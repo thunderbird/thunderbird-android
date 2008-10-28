@@ -16,8 +16,8 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 
-public class Email extends Application {
-    public static final String LOG_TAG = "Email";
+public class k9 extends Application {
+    public static final String LOG_TAG = "k9";
 
     public static File tempDirectory;
 
