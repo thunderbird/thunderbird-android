@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
-<project name="Email" default="debug">
+<project name="K9" default="debug">
     <!-- SDK Locations -->
     <property name="sdk-folder" value="/Users/jesse/Desktop/android-sdk-mac_x86-1.0_r1" />
     <property name="android-tools" value="/Users/jesse/Desktop/android-sdk-mac_x86-1.0_r1/tools" />
     
     <!-- Application Package Name -->
-    <property name="application-package" value="com.android.email.activity" />
+    <property name="application-package" value="com.fsck.k9.activity" />
 
     <!-- The intermediates directory -->
     <!-- Eclipse uses "bin" for its own output, so we do the same. -->
