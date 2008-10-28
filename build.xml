@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <project name="K9" default="debug">
     <!-- SDK Locations -->
-    <property name="sdk-folder" value="/Users/jesse/Desktop/android-sdk-mac_x86-1.0_r1" />
-    <property name="android-tools" value="/Users/jesse/Desktop/android-sdk-mac_x86-1.0_r1/tools" />
+    <property name="sdk-folder" value="/Users/jesse/android-sdk-mac_x86-1.0_r1" />
+    <property name="android-tools" value="/Users/jesse/android-sdk-mac_x86-1.0_r1/tools" />
     
     <!-- Application Package Name -->
     <property name="application-package" value="com.fsck.k9.activity" />
