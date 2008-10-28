@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <TextView
+        android:text="@string/account_setup_names_instructions"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?android:attr/textColorPrimary" />
+    <TextView
+        android:text="@string/account_setup_names_account_name_label"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorPrimary" />
+    <EditText
+        android:id="@+id/account_description"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+    <TextView
+        android:text="@string/account_setup_names_user_name_label"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorPrimary" />
+    <EditText
+        android:id="@+id/account_name"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+    <View
+        android:layout_height="0px"
+        android:layout_width="fill_parent"
+        android:layout_weight="1" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="54px"
+        android:background="@drawable/bottombar_565">
+        <Button
+            android:id="@+id/done"
+            android:text="@string/done_action"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:minWidth="@dimen/button_minWidth"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+</LinearLayout>

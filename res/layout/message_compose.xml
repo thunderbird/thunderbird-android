@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent" android:layout_width="fill_parent"
+    android:orientation="vertical" android:background="#ffffff">
+    <ScrollView android:layout_width="fill_parent"
+        android:layout_height="0dip" android:layout_weight="1"
+        android:scrollbarStyle="outsideInset"
+        android:fillViewport="true">
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:background="#ededed">
+                <MultiAutoCompleteTextView
+                    android:id="@+id/to" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:layout_marginLeft="6px"
+                    android:layout_marginRight="6px"
+                    android:hint="@string/message_compose_to_hint" />
+                <MultiAutoCompleteTextView
+                    android:id="@+id/cc" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:layout_marginLeft="6px"
+                    android:layout_marginRight="6px"
+                    android:hint="@string/message_compose_cc_hint"
+                    android:visibility="gone" />
+                <MultiAutoCompleteTextView
+                    android:id="@+id/bcc" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:layout_marginLeft="6px"
+                    android:layout_marginRight="6px"
+                    android:hint="@string/message_compose_bcc_hint"
+                    android:visibility="gone" />
+                <EditText android:id="@+id/subject"
+                    android:layout_width="fill_parent"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:layout_marginLeft="6px"
+                    android:layout_marginRight="6px"
+                    android:hint="@string/message_compose_subject_hint"
+                    android:autoText="true" android:capitalize="sentences" />
+                <!--
+                    Empty container for storing attachments. We'll stick
+                    instances of message_compose_attachment.xml in here.
+                -->
+                <LinearLayout android:id="@+id/attachments"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+                <View android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:background="@drawable/divider_horizontal_email" />
+            </LinearLayout>
+            <EditText android:id="@+id/message_content"
+                android:textColor="?android:attr/textColorSecondaryInverse"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="left|top"
+                android:minLines="3" android:autoText="true"
+                android:capitalize="sentences" />
+        <!--  quoted text bar -->
+            <RelativeLayout android:id="@+id/quoted_text_bar"
+                android:layout_width="fill_parent"
+                android:layout_height="45px" android:background="@drawable/email_quoted_bar">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:text="@string/message_compose_quoted_text_label"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true" />
+                <ImageButton android:id="@+id/quoted_text_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_dialog"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+            <WebView android:id="@+id/quoted_text"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" />
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="fill_parent" android:layout_height="54px"
+        android:background="@drawable/bottombar_565" android:gravity="center_vertical">
+        <Button android:id="@+id/send" android:text="@string/send_action"
+            android:layout_height="wrap_content" android:layout_width="0dip"
+            android:layout_weight="1" />
+        <Button android:id="@+id/save" android:text="@string/save_draft_action"
+            android:layout_height="wrap_content" android:layout_width="0dip"
+            android:layout_weight="1" />
+        <Button android:id="@+id/discard" android:text="@string/discard_action"
+            android:layout_height="wrap_content" android:layout_width="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbarStyle="outsideInset">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        <TextView
+            android:text="@string/account_setup_outgoing_smtp_server_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <EditText
+            android:id="@+id/account_server"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+        <TextView
+            android:text="@string/account_setup_outgoing_port_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <EditText
+            android:id="@+id/account_port"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+        <TextView
+            android:text="@string/account_setup_outgoing_security_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <Spinner
+            android:id="@+id/account_security_type"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+        <CheckBox
+            android:id="@+id/account_require_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account_setup_outgoing_require_login_label" />
+        <LinearLayout
+            android:id="@+id/account_require_login_settings"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:text="@string/account_setup_outgoing_username_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary" />
+            <EditText
+                android:id="@+id/account_username"
+                android:singleLine="true"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" />
+            <TextView
+                android:text="@string/account_setup_outgoing_password_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary" />
+            <EditText
+                android:id="@+id/account_password"
+                android:password="true"
+                android:singleLine="true"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" />
+        </LinearLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0px"
+            android:layout_weight="1" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="54px"
+            android:background="@drawable/bottombar_565">
+            <Button
+                android:id="@+id/next"
+                android:text="@string/next_action"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:minWidth="@dimen/button_minWidth"
+                android:drawableRight="@drawable/button_indicator_next"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

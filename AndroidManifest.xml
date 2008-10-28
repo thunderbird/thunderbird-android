@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.email">
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <permission android:name="com.android.email.permission.READ_ATTACHMENT"
+                android:permissionGroup="android.permission-group.MESSAGES"
+                android:protectionLevel="dangerous"
+                android:label="@string/read_attachment_label"
+                android:description="@string/read_attachment_desc"/>
+    <uses-permission android:name="com.android.email.permission.READ_ATTACHMENT"/>
+    <application android:icon="@drawable/icon" android:label="@string/app_name"
+        android:name="Email">
+        <activity android:name=".activity.Welcome">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.setup.AccountSetupBasics"
+            android:label="@string/account_setup_basics_title"
+            >
+        </activity>
+        <activity
+            android:name=".activity.setup.AccountSetupAccountType"
+            android:label="@string/account_setup_account_type_title"
+            >
+        </activity>
+        <activity
+            android:name=".activity.setup.AccountSetupIncoming"
+            android:label="@string/account_setup_incoming_title"
+            >
+        </activity>
+        <activity
+            android:name=".activity.setup.AccountSetupOutgoing"
+            android:label="@string/account_setup_outgoing_title"
+            >
+        </activity>
+        <activity
+            android:name=".activity.setup.AccountSetupOptions"
+            android:label="@string/account_setup_options_title"
+            >
+        </activity>
+        <activity
+            android:name=".activity.setup.AccountSetupNames"
+            android:label="@string/account_setup_names_title"
+            >
+        </activity>
+        <!-- XXX Note: this activity is hacked to ignore config changes,
+             since it doesn't currently handle them correctly in code. -->
+        <activity
+            android:name=".activity.setup.AccountSetupCheckSettings"
+            android:label="@string/account_setup_check_settings_title"
+            android:configChanges="keyboardHidden|orientation"
+            >
+        </activity>
+        <activity
+            android:name=".activity.setup.AccountSettings"
+            android:label="@string/account_settings_title_fmt"
+            >
+        </activity>
+
+        <activity
+            android:name=".activity.Debug"
+            android:label="@string/debug_title">
+        </activity>
+        <activity
+            android:name=".activity.Accounts"
+            android:label="@string/accounts_title">
+        </activity>
+        <activity
+            android:name=".activity.FolderMessageList">
+        </activity>
+        <activity
+            android:name=".activity.MessageView">
+        </activity>
+        <activity
+            android:name=".activity.MessageCompose"
+            android:label="@string/app_name"
+            android:enabled="false"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <data android:scheme="mailto" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="image/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="mailto" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <receiver android:name=".service.BootReceiver"
+              android:enabled="false"
+              >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".service.MailService"
+            android:enabled="false"
+            >
+        </service>
+        <provider
+            android:name=".provider.AttachmentProvider"
+            android:authorities="com.android.email.attachmentprovider"
+            android:multiprocess="true"
+            android:grantUriPermissions="true"
+            android:readPermission="com.android.email.permission.READ_ATTACHMENT"
+            />
+    </application>
+</manifest>

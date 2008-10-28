@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2008 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="account_settings">
+
+        <EditTextPreference
+            android:key="account_description"
+            android:title="@string/account_settings_description_label"
+            android:summary=""
+            android:dialogTitle="@string/account_settings_description_label" />
+
+        <EditTextPreference
+            android:key="account_name"
+            android:title="@string/account_settings_name_label"
+            android:summary=""
+            android:dialogTitle="@string/account_settings_name_label" />
+
+        <ListPreference
+            android:key="account_check_frequency"
+            android:title="@string/account_settings_mail_check_frequency_label"
+            android:entries="@array/account_settings_check_frequency_entries"
+            android:entryValues="@array/account_settings_check_frequency_values"
+            android:dialogTitle="@string/account_settings_mail_check_frequency_label" />
+
+        <CheckBoxPreference
+            android:key="account_default"
+            android:title="@string/account_settings_default_label"
+            android:summary="@string/account_settings_default_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_settings_notifications">
+
+        <CheckBoxPreference
+            android:key="account_notify"
+            android:title="@string/account_settings_notify_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_notify_summary" />
+
+        <RingtonePreference
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:dependency="account_notify"
+            android:key="account_ringtone"
+            android:title="@string/account_settings_ringtone"
+            android:ringtoneType="notification"
+            android:defaultValue="content://settings/system/notification_sound" />
+
+        <CheckBoxPreference
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:dependency="account_notify"
+            android:key="account_vibrate"
+            android:defaultValue="false"
+            android:title="@string/account_settings_vibrate_enable"
+            android:summary="@string/account_settings_vibrate_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_settings_servers">
+    
+        <PreferenceScreen
+            android:key="incoming"
+            android:title="@string/account_settings_incoming_label" />
+
+        <PreferenceScreen
+            android:key="outgoing"
+            android:title="@string/account_settings_outgoing_label" />
+
+        <PreferenceScreen
+            android:key="add_account"
+            android:title="@string/account_settings_add_account_label" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!--
+        This file is used to specify providers that we know default settings for
+        so that the user can set up their account by simply entering their email
+        address and password.
+
+        When a user starts this process, the email address is parsed, the domain
+        broken out and used to search this file for a provider. If one is found the
+        provider's settings are used to attempt to connect to the account.
+
+        A provider contains the settings for setting up an email account
+        that ends with the given domain. Domains should be unique within
+        this file. Each provider should have at least one incoming section and
+        one outgoing section. If more than one is specified only the first
+        will be used.
+
+        Valid incoming uri schemes are:
+            imap        IMAP with no transport security.
+            imap+tls    IMAP with optional TLS transport security.
+                            If TLS is not available the connection is made as "imap"
+            imap+tls+   IMAP with required TLS transport security.
+                            If TLS is not available the conneciton fails.
+            imap+ssl+   IMAP with required SSL transport security.
+                            If SSL is not available the connection fails.
+
+            pop3        POP3 with no transport security.
+            pop3+tls    POP3 with optional TLS transport security.
+                            If TLS is not available the connection is made as "pop3"
+            pop3+tls+   POP3 with required TLS transport security.
+                            If TLS is not available the conneciton fails.
+            pop3+ssl+   POP3 with required SSL transport security.
+                            If SSL is not available the connection fails.
+
+        Valid outgoing uri schemes are:
+            smtp        SMTP with no transport security.
+            smtp+tls    SMTP with optional TLS transport security.
+                            If TLS is not available the connection is made as "smtp"
+            smtp+tls+   SMTP with required TLS transport security.
+                            If TLS is not available the conneciton fails.
+            smtp+ssl+   SMTP with required SSL transport security.
+                            If SSL is not available the connection fails.
+
+        The URIs should be full templates for connection, including a port if
+        the service uses a non-default port.
+
+        The username attribute is used to supply a template for the username
+        that will be presented to the server. This username is built from a
+        set of variables that are substituted with parts of the user
+        specified email address.
+
+        Valid substitution values for the username attribute are:
+            $email - the email address the user entered
+            $user - the value before the @ sign in the email address the user entered
+            $domain - the value after the @ signin the email address the user entered
+    -->
+<providers>
+    <provider id="gmail" label="Gmail" domain="gmail.com">
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
+    </provider>
+    <provider id="google" label="Google" domain="google.com">
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
+    </provider>
+    <provider id="aol" label="AOL" domain="aol.com">
+        <incoming uri="imap://imap.aol.com" label="IMAP"
+            username="$email" />
+        <outgoing uri="smtp://smtp.aol.com:587" username="$email" />
+    </provider>
+    <provider id="aim" label="AIM" domain="aim.com">
+        <incoming uri="imap://imap.aim.com" label="IMAP"
+            username="$email" />
+        <outgoing uri="smtp://smtp.aim.com:587" username="$email" />
+    </provider>
+    <provider id="yahoo" label="Yahoo" domain="yahoo.com" note="@string/provider_note_yahoo">
+        <incoming uri="imap+tls://imap.mail.yahoo.com"
+            username="$user" />
+        <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com"
+            username="$user" />
+    </provider>
+    <provider id="mobileme" label="MobileMe" domain="me.com">
+        <incoming uri="imap+tls://mail.me.com" username="$email" />
+        <outgoing uri="smtp+tls://smtp.me.com" username="$email" />
+    </provider>
+    <provider id="dotmac" label=".Mac" domain="mac.com">
+        <incoming uri="imap+tls://mail.mac.com" username="$email" />
+        <outgoing uri="smtp+tls://smtp.mac.com" username="$email" />
+    </provider>
+    <provider id="comcast" label="Comcast" domain="comcast.net">
+        <incoming uri="pop3+ssl+://mail.comcast.net" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.comcast.net" username="$user" />
+    </provider>
+    <provider id="verizon" label="Verizon" domain="verizon.net">
+        <incoming uri="pop3://incoming.verizon.net" username="$user" />
+        <outgoing uri="smtp://outgoing.verizon.net" username="$user" />
+    </provider>
+    <provider id="sbcglobal" label="SBC Global" domain="sbcglobal.net">
+        <incoming uri="pop3://pop.sbcglobal.yahoo.com"
+            username="$email" />
+        <outgoing uri="smtp://smtp.sbcglobal.yahoo.com"
+            username="$email" />
+    </provider>
+    <provider id="compuserve" label="CompuServe" domain="cs.com">
+        <incoming uri="imap://imap.cs.com" username="$user" />
+        <outgoing uri="smtp://smtp.cs.com" username="$user" />
+    </provider>
+    <provider id="earthlink" label="Earthlink" domain="earthlink.net">
+        <incoming uri="pop3://pop.earthlink.net" username="$email" />
+        <outgoing uri="smtp://smtpauth.earthlink.net:587"
+            username="$email" />
+    </provider>
+    <provider id="juno" label="Juno" domain="juno.com">
+        <incoming uri="pop3://pop.juno.com" username="$user" />
+        <outgoing uri="smtp://smtp.juno.com" username="$user" />
+    </provider>
+    <provider id="netzero" label="NetZero" domain="netzero.com">
+        <incoming uri="pop3://pop.netzero.com" username="$user" />
+        <outgoing uri="smtp://smtp.netzero.com" username="$user" />
+    </provider>
+    <provider id="live" label="Windows Live Hotmail Plus" domain="live.com"
+            note="@string/provider_note_live">
+        <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
+    </provider>
+    <provider id="hotmail" label="Windows Live Hotmail Plus" domain="hotmail.com"
+            note="@string/provider_note_live">
+        <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
+    </provider>
+    <provider id="msn" label="Windows Live Hotmail Plus" domain="msn.com"
+            note="@string/provider_note_live">
+        <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
+        <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
+    </provider>
+</providers>
