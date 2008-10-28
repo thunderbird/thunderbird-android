@@ -17,6 +17,7 @@ import android.os.Process;
 import android.util.Config;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -448,6 +449,27 @@ public class FolderMessageList extends ExpandableListActivity {
             new Thread(new FolderUpdateWorker(folder.name, true)).start();
         }
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        int group = mListView.getPackedPositionGroup(mListView.getSelectedId());
+        int item =(mListView.getSelectedItemPosition() -1 );
+        if (item >= 0) { // Guard against hitting delete on group names
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DEL: {
+                if (true) {
+                    MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(group, item);
+
+                    onDelete(message);
+                }
+                return true;
+            }
+        } 
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
