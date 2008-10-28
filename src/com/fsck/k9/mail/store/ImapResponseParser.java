@@ -14,7 +14,7 @@ import java.util.Date;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.FixedLengthInputStream;
 import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.mail.MessagingException;
@@ -55,8 +55,8 @@ public class ImapResponseParser {
             readTokens(response);
         }
         if (Config.LOGD) {
-            if (Email.DEBUG) {
-                Log.d(Email.LOG_TAG, "<<< " + response.toString());
+            if (k9.DEBUG) {
+                Log.d(k9.LOG_TAG, "<<< " + response.toString());
             }
         }
         return response;

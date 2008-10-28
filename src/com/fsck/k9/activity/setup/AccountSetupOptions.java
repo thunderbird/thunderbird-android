@@ -12,7 +12,7 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
@@ -88,7 +88,7 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
         if (mDefaultView.isChecked()) {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);
         }
-        Email.setServicesEnabled(this);
+        k9.setServicesEnabled(this);
         AccountSetupNames.actionSetNames(this, mAccount);
         finish();
     }

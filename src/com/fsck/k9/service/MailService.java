@@ -18,7 +18,7 @@ import android.text.TextUtils;
 import android.net.Uri;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.MessagingController;
 import com.fsck.k9.MessagingListener;
 import com.fsck.k9.Preferences;
@@ -59,20 +59,20 @@ public class MailService extends Service {
         MessagingController.getInstance(getApplication()).addListener(mListener);
         if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
             if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
+                Log.v(k9.LOG_TAG, "***** MailService *****: checking mail");
             }
             MessagingController.getInstance(getApplication()).checkMail(this, null, mListener);
         }
         else if (ACTION_CANCEL.equals(intent.getAction())) {
             if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "***** MailService *****: cancel");
+                Log.v(k9.LOG_TAG, "***** MailService *****: cancel");
             }
             cancel();
             stopSelf(startId);
         }
         else if (ACTION_RESCHEDULE.equals(intent.getAction())) {
             if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "***** MailService *****: reschedule");
+                Log.v(k9.LOG_TAG, "***** MailService *****: reschedule");
             }
             reschedule();
             stopSelf(startId);
@@ -170,7 +170,7 @@ public class MailService extends Service {
                 } else {
                     Account account1 = accountsWithNewMail.keySet().iterator().next();
                     int totalNewMails = accountsWithNewMail.get(account1);
-                    Intent i = FolderMessageList.actionHandleAccountIntent(context, account1, Email.INBOX);
+                    Intent i = FolderMessageList.actionHandleAccountIntent(context, account1, k9.INBOX);
                     PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
                     notif.setLatestEventInfo(context, getString(R.string.notification_new_title),
                             getString(R.string.notification_new_one_account_fmt, totalNewMails,

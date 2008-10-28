@@ -21,7 +21,7 @@ import javax.net.ssl.SSLException;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.codec.binary.Base64;
 import com.fsck.k9.mail.Address;
@@ -144,8 +144,8 @@ public class SmtpTransport extends Transport {
                 localHost = localAddress.getHostName();
             } catch (Exception e) {
                 if (Config.LOGD) {
-                    if (Email.DEBUG) {
-                        Log.d(Email.LOG_TAG, "Unable to look up localhost");
+                    if (k9.DEBUG) {
+                        Log.d(k9.LOG_TAG, "Unable to look up localhost");
                     }
                 }
             }
@@ -277,8 +277,8 @@ public class SmtpTransport extends Transport {
         }
         String ret = sb.toString();
         if (Config.LOGD) {
-            if (Email.DEBUG) {
-                Log.d(Email.LOG_TAG, "<<< " + ret);
+            if (k9.DEBUG) {
+                Log.d(k9.LOG_TAG, "<<< " + ret);
             }
         }
         return ret;
@@ -286,8 +286,8 @@ public class SmtpTransport extends Transport {
 
     private void writeLine(String s) throws IOException {
         if (Config.LOGD) {
-            if (Email.DEBUG) {
-                Log.d(Email.LOG_TAG, ">>> " + s);
+            if (k9.DEBUG) {
+                Log.d(k9.LOG_TAG, ">>> " + s);
             }
         }
         mOut.write(s.getBytes());

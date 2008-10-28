@@ -16,7 +16,7 @@ import org.apache.james.mime4j.field.address.parser.ParseException;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.Utility;
 import com.fsck.k9.mail.internet.MimeUtility;
 
@@ -74,7 +74,7 @@ public class Address {
                     Mailbox mailbox = (Mailbox)address;
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain()));
                 } else {
-                    Log.e(Email.LOG_TAG, "Unknown address type from Mime4J: "
+                    Log.e(k9.LOG_TAG, "Unknown address type from Mime4J: "
                             + address.getClass().toString());
                 }
 

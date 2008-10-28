@@ -15,7 +15,7 @@ import org.apache.james.mime4j.util.CharsetUtil;
 
 import android.util.Log;
 
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -176,7 +176,7 @@ public class MimeUtility {
              * If we are not able to process the body there's nothing we can do about it. Return
              * null and let the upper layers handle the missing content.
              */
-            Log.e(Email.LOG_TAG, "Unable to getTextFromPart", e);
+            Log.e(k9.LOG_TAG, "Unable to getTextFromPart", e);
         }
         return null;
     }

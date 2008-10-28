@@ -25,7 +25,7 @@ import android.net.Uri;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.Utility;
 import com.fsck.k9.codec.binary.Base64OutputStream;
 import com.fsck.k9.mail.Address;
@@ -85,7 +85,7 @@ public class LocalStore extends Store {
         if (mDb.getVersion() != DB_VERSION) {
             if (mDb.getVersion() < 18) {
                 if (Config.LOGV) {
-                    Log.v(Email.LOG_TAG, String.format("Upgrading database from %d to %d", mDb
+                    Log.v(k9.LOG_TAG, String.format("Upgrading database from %d to %d", mDb
                             .getVersion(), 18));
                 }
                 mDb.execSQL("DROP TABLE IF EXISTS folders");
@@ -233,7 +233,7 @@ public class LocalStore extends Store {
 
     public void resetVisibleLimits() {
         ContentValues cv = new ContentValues();
-        cv.put("visible_limit", Integer.toString(Email.DEFAULT_VISIBLE_LIMIT));
+        cv.put("visible_limit", Integer.toString(k9.DEFAULT_VISIBLE_LIMIT));
         mDb.update("folders", cv, null, null);
     }
 
@@ -1100,7 +1100,7 @@ public class LocalStore extends Store {
                 }
             }
             catch (MessagingException me) {
-                Log.e(Email.LOG_TAG, "Unable to update LocalStore unread message count",
+                Log.e(k9.LOG_TAG, "Unable to update LocalStore unread message count",
                         me);
                 throw new RuntimeException(me);
             }

@@ -25,7 +25,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.MessagingController;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -152,7 +152,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
                             // Ignore
                     }
                     mSelectedContextAccount.delete(Preferences.getPreferences(Accounts.this));
-                    Email.setServicesEnabled(Accounts.this);
+                    k9.setServicesEnabled(Accounts.this);
                     refresh();
                 }
             })
@@ -269,7 +269,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
                 LocalStore localStore = (LocalStore) Store.getInstance(
                         account.getLocalStoreUri(),
                         getApplication());
-                LocalFolder localFolder = (LocalFolder) localStore.getFolder(Email.INBOX);
+                LocalFolder localFolder = (LocalFolder) localStore.getFolder(k9.INBOX);
                 if (localFolder.exists()) {
                     unreadMessageCount = localFolder.getUnreadMessageCount();
                 }

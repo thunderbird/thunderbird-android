@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.Utility;
@@ -89,7 +89,7 @@ public class AccountSetupNames extends Activity implements OnClickListener {
         }
         mAccount.setName(mName.getText().toString());
         mAccount.save(Preferences.getPreferences(this));
-        FolderMessageList.actionHandleAccount(this, mAccount, Email.INBOX);
+        FolderMessageList.actionHandleAccount(this, mAccount, k9.INBOX);
         finish();
     }
 

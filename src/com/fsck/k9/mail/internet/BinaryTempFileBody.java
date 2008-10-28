@@ -13,7 +13,7 @@ import org.apache.commons.io.IOUtils;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.codec.binary.Base64OutputStream;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;

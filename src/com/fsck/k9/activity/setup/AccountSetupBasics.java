@@ -27,7 +27,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -262,7 +262,7 @@ public class AccountSetupBasics extends Activity
             if (mDefaultView.isChecked()) {
                 Preferences.getPreferences(this).setDefaultAccount(mAccount);
             }
-            Email.setServicesEnabled(this);
+            k9.setServicesEnabled(this);
             AccountSetupNames.actionSetNames(this, mAccount);
             finish();
         }
@@ -361,7 +361,7 @@ public class AccountSetupBasics extends Activity
             }
         }
         catch (Exception e) {
-            Log.e(Email.LOG_TAG, "Error while trying to load provider settings.", e);
+            Log.e(k9.LOG_TAG, "Error while trying to load provider settings.", e);
         }
         return null;
     }

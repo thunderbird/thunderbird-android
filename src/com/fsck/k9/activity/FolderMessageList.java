@@ -33,7 +33,7 @@ import android.widget.Toast;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.MessagingController;
 import com.fsck.k9.MessagingListener;
 import com.fsck.k9.R;
@@ -700,7 +700,7 @@ public class FolderMessageList extends ExpandableListActivity {
                 }
                 mHandler.progress(false);
                 if (Config.LOGV) {
-                    Log.v(Email.LOG_TAG, "listFoldersFailed " + message);
+                    Log.v(k9.LOG_TAG, "listFoldersFailed " + message);
                 }
             }
 
@@ -731,7 +731,7 @@ public class FolderMessageList extends ExpandableListActivity {
                         mFolders.add(holder);
                     }
                     holder.name = folder.getName();
-                    if (holder.name.equalsIgnoreCase(Email.INBOX)) {
+                    if (holder.name.equalsIgnoreCase(k9.INBOX)) {
                         holder.displayName = getString(R.string.special_mailbox_name_inbox);
                     }
                     else {
@@ -749,7 +749,7 @@ public class FolderMessageList extends ExpandableListActivity {
                         folder.close(false);
                     }
                     catch (MessagingException me) {
-                        Log.e(Email.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
+                        Log.e(k9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
                     }
                 }
 
@@ -763,7 +763,7 @@ public class FolderMessageList extends ExpandableListActivity {
                  */
 //                if (mRestoredState != null) {
 //                    if (Config.LOGV) {
-//                        Log.v(Email.LOG_TAG, "Attempting to restore list state");
+//                        Log.v(k9.LOG_TAG, "Attempting to restore list state");
 //                    }
 //                    Parcelable listViewState =
 //                    mListView.onRestoreInstanceState(mListViewState);
@@ -1199,9 +1199,9 @@ public class FolderMessageList extends ExpandableListActivity {
             public int compareTo(FolderInfoHolder o) {
                 String s1 = this.name;
                 String s2 = o.name;
-                if (Email.INBOX.equalsIgnoreCase(s1)) {
+                if (k9.INBOX.equalsIgnoreCase(s1)) {
                     return -1;
-                } else if (Email.INBOX.equalsIgnoreCase(s2)) {
+                } else if (k9.INBOX.equalsIgnoreCase(s2)) {
                     return 1;
                 } else
                     return s1.toUpperCase().compareTo(s2.toUpperCase());
@@ -1248,7 +1248,7 @@ public class FolderMessageList extends ExpandableListActivity {
                 }
                 catch (MessagingException me) {
                     if (Config.LOGV) {
-                        Log.v(Email.LOG_TAG, "Unable to load message info", me);
+                        Log.v(k9.LOG_TAG, "Unable to load message info", me);
                     }
                 }
             }

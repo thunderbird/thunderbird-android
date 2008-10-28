@@ -45,7 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.MessagingController;
 import com.fsck.k9.MessagingListener;
 import com.fsck.k9.R;
@@ -623,19 +623,19 @@ public class MessageView extends Activity
             Button attachmentDownload = (Button)view.findViewById(R.id.download);
 
             if ((!MimeUtility.mimeTypeMatches(attachment.contentType,
-                    Email.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
+                    k9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
                     || (MimeUtility.mimeTypeMatches(attachment.contentType,
-                            Email.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES))) {
+                            k9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES))) {
                 attachmentView.setVisibility(View.GONE);
             }
             if ((!MimeUtility.mimeTypeMatches(attachment.contentType,
-                    Email.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
+                    k9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
                     || (MimeUtility.mimeTypeMatches(attachment.contentType,
-                            Email.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))) {
+                            k9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))) {
                 attachmentDownload.setVisibility(View.GONE);
             }
 
-            if (attachment.size > Email.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
+            if (attachment.size > k9.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
                 attachmentView.setVisibility(View.GONE);
                 attachmentDownload.setVisibility(View.GONE);
             }
@@ -690,7 +690,7 @@ public class MessageView extends Activity
             }
             catch (MessagingException me) {
                 if (Config.LOGV) {
-                    Log.v(Email.LOG_TAG, "loadMessageForViewHeadersAvailable", me);
+                    Log.v(k9.LOG_TAG, "loadMessageForViewHeadersAvailable", me);
                 }
             }
         }
@@ -747,7 +747,7 @@ public class MessageView extends Activity
             }
             catch (Exception e) {
                 if (Config.LOGV) {
-                    Log.v(Email.LOG_TAG, "loadMessageForViewBodyAvailable", e);
+                    Log.v(k9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
                 }
             }
         }

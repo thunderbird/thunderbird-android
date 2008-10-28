@@ -31,7 +31,7 @@ import javax.net.ssl.SSLException;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.Utility;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -707,7 +707,7 @@ public class ImapStore extends Store {
                                 }
                                 catch (MessagingException e) {
                                     if (Config.LOGV) {
-                                        Log.v(Email.LOG_TAG, "Error handling message", e);
+                                        Log.v(k9.LOG_TAG, "Error handling message", e);
                                     }
                                     message.setBody(null);
                                 }
@@ -1191,12 +1191,12 @@ public class ImapStore extends Store {
             mOut.write('\n');
             mOut.flush();
             if (Config.LOGD) {
-                if (Email.DEBUG) {
-                    if (sensitive && !Email.DEBUG_SENSITIVE) {
-                        Log.d(Email.LOG_TAG, ">>> "
+                if (k9.DEBUG) {
+                    if (sensitive && !k9.DEBUG_SENSITIVE) {
+                        Log.d(k9.LOG_TAG, ">>> "
                                 + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
                     } else {
-                        Log.d(Email.LOG_TAG, ">>> " + commandToSend);
+                        Log.d(k9.LOG_TAG, ">>> " + commandToSend);
                     }
                 }
             }

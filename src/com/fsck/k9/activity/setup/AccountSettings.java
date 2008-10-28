@@ -14,7 +14,7 @@ import android.preference.Preference;
 import android.preference.RingtonePreference;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
@@ -156,7 +156,7 @@ public class AccountSettings extends PreferenceActivity {
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));
         mAccount.save(Preferences.getPreferences(this));
-        Email.setServicesEnabled(this);
+        k9.setServicesEnabled(this);
     }
 
     @Override

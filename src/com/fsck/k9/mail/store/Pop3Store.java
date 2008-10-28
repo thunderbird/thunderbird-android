@@ -24,7 +24,7 @@ import javax.net.ssl.SSLException;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.Utility;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.FetchProfile;
@@ -731,8 +731,8 @@ public class Pop3Store extends Store {
             } while ((d = mIn.read()) != -1);
             String ret = sb.toString();
             if (Config.LOGD) {
-                if (Email.DEBUG) {
-                    Log.d(Email.LOG_TAG, "<<< " + ret);
+                if (k9.DEBUG) {
+                    Log.d(k9.LOG_TAG, "<<< " + ret);
                 }
             }
             return ret;
@@ -740,8 +740,8 @@ public class Pop3Store extends Store {
 
         private void writeLine(String s) throws IOException {
             if (Config.LOGD) {
-                if (Email.DEBUG) {
-                    Log.d(Email.LOG_TAG, ">>> " + s);
+                if (k9.DEBUG) {
+                    Log.d(k9.LOG_TAG, ">>> " + s);
                 }
             }
             mOut.write(s.getBytes());

@@ -22,7 +22,7 @@ import android.util.Config;
 import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.Utility;
 import com.fsck.k9.mail.internet.MimeUtility;
 

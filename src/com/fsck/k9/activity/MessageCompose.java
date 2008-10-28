@@ -37,7 +37,7 @@ import android.widget.Toast;
 import android.widget.AutoCompleteTextView.Validator;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.EmailAddressAdapter;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.MessagingController;
@@ -379,7 +379,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             String type = intent.getType();
             Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
             if (stream != null && type != null) {
-                if (MimeUtility.mimeTypeMatches(type, Email.ACCEPTABLE_ATTACHMENT_SEND_TYPES)) {
+                if (MimeUtility.mimeTypeMatches(type, k9.ACCEPTABLE_ATTACHMENT_SEND_TYPES)) {
                     addAttachment(stream);
                 }
             }
@@ -599,7 +599,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             message = createMessage();
         }
         catch (MessagingException me) {
-            Log.e(Email.LOG_TAG, "Failed to create new message for send or save.", me);
+            Log.e(k9.LOG_TAG, "Failed to create new message for send or save.", me);
             throw new RuntimeException("Failed to create a new message for send or save.", me);
         }
 
@@ -699,7 +699,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private void onAddAttachment() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType(Email.ACCEPTABLE_ATTACHMENT_SEND_TYPES[0]);
+        i.setType(k9.ACCEPTABLE_ATTACHMENT_SEND_TYPES[0]);
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_ATTACHMENT);
     }
 

@@ -10,7 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.fsck.k9.Email;
+import com.fsck.k9.k9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
@@ -39,17 +39,17 @@ public class Debug extends Activity implements OnCheckedChangeListener {
         mVersionView.setText(String.format(getString(R.string.debug_version_fmt).toString(),
                 getString(R.string.build_number)));
 
-        mEnableDebugLoggingView.setChecked(Email.DEBUG);
-        mEnableSensitiveLoggingView.setChecked(Email.DEBUG_SENSITIVE);
+        mEnableDebugLoggingView.setChecked(k9.DEBUG);
+        mEnableSensitiveLoggingView.setChecked(k9.DEBUG_SENSITIVE);
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView.getId() == R.id.debug_logging) {
-            Email.DEBUG = isChecked;
-            mPreferences.setEnableDebugLogging(Email.DEBUG);
+            k9.DEBUG = isChecked;
+            mPreferences.setEnableDebugLogging(k9.DEBUG);
         } else if (buttonView.getId() == R.id.sensitive_logging) {
-            Email.DEBUG_SENSITIVE = isChecked;
-            mPreferences.setEnableSensitiveLogging(Email.DEBUG_SENSITIVE);
+            k9.DEBUG_SENSITIVE = isChecked;
+            mPreferences.setEnableSensitiveLogging(k9.DEBUG_SENSITIVE);
         }
     }
 

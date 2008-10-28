@@ -118,7 +118,7 @@ public class MessagingController implements Runnable {
             }
             catch (Exception e) {
                 if (Config.LOGV) {
-                    Log.v(Email.LOG_TAG, "Error running command", e);
+                    Log.v(k9.LOG_TAG, "Error running command", e);
                 }
             }
             mBusy = false;
@@ -211,7 +211,7 @@ public class MessagingController implements Runnable {
                          */
                         for (Folder localFolder : localFolders) {
                             String localFolderName = localFolder.getName();
-                            if (localFolderName.equalsIgnoreCase(Email.INBOX) ||
+                            if (localFolderName.equalsIgnoreCase(k9.INBOX) ||
                                     localFolderName.equals(account.getTrashFolderName()) ||
                                     localFolderName.equals(account.getOutboxFolderName()) ||
                                     localFolderName.equals(account.getDraftsFolderName()) ||
@@ -293,7 +293,7 @@ public class MessagingController implements Runnable {
                     mApplication);
             LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
             localFolder.setVisibleLimit(localFolder.getVisibleLimit()
-                    + Email.VISIBLE_LIMIT_INCREMENT);
+                    + k9.VISIBLE_LIMIT_INCREMENT);
             synchronizeMailbox(account, folder, listener);
         }
         catch (MessagingException me) {
@@ -309,7 +309,7 @@ public class MessagingController implements Runnable {
                 localStore.resetVisibleLimits();
             }
             catch (MessagingException e) {
-                Log.e(Email.LOG_TAG, "Unable to reset visible limits", e);
+                Log.e(k9.LOG_TAG, "Unable to reset visible limits", e);
             }
         }
     }
@@ -402,8 +402,8 @@ public class MessagingController implements Runnable {
                 Open the folder
                 Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
                 Get the message count
-                Get the list of the newest Email.DEFAULT_VISIBLE_LIMIT messages
-                    getMessages(messageCount - Email.DEFAULT_VISIBLE_LIMIT, messageCount)
+                Get the list of the newest k9.DEFAULT_VISIBLE_LIMIT messages
+                    getMessages(messageCount - k9.DEFAULT_VISIBLE_LIMIT, messageCount)
                 See if we have each message locally, if not fetch it's flags and envelope
                 Get and update the unread count for the folder
                 Update the remote flags of any messages we have locally with an internal date
@@ -531,7 +531,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                                     }
                                 }
                                 catch (Exception e) {
-                                    Log.e(Email.LOG_TAG,
+                                    Log.e(k9.LOG_TAG,
                                             "Error while storing downloaded message.",
                                             e);
                                 }
@@ -735,7 +735,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
         }
         catch (Exception e) {
             if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "synchronizeMailbox", e);
+                Log.v(k9.LOG_TAG, "synchronizeMailbox", e);
             }
             for (MessagingListener l : mListeners) {
                 l.synchronizeMailboxFailed(
@@ -766,7 +766,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 }
                 catch (MessagingException me) {
                     if (Config.LOGV) {
-                        Log.v(Email.LOG_TAG, "processPendingCommands", me);
+                        Log.v(k9.LOG_TAG, "processPendingCommands", me);
                     }
                     /*
                      * Ignore any exceptions from the commands. Commands will be processed
@@ -1213,7 +1213,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 }
                 catch (MessagingException me) {
                     if (Config.LOGV) {
-                        Log.v(Email.LOG_TAG, "", me);
+                        Log.v(k9.LOG_TAG, "", me);
                     }
                     for (MessagingListener l : mListeners) {
                         l.loadAttachmentFailed(account, message, part, tag, me.getMessage());
@@ -1400,7 +1400,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 catch (Exception e) {
                     // TODO
                     if (Config.LOGV) {
-                        Log.v(Email.LOG_TAG, "emptyTrash");
+                        Log.v(k9.LOG_TAG, "emptyTrash");
                     }
                 }
             }
@@ -1432,7 +1432,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 }
                 for (Account account : accounts) {
                     sendPendingMessagesSynchronous(account);
-                    synchronizeMailboxSynchronous(account, Email.INBOX);
+                    synchronizeMailboxSynchronous(account, k9.INBOX);
                 }
                 for (MessagingListener l : mListeners) {
                     l.checkMailFinished(context, account);
@@ -1462,7 +1462,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
             processPendingCommands(account);
         }
         catch (MessagingException e) {
-            Log.e(Email.LOG_TAG, "Unable to save message as draft.", e);
+            Log.e(k9.LOG_TAG, "Unable to save message as draft.", e);
         }
     }
 
