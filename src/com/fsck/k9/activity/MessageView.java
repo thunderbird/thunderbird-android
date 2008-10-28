@@ -28,6 +28,7 @@ import android.os.Process;
 import android.text.util.Regex;
 import android.util.Config;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,6 +95,23 @@ public class MessageView extends Activity
 
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
+
+
+    
+    
+       public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DEL: { onDelete(); break;}
+            case KeyEvent.KEYCODE_F: { onForward(); break;}
+            case KeyEvent.KEYCODE_A: { onReplyAll(); break; }
+            case KeyEvent.KEYCODE_R: { onReply(); break; }
+            case KeyEvent.KEYCODE_J: { onPrevious(); break; }
+            case KeyEvent.KEYCODE_K: { onNext(); break; }
+            }
+        return true;
+        }
+ 
+
 
     class MessageViewHandler extends Handler {
         private static final int MSG_PROGRESS = 2;
@@ -218,6 +236,9 @@ public class MessageView extends Activity
             msg.arg1 = show ? 1 : 0;
             sendMessage(msg);
         }
+    
+    
+    
     }
 
     class Attachment {
