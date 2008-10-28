@@ -1,5 +1,5 @@
 
-package com.android.email.activity;
+package com.fsck.k9.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.android.email.Email;
-import com.android.email.Preferences;
-import com.android.email.R;
+import com.fsck.k9.Email;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 
 public class Debug extends Activity implements OnCheckedChangeListener {
     private TextView mVersionView;

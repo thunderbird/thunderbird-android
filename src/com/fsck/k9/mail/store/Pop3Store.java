@@ -1,5 +1,5 @@
 
-package com.android.email.mail.store;
+package com.fsck.k9.mail.store;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,19 +24,19 @@ import javax.net.ssl.SSLException;
 import android.util.Config;
 import android.util.Log;
 
-import com.android.email.Email;
-import com.android.email.Utility;
-import com.android.email.mail.AuthenticationFailedException;
-import com.android.email.mail.FetchProfile;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessageRetrievalListener;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Store;
-import com.android.email.mail.CertificateValidationException;
-import com.android.email.mail.Folder.OpenMode;
-import com.android.email.mail.internet.MimeMessage;
+import com.fsck.k9.Email;
+import com.fsck.k9.Utility;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.Folder.OpenMode;
+import com.fsck.k9.mail.internet.MimeMessage;
 
 public class Pop3Store extends Store {
     public static final int CONNECTION_SECURITY_NONE = 0;

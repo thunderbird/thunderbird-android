@@ -1,4 +1,4 @@
-package com.android.email.mail;
+package com.fsck.k9.mail;
 
 
 public abstract class Folder {

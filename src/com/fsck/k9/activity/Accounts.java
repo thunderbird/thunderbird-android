@@ -1,5 +1,5 @@
 
-package com.android.email.activity;
+package com.fsck.k9.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,17 +24,17 @@ import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.activity.setup.AccountSettings;
-import com.android.email.activity.setup.AccountSetupBasics;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Store;
-import com.android.email.mail.store.LocalStore;
-import com.android.email.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.Account;
+import com.fsck.k9.Email;
+import com.fsck.k9.MessagingController;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.activity.setup.AccountSettings;
+import com.fsck.k9.activity.setup.AccountSetupBasics;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 
 public class Accounts extends ListActivity implements OnItemClickListener, OnClickListener {
     private static final int DIALOG_REMOVE_ACCOUNT = 1;

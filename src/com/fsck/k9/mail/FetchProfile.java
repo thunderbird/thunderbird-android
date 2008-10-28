@@ -1,5 +1,5 @@
 
-package com.android.email.mail;
+package com.fsck.k9.mail;
 
 import java.util.ArrayList;
 

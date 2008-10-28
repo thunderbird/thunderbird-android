@@ -1,9 +1,9 @@
 
-package com.android.email.activity;
+package com.fsck.k9.activity;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.Preferences;
+import com.fsck.k9.Account;
+import com.fsck.k9.Email;
+import com.fsck.k9.Preferences;
 
 import android.app.Activity;
 import android.content.Intent;

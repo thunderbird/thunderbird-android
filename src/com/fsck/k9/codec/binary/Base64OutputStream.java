@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.email.codec.binary;
+package com.fsck.k9.codec.binary;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;

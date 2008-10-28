@@ -1,5 +1,5 @@
 
-package com.android.email.mail.store;
+package com.fsck.k9.mail.store;
 
 import android.util.Log;
 import android.net.http.DomainNameChecker;

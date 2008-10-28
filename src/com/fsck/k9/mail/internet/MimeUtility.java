@@ -1,5 +1,5 @@
 
-package com.android.email.mail.internet;
+package com.fsck.k9.mail.internet;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,13 +15,13 @@ import org.apache.james.mime4j.util.CharsetUtil;
 
 import android.util.Log;
 
-import com.android.email.Email;
-import com.android.email.mail.Body;
-import com.android.email.mail.BodyPart;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Multipart;
-import com.android.email.mail.Part;
+import com.fsck.k9.Email;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
 
 public class MimeUtility {
     public static String unfold(String s) {

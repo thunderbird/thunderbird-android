@@ -1,5 +1,5 @@
 
-package com.android.email.activity.setup;
+package com.fsck.k9.activity.setup;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,10 +19,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.email.Account;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.Utility;
+import com.fsck.k9.Account;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.Utility;
 
 public class AccountSetupIncoming extends Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";

@@ -1,5 +1,5 @@
 
-package com.android.email.mail;
+package com.fsck.k9.mail;
 
 /**
  * Flags that can be applied to Messages.

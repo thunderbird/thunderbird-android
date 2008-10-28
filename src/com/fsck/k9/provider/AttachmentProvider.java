@@ -1,4 +1,4 @@
-package com.android.email.provider;
+package com.fsck.k9.provider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,16 +21,16 @@ import android.provider.OpenableColumns;
 import android.util.Config;
 import android.util.Log;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.Utility;
-import com.android.email.mail.internet.MimeUtility;
+import com.fsck.k9.Account;
+import com.fsck.k9.Email;
+import com.fsck.k9.Utility;
+import com.fsck.k9.mail.internet.MimeUtility;
 
 /*
  * A simple ContentProvider that allows file access to Email's attachments.
  */
 public class AttachmentProvider extends ContentProvider {
-    public static final Uri CONTENT_URI = Uri.parse( "content://com.android.email.attachmentprovider");
+    public static final Uri CONTENT_URI = Uri.parse( "content://com.fsck.k9.attachmentprovider");
 
     private static final String FORMAT_RAW = "RAW";
     private static final String FORMAT_THUMBNAIL = "THUMBNAIL";

@@ -5,10 +5,10 @@
  * should not be modified by hand.
  */
 
-package com.android.email;
+package com.fsck.k9;
 
 public final class Manifest {
     public static final class permission {
-        public static final String READ_ATTACHMENT="com.android.email.permission.READ_ATTACHMENT";
+        public static final String READ_ATTACHMENT="com.fsck.k9.permission.READ_ATTACHMENT";
     }
 }

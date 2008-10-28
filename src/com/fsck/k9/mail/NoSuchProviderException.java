@@ -1,5 +1,5 @@
 
-package com.android.email.mail;
+package com.fsck.k9.mail;
 
 public class NoSuchProviderException extends MessagingException {
     public static final long serialVersionUID = -1;

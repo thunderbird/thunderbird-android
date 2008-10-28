@@ -1,5 +1,5 @@
 
-package com.android.email;
+package com.fsck.k9;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,23 +15,23 @@ import android.os.Process;
 import android.util.Config;
 import android.util.Log;
 
-import com.android.email.mail.FetchProfile;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessageRetrievalListener;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Part;
-import com.android.email.mail.Store;
-import com.android.email.mail.Transport;
-import com.android.email.mail.Folder.FolderType;
-import com.android.email.mail.Folder.OpenMode;
-import com.android.email.mail.internet.MimeHeader;
-import com.android.email.mail.internet.MimeUtility;
-import com.android.email.mail.store.LocalStore;
-import com.android.email.mail.store.LocalStore.LocalFolder;
-import com.android.email.mail.store.LocalStore.LocalMessage;
-import com.android.email.mail.store.LocalStore.PendingCommand;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.Folder.FolderType;
+import com.fsck.k9.mail.Folder.OpenMode;
+import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.mail.store.LocalStore.PendingCommand;
 
 /**
  * Starts a long running (application) Thread that will run through commands
@@ -67,11 +67,11 @@ public class MessagingController implements Runnable {
     private static final int MAX_SMALL_MESSAGE_SIZE = (25 * 1024);
 
     private static final String PENDING_COMMAND_TRASH =
-        "com.android.email.MessagingController.trash";
+        "com.fsck.k9.MessagingController.trash";
     private static final String PENDING_COMMAND_MARK_READ =
-        "com.android.email.MessagingController.markRead";
+        "com.fsck.k9.MessagingController.markRead";
     private static final String PENDING_COMMAND_APPEND =
-        "com.android.email.MessagingController.append";
+        "com.fsck.k9.MessagingController.append";
 
     private static MessagingController inst = null;
     private BlockingQueue<Command> mCommands = new LinkedBlockingQueue<Command>();

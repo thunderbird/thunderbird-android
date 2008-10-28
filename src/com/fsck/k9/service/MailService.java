@@ -1,5 +1,5 @@
 
-package com.android.email.service;
+package com.fsck.k9.service;
 
 import java.util.HashMap;
 
@@ -17,21 +17,21 @@ import android.util.Log;
 import android.text.TextUtils;
 import android.net.Uri;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.activity.Accounts;
-import com.android.email.activity.FolderMessageList;
+import com.fsck.k9.Account;
+import com.fsck.k9.Email;
+import com.fsck.k9.MessagingController;
+import com.fsck.k9.MessagingListener;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.activity.Accounts;
+import com.fsck.k9.activity.FolderMessageList;
 
 /**
  */
 public class MailService extends Service {
-    private static final String ACTION_CHECK_MAIL = "com.android.email.intent.action.MAIL_SERVICE_WAKEUP";
-    private static final String ACTION_RESCHEDULE = "com.android.email.intent.action.MAIL_SERVICE_RESCHEDULE";
-    private static final String ACTION_CANCEL = "com.android.email.intent.action.MAIL_SERVICE_CANCEL";
+    private static final String ACTION_CHECK_MAIL = "com.fsck.k9.intent.action.MAIL_SERVICE_WAKEUP";
+    private static final String ACTION_RESCHEDULE = "com.fsck.k9.intent.action.MAIL_SERVICE_RESCHEDULE";
+    private static final String ACTION_CANCEL = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL";
 
     private Listener mListener = new Listener();
 
@@ -88,7 +88,7 @@ public class MailService extends Service {
     private void cancel() {
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
-        i.setClassName("com.android.email", "com.android.email.service.MailService");
+        i.setClassName("com.fsck.k9", "com.fsck.k9.service.MailService");
         i.setAction(ACTION_CHECK_MAIL);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         alarmMgr.cancel(pi);
@@ -97,7 +97,7 @@ public class MailService extends Service {
     private void reschedule() {
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
-        i.setClassName("com.android.email", "com.android.email.service.MailService");
+        i.setClassName("com.fsck.k9", "com.fsck.k9.service.MailService");
         i.setAction(ACTION_CHECK_MAIL);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
 

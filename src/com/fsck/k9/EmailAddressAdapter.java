@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.email;
+package com.fsck.k9;
 
 import static android.provider.Contacts.ContactMethods.CONTENT_EMAIL_URI;
 import android.content.ContentResolver;
@@ -27,7 +27,7 @@ import android.view.View;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
-import com.android.email.mail.Address;
+import com.fsck.k9.mail.Address;
 
 public class EmailAddressAdapter extends ResourceCursorAdapter {
     public static final int NAME_INDEX = 1;

@@ -1,5 +1,5 @@
 
-package com.android.email;
+package com.fsck.k9;
 
 import java.io.Serializable;
 import java.util.Arrays;

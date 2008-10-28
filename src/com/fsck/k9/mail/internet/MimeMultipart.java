@@ -1,5 +1,5 @@
 
-package com.android.email.mail.internet;
+package com.fsck.k9.mail.internet;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -7,9 +7,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import com.android.email.mail.BodyPart;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Multipart;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
 
 public class MimeMultipart extends Multipart {
     protected String mPreamble;

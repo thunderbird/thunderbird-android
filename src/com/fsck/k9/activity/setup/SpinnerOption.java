@@ -2,7 +2,7 @@
  * 
  */
 
-package com.android.email.activity.setup;
+package com.fsck.k9.activity.setup;
 
 import android.widget.Spinner;
 

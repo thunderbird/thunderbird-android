@@ -1,5 +1,5 @@
 
-package com.android.email.activity.setup;
+package com.fsck.k9.activity.setup;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,12 +14,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.Utility;
-import com.android.email.activity.FolderMessageList;
+import com.fsck.k9.Account;
+import com.fsck.k9.Email;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.Utility;
+import com.fsck.k9.activity.FolderMessageList;
 
 public class AccountSetupNames extends Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";

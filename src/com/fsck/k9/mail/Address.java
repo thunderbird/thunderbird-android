@@ -1,5 +1,5 @@
 
-package com.android.email.mail;
+package com.fsck.k9.mail;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -16,9 +16,9 @@ import org.apache.james.mime4j.field.address.parser.ParseException;
 import android.util.Config;
 import android.util.Log;
 
-import com.android.email.Email;
-import com.android.email.Utility;
-import com.android.email.mail.internet.MimeUtility;
+import com.fsck.k9.Email;
+import com.fsck.k9.Utility;
+import com.fsck.k9.mail.internet.MimeUtility;
 
 public class Address {
     String mAddress;

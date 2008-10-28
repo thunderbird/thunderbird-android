@@ -1,11 +1,11 @@
 
-package com.android.email;
+package com.fsck.k9;
 
 import android.content.Context;
 
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.Part;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Part;
 
 /**
  * Defines the interface that MessagingController will use to callback to requesters. This class

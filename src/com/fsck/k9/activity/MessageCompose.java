@@ -1,5 +1,5 @@
 
-package com.android.email.activity;
+package com.fsck.k9.activity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,53 +36,53 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AutoCompleteTextView.Validator;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.EmailAddressAdapter;
-import com.android.email.EmailAddressValidator;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.Utility;
-import com.android.email.mail.Address;
-import com.android.email.mail.Body;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Multipart;
-import com.android.email.mail.Part;
-import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.internet.MimeBodyPart;
-import com.android.email.mail.internet.MimeHeader;
-import com.android.email.mail.internet.MimeMessage;
-import com.android.email.mail.internet.MimeMultipart;
-import com.android.email.mail.internet.MimeUtility;
-import com.android.email.mail.internet.TextBody;
-import com.android.email.mail.store.LocalStore;
-import com.android.email.mail.store.LocalStore.LocalAttachmentBody;
+import com.fsck.k9.Account;
+import com.fsck.k9.Email;
+import com.fsck.k9.EmailAddressAdapter;
+import com.fsck.k9.EmailAddressValidator;
+import com.fsck.k9.MessagingController;
+import com.fsck.k9.MessagingListener;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.Utility;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 
 public class MessageCompose extends Activity implements OnClickListener, OnFocusChangeListener {
-    private static final String ACTION_REPLY = "com.android.email.intent.action.REPLY";
-    private static final String ACTION_REPLY_ALL = "com.android.email.intent.action.REPLY_ALL";
-    private static final String ACTION_FORWARD = "com.android.email.intent.action.FORWARD";
-    private static final String ACTION_EDIT_DRAFT = "com.android.email.intent.action.EDIT_DRAFT";
+    private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
+    private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
+    private static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
+    private static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_FOLDER = "folder";
     private static final String EXTRA_MESSAGE = "message";
 
     private static final String STATE_KEY_ATTACHMENTS =
-        "com.android.email.activity.MessageCompose.attachments";
+        "com.fsck.k9.activity.MessageCompose.attachments";
     private static final String STATE_KEY_CC_SHOWN =
-        "com.android.email.activity.MessageCompose.ccShown";
+        "com.fsck.k9.activity.MessageCompose.ccShown";
     private static final String STATE_KEY_BCC_SHOWN =
-        "com.android.email.activity.MessageCompose.bccShown";
+        "com.fsck.k9.activity.MessageCompose.bccShown";
     private static final String STATE_KEY_QUOTED_TEXT_SHOWN =
-        "com.android.email.activity.MessageCompose.quotedTextShown";
+        "com.fsck.k9.activity.MessageCompose.quotedTextShown";
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
-        "com.android.email.activity.MessageCompose.stateKeySourceMessageProced";
+        "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
     private static final String STATE_KEY_DRAFT_UID =
-        "com.android.email.activity.MessageCompose.draftUid";
+        "com.fsck.k9.activity.MessageCompose.draftUid";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;

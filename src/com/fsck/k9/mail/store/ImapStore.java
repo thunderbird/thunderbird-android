@@ -1,5 +1,5 @@
 
-package com.android.email.mail.store;
+package com.fsck.k9.mail.store;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -31,28 +31,28 @@ import javax.net.ssl.SSLException;
 import android.util.Config;
 import android.util.Log;
 
-import com.android.email.Email;
-import com.android.email.PeekableInputStream;
-import com.android.email.Utility;
-import com.android.email.mail.AuthenticationFailedException;
-import com.android.email.mail.FetchProfile;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessageRetrievalListener;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Part;
-import com.android.email.mail.Store;
-import com.android.email.mail.CertificateValidationException;
-import com.android.email.mail.internet.MimeBodyPart;
-import com.android.email.mail.internet.MimeHeader;
-import com.android.email.mail.internet.MimeMessage;
-import com.android.email.mail.internet.MimeMultipart;
-import com.android.email.mail.internet.MimeUtility;
-import com.android.email.mail.store.ImapResponseParser.ImapList;
-import com.android.email.mail.store.ImapResponseParser.ImapResponse;
-import com.android.email.mail.transport.CountingOutputStream;
-import com.android.email.mail.transport.EOLConvertingOutputStream;
+import com.fsck.k9.Email;
+import com.fsck.k9.PeekableInputStream;
+import com.fsck.k9.Utility;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
+import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
+import com.fsck.k9.mail.transport.CountingOutputStream;
+import com.fsck.k9.mail.transport.EOLConvertingOutputStream;
 import com.beetstra.jutf7.CharsetProvider;
 
 /**

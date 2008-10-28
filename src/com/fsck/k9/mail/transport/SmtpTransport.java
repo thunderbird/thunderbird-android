@@ -1,5 +1,5 @@
 
-package com.android.email.mail.transport;
+package com.fsck.k9.mail.transport;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -21,17 +21,17 @@ import javax.net.ssl.SSLException;
 import android.util.Config;
 import android.util.Log;
 
-import com.android.email.Email;
-import com.android.email.PeekableInputStream;
-import com.android.email.codec.binary.Base64;
-import com.android.email.mail.Address;
-import com.android.email.mail.AuthenticationFailedException;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Transport;
-import com.android.email.mail.CertificateValidationException;
-import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.store.TrustManagerFactory;
+import com.fsck.k9.Email;
+import com.fsck.k9.PeekableInputStream;
+import com.fsck.k9.codec.binary.Base64;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.store.TrustManagerFactory;
 
 public class SmtpTransport extends Transport {
     public static final int CONNECTION_SECURITY_NONE = 0;

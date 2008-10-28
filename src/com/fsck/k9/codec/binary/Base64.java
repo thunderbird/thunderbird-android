@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.email.codec.binary;
+package com.fsck.k9.codec.binary;
 
 import org.apache.commons.codec.BinaryDecoder;
 import org.apache.commons.codec.BinaryEncoder;

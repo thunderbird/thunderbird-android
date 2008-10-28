@@ -1,5 +1,5 @@
 
-package com.android.email.activity.setup;
+package com.fsck.k9.activity.setup;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.android.email.Account;
-import com.android.email.R;
+import com.fsck.k9.Account;
+import com.fsck.k9.R;
 
 /**
  * Prompts the user to select an account type. The account type, along with the

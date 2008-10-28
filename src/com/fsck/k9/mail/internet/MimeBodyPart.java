@@ -1,14 +1,14 @@
 
-package com.android.email.mail.internet;
+package com.fsck.k9.mail.internet;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import com.android.email.mail.Body;
-import com.android.email.mail.BodyPart;
-import com.android.email.mail.MessagingException;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.MessagingException;
 
 /**
  * TODO this is a close approximation of Message, need to update along with
@@ -60,8 +60,8 @@ public class MimeBodyPart extends BodyPart {
 
     public void setBody(Body body) throws MessagingException {
         this.mBody = body;
-        if (body instanceof com.android.email.mail.Multipart) {
-            com.android.email.mail.Multipart multipart = ((com.android.email.mail.Multipart)body);
+        if (body instanceof com.fsck.k9.mail.Multipart) {
+            com.fsck.k9.mail.Multipart multipart = ((com.fsck.k9.mail.Multipart)body);
             multipart.setParent(this);
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, multipart.getContentType());
         }

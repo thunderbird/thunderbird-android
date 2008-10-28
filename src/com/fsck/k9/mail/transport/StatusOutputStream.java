@@ -1,10 +1,10 @@
-package com.android.email.mail.transport;
+package com.fsck.k9.mail.transport;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.android.email.Email;
+import com.fsck.k9.Email;
 
 import android.util.Config;
 import android.util.Log;

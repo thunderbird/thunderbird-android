@@ -1,4 +1,4 @@
-package com.android.email.activity;
+package com.fsck.k9.activity;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -32,24 +32,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.R;
-import com.android.email.Utility;
-import com.android.email.Preferences;
-import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.FolderInfoHolder;
-import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.MessageInfoHolder;
-import com.android.email.activity.setup.AccountSettings;
-import com.android.email.mail.Address;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.store.LocalStore.LocalMessage;
-import com.android.email.mail.store.LocalStore;
+import com.fsck.k9.Account;
+import com.fsck.k9.Email;
+import com.fsck.k9.MessagingController;
+import com.fsck.k9.MessagingListener;
+import com.fsck.k9.R;
+import com.fsck.k9.Utility;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.activity.FolderMessageList.FolderMessageListAdapter.FolderInfoHolder;
+import com.fsck.k9.activity.FolderMessageList.FolderMessageListAdapter.MessageInfoHolder;
+import com.fsck.k9.activity.setup.AccountSettings;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.mail.store.LocalStore;
 
 /**
  * FolderMessageList is the primary user interface for the program. This Activity shows
@@ -76,11 +76,11 @@ public class FolderMessageList extends ExpandableListActivity {
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
 
     private static final String STATE_KEY_LIST =
-            "com.android.email.activity.folderlist_expandableListState";
+            "com.fsck.k9.activity.folderlist_expandableListState";
     private static final String STATE_KEY_EXPANDED_GROUP =
-            "com.android.email.activity.folderlist_expandedGroup";
+            "com.fsck.k9.activity.folderlist_expandedGroup";
     private static final String STATE_KEY_EXPANDED_GROUP_SELECTION =
-            "com.android.email.activity.folderlist_expandedGroupSelection";
+            "com.fsck.k9.activity.folderlist_expandedGroupSelection";
 
     private static final int UPDATE_FOLDER_ON_EXPAND_INTERVAL_MS = (1000 * 60 * 3);
 

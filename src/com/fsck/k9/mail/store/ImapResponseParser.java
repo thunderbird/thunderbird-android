@@ -2,7 +2,7 @@
  *
  */
 
-package com.android.email.mail.store;
+package com.fsck.k9.mail.store;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,10 +14,10 @@ import java.util.Date;
 import android.util.Config;
 import android.util.Log;
 
-import com.android.email.Email;
-import com.android.email.FixedLengthInputStream;
-import com.android.email.PeekableInputStream;
-import com.android.email.mail.MessagingException;
+import com.fsck.k9.Email;
+import com.fsck.k9.FixedLengthInputStream;
+import com.fsck.k9.PeekableInputStream;
+import com.fsck.k9.mail.MessagingException;
 
 public class ImapResponseParser {
     SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z");

@@ -1,4 +1,4 @@
-package com.android.email.mail.internet;
+package com.fsck.k9.mail.internet;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,10 +13,10 @@ import org.apache.commons.io.IOUtils;
 import android.util.Config;
 import android.util.Log;
 
-import com.android.email.Email;
-import com.android.email.codec.binary.Base64OutputStream;
-import com.android.email.mail.Body;
-import com.android.email.mail.MessagingException;
+import com.fsck.k9.Email;
+import com.fsck.k9.codec.binary.Base64OutputStream;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.MessagingException;
 
 /**
  * A Body that is backed by a temp file. The Body exposes a getOutputStream method that allows

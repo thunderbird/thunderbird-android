@@ -1,5 +1,5 @@
 
-package com.android.email.activity.setup;
+package com.fsck.k9.activity.setup;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,10 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.Preferences;
-import com.android.email.R;
+import com.fsck.k9.Account;
+import com.fsck.k9.Email;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 
 public class AccountSetupOptions extends Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";

@@ -1,5 +1,5 @@
 
-package com.android.email.mail;
+package com.fsck.k9.mail;
 
 public interface MessageRetrievalListener {
     public void messageStarted(String uid, int number, int ofTotal);

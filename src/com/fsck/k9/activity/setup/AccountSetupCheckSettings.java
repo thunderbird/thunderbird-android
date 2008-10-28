@@ -1,5 +1,5 @@
 
-package com.android.email.activity.setup;
+package com.fsck.k9.activity.setup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,13 +14,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.email.Account;
-import com.android.email.R;
-import com.android.email.mail.AuthenticationFailedException;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Store;
-import com.android.email.mail.Transport;
-import com.android.email.mail.CertificateValidationException;
+import com.fsck.k9.Account;
+import com.fsck.k9.R;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.CertificateValidationException;
 
 /**
  * Checks the given settings to make sure that they can be used to send and

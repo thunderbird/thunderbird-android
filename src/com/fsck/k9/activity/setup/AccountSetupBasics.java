@@ -1,5 +1,5 @@
 
-package com.android.email.activity.setup;
+package com.fsck.k9.activity.setup;
 
 import java.io.Serializable;
 import java.net.URI;
@@ -26,12 +26,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.EmailAddressValidator;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.Utility;
+import com.fsck.k9.Account;
+import com.fsck.k9.Email;
+import com.fsck.k9.EmailAddressValidator;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.Utility;
 
 /**
  * Prompts the user for the email address and password. Also prompts for
@@ -43,10 +43,10 @@ import com.android.email.Utility;
  */
 public class AccountSetupBasics extends Activity
         implements OnClickListener, TextWatcher {
-    private final static String EXTRA_ACCOUNT = "com.android.email.AccountSetupBasics.account";
+    private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
-        "com.android.email.AccountSetupBasics.provider";
+        "com.fsck.k9.AccountSetupBasics.provider";
 
     private Preferences mPrefs;
     private EditText mEmailView;
