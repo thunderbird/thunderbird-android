@@ -336,7 +336,7 @@ public class MessagingController implements Runnable {
         }
         put("synchronizeMailbox", listener, new Runnable() {
             public void run() {
-                synchronizeMailboxSyncronous(account, folder);
+                synchronizeMailboxSynchronous(account, folder);
             }
         });
     }
@@ -353,7 +353,7 @@ public class MessagingController implements Runnable {
      *
      * TODO Break this method up into smaller chunks.
      */
-    public void synchronizeMailboxSyncronous(final Account account, final String folder) {
+    public void synchronizeMailboxSynchronous(final Account account, final String folder) {
         for (MessagingListener l : mListeners) {
             l.synchronizeMailboxStarted(account, folder);
         }
@@ -421,9 +421,6 @@ public class MessagingController implements Runnable {
              */
             remoteFolder.open(OpenMode.READ_WRITE);
 
-            /*
-             * Trash any remote messages that are marked as trashed locally.
-             */
 
             /*
              * Get the remote message count.
@@ -447,6 +444,12 @@ public class MessagingController implements Runnable {
                     remoteUidMap.put(message.getUid(), message);
                 }
 
+
+                
+                
+                
+                
+                
                 /*
                  * Get a list of the messages that are in the remote list but not on the
                  * local store, or messages that are in the local store but failed to download
@@ -455,12 +458,27 @@ public class MessagingController implements Runnable {
                 for (Message message : remoteMessages) {
                     Message localMessage = localUidMap.get(message.getUid());
                     if (localMessage == null ||
-                            (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
-                            !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))) {
+                            (!localMessage.isSet(Flag.DELETED) &&
+                             !localMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
+                             !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))) {
                         unsyncedMessages.add(message);
                     }
                 }
             }
+
+
+            /*
+             * Trash any remote messages that are marked as trashed locally.
+             */
+            for (Message message : localMessages) {
+                Message remoteMessage = remoteUidMap.get(message.getUid());
+                // skip things deleted on the server side 
+                if (remoteMessage != null &&  message.isSet(Flag.DELETED)) {
+                    remoteMessage.setFlag(Flag.DELETED, true);
+                }
+
+            }
+
 
             /*
              * A list of messages that were downloaded and which did not have the Seen flag set.
@@ -1414,7 +1432,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 }
                 for (Account account : accounts) {
                     sendPendingMessagesSynchronous(account);
-                    synchronizeMailboxSyncronous(account, Email.INBOX);
+                    synchronizeMailboxSynchronous(account, Email.INBOX);
                 }
                 for (MessagingListener l : mListeners) {
                     l.checkMailFinished(context, account);
