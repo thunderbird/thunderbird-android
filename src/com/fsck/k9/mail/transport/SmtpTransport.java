@@ -138,10 +138,16 @@ public class SmtpTransport extends Transport {
             // Eat the banner
             executeSimpleCommand(null);
 
-            String localHost = "localhost";
+            String localHost = "localhost.localdomain";
             try {
                 InetAddress localAddress = InetAddress.getLocalHost();
-                localHost = localAddress.getHostName();
+                if (! localAddress.isLoopbackAddress()) {
+                    // The loopback address will resolve to 'localhost'
+                    // some mail servers only accept qualified hostnames, so make sure 
+                    // never to override "localhost.localdomain" with "localhost"
+                    // TODO - this is a hack. but a better hack than what was there before
+                    localHost = localAddress.getHostName();
+                }
             } catch (Exception e) {
                 if (Config.LOGD) {
                     if (k9.DEBUG) {
