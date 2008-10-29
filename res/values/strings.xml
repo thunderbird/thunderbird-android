@@ -219,6 +219,8 @@
     <string name="account_settings_vibrate_summary">Also vibrate when email arrives</string>
     <string name="account_settings_ringtone">Select ringtone</string>
     <string name="account_settings_servers">Server settings</string>
+    <string name="account_settings_always_bcc_label">Always Bcc address</string>
+    <string name="account_settings_always_bcc_summary">Send this address a copy of every outgoing message</string>
 
     <string name="account_delete_dlg_title">Remove</string>
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from Email.</string>
