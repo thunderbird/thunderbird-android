@@ -27,6 +27,7 @@ public class Account implements Serializable {
     String mDescription;
     String mName;
     String mEmail;
+    String mAlwaysBcc;
     int mAutomaticCheckIntervalMinutes;
     long mLastAutomaticCheckTime;
     boolean mNotifyNewMail;
@@ -73,6 +74,7 @@ public class Account implements Serializable {
         mTransportUri = Utility.base64Decode(preferences.mSharedPreferences.getString(mUuid
                 + ".transportUri", null));
         mDescription = preferences.mSharedPreferences.getString(mUuid + ".description", null);
+        mAlwaysBcc = preferences.mSharedPreferences.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mName = preferences.mSharedPreferences.getString(mUuid + ".name", mName);
         mEmail = preferences.mSharedPreferences.getString(mUuid + ".email", mEmail);
         mAutomaticCheckIntervalMinutes = preferences.mSharedPreferences.getInt(mUuid
@@ -140,6 +142,15 @@ public class Account implements Serializable {
         this.mEmail = email;
     }
 
+    public String getAlwaysBcc() {
+        return mAlwaysBcc;
+    }
+
+    public void setAlwaysBcc(String alwaysBcc) {
+        this.mAlwaysBcc = alwaysBcc;
+    }
+
+    
     public boolean isVibrate() {
         return mVibrate;
     }
@@ -177,6 +188,7 @@ public class Account implements Serializable {
         editor.remove(mUuid + ".description");
         editor.remove(mUuid + ".name");
         editor.remove(mUuid + ".email");
+        editor.remove(mUuid + ".alwaysBcc");
         editor.remove(mUuid + ".automaticCheckIntervalMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
         editor.remove(mUuid + ".notifyNewMail");
@@ -233,6 +245,7 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".name", mName);
         editor.putString(mUuid + ".email", mEmail);
+        editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
