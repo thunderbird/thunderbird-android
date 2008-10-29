@@ -204,6 +204,7 @@
     <string name="account_settings_default_label">Default account</string>
     <string name="account_settings_default_summary">Send email from this account by default</string>
     <string name="account_settings_notify_label">Email notifications</string>
+    <string name="account_settings_email_label">Email address</string>
     <string name="account_settings_notify_summary">Notify in status bar when email arrives</string>
     <string name="account_settings_show_combined_label">Show combined Inbox</string>
     <string name="account_settings_mail_check_frequency_label">Email check frequency</string>

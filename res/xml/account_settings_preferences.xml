@@ -31,6 +31,12 @@
             android:summary=""
             android:dialogTitle="@string/account_settings_name_label" />
 
+        <EditTextPreference
+            android:key="account_email"
+            android:title="@string/account_settings_email_label"
+            android:summary=""
+            android:dialogTitle="@string/account_settings_email_label" />
+
         <ListPreference
             android:key="account_check_frequency"
             android:title="@string/account_settings_mail_check_frequency_label"
