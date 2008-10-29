@@ -73,6 +73,10 @@ public class MimeMultipart extends Multipart {
             writer.write(mPreamble + "\r\n");
         }
 
+        if(mParts.size() == 0){
+            writer.write("--" + mBoundary + "\r\n");
+        }
+
         for (int i = 0, count = mParts.size(); i < count; i++) {
             BodyPart bodyPart = (BodyPart)mParts.get(i);
             writer.write("--" + mBoundary + "\r\n");
@@ -80,7 +84,7 @@ public class MimeMultipart extends Multipart {
             bodyPart.writeTo(out);
             writer.write("\r\n");
         }
-
+        
         writer.write("--" + mBoundary + "--\r\n");
         writer.flush();
     }
