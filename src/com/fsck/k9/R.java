@@ -206,10 +206,12 @@ public final class R {
         public static final int message_view_option=0x7f090006;
     }
     public static final class string {
-        public static final int account_delete_dlg_instructions_fmt=0x7f0600bf;
-        public static final int account_delete_dlg_title=0x7f0600be;
+        public static final int account_delete_dlg_instructions_fmt=0x7f0600c1;
+        public static final int account_delete_dlg_title=0x7f0600c0;
         public static final int account_settings_action=0x7f06001b;
         public static final int account_settings_add_account_label=0x7f0600b6;
+        public static final int account_settings_always_bcc_label=0x7f0600be;
+        public static final int account_settings_always_bcc_summary=0x7f0600bf;
         public static final int account_settings_default_label=0x7f0600ac;
         public static final int account_settings_default_summary=0x7f0600ad;
         public static final int account_settings_description_label=0x7f0600b7;
@@ -396,8 +398,8 @@ public final class R {
         public static final int okay_action=0x7f060008;
         public static final int open_action=0x7f06001a;
         public static final int preferences_action=0x7f060019;
-        public static final int provider_note_live=0x7f0600c1;
-        public static final int provider_note_yahoo=0x7f0600c0;
+        public static final int provider_note_live=0x7f0600c3;
+        public static final int provider_note_yahoo=0x7f0600c2;
         public static final int read_action=0x7f06001e;
         public static final int read_attachment_desc=0x7f060002;
         public static final int read_attachment_label=0x7f060001;
