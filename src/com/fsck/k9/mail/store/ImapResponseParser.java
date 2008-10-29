@@ -123,6 +123,8 @@ public class ImapResponseParser {
             } else if (ch == '\n') {
                 expect('\n');
                 return null;
+            } else if (ch == '\t') {
+                  expect('\t');
             } else {
                 return parseAtom();
             }
