@@ -406,6 +406,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     mListener);
         }
 
+        addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
         updateTitle();
     }
 
