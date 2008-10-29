@@ -24,6 +24,7 @@ public class AccountSettings extends PreferenceActivity {
     private static final String PREFERENCE_TOP_CATERGORY = "account_settings";
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_NAME = "account_name";
+    private static final String PREFERENCE_ALWAYS_BCC = "account_always_bcc";
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_NOTIFY = "account_notify";
@@ -37,6 +38,7 @@ public class AccountSettings extends PreferenceActivity {
 
     private EditTextPreference mAccountDescription;
     private EditTextPreference mAccountName;
+    private EditTextPreference mAccountAlwaysBcc;
     private ListPreference mCheckFrequency;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
@@ -83,6 +85,21 @@ public class AccountSettings extends PreferenceActivity {
                 return false;
             }
         });
+
+        mAccountAlwaysBcc = (EditTextPreference) findPreference(PREFERENCE_ALWAYS_BCC);
+        mAccountAlwaysBcc.setSummary(mAccount.getAlwaysBcc());
+        mAccountAlwaysBcc.setText(mAccount.getAlwaysBcc());
+        mAccountAlwaysBcc.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                mAccountAlwaysBcc.setSummary(summary);
+                mAccountAlwaysBcc.setText(summary);
+                return false;
+            }
+        });
+
+
+
 
         mCheckFrequency = (ListPreference) findPreference(PREFERENCE_FREQUENCY);
         mCheckFrequency.setValue(String.valueOf(mAccount.getAutomaticCheckIntervalMinutes()));
