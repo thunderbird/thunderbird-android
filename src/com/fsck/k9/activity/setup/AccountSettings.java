@@ -87,7 +87,9 @@ public class AccountSettings extends PreferenceActivity {
         });
 
         mAccountAlwaysBcc = (EditTextPreference) findPreference(PREFERENCE_ALWAYS_BCC);
-        mAccountAlwaysBcc.setSummary(mAccount.getAlwaysBcc());
+        if (mAccount.getAlwaysBcc() != null && (mAccount.getAlwaysBcc().length() > 0 )) {
+            mAccountAlwaysBcc.setSummary(mAccount.getAlwaysBcc());
+        }
         mAccountAlwaysBcc.setText(mAccount.getAlwaysBcc());
         mAccountAlwaysBcc.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -167,6 +169,7 @@ public class AccountSettings extends PreferenceActivity {
         }
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setName(mAccountName.getText());
+        mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
