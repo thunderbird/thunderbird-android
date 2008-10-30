@@ -512,6 +512,10 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         message.setRecipients(RecipientType.CC, getAddresses(mCcView));
         message.setRecipients(RecipientType.BCC, getAddresses(mBccView));
         message.setSubject(mSubjectView.getText().toString());
+        // XXX TODO - not sure why this won't add header
+        // message.setHeader("X-User-Agent", getString(R.string.message_header_mua));
+
+
 
         /*
          * Build the Body that will contain the text of the message. We'll decide where to
