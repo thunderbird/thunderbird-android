@@ -91,17 +91,5 @@
                 android:layout_width="fill_parent" />
         </LinearLayout>
     </ScrollView>
-    <LinearLayout android:orientation="horizontal"
-        android:layout_width="fill_parent" android:layout_height="54px"
-        android:background="@drawable/bottombar_565" android:gravity="center_vertical">
-        <Button android:id="@+id/send" android:text="@string/send_action"
-            android:layout_height="wrap_content" android:layout_width="0dip"
-            android:layout_weight="1" />
-        <Button android:id="@+id/save" android:text="@string/save_draft_action"
-            android:layout_height="wrap_content" android:layout_width="0dip"
-            android:layout_weight="1" />
-        <Button android:id="@+id/discard" android:text="@string/discard_action"
-            android:layout_height="wrap_content" android:layout_width="0dip"
-            android:layout_weight="1" />
-    </LinearLayout>
+
 </LinearLayout>

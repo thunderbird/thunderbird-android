@@ -262,9 +262,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         mBccView = (MultiAutoCompleteTextView)findViewById(R.id.bcc);
         mSubjectView = (EditText)findViewById(R.id.subject);
         mMessageContentView = (EditText)findViewById(R.id.message_content);
-        mSendButton = (Button)findViewById(R.id.send);
-        mDiscardButton = (Button)findViewById(R.id.discard);
-        mSaveButton = (Button)findViewById(R.id.save);
+//         mSendButton = (Button)findViewById(R.id.send);
+//         mDiscardButton = (Button)findViewById(R.id.discard);
+//         mSaveButton = (Button)findViewById(R.id.save);
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
         mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
@@ -309,9 +309,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         mBccView.setTokenizer(new Rfc822Tokenizer());
         mBccView.setValidator(mAddressValidator);
 
-        mSendButton.setOnClickListener(this);
-        mDiscardButton.setOnClickListener(this);
-        mSaveButton.setOnClickListener(this);
+//         mSendButton.setOnClickListener(this);
+//         mDiscardButton.setOnClickListener(this);
+//         mSaveButton.setOnClickListener(this);
 
         mSubjectView.setOnFocusChangeListener(this);
 
@@ -780,15 +780,15 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.send:
-                onSend();
-                break;
-            case R.id.save:
-                onSave();
-                break;
-            case R.id.discard:
-                onDiscard();
-                break;
+//             case R.id.send:
+//                 onSend();
+//                 break;
+//             case R.id.save:
+//                 onSave();
+//                 break;
+//             case R.id.discard:
+//                 onDiscard();
+//                 break;
             case R.id.attachment_delete:
                 /*
                  * The view is the delete button, and we have previously set the tag of
