@@ -3,7 +3,7 @@
     <string name="read_attachment_label">read Email attachments</string>
     <string name="read_attachment_desc">Allows this application to read your Email attachments.</string>
 
-    <string name="app_name">K9</string>
+    <string name="app_name">K-9</string>
     <string name="accounts_title">Your accounts</string>
     <string name="compose_title">Compose</string>
     <string name="debug_title">Debug</string>
@@ -73,6 +73,8 @@
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_label">Enable extra debug logging?</string>
     <string name="debug_enable_sensitive_logging_label">Enable sensitive information debug logging? (May show passwords in logs.)</string>
+
+    <string name="message_header_mua">K-9 for Android <xliff:g id="version">%s</xliff:g></string>
 
     <string name="combined_inbox_title">All Email</string>
     <string name="combined_inbox_label">Recent messages from all accounts</string>
@@ -222,7 +224,7 @@
     <string name="account_settings_servers">Server settings</string>
 
     <string name="account_settings_composition_title">Message composition options</string>
-    <string name="account_settings_composition_label">Message composition</string>
+    <string name="account_settings_composition_label">Composing messages</string>
 
 
     <string name="account_settings_always_bcc_label">Always Bcc address</string>
