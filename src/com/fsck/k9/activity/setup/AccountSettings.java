@@ -32,7 +32,6 @@ public class AccountSettings extends PreferenceActivity {
     private static final String PREFERENCE_RINGTONE = "account_ringtone";
     private static final String PREFERENCE_INCOMING = "incoming";
     private static final String PREFERENCE_OUTGOING = "outgoing";
-    private static final String PREFERENCE_ADD_ACCOUNT = "add_account";
 
     private Account mAccount;
 
@@ -140,13 +139,6 @@ public class AccountSettings extends PreferenceActivity {
                         return true;
                     }
                 });
-        findPreference(PREFERENCE_ADD_ACCOUNT).setOnPreferenceClickListener(
-                new Preference.OnPreferenceClickListener() {
-                    public boolean onPreferenceClick(Preference preference) {
-                        onAddNewAccount();
-                        return true;
-                    }
-                });
     }
 
     @Override
@@ -190,8 +182,4 @@ public class AccountSettings extends PreferenceActivity {
         AccountSetupOutgoing.actionEditOutgoingSettings(this, mAccount);
     }
 
-    private void onAddNewAccount() {
-        AccountSetupBasics.actionNewAccount(this);
-        finish();
-    }
 }
