@@ -27,6 +27,7 @@ public class Account implements Serializable {
     String mDescription;
     String mName;
     String mEmail;
+    String mSignature;
     String mAlwaysBcc;
     int mAutomaticCheckIntervalMinutes;
     long mLastAutomaticCheckTime;
@@ -55,6 +56,7 @@ public class Account implements Serializable {
         mAutomaticCheckIntervalMinutes = -1;
         mAccountNumber = -1;
         mNotifyNewMail = true;
+        mSignature = "Sent from my Android phone with K-9. Please excuse my brevity.";
         mVibrate = false;
         mRingtoneUri = "content://settings/system/notification_sound";
     }
@@ -77,6 +79,7 @@ public class Account implements Serializable {
         mAlwaysBcc = preferences.mSharedPreferences.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mName = preferences.mSharedPreferences.getString(mUuid + ".name", mName);
         mEmail = preferences.mSharedPreferences.getString(mUuid + ".email", mEmail);
+        mSignature = preferences.mSharedPreferences.getString(mUuid + ".signature", mSignature);
         mAutomaticCheckIntervalMinutes = preferences.mSharedPreferences.getInt(mUuid
                 + ".automaticCheckIntervalMinutes", -1);
         mLastAutomaticCheckTime = preferences.mSharedPreferences.getLong(mUuid
@@ -132,6 +135,14 @@ public class Account implements Serializable {
 
     public void setName(String name) {
         this.mName = name;
+    }
+
+    public String getSignature() {
+        return mSignature;
+    }
+
+    public void setSignature(String signature) {
+        this.mSignature = signature;
     }
 
     public String getEmail() {
@@ -245,6 +256,7 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".name", mName);
         editor.putString(mUuid + ".email", mEmail);
+        editor.putString(mUuid + ".signature", mSignature);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);

@@ -551,6 +551,8 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             }
         }
 
+        text += "\n-- \n" + mAccount.getSignature();
+
         TextBody body = new TextBody(text);
 
         if (mAttachments.getChildCount() > 0) {

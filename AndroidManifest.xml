@@ -41,6 +41,11 @@
             android:label="@string/account_setup_incoming_title"
             >
         </activity>
+        <activity 
+            android:name=".activity.setup.AccountSetupComposition" 
+            android:label="@string/account_settings_composition_title" 
+        > 
+        </activity>
         <activity
             android:name=".activity.setup.AccountSetupOutgoing"
             android:label="@string/account_setup_outgoing_title"

@@ -24,8 +24,7 @@ public class AccountSettings extends PreferenceActivity {
     private static final String PREFERENCE_TOP_CATERGORY = "account_settings";
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_NAME = "account_name";
-    private static final String PREFERENCE_EMAIL = "account_email";
-    private static final String PREFERENCE_ALWAYS_BCC = "account_always_bcc";
+    private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_NOTIFY = "account_notify";
@@ -39,8 +38,6 @@ public class AccountSettings extends PreferenceActivity {
 
     private EditTextPreference mAccountDescription;
     private EditTextPreference mAccountName;
-    private EditTextPreference mAccountEmail;
-    private EditTextPreference mAccountAlwaysBcc;
     private ListPreference mCheckFrequency;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
@@ -89,38 +86,6 @@ public class AccountSettings extends PreferenceActivity {
         });
 
 
-        mAccountEmail = (EditTextPreference) findPreference(PREFERENCE_EMAIL);
-        mAccountEmail.setSummary(mAccount.getEmail());
-        mAccountEmail.setText(mAccount.getEmail());
-        mAccountEmail.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                mAccountEmail.setSummary(summary);
-                mAccountEmail.setText(summary);
-                return false;
-            }
-        });
-
-
-
-
-        mAccountAlwaysBcc = (EditTextPreference) findPreference(PREFERENCE_ALWAYS_BCC);
-        if (mAccount.getAlwaysBcc() != null && (mAccount.getAlwaysBcc().length() > 0 )) {
-            mAccountAlwaysBcc.setSummary(mAccount.getAlwaysBcc());
-        }
-        mAccountAlwaysBcc.setText(mAccount.getAlwaysBcc());
-        mAccountAlwaysBcc.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                mAccountAlwaysBcc.setSummary(summary);
-                mAccountAlwaysBcc.setText(summary);
-                return false;
-            }
-        });
-
-
-
-
         mCheckFrequency = (ListPreference) findPreference(PREFERENCE_FREQUENCY);
         mCheckFrequency.setValue(String.valueOf(mAccount.getAutomaticCheckIntervalMinutes()));
         mCheckFrequency.setSummary(mCheckFrequency.getEntry());
@@ -150,6 +115,15 @@ public class AccountSettings extends PreferenceActivity {
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.isVibrate());
+
+
+        findPreference(PREFERENCE_COMPOSITION).setOnPreferenceClickListener(
+                new Preference.OnPreferenceClickListener() {
+                    public boolean onPreferenceClick(Preference preference) {
+                        onCompositionSettings();
+                        return true;
+                    }
+                });
 
         findPreference(PREFERENCE_INCOMING).setOnPreferenceClickListener(
                 new Preference.OnPreferenceClickListener() {
@@ -187,8 +161,6 @@ public class AccountSettings extends PreferenceActivity {
         }
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setName(mAccountName.getText());
-        mAccount.setEmail(mAccountEmail.getText());
-        mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
@@ -204,6 +176,10 @@ public class AccountSettings extends PreferenceActivity {
             saveSettings();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void onCompositionSettings() {
+        AccountSetupComposition.actionEditCompositionSettings(this, mAccount);
     }
 
     private void onIncomingSettings() {
