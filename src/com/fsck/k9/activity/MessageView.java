@@ -288,10 +288,6 @@ public class MessageView extends Activity
         mMessageContentView.setVerticalScrollBarEnabled(false);
         mAttachments.setVisibility(View.GONE);
         mAttachmentIcon.setVisibility(View.GONE);
-
-        findViewById(R.id.reply).setOnClickListener(this);
-        findViewById(R.id.reply_all).setOnClickListener(this);
-        findViewById(R.id.delete).setOnClickListener(this);
         findViewById(R.id.show_pictures).setOnClickListener(this);
 
         // UrlInterceptRegistry.registerHandler(this);
@@ -503,15 +499,6 @@ public class MessageView extends Activity
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.reply:
-                onReply();
-                break;
-            case R.id.reply_all:
-                onReplyAll();
-                break;
-            case R.id.delete:
-                onDelete();
-                break;
             case R.id.next:
                 onNext();
                 break;
