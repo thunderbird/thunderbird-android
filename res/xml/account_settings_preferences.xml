@@ -21,15 +21,10 @@
 
         <EditTextPreference
             android:key="account_description"
+            android:singleLine="true"
             android:title="@string/account_settings_description_label"
             android:summary=""
             android:dialogTitle="@string/account_settings_description_label" />
-
-        <EditTextPreference
-            android:key="account_name"
-            android:title="@string/account_settings_name_label"
-            android:summary=""
-            android:dialogTitle="@string/account_settings_name_label" />
 
         <ListPreference
             android:key="account_check_frequency"
@@ -38,10 +33,6 @@
             android:entryValues="@array/account_settings_check_frequency_values"
             android:dialogTitle="@string/account_settings_mail_check_frequency_label" />
 
-        <CheckBoxPreference
-            android:key="account_default"
-            android:title="@string/account_settings_default_label"
-            android:summary="@string/account_settings_default_summary" />
 
         <PreferenceScreen
             android:key="composition"
@@ -86,5 +77,14 @@
             android:key="outgoing"
             android:title="@string/account_settings_outgoing_label" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_settings_default">
+        <CheckBoxPreference
+            android:key="account_default"
+            android:title="@string/account_settings_default_label"
+            android:summary="@string/account_settings_default_summary" />
+    </PreferenceCategory>
+
+
 
 </PreferenceScreen>

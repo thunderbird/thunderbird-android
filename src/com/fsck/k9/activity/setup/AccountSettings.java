@@ -23,7 +23,6 @@ public class AccountSettings extends PreferenceActivity {
 
     private static final String PREFERENCE_TOP_CATERGORY = "account_settings";
     private static final String PREFERENCE_DESCRIPTION = "account_description";
-    private static final String PREFERENCE_NAME = "account_name";
     private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
     private static final String PREFERENCE_DEFAULT = "account_default";
@@ -36,7 +35,6 @@ public class AccountSettings extends PreferenceActivity {
     private Account mAccount;
 
     private EditTextPreference mAccountDescription;
-    private EditTextPreference mAccountName;
     private ListPreference mCheckFrequency;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
@@ -68,18 +66,6 @@ public class AccountSettings extends PreferenceActivity {
                 final String summary = newValue.toString();
                 mAccountDescription.setSummary(summary);
                 mAccountDescription.setText(summary);
-                return false;
-            }
-        });
-
-        mAccountName = (EditTextPreference) findPreference(PREFERENCE_NAME);
-        mAccountName.setSummary(mAccount.getName());
-        mAccountName.setText(mAccount.getName());
-        mAccountName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final String summary = newValue.toString();
-                mAccountName.setSummary(summary);
-                mAccountName.setText(summary);
                 return false;
             }
         });
@@ -152,7 +138,6 @@ public class AccountSettings extends PreferenceActivity {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);
         }
         mAccount.setDescription(mAccountDescription.getText());
-        mAccount.setName(mAccountName.getText());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());

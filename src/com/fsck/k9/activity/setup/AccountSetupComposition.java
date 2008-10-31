@@ -3,18 +3,15 @@ package com.fsck.k9.activity.setup;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.view.KeyEvent;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.EditTextPreference;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
@@ -25,27 +22,14 @@ import com.fsck.k9.Utility;
 public class AccountSetupComposition extends Activity {
 
     private static final String EXTRA_ACCOUNT = "account";
-    // rivate static final String EXTRA_MAKE_DEFAULT = "makeDefault";
-
-    private static final String PREFERENCE_ALWAYS_BCC = "account_always_bcc";
-    private static final String PREFERENCE_EMAIL = "account_email";
-    private static final String PREFERENCE_SIGNATURE = "account_signature";
 
     private Account mAccount;
 
     private EditText mAccountSignature;
     private EditText mAccountEmail;
     private EditText mAccountAlwaysBcc;
+    private EditText mAccountName;
 
-
-
-
-     public static void actionCompositionSettings(Activity context, Account account, boolean makeDefault) {
-        Intent i = new Intent(context, AccountSetupComposition.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
-        //i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
-        context.startActivity(i);
-    }
 
 
     public static void actionEditCompositionSettings(Activity context, Account account) {
@@ -54,13 +38,13 @@ public class AccountSetupComposition extends Activity {
         i.putExtra(EXTRA_ACCOUNT, account);
         context.startActivity(i);
     }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
-        // addPreferencesFromResource(R.xml.account_settings_preferences);
-
 
         setContentView(R.layout.account_setup_composition);
 
@@ -72,6 +56,9 @@ public class AccountSetupComposition extends Activity {
             mAccount = (Account)savedInstanceState.getSerializable(EXTRA_ACCOUNT);
         }
 
+        mAccountName = (EditText)findViewById(R.id.account_name);
+        mAccountName.setText(mAccount.getName());
+        
         mAccountEmail = (EditText)findViewById(R.id.account_email);
         mAccountEmail.setText(mAccount.getEmail());
 
@@ -92,9 +79,11 @@ public class AccountSetupComposition extends Activity {
     private void saveSettings() {
         mAccount.setEmail(mAccountEmail.getText().toString());
         mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString()); 
-       mAccount.setSignature(mAccountSignature.getText().toString()); 
+        mAccount.setName(mAccountName.getText().toString());
+        mAccount.setSignature(mAccountSignature.getText().toString()); 
+
         mAccount.save(Preferences.getPreferences(this));
-        k9.setServicesEnabled(this);
+
     }
 
     @Override

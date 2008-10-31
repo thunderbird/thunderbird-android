@@ -203,10 +203,11 @@
     <string name="account_setup_failed_dlg_edit_details_action">Edit details</string>
 
     <string name="account_settings_title_fmt">General settings</string>
+    <string name="account_settings_default">Default account</string>
     <string name="account_settings_default_label">Default account</string>
     <string name="account_settings_default_summary">Send email from this account by default</string>
     <string name="account_settings_notify_label">Email notifications</string>
-    <string name="account_settings_email_label">Email address</string>
+    <string name="account_settings_email_label">Your email address</string>
     <string name="account_settings_notify_summary">Notify in status bar when email arrives</string>
     <string name="account_settings_show_combined_label">Show combined Inbox</string>
     <string name="account_settings_mail_check_frequency_label">Email check frequency</string>
@@ -227,7 +228,7 @@
     <string name="account_settings_composition_label">Composing messages</string>
 
 
-    <string name="account_settings_always_bcc_label">Always Bcc address</string>
+    <string name="account_settings_always_bcc_label">Bcc all messages to</string>
     <string name="account_settings_always_bcc_summary">Send this address a copy of every outgoing message</string>
 
 

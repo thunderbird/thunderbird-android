@@ -9,16 +9,30 @@
         android:layout_height="fill_parent"
         android:orientation="vertical">
         <TextView
-            android:text="@string/account_settings_email_label"
+            android:text="@string/account_settings_name_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorPrimary" />
         <EditText
+            android:id="@+id/account_name"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" 
+            />
+        <TextView
+            android:text="@string/account_settings_email_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" 
+            />
+        <EditText
             android:id="@+id/account_email"
             android:singleLine="true"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent" 
+            />
         <TextView
             android:text="@string/account_settings_always_bcc_label"
             android:layout_height="wrap_content"
