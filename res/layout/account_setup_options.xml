@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <TextView
+        android:text="@string/account_setup_options_mail_check_frequency_label"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorPrimary" />
+    <Spinner
+        android:id="@+id/account_check_frequency"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+    <CheckBox
+        android:id="@+id/account_default"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/account_setup_options_default_label" />
+    <CheckBox
+        android:id="@+id/account_notify"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/account_setup_options_notify_label" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="54px"
+        android:background="@drawable/bottombar_565">
+        <Button
+            android:id="@+id/next"
+            android:text="@string/next_action"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:minWidth="@dimen/button_minWidth"
+            android:drawableRight="@drawable/button_indicator_next"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+</LinearLayout>
