@@ -25,7 +25,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Process;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.util.Regex;
+import android.text.util.Linkify;
 import android.util.Config;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -691,6 +694,7 @@ public class MessageView extends Activity
     }
 
     class Listener extends MessagingListener {
+
         @Override
         public void loadMessageForViewHeadersAvailable(Account account, String folder, String uid,
                 final Message message) {
@@ -719,6 +723,7 @@ public class MessageView extends Activity
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
                 Message message) {
+            SpannableString markup;
             MessageView.this.mMessage = message;
             try {
                 Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
@@ -731,24 +736,14 @@ public class MessageView extends Activity
                         text = text.replaceAll("cid:", "http://cid/");
                     } else {
                         /*
-                         * Linkify the plain text and convert it to HTML by replacing
+                         * Convert plain text to HTML by replacing
                          * \r?\n with <br> and adding a html/body wrapper.
                          */
-                        Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
-                        StringBuffer sb = new StringBuffer();
-                        while (m.find()) {
-                            int start = m.start();
-                            if (start != 0 && text.charAt(start - 1) != '@') {
-                                m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
-                            }
-                            else {
-                                m.appendReplacement(sb, "$0");
-                            }
-                        }
-                        m.appendTail(sb);
-                        text = sb.toString().replaceAll("\r?\n", "<br>");
+                        text = text.replaceAll("\r?\n", "<br>");
                         text = "<html><body>" + text + "</body></html>";
                     }
+
+
 
                     /*
                      * TODO this should be smarter, change to regex for img, but consider how to
@@ -757,8 +752,10 @@ public class MessageView extends Activity
                     if (text.contains("<img")) {
                         mHandler.showShowPictures(true);
                     }
+                    markup = new SpannableString(text);
+                    Linkify.addLinks(markup, Linkify.ALL);
 
-                    mMessageContentView.loadDataWithBaseURL("email://", text, "text/html",
+                    mMessageContentView.loadDataWithBaseURL("email://", markup.toString(), "text/html",
                             "utf-8", null);
                 }
                 else {
