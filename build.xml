@@ -2,7 +2,7 @@
 <project name="K9" default="debug">
     <!-- SDK Locations -->
     <property name="sdk-folder" value="/Users/jesse/android-sdk-mac_x86-1.0_r1" />
-    <property name="android-tools" value="/Users/jesse/android-sdk-mac_x86-1.0_r1/tools" />
+    <property name="android-tools" value="${sdk-folder}/tools" />
     
     <!-- Application Package Name -->
     <property name="application-package" value="com.fsck.k9.activity" />
@@ -15,6 +15,7 @@
     <!-- No user servicable parts below. -->
 
     <property name="android-framework" value="${android-tools}/lib/framework.aidl" />
+    <property name="android-libs" value="${android-tools}/lib/" />
 
     <!-- Input directories -->
     <property name="resource-dir" value="res" />
@@ -139,6 +140,7 @@
                 destdir="${outdir-classes}"
                 bootclasspath="${android-jar}">
             <classpath>
+                <fileset dir="${android-libs}" includes="*.jar"/>
                 <fileset dir="${external-libs}" includes="*.jar"/>
             </classpath>
          </javac>
