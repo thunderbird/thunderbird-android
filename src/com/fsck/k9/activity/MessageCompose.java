@@ -549,7 +549,10 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             }
         }
 
-        text += "\n-- \n" + mAccount.getSignature();
+
+
+        text = appendSignature(text);
+        
 
         TextBody body = new TextBody(text);
 
@@ -590,6 +593,18 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
         return message;
     }
+
+    private String appendSignature (String text) {
+        String mSignature;
+        mSignature = mAccount.getSignature();
+        
+       if (mSignature != null && ! mSignature.contentEquals("")){
+         text += "\n-- \n" + mAccount.getSignature();
+        }
+
+        return text;
+    }
+
 
     private void sendOrSaveMessage(boolean save) {
         /*
