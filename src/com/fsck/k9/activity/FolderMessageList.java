@@ -736,6 +736,14 @@ public class FolderMessageList extends ExpandableListActivity {
                     holder.name = folder.getName();
                     if (holder.name.equalsIgnoreCase(k9.INBOX)) {
                         holder.displayName = getString(R.string.special_mailbox_name_inbox);
+                        // XXX TOOD nuke when we do this for all folders
+	                    try {
+	                        holder.unreadMessageCount = folder.getUnreadMessageCount();
+	                    }
+	                    catch (MessagingException me) {
+	                        Log.e(k9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
+	                    }
+	
                     }
                     else {
                         holder.displayName = folder.getName();
@@ -746,14 +754,18 @@ public class FolderMessageList extends ExpandableListActivity {
                     if (holder.messages == null) {
                         holder.messages = new ArrayList<MessageInfoHolder>();
                     }
+                    /* TODO - once we're in a position to asynchronously list off 
+                     * unread message counts quckly, start doing this again.
+                     * right now, they're not even displayed
+                     
                     try {
-                        folder.open(Folder.OpenMode.READ_WRITE);
                         holder.unreadMessageCount = folder.getUnreadMessageCount();
-                        folder.close(false);
                     }
                     catch (MessagingException me) {
                         Log.e(k9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
                     }
+
+                    */
                 }
 
                 Collections.sort(mFolders);
@@ -775,7 +787,7 @@ public class FolderMessageList extends ExpandableListActivity {
 
                 /*
                  * Now we need to refresh any folders that are currently expanded. We do this
-                 * in case the status or amount of messages has changed.
+                 * in case the status or number of messages has changed.
                  */
                 for (int i = 0, count = getGroupCount(); i < count; i++) {
                     if (mListView.isGroupExpanded(i)) {
