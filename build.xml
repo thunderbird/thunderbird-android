@@ -14,6 +14,8 @@
     <!-- ************************************************************************************* -->
     <!-- No user servicable parts below. -->
 
+    <property environment="env"/> 
+
     <property name="android-framework" value="${android-tools}/lib/framework.aidl" />
     <property name="android-libs" value="${android-tools}/lib/" />
 
@@ -66,6 +68,13 @@
     <condition property="out-debug-package-ospath"
             value="${basedir}\${out-debug-package}"
             else="${basedir}/${out-debug-package}" >
+        <os family="windows"/>
+    </condition>
+
+    <property name="out-signed-package" value="${outdir}/${ant.project.name}-signed.apk" />
+    <condition property="out-signed-package-ospath"
+            value="${basedir}\${out-signed-package}"
+            else="${basedir}/${out-signed-package}" >
         <os family="windows"/>
     </condition>
 
@@ -238,7 +247,17 @@
             <arg value="-rj" />
             <arg value="${external-libs-ospath}" />
         </exec>
-        <echo>It will need to be signed with jarsigner before being published.</echo>
+        <echo>Signing ${out-unsigned-package}</echo>
+        <exec executable="jarsigner" failonerror="true">
+            <arg value="-verbose" />
+            <arg value="-storepass" />
+            <arg value="${env.jarpass}" />
+            <arg value="-signedjar" />
+            <arg value="${out-signed-package-ospath}" />
+            <arg value="${out-unsigned-package-ospath}" />
+
+            <arg value="fsckcom" />
+        </exec>
     </target>
 
     <!-- Install the package on the default emulator -->
