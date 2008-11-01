@@ -151,8 +151,8 @@ public class MessagingController implements Runnable {
      * listFoldersCallback for local folders before it returns, and then for
      * remote folders at some later point. If there are no local folders
      * includeRemote is forced by this method. This method should be called from
-     * a Thread as it may take several seconds to list the local folders. TODO
-     * this needs to cache the remote folder list
+     * a Thread as it may take several seconds to list the local folders. 
+     * TODO this needs to cache the remote folder list
      *
      * @param account
      * @param includeRemote
@@ -170,13 +170,14 @@ public class MessagingController implements Runnable {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder[] localFolders = localStore.getPersonalNamespaces();
 
-            if (localFolders == null || localFolders.length == 0) {
-                refreshRemote = true;
-            } else {
-                for (MessagingListener l : mListeners) {
+            if ( localFolders == null || localFolders.length == 0) {
+                doRefreshRemote(account, listener);
+                return;
+            }
+
+             for (MessagingListener l : mListeners) {
                     l.listFolders(account, localFolders);
                 }
-            }
         }
         catch (Exception e) {
             for (MessagingListener l : mListeners) {
@@ -184,7 +185,12 @@ public class MessagingController implements Runnable {
                 return;
             }
         }
-        if (refreshRemote) {
+        for (MessagingListener l : mListeners) {
+                l.listFoldersFinished(account);
+        }
+    }
+
+    private void doRefreshRemote (final Account account, MessagingListener listener) {
             put("listFolders", listener, new Runnable() {
                 public void run() {
                     try {
@@ -199,6 +205,7 @@ public class MessagingController implements Runnable {
                         for (int i = 0, count = remoteFolders.length; i < count; i++) {
                             Folder localFolder = localStore.getFolder(remoteFolders[i].getName());
                             if (!localFolder.exists()) {
+
                                 localFolder.create(FolderType.HOLDS_MESSAGES);
                             }
                             remoteFolderNames.add(remoteFolders[i].getName());
@@ -239,12 +246,9 @@ public class MessagingController implements Runnable {
                     }
                 }
             });
-        } else {
-            for (MessagingListener l : mListeners) {
-                l.listFoldersFinished(account);
-            }
-        }
     }
+
+
 
     /**
      * List the local message store for the given folder. This work is done
