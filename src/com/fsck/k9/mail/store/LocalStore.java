@@ -83,6 +83,19 @@ public class LocalStore extends Store {
         }
         mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
         if (mDb.getVersion() != DB_VERSION) {
+            doDbUpgrade(mDb);
+        }
+
+
+        mAttachmentsDir = new File(mPath + "_att");
+        if (!mAttachmentsDir.exists()) {
+            mAttachmentsDir.mkdirs();
+        }
+    }
+
+    
+    private void doDbUpgrade ( SQLiteDatabase mDb) {
+
             if (mDb.getVersion() < 18) {
                 if (Config.LOGV) {
                     Log.v(k9.LOG_TAG, String.format("Upgrading database from %d to %d", mDb
@@ -117,11 +130,6 @@ public class LocalStore extends Store {
                 throw new Error("Database upgrade failed!");
             }
         }
-        mAttachmentsDir = new File(mPath + "_att");
-        if (!mAttachmentsDir.exists()) {
-            mAttachmentsDir.mkdirs();
-        }
-    }
 
     @Override
     public Folder getFolder(String name) throws MessagingException {
@@ -374,7 +382,7 @@ public class LocalStore extends Store {
             }
             mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[] {
                 mName,
-                25
+                k9.DEFAULT_VISIBLE_LIMIT 
             });
             return true;
         }
