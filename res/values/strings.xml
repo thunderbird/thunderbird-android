@@ -69,7 +69,7 @@
     <string name="special_mailbox_name_trash">Trash</string>
     <string name="special_mailbox_name_sent">Sent</string>
 
-    <string name="accounts_welcome">Welcome to K-9 Email setup!\n\nThis experimental version of the Android mail client supports deleting mail usind the "Del" button from the index view as well as propagating message deletion back to IMAP servers. Please report bugs at http://code.google.com/p/k9mail/</string>
+    <string name="accounts_welcome">Welcome to K-9 Email setup!\n\nThis experimental version of the Android mail client supports deleting mail using the "Del" button from the index view as well as propagating message deletion back to IMAP servers. Please report bugs at http://code.google.com/p/k9mail/</string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
     <string name="debug_enable_debug_logging_label">Enable extra debug logging?</string>
