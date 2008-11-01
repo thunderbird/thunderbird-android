@@ -335,8 +335,6 @@ public class LocalStore extends Store {
             if (isOpen()) {
                 return;
             }
-            if (!exists()) {
-            }
             Cursor cursor = null;
             try {
                 cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit FROM folders "
