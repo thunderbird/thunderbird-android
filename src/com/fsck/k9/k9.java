@@ -88,7 +88,7 @@ public class k9 extends Application {
     public static final int DEFAULT_VISIBLE_LIMIT = 25;
 
     /**
-     * Number of additioanl messages to load when a user selectes "Load more messages..."
+     * Number of additional messages to load when a user selectes "Load more messages..."
      */
     public static final int VISIBLE_LIMIT_INCREMENT = 25;
 
