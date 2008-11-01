@@ -141,6 +141,8 @@ public class LocalStore extends Store {
     public Folder[] getPersonalNamespaces() throws MessagingException {
         ArrayList<Folder> folders = new ArrayList<Folder>();
         Cursor cursor = null;
+
+
         try {
             cursor = mDb.rawQuery("SELECT name FROM folders", null);
             while (cursor.moveToNext()) {
@@ -334,7 +336,6 @@ public class LocalStore extends Store {
                 return;
             }
             if (!exists()) {
-                create(FolderType.HOLDS_MESSAGES);
             }
             Cursor cursor = null;
             try {
@@ -343,10 +344,18 @@ public class LocalStore extends Store {
                     new String[] {
                         mName
                     });
-            cursor.moveToFirst();
-            mFolderId = cursor.getInt(0);
-            mUnreadMessageCount = cursor.getInt(1);
-            mVisibleLimit = cursor.getInt(2);
+                if ( cursor.getCount() == 0  ) {
+                // Calling exists on open is a little expensive. Instead, just handle it when we don't find it.
+                    create(FolderType.HOLDS_MESSAGES);
+                    open(mode);
+
+                }
+                cursor.moveToFirst();
+                mFolderId = cursor.getInt(0);
+                mUnreadMessageCount = cursor.getInt(1);
+                mVisibleLimit = cursor.getInt(2);
+
+
             }
             finally {
                 if (cursor != null) {
@@ -372,7 +381,19 @@ public class LocalStore extends Store {
 
         @Override
         public boolean exists() throws MessagingException {
-            return Utility.arrayContains(getPersonalNamespaces(), this);
+          Cursor cursor = null;
+          int mFolderId = 0 ;
+          try {
+                cursor = mDb.rawQuery("SELECT id FROM folders " + "where folders.name = ?", new String[] { this.getName() });
+                cursor.moveToFirst();
+                mFolderId = cursor.getInt(0);
+            }
+            finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+            return (mFolderId > 0 )? true : false;
         }
 
         @Override
