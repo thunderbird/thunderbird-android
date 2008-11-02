@@ -337,25 +337,21 @@ public class LocalStore extends Store {
             }
             Cursor cursor = null;
             try {
-                cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit FROM folders "
-                        + "where folders.name = ?",
-                    new String[] {
-                        mName
-                    });
-                if ( cursor.getCount() == 0  ) {
-                // Calling exists on open is a little expensive. Instead, just handle it when we don't find it.
+                cursor = mDb.rawQuery(
+                        "SELECT id, unread_count, visible_limit FROM folders "
+                                + "where folders.name = ?",
+                        new String[] { mName });
+                if (cursor.moveToFirst()) {
+                    mFolderId = cursor.getInt(0);
+                    mUnreadMessageCount = cursor.getInt(1);
+                    mVisibleLimit = cursor.getInt(2);
+                } else {
+                    // Calling exists on open is a little expensive. Instead,
+                    // just handle it when we don't find it.
                     create(FolderType.HOLDS_MESSAGES);
                     open(mode);
-
                 }
-                cursor.moveToFirst();
-                mFolderId = cursor.getInt(0);
-                mUnreadMessageCount = cursor.getInt(1);
-                mVisibleLimit = cursor.getInt(2);
-
-
-            }
-            finally {
+            } finally {
                 if (cursor != null) {
                     cursor.close();
                 }
@@ -379,23 +375,23 @@ public class LocalStore extends Store {
 
         @Override
         public boolean exists() throws MessagingException {
-			Cursor cursor = null;
-			try {
-				cursor = mDb.rawQuery("SELECT id FROM folders "
-									  + "where folders.name = ?",
-									  new String[] { this.getName() });
-				if (cursor.moveToFirst()) {
-					int folderId = cursor.getInt(0);
-					return (folderId > 0) ? true : false;
-				} else {
-					return false;
-				}
-			} finally {
-				if (cursor != null) {
-					cursor.close();
-				}
-			}
-		}
+            Cursor cursor = null;
+            try {
+                cursor = mDb.rawQuery("SELECT id FROM folders "
+                        + "where folders.name = ?", new String[] { this
+                        .getName() });
+                if (cursor.moveToFirst()) {
+                    int folderId = cursor.getInt(0);
+                    return (folderId > 0) ? true : false;
+                } else {
+                    return false;
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
 
         @Override
         public boolean create(FolderType type) throws MessagingException {
