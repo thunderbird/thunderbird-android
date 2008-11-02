@@ -1219,7 +1219,7 @@ public class FolderMessageList extends ExpandableListActivity {
                 } else if (k9.INBOX.equalsIgnoreCase(s2)) {
                     return 1;
                 } else
-                    return s1.toUpperCase().compareTo(s2.toUpperCase());
+                    return s1.compareToIgnoreCase(s2);
             }
         }
 
