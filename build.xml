@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
 <project name="K9" default="debug">
     <!-- SDK Locations -->
-    <property name="sdk-folder" value="/Users/jesse/android-sdk-mac_x86-1.0_r1" />
+    <property environment="env"/> 
+
+    <property name="sdk-folder" value="${env.ANDROID_SDK}" />
     <property name="android-tools" value="${sdk-folder}/tools" />
     
     <!-- Application Package Name -->
@@ -14,7 +16,6 @@
     <!-- ************************************************************************************* -->
     <!-- No user servicable parts below. -->
 
-    <property environment="env"/> 
 
     <property name="android-framework" value="${android-tools}/lib/framework.aidl" />
     <property name="android-libs" value="${android-tools}/lib/" />
