@@ -379,20 +379,23 @@ public class LocalStore extends Store {
 
         @Override
         public boolean exists() throws MessagingException {
-          Cursor cursor = null;
-          int mFolderId = 0 ;
-          try {
-                cursor = mDb.rawQuery("SELECT id FROM folders " + "where folders.name = ?", new String[] { this.getName() });
-                cursor.moveToFirst();
-                mFolderId = cursor.getInt(0);
-            }
-            finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
-            return (mFolderId > 0 )? true : false;
-        }
+			Cursor cursor = null;
+			try {
+				cursor = mDb.rawQuery("SELECT id FROM folders "
+									  + "where folders.name = ?",
+									  new String[] { this.getName() });
+				if (cursor.moveToFirst()) {
+					int folderId = cursor.getInt(0);
+					return (folderId > 0) ? true : false;
+				} else {
+					return false;
+				}
+			} finally {
+				if (cursor != null) {
+					cursor.close();
+				}
+			}
+		}
 
         @Override
         public boolean create(FolderType type) throws MessagingException {
