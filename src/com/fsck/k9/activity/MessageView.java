@@ -105,6 +105,7 @@ public class MessageView extends Activity
        public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DEL: { onDelete(); return true;}
+            case KeyEvent.KEYCODE_D: { onDelete(); return true;}
             case KeyEvent.KEYCODE_F: { onForward(); return true;}
             case KeyEvent.KEYCODE_A: { onReplyAll(); return true; }
             case KeyEvent.KEYCODE_R: { onReply(); return true; }
