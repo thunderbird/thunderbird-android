@@ -111,6 +111,14 @@ public class MessageView extends Activity
             case KeyEvent.KEYCODE_R: { onReply(); return true; }
             case KeyEvent.KEYCODE_J: { onPrevious(); return true; }
             case KeyEvent.KEYCODE_K: { onNext(); return true; }
+            case KeyEvent.KEYCODE_Z: { if (event.isShiftPressed()) {
+                                            mMessageContentView.zoomIn(); 
+                                        } else {
+                                            mMessageContentView.zoomOut(); 
+                                        }
+                                     return true; }
+
+
             }
            return super.onKeyDown(keyCode, event);
         }
