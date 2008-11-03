@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="/Users/tibbetts/Tarballs/android-sdk-mac_x86-1.0_r1/tools/lib/layoutlib.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>

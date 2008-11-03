@@ -155,6 +155,7 @@ public class ImapStore extends Store {
 
         if ((uri.getPath() != null) && (uri.getPath().length() > 0)) {
             mPathPrefix = uri.getPath().substring(1);
+	    Log.i(k9.LOG_TAG, "IMAP Prefix is " + mPathPrefix);
         }
 
         mModifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
@@ -179,16 +180,35 @@ public class ImapStore extends Store {
         ImapConnection connection = getConnection();
         try {
             ArrayList<Folder> folders = new ArrayList<Folder>();
+	    //TMP: condition ? expression1 : expression2 is equivalent to
+	    //TMP: if(condition) { expression 1 }else{ expression 2 }
+	    if(mPathPrefix == null){ mPathPrefix = ""; }
             List<ImapResponse> responses =
                     connection.executeSimpleCommand(String.format("LIST \"\" \"%s*\"",
-                        mPathPrefix == null ? "" : mPathPrefix));
+                        mPathPrefix));
+
+	    //FIXME: Remove before submitting
+	    Log.i(k9.LOG_TAG, "Using LIST command " + String.format("LIST \"\" \"%s*\"", mPathPrefix));
+	    //TMP: So, that previous line does the following
+	    //TMP: If mPathPrefix is null, nothing is inserted in the string
+	    //TMP: else mPathPrefix is inserted
+	    //TMP: I'd like to see what this is actually doing
             for (ImapResponse response : responses) {
                 if (response.get(0).equals("LIST")) {
                     boolean includeFolder = true;
                     String folder = decodeFolderName(response.getString(3));
-                    if (folder.equalsIgnoreCase("INBOX")) {
+		    
+		    Log.i(k9.LOG_TAG, "Got folder name " + folder);
+                    if (folder.equalsIgnoreCase(k9.INBOX)) {
                         continue;
-                    }
+                    }else{
+			if(mPathPrefix.length() > 0){
+			    if(folder.length() >= mPathPrefix.length() + 1){
+				folder = folder.substring(mPathPrefix.length() + 1);
+			    }
+			}
+		    }
+		    
                     ImapList attributes = response.getList(1);
                     for (int i = 0, count = attributes.size(); i < count; i++) {
                         String attribute = attributes.getString(i);
@@ -293,7 +313,11 @@ public class ImapStore extends Store {
         private boolean mExists;
 
         public ImapFolder(String name) {
-            this.mName = name;
+	    this.mName = "";
+	    if(!name.equalsIgnoreCase(mPathPrefix) && mPathPrefix.length() > 0){
+		this.mName += mPathPrefix + ".";
+	    }
+	    this.mName += name;
         }
 
         public void open(OpenMode mode) throws MessagingException {
