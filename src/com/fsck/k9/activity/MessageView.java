@@ -301,7 +301,7 @@ public class MessageView extends Activity
         // UrlInterceptRegistry.registerHandler(this);
 
         mMessageContentView.getSettings().setBlockNetworkImage(true);
-        mMessageContentView.getSettings().setSupportZoom(false);
+        mMessageContentView.getSettings().setSupportZoom(true);
 
         setTitle("");
 
@@ -736,12 +736,29 @@ public class MessageView extends Activity
                     if (part.getMimeType().equalsIgnoreCase("text/html")) {
                         text = text.replaceAll("cid:", "http://cid/");
                     } else {
-                        /*
+                        Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
+                        StringBuffer sb = new StringBuffer();
+                        while (m.find()) {
+                            int start = m.start();
+                            if (start != 0 && text.charAt(start - 1) != '@') {
+                                m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
+                            }
+                            else {
+                                m.appendReplacement(sb, "$0");
+                            }
+                        }
+                        m.appendTail(sb);
+                        
+/*
                          * Convert plain text to HTML by replacing
                          * \r?\n with <br> and adding a html/body wrapper.
                          */
-                        text = text.replaceAll("\r?\n", "<br>");
+                        text = sb.toString().replaceAll("\r?\n", "<br>");
+
+
+
                         text = "<html><body>" + text + "</body></html>";
+                        
                     }
 
 
@@ -755,7 +772,6 @@ public class MessageView extends Activity
                     }
                     markup = new SpannableString(text);
                     Linkify.addLinks(markup, Linkify.ALL);
-
                     mMessageContentView.loadDataWithBaseURL("email://", markup.toString(), "text/html",
                             "utf-8", null);
                 }
