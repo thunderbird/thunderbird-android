@@ -64,14 +64,13 @@ public class k9 extends Application {
      * The MIME type(s) of attachments we're willing to download to SD.
      */
     public static final String[] ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
-        "image/*",
+        "*/*",
     };
 
     /**
      * The MIME type(s) of attachments we're not willing to download to SD.
      */
     public static final String[] UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
-        "image/gif",
     };
 
     /**
