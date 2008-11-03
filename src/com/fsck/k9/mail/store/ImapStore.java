@@ -155,7 +155,6 @@ public class ImapStore extends Store {
 
         if ((uri.getPath() != null) && (uri.getPath().length() > 0)) {
             mPathPrefix = uri.getPath().substring(1);
-	    Log.i(k9.LOG_TAG, "IMAP Prefix is " + mPathPrefix);
         }
 
         mModifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
@@ -180,25 +179,16 @@ public class ImapStore extends Store {
         ImapConnection connection = getConnection();
         try {
             ArrayList<Folder> folders = new ArrayList<Folder>();
-	    //TMP: condition ? expression1 : expression2 is equivalent to
-	    //TMP: if(condition) { expression 1 }else{ expression 2 }
 	    if(mPathPrefix == null){ mPathPrefix = ""; }
             List<ImapResponse> responses =
                     connection.executeSimpleCommand(String.format("LIST \"\" \"%s*\"",
                         mPathPrefix));
 
-	    //FIXME: Remove before submitting
-	    Log.i(k9.LOG_TAG, "Using LIST command " + String.format("LIST \"\" \"%s*\"", mPathPrefix));
-	    //TMP: So, that previous line does the following
-	    //TMP: If mPathPrefix is null, nothing is inserted in the string
-	    //TMP: else mPathPrefix is inserted
-	    //TMP: I'd like to see what this is actually doing
             for (ImapResponse response : responses) {
                 if (response.get(0).equals("LIST")) {
                     boolean includeFolder = true;
                     String folder = decodeFolderName(response.getString(3));
 		    
-		    Log.i(k9.LOG_TAG, "Got folder name " + folder);
                     if (folder.equalsIgnoreCase(k9.INBOX)) {
                         continue;
                     }else{
@@ -313,12 +303,17 @@ public class ImapStore extends Store {
         private boolean mExists;
 
         public ImapFolder(String name) {
-	    this.mName = "";
-	    if(!name.equalsIgnoreCase(mPathPrefix) && mPathPrefix.length() > 0){
-		this.mName += mPathPrefix + ".";
-	    }
 	    this.mName += name;
         }
+
+	public String getPrefixedName() {
+	    String prefixedName = "";
+	    if(mPathPrefix.length() > 0 && !mName.equalsIgnoreCase(k9.INBOX)){
+		prefixedName += mPathPrefix + ".";
+	    }
+	    prefixedName += mName;
+	    return prefixedName;
+	}
 
         public void open(OpenMode mode) throws MessagingException {
             if (isOpen() && mMode == mode) {
@@ -347,7 +342,7 @@ public class ImapStore extends Store {
             try {
                 List<ImapResponse> responses = mConnection.executeSimpleCommand(
                         String.format("SELECT \"%s\"",
-                                encodeFolderName(mName)));
+                                encodeFolderName(getPrefixedName())));
                 /*
                  * If the command succeeds we expect the folder has been opened read-write
                  * unless we are notified otherwise in the responses.
@@ -424,7 +419,7 @@ public class ImapStore extends Store {
             }
             try {
                 connection.executeSimpleCommand(String.format("STATUS \"%s\" (UIDVALIDITY)",
-                        encodeFolderName(mName)));
+                        encodeFolderName(getPrefixedName())));
                 mExists = true;
                 return true;
             }
@@ -458,7 +453,7 @@ public class ImapStore extends Store {
             }
             try {
                 connection.executeSimpleCommand(String.format("CREATE \"%s\"",
-                        encodeFolderName(mName)));
+                        encodeFolderName(getPrefixedName())));
                 return true;
             }
             catch (MessagingException me) {
@@ -503,7 +498,7 @@ public class ImapStore extends Store {
                 int unreadMessageCount = 0;
                 List<ImapResponse> responses = mConnection.executeSimpleCommand(
                         String.format("STATUS \"%s\" (UNSEEN)",
-                                encodeFolderName(mName)));
+                                encodeFolderName(getPrefixedName())));
                 for (ImapResponse response : responses) {
                     if (response.mTag == null && response.get(0).equals("STATUS")) {
                         ImapList status = response.getList(2);
@@ -973,7 +968,7 @@ public class ImapStore extends Store {
                     eolOut.flush();
                     mConnection.sendCommand(
                             String.format("APPEND \"%s\" {%d}",
-                                    encodeFolderName(mName),
+                                    encodeFolderName(getPrefixedName()),
                                     out.getCount()), false);
                     ImapResponse response;
                     do {
@@ -1057,7 +1052,7 @@ public class ImapStore extends Store {
 
         private void checkOpen() throws MessagingException {
             if (!isOpen()) {
-                throw new MessagingException("Folder " + mName + " is not open.");
+                throw new MessagingException("Folder " + getPrefixedName() + " is not open.");
             }
         }
 
@@ -1071,7 +1066,7 @@ public class ImapStore extends Store {
         @Override
         public boolean equals(Object o) {
             if (o instanceof ImapFolder) {
-                return ((ImapFolder)o).mName.equals(mName);
+                return ((ImapFolder)o).getPrefixedName().equals(getPrefixedName());
             }
             return super.equals(o);
         }
