@@ -303,7 +303,7 @@ public class ImapStore extends Store {
         private boolean mExists;
 
         public ImapFolder(String name) {
-	    this.mName += name;
+	    this.mName = name;
         }
 
 	public String getPrefixedName() {
