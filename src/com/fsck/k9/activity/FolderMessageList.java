@@ -1129,7 +1129,8 @@ public class FolderMessageList extends ExpandableListActivity {
                 }
                 else {
                     if (folder.status == null) {
-                        holder.main.setText(getString(R.string.message_list_load_more_messages_action));
+                        // holder.main.setText(getString(R.string.message_list_load_more_messages_action));
+			holder.main.setText("Load up to " + k9.VISIBLE_LIMIT_INCREMENT + " more");
                     }
                     else {
                         holder.main.setText(getString(R.string.status_loading_more_failed));
