@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   viewBox="115 35 327 254"
+   width="327pt"
+   height="254pt"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="new_k9_icon_II.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/Users/brock/Desktop/Outbox/new_k9_icon_II.png"
+   inkscape:export-xdpi="10.57"
+   inkscape:export-ydpi="10.57">
+  <sodipodi:namedview
+     inkscape:window-height="480"
+     inkscape:window-width="640"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     showgrid="false" />
+  <metadata
+     id="metadata4">
+    <dc:date>2008-11-05 02:47Z</dc:date>
+<!-- Produced by OmniGraffle Professional 4.2.2 -->    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs6">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 158.75 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="408.75 : 158.75 : 1"
+       inkscape:persp3d-origin="204.375 : 105.83333 : 1"
+       id="perspective49" />
+  </defs>
+  <g
+     stroke="none"
+     stroke-opacity="1"
+     stroke-dasharray="none"
+     fill="none"
+     fill-opacity="1"
+     id="g8">
+    <title
+       id="title10">Canvas 1</title>
+    <g
+       id="g12">
+      <title
+         id="title14">Layer 1</title>
+      <path
+         d="M 179.99995 143.99992 L 170.99962 72.00003 L 117.000046 72 L 116.99986 116.999985 L 161.99971 116.999985 L 170.99962 189.00003 Z"
+         fill="#f71000"
+         id="path16" />
+      <path
+         d="M 297 161.99992 L 315.00037 144.000015 L 333.00012 126 L 360 143.99989 L 350.99982 170.99976 L 342.00015 179.99998 L 315.00049 188.99991 Z"
+         fill="#222"
+         id="path18" />
+      <path
+         d="M 117 288 L 134.9995 216.00003 L 152.99948 180.00015 L 161.99947 144 L 305.99982 144 L 342 215.99989 L 360 288 Z"
+         fill="#8b99ae"
+         id="path20" />
+      <path
+         d="M 323.99948 143.99994 L 413.99988 152.99991 L 432 134.99997 L 432 116.9999 L 395.9999 107.99996 L 368.99994 99.00017 L 359.99979 72.0001 L 314.99966 72.0001 L 306 90.00004 L 306 135.000046 Z"
+         fill="#8b99ae"
+         id="path22" />
+      <path
+         d="M 135 279 L 152.99989 216 L 324.00012 216.00006 L 342 279.0003 Z"
+         fill="#6b7584"
+         id="path24" />
+      <path
+         d="M 135 279.00009 L 153.00009 216.00012 L 324.0003 216 L 342 279.00009 L 314.99911 234.00008 L 162.00005 234.00014 Z"
+         fill="#3a5163"
+         id="path26" />
+      <path
+         d="M 341.99994 71.99997 L 333.00003 72 L 333.00003 62.999985 L 324.00018 62.999985 L 315.00027 53.99997 L 315.00006 44.999992 L 324.00018 36.000015 L 333.00003 36.000015 L 341.99997 44.999992 L 341.99997 53.99997 L 341.99997 71.99996 Z"
+         fill="#cdd3d1"
+         id="path28" />
+      <path
+         d="M 342 72 L 351 72 L 350.99988 63 L 359.99985 63 L 368.99963 54 L 368.99988 45 L 359.99985 36 L 351 36 L 342.00003 45 L 342.00003 54 L 342.00015 72 Z"
+         fill="#cdd3d1"
+         id="path30" />
+      <path
+         d="M 360.00003 72 L 351 72 L 360.00003 99 L 369.00012 99 Z"
+         fill="#bf201a"
+         id="path32" />
+      <path
+         d="M 396 108 L 432 108 L 432 117 Z"
+         fill="#cecece"
+         id="path34" />
+      <rect
+         x="432"
+         y="126"
+         width="9"
+         height="9"
+         fill="#d1d1d1"
+         id="rect36" />
+      <path
+         d="M 198.89999 153 L 189 206.99994 L 288 207 L 278.1 153 Z"
+         fill="#b92221"
+         id="path38" />
+      <path
+         d="M 198.89999 153 L 189 206.99994 L 288 207 L 278.1 153 Z"
+         stroke="black"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         stroke-width="5"
+         id="path40" />
+      <path
+         d="M 198 153 L 237.99243 187.83203 C 238.75711 188.49803 239.89919 188.48636 240.65009 187.80487 L 279 153"
+         stroke="black"
+         stroke-opacity=".97"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         stroke-width="5"
+         id="path42" />
+      <circle
+         cx="328.5"
+         cy="49.5"
+         r="4.500001"
+         fill="#8c98ae"
+         id="circle44" />
+      <circle
+         cx="355.5"
+         cy="49.5"
+         r="4.500001"
+         fill="#8c98ae"
+         id="circle46" />
+    </g>
+  </g>
+</svg>
