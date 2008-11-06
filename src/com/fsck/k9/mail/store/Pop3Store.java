@@ -296,6 +296,11 @@ public class Pop3Store extends Store {
                  * being friendly.
                  */
             }
+            
+            closeIO();
+        }
+        
+        private void closeIO() {
             try {
                 mIn.close();
             } catch (Exception e) {
@@ -785,19 +790,25 @@ public class Pop3Store extends Store {
         }
 
         private String executeSimpleCommand(String command) throws IOException, MessagingException {
-            open(OpenMode.READ_WRITE);
-
-            if (command != null) {
-                writeLine(command);
+            try {
+                open(OpenMode.READ_WRITE);
+    
+                if (command != null) {
+                    writeLine(command);
+                }
+    
+                String response = readLine();
+    
+                if (response.length() > 1 && response.charAt(0) == '-') {
+                    throw new MessagingException(response);
+                }
+    
+                return response;
             }
-
-            String response = readLine();
-
-            if (response.length() > 1 && response.charAt(0) == '-') {
-                throw new MessagingException(response);
+            catch (IOException e) {
+                closeIO();
+                throw e;
             }
-
-            return response;
         }
 
         @Override
