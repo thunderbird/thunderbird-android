@@ -272,7 +272,7 @@ public class ImapStore extends Store {
              * The only thing that can throw this is getBytes("US-ASCII") and if US-ASCII doesn't
              * exist we're totally screwed.
              */
-            throw new RuntimeException("Unabel to encode folder name: " + name, uee);
+            throw new RuntimeException("Unable to encode folder name: " + name, uee);
         }
     }
 
