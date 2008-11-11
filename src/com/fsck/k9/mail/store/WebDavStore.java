@@ -1,4 +1,4 @@
-package com.android.email.mail.store;
+package com.fsck.k9.mail.store;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

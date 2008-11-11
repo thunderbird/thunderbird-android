@@ -161,12 +161,14 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_account_type_instructions">What type of account is this?</string>
     <string name="account_setup_account_type_pop_action">POP3 account</string>
     <string name="account_setup_account_type_imap_action">IMAP account</string>
+    <string name="account_setup_account_type_webdav_action">WebDav(Exchange) account</string>
 
     <string name="account_setup_incoming_title">Incoming server settings</string>
     <string name="account_setup_incoming_username_label">Username</string>
     <string name="account_setup_incoming_password_label">Password</string>
     <string name="account_setup_incoming_pop_server_label">POP3 server</string>
     <string name="account_setup_incoming_imap_server_label">IMAP server</string>
+    <string name="account_setup_incoming_webdav_server_label">WebDav(Exchange) server</string>
     <string name="account_setup_incoming_port_label">Port</string>
     <string name="account_setup_incoming_security_label">Security type</string>
     <string name="account_setup_incoming_security_none_label">None</string>
@@ -180,6 +182,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_incoming_delete_policy_delete_label">When I delete from Inbox</string>
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">Optional</string>
+    <string name="account_setup_incoming_webdav_path_prefix_label">WebDav(Exchange) path prefix</string>
+    <string name="account_setup_incoming_webdav_path_prefix_hint">Optional</string>
 
     <string name="account_setup_outgoing_title">Outgoing server settings</string>
     <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
@@ -199,6 +203,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_outgoing_authentication_basic_password_label">Password</string>
     <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP before SMTP</string>
     <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP before SMTP</string>
+    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDav(Exchange) before SMTP</string>
 
     <string name="account_setup_options_title">Account options</string>
     <string name="account_setup_options_mail_check_frequency_label">Email checking frequency</string>
