@@ -1,0 +1,27 @@
+Currently
+--
+Need to add NOOP checking to Pop3Store and ImapStore on cached connections.
+
+
+
+
+
+
+
+
+
+
+
+
+In the future
+--
+Move attachments to files, instead of storing as blobs in the database. There are tons of ways
+we can make the app perform better with this small change. Primarily, we can do everything
+pertaining to large attachments as streams instead of as large loads into byte arrays.
+
+Get rid of the LocalStore's attachment to Store altogether. Local storage is too complex and
+specific to performance to be bound to the Store API. It needs to be flexible with plenty of helper
+functions to make best use of memory and resources.
+
+Make better use of the abstractions for Body, Part and BodyPart. Proper use of these abstractions
+can completely remove the need for the special headers.

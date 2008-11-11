@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="4px">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4px">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_box"
+            android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/attachment_icon"
+                android:layout_width="62px"
+                android:layout_height="62px"
+                android:src="@drawable/attached_image_placeholder"
+                android:layout_marginLeft="4px"
+                android:layout_marginRight="4px"
+                android:layout_marginBottom="4px"
+                android:layout_marginTop="4px" />
+            <TextView
+                android:id="@+id/attachment_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?android:attr/textColorSecondaryInverse"
+                android:singleLine="true"
+                android:ellipsize="middle"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/attachment_icon"
+                android:layout_alignParentRight="true"
+                android:layout_alignWithParentIfMissing="true" />
+            <TextView
+                android:id="@+id/attachment_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorTertiaryInverse"
+                android:singleLine="true"
+                android:ellipsize="middle"
+                android:layout_alignLeft="@id/attachment_name"
+                android:layout_below="@id/attachment_name"
+                android:layout_alignWithParentIfMissing="true" />
+            <Button
+                android:id="@+id/download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonStyleSmall"
+                android:text="@string/message_view_attachment_download_action"
+                android:singleLine="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/attachment_name"
+                android:layout_marginTop="6px" />
+            <Button
+                android:id="@+id/view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonStyleSmall"
+                android:text="@string/message_view_attachment_view_action"
+                android:singleLine="true"
+                android:layout_toLeftOf="@id/download"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_below="@id/attachment_name"
+                android:layout_marginTop="6px" />
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical">
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_email_attachment"
+            android:layout_alignParentLeft="true" />
+    </LinearLayout>
+</FrameLayout>

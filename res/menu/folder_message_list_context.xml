@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/open"
+        android:title="@string/open_action"
+    />
+	<item
+		android:id="@+id/delete"
+		android:title="@string/delete_action"
+	/>
+	<item
+		android:id="@+id/forward"
+		android:title="@string/forward_action"
+	/>
+	<item
+		android:id="@+id/reply_all"
+		android:title="@string/reply_all_action"
+	/>
+	<item
+		android:id="@+id/reply"
+		android:title="@string/reply_action"
+	/>
+	<item
+		android:id="@+id/mark_as_read"
+		android:title="@string/mark_as_read_action"
+	/>
+</menu>

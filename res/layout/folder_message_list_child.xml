@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:paddingRight="10px"
+    android:background="@drawable/folder_message_list_child_background">
+    <View
+        android:id="@+id/chip"
+        android:background="@drawable/appointment_indicator_leftside_1"
+        android:layout_width="4px"
+        android:layout_height="56px"
+        android:layout_centerVertical="true" />
+    <TextView
+        android:id="@+id/from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/chip"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?android:attr/textColorPrimary"
+        android:paddingLeft="30px"
+        android:drawablePadding="4px"
+        android:paddingTop="12px" />
+    <TextView
+        android:id="@+id/date"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/subject" />
+    <TextView
+        android:id="@+id/subject"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/from"
+        android:layout_alignLeft="@id/from"
+        android:layout_toLeftOf="@id/date"
+        android:paddingLeft="30px"
+        android:layout_marginRight="6dip" />
+</RelativeLayout>

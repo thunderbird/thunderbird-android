@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="54px"
+	android:paddingRight="6px"
+	android:paddingTop="6px"
+	android:paddingBottom="6px">
+	<ImageButton
+		android:id="@+id/attachment_delete"
+		android:src="@drawable/ic_delete"
+		android:layout_alignParentRight="true"
+		android:layout_height="42px"
+		android:layout_width="42px" />
+	<TextView
+		android:id="@+id/attachment_name"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:textColor="?android:attr/textColorSecondaryInverse"
+		android:layout_width="1dip"
+		android:layout_height="42px"
+		android:background="@drawable/text_box"
+		android:paddingLeft="36px"
+		android:singleLine="true"
+		android:ellipsize="start"
+		android:gravity="center_vertical"
+		android:layout_marginLeft="6px"
+		android:layout_marginRight="4px"
+		android:layout_alignParentLeft="true"
+		android:layout_toLeftOf="@id/attachment_delete" />
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/ic_email_attachment"
+		android:layout_marginLeft="1px"
+		android:layout_centerVertical="true" />
+</RelativeLayout>
