@@ -126,7 +126,7 @@ public final class R {
         public static final int check_mail=0x7f0a0047;
         public static final int chip=0x7f0a0024;
         public static final int compose=0x7f0a0048;
-        public static final int date=0x7f0a0026;
+        public static final int date=0x7f0a0027;
         public static final int debug_logging=0x7f0a0022;
         public static final int delete=0x7f0a0038;
         public static final int delete_account=0x7f0a0046;
@@ -141,7 +141,7 @@ public final class R {
         public static final int folder_name=0x7f0a0029;
         public static final int folder_status=0x7f0a002a;
         public static final int forward=0x7f0a004a;
-        public static final int from=0x7f0a0025;
+        public static final int from=0x7f0a0026;
         public static final int imap=0x7f0a0001;
         public static final int imap_path_prefix=0x7f0a0015;
         public static final int imap_path_prefix_section=0x7f0a0014;
@@ -168,7 +168,7 @@ public final class R {
         public static final int sensitive_logging=0x7f0a0023;
         public static final int show_pictures=0x7f0a0041;
         public static final int show_pictures_section=0x7f0a0040;
-        public static final int subject=0x7f0a0027;
+        public static final int subject=0x7f0a0025;
         public static final int text1=0x7f0a0042;
         public static final int text2=0x7f0a0043;
         public static final int to=0x7f0a002b;
