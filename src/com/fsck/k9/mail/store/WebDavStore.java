@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -45,20 +46,42 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * <pre>
+ * Uses WebDAV formatted HTTP calls to an MS Exchange server to fetch emails
+ * and email information.  This has only been tested on an MS Exchange
+ * Server 2003.  It uses Form-Based authentication and requires that
+ * Outlook Web Access be enabled on the server.
+ * </pre>
+ */
 public class WebDavStore extends Store {
     public static final int CONNECTION_SECURITY_NONE = 0;
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
     public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
-    
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
-    private int mConnectionSecurity;
-    private String mUsername;
-    private String mPassword;
-    private String mUrl;
-    private CookieStore authCookies;
 
+    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
+    
+    private int mConnectionSecurity;
+    private String mUsername; /* Stores the username for authentications */
+    private String mPassword; /* Stores the password for authentications */
+    private String mUrl;      /* Stores the base URL for the server */
+
+    private CookieStore mAuthCookies; /* Stores cookies from authentication */
+    private boolean mAuthenticated = false; /* Stores authentication state */
+    private long mLastAuth = -1; /* Stores the timestamp of last auth */
+    private long mAuthTimeout = 5 * 60;
+    
+    /**
+     * webdav://user:password@server:port CONNECTION_SECURITY_NONE
+     * webdav+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
+     * webdav+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
+     * webdav+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
+     * webdav+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     *
+     * @param _uri
+     */
     public WebDavStore(String _uri) throws MessagingException {
         URI uri;
 
@@ -69,7 +92,6 @@ public class WebDavStore extends Store {
             Log.d(k9.LOG_TAG, ">>> Exception creating URI");
             throw new MessagingException("Invalid WebDavStore URI", use);
         }
-
         String scheme = uri.getScheme();
         if (scheme.equals("webdav")) {
             mConnectionSecurity = CONNECTION_SECURITY_NONE;
@@ -112,242 +134,382 @@ public class WebDavStore extends Store {
         }
         Log.d(k9.LOG_TAG, ">>> New WebDavStore creation complete");
     }
-    
+
+
     @Override
     public void checkSettings() throws MessagingException {
-        Log.d(k9.LOG_TAG, ">>> checkSettings() called");
+        Log.e(k9.LOG_TAG, "WebDavStore.checkSettings() not implemented");
     }
 
     @Override
     public Folder[] getPersonalNamespaces() throws MessagingException {
+        Log.d(k9.LOG_TAG, ">>> getPersonalNamespaces called");
         ArrayList<Folder> folderList = new ArrayList<Folder>();
-        Log.d(k9.LOG_TAG, ">>> getPersonalNamespaces() called");
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        HttpEntity responseEntity;
+        HttpGeneric httpmethod;
+        HttpResponse response;
+        StringEntity messageEntity;
+        String messageBody;
+        int status_code;
+        
+        if (needAuth()) {
+            authenticate();
+        }
+
+        if (this.mAuthenticated == false ||
+            this.mAuthCookies == null) {
+            return folderList.toArray(new Folder[] {});
+        }
+
         try {
-            /** Populate the authentication cookies so we can poll for our list of folders */
-            WebDavConnection connection = new WebDavConnection(this.mUsername, mPassword, this.mUrl);
-            this.authCookies = connection.getAuthCookies();
-
-            /** Retrieve the list of folder names */
-            DefaultHttpClient httpclient = new DefaultHttpClient();
-            httpclient.setCookieStore(this.authCookies);
-
-            StringBuffer strBuf = new StringBuffer(200);
-            strBuf.append("<?xml version='1.0' ?>");
-            strBuf.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-            strBuf.append("SELECT \"DAV:ishidden\"\r\n");
-            strBuf.append(" FROM \"\"\r\n");
-            strBuf.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
-            strBuf.append("</a:sql></a:searchrequest>\r\n");
-            String body = strBuf.toString();
-                    
-            StringEntity b_entity = new StringEntity(body);
-            b_entity.setContentType("text/xml");
-
-            /** Get our proper username for the path */
-            String[] userParts = this.mUsername.split(":", 2);
-            String localUsername;
+            /** Set up and execute the request */
+            httpclient.setCookieStore(this.mAuthCookies);
+            messageBody = getFolderListXml();
+            messageEntity = new StringEntity(messageBody);
+            messageEntity.setContentType("text/xml");
             
-            if (userParts.length > 1) {
-                localUsername = userParts[1];
-            } else {
-                localUsername = this.mUsername;
-            }
-
-            HttpGeneric httpmethod = new HttpGeneric(this.mUrl + "/Exchange/" + localUsername);
+            httpmethod = new HttpGeneric(this.mUrl + "/Exchange/" + this.mUsername);
             httpmethod.setMethod("SEARCH");
-            httpmethod.setEntity(b_entity);
+            httpmethod.setEntity(messageEntity);
             httpmethod.setHeader("Brief", "t");
 
-            HttpResponse response = httpclient.execute(httpmethod);
-            int status_code = response.getStatusLine().getStatusCode();
+            response = httpclient.execute(httpmethod);
+            status_code = response.getStatusLine().getStatusCode();
 
             if (status_code < 200 ||
                 status_code > 300) {
-                throw new IOException("Error getting folder listing, error during authentication");
+                throw new IOException("Error getting folder listing");
             }
-            
-            HttpEntity entity = response.getEntity();
-            
-            if (entity != null) {
+
+            responseEntity = response.getEntity();
+
+            if (responseEntity != null) {
+                /** Parse the returned data */
                 try {
-                    InputStream istream = entity.getContent();
+                    InputStream istream = responseEntity.getContent();
                     SAXParserFactory spf = SAXParserFactory.newInstance();
                     SAXParser sp = spf.newSAXParser();
-                    
+
                     XMLReader xr = sp.getXMLReader();
-                    
-                    FolderListingHandler myHandler = new FolderListingHandler();
+
+                    WebDavHandler myHandler = new WebDavHandler();
                     xr.setContentHandler(myHandler);
-                    
+
                     xr.parse(new InputSource(istream));
-                    
-                    ParsedFolderListingSet dataset = myHandler.getDataSet();
+
+                    ParsedDataSet dataset = myHandler.getDataSet();
 
                     String[] folderUrls = dataset.getHrefs();
                     int urlLength = folderUrls.length;
-                    
+
                     for (int i = 0; i < urlLength; i++) {
                         String[] urlParts = folderUrls[i].split("/");
                         folderList.add(getFolder(urlParts[urlParts.length - 1]));
                     }
-                    /** And hack it up, get the base Inbox folder */
-                    folderList.add(getFolder(""));
                 } catch (SAXException se) {
-                    Log.d(k9.LOG_TAG, ">>> SAXException caught");
+                    Log.e(k9.LOG_TAG, "Error with SAXParser " + se);
                 } catch (ParserConfigurationException pce) {
-                    Log.d(k9.LOG_TAG, ">>> ParserConfigurationException caught");
+                    Log.e(k9.LOG_TAG, "Error with SAXParser " + pce);
                 }
             }
         } catch (UnsupportedEncodingException uee) {
-            Log.d(k9.LOG_TAG, ">>> UnsupportedEncodingException caught");
+            Log.e(k9.LOG_TAG, "Error with encoding " + uee);
         } catch (IOException ioe) {
-            Log.d(k9.LOG_TAG, ">>> IOException caught");
-        }
+            Log.e(k9.LOG_TAG, "IOException " + ioe);
+        } 
 
+        Log.d(k9.LOG_TAG, ">>> getPersonalNamespaces finished");
         return folderList.toArray(new WebDavFolder[] {});
     }
 
     @Override
     public Folder getFolder(String name) throws MessagingException {
         WebDavFolder folder;
-        Log.d(k9.LOG_TAG, ">>> getFolder called on " + name);
+        Log.d(k9.LOG_TAG, ">>> getFolder called");
         folder = new WebDavFolder(name);
         return folder;
     }
 
-    public void delete() {
-        Log.d(k9.LOG_TAG, ">>> delete() called but not implemented");
+    /***************************************************************
+     * WebDAV XML Request body retrieval functions
+     */
+
+    private String getFolderListXml() {
+        StringBuffer buffer = new StringBuffer(200);
+        buffer.append("<?xml version='1.0' ?>");
+        buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
+        buffer.append("SELECT \"DAV:ishidden\"\r\n");
+        buffer.append(" FROM \"\"\r\n");
+        buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
+        buffer.append("</a:sql></a:searchrequest>\r\n");
+
+        return buffer.toString();
+            
     }
 
+    private String getMessageCountXml(String messageState) {
+        StringBuffer buffer = new StringBuffer(200);
+        buffer.append("<?xml version='1.0' ?>");
+        buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
+        buffer.append("SELECT \"DAV:visiblecount\"\r\n");
+        buffer.append(" FROM \"\"\r\n");
+        buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"="+messageState+"\r\n");
+        buffer.append(" GROUP BY \"DAV:ishidden\"\r\n");
+        buffer.append("</a:sql></a:searchrequest>\r\n");
+        return buffer.toString();
+    }
+
+    private String getMessagesXml() {
+        StringBuffer buffer = new StringBuffer(200);
+        buffer.append("<?xml version='1.0' ?>");
+        buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
+        buffer.append("SELECT \"DAV:uid\"\r\n");
+        buffer.append(" FROM \"\"\r\n");
+        buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False\r\n");
+        buffer.append("</a:sql></a:searchrequest>\r\n");
+        return buffer.toString();
+    }
+    
+    /***************************************************************
+     * Authentication related methods
+     */
+
+    /**
+     * Performs Form Based authentication regardless of the current
+     * authentication state
+     */
+    private void authenticate() {
+        Log.d(k9.LOG_TAG, ">>> authenticate() called");
+        try {
+            this.mAuthCookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
+        } catch (IOException ioe) {
+            Log.e(k9.LOG_TAG, "Error during authentication: " + ioe);
+            this.mAuthCookies = null;
+        }
+        
+        if (this.mAuthCookies == null) {
+            this.mAuthenticated = false;
+        } else {
+            this.mAuthenticated = true;
+            this.mLastAuth = System.currentTimeMillis()/1000;
+        }
+        Log.d(k9.LOG_TAG, ">>> authenticate completed");
+    }
+
+    /**
+     * Determines if a new authentication is needed.
+     * Returns true if new authentication is needed.
+     */
+    private boolean needAuth() {
+        Log.d(k9.LOG_TAG, ">>> needAuth called");
+        boolean status = false;
+        long currentTime = -1;
+        if (this.mAuthenticated == false) {
+            status = true;
+        }
+        
+        currentTime = System.currentTimeMillis()/1000;
+        if ((currentTime - this.mLastAuth) > (this.mAuthTimeout)) {
+            status = true;
+        }
+        return status;
+    }
+
+    /**
+     * Performs the Form Based Authentication
+     * Returns the CookieStore object for later use or null
+     */
+    private CookieStore doAuthentication(String username, String password,
+                                        String url) throws IOException {
+        Log.d(k9.LOG_TAG, ">>> doAuthentication called");
+        String authPath = "/exchweb/bin/auth/owaauth.dll";
+        CookieStore cookies = null;
+            
+        /* Browser Client */
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+
+        /* Post Method */
+        HttpPost httppost = new HttpPost(url + authPath);
+
+        /** Build the POST data to use */
+        ArrayList<BasicNameValuePair> pairs = new ArrayList();
+        pairs.add(new BasicNameValuePair("username", username));
+        pairs.add(new BasicNameValuePair("password", password));
+        pairs.add(new BasicNameValuePair("destination", url + "/Exchange/"));
+        pairs.add(new BasicNameValuePair("flags", "0"));
+        pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
+        pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
+        pairs.add(new BasicNameValuePair("trusted", "0"));
+
+        try {
+            UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
+
+            httppost.setEntity(formEntity);
+
+            /** Perform the actual POST */
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity entity = response.getEntity();
+            int status_code = response.getStatusLine().getStatusCode();
+            
+            /** Verify success */
+            if (status_code > 300 ||
+                status_code < 200) {
+                throw new IOException("Error during authentication: "+status_code);
+            }
+            
+            cookies = httpclient.getCookieStore();
+            if (cookies == null) {
+                throw new IOException("Error during authentication: No Cookies");
+            }
+        } catch (UnsupportedEncodingException uee) {
+            Log.e(k9.LOG_TAG, "Error encoding POST data for authencation");
+        }
+        Log.d(k9.LOG_TAG, ">>> doAuthentication finished");
+        return cookies;
+    }
+
+    /*************************************************************************
+     * Helper and Inner classes
+     */
+
+    /**
+     * A WebDav Folder
+     */
     class WebDavFolder extends Folder {
         private String mName;
-        private String mFolderUrl;
         private String mLocalUsername;
-        private int mMessageCount = -1;
+        private String mFolderUrl;
+        private boolean mIsOpen = false;
+        private int mMessageCount = 0;
         private int mUnreadMessageCount = 0;
-        private boolean mExists;
-        private CookieStore authCookies;
-        private boolean isOpen = false;
-
+        
         public WebDavFolder(String name) {
-            Log.d(k9.LOG_TAG, ">>> New WebDavFolder created");
+            String[] userParts;
+            
             this.mName = name;
-            String[] userParts = WebDavStore.this.mUsername.split("/", 2);
+            userParts = WebDavStore.this.mUsername.split("/", 2);
+
             if (userParts.length > 1) {
                 this.mLocalUsername = userParts[1];
             } else {
                 this.mLocalUsername = WebDavStore.this.mUsername;
             }
+
             this.mFolderUrl = WebDavStore.this.mUrl + "/Exchange/" + this.mLocalUsername + "/" + this.mName;
         }
 
         @Override
         public void open(OpenMode mode) throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> open called on folder " + this.mName);
-            try {
-                /** Get our authentication cookies */
-                WebDavConnection connection = new WebDavConnection(WebDavStore.this.mUsername, WebDavStore.this.mPassword, WebDavStore.this.mUrl);
-                this.authCookies = connection.getAuthCookies();
-
-                this.mMessageCount = getMessageCount(true, authCookies);
-                this.mUnreadMessageCount = getMessageCount(false, authCookies);
-                
-            } catch (IOException ioe) {
-                Log.d(k9.LOG_TAG, ">>> IOException caught in open()");
-                throw new MessagingException("IOException in WebDavConnection");
+            Log.d(k9.LOG_TAG, ">>> open called on folder "+this.mName);
+            if (needAuth()) {
+                authenticate();
             }
+
+            if (WebDavStore.this.mAuthCookies == null) {
+                return;
+            }
+
+            this.mIsOpen = true;
         }
 
-        private int getMessageCount(boolean read, CookieStore authCookies) throws IOException {
+        private int getMessageCount(boolean read, CookieStore authCookies) {
+            Log.d(k9.LOG_TAG, ">>> getMessageCount called on folder "+this.mName);
             String isRead;
             int messageCount = 0;
-            Log.d(k9.LOG_TAG, ">>> getMessageCount() called for folder " + this.mName);
+
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            HttpGeneric httpmethod;
+            HttpResponse response;
+            HttpEntity responseEntity;
+            StringEntity bodyEntity;
+            String messageBody;
+            int statusCode;
+            
             if (read) {
                 isRead = new String("True");
             } else {
                 isRead = new String("False");
             }
-            
-            /** Generate a new HTTP Client and assign the authentication cookies */
-            DefaultHttpClient httpclient = new DefaultHttpClient();
+
             httpclient.setCookieStore(authCookies);
 
-            /** Generate our XML request body to get message counts */
-            StringBuffer strBuf = new StringBuffer(600);
-            strBuf.append("<?xml version='1.0' ?>");
-            strBuf.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-            strBuf.append("SELECT \"DAV:visiblecount\"\r\n");
-            strBuf.append(" FROM \"\"\r\n");
-            strBuf.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"="+isRead+"\r\n");
-            strBuf.append(" GROUP BY \"DAV:ishidden\"\r\n");
-            strBuf.append("</a:sql></a:searchrequest>\r\n");
-            String body = strBuf.toString();
+            messageBody = getMessageCountXml(isRead);
+            
+            try {
+                bodyEntity = new StringEntity(messageBody);
+                bodyEntity.setContentType("text/xml");
 
-            /** Generate the request entity from the body */
-            StringEntity b_entity = new StringEntity(body);
-            b_entity.setContentType("text/xml");
+                httpmethod = new HttpGeneric(this.mFolderUrl);
+                httpmethod.setMethod("SEARCH");
+                httpmethod.setEntity(bodyEntity);
+                httpmethod.setHeader("Brief", "t");
 
-            /** Try and get the listing from the inbox */
-            HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
-            Log.d(k9.LOG_TAG, ">>> Created HttpGeneric with url " + this.mFolderUrl);
-            httpmethod.setMethod("SEARCH");
-            httpmethod.setEntity(b_entity);
-            httpmethod.setHeader("Brief", "t");
+                response = httpclient.execute(httpmethod);
+                statusCode = response.getStatusLine().getStatusCode();
 
-            /** Execute the request */
-            HttpResponse response = httpclient.execute(httpmethod);
-            int status_code = response.getStatusLine().getStatusCode();
-
-            /** Verify we have success */
-            if (status_code < 200 ||
-                status_code > 300) {
-                Log.d(k9.LOG_TAG, ">>> Status code was bad, value was: " + status_code);
-                throw new IOException("Error getting folder listing, error during authentication");
-            }
-
-            /** Generate our response entity */
-            HttpEntity entity = response.getEntity();
-                
-            if (entity != null) {
-                try {
-                    /** Initialize the parser for our expected response format */
-                    InputStream istream = entity.getContent();
-                    SAXParserFactory spf = SAXParserFactory.newInstance();
-                    SAXParser sp = spf.newSAXParser();
-                    
-                    XMLReader xr = sp.getXMLReader();
-                    MessageCountHandler myHandler = new MessageCountHandler();
-                    xr.setContentHandler(myHandler);
-
-                    /** Assign the input stream and parse it*/
-                    xr.parse(new InputSource(istream));
-                    
-                    /** Get the results of parsing */
-                    ParsedCountDataSet dataset = myHandler.getDataSet();
-                    messageCount = dataset.getMessageCount();
-
-                    istream.close();
-                    
-                } catch (SAXException se) {
-                    
-                } catch (ParserConfigurationException pce) {
-                        
+                if (statusCode < 200 ||
+                    statusCode > 300) {
+                    throw new IOException("Error getting folder listing, status code was " + statusCode);
                 }
-            }
 
-            Log.d(k9.LOG_TAG, ">>> Returning message count " + messageCount);
+                responseEntity = response.getEntity();
+
+                if (responseEntity != null) {
+                    try {
+                        ParsedDataSet dataset = new ParsedDataSet();
+                        InputStream istream = responseEntity.getContent();
+                        SAXParserFactory spf = SAXParserFactory.newInstance();
+                        SAXParser sp = spf.newSAXParser();
+
+                        XMLReader xr = sp.getXMLReader();
+                        WebDavHandler myHandler = new WebDavHandler();
+                        xr.setContentHandler(myHandler);
+
+                        xr.parse(new InputSource(istream));
+
+                        dataset = myHandler.getDataSet();
+                        messageCount = dataset.getMessageCount();
+
+                        istream.close();
+                    } catch (SAXException se) {
+                        Log.e(k9.LOG_TAG, "SAXException in getMessageCount " + se);
+                    } catch (ParserConfigurationException pce) {
+                        Log.e(k9.LOG_TAG, "ParserConfigurationException in getMessageCount " + pce);
+                    }
+                }
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(k9.LOG_TAG, "UnsupportedEncodingException in getMessageCount() " + uee);
+            } catch (IOException ioe) {
+                Log.e(k9.LOG_TAG, "IOException in getMessageCount() " + ioe);
+            }
+            Log.d(k9.LOG_TAG, ">>> getMessageCount finished");
             return messageCount;
         }
-        
+
+        @Override
+        public int getMessageCount() throws MessagingException {
+            open(OpenMode.READ_WRITE);
+            this.mMessageCount = getMessageCount(true, WebDavStore.this.mAuthCookies);
+
+            return this.mMessageCount;
+        }
+
+        @Override
+        public int getUnreadMessageCount() throws MessagingException {
+            open(OpenMode.READ_WRITE);
+            this.mUnreadMessageCount = getMessageCount(false, WebDavStore.this.mAuthCookies);
+
+            return this.mUnreadMessageCount;
+        }
+
         @Override
         public boolean isOpen() {
-            Log.d(k9.LOG_TAG, ">>> isOpen called on " + this.mName);
-            return this.isOpen;
+            return this.mIsOpen;
         }
 
         @Override
         public OpenMode getMode() throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> getMode() called on " + this.mName);
             return OpenMode.READ_WRITE;
         }
 
@@ -363,312 +525,378 @@ public class WebDavStore extends Store {
 
         @Override
         public void close(boolean expunge) throws MessagingException {
-            this.mMessageCount = -1;
-            this.isOpen = false;
-            Log.d(k9.LOG_TAG, ">>> close() called on " + this.mName);
-
+            this.mMessageCount = 0;
+            this.mUnreadMessageCount = 0;
+                
+            this.mIsOpen = false;
         }
-        
+
         @Override
         public boolean create(FolderType type) throws MessagingException {
-            //            return false;
             return true;
         }
 
         @Override
-        public int getMessageCount() throws MessagingException {
-            open(OpenMode.READ_WRITE);
-            Log.d(k9.LOG_TAG, ">>> getMessageCount called on " + this.mName + ".  Returning " + this.mMessageCount);
-            return this.mMessageCount;
-        }
-
-        @Override
-        public int getUnreadMessageCount() throws MessagingException {
-            open(OpenMode.READ_WRITE);
-            Log.d(k9.LOG_TAG, ">>> getUnreadMessageCount called on " + this.mName);
-            int messageCount = 0;
-            try {
-                messageCount = getMessageCount(false, authCookies);
-            } catch (IOException ioe) {
-                messageCount = -1;
-            }
-
-            Log.d(k9.LOG_TAG, ">>> Returning " + messageCount);
-            return messageCount;
-            /**            return this.mUnreadMessageCount;*/
-        }
-
-        @Override
         public void delete(boolean recursive) throws MessagingException {
-            throw new Error("WebDavStore.delete() not yet implemented");
+            throw new Error("WebDavFolder.delete() not implemeneted");
         }
 
         @Override
         public Message getMessage(String uid) throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> getMessage called for uid: " + uid);
             return new WebDavMessage(uid, this);
         }
-        
+
         @Override
         public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
                 throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> getMessages called for range " + start + "-" + end);
-            /** Reverse the range since they're numbered backwards */
+            Log.d(k9.LOG_TAG, ">>> getMessages(int, int, MessageRetrievalListener) called on " + this.mName);
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            ArrayList<Message> messages = new ArrayList<Message>();
+            String[] uids;
+            String[] urls;
+
+            String messageBody;
             int prevStart = start;
+
+            /** Reverse the message range since 0 index is newest */
             start = this.mMessageCount - end;
             end = this.mMessageCount - prevStart;
-            
-            Log.d(k9.LOG_TAG, ">>> reversed message range is " + start + "-" + end);
-            if (start < 0 || end < 1 || end < start) {
+
+            if (start < 0 || end < 0 || end < start) {
                 throw new MessagingException(String.format("Invalid message set %d %d", start, end));
             }
 
-            ArrayList<Message> messages = new ArrayList<Message>();
-            ArrayList<String> uids = new ArrayList<String>();
-            uids = getMessages(start, end);
-                
-            for (int i = 0, count = uids.size(); i < count; i++) {
-                if (listener != null) {
-                    listener.messageStarted(uids.get(i), i, count);
-                }
-                WebDavMessage message = new WebDavMessage(uids.get(i), this);
-                messages.add(message);
-                if (listener != null) {
-                    listener.messageFinished(message, i, count);
-                }
-            }
-            
-            return messages.toArray(new Message[] {});
-        }
-
-        public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
-            return getMessages(null, listener);
-        }
-
-        public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
-                throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> getMessages called on array of uids");
-            ArrayList<Message> messages = new ArrayList<Message>();
-            ArrayList<String> newUids = new ArrayList<String>();
-            if (uids == null) {
-                newUids = getMessages(0, k9.DEFAULT_VISIBLE_LIMIT);
-                uids = newUids.toArray(new String[] {});
-            }
-            
-            for (int i = 0, count = uids.length; i < count; i++) {
-                if (listener != null) {
-                    listener.messageStarted(uids[i], i, count);
-                }
-                WebDavMessage message = new WebDavMessage(uids[i], this);
-                messages.add(message);
-                if (listener != null) {
-                    listener.messageFinished(message, i, count);
-                }
+            /** Verify authentication */
+            if (needAuth()) {
+                authenticate();
             }
 
-            return messages.toArray(new Message[] {});
-        }
-
-        public ArrayList<String> getMessages(int start, int end) throws MessagingException {
-            ArrayList<String> uids = new ArrayList<String>();
-
-            open(OpenMode.READ_WRITE);
-            DefaultHttpClient httpclient = new DefaultHttpClient();
-            httpclient.setCookieStore(this.authCookies);
+            if (WebDavStore.this.mAuthenticated == false ||
+                WebDavStore.this.mAuthCookies == null) {
+                return messages.toArray(new Message[] {});
+            }
             
-            StringBuffer strBuf = new StringBuffer(200);
-            strBuf.append("<?xml version='1.0' ?>");
-            strBuf.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-            strBuf.append("SELECT \"DAV:uid\"\r\n");
-            strBuf.append(" FROM \"\"\r\n");
-            strBuf.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False\r\n");
-            strBuf.append("</a:sql></a:searchrequest>\r\n");
-            String body = strBuf.toString();
+            /** Retrieve and parse the XML entity for our messages */
+            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+            messageBody = getMessagesXml();
 
             try {
-                StringEntity b_entity = new StringEntity(body);
-                b_entity.setContentType("text/xml");
-
-                /** Try and get a listing from the inbox */
+                int status_code = -1;
+                StringEntity messageEntity = new StringEntity(messageBody);
                 HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
+                HttpResponse response;
+                HttpEntity entity;
+                
+                messageEntity.setContentType("text/xml");
                 httpmethod.setMethod("SEARCH");
-                httpmethod.setEntity(b_entity);
+                httpmethod.setEntity(messageEntity);
                 httpmethod.setHeader("Brief", "t");
                 httpmethod.setHeader("Range", "rows=" + start + "-" + end);
 
-                HttpResponse response = httpclient.execute(httpmethod);
-                int status_code = response.getStatusLine().getStatusCode();
+                response = httpclient.execute(httpmethod);
+                status_code = response.getStatusLine().getStatusCode();
 
                 if (status_code < 200 ||
                     status_code > 300) {
-                    throw new IOException("Error getting folder listing, error during authentication");
+                    throw new IOException("Error getting folder listing, returned HTTP Response code " + status_code);
                 }
-                
-                HttpEntity entity = response.getEntity();
-            
+
+                entity = response.getEntity();
+
                 if (entity != null) {
                     try {
                         InputStream istream = entity.getContent();
                         SAXParserFactory spf = SAXParserFactory.newInstance();
                         SAXParser sp = spf.newSAXParser();
-                        
                         XMLReader xr = sp.getXMLReader();
-                        MessageUidHandler myHandler = new MessageUidHandler();
-                        xr.setContentHandler(myHandler);
-                    
-                        xr.parse(new InputSource(istream));
-                    
-                        ParsedMessageUidSet dataset = myHandler.getDataSet();
-                    
-                        uids = dataset.getUids();
-                    } catch (SAXException se) {
-                    
-                    } catch (ParserConfigurationException pce) {
+                        WebDavHandler myHandler = new WebDavHandler();
+                        ParsedDataSet dataset;
+                        int uidsLength = 0;
+                        int urlsLength = 0;
                         
+                        xr.setContentHandler(myHandler);
+                        xr.parse(new InputSource(istream));
+
+                        dataset = myHandler.getDataSet();
+
+                        uids = dataset.getUids();
+                        urls = dataset.getHrefs();
+                        uidsLength = uids.length;
+                        urlsLength = urls.length;
+
+                        if (uidsLength != urlsLength) {
+                            Log.d(k9.LOG_TAG, ">>> Mismatched results for UIDs and URLs in getMessages");
+                            throw new MessagingException("Mismatched results for UIDs and URLs in getMessages");
+                        }
+
+                        for (int i = 0; i < uidsLength; i++) {
+                            if (listener != null) {
+                                listener.messageStarted(uids[i], i, uidsLength);
+                            }
+                            Log.d(k9.LOG_TAG, ">>> Adding message of UID " + uids[i] + " and URL of " + urls[i]);
+                            WebDavMessage message = new WebDavMessage(uids[i], this);
+                            message.setUrl(urls[i]);
+                            messages.add(message);
+                            
+                            if (listener != null) {
+                                listener.messageFinished(message, i, uidsLength);
+                            }
+                        }
+                    } catch (SAXException se) {
+                        Log.e(k9.LOG_TAG, "SAXException in getMessages() " + se);
+                    } catch (ParserConfigurationException pce) {
+                        Log.e(k9.LOG_TAG, "ParserConfigurationException in getMessages() " + pce);
                     }
                 }
             } catch (UnsupportedEncodingException uee) {
-
+                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
             } catch (IOException ioe) {
-
+                Log.e(k9.LOG_TAG, "IOException: " + ioe);
             }
-            
-            return uids;
+            Log.d(k9.LOG_TAG, ">>> getMessages finished");
+            return messages.toArray(new Message[] {});
         }
-        
+
+        @Override
+        public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
+            Log.d(k9.LOG_TAG, ">>> getMessages(MessageRetrievalListener) called on "+this.mName);
+            return getMessages(null, listener);
+        }
+
+        @Override
+        public Message[] getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
+            Log.d(k9.LOG_TAG, ">>> getMessages(String[], MessageRetrievalListener) called on "+this.mName);
+            ArrayList<Message> messageList = new ArrayList<Message>();
+            Message[] messages;
+            
+            if (uids == null) {
+                messages = getMessages(0, k9.DEFAULT_VISIBLE_LIMIT, listener);
+            } else {
+                for (int i = 0, count = uids.length; i < count; i++) {
+                    if (listener != null) {
+                        listener.messageStarted(uids[i], i, count);
+                    }
+
+                    WebDavMessage message = new WebDavMessage(uids[i], this);
+                    messageList.add(message);
+                    
+                    if (listener != null) {
+                        listener.messageFinished(message, i, count);
+                    }
+                }
+                messages = messageList.toArray(new Message[] {});
+            }
+            Log.d(k9.LOG_TAG, ">>> getMessages finished");
+            return messages;
+        }
+
         @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
                 throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> fetch called on array of messages");
-            Log.e(k9.LOG_TAG, "Starting fetch");
+            Log.d(k9.LOG_TAG, "Fetch called");
+            
             if (messages == null ||
                 messages.length == 0) {
                 return;
             }
 
-            /** Initialize the folder */
-            open(OpenMode.READ_WRITE);
-            ArrayList<String> uids = new ArrayList<String>();
-
-            for (Message message : messages) {
-                uids.add(message.getUid());
-            }
-
             for (int i = 0, count = messages.length; i < count; i++) {
-                Message message = messages[i];
-                Log.d(k9.LOG_TAG, ">>> Working on message number " + i);
-                if (!(message instanceof WebDavMessage)) {
-                    Log.d(k9.LOG_TAG, ">>> Not a WebDavMessage");
-                    throw new MessagingException("WebDavStore.fetch called with non-WebDav Message");
+                if (!(messages[i] instanceof WebDavMessage)) {
+                    throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
+                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                /**                fetchMessage(wdMessage, fp);*/
 
-                WebDavMessage wdMessage = (WebDavMessage) message;
+                if (fp.contains(FetchProfile.Item.ENVELOPE) ||
+                    fp.contains(FetchProfile.Item.BODY) ||
+                    fp.contains(FetchProfile.Item.BODY_SANE)) {
 
-                try {
+                    DefaultHttpClient httpclient = new DefaultHttpClient();
+                    InputStream istream = null;
+                    InputStream resultStream = null;
+                    HttpGet httpget;
+                    HttpEntity entity;
+                    HttpResponse response;
+                    int statusCode = 0;
+
                     if (listener != null) {
                         Log.d(k9.LOG_TAG, ">>> Starting listener");
                         listener.messageStarted(wdMessage.getUid(), i, count);
                     }
 
-                    /** Get our href */
-                    /** Build our request for the appropriate message attributes */
-                    DefaultHttpClient httpclient = new DefaultHttpClient();
-                    httpclient.setCookieStore(this.authCookies);
-
-                    StringBuffer strBuf = new StringBuffer(600);
-                    strBuf.append("<?xml version='1.0' ?>");
-                    strBuf.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-                    strBuf.append("SELECT \"DAV:uid\"\r\n");
-                    strBuf.append(" FROM \"\"\r\n");
-                    strBuf.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"DAV:uid\"=\'"+wdMessage.getUid()+"\'\r\n");
-                    strBuf.append("</a:sql></a:searchrequest>\r\n");
-                    String body = strBuf.toString();
-                    Log.d(k9.LOG_TAG, ">>> Request body is " + body);
-                    
                     try {
-                        StringEntity b_entity = new StringEntity(body);
-                        b_entity.setContentType("text/xml");
+                        httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+                        httpget = new HttpGet(new URI(wdMessage.getUrl()));
+                        httpget.setHeader("translate", "f");
 
-                        /** Try and get a listing from the inbox */
-                        Log.d(k9.LOG_TAG, ">>> Attempting post against url: " + this.mFolderUrl);
-                        HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
-                        httpmethod.setMethod("SEARCH");
-                        httpmethod.setEntity(b_entity);
-                        httpmethod.setHeader("Brief", "t");
-                        /**                        httpmethod.setHeader("Range", "0-0");*/
-                        
-                        HttpResponse response = httpclient.execute(httpmethod);
-                        
-                        int status_code = response.getStatusLine().getStatusCode();
+                        response = httpclient.execute(httpget);
+                        statusCode = response.getStatusLine().getStatusCode();
 
-                        if (status_code < 200 ||
-                            status_code > 300) {
-                            Log.d(k9.LOG_TAG, ">>> Response code from fetching href details was " + status_code);
-                            throw new IOException("Error getting folder listing, error during authentication");
+                        if (statusCode < 200 ||
+                            statusCode > 300) {
+                            throw new IOException("Status Code in invalid range");
                         }
-                
-                        HttpEntity entity = response.getEntity();
-                        Log.d(k9.LOG_TAG, ">>> Got response entity");
+
+                        entity = response.getEntity();
                         if (entity != null) {
-                            try {
-                                Log.d(k9.LOG_TAG, ">>> Parsing href");
-                                InputStream istream = entity.getContent();
-                                SAXParserFactory spf = SAXParserFactory.newInstance();
-                                SAXParser sp = spf.newSAXParser();
-                        
-                                XMLReader xr = sp.getXMLReader();
-                                MessageHrefHandler myHandler = new MessageHrefHandler();
-                                xr.setContentHandler(myHandler);
-                    
-                                xr.parse(new InputSource(istream));
-                    
-                                String href = myHandler.getHref();
-                                Log.d(k9.LOG_TAG, ">>> Fetching email at url: " + href);
+                            String resultText = new String();
+                            String tempText = new String();
+                            BufferedReader reader;
 
-                                /** Assign the stuff to the message here */
-                                HttpGet httpget = new HttpGet(href);
-                                httpget.setHeader("translate", "f");
-                                Log.d(k9.LOG_TAG, ">>> HttpGet set");
-                                
-                                response = httpclient.execute(httpget);
-                                Log.d(k9.LOG_TAG, ">>> Httpclient executed");
-                                status_code = response.getStatusLine().getStatusCode();
-                                Log.d(k9.LOG_TAG, ">>> Response code was " + status_code);
-                                if (status_code < 200 ||
-                                    status_code > 300) {
-                                    Log.d(k9.LOG_TAG, ">>> Response code for fetching email was " + status_code);
-                                    throw new IOException("Error getting folder listing, error during authentication");
+                            resultText = "";
+                            istream = entity.getContent();
+                            reader = new BufferedReader(new InputStreamReader(istream), 4096);
+
+                            //                    while ((tempText = reader.readLine()) != null) {
+                            if (fp.contains(FetchProfile.Item.ENVELOPE)) {
+                                while ((tempText = reader.readLine()) != null &&
+                                       !(tempText.equals(""))) {
+                                    if (resultText.equals("")) {
+                                        resultText = tempText;
+                                    } else {
+                                        resultText = resultText + "\r\n" + tempText;
+                                    }
                                 }
-                                Log.d(k9.LOG_TAG, ">>> Getting entity");
-                                entity = response.getEntity();
-                                if (entity != null) {
-                                    Log.d(k9.LOG_TAG, ">>> Using full input stream");
-                                    istream = entity.getContent();
-                                    Log.d(k9.LOG_TAG, ">>> Parsing item");
-                                    wdMessage.parse(istream);
-                                }
-                            } catch (SAXException se) {
-                                Log.d(k9.LOG_TAG, ">>> SAXException");
-                            } catch (ParserConfigurationException pce) {
-                                Log.d(k9.LOG_TAG, ">>> ParserConfigurationException");
                             }
+
+                            if (fp.contains(FetchProfile.Item.BODY)) {
+                                while ((tempText = reader.readLine()) != null) {
+                                    if (resultText.equals("")) {
+                                        resultText = tempText;
+                                    } else {
+                                        resultText = resultText + "\r\n" + tempText;
+                                    }
+                                }
+                                      
+                            }
+
+                            istream.close();
+                            resultStream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
+                            wdMessage.parse(resultStream);
                         }
-                    } catch (UnsupportedEncodingException uee) {
-                        Log.d(k9.LOG_TAG, ">>> UnsupportedEncodingException");
-                    } catch (IOException ioe) {
-                        Log.d(k9.LOG_TAG, ">>> IOException");
-                    }
                 
+                    } catch (IllegalArgumentException iae) {
+                        Log.e(k9.LOG_TAG, "IllegalArgumentException caught " + iae);
+                    } catch (URISyntaxException use) {
+                        Log.e(k9.LOG_TAG, "URISyntaxException caught " + use);
+                    } catch (IOException ioe) {
+                        Log.e(k9.LOG_TAG, "Non-success response code loading message, response code was " + statusCode);
+                    }
                     if (listener != null) {
                         Log.e(k9.LOG_TAG, "Messages fetched and parsed, setting finished for this one");
                         listener.messageFinished(wdMessage, i, count);
                     }
-                } finally {
-
                 }
             }
         }
 
+        private void fetchMessage(WebDavMessage message, FetchProfile fp) throws MessagingException {
+            Log.d(k9.LOG_TAG, "Fetch called on message " + message.getUid());
+            String url = message.getUrl();
+            InputStream istream = null;
+            
+            if (url == null) {
+                url = getMessageUrl(message);
+                message.setUrl(url);
+            }
+
+            /**
+             *  Because of how the stream can be set up, if we parse the body, we parse the headers
+             *  Separate between headers + body, headers + limited part of body and just headers
+             */
+            if (fp.contains(FetchProfile.Item.BODY)) {
+                //istream = fetchMessageBody(url, -1);
+            } else if (fp.contains(FetchProfile.Item.BODY_SANE)) {
+                //istream = fetchMessageBody(url, FETCH_BODY_SANE_SUGGESTED_SIZE);
+            } else if (fp.contains(FetchProfile.Item.ENVELOPE)) {
+                //                istream = fetchMessageEnvelope(url);
+                fetchMessageEnvelope(message, url);
+            }
+
+            if (fp.contains(FetchProfile.Item.FLAGS)) {
+                setMessageFlags(message);
+            }
+            
+            if (istream != null) {
+                /*                try {
+                    message.parse(istream);
+                    istream.close();
+                } catch (IOException ioe) {
+                    Log.e(k9.LOG_TAG, "IOException parsing message " + ioe);
+                    } */
+            }
+
+        }
+
+        private String getMessageUrl(Message message) {
+            return null;
+        }
+
+        private void setMessageFlags(WebDavMessage message) {
+
+        }
+        
+        private InputStream fetchMessageBody(String url, int size) {
+            return null;
+        }
+
+        private InputStream fetchMessageEnvelope(WebDavMessage message, String url) throws MessagingException {
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            InputStream istream = null;
+            InputStream resultStream = null;
+            HttpGet httpget;
+            HttpEntity entity;
+            HttpResponse response;
+            int statusCode = 0;
+            
+            try {
+                httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+                httpget = new HttpGet(new URI(url));
+                httpget.setHeader("translate", "f");
+
+                response = httpclient.execute(httpget);
+                statusCode = response.getStatusLine().getStatusCode();
+
+                if (statusCode < 200 ||
+                    statusCode > 300) {
+                    throw new IOException("Status Code in invalid range");
+                }
+
+                entity = response.getEntity();
+                if (entity != null) {
+                    String resultText = "";
+                    String tempText = "";
+                    BufferedReader reader;
+
+                    istream = entity.getContent();
+                    reader = new BufferedReader(new InputStreamReader(istream), 4096);
+
+                    //                    while ((tempText = reader.readLine()) != null) {
+                    while ((tempText = reader.readLine()) != null &&
+                           !(tempText.equals(""))) {
+                        if (resultText.equals("")) {
+                            resultText = tempText;
+                        } else {
+                            resultText = resultText + "\r\n" + tempText;
+                        }
+                    }
+
+                    istream.close();
+                    resultStream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
+                    message.parse(resultStream);
+                }
+                
+            } catch (IllegalArgumentException iae) {
+                Log.e(k9.LOG_TAG, "IllegalArgumentException caught " + iae);
+            } catch (URISyntaxException use) {
+                Log.e(k9.LOG_TAG, "URISyntaxException caught " + use);
+            } catch (IOException ioe) {
+                Log.e(k9.LOG_TAG, "Non-success response code loading message, response code was " + statusCode);
+            } 
+
+            return resultStream;
+        }
+        
         @Override
         public Flag[] getPermanentFlags() throws MessagingException {
             return PERMANENT_FLAGS;
@@ -687,7 +915,7 @@ public class WebDavStore extends Store {
         public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {
 
         }
-        
+
         @Override
         public Message[] expunge() throws MessagingException {
             return null;
@@ -696,240 +924,73 @@ public class WebDavStore extends Store {
         @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
                 throws MessagingException {
-
+            
         }
 
         @Override
         public boolean equals(Object o) {
             return false;
         }
-
-        class MessageHrefHandler extends DefaultHandler {
-            private String mHref = new String();
-            private boolean inHref = false;
-            
-            public String getHref() {
-                return this.mHref;
-            }
-
-            @Override
-            public void startDocument() throws SAXException {
-                this.mHref = new String();
-            }
-
-            @Override
-            public void endDocument() throws SAXException {
-                /** Do nothing */
-            }
-
-            @Override
-            public void startElement(String namespaceURI, String localName,
-                                     String qName, Attributes atts) throws SAXException {
-                if (localName.equals("href")) {
-                    this.inHref = true;
-                }
-            }
-
-            @Override
-            public void endElement(String namespaceURI, String localName, String qName) {
-                if (localName.equals("href")) {
-                    this.inHref = false;
-                }
-            }
-
-            @Override
-            public void characters(char ch[], int start, int length) {
-                if (this.inHref) {
-                    String value = new String(ch, start, length);
-                    this.mHref = value;
-                }
-
-            }
-        }
-        
-        class MessageUidHandler extends DefaultHandler {
-            private ParsedMessageUidSet parsedSet = new ParsedMessageUidSet();
-            private boolean inUid = false;
-
-            public ParsedMessageUidSet getDataSet() {
-                return this.parsedSet;
-            }
-
-            @Override
-            public void startDocument() throws SAXException {
-                this.parsedSet = new ParsedMessageUidSet();
-            }
-
-            @Override
-            public void endDocument() throws SAXException {
-                /** Do nothing */
-            }
-
-            @Override
-            public void startElement(String namespaceURI, String localName,
-                                     String qName, Attributes atts) throws SAXException {
-                if (localName.equals("uid")) {
-                    this.inUid = true;
-                }
-            }
-
-            @Override
-            public void endElement(String namespaceURI, String localName, String qName) {
-                if (localName.equals("uid")) {
-                    this.inUid = false;
-                }
-            }
-
-            @Override
-            public void characters(char ch[], int start, int length) {
-                if (this.inUid) {
-                    String value = new String(ch, start, length);
-                    this.parsedSet.addUid(value);
-                }
-            }
-        }
-
-        class MessageCountHandler extends DefaultHandler {
-            private ParsedCountDataSet parsedSet = new ParsedCountDataSet();
-            private boolean inVisibleCount = false;
-        
-            public ParsedCountDataSet getDataSet() {
-                return this.parsedSet;
-            }
-
-            @Override
-            public void startDocument() throws SAXException {
-                this.parsedSet = new ParsedCountDataSet();
-            }
-
-            @Override
-            public void endDocument() throws SAXException {
-                /** Do nothing */
-            }
-
-            @Override
-            public void startElement(String namespaceURI, String localName,
-                                     String qName, Attributes atts) throws SAXException {
-                if (localName.equals("visiblecount")) {
-                    this.inVisibleCount = true;
-                } 
-            }
-
-            @Override
-            public void endElement(String namespaceURI, String localName, String qName) {
-                if (localName.equals("visiblecount")) {
-                    this.inVisibleCount = false;
-                } 
-            }
-            
-            @Override
-            public void characters(char ch[], int start, int length) {
-                if (this.inVisibleCount) {
-                    String value = new String(ch, start, length);
-                    this.parsedSet.setMessageCount(Integer.parseInt(value));
-                }
-            }
-        }
-
-        class ParsedMessageEnvelopeSet {
-            private String mSubject = new String();
-            private String mFrom = new String();
-            private String mContentType = new String();
-            private String mTo = new String();
-            private String mCc = new String();
-            private String mContentLength = new String();
-
-            public void addValue(String value, String valname) {
-                if (valname.equals("subject")) {
-                    this.mSubject = value;
-                } else if (valname.equals("from")) {
-                    this.mFrom = value;
-                } else if (valname.equals("content-type")) {
-                    this.mContentType = value;
-                } else if (valname.equals("to")) {
-                    this.mTo = value;
-                } else if (valname.equals("cc")) {
-                    this.mCc = value;
-                } else if (valname.equals("getcontentlength")) {
-                    this.mContentLength = value;
-                }
-            }
-
-            public String getValue(String valname) {
-                if (valname.equals("subject")) {
-                    return this.mSubject;
-                } else if (valname.equals("from")) {
-                    return this.mFrom;
-                } else if (valname.equals("content-type")) {
-                    return this.mContentType;
-                } else if (valname.equals("to")) {
-                    return this.mTo;
-                } else if (valname.equals("cc")) {
-                    return this.mCc;
-                } else if (valname.equals("getcontentlength")) {
-                    return this.mContentLength;
-                }
-
-                return new String();
-            }
-        }
-        
-        class ParsedMessageUidSet {
-            private ArrayList<String> uids = new ArrayList<String>();
-
-            public void addUid(String uid) {
-                this.uids.add(uid);
-            }
-
-            public ArrayList<String> getUids() {
-                return this.uids;
-            }
-        }
-        
-        /** Class for holding count of messages from XML Parser */
-        class ParsedCountDataSet {
-            private int mMessageCount = 0;
-            private int mUnreadMessageCount = 0;
-            
-            public int getMessageCount() {
-                return this.mMessageCount;
-            }
-
-            public int getUnreadMessageCount() {
-                return this.mUnreadMessageCount;
-            }
-
-            public void setUnreadMessageCount(int count) {
-                this.mUnreadMessageCount = count;
-            }
-            
-            public void setMessageCount(int count) {
-                this.mMessageCount = count;
-            }
-
-            public void addOneUnreadMessage() {
-                this.mUnreadMessageCount++;
-            }
-            
-            public void addOneMessage() {
-                this.mMessageCount++;
-            }
-        }
     }
-
+    
+    /**
+     * A WebDav Message
+     */
     class WebDavMessage extends MimeMessage {
+        private String mUrl = null;
+        
         WebDavMessage(String uid, Folder folder) throws MessagingException {
-            Log.e(k9.LOG_TAG, "Created WebDavMessage, uid is " + uid + " Folder is " + folder);
+            Log.d(k9.LOG_TAG, ">>> WebDavMessage created with uid " + uid);
             this.mUid = uid;
             this.mFolder = folder;
         }
 
+        public void setUrl(String url) {
+            Log.d(k9.LOG_TAG, ">>> WDM.setUrl called with URL " +url);
+            String[] urlParts = url.split("/");
+            int length = urlParts.length;
+            String end = urlParts[length - 1];
+            
+            this.mUrl = new String();
+            url = new String();
+
+            /**
+             * We have to decode, then encode the URL because Exchange likes to
+             * not properly encode all characters
+             */
+            try {
+                end = java.net.URLDecoder.decode(end, "UTF-8");
+                end = java.net.URLEncoder.encode(end, "UTF-8");
+                end = end.replaceAll("\\+", "%20");
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(k9.LOG_TAG, "UnsupportedEncodingException caught in setUrl");
+            } catch (IllegalArgumentException iae) {
+                Log.e(k9.LOG_TAG, "IllegalArgumentException caught in setUrl");
+            }
+
+            for (int i = 0; i < length - 1; i++) {
+                if (i != 0) {
+                    url = url + "/" + urlParts[i];
+                } else {
+                    url = urlParts[i];
+                }
+            }
+
+            url = url + "/" + end;
+            Log.d(k9.LOG_TAG, ">>> Url is: " + url);
+            this.mUrl = url;
+        }
+
+        public String getUrl() {
+            return this.mUrl;
+        }
+        
         public void setSize(int size) {
             this.mSize = size;
         }
 
         public void parse(InputStream in) throws IOException, MessagingException {
-            Log.d(k9.LOG_TAG, ">>> parse called on WebDavMessage " + this.mUid);
+            Log.d(k9.LOG_TAG, ">>> parse called on webdavmessage");
             super.parse(in);
         }
 
@@ -943,166 +1004,121 @@ public class WebDavStore extends Store {
             mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
         }
     }
-
-    class WebDavBodyPart extends MimeBodyPart {
-        public WebDavBodyPart() throws MessagingException {
-            super();
-        }
-
-        public void setSize(int size) {
-            this.mSize = size;
-        }
-    }
-
-    class WebDavException extends MessagingException {
-        String mAlertText;
-
-        public WebDavException(String message, String alertText, Throwable throwable) {
-            super(message, throwable);
-            this.mAlertText = alertText;
-        }
-
-        public WebDavException(String message, String alertText) {
-            super(message);
-            this.mAlertText = alertText;
-        }
-
-        public String getAlertText() {
-            return mAlertText;
-        }
-
-        public void setAlertText(String alertText) {
-            mAlertText = alertText;
-        }
-    }
-
-    class WebDavConnection {
-        private String username = null;
-        private String password = null;
-        private String url = null;
-        private String authPath = "/exchweb/bin/auth/owaauth.dll";
-        private CookieStore cookies = null;
-
-        public WebDavConnection(String username, String password, String url) throws IOException, MessagingException {
-            Log.d(k9.LOG_TAG, ">>> New WebDavConnection created for url: " + url);
-            /** Assign our private info */
-            this.username = username;
-            this.password = password;
-            this.url = url;
-
-            doAuth();
-        }
-
-        public void doAuth() throws IOException, MessagingException {
-            /** Perform the first authentication */
-            DefaultHttpClient httpclient = new DefaultHttpClient();
-
-            /** Method wrapper for the form based authentication */
-            HttpPost httppost = new HttpPost(this.url + this.authPath);
-            Log.d(k9.LOG_TAG, ">>> Performing logon post to " + this.url + this.authPath);
-            /** Build the POST data */
-            ArrayList<BasicNameValuePair> pairs = new ArrayList();
-            pairs.add(new BasicNameValuePair("username", this.username));
-            pairs.add(new BasicNameValuePair("password", this.password));
-            pairs.add(new BasicNameValuePair("destination", this.url + "/Exchange/"));
-            pairs.add(new BasicNameValuePair("flags", "0"));
-            pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
-            pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
-            pairs.add(new BasicNameValuePair("trusted", "0"));
-
-            try {
-                Log.d(k9.LOG_TAG, ">>> In try block");
-                UrlEncodedFormEntity p_entity = new UrlEncodedFormEntity(pairs);
+    
+    /** 
+     * XML Parsing Handler
+     * Can handle all XML handling needs
+     */
+    class WebDavHandler extends DefaultHandler {
+        private ParsedDataSet mDataSet = new ParsedDataSet();
+        private Stack<String> mOpenTags = new Stack<String>();
         
-                /** Assign the POST data to the entity */
-                httppost.setEntity(p_entity);
-                Log.d(k9.LOG_TAG, ">>> setEntity called");
-                /** Perform the actual HTTP POST */
-                HttpResponse response = httpclient.execute(httppost);
-                Log.d(k9.LOG_TAG, ">>> POST executed");
-                HttpEntity entity = response.getEntity();
-                Log.d(k9.LOG_TAG, ">>> getEntity() called");
-                int status_code = response.getStatusLine().getStatusCode();
-                Log.d(k9.LOG_TAG, ">>> getStatusCode() called");
-
-                /** Check the response */
-                if (status_code > 300 ||
-                    status_code < 200) {
-                    Log.d(k9.LOG_TAG, ">>> status_code out of range, was " + status_code);
-                    throw new MessagingException("Error in WebDAV authentication");
-                }
-                
-                this.cookies = httpclient.getCookieStore();
-                if (this.cookies == null) {
-                    Log.d(k9.LOG_TAG, ">>> cookies were null");
-                    throw new MessagingException("Error in WebDAV authentication");
-                }
-                
-            } catch (UnsupportedEncodingException uee) {
-                Log.d(k9.LOG_TAG, ">>> UnsupportedEncodingException caught");
-                throw new MessagingException("Error encoding POST entity");
-            }                 
+        public ParsedDataSet getDataSet() {
+            Log.d(k9.LOG_TAG, ">>> WDH.getDataSet called");
+            return this.mDataSet;
         }
-
-        public CookieStore getAuthCookies() {
-            return this.cookies;
-        }
-    }
-
-    class FolderListingHandler extends DefaultHandler {
-        private ParsedFolderListingSet parsedSet = new ParsedFolderListingSet();
-            private boolean inHref = false;
-
-        public ParsedFolderListingSet getDataSet() {
-                return this.parsedSet;
-            }
 
         @Override
         public void startDocument() throws SAXException {
-            this.parsedSet = new ParsedFolderListingSet();
+            Log.d(k9.LOG_TAG, ">>> WDH.startDocument() called");
+            this.mDataSet = new ParsedDataSet();
         }
 
         @Override
         public void endDocument() throws SAXException {
-            /** Do nothing */
+            /* Do nothing */
         }
 
         @Override
         public void startElement(String namespaceURI, String localName,
                                  String qName, Attributes atts) throws SAXException {
-            if (localName.equals("href")) {
-                this.inHref = true;
-            }
+            Log.d(k9.LOG_TAG, ">>> Pushing localName of " + localName + " onto stack");
+            mOpenTags.push(localName);
         }
 
         @Override
         public void endElement(String namespaceURI, String localName, String qName) {
-            if (localName.equals("href")) {
-                this.inHref = false;
-            }
+            Log.d(k9.LOG_TAG, ">>> Popping localName of " + localName + " off of stack");
+            mOpenTags.pop();
         }
 
         @Override
         public void characters(char ch[], int start, int length) {
-            if (this.inHref) {
-                String value = new String(ch, start, length);
-                this.parsedSet.addHref(value);
-            }
+            String value = new String(ch, start, length);
+            Log.d(k9.LOG_TAG, ">>> Calling addValue with values of " + value + ", "+mOpenTags.peek());
+            mDataSet.addValue(value, mOpenTags.peek());
         }
     }
 
-    class ParsedFolderListingSet {
-        private ArrayList<String> mFolderNames = new ArrayList<String>();
+    /**
+     * Data set for handling all XML Parses
+     */
+    class ParsedDataSet {
+        private ArrayList<String> mHrefs = new ArrayList<String>();
+        private ArrayList<String> mUids = new ArrayList<String>();
+        private int mMessageCount = 0;
 
-        public void addHref(String href) {
-            this.mFolderNames.add(href);
+        public void addValue(String value, String tagName) {
+            Log.d(k9.LOG_TAG, ">>> addValue called with values of "+value+", "+tagName);
+            if (tagName.equals("href")) {
+                this.mHrefs.add(value);
+            } else if (tagName.equals("visiblecount")) {
+                this.mMessageCount = new Integer(value).intValue();
+                Log.d(k9.LOG_TAG, ">>> Weird, value is " + value + " and messagecount is " + this.mMessageCount);
+            } else if (tagName.equals("uid")) {
+                this.mUids.add(value);
+            }
+            Log.d(k9.LOG_TAG, ">>> mMessageCount is now " + this.mMessageCount);
         }
 
+        /**
+         * Get all stored Hrefs
+         */
         public String[] getHrefs() {
-            return this.mFolderNames.toArray(new String[] {});
+            Log.d(k9.LOG_TAG, ">>> PDS.getHrefs called");
+            return this.mHrefs.toArray(new String[] {});
+        }
+
+        /**
+         * Get the first stored Href
+         */
+        public String getHref() {
+            Log.d(k9.LOG_TAG, ">>> PDS.getHref called");
+            String[] hrefs = this.mHrefs.toArray(new String[] {});
+            return hrefs[0];
+        }
+        
+        /**
+         * Get all stored Uids
+         */
+        public String[] getUids() {
+            Log.d(k9.LOG_TAG, ">>> PDS.getUids called");
+            return this.mUids.toArray(new String[] {});
+        }
+
+        /**
+         * Get the first stored Uid
+         */
+        public String getUid() {
+            Log.d(k9.LOG_TAG, ">>> PDS.getUid called");
+            String[] uids = this.mUids.toArray(new String[] {});
+            return uids[0];
+        }
+        
+        /**
+         * Get message count
+         */
+        public int getMessageCount() {
+            Log.d(k9.LOG_TAG, ">>> PDS.getMessageCount called, returning value " + this.mMessageCount);
+            
+            return this.mMessageCount;
         }
     }
     
+    /**
+     * New HTTP Method that allows changing of the method and generic handling
+     * Needed for WebDAV custom methods such as SEARCH and PROPFIND
+     */
     class HttpGeneric extends HttpEntityEnclosingRequestBase {
         public String METHOD_NAME = "POST";
 
@@ -1133,5 +1149,5 @@ public class WebDavStore extends Store {
                 METHOD_NAME = method;
             }
         }
-    }    
+    }
 }
