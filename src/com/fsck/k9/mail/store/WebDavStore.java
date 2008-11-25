@@ -271,6 +271,26 @@ public class WebDavStore extends Store {
         return buffer.toString();
     }
 
+    private String getMessageUrlsXml(String[] uids) {
+        StringBuffer buffer = new StringBuffer(600);
+        buffer.append("<?xml version='1.0' ?>");
+        buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
+        buffer.append("SELECT \"urn:schemas:httpmail:read\"\r\n");
+        buffer.append(" FROM \"\"\r\n");
+        buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND ");
+        for (int i = 0, count = uids.length; i < count; i++) {
+            if (i != 0) {
+                buffer.append("  OR ");
+            }
+
+            buffer.append(" \"DAV:uid\"='"+uids[i]+"' ");
+
+        }
+        buffer.append("\r\n");
+        buffer.append("</a:sql></a:searchrequest>\r\n");
+        return buffer.toString();
+    }
+    
     private String getMessageFlagsXml(String uid) {
         StringBuffer buffer = new StringBuffer(200);
         buffer.append("<?xml version='1.0' ?>");
@@ -279,6 +299,27 @@ public class WebDavStore extends Store {
         buffer.append(" FROM \"\"\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"DAV:uid\"='"+uid+"'\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
+        return buffer.toString();
+    }
+
+    private String getMarkMessagesReadXml(String[] urls) {
+        Log.d(k9.LOG_TAG, ">>> Generating XML");
+        StringBuffer buffer = new StringBuffer(600);
+        buffer.append("<?xml version='1.0' ?>\r\n");
+        buffer.append("<a:propertyupdate xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
+        buffer.append("<a:target>\r\n");
+
+        for (int i = 0, count = urls.length; i < count; i++) {
+            buffer.append(" <a:href>"+urls[i].substring(urls[i].lastIndexOf('/') + 1)+"</a:href>\r\n");
+        }
+        
+        buffer.append("</a:target>\r\n");
+        buffer.append("<a:set>\r\n");
+        buffer.append(" <a:prop>\r\n");
+        buffer.append("  <b:read>1</b:read>\r\n");
+        buffer.append(" </a:prop>\r\n");
+        buffer.append("</a:set>\r\n");
+        buffer.append("</a:propertyupdate>\r\n");
         return buffer.toString();
     }
     
@@ -701,6 +742,80 @@ public class WebDavStore extends Store {
             return messages;
         }
 
+        private String[] getMessageUrls(String[] uids) {
+            Log.d(k9.LOG_TAG, ">>> getMessageUrls");
+            String[] urls = new String[0];
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            String messageBody;
+
+            /** Verify authentication */
+            if (needAuth()) {
+                authenticate();
+            }
+
+            if (WebDavStore.this.mAuthenticated == false ||
+                WebDavStore.this.mAuthCookies == null) {
+                return urls;
+            }
+
+            Log.d(k9.LOG_TAG, ">>> Auth passed");
+            /** Retrieve and parse the XML entity for our messages */
+            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+            messageBody = getMessageUrlsXml(uids);
+            Log.d(k9.LOG_TAG, ">>> We have the message body, it was: " + messageBody);
+            try {
+                int status_code = -1;
+                StringEntity messageEntity = new StringEntity(messageBody);
+                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
+                HttpResponse response;
+                HttpEntity entity;
+                
+                messageEntity.setContentType("text/xml");
+                httpmethod.setMethod("SEARCH");
+                httpmethod.setEntity(messageEntity);
+                httpmethod.setHeader("Brief", "t");
+
+                response = httpclient.execute(httpmethod);
+                status_code = response.getStatusLine().getStatusCode();
+
+                if (status_code < 200 ||
+                    status_code > 300) {
+                    throw new IOException("Error getting messages, returned HTTP Response code " + status_code);
+                }
+
+                entity = response.getEntity();
+
+                if (entity != null) {
+                    try {
+                        InputStream istream = entity.getContent();
+                        SAXParserFactory spf = SAXParserFactory.newInstance();
+                        SAXParser sp = spf.newSAXParser();
+                        XMLReader xr = sp.getXMLReader();
+                        WebDavHandler myHandler = new WebDavHandler();
+                        ParsedDataSet dataset;
+                        int uidsLength = 0;
+                        int urlsLength = 0;
+                        
+                        xr.setContentHandler(myHandler);
+                        xr.parse(new InputSource(istream));
+
+                        dataset = myHandler.getDataSet();
+                        urls = dataset.getHrefs();
+                    } catch (SAXException se) {
+                        Log.e(k9.LOG_TAG, "SAXException in getMessages() " + se);
+                    } catch (ParserConfigurationException pce) {
+                        Log.e(k9.LOG_TAG, "ParserConfigurationException in getMessages() " + pce);
+                    }
+                }
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+            } catch (IOException ioe) {
+                Log.e(k9.LOG_TAG, "IOException: " + ioe);
+            }
+
+            return urls;
+        }
+        
         @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
                 throws MessagingException {
@@ -716,12 +831,15 @@ public class WebDavStore extends Store {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
                 WebDavMessage wdMessage = (WebDavMessage) messages[i];
-                /**                fetchMessage(wdMessage, fp);*/
                 
                 if (listener != null) {
                     Log.d(k9.LOG_TAG, ">>> Starting listener");
                     listener.messageStarted(wdMessage.getUid(), i, count);
                 }
+
+                /**
+                 * Message fetching that we can pull as a stream
+                 */
                 if (fp.contains(FetchProfile.Item.ENVELOPE) ||
                     fp.contains(FetchProfile.Item.BODY) ||
                     fp.contains(FetchProfile.Item.BODY_SANE)) {
@@ -755,10 +873,11 @@ public class WebDavStore extends Store {
 
                             resultText = "";
                             istream = entity.getContent();
-                            reader = new BufferedReader(new InputStreamReader(istream), 4096);
+                            if (fp.contains(FetchProfile.Item.BODY)) {
 
-                            //                    while ((tempText = reader.readLine()) != null) {
-                            if (fp.contains(FetchProfile.Item.ENVELOPE)) {
+                            } else if (fp.contains(FetchProfile.Item.ENVELOPE)) {
+                                reader = new BufferedReader(new InputStreamReader(istream), 4096);
+
                                 while ((tempText = reader.readLine()) != null &&
                                        !(tempText.equals(""))) {
                                     if (resultText.equals("")) {
@@ -767,22 +886,12 @@ public class WebDavStore extends Store {
                                         resultText = resultText + "\r\n" + tempText;
                                     }
                                 }
+
+                                istream.close();
+                                istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
                             }
 
-                            if (fp.contains(FetchProfile.Item.BODY)) {
-                                while ((tempText = reader.readLine()) != null) {
-                                    if (resultText.equals("")) {
-                                        resultText = tempText;
-                                    } else {
-                                        resultText = resultText + "\r\n" + tempText;
-                                    }
-                                }
-                                      
-                            }
-
-                            istream.close();
-                            resultStream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
-                            wdMessage.parse(resultStream);
+                            wdMessage.parse(istream);
                         }
                 
                     } catch (IllegalArgumentException iae) {
@@ -794,6 +903,12 @@ public class WebDavStore extends Store {
                     }
                 }
 
+                /**
+                 * Wonderful exchange, can't pull flag data as a stream.
+                 * Have to do the WebDAV SEARCH for read status.
+                 * Replied flags should be available somehow,
+                 * but I haven't found any documentation on it yet
+                 */
                 if (fp.contains(FetchProfile.Item.FLAGS)) {
                     DefaultHttpClient httpclient = new DefaultHttpClient();
                     String messageBody = new String();
@@ -866,6 +981,84 @@ public class WebDavStore extends Store {
         }
 
         @Override
+        public void setFlags(Message[] messages, Flag[] flags, boolean value)
+                throws MessagingException {
+            Log.d(k9.LOG_TAG, ">>> setFlags called");
+            String[] uids = new String[messages.length];
+            
+            if (needAuth()) {
+                Log.d(k9.LOG_TAG, ">>> needAuth was true");
+                authenticate();
+            }
+
+            if (WebDavStore.this.mAuthenticated == false ||
+                WebDavStore.this.mAuthCookies == null) {
+                Log.d(k9.LOG_TAG, ">>> For some reason we aren't authenticated");
+                return;
+            }
+
+            for (int i = 0, count = messages.length; i < count; i++) {
+                uids[i] = messages[i].getUid();
+            }
+
+            for (int i = 0, count = flags.length; i < count; i++) {
+                Flag flag = flags[i];
+
+                if (flag == Flag.SEEN) {
+                    markServerMessagesRead(uids);
+                } else if (flag == Flag.DELETED) {
+                    deleteServerMessages(uids);
+                }
+            }
+        }
+
+        private void markServerMessagesRead(String[] uids) throws MessagingException {
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            String messageBody = new String();
+            Message[] messages = getMessages(uids, null);
+            String[] urls = getMessageUrls(uids);
+            Log.d(k9.LOG_TAG, ">>> Setting messages as read");
+
+            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+
+            messageBody = getMarkMessagesReadXml(urls);
+
+            try {
+                int status_code = -1;
+                StringEntity messageEntity = new StringEntity(messageBody);
+                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl + "/");
+                HttpResponse response;
+                HttpEntity entity;
+                
+                messageEntity.setContentType("text/xml");
+                httpmethod.setMethod("BPROPPATCH");
+                httpmethod.setEntity(messageEntity);
+                httpmethod.setHeader("Brief", "t");
+                httpmethod.setHeader("If-Match", "*");
+
+                response = httpclient.execute(httpmethod);
+                status_code = response.getStatusLine().getStatusCode();
+
+                if (status_code < 200 ||
+                    status_code > 300) {
+                    throw new IOException("Error marking messages as read, returned HTTP Response code " + status_code);
+                }
+
+                Log.d(k9.LOG_TAG, "Success, respones code was: " + status_code);
+                entity = response.getEntity();
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+            } catch (IOException ioe) {
+                Log.e(k9.LOG_TAG, "IOException: " + ioe);
+            }
+            Log.d(k9.LOG_TAG, "Message marked as read\n");
+        }
+
+        private void deleteServerMessages(String[] uids) {
+
+        }
+        
+        @Override
         public void appendMessages(Message[] messages) throws MessagingException {
             appendMessages(messages, false);
         }
@@ -882,12 +1075,6 @@ public class WebDavStore extends Store {
         @Override
         public Message[] expunge() throws MessagingException {
             return null;
-        }
-
-        @Override
-        public void setFlags(Message[] messages, Flag[] flags, boolean value)
-                throws MessagingException {
-            
         }
 
         @Override
