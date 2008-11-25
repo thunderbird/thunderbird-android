@@ -1015,7 +1015,6 @@ public class WebDavStore extends Store {
         private void markServerMessagesRead(String[] uids) throws MessagingException {
             DefaultHttpClient httpclient = new DefaultHttpClient();
             String messageBody = new String();
-            Message[] messages = getMessages(uids, null);
             String[] urls = getMessageUrls(uids);
             Log.d(k9.LOG_TAG, ">>> Setting messages as read");
 
@@ -1054,8 +1053,38 @@ public class WebDavStore extends Store {
             Log.d(k9.LOG_TAG, "Message marked as read\n");
         }
 
-        private void deleteServerMessages(String[] uids) {
+        private void deleteServerMessages(String[] uids) throws MessagingException {
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            String[] urls = getMessageUrls(uids);
 
+            Log.d(k9.LOG_TAG, ">>> deleteServerMessages");
+
+            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+            
+            for (int i = 0, count = urls.length; i < count; i++) {
+                try {
+                    int status_code = -1;
+                    HttpGeneric httpmethod = new HttpGeneric(urls[i]);
+                    HttpResponse response;
+                    HttpEntity entity;
+
+                    httpmethod.setMethod("DELETE");
+                    httpmethod.setHeader("Brief", "t");
+
+                    response = httpclient.execute(httpmethod);
+                    status_code = response.getStatusLine().getStatusCode();
+
+                    if (status_code < 200 ||
+                        status_code > 300) {
+                        throw new IOException("Error deleting message url: "+urls[i]+" \nResponse Code: "+status_code);
+                    }
+                } catch (UnsupportedEncodingException uee) {
+                    Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+                } catch (IOException ioe) {
+                    Log.e(k9.LOG_TAG, "IOException: " + ioe);
+                }
+                Log.d(k9.LOG_TAG, "Message deleted");
+            }
         }
         
         @Override
