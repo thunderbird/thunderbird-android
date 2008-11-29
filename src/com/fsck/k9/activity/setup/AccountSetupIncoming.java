@@ -41,7 +41,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
             "imap", "imap+ssl", "imap+ssl+", "imap+tls", "imap+tls+"
     };
     private static final int webdavPorts[] = {
-            80, 443
+            80, 443, 443, 443, 443
     };
     private static final String webdavSchemes[] = {
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
