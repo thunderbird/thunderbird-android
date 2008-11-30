@@ -268,6 +268,9 @@ public final class R {
         /**  Cannot connect to server\n(Connection timed out) 
          */
         public static final int account_setup_failed_dlg_edit_details_action=0x7f0600b0;
+        public static final int account_setup_failed_dlg_invalid_certificate_accept=0x7f0600d1;
+        public static final int account_setup_failed_dlg_invalid_certificate_reject=0x7f0600d2;
+        public static final int account_setup_failed_dlg_invalid_certificate_title=0x7f0600d0;
         /**  Cannot safely connect to server\n(Invalid certificate) 
          */
         public static final int account_setup_failed_dlg_server_message_fmt=0x7f0600af;

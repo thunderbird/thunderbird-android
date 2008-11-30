@@ -65,6 +65,7 @@ public class WebDavStore extends Store {
     
     private int mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
+    private String alias;
     private String mPassword; /* Stores the password for authentications */
     private String mUrl;      /* Stores the base URL for the server */
 
@@ -128,6 +129,13 @@ public class WebDavStore extends Store {
         if (uri.getUserInfo() != null) {
             String[] userInfoParts = uri.getUserInfo().split(":", 2);
             mUsername = userInfoParts[0];
+            String userParts[] = mUsername.split("/", 2);
+
+            if (userParts.length > 1) {
+                alias = userParts[1];
+            } else {
+                alias = mUsername;
+            }
             if (userInfoParts.length > 1) {
                 mPassword = userInfoParts[1];
             }
@@ -344,7 +352,7 @@ public class WebDavStore extends Store {
      * Performs Form Based authentication regardless of the current
      * authentication state
      */
-    private void authenticate() {
+    public void authenticate() {
         Log.d(k9.LOG_TAG, ">>> authenticate() called");
         try {
             this.mAuthCookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
@@ -366,7 +374,7 @@ public class WebDavStore extends Store {
      * Determines if a new authentication is needed.
      * Returns true if new authentication is needed.
      */
-    private boolean needAuth() {
+    public boolean needAuth() {
         Log.d(k9.LOG_TAG, ">>> needAuth called");
         boolean status = false;
         long currentTime = -1;
@@ -385,7 +393,7 @@ public class WebDavStore extends Store {
      * Performs the Form Based Authentication
      * Returns the CookieStore object for later use or null
      */
-    private CookieStore doAuthentication(String username, String password,
+    public CookieStore doAuthentication(String username, String password,
                                         String url) throws IOException {
         Log.d(k9.LOG_TAG, ">>> doAuthentication called");
         String authPath = "/exchweb/bin/auth/owaauth.dll";
@@ -433,6 +441,16 @@ public class WebDavStore extends Store {
         Log.d(k9.LOG_TAG, ">>> doAuthentication finished");
         return cookies;
     }
+
+	public CookieStore getAuthCookies() {
+		return mAuthCookies;
+	}
+	public String getAlias() {
+		return alias;
+	}
+	public String getUrl() {
+		return mUrl;
+	}
 
     /*************************************************************************
      * Helper and Inner classes
@@ -1213,7 +1231,7 @@ public class WebDavStore extends Store {
      * XML Parsing Handler
      * Can handle all XML handling needs
      */
-    class WebDavHandler extends DefaultHandler {
+    public class WebDavHandler extends DefaultHandler {
         private ParsedDataSet mDataSet = new ParsedDataSet();
         private Stack<String> mOpenTags = new Stack<String>();
         
@@ -1257,7 +1275,7 @@ public class WebDavStore extends Store {
     /**
      * Data set for handling all XML Parses
      */
-    class ParsedDataSet {
+    public class ParsedDataSet {
         private ArrayList<String> mHrefs = new ArrayList<String>();
         private ArrayList<String> mUids = new ArrayList<String>();
         private ArrayList<Boolean> mReads = new ArrayList<Boolean>();
@@ -1348,7 +1366,7 @@ public class WebDavStore extends Store {
      * New HTTP Method that allows changing of the method and generic handling
      * Needed for WebDAV custom methods such as SEARCH and PROPFIND
      */
-    class HttpGeneric extends HttpEntityEnclosingRequestBase {
+    public class HttpGeneric extends HttpEntityEnclosingRequestBase {
         public String METHOD_NAME = "POST";
 
         public HttpGeneric() {

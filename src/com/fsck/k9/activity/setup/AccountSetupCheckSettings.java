@@ -1,6 +1,9 @@
 
 package com.fsck.k9.activity.setup;
 
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,6 +24,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.store.TrustManagerFactory;
 
 /**
  * Checks the given settings to make sure that they can be used to send and
@@ -78,6 +82,7 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
 
         new Thread() {
             public void run() {
+            	Store store = null;
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 try {
                     if (mDestroyed) {
@@ -88,9 +93,9 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
                         return;
                     }
                     if (mCheckIncoming) {
-                        setMessage(R.string.account_setup_check_settings_check_incoming_msg);
-                        Store store = Store.getInstance(mAccount.getStoreUri(), getApplication());
-                        store.checkSettings();
+                    	setMessage(R.string.account_setup_check_settings_check_incoming_msg);
+                    	store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+                    	store.checkSettings();
                     }
                     if (mDestroyed) {
                         return;
@@ -118,17 +123,19 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
                 } catch (final AuthenticationFailedException afe) {
                     showErrorDialog(
                             R.string.account_setup_failed_dlg_auth_message_fmt,
-                    afe.getMessage() == null ? "" : afe.getMessage());
+                            afe.getMessage() == null ? "" : afe.getMessage());
                 } catch (final CertificateValidationException cve) {
-                    showErrorDialog(
+                	acceptKeyDialog(
                             R.string.account_setup_failed_dlg_certificate_message_fmt,
-                            cve.getMessage() == null ? "" : cve.getMessage());
+                            cve);
+                			//cve.getMessage() == null ? "" : cve.getMessage());
                 } catch (final MessagingException me) {
                     showErrorDialog(
                             R.string.account_setup_failed_dlg_server_message_fmt,
                             me.getMessage() == null ? "" : me.getMessage());
                 }
             }
+
         }.start();
     }
 
@@ -172,7 +179,86 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
             }
         });
     }
+    private void acceptKeyDialog(final int msgResId, final Object... args) {
+        mHandler.post(new Runnable() {
+            public void run() {
+                if (mDestroyed) {
+                    return;
+                }
+                final X509Certificate[] chain = TrustManagerFactory.getLastCertChain();
+                String exMessage = "Unknown Error";
+                
+                Exception ex = ((Exception)args[0]);
+                if (ex != null) {
+                	if (ex.getCause() != null) {
+                    	if (ex.getCause().getCause() != null) {
+                    		exMessage = ex.getCause().getCause().getMessage();
+                    		
+                    	} else {
+                    		exMessage = ex.getCause().getMessage();
+                    	}
+                	} else {
+                		exMessage = ex.getMessage();
+                	}
+                }
+                
+                mProgressBar.setIndeterminate(false);
+                StringBuffer chainInfo = new StringBuffer(100);
+                for (int i = 0; i < chain.length; i++)
+                {
+                   // display certificate chain information
+                    chainInfo.append("Certificate chain[" + i + "]:\n");
+                    chainInfo.append("Subject: " + chain[i].getSubjectDN().toString() + "\n");
+                    chainInfo.append("Issuer: " + chain[i].getIssuerDN().toString() + "\n");
+                }
 
+                new AlertDialog.Builder(AccountSetupCheckSettings.this)
+                        .setTitle(getString(R.string.account_setup_failed_dlg_invalid_certificate_title))
+                        //.setMessage(getString(R.string.account_setup_failed_dlg_invalid_certificate)
+                        .setMessage(getString(msgResId,exMessage)
+                        		+ " " + chainInfo.toString()
+                        		)
+                        .setCancelable(true)
+                        .setPositiveButton(
+                        		getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    	try {
+                                    		String alias = mAccount.getUuid();
+                                    		if (mCheckIncoming) {
+                                    			alias = alias + ".incoming";
+                                    		}
+                                    		if (mCheckOutgoing) {
+                                    			alias = alias + ".outgoing";
+                                    		}
+											TrustManagerFactory.addCertificateChain(alias, chain);
+										} catch (CertificateException e) {
+						                	showErrorDialog(
+						                            R.string.account_setup_failed_dlg_certificate_message_fmt,
+						                            e.getMessage() == null ? "" : e.getMessage());											
+										}
+                                    	AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
+                                                mCheckIncoming, mCheckOutgoing);
+                                    }
+                                })
+                        .setNegativeButton(
+                        		getString(R.string.account_setup_failed_dlg_invalid_certificate_reject),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                        .show();
+            }
+        });
+    }
+
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+    	setResult(resCode);
+    	finish();
+    }
+
+    
     private void onCancel() {
         mCanceled = true;
         setMessage(R.string.account_setup_check_settings_canceling_msg);
