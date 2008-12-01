@@ -309,7 +309,7 @@ public class WebDavStore extends Store {
         StringBuffer buffer = new StringBuffer(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-        buffer.append("SELECT \"urn:schemas:httpmail:read\"\r\n");
+        buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
         buffer.append(" FROM \"\"\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND ");
 
@@ -647,7 +647,6 @@ public class WebDavStore extends Store {
             DefaultHttpClient httpclient = new DefaultHttpClient();
             ArrayList<Message> messages = new ArrayList<Message>();
             String[] uids;
-            String[] urls;
 
             String messageBody;
             int prevStart = start;
@@ -714,22 +713,16 @@ public class WebDavStore extends Store {
                         dataset = myHandler.getDataSet();
 
                         uids = dataset.getUids();
-                        urls = dataset.getHrefs();
+                        HashMap<String, String> uidToUrl = dataset.getUidToUrl();
                         uidsLength = uids.length;
-                        urlsLength = urls.length;
-
-                        if (uidsLength != urlsLength) {
-                            Log.d(k9.LOG_TAG, ">>> Mismatched results for UIDs and URLs in getMessages");
-                            throw new MessagingException("Mismatched results for UIDs and URLs in getMessages");
-                        }
 
                         for (int i = 0; i < uidsLength; i++) {
                             if (listener != null) {
                                 listener.messageStarted(uids[i], i, uidsLength);
                             }
-                            Log.d(k9.LOG_TAG, ">>> Adding message of UID " + uids[i] + " and URL of " + urls[i]);
+                            Log.d(k9.LOG_TAG, ">>> Adding message of UID " + uids[i]);
                             WebDavMessage message = new WebDavMessage(uids[i], this);
-                            message.setUrl(urls[i]);
+                            message.setUrl(uidToUrl.get(uids[i]));
                             messages.add(message);
                             
                             if (listener != null) {
@@ -784,9 +777,9 @@ public class WebDavStore extends Store {
             return messages;
         }
 
-        private String[] getMessageUrls(String[] uids) {
+        private HashMap<String, String> getMessageUrls(String[] uids) {
             Log.d(k9.LOG_TAG, ">>> getMessageUrls");
-            ArrayList<String> urls = new ArrayList<String>();
+            HashMap<String, String> uidToUrl = new HashMap<String, String>();
             DefaultHttpClient httpclient = new DefaultHttpClient();
             String messageBody;
 
@@ -797,7 +790,7 @@ public class WebDavStore extends Store {
 
             if (WebDavStore.this.mAuthenticated == false ||
                 WebDavStore.this.mAuthCookies == null) {
-                return urls.toArray(new String[] {});
+                return uidToUrl;
             }
 
             Log.d(k9.LOG_TAG, ">>> Auth passed");
@@ -842,12 +835,7 @@ public class WebDavStore extends Store {
                         xr.parse(new InputSource(istream));
 
                         dataset = myHandler.getDataSet();
-                        HashMap<String, String> uidToUrl = dataset.getUidToUrl();
-                        for (int i = 0, count = uids.length; i < count; i++) {
-                            Log.d(k9.LOG_TAG, ">>> Adding url to list of " + uidToUrl.get(uids[i]));
-                            urls.add(uidToUrl.get(uids[i]));
-                        }
-                        /**                        urls = dataset.getHrefs();*/
+                        uidToUrl = dataset.getUidToUrl();
                     } catch (SAXException se) {
                         Log.e(k9.LOG_TAG, "SAXException in getMessages() " + se);
                     } catch (ParserConfigurationException pce) {
@@ -860,14 +848,14 @@ public class WebDavStore extends Store {
                 Log.e(k9.LOG_TAG, "IOException: " + ioe);
             }
 
-            return urls.toArray(new String[] {});
+            return uidToUrl;
         }
         
         @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
                 throws MessagingException {
             Log.d(k9.LOG_TAG, "Fetch called");
-            Boolean[] readStatus = new Boolean[0];
+            HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
             if (messages == null ||
                 messages.length == 0) {
                 return;
@@ -927,7 +915,7 @@ public class WebDavStore extends Store {
                             xr.parse(new InputSource(istream));
 
                             dataset = myHandler.getDataSet();
-                            readStatus = dataset.getReadArray();
+                            uidToReadStatus = dataset.getUidToRead();
                         } catch (SAXException se) {
                             Log.e(k9.LOG_TAG, "SAXException in fetch() " + se);
                         } catch (ParserConfigurationException pce) {
@@ -958,7 +946,7 @@ public class WebDavStore extends Store {
                 }
 
                 if (fp.contains(FetchProfile.Item.FLAGS)) {
-                    wdMessage.setFlagInternal(Flag.SEEN, readStatus[i]);
+                    wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
                 }
                 
                 /**
@@ -1074,9 +1062,14 @@ public class WebDavStore extends Store {
         private void markServerMessagesRead(String[] uids) throws MessagingException {
             DefaultHttpClient httpclient = new DefaultHttpClient();
             String messageBody = new String();
-            String[] urls = getMessageUrls(uids);
+            HashMap<String, String> uidToUrl = getMessageUrls(uids);
+            String[] urls = new String[uids.length];
             Log.d(k9.LOG_TAG, ">>> Setting messages as read");
 
+            for (int i = 0, count = uids.length; i < count; i++) {
+                urls[i] = uidToUrl.get(uids[i]);
+            }
+            
             httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
             Log.d(k9.LOG_TAG, ">>> HttpClient cookies set");
             messageBody = getMarkMessagesReadXml(urls);
@@ -1114,16 +1107,17 @@ public class WebDavStore extends Store {
 
         private void deleteServerMessages(String[] uids) throws MessagingException {
             DefaultHttpClient httpclient = new DefaultHttpClient();
-            String[] urls = getMessageUrls(uids);
+            HashMap<String, String> uidToUrl = getMessageUrls(uids);
+            String[] urls = new String[uids.length];
 
             Log.d(k9.LOG_TAG, ">>> deleteServerMessages");
 
             httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
             
-            for (int i = 0, count = urls.length; i < count; i++) {
+            for (int i = 0, count = uids.length; i < count; i++) {
                 try {
                     int status_code = -1;
-                    HttpGeneric httpmethod = new HttpGeneric(urls[i]);
+                    HttpGeneric httpmethod = new HttpGeneric(uidToUrl.get(uids[i]));
                     HttpResponse response;
                     HttpEntity entity;
 
