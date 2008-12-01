@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 import javax.xml.parsers.SAXParser;
@@ -213,7 +214,7 @@ public class WebDavStore extends Store {
 
                     for (int i = 0; i < urlLength; i++) {
                         String[] urlParts = folderUrls[i].split("/");
-                        folderList.add(getFolder(urlParts[urlParts.length - 1]));
+                        folderList.add(getFolder(java.net.URLDecoder.decode(urlParts[urlParts.length - 1], "UTF-8")));
                     }
                 } catch (SAXException se) {
                     Log.e(k9.LOG_TAG, "Error with SAXParser " + se);
@@ -469,7 +470,15 @@ public class WebDavStore extends Store {
         
         public WebDavFolder(String name) {
             String[] userParts;
-            
+            String encodedName = new String();
+            try {
+                encodedName = java.net.URLEncoder.encode(name, "UTF-8");
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(k9.LOG_TAG, "UnsupportedEncodingException URLEncoding folder name, skipping encoded");
+                encodedName = name;
+            }
+
+            encodedName = encodedName.replaceAll("\\+", "%20");
             this.mName = name;
             userParts = WebDavStore.this.mUsername.split("/", 2);
 
@@ -479,7 +488,8 @@ public class WebDavStore extends Store {
                 this.mLocalUsername = WebDavStore.this.mUsername;
             }
 
-            this.mFolderUrl = WebDavStore.this.mUrl + "/Exchange/" + this.mLocalUsername + "/" + this.mName;
+            
+            this.mFolderUrl = WebDavStore.this.mUrl + "/Exchange/" + this.mLocalUsername + "/" + encodedName;
         }
 
         @Override
@@ -775,7 +785,7 @@ public class WebDavStore extends Store {
 
         private String[] getMessageUrls(String[] uids) {
             Log.d(k9.LOG_TAG, ">>> getMessageUrls");
-            String[] urls = new String[0];
+            ArrayList<String> urls = new ArrayList<String>();
             DefaultHttpClient httpclient = new DefaultHttpClient();
             String messageBody;
 
@@ -786,7 +796,7 @@ public class WebDavStore extends Store {
 
             if (WebDavStore.this.mAuthenticated == false ||
                 WebDavStore.this.mAuthCookies == null) {
-                return urls;
+                return urls.toArray(new String[] {});
             }
 
             Log.d(k9.LOG_TAG, ">>> Auth passed");
@@ -831,7 +841,11 @@ public class WebDavStore extends Store {
                         xr.parse(new InputSource(istream));
 
                         dataset = myHandler.getDataSet();
-                        urls = dataset.getHrefs();
+                        HashMap<String, String> uidToUrl = dataset.getUidToUrl();
+                        for (int i = 0, count = uids.length; i < count; i++) {
+                            urls.add(uidToUrl.get(uids[i]));
+                        }
+                        /**                        urls = dataset.getHrefs();*/
                     } catch (SAXException se) {
                         Log.e(k9.LOG_TAG, "SAXException in getMessages() " + se);
                     } catch (ParserConfigurationException pce) {
@@ -844,7 +858,7 @@ public class WebDavStore extends Store {
                 Log.e(k9.LOG_TAG, "IOException: " + ioe);
             }
 
-            return urls;
+            return urls.toArray(new String[] {});
         }
         
         @Override
@@ -1262,6 +1276,11 @@ public class WebDavStore extends Store {
         public void endElement(String namespaceURI, String localName, String qName) {
             Log.d(k9.LOG_TAG, ">>> Popping localName of " + localName + " off of stack");
             mOpenTags.pop();
+
+            /** Reset the hash temp variables */
+            if (localName.equals("response")) {
+                this.mDataSet.clearTempData();
+            }
         }
 
         @Override
@@ -1279,28 +1298,66 @@ public class WebDavStore extends Store {
         private ArrayList<String> mHrefs = new ArrayList<String>();
         private ArrayList<String> mUids = new ArrayList<String>();
         private ArrayList<Boolean> mReads = new ArrayList<Boolean>();
+        private HashMap<String, String> mUidUrls = new HashMap<String, String>();
+        private HashMap<String, Boolean> mUidRead = new HashMap<String, Boolean>();
         private int mMessageCount = 0;
+        private String mTempUid = "";
+        private String mTempUrl = "";
+        private Boolean mTempRead;
         private boolean mRead;
 
         public void addValue(String value, String tagName) {
             Log.d(k9.LOG_TAG, ">>> addValue called with values of "+value+", "+tagName);
             if (tagName.equals("href")) {
                 this.mHrefs.add(value);
+                this.mTempUrl = value;
+                if (!this.mTempUid.equals("")) {
+                    mUidUrls.put(this.mTempUid, this.mTempUrl);
+                }
             } else if (tagName.equals("visiblecount")) {
                 this.mMessageCount = new Integer(value).intValue();
                 Log.d(k9.LOG_TAG, ">>> Weird, value is " + value + " and messagecount is " + this.mMessageCount);
             } else if (tagName.equals("uid")) {
                 this.mUids.add(value);
+                this.mTempUid = value;
             } else if (tagName.equals("read")) {
                 if (value.equals("0")) {
                     this.mReads.add(false);
+                    if (!this.mTempUid.equals("")) {
+                        this.mUidRead.put(this.mTempUid, false);
+                    }
                 } else {
                     this.mReads.add(true);
+                    if (!this.mTempUid.equals("")) {
+                        this.mUidRead.put(this.mTempUid, true);
+                    }
                 }
             }
             Log.d(k9.LOG_TAG, ">>> mMessageCount is now " + this.mMessageCount);
         }
 
+        /**
+         * Clears the temp variables
+         */
+        public void clearTempData() {
+            this.mTempUid = "";
+            this.mTempUrl = "";
+        }
+
+        /**
+         * Returns the Uid to Url hashmap
+         */
+        public HashMap getUidToUrl() {
+            return this.mUidUrls;
+        }
+
+        /**
+         * Returns the Uid to Read hashmap
+         */
+        public HashMap getUidToRead() {
+            return this.mUidRead;
+        }
+        
         /**
          * Get all stored Hrefs
          */
