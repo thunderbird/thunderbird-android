@@ -284,7 +284,7 @@ public class WebDavStore extends Store {
         StringBuffer buffer = new StringBuffer(600);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-        buffer.append("SELECT \"urn:schemas:httpmail:read\"\r\n");
+        buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
         buffer.append(" FROM \"\"\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND ");
         for (int i = 0, count = uids.length; i < count; i++) {
@@ -330,11 +330,11 @@ public class WebDavStore extends Store {
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:propertyupdate xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
-
+        Log.d(k9.LOG_TAG, ">>> Before loop");
         for (int i = 0, count = urls.length; i < count; i++) {
             buffer.append(" <a:href>"+urls[i].substring(urls[i].lastIndexOf('/') + 1)+"</a:href>\r\n");
         }
-        
+        Log.d(k9.LOG_TAG, ">>> After loop");
         buffer.append("</a:target>\r\n");
         buffer.append("<a:set>\r\n");
         buffer.append(" <a:prop>\r\n");
@@ -342,6 +342,7 @@ public class WebDavStore extends Store {
         buffer.append(" </a:prop>\r\n");
         buffer.append("</a:set>\r\n");
         buffer.append("</a:propertyupdate>\r\n");
+        Log.d(k9.LOG_TAG, ">>> XML Body is " + buffer.toString());
         return buffer.toString();
     }
     
@@ -843,6 +844,7 @@ public class WebDavStore extends Store {
                         dataset = myHandler.getDataSet();
                         HashMap<String, String> uidToUrl = dataset.getUidToUrl();
                         for (int i = 0, count = uids.length; i < count; i++) {
+                            Log.d(k9.LOG_TAG, ">>> Adding url to list of " + uidToUrl.get(uids[i]));
                             urls.add(uidToUrl.get(uids[i]));
                         }
                         /**                        urls = dataset.getHrefs();*/
@@ -1076,7 +1078,7 @@ public class WebDavStore extends Store {
             Log.d(k9.LOG_TAG, ">>> Setting messages as read");
 
             httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
-
+            Log.d(k9.LOG_TAG, ">>> HttpClient cookies set");
             messageBody = getMarkMessagesReadXml(urls);
 
             try {
@@ -1311,29 +1313,36 @@ public class WebDavStore extends Store {
             if (tagName.equals("href")) {
                 this.mHrefs.add(value);
                 this.mTempUrl = value;
-                if (!this.mTempUid.equals("")) {
-                    mUidUrls.put(this.mTempUid, this.mTempUrl);
-                }
             } else if (tagName.equals("visiblecount")) {
                 this.mMessageCount = new Integer(value).intValue();
-                Log.d(k9.LOG_TAG, ">>> Weird, value is " + value + " and messagecount is " + this.mMessageCount);
             } else if (tagName.equals("uid")) {
                 this.mUids.add(value);
                 this.mTempUid = value;
             } else if (tagName.equals("read")) {
                 if (value.equals("0")) {
                     this.mReads.add(false);
-                    if (!this.mTempUid.equals("")) {
-                        this.mUidRead.put(this.mTempUid, false);
-                    }
+                    this.mTempRead = false;
                 } else {
                     this.mReads.add(true);
-                    if (!this.mTempUid.equals("")) {
-                        this.mUidRead.put(this.mTempUid, true);
-                    }
+                    this.mTempRead = true;
                 }
             }
-            Log.d(k9.LOG_TAG, ">>> mMessageCount is now " + this.mMessageCount);
+
+            if (!this.mTempUid.equals("") &&
+                this.mTempRead != null) {
+                Log.d(k9.LOG_TAG, "Adding hash member to mUidRead");
+                if (this.mTempRead) {
+                    this.mUidRead.put(this.mTempUid, true);
+                } else {
+                    this.mUidRead.put(this.mTempUid, false);
+                }
+            }
+
+            if (!this.mTempUid.equals("") &&
+                !this.mTempUrl.equals("")) {
+                Log.d(k9.LOG_TAG, "Adding hash member to mUidUrls");
+                this.mUidUrls.put(this.mTempUid, this.mTempUrl);
+            }
         }
 
         /**
@@ -1440,7 +1449,37 @@ public class WebDavStore extends Store {
          */
         public HttpGeneric(final String uri) {
             super();
-            setURI(URI.create(uri));
+
+            String[] urlParts = uri.split("/");
+            int length = urlParts.length;
+            String end = urlParts[length - 1];
+            String url = new String();
+            
+            /**
+             * We have to decode, then encode the URL because Exchange likes to
+             * not properly encode all characters
+             */
+            try {
+                end = java.net.URLDecoder.decode(end, "UTF-8");
+                end = java.net.URLEncoder.encode(end, "UTF-8");
+                end = end.replaceAll("\\+", "%20");
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(k9.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri)");
+            } catch (IllegalArgumentException iae) {
+                Log.e(k9.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri)");
+            }
+
+            for (int i = 0; i < length - 1; i++) {
+                if (i != 0) {
+                    url = url + "/" + urlParts[i];
+                } else {
+                    url = urlParts[i];
+                }
+            }
+
+            url = url + "/" + end;
+
+            setURI(URI.create(url));
         }
 
         @Override
