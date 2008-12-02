@@ -88,10 +88,8 @@ public class WebDavStore extends Store {
         URI uri;
 
         try {
-            Log.d(k9.LOG_TAG, ">>> New WebDavStore created");
             uri = new URI(_uri);
         } catch (URISyntaxException use) {
-            Log.d(k9.LOG_TAG, ">>> Exception creating URI");
             throw new MessagingException("Invalid WebDavStore URI", use);
         }
         String scheme = uri.getScheme();
@@ -141,7 +139,6 @@ public class WebDavStore extends Store {
                 mPassword = userInfoParts[1];
             }
         }
-        Log.d(k9.LOG_TAG, ">>> New WebDavStore creation complete");
     }
 
 
@@ -152,7 +149,6 @@ public class WebDavStore extends Store {
 
     @Override
     public Folder[] getPersonalNamespaces() throws MessagingException {
-        Log.d(k9.LOG_TAG, ">>> getPersonalNamespaces called");
         ArrayList<Folder> folderList = new ArrayList<Folder>();
         DefaultHttpClient httpclient = new DefaultHttpClient();
         HttpEntity responseEntity;
@@ -214,7 +210,11 @@ public class WebDavStore extends Store {
 
                     for (int i = 0; i < urlLength; i++) {
                         String[] urlParts = folderUrls[i].split("/");
-                        folderList.add(getFolder(java.net.URLDecoder.decode(urlParts[urlParts.length - 1], "UTF-8")));
+                        String folderName = urlParts[urlParts.length - 1];
+                        if (folderName.equalsIgnoreCase(k9.INBOX)) {
+                            folderName = "INBOX";
+                        }
+                        folderList.add(getFolder(java.net.URLDecoder.decode(folderName, "UTF-8")));
                     }
                 } catch (SAXException se) {
                     Log.e(k9.LOG_TAG, "Error with SAXParser " + se);
@@ -228,14 +228,12 @@ public class WebDavStore extends Store {
             Log.e(k9.LOG_TAG, "IOException " + ioe);
         } 
 
-        Log.d(k9.LOG_TAG, ">>> getPersonalNamespaces finished");
         return folderList.toArray(new WebDavFolder[] {});
     }
 
     @Override
     public Folder getFolder(String name) throws MessagingException {
         WebDavFolder folder;
-        Log.d(k9.LOG_TAG, ">>> getFolder called");
         folder = new WebDavFolder(name);
         return folder;
     }
@@ -302,7 +300,6 @@ public class WebDavStore extends Store {
     
     private String getMessageFlagsXml(String[] uids) throws MessagingException {
         if (uids.length == 0) {
-            Log.d(k9.LOG_TAG, ">>> 0 length array for uids in getMessageFlagsXml");
             throw new MessagingException("Attempt to get flags on 0 length array for uids");
         }
         
@@ -325,16 +322,13 @@ public class WebDavStore extends Store {
     }
 
     private String getMarkMessagesReadXml(String[] urls) {
-        Log.d(k9.LOG_TAG, ">>> Generating XML");
         StringBuffer buffer = new StringBuffer(600);
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:propertyupdate xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
-        Log.d(k9.LOG_TAG, ">>> Before loop");
         for (int i = 0, count = urls.length; i < count; i++) {
             buffer.append(" <a:href>"+urls[i].substring(urls[i].lastIndexOf('/') + 1)+"</a:href>\r\n");
         }
-        Log.d(k9.LOG_TAG, ">>> After loop");
         buffer.append("</a:target>\r\n");
         buffer.append("<a:set>\r\n");
         buffer.append(" <a:prop>\r\n");
@@ -342,7 +336,6 @@ public class WebDavStore extends Store {
         buffer.append(" </a:prop>\r\n");
         buffer.append("</a:set>\r\n");
         buffer.append("</a:propertyupdate>\r\n");
-        Log.d(k9.LOG_TAG, ">>> XML Body is " + buffer.toString());
         return buffer.toString();
     }
     
@@ -355,7 +348,6 @@ public class WebDavStore extends Store {
      * authentication state
      */
     public void authenticate() {
-        Log.d(k9.LOG_TAG, ">>> authenticate() called");
         try {
             this.mAuthCookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
         } catch (IOException ioe) {
@@ -369,7 +361,6 @@ public class WebDavStore extends Store {
             this.mAuthenticated = true;
             this.mLastAuth = System.currentTimeMillis()/1000;
         }
-        Log.d(k9.LOG_TAG, ">>> authenticate completed");
     }
 
     /**
@@ -377,7 +368,6 @@ public class WebDavStore extends Store {
      * Returns true if new authentication is needed.
      */
     public boolean needAuth() {
-        Log.d(k9.LOG_TAG, ">>> needAuth called");
         boolean status = false;
         long currentTime = -1;
         if (this.mAuthenticated == false) {
@@ -397,7 +387,6 @@ public class WebDavStore extends Store {
      */
     public CookieStore doAuthentication(String username, String password,
                                         String url) throws IOException {
-        Log.d(k9.LOG_TAG, ">>> doAuthentication called");
         String authPath = "/exchweb/bin/auth/owaauth.dll";
         CookieStore cookies = null;
             
@@ -440,7 +429,6 @@ public class WebDavStore extends Store {
         } catch (UnsupportedEncodingException uee) {
             Log.e(k9.LOG_TAG, "Error encoding POST data for authencation");
         }
-        Log.d(k9.LOG_TAG, ">>> doAuthentication finished");
         return cookies;
     }
 
@@ -495,7 +483,6 @@ public class WebDavStore extends Store {
 
         @Override
         public void open(OpenMode mode) throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> open called on folder "+this.mName);
             if (needAuth()) {
                 authenticate();
             }
@@ -508,7 +495,6 @@ public class WebDavStore extends Store {
         }
 
         private int getMessageCount(boolean read, CookieStore authCookies) {
-            Log.d(k9.LOG_TAG, ">>> getMessageCount called on folder "+this.mName);
             String isRead;
             int messageCount = 0;
 
@@ -577,7 +563,6 @@ public class WebDavStore extends Store {
             } catch (IOException ioe) {
                 Log.e(k9.LOG_TAG, "IOException in getMessageCount() " + ioe);
             }
-            Log.d(k9.LOG_TAG, ">>> getMessageCount finished");
             return messageCount;
         }
 
@@ -643,7 +628,6 @@ public class WebDavStore extends Store {
         @Override
         public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
                 throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> getMessages(int, int, MessageRetrievalListener) called on " + this.mName);
             DefaultHttpClient httpclient = new DefaultHttpClient();
             ArrayList<Message> messages = new ArrayList<Message>();
             String[] uids;
@@ -720,7 +704,6 @@ public class WebDavStore extends Store {
                             if (listener != null) {
                                 listener.messageStarted(uids[i], i, uidsLength);
                             }
-                            Log.d(k9.LOG_TAG, ">>> Adding message of UID " + uids[i]);
                             WebDavMessage message = new WebDavMessage(uids[i], this);
                             message.setUrl(uidToUrl.get(uids[i]));
                             messages.add(message);
@@ -740,19 +723,17 @@ public class WebDavStore extends Store {
             } catch (IOException ioe) {
                 Log.e(k9.LOG_TAG, "IOException: " + ioe);
             }
-            Log.d(k9.LOG_TAG, ">>> getMessages finished");
+
             return messages.toArray(new Message[] {});
         }
 
         @Override
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> getMessages(MessageRetrievalListener) called on "+this.mName);
             return getMessages(null, listener);
         }
 
         @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> getMessages(String[], MessageRetrievalListener) called on "+this.mName);
             ArrayList<Message> messageList = new ArrayList<Message>();
             Message[] messages;
             
@@ -773,12 +754,11 @@ public class WebDavStore extends Store {
                 }
                 messages = messageList.toArray(new Message[] {});
             }
-            Log.d(k9.LOG_TAG, ">>> getMessages finished");
+
             return messages;
         }
 
         private HashMap<String, String> getMessageUrls(String[] uids) {
-            Log.d(k9.LOG_TAG, ">>> getMessageUrls");
             HashMap<String, String> uidToUrl = new HashMap<String, String>();
             DefaultHttpClient httpclient = new DefaultHttpClient();
             String messageBody;
@@ -793,11 +773,10 @@ public class WebDavStore extends Store {
                 return uidToUrl;
             }
 
-            Log.d(k9.LOG_TAG, ">>> Auth passed");
             /** Retrieve and parse the XML entity for our messages */
             httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
             messageBody = getMessageUrlsXml(uids);
-            Log.d(k9.LOG_TAG, ">>> We have the message body, it was: " + messageBody);
+
             try {
                 int status_code = -1;
                 StringEntity messageEntity = new StringEntity(messageBody);
@@ -854,7 +833,6 @@ public class WebDavStore extends Store {
         @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
                 throws MessagingException {
-            Log.d(k9.LOG_TAG, "Fetch called");
             HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
             if (messages == null ||
                 messages.length == 0) {
@@ -867,19 +845,17 @@ public class WebDavStore extends Store {
              * Listener isn't started yet since it isn't a per-message lookup.
              */
             if (fp.contains(FetchProfile.Item.FLAGS)) {
-                Log.d(k9.LOG_TAG, ">>> fetch message FLAGS");
                 DefaultHttpClient httpclient = new DefaultHttpClient();
                 String messageBody = new String();
                 String[] uids = new String[messages.length];
 
                 for (int i = 0, count = messages.length; i < count; i++) {
                     uids[i] = messages[i].getUid();
-                    Log.d(k9.LOG_TAG, ">>> Adding message UID of " + uids[i]);
                 }
 
                 httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
                 messageBody = getMessageFlagsXml(uids);
-                Log.d(k9.LOG_TAG, ">>> Message body was: \n"+messageBody);
+
                 try {
                     int status_code = -1;
                     StringEntity messageEntity = new StringEntity(messageBody);
@@ -927,11 +903,6 @@ public class WebDavStore extends Store {
                 } catch (IOException ioe) {
                     Log.e(k9.LOG_TAG, "IOException: " + ioe);
                 }
-                /**
-                if (readStatus.length != uids.length) {
-                    Log.d(k9.LOG_TAG, "Uids and readstatus were wrong lengths, uids: "+uids.length+" readStatus "+readStatus.length);
-                    throw new MessagingException("WebdavStore fetch for flags called and mismatched results were received");
-                    }*/
             }
             
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -941,7 +912,6 @@ public class WebDavStore extends Store {
                 WebDavMessage wdMessage = (WebDavMessage) messages[i];
                 
                 if (listener != null) {
-                    Log.d(k9.LOG_TAG, ">>> Starting listener");
                     listener.messageStarted(wdMessage.getUid(), i, count);
                 }
 
@@ -1030,17 +1000,14 @@ public class WebDavStore extends Store {
         @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
                 throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> setFlags called");
             String[] uids = new String[messages.length];
             
             if (needAuth()) {
-                Log.d(k9.LOG_TAG, ">>> needAuth was true");
                 authenticate();
             }
 
             if (WebDavStore.this.mAuthenticated == false ||
                 WebDavStore.this.mAuthCookies == null) {
-                Log.d(k9.LOG_TAG, ">>> For some reason we aren't authenticated");
                 return;
             }
 
@@ -1064,14 +1031,12 @@ public class WebDavStore extends Store {
             String messageBody = new String();
             HashMap<String, String> uidToUrl = getMessageUrls(uids);
             String[] urls = new String[uids.length];
-            Log.d(k9.LOG_TAG, ">>> Setting messages as read");
 
             for (int i = 0, count = uids.length; i < count; i++) {
                 urls[i] = uidToUrl.get(uids[i]);
             }
             
             httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
-            Log.d(k9.LOG_TAG, ">>> HttpClient cookies set");
             messageBody = getMarkMessagesReadXml(urls);
 
             try {
@@ -1095,22 +1060,18 @@ public class WebDavStore extends Store {
                     throw new IOException("Error marking messages as read, returned HTTP Response code " + status_code);
                 }
 
-                Log.d(k9.LOG_TAG, "Success, respones code was: " + status_code);
                 entity = response.getEntity();
             } catch (UnsupportedEncodingException uee) {
                 Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
             } catch (IOException ioe) {
                 Log.e(k9.LOG_TAG, "IOException: " + ioe);
             }
-            Log.d(k9.LOG_TAG, "Message marked as read\n");
         }
 
         private void deleteServerMessages(String[] uids) throws MessagingException {
             DefaultHttpClient httpclient = new DefaultHttpClient();
             HashMap<String, String> uidToUrl = getMessageUrls(uids);
             String[] urls = new String[uids.length];
-
-            Log.d(k9.LOG_TAG, ">>> deleteServerMessages");
 
             httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
             
@@ -1136,7 +1097,6 @@ public class WebDavStore extends Store {
                 } catch (IOException ioe) {
                     Log.e(k9.LOG_TAG, "IOException: " + ioe);
                 }
-                Log.d(k9.LOG_TAG, "Message deleted");
             }
         }
         
@@ -1172,13 +1132,11 @@ public class WebDavStore extends Store {
         private String mUrl = null;
         
         WebDavMessage(String uid, Folder folder) throws MessagingException {
-            Log.d(k9.LOG_TAG, ">>> WebDavMessage created with uid " + uid);
             this.mUid = uid;
             this.mFolder = folder;
         }
 
         public void setUrl(String url) {
-            Log.d(k9.LOG_TAG, ">>> WDM.setUrl called with URL " +url);
             String[] urlParts = url.split("/");
             int length = urlParts.length;
             String end = urlParts[length - 1];
@@ -1209,7 +1167,7 @@ public class WebDavStore extends Store {
             }
 
             url = url + "/" + end;
-            Log.d(k9.LOG_TAG, ">>> Url is: " + url);
+
             this.mUrl = url;
         }
 
@@ -1222,7 +1180,6 @@ public class WebDavStore extends Store {
         }
 
         public void parse(InputStream in) throws IOException, MessagingException {
-            Log.d(k9.LOG_TAG, ">>> parse called on webdavmessage");
             super.parse(in);
         }
 
@@ -1246,13 +1203,11 @@ public class WebDavStore extends Store {
         private Stack<String> mOpenTags = new Stack<String>();
         
         public ParsedDataSet getDataSet() {
-            Log.d(k9.LOG_TAG, ">>> WDH.getDataSet called");
             return this.mDataSet;
         }
 
         @Override
         public void startDocument() throws SAXException {
-            Log.d(k9.LOG_TAG, ">>> WDH.startDocument() called");
             this.mDataSet = new ParsedDataSet();
         }
 
@@ -1264,13 +1219,11 @@ public class WebDavStore extends Store {
         @Override
         public void startElement(String namespaceURI, String localName,
                                  String qName, Attributes atts) throws SAXException {
-            Log.d(k9.LOG_TAG, ">>> Pushing localName of " + localName + " onto stack");
             mOpenTags.push(localName);
         }
 
         @Override
         public void endElement(String namespaceURI, String localName, String qName) {
-            Log.d(k9.LOG_TAG, ">>> Popping localName of " + localName + " off of stack");
             mOpenTags.pop();
 
             /** Reset the hash temp variables */
@@ -1282,7 +1235,6 @@ public class WebDavStore extends Store {
         @Override
         public void characters(char ch[], int start, int length) {
             String value = new String(ch, start, length);
-            Log.d(k9.LOG_TAG, ">>> Calling addValue with values of " + value + ", "+mOpenTags.peek());
             mDataSet.addValue(value, mOpenTags.peek());
         }
     }
@@ -1303,7 +1255,6 @@ public class WebDavStore extends Store {
         private boolean mRead;
 
         public void addValue(String value, String tagName) {
-            Log.d(k9.LOG_TAG, ">>> addValue called with values of "+value+", "+tagName);
             if (tagName.equals("href")) {
                 this.mHrefs.add(value);
                 this.mTempUrl = value;
@@ -1324,7 +1275,6 @@ public class WebDavStore extends Store {
 
             if (!this.mTempUid.equals("") &&
                 this.mTempRead != null) {
-                Log.d(k9.LOG_TAG, "Adding hash member to mUidRead");
                 if (this.mTempRead) {
                     this.mUidRead.put(this.mTempUid, true);
                 } else {
@@ -1334,7 +1284,6 @@ public class WebDavStore extends Store {
 
             if (!this.mTempUid.equals("") &&
                 !this.mTempUrl.equals("")) {
-                Log.d(k9.LOG_TAG, "Adding hash member to mUidUrls");
                 this.mUidUrls.put(this.mTempUid, this.mTempUrl);
             }
         }
@@ -1365,7 +1314,6 @@ public class WebDavStore extends Store {
          * Get all stored Hrefs
          */
         public String[] getHrefs() {
-            Log.d(k9.LOG_TAG, ">>> PDS.getHrefs called");
             return this.mHrefs.toArray(new String[] {});
         }
 
@@ -1373,7 +1321,6 @@ public class WebDavStore extends Store {
          * Get the first stored Href
          */
         public String getHref() {
-            Log.d(k9.LOG_TAG, ">>> PDS.getHref called");
             String[] hrefs = this.mHrefs.toArray(new String[] {});
             return hrefs[0];
         }
@@ -1382,7 +1329,6 @@ public class WebDavStore extends Store {
          * Get all stored Uids
          */
         public String[] getUids() {
-            Log.d(k9.LOG_TAG, ">>> PDS.getUids called");
             return this.mUids.toArray(new String[] {});
         }
 
@@ -1390,7 +1336,6 @@ public class WebDavStore extends Store {
          * Get the first stored Uid
          */
         public String getUid() {
-            Log.d(k9.LOG_TAG, ">>> PDS.getUid called");
             String[] uids = this.mUids.toArray(new String[] {});
             return uids[0];
         }
@@ -1399,8 +1344,6 @@ public class WebDavStore extends Store {
          * Get message count
          */
         public int getMessageCount() {
-            Log.d(k9.LOG_TAG, ">>> PDS.getMessageCount called, returning value " + this.mMessageCount);
-            
             return this.mMessageCount;
         }
 
@@ -1408,7 +1351,6 @@ public class WebDavStore extends Store {
          * Get all stored read statuses
          */
         public Boolean[] getReadArray() {
-            Log.d(k9.LOG_TAG, ">>> PDS.getReadArray called");
             Boolean[] readStatus = this.mReads.toArray(new Boolean[] {});
             return readStatus;
         }
@@ -1417,7 +1359,6 @@ public class WebDavStore extends Store {
          * Get the first stored read status
          */
         public boolean getRead() {
-            Log.d(k9.LOG_TAG, ">>> PDS.getRead called");
             return this.mRead;
         }
     }
