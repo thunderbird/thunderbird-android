@@ -1177,7 +1177,7 @@ public class FolderMessageList extends ExpandableListActivity {
                 holder.from.setText(message.sender);
                 holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
                 holder.date.setText(message.date);
-                holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                holder.subject.setCompoundDrawablesWithIntrinsicBounds(null, null,
                         message.hasAttachments ? mAttachmentIcon : null, null);
 //                if (folder.outbox) {
 //                    holder.status.setText("Sending");

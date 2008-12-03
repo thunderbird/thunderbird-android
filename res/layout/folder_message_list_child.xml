@@ -19,21 +19,19 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="11sp"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_width="200px"
+        android:layout_width="250px"
         android:layout_height="wrap_content"
         android:paddingLeft="10px"
         android:layout_marginRight="1px" />
     <TextView
         android:id="@+id/from"
         android:textSize="9sp"
-        android:ellipsize="end"
         android:singleLine="true"
-        android:layout_width="wrap_content"
+        android:layout_width="70px"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorSecondary"
         android:paddingRight="5px"
-        android:layout_below="@+id/date"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         />
