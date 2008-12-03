@@ -192,4 +192,8 @@
   <string name="status_network_error">Error de conexión</string>
   <string name="status_sending">Enviando\u2026</string>
   <string name="view_hide_details_action">Ver/ocultar detalles</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
+  
 </resources>
