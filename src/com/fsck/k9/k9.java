@@ -17,9 +17,9 @@ import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 
 public class k9 extends Application {
-    public static final String LOG_TAG = "k9";
-
+    public static Application app = null;
     public static File tempDirectory;
+    public static final String LOG_TAG = "k9";
 
     /**
      * If this is enabled there will be additional logging information sent to
@@ -146,6 +146,7 @@ public class k9 extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        app = this;
         Preferences prefs = Preferences.getPreferences(this);
         DEBUG = prefs.geteEnableDebugLogging();
         DEBUG_SENSITIVE = prefs.getEnableSensitiveLogging();
