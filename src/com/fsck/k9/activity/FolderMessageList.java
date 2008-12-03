@@ -461,6 +461,7 @@ public class FolderMessageList extends ExpandableListActivity {
         MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(group, item);
         switch (keyCode) {
             case KeyEvent.KEYCODE_DEL: { onDelete(message); return true;}
+            case KeyEvent.KEYCODE_D: { onDelete(message); return true;}
             case KeyEvent.KEYCODE_C: { onCompose(); return true;}
             case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
             case KeyEvent.KEYCODE_F: { onForward(message); return true;}
