@@ -209,8 +209,8 @@ public final class R {
         public static final int message_view_option=0x7f090006;
     }
     public static final class string {
-        public static final int account_delete_dlg_instructions_fmt=0x7f0600c8;
-        public static final int account_delete_dlg_title=0x7f0600c7;
+        public static final int account_delete_dlg_instructions_fmt=0x7f0600ca;
+        public static final int account_delete_dlg_title=0x7f0600c9;
         public static final int account_settings_action=0x7f06001b;
         public static final int account_settings_add_account_label=0x7f0600b9;
         public static final int account_settings_always_bcc_label=0x7f0600c3;
@@ -232,6 +232,8 @@ public final class R {
         public static final int account_settings_outgoing_label=0x7f0600b7;
         public static final int account_settings_outgoing_summary=0x7f0600b8;
         public static final int account_settings_ringtone=0x7f0600bf;
+        public static final int account_settings_sent_items_label=0x7f0600c7;
+        public static final int account_settings_sent_items_summary=0x7f0600c8;
         public static final int account_settings_servers=0x7f0600c0;
         public static final int account_settings_show_combined_label=0x7f0600b3;
         public static final int account_settings_signature_label=0x7f0600c5;
@@ -265,6 +267,9 @@ public final class R {
         /**  Cannot connect to server\n(Connection timed out) 
          */
         public static final int account_setup_failed_dlg_edit_details_action=0x7f0600ab;
+        public static final int account_setup_failed_dlg_invalid_certificate_accept=0x7f0600ce;
+        public static final int account_setup_failed_dlg_invalid_certificate_reject=0x7f0600cf;
+        public static final int account_setup_failed_dlg_invalid_certificate_title=0x7f0600cd;
         /**  Cannot safely connect to server\n(Invalid certificate) 
          */
         public static final int account_setup_failed_dlg_server_message_fmt=0x7f0600aa;
@@ -408,8 +413,8 @@ public final class R {
         public static final int okay_action=0x7f060008;
         public static final int open_action=0x7f06001a;
         public static final int preferences_action=0x7f060019;
-        public static final int provider_note_live=0x7f0600ca;
-        public static final int provider_note_yahoo=0x7f0600c9;
+        public static final int provider_note_live=0x7f0600cc;
+        public static final int provider_note_yahoo=0x7f0600cb;
         public static final int read_action=0x7f06001e;
         public static final int read_attachment_desc=0x7f060003;
         public static final int read_attachment_label=0x7f060002;
