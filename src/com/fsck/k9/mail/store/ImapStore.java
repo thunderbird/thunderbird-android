@@ -199,6 +199,9 @@ public class ImapStore extends Store {
 			    if(folder.length() >= mPathPrefix.length() + 1){
 				folder = folder.substring(mPathPrefix.length() + 1);
 			    }
+			    if(!decodeFolderName(response.getString(3)).equals(mPathPrefix + mPathDelimeter + folder)){
+				includeFolder = false;
+			    }
 			}
 		    }
 		    
