@@ -86,7 +86,7 @@ public final class TrustManagerFactory {
         	try {
         		defaultTrustManager.checkServerTrusted(chain, authType);
         	} catch (CertificateException e) {
-        		localTrustManager.checkServerTrusted(chain, authType);
+        		localTrustManager.checkServerTrusted(new X509Certificate[] {chain[0]}, authType);
         	}
         	if (!DomainNameChecker.match(chain[0], mHost)) {
         		try {
