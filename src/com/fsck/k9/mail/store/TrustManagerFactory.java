@@ -26,11 +26,11 @@ public final class TrustManagerFactory {
     private static X509TrustManager defaultTrustManager;
     private static X509TrustManager unsecureTrustManager;
 	private static X509TrustManager localTrustManager;
-	
+
 	private static SecureX509TrustManager secureTrustManager;
 
     private static X509Certificate[] lastCertChain = null;
-    
+
     private static File keyStoreFile;
     private static KeyStore keyStore;
 
@@ -50,8 +50,6 @@ public final class TrustManagerFactory {
     }
 
     private static class SecureX509TrustManager implements X509TrustManager {
-        //private static X509TrustManager mTrustManager;
-        //private static X509TrustManager mLocalTrustManager;
         private static String mHost;
         private static SecureX509TrustManager me;
 
@@ -69,19 +67,14 @@ public final class TrustManagerFactory {
 		public static void setHost(String host){
 			mHost = host;
 		}
-		
-		//
-//        public static void updateTrustManager(X509TrustManager trustManager) {
-//            mTrustManager = trustManager;
-//        }
-        
+
         public void checkClientTrusted(X509Certificate[] chain, String authType)
                 throws CertificateException {
             defaultTrustManager.checkClientTrusted(chain, authType);
         }
 
         public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {        	
+                throws CertificateException {
         	TrustManagerFactory.setLastCertChain(chain);
         	try {
         		defaultTrustManager.checkServerTrusted(chain, authType);
@@ -97,7 +90,7 @@ public final class TrustManagerFactory {
         		} catch (KeyStoreException e) {
         			throw new CertificateException("Certificate cannot be verified; KeyStore Exception: " + e);
         		}
-        		throw new CertificateException("Certificate domain name does not match " 
+        		throw new CertificateException("Certificate domain name does not match "
         				+ mHost);
         	}
         }
@@ -167,11 +160,11 @@ public final class TrustManagerFactory {
         return secure ? SecureX509TrustManager.getInstance(host) :
                 unsecureTrustManager;
     }
-    
+
     public static KeyStore getKeyStore() {
     	return keyStore;
     }
-    
+
 	public static void setLastCertChain(X509Certificate[] chain) {
 		lastCertChain = chain;
 	}
