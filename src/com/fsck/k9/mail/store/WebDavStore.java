@@ -11,7 +11,11 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -267,6 +271,39 @@ public class WebDavStore extends Store {
         return buffer.toString();
     }
 
+    private String getMessageEnvelopeXml(String[] uids) {
+        StringBuffer buffer = new StringBuffer(200);
+        buffer.append("<?xml version='1.0' ?>");
+        buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
+        buffer.append("SELECT \"DAV:uid\", \"DAV:getcontentlength\",");
+        buffer.append(" \"urn:schemas:mailheader:received\",");
+        buffer.append(" \"urn:schemas:mailheader:mime-version\",");
+        buffer.append(" \"urn:schemas:mailheader:content-type\",");
+        buffer.append(" \"urn:schemas:mailheader:subject\",");
+        buffer.append(" \"urn:schemas:mailheader:date\",");
+        buffer.append(" \"urn:schemas:mailheader:thread-topic\",");
+        buffer.append(" \"urn:schemas:mailheader:thread-index\",");
+        buffer.append(" \"urn:schemas:mailheader:from\",");
+        buffer.append(" \"urn:schemas:mailheader:to\",");
+        buffer.append(" \"urn:schemas:mailheader:in-reply-to\",");
+        buffer.append(" \"urn:schemas:mailheader:return-path\",");
+        buffer.append(" \"urn:schemas:mailheader:cc\",");
+        buffer.append(" \"urn:schemas:mailheader:references\",");
+        buffer.append(" \"urn:schemas:httpmail:read\"");
+        buffer.append(" \r\n");
+        buffer.append(" FROM \"\"\r\n");
+        buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND ");
+        for (int i = 0, count = uids.length; i < count; i++) {
+            if (i != 0) {
+                buffer.append("  OR ");
+            }
+            buffer.append(" \"DAV:uid\"='"+uids[i]+"' ");
+        }
+        buffer.append("\r\n");
+        buffer.append("</a:sql></a:searchrequest>\r\n");
+        return buffer.toString();
+    }
+    
     private String getMessagesXml() {
         StringBuffer buffer = new StringBuffer(200);
         buffer.append("<?xml version='1.0' ?>");
@@ -432,15 +469,15 @@ public class WebDavStore extends Store {
         return cookies;
     }
 
-	public CookieStore getAuthCookies() {
-		return mAuthCookies;
-	}
-	public String getAlias() {
-		return alias;
-	}
-	public String getUrl() {
-		return mUrl;
-	}
+    public CookieStore getAuthCookies() {
+        return mAuthCookies;
+    }
+    public String getAlias() {
+        return alias;
+    }
+    public String getUrl() {
+        return mUrl;
+    }
 
     /*************************************************************************
      * Helper and Inner classes
@@ -834,9 +871,76 @@ public class WebDavStore extends Store {
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
                 throws MessagingException {
             HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
+            HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
             if (messages == null ||
                 messages.length == 0) {
                 return;
+            }
+
+            /**
+             * Get message info for all messages here since it can be pulled with
+             * a single request.  Header data will be set in the for loop.
+             * Listener isn't started yet since it isn't a per-message lookup.
+             */
+            if (fp.contains(FetchProfile.Item.ENVELOPE)) {
+                DefaultHttpClient httpclient = new DefaultHttpClient();
+                String messageBody = new String();
+                String[] uids = new String[messages.length];
+
+                for (int i = 0, count = messages.length; i < count; i++) {
+                    uids[i] = messages[i].getUid();
+                }
+
+                httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+                messageBody = getMessageEnvelopeXml(uids);
+
+                try {
+                    int status_code = -1;
+                    StringEntity messageEntity = new StringEntity(messageBody);
+                    HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
+                    HttpResponse response;
+                    HttpEntity entity;
+
+                    messageEntity.setContentType("text/xml");
+                    httpmethod.setMethod("SEARCH");
+                    httpmethod.setEntity(messageEntity);
+                    httpmethod.setHeader("Brief", "t");
+
+                    response = httpclient.execute(httpmethod);
+                    status_code = response.getStatusLine().getStatusCode();
+
+                    if (status_code < 200 ||
+                        status_code > 300) {
+                        throw new IOException("Error getting message envelopes, returned HTTP Response code " + status_code);
+                    }
+
+                    entity = response.getEntity();
+
+                    if (entity != null) {
+                        try {
+                            InputStream istream = entity.getContent();
+                            SAXParserFactory spf = SAXParserFactory.newInstance();
+                            SAXParser sp = spf.newSAXParser();
+                            XMLReader xr = sp.getXMLReader();
+                            WebDavHandler myHandler = new WebDavHandler();
+                            ParsedDataSet dataset;
+
+                            xr.setContentHandler(myHandler);
+                            xr.parse(new InputSource(istream));
+
+                            dataset = myHandler.getDataSet();
+                            envelopes = dataset.getMessageEnvelopes();
+                        } catch (SAXException se) {
+                            Log.e(k9.LOG_TAG, "SAXException in fetch() " + se);
+                        } catch (ParserConfigurationException pce) {
+                            Log.e(k9.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
+                        }
+                    }
+                } catch (UnsupportedEncodingException uee) {
+                    Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+                } catch (IOException ioe) {
+                    Log.e(k9.LOG_TAG, "IOException: " + ioe);
+                }
             }
 
             /**
@@ -904,7 +1008,7 @@ public class WebDavStore extends Store {
                     Log.e(k9.LOG_TAG, "IOException: " + ioe);
                 }
             }
-            
+
             for (int i = 0, count = messages.length; i < count; i++) {
                 if (!(messages[i] instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
@@ -918,12 +1022,23 @@ public class WebDavStore extends Store {
                 if (fp.contains(FetchProfile.Item.FLAGS)) {
                     wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
                 }
-                
+
+                if (fp.contains(FetchProfile.Item.ENVELOPE)) {
+                    wdMessage.setNewHeaders(envelopes.get(wdMessage.getUid()));
+                }
+
+                /**
+                 * Set the body to null if it's asking for the structure because
+                 * we don't support it yet.
+                 */
+                if (fp.contains(FetchProfile.Item.STRUCTURE)) {
+                    wdMessage.setBody(null);
+                }
+
                 /**
                  * Message fetching that we can pull as a stream
                  */
-                if (fp.contains(FetchProfile.Item.ENVELOPE) ||
-                    fp.contains(FetchProfile.Item.BODY) ||
+                if (fp.contains(FetchProfile.Item.BODY) ||
                     fp.contains(FetchProfile.Item.BODY_SANE)) {
 
                     DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -955,23 +1070,31 @@ public class WebDavStore extends Store {
 
                             resultText = "";
                             istream = entity.getContent();
-                            if (fp.contains(FetchProfile.Item.BODY)) {
+                            /**
+                             * Keep this commented out for now, messages won't display properly if
+                             * we do it like this.
+                             */
+                            /**
+                            if (fp.contains(FetchProfile.Item.BODY_SANE)) {
+                                int lines = FETCH_BODY_SANE_SUGGESTED_SIZE / 76;
+                                int line = 0;
 
-                            } else if (fp.contains(FetchProfile.Item.ENVELOPE)) {
-                                reader = new BufferedReader(new InputStreamReader(istream), 4096);
+                                reader = new BufferedReader(new InputStreamReader(istream),4096);
 
                                 while ((tempText = reader.readLine()) != null &&
-                                       !(tempText.equals(""))) {
+                                       (line < lines)) {
                                     if (resultText.equals("")) {
                                         resultText = tempText;
                                     } else {
                                         resultText = resultText + "\r\n" + tempText;
                                     }
+
+                                    line++;
                                 }
 
                                 istream.close();
                                 istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
-                            }
+                                }*/
 
                             wdMessage.parse(istream);
                         }
@@ -986,7 +1109,6 @@ public class WebDavStore extends Store {
                 }
 
                 if (listener != null) {
-                    Log.e(k9.LOG_TAG, "Messages fetched and parsed, setting finished for this one");
                     listener.messageFinished(wdMessage, i, count);
                 }
             }
@@ -1187,6 +1309,18 @@ public class WebDavStore extends Store {
             super.setFlag(flag, set);
         }
 
+        public void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
+            String[] headers = envelope.getHeaderList();
+            HashMap<String, String> messageHeaders = envelope.getMessageHeaders();
+            
+            for (int i = 0, count = headers.length; i < count; i++) {
+                if (headers[i].equals("Content-Length")) {
+                    this.setSize(new Integer(messageHeaders.get(headers[i])).intValue());
+                }
+                this.addHeader(headers[i], messageHeaders.get(headers[i]));
+            }
+        }
+        
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
@@ -1228,6 +1362,7 @@ public class WebDavStore extends Store {
 
             /** Reset the hash temp variables */
             if (localName.equals("response")) {
+                this.mDataSet.addEnvelope();
                 this.mDataSet.clearTempData();
             }
         }
@@ -1240,6 +1375,51 @@ public class WebDavStore extends Store {
     }
 
     /**
+     * Data set for a single E-Mail message's required headers (the envelope)
+     * Only provides accessor methods to the stored data.  All processing should be
+     * done elsewhere.  This is done rather than having multiple hashmaps 
+     * associating UIDs to values
+     */
+    public class ParsedMessageEnvelope {
+        private boolean mReadStatus = false;
+        private String mUid = new String();
+        private HashMap<String, String> mMessageHeaders = new HashMap<String, String>();
+        private ArrayList<String> mHeaders = new ArrayList<String>();
+        
+        public void addHeader(String field, String value) {
+            this.mMessageHeaders.put(field, value);
+            this.mHeaders.add(field);
+        }
+
+        public HashMap<String, String> getMessageHeaders() {
+            return this.mMessageHeaders;
+        }
+
+        public String[] getHeaderList() {
+            return this.mHeaders.toArray(new String[] {});
+        }
+        
+        public void setReadStatus(boolean status) {
+            this.mReadStatus = status;
+        }
+
+        public boolean getReadStatus() {
+            return this.mReadStatus;
+        }
+
+        public void setUid(String uid) {
+            if (uid != null) {
+                this.mUid = uid;
+            }
+        }
+
+        public String getUid() {
+            return this.mUid;
+        }
+    }
+
+
+    /**
      * Data set for handling all XML Parses
      */
     public class ParsedDataSet {
@@ -1248,10 +1428,16 @@ public class WebDavStore extends Store {
         private ArrayList<Boolean> mReads = new ArrayList<Boolean>();
         private HashMap<String, String> mUidUrls = new HashMap<String, String>();
         private HashMap<String, Boolean> mUidRead = new HashMap<String, Boolean>();
+        private HashMap<String, ParsedMessageEnvelope> mEnvelopes = new HashMap<String, ParsedMessageEnvelope>();
         private int mMessageCount = 0;
         private String mTempUid = "";
         private String mTempUrl = "";
+        private String mFrom = "";
+        private String mTo = "";
+        private String mCc = "";
+        private String mReceived = "";
         private Boolean mTempRead;
+        private ParsedMessageEnvelope mEnvelope = new ParsedMessageEnvelope();
         private boolean mRead;
 
         public void addValue(String value, String tagName) {
@@ -1262,16 +1448,63 @@ public class WebDavStore extends Store {
                 this.mMessageCount = new Integer(value).intValue();
             } else if (tagName.equals("uid")) {
                 this.mUids.add(value);
+                this.mEnvelope.setUid(value);
                 this.mTempUid = value;
             } else if (tagName.equals("read")) {
                 if (value.equals("0")) {
                     this.mReads.add(false);
+                    this.mEnvelope.setReadStatus(false);
                     this.mTempRead = false;
                 } else {
                     this.mReads.add(true);
+                    this.mEnvelope.setReadStatus(true);
                     this.mTempRead = true;
                 }
-            }
+            } else if (tagName.equals("received")) {
+                this.mReceived = this.mReceived + value;
+            } else if (tagName.equals("mime-version")) {
+                this.mEnvelope.addHeader("MIME-Version", value);
+            } else if (tagName.equals("content-type")) {
+                this.mEnvelope.addHeader("Content-Type", value);
+            } else if (tagName.equals("subject")) {
+                this.mEnvelope.addHeader("Subject", value);
+            } else if (tagName.equals("date")) {
+                value = value.replaceAll("T", " ");
+                String[] valueBreak = value.split("\\.");
+                value = valueBreak[0];
+
+                DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z");
+                String tempDate = "";
+
+                try {
+                    Date parsedDate = dfInput.parse(value);
+                    tempDate = dfOutput.format(parsedDate);
+                } catch (java.text.ParseException pe) {
+                    Log.e(k9.LOG_TAG, "Error parsing date: "+ pe);
+                }
+
+                this.mEnvelope.addHeader("Date", tempDate);
+            } else if (tagName.equals("thread-topic")) {
+                this.mEnvelope.addHeader("Thread-Topic", value);
+            } else if (tagName.equals("thread-index")) {
+                this.mEnvelope.addHeader("Thread-Index", value);
+            } else if (tagName.equals("from")) {
+                this.mFrom = this.mFrom + value;
+            } else if (tagName.equals("to")) {
+                this.mTo = this.mTo + value;
+            } else if (tagName.equals("in-reply-to")) {
+                this.mEnvelope.addHeader("In-Reply-To", value);
+            } else if (tagName.equals("return-path")) {
+                this.mEnvelope.addHeader("Return-Path", value);
+            } else if (tagName.equals("cc")) {
+                this.mCc = this.mCc + value;
+            } else if (tagName.equals("references")) {
+                this.mEnvelope.addHeader("References", value);
+            } else if (tagName.equals("getcontentlength")) {
+                this.mEnvelope.addHeader("Content-Length", value);
+            } 
+
 
             if (!this.mTempUid.equals("") &&
                 this.mTempRead != null) {
@@ -1294,6 +1527,23 @@ public class WebDavStore extends Store {
         public void clearTempData() {
             this.mTempUid = "";
             this.mTempUrl = "";
+            this.mFrom = "";
+            this.mEnvelope = new ParsedMessageEnvelope();
+        }
+
+        public void addEnvelope() {
+            this.mEnvelope.addHeader("From", this.mFrom);
+            this.mEnvelope.addHeader("To", this.mTo);
+            this.mEnvelope.addHeader("Cc", this.mCc);
+            this.mEnvelope.addHeader("Received", this.mReceived);
+            this.mEnvelopes.put(this.mEnvelope.getUid(), this.mEnvelope);
+        }
+
+        /**
+         * Returns an array of the set of message envelope objects
+         */
+        public HashMap<String, ParsedMessageEnvelope> getMessageEnvelopes() {
+            return this.mEnvelopes;
         }
 
         /**
