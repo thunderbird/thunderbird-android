@@ -871,7 +871,7 @@ public class WebDavStore extends Store {
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
                 throws MessagingException {
             HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
-            HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
+
             if (messages == null ||
                 messages.length == 0) {
                 return;
@@ -883,64 +883,7 @@ public class WebDavStore extends Store {
              * Listener isn't started yet since it isn't a per-message lookup.
              */
             if (fp.contains(FetchProfile.Item.ENVELOPE)) {
-                DefaultHttpClient httpclient = new DefaultHttpClient();
-                String messageBody = new String();
-                String[] uids = new String[messages.length];
-
-                for (int i = 0, count = messages.length; i < count; i++) {
-                    uids[i] = messages[i].getUid();
-                }
-
-                httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
-                messageBody = getMessageEnvelopeXml(uids);
-
-                try {
-                    int status_code = -1;
-                    StringEntity messageEntity = new StringEntity(messageBody);
-                    HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
-                    HttpResponse response;
-                    HttpEntity entity;
-
-                    messageEntity.setContentType("text/xml");
-                    httpmethod.setMethod("SEARCH");
-                    httpmethod.setEntity(messageEntity);
-                    httpmethod.setHeader("Brief", "t");
-
-                    response = httpclient.execute(httpmethod);
-                    status_code = response.getStatusLine().getStatusCode();
-
-                    if (status_code < 200 ||
-                        status_code > 300) {
-                        throw new IOException("Error getting message envelopes, returned HTTP Response code " + status_code);
-                    }
-
-                    entity = response.getEntity();
-
-                    if (entity != null) {
-                        try {
-                            InputStream istream = entity.getContent();
-                            SAXParserFactory spf = SAXParserFactory.newInstance();
-                            SAXParser sp = spf.newSAXParser();
-                            XMLReader xr = sp.getXMLReader();
-                            WebDavHandler myHandler = new WebDavHandler();
-                            ParsedDataSet dataset;
-
-                            xr.setContentHandler(myHandler);
-                            xr.parse(new InputSource(istream));
-
-                            dataset = myHandler.getDataSet();
-                            envelopes = dataset.getMessageEnvelopes();
-                        } catch (SAXException se) {
-                            Log.e(k9.LOG_TAG, "SAXException in fetch() " + se);
-                        } catch (ParserConfigurationException pce) {
-                            Log.e(k9.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
-                        }
-                    }
-                } catch (UnsupportedEncodingException uee) {
-                    Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
-                } catch (IOException ioe) {
-                    Log.e(k9.LOG_TAG, "IOException: " + ioe);
-                }
+                fetchEnvelope(messages, listener);
             }
 
             /**
@@ -1014,17 +957,13 @@ public class WebDavStore extends Store {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
                 WebDavMessage wdMessage = (WebDavMessage) messages[i];
-                
+
                 if (listener != null) {
                     listener.messageStarted(wdMessage.getUid(), i, count);
                 }
 
                 if (fp.contains(FetchProfile.Item.FLAGS)) {
                     wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
-                }
-
-                if (fp.contains(FetchProfile.Item.ENVELOPE)) {
-                    wdMessage.setNewHeaders(envelopes.get(wdMessage.getUid()));
                 }
 
                 /**
@@ -1114,6 +1053,117 @@ public class WebDavStore extends Store {
             }
         }
 
+        /**
+         * Fetches and parses the message envelopes for the supplied messages.
+         * The idea is to have this be recursive so that we do a series of medium calls
+         * instead of one large massive call or a large number of smaller calls.
+         * Call it a happy balance
+         */
+        private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
+            HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
+            Message[] messages = new Message[10];
+            if (startMessages == null ||
+                startMessages.length == 0) {
+                return;
+            }
+
+            if (startMessages.length > 10) {
+                Message[] newMessages = new Message[startMessages.length - 10];
+                for (int i = 0, count = startMessages.length; i < count; i++) {
+                    if (i < 10) {
+                        messages[i] = startMessages[i];
+                    } else {
+                        newMessages[i - 10] = startMessages[i];
+                    }
+                }
+                /**                System.arraycopy(startMessages, 0, messages, 0, 10);
+                                   System.arraycopy(startMessages, 10, newMessages, 0, startMessages.length - 10);*/
+                fetchEnvelope(newMessages, listener);
+            } else {
+                messages = startMessages;
+            }
+
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            String messageBody = new String();
+            String[] uids = new String[messages.length];
+
+            for (int i = 0, count = messages.length; i < count; i++) {
+                uids[i] = messages[i].getUid();
+            }
+
+            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+            messageBody = getMessageEnvelopeXml(uids);
+
+            try {
+                int status_code = -1;
+                StringEntity messageEntity = new StringEntity(messageBody);
+                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
+                HttpResponse response;
+                HttpEntity entity;
+                
+                messageEntity.setContentType("text/xml");
+                httpmethod.setMethod("SEARCH");
+                httpmethod.setEntity(messageEntity);
+                httpmethod.setHeader("Brief", "t");
+
+                response = httpclient.execute(httpmethod);
+                status_code = response.getStatusLine().getStatusCode();
+
+                if (status_code < 200 ||
+                    status_code > 300) {
+                    throw new IOException("Error getting message flags, returned HTTP Response code " + status_code);
+                }
+
+                entity = response.getEntity();
+
+                if (entity != null) {
+                    try {
+                        InputStream istream = entity.getContent();
+                        SAXParserFactory spf = SAXParserFactory.newInstance();
+                        SAXParser sp = spf.newSAXParser();
+                        XMLReader xr = sp.getXMLReader();
+                        WebDavHandler myHandler = new WebDavHandler();
+                        ParsedDataSet dataset;
+
+                        xr.setContentHandler(myHandler);
+                        xr.parse(new InputSource(istream));
+
+                        dataset = myHandler.getDataSet();
+                        envelopes = dataset.getMessageEnvelopes();
+                    } catch (SAXException se) {
+                        Log.e(k9.LOG_TAG, "SAXException in fetch() " + se);
+                    } catch (ParserConfigurationException pce) {
+                        Log.e(k9.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
+                    }
+                }
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+            } catch (IOException ioe) {
+                Log.e(k9.LOG_TAG, "IOException: " + ioe);
+            }
+
+            for (int i = 0, count = messages.length; i < count; i++) {
+                if (!(messages[i] instanceof WebDavMessage)) {
+                    throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
+                }
+                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                
+                if (listener != null) {
+                    listener.messageStarted(messages[i].getUid(), i, count);
+                }
+                /**
+                ((WebDavMessage) messages[i]).setNewHeaders(envelopes.get(((WebDavMessage) messages[i]).getUid()));
+                ((WebDavMessage) messages[i]).setFlagInternal(Flag.SEEN, envelopes.get(((WebDavMessage) messages[i]).getUid()).getReadStatus());
+                */
+                wdMessage.setNewHeaders(envelopes.get(wdMessage.getUid()));
+                wdMessage.setFlagInternal(Flag.SEEN, envelopes.get(wdMessage.getUid()).getReadStatus());
+
+                if (listener != null) {
+                    listener.messageFinished(messages[i], i, count);
+                }
+            }
+        }
+        
         @Override
         public Flag[] getPermanentFlags() throws MessagingException {
             return PERMANENT_FLAGS;
