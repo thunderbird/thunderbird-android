@@ -268,10 +268,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
         your correct email address and password, you may not have a paid
         \"Plus\" account. Please launch the Web browser to gain access to
         these mail accounts.</string>
-    <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string> 
-    <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string> 
-    <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string> 
-        
     <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
