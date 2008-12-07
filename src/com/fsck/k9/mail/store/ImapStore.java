@@ -85,6 +85,7 @@ public class ImapStore extends Store {
     private String mPassword;
     private int mConnectionSecurity;
     private String mPathPrefix;
+    private String mPathDelimeter;
 
     private LinkedList<ImapConnection> mConnections =
             new LinkedList<ImapConnection>();
@@ -188,13 +189,18 @@ public class ImapStore extends Store {
                 if (response.get(0).equals("LIST")) {
                     boolean includeFolder = true;
                     String folder = decodeFolderName(response.getString(3));
-		    
+
+		    if(mPathDelimeter == null){ mPathDelimeter = response.getString(2); }
+
                     if (folder.equalsIgnoreCase(k9.INBOX)) {
                         continue;
                     }else{
 			if(mPathPrefix.length() > 0){
 			    if(folder.length() >= mPathPrefix.length() + 1){
 				folder = folder.substring(mPathPrefix.length() + 1);
+			    }
+			    if(!decodeFolderName(response.getString(3)).equals(mPathPrefix + mPathDelimeter + folder)){
+				includeFolder = false;
 			    }
 			}
 		    }
@@ -309,8 +315,9 @@ public class ImapStore extends Store {
 	public String getPrefixedName() {
 	    String prefixedName = "";
 	    if(mPathPrefix.length() > 0 && !mName.equalsIgnoreCase(k9.INBOX)){
-		prefixedName += mPathPrefix + ".";
+		prefixedName += mPathPrefix + mPathDelimeter;
 	    }
+
 	    prefixedName += mName;
 	    return prefixedName;
 	}
@@ -340,9 +347,18 @@ public class ImapStore extends Store {
             // * OK [UIDNEXT 57576] Predicted next UID
             // 2 OK [READ-WRITE] Select completed.
             try {
-                List<ImapResponse> responses = mConnection.executeSimpleCommand(
-                        String.format("SELECT \"%s\"",
-                                encodeFolderName(getPrefixedName())));
+	
+		if(mPathDelimeter == null){
+		    List<ImapResponse> nameResponses =
+			mConnection.executeSimpleCommand(String.format("LIST \"\" \"*%s\"", encodeFolderName(mName)));
+		    if(nameResponses.size() > 0){
+			mPathDelimeter = nameResponses.get(0).getString(2);
+		    }
+		}
+		List<ImapResponse> responses = mConnection.executeSimpleCommand(
+		    String.format("SELECT \"%s\"",
+				  encodeFolderName(getPrefixedName())));
+
                 /*
                  * If the command succeeds we expect the folder has been opened read-write
                  * unless we are notified otherwise in the responses.

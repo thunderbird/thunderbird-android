@@ -55,11 +55,11 @@
     -->
 <providers>
     <provider id="gmail" label="Gmail" domain="gmail.com">
-        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <incoming uri="imap+ssl+://imap.googlemail.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
     </provider>
     <provider id="google" label="Google" domain="google.com">
-        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <incoming uri="imap+ssl+://imap.googlemail.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
     </provider>
     <provider id="aol" label="AOL" domain="aol.com">

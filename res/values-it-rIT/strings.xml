@@ -192,4 +192,7 @@
   <string name="status_network_error">Errore di connessione</string>
   <string name="status_sending">Invio in corso\u2026</string>
   <string name="view_hide_details_action">Visualizza/Nascondi dettagli</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
 </resources>

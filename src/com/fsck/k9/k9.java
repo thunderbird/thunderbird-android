@@ -17,11 +17,9 @@ import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 
 public class k9 extends Application {
-	public static Application app = null;
-	
-    public static final String LOG_TAG = "k9";
-
+    public static Application app = null;
     public static File tempDirectory;
+    public static final String LOG_TAG = "k9";
 
     /**
      * If this is enabled there will be additional logging information sent to
@@ -87,12 +85,12 @@ public class k9 extends Application {
      * on each new folder and can be incremented with "Load more messages..." by the
      * VISIBLE_LIMIT_INCREMENT
      */
-    public static final int DEFAULT_VISIBLE_LIMIT = 25;
+    public static final int DEFAULT_VISIBLE_LIMIT = 100;
 
     /**
      * Number of additioanl messages to load when a user selectes "Load more messages..."
      */
-    public static final int VISIBLE_LIMIT_INCREMENT = 25;
+    public static final int VISIBLE_LIMIT_INCREMENT = 100;
 
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)

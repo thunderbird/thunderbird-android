@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="28px"
+    android:layout_height="19px"
     android:paddingRight="1px"
     android:paddingTop="3px"
     android:background="@drawable/folder_message_list_child_background">
@@ -10,42 +10,45 @@
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
         android:layout_width="4px"
-        android:layout_height="16px"
+        android:layout_height="20px"
         android:layout_centerVertical="true" />
     <TextView
         android:id="@+id/subject"
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="11sp"
+        android:textSize="12sp"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_width="250px"
+        android:layout_width="350px"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/from"
         android:paddingLeft="10px"
         android:layout_marginRight="1px" />
     <TextView
         android:id="@+id/from"
         android:textSize="9sp"
+        android:layout_toRightOf="@+id/subject"
+        android:ellipsize="end"
         android:singleLine="true"
-        android:layout_width="70px"
+        android:layout_width="85px"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorSecondary"
+        android:paddingLeft="5px"
         android:paddingRight="5px"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:drawablePadding="4px"
         />
     <TextView
         android:id="@+id/date"
         android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="9sp"
-        android:paddingRight="5px"
         android:singleLine="true"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="25px"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/from"
         />
 </RelativeLayout>

@@ -8,7 +8,7 @@
         android:background="@drawable/ic_email_thread_open_top_default">
         <TextView
             android:id="@+id/from"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorPrimaryInverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:layout_below="@id/from">
             <TextView
                 android:id="@+id/to_label"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="10sp"
                 android:textColor="?android:attr/textColorSecondaryInverse"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
@@ -42,12 +42,21 @@
                 android:id="@+id/to"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondaryInverse"
+                android:textSize="10sp"
                 android:layout_width="0dip"
                 android:layout_weight="1.0"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4px"
                 android:singleLine="false"
                 android:ellipsize="none" />
+           <TextView
+                android:id="@+id/date"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimaryInverse"
+                android:layout_width="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -59,15 +68,10 @@
                 android:id="@+id/subject"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondaryInverse"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 android:layout_width="0dip"
                 android:layout_weight="1.0"
-                android:layout_height="wrap_content" />
-           <TextView
-                android:id="@+id/date"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimaryInverse"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </RelativeLayout>

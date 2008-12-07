@@ -461,6 +461,7 @@ public class FolderMessageList extends ExpandableListActivity {
         MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(group, item);
         switch (keyCode) {
             case KeyEvent.KEYCODE_DEL: { onDelete(message); return true;}
+            case KeyEvent.KEYCODE_D: { onDelete(message); return true;}
             case KeyEvent.KEYCODE_C: { onCompose(); return true;}
             case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
             case KeyEvent.KEYCODE_F: { onForward(message); return true;}
@@ -1177,7 +1178,7 @@ public class FolderMessageList extends ExpandableListActivity {
                 holder.from.setText(message.sender);
                 holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
                 holder.date.setText(message.date);
-                holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                holder.subject.setCompoundDrawablesWithIntrinsicBounds(null, null,
                         message.hasAttachments ? mAttachmentIcon : null, null);
 //                if (folder.outbox) {
 //                    holder.status.setText("Sending");
