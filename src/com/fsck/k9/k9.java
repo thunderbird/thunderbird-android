@@ -64,13 +64,14 @@ public class k9 extends Application {
      * The MIME type(s) of attachments we're willing to download to SD.
      */
     public static final String[] ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
-        "*/*",
+        "image/*",
     };
 
     /**
      * The MIME type(s) of attachments we're not willing to download to SD.
      */
     public static final String[] UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
+        "image/gif",
     };
 
     /**
@@ -87,7 +88,7 @@ public class k9 extends Application {
     public static final int DEFAULT_VISIBLE_LIMIT = 100;
 
     /**
-     * Number of additional messages to load when a user selectes "Load more messages..."
+     * Number of additioanl messages to load when a user selectes "Load more messages..."
      */
     public static final int VISIBLE_LIMIT_INCREMENT = 100;
 
@@ -157,13 +158,6 @@ public class k9 extends Application {
          * doesn't work in Android and MimeMessage does not have access to a Context.
          */
         BinaryTempFileBody.setTempDirectory(getCacheDir());
-
-        /* 
-         * Enable background sync of messages
-         */
-   
-        setServicesEnabled(this);
-
     }
 }
 

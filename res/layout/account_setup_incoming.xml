@@ -94,6 +94,13 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/webdav_path_prefix_section"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="0px"

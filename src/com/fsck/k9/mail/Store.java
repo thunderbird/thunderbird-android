@@ -8,6 +8,7 @@ import android.app.Application;
 import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.Pop3Store;
+import com.fsck.k9.mail.store.WebDavStore;
 
 /**
  * Store is the access point for an email message store. It's location can be
@@ -54,7 +55,10 @@ public abstract class Store {
                 store = new Pop3Store(uri);
             } else if (uri.startsWith("local")) {
                 store = new LocalStore(uri, application);
+            } else if (uri.startsWith("webdav")) {
+                store = new WebDavStore(uri);
             }
+
 
             if (store != null) {
                 mStores.put(uri, store);

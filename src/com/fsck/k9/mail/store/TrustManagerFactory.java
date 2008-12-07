@@ -26,11 +26,11 @@ public final class TrustManagerFactory {
     private static X509TrustManager defaultTrustManager;
     private static X509TrustManager unsecureTrustManager;
 	private static X509TrustManager localTrustManager;
-
+	
 	private static SecureX509TrustManager secureTrustManager;
 
     private static X509Certificate[] lastCertChain = null;
-
+    
     private static File keyStoreFile;
     private static KeyStore keyStore;
 

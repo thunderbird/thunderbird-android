@@ -41,6 +41,12 @@ public class AccountSetupOutgoing extends Activity implements OnClickListener,
     private static final String smtpSchemes[] = {
             "smtp", "smtp+ssl", "smtp+ssl+", "smtp+tls", "smtp+tls+"
     };
+    private static final int webdavPorts[] = {
+        80, 443, 443, 443, 443
+    };
+    private static final String webdavSchemes[] = {
+    	"webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
+    };
 
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -72,6 +78,19 @@ public class AccountSetupOutgoing extends Activity implements OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_outgoing);
 
+        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        
+        try {
+			if (new URI(mAccount.getStoreUri()).getScheme().startsWith("webdav")) {
+				mAccount.setTransportUri(mAccount.getStoreUri());
+				AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+			}
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        
         mUsernameView = (EditText)findViewById(R.id.account_username);
         mPasswordView = (EditText)findViewById(R.id.account_password);
         mServerView = (EditText)findViewById(R.id.account_server);

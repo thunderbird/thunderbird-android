@@ -40,6 +40,12 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     private static final String imapSchemes[] = {
             "imap", "imap+ssl", "imap+ssl+", "imap+tls", "imap+tls+"
     };
+    private static final int webdavPorts[] = {
+            80, 443, 443, 443, 443
+    };
+    private static final String webdavSchemes[] = {
+        "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
+    };
 
     private int mAccountPorts[];
     private String mAccountSchemes[];
@@ -200,6 +206,10 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 if (uri.getPath() != null && uri.getPath().length() > 0) {
                     mImapPathPrefixView.setText(uri.getPath().substring(1));
                 }
+            } else if (uri.getScheme().startsWith("webdav")) {
+                serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
+                mAccountPorts = webdavPorts;
+                mAccountSchemes = webdavSchemes;
             } else {
                 throw new Error("Unknown account type: " + mAccount.getStoreUri());
             }
