@@ -29,7 +29,8 @@ public class AccountSetupComposition extends Activity {
     private EditText mAccountEmail;
     private EditText mAccountAlwaysBcc;
     private EditText mAccountName;
-
+    private EditText mAccountSentItems;
+    private EditText mAccountDeletedItems;
 
 
     public static void actionEditCompositionSettings(Activity context, Account account) {
@@ -68,6 +69,12 @@ public class AccountSetupComposition extends Activity {
         mAccountSignature = (EditText)findViewById(R.id.account_signature);
         mAccountSignature.setText(mAccount.getSignature());
 
+        mAccountSentItems = (EditText)findViewById(R.id.account_sent_items);
+        mAccountSentItems.setText(mAccount.getSentFolderName());
+
+        mAccountDeletedItems = (EditText)findViewById(R.id.account_deleted_items);
+        mAccountDeletedItems.setText(mAccount.getTrashFolderName());
+        
     }
 
     @Override
@@ -81,6 +88,8 @@ public class AccountSetupComposition extends Activity {
         mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString()); 
         mAccount.setName(mAccountName.getText().toString());
         mAccount.setSignature(mAccountSignature.getText().toString()); 
+        mAccount.setSentFolderName(mAccountSentItems.getText().toString()); 
+        mAccount.setTrashFolderName(mAccountDeletedItems.getText().toString()); 
 
         mAccount.save(Preferences.getPreferences(this));
 

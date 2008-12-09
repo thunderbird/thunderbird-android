@@ -259,6 +259,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_settings_sent_items_label">Sent Items Folder</string>
     <string name="account_settings_sent_items_summary">Save all sent messages to this folder</string>
 
+    <string name="account_settings_deleted_items_label">Deleted Items Folder</string>
+    <string name="account_settings_deleted_items_summary">Set the deleted items folder</string>
+
     <string name="account_delete_dlg_title">Remove</string>
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from Email.</string>
 
