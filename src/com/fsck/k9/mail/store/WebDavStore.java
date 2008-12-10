@@ -33,6 +33,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.TextBody;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpEntity;
@@ -877,79 +878,27 @@ public class WebDavStore extends Store {
                 return;
             }
 
-            /**
-             * Get message info for all messages here since it can be pulled with
-             * a single request.  Header data will be set in the for loop.
-             * Listener isn't started yet since it isn't a per-message lookup.
-             */
-            if (fp.contains(FetchProfile.Item.ENVELOPE)) {
-                fetchEnvelope(messages, listener);
+            if (needAuth()) {
+                authenticate();
+            }
+
+            if (WebDavStore.this.mAuthenticated == false ||
+                WebDavStore.this.mAuthCookies == null) {
+                return;
             }
 
             /**
-             * Check for flags and get the status here since it can be pulled with
-             * just one request.  Flags will be set inside the for loop.
-             * Listener isn't started yet since it isn't a per-message lookup.
+             * Fetch message flag info for the array
              */
             if (fp.contains(FetchProfile.Item.FLAGS)) {
-                DefaultHttpClient httpclient = new DefaultHttpClient();
-                String messageBody = new String();
-                String[] uids = new String[messages.length];
+                fetchFlags(messages, listener);
+            }
 
-                for (int i = 0, count = messages.length; i < count; i++) {
-                    uids[i] = messages[i].getUid();
-                }
-
-                httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
-                messageBody = getMessageFlagsXml(uids);
-
-                try {
-                    int status_code = -1;
-                    StringEntity messageEntity = new StringEntity(messageBody);
-                    HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
-                    HttpResponse response;
-                    HttpEntity entity;
-                
-                    messageEntity.setContentType("text/xml");
-                    httpmethod.setMethod("SEARCH");
-                    httpmethod.setEntity(messageEntity);
-                    httpmethod.setHeader("Brief", "t");
-
-                    response = httpclient.execute(httpmethod);
-                    status_code = response.getStatusLine().getStatusCode();
-
-                    if (status_code < 200 ||
-                        status_code > 300) {
-                        throw new IOException("Error getting message flags, returned HTTP Response code " + status_code);
-                    }
-
-                    entity = response.getEntity();
-
-                    if (entity != null) {
-                        try {
-                            InputStream istream = entity.getContent();
-                            SAXParserFactory spf = SAXParserFactory.newInstance();
-                            SAXParser sp = spf.newSAXParser();
-                            XMLReader xr = sp.getXMLReader();
-                            WebDavHandler myHandler = new WebDavHandler();
-                            ParsedDataSet dataset;
-                        
-                            xr.setContentHandler(myHandler);
-                            xr.parse(new InputSource(istream));
-
-                            dataset = myHandler.getDataSet();
-                            uidToReadStatus = dataset.getUidToRead();
-                        } catch (SAXException se) {
-                            Log.e(k9.LOG_TAG, "SAXException in fetch() " + se);
-                        } catch (ParserConfigurationException pce) {
-                            Log.e(k9.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
-                        }
-                    }
-                } catch (UnsupportedEncodingException uee) {
-                    Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
-                } catch (IOException ioe) {
-                    Log.e(k9.LOG_TAG, "IOException: " + ioe);
-                }
+            /**
+             * Fetch message envelope information for the array
+             */
+            if (fp.contains(FetchProfile.Item.ENVELOPE)) {
+                fetchEnvelope(messages, listener);
             }
 
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -960,10 +909,6 @@ public class WebDavStore extends Store {
 
                 if (listener != null) {
                     listener.messageStarted(wdMessage.getUid(), i, count);
-                }
-
-                if (fp.contains(FetchProfile.Item.FLAGS)) {
-                    wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
                 }
 
                 /**
@@ -990,10 +935,23 @@ public class WebDavStore extends Store {
 
                     try {
                         httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+
+                        /**
+                         * If fetch is called outside of the initial list (ie, a locally stored
+                         * stored message), it may not have a URL associated.  Verify and fix that
+                         */
+                        if (wdMessage.getUrl().equals("")) {
+                            wdMessage.setUrl(getMessageUrls(new String[] {wdMessage.getUid()}).get(wdMessage.getUid()));
+                            if (wdMessage.getUrl().equals("")) {
+                                throw new MessagingException("Unable to get URL for message");
+                            }
+                        }
+
                         httpget = new HttpGet(new URI(wdMessage.getUrl()));
                         httpget.setHeader("translate", "f");
 
                         response = httpclient.execute(httpget);
+
                         statusCode = response.getStatusLine().getStatusCode();
 
                         if (statusCode < 200 ||
@@ -1003,39 +961,32 @@ public class WebDavStore extends Store {
 
                         entity = response.getEntity();
                         if (entity != null) {
-                            String resultText = new String();
+                            StringBuffer buffer = new StringBuffer();
                             String tempText = new String();
+                            String resultText = new String();
+                            String bodyBoundary = "";
                             BufferedReader reader;
-
-                            resultText = "";
+                            int totalLines = FETCH_BODY_SANE_SUGGESTED_SIZE / 76;
+                            int lines = 0;
+                            
                             istream = entity.getContent();
-                            /**
-                             * Keep this commented out for now, messages won't display properly if
-                             * we do it like this.
-                             */
-                            /**
-                            if (fp.contains(FetchProfile.Item.BODY_SANE)) {
-                                int lines = FETCH_BODY_SANE_SUGGESTED_SIZE / 76;
-                                int line = 0;
 
-                                reader = new BufferedReader(new InputStreamReader(istream),4096);
+                            if (fp.contains(FetchProfile.Item.BODY_SANE)) {
+                                reader = new BufferedReader(new InputStreamReader(istream), 8192);
 
                                 while ((tempText = reader.readLine()) != null &&
-                                       (line < lines)) {
-                                    if (resultText.equals("")) {
-                                        resultText = tempText;
-                                    } else {
-                                        resultText = resultText + "\r\n" + tempText;
-                                    }
-
-                                    line++;
+                                       (lines < totalLines)) {
+                                    buffer.append(tempText+"\r\n");
+                                    lines++;
                                 }
 
                                 istream.close();
+                                resultText = buffer.toString();
                                 istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
-                                }*/
+                            }
 
                             wdMessage.parse(istream);
+
                         }
                 
                     } catch (IllegalArgumentException iae) {
@@ -1053,6 +1004,114 @@ public class WebDavStore extends Store {
             }
         }
 
+        /**
+         * Fetches and sets the message flags for the supplied messages.
+         * The idea is to have this be recursive so that we do a series of medium calls
+         * instead of one large massive call or a large number of smaller calls.
+         */
+        private void fetchFlags(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
+            HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+            String messageBody = new String();
+            Message[] messages = new Message[20];
+            String[] uids;
+            
+
+            if (startMessages == null ||
+                startMessages.length == 0) {
+                return;
+            }
+
+            if (startMessages.length > 20) {
+                Message[] newMessages = new Message[startMessages.length - 20];
+                for (int i = 0, count = startMessages.length; i < count; i++) {
+                    if (i < 20) {
+                        messages[i] = startMessages[i];
+                    } else {
+                        newMessages[i - 20] = startMessages[i];
+                    }
+                }
+
+                fetchFlags(newMessages, listener);
+            } else {
+                messages = startMessages;
+            }
+
+            uids = new String[messages.length];
+
+            for (int i = 0, count = messages.length; i < count; i++) {
+                uids[i] = messages[i].getUid();
+            }
+
+            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+            messageBody = getMessageFlagsXml(uids);
+
+            try {
+                int status_code = -1;
+                StringEntity messageEntity = new StringEntity(messageBody);
+                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
+                HttpResponse response;
+                HttpEntity entity;
+                
+                messageEntity.setContentType("text/xml");
+                httpmethod.setMethod("SEARCH");
+                httpmethod.setEntity(messageEntity);
+                httpmethod.setHeader("Brief", "t");
+
+                response = httpclient.execute(httpmethod);
+                status_code = response.getStatusLine().getStatusCode();
+                
+                if (status_code < 200 ||
+                    status_code > 300) {
+                    throw new IOException("Error getting message flags, returned HTTP Response code " + status_code);
+                }
+
+                entity = response.getEntity();
+                
+                if (entity != null) {
+                    try {
+                        InputStream istream = entity.getContent();
+                        SAXParserFactory spf = SAXParserFactory.newInstance();
+                        SAXParser sp = spf.newSAXParser();
+                        XMLReader xr = sp.getXMLReader();
+                        WebDavHandler myHandler = new WebDavHandler();
+                        ParsedDataSet dataset;
+                        
+                        xr.setContentHandler(myHandler);
+                        xr.parse(new InputSource(istream));
+                        
+                        dataset = myHandler.getDataSet();
+                        uidToReadStatus = dataset.getUidToRead();
+                    } catch (SAXException se) {
+                        Log.e(k9.LOG_TAG, "SAXException in fetch() " + se);
+                    } catch (ParserConfigurationException pce) {
+                        Log.e(k9.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
+                    }
+                }
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+            } catch (IOException ioe) {
+                Log.e(k9.LOG_TAG, "IOException: " + ioe);
+            }
+
+            for (int i = 0, count = messages.length; i < count; i++) {
+                if (!(messages[i] instanceof WebDavMessage)) {
+                    throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
+                }
+                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+                
+                if (listener != null) {
+                    listener.messageStarted(messages[i].getUid(), i, count);
+                }
+
+                wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
+
+                if (listener != null) {
+                    listener.messageFinished(messages[i], i, count);
+                }
+            }
+        }
+        
         /**
          * Fetches and parses the message envelopes for the supplied messages.
          * The idea is to have this be recursive so that we do a series of medium calls
@@ -1151,10 +1210,7 @@ public class WebDavStore extends Store {
                 if (listener != null) {
                     listener.messageStarted(messages[i].getUid(), i, count);
                 }
-                /**
-                ((WebDavMessage) messages[i]).setNewHeaders(envelopes.get(((WebDavMessage) messages[i]).getUid()));
-                ((WebDavMessage) messages[i]).setFlagInternal(Flag.SEEN, envelopes.get(((WebDavMessage) messages[i]).getUid()).getReadStatus());
-                */
+
                 wdMessage.setNewHeaders(envelopes.get(wdMessage.getUid()));
                 wdMessage.setFlagInternal(Flag.SEEN, envelopes.get(wdMessage.getUid()).getReadStatus());
 
@@ -1301,7 +1357,7 @@ public class WebDavStore extends Store {
      * A WebDav Message
      */
     class WebDavMessage extends MimeMessage {
-        private String mUrl = null;
+        private String mUrl = new String();
         
         WebDavMessage(String uid, Folder folder) throws MessagingException {
             this.mUid = uid;
