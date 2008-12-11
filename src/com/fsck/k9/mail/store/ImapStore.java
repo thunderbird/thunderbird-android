@@ -304,6 +304,7 @@ public class ImapStore extends Store {
     class ImapFolder extends Folder {
         private String mName;
         private int mMessageCount = -1;
+        private int mUIDNext = -1;
         private ImapConnection mConnection;
         private OpenMode mMode;
         private boolean mExists;
@@ -368,6 +369,13 @@ public class ImapStore extends Store {
                 for (ImapResponse response : responses) {
                     if (response.mTag == null && response.get(1).equals("EXISTS")) {
                         mMessageCount = response.getNumber(0);
+                    }
+                    else if (response.mTag == null && response.size() >= 4 && response.getString(3).equalsIgnoreCase("predicted")) {
+
+                        // we have a server which specifies the UID of next message that will come into this folder
+                        // get the value for UIDNEXT in this case.
+                        String mUIDNextStr = response.getString(2);
+                        mUIDNext = Integer.parseInt(mUIDNextStr.substring(0, mUIDNextStr.length()-1));
                     }
                     else if (response.mTag != null && response.size() >= 2) {
                         if ("[READ-ONLY]".equalsIgnoreCase(response.getString(1))) {
@@ -564,11 +572,21 @@ public class ImapStore extends Store {
         @Override
         public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
                 throws MessagingException {
+            int visibleLimit = end - start + 1;
             if (start < 1 || end < 1 || end < start) {
                 throw new MessagingException(
                         String.format("Invalid message set %d %d",
                                 start, end));
             }
+            // adjust start and end if UIDNEXT was seen in SELECT
+            // Note that mUIDNext will be 3 if there are 2 messages in the folder
+            // If there are 2 messages in the folder visibleLimit is 2
+            // This math avoids having to change non-store top level code
+            if (mUIDNext > 0) {
+                start = Math.max(1, mUIDNext - visibleLimit);
+                end = mUIDNext;
+            }
+
             checkOpen();
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
