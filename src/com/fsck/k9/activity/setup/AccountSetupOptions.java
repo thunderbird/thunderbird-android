@@ -23,6 +23,8 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
 
     private Spinner mCheckFrequencyView;
 
+    private Spinner mDisplayCountView;
+    
     private CheckBox mDefaultView;
 
     private CheckBox mNotifyView;
@@ -42,6 +44,7 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
         setContentView(R.layout.account_setup_options);
 
         mCheckFrequencyView = (Spinner)findViewById(R.id.account_check_frequency);
+        mDisplayCountView = (Spinner)findViewById(R.id.account_display_count);
         mDefaultView = (CheckBox)findViewById(R.id.account_default);
         mNotifyView = (CheckBox)findViewById(R.id.account_notify);
 
@@ -68,6 +71,22 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCheckFrequencyView.setAdapter(checkFrequenciesAdapter);
 
+        SpinnerOption displayCounts[] = {
+            new SpinnerOption(10,
+                              getString(R.string.account_setup_options_mail_display_count_10)),
+            new SpinnerOption(25,
+                              getString(R.string.account_setup_options_mail_display_count_25)),
+            new SpinnerOption(50,
+                              getString(R.string.account_setup_options_mail_display_count_50)),
+            new SpinnerOption(100,
+                              getString(R.string.account_setup_options_mail_display_count_100)),
+        };
+
+        ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<SpinnerOption>(this,
+                android.R.layout.simple_spinner_item, displayCounts);
+        displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mDisplayCountView.setAdapter(displayCountsAdapter);
+        
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
         boolean makeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
@@ -77,12 +96,16 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
         mNotifyView.setChecked(mAccount.isNotifyNewMail());
         SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
                 .getAutomaticCheckIntervalMinutes());
+        SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
+                .getDisplayCount());
     }
 
     private void onDone() {
         mAccount.setDescription(mAccount.getEmail());
         mAccount.setNotifyNewMail(mNotifyView.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption)mCheckFrequencyView
+                .getSelectedItem()).value);
+        mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView
                 .getSelectedItem()).value);
         mAccount.save(Preferences.getPreferences(this));
         if (mDefaultView.isChecked()) {

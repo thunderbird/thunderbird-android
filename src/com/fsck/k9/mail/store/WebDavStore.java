@@ -774,24 +774,25 @@ public class WebDavStore extends Store {
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener) throws MessagingException {
             ArrayList<Message> messageList = new ArrayList<Message>();
             Message[] messages;
-            
-            if (uids == null) {
-                messages = getMessages(0, k9.DEFAULT_VISIBLE_LIMIT, listener);
-            } else {
-                for (int i = 0, count = uids.length; i < count; i++) {
-                    if (listener != null) {
-                        listener.messageStarted(uids[i], i, count);
-                    }
 
-                    WebDavMessage message = new WebDavMessage(uids[i], this);
-                    messageList.add(message);
-                    
-                    if (listener != null) {
-                        listener.messageFinished(message, i, count);
-                    }
-                }
-                messages = messageList.toArray(new Message[] {});
+            if (uids == null ||
+                uids.length == 0) {
+                return messageList.toArray(new Message[] {});
             }
+            
+            for (int i = 0, count = uids.length; i < count; i++) {
+                if (listener != null) {
+                    listener.messageStarted(uids[i], i, count);
+                }
+
+                WebDavMessage message = new WebDavMessage(uids[i], this);
+                messageList.add(message);
+                    
+                if (listener != null) {
+                    listener.messageFinished(message, i, count);
+                }
+            }
+            messages = messageList.toArray(new Message[] {});
 
             return messages;
         }

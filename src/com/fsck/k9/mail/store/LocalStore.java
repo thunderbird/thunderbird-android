@@ -242,8 +242,12 @@ public class LocalStore extends Store {
     }
 
     public void resetVisibleLimits() {
+        resetVisibleLimits(k9.DEFAULT_VISIBLE_LIMIT);
+    }
+
+    public void resetVisibleLimits(int visibleLimit) {
         ContentValues cv = new ContentValues();
-        cv.put("visible_limit", Integer.toString(k9.DEFAULT_VISIBLE_LIMIT));
+        cv.put("visible_limit", Integer.toString(visibleLimit));
         mDb.update("folders", cv, null, null);
     }
 
@@ -401,6 +405,17 @@ public class LocalStore extends Store {
             mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[] {
                 mName,
                 k9.DEFAULT_VISIBLE_LIMIT 
+            });
+            return true;
+        }
+
+        public boolean create(FolderType type, int visibleLimit) throws MessagingException {
+            if (exists()) {
+                throw new MessagingException("Folder " + mName + " already exists.");
+            }
+            mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[] {
+                mName,
+                visibleLimit
             });
             return true;
         }

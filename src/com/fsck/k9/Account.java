@@ -30,6 +30,7 @@ public class Account implements Serializable {
     String mSignature;
     String mAlwaysBcc;
     int mAutomaticCheckIntervalMinutes;
+    int mDisplayCount;
     long mLastAutomaticCheckTime;
     boolean mNotifyNewMail;
     String mDraftsFolderName;
@@ -54,6 +55,7 @@ public class Account implements Serializable {
         mUuid = UUID.randomUUID().toString();
         mLocalStoreUri = "local://localhost/" + context.getDatabasePath(mUuid + ".db");
         mAutomaticCheckIntervalMinutes = -1;
+        mDisplayCount = -1;
         mAccountNumber = -1;
         mNotifyNewMail = true;
         mSignature = "Sent from my Android phone with K-9. Please excuse my brevity.";
@@ -82,6 +84,7 @@ public class Account implements Serializable {
         mSignature = preferences.mSharedPreferences.getString(mUuid + ".signature", mSignature);
         mAutomaticCheckIntervalMinutes = preferences.mSharedPreferences.getInt(mUuid
                 + ".automaticCheckIntervalMinutes", -1);
+        mDisplayCount = preferences.mSharedPreferences.getInt(mUuid + ".displayCount", -1);
         mLastAutomaticCheckTime = preferences.mSharedPreferences.getLong(mUuid
                 + ".lastAutomaticCheckTime", 0);
         mNotifyNewMail = preferences.mSharedPreferences.getBoolean(mUuid + ".notifyNewMail", 
@@ -259,6 +262,7 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".signature", mSignature);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
+        editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
         editor.putInt(mUuid + ".deletePolicy", mDeletePolicy);
@@ -295,11 +299,29 @@ public class Account implements Serializable {
         return mAutomaticCheckIntervalMinutes;
     }
 
+    public int getDisplayCount() {
+        if (mDisplayCount == -1) {
+            this.mDisplayCount = k9.DEFAULT_VISIBLE_LIMIT;
+        }
+        return mDisplayCount;
+    }
+
     /**
      * @param automaticCheckIntervalMinutes or -1 for never.
      */
     public void setAutomaticCheckIntervalMinutes(int automaticCheckIntervalMinutes) {
         this.mAutomaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
+    }
+
+    /**
+     * @param displayCount
+     */
+    public void setDisplayCount(int displayCount) {
+        if (displayCount != -1) {
+            this.mDisplayCount = displayCount;
+        } else {
+            this.mDisplayCount = k9.DEFAULT_VISIBLE_LIMIT;
+        }
     }
 
     public long getLastAutomaticCheckTime() {

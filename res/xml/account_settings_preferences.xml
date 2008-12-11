@@ -33,6 +33,12 @@
             android:entryValues="@array/account_settings_check_frequency_values"
             android:dialogTitle="@string/account_settings_mail_check_frequency_label" />
 
+        <ListPreference
+            android:key="account_display_count"
+            android:title="@string/account_settings_mail_display_count_label"
+            android:entries="@array/account_settings_display_count_entries"
+            android:entryValues="@array/account_settings_display_count_values"
+            android:dialogTitle="@string/account_settings_mail_display_count_label" />
 
         <PreferenceScreen
             android:key="composition"

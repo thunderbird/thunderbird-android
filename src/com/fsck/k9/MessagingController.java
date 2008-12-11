@@ -206,7 +206,7 @@ public class MessagingController implements Runnable {
                             Folder localFolder = localStore.getFolder(remoteFolders[i].getName());
                             if (!localFolder.exists()) {
 
-                                localFolder.create(FolderType.HOLDS_MESSAGES);
+                                localFolder.create(FolderType.HOLDS_MESSAGES, account.getDisplayCount());
                             }
                             remoteFolderNames.add(remoteFolders[i].getName());
                         }
@@ -297,7 +297,7 @@ public class MessagingController implements Runnable {
                     mApplication);
             LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
             localFolder.setVisibleLimit(localFolder.getVisibleLimit()
-                    + k9.VISIBLE_LIMIT_INCREMENT);
+                    + account.getDisplayCount());
             synchronizeMailbox(account, folder, listener);
         }
         catch (MessagingException me) {
@@ -310,7 +310,7 @@ public class MessagingController implements Runnable {
             try {
                 LocalStore localStore =
                     (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
-                localStore.resetVisibleLimits();
+                localStore.resetVisibleLimits(account.getDisplayCount());
             }
             catch (MessagingException e) {
                 Log.e(k9.LOG_TAG, "Unable to reset visible limits", e);

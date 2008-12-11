@@ -217,6 +217,13 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_options_default_label">Send email from this account by default.</string>
     <string name="account_setup_options_notify_label">Notify me when email arrives.</string>
 
+    <!-- Number of displayed messages, also used in account_settings_* -->
+    <string name="account_setup_options_mail_display_count_label">Number of emails to display</string>
+    <string name="account_setup_options_mail_display_count_10">10 Messages</string>
+    <string name="account_setup_options_mail_display_count_25">25 Messages</string>
+    <string name="account_setup_options_mail_display_count_50">50 Messages</string>
+    <string name="account_setup_options_mail_display_count_100">100 Messages</string>
+
     <string name="account_setup_failed_dlg_title">Setup could not finish</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
     <string name="account_setup_failed_dlg_certificate_message_fmt">Cannot safely connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
@@ -232,6 +239,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_settings_notify_summary">Notify in status bar when email arrives</string>
     <string name="account_settings_show_combined_label">Show combined Inbox</string>
     <string name="account_settings_mail_check_frequency_label">Email check frequency</string>
+    <string name="account_settings_mail_display_count_label">Number of emails to display</string>
     <string name="account_settings_incoming_label">Incoming settings</string>
     <string name="account_settings_incoming_summary">Configure the incoming email server</string>
     <string name="account_settings_outgoing_label">Outgoing settings</string>

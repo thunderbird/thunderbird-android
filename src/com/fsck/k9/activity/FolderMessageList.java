@@ -738,13 +738,13 @@ public class FolderMessageList extends ExpandableListActivity {
                     if (holder.name.equalsIgnoreCase(k9.INBOX)) {
                         holder.displayName = getString(R.string.special_mailbox_name_inbox);
                         // XXX TOOD nuke when we do this for all folders
-	                    try {
-	                        holder.unreadMessageCount = folder.getUnreadMessageCount();
-	                    }
-	                    catch (MessagingException me) {
-	                        Log.e(k9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
-	                    }
-	
+                        try {
+                            holder.unreadMessageCount = folder.getUnreadMessageCount();
+                        }
+                        catch (MessagingException me) {
+                            Log.e(k9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
+                        }
+    
                     }
                     else {
                         holder.displayName = folder.getName();
@@ -1131,7 +1131,8 @@ public class FolderMessageList extends ExpandableListActivity {
                 else {
                     if (folder.status == null) {
                         // holder.main.setText(getString(R.string.message_list_load_more_messages_action));
-			holder.main.setText("Load up to " + k9.VISIBLE_LIMIT_INCREMENT + " more");
+                        // holder.main.setText("Load up to " + k9.VISIBLE_LIMIT_INCREMENT + " more");
+                        holder.main.setText("Load up to " + mAccount.getDisplayCount() + " more");
                     }
                     else {
                         holder.main.setText(getString(R.string.status_loading_more_failed));

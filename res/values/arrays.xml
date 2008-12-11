@@ -34,4 +34,17 @@
         <item>60</item>  
     </string-array>
     
+    <string-array name="account_settings_display_count_entries">
+        <item>@string/account_setup_options_mail_display_count_10</item>
+        <item>@string/account_setup_options_mail_display_count_25</item>
+        <item>@string/account_setup_options_mail_display_count_50</item>
+        <item>@string/account_setup_options_mail_display_count_100</item>
+    </string-array>
+
+    <string-array name="account_settings_display_count_values">
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
 </resources>

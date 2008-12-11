@@ -25,6 +25,7 @@ public class AccountSettings extends PreferenceActivity {
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
+    private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
@@ -36,6 +37,7 @@ public class AccountSettings extends PreferenceActivity {
 
     private EditTextPreference mAccountDescription;
     private ListPreference mCheckFrequency;
+    private ListPreference mDisplayCount;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountVibrate;
@@ -84,6 +86,19 @@ public class AccountSettings extends PreferenceActivity {
             }
         });
 
+        mDisplayCount = (ListPreference) findPreference(PREFERENCE_DISPLAY_COUNT);
+        mDisplayCount.setValue(String.valueOf(mAccount.getDisplayCount()));
+        mDisplayCount.setSummary(mDisplayCount.getEntry());
+        mDisplayCount.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mDisplayCount.findIndexOfValue(summary);
+                mDisplayCount.setSummary(mDisplayCount.getEntries()[index]);
+                mDisplayCount.setValue(summary);
+                return false;
+            }
+        });
+        
         mAccountDefault = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT);
         mAccountDefault.setChecked(
                 mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
@@ -140,6 +155,7 @@ public class AccountSettings extends PreferenceActivity {
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
+        mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));

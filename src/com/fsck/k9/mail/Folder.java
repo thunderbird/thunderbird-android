@@ -41,6 +41,14 @@ public abstract class Folder {
 
     public abstract boolean create(FolderType type) throws MessagingException;
 
+    /**
+     * Create a new folder with a specified display limit.  Not abstract to allow 
+     * remote folders to not override or worry about this call if they don't care to.
+     */
+    public boolean create(FolderType type, int displayLimit) throws MessagingException {
+        return create(type);
+    }
+
     public abstract boolean exists() throws MessagingException;
 
     /**

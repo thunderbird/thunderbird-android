@@ -85,12 +85,12 @@ public class k9 extends Application {
      * on each new folder and can be incremented with "Load more messages..." by the
      * VISIBLE_LIMIT_INCREMENT
      */
-    public static final int DEFAULT_VISIBLE_LIMIT = 100;
+    public static int DEFAULT_VISIBLE_LIMIT = 25;
 
     /**
      * Number of additioanl messages to load when a user selectes "Load more messages..."
      */
-    public static final int VISIBLE_LIMIT_INCREMENT = 100;
+    public static int VISIBLE_LIMIT_INCREMENT = 25;
 
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)
