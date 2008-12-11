@@ -33,6 +33,7 @@ public class Account implements Serializable {
     int mDisplayCount;
     long mLastAutomaticCheckTime;
     boolean mNotifyNewMail;
+    boolean mNotifyRingtone;
     String mDraftsFolderName;
     String mSentFolderName;
     String mTrashFolderName;
@@ -58,6 +59,7 @@ public class Account implements Serializable {
         mDisplayCount = -1;
         mAccountNumber = -1;
         mNotifyNewMail = true;
+        mNotifyRingtone = false; 
         mSignature = "Sent from my Android phone with K-9. Please excuse my brevity.";
         mVibrate = false;
         mRingtoneUri = "content://settings/system/notification_sound";
@@ -88,6 +90,8 @@ public class Account implements Serializable {
         mLastAutomaticCheckTime = preferences.mSharedPreferences.getLong(mUuid
                 + ".lastAutomaticCheckTime", 0);
         mNotifyNewMail = preferences.mSharedPreferences.getBoolean(mUuid + ".notifyNewMail", 
+                false);
+        mNotifyRingtone = preferences.mSharedPreferences.getBoolean(mUuid + ".notifyRingtone", 
                 false);
         mDeletePolicy = preferences.mSharedPreferences.getInt(mUuid + ".deletePolicy", 0);
         mDraftsFolderName = preferences.mSharedPreferences.getString(mUuid  + ".draftsFolderName", 
@@ -265,6 +269,7 @@ public class Account implements Serializable {
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
+        editor.putBoolean(mUuid + ".notifyRingtone", mNotifyRingtone);
         editor.putInt(mUuid + ".deletePolicy", mDeletePolicy);
         editor.putString(mUuid + ".draftsFolderName", mDraftsFolderName);
         editor.putString(mUuid + ".sentFolderName", mSentFolderName);
@@ -331,6 +336,15 @@ public class Account implements Serializable {
     public void setLastAutomaticCheckTime(long lastAutomaticCheckTime) {
         this.mLastAutomaticCheckTime = lastAutomaticCheckTime;
     }
+
+    public boolean isNotifyRingtone() {
+        return mNotifyRingtone;
+    }
+
+    public void setNotifyRingtone(boolean notifyRingtone) {
+        this.mNotifyRingtone = notifyRingtone;
+    }
+
 
     public boolean isNotifyNewMail() {
         return mNotifyNewMail;

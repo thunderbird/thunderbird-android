@@ -160,7 +160,7 @@ public class MailService extends Service {
                 if (accountsWithNewMail.size() > 1) {
                     for (Account account1 : accountsWithNewMail.keySet()) {
                         if (account1.isVibrate()) vibrate = true;
-                        ringtone = account1.getRingtone();
+                        if (account1.isNotifyRingtone()) ringtone = account1.getRingtone();
                     }
                     Intent i = new Intent(context, Accounts.class);
                     PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
@@ -176,7 +176,7 @@ public class MailService extends Service {
                             getString(R.string.notification_new_one_account_fmt, totalNewMails,
                                     account1.getDescription()), pi);
                     vibrate = account1.isVibrate();
-                    ringtone = account1.getRingtone();
+                    if (account1.isNotifyRingtone()) ringtone = account1.getRingtone();
                 }
                 notif.defaults = Notification.DEFAULT_LIGHTS;
                 notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);

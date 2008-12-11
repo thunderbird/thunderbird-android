@@ -34,6 +34,11 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:text="@string/account_setup_options_notify_label" />
+    <CheckBox
+        android:id="@+id/account_notify_ringtone"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="@string/account_setup_options_notify_ringtone_label" />
     <View
         android:layout_width="fill_parent"
         android:layout_height="0px"
