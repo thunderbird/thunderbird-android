@@ -179,7 +179,7 @@ public class WebDavStore extends Store {
             messageEntity = new StringEntity(messageBody);
             messageEntity.setContentType("text/xml");
             
-            httpmethod = new HttpGeneric(this.mUrl + "/Exchange/" + this.mUsername);
+            httpmethod = new HttpGeneric(this.mUrl);// + "/Exchange/" + this.mUsername);
             httpmethod.setMethod("SEARCH");
             httpmethod.setEntity(messageEntity);
             httpmethod.setHeader("Brief", "t");
@@ -464,6 +464,22 @@ public class WebDavStore extends Store {
             if (cookies == null) {
                 throw new IOException("Error during authentication: No Cookies");
             }
+
+            /** Get the URL for the mailbox and set it for the store */
+            if (entity != null) {
+                InputStream istream = entity.getContent();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 8192);
+                String tempText = "";
+
+                while ((tempText = reader.readLine()) != null) {
+                    if (tempText.indexOf("BASE href") >= 0) {
+                        String[] tagParts = tempText.split("\"");
+                        this.mUrl = tagParts[1];
+                    }
+                }
+            }
+            
         } catch (UnsupportedEncodingException uee) {
             Log.e(k9.LOG_TAG, "Error encoding POST data for authencation");
         }
@@ -516,7 +532,8 @@ public class WebDavStore extends Store {
             }
 
             
-            this.mFolderUrl = WebDavStore.this.mUrl + "/Exchange/" + this.mLocalUsername + "/" + encodedName;
+            //this.mFolderUrl = WebDavStore.this.mUrl + "/Exchange/" + this.mLocalUsername + "/" + encodedName;
+            this.mFolderUrl = WebDavStore.this.mUrl + encodedName;
         }
 
         @Override
@@ -1202,7 +1219,9 @@ public class WebDavStore extends Store {
                 Log.e(k9.LOG_TAG, "IOException: " + ioe);
             }
 
-            for (int i = 0, count = messages.length; i < count; i++) {
+            int count = messages.length;
+            for (int i = messages.length - 1; i >= 0; i--) {
+                /*            for (int i = 0, count = messages.length; i < count; i++) {*/
                 if (!(messages[i] instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
