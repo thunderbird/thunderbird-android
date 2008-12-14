@@ -812,13 +812,19 @@ public class Pop3Store extends Store {
         }
 
         @Override
+        public boolean supportsFetchingFlags() {
+            return false;
+        }//isFlagSupported
+
+        @Override
         public boolean equals(Object o) {
             if (o instanceof Pop3Folder) {
                 return ((Pop3Folder) o).mName.equals(mName);
             }
             return super.equals(o);
         }
-    }
+                
+    }//Pop3Folder
 
     class Pop3Message extends MimeMessage {
         public Pop3Message(String uid, Pop3Folder folder) throws MessagingException {

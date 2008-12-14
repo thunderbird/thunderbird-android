@@ -96,6 +96,10 @@ public abstract class Folder {
 
     public abstract Flag[] getPermanentFlags() throws MessagingException;
 
+    public boolean supportsFetchingFlags() {
+        return true;
+    }//isFlagSupported
+
     @Override
     public String toString() {
         return getName();

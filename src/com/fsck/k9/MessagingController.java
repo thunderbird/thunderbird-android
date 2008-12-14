@@ -504,7 +504,9 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 Collections.reverse(unsyncedMessages);
 
                 FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.FLAGS);
+                if (remoteFolder.supportsFetchingFlags()) {
+                    fp.add(FetchProfile.Item.FLAGS);
+                }
                 fp.add(FetchProfile.Item.ENVELOPE);
                 remoteFolder.fetch(unsyncedMessages.toArray(new Message[0]), fp,
                         new MessageRetrievalListener() {
