@@ -1441,8 +1441,21 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     accounts = Preferences.getPreferences(context).getAccounts();
                 }
                 for (Account account : accounts) {
-                    sendPendingMessagesSynchronous(account);
-                    synchronizeMailboxSynchronous(account, k9.INBOX);
+                    //We do the math in seconds and not millis
+                    //since timers are not that accurate
+                    long now = (long)Math.floor(System.currentTimeMillis() / 1000);
+                    long autoCheckIntervalTime = account.getAutomaticCheckIntervalMinutes() * 60;
+                    long lastAutoCheckTime = (long)Math.ceil(account.getLastAutomaticCheckTime() / 1000);
+                    if (autoCheckIntervalTime>0
+                            && (now-lastAutoCheckTime)>autoCheckIntervalTime) {
+                        sendPendingMessagesSynchronous(account);
+                        synchronizeMailboxSynchronous(account, k9.INBOX);
+                        //This saves the last auto check time even if sync fails
+                        //TODO: Listen for both send and sync success and failures
+                        //and only save last auto check time is not errors
+                        account.setLastAutomaticCheckTime(now*1000);
+                        account.save(Preferences.getPreferences(context));
+                    }
                 }
                 for (MessagingListener l : mListeners) {
                     l.checkMailFinished(context, account);
