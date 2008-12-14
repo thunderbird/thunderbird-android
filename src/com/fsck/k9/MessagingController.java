@@ -548,22 +548,26 @@ s             * critical data as fast as possible, and then we'll fill in the de
                         });
             }
 
+            FetchProfile fp;
+            
             /*
              * Refresh the flags for any messages in the local store that we didn't just
              * download.
              */
-            FetchProfile fp = new FetchProfile();
-            fp.add(FetchProfile.Item.FLAGS);
-            remoteFolder.fetch(remoteMessages, fp, null);
-            for (Message remoteMessage : remoteMessages) {
-                Message localMessage = localFolder.getMessage(remoteMessage.getUid());
-                if (localMessage == null) {
-                    continue;
-                }
-                if (remoteMessage.isSet(Flag.SEEN) != localMessage.isSet(Flag.SEEN)) {
-                    localMessage.setFlag(Flag.SEEN, remoteMessage.isSet(Flag.SEEN));
-                    for (MessagingListener l : mListeners) {
-                        l.synchronizeMailboxNewMessage(account, folder, localMessage);
+            if (remoteFolder.supportsFetchingFlags()) {
+                fp = new FetchProfile();
+                fp.add(FetchProfile.Item.FLAGS);
+                remoteFolder.fetch(remoteMessages, fp, null);
+                for (Message remoteMessage : remoteMessages) {
+                    Message localMessage = localFolder.getMessage(remoteMessage.getUid());
+                    if (localMessage == null) {
+                        continue;
+                    }
+                    if (remoteMessage.isSet(Flag.SEEN) != localMessage.isSet(Flag.SEEN)) {
+                        localMessage.setFlag(Flag.SEEN, remoteMessage.isSet(Flag.SEEN));
+                        for (MessagingListener l : mListeners) {
+                            l.synchronizeMailboxNewMessage(account, folder, localMessage);
+                        }
                     }
                 }
             }
