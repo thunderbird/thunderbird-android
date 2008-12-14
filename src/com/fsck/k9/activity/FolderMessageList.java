@@ -453,26 +453,30 @@ public class FolderMessageList extends ExpandableListActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	//Shortcuts that work no matter what is selected
+    	switch (keyCode) {
+	        case KeyEvent.KEYCODE_C: { onCompose(); return true;}
+	        case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
+	    }//switch
+
+        //Shortcuts that only work when a message is selected
         int group = mListView.getPackedPositionGroup(mListView.getSelectedId());
         int item =(mListView.getSelectedItemPosition() -1 );
-                // Guard against hitting delete on group names
-                //
+        // Guard against hitting delete on group names
         try {
-        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(group, item);
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_DEL: { onDelete(message); return true;}
-            case KeyEvent.KEYCODE_D: { onDelete(message); return true;}
-            case KeyEvent.KEYCODE_C: { onCompose(); return true;}
-            case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
-            case KeyEvent.KEYCODE_F: { onForward(message); return true;}
-            case KeyEvent.KEYCODE_A: { onReplyAll(message); return true; } 
-            case KeyEvent.KEYCODE_R: { onReply(message); return true; }
+            MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(group, item);
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_DEL: { onDelete(message); return true;}
+                case KeyEvent.KEYCODE_D: { onDelete(message); return true;}
+                case KeyEvent.KEYCODE_F: { onForward(message); return true;}
+                case KeyEvent.KEYCODE_A: { onReplyAll(message); return true; }
+                case KeyEvent.KEYCODE_R: { onReply(message); return true; }
             }
         }
         finally {
-        return super.onKeyDown(keyCode, event);
+        	   return super.onKeyDown(keyCode, event);
         }
-    }
+    }//onKeyDown
 
 
     @Override
