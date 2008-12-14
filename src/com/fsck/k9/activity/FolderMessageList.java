@@ -457,6 +457,12 @@ public class FolderMessageList extends ExpandableListActivity {
     	switch (keyCode) {
 	        case KeyEvent.KEYCODE_C: { onCompose(); return true;}
 	        case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
+	        case KeyEvent.KEYCODE_S: { onEditAccount(); return true; }
+            case KeyEvent.KEYCODE_L: {
+                long lastAutoCheckTime = mAccount.getLastAutomaticCheckTime();
+                Toast.makeText(this, (new Date(lastAutoCheckTime)).toString(), Toast.LENGTH_LONG).show();
+                return true;
+	        }
 	    }//switch
 
         //Shortcuts that only work when a message is selected
