@@ -158,6 +158,13 @@ public class k9 extends Application {
          * doesn't work in Android and MimeMessage does not have access to a Context.
          */
         BinaryTempFileBody.setTempDirectory(getCacheDir());
+
+        /* 
+         * Enable background sync of messages
+         */
+   
+        setServicesEnabled(this);
+
     }
 }
 
