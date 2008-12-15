@@ -442,18 +442,28 @@ public class WebDavStore extends Store {
                                         String url) throws IOException {
         String authPath = "/exchweb/bin/auth/owaauth.dll";
         CookieStore cookies = null;
+        String[] urlParts = url.split("/");
+        String finalUrl = "";
+
+        for (int i = 0; i <= 2; i++) {
+            if (i != 0) {
+                finalUrl = finalUrl + "/" + urlParts[i];
+            } else {
+                finalUrl = urlParts[i];
+            }
+        }
             
         /* Browser Client */
         DefaultHttpClient httpclient = new DefaultHttpClient();
 
         /* Post Method */
-        HttpPost httppost = new HttpPost(url + authPath);
+        HttpPost httppost = new HttpPost(finalUrl + authPath);
 
         /** Build the POST data to use */
         ArrayList<BasicNameValuePair> pairs = new ArrayList();
         pairs.add(new BasicNameValuePair("username", username));
         pairs.add(new BasicNameValuePair("password", password));
-        pairs.add(new BasicNameValuePair("destination", url + "/Exchange/"));
+        pairs.add(new BasicNameValuePair("destination", finalUrl + "/Exchange/"));
         pairs.add(new BasicNameValuePair("flags", "0"));
         pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
         pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
