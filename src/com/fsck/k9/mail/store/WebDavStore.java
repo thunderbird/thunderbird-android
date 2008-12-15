@@ -79,7 +79,8 @@ public class WebDavStore extends Store {
     private boolean mAuthenticated = false; /* Stores authentication state */
     private long mLastAuth = -1; /* Stores the timestamp of last auth */
     private long mAuthTimeout = 5 * 60;
-    
+
+    private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
     /**
      * webdav://user:password@server:port CONNECTION_SECURITY_NONE
      * webdav+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
@@ -216,10 +217,19 @@ public class WebDavStore extends Store {
                     for (int i = 0; i < urlLength; i++) {
                         String[] urlParts = folderUrls[i].split("/");
                         String folderName = urlParts[urlParts.length - 1];
+                        String fullUrl = "";
+                        WebDavFolder wdFolder;
+                        
                         if (folderName.equalsIgnoreCase(k9.INBOX)) {
                             folderName = "INBOX";
                         }
-                        folderList.add(getFolder(java.net.URLDecoder.decode(folderName, "UTF-8")));
+
+                        folderName = java.net.URLDecoder.decode(folderName, "UTF-8");
+                        wdFolder = new WebDavFolder(folderName);
+                        wdFolder.setUrl(folderUrls[i]);
+                        folderList.add(wdFolder);
+                        this.mFolderList.put(folderName, wdFolder);
+                        //folderList.add(getFolder(java.net.URLDecoder.decode(folderName, "UTF-8")));
                     }
                 } catch (SAXException se) {
                     Log.e(k9.LOG_TAG, "Error with SAXParser " + se);
@@ -239,7 +249,11 @@ public class WebDavStore extends Store {
     @Override
     public Folder getFolder(String name) throws MessagingException {
         WebDavFolder folder;
-        folder = new WebDavFolder(name);
+
+        if ((folder = this.mFolderList.get(name)) == null) {
+            folder = new WebDavFolder(name);
+        }
+
         return folder;
     }
 
@@ -252,7 +266,8 @@ public class WebDavStore extends Store {
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:ishidden\"\r\n");
-        buffer.append(" FROM \"\"\r\n");
+        //        buffer.append(" FROM \"\"\r\n");
+        buffer.append(" FROM SCOPE('deep traversal of \""+this.mUrl+"\"')\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
 
@@ -534,6 +549,12 @@ public class WebDavStore extends Store {
             
             //this.mFolderUrl = WebDavStore.this.mUrl + "/Exchange/" + this.mLocalUsername + "/" + encodedName;
             this.mFolderUrl = WebDavStore.this.mUrl + encodedName;
+        }
+
+        public void setUrl(String url) {
+            if (url != null) {
+                this.mFolderUrl = url;
+            }
         }
 
         @Override
