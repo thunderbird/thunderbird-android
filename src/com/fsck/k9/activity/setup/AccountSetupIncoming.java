@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -254,7 +256,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
         mNextButton
                 .setEnabled(Utility.requiredFieldValid(mUsernameView)
                         && Utility.requiredFieldValid(mPasswordView)
-                        && Utility.requiredFieldValid(mServerView)
+                        && Utility.domainFieldValid(mServerView)
                         && Utility.requiredFieldValid(mPortView));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
@@ -301,31 +303,32 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     }
 
     private void onNext() {
-        int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-        try {
-            String path = null;
-            if (mAccountSchemes[securityType].startsWith("imap")) {
-                path = "/" + mImapPathPrefixView.getText();
-            }
-            URI uri = new URI(
-                    mAccountSchemes[securityType],
-                    mUsernameView.getText() + ":" + mPasswordView.getText(),
-                    mServerView.getText().toString(),
-                    Integer.parseInt(mPortView.getText().toString()),
-                    path, // path
-                    null, // query
-                    null);
-            mAccount.setStoreUri(uri.toString());
-        } catch (URISyntaxException use) {
-            /*
-             * It's unrecoverable if we cannot create a URI from components that
-             * we validated to be safe.
-             */
-            throw new Error(use);
-        }
+    	int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
+    	try {
+    		String path = null;
+    		if (mAccountSchemes[securityType].startsWith("imap")) {
+    			path = "/" + mImapPathPrefixView.getText();
+    		}
+    		URI uri = new URI(
+    				mAccountSchemes[securityType],
+    				mUsernameView.getText() + ":" + mPasswordView.getText(),
+    				mServerView.getText().toString(),
+    				Integer.parseInt(mPortView.getText().toString()),
+    				path, // path
+    				null, // query
+    				null);
+    		mAccount.setStoreUri(uri.toString());
+    	} catch (URISyntaxException use) {
+    		/*
+    		 * It's unrecoverable if we cannot create a URI from components that
+    		 * we validated to be safe.
+    		 */
+    		throw new Error(use);
+    	}
 
-        mAccount.setDeletePolicy((Integer)((SpinnerOption)mDeletePolicyView.getSelectedItem()).value);
-        AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
+    	mAccount.setDeletePolicy((Integer)((SpinnerOption)mDeletePolicyView.getSelectedItem()).value);
+    	AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
+
     }
 
     public void onClick(View v) {

@@ -222,7 +222,7 @@ public class AccountSetupOutgoing extends Activity implements OnClickListener,
     private void validateFields() {
         mNextButton
                 .setEnabled(
-                        Utility.requiredFieldValid(mServerView) && 
+                        Utility.domainFieldValid(mServerView) && 
                         Utility.requiredFieldValid(mPortView) && 
                         (!mRequireLoginView.isChecked() || 
                                 (Utility.requiredFieldValid(mUsernameView) && 
