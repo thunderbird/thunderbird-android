@@ -217,14 +217,22 @@ public class WebDavStore extends Store {
                     for (int i = 0; i < urlLength; i++) {
                         String[] urlParts = folderUrls[i].split("/");
                         String folderName = urlParts[urlParts.length - 1];
-                        String fullUrl = "";
+                        String fullPathName = "";
                         WebDavFolder wdFolder;
                         
                         if (folderName.equalsIgnoreCase(k9.INBOX)) {
                             folderName = "INBOX";
+                        } else {
+                            for (int j = 5, count = urlParts.length; j < count; j++) {
+                                if (j != 5) {
+                                    fullPathName = fullPathName + "/" + urlParts[j];
+                                } else {
+                                    fullPathName = urlParts[j];
+                                }
+                            }
+                            folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
                         }
 
-                        folderName = java.net.URLDecoder.decode(folderName, "UTF-8");
                         wdFolder = new WebDavFolder(folderName);
                         wdFolder.setUrl(folderUrls[i]);
                         folderList.add(wdFolder);
