@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/refresh"
+        android:alphabeticShortcut="r"
+		android:title="@string/refresh_action"
+		android:icon="@drawable/ic_menu_refresh"
+	/>
+    <item
+		android:id="@+id/compose"
+        android:alphabeticShortcut="c"
+		android:title="@string/compose_action"
+		android:icon="@drawable/ic_menu_compose"
+	/>
+    <item
+		android:id="@+id/accounts"
+		android:title="@string/accounts_action"
+		android:icon="@drawable/ic_menu_account_list"
+	/>
+    <item
+		android:id="@+id/account_settings"
+		android:title="@string/account_settings_action"
+		android:icon="@android:drawable/ic_menu_preferences"
+	/>
+    <!-- 
+		<item android:id="@+id/search"
+		android:title="@string/search_action" />
+		<item android:id="@+id/preferences"
+		android:title="@string/preferences_action" />
+	-->
+</menu>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="100sp" />
+    <TextView
+        android:id="@+id/message"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?android:attr/textColorPrimary"
+        android:paddingBottom="6px" />
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        style="?android:attr/progressBarStyleHorizontal" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_weight="1" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="54px"
+        android:background="@drawable/bottombar_565">
+        <Button
+            android:id="@+id/cancel"
+            android:text="@string/cancel_action"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:minWidth="@dimen/button_minWidth"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+</LinearLayout>
