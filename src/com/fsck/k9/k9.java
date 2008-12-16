@@ -41,7 +41,7 @@ public class k9 extends Application {
      * with Intent.ACTION_SEND.
      */
     public static final String[] ACCEPTABLE_ATTACHMENT_SEND_TYPES = new String[] {
-        "image/*",
+        "*/*",
     };
 
     /**
@@ -64,7 +64,7 @@ public class k9 extends Application {
      * The MIME type(s) of attachments we're willing to download to SD.
      */
     public static final String[] ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
-        "image/*",
+        "*/*",
     };
 
     /**
