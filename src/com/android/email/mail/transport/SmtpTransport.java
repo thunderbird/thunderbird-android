@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.transport;
+package com.android.email.mail.transport;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -21,17 +21,17 @@ import javax.net.ssl.SSLException;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.k9;
-import com.fsck.k9.PeekableInputStream;
-import com.fsck.k9.codec.binary.Base64;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.store.TrustManagerFactory;
+import com.android.email.Email;
+import com.android.email.PeekableInputStream;
+import com.android.email.codec.binary.Base64;
+import com.android.email.mail.Address;
+import com.android.email.mail.AuthenticationFailedException;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Transport;
+import com.android.email.mail.CertificateValidationException;
+import com.android.email.mail.Message.RecipientType;
+import com.android.email.mail.store.TrustManagerFactory;
 
 public class SmtpTransport extends Transport {
     public static final int CONNECTION_SECURITY_NONE = 0;
@@ -150,8 +150,8 @@ public class SmtpTransport extends Transport {
                 }
             } catch (Exception e) {
                 if (Config.LOGD) {
-                    if (k9.DEBUG) {
-                        Log.d(k9.LOG_TAG, "Unable to look up localhost");
+                    if (Email.DEBUG) {
+                        Log.d(Email.LOG_TAG, "Unable to look up localhost");
                     }
                 }
             }
@@ -283,8 +283,8 @@ public class SmtpTransport extends Transport {
         }
         String ret = sb.toString();
         if (Config.LOGD) {
-            if (k9.DEBUG) {
-                Log.d(k9.LOG_TAG, "<<< " + ret);
+            if (Email.DEBUG) {
+                Log.d(Email.LOG_TAG, "<<< " + ret);
             }
         }
         return ret;
@@ -292,8 +292,8 @@ public class SmtpTransport extends Transport {
 
     private void writeLine(String s) throws IOException {
         if (Config.LOGD) {
-            if (k9.DEBUG) {
-                Log.d(k9.LOG_TAG, ">>> " + s);
+            if (Email.DEBUG) {
+                Log.d(Email.LOG_TAG, ">>> " + s);
             }
         }
         mOut.write(s.getBytes());

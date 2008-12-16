@@ -1,5 +1,5 @@
 
-package com.fsck.k9;
+package com.android.email;
 
 import java.io.IOException;
 import java.io.InputStream;

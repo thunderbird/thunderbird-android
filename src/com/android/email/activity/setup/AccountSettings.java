@@ -1,5 +1,5 @@
 
-package com.fsck.k9.activity.setup;
+package com.android.email.activity.setup;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,10 +13,10 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.RingtonePreference;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.k9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
+import com.android.email.Account;
+import com.android.email.Email;
+import com.android.email.Preferences;
+import com.android.email.R;
 
 public class AccountSettings extends PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
@@ -166,7 +166,7 @@ public class AccountSettings extends PreferenceActivity {
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));
         mAccount.save(Preferences.getPreferences(this));
-        k9.setServicesEnabled(this);
+        Email.setServicesEnabled(this);
     }
 
     @Override

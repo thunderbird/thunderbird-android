@@ -1,5 +1,5 @@
 
-package com.fsck.k9.activity;
+package com.android.email.activity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,32 +48,32 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.k9;
-import com.fsck.k9.MessagingController;
-import com.fsck.k9.MessagingListener;
-import com.fsck.k9.R;
-import com.fsck.k9.Utility;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
-import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.provider.AttachmentProvider;
+import com.android.email.Account;
+import com.android.email.Email;
+import com.android.email.MessagingController;
+import com.android.email.MessagingListener;
+import com.android.email.R;
+import com.android.email.Utility;
+import com.android.email.mail.Address;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Multipart;
+import com.android.email.mail.Part;
+import com.android.email.mail.Message.RecipientType;
+import com.android.email.mail.internet.MimeHeader;
+import com.android.email.mail.internet.MimeUtility;
+import com.android.email.mail.store.LocalStore.LocalAttachmentBody;
+import com.android.email.mail.store.LocalStore.LocalAttachmentBodyPart;
+import com.android.email.mail.store.LocalStore.LocalMessage;
+import com.android.email.provider.AttachmentProvider;
 
 public class MessageView extends Activity
         implements UrlInterceptHandler, OnClickListener {
-    private static final String EXTRA_ACCOUNT = "com.fsck.k9.MessageView_account";
-    private static final String EXTRA_FOLDER = "com.fsck.k9.MessageView_folder";
-    private static final String EXTRA_MESSAGE = "com.fsck.k9.MessageView_message";
-    private static final String EXTRA_FOLDER_UIDS = "com.fsck.k9.MessageView_folderUids";
-    private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
+    private static final String EXTRA_ACCOUNT = "com.android.email.MessageView_account";
+    private static final String EXTRA_FOLDER = "com.android.email.MessageView_folder";
+    private static final String EXTRA_MESSAGE = "com.android.email.MessageView_message";
+    private static final String EXTRA_FOLDER_UIDS = "com.android.email.MessageView_folderUids";
+    private static final String EXTRA_NEXT = "com.android.email.MessageView_next";
 
     private TextView mFromView;
     private TextView mDateView;
@@ -656,19 +656,19 @@ public class MessageView extends Activity
             Button attachmentDownload = (Button)view.findViewById(R.id.download);
 
             if ((!MimeUtility.mimeTypeMatches(attachment.contentType,
-                    k9.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
+                    Email.ACCEPTABLE_ATTACHMENT_VIEW_TYPES))
                     || (MimeUtility.mimeTypeMatches(attachment.contentType,
-                            k9.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES))) {
+                            Email.UNACCEPTABLE_ATTACHMENT_VIEW_TYPES))) {
                 attachmentView.setVisibility(View.GONE);
             }
             if ((!MimeUtility.mimeTypeMatches(attachment.contentType,
-                    k9.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
+                    Email.ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))
                     || (MimeUtility.mimeTypeMatches(attachment.contentType,
-                            k9.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))) {
+                            Email.UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES))) {
                 attachmentDownload.setVisibility(View.GONE);
             }
 
-            if (attachment.size > k9.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
+            if (attachment.size > Email.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
                 attachmentView.setVisibility(View.GONE);
                 attachmentDownload.setVisibility(View.GONE);
             }
@@ -724,7 +724,7 @@ public class MessageView extends Activity
             }
             catch (MessagingException me) {
                 if (Config.LOGV) {
-                    Log.v(k9.LOG_TAG, "loadMessageForViewHeadersAvailable", me);
+                    Log.v(Email.LOG_TAG, "loadMessageForViewHeadersAvailable", me);
                 }
             }
         }
@@ -790,7 +790,7 @@ public class MessageView extends Activity
             }
             catch (Exception e) {
                 if (Config.LOGV) {
-                    Log.v(k9.LOG_TAG, "loadMessageForViewBodyAvailable", e);
+                    Log.v(Email.LOG_TAG, "loadMessageForViewBodyAvailable", e);
                 }
             }
         }

@@ -1,8 +1,8 @@
 
-package com.fsck.k9.mail;
+package com.android.email.mail;
 
-import com.fsck.k9.mail.transport.SmtpTransport;
-import com.fsck.k9.mail.transport.WebDavTransport;
+import com.android.email.mail.transport.SmtpTransport;
+import com.android.email.mail.transport.WebDavTransport;
 
 public abstract class Transport {
     protected static final int SOCKET_CONNECT_TIMEOUT = 10000;

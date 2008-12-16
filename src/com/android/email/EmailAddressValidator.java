@@ -1,7 +1,7 @@
 
-package com.fsck.k9;
+package com.android.email;
 
-import com.fsck.k9.mail.Address;
+import com.android.email.mail.Address;
 
 import android.util.Config;
 import android.util.Log;

@@ -1,9 +1,9 @@
 
-package com.fsck.k9.activity;
+package com.android.email.activity;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.k9;
-import com.fsck.k9.Preferences;
+import com.android.email.Account;
+import com.android.email.Email;
+import com.android.email.Preferences;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,7 +26,7 @@ public class Welcome extends Activity {
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         if (accounts.length == 1) {
-            FolderMessageList.actionHandleAccount(this, accounts[0], k9.INBOX);
+            FolderMessageList.actionHandleAccount(this, accounts[0], Email.INBOX);
         } else {
             startActivity(new Intent(this, Accounts.class));
         }

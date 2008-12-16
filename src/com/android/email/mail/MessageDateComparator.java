@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail;
+package com.android.email.mail;
 
 import java.util.Comparator;
 

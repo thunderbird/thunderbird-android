@@ -1,5 +1,5 @@
 
-package com.fsck.k9;
+package com.android.email;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -306,7 +306,7 @@ public class Account implements Serializable {
 
     public int getDisplayCount() {
         if (mDisplayCount == -1) {
-            this.mDisplayCount = k9.DEFAULT_VISIBLE_LIMIT;
+            this.mDisplayCount = Email.DEFAULT_VISIBLE_LIMIT;
         }
         return mDisplayCount;
     }
@@ -325,7 +325,7 @@ public class Account implements Serializable {
         if (displayCount != -1) {
             this.mDisplayCount = displayCount;
         } else {
-            this.mDisplayCount = k9.DEFAULT_VISIBLE_LIMIT;
+            this.mDisplayCount = Email.DEFAULT_VISIBLE_LIMIT;
         }
     }
 

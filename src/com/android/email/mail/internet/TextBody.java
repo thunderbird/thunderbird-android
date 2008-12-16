@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.internet;
+package com.android.email.mail.internet;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -8,9 +8,9 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 
-import com.fsck.k9.codec.binary.Base64;
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.MessagingException;
+import com.android.email.codec.binary.Base64;
+import com.android.email.mail.Body;
+import com.android.email.mail.MessagingException;
 
 public class TextBody implements Body {
     String mBody;

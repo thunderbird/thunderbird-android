@@ -1,5 +1,5 @@
 
-package com.fsck.k9.service;
+package com.android.email.service;
 
 import java.util.HashMap;
 
@@ -17,21 +17,21 @@ import android.util.Log;
 import android.text.TextUtils;
 import android.net.Uri;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.k9;
-import com.fsck.k9.MessagingController;
-import com.fsck.k9.MessagingListener;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.activity.Accounts;
-import com.fsck.k9.activity.FolderMessageList;
+import com.android.email.Account;
+import com.android.email.Email;
+import com.android.email.MessagingController;
+import com.android.email.MessagingListener;
+import com.android.email.Preferences;
+import com.android.email.R;
+import com.android.email.activity.Accounts;
+import com.android.email.activity.FolderMessageList;
 
 /**
  */
 public class MailService extends Service {
-    private static final String ACTION_CHECK_MAIL = "com.fsck.k9.intent.action.MAIL_SERVICE_WAKEUP";
-    private static final String ACTION_RESCHEDULE = "com.fsck.k9.intent.action.MAIL_SERVICE_RESCHEDULE";
-    private static final String ACTION_CANCEL = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL";
+    private static final String ACTION_CHECK_MAIL = "com.android.email.intent.action.MAIL_SERVICE_WAKEUP";
+    private static final String ACTION_RESCHEDULE = "com.android.email.intent.action.MAIL_SERVICE_RESCHEDULE";
+    private static final String ACTION_CANCEL = "com.android.email.intent.action.MAIL_SERVICE_CANCEL";
 
     private Listener mListener = new Listener();
 
@@ -59,20 +59,20 @@ public class MailService extends Service {
         MessagingController.getInstance(getApplication()).addListener(mListener);
         if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
             if (Config.LOGV) {
-                Log.v(k9.LOG_TAG, "***** MailService *****: checking mail");
+                Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
             }
             MessagingController.getInstance(getApplication()).checkMail(this, null, mListener);
         }
         else if (ACTION_CANCEL.equals(intent.getAction())) {
             if (Config.LOGV) {
-                Log.v(k9.LOG_TAG, "***** MailService *****: cancel");
+                Log.v(Email.LOG_TAG, "***** MailService *****: cancel");
             }
             cancel();
             stopSelf(startId);
         }
         else if (ACTION_RESCHEDULE.equals(intent.getAction())) {
             if (Config.LOGV) {
-                Log.v(k9.LOG_TAG, "***** MailService *****: reschedule");
+                Log.v(Email.LOG_TAG, "***** MailService *****: reschedule");
             }
             reschedule();
             stopSelf(startId);
@@ -88,7 +88,7 @@ public class MailService extends Service {
     private void cancel() {
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
-        i.setClassName("com.fsck.k9", "com.fsck.k9.service.MailService");
+        i.setClassName("com.android.email", "com.android.email.service.MailService");
         i.setAction(ACTION_CHECK_MAIL);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         alarmMgr.cancel(pi);
@@ -97,7 +97,7 @@ public class MailService extends Service {
     private void reschedule() {
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
-        i.setClassName("com.fsck.k9", "com.fsck.k9.service.MailService");
+        i.setClassName("com.android.email", "com.android.email.service.MailService");
         i.setAction(ACTION_CHECK_MAIL);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
 
@@ -170,7 +170,7 @@ public class MailService extends Service {
                 } else {
                     Account account1 = accountsWithNewMail.keySet().iterator().next();
                     int totalNewMails = accountsWithNewMail.get(account1);
-                    Intent i = FolderMessageList.actionHandleAccountIntent(context, account1, k9.INBOX);
+                    Intent i = FolderMessageList.actionHandleAccountIntent(context, account1, Email.INBOX);
                     PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
                     notif.setLatestEventInfo(context, getString(R.string.notification_new_title),
                             getString(R.string.notification_new_one_account_fmt, totalNewMails,

@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store;
+package com.android.email.mail.store;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,17 +23,17 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.fsck.k9.k9;
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.internet.MimeBodyPart;
-import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.TextBody;
+import com.android.email.Email;
+import com.android.email.mail.FetchProfile;
+import com.android.email.mail.Flag;
+import com.android.email.mail.Folder;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessageRetrievalListener;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Store;
+import com.android.email.mail.internet.MimeBodyPart;
+import com.android.email.mail.internet.MimeMessage;
+import com.android.email.mail.internet.TextBody;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpEntity;
@@ -150,7 +150,7 @@ public class WebDavStore extends Store {
 
     @Override
     public void checkSettings() throws MessagingException {
-        Log.e(k9.LOG_TAG, "WebDavStore.checkSettings() not implemented");
+        Log.e(Email.LOG_TAG, "WebDavStore.checkSettings() not implemented");
     }
 
     @Override
@@ -220,7 +220,7 @@ public class WebDavStore extends Store {
                         String fullPathName = "";
                         WebDavFolder wdFolder;
                         
-                        if (folderName.equalsIgnoreCase(k9.INBOX)) {
+                        if (folderName.equalsIgnoreCase(Email.INBOX)) {
                             folderName = "INBOX";
                         } else {
                             for (int j = 5, count = urlParts.length; j < count; j++) {
@@ -240,15 +240,15 @@ public class WebDavStore extends Store {
                         //folderList.add(getFolder(java.net.URLDecoder.decode(folderName, "UTF-8")));
                     }
                 } catch (SAXException se) {
-                    Log.e(k9.LOG_TAG, "Error with SAXParser " + se);
+                    Log.e(Email.LOG_TAG, "Error with SAXParser " + se);
                 } catch (ParserConfigurationException pce) {
-                    Log.e(k9.LOG_TAG, "Error with SAXParser " + pce);
+                    Log.e(Email.LOG_TAG, "Error with SAXParser " + pce);
                 }
             }
         } catch (UnsupportedEncodingException uee) {
-            Log.e(k9.LOG_TAG, "Error with encoding " + uee);
+            Log.e(Email.LOG_TAG, "Error with encoding " + uee);
         } catch (IOException ioe) {
-            Log.e(k9.LOG_TAG, "IOException " + ioe);
+            Log.e(Email.LOG_TAG, "IOException " + ioe);
         } 
 
         return folderList.toArray(new WebDavFolder[] {});
@@ -412,7 +412,7 @@ public class WebDavStore extends Store {
         try {
             this.mAuthCookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
         } catch (IOException ioe) {
-            Log.e(k9.LOG_TAG, "Error during authentication: " + ioe);
+            Log.e(Email.LOG_TAG, "Error during authentication: " + ioe);
             this.mAuthCookies = null;
         }
         
@@ -514,7 +514,7 @@ public class WebDavStore extends Store {
             }
             
         } catch (UnsupportedEncodingException uee) {
-            Log.e(k9.LOG_TAG, "Error encoding POST data for authencation");
+            Log.e(Email.LOG_TAG, "Error encoding POST data for authencation");
         }
         return cookies;
     }
@@ -550,7 +550,7 @@ public class WebDavStore extends Store {
             try {
                 encodedName = java.net.URLEncoder.encode(name, "UTF-8");
             } catch (UnsupportedEncodingException uee) {
-                Log.e(k9.LOG_TAG, "UnsupportedEncodingException URLEncoding folder name, skipping encoded");
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException URLEncoding folder name, skipping encoded");
                 encodedName = name;
             }
 
@@ -647,15 +647,15 @@ public class WebDavStore extends Store {
 
                         istream.close();
                     } catch (SAXException se) {
-                        Log.e(k9.LOG_TAG, "SAXException in getMessageCount " + se);
+                        Log.e(Email.LOG_TAG, "SAXException in getMessageCount " + se);
                     } catch (ParserConfigurationException pce) {
-                        Log.e(k9.LOG_TAG, "ParserConfigurationException in getMessageCount " + pce);
+                        Log.e(Email.LOG_TAG, "ParserConfigurationException in getMessageCount " + pce);
                     }
                 }
             } catch (UnsupportedEncodingException uee) {
-                Log.e(k9.LOG_TAG, "UnsupportedEncodingException in getMessageCount() " + uee);
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException in getMessageCount() " + uee);
             } catch (IOException ioe) {
-                Log.e(k9.LOG_TAG, "IOException in getMessageCount() " + ioe);
+                Log.e(Email.LOG_TAG, "IOException in getMessageCount() " + ioe);
             }
             return messageCount;
         }
@@ -807,15 +807,15 @@ public class WebDavStore extends Store {
                             }
                         }
                     } catch (SAXException se) {
-                        Log.e(k9.LOG_TAG, "SAXException in getMessages() " + se);
+                        Log.e(Email.LOG_TAG, "SAXException in getMessages() " + se);
                     } catch (ParserConfigurationException pce) {
-                        Log.e(k9.LOG_TAG, "ParserConfigurationException in getMessages() " + pce);
+                        Log.e(Email.LOG_TAG, "ParserConfigurationException in getMessages() " + pce);
                     }
                 }
             } catch (UnsupportedEncodingException uee) {
-                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
             } catch (IOException ioe) {
-                Log.e(k9.LOG_TAG, "IOException: " + ioe);
+                Log.e(Email.LOG_TAG, "IOException: " + ioe);
             }
 
             return messages.toArray(new Message[] {});
@@ -911,15 +911,15 @@ public class WebDavStore extends Store {
                         dataset = myHandler.getDataSet();
                         uidToUrl = dataset.getUidToUrl();
                     } catch (SAXException se) {
-                        Log.e(k9.LOG_TAG, "SAXException in getMessages() " + se);
+                        Log.e(Email.LOG_TAG, "SAXException in getMessages() " + se);
                     } catch (ParserConfigurationException pce) {
-                        Log.e(k9.LOG_TAG, "ParserConfigurationException in getMessages() " + pce);
+                        Log.e(Email.LOG_TAG, "ParserConfigurationException in getMessages() " + pce);
                     }
                 }
             } catch (UnsupportedEncodingException uee) {
-                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
             } catch (IOException ioe) {
-                Log.e(k9.LOG_TAG, "IOException: " + ioe);
+                Log.e(Email.LOG_TAG, "IOException: " + ioe);
             }
 
             return uidToUrl;
@@ -1047,11 +1047,11 @@ public class WebDavStore extends Store {
                         }
                 
                     } catch (IllegalArgumentException iae) {
-                        Log.e(k9.LOG_TAG, "IllegalArgumentException caught " + iae);
+                        Log.e(Email.LOG_TAG, "IllegalArgumentException caught " + iae);
                     } catch (URISyntaxException use) {
-                        Log.e(k9.LOG_TAG, "URISyntaxException caught " + use);
+                        Log.e(Email.LOG_TAG, "URISyntaxException caught " + use);
                     } catch (IOException ioe) {
-                        Log.e(k9.LOG_TAG, "Non-success response code loading message, response code was " + statusCode);
+                        Log.e(Email.LOG_TAG, "Non-success response code loading message, response code was " + statusCode);
                     }
                 }
 
@@ -1140,15 +1140,15 @@ public class WebDavStore extends Store {
                         dataset = myHandler.getDataSet();
                         uidToReadStatus = dataset.getUidToRead();
                     } catch (SAXException se) {
-                        Log.e(k9.LOG_TAG, "SAXException in fetch() " + se);
+                        Log.e(Email.LOG_TAG, "SAXException in fetch() " + se);
                     } catch (ParserConfigurationException pce) {
-                        Log.e(k9.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
+                        Log.e(Email.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
                     }
                 }
             } catch (UnsupportedEncodingException uee) {
-                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
             } catch (IOException ioe) {
-                Log.e(k9.LOG_TAG, "IOException: " + ioe);
+                Log.e(Email.LOG_TAG, "IOException: " + ioe);
             }
 
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -1247,15 +1247,15 @@ public class WebDavStore extends Store {
                         dataset = myHandler.getDataSet();
                         envelopes = dataset.getMessageEnvelopes();
                     } catch (SAXException se) {
-                        Log.e(k9.LOG_TAG, "SAXException in fetch() " + se);
+                        Log.e(Email.LOG_TAG, "SAXException in fetch() " + se);
                     } catch (ParserConfigurationException pce) {
-                        Log.e(k9.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
+                        Log.e(Email.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
                     }
                 }
             } catch (UnsupportedEncodingException uee) {
-                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
             } catch (IOException ioe) {
-                Log.e(k9.LOG_TAG, "IOException: " + ioe);
+                Log.e(Email.LOG_TAG, "IOException: " + ioe);
             }
 
             int count = messages.length;
@@ -1349,9 +1349,9 @@ public class WebDavStore extends Store {
 
                 entity = response.getEntity();
             } catch (UnsupportedEncodingException uee) {
-                Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
             } catch (IOException ioe) {
-                Log.e(k9.LOG_TAG, "IOException: " + ioe);
+                Log.e(Email.LOG_TAG, "IOException: " + ioe);
             }
         }
 
@@ -1380,9 +1380,9 @@ public class WebDavStore extends Store {
                         throw new IOException("Error deleting message url: "+urls[i]+" \nResponse Code: "+status_code);
                     }
                 } catch (UnsupportedEncodingException uee) {
-                    Log.e(k9.LOG_TAG, "UnsupportedEncodingException: " + uee);
+                    Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
                 } catch (IOException ioe) {
-                    Log.e(k9.LOG_TAG, "IOException: " + ioe);
+                    Log.e(Email.LOG_TAG, "IOException: " + ioe);
                 }
             }
         }
@@ -1440,9 +1440,9 @@ public class WebDavStore extends Store {
                 end = java.net.URLEncoder.encode(end, "UTF-8");
                 end = end.replaceAll("\\+", "%20");
             } catch (UnsupportedEncodingException uee) {
-                Log.e(k9.LOG_TAG, "UnsupportedEncodingException caught in setUrl");
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException caught in setUrl");
             } catch (IllegalArgumentException iae) {
-                Log.e(k9.LOG_TAG, "IllegalArgumentException caught in setUrl");
+                Log.e(Email.LOG_TAG, "IllegalArgumentException caught in setUrl");
             }
 
             for (int i = 0; i < length - 1; i++) {
@@ -1646,7 +1646,7 @@ public class WebDavStore extends Store {
                     Date parsedDate = dfInput.parse(value);
                     tempDate = dfOutput.format(parsedDate);
                 } catch (java.text.ParseException pe) {
-                    Log.e(k9.LOG_TAG, "Error parsing date: "+ pe);
+                    Log.e(Email.LOG_TAG, "Error parsing date: "+ pe);
                 }
 
                 this.mEnvelope.addHeader("Date", tempDate);
@@ -1814,9 +1814,9 @@ public class WebDavStore extends Store {
                 end = java.net.URLEncoder.encode(end, "UTF-8");
                 end = end.replaceAll("\\+", "%20");
             } catch (UnsupportedEncodingException uee) {
-                Log.e(k9.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri)");
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri)");
             } catch (IllegalArgumentException iae) {
-                Log.e(k9.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri)");
+                Log.e(Email.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri)");
             }
 
             for (int i = 0; i < length - 1; i++) {

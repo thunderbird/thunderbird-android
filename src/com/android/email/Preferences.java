@@ -1,5 +1,5 @@
 
-package com.fsck.k9;
+package com.android.email;
 
 import java.util.Arrays;
 
@@ -116,7 +116,7 @@ public class Preferences {
     public void dump() {
         if (Config.LOGV) {
             for (String key : mSharedPreferences.getAll().keySet()) {
-                Log.v(k9.LOG_TAG, key + " = " + mSharedPreferences.getAll().get(key));
+                Log.v(Email.LOG_TAG, key + " = " + mSharedPreferences.getAll().get(key));
             }
         }
     }

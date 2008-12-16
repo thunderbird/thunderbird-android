@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.transport;
+package com.android.email.mail.transport;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -37,22 +37,22 @@ import org.xml.sax.XMLReader;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.k9;
-import com.fsck.k9.PeekableInputStream;
-import com.fsck.k9.codec.binary.Base64;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.store.TrustManagerFactory;
-import com.fsck.k9.mail.store.WebDavStore;
-import com.fsck.k9.mail.store.WebDavStore.HttpGeneric;
-import com.fsck.k9.mail.store.WebDavStore.ParsedDataSet;
-import com.fsck.k9.mail.store.WebDavStore.WebDavHandler;
+import com.android.email.Email;
+import com.android.email.PeekableInputStream;
+import com.android.email.codec.binary.Base64;
+import com.android.email.mail.Address;
+import com.android.email.mail.AuthenticationFailedException;
+import com.android.email.mail.Folder;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Transport;
+import com.android.email.mail.CertificateValidationException;
+import com.android.email.mail.Message.RecipientType;
+import com.android.email.mail.store.TrustManagerFactory;
+import com.android.email.mail.store.WebDavStore;
+import com.android.email.mail.store.WebDavStore.HttpGeneric;
+import com.android.email.mail.store.WebDavStore.ParsedDataSet;
+import com.android.email.mail.store.WebDavStore.WebDavHandler;
 
 public class WebDavTransport extends Transport {
     public static final int CONNECTION_SECURITY_NONE = 0;
@@ -85,11 +85,11 @@ public class WebDavTransport extends Transport {
      */
     public WebDavTransport(String _uri) throws MessagingException {
     	store = new WebDavStore(_uri);
-        Log.d(k9.LOG_TAG, ">>> New WebDavTransport creation complete");
+        Log.d(Email.LOG_TAG, ">>> New WebDavTransport creation complete");
     }
 
     public void open() throws MessagingException {
-        Log.d(k9.LOG_TAG, ">>> open called on WebDavTransport ");
+        Log.d(Email.LOG_TAG, ">>> open called on WebDavTransport ");
         if (store.needAuth()) {
             store.authenticate();
         }
@@ -116,7 +116,7 @@ public class WebDavTransport extends Transport {
     }
     
     public void sendMessage(Message message) throws MessagingException {
-        Log.d(k9.LOG_TAG, ">>> sendMessage called.");
+        Log.d(Email.LOG_TAG, ">>> sendMessage called.");
 
         DefaultHttpClient httpclient = new DefaultHttpClient();
         HttpGeneric httpmethod;
@@ -130,13 +130,13 @@ public class WebDavTransport extends Transport {
         	try {
         		subject = message.getSubject();
         	} catch (MessagingException e) {
-        		Log.e(k9.LOG_TAG, "MessagingException while retrieving Subject: " + e);
+        		Log.e(Email.LOG_TAG, "MessagingException while retrieving Subject: " + e);
         		subject = "";
         	}
         	try {
         		out = new ByteArrayOutputStream(message.getSize());
         	} catch (MessagingException e) {
-        		Log.e(k9.LOG_TAG, "MessagingException while getting size of message: " + e);
+        		Log.e(Email.LOG_TAG, "MessagingException while getting size of message: " + e);
         		out = new ByteArrayOutputStream();
         	}
         	open();
@@ -178,12 +178,12 @@ public class WebDavTransport extends Transport {
         	}
 
         } catch (UnsupportedEncodingException uee) {
-        	Log.e(k9.LOG_TAG, "UnsupportedEncodingException in getMessageCount() " + uee);
+        	Log.e(Email.LOG_TAG, "UnsupportedEncodingException in getMessageCount() " + uee);
         } catch (IOException ioe) {
-        	Log.e(k9.LOG_TAG, "IOException in getMessageCount() " + ioe);
+        	Log.e(Email.LOG_TAG, "IOException in getMessageCount() " + ioe);
         	throw new MessagingException("Unable to send message", ioe);
         }
-        Log.d(k9.LOG_TAG, ">>> getMessageCount finished");
+        Log.d(Email.LOG_TAG, ">>> getMessageCount finished");
     }
 
 }

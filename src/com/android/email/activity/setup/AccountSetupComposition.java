@@ -1,4 +1,4 @@
-package com.fsck.k9.activity.setup;
+package com.android.email.activity.setup;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,11 +13,11 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.k9;
-import com.fsck.k9.Utility;
+import com.android.email.Account;
+import com.android.email.Preferences;
+import com.android.email.R;
+import com.android.email.Email;
+import com.android.email.Utility;
 
 public class AccountSetupComposition extends Activity {
 

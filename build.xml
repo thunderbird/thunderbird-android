@@ -7,7 +7,7 @@
     <property name="android-tools" value="${sdk-folder}/tools" />
     
     <!-- Application Package Name -->
-    <property name="application-package" value="com.fsck.k9.activity" />
+    <property name="application-package" value="com.android.email.activity" />
 
     <!-- The intermediates directory -->
     <!-- Eclipse uses "bin" for its own output, so we do the same. -->

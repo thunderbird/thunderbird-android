@@ -1,5 +1,5 @@
 
-package com.fsck.k9.activity;
+package com.android.email.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.fsck.k9.k9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
+import com.android.email.Email;
+import com.android.email.Preferences;
+import com.android.email.R;
 
 public class Debug extends Activity implements OnCheckedChangeListener {
     private TextView mVersionView;
@@ -39,17 +39,17 @@ public class Debug extends Activity implements OnCheckedChangeListener {
         mVersionView.setText(String.format(getString(R.string.debug_version_fmt).toString(),
                 getString(R.string.build_number)));
 
-        mEnableDebugLoggingView.setChecked(k9.DEBUG);
-        mEnableSensitiveLoggingView.setChecked(k9.DEBUG_SENSITIVE);
+        mEnableDebugLoggingView.setChecked(Email.DEBUG);
+        mEnableSensitiveLoggingView.setChecked(Email.DEBUG_SENSITIVE);
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (buttonView.getId() == R.id.debug_logging) {
-            k9.DEBUG = isChecked;
-            mPreferences.setEnableDebugLogging(k9.DEBUG);
+            Email.DEBUG = isChecked;
+            mPreferences.setEnableDebugLogging(Email.DEBUG);
         } else if (buttonView.getId() == R.id.sensitive_logging) {
-            k9.DEBUG_SENSITIVE = isChecked;
-            mPreferences.setEnableSensitiveLogging(k9.DEBUG_SENSITIVE);
+            Email.DEBUG_SENSITIVE = isChecked;
+            mPreferences.setEnableSensitiveLogging(Email.DEBUG_SENSITIVE);
         }
     }
 

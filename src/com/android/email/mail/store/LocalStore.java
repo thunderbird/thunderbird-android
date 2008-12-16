@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.store;
+package com.android.email.mail.store;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -25,27 +25,27 @@ import android.net.Uri;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.k9;
-import com.fsck.k9.Utility;
-import com.fsck.k9.codec.binary.Base64OutputStream;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.internet.MimeBodyPart;
-import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.MimeMultipart;
-import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.internet.TextBody;
-import com.fsck.k9.provider.AttachmentProvider;
+import com.android.email.Email;
+import com.android.email.Utility;
+import com.android.email.codec.binary.Base64OutputStream;
+import com.android.email.mail.Address;
+import com.android.email.mail.Body;
+import com.android.email.mail.FetchProfile;
+import com.android.email.mail.Flag;
+import com.android.email.mail.Folder;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessageRetrievalListener;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Part;
+import com.android.email.mail.Store;
+import com.android.email.mail.Message.RecipientType;
+import com.android.email.mail.internet.MimeBodyPart;
+import com.android.email.mail.internet.MimeHeader;
+import com.android.email.mail.internet.MimeMessage;
+import com.android.email.mail.internet.MimeMultipart;
+import com.android.email.mail.internet.MimeUtility;
+import com.android.email.mail.internet.TextBody;
+import com.android.email.provider.AttachmentProvider;
 
 /**
  * <pre>
@@ -98,7 +98,7 @@ public class LocalStore extends Store {
 
             if (mDb.getVersion() < 18) {
                 if (Config.LOGV) {
-                    Log.v(k9.LOG_TAG, String.format("Upgrading database from %d to %d", mDb
+                    Log.v(Email.LOG_TAG, String.format("Upgrading database from %d to %d", mDb
                             .getVersion(), 18));
                 }
                 mDb.execSQL("DROP TABLE IF EXISTS folders");
@@ -242,7 +242,7 @@ public class LocalStore extends Store {
     }
 
     public void resetVisibleLimits() {
-        resetVisibleLimits(k9.DEFAULT_VISIBLE_LIMIT);
+        resetVisibleLimits(Email.DEFAULT_VISIBLE_LIMIT);
     }
 
     public void resetVisibleLimits(int visibleLimit) {
@@ -404,7 +404,7 @@ public class LocalStore extends Store {
             }
             mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[] {
                 mName,
-                k9.DEFAULT_VISIBLE_LIMIT 
+                Email.DEFAULT_VISIBLE_LIMIT 
             });
             return true;
         }
@@ -1141,7 +1141,7 @@ public class LocalStore extends Store {
                 }
             }
             catch (MessagingException me) {
-                Log.e(k9.LOG_TAG, "Unable to update LocalStore unread message count",
+                Log.e(Email.LOG_TAG, "Unable to update LocalStore unread message count",
                         me);
                 throw new RuntimeException(me);
             }

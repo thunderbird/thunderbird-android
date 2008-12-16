@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail;
+package com.android.email.mail;
 
 public class AuthenticationFailedException extends MessagingException {
     public static final long serialVersionUID = -1;

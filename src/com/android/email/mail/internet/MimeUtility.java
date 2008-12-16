@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.internet;
+package com.android.email.mail.internet;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,13 +17,13 @@ import org.apache.james.mime4j.decoder.QuotedPrintableInputStream;
 
 import android.util.Log;
 
-import com.fsck.k9.k9;
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
-import com.fsck.k9.mail.Part;
+import com.android.email.Email;
+import com.android.email.mail.Body;
+import com.android.email.mail.BodyPart;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Multipart;
+import com.android.email.mail.Part;
 
 public class MimeUtility {
 
@@ -183,7 +183,7 @@ public class MimeUtility {
              * If we are not able to process the body there's nothing we can do about it. Return
              * null and let the upper layers handle the missing content.
              */
-            Log.e(k9.LOG_TAG, "Unable to getTextFromPart", e);
+            Log.e(Email.LOG_TAG, "Unable to getTextFromPart", e);
         }
         return null;
     }

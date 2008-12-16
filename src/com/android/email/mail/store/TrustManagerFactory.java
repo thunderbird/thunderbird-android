@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.store;
+package com.android.email.mail.store;
 
 import android.util.Log;
 import android.app.Application;
@@ -18,7 +18,7 @@ import java.security.cert.CertificateException;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.TrustManager;
 
-import com.fsck.k9.k9;
+import com.android.email.Email;
 
 public final class TrustManagerFactory {
     private static final String LOG_TAG = "TrustManagerFactory";
@@ -104,7 +104,7 @@ public final class TrustManagerFactory {
     static {
         try {
             javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
-            Application app = k9.app;
+            Application app = Email.app;
             keyStoreFile = new File(app.getDir("KeyStore", Context.MODE_PRIVATE) + File.separator + "KeyStore.bks");
             keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			//TODO: read store from disk.

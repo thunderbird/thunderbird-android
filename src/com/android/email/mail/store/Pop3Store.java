@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.store;
+package com.android.email.mail.store;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,19 +24,19 @@ import javax.net.ssl.SSLException;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.k9;
-import com.fsck.k9.Utility;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.Folder.OpenMode;
-import com.fsck.k9.mail.internet.MimeMessage;
+import com.android.email.Email;
+import com.android.email.Utility;
+import com.android.email.mail.AuthenticationFailedException;
+import com.android.email.mail.FetchProfile;
+import com.android.email.mail.Flag;
+import com.android.email.mail.Folder;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessageRetrievalListener;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Store;
+import com.android.email.mail.CertificateValidationException;
+import com.android.email.mail.Folder.OpenMode;
+import com.android.email.mail.internet.MimeMessage;
 
 public class Pop3Store extends Store {
     public static final int CONNECTION_SECURITY_NONE = 0;
@@ -736,8 +736,8 @@ public class Pop3Store extends Store {
             } while ((d = mIn.read()) != -1);
             String ret = sb.toString();
             if (Config.LOGD) {
-                if (k9.DEBUG) {
-                    Log.d(k9.LOG_TAG, "<<< " + ret);
+                if (Email.DEBUG) {
+                    Log.d(Email.LOG_TAG, "<<< " + ret);
                 }
             }
             return ret;
@@ -745,8 +745,8 @@ public class Pop3Store extends Store {
 
         private void writeLine(String s) throws IOException {
             if (Config.LOGD) {
-                if (k9.DEBUG) {
-                    Log.d(k9.LOG_TAG, ">>> " + s);
+                if (Email.DEBUG) {
+                    Log.d(Email.LOG_TAG, ">>> " + s);
                 }
             }
             mOut.write(s.getBytes());

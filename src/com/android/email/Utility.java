@@ -1,5 +1,5 @@
 
-package com.fsck.k9;
+package com.android.email;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
-import com.fsck.k9.codec.binary.Base64;
+import com.android.email.codec.binary.Base64;
 
 import android.text.Editable;
 import android.widget.TextView;

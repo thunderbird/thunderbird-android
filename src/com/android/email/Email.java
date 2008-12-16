@@ -1,5 +1,5 @@
 
-package com.fsck.k9;
+package com.android.email;
 
 import java.io.File;
 
@@ -10,13 +10,13 @@ import android.content.pm.PackageManager;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.service.BootReceiver;
-import com.fsck.k9.service.MailService;
+import com.android.email.activity.MessageCompose;
+import com.android.email.mail.internet.BinaryTempFileBody;
+import com.android.email.mail.internet.MimeMessage;
+import com.android.email.service.BootReceiver;
+import com.android.email.service.MailService;
 
-public class k9 extends Application {
+public class Email extends Application {
     public static Application app = null;
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";

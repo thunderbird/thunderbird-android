@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fsck.k9"
+    package="com.android.email"
     android:versionCode="22"
     android:versionName="0.22"
     >
@@ -10,12 +10,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"
+    <permission android:name="com.android.email.permission.READ_ATTACHMENT"
                 android:permissionGroup="android.permission-group.MESSAGES"
                 android:protectionLevel="dangerous"
                 android:label="@string/read_attachment_label"
                 android:description="@string/read_attachment_desc"/>
-    <uses-permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"/>
+    <uses-permission android:name="com.android.email.permission.READ_ATTACHMENT"/>
     <application android:icon="@drawable/icon" android:label="@string/app_name"
         android:name="k9">
         <activity android:name=".activity.Welcome">
@@ -131,10 +131,10 @@
         </service>
         <provider
             android:name=".provider.AttachmentProvider"
-            android:authorities="com.fsck.k9.attachmentprovider"
+            android:authorities="com.android.email.attachmentprovider"
             android:multiprocess="true"
             android:grantUriPermissions="true"
-            android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"
+            android:readPermission="com.android.email.permission.READ_ATTACHMENT"
             />
     </application>
 </manifest>

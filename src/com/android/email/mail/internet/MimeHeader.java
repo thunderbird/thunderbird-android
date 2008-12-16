@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.internet;
+package com.android.email.mail.internet;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-import com.fsck.k9.Utility;
-import com.fsck.k9.mail.MessagingException;
+import com.android.email.Utility;
+import com.android.email.mail.MessagingException;
 
 public class MimeHeader {
     /**

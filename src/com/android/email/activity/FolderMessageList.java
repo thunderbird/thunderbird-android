@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.android.email.activity;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -32,24 +32,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.k9;
-import com.fsck.k9.MessagingController;
-import com.fsck.k9.MessagingListener;
-import com.fsck.k9.R;
-import com.fsck.k9.Utility;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.FolderMessageList.FolderMessageListAdapter.FolderInfoHolder;
-import com.fsck.k9.activity.FolderMessageList.FolderMessageListAdapter.MessageInfoHolder;
-import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.mail.store.LocalStore;
+import com.android.email.Account;
+import com.android.email.Email;
+import com.android.email.MessagingController;
+import com.android.email.MessagingListener;
+import com.android.email.R;
+import com.android.email.Utility;
+import com.android.email.Preferences;
+import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.FolderInfoHolder;
+import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.MessageInfoHolder;
+import com.android.email.activity.setup.AccountSettings;
+import com.android.email.mail.Address;
+import com.android.email.mail.Flag;
+import com.android.email.mail.Folder;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Message.RecipientType;
+import com.android.email.mail.store.LocalStore.LocalMessage;
+import com.android.email.mail.store.LocalStore;
 
 /**
  * FolderMessageList is the primary user interface for the program. This Activity shows
@@ -76,11 +76,11 @@ public class FolderMessageList extends ExpandableListActivity {
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
 
     private static final String STATE_KEY_LIST =
-            "com.fsck.k9.activity.folderlist_expandableListState";
+            "com.android.email.activity.folderlist_expandableListState";
     private static final String STATE_KEY_EXPANDED_GROUP =
-            "com.fsck.k9.activity.folderlist_expandedGroup";
+            "com.android.email.activity.folderlist_expandedGroup";
     private static final String STATE_KEY_EXPANDED_GROUP_SELECTION =
-            "com.fsck.k9.activity.folderlist_expandedGroupSelection";
+            "com.android.email.activity.folderlist_expandedGroupSelection";
 
     private static final int UPDATE_FOLDER_ON_EXPAND_INTERVAL_MS = (1000 * 60 * 3);
 
@@ -714,7 +714,7 @@ public class FolderMessageList extends ExpandableListActivity {
                 }
                 mHandler.progress(false);
                 if (Config.LOGV) {
-                    Log.v(k9.LOG_TAG, "listFoldersFailed " + message);
+                    Log.v(Email.LOG_TAG, "listFoldersFailed " + message);
                 }
             }
 
@@ -745,14 +745,14 @@ public class FolderMessageList extends ExpandableListActivity {
                         mFolders.add(holder);
                     }
                     holder.name = folder.getName();
-                    if (holder.name.equalsIgnoreCase(k9.INBOX)) {
+                    if (holder.name.equalsIgnoreCase(Email.INBOX)) {
                         holder.displayName = getString(R.string.special_mailbox_name_inbox);
                         // XXX TOOD nuke when we do this for all folders
                         try {
                             holder.unreadMessageCount = folder.getUnreadMessageCount();
                         }
                         catch (MessagingException me) {
-                            Log.e(k9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
+                            Log.e(Email.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
                         }
     
                     }
@@ -773,7 +773,7 @@ public class FolderMessageList extends ExpandableListActivity {
                         holder.unreadMessageCount = folder.getUnreadMessageCount();
                     }
                     catch (MessagingException me) {
-                        Log.e(k9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
+                        Log.e(Email.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
                     }
 
                     */
@@ -789,7 +789,7 @@ public class FolderMessageList extends ExpandableListActivity {
                  */
 //                if (mRestoredState != null) {
 //                    if (Config.LOGV) {
-//                        Log.v(k9.LOG_TAG, "Attempting to restore list state");
+//                        Log.v(Email.LOG_TAG, "Attempting to restore list state");
 //                    }
 //                    Parcelable listViewState =
 //                    mListView.onRestoreInstanceState(mListViewState);
@@ -1141,7 +1141,7 @@ public class FolderMessageList extends ExpandableListActivity {
                 else {
                     if (folder.status == null) {
                         // holder.main.setText(getString(R.string.message_list_load_more_messages_action));
-                        // holder.main.setText("Load up to " + k9.VISIBLE_LIMIT_INCREMENT + " more");
+                        // holder.main.setText("Load up to " + Email.VISIBLE_LIMIT_INCREMENT + " more");
                         holder.main.setText("Load up to " + mAccount.getDisplayCount() + " more");
                     }
                     else {
@@ -1227,9 +1227,9 @@ public class FolderMessageList extends ExpandableListActivity {
             public int compareTo(FolderInfoHolder o) {
                 String s1 = this.name;
                 String s2 = o.name;
-                if (k9.INBOX.equalsIgnoreCase(s1)) {
+                if (Email.INBOX.equalsIgnoreCase(s1)) {
                     return -1;
-                } else if (k9.INBOX.equalsIgnoreCase(s2)) {
+                } else if (Email.INBOX.equalsIgnoreCase(s2)) {
                     return 1;
                 } else
                     return s1.compareToIgnoreCase(s2);
@@ -1276,7 +1276,7 @@ public class FolderMessageList extends ExpandableListActivity {
                 }
                 catch (MessagingException me) {
                     if (Config.LOGV) {
-                        Log.v(k9.LOG_TAG, "Unable to load message info", me);
+                        Log.v(Email.LOG_TAG, "Unable to load message info", me);
                     }
                 }
             }

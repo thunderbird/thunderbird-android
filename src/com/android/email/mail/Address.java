@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail;
+package com.android.email.mail;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -16,9 +16,9 @@ import org.apache.james.mime4j.field.address.parser.ParseException;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.k9;
-import com.fsck.k9.Utility;
-import com.fsck.k9.mail.internet.MimeUtility;
+import com.android.email.Email;
+import com.android.email.Utility;
+import com.android.email.mail.internet.MimeUtility;
 
 public class Address {
     String mAddress;
@@ -74,7 +74,7 @@ public class Address {
                     Mailbox mailbox = (Mailbox)address;
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain()));
                 } else {
-                    Log.e(k9.LOG_TAG, "Unknown address type from Mime4J: "
+                    Log.e(Email.LOG_TAG, "Unknown address type from Mime4J: "
                             + address.getClass().toString());
                 }
 

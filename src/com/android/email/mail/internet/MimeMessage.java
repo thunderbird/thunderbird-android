@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.internet;
+package com.android.email.mail.internet;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,12 +17,12 @@ import org.apache.james.mime4j.MimeStreamParser;
 import org.apache.james.mime4j.field.DateTimeField;
 import org.apache.james.mime4j.field.Field;
 
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
+import com.android.email.mail.Address;
+import com.android.email.mail.Body;
+import com.android.email.mail.BodyPart;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Part;
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and
@@ -251,8 +251,8 @@ public class MimeMessage extends Message {
 
     public void setBody(Body body) throws MessagingException {
         this.mBody = body;
-        if (body instanceof com.fsck.k9.mail.Multipart) {
-            com.fsck.k9.mail.Multipart multipart = ((com.fsck.k9.mail.Multipart)body);
+        if (body instanceof com.android.email.mail.Multipart) {
+            com.android.email.mail.Multipart multipart = ((com.android.email.mail.Multipart)body);
             multipart.setParent(this);
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, multipart.getContentType());
             setHeader("MIME-Version", "1.0");

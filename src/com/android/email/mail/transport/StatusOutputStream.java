@@ -1,10 +1,10 @@
-package com.fsck.k9.mail.transport;
+package com.android.email.mail.transport;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.fsck.k9.k9;
+import com.android.email.Email;
 
 import android.util.Config;
 import android.util.Log;
@@ -22,7 +22,7 @@ public class StatusOutputStream extends FilterOutputStream {
         mCount++;
         if (Config.LOGV) {
             if (mCount % 1024 == 0) {
-                Log.v(k9.LOG_TAG, "# " + mCount);
+                Log.v(Email.LOG_TAG, "# " + mCount);
             }
         }
     }

@@ -1,14 +1,14 @@
 
-package com.fsck.k9.mail;
+package com.android.email.mail;
 
 import java.util.HashMap;
 
 import android.app.Application;
 
-import com.fsck.k9.mail.store.ImapStore;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.Pop3Store;
-import com.fsck.k9.mail.store.WebDavStore;
+import com.android.email.mail.store.ImapStore;
+import com.android.email.mail.store.LocalStore;
+import com.android.email.mail.store.Pop3Store;
+import com.android.email.mail.store.WebDavStore;
 
 /**
  * Store is the access point for an email message store. It's location can be

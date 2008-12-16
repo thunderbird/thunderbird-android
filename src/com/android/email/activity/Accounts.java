@@ -1,5 +1,5 @@
 
-package com.fsck.k9.activity;
+package com.android.email.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,17 +24,17 @@ import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.k9;
-import com.fsck.k9.MessagingController;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.activity.setup.AccountSetupBasics;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.android.email.Account;
+import com.android.email.Email;
+import com.android.email.MessagingController;
+import com.android.email.Preferences;
+import com.android.email.R;
+import com.android.email.activity.setup.AccountSettings;
+import com.android.email.activity.setup.AccountSetupBasics;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Store;
+import com.android.email.mail.store.LocalStore;
+import com.android.email.mail.store.LocalStore.LocalFolder;
 
 public class Accounts extends ListActivity implements OnItemClickListener, OnClickListener {
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
@@ -152,7 +152,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
                             // Ignore
                     }
                     mSelectedContextAccount.delete(Preferences.getPreferences(Accounts.this));
-                    k9.setServicesEnabled(Accounts.this);
+                    Email.setServicesEnabled(Accounts.this);
                     refresh();
                 }
             })
@@ -269,7 +269,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
                 LocalStore localStore = (LocalStore) Store.getInstance(
                         account.getLocalStoreUri(),
                         getApplication());
-                LocalFolder localFolder = (LocalFolder) localStore.getFolder(k9.INBOX);
+                LocalFolder localFolder = (LocalFolder) localStore.getFolder(Email.INBOX);
                 if (localFolder.exists()) {
                     unreadMessageCount = localFolder.getUnreadMessageCount();
                 }

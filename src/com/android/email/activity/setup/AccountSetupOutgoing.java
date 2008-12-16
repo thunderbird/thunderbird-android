@@ -1,5 +1,5 @@
 
-package com.fsck.k9.activity.setup;
+package com.android.email.activity.setup;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,10 +23,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.Utility;
+import com.android.email.Account;
+import com.android.email.Preferences;
+import com.android.email.R;
+import com.android.email.Utility;
 
 public class AccountSetupOutgoing extends Activity implements OnClickListener,
         OnCheckedChangeListener {

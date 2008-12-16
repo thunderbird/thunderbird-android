@@ -1,7 +1,7 @@
 
-package com.fsck.k9.service;
+package com.android.email.service;
 
-import com.fsck.k9.MessagingController;
+import com.android.email.MessagingController;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

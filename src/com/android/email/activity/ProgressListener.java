@@ -1,5 +1,5 @@
 
-package com.fsck.k9.activity;
+package com.android.email.activity;
 
 import android.content.Context;
 

@@ -1,5 +1,5 @@
 
-package com.fsck.k9.activity.setup;
+package com.android.email.activity.setup;
 
 import java.io.Serializable;
 import java.net.URI;
@@ -26,12 +26,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.k9;
-import com.fsck.k9.EmailAddressValidator;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.Utility;
+import com.android.email.Account;
+import com.android.email.Email;
+import com.android.email.EmailAddressValidator;
+import com.android.email.Preferences;
+import com.android.email.R;
+import com.android.email.Utility;
 
 /**
  * Prompts the user for the email address and password. Also prompts for
@@ -43,10 +43,10 @@ import com.fsck.k9.Utility;
  */
 public class AccountSetupBasics extends Activity
         implements OnClickListener, TextWatcher {
-    private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
+    private final static String EXTRA_ACCOUNT = "com.android.email.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
-        "com.fsck.k9.AccountSetupBasics.provider";
+        "com.android.email.AccountSetupBasics.provider";
 
     private Preferences mPrefs;
     private EditText mEmailView;
@@ -262,7 +262,7 @@ public class AccountSetupBasics extends Activity
             if (mDefaultView.isChecked()) {
                 Preferences.getPreferences(this).setDefaultAccount(mAccount);
             }
-            k9.setServicesEnabled(this);
+            Email.setServicesEnabled(this);
             AccountSetupNames.actionSetNames(this, mAccount);
             finish();
         }
@@ -361,7 +361,7 @@ public class AccountSetupBasics extends Activity
             }
         }
         catch (Exception e) {
-            Log.e(k9.LOG_TAG, "Error while trying to load provider settings.", e);
+            Log.e(Email.LOG_TAG, "Error while trying to load provider settings.", e);
         }
         return null;
     }

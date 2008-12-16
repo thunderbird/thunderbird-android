@@ -1,5 +1,5 @@
 
-package com.fsck.k9;
+package com.android.email;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,23 +15,23 @@ import android.os.Process;
 import android.util.Config;
 import android.util.Log;
 
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.Folder.FolderType;
-import com.fsck.k9.mail.Folder.OpenMode;
-import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.mail.store.LocalStore.PendingCommand;
+import com.android.email.mail.FetchProfile;
+import com.android.email.mail.Flag;
+import com.android.email.mail.Folder;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessageRetrievalListener;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Part;
+import com.android.email.mail.Store;
+import com.android.email.mail.Transport;
+import com.android.email.mail.Folder.FolderType;
+import com.android.email.mail.Folder.OpenMode;
+import com.android.email.mail.internet.MimeHeader;
+import com.android.email.mail.internet.MimeUtility;
+import com.android.email.mail.store.LocalStore;
+import com.android.email.mail.store.LocalStore.LocalFolder;
+import com.android.email.mail.store.LocalStore.LocalMessage;
+import com.android.email.mail.store.LocalStore.PendingCommand;
 
 /**
  * Starts a long running (application) Thread that will run through commands
@@ -67,11 +67,11 @@ public class MessagingController implements Runnable {
     private static final int MAX_SMALL_MESSAGE_SIZE = (25 * 1024);
 
     private static final String PENDING_COMMAND_TRASH =
-        "com.fsck.k9.MessagingController.trash";
+        "com.android.email.MessagingController.trash";
     private static final String PENDING_COMMAND_MARK_READ =
-        "com.fsck.k9.MessagingController.markRead";
+        "com.android.email.MessagingController.markRead";
     private static final String PENDING_COMMAND_APPEND =
-        "com.fsck.k9.MessagingController.append";
+        "com.android.email.MessagingController.append";
 
     private static MessagingController inst = null;
     private BlockingQueue<Command> mCommands = new LinkedBlockingQueue<Command>();
@@ -118,7 +118,7 @@ public class MessagingController implements Runnable {
             }
             catch (Exception e) {
                 if (Config.LOGV) {
-                    Log.v(k9.LOG_TAG, "Error running command", e);
+                    Log.v(Email.LOG_TAG, "Error running command", e);
                 }
             }
             mBusy = false;
@@ -218,7 +218,7 @@ public class MessagingController implements Runnable {
                          */
                         for (Folder localFolder : localFolders) {
                             String localFolderName = localFolder.getName();
-                            if (localFolderName.equalsIgnoreCase(k9.INBOX) ||
+                            if (localFolderName.equalsIgnoreCase(Email.INBOX) ||
                                     localFolderName.equals(account.getTrashFolderName()) ||
                                     localFolderName.equals(account.getOutboxFolderName()) ||
                                     localFolderName.equals(account.getDraftsFolderName()) ||
@@ -313,7 +313,7 @@ public class MessagingController implements Runnable {
                 localStore.resetVisibleLimits(account.getDisplayCount());
             }
             catch (MessagingException e) {
-                Log.e(k9.LOG_TAG, "Unable to reset visible limits", e);
+                Log.e(Email.LOG_TAG, "Unable to reset visible limits", e);
             }
         }
     }
@@ -406,8 +406,8 @@ public class MessagingController implements Runnable {
                 Open the folder
                 Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
                 Get the message count
-                Get the list of the newest k9.DEFAULT_VISIBLE_LIMIT messages
-                    getMessages(messageCount - k9.DEFAULT_VISIBLE_LIMIT, messageCount)
+                Get the list of the newest Email.DEFAULT_VISIBLE_LIMIT messages
+                    getMessages(messageCount - Email.DEFAULT_VISIBLE_LIMIT, messageCount)
                 See if we have each message locally, if not fetch it's flags and envelope
                 Get and update the unread count for the folder
                 Update the remote flags of any messages we have locally with an internal date
@@ -537,7 +537,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                                     }
                                 }
                                 catch (Exception e) {
-                                    Log.e(k9.LOG_TAG,
+                                    Log.e(Email.LOG_TAG,
                                             "Error while storing downloaded message.",
                                             e);
                                 }
@@ -745,7 +745,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
         }
         catch (Exception e) {
             if (Config.LOGV) {
-                Log.v(k9.LOG_TAG, "synchronizeMailbox", e);
+                Log.v(Email.LOG_TAG, "synchronizeMailbox", e);
             }
             for (MessagingListener l : mListeners) {
                 l.synchronizeMailboxFailed(
@@ -776,7 +776,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 }
                 catch (MessagingException me) {
                     if (Config.LOGV) {
-                        Log.v(k9.LOG_TAG, "processPendingCommands", me);
+                        Log.v(Email.LOG_TAG, "processPendingCommands", me);
                     }
                     /*
                      * Ignore any exceptions from the commands. Commands will be processed
@@ -1223,7 +1223,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 }
                 catch (MessagingException me) {
                     if (Config.LOGV) {
-                        Log.v(k9.LOG_TAG, "", me);
+                        Log.v(Email.LOG_TAG, "", me);
                     }
                     for (MessagingListener l : mListeners) {
                         l.loadAttachmentFailed(account, message, part, tag, me.getMessage());
@@ -1410,7 +1410,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 catch (Exception e) {
                     // TODO
                     if (Config.LOGV) {
-                        Log.v(k9.LOG_TAG, "emptyTrash");
+                        Log.v(Email.LOG_TAG, "emptyTrash");
                     }
                 }
             }
@@ -1449,7 +1449,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     if (autoCheckIntervalTime>0
                             && (now-lastAutoCheckTime)>autoCheckIntervalTime) {
                         sendPendingMessagesSynchronous(account);
-                        synchronizeMailboxSynchronous(account, k9.INBOX);
+                        synchronizeMailboxSynchronous(account, Email.INBOX);
                         //This saves the last auto check time even if sync fails
                         //TODO: Listen for both send and sync success and failures
                         //and only save last auto check time is not errors
@@ -1485,7 +1485,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
             processPendingCommands(account);
         }
         catch (MessagingException e) {
-            Log.e(k9.LOG_TAG, "Unable to save message as draft.", e);
+            Log.e(Email.LOG_TAG, "Unable to save message as draft.", e);
         }
     }
 
