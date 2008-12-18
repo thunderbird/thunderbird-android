@@ -17,6 +17,11 @@
         android:title="@string/compose_action"
 		android:icon="@drawable/ic_menu_compose"
 	/>
+	<item
+		android:id="@+id/about"
+        android:title="@string/about_action"
+		android:icon="@drawable/ic_menu_preferences"
+	/>
 	<!-- 
 		<item android:id="@+id/search"
 		android:title="@string/search_action" />

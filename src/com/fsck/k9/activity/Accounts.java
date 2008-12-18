@@ -8,6 +8,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -15,10 +17,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -31,6 +36,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
+import com.fsck.k9.activity.setup.AccountSetupCheckSettings;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
@@ -198,13 +204,58 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
             case R.id.compose:
                 onCompose();
                 break;
+            case R.id.about:
+                onAbout();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
     }
 
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+    private void onAbout() {
+    	String appName = getString(R.string.app_name);
+    	WebView wv = new WebView(this);
+    	String html = "<h1>" + String.format(getString(R.string.about_title_fmt).toString(),
+        		"<a href=\"" + getString(R.string.app_webpage_url) + "\">" + appName + "</a>") + "</h1>" +
+    		"<p>" + appName + " " + 
+		String.format(getString(R.string.debug_version_fmt).toString(),
+				getVersionNumber()) + "</p>" +
+				"<p>" + String.format(getString(R.string.app_authors_fmt).toString(), 
+						getString(R.string.app_authors)) + "</p>" +
+				"<p>" + String.format(getString(R.string.app_revision_fmt).toString(), 
+						"<a href=\"" + getString(R.string.app_revision_url) + "\">" + 
+						getString(R.string.app_revision_url) + "</a></p>");
+    	wv.loadData(html, "text/html", "utf-8");
+    	new AlertDialog.Builder(this)
+        .setView(wv)
+        .setCancelable(true)
+        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener () {
+        	public void onClick(DialogInterface d, int c) {
+        		d.dismiss();
+        	}
+        })
+        .show();
+    }
+
+    /**
+     * Get current version number.
+     *
+     * @return String version
+     */
+    private String getVersionNumber() {
+            String version = "?";
+            try {
+                    PackageInfo pi =
+getPackageManager().getPackageInfo(getPackageName(), 0);
+                    version = pi.versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                    //Log.e(TAG, "Package name not found", e);
+            };
+            return version;
+    } 
+    
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         return true;
     }
 
