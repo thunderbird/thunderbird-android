@@ -10,6 +10,7 @@ import java.util.Date;
 import com.android.email.codec.binary.Base64;
 
 import android.text.Editable;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class Utility {
@@ -75,10 +76,27 @@ public class Utility {
     public static boolean requiredFieldValid(TextView view) {
         return view.getText() != null && view.getText().length() > 0;
     }
+    
 
     public static boolean requiredFieldValid(Editable s) {
         return s != null && s.length() > 0;
     }
+
+    public static boolean domainFieldValid(EditText view) {
+		if (view.getText() != null) {
+			String s = view.getText().toString();
+			if (s.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$")) {
+				return true;
+			}
+			if (s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")) {
+				return true;
+			}
+			if ((s.equalsIgnoreCase("localhost"))||(s.equalsIgnoreCase("localhost.localdomain"))) {
+				return true;
+			}
+		}
+		return false;
+	}
 
     /**
      * Ensures that the given string starts and ends with the double quote character. The string is not modified in any way except to add the
@@ -173,4 +191,5 @@ public class Utility {
 //            }
 //        }
     }
+
 }
