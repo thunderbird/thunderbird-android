@@ -11,6 +11,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.util.Config;
 import android.util.Log;
@@ -61,6 +63,7 @@ public class MailService extends Service {
             if (Config.LOGV) {
                 Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
             }
+            mListener.wakeLockAcquire();
             MessagingController.getInstance(getApplication()).checkMail(this, null, mListener);
         }
         else if (ACTION_CANCEL.equals(intent.getAction())) {
@@ -124,6 +127,25 @@ public class MailService extends Service {
 
     class Listener extends MessagingListener {
         HashMap<Account, Integer> accountsWithNewMail = new HashMap<Account, Integer>();
+        private WakeLock wakeLock = null;
+        
+        // wakelock strategy is to be very conservative.  If there is any reason to release, then release
+        // don't want to take the chance of running wild
+        public synchronized void wakeLockAcquire() {
+        	if (wakeLock == null) {
+                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+                wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
+                wakeLock.setReferenceCounted(false);
+                wakeLock.acquire(Email.WAKE_LOCK_TIMEOUT);
+        	}
+        }
+
+        public synchronized void wakeLockRelease() {
+        	if (wakeLock != null) {
+        		wakeLock.release();
+        		wakeLock = null;
+        	}
+        }
 
         @Override
         public void checkMailStarted(Context context, Account account) {
@@ -133,6 +155,7 @@ public class MailService extends Service {
         @Override
         public void checkMailFailed(Context context, Account account, String reason) {
             reschedule();
+            wakeLockRelease();
             stopSelf(mStartId);
         }
 
@@ -187,6 +210,7 @@ public class MailService extends Service {
             }
 
             reschedule();
+            wakeLockRelease();
             stopSelf(mStartId);
         }
     }

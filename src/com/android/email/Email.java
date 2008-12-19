@@ -99,6 +99,11 @@ public class Email extends Application {
      * 6.8MB downloaded but only 5MB saved.
      */
     public static final int MAX_ATTACHMENT_DOWNLOAD_SIZE = (5 * 1024 * 1024);
+    
+    /**
+     * Max time (in millis) the wake lock will be held for when background sync is happening 
+     */
+    public static final int WAKE_LOCK_TIMEOUT = 30000;
 
     /**
      * Called throughout the application when the number of accounts has changed. This method
