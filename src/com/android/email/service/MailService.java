@@ -91,7 +91,7 @@ public class MailService extends Service {
     private void cancel() {
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
-        i.setClassName("com.android.email", "com.android.email.service.MailService");
+        i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
         i.setAction(ACTION_CHECK_MAIL);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         alarmMgr.cancel(pi);
@@ -100,7 +100,7 @@ public class MailService extends Service {
     private void reschedule() {
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
-        i.setClassName("com.android.email", "com.android.email.service.MailService");
+        i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
         i.setAction(ACTION_CHECK_MAIL);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
 
