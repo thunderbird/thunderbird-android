@@ -7,7 +7,7 @@
     <property name="android-tools" value="${sdk-folder}/tools" />
     
     <!-- Application Package Name -->
-    <property name="application-package" value="com.fsck.k9.activity" />
+    <property name="application-package" value="com.fsck.k9" />
 
     <!-- The intermediates directory -->
     <!-- Eclipse uses "bin" for its own output, so we do the same. -->
@@ -129,6 +129,11 @@
             <arg value="-I" />
             <arg value="${android-jar}" />
         </exec>
+    	<copy overwrite="true" file="src/com/fsck/k9/R.java" tofile="src/com/android/email/R.java">
+    		<filterset begintoken="package " endtoken=";">
+    		    <filter token="com.fsck.k9" value="package com.android.email;"/>
+    		</filterset>
+		</copy>
     </target>
 
     <!-- Generate java classes from .aidl files. -->
