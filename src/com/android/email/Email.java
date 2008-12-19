@@ -118,7 +118,7 @@ public class Email extends Application {
     /**
      * Time the LED is off when blicking on new email notification
      */
-    public static final int NOTIFICATION_LED_OFF_TIME = 500; 
+    public static final int NOTIFICATION_LED_OFF_TIME = 2000; 
 
     /**
      * Called throughout the application when the number of accounts has changed. This method
