@@ -201,11 +201,16 @@ public class MailService extends Service {
                     vibrate = account1.isVibrate();
                     if (account1.isNotifyRingtone()) ringtone = account1.getRingtone();
                 }
-                notif.defaults = Notification.DEFAULT_LIGHTS;
+
                 notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
                 if (vibrate) {
                     notif.defaults |= Notification.DEFAULT_VIBRATE;
                 }
+		        notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+		        notif.ledARGB = Email.NOTIFICATION_LED_COLOR;
+		        notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
+		        notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
+				    
                 notifMgr.notify(1, notif);
             }
 

@@ -106,6 +106,21 @@ public class Email extends Application {
     public static final int WAKE_LOCK_TIMEOUT = 30000;
 
     /**
+     * LED color used for the new email notitication
+     */
+    public static final int NOTIFICATION_LED_COLOR = 0xffff00ff;
+
+    /**
+     * Time the LED is on when blicking on new email notification
+     */
+    public static final int NOTIFICATION_LED_ON_TIME = 500; 
+
+    /**
+     * Time the LED is off when blicking on new email notification
+     */
+    public static final int NOTIFICATION_LED_OFF_TIME = 500; 
+
+    /**
      * Called throughout the application when the number of accounts has changed. This method
      * enables or disables the Compose activity, the boot receiver and the service based on
      * whether any accounts are configured.
