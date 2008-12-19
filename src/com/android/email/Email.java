@@ -120,6 +120,8 @@ public class Email extends Application {
      */
     public static final int NOTIFICATION_LED_OFF_TIME = 2000; 
 
+    public static final int NEW_EMAIL_NOTIFICATION_ID = 1; 
+
     /**
      * Called throughout the application when the number of accounts has changed. This method
      * enables or disables the Compose activity, the boot receiver and the service based on

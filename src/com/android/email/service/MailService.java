@@ -211,7 +211,7 @@ public class MailService extends Service {
 		        notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
 		        notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
 				    
-                notifMgr.notify(1, notif);
+                notifMgr.notify(Email.NEW_EMAIL_NOTIFICATION_ID, notif);
             }
 
             reschedule();

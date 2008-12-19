@@ -399,7 +399,7 @@ public class FolderMessageList extends ExpandableListActivity {
 
         NotificationManager notifMgr = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
-        notifMgr.cancel(1);
+        notifMgr.cancel(Email.NEW_EMAIL_NOTIFICATION_ID);
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
         mAccount.refresh(Preferences.getPreferences(this));
