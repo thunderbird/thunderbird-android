@@ -10,11 +10,16 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Process;
 import android.util.Config;
 import android.util.Log;
 
+import com.android.email.activity.FolderMessageList;
 import com.android.email.mail.FetchProfile;
 import com.android.email.mail.Flag;
 import com.android.email.mail.Folder;
@@ -1432,33 +1437,52 @@ s             * critical data as fast as possible, and then we'll fill in the de
         }
         put("checkMail", listener, new Runnable() {
             public void run() {
-                Account[] accounts;
-                if (account != null) {
-                    accounts = new Account[] {
-                        account
-                    };
-                } else {
-                    accounts = Preferences.getPreferences(context).getAccounts();
-                }
-                for (Account account : accounts) {
-                    //We do the math in seconds and not millis
-                    //since timers are not that accurate
-                    long now = (long)Math.floor(System.currentTimeMillis() / 1000);
-                    long autoCheckIntervalTime = account.getAutomaticCheckIntervalMinutes() * 60;
-                    long lastAutoCheckTime = (long)Math.ceil(account.getLastAutomaticCheckTime() / 1000);
-                    if (autoCheckIntervalTime>0
-                            && (now-lastAutoCheckTime)>autoCheckIntervalTime) {
-                        sendPendingMessagesSynchronous(account);
-                        synchronizeMailboxSynchronous(account, Email.INBOX);
-                        //This saves the last auto check time even if sync fails
-                        //TODO: Listen for both send and sync success and failures
-                        //and only save last auto check time is not errors
-                        account.setLastAutomaticCheckTime(now*1000);
-                        account.save(Preferences.getPreferences(context));
+                NotificationManager notifMgr = (NotificationManager)context
+                	.getSystemService(Context.NOTIFICATION_SERVICE);
+                try {
+                    Account[] accounts;
+                    if (account != null) {
+                        accounts = new Account[] {
+                            account
+                        };
+                    } else {
+                        accounts = Preferences.getPreferences(context).getAccounts();
+                    }
+                    for (Account account : accounts) {
+                        //We do the math in seconds and not millis
+                        //since timers are not that accurate
+                        long now = (long)Math.floor(System.currentTimeMillis() / 1000);
+                        long autoCheckIntervalTime = account.getAutomaticCheckIntervalMinutes() * 60;
+                        long lastAutoCheckTime = (long)Math.ceil(account.getLastAutomaticCheckTime() / 1000);
+                        if (autoCheckIntervalTime>0
+                                && (now-lastAutoCheckTime)>autoCheckIntervalTime) {
+                        	Notification notif = new Notification(R.drawable.ic_menu_refresh, context.getString(R.string.notification_bg_sync_ticker, account.getDescription()), System.currentTimeMillis());                        	
+                        	Intent intent = FolderMessageList.actionHandleAccountIntent(context, account, Email.INBOX);
+                        	PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
+                            notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_sync_title), account.getDescription(), pi);
+                            notif.flags = Notification.FLAG_ONGOING_EVENT;
+                            notifMgr.notify(Email.FETCHING_EMAIL_NOTIFICATION_ID, notif);
+
+                            sendPendingMessagesSynchronous(account);
+                            synchronizeMailboxSynchronous(account, Email.INBOX);
+                            //This saves the last auto check time even if sync fails
+                            //TODO: Listen for both send and sync success and failures
+                            //and only save last auto check time is not errors
+                            account.setLastAutomaticCheckTime(now*1000);
+                            account.save(Preferences.getPreferences(context));
+                        }
+                    }
+                    for (MessagingListener l : mListeners) {
+                        l.checkMailFinished(context, account);
                     }
                 }
-                for (MessagingListener l : mListeners) {
-                    l.checkMailFinished(context, account);
+                catch (Exception e) {
+                    for (MessagingListener l : mListeners) {
+                        l.checkMailFailed(context, account, e.getMessage());
+                    }
+                }
+                finally {
+                	notifMgr.cancel(Email.FETCHING_EMAIL_NOTIFICATION_ID);
                 }
             }
         });

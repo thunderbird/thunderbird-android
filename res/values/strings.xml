@@ -69,6 +69,9 @@
     <string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> accounts</string>
     <string name="notification_unsent_title">Message not sent</string>
 
+    <string name="notification_bg_sync_ticker">Checking email: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_sync_title">Checking email</string>
+
     <string name="special_mailbox_name_inbox">Inbox</string>
     <string name="special_mailbox_name_outbox">Outbox</string>
     <!-- The following mailbox names will be used if the user has not specified one from the server -->
