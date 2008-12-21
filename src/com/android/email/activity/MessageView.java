@@ -100,8 +100,8 @@ public class MessageView extends Activity
     private MessageViewHandler mHandler = new MessageViewHandler();
 
 
-    
-    
+
+
        public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DEL: { onDelete(); return true;}
@@ -112,9 +112,9 @@ public class MessageView extends Activity
             case KeyEvent.KEYCODE_J: { onPrevious(); return true; }
             case KeyEvent.KEYCODE_K: { onNext(); return true; }
             case KeyEvent.KEYCODE_Z: { if (event.isShiftPressed()) {
-                                            mMessageContentView.zoomIn(); 
+                                            mMessageContentView.zoomIn();
                                         } else {
-                                            mMessageContentView.zoomOut(); 
+                                            mMessageContentView.zoomOut();
                                         }
                                      return true; }
 
@@ -122,7 +122,7 @@ public class MessageView extends Activity
             }
            return super.onKeyDown(keyCode, event);
         }
- 
+
 
 
     class MessageViewHandler extends Handler {
@@ -248,9 +248,9 @@ public class MessageView extends Activity
             msg.arg1 = show ? 1 : 0;
             sendMessage(msg);
         }
-    
-    
-    
+
+
+
     }
 
     class Attachment {
@@ -302,7 +302,7 @@ public class MessageView extends Activity
         mAttachmentIcon.setVisibility(View.GONE);
 
         findViewById(R.id.reply).setOnClickListener(this);
-        findViewById(R.id.reply_all).setOnClickListener(this);
+        findViewById(R.id.delete).setOnClickListener(this);
         findViewById(R.id.forward).setOnClickListener(this);
         findViewById(R.id.show_pictures).setOnClickListener(this);
 
@@ -518,8 +518,8 @@ public class MessageView extends Activity
             case R.id.reply:
                 onReply();
                 break;
-            case R.id.reply_all:
-                onReplyAll();
+            case R.id.delete:
+                onDelete();
                 break;
             case R.id.forward:
                 onForward();
@@ -756,7 +756,7 @@ public class MessageView extends Activity
                             }
                         }
                         m.appendTail(sb);
-                        
+
 /*
                          * Convert plain text to HTML by replacing
                          * \r?\n with <br> and adding a html/body wrapper.
@@ -766,7 +766,7 @@ public class MessageView extends Activity
 
 
                         text = "<html><body>" + text + "</body></html>";
-                        
+
                     }
 
 
