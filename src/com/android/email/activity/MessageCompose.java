@@ -402,6 +402,8 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
         addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
         updateTitle();
+        //change focus to message body.
+        mMessageContentView.requestFocus();
     }
 
     public void onResume() {
