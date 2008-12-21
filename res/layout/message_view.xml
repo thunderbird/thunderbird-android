@@ -61,8 +61,8 @@
             android:layout_width="0dip"
             android:layout_weight="1" />
         <Button
-            android:id="@+id/delete"
-            android:text="@string/delete_action"
+            android:id="@+id/forward"
+            android:text="@string/forward_action"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />

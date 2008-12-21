@@ -303,7 +303,7 @@ public class MessageView extends Activity
 
         findViewById(R.id.reply).setOnClickListener(this);
         findViewById(R.id.reply_all).setOnClickListener(this);
-        findViewById(R.id.delete).setOnClickListener(this);
+        findViewById(R.id.forward).setOnClickListener(this);
         findViewById(R.id.show_pictures).setOnClickListener(this);
 
         // UrlInterceptRegistry.registerHandler(this);
@@ -521,8 +521,8 @@ public class MessageView extends Activity
             case R.id.reply_all:
                 onReplyAll();
                 break;
-            case R.id.delete:
-                onDelete();
+            case R.id.forward:
+                onForward();
                 break;
             case R.id.next:
                 onNext();
