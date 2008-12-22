@@ -564,6 +564,14 @@ public class WebDavStore extends Store {
                 this.mLocalUsername = WebDavStore.this.mUsername;
             }
 
+            /**
+             * In some instances, it is possible that our folder objects have been collected,
+             * but getPersonalNamespaces() isn't called again (ex. Android destroys the email client).
+             * Perform an authentication to get the appropriate URLs in place again
+             */
+            if (needAuth()) {
+                authenticate();
+            }
             
             //this.mFolderUrl = WebDavStore.this.mUrl + "/Exchange/" + this.mLocalUsername + "/" + encodedName;
             this.mFolderUrl = WebDavStore.this.mUrl + encodedName;
@@ -1625,8 +1633,6 @@ public class WebDavStore extends Store {
                     this.mEnvelope.setReadStatus(true);
                     this.mTempRead = true;
                 }
-            } else if (tagName.equals("received")) {
-                this.mReceived = this.mReceived + value;
             } else if (tagName.equals("mime-version")) {
                 this.mEnvelope.addHeader("MIME-Version", value);
             } else if (tagName.equals("content-type")) {
@@ -1660,12 +1666,8 @@ public class WebDavStore extends Store {
                 this.mTo = this.mTo + value;
             } else if (tagName.equals("in-reply-to")) {
                 this.mEnvelope.addHeader("In-Reply-To", value);
-            } else if (tagName.equals("return-path")) {
-                this.mEnvelope.addHeader("Return-Path", value);
             } else if (tagName.equals("cc")) {
                 this.mCc = this.mCc + value;
-            } else if (tagName.equals("references")) {
-                this.mEnvelope.addHeader("References", value);
             } else if (tagName.equals("getcontentlength")) {
                 this.mEnvelope.addHeader("Content-Length", value);
             } 
