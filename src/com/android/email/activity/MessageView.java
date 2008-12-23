@@ -319,6 +319,8 @@ public class MessageView extends Activity
         mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
         mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
 
+        findSurroundingMessagesUid();
+        
         View next = findViewById(R.id.next);
         View previous = findViewById(R.id.previous);
         /*
@@ -328,8 +330,6 @@ public class MessageView extends Activity
         if (next != null && previous != null) {
             next.setOnClickListener(this);
             previous.setOnClickListener(this);
-
-            findSurroundingMessagesUid();
 
             previous.setVisibility(mPreviousMessageUid != null ? View.VISIBLE : View.GONE);
             next.setVisibility(mNextMessageUid != null ? View.VISIBLE : View.GONE);
