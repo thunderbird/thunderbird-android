@@ -399,11 +399,14 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     mSourceMessageUid,
                     mListener);
         }
+        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
+                    ACTION_EDIT_DRAFT.equals(action)) {
+            //change focus to message body.
+            mMessageContentView.requestFocus();
+        }
 
         addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
         updateTitle();
-        //change focus to message body.
-        mMessageContentView.requestFocus();
     }
 
     public void onResume() {
