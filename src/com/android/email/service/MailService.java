@@ -75,6 +75,7 @@ public class MailService extends Service {
             //if (Config.LOGV) {
                 Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
             //}
+                reschedule();
             mListener.wakeLockAcquire();
             MessagingController.getInstance(getApplication()).checkMail(this, null, mListener);
         }
@@ -176,7 +177,6 @@ public class MailService extends Service {
 
         @Override
         public void checkMailFailed(Context context, Account account, String reason) {
-            reschedule();
             wakeLockRelease();
             stopSelf(mStartId);
         }
@@ -265,7 +265,7 @@ public class MailService extends Service {
             notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
             notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
 
-            //TODO: notifMgr.cancelAll();
+            notifMgr.cancelAll();
 				    notifMgr.notify(accountNumber, notif);
 				  }
 
@@ -281,7 +281,6 @@ public class MailService extends Service {
         	}
         	finally
         	{
-            reschedule();
             wakeLockRelease();
             stopSelf(mStartId);
         	}
