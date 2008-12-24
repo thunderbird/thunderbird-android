@@ -300,7 +300,6 @@ public class WebDavStore extends Store {
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:getcontentlength\",");
-        buffer.append(" \"urn:schemas:mailheader:received\",");
         buffer.append(" \"urn:schemas:mailheader:mime-version\",");
         buffer.append(" \"urn:schemas:mailheader:content-type\",");
         buffer.append(" \"urn:schemas:mailheader:subject\",");
@@ -310,9 +309,7 @@ public class WebDavStore extends Store {
         buffer.append(" \"urn:schemas:mailheader:from\",");
         buffer.append(" \"urn:schemas:mailheader:to\",");
         buffer.append(" \"urn:schemas:mailheader:in-reply-to\",");
-        buffer.append(" \"urn:schemas:mailheader:return-path\",");
         buffer.append(" \"urn:schemas:mailheader:cc\",");
-        buffer.append(" \"urn:schemas:mailheader:references\",");
         buffer.append(" \"urn:schemas:httpmail:read\"");
         buffer.append(" \r\n");
         buffer.append(" FROM \"\"\r\n");
@@ -388,7 +385,7 @@ public class WebDavStore extends Store {
         buffer.append("<a:propertyupdate xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
         for (int i = 0, count = urls.length; i < count; i++) {
-            buffer.append(" <a:href>"+urls[i].substring(urls[i].lastIndexOf('/') + 1)+"</a:href>\r\n");
+            buffer.append(" <a:href>"+urls[i]+"</a:href>\r\n");
         }
         buffer.append("</a:target>\r\n");
         buffer.append("<a:set>\r\n");
@@ -548,7 +545,16 @@ public class WebDavStore extends Store {
             String[] userParts;
             String encodedName = new String();
             try {
-                encodedName = java.net.URLEncoder.encode(name, "UTF-8");
+                String[] urlParts = name.split("/");
+                String url = "";
+                for (int i = 0, count = urlParts.length; i < count; i++) {
+                    if (i != 0) {
+                        url = url + "/" + java.net.URLEncoder.encode(urlParts[i], "UTF-8");
+                    } else {
+                        url = java.net.URLEncoder.encode(urlParts[i], "UTF-8");
+                    }
+                }
+                encodedName = url;
             } catch (UnsupportedEncodingException uee) {
                 Log.e(Email.LOG_TAG, "UnsupportedEncodingException URLEncoding folder name, skipping encoded");
                 encodedName = name;
@@ -571,6 +577,10 @@ public class WebDavStore extends Store {
              */
             if (needAuth()) {
                 authenticate();
+            }
+
+            if (encodedName.equals("INBOX")) {
+                encodedName = "Inbox";
             }
             
             //this.mFolderUrl = WebDavStore.this.mUrl + "/Exchange/" + this.mLocalUsername + "/" + encodedName;
@@ -1337,7 +1347,7 @@ public class WebDavStore extends Store {
             try {
                 int status_code = -1;
                 StringEntity messageEntity = new StringEntity(messageBody);
-                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl + "/");
+                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
                 HttpResponse response;
                 HttpEntity entity;
                 
@@ -1356,6 +1366,7 @@ public class WebDavStore extends Store {
                 }
 
                 entity = response.getEntity();
+
             } catch (UnsupportedEncodingException uee) {
                 Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
             } catch (IOException ioe) {
