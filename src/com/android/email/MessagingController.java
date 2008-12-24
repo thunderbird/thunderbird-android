@@ -2000,7 +2000,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	                }
 
 	                for (final Account account : accounts) {
-	                  	long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
+	                  	final long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
 	                  	if (accountInterval <= 0)
 	                  	{
 		                  	if (Config.LOGV || true)
@@ -2113,8 +2113,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
 				                    		tLocalFolder.open(Folder.OpenMode.READ_WRITE);
 				                    						                    		
 				                    		if (tLocalFolder.getLastChecked() > 
-				                    			(System.currentTimeMillis() - 
-				                    					(account.getAutomaticCheckIntervalMinutes() * 60 * 1000)))
+				                    			    (System.currentTimeMillis() - accountInterval))
 				                    		{
 				                    			if (Config.LOGV) {
 					                    			Log.v(Email.LOG_TAG, "Not running Command for folder " + folder.getName()
