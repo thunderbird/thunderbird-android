@@ -612,22 +612,19 @@ public class FolderMessageList extends ExpandableListActivity
 	        case KeyEvent.KEYCODE_C: { onCompose(); return true;}
 	        case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
 	        case KeyEvent.KEYCODE_S: { onEditAccount(); return true; }
-            case KeyEvent.KEYCODE_L: {
-                long lastAutoCheckTime = mAccount.getLastAutomaticCheckTime();
-                Toast.makeText(this, (new Date(lastAutoCheckTime)).toString(), Toast.LENGTH_LONG).show();
-                return true;
-	        }
 	    }//switch
+    	
+    	long packedPosition = mListView.getSelectedPosition();
+       int group = ExpandableListView
+           .getPackedPositionGroup(packedPosition);
+       int child = ExpandableListView
+           .getPackedPositionChild(packedPosition);
 
-        //Shortcuts that only work when a message is selected
-        int group = mListView.getPackedPositionGroup(mListView.getSelectedId());
-        int item =(mListView.getSelectedItemPosition() -1 );
-        // Guard against hitting delete on group names
         try {
-          if (group >= 0 && item >= 0)
+          if (group >= 0 && child >= 0)
           {
           
-              MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(group, item);
+              MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(group, child);
               switch (keyCode) {
                   case KeyEvent.KEYCODE_DEL: { onDelete(message); return true;}
                   case KeyEvent.KEYCODE_D: { onDelete(message); return true;}

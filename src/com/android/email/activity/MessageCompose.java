@@ -408,7 +408,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     mAccount,
                     mFolder,
                     mSourceMessageUid,
-                    mListener);
+                    null);
         }
 
         addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
