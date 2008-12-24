@@ -93,8 +93,31 @@ public class MessageView extends Activity
     private String mNextMessageUid = null;
     private String mPreviousMessageUid = null;
 
-    private DateFormat mDateTimeFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-    private DateFormat mTimeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
+    private DateFormat dateFormat = null;
+    private DateFormat timeFormat = null;
+    
+    
+    private DateFormat getDateFormat()
+    {
+    	if (dateFormat == null)
+    	{
+    		dateFormat = android.pim.DateFormat.getDateFormat(getApplication());
+    	}
+    	return  dateFormat;
+    }
+    private DateFormat getTimeFormat()
+    {
+    	if (timeFormat == null)
+    	{
+    		timeFormat = android.pim.DateFormat.getTimeFormat(getApplication()); 
+    	}
+    	return timeFormat;
+    }
+    private void clearFormats()
+    {
+    	dateFormat = null;
+    	timeFormat = null;
+    }
 
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
@@ -374,6 +397,7 @@ public class MessageView extends Activity
 
     public void onResume() {
         super.onResume();
+        clearFormats();
         MessagingController.getInstance(getApplication()).addListener(mListener);
     }
 
@@ -427,6 +451,13 @@ public class MessageView extends Activity
             finish();
         }
     }
+    
+    private void onSendAlternate() {
+      if (mMessage != null) {
+  			MessagingController.getInstance(getApplication()).sendAlternate(this, mAccount, mMessage);
+
+      }
+  }
 
     private void onNext() {
         Bundle extras = new Bundle(1);
@@ -556,6 +587,9 @@ public class MessageView extends Activity
             case R.id.forward:
                 onForward();
                 break;
+            case R.id.send_alternate:
+              onSendAlternate();
+              break;
             case R.id.mark_as_unread:
                 onMarkAsUnread();
                 break;
@@ -712,8 +746,8 @@ public class MessageView extends Activity
                 String subjectText = message.getSubject();
                 String fromText = Address.toFriendly(message.getFrom());
                 String dateText = Utility.isDateToday(message.getSentDate()) ?
-                        mTimeFormat.format(message.getSentDate()) :
-                            mDateTimeFormat.format(message.getSentDate());
+                        getTimeFormat().format(message.getSentDate()) :
+                            getDateFormat().format(message.getSentDate());
                 String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
                 boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
                 mHandler.setHeaders(subjectText,

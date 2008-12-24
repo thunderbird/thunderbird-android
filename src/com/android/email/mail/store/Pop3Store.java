@@ -282,7 +282,7 @@ public class Pop3Store extends Store {
 
         @Override
         public OpenMode getMode() throws MessagingException {
-            return OpenMode.READ_ONLY;
+            return OpenMode.READ_WRITE;
         }
 
         @Override
@@ -487,13 +487,13 @@ public class Pop3Store extends Store {
 
         @Override
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
-            throw new UnsupportedOperationException("Pop3Folder.getMessage(MessageRetrievalListener)");
+            throw new UnsupportedOperationException("Pop3: No getMessages");
         }
 
         @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
                 throws MessagingException {
-            throw new UnsupportedOperationException("Pop3Folder.getMessage(MessageRetrievalListener)");
+            throw new UnsupportedOperationException("Pop3: No getMessages by uids");
         }
 
         /**
@@ -560,7 +560,7 @@ public class Pop3Store extends Store {
                          */
                         pop3Message.setBody(null);
                     }
-                    if (listener != null && !fp.contains(FetchProfile.Item.ENVELOPE)) {
+                    if (listener != null && !(fp.contains(FetchProfile.Item.ENVELOPE) && fp.size() == 1)) {
                         listener.messageFinished(message, i, count);
                     }
                 } catch (IOException ioe) {
@@ -683,9 +683,22 @@ public class Pop3Store extends Store {
 
         public void delete(boolean recurse) throws MessagingException {
         }
-
+        
+        @Override
+        public String getUidFromMessageId(Message message) throws MessagingException
+        {
+        	return null;
+        }
+ 
         public Message[] expunge() throws MessagingException {
             return null;
+        }
+
+        @Override
+        public void setFlags(Flag[] flags, boolean value)
+        throws MessagingException {
+        	Message[] messages = getMessages(null);
+        	setFlags(messages, flags, value);
         }
 
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
@@ -695,6 +708,20 @@ public class Pop3Store extends Store {
                  * The only flagging we support is setting the Deleted flag.
                  */
                 return;
+            }
+            ArrayList<String> uids = new ArrayList<String>();
+            try
+            {
+            	for (Message message : messages)
+            	{
+            		uids.add(message.getUid());
+            	}
+            	
+            	indexUids(uids);
+            }
+            catch (IOException ioe)
+            {
+            	throw new MessagingException("Could not get message number for uid " + uids, ioe);
             }
             try {
                 for (Message message : messages) {
@@ -792,13 +819,20 @@ public class Pop3Store extends Store {
         private String executeSimpleCommand(String command) throws IOException, MessagingException {
             try {
                 open(OpenMode.READ_WRITE);
-    
+                if (Config.LOGV)
+                {
+                	Log.v(Email.LOG_TAG, "POP3: command '" + command + "'");
+                }
                 if (command != null) {
                     writeLine(command);
                 }
     
                 String response = readLine();
-    
+                if (Config.LOGV)
+                {
+                	Log.v(Email.LOG_TAG, "POP3: response '" + command + "'");
+                }
+
                 if (response.length() > 1 && response.charAt(0) == '-') {
                     throw new MessagingException(response);
                 }
@@ -831,6 +865,7 @@ public class Pop3Store extends Store {
             mUid = uid;
             mFolder = folder;
             mSize = -1;
+            mFlags.add(Flag.X_NO_SEEN_INFO);
         }
 
         public void setSize(int size) {
@@ -845,6 +880,20 @@ public class Pop3Store extends Store {
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
             mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
+        }
+        
+        @Override
+        public void delete(String trashFolderName) throws MessagingException
+        {
+       // 	try
+       // 	{
+        	// 	Poor POP3 users, we can't copy the message to the Trash folder, but they still want a delete
+        		setFlag(Flag.DELETED, true);
+      //  	}
+//        	catch (MessagingException me)
+//        	{
+//        		Log.w(Email.LOG_TAG, "Could not delete non-existant message", me);
+//        	}
         }
     }
 

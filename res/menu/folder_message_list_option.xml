@@ -12,6 +12,12 @@
 		android:title="@string/compose_action"
 		android:icon="@drawable/ic_menu_compose"
 	/>
+	<item
+		android:id="@+id/empty_trash"
+        android:alphabeticShortcut="e"
+		android:title="@string/empty_trash_action"
+		android:icon="@drawable/ic_menu_delete"
+	/>
     <item
 		android:id="@+id/accounts"
 		android:title="@string/accounts_action"

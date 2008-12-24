@@ -55,6 +55,8 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
         SpinnerOption checkFrequencies[] = {
                 new SpinnerOption(-1,
                         getString(R.string.account_setup_options_mail_check_frequency_never)),
+                new SpinnerOption(1,
+                        getString(R.string.account_setup_options_mail_check_frequency_1min)),
                 new SpinnerOption(5,
                         getString(R.string.account_setup_options_mail_check_frequency_5min)),
                 new SpinnerOption(10,

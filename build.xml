@@ -150,7 +150,7 @@
 
     <!-- Compile this project's .java files into .class files. -->
     <target name="compile" depends="dirs, resource-src, aidl">
-        <javac encoding="ascii" target="1.5" debug="false" extdirs=""
+        <javac encoding="ascii" target="1.5" debug="true" extdirs=""
                 srcdir="."
                 destdir="${outdir-classes}"
                 bootclasspath="${android-jar}">
@@ -256,12 +256,13 @@
         <echo>Signing ${out-unsigned-package}</echo>
         <exec executable="jarsigner" failonerror="true">
             <arg value="-verbose" />
+	    <arg value="-keystore" />
+	    <arg value="${env.KEYSTORE}" />
             <arg value="-storepass" />
             <arg value="${env.jarpass}" />
             <arg value="-signedjar" />
             <arg value="${out-signed-package-ospath}" />
             <arg value="${out-unsigned-package-ospath}" />
-
             <arg value="fsckcom" />
         </exec>
     </target>

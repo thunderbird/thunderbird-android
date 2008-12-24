@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -17,6 +18,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +46,7 @@ import com.android.email.mail.MessagingException;
 import com.android.email.mail.Part;
 import com.android.email.mail.Store;
 import com.android.email.mail.CertificateValidationException;
+import com.android.email.mail.Folder.FolderType;
 import com.android.email.mail.internet.MimeBodyPart;
 import com.android.email.mail.internet.MimeHeader;
 import com.android.email.mail.internet.MimeMessage;
@@ -167,7 +170,7 @@ public class ImapStore extends Store {
         synchronized (mFolderCache) {
             folder = mFolderCache.get(name);
             if (folder == null) {
-                folder = new ImapFolder(name);
+                folder = new ImapFolder(this, name);
                 mFolderCache.put(name, folder);
             }
         }
@@ -263,7 +266,10 @@ public class ImapStore extends Store {
     }
 
     private void releaseConnection(ImapConnection connection) {
-        mConnections.offer(connection);
+    		synchronized(mConnections)
+    		{
+    			mConnections.offer(connection);
+    		}
     }
 
     private String encodeFolderName(String name) {
@@ -307,8 +313,10 @@ public class ImapStore extends Store {
         private ImapConnection mConnection;
         private OpenMode mMode;
         private boolean mExists;
+        private ImapStore store = null;
 
-        public ImapFolder(String name) {
+        public ImapFolder(ImapStore nStore, String name) {
+        	store = nStore;
 	    this.mName = name;
         }
 
@@ -399,11 +407,14 @@ public class ImapStore extends Store {
             return mMode;
         }
 
-        public void close(boolean expunge) {
+        public void close(boolean expunge) throws MessagingException {
             if (!isOpen()) {
                 return;
             }
-            // TODO implement expunge
+            if (expunge)
+            {
+            	expunge();
+            }
             mMessageCount = -1;
             synchronized (this) {
                 releaseConnection(mConnection);
@@ -1002,31 +1013,63 @@ public class ImapStore extends Store {
                         while (response.more());
                     } while(response.mTag == null);
 
-                    /*
-                     * Try to find the UID of the message we just appended using the
-                     * Message-ID header.
-                     */
-                    String[] messageIdHeader = message.getHeader("Message-ID");
-                    if (messageIdHeader == null || messageIdHeader.length == 0) {
-                        continue;
+                    String newUid = getUidFromMessageId(message);
+                    if (Config.LOGD)
+                    {
+                    	Log.d(Email.LOG_TAG, "Got UID " + newUid + " for message");
+                    }          
+                    
+                    if (newUid != null)
+                    {
+                    	message.setUid(newUid);
                     }
-                    String messageId = messageIdHeader[0];
-                    List<ImapResponse> responses =
-                        mConnection.executeSimpleCommand(
-                                String.format("UID SEARCH (HEADER MESSAGE-ID %s)", messageId));
-                    for (ImapResponse response1 : responses) {
-                        if (response1.mTag == null && response1.get(0).equals("SEARCH")
-                                && response1.size() > 1) {
-                            message.setUid(response1.getString(1));
-                        }
-                    }
-
                 }
             }
             catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
         }
+        
+        public String getUidFromMessageId(Message message) throws MessagingException
+        {
+        	try
+        	{
+	        	 /*
+	           * Try to find the UID of the message we just appended using the
+	           * Message-ID header.
+	           */
+	          String[] messageIdHeader = message.getHeader("Message-ID");
+
+	          if (messageIdHeader == null || messageIdHeader.length == 0) {
+	          	if (Config.LOGD)
+	            {
+	          		Log.d(Email.LOG_TAG, "Did not get a message-id in order to search for UID");
+	            }
+	            return null;
+	          }
+	          String messageId = messageIdHeader[0];
+	          if (Config.LOGD)
+            {
+            	Log.d(Email.LOG_TAG, "Looking for UID for message with message-id " + messageId);
+            }   
+	
+	          List<ImapResponse> responses =
+	              mConnection.executeSimpleCommand(
+	                      String.format("UID SEARCH (HEADER MESSAGE-ID %s)", messageId));
+	          for (ImapResponse response1 : responses) {
+	              if (response1.mTag == null && response1.get(0).equals("SEARCH")
+	                      && response1.size() > 1) {
+	                  return response1.getString(1);
+	              }
+	          }
+	          return null;
+        	}
+        	catch (IOException ioe)
+        	{
+        		throw new MessagingException("Could not find UID for message based on Message-ID", ioe);
+        	}
+        }
+        
 
         public Message[] expunge() throws MessagingException {
             checkOpen();
@@ -1037,6 +1080,31 @@ public class ImapStore extends Store {
             }
             return null;
         }
+
+        @Override
+				public void setFlags(Flag[] flags, boolean value)
+				        throws MessagingException {
+				    checkOpen();
+	
+				    ArrayList<String> flagNames = new ArrayList<String>();
+				    for (int i = 0, count = flags.length; i < count; i++) {
+				        Flag flag = flags[i];
+				        if (flag == Flag.SEEN) {
+				            flagNames.add("\\Seen");
+				        }
+				        else if (flag == Flag.DELETED) {
+				            flagNames.add("\\Deleted");
+				        }
+				    }
+				    try {
+				        mConnection.executeSimpleCommand(String.format("UID STORE 1:* %sFLAGS.SILENT (%s)",
+				                value ? "+" : "-",
+				                Utility.combine(flagNames.toArray(new String[flagNames.size()]), ' ')));
+				    }
+				    catch (IOException ioe) {
+				        throw ioExceptionHandler(mConnection, ioe);
+				    }
+				}
 
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
                 throws MessagingException {
@@ -1086,6 +1154,11 @@ public class ImapStore extends Store {
             }
             return super.equals(o);
         }
+
+				protected ImapStore getStore()
+				{
+					return store;
+				}
     }
 
     /**
@@ -1104,9 +1177,21 @@ public class ImapStore extends Store {
             }
 
             mNextCommandTag = 1;
-
+            try
+            {
+            	Security.setProperty("networkaddress.cache.ttl", "0");
+            }
+            catch (Exception e)
+            {
+            	Log.w(Email.LOG_TAG, "Could not set DNS ttl to 0", e);
+            }
+            
             try {
-                SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
+                
+              SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
+              
+              Log.i(Email.LOG_TAG, "Connecting to " + mHost + " @ IP addr " + socketAddress);
+              
                 if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
                         mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
                     SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -1177,6 +1262,20 @@ public class ImapStore extends Store {
                 throw new MessagingException(
                         "Unable to open connection to IMAP server due to security error.", gse);
             }
+            catch (ConnectException ce)
+            {
+            	String ceMess = ce.getMessage();
+            	String[] tokens = ceMess.split("-");
+            	if (tokens != null && tokens.length > 1 && tokens[1] != null)
+            	{
+            		Log.e(Email.LOG_TAG, "Stripping host/port from ConnectionException", ce);
+            		throw new ConnectException(tokens[1].trim());
+            	}
+            	else
+            	{
+            		throw ce;
+            	}
+            }
         }
 
         public boolean isOpen() {
@@ -1245,11 +1344,19 @@ public class ImapStore extends Store {
 
         public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive)
                 throws IOException, ImapException, MessagingException {
+        	if (Config.LOGV)
+        	{
+        		Log.v(Email.LOG_TAG, "Sending IMAP command " + command);
+        	}
             String tag = sendCommand(command, sensitive);
             ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
             ImapResponse response;
             do {
                 response = mParser.readResponse();
+                if (Config.LOGV)
+                {
+                	Log.v(Email.LOG_TAG, "Got IMAP response " + response);
+                }
                 responses.add(response);
             } while (response.mTag == null);
             if (response.size() < 1 || !response.get(0).equals("OK")) {
@@ -1282,6 +1389,40 @@ public class ImapStore extends Store {
             super.setFlag(flag, set);
             mFolder.setFlags(new Message[] { this }, new Flag[] { flag }, set);
         }
+        
+        @Override
+        public void delete(String trashFolderName) throws MessagingException
+        {
+        	ImapFolder iFolder = (ImapFolder)getFolder();
+	        Folder remoteTrashFolder = iFolder.getStore().getFolder(trashFolderName);
+	        /*
+	         * Attempt to copy the remote message to the remote trash folder.
+	         */
+	        if (!remoteTrashFolder.exists()) {
+	            /*
+	             * If the remote trash folder doesn't exist we try to create it.
+	             */
+	        		Log.i(Email.LOG_TAG, "IMAPMessage.delete: attempting to create remote " + trashFolderName + " folder");
+	            remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
+	        }
+	
+	        if (remoteTrashFolder.exists()) {
+	        	if (Config.LOGD)
+	        	{
+	        		Log.d(Email.LOG_TAG, "IMAPMessage.delete: copying remote message to " + trashFolderName);
+	        	}
+	          iFolder.copyMessages(new Message[] { this }, remoteTrashFolder);
+	          setFlag(Flag.DELETED, true);
+	          iFolder.expunge();
+	        }
+	        else
+	        {
+	 //     		Toast.makeText(context, R.string.message_delete_failed, Toast.LENGTH_SHORT).show();
+	
+	         	Log.e(Email.LOG_TAG, "IMAPMessage.delete: remote Trash folder " + trashFolderName + " does not exist and could not be created");
+	        }
+        }
+ 
     }
 
     class ImapBodyPart extends MimeBodyPart {

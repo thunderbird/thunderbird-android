@@ -79,14 +79,24 @@ public class MessagingListener {
 
     public void checkMailFinished(Context context, Account account) {
     }
-
+    
     public void checkMailFailed(Context context, Account account, String reason) {
+    }
+
+    public void sendPendingMessagesStarted(Account account) {
     }
 
     public void sendPendingMessagesCompleted(Account account) {
     }
+    
+    public void sendPendingMessagesFailed(Account account) {
+    }
+
 
     public void emptyTrashCompleted(Account account) {
+    }
+
+    public void folderStatusChanged(Account account, String folderName) {
     }
 
     public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {

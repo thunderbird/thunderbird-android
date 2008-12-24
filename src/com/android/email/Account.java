@@ -5,9 +5,17 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.UUID;
 
+import com.android.email.mail.Folder;
+import com.android.email.mail.MessagingException;
+import com.android.email.mail.Store;
+import com.android.email.mail.store.LocalStore;
+import com.android.email.mail.store.LocalStore.LocalFolder;
+
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save
@@ -17,6 +25,7 @@ public class Account implements Serializable {
     public static final int DELETE_POLICY_NEVER = 0;
     public static final int DELETE_POLICY_7DAYS = 1;
     public static final int DELETE_POLICY_ON_DELETE = 2;
+    public static final int DELETE_POLICY_MARK_AS_READ = 3;
     
     private static final long serialVersionUID = 2975156672298625121L;
 
@@ -38,9 +47,15 @@ public class Account implements Serializable {
     String mSentFolderName;
     String mTrashFolderName;
     String mOutboxFolderName;
+    FolderMode mFolderDisplayMode;
+    FolderMode mFolderSyncMode;
     int mAccountNumber;
     boolean mVibrate;
     String mRingtoneUri;
+    
+    public enum FolderMode {
+    	ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
+    }
 
     /**
      * <pre>
@@ -62,6 +77,8 @@ public class Account implements Serializable {
         mNotifyRingtone = false; 
         mSignature = "Sent from my Android phone with K-9. Please excuse my brevity.";
         mVibrate = false;
+        mFolderDisplayMode = FolderMode.ALL;
+        mFolderSyncMode = FolderMode.ALL;
         mRingtoneUri = "content://settings/system/notification_sound";
     }
 
@@ -106,6 +123,26 @@ public class Account implements Serializable {
         mVibrate = preferences.mSharedPreferences.getBoolean(mUuid + ".vibrate", false);
         mRingtoneUri = preferences.mSharedPreferences.getString(mUuid  + ".ringtone", 
                 "content://settings/system/notification_sound");
+        try
+        {
+        	mFolderDisplayMode = FolderMode.valueOf(preferences.mSharedPreferences.getString(mUuid  + ".folderDisplayMode", 
+        			FolderMode.ALL.name()));
+        }
+        catch (Exception e)
+        {
+        	mFolderDisplayMode = FolderMode.ALL;
+        }
+
+        try
+        {
+        	mFolderSyncMode = FolderMode.valueOf(preferences.mSharedPreferences.getString(mUuid  + ".folderSyncMode", 
+        			FolderMode.ALL.name()));
+        }
+        catch (Exception e)
+        {
+        	mFolderSyncMode = FolderMode.ALL;
+        }
+
     }
 
     public String getUuid() {
@@ -218,6 +255,9 @@ public class Account implements Serializable {
         editor.remove(mUuid + ".accountNumber");
         editor.remove(mUuid + ".vibrate");
         editor.remove(mUuid + ".ringtone");
+        editor.remove(mUuid + ".lastFullSync");
+        editor.remove(mUuid + ".folderDisplayMode");
+        editor.remove(mUuid + ".folderSyncMode");
         editor.commit();
     }
 
@@ -278,6 +318,9 @@ public class Account implements Serializable {
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
         editor.putBoolean(mUuid + ".vibrate", mVibrate);
         editor.putString(mUuid + ".ringtone", mRingtoneUri);
+        editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
+        editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
+       
         editor.commit();
     }
 
@@ -302,6 +345,49 @@ public class Account implements Serializable {
      */
     public int getAutomaticCheckIntervalMinutes() {
         return mAutomaticCheckIntervalMinutes;
+    }
+    
+    public int getUnreadMessageCount(Context context, Application application) throws MessagingException
+    {
+    	int unreadMessageCount = 0;
+      LocalStore localStore = (LocalStore) Store.getInstance(
+              getLocalStoreUri(),
+              application);
+    	Account.FolderMode aMode = getFolderDisplayMode();
+    	Preferences prefs = Preferences.getPreferences(context);
+      for (LocalFolder folder : localStore.getPersonalNamespaces())
+      {
+      	folder.refresh(prefs);
+       	Folder.FolderClass fMode = folder.getDisplayClass();
+        
+      	if (folder.getName().equals(getTrashFolderName()) == false &&
+      			folder.getName().equals(getDraftsFolderName()) == false &&
+      			folder.getName().equals(getOutboxFolderName()) == false &&
+      			folder.getName().equals(getSentFolderName()) == false &&
+      			folder.getName().equals(getErrorFolderName()) == false)
+      	{
+      		if (aMode == Account.FolderMode.FIRST_CLASS && 
+        			fMode != Folder.FolderClass.FIRST_CLASS)
+          {
+           	continue;
+          }
+      		if (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
+      				fMode != Folder.FolderClass.FIRST_CLASS &&
+      				fMode != Folder.FolderClass.SECOND_CLASS)
+      		{
+      			continue;
+      		}
+          if (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
+              fMode == Folder.FolderClass.SECOND_CLASS)
+          {
+          	continue;
+        	}
+      		unreadMessageCount += folder.getUnreadMessageCount();
+      	}
+      }
+      
+      return unreadMessageCount;
+    	
     }
 
     public int getDisplayCount() {
@@ -373,6 +459,11 @@ public class Account implements Serializable {
     public String getSentFolderName() {
         return mSentFolderName;
     }
+    
+    public String getErrorFolderName()
+    {
+    	return "K9mail-errors";
+    }
 
     public void setSentFolderName(String sentFolderName) {
         mSentFolderName = sentFolderName;
@@ -405,4 +496,25 @@ public class Account implements Serializable {
         }
         return super.equals(o);
     }
+
+		public FolderMode getFolderDisplayMode()
+		{
+			return mFolderDisplayMode;
+		}
+
+		public void setFolderDisplayMode(FolderMode displayMode)
+		{
+			mFolderDisplayMode = displayMode;
+		}
+		
+		public FolderMode getFolderSyncMode()
+		{
+			return mFolderSyncMode;
+		}
+
+		public void setFolderSyncMode(FolderMode syncMode)
+		{
+			mFolderSyncMode = syncMode;
+		}
+
 }

@@ -12,7 +12,7 @@ import android.util.Log;
 public class Preferences {
     private static Preferences preferences;
 
-    SharedPreferences mSharedPreferences;
+    public SharedPreferences mSharedPreferences;
 
     private Preferences(Context context) {
         mSharedPreferences = context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE);

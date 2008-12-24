@@ -37,6 +37,7 @@ import com.android.email.R;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.AccountSetupBasics;
 import com.android.email.activity.setup.AccountSetupCheckSettings;
+import com.android.email.mail.Folder;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Store;
 import com.android.email.mail.store.LocalStore;
@@ -85,7 +86,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
 
         NotificationManager notifMgr = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
-        notifMgr.cancel(1);
+        notifMgr.cancelAll();
 
         refresh();
     }
@@ -106,6 +107,16 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     private void onRefresh() {
         MessagingController.getInstance(getApplication()).checkMail(this, null, null);
     }
+    
+    private void onClearCommands(Account account) {
+      MessagingController.getInstance(getApplication()).clearAllPending(account);
+    }
+  	
+    private void onEmptyTrash(Account account)
+  	{
+  		MessagingController.getInstance(getApplication()).emptyTrash(account, null);
+  	}
+
 
     private void onCompose() {
         Account defaultAccount =
@@ -183,6 +194,12 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
             case R.id.open:
                 onOpenAccount(account);
                 break;
+            case R.id.clear_pending:
+              onClearCommands(account);
+              break;
+            case R.id.empty_trash:
+              onEmptyTrash(account);
+              break;
         }
         return true;
     }
@@ -286,6 +303,7 @@ getPackageManager().getPackageInfo(getPackageName(), 0);
         }
         return super.onKeyDown(keyCode, event);
     }
+    
 
     class AccountsAdapter extends ArrayAdapter<Account> {
         public AccountsAdapter(Account[] accounts) {
@@ -317,13 +335,7 @@ getPackageManager().getPackageInfo(getPackageName(), 0);
             }
             int unreadMessageCount = 0;
             try {
-                LocalStore localStore = (LocalStore) Store.getInstance(
-                        account.getLocalStoreUri(),
-                        getApplication());
-                LocalFolder localFolder = (LocalFolder) localStore.getFolder(Email.INBOX);
-                if (localFolder.exists()) {
-                    unreadMessageCount = localFolder.getUnreadMessageCount();
-                }
+            	unreadMessageCount = account.getUnreadMessageCount(Accounts.this, getApplication());
             }
             catch (MessagingException me) {
                 /*

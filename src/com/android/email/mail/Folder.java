@@ -1,11 +1,19 @@
 package com.android.email.mail;
 
+import com.android.email.Preferences;
+
 
 public abstract class Folder {
+		private String status = null;
+		private long lastChecked = 0;
     public enum OpenMode {
         READ_WRITE, READ_ONLY,
     }
-
+    
+    public enum FolderClass {
+    	NONE, FIRST_CLASS, SECOND_CLASS;
+    }
+    
     public enum FolderType {
         HOLDS_FOLDERS, HOLDS_MESSAGES,
     }
@@ -84,6 +92,10 @@ public abstract class Folder {
 
     public abstract void setFlags(Message[] messages, Flag[] flags, boolean value)
             throws MessagingException;
+    
+		public abstract void setFlags(Flag[] flags, boolean value) throws MessagingException;
+
+    public abstract String getUidFromMessageId(Message message) throws MessagingException;
 
     public abstract Message[] expunge() throws MessagingException;
 
@@ -104,4 +116,42 @@ public abstract class Folder {
     public String toString() {
         return getName();
     }
+
+		public long getLastChecked()
+		{
+			return lastChecked;
+		}
+
+		public void setLastChecked(long lastChecked) throws MessagingException
+		{
+			this.lastChecked = lastChecked;
+		}
+		
+   	public FolderClass getDisplayClass()
+		{
+			return FolderClass.NONE;
+		}
+		
+		public FolderClass getSyncClass()
+		{
+			return getDisplayClass();
+		}
+		
+    public void refresh(Preferences preferences) throws MessagingException
+    {
+
+    }
+
+		public String getStatus()
+		{
+			return status;
+		}
+
+		public void setStatus(String status) throws MessagingException
+		{
+			this.status = status;
+		}
+
+
+
 }

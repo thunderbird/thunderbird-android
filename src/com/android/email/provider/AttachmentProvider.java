@@ -30,7 +30,7 @@ import com.android.email.mail.internet.MimeUtility;
  * A simple ContentProvider that allows file access to Email's attachments.
  */
 public class AttachmentProvider extends ContentProvider {
-    public static final Uri CONTENT_URI = Uri.parse( "content://com.android.email.attachmentprovider");
+	public static final Uri CONTENT_URI = Uri.parse( "content://com.android.email.attachmentprovider");
 
     private static final String FORMAT_RAW = "RAW";
     private static final String FORMAT_THUMBNAIL = "THUMBNAIL";

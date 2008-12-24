@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mark_all_as_read"
+        android:title="@string/mark_all_as_read_action"
+    />
+
+    <item
+        android:id="@+id/empty_trash"
+        android:title="@string/empty_trash_action"
+    />
+
+    <item
+        android:id="@+id/refresh"
+        android:title="@string/refresh_action"
+    />
+       <item       
+        android:id="@+id/folder_settings"
+		android:title="@string/folder_settings_action"
+    />
+	
+</menu>

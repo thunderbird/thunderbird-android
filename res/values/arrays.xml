@@ -18,6 +18,7 @@
 
     <string-array name="account_settings_check_frequency_entries">
         <item>@string/account_setup_options_mail_check_frequency_never</item>
+        <item>@string/account_setup_options_mail_check_frequency_1min</item>
         <item>@string/account_setup_options_mail_check_frequency_5min</item>
         <item>@string/account_setup_options_mail_check_frequency_10min</item>
         <item>@string/account_setup_options_mail_check_frequency_15min</item>
@@ -27,6 +28,7 @@
 
     <string-array name="account_settings_check_frequency_values">
         <item>-1</item>
+        <item>1</item>
         <item>5</item>
         <item>10</item>
         <item>15</item>
@@ -47,4 +49,69 @@
         <item>50</item>
         <item>100</item>
     </string-array>
+    
+    <string-array name="account_settings_folder_display_mode_entries">
+        <item>@string/account_settings_folder_display_mode_all</item>
+       <item>@string/account_settings_folder_display_mode_first_class</item>
+       <item>@string/account_settings_folder_display_mode_first_and_second_class</item>
+       <item>@string/account_settings_folder_display_mode_not_second_class</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_display_mode_values">
+        <item>ALL</item>
+        <item>FIRST_CLASS</item>
+        <item>FIRST_AND_SECOND_CLASS</item>
+        <item>NOT_SECOND_CLASS</item> 
+    </string-array>
+  
+     <string-array name="account_settings_folder_sync_mode_entries">
+        <item>@string/account_settings_folder_sync_mode_all</item>
+       <item>@string/account_settings_folder_sync_mode_first_class</item>
+       <item>@string/account_settings_folder_sync_mode_first_and_second_class</item>
+       <item>@string/account_settings_folder_sync_mode_not_second_class</item>
+    </string-array>
+
+    <string-array name="account_settings_folder_sync_mode_values">
+        <item>ALL</item>
+        <item>FIRST_CLASS</item>
+        <item>FIRST_AND_SECOND_CLASS</item>
+        <item>NOT_SECOND_CLASS</item> 
+    </string-array>
+    
+    <string-array name="folder_settings_folder_display_mode_entries">
+       <item>@string/folder_settings_folder_display_mode_normal</item>
+       <item>@string/folder_settings_folder_display_mode_first_class</item>
+       <item>@string/folder_settings_folder_display_mode_second_class</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_display_mode_values">
+        <item>NONE</item>
+        <item>FIRST_CLASS</item>
+        <item>SECOND_CLASS</item> 
+    </string-array>
+    
+    <string-array name="folder_settings_folder_sync_mode_entries">
+       <item>@string/folder_settings_folder_sync_mode_normal</item>
+       <item>@string/folder_settings_folder_sync_mode_first_class</item>
+       <item>@string/folder_settings_folder_sync_mode_second_class</item>
+    </string-array>
+    
+    <string-array name="folder_settings_folder_sync_mode_values">
+    <item>NONE</item>
+    <item>FIRST_CLASS</item>
+    <item>SECOND_CLASS</item>     
+    </string-array>
+    
+    <string-array name="account_setup_delete_policy_entries">
+    	<item>@string/account_setup_incoming_delete_policy_never_label</item>
+    	<item>@string/account_setup_incoming_delete_policy_delete_label</item>
+    	<item>@string/account_setup_incoming_delete_policy_markread_label</item>
+    </string-array>
+    
+    <string-array name="account_setup_delete_policy_values">
+    	<item>0</item>
+    	<item>2</item>
+    	<item>3</item>
+    </string-array>
+    
 </resources>
