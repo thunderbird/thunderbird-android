@@ -1296,7 +1296,7 @@ public class WebDavStore extends Store {
                 }
             }
         }
-        
+
         @Override
         public Flag[] getPermanentFlags() throws MessagingException {
             return PERMANENT_FLAGS;
@@ -1602,7 +1602,6 @@ public class WebDavStore extends Store {
         }
     }
 
-
     /**
      * Data set for handling all XML Parses
      */
@@ -1651,11 +1650,13 @@ public class WebDavStore extends Store {
             } else if (tagName.equals("subject")) {
                 this.mEnvelope.addHeader("Subject", value);
             } else if (tagName.equals("date")) {
-                value = value.replaceAll("T", " ");
-                String[] valueBreak = value.split("\\.");
-                value = valueBreak[0];
+                /**
+                 * Exchange doesn't give us rfc822 dates like it claims.  The date is in the format:
+                 * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances are Z>
+                 */
+                value = value.substring(0, value.length() - 1);
 
-                DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                 DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z");
                 String tempDate = "";
 
@@ -1681,7 +1682,7 @@ public class WebDavStore extends Store {
                 this.mCc = this.mCc + value;
             } else if (tagName.equals("getcontentlength")) {
                 this.mEnvelope.addHeader("Content-Length", value);
-            } 
+            }
 
 
             if (!this.mTempUid.equals("") &&
