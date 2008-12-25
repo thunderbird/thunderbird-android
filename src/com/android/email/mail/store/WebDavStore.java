@@ -340,7 +340,7 @@ public class WebDavStore extends Store {
         StringBuffer buffer = new StringBuffer(600);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-        buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
+        buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\", \"DAV:href\"\r\n");
         buffer.append(" FROM \"\"\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND ");
         for (int i = 0, count = uids.length; i < count; i++) {
@@ -1384,19 +1384,31 @@ public class WebDavStore extends Store {
             for (int i = 0, count = uids.length; i < count; i++) {
                 try {
                     int status_code = -1;
-                    HttpGeneric httpmethod = new HttpGeneric(uidToUrl.get(uids[i]));
+                    String uid = uids[i];
+                    String url = uidToUrl.get(uids[i]);
+                    HttpGeneric httpmethod = new HttpGeneric(url);
                     HttpResponse response;
                     HttpEntity entity;
+                    String destinationUrl = generateDeleteUrl(url);
 
-                    httpmethod.setMethod("DELETE");
-                    httpmethod.setHeader("Brief", "t");
+                    /**
+                     * If the destination is the same as the origin, assume delete forever
+                     */
+                    if (destinationUrl.equals(url)) {
+                        httpmethod.setMethod("DELETE");
+                        httpmethod.setHeader("Brief", "t");
+                    } else {
+                        httpmethod.setMethod("MOVE");
+                        httpmethod.setHeader("Destination", generateDeleteUrl(url));
+                        httpmethod.setHeader("Brief", "t");
+                    }
 
                     response = httpclient.execute(httpmethod);
                     status_code = response.getStatusLine().getStatusCode();
 
                     if (status_code < 200 ||
                         status_code > 300) {
-                        throw new IOException("Error deleting message url: "+urls[i]+" \nResponse Code: "+status_code);
+                        throw new IOException("Error deleting message url, Response Code: "+status_code);
                     }
                 } catch (UnsupportedEncodingException uee) {
                     Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
@@ -1404,6 +1416,14 @@ public class WebDavStore extends Store {
                     Log.e(Email.LOG_TAG, "IOException: " + ioe);
                 }
             }
+        }
+
+        private String generateDeleteUrl(String startUrl) {
+            String[] urlParts = startUrl.split("/");
+            String filename = urlParts[urlParts.length - 1];
+            String finalUrl = WebDavStore.this.mUrl + "Deleted%20Items/" + filename;
+
+            return finalUrl;
         }
         
         @Override
