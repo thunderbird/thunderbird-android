@@ -141,7 +141,7 @@
         </service>
         <provider
             android:name="com.android.email.provider.AttachmentProvider"
-            android:authorities="com.android.email.attachmentprovider"
+            android:authorities="com.fsck.email.attachmentprovider"
             android:multiprocess="true"
             android:grantUriPermissions="true"
             android:readPermission="com.android.email.permission.READ_ATTACHMENT"
