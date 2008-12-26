@@ -1210,6 +1210,18 @@ public class WebDavStore extends Store {
         public boolean equals(Object o) {
             return false;
         }
+
+        public String getUidFromMessageId(Message message) throws MessagingException {
+            Log.e(Email.LOG_TAG, "Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
+                  + " being uploaded to the Sent folder");
+            return null;
+        }
+
+        public void setFlags(Flag[] flags, boolean value) throws MessagingException {
+            Log.e(Email.LOG_TAG, "Unimplemented method setFlags(Flag[], boolean) breaks markAllMessagesAsRead and EmptyTrash");
+            // Try to make this efficient by not retrieving all of the messages
+            return;
+        }
     }
     
     /**
