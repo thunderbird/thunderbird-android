@@ -374,7 +374,7 @@ public class MessageView extends Activity
                         mAccount,
                         mFolder,
                         mMessageUid,
-                        mListener);
+                        null);
             }
         }.start();
     }
@@ -807,7 +807,7 @@ public class MessageView extends Activity
 
                     /*
                      * TODO this should be smarter, change to regex for img, but consider how to
-                     * get backgroung images and a million other things that HTML allows.
+                     * get background images and a million other things that HTML allows.
                      */
                     if (text.contains("<img")) {
                         mHandler.showShowPictures(true);
