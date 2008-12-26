@@ -322,7 +322,7 @@ public class ImapStore extends Store {
 
 	public String getPrefixedName() {
 	    String prefixedName = "";
-	    if(mPathPrefix.length() > 0 && !mName.equalsIgnoreCase(Email.INBOX)){
+	    if(mPathPrefix != null && mPathPrefix.length() > 0 && !Email.INBOX.equalsIgnoreCase(mName)){
 		prefixedName += mPathPrefix + mPathDelimeter;
 	    }
 
