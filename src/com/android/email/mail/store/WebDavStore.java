@@ -156,100 +156,56 @@ public class WebDavStore extends Store {
     @Override
     public Folder[] getPersonalNamespaces() throws MessagingException {
         ArrayList<Folder> folderList = new ArrayList<Folder>();
-        DefaultHttpClient httpclient = new DefaultHttpClient();
-        HttpEntity responseEntity;
-        HttpGeneric httpmethod;
-        HttpResponse response;
-        StringEntity messageEntity;
+        HashMap<String, String> headers = new HashMap<String, String>();
+        ParsedDataSet dataset = new ParsedDataSet();
         String messageBody;
-        int status_code;
-        
+        String[] folderUrls;
+        int urlLength;
+
+        /**
+         * We have to check authentication here so we have the proper URL stored
+         */
         if (needAuth()) {
             authenticate();
         }
+        
+        messageBody = getFolderListXml();
+        headers.put("Brief", "t");
 
-        if (this.mAuthenticated == false ||
-            this.mAuthCookies == null) {
-            return folderList.toArray(new Folder[] {});
-        }
+        dataset = processRequest(this.mUrl, "SEARCH", messageBody, headers);
 
-        try {
-            /** Set up and execute the request */
-            httpclient.setCookieStore(this.mAuthCookies);
-            messageBody = getFolderListXml();
-            messageEntity = new StringEntity(messageBody);
-            messageEntity.setContentType("text/xml");
-            
-            httpmethod = new HttpGeneric(this.mUrl);// + "/Exchange/" + this.mUsername);
-            httpmethod.setMethod("SEARCH");
-            httpmethod.setEntity(messageEntity);
-            httpmethod.setHeader("Brief", "t");
+        folderUrls = dataset.getHrefs();
+        urlLength = folderUrls.length;
 
-            response = httpclient.execute(httpmethod);
-            status_code = response.getStatusLine().getStatusCode();
-
-            if (status_code < 200 ||
-                status_code > 300) {
-                throw new IOException("Error getting folder listing");
-            }
-
-            responseEntity = response.getEntity();
-
-            if (responseEntity != null) {
-                /** Parse the returned data */
-                try {
-                    InputStream istream = responseEntity.getContent();
-                    SAXParserFactory spf = SAXParserFactory.newInstance();
-                    SAXParser sp = spf.newSAXParser();
-
-                    XMLReader xr = sp.getXMLReader();
-
-                    WebDavHandler myHandler = new WebDavHandler();
-                    xr.setContentHandler(myHandler);
-
-                    xr.parse(new InputSource(istream));
-
-                    ParsedDataSet dataset = myHandler.getDataSet();
-
-                    String[] folderUrls = dataset.getHrefs();
-                    int urlLength = folderUrls.length;
-
-                    for (int i = 0; i < urlLength; i++) {
-                        String[] urlParts = folderUrls[i].split("/");
-                        String folderName = urlParts[urlParts.length - 1];
-                        String fullPathName = "";
-                        WebDavFolder wdFolder;
+        for (int i = 0; i < urlLength; i++) {
+            String[] urlParts = folderUrls[i].split("/");
+            String folderName = urlParts[urlParts.length - 1];
+            String fullPathName = "";
+            WebDavFolder wdFolder;
                         
-                        if (folderName.equalsIgnoreCase(Email.INBOX)) {
-                            folderName = "INBOX";
-                        } else {
-                            for (int j = 5, count = urlParts.length; j < count; j++) {
-                                if (j != 5) {
-                                    fullPathName = fullPathName + "/" + urlParts[j];
-                                } else {
-                                    fullPathName = urlParts[j];
-                                }
-                            }
-                            folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
-                        }
-
-                        wdFolder = new WebDavFolder(folderName);
-                        wdFolder.setUrl(folderUrls[i]);
-                        folderList.add(wdFolder);
-                        this.mFolderList.put(folderName, wdFolder);
-                        //folderList.add(getFolder(java.net.URLDecoder.decode(folderName, "UTF-8")));
+            if (folderName.equalsIgnoreCase(Email.INBOX)) {
+                folderName = "INBOX";
+            } else {
+                for (int j = 5, count = urlParts.length; j < count; j++) {
+                    if (j != 5) {
+                        fullPathName = fullPathName + "/" + urlParts[j];
+                    } else {
+                        fullPathName = urlParts[j];
                     }
-                } catch (SAXException se) {
-                    Log.e(Email.LOG_TAG, "Error with SAXParser " + se);
-                } catch (ParserConfigurationException pce) {
-                    Log.e(Email.LOG_TAG, "Error with SAXParser " + pce);
+                }
+                try {
+                    folderName = java.net.URLDecoder.decode(fullPathName, "UTF-8");
+                } catch (UnsupportedEncodingException uee) {
+                    /** If we don't support UTF-8 there's a problem, don't decode it then */
+                    folderName = fullPathName;
                 }
             }
-        } catch (UnsupportedEncodingException uee) {
-            Log.e(Email.LOG_TAG, "Error with encoding " + uee);
-        } catch (IOException ioe) {
-            Log.e(Email.LOG_TAG, "IOException " + ioe);
-        } 
+
+            wdFolder = new WebDavFolder(folderName);
+            wdFolder.setUrl(folderUrls[i]);
+            folderList.add(wdFolder);
+            this.mFolderList.put(folderName, wdFolder);
+        }
 
         return folderList.toArray(new WebDavFolder[] {});
     }
@@ -519,13 +475,101 @@ public class WebDavStore extends Store {
     public CookieStore getAuthCookies() {
         return mAuthCookies;
     }
+    
     public String getAlias() {
         return alias;
     }
+    
     public String getUrl() {
         return mUrl;
     }
 
+    /**
+     * Performs an httprequest to the supplied url using the supplied method.
+     * messageBody and headers are optional as not all requests will need them.
+     * There are two signatures to support calls that don't require parsing of the response.
+     */
+    private ParsedDataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers) {
+        return processRequest(url, method, messageBody, headers, true);
+    }
+    
+    private ParsedDataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers, boolean needsParsing) {
+        ParsedDataSet dataset = new ParsedDataSet();
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        
+        if (url == null ||
+            method == null) {
+            return dataset;
+        }
+
+        if (needAuth()) {
+            authenticate();
+        }
+
+        if (this.mAuthenticated == false ||
+            this.mAuthCookies == null) {
+            Log.e(Email.LOG_TAG, "Error during authentication");
+            return dataset;
+        }
+
+        httpclient.setCookieStore(this.mAuthCookies);
+        try {
+            int statusCode = -1;
+            StringEntity messageEntity;
+            HttpGeneric httpmethod = new HttpGeneric(url);
+            HttpResponse response;
+            HttpEntity entity;
+
+            if (messageBody != null) {
+                messageEntity = new StringEntity(messageBody);
+                messageEntity.setContentType("text/xml");
+                httpmethod.setEntity(messageEntity);
+            }
+
+            for (String headerName : headers.keySet()) {
+                httpmethod.setHeader(headerName, headers.get(headerName));
+            }
+
+            httpmethod.setMethod(method);
+
+            response = httpclient.execute(httpmethod);
+            statusCode = response.getStatusLine().getStatusCode();
+
+            if (statusCode < 200 ||
+                statusCode > 300) {
+                throw new IOException("Error processing request, returned HTTP Response Code was " + statusCode);
+            }
+
+            entity = response.getEntity();
+
+            if (entity != null &&
+                needsParsing) {
+                try {
+                    InputStream istream = entity.getContent();
+                    SAXParserFactory spf = SAXParserFactory.newInstance();
+                    SAXParser sp = spf.newSAXParser();
+                    XMLReader xr = sp.getXMLReader();
+                    WebDavHandler myHandler = new WebDavHandler();
+                        
+                    xr.setContentHandler(myHandler);
+                    xr.parse(new InputSource(istream));
+
+                    dataset = myHandler.getDataSet();
+                } catch (SAXException se) {
+                    Log.e(Email.LOG_TAG, "SAXException in processRequest() " + se);
+                } catch (ParserConfigurationException pce) {
+                    Log.e(Email.LOG_TAG, "ParserConfigurationException in processRequest() " + pce);
+                }
+            }
+        } catch (UnsupportedEncodingException uee) {
+            Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
+        } catch (IOException ioe) {
+            Log.e(Email.LOG_TAG, "IOException: " + ioe);
+        }
+
+        return dataset;
+    }
+    
     /*************************************************************************
      * Helper and Inner classes
      */
@@ -609,14 +653,9 @@ public class WebDavStore extends Store {
         private int getMessageCount(boolean read, CookieStore authCookies) {
             String isRead;
             int messageCount = 0;
-
-            DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpGeneric httpmethod;
-            HttpResponse response;
-            HttpEntity responseEntity;
-            StringEntity bodyEntity;
+            ParsedDataSet dataset = new ParsedDataSet();
+            HashMap<String, String> headers = new HashMap<String, String>();
             String messageBody;
-            int statusCode;
             
             if (read) {
                 isRead = new String("True");
@@ -624,57 +663,13 @@ public class WebDavStore extends Store {
                 isRead = new String("False");
             }
 
-            httpclient.setCookieStore(authCookies);
-
             messageBody = getMessageCountXml(isRead);
-            
-            try {
-                bodyEntity = new StringEntity(messageBody);
-                bodyEntity.setContentType("text/xml");
-
-                httpmethod = new HttpGeneric(this.mFolderUrl);
-                httpmethod.setMethod("SEARCH");
-                httpmethod.setEntity(bodyEntity);
-                httpmethod.setHeader("Brief", "t");
-
-                response = httpclient.execute(httpmethod);
-                statusCode = response.getStatusLine().getStatusCode();
-
-                if (statusCode < 200 ||
-                    statusCode > 300) {
-                    throw new IOException("Error getting message count, status code was " + statusCode);
-                }
-
-                responseEntity = response.getEntity();
-
-                if (responseEntity != null) {
-                    try {
-                        ParsedDataSet dataset = new ParsedDataSet();
-                        InputStream istream = responseEntity.getContent();
-                        SAXParserFactory spf = SAXParserFactory.newInstance();
-                        SAXParser sp = spf.newSAXParser();
-
-                        XMLReader xr = sp.getXMLReader();
-                        WebDavHandler myHandler = new WebDavHandler();
-                        xr.setContentHandler(myHandler);
-
-                        xr.parse(new InputSource(istream));
-
-                        dataset = myHandler.getDataSet();
-                        messageCount = dataset.getMessageCount();
-
-                        istream.close();
-                    } catch (SAXException se) {
-                        Log.e(Email.LOG_TAG, "SAXException in getMessageCount " + se);
-                    } catch (ParserConfigurationException pce) {
-                        Log.e(Email.LOG_TAG, "ParserConfigurationException in getMessageCount " + pce);
-                    }
-                }
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "UnsupportedEncodingException in getMessageCount() " + uee);
-            } catch (IOException ioe) {
-                Log.e(Email.LOG_TAG, "IOException in getMessageCount() " + ioe);
+            headers.put("Brief", "t");
+            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            if (dataset != null) {
+                messageCount = dataset.getMessageCount();
             }
+
             return messageCount;
         }
 
@@ -740,10 +735,12 @@ public class WebDavStore extends Store {
         @Override
         public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
                 throws MessagingException {
-            DefaultHttpClient httpclient = new DefaultHttpClient();
             ArrayList<Message> messages = new ArrayList<Message>();
             String[] uids;
-
+            ParsedDataSet dataset = new ParsedDataSet();
+            HashMap<String, String> headers = new HashMap<String, String>();
+            int uidsLength = -1;
+            
             String messageBody;
             int prevStart = start;
 
@@ -765,75 +762,27 @@ public class WebDavStore extends Store {
                 return messages.toArray(new Message[] {});
             }
             
-            /** Retrieve and parse the XML entity for our messages */
-            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
             messageBody = getMessagesXml();
 
-            try {
-                int status_code = -1;
-                StringEntity messageEntity = new StringEntity(messageBody);
-                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
-                HttpResponse response;
-                HttpEntity entity;
-                
-                messageEntity.setContentType("text/xml");
-                httpmethod.setMethod("SEARCH");
-                httpmethod.setEntity(messageEntity);
-                httpmethod.setHeader("Brief", "t");
-                httpmethod.setHeader("Range", "rows=" + start + "-" + end);
+            headers.put("Brief", "t");
+            headers.put("Range", "rows=" + start + "-" + end);
+            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
-                response = httpclient.execute(httpmethod);
-                status_code = response.getStatusLine().getStatusCode();
+            uids = dataset.getUids();
+            HashMap<String, String> uidToUrl = dataset.getUidToUrl();
+            uidsLength = uids.length;
 
-                if (status_code < 200 ||
-                    status_code > 300) {
-                    throw new IOException("Error getting messages, returned HTTP Response code " + status_code);
+            for (int i = 0; i < uidsLength; i++) {
+                if (listener != null) {
+                    listener.messageStarted(uids[i], i, uidsLength);
                 }
-
-                entity = response.getEntity();
-
-                if (entity != null) {
-                    try {
-                        InputStream istream = entity.getContent();
-                        SAXParserFactory spf = SAXParserFactory.newInstance();
-                        SAXParser sp = spf.newSAXParser();
-                        XMLReader xr = sp.getXMLReader();
-                        WebDavHandler myHandler = new WebDavHandler();
-                        ParsedDataSet dataset;
-                        int uidsLength = 0;
-                        int urlsLength = 0;
-                        
-                        xr.setContentHandler(myHandler);
-                        xr.parse(new InputSource(istream));
-
-                        dataset = myHandler.getDataSet();
-
-                        uids = dataset.getUids();
-                        HashMap<String, String> uidToUrl = dataset.getUidToUrl();
-                        uidsLength = uids.length;
-
-                        for (int i = 0; i < uidsLength; i++) {
-                            if (listener != null) {
-                                listener.messageStarted(uids[i], i, uidsLength);
-                            }
-                            WebDavMessage message = new WebDavMessage(uids[i], this);
-                            message.setUrl(uidToUrl.get(uids[i]));
-                            messages.add(message);
+                WebDavMessage message = new WebDavMessage(uids[i], this);
+                message.setUrl(uidToUrl.get(uids[i]));
+                messages.add(message);
                             
-                            if (listener != null) {
-                                listener.messageFinished(message, i, uidsLength);
-                            }
-                        }
-                    } catch (SAXException se) {
-                        Log.e(Email.LOG_TAG, "SAXException in getMessages() " + se);
-                    } catch (ParserConfigurationException pce) {
-                        Log.e(Email.LOG_TAG, "ParserConfigurationException in getMessages() " + pce);
-                    }
+                if (listener != null) {
+                    listener.messageFinished(message, i, uidsLength);
                 }
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
-            } catch (IOException ioe) {
-                Log.e(Email.LOG_TAG, "IOException: " + ioe);
             }
 
             return messages.toArray(new Message[] {});
@@ -873,72 +822,16 @@ public class WebDavStore extends Store {
 
         private HashMap<String, String> getMessageUrls(String[] uids) {
             HashMap<String, String> uidToUrl = new HashMap<String, String>();
-            DefaultHttpClient httpclient = new DefaultHttpClient();
+            HashMap<String, String> headers = new HashMap<String, String>();
+            ParsedDataSet dataset = new ParsedDataSet();
             String messageBody;
 
-            /** Verify authentication */
-            if (needAuth()) {
-                authenticate();
-            }
-
-            if (WebDavStore.this.mAuthenticated == false ||
-                WebDavStore.this.mAuthCookies == null) {
-                return uidToUrl;
-            }
-
             /** Retrieve and parse the XML entity for our messages */
-            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
             messageBody = getMessageUrlsXml(uids);
+            headers.put("Brief", "t");
 
-            try {
-                int status_code = -1;
-                StringEntity messageEntity = new StringEntity(messageBody);
-                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
-                HttpResponse response;
-                HttpEntity entity;
-                
-                messageEntity.setContentType("text/xml");
-                httpmethod.setMethod("SEARCH");
-                httpmethod.setEntity(messageEntity);
-                httpmethod.setHeader("Brief", "t");
-
-                response = httpclient.execute(httpmethod);
-                status_code = response.getStatusLine().getStatusCode();
-
-                if (status_code < 200 ||
-                    status_code > 300) {
-                    throw new IOException("Error getting messages, returned HTTP Response code " + status_code);
-                }
-
-                entity = response.getEntity();
-
-                if (entity != null) {
-                    try {
-                        InputStream istream = entity.getContent();
-                        SAXParserFactory spf = SAXParserFactory.newInstance();
-                        SAXParser sp = spf.newSAXParser();
-                        XMLReader xr = sp.getXMLReader();
-                        WebDavHandler myHandler = new WebDavHandler();
-                        ParsedDataSet dataset;
-                        int uidsLength = 0;
-                        int urlsLength = 0;
-                        
-                        xr.setContentHandler(myHandler);
-                        xr.parse(new InputSource(istream));
-
-                        dataset = myHandler.getDataSet();
-                        uidToUrl = dataset.getUidToUrl();
-                    } catch (SAXException se) {
-                        Log.e(Email.LOG_TAG, "SAXException in getMessages() " + se);
-                    } catch (ParserConfigurationException pce) {
-                        Log.e(Email.LOG_TAG, "ParserConfigurationException in getMessages() " + pce);
-                    }
-                }
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
-            } catch (IOException ioe) {
-                Log.e(Email.LOG_TAG, "IOException: " + ioe);
-            }
+            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+            uidToUrl = dataset.getUidToUrl();
 
             return uidToUrl;
         }
@@ -1013,7 +906,7 @@ public class WebDavStore extends Store {
 
                         /**
                          * If fetch is called outside of the initial list (ie, a locally stored
-                         * stored message), it may not have a URL associated.  Verify and fix that
+                         * message), it may not have a URL associated.  Verify and fix that
                          */
                         if (wdMessage.getUrl().equals("")) {
                             wdMessage.setUrl(getMessageUrls(new String[] {wdMessage.getUid()}).get(wdMessage.getUid()));
@@ -1086,7 +979,8 @@ public class WebDavStore extends Store {
          */
         private void fetchFlags(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
             HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
-            DefaultHttpClient httpclient = new DefaultHttpClient();
+            HashMap<String, String> headers = new HashMap<String, String>();
+            ParsedDataSet dataset = new ParsedDataSet();
             String messageBody = new String();
             Message[] messages = new Message[20];
             String[] uids;
@@ -1118,56 +1012,11 @@ public class WebDavStore extends Store {
                 uids[i] = messages[i].getUid();
             }
 
-            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
             messageBody = getMessageFlagsXml(uids);
+            headers.put("Brief", "t");
+            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
-            try {
-                int status_code = -1;
-                StringEntity messageEntity = new StringEntity(messageBody);
-                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
-                HttpResponse response;
-                HttpEntity entity;
-                
-                messageEntity.setContentType("text/xml");
-                httpmethod.setMethod("SEARCH");
-                httpmethod.setEntity(messageEntity);
-                httpmethod.setHeader("Brief", "t");
-
-                response = httpclient.execute(httpmethod);
-                status_code = response.getStatusLine().getStatusCode();
-                
-                if (status_code < 200 ||
-                    status_code > 300) {
-                    throw new IOException("Error getting message flags, returned HTTP Response code " + status_code);
-                }
-
-                entity = response.getEntity();
-                
-                if (entity != null) {
-                    try {
-                        InputStream istream = entity.getContent();
-                        SAXParserFactory spf = SAXParserFactory.newInstance();
-                        SAXParser sp = spf.newSAXParser();
-                        XMLReader xr = sp.getXMLReader();
-                        WebDavHandler myHandler = new WebDavHandler();
-                        ParsedDataSet dataset;
-                        
-                        xr.setContentHandler(myHandler);
-                        xr.parse(new InputSource(istream));
-                        
-                        dataset = myHandler.getDataSet();
-                        uidToReadStatus = dataset.getUidToRead();
-                    } catch (SAXException se) {
-                        Log.e(Email.LOG_TAG, "SAXException in fetch() " + se);
-                    } catch (ParserConfigurationException pce) {
-                        Log.e(Email.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
-                    }
-                }
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
-            } catch (IOException ioe) {
-                Log.e(Email.LOG_TAG, "IOException: " + ioe);
-            }
+            uidToReadStatus = dataset.getUidToRead();
 
             for (int i = 0, count = messages.length; i < count; i++) {
                 if (!(messages[i] instanceof WebDavMessage)) {
@@ -1195,7 +1044,12 @@ public class WebDavStore extends Store {
          */
         private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
             HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
+            HashMap<String, String> headers = new HashMap<String, String>();
+            ParsedDataSet dataset = new ParsedDataSet();
+            String messageBody = new String();
+            String[] uids;
             Message[] messages = new Message[10];
+
             if (startMessages == null ||
                 startMessages.length == 0) {
                 return;
@@ -1210,71 +1064,23 @@ public class WebDavStore extends Store {
                         newMessages[i - 10] = startMessages[i];
                     }
                 }
-                /**                System.arraycopy(startMessages, 0, messages, 0, 10);
-                                   System.arraycopy(startMessages, 10, newMessages, 0, startMessages.length - 10);*/
+
                 fetchEnvelope(newMessages, listener);
             } else {
                 messages = startMessages;
             }
 
-            DefaultHttpClient httpclient = new DefaultHttpClient();
-            String messageBody = new String();
-            String[] uids = new String[messages.length];
+            uids = new String[messages.length];
 
             for (int i = 0, count = messages.length; i < count; i++) {
                 uids[i] = messages[i].getUid();
             }
 
-            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
             messageBody = getMessageEnvelopeXml(uids);
+            headers.put("Brief", "t");
+            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
-            try {
-                int status_code = -1;
-                StringEntity messageEntity = new StringEntity(messageBody);
-                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
-                HttpResponse response;
-                HttpEntity entity;
-                
-                messageEntity.setContentType("text/xml");
-                httpmethod.setMethod("SEARCH");
-                httpmethod.setEntity(messageEntity);
-                httpmethod.setHeader("Brief", "t");
-
-                response = httpclient.execute(httpmethod);
-                status_code = response.getStatusLine().getStatusCode();
-
-                if (status_code < 200 ||
-                    status_code > 300) {
-                    throw new IOException("Error getting message flags, returned HTTP Response code " + status_code);
-                }
-
-                entity = response.getEntity();
-
-                if (entity != null) {
-                    try {
-                        InputStream istream = entity.getContent();
-                        SAXParserFactory spf = SAXParserFactory.newInstance();
-                        SAXParser sp = spf.newSAXParser();
-                        XMLReader xr = sp.getXMLReader();
-                        WebDavHandler myHandler = new WebDavHandler();
-                        ParsedDataSet dataset;
-
-                        xr.setContentHandler(myHandler);
-                        xr.parse(new InputSource(istream));
-
-                        dataset = myHandler.getDataSet();
-                        envelopes = dataset.getMessageEnvelopes();
-                    } catch (SAXException se) {
-                        Log.e(Email.LOG_TAG, "SAXException in fetch() " + se);
-                    } catch (ParserConfigurationException pce) {
-                        Log.e(Email.LOG_TAG, "ParserConfigurationException in fetch() " + pce);
-                    }
-                }
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
-            } catch (IOException ioe) {
-                Log.e(Email.LOG_TAG, "IOException: " + ioe);
-            }
+            envelopes = dataset.getMessageEnvelopes();
 
             int count = messages.length;
             for (int i = messages.length - 1; i >= 0; i--) {
@@ -1332,88 +1138,43 @@ public class WebDavStore extends Store {
         }
 
         private void markServerMessagesRead(String[] uids) throws MessagingException {
-            DefaultHttpClient httpclient = new DefaultHttpClient();
             String messageBody = new String();
+            HashMap<String, String> headers = new HashMap<String, String>();
             HashMap<String, String> uidToUrl = getMessageUrls(uids);
+            ParsedDataSet dataset = new ParsedDataSet();
             String[] urls = new String[uids.length];
 
             for (int i = 0, count = uids.length; i < count; i++) {
                 urls[i] = uidToUrl.get(uids[i]);
             }
             
-            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
             messageBody = getMarkMessagesReadXml(urls);
+            headers.put("Brief", "t");
+            headers.put("If-Match", "*");
 
-            try {
-                int status_code = -1;
-                StringEntity messageEntity = new StringEntity(messageBody);
-                HttpGeneric httpmethod = new HttpGeneric(this.mFolderUrl);
-                HttpResponse response;
-                HttpEntity entity;
-                
-                messageEntity.setContentType("text/xml");
-                httpmethod.setMethod("BPROPPATCH");
-                httpmethod.setEntity(messageEntity);
-                httpmethod.setHeader("Brief", "t");
-                httpmethod.setHeader("If-Match", "*");
-
-                response = httpclient.execute(httpmethod);
-                status_code = response.getStatusLine().getStatusCode();
-
-                if (status_code < 200 ||
-                    status_code > 300) {
-                    throw new IOException("Error marking messages as read, returned HTTP Response code " + status_code);
-                }
-
-                entity = response.getEntity();
-
-            } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
-            } catch (IOException ioe) {
-                Log.e(Email.LOG_TAG, "IOException: " + ioe);
-            }
+            processRequest(this.mFolderUrl, "BPROPPATCH", messageBody, headers, false);
         }
 
         private void deleteServerMessages(String[] uids) throws MessagingException {
-            DefaultHttpClient httpclient = new DefaultHttpClient();
             HashMap<String, String> uidToUrl = getMessageUrls(uids);
             String[] urls = new String[uids.length];
 
-            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
-            
             for (int i = 0, count = uids.length; i < count; i++) {
-                try {
-                    int status_code = -1;
-                    String uid = uids[i];
-                    String url = uidToUrl.get(uids[i]);
-                    HttpGeneric httpmethod = new HttpGeneric(url);
-                    HttpResponse response;
-                    HttpEntity entity;
-                    String destinationUrl = generateDeleteUrl(url);
+                HashMap<String, String> headers = new HashMap<String, String>();
+                String uid = uids[i];
+                String url = uidToUrl.get(uid);
+                String destinationUrl = generateDeleteUrl(url);
 
-                    /**
-                     * If the destination is the same as the origin, assume delete forever
-                     */
-                    if (destinationUrl.equals(url)) {
-                        httpmethod.setMethod("DELETE");
-                        httpmethod.setHeader("Brief", "t");
-                    } else {
-                        httpmethod.setMethod("MOVE");
-                        httpmethod.setHeader("Destination", generateDeleteUrl(url));
-                        httpmethod.setHeader("Brief", "t");
-                    }
-
-                    response = httpclient.execute(httpmethod);
-                    status_code = response.getStatusLine().getStatusCode();
-
-                    if (status_code < 200 ||
-                        status_code > 300) {
-                        throw new IOException("Error deleting message url, Response Code: "+status_code);
-                    }
-                } catch (UnsupportedEncodingException uee) {
-                    Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
-                } catch (IOException ioe) {
-                    Log.e(Email.LOG_TAG, "IOException: " + ioe);
+                /**
+                 * If the destination is the same as the origin, assume delete forever
+                 */
+                if (destinationUrl.equals(url)) {
+                    headers.put("Brief", "t");
+                    processRequest(url, "DELETE", null, headers, false);
+                } else {
+                    headers.put("Destination", generateDeleteUrl(url));
+                    headers.put("Brief", "t");
+                    processRequest(url, "MOVE", null, headers, false);
                 }
             }
         }
