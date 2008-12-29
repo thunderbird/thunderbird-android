@@ -2,12 +2,14 @@ package com.android.email.mail.store;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
 import android.util.Log;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,6 +36,7 @@ import com.android.email.mail.Store;
 import com.android.email.mail.internet.MimeBodyPart;
 import com.android.email.mail.internet.MimeMessage;
 import com.android.email.mail.internet.TextBody;
+import com.android.email.mail.transport.EOLConvertingOutputStream;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpEntity;
@@ -230,13 +233,10 @@ public class WebDavStore extends Store {
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:ishidden\"\r\n");
-        //        buffer.append(" FROM \"\"\r\n");
         buffer.append(" FROM SCOPE('deep traversal of \""+this.mUrl+"\"')\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
-
         return buffer.toString();
-            
     }
 
     private String getMessageCountXml(String messageState) {
@@ -869,101 +869,131 @@ public class WebDavStore extends Store {
                 fetchEnvelope(messages, listener);
             }
 
+            if (fp.contains(FetchProfile.Item.BODY_SANE)) {
+                fetchMessages(messages, listener, FETCH_BODY_SANE_SUGGESTED_SIZE / 76);
+            }
+
+            if (fp.contains(FetchProfile.Item.BODY)) {
+                fetchMessages(messages, listener, -1);
+            }
+
+            if (fp.contains(FetchProfile.Item.STRUCTURE)) {
+                for (int i = 0, count = messages.length; i < count; i++) {
+                    if (!(messages[i] instanceof WebDavMessage)) {
+                        throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
+                    }
+                    WebDavMessage wdMessage = (WebDavMessage) messages[i];
+
+                    if (listener != null) {
+                        listener.messageStarted(wdMessage.getUid(), i, count);
+                    }
+
+                    wdMessage.setBody(null);
+
+                    if (listener != null) {
+                        listener.messageFinished(wdMessage, i, count);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Fetches the full messages or up to lines lines and passes them to the message parser.
+         */
+        private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines) throws MessagingException {
+            DefaultHttpClient httpclient = new DefaultHttpClient();
+
+            /**
+             * We can't hand off to processRequest() since we need the stream to parse.
+             */
+            if (needAuth()) {
+                authenticate();
+            }
+
+            if (WebDavStore.this.mAuthenticated == false ||
+                WebDavStore.this.mAuthCookies == null) {
+                throw new MessagingException("Error during authentication in fetchMessages().");
+            }
+
+            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+            
             for (int i = 0, count = messages.length; i < count; i++) {
+                WebDavMessage wdMessage;
+                int statusCode = 0;
+                
                 if (!(messages[i] instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
-                WebDavMessage wdMessage = (WebDavMessage) messages[i];
+
+                wdMessage = (WebDavMessage) messages[i];
 
                 if (listener != null) {
                     listener.messageStarted(wdMessage.getUid(), i, count);
                 }
 
                 /**
-                 * Set the body to null if it's asking for the structure because
-                 * we don't support it yet.
+                 * If fetch is called outside of the initial list (ie, a locally stored
+                 * message), it may not have a URL associated.  Verify and fix that
                  */
-                if (fp.contains(FetchProfile.Item.STRUCTURE)) {
-                    wdMessage.setBody(null);
+                if (wdMessage.getUrl().equals("")) {
+                    wdMessage.setUrl(getMessageUrls(new String[] {wdMessage.getUid()}).get(wdMessage.getUid()));
+                    if (wdMessage.getUrl().equals("")) {
+                        throw new MessagingException("Unable to get URL for message");
+                    }
                 }
 
-                /**
-                 * Message fetching that we can pull as a stream
-                 */
-                if (fp.contains(FetchProfile.Item.BODY) ||
-                    fp.contains(FetchProfile.Item.BODY_SANE)) {
-
-                    DefaultHttpClient httpclient = new DefaultHttpClient();
-                    InputStream istream = null;
-                    InputStream resultStream = null;
-                    HttpGet httpget;
-                    HttpEntity entity;
+                try {
+                    HttpGet httpget = new HttpGet(new URI(wdMessage.getUrl()));
                     HttpResponse response;
-                    int statusCode = 0;
+                    HttpEntity entity;
+                    
+                    httpget.setHeader("translate", "f");
 
-                    try {
-                        httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
+                    response = httpclient.execute(httpget);
+                    
+                    statusCode = response.getStatusLine().getStatusCode();
 
-                        /**
-                         * If fetch is called outside of the initial list (ie, a locally stored
-                         * message), it may not have a URL associated.  Verify and fix that
-                         */
-                        if (wdMessage.getUrl().equals("")) {
-                            wdMessage.setUrl(getMessageUrls(new String[] {wdMessage.getUid()}).get(wdMessage.getUid()));
-                            if (wdMessage.getUrl().equals("")) {
-                                throw new MessagingException("Unable to get URL for message");
-                            }
-                        }
-
-                        httpget = new HttpGet(new URI(wdMessage.getUrl()));
-                        httpget.setHeader("translate", "f");
-
-                        response = httpclient.execute(httpget);
-
-                        statusCode = response.getStatusLine().getStatusCode();
-
-                        if (statusCode < 200 ||
-                            statusCode > 300) {
-                            throw new IOException("Status Code in invalid range");
-                        }
-
-                        entity = response.getEntity();
-                        if (entity != null) {
-                            StringBuffer buffer = new StringBuffer();
-                            String tempText = new String();
-                            String resultText = new String();
-                            String bodyBoundary = "";
-                            BufferedReader reader;
-                            int totalLines = FETCH_BODY_SANE_SUGGESTED_SIZE / 76;
-                            int lines = 0;
-                            
-                            istream = entity.getContent();
-
-                            if (fp.contains(FetchProfile.Item.BODY_SANE)) {
-                                reader = new BufferedReader(new InputStreamReader(istream), 8192);
-
-                                while ((tempText = reader.readLine()) != null &&
-                                       (lines < totalLines)) {
-                                    buffer.append(tempText+"\r\n");
-                                    lines++;
-                                }
-
-                                istream.close();
-                                resultText = buffer.toString();
-                                istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
-                            }
-
-                            wdMessage.parse(istream);
-
-                        }
-                
-                    } catch (IllegalArgumentException iae) {
-                        Log.e(Email.LOG_TAG, "IllegalArgumentException caught " + iae);
-                    } catch (URISyntaxException use) {
-                        Log.e(Email.LOG_TAG, "URISyntaxException caught " + use);
-                    } catch (IOException ioe) {
-                        Log.e(Email.LOG_TAG, "Non-success response code loading message, response code was " + statusCode);
+                    if (statusCode < 200 ||
+                        statusCode > 300) {
+                        throw new IOException("Status Code in invalid range");
                     }
+
+                    entity = response.getEntity();
+
+                    if (entity != null) {
+                        InputStream istream = null;
+                        StringBuffer buffer = new StringBuffer();
+                        String tempText = new String();
+                        String resultText = new String();
+                        String bodyBoundary = "";
+                        BufferedReader reader;
+                        int currentLines = 0;
+                            
+                        istream = entity.getContent();
+                            
+                        if (lines != -1) {
+                            reader = new BufferedReader(new InputStreamReader(istream), 8192);
+
+                            while ((tempText = reader.readLine()) != null &&
+                                   (currentLines < lines)) {
+                                buffer.append(tempText+"\r\n");
+                                currentLines++;
+                            }
+
+                            istream.close();
+                            resultText = buffer.toString();
+                            istream = new ByteArrayInputStream(resultText.getBytes("UTF-8"));
+                        }
+
+                        wdMessage.parse(istream);
+                    }
+                
+                } catch (IllegalArgumentException iae) {
+                    Log.e(Email.LOG_TAG, "IllegalArgumentException caught " + iae);
+                } catch (URISyntaxException use) {
+                    Log.e(Email.LOG_TAG, "URISyntaxException caught " + use);
+                } catch (IOException ioe) {
+                    Log.e(Email.LOG_TAG, "Non-success response code loading message, response code was " + statusCode);
                 }
 
                 if (listener != null) {
@@ -971,7 +1001,7 @@ public class WebDavStore extends Store {
                 }
             }
         }
-
+        
         /**
          * Fetches and sets the message flags for the supplied messages.
          * The idea is to have this be recursive so that we do a series of medium calls
@@ -1186,23 +1216,21 @@ public class WebDavStore extends Store {
 
             return finalUrl;
         }
-        
+
         @Override
         public void appendMessages(Message[] messages) throws MessagingException {
-            appendMessages(messages, false);
+            Log.e(Email.LOG_TAG, "appendMessages() not implmented");
         }
 
-        public void appendMessages(Message[] messages, boolean copy) throws MessagingException {
-
-        }
-
+        
         @Override
         public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {
-
+            Log.e(Email.LOG_TAG, "copyMessages() not implemented");
         }
 
         @Override
         public Message[] expunge() throws MessagingException {
+            /** Do nothing, deletes occur as soon as the call is made rather than flags on the message */
             return null;
         }
 
