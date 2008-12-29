@@ -89,6 +89,8 @@
     <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="special_mailbox_name_trash">Trash</string>
     <string name="special_mailbox_name_sent">Sent</string>
+    
+    <string name="end_of_folder">No more messages</string>
 
     <string name="accounts_welcome">
 Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based on the standard Android Mail client.
@@ -97,6 +99,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
  * Better performance
  * Email signatures
  * Bcc-to-self
+ * Folder subscriptions
+ * All folder synchronization
  * Return-address configuration
  * Keyboard shortcuts
  * Better IMAP support 

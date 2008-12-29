@@ -132,7 +132,11 @@ public class MessageView extends Activity
             case KeyEvent.KEYCODE_F: { onForward(); return true;}
             case KeyEvent.KEYCODE_A: { onReplyAll(); return true; }
             case KeyEvent.KEYCODE_R: { onReply(); return true; }
-            case KeyEvent.KEYCODE_J: { onPrevious(); return true; }
+            case KeyEvent.KEYCODE_J:
+            case KeyEvent.KEYCODE_P:
+            { onPrevious(); return true; }
+            case KeyEvent.KEYCODE_SPACE:
+            case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K: { onNext(); return true; }
             case KeyEvent.KEYCODE_Z: { if (event.isShiftPressed()) {
                                             mMessageContentView.zoomIn(); 
@@ -344,6 +348,9 @@ public class MessageView extends Activity
 
         View next = findViewById(R.id.next);
         View previous = findViewById(R.id.previous);
+        
+        findSurroundingMessagesUid();
+
         /*
          * Next and Previous Message are not shown in landscape mode, so
          * we need to check before we use them.
@@ -352,8 +359,7 @@ public class MessageView extends Activity
             next.setOnClickListener(this);
             previous.setOnClickListener(this);
 
-            findSurroundingMessagesUid();
-
+ 
             previous.setVisibility(mPreviousMessageUid != null ? View.VISIBLE : View.GONE);
             next.setVisibility(mNextMessageUid != null ? View.VISIBLE : View.GONE);
 
@@ -460,6 +466,13 @@ public class MessageView extends Activity
   }
 
     private void onNext() {
+      if (mNextMessageUid == null)
+      {
+        Toast.makeText(this,
+            getString(R.string.end_of_folder),
+            Toast.LENGTH_SHORT).show();
+        return;
+      }
         Bundle extras = new Bundle(1);
         extras.putBoolean(EXTRA_NEXT, true);
         MessageView.actionView(this, mAccount, mFolder, mNextMessageUid, mFolderUids, extras);
@@ -467,6 +480,13 @@ public class MessageView extends Activity
     }
 
     private void onPrevious() {
+      if (mPreviousMessageUid == null)
+      {
+        Toast.makeText(this,
+            getString(R.string.end_of_folder),
+            Toast.LENGTH_SHORT).show();
+        return;
+      }
         MessageView.actionView(this, mAccount, mFolder, mPreviousMessageUid, mFolderUids);
         finish();
     }
