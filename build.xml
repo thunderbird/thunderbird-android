@@ -262,7 +262,7 @@
             <arg value="${out-signed-package-ospath}" />
             <arg value="${out-unsigned-package-ospath}" />
 
-            <arg value="fsckcom" />
+            <arg value="fsck.com" />
         </exec>
     </target>
 
