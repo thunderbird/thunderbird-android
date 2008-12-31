@@ -263,7 +263,7 @@
             <arg value="-signedjar" />
             <arg value="${out-signed-package-ospath}" />
             <arg value="${out-unsigned-package-ospath}" />
-            <arg value="danapple.com" />
+            <arg value="fsckcom" />
         </exec>
     </target>
 
