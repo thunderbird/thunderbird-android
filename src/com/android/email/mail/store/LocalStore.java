@@ -8,12 +8,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+import android.content.SharedPreferences;
 
 import org.apache.commons.io.IOUtils;
 
@@ -26,6 +28,7 @@ import android.util.Config;
 import android.util.Log;
 
 import com.android.email.Email;
+import com.android.email.Preferences;
 import com.android.email.Utility;
 import com.android.email.codec.binary.Base64OutputStream;
 import com.android.email.mail.Address;
@@ -38,6 +41,7 @@ import com.android.email.mail.MessageRetrievalListener;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Part;
 import com.android.email.mail.Store;
+import com.android.email.mail.Folder.FolderClass;
 import com.android.email.mail.Message.RecipientType;
 import com.android.email.mail.internet.MimeBodyPart;
 import com.android.email.mail.internet.MimeHeader;
@@ -52,14 +56,15 @@ import com.android.email.provider.AttachmentProvider;
  * Implements a SQLite database backed local store for Messages.
  * </pre>
  */
-public class LocalStore extends Store {
-    private static final int DB_VERSION = 18;
+public class LocalStore extends Store implements Serializable {
+    private static final int DB_VERSION = 22;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
     private SQLiteDatabase mDb;
     private File mAttachmentsDir;
     private Application mApplication;
+    private String uUid = null;
 
     /**
      * @param uri local://localhost/path/to/database/uuid.db
@@ -77,6 +82,14 @@ public class LocalStore extends Store {
         }
         mPath = uri.getPath();
 
+      
+  			// We need to associate the localstore with the account.  Since we don't have the account
+  			// handy here, we'll take the filename from the DB and use the basename of the filename
+  			// Folders probably should have references to their containing accounts
+      	File dbFile = new File(mPath);
+      	String[] tokens = dbFile.getName().split("\\.");
+      	uUid = tokens[0];
+    
         File parentDir = new File(mPath).getParentFile();
         if (!parentDir.exists()) {
             parentDir.mkdirs();
@@ -95,58 +108,58 @@ public class LocalStore extends Store {
 
     
     private void doDbUpgrade ( SQLiteDatabase mDb) {
-
-            if (mDb.getVersion() < 18) {
-                if (Config.LOGV) {
-                    Log.v(Email.LOG_TAG, String.format("Upgrading database from %d to %d", mDb
-                            .getVersion(), 18));
-                }
-                mDb.execSQL("DROP TABLE IF EXISTS folders");
-                mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                        + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER)");
-
-                mDb.execSQL("DROP TABLE IF EXISTS messages");
-                mDb.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, folder_id INTEGER, uid TEXT, subject TEXT, "
-                        + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
-                        + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER)");
-
-                mDb.execSQL("DROP TABLE IF EXISTS attachments");
-                mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
-                        + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
-                        + "mime_type TEXT)");
-
-                mDb.execSQL("DROP TABLE IF EXISTS pending_commands");
-                mDb.execSQL("CREATE TABLE pending_commands " +
-                        "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
-
-                mDb.execSQL("DROP TRIGGER IF EXISTS delete_folder");
-                mDb.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
-
-                mDb.execSQL("DROP TRIGGER IF EXISTS delete_message");
-                mDb.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; END;");
-                mDb.setVersion(18);
+            if (Config.LOGV) {
+                Log.v(Email.LOG_TAG, String.format("Upgrading database from %d to %d", mDb
+                        .getVersion(), DB_VERSION));
             }
+            mDb.execSQL("DROP TABLE IF EXISTS folders");
+            mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
+                    + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT)");
+
+            mDb.execSQL("DROP TABLE IF EXISTS messages");
+            mDb.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, folder_id INTEGER, uid TEXT, subject TEXT, "
+                    + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
+                    + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT)");
+
+            mDb.execSQL("DROP TABLE IF EXISTS attachments");
+            mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
+                    + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
+                    + "mime_type TEXT)");
+
+            mDb.execSQL("DROP TABLE IF EXISTS pending_commands");
+            mDb.execSQL("CREATE TABLE pending_commands " +
+                    "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
+
+            mDb.execSQL("DROP TRIGGER IF EXISTS delete_folder");
+            mDb.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
+
+            mDb.execSQL("DROP TRIGGER IF EXISTS delete_message");
+            mDb.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; END;");
+            mDb.setVersion(DB_VERSION);
             if (mDb.getVersion() != DB_VERSION) {
                 throw new Error("Database upgrade failed!");
             }
         }
 
     @Override
-    public Folder getFolder(String name) throws MessagingException {
+    public LocalFolder getFolder(String name) throws MessagingException {
         return new LocalFolder(name);
     }
 
     // TODO this takes about 260-300ms, seems slow.
     @Override
-    public Folder[] getPersonalNamespaces() throws MessagingException {
-        ArrayList<Folder> folders = new ArrayList<Folder>();
+    public LocalFolder[] getPersonalNamespaces() throws MessagingException {
+        ArrayList<LocalFolder> folders = new ArrayList<LocalFolder>();
         Cursor cursor = null;
 
 
         try {
-            cursor = mDb.rawQuery("SELECT name FROM folders", null);
+            cursor = mDb.rawQuery("SELECT name, id, unread_count, visible_limit, last_updated, status FROM folders", null);
             while (cursor.moveToNext()) {
-                folders.add(new LocalFolder(cursor.getString(0)));
+            	LocalFolder folder = new LocalFolder(cursor.getString(0));
+              folder.open(cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5));
+          
+              folders.add(folder);
             }
         }
         finally {
@@ -154,7 +167,7 @@ public class LocalStore extends Store {
                 cursor.close();
             }
         }
-        return folders.toArray(new Folder[] {});
+        return folders.toArray(new LocalFolder[] {});
     }
 
     @Override
@@ -300,6 +313,10 @@ public class LocalStore extends Store {
     public void removePendingCommand(PendingCommand command) {
         mDb.delete("pending_commands", "id = ?", new String[] { Long.toString(command.mId) });
     }
+    
+    public void removePendingCommands() {
+      mDb.delete("pending_commands", null, null);
+  }
 
     public static class PendingCommand {
         private long mId;
@@ -310,21 +327,24 @@ public class LocalStore extends Store {
         public String toString() {
             StringBuffer sb = new StringBuffer();
             sb.append(command);
-            sb.append("\n");
+            sb.append(": ");
             for (String argument : arguments) {
                 sb.append("  ");
                 sb.append(argument);
-                sb.append("\n");
+                //sb.append("\n");
             }
             return sb.toString();
         }
     }
 
-    public class LocalFolder extends Folder {
+    public class LocalFolder extends Folder implements Serializable {
         private String mName;
         private long mFolderId = -1;
         private int mUnreadMessageCount = -1;
         private int mVisibleLimit = -1;
+    		private FolderClass displayClass = FolderClass.NONE;
+    		private FolderClass syncClass = FolderClass.NONE;
+    		private String prefId = null;
 
         public LocalFolder(String name) {
             this.mName = name;
@@ -341,25 +361,31 @@ public class LocalStore extends Store {
             }
             Cursor cursor = null;
             try {
-                cursor = mDb.rawQuery(
-                        "SELECT id, unread_count, visible_limit FROM folders "
-                                + "where folders.name = ?",
-                        new String[] { mName });
-                if (cursor.moveToFirst()) {
-                    mFolderId = cursor.getInt(0);
-                    mUnreadMessageCount = cursor.getInt(1);
-                    mVisibleLimit = cursor.getInt(2);
-                } else {
-                    // Calling exists on open is a little expensive. Instead,
-                    // just handle it when we don't find it.
-                    create(FolderType.HOLDS_MESSAGES);
-                    open(mode);
-                }
-            } finally {
+                cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status FROM folders "
+                        + "where folders.name = ?",
+                    new String[] {
+                        mName
+                    });
+                cursor.moveToFirst();
+                open(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getLong(3), cursor.getString(4));
+            
+            }
+            finally {
                 if (cursor != null) {
                     cursor.close();
                 }
             }
+        }
+        
+        private void open(int id, int unreadCount, int visibleLimit, long lastChecked, String status) throws MessagingException
+        {
+         	mFolderId = id;
+          mUnreadMessageCount = unreadCount;
+          mVisibleLimit = visibleLimit;
+          super.setStatus(status);
+          // Only want to set the local variable stored in the super class.  This class 
+          // does a DB update on setLastChecked
+          super.setLastChecked(lastChecked);
         }
 
         @Override
@@ -461,6 +487,13 @@ public class LocalStore extends Store {
             mDb.execSQL("UPDATE folders SET unread_count = ? WHERE id = ?",
                     new Object[] { mUnreadMessageCount, mFolderId });
         }
+        
+        public void setLastChecked(long lastChecked) throws MessagingException {
+          open(OpenMode.READ_WRITE);
+          super.setLastChecked(lastChecked);
+          mDb.execSQL("UPDATE folders SET last_updated = ? WHERE id = ?",
+                  new Object[] { lastChecked, mFolderId });
+      }
 
         public int getVisibleLimit() throws MessagingException {
             open(OpenMode.READ_WRITE);
@@ -474,8 +507,128 @@ public class LocalStore extends Store {
             mDb.execSQL("UPDATE folders SET visible_limit = ? WHERE id = ?",
                     new Object[] { mVisibleLimit, mFolderId });
         }
+        
+        public void setStatus(String status) throws MessagingException
+        {
+        	open(OpenMode.READ_WRITE);
+        	super.setStatus(status);
+          mDb.execSQL("UPDATE folders SET status = ? WHERE id = ?",
+                  new Object[] { status, mFolderId });
+        }
+        @Override
+      	public FolderClass getDisplayClass()
+    		{
+    			return displayClass;
+    		}
+    		
+        @Override
+    		public FolderClass getSyncClass()
+    		{
+    			if (FolderClass.NONE == syncClass)
+    			{
+    				return displayClass;
+    			}
+    			else
+    			{
+    				return syncClass;
+    			}
+    		}
+        
+        public FolderClass getRawSyncClass()
+    		{
+    			
+    			return syncClass;
+    			
+    		}
 
+    		public void setDisplayClass(FolderClass displayClass)
+    		{
+    			this.displayClass = displayClass;
+    		}
+    		
+    		public void setSyncClass(FolderClass syncClass)
+    		{
+    			this.syncClass = syncClass;
+    		}
+    		
+    		private String getPrefId() throws MessagingException
+    		{
+     			open(OpenMode.READ_WRITE);
+   			
+         	if (prefId == null)
+         	{
+         		prefId = uUid + "." + mName;
+         	}
+   
+    			return prefId; 
+    		}
+        
+        public void delete(Preferences preferences) throws MessagingException {
+        	String id = getPrefId();
+          
+        	SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
+          
+        	editor.remove(id + ".displayMode");
+          editor.remove(id + ".syncMode");
 
+          editor.commit();
+      }
+
+      public void save(Preferences preferences) throws MessagingException {
+      		String id = getPrefId();
+        
+          SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
+          // there can be a lot of folders.  For the defaults, let's not save prefs, saving space
+          if (displayClass == FolderClass.NONE)
+          {
+          	editor.remove(id + ".displayMode");
+          }
+          else
+          {
+           	editor.putString(id + ".displayMode", displayClass.name());
+          }
+          
+          if (syncClass == FolderClass.NONE)
+          {
+          	editor.remove(id + ".syncMode");
+          }
+          else
+          {
+           	editor.putString(id + ".syncMode", syncClass.name());
+          }
+         
+          editor.commit();
+      }
+      public void refresh(Preferences preferences) throws MessagingException {
+      	
+     		String id = getPrefId();
+     	 
+        try
+        {
+        	displayClass = FolderClass.valueOf(preferences.mSharedPreferences.getString(id + ".displayMode", 
+        			FolderClass.NONE.name()));
+        }
+        catch (Exception e)
+        {
+         	Log.e(Email.LOG_TAG, "Unable to load displayMode for " + getName(), e);
+
+        	displayClass = FolderClass.NONE;
+        }
+
+        try
+        {
+        	syncClass = FolderClass.valueOf(preferences.mSharedPreferences.getString(id  + ".syncMode", 
+        			FolderClass.NONE.name()));
+        }
+        catch (Exception e)
+        {
+        	Log.e(Email.LOG_TAG, "Unable to load syncMode for " + getName(), e);
+
+        	syncClass = FolderClass.NONE;
+        }
+
+    }
+      
         @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
                 throws MessagingException {
@@ -596,6 +749,7 @@ public class LocalStore extends Store {
             message.setReplyTo(Address.unpack(cursor.getString(9)));
             message.mAttachmentCount = cursor.getInt(10);
             message.setInternalDate(new Date(cursor.getLong(11)));
+            message.setHeader("Message-ID", cursor.getString(12));
         }
 
         @Override
@@ -614,7 +768,7 @@ public class LocalStore extends Store {
             try {
                 cursor = mDb.rawQuery(
                         "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
-                        + "bcc_list, reply_to_list, attachment_count, internal_date "
+                        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
                                 + "FROM messages " + "WHERE uid = ? " + "AND folder_id = ?",
                         new String[] {
                                 message.getUid(), Long.toString(mFolderId)
@@ -640,7 +794,7 @@ public class LocalStore extends Store {
             try {
                 cursor = mDb.rawQuery(
                         "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
-                        + "bcc_list, reply_to_list, attachment_count, internal_date "
+                        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
                                 + "FROM messages " + "WHERE folder_id = ?", new String[] {
                             Long.toString(mFolderId)
                         });
@@ -761,6 +915,11 @@ public class LocalStore extends Store {
                     cv.put("attachment_count", attachments.size());
                     cv.put("internal_date",  message.getInternalDate() == null
                             ? System.currentTimeMillis() : message.getInternalDate().getTime());
+                    String[] mHeaders = message.getHeader("Message-ID");
+                    if (mHeaders != null && mHeaders.length > 0)
+                    {
+                    	cv.put("message_id", mHeaders[0]);
+                    }
                     long messageId = mDb.insert("messages", "uid", cv);
                     for (Part attachment : attachments) {
                         saveAttachment(messageId, attachment, copy);
@@ -968,7 +1127,21 @@ public class LocalStore extends Store {
                 message.setFlags(flags, value);
             }
         }
+        
+        @Override
+        public void setFlags(Flag[] flags, boolean value)
+                throws MessagingException {
+            open(OpenMode.READ_WRITE);
+            for (Message message : getMessages(null)) {
+                message.setFlags(flags, value);
+            }
+        }
 
+        @Override
+        public String getUidFromMessageId(Message message) throws MessagingException
+        {
+        	throw new MessagingException("Cannot call getUidFromMessageId on LocalFolder");
+        }
         @Override
         public Message[] expunge() throws MessagingException {
             open(OpenMode.READ_WRITE);
@@ -978,6 +1151,13 @@ public class LocalStore extends Store {
              * and really, really deleted messages are "Destroyed" and removed immediately.
              */
             return expungedMessages.toArray(new Message[] {});
+        }
+        
+        public void deleteMessagesOlderThan(long cutoff) throws MessagingException
+        {
+        	open(OpenMode.READ_ONLY);
+        	mDb.execSQL("DELETE FROM messages WHERE folder_id = ? and date < ?", new Object[] {
+              Long.toString(mFolderId), new Long(cutoff) } );	
         }
 
         @Override
@@ -1066,7 +1246,7 @@ public class LocalStore extends Store {
             this.mUid = uid;
             this.mFolder = folder;
         }
-
+   
         public int getAttachmentCount() {
             return mAttachmentCount;
         }

@@ -28,7 +28,6 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
     private CheckBox mDefaultView;
 
     private CheckBox mNotifyView;
-    private CheckBox mNotifyRingtoneView;
 
     private Account mAccount;
 
@@ -48,13 +47,14 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
         mDisplayCountView = (Spinner)findViewById(R.id.account_display_count);
         mDefaultView = (CheckBox)findViewById(R.id.account_default);
         mNotifyView = (CheckBox)findViewById(R.id.account_notify);
-        mNotifyRingtoneView = (CheckBox)findViewById(R.id.account_notify_ringtone);
 
         findViewById(R.id.next).setOnClickListener(this);
 
         SpinnerOption checkFrequencies[] = {
                 new SpinnerOption(-1,
                         getString(R.string.account_setup_options_mail_check_frequency_never)),
+                new SpinnerOption(1,
+                        getString(R.string.account_setup_options_mail_check_frequency_1min)),
                 new SpinnerOption(5,
                         getString(R.string.account_setup_options_mail_check_frequency_5min)),
                 new SpinnerOption(10,
@@ -96,7 +96,6 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
             mDefaultView.setChecked(true);
         }
         mNotifyView.setChecked(mAccount.isNotifyNewMail());
-        mNotifyRingtoneView.setChecked(mAccount.isNotifyRingtone());
         SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
                 .getAutomaticCheckIntervalMinutes());
         SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
@@ -106,7 +105,6 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
     private void onDone() {
         mAccount.setDescription(mAccount.getEmail());
         mAccount.setNotifyNewMail(mNotifyView.isChecked());
-        mAccount.setNotifyRingtone(mNotifyRingtoneView.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption)mCheckFrequencyView
                 .getSelectedItem()).value);
         mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView

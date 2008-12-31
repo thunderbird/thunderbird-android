@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -22,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.email.Account;
+import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
@@ -104,12 +106,15 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
         };
 
         SpinnerOption deletePolicies[] = {
-                new SpinnerOption(0,
+                new SpinnerOption(Account.DELETE_POLICY_NEVER,
                         getString(R.string.account_setup_incoming_delete_policy_never_label)),
-                new SpinnerOption(1,
-                        getString(R.string.account_setup_incoming_delete_policy_7days_label)),
-                new SpinnerOption(2,
+                /*new SpinnerOption(Account.DELETE_POLICY_7DAYS,
+                        getString(R.string.account_setup_incoming_delete_policy_7days_label)),*/
+                new SpinnerOption(Account.DELETE_POLICY_ON_DELETE,
                         getString(R.string.account_setup_incoming_delete_policy_delete_label)),
+                new SpinnerOption(Account.DELETE_POLICY_MARK_AS_READ,
+                            getString(R.string.account_setup_incoming_delete_policy_markread_label)),
+
         };
 
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
@@ -203,8 +208,6 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 mAccountPorts = imapPorts;
                 mAccountSchemes = imapSchemes;
 
-                findViewById(R.id.account_delete_policy_label).setVisibility(View.GONE);
-                mDeletePolicyView.setVisibility(View.GONE);
                 if (uri.getPath() != null && uri.getPath().length() > 0) {
                     mImapPathPrefixView.setText(uri.getPath().substring(1));
                 }
@@ -326,9 +329,10 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     		throw new Error(use);
     	}
 
-    	mAccount.setDeletePolicy((Integer)((SpinnerOption)mDeletePolicyView.getSelectedItem()).value);
-    	AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
+        int deleteSpinnerVal = (Integer)((SpinnerOption)mDeletePolicyView.getSelectedItem()).value;
 
+        mAccount.setDeletePolicy(deleteSpinnerVal);
+        AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
     }
 
     public void onClick(View v) {

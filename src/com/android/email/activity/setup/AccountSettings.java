@@ -28,11 +28,13 @@ public class AccountSettings extends PreferenceActivity {
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_NOTIFY = "account_notify";
-    private static final String PREFERENCE_NOTIFY_RINGTONE = "account_notify_ringtone";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
     private static final String PREFERENCE_RINGTONE = "account_ringtone";
     private static final String PREFERENCE_INCOMING = "incoming";
     private static final String PREFERENCE_OUTGOING = "outgoing";
+    private static final String PREFERENCE_DISPLAY_MODE = "folder_display_mode";
+    private static final String PREFERENCE_SYNC_MODE = "folder_sync_mode";
+    private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
 
     private Account mAccount;
 
@@ -41,9 +43,11 @@ public class AccountSettings extends PreferenceActivity {
     private ListPreference mDisplayCount;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
-    private CheckBoxPreference mAccountNotifyRingtone;
     private CheckBoxPreference mAccountVibrate;
     private RingtonePreference mAccountRingtone;
+    private ListPreference mDisplayMode;
+    private ListPreference mSyncMode;
+    private ListPreference mDeletePolicy;
 
     public static void actionSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSettings.class);
@@ -87,6 +91,45 @@ public class AccountSettings extends PreferenceActivity {
                 return false;
             }
         });
+        
+        mDisplayMode = (ListPreference) findPreference(PREFERENCE_DISPLAY_MODE);
+        mDisplayMode.setValue(mAccount.getFolderDisplayMode().name());
+        mDisplayMode.setSummary(mDisplayMode.getEntry());
+        mDisplayMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mDisplayMode.findIndexOfValue(summary);
+                mDisplayMode.setSummary(mDisplayMode.getEntries()[index]);
+                mDisplayMode.setValue(summary);
+                return false;
+            }
+        });
+ 
+        mSyncMode = (ListPreference) findPreference(PREFERENCE_SYNC_MODE);
+        mSyncMode.setValue(mAccount.getFolderSyncMode().name());
+        mSyncMode.setSummary(mSyncMode.getEntry());
+        mSyncMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mSyncMode.findIndexOfValue(summary);
+                mSyncMode.setSummary(mSyncMode.getEntries()[index]);
+                mSyncMode.setValue(summary);
+                return false;
+            }
+        });
+        
+        mDeletePolicy = (ListPreference) findPreference(PREFERENCE_DELETE_POLICY);
+        mDeletePolicy.setValue("" + mAccount.getDeletePolicy());
+        mDeletePolicy.setSummary(mDeletePolicy.getEntry());
+        mDeletePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mDeletePolicy.findIndexOfValue(summary);
+                mDeletePolicy.setSummary(mDeletePolicy.getEntries()[index]);
+                mDeletePolicy.setValue(summary);
+                return false;
+            }
+        });
 
         mDisplayCount = (ListPreference) findPreference(PREFERENCE_DISPLAY_COUNT);
         mDisplayCount.setValue(String.valueOf(mAccount.getDisplayCount()));
@@ -107,9 +150,6 @@ public class AccountSettings extends PreferenceActivity {
 
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
         mAccountNotify.setChecked(mAccount.isNotifyNewMail());
-
-        mAccountNotifyRingtone = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_RINGTONE);
-        mAccountNotifyRingtone.setChecked(mAccount.isNotifyRingtone());
 
         mAccountRingtone = (RingtonePreference) findPreference(PREFERENCE_RINGTONE);
 
@@ -159,14 +199,17 @@ public class AccountSettings extends PreferenceActivity {
         }
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
-        mAccount.setNotifyRingtone(mAccountNotifyRingtone.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
+        mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
+        mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
+        mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));
         mAccount.save(Preferences.getPreferences(this));
         Email.setServicesEnabled(this);
+        // TODO: refresh folder list here
     }
 
     @Override

@@ -246,6 +246,10 @@ public class SmtpTransport extends Transport {
         } catch (IOException ioe) {
             throw new MessagingException("Unable to send message", ioe);
         }
+        finally
+        {
+        	close();
+        }
     }
 
     public void close() {

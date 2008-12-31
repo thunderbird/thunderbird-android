@@ -26,12 +26,10 @@
             android:summary=""
             android:dialogTitle="@string/account_settings_description_label" />
 
-        <ListPreference
-            android:key="account_check_frequency"
-            android:title="@string/account_settings_mail_check_frequency_label"
-            android:entries="@array/account_settings_check_frequency_entries"
-            android:entryValues="@array/account_settings_check_frequency_values"
-            android:dialogTitle="@string/account_settings_mail_check_frequency_label" />
+        <CheckBoxPreference
+            android:key="account_default"
+            android:title="@string/account_settings_default_label"
+            android:summary="@string/account_settings_default_summary" />
 
         <ListPreference
             android:key="account_display_count"
@@ -39,6 +37,40 @@
             android:entries="@array/account_settings_display_count_entries"
             android:entryValues="@array/account_settings_display_count_values"
             android:dialogTitle="@string/account_settings_mail_display_count_label" />
+
+	   	</PreferenceCategory>
+	
+    	<PreferenceCategory android:title="@string/account_settings_display_sync">
+
+        <ListPreference
+            android:key="account_check_frequency"
+            android:title="@string/account_settings_mail_check_frequency_label"
+            android:entries="@array/account_settings_check_frequency_entries"
+            android:entryValues="@array/account_settings_check_frequency_values"
+            android:dialogTitle="@string/account_settings_mail_check_frequency_label" />
+
+
+        <ListPreference
+            android:key="folder_display_mode"
+            android:title="@string/account_settings_folder_display_mode_label"
+            android:entries="@array/account_settings_folder_display_mode_entries"
+            android:entryValues="@array/account_settings_folder_display_mode_values"
+            android:dialogTitle="@string/account_settings_folder_display_mode_label" />
+  
+         <ListPreference
+            android:key="folder_sync_mode"
+            android:title="@string/account_settings_folder_sync_mode_label"
+            android:entries="@array/account_settings_folder_sync_mode_entries"
+            android:entryValues="@array/account_settings_folder_sync_mode_values"
+            android:dialogTitle="@string/account_settings_folder_sync_mode_label" />            
+            
+        <ListPreference
+        	android:key="delete_policy"
+        	android:title="@string/account_setup_incoming_delete_policy_label"
+        	android:entries="@array/account_setup_delete_policy_entries"
+        	android:entryValues="@array/account_setup_delete_policy_values"
+        	android:dialogTitle="@string/account_setup_incoming_delete_policy_label" />
+           
 
         <PreferenceScreen
             android:key="composition"
@@ -54,11 +86,6 @@
             android:title="@string/account_settings_notify_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_notify_summary" />
-        <CheckBoxPreference
-            android:key="account_notify_ringtone"
-            android:title="@string/account_settings_notify_ringtone_label"
-            android:defaultValue="true"
-            android:summary="@string/account_settings_notify_ringtone_summary" />
 
         <RingtonePreference
             android:layout="?android:attr/preferenceLayoutChild"
@@ -89,13 +116,6 @@
             android:title="@string/account_settings_outgoing_label" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/account_settings_default">
-        <CheckBoxPreference
-            android:key="account_default"
-            android:title="@string/account_settings_default_label"
-            android:summary="@string/account_settings_default_summary" />
-    </PreferenceCategory>
-
-
+  
 
 </PreferenceScreen>

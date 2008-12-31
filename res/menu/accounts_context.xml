@@ -2,8 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/open"
         android:title="@string/open_action" />
+    <item android:id="@+id/empty_trash"
+        android:title="@string/empty_trash_action" />
     <item android:id="@+id/edit_account"
         android:title="@string/account_settings_action" />
     <item android:id="@+id/delete_account"
         android:title="@string/remove_account_action" />
+    <item android:id="@+id/clear_pending"
+        android:title="@string/clear_pending_action" />
 </menu>

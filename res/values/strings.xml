@@ -31,16 +31,23 @@
     <string name="save_draft_action">Save as draft</string>
     <string name="retry_action">Retry</string>
     <string name="refresh_action">Refresh</string>
+    <string name="mark_all_as_read_action">Mark all messages as read</string> 
     <string name="add_account_action">Add account</string>
     <string name="compose_action">Compose</string>
     <string name="search_action">Search</string>
     <string name="preferences_action">Preferences</string>
     <string name="open_action">Open</string>
     <string name="account_settings_action">Account settings</string>
+    <string name="folder_settings_action">Folder settings</string>
     <string name="remove_account_action">Remove account</string>
+    <string name="clear_pending_action">Clear pending actions (danger!)</string>
+    
     <string name="accounts_action">Accounts</string>
     <string name="read_action">Read</string>
     <string name="mark_as_read_action">Mark as read</string>
+    <string name="send_alternate_action">Forward (alternate)</string>
+    <string name="send_alternate_chooser_title">Choose sender</string>
+ 
     <string name="mark_as_unread_action">Mark as unread</string>
     <string name="move_to_action">Move to</string>
     <string name="folders_action">Folders</string>
@@ -53,6 +60,7 @@
     <string name="about_action">About</string>
 
     <string name="accounts_context_menu_title">Account options</string>
+    <string name="folder_context_menu_title">Folder options</string>
 
     <string name="general_no_subject">(No subject)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
 
@@ -69,8 +77,11 @@
     <string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> accounts</string>
     <string name="notification_unsent_title">Message not sent</string>
 
-    <string name="notification_bg_sync_ticker">Checking email: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Checking email: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Checking email</string>
+    <string name="notification_bg_send_ticker">Sending email: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Sending email</string>
+    <string name="notification_bg_title_separator">:</string>
 
     <string name="special_mailbox_name_inbox">Inbox</string>
     <string name="special_mailbox_name_outbox">Outbox</string>
@@ -78,6 +89,8 @@
     <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="special_mailbox_name_trash">Trash</string>
     <string name="special_mailbox_name_sent">Sent</string>
+    
+    <string name="end_of_folder">No more messages</string>
 
     <string name="accounts_welcome">
 Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based on the standard Android Mail client.
@@ -86,6 +99,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
  * Better performance
  * Email signatures
  * Bcc-to-self
+ * Folder subscriptions
+ * All folder synchronization
  * Return-address configuration
  * Keyboard shortcuts
  * Better IMAP support 
@@ -142,6 +157,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="message_deleted_toast">Message deleted.</string>
     <string name="message_discarded_toast">Message discarded.</string>
     <string name="message_saved_toast">Message saved as draft.</string>
+    <string name="message_delete_failed">Message could not be deleted.</string>
 
 	<string name="about_header">About <xliff:g id="app_name">%s</xliff:g></string>
 	<string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
@@ -189,10 +205,13 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_incoming_security_ssl_label">SSL (always)</string>
     <string name="account_setup_incoming_security_tls_optional_label">TLS (if available)</string>
     <string name="account_setup_incoming_security_tls_label">TLS (always)</string>
-    <string name="account_setup_incoming_delete_policy_label">Delete email from server:</string>
-    <string name="account_setup_incoming_delete_policy_never_label">Never</string>
+    
+    <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
+    <string name="account_setup_incoming_delete_policy_never_label">Do not delete on server</string>
     <string name="account_setup_incoming_delete_policy_7days_label">After 7 days</string>
-    <string name="account_setup_incoming_delete_policy_delete_label">When I delete from Inbox</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Delete from server</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Mark as read on server</string>
+
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">Optional</string>
     <string name="account_setup_incoming_webdav_path_prefix_label">WebDav(Exchange) path prefix</string>
@@ -219,9 +238,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDav(Exchange) before SMTP</string>
 
     <string name="account_setup_options_title">Account options</string>
+
     <string name="account_setup_options_mail_check_frequency_label">Email checking frequency</string>
     <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
+    <string name="account_setup_options_mail_check_frequency_1min">Every minute</string>
     <string name="account_setup_options_mail_check_frequency_5min">Every 5 minutes</string>
     <string name="account_setup_options_mail_check_frequency_10min">Every 10 minutes</string>
     <string name="account_setup_options_mail_check_frequency_15min">Every 15 minutes</string>
@@ -229,7 +250,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_options_mail_check_frequency_1hour">Every hour</string>
     <string name="account_setup_options_default_label">Send email from this account by default.</string>
     <string name="account_setup_options_notify_label">Notify me when email arrives.</string>
-    <string name="account_setup_options_notify_ringtone_label">Play a sound when email arrives.</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
     <string name="account_setup_options_mail_display_count_label">Number of emails to display</string>
@@ -248,14 +268,41 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_settings_default">Default account</string>
     <string name="account_settings_default_label">Default account</string>
     <string name="account_settings_default_summary">Send email from this account by default</string>
-    <string name="account_settings_email_label">Your email address</string>
     <string name="account_settings_notify_label">Email notifications</string>
+    <string name="account_settings_email_label">Your email address</string>
     <string name="account_settings_notify_summary">Notify in status bar when email arrives</string>
-    <string name="account_settings_notify_ringtone_label">Ringtone notifications</string>
-    <string name="account_settings_notify_ringtone_summary">Play a sound when email arrives</string>
     <string name="account_settings_show_combined_label">Show combined Inbox</string>
+    
+    <string name="account_settings_display_sync">Display and synchronization</string>
+    
     <string name="account_settings_mail_check_frequency_label">Email check frequency</string>
+    <string name="account_settings_second_class_check_frequency_label">2nd class check frequency</string>
+    
     <string name="account_settings_mail_display_count_label">Number of emails to display</string>
+      
+    <string name="account_settings_folder_display_mode_label">Folder display mode</string>
+    <string name="account_settings_folder_display_mode_all">All</string>
+    <string name="account_settings_folder_display_mode_first_class">Only 1st Class folders</string>
+    <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
+    <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
+  
+    <string name="account_settings_folder_sync_mode_label">Folder sync mode</string>
+    <string name="account_settings_folder_sync_mode_all">All</string>
+    <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
+    <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
+   
+    <string name="folder_settings_title">Folder settings</string>
+    <string name="folder_settings_folder_display_mode_label">Folder display class</string>
+    <string name="folder_settings_folder_display_mode_normal">None</string>
+    <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
+    <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
+ 
+    <string name="folder_settings_folder_sync_mode_label">Folder sync class</string>
+    <string name="folder_settings_folder_sync_mode_normal">Same as display class</string>
+    <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
+    <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
+    
     <string name="account_settings_incoming_label">Incoming settings</string>
     <string name="account_settings_incoming_summary">Configure the incoming email server</string>
     <string name="account_settings_outgoing_label">Outgoing settings</string>
@@ -295,7 +342,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
         your correct email address and password, you may not have a paid
         \"Plus\" account. Please launch the Web browser to gain access to
         these mail accounts.</string>
+        
     <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
+        
 </resources>

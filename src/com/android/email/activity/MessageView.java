@@ -93,8 +93,31 @@ public class MessageView extends Activity
     private String mNextMessageUid = null;
     private String mPreviousMessageUid = null;
 
-    private DateFormat mDateTimeFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-    private DateFormat mTimeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
+    private DateFormat dateFormat = null;
+    private DateFormat timeFormat = null;
+    
+    
+    private DateFormat getDateFormat()
+    {
+    	if (dateFormat == null)
+    	{
+    		dateFormat = android.pim.DateFormat.getDateFormat(getApplication());
+    	}
+    	return  dateFormat;
+    }
+    private DateFormat getTimeFormat()
+    {
+    	if (timeFormat == null)
+    	{
+    		timeFormat = android.pim.DateFormat.getTimeFormat(getApplication()); 
+    	}
+    	return timeFormat;
+    }
+    private void clearFormats()
+    {
+    	dateFormat = null;
+    	timeFormat = null;
+    }
 
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
@@ -109,7 +132,11 @@ public class MessageView extends Activity
             case KeyEvent.KEYCODE_F: { onForward(); return true;}
             case KeyEvent.KEYCODE_A: { onReplyAll(); return true; }
             case KeyEvent.KEYCODE_R: { onReply(); return true; }
-            case KeyEvent.KEYCODE_J: { onPrevious(); return true; }
+            case KeyEvent.KEYCODE_J:
+            case KeyEvent.KEYCODE_P:
+            { onPrevious(); return true; }
+            case KeyEvent.KEYCODE_SPACE:
+            case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K: { onNext(); return true; }
             case KeyEvent.KEYCODE_Z: { if (event.isShiftPressed()) {
                                             mMessageContentView.zoomIn();
@@ -301,10 +328,10 @@ public class MessageView extends Activity
         mAttachments.setVisibility(View.GONE);
         mAttachmentIcon.setVisibility(View.GONE);
 
-        findViewById(R.id.reply).setOnClickListener(this);
-        findViewById(R.id.delete).setOnClickListener(this);
-        findViewById(R.id.forward).setOnClickListener(this);
-        findViewById(R.id.show_pictures).setOnClickListener(this);
+        setOnClickListener(R.id.reply);
+        setOnClickListener(R.id.delete);
+        setOnClickListener(R.id.forward);
+        setOnClickListener(R.id.show_pictures);
 
         // UrlInterceptRegistry.registerHandler(this);
 
@@ -318,11 +345,12 @@ public class MessageView extends Activity
         mFolder = intent.getStringExtra(EXTRA_FOLDER);
         mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
         mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
-
-        findSurroundingMessagesUid();
-        
+       
         View next = findViewById(R.id.next);
         View previous = findViewById(R.id.previous);
+        
+        findSurroundingMessagesUid();
+
         /*
          * Next and Previous Message are not shown in landscape mode, so
          * we need to check before we use them.
@@ -330,6 +358,7 @@ public class MessageView extends Activity
         if (next != null && previous != null) {
             next.setOnClickListener(this);
             previous.setOnClickListener(this);
+
 
             previous.setVisibility(mPreviousMessageUid != null ? View.VISIBLE : View.GONE);
             next.setVisibility(mNextMessageUid != null ? View.VISIBLE : View.GONE);
@@ -351,9 +380,18 @@ public class MessageView extends Activity
                         mAccount,
                         mFolder,
                         mMessageUid,
-                        mListener);
+                        null);
             }
         }.start();
+    }
+    
+    private void setOnClickListener(int viewCode)
+    {
+      View thisView = findViewById(viewCode);
+      if (thisView != null)
+      {
+        thisView.setOnClickListener(this);
+      }
     }
 
     private void findSurroundingMessagesUid() {
@@ -374,6 +412,7 @@ public class MessageView extends Activity
 
     public void onResume() {
         super.onResume();
+        clearFormats();
         MessagingController.getInstance(getApplication()).addListener(mListener);
     }
 
@@ -427,8 +466,22 @@ public class MessageView extends Activity
             finish();
         }
     }
+    
+    private void onSendAlternate() {
+      if (mMessage != null) {
+  			MessagingController.getInstance(getApplication()).sendAlternate(this, mAccount, mMessage);
+
+      }
+  }
 
     private void onNext() {
+      if (mNextMessageUid == null)
+      {
+        Toast.makeText(this,
+            getString(R.string.end_of_folder),
+            Toast.LENGTH_SHORT).show();
+        return;
+      }
         Bundle extras = new Bundle(1);
         extras.putBoolean(EXTRA_NEXT, true);
         MessageView.actionView(this, mAccount, mFolder, mNextMessageUid, mFolderUids, extras);
@@ -436,6 +489,13 @@ public class MessageView extends Activity
     }
 
     private void onPrevious() {
+      if (mPreviousMessageUid == null)
+      {
+        Toast.makeText(this,
+            getString(R.string.end_of_folder),
+            Toast.LENGTH_SHORT).show();
+        return;
+      }
         MessageView.actionView(this, mAccount, mFolder, mPreviousMessageUid, mFolderUids);
         finish();
     }
@@ -518,6 +578,9 @@ public class MessageView extends Activity
             case R.id.reply:
                 onReply();
                 break;
+            case R.id.reply_all:
+              onReplyAll();
+              break;
             case R.id.delete:
                 onDelete();
                 break;
@@ -556,6 +619,9 @@ public class MessageView extends Activity
             case R.id.forward:
                 onForward();
                 break;
+            case R.id.send_alternate:
+              onSendAlternate();
+              break;
             case R.id.mark_as_unread:
                 onMarkAsUnread();
                 break;
@@ -712,8 +778,8 @@ public class MessageView extends Activity
                 String subjectText = message.getSubject();
                 String fromText = Address.toFriendly(message.getFrom());
                 String dateText = Utility.isDateToday(message.getSentDate()) ?
-                        mTimeFormat.format(message.getSentDate()) :
-                            mDateTimeFormat.format(message.getSentDate());
+                        getTimeFormat().format(message.getSentDate()) :
+                            getDateFormat().format(message.getSentDate());
                 String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
                 boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
                 mHandler.setHeaders(subjectText,
@@ -773,7 +839,7 @@ public class MessageView extends Activity
 
                     /*
                      * TODO this should be smarter, change to regex for img, but consider how to
-                     * get backgroung images and a million other things that HTML allows.
+                     * get background images and a million other things that HTML allows.
                      */
                     if (text.contains("<img")) {
                         mHandler.showShowPictures(true);

@@ -20,6 +20,14 @@ public class Email extends Application {
     public static Application app = null;
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
+    
+    /**
+     * Some log messages can be sent to a file, so that the logs
+     * can be read using unprivileged access (eg. Terminal Emulator)
+     * on the phone, without adb.  Set to null to disable
+     */
+    public static final String logFile = null;
+    //public static final String logFile = "/sdcard/k9mail/debug.log";
 
     /**
      * If this is enabled there will be additional logging information sent to
@@ -33,6 +41,12 @@ public class Email extends Application {
      */
     public static boolean DEBUG_SENSITIVE = false;
 
+    /**
+     * Can create messages containing stack traces that can be forwarded
+     * to the development team.
+     */
+    public static boolean ENABLE_ERROR_FOLDER = true;
+    public static String ERROR_FOLDER_NAME = "K9mail-errors";
 
     /**
      * The MIME type(s) of attachments we're willing to send. At the moment it is not possible
@@ -41,7 +55,7 @@ public class Email extends Application {
      * with Intent.ACTION_SEND.
      */
     public static final String[] ACCEPTABLE_ATTACHMENT_SEND_TYPES = new String[] {
-        "*/*",
+        "*/*"
     };
 
     /**
@@ -103,7 +117,7 @@ public class Email extends Application {
     /**
      * Max time (in millis) the wake lock will be held for when background sync is happening 
      */
-    public static final int WAKE_LOCK_TIMEOUT = 30000;
+    public static final int WAKE_LOCK_TIMEOUT = 600000;
 
     /**
      * LED color used for the new email notitication
@@ -120,8 +134,10 @@ public class Email extends Application {
      */
     public static final int NOTIFICATION_LED_OFF_TIME = 2000; 
 
-    public static final int NEW_EMAIL_NOTIFICATION_ID           = 1; 
-    public static final int FETCHING_EMAIL_NOTIFICATION_ID      = 2; 
+    // Must not conflict with an account number
+    public static final int FETCHING_EMAIL_NOTIFICATION_ID      = -4; 
+    public static final int FETCHING_EMAIL_NOTIFICATION_MULTI_ACCOUNT_ID      = -1;
+    public static final int FETCHING_EMAIL_NOTIFICATION_NO_ACCOUNT = -2;
 
     /**
      * Called throughout the application when the number of accounts has changed. This method

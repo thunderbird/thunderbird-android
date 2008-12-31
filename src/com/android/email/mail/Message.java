@@ -83,6 +83,8 @@ public abstract class Message implements Part, Body {
     public boolean isMimeType(String mimeType) throws MessagingException {
         return getContentType().startsWith(mimeType);
     }
+    
+    public void delete(String trashFolderName) throws MessagingException {} ;
 
     /*
      * TODO Refactor Flags at some point to be able to store user defined flags. 

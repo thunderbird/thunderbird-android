@@ -370,6 +370,17 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                 return;
             }
 
+            String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (text != null)
+            {
+            	mMessageContentView.setText(text);
+            }
+            String subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+            if (subject != null)
+            {
+            	mSubjectView.setText(subject);
+            }
+            
             String type = intent.getType();
             Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
             if (stream != null && type != null) {
@@ -397,7 +408,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     mAccount,
                     mFolder,
                     mSourceMessageUid,
-                    mListener);
+                    null);
         }
         if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
                     ACTION_EDIT_DRAFT.equals(action)) {

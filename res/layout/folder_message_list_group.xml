@@ -8,7 +8,7 @@
     android:paddingLeft="36px"
     android:paddingRight="4px">
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_vertical">
@@ -26,11 +26,11 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <View
-        android:layout_height="0dip"
-        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_width="0px"
         android:layout_weight="1" />
     <TextView
-        android:id="@+id/new_message_count"
+        android:id="@+id/folder_unread_message_count"
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
