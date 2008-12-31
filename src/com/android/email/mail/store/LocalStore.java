@@ -359,6 +359,9 @@ public class LocalStore extends Store implements Serializable {
             if (isOpen()) {
                 return;
             }
+            if (!exists()) {
+                create(FolderType.HOLDS_MESSAGES);
+            }
             Cursor cursor = null;
             try {
                 cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status FROM folders "

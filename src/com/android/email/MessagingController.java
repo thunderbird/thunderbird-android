@@ -1392,10 +1392,6 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	    	
     		Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
     		LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
-    		if (localFolder.exists() == false)
-    		{
-    			localFolder.create(Folder.FolderType.HOLDS_MESSAGES);
-    		}
     		Message[] messages = new Message[1];
     		Message message = new MimeMessage();
     		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1733,10 +1729,6 @@ s             * critical data as fast as possible, and then we'll fill in the de
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             LocalFolder localFolder =
                 (LocalFolder) localStore.getFolder(account.getOutboxFolderName());
-            if (!localFolder.exists())
-            {
-              localFolder.create(Folder.FolderType.HOLDS_MESSAGES);
-            }
             localFolder.open(OpenMode.READ_WRITE);
             localFolder.appendMessages(new Message[] {
                 message
@@ -2236,10 +2228,6 @@ s             * critical data as fast as possible, and then we'll fill in the de
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             LocalFolder localFolder =
                 (LocalFolder) localStore.getFolder(account.getDraftsFolderName());
-            if (!localFolder.exists())
-            {
-              localFolder.create(Folder.FolderType.HOLDS_MESSAGES);
-            }
             localFolder.open(OpenMode.READ_WRITE);
             localFolder.appendMessages(new Message[] {
                 message
