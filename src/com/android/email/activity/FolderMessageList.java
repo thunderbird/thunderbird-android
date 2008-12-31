@@ -1545,6 +1545,10 @@ public class FolderMessageList extends ExpandableListActivity
 		public int getChildrenCount(int groupPosition)
 		{
             FolderInfoHolder folder = (FolderInfoHolder) getGroup(groupPosition);
+            if (folder == null || folder.messages == null)
+            {
+              return 0;
+            }
             return folder.messages.size() + 1;
         }
 

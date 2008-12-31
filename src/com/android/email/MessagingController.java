@@ -2,6 +2,8 @@
 package com.android.email;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,6 +114,44 @@ public class MessagingController implements Runnable {
         mApplication = application;
         mThread = new Thread(this);
         mThread.start();
+    }
+    
+    public void log(String logmess)
+    {
+      Log.d(Email.LOG_TAG, logmess);
+      if (Email.logFile != null)
+      {
+        FileOutputStream fos = null;
+        try
+        {
+          File logFile = new File(Email.logFile);
+          fos = new FileOutputStream(logFile, true);
+          PrintStream ps = new PrintStream(fos);
+          ps.println(new Date() + ":" + Email.LOG_TAG + ":" + logmess);
+          ps.flush();
+          ps.close();
+          fos.flush();
+          fos.close();
+        }
+        catch (Exception e)
+        {
+          Log.e(Email.LOG_TAG, "Unable to log message '" + logmess + "'", e);
+        }
+        finally
+        {
+          if (fos != null)
+          {
+            try
+            {
+              fos.close();
+            }
+            catch (Exception e)
+            {
+              
+            }
+          }
+        }
+      }
     }
 
     /**
@@ -257,15 +297,17 @@ public class MessagingController implements Runnable {
 
                         Folder[] remoteFolders = store.getPersonalNamespaces();
 
-                        Store localStore = Store.getInstance(
+                        LocalStore localStore = (LocalStore)Store.getInstance(
                                 account.getLocalStoreUri(),
                                 mApplication);
                         HashSet<String> remoteFolderNames = new HashSet<String>();
                         for (int i = 0, count = remoteFolders.length; i < count; i++) {
-                            Folder localFolder = localStore.getFolder(remoteFolders[i].getName());
+                            LocalFolder localFolder = localStore.getFolder(remoteFolders[i].getName());
                             if (!localFolder.exists()) {
-
+                              // TODO: if the localFolder is inbox, set to 1st Class
                                 localFolder.create(FolderType.HOLDS_MESSAGES, account.getDisplayCount());
+                                localFolder.setDisplayClass(Folder.FolderClass.FIRST_CLASS);
+                                localFolder.save(Preferences.getPreferences(mApplication));
                             }
                             remoteFolderNames.add(remoteFolders[i].getName());
                         }
@@ -417,9 +459,11 @@ public class MessagingController implements Runnable {
     	if (account.getErrorFolderName().equals(folder)){
     		return;
     	}
+    	String debugLine = "Synchronizing folder " + account.getDescription() + ":" + folder;
     	if (Config.LOGV) {
-    		Log.v(Email.LOG_TAG, "Synchronizing folder " + account.getDescription() + ":" + folder);
+    		Log.v(Email.LOG_TAG, debugLine);
     	}
+    	log(debugLine);
         for (MessagingListener l : getListeners()) {
             l.synchronizeMailboxStarted(account, folder);
         }
@@ -898,11 +942,11 @@ s             * critical data as fast as possible, and then we'll fill in the de
             remoteFolder.close(false);
             localFolder.close(false);
             if (Config.LOGD) {
-            	Log.d(Email.LOG_TAG, "Done synchronizing folder " + 
+            	log( "Done synchronizing folder " + 
             			account.getDescription() + ":" + folder + " @ " + new Date() + 
             			" with " + newMessages.size() + " new messages"); 
             }
-            
+          
              
             for (MessagingListener l : getListeners()) {
               l.synchronizeMailboxFinished(
@@ -952,7 +996,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                         rootMessage);
             }
             addErrorMessage(account, e);
-           	Log.e(Email.LOG_TAG, "Failed synchronizing folder " + 
+           	log("Failed synchronizing folder " + 
           			account.getDescription() + ":" + folder + " @ " + new Date()); 
 
         }
@@ -1288,6 +1332,10 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	      		message.setFlag(Flag.SEEN, true);
 	      	}
 	      }
+	      localFolder.setUnreadMessageCount(0);
+        for (MessagingListener l : getListeners()) {
+          l.folderStatusChanged(account, folder);
+        }
 				try
 				{
 	        if (account.getErrorFolderName().equals(folder))
@@ -1308,12 +1356,6 @@ s             * critical data as fast as possible, and then we'll fill in the de
 								
 					remoteFolder.setFlags(new Flag[] { Flag.SEEN }, true);
 					remoteFolder.close(false);
-					
-					 localFolder.setUnreadMessageCount(0);
-					 for (MessagingListener l : getListeners()) {
-						 l.folderStatusChanged(account, folder);
-					 }
-
 				}
 				catch (UnsupportedOperationException uoe)
 				{
@@ -1330,6 +1372,10 @@ s             * critical data as fast as possible, and then we'll fill in the de
     static AtomicBoolean loopCatch = new AtomicBoolean();
     public void addErrorMessage(Account account, Throwable t)
     {
+      if (Email.ENABLE_ERROR_FOLDER == false)
+      {
+        return;
+      }
     	if (loopCatch.compareAndSet(false, true) == false)
     	{
     		return;
@@ -1341,6 +1387,9 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	    		return;
 	    	}
 
+	    	String rootCauseMessage = getRootCauseMessage(t);
+	    	log("Error" + "'" + rootCauseMessage + "'");
+	    	
     		Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
     		LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
     		if (localFolder.exists() == false)
@@ -1355,7 +1404,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
     		ps.close();
     		message.setBody(new TextBody(baos.toString()));
     		message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-    		message.setSubject(getRootCauseMessage(t));
+    		message.setSubject(rootCauseMessage);
     		
     		long nowTime = System.currentTimeMillis();
     		Date nowDate = new Date(nowTime);
@@ -1684,6 +1733,10 @@ s             * critical data as fast as possible, and then we'll fill in the de
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             LocalFolder localFolder =
                 (LocalFolder) localStore.getFolder(account.getOutboxFolderName());
+            if (!localFolder.exists())
+            {
+              localFolder.create(Folder.FolderType.HOLDS_MESSAGES);
+            }
             localFolder.open(OpenMode.READ_WRITE);
             localFolder.appendMessages(new Message[] {
                 message
@@ -2183,6 +2236,10 @@ s             * critical data as fast as possible, and then we'll fill in the de
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             LocalFolder localFolder =
                 (LocalFolder) localStore.getFolder(account.getDraftsFolderName());
+            if (!localFolder.exists())
+            {
+              localFolder.create(Folder.FolderType.HOLDS_MESSAGES);
+            }
             localFolder.open(OpenMode.READ_WRITE);
             localFolder.appendMessages(new Message[] {
                 message

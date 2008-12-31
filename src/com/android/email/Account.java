@@ -122,7 +122,7 @@ public class Account implements Serializable {
         try
         {
         	mFolderDisplayMode = FolderMode.valueOf(preferences.mSharedPreferences.getString(mUuid  + ".folderDisplayMode", 
-        			FolderMode.ALL.name()));
+        			FolderMode.NOT_SECOND_CLASS.name()));
         }
         catch (Exception e)
         {
@@ -132,7 +132,7 @@ public class Account implements Serializable {
         try
         {
         	mFolderSyncMode = FolderMode.valueOf(preferences.mSharedPreferences.getString(mUuid  + ".folderSyncMode", 
-        			FolderMode.ALL.name()));
+        			FolderMode.FIRST_CLASS.name()));
         }
         catch (Exception e)
         {
@@ -448,7 +448,7 @@ public class Account implements Serializable {
     
     public String getErrorFolderName()
     {
-    	return "K9mail-errors";
+    	return Email.ERROR_FOLDER_NAME;
     }
 
     public void setSentFolderName(String sentFolderName) {

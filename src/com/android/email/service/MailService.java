@@ -73,9 +73,9 @@ public class MailService extends Service {
         MessagingController.getInstance(getApplication()).addListener(mListener);
         if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
             //if (Config.LOGV) {
+          MessagingController.getInstance(getApplication()).log("***** MailService *****: checking mail");
                 Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
             //}
-                reschedule();
             mListener.wakeLockAcquire();
             MessagingController.getInstance(getApplication()).checkMail(this, null, mListener);
         }
@@ -83,6 +83,8 @@ public class MailService extends Service {
             if (Config.LOGV) {
                 Log.v(Email.LOG_TAG, "***** MailService *****: cancel");
             }
+            MessagingController.getInstance(getApplication()).log("***** MailService *****: cancel");
+            
             cancel();
             stopSelf(startId);
         }
@@ -90,6 +92,7 @@ public class MailService extends Service {
             if (Config.LOGV) {
                 Log.v(Email.LOG_TAG, "***** MailService *****: reschedule");
             }
+            MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
             reschedule();
             stopSelf(startId);
         }
@@ -136,7 +139,9 @@ public class MailService extends Service {
 	        long delay = (shortestInterval * (60 * 1000));
 	        
 	        long nextTime = System.currentTimeMillis() + delay;
-	        Log.v(Email.LOG_TAG, "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime));
+	        String checkString = "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime);
+	        Log.v(Email.LOG_TAG, checkString);
+	        MessagingController.getInstance(getApplication()).log(checkString);
 	        alarmMgr.set(AlarmManager.RTC_WAKEUP, nextTime, pi);
         }
         
@@ -177,7 +182,14 @@ public class MailService extends Service {
 
         @Override
         public void checkMailFailed(Context context, Account account, String reason) {
+          try
+          {
+            reschedule();
+          }
+          finally
+          {
             wakeLockRelease();
+          }
             stopSelf(mStartId);
         }
 
@@ -265,7 +277,6 @@ public class MailService extends Service {
             notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
             notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
 
-            notifMgr.cancelAll();
 				    notifMgr.notify(accountNumber, notif);
 				  }
 
@@ -281,7 +292,14 @@ public class MailService extends Service {
         	}
         	finally
         	{
-            wakeLockRelease();
+            try
+            {
+              reschedule();
+            }
+            finally
+            {
+              wakeLockRelease();
+            }
             stopSelf(mStartId);
         	}
         }

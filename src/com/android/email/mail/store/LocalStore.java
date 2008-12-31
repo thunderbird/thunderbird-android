@@ -142,7 +142,7 @@ public class LocalStore extends Store implements Serializable {
         }
 
     @Override
-    public Folder getFolder(String name) throws MessagingException {
+    public LocalFolder getFolder(String name) throws MessagingException {
         return new LocalFolder(name);
     }
 
