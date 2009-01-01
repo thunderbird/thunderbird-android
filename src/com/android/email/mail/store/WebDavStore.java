@@ -11,8 +11,14 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -21,11 +27,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Stack;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.android.email.Email;
+import com.android.email.mail.CertificateValidationException;
 import com.android.email.mail.FetchProfile;
 import com.android.email.mail.Flag;
 import com.android.email.mail.Folder;
@@ -37,6 +48,7 @@ import com.android.email.mail.internet.MimeBodyPart;
 import com.android.email.mail.internet.MimeMessage;
 import com.android.email.mail.internet.TextBody;
 import com.android.email.mail.transport.EOLConvertingOutputStream;
+import com.android.email.mail.transport.TrustedSocketFactory;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpEntity;
@@ -45,6 +57,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.scheme.SocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -77,6 +92,7 @@ public class WebDavStore extends Store {
     private String alias;
     private String mPassword; /* Stores the password for authentications */
     private String mUrl;      /* Stores the base URL for the server */
+    private String mHost;      /* Stores the host name for the server */
 
     private CookieStore mAuthCookies; /* Stores cookies from authentication */
     private boolean mAuthenticated = false; /* Stores authentication state */
@@ -84,6 +100,8 @@ public class WebDavStore extends Store {
     private long mAuthTimeout = 5 * 60;
 
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
+	private boolean mSecure;
+    
     /**
      * webdav://user:password@server:port CONNECTION_SECURITY_NONE
      * webdav+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
@@ -116,12 +134,11 @@ public class WebDavStore extends Store {
             throw new MessagingException("Unsupported protocol");
         }
 
-        String host = uri.getHost();
-
-        if (host.startsWith("http")) {
-            String[] hostParts = host.split("://", 2);
+        mHost = uri.getHost();
+		if (mHost.startsWith("http")) {
+            String[] hostParts = mHost.split("://", 2);
             if (hostParts.length > 1) {
-                host = hostParts[1];
+                mHost = hostParts[1];
             }
         }
 
@@ -129,9 +146,9 @@ public class WebDavStore extends Store {
             mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
             mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL ||
             mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
-            this.mUrl = "https://" + host;
+            this.mUrl = "https://" + mHost;
         } else {
-            this.mUrl = "http://" + host;
+            this.mUrl = "http://" + mHost;
         }
         
         if (uri.getUserInfo() != null) {
@@ -148,6 +165,7 @@ public class WebDavStore extends Store {
                 mPassword = userInfoParts[1];
             }
         }
+		mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
     }
 
 
@@ -360,8 +378,9 @@ public class WebDavStore extends Store {
     /**
      * Performs Form Based authentication regardless of the current
      * authentication state
+     * @throws MessagingException 
      */
-    public void authenticate() {
+    public void authenticate() throws MessagingException {
         try {
             this.mAuthCookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
         } catch (IOException ioe) {
@@ -398,9 +417,10 @@ public class WebDavStore extends Store {
     /**
      * Performs the Form Based Authentication
      * Returns the CookieStore object for later use or null
+     * @throws MessagingException 
      */
     public CookieStore doAuthentication(String username, String password,
-                                        String url) throws IOException {
+                                        String url) throws IOException, MessagingException {
         String authPath = "/exchweb/bin/auth/owaauth.dll";
         CookieStore cookies = null;
         String[] urlParts = url.split("/");
@@ -413,61 +433,67 @@ public class WebDavStore extends Store {
                 finalUrl = urlParts[i];
             }
         }
-            
-        /* Browser Client */
-        DefaultHttpClient httpclient = new DefaultHttpClient();
-
-        /* Post Method */
-        HttpPost httppost = new HttpPost(finalUrl + authPath);
-
-        /** Build the POST data to use */
-        ArrayList<BasicNameValuePair> pairs = new ArrayList();
-        pairs.add(new BasicNameValuePair("username", username));
-        pairs.add(new BasicNameValuePair("password", password));
-        pairs.add(new BasicNameValuePair("destination", finalUrl + "/Exchange/"));
-        pairs.add(new BasicNameValuePair("flags", "0"));
-        pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
-        pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
-        pairs.add(new BasicNameValuePair("trusted", "0"));
 
         try {
-            UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
+            /* Browser Client */
+            DefaultHttpClient httpclient = getTrustedHttpClient();
+        	/* Post Method */
+        	HttpPost httppost = new HttpPost(finalUrl + authPath);
 
-            httppost.setEntity(formEntity);
+        	/** Build the POST data to use */
+        	ArrayList<BasicNameValuePair> pairs = new ArrayList();
+        	pairs.add(new BasicNameValuePair("username", username));
+        	pairs.add(new BasicNameValuePair("password", password));
+        	pairs.add(new BasicNameValuePair("destination", finalUrl + "/Exchange/"));
+        	pairs.add(new BasicNameValuePair("flags", "0"));
+        	pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
+        	pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
+        	pairs.add(new BasicNameValuePair("trusted", "0"));
 
-            /** Perform the actual POST */
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            int status_code = response.getStatusLine().getStatusCode();
-            
-            /** Verify success */
-            if (status_code > 300 ||
-                status_code < 200) {
-                throw new IOException("Error during authentication: "+status_code);
-            }
-            
-            cookies = httpclient.getCookieStore();
-            if (cookies == null) {
-                throw new IOException("Error during authentication: No Cookies");
-            }
+        	try {
+        		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
 
-            /** Get the URL for the mailbox and set it for the store */
-            if (entity != null) {
-                InputStream istream = entity.getContent();
+        		httppost.setEntity(formEntity);
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 8192);
-                String tempText = "";
+        		/** Perform the actual POST */
+        		HttpResponse response = httpclient.execute(httppost);
+        		HttpEntity entity = response.getEntity();
+        		int status_code = response.getStatusLine().getStatusCode();
 
-                while ((tempText = reader.readLine()) != null) {
-                    if (tempText.indexOf("BASE href") >= 0) {
-                        String[] tagParts = tempText.split("\"");
-                        this.mUrl = tagParts[1];
-                    }
-                }
-            }
-            
-        } catch (UnsupportedEncodingException uee) {
-            Log.e(Email.LOG_TAG, "Error encoding POST data for authencation");
+        		/** Verify success */
+        		if (status_code > 300 ||
+        				status_code < 200) {
+        			throw new IOException("Error during authentication: "+status_code);
+        		}
+
+        		cookies = httpclient.getCookieStore();
+        		if (cookies == null) {
+        			throw new IOException("Error during authentication: No Cookies");
+        		}
+
+        		/** Get the URL for the mailbox and set it for the store */
+        		if (entity != null) {
+        			InputStream istream = entity.getContent();
+
+        			BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 8192);
+        			String tempText = "";
+
+        			while ((tempText = reader.readLine()) != null) {
+        				if (tempText.indexOf("BASE href") >= 0) {
+        					String[] tagParts = tempText.split("\"");
+        					this.mUrl = tagParts[1];
+        				}
+        			}
+        		}
+
+        	} catch (UnsupportedEncodingException uee) {
+        		Log.e(Email.LOG_TAG, "Error encoding POST data for authencation");
+        	}
+        } catch (SSLException e) {
+        	throw new CertificateValidationException(e.getMessage(), e);
+        } catch (GeneralSecurityException gse) {
+        	throw new MessagingException(
+        			"Unable to open connection to SMTP server due to security error.", gse);
         }
         return cookies;
     }
@@ -484,6 +510,15 @@ public class WebDavStore extends Store {
         return mUrl;
     }
 
+    public DefaultHttpClient getTrustedHttpClient() throws KeyManagementException, NoSuchAlgorithmException{
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        SchemeRegistry reg = httpclient.getConnectionManager().getSchemeRegistry();
+        reg.unregister("https");
+        Scheme s = new Scheme("https",new TrustedSocketFactory(mHost,mSecure),443);
+        reg.register(s);
+        return httpclient;
+    }
+    
     /**
      * Performs an httprequest to the supplied url using the supplied method.
      * messageBody and headers are optional as not all requests will need them.
@@ -495,15 +530,27 @@ public class WebDavStore extends Store {
     
     private ParsedDataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers, boolean needsParsing) {
         ParsedDataSet dataset = new ParsedDataSet();
-        DefaultHttpClient httpclient = new DefaultHttpClient();
+        DefaultHttpClient httpclient;
         
         if (url == null ||
             method == null) {
             return dataset;
         }
-
+        try {
+        	httpclient = getTrustedHttpClient();
+        } catch (KeyManagementException e) {
+        	Log.e(Email.LOG_TAG, "Generated KeyManagementException during authentication" + e.getStackTrace());
+        	return dataset;
+        } catch (NoSuchAlgorithmException e) {
+        	Log.e(Email.LOG_TAG, "Generated NoSuchAlgorithmException during authentication" + e.getStackTrace());
+        	return dataset;
+        }
         if (needAuth()) {
-            authenticate();
+            try {
+				authenticate();
+			} catch (MessagingException e) {
+				Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + e.getStackTrace());
+			}
         }
 
         if (this.mAuthenticated == false ||
@@ -620,7 +667,11 @@ public class WebDavStore extends Store {
              * Perform an authentication to get the appropriate URLs in place again
              */
             if (needAuth()) {
-                authenticate();
+                try {
+    				authenticate();
+    			} catch (MessagingException e) {
+    				Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + e.getStackTrace());
+    			}
             }
 
             if (encodedName.equals("INBOX")) {
@@ -901,7 +952,14 @@ public class WebDavStore extends Store {
          * Fetches the full messages or up to lines lines and passes them to the message parser.
          */
         private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines) throws MessagingException {
-            DefaultHttpClient httpclient = new DefaultHttpClient();
+            DefaultHttpClient httpclient;
+			try {
+				httpclient = getTrustedHttpClient();
+			} catch (KeyManagementException e) {
+                throw new MessagingException("KeyManagement Exception in fetchMessages()."+ e.getStackTrace());
+			} catch (NoSuchAlgorithmException e) {
+                throw new MessagingException("NoSuchAlgorithm Exception in fetchMessages():" + e.getStackTrace());
+			}
 
             /**
              * We can't hand off to processRequest() since we need the stream to parse.

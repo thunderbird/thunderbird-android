@@ -16,6 +16,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.net.ssl.SSLContext;
@@ -118,7 +120,16 @@ public class WebDavTransport extends Transport {
     public void sendMessage(Message message) throws MessagingException {
         Log.d(Email.LOG_TAG, ">>> sendMessage called.");
 
-        DefaultHttpClient httpclient = new DefaultHttpClient();
+        DefaultHttpClient httpclient;
+		try {
+			httpclient = store.getTrustedHttpClient();
+		} catch (KeyManagementException e) {
+    		Log.e(Email.LOG_TAG, "KeyManagementException while creating HttpClient: " + e);
+    		throw new MessagingException("KeyManagementException while creating HttpClient: " + e);
+		} catch (NoSuchAlgorithmException e) {
+    		Log.e(Email.LOG_TAG, "NoSuchAlgorithmException while creating HttpClient: " + e);
+    		throw new MessagingException("NoSuchAlgorithmException while creating HttpClient: " + e);
+		}
         HttpGeneric httpmethod;
         HttpResponse response;
         HttpEntity responseEntity;
@@ -160,11 +171,6 @@ public class WebDavTransport extends Transport {
         		throw new IOException("Error sending message, status code was " + statusCode);
         	}
         	
-        	//responseEntity = response.getEntity();
-            //DefaultHttpClient movehttpclient = new DefaultHttpClient();
-            //HttpGeneric movehttpmethod;
-            //HttpResponse moveresponse;
-            //HttpEntity moveresponseEntity;
             httpmethod = store.new HttpGeneric(generateTempURI(subject));
         	httpmethod.setMethod("MOVE");
         	httpmethod.setHeader("Destination", generateSendURI());
