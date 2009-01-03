@@ -3,7 +3,6 @@ package com.android.email.mail.transport;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -34,23 +33,18 @@ public class TrustedSocketFactory implements SocketFactory {
         		org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 	}
 
-	@Override
 	public Socket connectSocket(Socket sock, String host, int port,
 			InetAddress localAddress, int localPort, HttpParams params)
 			throws IOException, UnknownHostException, ConnectTimeoutException {
 		return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
 	}
 
-	@Override
 	public Socket createSocket() throws IOException {
-		// TODO Auto-generated method stub
 		return mSocketFactory.createSocket();
 	}
 
-	@Override
-	public boolean isSecure(Socket arg0) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isSecure(Socket sock) throws IllegalArgumentException {
+		return mSchemeSocketFactory.isSecure(sock);
 	}
 	
 }
