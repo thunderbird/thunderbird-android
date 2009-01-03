@@ -751,7 +751,10 @@ public class FolderMessageList extends ExpandableListActivity
 
 	private void onDelete(MessageInfoHolder holder)
 	{
-		
+		if (holder.read == false && holder.folder.unreadMessageCount > 0)
+		{
+		  holder.folder.unreadMessageCount--;
+		}
 		MessagingController.getInstance(getApplication()).deleteMessage(mAccount,
 				holder.message.getFolder().getName(), holder.message, null);
     mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
@@ -783,6 +786,7 @@ public class FolderMessageList extends ExpandableListActivity
 		for (MessageInfoHolder holder : folder.messages){
 			holder.read = true;
 		}
+		folder.unreadMessageCount = 0;
     mHandler.dataChanged();
 
   		//onRefresh(false);
@@ -796,6 +800,13 @@ public class FolderMessageList extends ExpandableListActivity
 
 	private void onToggleRead(MessageInfoHolder holder)
 	{
+	  
+	  holder.folder.unreadMessageCount += (holder.read ? 1 : -1);
+	  if (holder.folder.unreadMessageCount < 0)
+	  {
+	    holder.folder.unreadMessageCount = 0;
+	  }
+	  
 		MessagingController.getInstance(getApplication()).markMessageRead(mAccount,
 				holder.message.getFolder().getName(), holder.uid, !holder.read);
         holder.read = !holder.read;
@@ -1762,6 +1773,8 @@ public class FolderMessageList extends ExpandableListActivity
             public boolean read;
 
             public Message message;
+            
+            public FolderInfoHolder folder;
 
 			public MessageInfoHolder(Message m, FolderInfoHolder folder)
 			{
@@ -1775,6 +1788,7 @@ public class FolderMessageList extends ExpandableListActivity
                     LocalMessage message = (LocalMessage) m;
                     Date date = message.getSentDate();
                     this.compareDate = date;
+                    this.folder = folder;
 					if (Utility.isDateToday(date))
 					{
 						this.date = getTimeFormat().format(date);
