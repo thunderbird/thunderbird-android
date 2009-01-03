@@ -75,8 +75,8 @@ public class Account implements Serializable {
         mNotifyNewMail = true;
         mSignature = "Sent from my Android phone with K-9. Please excuse my brevity.";
         mVibrate = false;
-        mFolderDisplayMode = FolderMode.ALL;
-        mFolderSyncMode = FolderMode.ALL;
+        mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
+        mFolderSyncMode = FolderMode.FIRST_CLASS;
         mRingtoneUri = "content://settings/system/notification_sound";
     }
 
@@ -126,7 +126,7 @@ public class Account implements Serializable {
         }
         catch (Exception e)
         {
-        	mFolderDisplayMode = FolderMode.ALL;
+        	mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
         }
 
         try
@@ -136,7 +136,7 @@ public class Account implements Serializable {
         }
         catch (Exception e)
         {
-        	mFolderSyncMode = FolderMode.ALL;
+        	mFolderSyncMode = FolderMode.FIRST_CLASS;
         }
 
     }

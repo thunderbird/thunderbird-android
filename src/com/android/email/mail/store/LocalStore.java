@@ -348,6 +348,12 @@ public class LocalStore extends Store implements Serializable {
 
         public LocalFolder(String name) {
             this.mName = name;
+            
+            if (Email.INBOX.equals(getName()))
+            {
+              syncClass =  FolderClass.FIRST_CLASS;
+            }
+     
         }
 
         public long getId() {
@@ -356,28 +362,33 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public void open(OpenMode mode) throws MessagingException {
-            if (isOpen()) {
-                return;
-            }
-            if (!exists()) {
-                create(FolderType.HOLDS_MESSAGES);
-            }
-            Cursor cursor = null;
-            try {
-                cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status FROM folders "
-                        + "where folders.name = ?",
-                    new String[] {
-                        mName
-                    });
-                cursor.moveToFirst();
+          if (isOpen()) {
+            return;
+          }
+          Cursor cursor = null;
+          try {
+            cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status FROM folders "
+                + "where folders.name = ?",
+                new String[] {
+                    mName
+                });
+
+            if (cursor.moveToFirst()) {
+              int folderId = cursor.getInt(0);
+              if (folderId > 0)
+              {
                 open(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getLong(3), cursor.getString(4));
-            
+              }
+            } else {
+              create(FolderType.HOLDS_MESSAGES);
+              open(mode);
             }
-            finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+          }
+          finally {
+            if (cursor != null) {
+              cursor.close();
             }
+          }
         }
         
         private void open(int id, int unreadCount, int visibleLimit, long lastChecked, String status) throws MessagingException
@@ -581,8 +592,8 @@ public class LocalStore extends Store implements Serializable {
       		String id = getPrefId();
         
           SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
-          // there can be a lot of folders.  For the defaults, let's not save prefs, saving space
-          if (displayClass == FolderClass.NONE)
+          // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
+          if (displayClass == FolderClass.NONE && !Email.INBOX.equals(getName()))
           {
           	editor.remove(id + ".displayMode");
           }
@@ -591,7 +602,7 @@ public class LocalStore extends Store implements Serializable {
            	editor.putString(id + ".displayMode", displayClass.name());
           }
           
-          if (syncClass == FolderClass.NONE)
+          if (syncClass == FolderClass.NONE && !Email.INBOX.equals(getName()))
           {
           	editor.remove(id + ".syncMode");
           }
@@ -605,7 +616,7 @@ public class LocalStore extends Store implements Serializable {
       public void refresh(Preferences preferences) throws MessagingException {
       	
      		String id = getPrefId();
-     	 
+      		
         try
         {
         	displayClass = FolderClass.valueOf(preferences.mSharedPreferences.getString(id + ".displayMode", 
