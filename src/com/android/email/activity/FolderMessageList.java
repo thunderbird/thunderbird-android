@@ -754,10 +754,10 @@ public class FolderMessageList extends ExpandableListActivity
 		
 		MessagingController.getInstance(getApplication()).deleteMessage(mAccount,
 				holder.message.getFolder().getName(), holder.message, null);
-        mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
+    mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
 		Toast.makeText(this, R.string.message_deleted_toast, Toast.LENGTH_SHORT)
 				.show();
-		onRefresh(false);
+	//	onRefresh(false);
     }
 
 	private void onReply(MessageInfoHolder holder)
@@ -783,8 +783,9 @@ public class FolderMessageList extends ExpandableListActivity
 		for (MessageInfoHolder holder : folder.messages){
 			holder.read = true;
 		}
-		
-  		onRefresh(false);
+    mHandler.dataChanged();
+
+  		//onRefresh(false);
 	}
 	
 	private void onEmptyTrash(Account account)
@@ -798,7 +799,9 @@ public class FolderMessageList extends ExpandableListActivity
 		MessagingController.getInstance(getApplication()).markMessageRead(mAccount,
 				holder.message.getFolder().getName(), holder.uid, !holder.read);
         holder.read = !holder.read;
-        onRefresh(false);
+        mHandler.dataChanged();
+
+      //  onRefresh(false);
     }
 
     @Override
