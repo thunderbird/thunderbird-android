@@ -52,7 +52,12 @@ import com.android.email.mail.transport.TrustedSocketFactory;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpEntity;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
@@ -92,7 +97,8 @@ public class WebDavStore extends Store {
     private String alias;
     private String mPassword; /* Stores the password for authentications */
     private String mUrl;      /* Stores the base URL for the server */
-    private String mHost;      /* Stores the host name for the server */
+    private String mHost;     /* Stores the host name for the server */
+	private URI mUri;         /* Stores the Uniform Resource Indicator with all connection info */
 
     private CookieStore mAuthCookies; /* Stores cookies from authentication */
     private boolean mAuthenticated = false; /* Stores authentication state */
@@ -112,14 +118,12 @@ public class WebDavStore extends Store {
      * @param _uri
      */
     public WebDavStore(String _uri) throws MessagingException {
-        URI uri;
-
         try {
-            uri = new URI(_uri);
+            mUri = new URI(_uri);
         } catch (URISyntaxException use) {
             throw new MessagingException("Invalid WebDavStore URI", use);
         }
-        String scheme = uri.getScheme();
+        String scheme = mUri.getScheme();
         if (scheme.equals("webdav")) {
             mConnectionSecurity = CONNECTION_SECURITY_NONE;
         } else if (scheme.equals("webdav+ssl")) {
@@ -134,7 +138,7 @@ public class WebDavStore extends Store {
             throw new MessagingException("Unsupported protocol");
         }
 
-        mHost = uri.getHost();
+        mHost = mUri.getHost();
 		if (mHost.startsWith("http")) {
             String[] hostParts = mHost.split("://", 2);
             if (hostParts.length > 1) {
@@ -151,8 +155,8 @@ public class WebDavStore extends Store {
             this.mUrl = "http://" + mHost;
         }
         
-        if (uri.getUserInfo() != null) {
-            String[] userInfoParts = uri.getUserInfo().split(":", 2);
+        if (mUri.getUserInfo() != null) {
+            String[] userInfoParts = mUri.getUserInfo().split(":", 2);
             mUsername = userInfoParts[0];
             String userParts[] = mUsername.split("/", 2);
 
@@ -459,8 +463,31 @@ public class WebDavStore extends Store {
         		HttpResponse response = httpclient.execute(httppost);
         		HttpEntity entity = response.getEntity();
         		int status_code = response.getStatusLine().getStatusCode();
-
+        		
         		/** Verify success */
+        		if (status_code < 500 &&
+        				status_code > 400) {
+        			String errorText = "";
+        			String requestText = "";
+            		if (entity != null) {
+            			BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()), 8192);
+            			String tempText = "";
+
+            			while ((tempText = reader.readLine()) != null) {
+            				errorText += tempText;
+            			}
+            		}
+        			BufferedReader reader = new BufferedReader(new InputStreamReader(formEntity.getContent()), 8192);
+        			String tempText = "";
+
+        			while ((tempText = reader.readLine()) != null) {
+        				requestText += tempText;
+        			}
+        			throw new MessagingException("Error during authentication: "+
+        					response.getStatusLine().toString()+ "\n\nRequest: "+
+        					requestText + "\n\nResponse: " +
+        					errorText);
+        		}
         		if (status_code > 300 ||
         				status_code < 200) {
         			throw new IOException("Error during authentication: "+status_code);
@@ -512,10 +539,23 @@ public class WebDavStore extends Store {
 
     public DefaultHttpClient getTrustedHttpClient() throws KeyManagementException, NoSuchAlgorithmException{
         DefaultHttpClient httpclient = new DefaultHttpClient();
+        /*
         SchemeRegistry reg = httpclient.getConnectionManager().getSchemeRegistry();
         reg.unregister("https");
         Scheme s = new Scheme("https",new TrustedSocketFactory(mHost,mSecure),443);
         reg.register(s);
+        */
+        /*
+        //Add credentials for NTLM/Digest/Basic Auth
+    	Credentials creds = new UsernamePasswordCredentials(mUsername, mPassword);
+    	CredentialsProvider credsProvider  = httpclient.getCredentialsProvider();
+    	// setting AuthScope for 80 and 443, in case we end up getting redirected
+    	// from 80 to 443.
+    	credsProvider.setCredentials(new AuthScope(mHost, 80, AuthScope.ANY_REALM), creds);
+    	credsProvider.setCredentials(new AuthScope(mHost, 443, AuthScope.ANY_REALM), creds);
+    	credsProvider.setCredentials(new AuthScope(mHost, mUri.getPort(), AuthScope.ANY_REALM), creds);
+    	httpclient.setCredentialsProvider(credsProvider);
+		*/
         return httpclient;
     }
     
