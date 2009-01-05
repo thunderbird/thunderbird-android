@@ -1,39 +1,51 @@
 package com.android.email.mail.store;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import android.util.Log;
-
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.text.DateFormat;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Stack;
 
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+
+import android.util.Log;
 
 import com.android.email.Email;
 import com.android.email.mail.CertificateValidationException;
@@ -44,36 +56,8 @@ import com.android.email.mail.Message;
 import com.android.email.mail.MessageRetrievalListener;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Store;
-import com.android.email.mail.internet.MimeBodyPart;
 import com.android.email.mail.internet.MimeMessage;
-import com.android.email.mail.internet.TextBody;
-import com.android.email.mail.transport.EOLConvertingOutputStream;
 import com.android.email.mail.transport.TrustedSocketFactory;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpEntity;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.scheme.SocketFactory;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * <pre>
@@ -107,7 +91,8 @@ public class WebDavStore extends Store {
 
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 	private boolean mSecure;
-    
+	private DefaultHttpClient mHttpClient = null;
+	
     /**
      * webdav://user:password@server:port CONNECTION_SECURITY_NONE
      * webdav+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
@@ -150,9 +135,9 @@ public class WebDavStore extends Store {
             mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
             mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL ||
             mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
-            this.mUrl = "https://" + mHost;
+            this.mUrl = "https://" + mHost + ":" + mUri.getPort();
         } else {
-            this.mUrl = "http://" + mHost;
+            this.mUrl = "http://" + mHost + ":" + mUri.getPort();
         }
         
         if (mUri.getUserInfo() != null) {
@@ -448,7 +433,7 @@ public class WebDavStore extends Store {
         	ArrayList<BasicNameValuePair> pairs = new ArrayList();
         	pairs.add(new BasicNameValuePair("username", username));
         	pairs.add(new BasicNameValuePair("password", password));
-        	pairs.add(new BasicNameValuePair("destination", finalUrl + "/Exchange/"));
+        	pairs.add(new BasicNameValuePair("destination", finalUrl + "/exchange/" +username+"/"));
         	pairs.add(new BasicNameValuePair("flags", "0"));
         	pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
         	pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
@@ -466,7 +451,7 @@ public class WebDavStore extends Store {
         		
         		/** Verify success */
         		if (status_code < 500 &&
-        				status_code > 400) {
+        				status_code >= 400) {
         			String errorText = "";
         			String requestText = "";
             		if (entity != null) {
@@ -483,6 +468,7 @@ public class WebDavStore extends Store {
         			while ((tempText = reader.readLine()) != null) {
         				requestText += tempText;
         			}
+        			requestText = requestText.replaceAll("password=.*?&", "password=(omitted)&");
         			throw new MessagingException("Error during authentication: "+
         					response.getStatusLine().toString()+ "\n\nRequest: "+
         					requestText + "\n\nResponse: " +
@@ -538,25 +524,25 @@ public class WebDavStore extends Store {
     }
 
     public DefaultHttpClient getTrustedHttpClient() throws KeyManagementException, NoSuchAlgorithmException{
-        DefaultHttpClient httpclient = new DefaultHttpClient();
-        /*
-        SchemeRegistry reg = httpclient.getConnectionManager().getSchemeRegistry();
-        reg.unregister("https");
-        Scheme s = new Scheme("https",new TrustedSocketFactory(mHost,mSecure),443);
-        reg.register(s);
-        */
-        /*
-        //Add credentials for NTLM/Digest/Basic Auth
-    	Credentials creds = new UsernamePasswordCredentials(mUsername, mPassword);
-    	CredentialsProvider credsProvider  = httpclient.getCredentialsProvider();
-    	// setting AuthScope for 80 and 443, in case we end up getting redirected
-    	// from 80 to 443.
-    	credsProvider.setCredentials(new AuthScope(mHost, 80, AuthScope.ANY_REALM), creds);
-    	credsProvider.setCredentials(new AuthScope(mHost, 443, AuthScope.ANY_REALM), creds);
-    	credsProvider.setCredentials(new AuthScope(mHost, mUri.getPort(), AuthScope.ANY_REALM), creds);
-    	httpclient.setCredentialsProvider(credsProvider);
-		*/
-        return httpclient;
+    	if (mHttpClient == null) {
+    		mHttpClient = new DefaultHttpClient();
+    		SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
+    		Scheme s = new Scheme("https",new TrustedSocketFactory(mHost,mSecure),443);
+    		reg.register(s);
+
+
+    		//Add credentials for NTLM/Digest/Basic Auth
+    		Credentials creds = new UsernamePasswordCredentials(mUsername, mPassword);
+    		CredentialsProvider credsProvider  = mHttpClient.getCredentialsProvider();
+    		// setting AuthScope for 80 and 443, in case we end up getting redirected
+    		// from 80 to 443.
+    		credsProvider.setCredentials(new AuthScope(mHost, 80, AuthScope.ANY_REALM), creds);
+    		credsProvider.setCredentials(new AuthScope(mHost, 443, AuthScope.ANY_REALM), creds);
+    		credsProvider.setCredentials(new AuthScope(mHost, mUri.getPort(), AuthScope.ANY_REALM), creds);
+    		mHttpClient.setCredentialsProvider(credsProvider);
+    	} 
+
+        return mHttpClient;
     }
     
     /**
@@ -622,12 +608,28 @@ public class WebDavStore extends Store {
             response = httpclient.execute(httpmethod);
             statusCode = response.getStatusLine().getStatusCode();
 
+            entity = response.getEntity();
+
+    		if (statusCode < 500 &&
+    				statusCode >= 400) {
+    			String errorText = "";
+        		if (entity != null) {
+        			BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()), 8192);
+        			String tempText = "";
+
+        			while ((tempText = reader.readLine()) != null) {
+        				errorText += tempText;
+        			}
+        		}
+    			throw new IOException("Error during authentication: "+
+    					response.getStatusLine().toString()+ "\n\nRequest: "+
+    					messageBody + "\n\nResponse: " +
+    					errorText);
+    		}
             if (statusCode < 200 ||
                 statusCode > 300) {
                 throw new IOException("Error processing request, returned HTTP Response Code was " + statusCode);
             }
-
-            entity = response.getEntity();
 
             if (entity != null &&
                 needsParsing) {
@@ -1053,7 +1055,7 @@ public class WebDavStore extends Store {
 
                     if (statusCode < 200 ||
                         statusCode > 300) {
-                        throw new IOException("Status Code in invalid range");
+                        throw new IOException("Status Code in invalid range, URL: "+wdMessage.getUrl());
                     }
 
                     entity = response.getEntity();
@@ -1091,7 +1093,7 @@ public class WebDavStore extends Store {
                 } catch (URISyntaxException use) {
                     Log.e(Email.LOG_TAG, "URISyntaxException caught " + use);
                 } catch (IOException ioe) {
-                    Log.e(Email.LOG_TAG, "Non-success response code loading message, response code was " + statusCode);
+                    Log.e(Email.LOG_TAG, "Non-success response code loading message, response code was: " + statusCode + " Error: "+ioe.getMessage());
                 }
 
                 if (listener != null) {
@@ -1362,6 +1364,18 @@ public class WebDavStore extends Store {
         }
 
         public void setUrl(String url) {
+        	//TODO: bleh.  This is an ugly hack, but does prevent a crash if the url is relative
+        	//FIXME: so fix, or better yet:
+        	//XXX: prevent URLs from getting to us that are broken.
+        	if (! (url.toLowerCase().contains(WebDavStore.this.mUrl.toLowerCase()+this.mFolder.toString().toLowerCase()))) {
+        		if (!(url.startsWith("/"))){
+        			url = "/" + url;
+        		}
+        		url = WebDavStore.this.mUrl + this.mFolder+url;
+        	}
+        	if (!(url.toLowerCase().contains(WebDavStore.this.mUrl.toLowerCase()))) {
+        		url = WebDavStore.this.mUrl + url;
+        	}
             String[] urlParts = url.split("/");
             int length = urlParts.length;
             String end = urlParts[length - 1];

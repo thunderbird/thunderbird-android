@@ -107,7 +107,6 @@ public final class TrustManagerFactory {
             Application app = Email.app;
             keyStoreFile = new File(app.getDir("KeyStore", Context.MODE_PRIVATE) + File.separator + "KeyStore.bks");
             keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			//TODO: read store from disk.
     		java.io.FileInputStream fis;
 			try {
 				fis = new java.io.FileInputStream(keyStoreFile);
@@ -116,6 +115,9 @@ public final class TrustManagerFactory {
 			}
     		try {
     			keyStore.load(fis, "".toCharArray());
+        		//if (fis != null) {
+        		//	fis.close();
+        		//}
     		} catch (IOException e) {
                 Log.e(LOG_TAG, "KeyStore IOException while initializing TrustManagerFactory ", e);
     			keyStore = null;

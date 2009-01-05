@@ -9,16 +9,17 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
 import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.scheme.SocketFactory;
+import org.apache.http.conn.scheme.LayeredSocketFactory;
 import org.apache.http.params.HttpParams;
 
 import com.android.email.mail.store.TrustManagerFactory;
 
-public class TrustedSocketFactory implements SocketFactory {
+public class TrustedSocketFactory implements LayeredSocketFactory {
 	private SSLSocketFactory mSocketFactory;
 	private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
 	
@@ -46,5 +47,19 @@ public class TrustedSocketFactory implements SocketFactory {
 	public boolean isSecure(Socket sock) throws IllegalArgumentException {
 		return mSchemeSocketFactory.isSecure(sock);
 	}
-	
-}
+	public Socket createSocket(
+	        final Socket socket,
+	        final String host,
+	        final int port,
+	        final boolean autoClose
+	    ) throws IOException, UnknownHostException {
+	        SSLSocket sslSocket = (SSLSocket) mSocketFactory.createSocket(
+	              socket,
+	              host,
+	              port,
+	              autoClose
+	        );
+	        //hostnameVerifier.verify(host, sslSocket);
+	        // verifyHostName() didn't blowup - good!
+	        return sslSocket;
+	    }}
