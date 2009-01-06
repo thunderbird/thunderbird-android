@@ -403,6 +403,31 @@ public class WebDavStore extends Store {
         return status;
     }
 
+    public static String getHttpRequestResponse(HttpEntity request, HttpEntity response) throws IllegalStateException, IOException{
+		String responseText = "";
+		String requestText = "";
+		if (response != null) {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(response.getContent()), 8192);
+			String tempText = "";
+
+			while ((tempText = reader.readLine()) != null) {
+				responseText += tempText;
+			}
+		}
+		if (request != null) {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(request.getContent()), 8192);
+			String tempText = "";
+
+			while ((tempText = reader.readLine()) != null) {
+				requestText += tempText;
+			}
+			requestText = requestText.replaceAll("password=.*?&", "password=(omitted)&");
+		}
+		return "Request: " + requestText +
+				"\n\nResponse: " + responseText;
+
+    }
+    
     /**
      * Performs the Form Based Authentication
      * Returns the CookieStore object for later use or null
@@ -450,33 +475,11 @@ public class WebDavStore extends Store {
         		int status_code = response.getStatusLine().getStatusCode();
         		
         		/** Verify success */
-        		if (status_code < 500 &&
-        				status_code >= 400) {
-        			String errorText = "";
-        			String requestText = "";
-            		if (entity != null) {
-            			BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()), 8192);
-            			String tempText = "";
-
-            			while ((tempText = reader.readLine()) != null) {
-            				errorText += tempText;
-            			}
-            		}
-        			BufferedReader reader = new BufferedReader(new InputStreamReader(formEntity.getContent()), 8192);
-        			String tempText = "";
-
-        			while ((tempText = reader.readLine()) != null) {
-        				requestText += tempText;
-        			}
-        			requestText = requestText.replaceAll("password=.*?&", "password=(omitted)&");
-        			throw new MessagingException("Error during authentication: "+
-        					response.getStatusLine().toString()+ "\n\nRequest: "+
-        					requestText + "\n\nResponse: " +
-        					errorText);
-        		}
         		if (status_code > 300 ||
         				status_code < 200) {
-        			throw new IOException("Error during authentication: "+status_code);
+        			throw new MessagingException("Error during authentication: "+
+        					response.getStatusLine().toString()+ "\n\n"+
+        					getHttpRequestResponse(formEntity, entity));
         		}
 
         		cookies = httpclient.getCookieStore();
@@ -588,7 +591,7 @@ public class WebDavStore extends Store {
         httpclient.setCookieStore(this.mAuthCookies);
         try {
             int statusCode = -1;
-            StringEntity messageEntity;
+            StringEntity messageEntity = null;
             HttpGeneric httpmethod = new HttpGeneric(url);
             HttpResponse response;
             HttpEntity entity;
@@ -610,25 +613,11 @@ public class WebDavStore extends Store {
 
             entity = response.getEntity();
 
-    		if (statusCode < 500 &&
-    				statusCode >= 400) {
-    			String errorText = "";
-        		if (entity != null) {
-        			BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()), 8192);
-        			String tempText = "";
-
-        			while ((tempText = reader.readLine()) != null) {
-        				errorText += tempText;
-        			}
-        		}
-    			throw new IOException("Error during authentication: "+
-    					response.getStatusLine().toString()+ "\n\nRequest: "+
-    					messageBody + "\n\nResponse: " +
-    					errorText);
-    		}
             if (statusCode < 200 ||
                 statusCode > 300) {
-                throw new IOException("Error processing request, returned HTTP Response Code was " + statusCode);
+    			throw new IOException("Error during request processing: "+
+    					response.getStatusLine().toString()+ "\n\n"+
+    					getHttpRequestResponse(messageEntity, entity));
             }
 
             if (entity != null &&
@@ -1053,12 +1042,14 @@ public class WebDavStore extends Store {
                     
                     statusCode = response.getStatusLine().getStatusCode();
 
+                    entity = response.getEntity();
+
                     if (statusCode < 200 ||
                         statusCode > 300) {
-                        throw new IOException("Status Code in invalid range, URL: "+wdMessage.getUrl());
+            			throw new IOException("Error during fetch: "+
+            					response.getStatusLine().toString()+ "\n\n"+
+            					getHttpRequestResponse(null, entity));
                     }
-
-                    entity = response.getEntity();
 
                     if (entity != null) {
                         InputStream istream = null;

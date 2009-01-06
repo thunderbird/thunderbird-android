@@ -111,10 +111,10 @@ public class WebDavTransport extends Transport {
     
     public String generateTempURI(String subject) {
     	String encodedSubject = URLEncoder.encode(subject);
-    	return store.getUrl() + "/Exchange/" + store.getAlias() + "/drafts/" + encodedSubject + ".eml";
+    	return store.getUrl()  + "/drafts/" + encodedSubject + ".eml";
     }
     public String generateSendURI() {
-    	return store.getUrl() + "/Exchange/" + store.getAlias() + "/##DavMailSubmissionURI##/";
+    	return store.getUrl() +  "/##DavMailSubmissionURI##/";
     }
     
     public void sendMessage(Message message) throws MessagingException {
@@ -132,7 +132,6 @@ public class WebDavTransport extends Transport {
 		}
         HttpGeneric httpmethod;
         HttpResponse response;
-        HttpEntity responseEntity;
         StringEntity bodyEntity;
         int statusCode;
         String subject;
@@ -168,7 +167,9 @@ public class WebDavTransport extends Transport {
 
         	if (statusCode < 200 ||
         			statusCode > 300) {
-        		throw new IOException("Error sending message, status code was " + statusCode);
+    			throw new IOException("Sending Message: Error while trying to upload to drafts folder: "+
+    					response.getStatusLine().toString()+ "\n\n"+
+    					WebDavStore.getHttpRequestResponse(bodyEntity, response.getEntity()));
         	}
         	
             httpmethod = store.new HttpGeneric(generateTempURI(subject));
@@ -180,14 +181,16 @@ public class WebDavTransport extends Transport {
 
         	if (statusCode < 200 ||
         			statusCode > 300) {
-        		throw new IOException("Error sending message, status code was " + statusCode);
+    			throw new IOException("Sending Message: Error while trying to move finished draft to Outbox: "+
+    					response.getStatusLine().toString()+ "\n\n"+
+    					WebDavStore.getHttpRequestResponse(null, response.getEntity()));
         	}
 
         } catch (UnsupportedEncodingException uee) {
-        	Log.e(Email.LOG_TAG, "UnsupportedEncodingException in getMessageCount() " + uee);
+        	Log.e(Email.LOG_TAG, "UnsupportedEncodingException in sendMessage() " + uee);
         } catch (IOException ioe) {
-        	Log.e(Email.LOG_TAG, "IOException in getMessageCount() " + ioe);
-        	throw new MessagingException("Unable to send message", ioe);
+        	Log.e(Email.LOG_TAG, "IOException in sendMessage() " + ioe);
+        	throw new MessagingException("Unable to send message"+ioe.getMessage(), ioe);
         }
         Log.d(Email.LOG_TAG, ">>> getMessageCount finished");
     }
