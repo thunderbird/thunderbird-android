@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="92"
-    android:versionName="0.92" package="com.fsck.k9">
+    android:versionCode="93"
+    android:versionName="0.93" package="com.fsck.k9">
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
