@@ -2,7 +2,10 @@
 package com.android.email.activity;
 
 import android.app.Activity;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
@@ -13,6 +16,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
+
+import java.lang.Integer;
 
 public class Debug extends Activity implements OnCheckedChangeListener {
     private TextView mVersionView;
@@ -35,9 +40,8 @@ public class Debug extends Activity implements OnCheckedChangeListener {
 
         mEnableDebugLoggingView.setOnCheckedChangeListener(this);
         mEnableSensitiveLoggingView.setOnCheckedChangeListener(this);
-
-        mVersionView.setText(String.format(getString(R.string.debug_version_fmt).toString(),
-                getString(R.string.build_number)));
+	
+        mVersionView.setText(String.format(getString(R.string.debug_version_fmt).toString(), getVersionNumber()));
 
         mEnableDebugLoggingView.setChecked(Email.DEBUG);
         mEnableSensitiveLoggingView.setChecked(Email.DEBUG_SENSITIVE);
@@ -70,4 +74,18 @@ public class Debug extends Activity implements OnCheckedChangeListener {
         return true;
     }
 
+    private String getVersionNumber() {
+	String version = "?";
+	int vnum;
+
+	try {
+	    PackageInfo pi = 
+		getPackageManager().getPackageInfo(getPackageName(), 0);
+	    version = Integer.toString(pi.versionCode);
+	    
+	} catch (PackageManager.NameNotFoundException e){
+	    Log.e(Email.LOG_TAG, "Package name not found: " + e.getMessage());
+	};
+	return version;
+    }
 }

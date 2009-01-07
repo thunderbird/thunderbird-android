@@ -1635,9 +1635,8 @@ public class FolderMessageList extends ExpandableListActivity
 				{
 					if (folder.lastCheckFailed == false)
 					{
-					    holder.main.setText(getString(R.string.load_more_before_number)
-								+ mAccount.getDisplayCount()
-								+ getString(R.string.load_more_after_number));
+					    holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(), 
+									      mAccount.getDisplayCount()));
 					} else
 					{
                         holder.main.setText(getString(R.string.status_loading_more_failed));
