@@ -337,7 +337,7 @@ public class ImapResponseParser {
         }
 
         public String getAlertText() {
-            if (size() > 1 && "[ALERT]".equals(getString(1))) {
+            if (size() > 1 && "[ALERT]".equals(get(1))) {
                 StringBuffer sb = new StringBuffer();
                 for (int i = 2, count = size(); i < count; i++) {
                     sb.append(get(i).toString());
