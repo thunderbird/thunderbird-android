@@ -1394,33 +1394,41 @@ public class ImapStore extends Store {
         public void delete(String trashFolderName) throws MessagingException
         {
         	ImapFolder iFolder = (ImapFolder)getFolder();
-	        Folder remoteTrashFolder = iFolder.getStore().getFolder(trashFolderName);
-	        /*
-	         * Attempt to copy the remote message to the remote trash folder.
-	         */
-	        if (!remoteTrashFolder.exists()) {
-	            /*
-	             * If the remote trash folder doesn't exist we try to create it.
-	             */
-	        		Log.i(Email.LOG_TAG, "IMAPMessage.delete: attempting to create remote " + trashFolderName + " folder");
-	            remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
-	        }
-	
-	        if (remoteTrashFolder.exists()) {
-	        	if (Config.LOGD)
-	        	{
-	        		Log.d(Email.LOG_TAG, "IMAPMessage.delete: copying remote message to " + trashFolderName);
-	        	}
-	          iFolder.copyMessages(new Message[] { this }, remoteTrashFolder);
-	          setFlag(Flag.DELETED, true);
-	          iFolder.expunge();
-	        }
-	        else
-	        {
-	 //     		Toast.makeText(context, R.string.message_delete_failed, Toast.LENGTH_SHORT).show();
-	
-	         	Log.e(Email.LOG_TAG, "IMAPMessage.delete: remote Trash folder " + trashFolderName + " does not exist and could not be created");
-	        }
+        	if (iFolder.getName().equals(trashFolderName))
+        	{
+        	  setFlag(Flag.DELETED, true);
+        	  iFolder.expunge();
+        	}
+        	else
+        	{
+  	        Folder remoteTrashFolder = iFolder.getStore().getFolder(trashFolderName);
+  	        /*
+  	         * Attempt to copy the remote message to the remote trash folder.
+  	         */
+  	        if (!remoteTrashFolder.exists()) {
+  	            /*
+  	             * If the remote trash folder doesn't exist we try to create it.
+  	             */
+  	        		Log.i(Email.LOG_TAG, "IMAPMessage.delete: attempting to create remote " + trashFolderName + " folder");
+  	            remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
+  	        }
+  	
+  	        if (remoteTrashFolder.exists()) {
+  	        	if (Config.LOGD)
+  	        	{
+  	        		Log.d(Email.LOG_TAG, "IMAPMessage.delete: copying remote message to " + trashFolderName);
+  	        	}
+  	          iFolder.copyMessages(new Message[] { this }, remoteTrashFolder);
+  	          setFlag(Flag.DELETED, true);
+  	          iFolder.expunge();
+  	        }
+  	        else
+  	        {
+  	 //     		Toast.makeText(context, R.string.message_delete_failed, Toast.LENGTH_SHORT).show();
+  	
+  	         	Log.e(Email.LOG_TAG, "IMAPMessage.delete: remote Trash folder " + trashFolderName + " does not exist and could not be created");
+  	        }
+        	}
         }
  
     }

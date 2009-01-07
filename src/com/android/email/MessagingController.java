@@ -1860,39 +1860,77 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
         }
     }
-
-    /**
-     * We do the local portion of this synchronously because other activities may have to make
-     * updates based on what happens here
-     * @param account
-     * @param folder
-     * @param message
-     * @param listener
-     */
+    
     public void deleteMessage(final Account account, final String folder, final Message message,
-            MessagingListener listener) {
-        if (folder.equals(account.getTrashFolderName())) {
-            return;
+            final MessagingListener listener) {
+      put("deleteMessage", null, new Runnable() {
+        public void run() {
+          deleteMessageSynchronous(account, folder, message, listener);
         }
+      });
+    }
+    
+    private void deleteMessageSynchronous(final Account account, final String folder, final Message message,
+        MessagingListener listener) {
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder localFolder = localStore.getFolder(folder);
-            Folder localTrashFolder = localStore.getFolder(account.getTrashFolderName());
-            if (localTrashFolder.exists() == false)
+            
+            if (folder.equals(account.getTrashFolderName()))
             {
-              localTrashFolder.create(Folder.FolderType.HOLDS_MESSAGES);
-            }
-            if (localTrashFolder.exists() == true)
-            {
-              localFolder.copyMessages(new Message[] { message }, localTrashFolder);
+              if (Config.LOGD)
+              {
+                Log.d(Email.LOG_TAG, "Deleting message in trash folder, not copying");
+              }
               message.setFlag(Flag.DELETED, true);
             }
+            else
+            {
+              Folder localTrashFolder = localStore.getFolder(account.getTrashFolderName());
+              if (localTrashFolder.exists() == false)
+              {
+                localTrashFolder.create(Folder.FolderType.HOLDS_MESSAGES);
+              }
+              if (localTrashFolder.exists() == true)
+              {
+                if (Config.LOGD)
+                {
+                  Log.d(Email.LOG_TAG, "Deleting message in normal folder, copying");
+                }
+                FetchProfile fp = new FetchProfile();
+                fp.add(FetchProfile.Item.ENVELOPE);
+                fp.add(FetchProfile.Item.BODY);
+                // TODO: Turn the fetch/copy/delete into an atomic move
+                localFolder.fetch(new Message[] { message }, fp, null);
+                localFolder.copyMessages(new Message[] { message }, localTrashFolder);
+                message.setFlag(Flag.DELETED, true);
+              }
+            }
+            if (listener != null) {
+              listener.messageDeleted(account, folder, message);
+            }
+//            for (MessagingListener l : getListeners()) {
+//              l.folderStatusChanged(account, account.getTrashFolderName());
+//          }
             
             if (Config.LOGD)
           	{
             	Log.d(Email.LOG_TAG, "Delete policy for account " + account.getDescription() + " is " + account.getDeletePolicy());
           	}
-            if (account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE) {
+            if (folder.equals(account.getOutboxFolderName()))
+            {
+              // If the message was in the Outbox, then it has been copied to local Trash, and has
+              // to be copied to remote trash
+              PendingCommand command = new PendingCommand();
+              command.command = PENDING_COMMAND_APPEND;
+              command.arguments =
+                  new String[] {
+                      account.getTrashFolderName(),
+                      message.getUid() };
+              queuePendingCommand(account, command);
+              processPendingCommands(account);
+            }
+            else if (account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE) {
                 PendingCommand command = new PendingCommand();
                 command.command = PENDING_COMMAND_TRASH;
                 command.arguments = new String[] { folder, message.getUid() };

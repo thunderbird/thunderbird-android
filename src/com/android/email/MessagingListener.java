@@ -92,7 +92,10 @@ public class MessagingListener {
     public void sendPendingMessagesFailed(Account account) {
     }
 
-
+    public void messageDeleted(Account account, String folder, Message message)
+    {
+      
+    }
     public void emptyTrashCompleted(Account account) {
     }
 

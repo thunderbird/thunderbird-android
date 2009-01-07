@@ -426,26 +426,48 @@ public class MessageView extends Activity
 
     private void onDelete() {
         if (mMessage != null) {
-            MessagingController.getInstance(getApplication()).deleteMessage(
-                    mAccount,
-                    mFolder,
-                    mMessage,
-                    null);
-            Toast.makeText(this, R.string.message_deleted_toast, Toast.LENGTH_SHORT).show();
+           
 
             // Remove this message's Uid locally
             mFolderUids.remove(mMessage.getUid());
-            // Check if we have previous/next messages available before choosing
-            // which one to display
-            findSurroundingMessagesUid();
-
-            if (mPreviousMessageUid != null) {
-                onPrevious();
-            } else if (mNextMessageUid != null) {
-                onNext();
-            } else {
-                finish();
+            
+           findSurroundingMessagesUid();
+            
+            MessagingListener listener = new MessagingListener()
+            {
+              public void messageDeleted(Account account, String folder, Message message)
+              {
+            //    Toast.makeText(MessageView.this, R.string.message_deleted_toast, Toast.LENGTH_SHORT).show();
+                
+                // Check if we have previous/next messages available before choosing
+                // which one to display
+                if (mPreviousMessageUid != null) {
+                    onPrevious();
+                } else if (mNextMessageUid != null) {
+                    onNext();
+                } else {
+                    finish();
+                }
+              }
+            };
+            MessagingListener waitListener = null;
+            if (mPreviousMessageUid == null && mNextMessageUid == null)
+            {
+              // If we have no more messages to view, force the delete to be synchronous, so that
+              // when we return to the list, all of the localStore operations have completed.
+              waitListener = listener;
             }
+            else
+            {
+              listener.messageDeleted(mAccount, mFolder, mMessage);
+            }
+            
+            MessagingController.getInstance(getApplication()).deleteMessage(
+                mAccount,
+                mFolder,
+                mMessage,
+                waitListener);
+           
         }
     }
 

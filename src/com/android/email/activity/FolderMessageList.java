@@ -546,18 +546,18 @@ public class FolderMessageList extends ExpandableListActivity
     @Override
 	public void onResume()
 	{
-        super.onResume();
+    super.onResume();
 		clearFormats();
 
 		MessagingController.getInstance(getApplication()).addListener(
 				mAdapter.mListener);
-        mAccount.refresh(Preferences.getPreferences(this));
-        onRefresh(false);
+    mAccount.refresh(Preferences.getPreferences(this));
+    onRefresh(false);
 		
 		NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notifMgr.cancel(mAccount.getAccountNumber());
 
-    }
+  }
 
     @Override
 	public void onSaveInstanceState(Bundle outState)
@@ -651,10 +651,8 @@ public class FolderMessageList extends ExpandableListActivity
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
             int childPosition, long id) {
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getGroup(groupPosition);
-        if (folder.outbox) {
-            return false;
-        }
-		if (childPosition == folder.messages.size() && !folder.loading)
+
+		if (!folder.outbox && childPosition == folder.messages.size() && !folder.loading)
 		{
 			if (folder.status == null)
 			{
@@ -759,12 +757,13 @@ public class FolderMessageList extends ExpandableListActivity
 		{
 		  holder.folder.unreadMessageCount--;
 		}
-		MessagingController.getInstance(getApplication()).deleteMessage(mAccount,
-				holder.message.getFolder().getName(), holder.message, null);
+
     mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
-		Toast.makeText(this, R.string.message_deleted_toast, Toast.LENGTH_SHORT)
-				.show();
-	//	onRefresh(false);
+    mAdapter.addOrUpdateMessage(mAccount.getTrashFolderName(), holder.message);
+    
+    MessagingController.getInstance(getApplication()).deleteMessage(mAccount,
+        holder.message.getFolder().getName(), holder.message, null);
+
     }
 
 	private void onReply(MessageInfoHolder holder)
@@ -950,10 +949,10 @@ public class FolderMessageList extends ExpandableListActivity
 					.getPackedPositionChild(packedPosition);
 			FolderInfoHolder folder = (FolderInfoHolder) mAdapter
 					.getGroup(groupPosition);
-			if (folder.outbox)
-			{
-                return;
-            }
+//			if (folder.outbox)
+//			{
+//                return;
+//            }
 			if (childPosition < folder.messages.size())
 			{
                 getMenuInflater().inflate(R.menu.folder_message_list_context, menu);
