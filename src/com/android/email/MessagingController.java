@@ -632,14 +632,14 @@ public class MessagingController implements Runnable {
             /*
              * Trash any remote messages that are marked as trashed locally.
              */
-            for (Message message : localMessages) {
-                Message remoteMessage = remoteUidMap.get(message.getUid());
-                // skip things deleted on the server side 
-                if (remoteMessage != null &&  message.isSet(Flag.DELETED)) {
-                    remoteMessage.setFlag(Flag.DELETED, true);
-                }
-
-            }
+//            for (Message message : localMessages) {
+//                Message remoteMessage = remoteUidMap.get(message.getUid());
+//                // skip things deleted on the server side 
+//                if (remoteMessage != null &&  message.isSet(Flag.DELETED)) {
+//                    remoteMessage.setFlag(Flag.DELETED, true);
+//                }
+//
+//            }
 
 
             /*
