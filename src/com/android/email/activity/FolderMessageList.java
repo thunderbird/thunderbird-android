@@ -612,6 +612,10 @@ public class FolderMessageList extends ExpandableListActivity
 	        case KeyEvent.KEYCODE_C: { onCompose(); return true;}
 	        case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
 	        case KeyEvent.KEYCODE_S: { onEditAccount(); return true; }
+	        case KeyEvent.KEYCODE_H: {
+	            Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
+	            toast.show();
+	            return true; }
 	    }//switch
     	
     	long packedPosition = mListView.getSelectedPosition();

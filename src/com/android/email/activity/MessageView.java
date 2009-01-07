@@ -145,7 +145,10 @@ public class MessageView extends Activity
                                         }
                                      return true; }
 
-
+	    case KeyEvent.KEYCODE_H: {
+	        Toast toast = Toast.makeText(this, R.string.message_help_key, Toast.LENGTH_LONG);
+	        toast.show();
+	        return true; }
             }
            return super.onKeyDown(keyCode, event);
         }
