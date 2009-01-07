@@ -351,8 +351,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
 
     <string name="message_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AF - Forward\u000AJ - Previous
-    Message\u000AF - Next Message\u000AZ - Zoom Out\u000AShift-Z -
+    Reply\u000AA - Reply All\u000AF - Forward\u000AJ or P - Previous
+    Message\u000AK, N or space - Next Message\u000AZ - Zoom Out\u000AShift-Z -
     Zoom In</string>
     <string name="message_list_help_key">Del (or D) - Delete\u000AR -
     Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000AQ
