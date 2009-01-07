@@ -1631,8 +1631,9 @@ public class FolderMessageList extends ExpandableListActivity
 				{
 					if (folder.lastCheckFailed == false)
 					{
-					  // TODO: Strings should be externalized
-						holder.main.setText("Load up to " + mAccount.getDisplayCount() + " more");
+					    holder.main.setText(getString(R.string.load_more_before_number)
+								+ mAccount.getDisplayCount()
+								+ getString(R.string.load_more_after_number));
 					} else
 					{
                         holder.main.setText(getString(R.string.status_loading_more_failed));

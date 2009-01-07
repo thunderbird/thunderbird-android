@@ -71,6 +71,9 @@
     <string name="status_sending">Sending\u2026</string> <!-- Used in Outbox when a message is currently sending -->
     <string name="status_loading_more_failed">Retry loading more messages</string>
 
+    <string name="load_more_before_number">Load up to\u0020</string>
+    <string name="load_more_after_number">\u0020more</string>
+
     <string name="notification_new_title">New email</string>
     <string name="notification_new_scrolling">New email from <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
