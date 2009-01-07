@@ -150,7 +150,7 @@
 
     <!-- Compile this project's .java files into .class files. -->
     <target name="compile" depends="dirs, resource-src, aidl">
-        <javac encoding="ascii" target="1.5" debug="false" extdirs=""
+        <javac encoding="ascii" target="1.5" debug="true" extdirs=""
                 srcdir="."
                 destdir="${outdir-classes}"
                 bootclasspath="${android-jar}">
