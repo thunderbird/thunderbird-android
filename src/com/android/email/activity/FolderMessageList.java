@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.ExpandableListActivity;
 import android.app.NotificationManager;
@@ -1223,6 +1225,10 @@ public class FolderMessageList extends ExpandableListActivity
 				{
                     return;
                 }
+				FolderInfoHolder holder = getFolder(folder);
+				if (holder != null) {
+				  holder.deletedUids.clear();
+				}
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
 			//	mHandler.folderStatus(folder, null);
@@ -1239,6 +1245,8 @@ public class FolderMessageList extends ExpandableListActivity
 				{
                     return;
                 }
+        
+        
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
 				
@@ -1249,6 +1257,7 @@ public class FolderMessageList extends ExpandableListActivity
 				if (holder != null)
 				{
                     holder.lastChecked = 0;
+                    holder.deletedUids.clear();
                 }
 				mHandler.folderSyncing(null);
             }
@@ -1368,6 +1377,9 @@ public class FolderMessageList extends ExpandableListActivity
 			{
                 return;
             }
+			if (f.deletedUids.contains(messageUid) == false) {
+			  f.deletedUids.add(messageUid);
+			}
             mHandler.removeMessage(f, m);
         }
 
@@ -1389,6 +1401,9 @@ public class FolderMessageList extends ExpandableListActivity
         private void addOrUpdateMessage(FolderInfoHolder folder, Message message,
 				boolean sort, boolean notify)
 		{
+          if (folder.deletedUids.remove(message.getUid())){
+            return;
+          }
             MessageInfoHolder m = getMessage(folder, message.getUid());
 			if (m == null)
 			{
@@ -1738,7 +1753,8 @@ public class FolderMessageList extends ExpandableListActivity
             public String status;
 
             public boolean lastCheckFailed;
-
+            
+            public List<String> deletedUids = Collections.synchronizedList(new ArrayList<String>());
             /**
              * Outbox is handled differently from any other folder.
              */
