@@ -82,7 +82,7 @@ public class WebDavStore extends Store {
     private String mPassword; /* Stores the password for authentications */
     private String mUrl;      /* Stores the base URL for the server */
     private String mHost;     /* Stores the host name for the server */
-	private URI mUri;         /* Stores the Uniform Resource Indicator with all connection info */
+    private URI mUri;         /* Stores the Uniform Resource Indicator with all connection info */
 
     private CookieStore mAuthCookies; /* Stores cookies from authentication */
     private boolean mAuthenticated = false; /* Stores authentication state */
@@ -90,8 +90,8 @@ public class WebDavStore extends Store {
     private long mAuthTimeout = 5 * 60;
 
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
-	private boolean mSecure;
-	private DefaultHttpClient mHttpClient = null;
+    private boolean mSecure;
+    private DefaultHttpClient mHttpClient = null;
 	
     /**
      * webdav://user:password@server:port CONNECTION_SECURITY_NONE
@@ -124,7 +124,7 @@ public class WebDavStore extends Store {
         }
 
         mHost = mUri.getHost();
-		if (mHost.startsWith("http")) {
+        if (mHost.startsWith("http")) {
             String[] hostParts = mHost.split("://", 2);
             if (hostParts.length > 1) {
                 mHost = hostParts[1];
@@ -154,7 +154,7 @@ public class WebDavStore extends Store {
                 mPassword = userInfoParts[1];
             }
         }
-		mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+        mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
     }
 
 
@@ -181,7 +181,6 @@ public class WebDavStore extends Store {
         
         messageBody = getFolderListXml();
         headers.put("Brief", "t");
-
         dataset = processRequest(this.mUrl, "SEARCH", messageBody, headers);
 
         folderUrls = dataset.getHrefs();
@@ -404,27 +403,27 @@ public class WebDavStore extends Store {
     }
 
     public static String getHttpRequestResponse(HttpEntity request, HttpEntity response) throws IllegalStateException, IOException{
-		String responseText = "";
-		String requestText = "";
-		if (response != null) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(response.getContent()), 8192);
-			String tempText = "";
+        String responseText = "";
+        String requestText = "";
+        if (response != null) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getContent()), 8192);
+            String tempText = "";
 
-			while ((tempText = reader.readLine()) != null) {
-				responseText += tempText;
-			}
-		}
-		if (request != null) {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(request.getContent()), 8192);
-			String tempText = "";
+            while ((tempText = reader.readLine()) != null) {
+                responseText += tempText;
+            }
+        }
+        if (request != null) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(request.getContent()), 8192);
+            String tempText = "";
 
-			while ((tempText = reader.readLine()) != null) {
-				requestText += tempText;
-			}
-			requestText = requestText.replaceAll("password=.*?&", "password=(omitted)&");
-		}
-		return "Request: " + requestText +
-				"\n\nResponse: " + responseText;
+            while ((tempText = reader.readLine()) != null) {
+                requestText += tempText;
+            }
+            requestText = requestText.replaceAll("password=.*?&", "password=(omitted)&");
+        }
+        return "Request: " + requestText +
+            "\n\nResponse: " + responseText;
 
     }
     
@@ -439,6 +438,7 @@ public class WebDavStore extends Store {
         CookieStore cookies = null;
         String[] urlParts = url.split("/");
         String finalUrl = "";
+        String loginUrl = new String();
 
         for (int i = 0; i <= 2; i++) {
             if (i != 0) {
@@ -448,68 +448,118 @@ public class WebDavStore extends Store {
             }
         }
 
+        if (finalUrl.equals("")) {
+            throw new MessagingException("doAuthentication failed, unable to construct URL to post login credentials to.");
+        }
+        
+        loginUrl = finalUrl + authPath;
+        
         try {
             /* Browser Client */
             DefaultHttpClient httpclient = getTrustedHttpClient();
-        	/* Post Method */
-        	HttpPost httppost = new HttpPost(finalUrl + authPath);
 
-        	/** Build the POST data to use */
-        	ArrayList<BasicNameValuePair> pairs = new ArrayList();
-        	pairs.add(new BasicNameValuePair("username", username));
-        	pairs.add(new BasicNameValuePair("password", password));
-        	pairs.add(new BasicNameValuePair("destination", finalUrl + "/exchange/" +username+"/"));
-        	pairs.add(new BasicNameValuePair("flags", "0"));
-        	pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
-        	pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
-        	pairs.add(new BasicNameValuePair("trusted", "0"));
+            /* Verb Fix issue */
+            /**
+             * This is in a separate block because I really don't like how it's done.
+             * This basically scrapes the OWA login page for the form submission URL.
+             * UGLY!
+             */
+            {
+                HttpGet httpget = new HttpGet(finalUrl);
+                HttpResponse response = httpclient.execute(httpget);
+                HttpEntity entity = response.getEntity();
+                int statusCode = response.getStatusLine().getStatusCode();
 
-        	try {
-        		UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
+                if (statusCode > 300 ||
+                    statusCode < 200) {
+                    throw new MessagingException("Error during authentication: "+
+                                                 response.getStatusLine().toString()+"\n\n");
+                }
+                
+                if (entity != null) {
+                    InputStream istream = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
+                    String tempText = new String();
+                    boolean matched = false;
 
-        		httppost.setEntity(formEntity);
+                    while ((tempText = reader.readLine()) != null &&
+                           !matched) {
+                        if (tempText.indexOf(" action") >= 0) {
+                            String[] tagParts = tempText.split("\"");
+                            loginUrl = finalUrl + tagParts[1];
+                            matched = true;
+                        }
+                    }
+                    istream.close();
+                }
+            }
 
-        		/** Perform the actual POST */
-        		HttpResponse response = httpclient.execute(httppost);
-        		HttpEntity entity = response.getEntity();
-        		int status_code = response.getStatusLine().getStatusCode();
+            /* Post Method */
+            HttpPost httppost = new HttpPost(loginUrl);
+
+            /** Build the POST data to use */
+            ArrayList<BasicNameValuePair> pairs = new ArrayList();
+            pairs.add(new BasicNameValuePair("username", username));
+            pairs.add(new BasicNameValuePair("password", password));
+            pairs.add(new BasicNameValuePair("destination", finalUrl + "/exchange/" +username+"/"));
+            pairs.add(new BasicNameValuePair("flags", "0"));
+            pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
+            pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
+            pairs.add(new BasicNameValuePair("trusted", "0"));
+
+            try {
+                UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
+                String tempUrl = "";
+                
+                httppost.setEntity(formEntity);
+
+                /** Perform the actual POST */
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+                int status_code = response.getStatusLine().getStatusCode();
         		
-        		/** Verify success */
-        		if (status_code > 300 ||
-        				status_code < 200) {
-        			throw new MessagingException("Error during authentication: "+
-        					response.getStatusLine().toString()+ "\n\n"+
-        					getHttpRequestResponse(formEntity, entity));
-        		}
+                /** Verify success */
+                if (status_code > 300 ||
+                    status_code < 200) {
+                    throw new MessagingException("Error during authentication: "+
+                                                 response.getStatusLine().toString()+ "\n\n"+
+                                                 getHttpRequestResponse(formEntity, entity));
+                }
 
-        		cookies = httpclient.getCookieStore();
-        		if (cookies == null) {
-        			throw new IOException("Error during authentication: No Cookies");
-        		}
+                cookies = httpclient.getCookieStore();
+                if (cookies == null) {
+                    throw new IOException("Error during authentication: No Cookies");
+                }
 
-        		/** Get the URL for the mailbox and set it for the store */
-        		if (entity != null) {
-        			InputStream istream = entity.getContent();
+                /** Get the URL for the mailbox and set it for the store */
+                if (entity != null) {
+                    InputStream istream = entity.getContent();
+                    
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 8192);
+                    String tempText = "";
+                    
+                    while ((tempText = reader.readLine()) != null) {
+                        if (tempText.indexOf("BASE href") >= 0) {
+                            String[] tagParts = tempText.split("\"");
+                            tempUrl = tagParts[1];
+                        }
+                    }
+                }
 
-        			BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 8192);
-        			String tempText = "";
+                if (tempUrl.equals("")) {
+                    this.mUrl = finalUrl + "/Exchange/" + this.alias + "/";
+                } else {
+                    this.mUrl = tempUrl;
+                }
 
-        			while ((tempText = reader.readLine()) != null) {
-        				if (tempText.indexOf("BASE href") >= 0) {
-        					String[] tagParts = tempText.split("\"");
-        					this.mUrl = tagParts[1];
-        				}
-        			}
-        		}
-
-        	} catch (UnsupportedEncodingException uee) {
-        		Log.e(Email.LOG_TAG, "Error encoding POST data for authencation");
-        	}
+            } catch (UnsupportedEncodingException uee) {
+                Log.e(Email.LOG_TAG, "Error encoding POST data for authencation");
+            }
         } catch (SSLException e) {
-        	throw new CertificateValidationException(e.getMessage(), e);
+            throw new CertificateValidationException(e.getMessage(), e);
         } catch (GeneralSecurityException gse) {
-        	throw new MessagingException(
-        			"Unable to open connection to SMTP server due to security error.", gse);
+            throw new MessagingException(
+                                         "Unable to open connection to SMTP server due to security error.", gse);
         }
         return cookies;
     }
@@ -576,10 +626,10 @@ public class WebDavStore extends Store {
         }
         if (needAuth()) {
             try {
-				authenticate();
-			} catch (MessagingException e) {
-				Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + e.getStackTrace());
-			}
+                authenticate();
+            } catch (MessagingException e) {
+                Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + e.getStackTrace());
+            }
         }
 
         if (this.mAuthenticated == false ||
@@ -699,10 +749,10 @@ public class WebDavStore extends Store {
              */
             if (needAuth()) {
                 try {
-    				authenticate();
-    			} catch (MessagingException e) {
-    				Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + e.getStackTrace());
-    			}
+                    authenticate();
+                } catch (MessagingException e) {
+                    Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + e.getStackTrace());
+                }
             }
 
             if (encodedName.equals("INBOX")) {
@@ -1355,18 +1405,15 @@ public class WebDavStore extends Store {
         }
 
         public void setUrl(String url) {
-        	//TODO: bleh.  This is an ugly hack, but does prevent a crash if the url is relative
-        	//FIXME: so fix, or better yet:
-        	//XXX: prevent URLs from getting to us that are broken.
-        	if (! (url.toLowerCase().contains(WebDavStore.this.mUrl.toLowerCase()+this.mFolder.toString().toLowerCase()))) {
-        		if (!(url.startsWith("/"))){
-        			url = "/" + url;
-        		}
-        		url = WebDavStore.this.mUrl + this.mFolder+url;
-        	}
-        	if (!(url.toLowerCase().contains(WebDavStore.this.mUrl.toLowerCase()))) {
-        		url = WebDavStore.this.mUrl + url;
-        	}
+            //TODO: This is a not as ugly hack (ie, it will actually work)
+            //XXX: prevent URLs from getting to us that are broken
+            if (!(url.toLowerCase().contains("http"))) {
+                if (!(url.startsWith("/"))){
+                    url = "/" + url;
+                }
+                url = WebDavStore.this.mUrl + this.mFolder + url;
+            }
+
             String[] urlParts = url.split("/");
             int length = urlParts.length;
             String end = urlParts[length - 1];
