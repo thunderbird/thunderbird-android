@@ -363,9 +363,10 @@ public class ImapStore extends Store {
 			mPathDelimeter = nameResponses.get(0).getString(2);
 		    }
 		}
-		List<ImapResponse> responses = mConnection.executeSimpleCommand(
-		    String.format("SELECT \"%s\"",
-				  encodeFolderName(getPrefixedName())));
+		String command = String.format("SELECT \"%s\"",
+        encodeFolderName(getPrefixedName()));
+		
+		List<ImapResponse> responses = mConnection.executeSimpleCommand(command);
 
                 /*
                  * If the command succeeds we expect the folder has been opened read-write
@@ -389,7 +390,7 @@ public class ImapStore extends Store {
 
                 if (mMessageCount == -1) {
                     throw new MessagingException(
-                            "Did not find message count during select");
+                            "Did not find message count with command '" + command + "'");
                 }
                 mExists = true;
 
