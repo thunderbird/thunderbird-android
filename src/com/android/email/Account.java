@@ -258,6 +258,8 @@ public class Account implements Serializable {
     }
 
     public void save(Preferences preferences) {
+      SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
+
         if (!preferences.mSharedPreferences.getString("accountUuids", "").contains(mUuid)) {
             /*
              * When the account is first created we assign it a unique account number. The
@@ -286,12 +288,12 @@ public class Account implements Serializable {
             
             String accountUuids = preferences.mSharedPreferences.getString("accountUuids", "");
             accountUuids += (accountUuids.length() != 0 ? "," : "") + mUuid;
-            SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
+  //          SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
             editor.putString("accountUuids", accountUuids);
-            editor.commit();
+  //          editor.commit();
         }
 
-        SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
+ //       SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
 
         editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
         editor.putString(mUuid + ".localStoreUri", mLocalStoreUri);
