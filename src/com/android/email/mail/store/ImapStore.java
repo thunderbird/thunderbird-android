@@ -498,6 +498,10 @@ public class ImapStore extends Store {
 
         @Override
         public void copyMessages(Message[] messages, Folder folder) throws MessagingException {
+          if (folder instanceof ImapFolder == false) {
+            throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
+          }
+          ImapFolder iFolder = (ImapFolder)folder;
             checkOpen();
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -506,7 +510,7 @@ public class ImapStore extends Store {
             try {
                 mConnection.executeSimpleCommand(String.format("UID COPY %s \"%s\"",
                         Utility.combine(uids, ','),
-                        encodeFolderName(folder.getName())));
+                        encodeFolderName(iFolder.getPrefixedName())));
             }
             catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
@@ -1360,7 +1364,7 @@ public class ImapStore extends Store {
                 responses.add(response);
             } while (response.mTag == null);
             if (response.size() < 1 || !response.get(0).equals("OK")) {
-                throw new ImapException(response.toString(), response.getAlertText());
+                throw new ImapException("Command: " + command + "; response: " + response.toString(), response.getAlertText());
             }
             return responses;
         }
