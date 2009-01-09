@@ -761,10 +761,22 @@ public class FolderMessageList extends ExpandableListActivity
 		}
 
     mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
-    mAdapter.addOrUpdateMessage(mAccount.getTrashFolderName(), holder.message);
+    if (holder.folder.name.equals(mAccount.getTrashFolderName()) == false) {
+      mAdapter.addOrUpdateMessage(mAccount.getTrashFolderName(), holder.message);
+    }
     
     MessagingController.getInstance(getApplication()).deleteMessage(mAccount,
-        holder.message.getFolder().getName(), holder.message, null);
+        holder.message.getFolder().getName(), holder.message, 
+        new MessagingListener() {
+      @Override
+      public void messageDeleted(Account account, String folder, Message message) {
+       if (account != mAccount) {
+         return;
+       }
+       mAdapter.removeDeletedUid(folder, message.getUid());
+      }
+    }
+    );
 
     }
 
@@ -1226,9 +1238,9 @@ public class FolderMessageList extends ExpandableListActivity
                     return;
                 }
 				FolderInfoHolder holder = getFolder(folder);
-				if (holder != null) {
-				  holder.deletedUids.clear();
-				}
+//				if (holder != null) {
+//				  holder.deletedUids.clear();
+//				}
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
 			//	mHandler.folderStatus(folder, null);
@@ -1257,7 +1269,7 @@ public class FolderMessageList extends ExpandableListActivity
 				if (holder != null)
 				{
                     holder.lastChecked = 0;
-                    holder.deletedUids.clear();
+              //      holder.deletedUids.clear();
                 }
 				mHandler.folderSyncing(null);
             }
@@ -1365,6 +1377,14 @@ public class FolderMessageList extends ExpandableListActivity
 					R.drawable.ic_mms_attachment_small);
         }
 
+		public void removeDeletedUid(String folder, String messageUid) {
+		  FolderInfoHolder f = getFolder(folder);
+      if (f != null)
+      {
+        f.deletedUids.remove(messageUid);
+      }
+		}
+		
 		public void removeMessage(String folder, String messageUid)
 		{
             FolderInfoHolder f = getFolder(folder);
