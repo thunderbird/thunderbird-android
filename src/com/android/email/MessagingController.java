@@ -269,7 +269,7 @@ public class MessagingController implements Runnable {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder[] localFolders = localStore.getPersonalNamespaces();
 
-            if ( localFolders == null || localFolders.length == 0) {
+            if ( refreshRemote || localFolders == null || localFolders.length == 0) {
                 doRefreshRemote(account, listener);
                 return;
             }
@@ -1795,6 +1795,10 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
             Transport transport = Transport.getInstance(account.getTransportUri());
             for (Message message : localMessages) {
+              if (message.isSet(Flag.DELETED)) {
+                message.setFlag(Flag.X_DESTROYED, true);
+                continue;
+              }
                 try {
                     localFolder.fetch(new Message[] { message }, fp, null);
                     try {
@@ -1903,7 +1907,12 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 // TODO: Turn the fetch/copy/delete into an atomic move
                 localFolder.fetch(new Message[] { message }, fp, null);
                 localFolder.copyMessages(new Message[] { message }, localTrashFolder);
-                message.setFlag(Flag.DELETED, true);
+                if (folder.equals(account.getOutboxFolderName())) {
+                  message.setFlag(Flag.X_DESTROYED, true);
+                }
+                else {
+                  message.setFlag(Flag.DELETED, true);
+                }
               }
             }
             if (listener != null) {
