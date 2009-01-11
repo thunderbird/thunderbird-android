@@ -105,6 +105,8 @@ public class MessagingController implements Runnable {
     //private Set<MessagingListener> mListeners = Collections.synchronizedSet(new HashSet<MessagingListener>());
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
     
+    private MessagingListener checkMailListener = null;
+    
     private boolean mBusy;
     private Application mApplication;
     
@@ -462,6 +464,7 @@ public class MessagingController implements Runnable {
     		Log.v(Email.LOG_TAG, debugLine);
     	}
     	log(debugLine);
+ 
         for (MessagingListener l : getListeners()) {
             l.synchronizeMailboxStarted(account, folder);
         }
@@ -945,7 +948,6 @@ s             * critical data as fast as possible, and then we'll fill in the de
             			" with " + newMessages.size() + " new messages"); 
             }
           
-             
             for (MessagingListener l : getListeners()) {
               l.synchronizeMailboxFinished(
                       account,
@@ -2066,7 +2068,6 @@ s             * critical data as fast as possible, and then we'll fill in the de
     public void checkMail(final Context context, final Account account,
             final MessagingListener listener) {
     	
-    	
         for (MessagingListener l : getListeners()) {
             l.checkMailStarted(context, account);
         }
@@ -2114,6 +2115,14 @@ s             * critical data as fast as possible, and then we'll fill in the de
                             notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_send_title), 
                                 account.getDescription() , pi);
                             notif.flags = Notification.FLAG_ONGOING_EVENT;
+                            
+                            if (Email.NOTIFICATION_LED_WHILE_SYNCING) {
+                              notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+                              notif.ledARGB = Email.NOTIFICATION_LED_DIM_COLOR;
+                              notif.ledOnMS = Email.NOTIFICATION_LED_FAST_ON_TIME;
+                              notif.ledOffMS = Email.NOTIFICATION_LED_FAST_OFF_TIME;
+                            }
+                            
                             notifMgr.notify(Email.FETCHING_EMAIL_NOTIFICATION_ID, notif);
                           try
                           {
@@ -2220,6 +2229,13 @@ s             * critical data as fast as possible, and then we'll fill in the de
 			                            notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_sync_title), account.getDescription()
 			                                + context.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
 			                            notif.flags = Notification.FLAG_ONGOING_EVENT;
+			                            if (Email.NOTIFICATION_LED_WHILE_SYNCING) {
+  			                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+  			                            notif.ledARGB = Email.NOTIFICATION_LED_DIM_COLOR;
+  			                            notif.ledOnMS = Email.NOTIFICATION_LED_FAST_ON_TIME;
+  			                            notif.ledOffMS = Email.NOTIFICATION_LED_FAST_OFF_TIME;
+			                            }
+
 			                            notifMgr.notify(Email.FETCHING_EMAIL_NOTIFICATION_ID, notif);
 			                          try
 			                          {
@@ -2261,6 +2277,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
 		                for (MessagingListener l : getListeners()) {
 		                    l.checkMailFinished(context, account);
 		                }
+		                
                   }
               	}
               	);
@@ -2300,5 +2317,23 @@ s             * critical data as fast as possible, and then we'll fill in the de
         public MessagingListener listener;
 
         public String description;
+    }
+
+    public MessagingListener getCheckMailListener()
+    {
+      return checkMailListener;
+    }
+
+    public void setCheckMailListener(MessagingListener checkMailListener)
+    {
+      if (this.checkMailListener != null)
+      {
+        removeListener(this.checkMailListener);
+      }
+      this.checkMailListener = checkMailListener;
+      if (this.checkMailListener != null)
+      {
+        addListener(this.checkMailListener);
+      }
     }
 }

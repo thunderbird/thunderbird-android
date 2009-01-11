@@ -132,7 +132,12 @@ public class Email extends Application {
     /**
      * Time the LED is off when blicking on new email notification
      */
-    public static final int NOTIFICATION_LED_OFF_TIME = 2000; 
+    public static final int NOTIFICATION_LED_OFF_TIME = 2000;
+    
+    public static final boolean NOTIFICATION_LED_WHILE_SYNCING = false;
+    public static final int NOTIFICATION_LED_DIM_COLOR = 0x77770077;
+    public static final int NOTIFICATION_LED_FAST_ON_TIME = 100;
+    public static final int NOTIFICATION_LED_FAST_OFF_TIME = 100;
 
     // Must not conflict with an account number
     public static final int FETCHING_EMAIL_NOTIFICATION_ID      = -4; 

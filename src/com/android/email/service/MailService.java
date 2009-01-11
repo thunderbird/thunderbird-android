@@ -70,14 +70,32 @@ public class MailService extends Service {
         super.onStart(intent, startId);
         this.mStartId = startId;
 
-        MessagingController.getInstance(getApplication()).addListener(mListener);
+       // MessagingController.getInstance(getApplication()).addListener(mListener);
         if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
             //if (Config.LOGV) {
           MessagingController.getInstance(getApplication()).log("***** MailService *****: checking mail");
                 Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
             //}
-            mListener.wakeLockAcquire();
-            MessagingController.getInstance(getApplication()).checkMail(this, null, mListener);
+            
+            MessagingController controller = MessagingController.getInstance(getApplication());
+            Listener listener = (Listener)controller.getCheckMailListener();
+            if (listener == null)
+            {
+              MessagingController.getInstance(getApplication()).log("***** MailService *****: starting new check");
+              
+              mListener.wakeLockAcquire();
+              controller.setCheckMailListener(mListener);
+              controller.checkMail(this, null, mListener);
+            }
+            else
+            {
+              MessagingController.getInstance(getApplication()).log("***** MailService *****: renewing WakeLock");
+              
+              listener.wakeLockAcquire();
+            }
+
+            reschedule();
+            stopSelf(startId);
         }
         else if (ACTION_CANCEL.equals(intent.getAction())) {
             if (Config.LOGV) {
@@ -102,7 +120,7 @@ public class MailService extends Service {
     public void onDestroy() {
     		Log.v(Email.LOG_TAG, "***** MailService *****: onDestroy()");
         super.onDestroy();
-        MessagingController.getInstance(getApplication()).removeListener(mListener);
+   //     MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
 
     private void cancel() {
@@ -152,20 +170,25 @@ public class MailService extends Service {
     }
 
     class Listener extends MessagingListener {
-        HashMap<Account, Integer> accountsWithNewMail = new HashMap<Account, Integer>();
+        HashMap<String, Integer> accountsWithNewMail = new HashMap<String, Integer>();
         private WakeLock wakeLock = null;
         
         // wakelock strategy is to be very conservative.  If there is any reason to release, then release
         // don't want to take the chance of running wild
         public synchronized void wakeLockAcquire()
         {
-        	if (wakeLock == null)
-        	{
-           	PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-          	wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
-          	wakeLock.setReferenceCounted(false);
-           	wakeLock.acquire(Email.WAKE_LOCK_TIMEOUT);
-        	}
+          WakeLock oldWakeLock = wakeLock;
+        	
+         	PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        	wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
+        	wakeLock.setReferenceCounted(false);
+         	wakeLock.acquire(Email.WAKE_LOCK_TIMEOUT);
+
+         	if (oldWakeLock != null)
+         	{
+         	  oldWakeLock.release();
+         	}
+        	
         }
         public synchronized void wakeLockRelease()
         {
@@ -182,15 +205,7 @@ public class MailService extends Service {
 
         @Override
         public void checkMailFailed(Context context, Account account, String reason) {
-          try
-          {
-            reschedule();
-          }
-          finally
-          {
-            wakeLockRelease();
-          }
-            stopSelf(mStartId);
+            release();
         }
 
         @Override
@@ -200,7 +215,7 @@ public class MailService extends Service {
                 int totalMessagesInMailbox,
                 int numNewMessages) {
             if (account.isNotifyNewMail() && numNewMessages > 0) {
-                accountsWithNewMail.put(account, numNewMessages);
+                accountsWithNewMail.put(account.getUuid(), numNewMessages);
             }
         }
         
@@ -244,11 +259,14 @@ public class MailService extends Service {
 		          	Log.e(Email.LOG_TAG, "***** MailService *****: couldn't get unread count for account " +
 		          			thisAccount.getDescription(), me);
 		          }
-		          if (ringtone == null)
+		          if (accountsWithNewMail.containsKey(thisAccount.getUuid()))
 		          {
-		          	ringtone = thisAccount.getRingtone();
+  		          if (ringtone == null)
+  		          {
+  		          	ringtone = thisAccount.getRingtone();
+  		          }
+  		          vibrate |= thisAccount.isVibrate();
 		          }
-		          vibrate |= thisAccount.isVibrate();
           	}
           }
           if (notice.length() > 0)
@@ -266,6 +284,8 @@ public class MailService extends Service {
 				    notif.setLatestEventInfo(context, getString(R.string.notification_new_title),
 				                  notice, pi);
 		
+            Log.v(Email.LOG_TAG, "Using ringtone " + ringtone + " and vibrate = " + vibrate);
+
 				   // notif.defaults = Notification.DEFAULT_LIGHTS;
 				    notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
 				    if (vibrate) {
@@ -281,6 +301,15 @@ public class MailService extends Service {
 				  }
 
         }
+        
+        private void release()
+        {
+          MessagingController controller = MessagingController.getInstance(getApplication());
+          controller.setCheckMailListener(null);
+          reschedule();
+          wakeLockRelease();
+          stopSelf(mStartId);
+        }
 
         @Override
         public void checkMailFinished(Context context, Account account) {
@@ -292,15 +321,7 @@ public class MailService extends Service {
         	}
         	finally
         	{
-            try
-            {
-              reschedule();
-            }
-            finally
-            {
-              wakeLockRelease();
-            }
-            stopSelf(mStartId);
+        	  release();
         	}
         }
     }
