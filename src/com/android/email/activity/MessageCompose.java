@@ -380,7 +380,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             {
             	mSubjectView.setText(subject);
             }
-            
+
             String type = intent.getType();
             Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
             if (stream != null && type != null) {
@@ -413,8 +413,13 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
         addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
         updateTitle();
-        //change focus to message body.
-        mMessageContentView.requestFocus();
+
+        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) {
+            mMessageContentView.requestFocus();
+        }
+        else {
+            //leave focus to TO address line
+        }
     }
 
     public void onResume() {
@@ -565,7 +570,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
 
         text = appendSignature(text);
-        
+
 
         TextBody body = new TextBody(text);
 
@@ -610,7 +615,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private String appendSignature (String text) {
         String mSignature;
         mSignature = mAccount.getSignature();
-        
+
        if (mSignature != null && ! mSignature.contentEquals("")){
          text += "\n-- \n" + mAccount.getSignature();
         }
