@@ -329,7 +329,7 @@ public class MessageView extends Activity
         mAttachmentIcon.setVisibility(View.GONE);
 
         findViewById(R.id.reply).setOnClickListener(this);
-        findViewById(R.id.forward).setOnClickListener(this);
+        findViewById(R.id.reply_all).setOnClickListener(this);
         findViewById(R.id.delete).setOnClickListener(this);
         findViewById(R.id.show_pictures).setOnClickListener(this);
 
@@ -569,8 +569,8 @@ public class MessageView extends Activity
             case R.id.reply:
                 onReply();
                 break;
-            case R.id.forward:
-                onForward();
+            case R.id.reply_all:
+                onReplyAll();
                 break;
             case R.id.delete:
                 onDelete();
