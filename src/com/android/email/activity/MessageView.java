@@ -839,7 +839,7 @@ public class MessageView extends Activity
                         StringBuffer sb = new StringBuffer();
                         while (m.find()) {
                             int start = m.start();
-                            if (start != 0 && text.charAt(start - 1) != '@') {
+                            if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
                                 m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
                             }
                             else {
