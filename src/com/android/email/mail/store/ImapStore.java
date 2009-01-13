@@ -1100,6 +1100,13 @@ public class ImapStore extends Store {
 				        else if (flag == Flag.DELETED) {
 				            flagNames.add("\\Deleted");
 				        }
+				        else if (flag == Flag.ANSWERED) {
+                  flagNames.add("\\Answered");
+				        }
+				        else if (flag == Flag.FLAGGED) {
+                  flagNames.add("\\Flagged");
+                }
+				        
 				    }
 				    try {
 				        mConnection.executeSimpleCommand(String.format("UID STORE 1:* %sFLAGS.SILENT (%s)",
@@ -1126,6 +1133,12 @@ public class ImapStore extends Store {
                 }
                 else if (flag == Flag.DELETED) {
                     flagNames.add("\\Deleted");
+                }
+                else if (flag == Flag.ANSWERED) {
+                  flagNames.add("\\Answered");
+                }
+                else if (flag == Flag.FLAGGED) {
+                  flagNames.add("\\Flagged");
                 }
             }
             try {

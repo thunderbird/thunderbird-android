@@ -51,6 +51,7 @@ public class Account implements Serializable {
     int mAccountNumber;
     boolean mVibrate;
     String mRingtoneUri;
+    boolean showOngoing = true;
     
     public enum FolderMode {
     	ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
@@ -504,5 +505,15 @@ public class Account implements Serializable {
 		{
 			mFolderSyncMode = syncMode;
 		}
+
+    public boolean isShowOngoing()
+    {
+      return showOngoing;
+    }
+
+    public void setShowOngoing(boolean showOngoing)
+    {
+      this.showOngoing = showOngoing;
+    }
 
 }

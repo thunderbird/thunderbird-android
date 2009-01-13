@@ -87,8 +87,8 @@ public class MessagingController implements Runnable {
 
     private static final String PENDING_COMMAND_TRASH =
         "com.android.email.MessagingController.trash";
-    private static final String PENDING_COMMAND_MARK_READ =
-        "com.android.email.MessagingController.markRead";
+    private static final String PENDING_COMMAND_SET_FLAG =
+        "com.android.email.MessagingController.setFlag";
     private static final String PENDING_COMMAND_APPEND =
         "com.android.email.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ =
@@ -735,16 +735,23 @@ s             * critical data as fast as possible, and then we'll fill in the de
               fp.add(FetchProfile.Item.FLAGS);
               remoteFolder.fetch(remoteMessages.toArray(new Message[0]), fp, null);
               for (Message remoteMessage : remoteMessages) {
+                boolean messageChanged = false;
                   Message localMessage = localFolder.getMessage(remoteMessage.getUid());
                   if (localMessage == null) {
                       continue;
                   }
-                  if (!remoteMessage.isSet(Flag.X_NO_SEEN_INFO) && remoteMessage.isSet(Flag.SEEN) != localMessage.isSet(Flag.SEEN)) {
-                      localMessage.setFlag(Flag.SEEN, remoteMessage.isSet(Flag.SEEN));
-                      for (MessagingListener l : getListeners()) {
-                          l.synchronizeMailboxNewMessage(account, folder, localMessage);
-                        }
+                  for (Flag flag : new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED } )
+                  {
+                    if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
+                      localMessage.setFlag(flag, remoteMessage.isSet(flag));
+                      
                     }
+                  }
+                  if (messageChanged) {
+                    for (MessagingListener l : getListeners()) {
+                      l.synchronizeMailboxNewMessage(account, folder, localMessage);
+                    }
+                  }
                }
             }
             if (Config.LOGV) {
@@ -1071,8 +1078,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	            if (PENDING_COMMAND_APPEND.equals(command.command)) {
 	                processPendingAppend(command, account);
 	            }
-	            else if (PENDING_COMMAND_MARK_READ.equals(command.command)) {
-	                processPendingMarkRead(command, account);
+	            else if (PENDING_COMMAND_SET_FLAG.equals(command.command)) {
+	                processPendingSetFlag(command, account);
 	            }
 	            else if (PENDING_COMMAND_MARK_ALL_AS_READ.equals(command.command)) {
                 processPendingMarkAllAsRead(command, account);
@@ -1286,7 +1293,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
      * @param command arguments = (String folder, String uid, boolean read)
      * @param account
      */
-    private void processPendingMarkRead(PendingCommand command, Account account)
+    private void processPendingSetFlag(PendingCommand command, Account account)
             throws MessagingException {
         String folder = command.arguments[0];
         String uid = command.arguments[1];
@@ -1296,7 +1303,9 @@ s             * critical data as fast as possible, and then we'll fill in the de
     			return;
     		}
         
-        boolean read = Boolean.parseBoolean(command.arguments[2]);
+        boolean newState = Boolean.parseBoolean(command.arguments[2]);
+        
+        Flag flag = Flag.valueOf(command.arguments[3]);
 
         Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
         Folder remoteFolder = remoteStore.getFolder(folder);
@@ -1315,7 +1324,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
         if (remoteMessage == null) {
             return;
         }
-        remoteMessage.setFlag(Flag.SEEN, read);
+        remoteMessage.setFlag(flag, newState);
     }
     
     private void processPendingMarkAllAsRead(PendingCommand command, Account account) throws MessagingException {
@@ -1437,6 +1446,9 @@ s             * critical data as fast as possible, and then we'll fill in the de
       processPendingCommands(account);
     }
 
+    
+    
+    
     /**
      * Mark the message with the given account, folder and uid either Seen or not Seen.
      * @param account
@@ -1449,13 +1461,27 @@ s             * critical data as fast as possible, and then we'll fill in the de
             final String folder,
             final String uid,
             final boolean seen) {
+      setMessageFlag(account, folder, uid, Flag.SEEN, seen);
+    }
+    
+    
+    public void setMessageFlag(
+        final Account account,
+        final String folder,
+        final String uid,
+        final Flag flag,
+        boolean newState) {
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder localFolder = localStore.getFolder(folder);
             localFolder.open(OpenMode.READ_WRITE);
 
             Message message = localFolder.getMessage(uid);
-            message.setFlag(Flag.SEEN, seen);
+            message.setFlag(flag, newState);
+            
+            for (MessagingListener l : getListeners()) {
+              l.folderStatusChanged(account, folder);
+          }
             
             if (account.getErrorFolderName().equals(folder))
         		{
@@ -1463,8 +1489,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
         		}
             
             PendingCommand command = new PendingCommand();
-            command.command = PENDING_COMMAND_MARK_READ;
-            command.arguments = new String[] { folder, uid, Boolean.toString(seen) };
+            command.command = PENDING_COMMAND_SET_FLAG;
+            command.arguments = new String[] { folder, uid, Boolean.toString(newState), flag.toString() };
             queuePendingCommand(account, command);
             processPendingCommands(account);
         }
@@ -1951,8 +1977,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
             else if (account.getDeletePolicy() == Account.DELETE_POLICY_MARK_AS_READ)
             {
               PendingCommand command = new PendingCommand();
-              command.command = PENDING_COMMAND_MARK_READ;
-              command.arguments = new String[] { folder, message.getUid(), Boolean.toString(true) };
+              command.command = PENDING_COMMAND_SET_FLAG;
+              command.arguments = new String[] { folder, message.getUid(), Boolean.toString(true), Flag.SEEN.toString() };
               queuePendingCommand(account, command);
               processPendingCommands(account);
             }
@@ -2108,28 +2134,32 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	                  	}
                     	putBackground("sendPending " + account.getDescription(), null, new Runnable() {
                         public void run() {
-                          Notification notif = new Notification(R.drawable.ic_menu_refresh, 
-                              context.getString(R.string.notification_bg_send_ticker, account.getDescription()), System.currentTimeMillis());                         
-                          Intent intent = FolderMessageList.actionHandleAccountIntent(context, account, Email.INBOX);
-                          PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
-                            notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_send_title), 
-                                account.getDescription() , pi);
-                            notif.flags = Notification.FLAG_ONGOING_EVENT;
-                            
-                            if (Email.NOTIFICATION_LED_WHILE_SYNCING) {
-                              notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                              notif.ledARGB = Email.NOTIFICATION_LED_DIM_COLOR;
-                              notif.ledOnMS = Email.NOTIFICATION_LED_FAST_ON_TIME;
-                              notif.ledOffMS = Email.NOTIFICATION_LED_FAST_OFF_TIME;
-                            }
-                            
-                            notifMgr.notify(Email.FETCHING_EMAIL_NOTIFICATION_ID, notif);
+                          if (account.isShowOngoing()) {
+                            Notification notif = new Notification(R.drawable.ic_menu_refresh, 
+                                context.getString(R.string.notification_bg_send_ticker, account.getDescription()), System.currentTimeMillis());                         
+                            Intent intent = FolderMessageList.actionHandleAccountIntent(context, account, Email.INBOX);
+                            PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
+                              notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_send_title), 
+                                  account.getDescription() , pi);
+                              notif.flags = Notification.FLAG_ONGOING_EVENT;
+                              
+                              if (Email.NOTIFICATION_LED_WHILE_SYNCING) {
+                                notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+                                notif.ledARGB = Email.NOTIFICATION_LED_DIM_COLOR;
+                                notif.ledOnMS = Email.NOTIFICATION_LED_FAST_ON_TIME;
+                                notif.ledOffMS = Email.NOTIFICATION_LED_FAST_OFF_TIME;
+                              }
+                              
+                              notifMgr.notify(Email.FETCHING_EMAIL_NOTIFICATION_ID, notif);
+                          }
                           try
                           {
                             sendPendingMessagesSynchronous(account);
                           }
                         	finally {
-                            notifMgr.cancel(Email.FETCHING_EMAIL_NOTIFICATION_ID);
+                        	  if (account.showOngoing) {
+                        	    notifMgr.cancel(Email.FETCHING_EMAIL_NOTIFICATION_ID);
+                        	  }
                           }
                         }
                     	}
@@ -2221,29 +2251,33 @@ s             * critical data as fast as possible, and then we'll fill in the de
 				                    			}
 				                    			return;
 				                    		}
-				                    		Notification notif = new Notification(R.drawable.ic_menu_refresh, 
-				                    		    context.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()), 
-				                    		    System.currentTimeMillis());                         
-			                          Intent intent = FolderMessageList.actionHandleAccountIntent(context, account, Email.INBOX);
-			                          PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
-			                            notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_sync_title), account.getDescription()
-			                                + context.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
-			                            notif.flags = Notification.FLAG_ONGOING_EVENT;
-			                            if (Email.NOTIFICATION_LED_WHILE_SYNCING) {
-  			                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-  			                            notif.ledARGB = Email.NOTIFICATION_LED_DIM_COLOR;
-  			                            notif.ledOnMS = Email.NOTIFICATION_LED_FAST_ON_TIME;
-  			                            notif.ledOffMS = Email.NOTIFICATION_LED_FAST_OFF_TIME;
-			                            }
-
-			                            notifMgr.notify(Email.FETCHING_EMAIL_NOTIFICATION_ID, notif);
+				                    		if (account.isShowOngoing()) {
+  				                    		Notification notif = new Notification(R.drawable.ic_menu_refresh, 
+  				                    		    context.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()), 
+  				                    		    System.currentTimeMillis());                         
+  			                          Intent intent = FolderMessageList.actionHandleAccountIntent(context, account, Email.INBOX);
+  			                          PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
+  			                            notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_sync_title), account.getDescription()
+  			                                + context.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
+  			                            notif.flags = Notification.FLAG_ONGOING_EVENT;
+  			                            if (Email.NOTIFICATION_LED_WHILE_SYNCING) {
+    			                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+    			                            notif.ledARGB = Email.NOTIFICATION_LED_DIM_COLOR;
+    			                            notif.ledOnMS = Email.NOTIFICATION_LED_FAST_ON_TIME;
+    			                            notif.ledOffMS = Email.NOTIFICATION_LED_FAST_OFF_TIME;
+  			                            }
+  
+  			                            notifMgr.notify(Email.FETCHING_EMAIL_NOTIFICATION_ID, notif);
+				                    		}
 			                          try
 			                          {
 			                            synchronizeMailboxSynchronous(account, folder.getName());
 			                          }
 				                    	  
 		                            finally {
-		                              notifMgr.cancel(Email.FETCHING_EMAIL_NOTIFICATION_ID);
+		                              if (account.isShowOngoing()) {
+		                                notifMgr.cancel(Email.FETCHING_EMAIL_NOTIFICATION_ID);
+		                              }
 		                            }
 				                    	}
 				                    	catch (Exception e)

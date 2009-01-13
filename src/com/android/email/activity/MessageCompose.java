@@ -47,6 +47,7 @@ import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.mail.Address;
 import com.android.email.mail.Body;
+import com.android.email.mail.Flag;
 import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Multipart;
@@ -199,7 +200,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             Context context,
             Account account,
             Message message,
-            boolean replyAll) {
+            boolean replyAll) { 
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
@@ -393,6 +394,15 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
             mFolder = (String) intent.getStringExtra(EXTRA_FOLDER);
             mSourceMessageUid = (String) intent.getStringExtra(EXTRA_MESSAGE);
+        }
+        
+        Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
+        if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null)
+        {
+          Log.d(Email.LOG_TAG, "Setting message ANSWERED flag to true");
+          // TODO: Really, we should wait until we send the message, but that would require saving the original
+          // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
+            MessagingController.getInstance(getApplication()).setMessageFlag(mAccount, mFolder, mSourceMessageUid, Flag.ANSWERED, true);
         }
 
         if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||

@@ -47,6 +47,9 @@
     <string name="mark_as_read_action">Mark as read</string>
     <string name="send_alternate_action">Forward (alternate)</string>
     <string name="send_alternate_chooser_title">Choose sender</string>
+    
+    <string name="flag_action">Flag</string>
+    <string name="unflag_action">Unflag</string>
  
     <string name="mark_as_unread_action">Mark as unread</string>
     <string name="move_to_action">Move to</string>
@@ -353,8 +356,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="message_help_key">Del (or D) - Delete\u000AR -
     Reply\u000AA - Reply All\u000AF - Forward\u000AJ or P - Previous
     Message\u000AK, N or space - Next Message\u000AZ - Zoom Out\u000AShift-Z -
-    Zoom In</string>
+    Zoom In\u000aG - Flag</string>
     <string name="message_list_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000AQ
+    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\\u000aG - Flagu000AQ
     - Return to Accounts</string>
 </resources>

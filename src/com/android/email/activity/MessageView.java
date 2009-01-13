@@ -55,6 +55,7 @@ import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.mail.Address;
+import com.android.email.mail.Flag;
 import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Multipart;
@@ -132,6 +133,7 @@ public class MessageView extends Activity
             case KeyEvent.KEYCODE_F: { onForward(); return true;}
             case KeyEvent.KEYCODE_A: { onReplyAll(); return true; }
             case KeyEvent.KEYCODE_R: { onReply(); return true; }
+            case KeyEvent.KEYCODE_G: { onFlag(); return true; }
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P:
             { onPrevious(); return true; }
@@ -491,6 +493,22 @@ public class MessageView extends Activity
             finish();
         }
     }
+    
+    private void onFlag() {
+      if (mMessage != null) {
+        MessagingController.getInstance(getApplication()).setMessageFlag(mAccount,
+            mMessage.getFolder().getName(), mMessage.getUid(), Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
+        try
+        {
+          mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
+        }
+        catch (MessagingException me)
+        {
+          Log.e(Email.LOG_TAG, "Could not set flag on local message", me);
+        }
+      }
+  }
+  
     
     private void onSendAlternate() {
       if (mMessage != null) {

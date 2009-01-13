@@ -639,6 +639,7 @@ public class FolderMessageList extends ExpandableListActivity
                     case KeyEvent.KEYCODE_F: { onForward(message); return true;}
                     case KeyEvent.KEYCODE_A: { onReplyAll(message); return true; }
                     case KeyEvent.KEYCODE_R: { onReply(message); return true; }
+                    case KeyEvent.KEYCODE_G: { onToggleFlag(message); return true; }
                 }
               }
           }
@@ -832,6 +833,15 @@ public class FolderMessageList extends ExpandableListActivity
       //  onRefresh(false);
     }
 
+	private void onToggleFlag(MessageInfoHolder holder)
+  {
+    
+    MessagingController.getInstance(getApplication()).setMessageFlag(mAccount,
+        holder.message.getFolder().getName(), holder.uid, Flag.FLAGGED, !holder.flagged);
+        holder.flagged = !holder.flagged;
+        mHandler.dataChanged();
+    }
+	
     @Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -901,6 +911,9 @@ public class FolderMessageList extends ExpandableListActivity
                 case R.id.mark_as_read:
                     onToggleRead(holder);
                     break;
+                case R.id.flag:
+                  onToggleFlag(holder);
+                  break;
 				case R.id.send_alternate:
 					onSendAlternate(mAccount, holder);
 					break;
@@ -976,7 +989,12 @@ public class FolderMessageList extends ExpandableListActivity
 				{
 					menu.findItem(R.id.mark_as_read).setTitle(
 							R.string.mark_as_unread_action);
-                }
+        }
+				if (message.flagged)
+				{
+				  menu.findItem(R.id.flag).setTitle(
+              R.string.unflag_action);
+				}
             }
 		} else if (ExpandableListView.getPackedPositionType(info.packedPosition) == ExpandableListView.PACKED_POSITION_TYPE_GROUP)
 		{
@@ -1370,11 +1388,14 @@ public class FolderMessageList extends ExpandableListActivity
         };
 
         private Drawable mAttachmentIcon;
+        private Drawable mAnsweredIcon;
 
 		FolderMessageListAdapter()
 		{
 			mAttachmentIcon = getResources().getDrawable(
 					R.drawable.ic_mms_attachment_small);
+			mAnsweredIcon = getResources().getDrawable(
+          R.drawable.ic_mms_answered_small);
         }
 
 		public void removeDeletedUid(String folder, String messageUid) {
@@ -1716,15 +1737,28 @@ public class FolderMessageList extends ExpandableListActivity
 				if (message != null)
 				{
                 holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
+               
+                holder.subject.setTypeface(null, 
+                    message.read && !message.flagged ? Typeface.NORMAL  : Typeface.BOLD);
+                
+                if (message.flagged)
+                {
+                  holder.subject.setTextColor(0xffff4444);
+                }
+                else
+                {
+                  holder.subject.setTextColor(0xffffffff);
+                }
                 holder.subject.setText(message.subject);
-					holder.subject.setTypeface(null, message.read ? Typeface.NORMAL
-							: Typeface.BOLD);
+                
                 holder.from.setText(message.sender);
-					holder.from.setTypeface(null, message.read ? Typeface.NORMAL
-							: Typeface.BOLD);
+                holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
                 holder.date.setText(message.date);
-                holder.subject.setCompoundDrawablesWithIntrinsicBounds(null, null,
-                        message.hasAttachments ? mAttachmentIcon : null, null);
+                holder.subject.setCompoundDrawablesWithIntrinsicBounds(
+                    message.answered ? mAnsweredIcon : null, // left 
+                        null, // top
+                        message.hasAttachments ? mAttachmentIcon : null, // right 
+                            null); // bottom
 				}
 				else
 				{
@@ -1804,12 +1838,18 @@ public class FolderMessageList extends ExpandableListActivity
             public Date compareDate;
 
             public String sender;
+            
+            public String[] recipients;
 
             public boolean hasAttachments;
 
             public String uid;
 
             public boolean read;
+            
+            public boolean answered;
+            
+            public boolean flagged;
 
             public Message message;
             
@@ -1837,6 +1877,8 @@ public class FolderMessageList extends ExpandableListActivity
                     }
                     this.hasAttachments = message.getAttachmentCount() > 0;
                     this.read = message.isSet(Flag.SEEN);
+                    this.answered = message.isSet(Flag.ANSWERED);
+                    this.flagged = message.isSet(Flag.FLAGGED);
 					if (folder.outbox)
 					{
 						this.sender = Address.toFriendly(message
