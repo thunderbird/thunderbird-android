@@ -2,9 +2,11 @@ package com.android.email.mail.store;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -75,7 +77,7 @@ public class WebDavStore extends Store {
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN, Flag.ANSWERED };
-    
+
     private int mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
     private String alias;
@@ -92,7 +94,7 @@ public class WebDavStore extends Store {
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
     private boolean mSecure;
     private DefaultHttpClient mHttpClient = null;
-	
+
     /**
      * webdav://user:password@server:port CONNECTION_SECURITY_NONE
      * webdav+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
@@ -139,7 +141,7 @@ public class WebDavStore extends Store {
         } else {
             this.mUrl = "http://" + mHost + ":" + mUri.getPort();
         }
-        
+
         if (mUri.getUserInfo() != null) {
             String[] userInfoParts = mUri.getUserInfo().split(":", 2);
             mUsername = userInfoParts[0];
@@ -167,7 +169,7 @@ public class WebDavStore extends Store {
     public Folder[] getPersonalNamespaces() throws MessagingException {
         ArrayList<Folder> folderList = new ArrayList<Folder>();
         HashMap<String, String> headers = new HashMap<String, String>();
-        ParsedDataSet dataset = new ParsedDataSet();
+        DataSet dataset = new DataSet();
         String messageBody;
         String[] folderUrls;
         int urlLength;
@@ -178,7 +180,7 @@ public class WebDavStore extends Store {
         if (needAuth()) {
             authenticate();
         }
-        
+
         messageBody = getFolderListXml();
         headers.put("Brief", "t");
         dataset = processRequest(this.mUrl, "SEARCH", messageBody, headers);
@@ -191,7 +193,7 @@ public class WebDavStore extends Store {
             String folderName = urlParts[urlParts.length - 1];
             String fullPathName = "";
             WebDavFolder wdFolder;
-                        
+
             if (folderName.equalsIgnoreCase(Email.INBOX)) {
                 folderName = "INBOX";
             } else {
@@ -238,7 +240,7 @@ public class WebDavStore extends Store {
         StringBuffer buffer = new StringBuffer(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-        buffer.append("SELECT \"DAV:ishidden\"\r\n");
+        buffer.append("SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n");
         buffer.append(" FROM SCOPE('deep traversal of \""+this.mUrl+"\"')\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
@@ -286,7 +288,7 @@ public class WebDavStore extends Store {
         buffer.append("</a:sql></a:searchrequest>\r\n");
         return buffer.toString();
     }
-    
+
     private String getMessagesXml() {
         StringBuffer buffer = new StringBuffer(200);
         buffer.append("<?xml version='1.0' ?>");
@@ -302,7 +304,7 @@ public class WebDavStore extends Store {
         StringBuffer buffer = new StringBuffer(600);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-        buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\", \"DAV:href\"\r\n");
+        buffer.append("SELECT \"urn:schemas:httpmail:read\", \"DAV:uid\"\r\n");
         buffer.append(" FROM \"\"\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND ");
         for (int i = 0, count = uids.length; i < count; i++) {
@@ -317,12 +319,12 @@ public class WebDavStore extends Store {
         buffer.append("</a:sql></a:searchrequest>\r\n");
         return buffer.toString();
     }
-    
+
     private String getMessageFlagsXml(String[] uids) throws MessagingException {
         if (uids.length == 0) {
             throw new MessagingException("Attempt to get flags on 0 length array for uids");
         }
-        
+
         StringBuffer buffer = new StringBuffer(200);
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
@@ -358,7 +360,7 @@ public class WebDavStore extends Store {
         buffer.append("</a:propertyupdate>\r\n");
         return buffer.toString();
     }
-    
+
     /***************************************************************
      * Authentication related methods
      */
@@ -372,10 +374,10 @@ public class WebDavStore extends Store {
         try {
             this.mAuthCookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
         } catch (IOException ioe) {
-            Log.e(Email.LOG_TAG, "Error during authentication: " + ioe);
+            Log.e(Email.LOG_TAG, "Error during authentication: " + ioe + "\nStack: " + processException(ioe));
             this.mAuthCookies = null;
         }
-        
+
         if (this.mAuthCookies == null) {
             this.mAuthenticated = false;
         } else {
@@ -394,7 +396,7 @@ public class WebDavStore extends Store {
         if (this.mAuthenticated == false) {
             status = true;
         }
-        
+
         currentTime = System.currentTimeMillis()/1000;
         if ((currentTime - this.mLastAuth) > (this.mAuthTimeout)) {
             status = true;
@@ -426,7 +428,7 @@ public class WebDavStore extends Store {
             "\n\nResponse: " + responseText;
 
     }
-    
+
     /**
      * Performs the Form Based Authentication
      * Returns the CookieStore object for later use or null
@@ -451,9 +453,9 @@ public class WebDavStore extends Store {
         if (finalUrl.equals("")) {
             throw new MessagingException("doAuthentication failed, unable to construct URL to post login credentials to.");
         }
-        
+
         loginUrl = finalUrl + authPath;
-        
+
         try {
             /* Browser Client */
             DefaultHttpClient httpclient = getTrustedHttpClient();
@@ -475,7 +477,7 @@ public class WebDavStore extends Store {
                     throw new MessagingException("Error during authentication: "+
                                                  response.getStatusLine().toString()+"\n\n");
                 }
-                
+
                 if (entity != null) {
                     InputStream istream = entity.getContent();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
@@ -510,14 +512,14 @@ public class WebDavStore extends Store {
             try {
                 UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
                 String tempUrl = "";
-                
+
                 httppost.setEntity(formEntity);
 
                 /** Perform the actual POST */
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
                 int status_code = response.getStatusLine().getStatusCode();
-        		
+
                 /** Verify success */
                 if (status_code > 300 ||
                     status_code < 200) {
@@ -534,10 +536,10 @@ public class WebDavStore extends Store {
                 /** Get the URL for the mailbox and set it for the store */
                 if (entity != null) {
                     InputStream istream = entity.getContent();
-                    
+
                     BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 8192);
                     String tempText = "";
-                    
+
                     while ((tempText = reader.readLine()) != null) {
                         if (tempText.indexOf("BASE href") >= 0) {
                             String[] tagParts = tempText.split("\"");
@@ -553,13 +555,13 @@ public class WebDavStore extends Store {
                 }
 
             } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "Error encoding POST data for authencation");
+                Log.e(Email.LOG_TAG, "Error encoding POST data for authencation: " + uee + "\nTrace: " + processException(uee));
             }
         } catch (SSLException e) {
             throw new CertificateValidationException(e.getMessage(), e);
         } catch (GeneralSecurityException gse) {
             throw new MessagingException(
-                                         "Unable to open connection to SMTP server due to security error.", gse);
+                            "Unable to open connection to SMTP server due to security error.", gse);
         }
         return cookies;
     }
@@ -567,21 +569,21 @@ public class WebDavStore extends Store {
     public CookieStore getAuthCookies() {
         return mAuthCookies;
     }
-    
+
     public String getAlias() {
         return alias;
     }
-    
+
     public String getUrl() {
         return mUrl;
     }
 
     public DefaultHttpClient getTrustedHttpClient() throws KeyManagementException, NoSuchAlgorithmException{
-    	if (mHttpClient == null) {
-    		mHttpClient = new DefaultHttpClient();
-    		SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
-    		Scheme s = new Scheme("https",new TrustedSocketFactory(mHost,mSecure),443);
-    		reg.register(s);
+        if (mHttpClient == null) {
+            mHttpClient = new DefaultHttpClient();
+            SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
+            Scheme s = new Scheme("https",new TrustedSocketFactory(mHost,mSecure),443);
+            reg.register(s);
 
 
     		//Add credentials for NTLM/Digest/Basic Auth
@@ -597,20 +599,20 @@ public class WebDavStore extends Store {
 
         return mHttpClient;
     }
-    
+
     /**
      * Performs an httprequest to the supplied url using the supplied method.
      * messageBody and headers are optional as not all requests will need them.
      * There are two signatures to support calls that don't require parsing of the response.
      */
-    private ParsedDataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers) {
+    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers) {
         return processRequest(url, method, messageBody, headers, true);
     }
-    
-    private ParsedDataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers, boolean needsParsing) {
-        ParsedDataSet dataset = new ParsedDataSet();
+
+    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers, boolean needsParsing) {
+        DataSet dataset = new DataSet();
         DefaultHttpClient httpclient;
-        
+
         if (url == null ||
             method == null) {
             return dataset;
@@ -618,17 +620,17 @@ public class WebDavStore extends Store {
         try {
         	httpclient = getTrustedHttpClient();
         } catch (KeyManagementException e) {
-        	Log.e(Email.LOG_TAG, "Generated KeyManagementException during authentication" + e.getStackTrace());
+            Log.e(Email.LOG_TAG, "Generated KeyManagementException during authentication" + processException(e));
         	return dataset;
         } catch (NoSuchAlgorithmException e) {
-        	Log.e(Email.LOG_TAG, "Generated NoSuchAlgorithmException during authentication" + e.getStackTrace());
+            Log.e(Email.LOG_TAG, "Generated NoSuchAlgorithmException during authentication" + processException(e));
         	return dataset;
         }
         if (needAuth()) {
             try {
                 authenticate();
             } catch (MessagingException e) {
-                Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + e.getStackTrace());
+                Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + processException(e));
             }
         }
 
@@ -684,18 +686,31 @@ public class WebDavStore extends Store {
 
                     dataset = myHandler.getDataSet();
                 } catch (SAXException se) {
-                    Log.e(Email.LOG_TAG, "SAXException in processRequest() " + se);
+                    Log.e(Email.LOG_TAG, "SAXException in processRequest() " + se + "\nTrace: " + processException(se));
                 } catch (ParserConfigurationException pce) {
-                    Log.e(Email.LOG_TAG, "ParserConfigurationException in processRequest() " + pce);
+                    Log.e(Email.LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: " + processException(pce));
                 }
             }
         } catch (UnsupportedEncodingException uee) {
-            Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee);
+            Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee + "\nTrace: " + processException(uee));
         } catch (IOException ioe) {
-            Log.e(Email.LOG_TAG, "IOException: " + ioe);
+            Log.e(Email.LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
         }
 
         return dataset;
+    }
+
+    /**
+     * Returns a string of the stacktrace for a Throwable to allow for easy inline printing of errors.
+     */
+    private String processException(Throwable t) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+
+        t.printStackTrace(ps);
+        ps.close();
+
+        return baos.toString();
     }
     
     /*************************************************************************
@@ -751,7 +766,7 @@ public class WebDavStore extends Store {
                 try {
                     authenticate();
                 } catch (MessagingException e) {
-                    Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + e.getStackTrace());
+                    Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + processException(e));
                 }
             }
 
@@ -759,7 +774,6 @@ public class WebDavStore extends Store {
                 encodedName = "Inbox";
             }
             
-            //this.mFolderUrl = WebDavStore.this.mUrl + "/Exchange/" + this.mLocalUsername + "/" + encodedName;
             this.mFolderUrl = WebDavStore.this.mUrl + encodedName;
         }
 
@@ -785,7 +799,7 @@ public class WebDavStore extends Store {
         private int getMessageCount(boolean read, CookieStore authCookies) {
             String isRead;
             int messageCount = 0;
-            ParsedDataSet dataset = new ParsedDataSet();
+            DataSet dataset = new DataSet();
             HashMap<String, String> headers = new HashMap<String, String>();
             String messageBody;
             
@@ -869,7 +883,7 @@ public class WebDavStore extends Store {
                 throws MessagingException {
             ArrayList<Message> messages = new ArrayList<Message>();
             String[] uids;
-            ParsedDataSet dataset = new ParsedDataSet();
+            DataSet dataset = new DataSet();
             HashMap<String, String> headers = new HashMap<String, String>();
             int uidsLength = -1;
             
@@ -955,7 +969,7 @@ public class WebDavStore extends Store {
         private HashMap<String, String> getMessageUrls(String[] uids) {
             HashMap<String, String> uidToUrl = new HashMap<String, String>();
             HashMap<String, String> headers = new HashMap<String, String>();
-            ParsedDataSet dataset = new ParsedDataSet();
+            DataSet dataset = new DataSet();
             String messageBody;
 
             /** Retrieve and parse the XML entity for our messages */
@@ -1034,13 +1048,13 @@ public class WebDavStore extends Store {
          */
         private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines) throws MessagingException {
             DefaultHttpClient httpclient;
-			try {
-				httpclient = getTrustedHttpClient();
-			} catch (KeyManagementException e) {
+            try {
+                httpclient = getTrustedHttpClient();
+            } catch (KeyManagementException e) {
                 throw new MessagingException("KeyManagement Exception in fetchMessages()."+ e.getStackTrace());
-			} catch (NoSuchAlgorithmException e) {
+            } catch (NoSuchAlgorithmException e) {
                 throw new MessagingException("NoSuchAlgorithm Exception in fetchMessages():" + e.getStackTrace());
-			}
+            }
 
             /**
              * We can't hand off to processRequest() since we need the stream to parse.
@@ -1130,11 +1144,11 @@ public class WebDavStore extends Store {
                     }
                 
                 } catch (IllegalArgumentException iae) {
-                    Log.e(Email.LOG_TAG, "IllegalArgumentException caught " + iae);
+                    Log.e(Email.LOG_TAG, "IllegalArgumentException caught " + iae + "\nTrace: " + processException(iae));
                 } catch (URISyntaxException use) {
-                    Log.e(Email.LOG_TAG, "URISyntaxException caught " + use);
+                    Log.e(Email.LOG_TAG, "URISyntaxException caught " + use + "\nTrace: " + processException(use));
                 } catch (IOException ioe) {
-                    Log.e(Email.LOG_TAG, "Non-success response code loading message, response code was: " + statusCode + " Error: "+ioe.getMessage());
+                    Log.e(Email.LOG_TAG, "Non-success response code loading message, response code was " + statusCode + "\nURL: " + wdMessage.getUrl() + "\nError: " + ioe.getMessage() + "\nTrace: " + processException(ioe));
                 }
 
                 if (listener != null) {
@@ -1151,7 +1165,7 @@ public class WebDavStore extends Store {
         private void fetchFlags(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
             HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
             HashMap<String, String> headers = new HashMap<String, String>();
-            ParsedDataSet dataset = new ParsedDataSet();
+            DataSet dataset = new DataSet();
             String messageBody = new String();
             Message[] messages = new Message[20];
             String[] uids;
@@ -1216,7 +1230,7 @@ public class WebDavStore extends Store {
         private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException {
             HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
             HashMap<String, String> headers = new HashMap<String, String>();
-            ParsedDataSet dataset = new ParsedDataSet();
+            DataSet dataset = new DataSet();
             String messageBody = new String();
             String[] uids;
             Message[] messages = new Message[10];
@@ -1312,7 +1326,7 @@ public class WebDavStore extends Store {
             String messageBody = new String();
             HashMap<String, String> headers = new HashMap<String, String>();
             HashMap<String, String> uidToUrl = getMessageUrls(uids);
-            ParsedDataSet dataset = new ParsedDataSet();
+            DataSet dataset = new DataSet();
             String[] urls = new String[uids.length];
 
             for (int i = 0, count = uids.length; i < count; i++) {
@@ -1430,9 +1444,9 @@ public class WebDavStore extends Store {
                 end = java.net.URLEncoder.encode(end, "UTF-8");
                 end = end.replaceAll("\\+", "%20");
             } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "UnsupportedEncodingException caught in setUrl");
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException caught in setUrl: " + uee + "\nTrace: " + processException(uee));
             } catch (IllegalArgumentException iae) {
-                Log.e(Email.LOG_TAG, "IllegalArgumentException caught in setUrl");
+                Log.e(Email.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: " + processException(iae));
             }
 
             for (int i = 0; i < length - 1; i++) {
@@ -1469,10 +1483,16 @@ public class WebDavStore extends Store {
             HashMap<String, String> messageHeaders = envelope.getMessageHeaders();
             
             for (int i = 0, count = headers.length; i < count; i++) {
+                String headerValue = messageHeaders.get(headers[i]);
                 if (headers[i].equals("Content-Length")) {
-                    this.setSize(new Integer(messageHeaders.get(headers[i])).intValue());
+                    int size = new Integer(messageHeaders.get(headers[i])).intValue();
+                    this.setSize(size);
                 }
-                this.addHeader(headers[i], messageHeaders.get(headers[i]));
+
+                if (headerValue != null &&
+                    !headerValue.equals("")) {
+                    this.addHeader(headers[i], headerValue);
+                }
             }
         }
         
@@ -1488,16 +1508,16 @@ public class WebDavStore extends Store {
      * Can handle all XML handling needs
      */
     public class WebDavHandler extends DefaultHandler {
-        private ParsedDataSet mDataSet = new ParsedDataSet();
+        private DataSet mDataSet = new DataSet();
         private Stack<String> mOpenTags = new Stack<String>();
         
-        public ParsedDataSet getDataSet() {
+        public DataSet getDataSet() {
             return this.mDataSet;
         }
 
         @Override
         public void startDocument() throws SAXException {
-            this.mDataSet = new ParsedDataSet();
+            this.mDataSet = new DataSet();
         }
 
         @Override
@@ -1517,8 +1537,7 @@ public class WebDavStore extends Store {
 
             /** Reset the hash temp variables */
             if (localName.equals("response")) {
-                this.mDataSet.addEnvelope();
-                this.mDataSet.clearTempData();
+                this.mDataSet.finish();
             }
         }
 
@@ -1536,14 +1555,37 @@ public class WebDavStore extends Store {
      * associating UIDs to values
      */
     public class ParsedMessageEnvelope {
+        /**
+         * Holds the mappings from the name returned from Exchange to the MIME format header name
+         */
+        private final HashMap<String, String> mHeaderMappings = new HashMap<String, String>() {
+        {
+            put("mime-version", "MIME-Version");
+            put("content-type", "Content-Type");
+            put("subject", "Subject");
+            put("date", "Date");
+            put("thread-topic", "Thread-Topic");
+            put("thread-index", "Thread-Index");
+            put("from", "From");
+            put("to", "To");
+            put("in-reply-to", "In-Reply-To");
+            put("cc", "Cc");
+            put("getcontentlength", "Content-Length");
+        }
+        };
+        
         private boolean mReadStatus = false;
         private String mUid = new String();
         private HashMap<String, String> mMessageHeaders = new HashMap<String, String>();
         private ArrayList<String> mHeaders = new ArrayList<String>();
         
         public void addHeader(String field, String value) {
-            this.mMessageHeaders.put(field, value);
-            this.mHeaders.add(field);
+            String headerName = mHeaderMappings.get(field);
+
+            if (headerName != null) {
+                this.mMessageHeaders.put(mHeaderMappings.get(field), value);
+                this.mHeaders.add(mHeaderMappings.get(field));
+            }
         }
 
         public HashMap<String, String> getMessageHeaders() {
@@ -1574,192 +1616,176 @@ public class WebDavStore extends Store {
     }
 
     /**
-     * Data set for handling all XML Parses
+     * Dataset for all XML parses.
+     * Data is stored in a single format inside the class and is formatted appropriately depending on the accessor calls made.
      */
-    public class ParsedDataSet {
-        private ArrayList<String> mHrefs = new ArrayList<String>();
-        private ArrayList<String> mUids = new ArrayList<String>();
-        private ArrayList<Boolean> mReads = new ArrayList<Boolean>();
-        private HashMap<String, String> mUidUrls = new HashMap<String, String>();
-        private HashMap<String, Boolean> mUidRead = new HashMap<String, Boolean>();
-        private HashMap<String, ParsedMessageEnvelope> mEnvelopes = new HashMap<String, ParsedMessageEnvelope>();
-        private int mMessageCount = 0;
-        private String mTempUid = "";
-        private String mTempUrl = "";
-        private String mFrom = "";
-        private String mTo = "";
-        private String mCc = "";
-        private String mReceived = "";
-        private Boolean mTempRead;
-        private ParsedMessageEnvelope mEnvelope = new ParsedMessageEnvelope();
-        private boolean mRead;
+    public class DataSet {
+        private HashMap<String, HashMap> mData = new HashMap<String, HashMap>();
+        private HashMap<String, String> mLostData = new HashMap<String, String>();
+        private String mUid = new String();
+        private HashMap<String, String> mTempData = new HashMap<String, String>();
 
         public void addValue(String value, String tagName) {
-            if (tagName.equals("href")) {
-                this.mHrefs.add(value);
-                this.mTempUrl = value;
-            } else if (tagName.equals("visiblecount")) {
-                this.mMessageCount = new Integer(value).intValue();
-            } else if (tagName.equals("uid")) {
-                this.mUids.add(value);
-                this.mEnvelope.setUid(value);
-                this.mTempUid = value;
-            } else if (tagName.equals("read")) {
-                if (value.equals("0")) {
-                    this.mReads.add(false);
-                    this.mEnvelope.setReadStatus(false);
-                    this.mTempRead = false;
-                } else {
-                    this.mReads.add(true);
-                    this.mEnvelope.setReadStatus(true);
-                    this.mTempRead = true;
-                }
-            } else if (tagName.equals("mime-version")) {
-                this.mEnvelope.addHeader("MIME-Version", value);
-            } else if (tagName.equals("content-type")) {
-                this.mEnvelope.addHeader("Content-Type", value);
-            } else if (tagName.equals("subject")) {
-                this.mEnvelope.addHeader("Subject", value);
-            } else if (tagName.equals("date")) {
-                /**
-                 * Exchange doesn't give us rfc822 dates like it claims.  The date is in the format:
-                 * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances are Z>
+            if (tagName.equals("uid")) {
+                mUid = value;
+            }
+
+            if (mTempData.containsKey(tagName)) {
+                mTempData.put(tagName, mTempData.get(tagName) + value);
+            } else {
+                mTempData.put(tagName, value);
+            }
+        }
+
+        public void finish() {
+            if (mUid != null &&
+                mTempData != null) {
+                mData.put(mUid, mTempData);
+            } else if (mTempData != null) {
+                /* Lost Data are for requests that don't include a message UID.
+                 * These requests should only have a depth of one for the response so it will never get stomped over.
                  */
-                value = value.substring(0, value.length() - 1);
-
-                DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-                DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z");
-                String tempDate = "";
-
-                try {
-                    Date parsedDate = dfInput.parse(value);
-                    tempDate = dfOutput.format(parsedDate);
-                } catch (java.text.ParseException pe) {
-                    Log.e(Email.LOG_TAG, "Error parsing date: "+ pe);
-                }
-
-                this.mEnvelope.addHeader("Date", tempDate);
-            } else if (tagName.equals("thread-topic")) {
-                this.mEnvelope.addHeader("Thread-Topic", value);
-            } else if (tagName.equals("thread-index")) {
-                this.mEnvelope.addHeader("Thread-Index", value);
-            } else if (tagName.equals("from")) {
-                this.mFrom = this.mFrom + value;
-            } else if (tagName.equals("to")) {
-                this.mTo = this.mTo + value;
-            } else if (tagName.equals("in-reply-to")) {
-                this.mEnvelope.addHeader("In-Reply-To", value);
-            } else if (tagName.equals("cc")) {
-                this.mCc = this.mCc + value;
-            } else if (tagName.equals("getcontentlength")) {
-                this.mEnvelope.addHeader("Content-Length", value);
+                mLostData = mTempData;
+                String visibleCount = mLostData.get("visiblecount");
             }
 
+            mUid = new String();
+            mTempData = new HashMap<String, String>();
+        }
 
-            if (!this.mTempUid.equals("") &&
-                this.mTempRead != null) {
-                if (this.mTempRead) {
-                    this.mUidRead.put(this.mTempUid, true);
-                } else {
-                    this.mUidRead.put(this.mTempUid, false);
+        /**
+         * Returns a hashmap of Message UID => Message Url
+         */
+        public HashMap<String, String> getUidToUrl() {
+            HashMap<String, String> uidToUrl = new HashMap<String, String>();
+
+            for (String uid : mData.keySet()) {
+                HashMap<String, String> data = mData.get(uid);
+                String value = data.get("href");
+                if (value != null &&
+                    !value.equals("")) {
+                    uidToUrl.put(uid, value);
                 }
             }
 
-            if (!this.mTempUid.equals("") &&
-                !this.mTempUrl.equals("")) {
-                this.mUidUrls.put(this.mTempUid, this.mTempUrl);
+            return uidToUrl;
+        }
+
+        /**
+         * Returns a hashmap of Message UID => Read Status
+         */
+        public HashMap<String, Boolean> getUidToRead() {
+            HashMap<String, Boolean> uidToRead = new HashMap<String, Boolean>();
+
+            for (String uid : mData.keySet()) {
+                HashMap<String, String> data = mData.get(uid);
+                String readStatus = data.get("read");
+                if (readStatus != null &&
+                    !readStatus.equals("")) {
+                    Boolean value = readStatus.equals("0") ? false : true;
+                    uidToRead.put(uid, value);
+                }
             }
+
+            return uidToRead;
         }
 
         /**
-         * Clears the temp variables
-         */
-        public void clearTempData() {
-            this.mTempUid = "";
-            this.mTempUrl = "";
-            this.mFrom = "";
-            this.mEnvelope = new ParsedMessageEnvelope();
-        }
-
-        public void addEnvelope() {
-            this.mEnvelope.addHeader("From", this.mFrom);
-            this.mEnvelope.addHeader("To", this.mTo);
-            this.mEnvelope.addHeader("Cc", this.mCc);
-            this.mEnvelope.addHeader("Received", this.mReceived);
-            this.mEnvelopes.put(this.mEnvelope.getUid(), this.mEnvelope);
-        }
-
-        /**
-         * Returns an array of the set of message envelope objects
-         */
-        public HashMap<String, ParsedMessageEnvelope> getMessageEnvelopes() {
-            return this.mEnvelopes;
-        }
-
-        /**
-         * Returns the Uid to Url hashmap
-         */
-        public HashMap getUidToUrl() {
-            return this.mUidUrls;
-        }
-
-        /**
-         * Returns the Uid to Read hashmap
-         */
-        public HashMap getUidToRead() {
-            return this.mUidRead;
-        }
-        
-        /**
-         * Get all stored Hrefs
+         * Returns an array of all hrefs (urls) that were received
          */
         public String[] getHrefs() {
-            return this.mHrefs.toArray(new String[] {});
+            ArrayList<String> hrefs = new ArrayList<String>();
+
+            for (String uid : mData.keySet()) {
+                HashMap<String, String> data = mData.get(uid);
+                String href = data.get("href");
+                hrefs.add(href);
+            }
+
+            return hrefs.toArray(new String[] {});
         }
 
         /**
-         * Get the first stored Href
-         */
-        public String getHref() {
-            String[] hrefs = this.mHrefs.toArray(new String[] {});
-            return hrefs[0];
-        }
-        
-        /**
-         * Get all stored Uids
+         * Return an array of all Message UIDs that were received
          */
         public String[] getUids() {
-            return this.mUids.toArray(new String[] {});
+            ArrayList<String> uids = new ArrayList<String>();
+
+            for (String uid : mData.keySet()) {
+                uids.add(uid);
+            }
+
+            return uids.toArray(new String[] {});
         }
 
         /**
-         * Get the first stored Uid
-         */
-        public String getUid() {
-            String[] uids = this.mUids.toArray(new String[] {});
-            return uids[0];
-        }
-        
-        /**
-         * Get message count
+         * Returns the message count as it was retrieved
          */
         public int getMessageCount() {
-            return this.mMessageCount;
+            int messageCount = -1;
+
+            for (String uid : mData.keySet()) {
+                HashMap<String, String> data = mData.get(uid);
+                String count = data.get("visiblecount");
+
+                if (count != null &&
+                    !count.equals("")) {
+                    messageCount = new Integer(count).intValue();
+                }
+                
+            }
+
+            return messageCount;
         }
 
         /**
-         * Get all stored read statuses
+         * Returns a HashMap of message UID => ParsedMessageEnvelope
          */
-        public Boolean[] getReadArray() {
-            Boolean[] readStatus = this.mReads.toArray(new Boolean[] {});
-            return readStatus;
-        }
-        
-        /**
-         * Get the first stored read status
-         */
-        public boolean getRead() {
-            return this.mRead;
+        public HashMap<String, ParsedMessageEnvelope> getMessageEnvelopes() {
+            HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
+
+            for (String uid : mData.keySet()) {
+                ParsedMessageEnvelope envelope = new ParsedMessageEnvelope();
+                HashMap<String, String> data = mData.get(uid);
+
+                if (data != null) {
+                    for (String header : data.keySet()) {
+                        if (header.equals("read")) {
+                            String read = data.get(header);
+                            Boolean readStatus = read.equals("0") ? false : true;
+
+                            envelope.setReadStatus(readStatus);
+                        } else if (header.equals("date")) {
+                            /**
+                             * Exchange doesn't give us rfc822 dates like it claims.  The date is in the format:
+                             * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances are Z>
+                             */
+                            String date = data.get(header);
+                            date = date.substring(0, date.length() - 1);
+                            
+                            DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+                            DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z");
+                            String tempDate = "";
+
+                            try {
+                                Date parsedDate = dfInput.parse(date);
+                                tempDate = dfOutput.format(parsedDate);
+                            } catch (java.text.ParseException pe) {
+                                Log.e(Email.LOG_TAG, "Error parsing date: "+ pe + "\nTrace: " + processException(pe));
+                            }
+                            envelope.addHeader(header, tempDate);
+                        } else {
+                            envelope.addHeader(header, data.get(header));
+                        }
+                    }
+                } 
+
+                if (envelope != null) {
+                    envelopes.put(uid, envelope);
+                }
+            }
+
+            return envelopes;
         }
     }
     
@@ -1799,9 +1825,9 @@ public class WebDavStore extends Store {
                 end = java.net.URLEncoder.encode(end, "UTF-8");
                 end = end.replaceAll("\\+", "%20");
             } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri)");
+                Log.e(Email.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri): " + uee + "\nTrace: " + processException(uee));
             } catch (IllegalArgumentException iae) {
-                Log.e(Email.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri)");
+                Log.e(Email.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri): " + iae + "\nTrace: " + processException(iae));
             }
 
             for (int i = 0; i < length - 1; i++) {

@@ -53,7 +53,7 @@ import com.android.email.mail.Message.RecipientType;
 import com.android.email.mail.store.TrustManagerFactory;
 import com.android.email.mail.store.WebDavStore;
 import com.android.email.mail.store.WebDavStore.HttpGeneric;
-import com.android.email.mail.store.WebDavStore.ParsedDataSet;
+import com.android.email.mail.store.WebDavStore.DataSet;
 import com.android.email.mail.store.WebDavStore.WebDavHandler;
 
 public class WebDavTransport extends Transport {
