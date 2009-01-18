@@ -18,7 +18,7 @@ public class MimeBodyPart extends BodyPart {
     protected MimeHeader mHeader = new MimeHeader();
     protected Body mBody;
     protected int mSize;
-
+ 
     public MimeBodyPart() throws MessagingException {
         this(null);
     }

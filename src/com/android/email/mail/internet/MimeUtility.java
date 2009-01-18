@@ -28,7 +28,7 @@ import com.android.email.mail.Part;
 
 public class MimeUtility {
 
-
+ 
     public static String unfold(String s) {
         if (s == null) {
             return null;

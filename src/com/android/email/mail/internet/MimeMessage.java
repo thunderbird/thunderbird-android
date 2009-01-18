@@ -39,7 +39,7 @@ public class MimeMessage extends Message {
     protected SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
     protected Body mBody;
     protected int mSize;
-
+ 
     public MimeMessage() {
         /*
          * Every new messages gets a Message-ID
