@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 import java.nio.charset.Charset;
 
 
@@ -196,7 +197,9 @@ public class MimeUtility {
      * @return
      */
     public static boolean mimeTypeMatches(String mimeType, String matchAgainst) {
-        return mimeType.matches(matchAgainst.replaceAll("\\*", "\\.\\*"));
+      Pattern p = Pattern.compile(matchAgainst.replaceAll("\\*", "\\.\\*"),
+          Pattern.CASE_INSENSITIVE);
+      return p.matcher(mimeType).matches();
     }
 
     /**
@@ -208,9 +211,9 @@ public class MimeUtility {
      */
     public static boolean mimeTypeMatches(String mimeType, String[] matchAgainst) {
         for (String matchType : matchAgainst) {
-            if (mimeType.matches(matchType.replaceAll("\\*", "\\.\\*"))) {
-                return true;
-            }
+          if (mimeTypeMatches(mimeType, matchType)) {
+            return true;
+          }
         }
         return false;
     }

@@ -81,7 +81,7 @@ public class MimeBodyPart extends BodyPart {
         if (contentType == null) {
             return "text/plain";
         } else {
-            return contentType;
+            return contentType.toLowerCase();
         }
     }
 
