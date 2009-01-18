@@ -148,7 +148,15 @@ public class FolderMessageList extends ExpandableListActivity
 	{
 		if (dateFormat == null)
 		{
-			dateFormat = android.pim.DateFormat.getDateFormat(getApplication());
+	   String dateFormatS = android.provider.Settings.System.getString(getContentResolver(), 
+          android.provider.Settings.System.DATE_FORMAT);
+      if (dateFormatS != null) {
+        dateFormat = new java.text.SimpleDateFormat(dateFormatS);
+      }
+      else
+      {
+        dateFormat = new java.text.SimpleDateFormat(Email.BACKUP_DATE_FORMAT);
+      }
 		}
 		return dateFormat;
 	}
@@ -156,8 +164,11 @@ public class FolderMessageList extends ExpandableListActivity
 	private DateFormat getTimeFormat()
 	{
 		if (timeFormat == null)
-		{
-			timeFormat = android.pim.DateFormat.getTimeFormat(getApplication());
+		{ 
+		  String timeFormatS = android.provider.Settings.System.getString(getContentResolver(), 
+		      android.provider.Settings.System.TIME_12_24);
+	    boolean b24 =  !(timeFormatS == null || timeFormatS.equals("12"));
+	    timeFormat = new java.text.SimpleDateFormat(b24 ? Email.TIME_FORMAT_24 : Email.TIME_FORMAT_12);
 		}
 		return timeFormat;
 	}

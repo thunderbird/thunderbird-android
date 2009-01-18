@@ -143,6 +143,11 @@ public class Email extends Application {
     public static final int FETCHING_EMAIL_NOTIFICATION_ID      = -4; 
     public static final int FETCHING_EMAIL_NOTIFICATION_MULTI_ACCOUNT_ID      = -1;
     public static final int FETCHING_EMAIL_NOTIFICATION_NO_ACCOUNT = -2;
+    
+    // Backup formats in case they can't be fetched from the system
+    public static final String BACKUP_DATE_FORMAT = "MM-dd-yyyy";
+    public static final String TIME_FORMAT_12 = "h:mm a";
+    public static final String TIME_FORMAT_24 = "H:mm";
 
     /**
      * Called throughout the application when the number of accounts has changed. This method
