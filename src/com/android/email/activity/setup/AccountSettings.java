@@ -28,6 +28,7 @@ public class AccountSettings extends PreferenceActivity {
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_NOTIFY = "account_notify";
+    private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
     private static final String PREFERENCE_RINGTONE = "account_ringtone";
     private static final String PREFERENCE_INCOMING = "incoming";
@@ -43,6 +44,7 @@ public class AccountSettings extends PreferenceActivity {
     private ListPreference mDisplayCount;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
+    private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
@@ -151,6 +153,9 @@ public class AccountSettings extends PreferenceActivity {
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
         mAccountNotify.setChecked(mAccount.isNotifyNewMail());
 
+        mAccountNotifySync = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_SYNC);
+        mAccountNotifySync.setChecked(mAccount.isShowOngoing());
+
         mAccountRingtone = (RingtonePreference) findPreference(PREFERENCE_RINGTONE);
 
         // XXX: The following two lines act as a workaround for the RingtonePreference
@@ -199,6 +204,7 @@ public class AccountSettings extends PreferenceActivity {
         }
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
+        mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());

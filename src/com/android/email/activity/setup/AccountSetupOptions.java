@@ -28,6 +28,7 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
     private CheckBox mDefaultView;
 
     private CheckBox mNotifyView;
+    private CheckBox mNotifySyncView;
 
     private Account mAccount;
 
@@ -47,6 +48,7 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
         mDisplayCountView = (Spinner)findViewById(R.id.account_display_count);
         mDefaultView = (CheckBox)findViewById(R.id.account_default);
         mNotifyView = (CheckBox)findViewById(R.id.account_notify);
+        mNotifySyncView = (CheckBox)findViewById(R.id.account_notify_sync);
 
         findViewById(R.id.next).setOnClickListener(this);
 
@@ -96,6 +98,7 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
             mDefaultView.setChecked(true);
         }
         mNotifyView.setChecked(mAccount.isNotifyNewMail());
+        mNotifySyncView.setChecked(mAccount.isShowOngoing());
         SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
                 .getAutomaticCheckIntervalMinutes());
         SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
@@ -105,6 +108,7 @@ public class AccountSetupOptions extends Activity implements OnClickListener {
     private void onDone() {
         mAccount.setDescription(mAccount.getEmail());
         mAccount.setNotifyNewMail(mNotifyView.isChecked());
+        mAccount.setShowOngoing(mNotifySyncView.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption)mCheckFrequencyView
                 .getSelectedItem()).value);
         mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView

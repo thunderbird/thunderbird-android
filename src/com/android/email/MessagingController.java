@@ -632,18 +632,6 @@ public class MessagingController implements Runnable {
             }
 
 
-            /*
-             * Trash any remote messages that are marked as trashed locally.
-             */
-//            for (Message message : localMessages) {
-//                Message remoteMessage = remoteUidMap.get(message.getUid());
-//                // skip things deleted on the server side 
-//                if (remoteMessage != null &&  message.isSet(Flag.DELETED)) {
-//                    remoteMessage.setFlag(Flag.DELETED, true);
-//                }
-//
-//            }
-
 
             /*
              * A list of messages that were downloaded and which did not have the Seen flag set.
@@ -744,7 +732,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                   {
                     if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                       localMessage.setFlag(flag, remoteMessage.isSet(flag));
-                      
+                      messageChanged = true;
                     }
                   }
                   if (messageChanged) {
@@ -2157,7 +2145,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                             sendPendingMessagesSynchronous(account);
                           }
                         	finally {
-                        	  if (account.showOngoing) {
+                        	  if (account.isShowOngoing()) {
                         	    notifMgr.cancel(Email.FETCHING_EMAIL_NOTIFICATION_ID);
                         	  }
                           }

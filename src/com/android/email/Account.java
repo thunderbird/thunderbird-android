@@ -51,7 +51,7 @@ public class Account implements Serializable {
     int mAccountNumber;
     boolean mVibrate;
     String mRingtoneUri;
-    boolean showOngoing = true;
+    boolean mNotifySync;
     
     public enum FolderMode {
     	ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
@@ -74,6 +74,7 @@ public class Account implements Serializable {
         mDisplayCount = -1;
         mAccountNumber = -1;
         mNotifyNewMail = true;
+        mNotifySync = true;
         mSignature = "Sent from my Android phone with K-9. Please excuse my brevity.";
         mVibrate = false;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
@@ -107,6 +108,8 @@ public class Account implements Serializable {
                 + ".lastAutomaticCheckTime", 0);
         mNotifyNewMail = preferences.mSharedPreferences.getBoolean(mUuid + ".notifyNewMail", 
                 false);
+        mNotifySync = preferences.mSharedPreferences.getBoolean(mUuid + ".notifyMailCheck", 
+																   false);
         mDeletePolicy = preferences.mSharedPreferences.getInt(mUuid + ".deletePolicy", 0);
         mDraftsFolderName = preferences.mSharedPreferences.getString(mUuid  + ".draftsFolderName", 
                 "Drafts");
@@ -308,6 +311,7 @@ public class Account implements Serializable {
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
+        editor.putBoolean(mUuid + ".notifyMailCheck", mNotifySync);
         editor.putInt(mUuid + ".deletePolicy", mDeletePolicy);
         editor.putString(mUuid + ".draftsFolderName", mDraftsFolderName);
         editor.putString(mUuid + ".sentFolderName", mSentFolderName);
@@ -508,12 +512,12 @@ public class Account implements Serializable {
 
     public boolean isShowOngoing()
     {
-      return showOngoing;
+      return mNotifySync;
     }
 
     public void setShowOngoing(boolean showOngoing)
     {
-      this.showOngoing = showOngoing;
+      this.mNotifySync = showOngoing;
     }
 
 }
