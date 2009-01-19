@@ -22,11 +22,18 @@
         </LinearLayout>
     </ScrollView>
     <LinearLayout
+    	android:id="@+id/bottom_buttons"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="57px"
         android:background="@drawable/ic_email_thread_open_bottom_default"
         android:gravity="center_vertical">
+        <Button
+           android:id="@+id/previous"
+           android:text="@string/message_view_prev_action"
+           android:layout_height="wrap_content"
+           android:layout_width="0dip"
+           android:layout_weight="1" />
         <Button
             android:id="@+id/reply"
             android:text="@string/reply_action"
@@ -42,6 +49,12 @@
         <Button
             android:id="@+id/forward"
             android:text="@string/forward_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+         <Button
+            android:id="@+id/next"
+            android:text="@string/message_view_next_action"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />

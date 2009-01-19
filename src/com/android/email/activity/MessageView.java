@@ -16,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
@@ -367,22 +368,42 @@ public class MessageView extends Activity
         
         findSurroundingMessagesUid();
 
-        /*
-         * Next and Previous Message are not shown in landscape mode, so
-         * we need to check before we use them.
-         */
         if (next != null && previous != null) {
             next.setOnClickListener(this);
             previous.setOnClickListener(this);
 
 
-            previous.setVisibility(mPreviousMessageUid != null ? View.VISIBLE : View.GONE);
-            next.setVisibility(mNextMessageUid != null ? View.VISIBLE : View.GONE);
+           // previous.setVisibility(mPreviousMessageUid != null ? View.VISIBLE : View.GONE);
+            previous.setEnabled(mPreviousMessageUid != null);
+            
+            //next.setVisibility(mNextMessageUid != null ? View.VISIBLE : View.GONE);
+            next.setEnabled(mNextMessageUid != null );
 
             boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
             if (goNext) {
                 next.requestFocus();
             }
+        }
+        if (mAccount.isHideMessageViewButtons())
+        {
+          final Configuration config = this.getResources().getConfiguration();
+//          Configuration config = new Configuration();
+//          android.provider.Settings.System.getConfiguration(getContentResolver(), config);
+          if (config.keyboardHidden == Configuration.KEYBOARDHIDDEN_NO )
+          {
+            View bottomButtons = findViewById(R.id.bottom_buttons);
+            if (bottomButtons != null) {
+              bottomButtons.setVisibility(View.GONE);
+            }
+          }
+          
+          
+          
+//          View topButtons = findViewById(R.id.top_buttons);
+//          if (topButtons != null) {
+//            topButtons.setVisibility(View.GONE);
+//          }
+          
         }
 
         MessagingController.getInstance(getApplication()).addListener(mListener);
@@ -415,11 +436,11 @@ public class MessageView extends Activity
             String messageUid = mFolderUids.get(i);
             if (messageUid.equals(mMessageUid)) {
                 if (i != 0) {
-                    mPreviousMessageUid = mFolderUids.get(i - 1);
+                    mNextMessageUid = mFolderUids.get(i - 1);
                 }
 
                 if (i != count - 1) {
-                    mNextMessageUid = mFolderUids.get(i + 1);
+                    mPreviousMessageUid = mFolderUids.get(i + 1);
                 }
                 break;
             }
@@ -439,10 +460,12 @@ public class MessageView extends Activity
 
     private void onDelete() {
         if (mMessage != null) {
-           
+           Message messageToDelete = mMessage;
+           String folderForDelete = mFolder;
+           Account accountForDelete = mAccount;
 
             // Remove this message's Uid locally
-            mFolderUids.remove(mMessage.getUid());
+            mFolderUids.remove(messageToDelete.getUid());
             
            findSurroundingMessagesUid();
             
@@ -450,37 +473,25 @@ public class MessageView extends Activity
             {
               public void messageDeleted(Account account, String folder, Message message)
               {
-            //    Toast.makeText(MessageView.this, R.string.message_deleted_toast, Toast.LENGTH_SHORT).show();
-                
-                // Check if we have previous/next messages available before choosing
-                // which one to display
-                if (mPreviousMessageUid != null) {
+                if (mNextMessageUid != null) {
+                  onNext();
+                }
+                else if (mPreviousMessageUid != null) {
                     onPrevious();
-                } else if (mNextMessageUid != null) {
-                    onNext();
                 } else {
                     finish();
                 }
               }
             };
-            MessagingListener waitListener = null;
-            if (mPreviousMessageUid == null && mNextMessageUid == null)
-            {
-              // If we have no more messages to view, force the delete to be synchronous, so that
-              // when we return to the list, all of the localStore operations have completed.
-              waitListener = listener;
-            }
-            else
-            {
-              listener.messageDeleted(mAccount, mFolder, mMessage);
-            }
+            MessagingListener waitListener = listener;
             
             MessagingController.getInstance(getApplication()).deleteMessage(
-                mAccount,
-                mFolder,
-                mMessage,
+                accountForDelete,
+                folderForDelete,
+                messageToDelete,
                 waitListener);
-           
+            
+  
         }
     }
 

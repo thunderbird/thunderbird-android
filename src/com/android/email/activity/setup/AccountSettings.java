@@ -27,6 +27,7 @@ public class AccountSettings extends PreferenceActivity {
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
+    private static final String PREFERENCE_HIDE_BUTTONS = "hide_buttons";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
@@ -44,6 +45,7 @@ public class AccountSettings extends PreferenceActivity {
     private ListPreference mDisplayCount;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
+    private CheckBoxPreference mAccountHideButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
     private RingtonePreference mAccountRingtone;
@@ -150,6 +152,10 @@ public class AccountSettings extends PreferenceActivity {
         mAccountDefault.setChecked(
                 mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
 
+        mAccountHideButtons = (CheckBoxPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
+        mAccountHideButtons.setChecked(mAccount.isHideMessageViewButtons());
+
+        
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
         mAccountNotify.setChecked(mAccount.isNotifyNewMail());
 
@@ -213,6 +219,7 @@ public class AccountSettings extends PreferenceActivity {
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));
+        mAccount.setHideMessageViewButtons(mAccountHideButtons.isChecked());
         mAccount.save(Preferences.getPreferences(this));
         Email.setServicesEnabled(this);
         // TODO: refresh folder list here
