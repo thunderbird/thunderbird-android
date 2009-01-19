@@ -149,7 +149,6 @@ public class MessageView extends Activity
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P:
             { onPrevious(); return true; }
-            case KeyEvent.KEYCODE_SPACE:
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K: { onNext(); return true; }
             case KeyEvent.KEYCODE_Z: { if (event.isShiftPressed()) {
