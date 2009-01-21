@@ -84,6 +84,7 @@ public class WebDavStore extends Store {
     private String mPassword; /* Stores the password for authentications */
     private String mUrl;      /* Stores the base URL for the server */
     private String mHost;     /* Stores the host name for the server */
+    private String mPath;     /* Stores the path for the server */
     private URI mUri;         /* Stores the Uniform Resource Indicator with all connection info */
 
     private CookieStore mAuthCookies; /* Stores cookies from authentication */
@@ -133,13 +134,18 @@ public class WebDavStore extends Store {
             }
         }
 
+        mPath = mUri.getPath();
+        if (mPath == null) {
+            mPath = "";
+        }
+        
         if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED ||
             mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
             mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL ||
             mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
-            this.mUrl = "https://" + mHost + ":" + mUri.getPort();
+            this.mUrl = "https://" + mHost + ":" + mUri.getPort() + mPath;
         } else {
-            this.mUrl = "http://" + mHost + ":" + mUri.getPort();
+            this.mUrl = "http://" + mHost + ":" + mUri.getPort() + mPath;
         }
 
         if (mUri.getUserInfo() != null) {

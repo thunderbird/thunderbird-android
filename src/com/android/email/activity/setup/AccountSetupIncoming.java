@@ -60,6 +60,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     private Spinner mSecurityTypeView;
     private Spinner mDeletePolicyView;
     private EditText mImapPathPrefixView;
+    private EditText mWebdavPathPrefixView;
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
@@ -91,6 +92,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
         mDeletePolicyView = (Spinner)findViewById(R.id.account_delete_policy);
         mImapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
+        mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
         mNextButton = (Button)findViewById(R.id.next);
 
         mNextButton.setOnClickListener(this);
@@ -203,6 +205,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 mAccountSchemes = popSchemes;
 
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
             } else if (uri.getScheme().startsWith("imap")) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
                 mAccountPorts = imapPorts;
@@ -211,6 +214,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 if (uri.getPath() != null && uri.getPath().length() > 0) {
                     mImapPathPrefixView.setText(uri.getPath().substring(1));
                 }
+                findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
             } else if (uri.getScheme().startsWith("webdav")) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mAccountPorts = webdavPorts;
@@ -218,6 +222,9 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
 
                 /** Hide the unnecessary fields */
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                if (uri.getPath() != null && uri.getPath().length() > 0) {
+                    mWebdavPathPrefixView.setText(uri.getPath().substring(1));
+                }
             } else {
                 throw new Error("Unknown account type: " + mAccount.getStoreUri());
             }
@@ -311,7 +318,10 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     		String path = null;
     		if (mAccountSchemes[securityType].startsWith("imap")) {
     			path = "/" + mImapPathPrefixView.getText();
-    		}
+    		} else if (mAccountSchemes[securityType].startsWith("webdav")) {
+                    path = "/" + mWebdavPathPrefixView.getText();
+                }
+                
     		URI uri = new URI(
     				mAccountSchemes[securityType],
     				mUsernameView.getText() + ":" + mPasswordView.getText(),

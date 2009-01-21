@@ -99,8 +99,19 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:text="@string/account_setup_incoming_webdav_path_prefix_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary" />
+            <EditText
+                android:id="@+id/webdav_path_prefix"
+                android:hint="@string/account_setup_incoming_imap_path_prefix_hint"
+                android:singleLine="true"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" />
         </LinearLayout>
-
         <View
             android:layout_width="fill_parent"
             android:layout_height="0px"
