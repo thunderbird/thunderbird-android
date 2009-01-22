@@ -509,7 +509,7 @@ public class WebDavStore extends Store {
             ArrayList<BasicNameValuePair> pairs = new ArrayList();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("password", password));
-            pairs.add(new BasicNameValuePair("destination", finalUrl + "/exchange/" +username+"/"));
+            pairs.add(new BasicNameValuePair("destination", url));
             pairs.add(new BasicNameValuePair("flags", "0"));
             pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
             pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
