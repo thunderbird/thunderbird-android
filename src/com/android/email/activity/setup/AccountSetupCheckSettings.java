@@ -128,11 +128,11 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
                 	acceptKeyDialog(
                             R.string.account_setup_failed_dlg_certificate_message_fmt,
                             cve);
-                			//cve.getMessage() == null ? "" : cve.getMessage());
-                } catch (final MessagingException me) {
+                } catch (final Throwable t) {
                     showErrorDialog(
                             R.string.account_setup_failed_dlg_server_message_fmt,
-                            me.getMessage() == null ? "" : me.getMessage());
+                            (t.getMessage() == null ? "" : t.getMessage()));
+                	
                 }
             }
 
