@@ -998,9 +998,11 @@ public class ImapStore extends Store {
                     EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(out);
                     message.writeTo(eolOut);
                     eolOut.flush();
+                    
                     mConnection.sendCommand(
-                            String.format("APPEND \"%s\" {%d}",
+                            String.format("APPEND \"%s\" (%s) {%d}",
                                     encodeFolderName(getPrefixedName()),
+                                    combineFlags(message.getFlags()),
                                     out.getCount()), false);
                     ImapResponse response;
                     do {
@@ -1028,6 +1030,8 @@ public class ImapStore extends Store {
                     {
                     	message.setUid(newUid);
                     }
+                    
+                   
                 }
             }
             catch (IOException ioe) {
@@ -1086,32 +1090,38 @@ public class ImapStore extends Store {
             return null;
         }
 
+        private String combineFlags(Flag[] flags)
+        {
+          ArrayList<String> flagNames = new ArrayList<String>();
+          for (int i = 0, count = flags.length; i < count; i++) {
+              Flag flag = flags[i];
+              if (flag == Flag.SEEN) {
+                  flagNames.add("\\Seen");
+              }
+              else if (flag == Flag.DELETED) {
+                  flagNames.add("\\Deleted");
+              }
+              else if (flag == Flag.ANSWERED) {
+                flagNames.add("\\Answered");
+              }
+              else if (flag == Flag.FLAGGED) {
+                flagNames.add("\\Flagged");
+              }
+              
+          }
+          return Utility.combine(flagNames.toArray(new String[flagNames.size()]), ' ');
+        }
+        
+        
         @Override
 				public void setFlags(Flag[] flags, boolean value)
 				        throws MessagingException {
 				    checkOpen();
 	
-				    ArrayList<String> flagNames = new ArrayList<String>();
-				    for (int i = 0, count = flags.length; i < count; i++) {
-				        Flag flag = flags[i];
-				        if (flag == Flag.SEEN) {
-				            flagNames.add("\\Seen");
-				        }
-				        else if (flag == Flag.DELETED) {
-				            flagNames.add("\\Deleted");
-				        }
-				        else if (flag == Flag.ANSWERED) {
-                  flagNames.add("\\Answered");
-				        }
-				        else if (flag == Flag.FLAGGED) {
-                  flagNames.add("\\Flagged");
-                }
-				        
-				    }
+				   
 				    try {
 				        mConnection.executeSimpleCommand(String.format("UID STORE 1:* %sFLAGS.SILENT (%s)",
-				                value ? "+" : "-",
-				                Utility.combine(flagNames.toArray(new String[flagNames.size()]), ' ')));
+				                value ? "+" : "-", combineFlags(flags) ));
 				    }
 				    catch (IOException ioe) {
 				        throw ioExceptionHandler(mConnection, ioe);
