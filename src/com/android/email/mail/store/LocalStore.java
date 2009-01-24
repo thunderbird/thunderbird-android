@@ -1077,7 +1077,11 @@ public class LocalStore extends Store implements Serializable {
                         MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA), ',');
 
             String name = MimeUtility.getHeaderParameter(attachment.getContentType(), "name");
-
+            String contentDisposition = MimeUtility.unfoldAndDecode(attachment.getDisposition());
+            if (name == null && contentDisposition != null)
+            {
+              name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
+            }
             if (attachmentId == -1) {
                 ContentValues cv = new ContentValues();
                 cv.put("message_id", messageId);
