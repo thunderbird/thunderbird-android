@@ -7,19 +7,63 @@
     android:background="@android:color/white">
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="0dip"
+        android:layout_height="fill_parent"
         android:layout_weight="1"
         android:scrollbarStyle="outsideInset"
+        android:foregroundGravity="fill"
+        android:fillViewport="true"
         android:fadingEdge="none">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="0dip"
+            android:layout_height="fill_parent"
             android:layout_weight="1">
 
             <include layout="@layout/message_view_header" />
-
+            <View
+       	     	android:layout_width="fill_parent"
+        	 	android:layout_height="0px"
+         	 	android:layout_weight="1" /> 
+			<LinearLayout
+		    	android:id="@+id/scrolling_buttons"
+		        android:orientation="horizontal"
+		        android:layout_width="fill_parent"
+		        android:layout_height="57px"
+		        android:background="@drawable/ic_email_thread_open_bottom_default"
+		        android:gravity="bottom">
+		        <Button
+		           android:id="@+id/previous_scrolling"
+		           android:text="@string/message_view_prev_action"
+		           android:layout_height="wrap_content"
+		           android:layout_width="0dip"
+		           android:layout_weight="1" />
+		        <Button
+		            android:id="@+id/reply_scrolling"
+		            android:text="@string/reply_action"
+		            android:layout_height="wrap_content"
+		            android:layout_width="0dip"
+		            android:layout_weight="1" />
+		        <Button
+		            android:id="@+id/delete_scrolling"
+		            android:text="@string/delete_action"
+		            android:layout_height="wrap_content"
+		            android:layout_width="0dip"
+		            android:layout_weight="1" />
+		        <Button
+		            android:id="@+id/forward_scrolling"
+		            android:text="@string/forward_action"
+		            android:layout_height="wrap_content"
+		            android:layout_width="0dip"
+		            android:layout_weight="1" />
+		         <Button
+		            android:id="@+id/next_scrolling"
+		            android:text="@string/message_view_next_action"
+		            android:layout_height="wrap_content"
+		            android:layout_width="0dip"
+		            android:layout_weight="1" />
+		    </LinearLayout>
         </LinearLayout>
+      
     </ScrollView>
     <LinearLayout
     	android:id="@+id/bottom_buttons"

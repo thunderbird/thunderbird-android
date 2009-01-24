@@ -38,10 +38,12 @@
             android:entryValues="@array/account_settings_display_count_values"
             android:dialogTitle="@string/account_settings_mail_display_count_label" />
 
-       <CheckBoxPreference
-            android:key="hide_buttons"
+       <ListPreference
+            android:key="hide_buttons_enum"
             android:title="@string/account_settings_hide_buttons_label"
-            android:summary="@string/account_settings_hide_buttons_summary" />
+            android:entries="@array/account_settings_hide_buttons_entries"
+            android:entryValues="@array/account_settings_hide_buttons_values"
+            android:dialogTitle="@string/account_settings_hide_buttons_label" />
 
 	   	</PreferenceCategory>
 	

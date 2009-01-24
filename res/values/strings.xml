@@ -282,8 +282,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_settings_notify_sync_summary">Notify in status bar while email is checked</string>
     <string name="account_settings_show_combined_label">Show combined Inbox</string>
     
-    <string name="account_settings_hide_buttons_label">Hide buttons</string>
-    <string name="account_settings_hide_buttons_summary">While viewing message if keyboard is available</string>
+    <string name="account_settings_hide_buttons_label">Scroll navigation buttons</string>
+    <string name="account_settings_hide_buttons_never">Never</string>
+    <string name="account_settings_hide_buttons_keyboard_avail">When keyboard is available</string>
+    <string name="account_settings_hide_buttons_always">Always</string>
     
     <string name="account_settings_display_sync">Display and synchronization</string>
     
@@ -364,6 +366,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     Message\u000AK, N - Next Message\u000AZ - Zoom Out\u000AShift-Z -
     Zoom In\u000aG - Flag</string>
     <string name="message_list_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\\u000aG - Flagu000AQ
+    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aG - Flag\u000AQ
     - Return to Accounts</string>
 </resources>

@@ -52,10 +52,14 @@ public class Account implements Serializable {
     boolean mVibrate;
     String mRingtoneUri;
     boolean mNotifySync;
-    boolean mHideMessageViewButtons = false;
+    HideButtons mHideMessageViewButtons;
     
     public enum FolderMode {
     	ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
+    }
+    
+    public enum HideButtons {
+      NEVER, ALWAYS, KEYBOARD_AVAILABLE;
     }
 
     /**
@@ -80,6 +84,7 @@ public class Account implements Serializable {
         mVibrate = false;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
         mFolderSyncMode = FolderMode.FIRST_CLASS;
+        mHideMessageViewButtons = HideButtons.NEVER;
         mRingtoneUri = "content://settings/system/notification_sound";
     }
 
@@ -122,7 +127,17 @@ public class Account implements Serializable {
                 "Outbox");
         mAccountNumber = preferences.mSharedPreferences.getInt(mUuid + ".accountNumber", 0);
         mVibrate = preferences.mSharedPreferences.getBoolean(mUuid + ".vibrate", false);
-        mHideMessageViewButtons = preferences.mSharedPreferences.getBoolean(mUuid + ".hideButtons", false);
+
+        try
+        {
+          mHideMessageViewButtons = HideButtons.valueOf(preferences.mSharedPreferences.getString(mUuid + ".hideButtonsEnum", 
+              HideButtons.NEVER.name()));
+        }
+        catch (Exception e)
+        {
+          mHideMessageViewButtons = HideButtons.NEVER;
+        }
+
         mRingtoneUri = preferences.mSharedPreferences.getString(mUuid  + ".ringtone", 
                 "content://settings/system/notification_sound");
         try
@@ -260,7 +275,7 @@ public class Account implements Serializable {
         editor.remove(mUuid + ".lastFullSync");
         editor.remove(mUuid + ".folderDisplayMode");
         editor.remove(mUuid + ".folderSyncMode");
-        editor.remove(mUuid + ".hideButtons");
+        editor.remove(mUuid + ".hideButtonsEnum");
         editor.commit();
     }
 
@@ -322,7 +337,7 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".outboxFolderName", mOutboxFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
         editor.putBoolean(mUuid + ".vibrate", mVibrate);
-        editor.putBoolean(mUuid + ".hideButtons", mHideMessageViewButtons);
+        editor.putString(mUuid + ".hideButtonsEnum", mHideMessageViewButtons.name());
         editor.putString(mUuid + ".ringtone", mRingtoneUri);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
@@ -524,12 +539,12 @@ public class Account implements Serializable {
       this.mNotifySync = showOngoing;
     }
 
-    public boolean isHideMessageViewButtons()
+    public HideButtons getHideMessageViewButtons()
     {
       return mHideMessageViewButtons;
     }
 
-    public void setHideMessageViewButtons(boolean hideMessageViewButtons)
+    public void setHideMessageViewButtons(HideButtons hideMessageViewButtons)
     {
       mHideMessageViewButtons = hideMessageViewButtons;
     }

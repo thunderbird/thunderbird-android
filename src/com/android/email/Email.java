@@ -148,6 +148,8 @@ public class Email extends Application {
     public static final String BACKUP_DATE_FORMAT = "MM-dd-yyyy";
     public static final String TIME_FORMAT_12 = "h:mm a";
     public static final String TIME_FORMAT_24 = "H:mm";
+    
+    public static final int FLAGGED_COLOR = 0xffff4444;
 
     /**
      * Called throughout the application when the number of accounts has changed. This method

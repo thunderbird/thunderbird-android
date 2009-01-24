@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/forward"
-        android:alphabeticShortcut="f"
-        android:title="@string/forward_action"
-        android:icon="@drawable/ic_menu_forward_mail"
-    />
-    <item
         android:id="@+id/reply"
         android:alphabeticShortcut="r"
         android:title="@string/reply_action"
@@ -19,6 +13,12 @@
         android:icon="@drawable/ic_menu_reply_all"
     />
     <item
+        android:id="@+id/forward"
+        android:alphabeticShortcut="f"
+        android:title="@string/forward_action"
+        android:icon="@drawable/ic_menu_forward_mail"
+    />
+    <item
         android:id="@+id/mark_as_unread"
         android:alphabeticShortcut="u"
         android:title="@string/mark_as_unread_action"
@@ -29,6 +29,12 @@
         android:alphabeticShortcut="q"
         android:title="@string/delete_action"
         android:icon="@drawable/ic_menu_delete"
+    />
+     <item
+        android:id="@+id/flag"
+        android:alphabeticShortcut="s"
+        android:title="@string/flag_action"
+        android:icon="@drawable/ic_menu_forward_mail"
     />
     <item
         android:id="@+id/send_alternate"

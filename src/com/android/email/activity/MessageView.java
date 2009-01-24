@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
@@ -97,6 +98,8 @@ public class MessageView extends Activity
 
     private DateFormat dateFormat = null;
     private DateFormat timeFormat = null;
+    
+    private Menu optionsMenu = null;
     
     
     private DateFormat getDateFormat()
@@ -178,6 +181,8 @@ public class MessageView extends Activity
         private static final int MSG_ATTACHMENT_NOT_SAVED = 8;
         private static final int MSG_SHOW_SHOW_PICTURES = 9;
         private static final int MSG_FETCHING_ATTACHMENT = 10;
+        private static final int FLAG_FLAGGED = 1;
+        private static final int FLAG_ANSWERED = 2;
 
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -204,6 +209,22 @@ public class MessageView extends Activity
                     mDateView.setText(values[2]);
                     mToView.setText(values[3]);
                     mAttachmentIcon.setVisibility(msg.arg1 == 1 ? View.VISIBLE : View.GONE);
+                    if ((msg.arg2 & FLAG_FLAGGED) != 0) {
+                      mSubjectView.setTextColor(Email.FLAGGED_COLOR);
+                    }
+                    else {
+                      mSubjectView.setTextColor(0xff000000);
+                    }
+                    if ((msg.arg2 & FLAG_ANSWERED) != 0) {
+                     Drawable answeredIcon = getResources().getDrawable(
+                          R.drawable.ic_mms_answered_small);
+                     mSubjectView.setCompoundDrawablesWithIntrinsicBounds(
+                          answeredIcon, // left 
+                              null, // top
+                              null, // right 
+                              null); // bottom
+                    }
+                    
                     break;
                 case MSG_NETWORK_ERROR:
                     Toast.makeText(MessageView.this,
@@ -258,10 +279,15 @@ public class MessageView extends Activity
                 String from,
                 String date,
                 String to,
-                boolean hasAttachments) {
+                boolean hasAttachments,
+                boolean flagged,
+                boolean seen) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_SET_HEADERS;
             msg.arg1 = hasAttachments ? 1 : 0;
+            msg.arg2 += (flagged ? FLAG_FLAGGED : 0);
+            msg.arg2 += (seen ? FLAG_ANSWERED : 0);
+           
             msg.obj = new String[] { subject, from, date, to };
             sendMessage(msg);
         }
@@ -345,8 +371,19 @@ public class MessageView extends Activity
         mAttachmentIcon.setVisibility(View.GONE);
 
         setOnClickListener(R.id.reply);
+        setOnClickListener(R.id.reply_all);
         setOnClickListener(R.id.delete);
         setOnClickListener(R.id.forward);
+        setOnClickListener(R.id.next);
+        setOnClickListener(R.id.previous);
+ 
+        setOnClickListener(R.id.reply_scrolling);
+ //       setOnClickListener(R.id.reply_all_scrolling);
+        setOnClickListener(R.id.delete_scrolling);
+        setOnClickListener(R.id.forward_scrolling);
+        setOnClickListener(R.id.next_scrolling);
+        setOnClickListener(R.id.previous_scrolling);
+
         setOnClickListener(R.id.show_pictures);
 
         // UrlInterceptRegistry.registerHandler(this);
@@ -366,45 +403,53 @@ public class MessageView extends Activity
         View previous = findViewById(R.id.previous);
         
         findSurroundingMessagesUid();
+       
+        setOnClickListener(R.id.next);
+        setOnClickListener(R.id.previous);
 
-        if (next != null && previous != null) {
-            next.setOnClickListener(this);
-            previous.setOnClickListener(this);
-
-
-           // previous.setVisibility(mPreviousMessageUid != null ? View.VISIBLE : View.GONE);
-            previous.setEnabled(mPreviousMessageUid != null);
-            
-            //next.setVisibility(mNextMessageUid != null ? View.VISIBLE : View.GONE);
-            next.setEnabled(mNextMessageUid != null );
-
-            boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
-            if (goNext) {
-                next.requestFocus();
-            }
+        next.setEnabled(mNextMessageUid != null );
+        previous.setEnabled(mPreviousMessageUid != null);
+ 
+        View next_scrolling = findViewById(R.id.next_scrolling);
+        
+        if (next_scrolling != null) {
+          next_scrolling.setEnabled(mNextMessageUid != null );
         }
-        if (mAccount.isHideMessageViewButtons())
+        
+        View previous_scrolling = findViewById(R.id.previous_scrolling);
+        if (previous_scrolling != null) {
+          previous_scrolling.setEnabled(mPreviousMessageUid != null);
+                  
+        }
+
+        boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
+        if (goNext) {
+            next.requestFocus();
+        }
+        
+        Account.HideButtons hideButtons = mAccount.getHideMessageViewButtons();
+        
+        if (Account.HideButtons.ALWAYS == hideButtons)
         {
-          final Configuration config = this.getResources().getConfiguration();
-//          Configuration config = new Configuration();
-//          android.provider.Settings.System.getConfiguration(getContentResolver(), config);
-          if (config.keyboardHidden == Configuration.KEYBOARDHIDDEN_NO )
-          {
-            View bottomButtons = findViewById(R.id.bottom_buttons);
-            if (bottomButtons != null) {
-              bottomButtons.setVisibility(View.GONE);
-            }
-          }
-          
-          
-          
-//          View topButtons = findViewById(R.id.top_buttons);
-//          if (topButtons != null) {
-//            topButtons.setVisibility(View.GONE);
-//          }
-          
+          hideButtons();
         }
-
+        else if (Account.HideButtons.NEVER == hideButtons)
+        {
+          showButtons();
+        }
+        else // Account.HideButtons.KEYBOARD_AVAIL
+        {
+            final Configuration config = this.getResources().getConfiguration();
+            if (config.keyboardHidden == Configuration.KEYBOARDHIDDEN_NO )
+            {
+              hideButtons();
+            }
+            else
+            {
+              showButtons();
+            }
+        }
+             
         MessagingController.getInstance(getApplication()).addListener(mListener);
         new Thread() {
             public void run() {
@@ -420,6 +465,21 @@ public class MessageView extends Activity
             }
         }.start();
     }
+  private void showButtons()
+  {
+    View buttons = findViewById(R.id.scrolling_buttons);
+    if (buttons != null) {
+      buttons.setVisibility(View.GONE);
+    }
+  }
+  
+  private void hideButtons()
+  {
+    View buttons = findViewById(R.id.bottom_buttons);
+    if (buttons != null) {
+      buttons.setVisibility(View.GONE);
+    }
+  }
     
     private void setOnClickListener(int viewCode)
     {
@@ -456,7 +516,7 @@ public class MessageView extends Activity
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
-
+    
     private void onDelete() {
         if (mMessage != null) {
            Message messageToDelete = mMessage;
@@ -522,6 +582,8 @@ public class MessageView extends Activity
         try
         {
           mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
+          setHeaders(mAccount, mMessage.getFolder().getName(), mMessage.getUid(), mMessage);
+          setMenuFlag();
         }
         catch (MessagingException me)
         {
@@ -640,21 +702,26 @@ public class MessageView extends Activity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.reply:
+            case R.id.reply_scrolling:
                 onReply();
                 break;
             case R.id.reply_all:
               onReplyAll();
               break;
             case R.id.delete:
+            case R.id.delete_scrolling:
                 onDelete();
                 break;
             case R.id.forward:
+            case R.id.forward_scrolling:
                 onForward();
                 break;
             case R.id.next:
+            case R.id.next_scrolling:
                 onNext();
                 break;
             case R.id.previous:
+            case R.id.previous_scrolling:
                 onPrevious();
                 break;
             case R.id.download:
@@ -689,6 +756,9 @@ public class MessageView extends Activity
             case R.id.mark_as_unread:
                 onMarkAsUnread();
                 break;
+            case R.id.flag:
+              onFlag();
+              break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -698,7 +768,22 @@ public class MessageView extends Activity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_view_option, menu);
+        optionsMenu = menu;
+        setMenuFlag();
         return true;
+    }
+    
+    private void setMenuFlag()
+    {
+      Menu menu = optionsMenu;
+      if (menu != null)
+      {
+        MenuItem flagItem = menu.findItem(R.id.flag);
+        if (flagItem != null)
+        {
+          flagItem.setTitle((mMessage.isSet(Flag.FLAGGED) ? R.string.unflag_action : R.string.flag_action));
+        }
+      }
     }
 
     public CacheResult service(String url, Map<String, String> headers) {
@@ -831,6 +916,25 @@ public class MessageView extends Activity
             }
         }
     }
+    
+    private void setHeaders(Account account, String folder, String uid,
+                final Message message) throws MessagingException
+    {
+      String subjectText = message.getSubject();
+      String fromText = Address.toFriendly(message.getFrom());
+      String dateText = Utility.isDateToday(message.getSentDate()) ?
+              getTimeFormat().format(message.getSentDate()) :
+                  getDateFormat().format(message.getSentDate());
+      String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
+      boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
+      mHandler.setHeaders(subjectText,
+              fromText,
+              dateText,
+              toText,
+              hasAttachments,
+              message.isSet(Flag.FLAGGED),
+              message.isSet(Flag.ANSWERED));
+    }
 
     class Listener extends MessagingListener {
 
@@ -839,18 +943,7 @@ public class MessageView extends Activity
                 final Message message) {
             MessageView.this.mMessage = message;
             try {
-                String subjectText = message.getSubject();
-                String fromText = Address.toFriendly(message.getFrom());
-                String dateText = Utility.isDateToday(message.getSentDate()) ?
-                        getTimeFormat().format(message.getSentDate()) :
-                            getDateFormat().format(message.getSentDate());
-                String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
-                boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
-                mHandler.setHeaders(subjectText,
-                        fromText,
-                        dateText,
-                        toText,
-                        hasAttachments);
+                setHeaders(account, folder, uid, message);
             }
             catch (MessagingException me) {
                 if (Config.LOGV) {
