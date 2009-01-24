@@ -87,6 +87,8 @@ public class MessagingController implements Runnable {
 
     private static final String PENDING_COMMAND_TRASH =
         "com.android.email.MessagingController.trash";
+    private static final String PENDING_COMMAND_EMPTY_TRASH =
+      "com.android.email.MessagingController.emptyTrash";
     private static final String PENDING_COMMAND_SET_FLAG =
         "com.android.email.MessagingController.setFlag";
     private static final String PENDING_COMMAND_APPEND =
@@ -176,6 +178,7 @@ public class MessagingController implements Runnable {
     public void run() {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
         while (true) {
+          String commandDescription = null;
             try {
                 Command command = mCommands.poll();
                 if (command == null)
@@ -189,19 +192,21 @@ public class MessagingController implements Runnable {
                 
                 if (command != null)
                 {
-	                if (command.listener == null || mListeners.contains(command.listener)) {
-	                    mBusy = true;
-	                    command.runnable.run();
-	                    for (MessagingListener l : mListeners) {
-	                        l.controllerCommandCompleted(mCommands.size() > 0);
-	                    }
-	                }
-                }
+                  commandDescription = command.description;
+                  Log.d(Email.LOG_TAG, "Running background command '" + command.description + "'");
+                  mBusy = true;
+                  command.runnable.run();
+                  Log.d(Email.LOG_TAG, "Background command '" + command.description + "' completed");
+                  for (MessagingListener l : getListeners()) {
+                      l.controllerCommandCompleted(mCommands.size() > 0);
+                  }
+                  if (command.listener != null && !mListeners.contains(command.listener)) {
+                    command.listener.controllerCommandCompleted(mCommands.size() > 0);
+                  }
+	              }
             }
             catch (Exception e) {
-                if (Config.LOGV) {
-                    Log.v(Email.LOG_TAG, "Error running command", e);
-                }
+                Log.e(Email.LOG_TAG, "Error running command '" + commandDescription + "'", e);
             }
             mBusy = false;
         }
@@ -1058,6 +1063,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
         {
 	        for (PendingCommand command : commands) {
 	        	processingCommand = command;
+	        	Log.d(Email.LOG_TAG, "Processing pending command '" + command + "'");
 	            /*
 	             * We specifically do not catch any exceptions here. If a command fails it is
 	             * most likely due to a server or IO error and it must be retried before any
@@ -1075,14 +1081,19 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	            else if (PENDING_COMMAND_TRASH.equals(command.command)) {
 	                processPendingTrash(command, account);
 	            }
+	            else if (PENDING_COMMAND_EMPTY_TRASH.equals(command.command)) {
+                processPendingEmptyTrash(command, account);
+	            }
 	            localStore.removePendingCommand(command);
+	            Log.d(Email.LOG_TAG, "Done processing pending command '" + command + "'");
+
 	        }
         }
         catch (MessagingException me)
         {
           addErrorMessage(account, me);
 
-        	Log.e(Email.LOG_TAG, "Could not process command " + processingCommand, me);
+        	Log.e(Email.LOG_TAG, "Could not process command '" + processingCommand + "'", me);
         	throw me;
         }
     }
@@ -1458,7 +1469,9 @@ s             * critical data as fast as possible, and then we'll fill in the de
         final String folder,
         final String uid,
         final Flag flag,
-        boolean newState) {
+        final boolean newState) {
+      // TODO: put this into the background, but right now that causes odd behavior
+      // because the FolderMessageList doesn't have its own cache of the flag states
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder localFolder = localStore.getFolder(folder);
@@ -1515,6 +1528,11 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
                     Message message = localFolder.getMessage(uid);
 
+                    // This is a view message request, so mark it read
+                    if (!message.isSet(Flag.SEEN)) {
+                        markMessageRead(account, folder, uid, true);
+                    }
+
                     if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
                         /*
                          * If the message has been synchronized since we were called we'll
@@ -1555,11 +1573,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     message = localFolder.getMessage(uid);
                     localFolder.fetch(new Message[] { message }, fp, null);
 
-                    // This is a view message request, so mark it read
-                    if (!message.isSet(Flag.SEEN)) {
-                        markMessageRead(account, folder, uid, true);
-                    }
-
+ 
                     // Mark that this message is now fully synched
                     message.setFlag(Flag.X_DOWNLOADED_FULL, true);
 
@@ -1594,19 +1608,19 @@ s             * critical data as fast as possible, and then we'll fill in the de
             localFolder.open(OpenMode.READ_WRITE);
 
             Message message = localFolder.getMessage(uid);
-
+            
+            if (!message.isSet(Flag.SEEN)) {
+              markMessageRead(account, folder, uid, true);
+            }
+            
             for (MessagingListener l : getListeners()) {
                 l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
             }
-
+            
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
                 loadMessageForViewRemote(account, folder, uid, listener);
                 localFolder.close(false);
                 return;
-            }
-
-            if (!message.isSet(Flag.SEEN)) {
-                markMessageRead(account, folder, uid, true);
             }
 
             FetchProfile fp = new FetchProfile();
@@ -1821,10 +1835,11 @@ s             * critical data as fast as possible, and then we'll fill in the de
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
                         transport.sendMessage(message);
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
+                        message.setFlag(Flag.SEEN, true);
                         localFolder.copyMessages(
                                 new Message[] { message },
                                 localSentFolder);
-
+                        
                         PendingCommand command = new PendingCommand();
                         command.command = PENDING_COMMAND_APPEND;
                         command.arguments =
@@ -1984,6 +1999,18 @@ s             * critical data as fast as possible, and then we'll fill in the de
             throw new RuntimeException("Error deleting message from local store.", me);
         }
     }
+    
+    private void processPendingEmptyTrash(PendingCommand command, Account account) throws MessagingException {
+      Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+      
+      Folder remoteFolder = remoteStore.getFolder(account.getTrashFolderName());
+      if (remoteFolder.exists())
+      {
+        remoteFolder.open(OpenMode.READ_WRITE);
+        remoteFolder.setFlags(new Flag [] { Flag.DELETED }, true);
+        remoteFolder.close(true);
+      }
+    }
 
     public void emptyTrash(final Account account, MessagingListener listener) {
         put("emptyTrash", listener, new Runnable() {
@@ -1995,25 +2022,19 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
                     localFolder.close(true);
                     
-                    Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
-                    
-                    Folder remoteFolder = remoteStore.getFolder(account.getTrashFolderName());
-                    if (remoteFolder.exists())
-                    {
-	                    remoteFolder.open(OpenMode.READ_WRITE);
-	                    remoteFolder.setFlags(new Flag [] { Flag.DELETED }, true);
-	                    remoteFolder.close(true);
-                    }
-
                     for (MessagingListener l : getListeners()) {
-                        l.emptyTrashCompleted(account);
+                      l.emptyTrashCompleted(account);
                     }
+                    List<String> args = new ArrayList<String>();
+                    PendingCommand command = new PendingCommand();
+                    command.command = PENDING_COMMAND_EMPTY_TRASH;
+                    command.arguments = args.toArray(new String[0]);
+                    queuePendingCommand(account, command);
+                    processPendingCommands(account);
                 }
                 catch (Exception e) {
-                    // TODO
-                    if (Config.LOGV) {
-                        Log.v(Email.LOG_TAG, "emptyTrash");
-                    }
+                    Log.e(Email.LOG_TAG, "emptyTrash failed", e);
+                    
                     addErrorMessage(account, e);
                 }
             }

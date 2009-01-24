@@ -821,9 +821,22 @@ public class FolderMessageList extends ExpandableListActivity
   		//onRefresh(false);
 	}
 	
-	private void onEmptyTrash(Account account)
+	private void onEmptyTrash(final Account account)
 	{
-		MessagingController.getInstance(getApplication()).emptyTrash(account, null);
+	  mAdapter.removeAllMessages(account.getTrashFolderName());
+	  mHandler.dataChanged();
+	  
+	  MessagingListener listener = new MessagingListener() 
+	  {
+	    @Override
+	    public void controllerCommandCompleted(boolean moreToDo)
+	    {
+	      Log.v(Email.LOG_TAG, "Empty Trash background task completed");
+	      mAdapter.removeAllDeletedUids(account.getTrashFolderName());
+	    }
+	  };
+	  
+		MessagingController.getInstance(getApplication()).emptyTrash(account, listener);
 	}
 
 
@@ -1417,6 +1430,29 @@ public class FolderMessageList extends ExpandableListActivity
       }
 		}
 		
+		public void removeAllDeletedUids(String folder)
+		{
+		  FolderInfoHolder f = getFolder(folder);
+      if (f != null)
+      {
+        f.deletedUids.clear();
+      }
+		}
+		
+		public void removeAllMessages(String folder)
+		{
+	     FolderInfoHolder f = getFolder(folder);
+	      if (f == null)
+	      {
+	                return;
+	            }
+	      for (MessageInfoHolder m : f.messages)
+	      {
+	        removeMessage(folder, m.uid);
+	      }
+	      f.unreadMessageCount = 0;
+		}
+		
 		public void removeMessage(String folder, String messageUid)
 		{
             FolderInfoHolder f = getFolder(folder);
@@ -1754,7 +1790,7 @@ public class FolderMessageList extends ExpandableListActivity
                 
                 if (message.flagged)
                 {
-                  holder.subject.setTextColor(0xffff4444);
+                  holder.subject.setTextColor(Email.FLAGGED_COLOR);
                 }
                 else
                 {
