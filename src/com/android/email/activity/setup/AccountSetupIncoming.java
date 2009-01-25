@@ -61,6 +61,8 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     private Spinner mDeletePolicyView;
     private EditText mImapPathPrefixView;
     private EditText mWebdavPathPrefixView;
+    private EditText mWebdavAuthPathView;
+    private EditText mWebdavMailboxPathView;
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
@@ -93,6 +95,8 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
         mDeletePolicyView = (Spinner)findViewById(R.id.account_delete_policy);
         mImapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
         mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
+        mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
+        mWebdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
         mNextButton = (Button)findViewById(R.id.next);
 
         mNextButton.setOnClickListener(this);
@@ -206,6 +210,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
 
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
             } else if (uri.getScheme().startsWith("imap")) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
                 mAccountPorts = imapPorts;
@@ -215,6 +220,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                     mImapPathPrefixView.setText(uri.getPath().substring(1));
                 }
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
             } else if (uri.getScheme().startsWith("webdav")) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mAccountPorts = webdavPorts;
@@ -223,7 +229,23 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 /** Hide the unnecessary fields */
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 if (uri.getPath() != null && uri.getPath().length() > 0) {
-                    mWebdavPathPrefixView.setText(uri.getPath().substring(1));
+                    String[] pathParts = uri.getPath().split("\\|");
+
+                    for (int i = 0, count = pathParts.length; i < count; i++) {
+                        if (i == 0) {
+                            if (pathParts[0] != null) {
+                                mWebdavPathPrefixView.setText(pathParts[0].substring(1));
+                            }
+                        } else if (i == 1) {
+                            if (pathParts[1] != null) {
+                                mWebdavAuthPathView.setText(pathParts[1]);
+                            }
+                        } else if (i == 2) {
+                            if (pathParts[2] != null ) {
+                                mWebdavMailboxPathView.setText(pathParts[2]);
+                            }
+                        }
+                    }
                 }
             } else {
                 throw new Error("Unknown account type: " + mAccount.getStoreUri());
@@ -313,31 +335,33 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     }
 
     private void onNext() {
-    	int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-    	try {
-    		String path = null;
-    		if (mAccountSchemes[securityType].startsWith("imap")) {
-    			path = "/" + mImapPathPrefixView.getText();
-    		} else if (mAccountSchemes[securityType].startsWith("webdav")) {
-                    path = "/" + mWebdavPathPrefixView.getText();
-                }
-                
-    		URI uri = new URI(
-    				mAccountSchemes[securityType],
-    				mUsernameView.getText() + ":" + mPasswordView.getText(),
-    				mServerView.getText().toString(),
-    				Integer.parseInt(mPortView.getText().toString()),
-    				path, // path
-    				null, // query
-    				null);
-    		mAccount.setStoreUri(uri.toString());
-    	} catch (URISyntaxException use) {
-    		/*
-    		 * It's unrecoverable if we cannot create a URI from components that
-    		 * we validated to be safe.
-    		 */
-    		throw new Error(use);
-    	}
+        int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
+        try {
+            String path = null;
+            if (mAccountSchemes[securityType].startsWith("imap")) {
+                path = "/" + mImapPathPrefixView.getText();
+            } else if (mAccountSchemes[securityType].startsWith("webdav")) {
+                path = "/" + mWebdavPathPrefixView.getText();
+                path = path + "|" + mWebdavAuthPathView.getText();
+                path = path + "|" + mWebdavMailboxPathView.getText();
+            }
+
+            URI uri = new URI(
+                    mAccountSchemes[securityType],
+                    mUsernameView.getText() + ":" + mPasswordView.getText(),
+                    mServerView.getText().toString(),
+                    Integer.parseInt(mPortView.getText().toString()),
+                    path, // path
+                    null, // query
+                    null);
+            mAccount.setStoreUri(uri.toString());
+        } catch (URISyntaxException use) {
+            /*
+             * It's unrecoverable if we cannot create a URI from components that
+             * we validated to be safe.
+             */
+            throw new Error(use);
+        }
 
         int deleteSpinnerVal = (Integer)((SpinnerOption)mDeletePolicyView.getSelectedItem()).value;
 

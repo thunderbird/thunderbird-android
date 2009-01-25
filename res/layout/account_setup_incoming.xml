@@ -112,6 +112,36 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/webdav_path_debug_section"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="@string/account_setup_incoming_webdav_auth_path_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary" />
+            <EditText
+                android:id="@+id/webdav_auth_path"
+                android:hint="@string/account_setup_incoming_webdav_auth_path_hint"
+                android:singleLine="true"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" />
+            <TextView
+                android:text="@string/account_setup_incoming_webdav_mailbox_path_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary" />
+            <EditText
+                android:id="@+id/webdav_mailbox_path"
+                android:hint="@string/account_setup_incoming_webdav_mailbox_path_hint"
+                android:singleLine="true"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" />
+        </LinearLayout>
         <View
             android:layout_width="fill_parent"
             android:layout_height="0px"

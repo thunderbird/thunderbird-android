@@ -85,6 +85,8 @@ public class WebDavStore extends Store {
     private String mUrl;      /* Stores the base URL for the server */
     private String mHost;     /* Stores the host name for the server */
     private String mPath;     /* Stores the path for the server */
+    private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
+    private String mMailboxPath; /* Stores the user specified path to the mailbox */
     private URI mUri;         /* Stores the Uniform Resource Indicator with all connection info */
 
     private CookieStore mAuthCookies; /* Stores cookies from authentication */
@@ -134,9 +136,28 @@ public class WebDavStore extends Store {
             }
         }
 
-        mPath = mUri.getPath();
-        if (mPath == null) {
-            mPath = "";
+        String[] pathParts = mUri.getPath().split("\\|");
+
+        for (int i = 0, count = pathParts.length; i < count; i++) {
+            if (i == 0) {
+                if (pathParts[0] != null) {
+                    if (!pathParts[0].substring(1).equals("")) {
+                        mPath = pathParts[0].substring(1);
+                    } else {
+                        mPath = "";
+                    }
+                } else {
+                    mPath = "";
+                }
+            } else if (i == 1) {
+                if (pathParts[1] != null) {
+                    mAuthPath = "/" + pathParts[1];
+                }
+            } else if (i == 2) {
+                if (pathParts[2] != null) {
+                    mMailboxPath = "/" + pathParts[2];
+                }
+            }
         }
         
         if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED ||
@@ -442,11 +463,19 @@ public class WebDavStore extends Store {
      */
     public CookieStore doAuthentication(String username, String password,
                                         String url) throws IOException, MessagingException {
-        String authPath = "/exchweb/bin/auth/owaauth.dll";
+        String authPath;
         CookieStore cookies = null;
         String[] urlParts = url.split("/");
         String finalUrl = "";
         String loginUrl = new String();
+
+        if (this.mAuthPath != null &&
+            !this.mAuthPath.equals("") &&
+            !this.mAuthPath.equals("/")) {
+            authPath = this.mAuthPath;
+        } else {
+            authPath = "/exchweb/bin/auth/owaauth.dll";
+        }
 
         for (int i = 0; i <= 2; i++) {
             if (i != 0) {
@@ -471,8 +500,11 @@ public class WebDavStore extends Store {
              * This is in a separate block because I really don't like how it's done.
              * This basically scrapes the OWA login page for the form submission URL.
              * UGLY!
+             * Added an if-check to see if there's a user supplied authentication path for FBA
              */
-            {
+            if (this.mAuthPath == null ||
+                this.mAuthPath.equals("") ||
+                this.mAuthPath.equals("/")) {
                 HttpGet httpget = new HttpGet(finalUrl);
                 HttpResponse response = httpclient.execute(httpget);
                 HttpEntity entity = response.getEntity();
@@ -509,7 +541,12 @@ public class WebDavStore extends Store {
             ArrayList<BasicNameValuePair> pairs = new ArrayList();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("password", password));
-            pairs.add(new BasicNameValuePair("destination", url));
+            if (this.mMailboxPath != null &&
+                !this.mMailboxPath.equals("")) {
+                pairs.add(new BasicNameValuePair("destination", finalUrl + this.mMailboxPath));
+            } else {
+                pairs.add(new BasicNameValuePair("destination", url));
+            }
             pairs.add(new BasicNameValuePair("flags", "0"));
             pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
             pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
@@ -554,14 +591,17 @@ public class WebDavStore extends Store {
                     }
                 }
 
-                if (tempUrl.equals("")) {
+                if (this.mMailboxPath != null &&
+                    !this.mMailboxPath.equals("")) {
+                    this.mUrl = finalUrl + "/" + this.mMailboxPath + "/";
+                } else if (tempUrl.equals("")) {
                     this.mUrl = finalUrl + "/Exchange/" + this.alias + "/";
                 } else {
                     this.mUrl = tempUrl;
                 }
 
             } catch (UnsupportedEncodingException uee) {
-                Log.e(Email.LOG_TAG, "Error encoding POST data for authencation: " + uee + "\nTrace: " + processException(uee));
+                Log.e(Email.LOG_TAG, "Error encoding POST data for authentication: " + uee + "\nTrace: " + processException(uee));
             }
         } catch (SSLException e) {
             throw new CertificateValidationException(e.getMessage(), e);
