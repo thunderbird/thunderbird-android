@@ -92,13 +92,7 @@ public class WebDavTransport extends Transport {
 
     public void open() throws MessagingException {
         Log.d(Email.LOG_TAG, ">>> open called on WebDavTransport ");
-        if (store.needAuth()) {
-            store.authenticate();
-        }
-
-        if (store.getAuthCookies() == null) {
-            return;
-        }
+        store.getHttpClient();
     }
 
 //    public void sendMessage(Message message) throws MessagingException {
@@ -121,15 +115,7 @@ public class WebDavTransport extends Transport {
         Log.d(Email.LOG_TAG, ">>> sendMessage called.");
 
         DefaultHttpClient httpclient;
-		try {
-			httpclient = store.getTrustedHttpClient();
-		} catch (KeyManagementException e) {
-    		Log.e(Email.LOG_TAG, "KeyManagementException while creating HttpClient: " + e);
-    		throw new MessagingException("KeyManagementException while creating HttpClient: " + e);
-		} catch (NoSuchAlgorithmException e) {
-    		Log.e(Email.LOG_TAG, "NoSuchAlgorithmException while creating HttpClient: " + e);
-    		throw new MessagingException("NoSuchAlgorithmException while creating HttpClient: " + e);
-		}
+        httpclient = store.getHttpClient();
         HttpGeneric httpmethod;
         HttpResponse response;
         StringEntity bodyEntity;
@@ -153,7 +139,6 @@ public class WebDavTransport extends Transport {
         	message.writeTo(
         			new EOLConvertingOutputStream(
         					new BufferedOutputStream(out, 1024)));
-        	httpclient.setCookieStore(store.getAuthCookies());
 
         	bodyEntity = new StringEntity(out.toString(), "UTF-8");
         	bodyEntity.setContentType("message/rfc822");

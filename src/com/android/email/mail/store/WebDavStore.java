@@ -156,6 +156,10 @@ public class WebDavStore extends Store {
             } else if (i == 2) {
                 if (pathParts[2] != null) {
                     mMailboxPath = "/" + pathParts[2];
+                    if (mPath == null ||
+                        mPath.equals("")) {
+                        mPath = mMailboxPath;
+                    }
                 }
             }
         }
@@ -204,10 +208,7 @@ public class WebDavStore extends Store {
         /**
          * We have to check authentication here so we have the proper URL stored
          */
-        if (needAuth()) {
-            authenticate();
-        }
-
+        getHttpClient();
         messageBody = getFolderListXml();
         headers.put("Brief", "t");
         dataset = processRequest(this.mUrl, "SEARCH", messageBody, headers);
@@ -493,9 +494,8 @@ public class WebDavStore extends Store {
 
         try {
             /* Browser Client */
-            DefaultHttpClient httpclient = getTrustedHttpClient();
+            DefaultHttpClient httpclient = mHttpClient;
 
-            /* Verb Fix issue */
             /**
              * This is in a separate block because I really don't like how it's done.
              * This basically scrapes the OWA login page for the form submission URL.
@@ -572,6 +572,7 @@ public class WebDavStore extends Store {
                 }
 
                 cookies = httpclient.getCookieStore();
+
                 if (cookies == null) {
                     throw new IOException("Error during authentication: No Cookies");
                 }
@@ -605,10 +606,8 @@ public class WebDavStore extends Store {
             }
         } catch (SSLException e) {
             throw new CertificateValidationException(e.getMessage(), e);
-        } catch (GeneralSecurityException gse) {
-            throw new MessagingException(
-                            "Unable to open connection to SMTP server due to security error.", gse);
         }
+        
         return cookies;
     }
 
@@ -624,6 +623,75 @@ public class WebDavStore extends Store {
         return mUrl;
     }
 
+    public DefaultHttpClient getHttpClient() throws MessagingException {
+        SchemeRegistry reg;
+        Scheme s;
+        
+        if (mHttpClient == null) {
+            mHttpClient = new DefaultHttpClient();
+        }
+
+        reg = mHttpClient.getConnectionManager().getSchemeRegistry();
+        try {
+            s = new Scheme("https", new TrustedSocketFactory(mHost, mSecure), 443);
+        } catch (NoSuchAlgorithmException nsa) {
+            Log.e(Email.LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
+            throw new MessagingException("NoSuchAlgorithmException in getHttpClient: " + nsa);
+        } catch (KeyManagementException kme) {
+            Log.e(Email.LOG_TAG, "KeyManagementException in getHttpClient: " + kme);
+            throw new MessagingException("KeyManagementException in getHttpClient: " + kme);
+        }
+        reg.register(s);
+
+        if (needAuth()) {
+            if (!checkAuth()) {
+                try {
+                    CookieStore cookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
+                    if (cookies != null) {
+                        this.mAuthenticated = true;
+                        this.mLastAuth = System.currentTimeMillis()/1000;
+                    }
+                    mHttpClient.setCookieStore(cookies);
+                } catch (IOException ioe) {
+                    Log.e(Email.LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
+                }
+            } else {
+                Credentials creds = new UsernamePasswordCredentials(mUsername, mPassword);
+                CredentialsProvider credsProvider = mHttpClient.getCredentialsProvider();
+                credsProvider.setCredentials(new AuthScope(mHost, 80, AuthScope.ANY_REALM), creds);
+                credsProvider.setCredentials(new AuthScope(mHost, 443, AuthScope.ANY_REALM), creds);
+                credsProvider.setCredentials(new AuthScope(mHost, mUri.getPort(), AuthScope.ANY_REALM), creds);
+                mHttpClient.setCredentialsProvider(credsProvider);
+                // Assume we're authenticated and ok here since the checkAuth() was 401 and we've now set the credentials
+                this.mAuthenticated = true;
+                this.mLastAuth = System.currentTimeMillis()/1000;
+            }
+        }
+
+        return mHttpClient;
+    }
+
+    private boolean checkAuth() {
+        DefaultHttpClient httpclient = mHttpClient;
+        HttpResponse response;
+        HttpGet httpget = new HttpGet(mUrl);
+        try {
+            response = httpclient.execute(httpget);
+        } catch (IOException ioe) {
+            Log.e(Email.LOG_TAG, "Error checking authentication status");
+            return false;
+        }
+        
+        HttpEntity entity = response.getEntity();
+        int statusCode = response.getStatusLine().getStatusCode();
+
+        if (statusCode == 401) {
+            return true;
+        }
+
+        return false;
+    }
+    
     public DefaultHttpClient getTrustedHttpClient() throws KeyManagementException, NoSuchAlgorithmException{
         if (mHttpClient == null) {
             mHttpClient = new DefaultHttpClient();
@@ -663,30 +731,14 @@ public class WebDavStore extends Store {
             method == null) {
             return dataset;
         }
-        try {
-        	httpclient = getTrustedHttpClient();
-        } catch (KeyManagementException e) {
-            Log.e(Email.LOG_TAG, "Generated KeyManagementException during authentication" + processException(e));
-        	return dataset;
-        } catch (NoSuchAlgorithmException e) {
-            Log.e(Email.LOG_TAG, "Generated NoSuchAlgorithmException during authentication" + processException(e));
-        	return dataset;
-        }
-        if (needAuth()) {
-            try {
-                authenticate();
-            } catch (MessagingException e) {
-                Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + processException(e));
-            }
-        }
 
-        if (this.mAuthenticated == false ||
-            this.mAuthCookies == null) {
-            Log.e(Email.LOG_TAG, "Error during authentication");
+        try {
+            httpclient = getHttpClient();
+        } catch (MessagingException me) {
+            Log.e(Email.LOG_TAG, "Generated MessagingException getting HttpClient: " + me);
             return dataset;
         }
 
-        httpclient.setCookieStore(this.mAuthCookies);
         try {
             int statusCode = -1;
             StringEntity messageEntity = null;
@@ -808,12 +860,11 @@ public class WebDavStore extends Store {
              * but getPersonalNamespaces() isn't called again (ex. Android destroys the email client).
              * Perform an authentication to get the appropriate URLs in place again
              */
-            if (needAuth()) {
-                try {
-                    authenticate();
-                } catch (MessagingException e) {
-                    Log.e(Email.LOG_TAG, "Generated MessagingException during authentication" + processException(e));
-                }
+            try {
+                getHttpClient();
+            } catch (MessagingException me) {
+                Log.e(Email.LOG_TAG, "MessagingException during authentication for WebDavFolder: " + me);
+                return;
             }
 
             if (encodedName.equals("INBOX")) {
@@ -831,13 +882,7 @@ public class WebDavStore extends Store {
 
         @Override
         public void open(OpenMode mode) throws MessagingException {
-            if (needAuth()) {
-                authenticate();
-            }
-
-            if (WebDavStore.this.mAuthCookies == null) {
-                return;
-            }
+            getHttpClient();
 
             this.mIsOpen = true;
         }
@@ -945,15 +990,6 @@ public class WebDavStore extends Store {
             }
 
             /** Verify authentication */
-            if (needAuth()) {
-                authenticate();
-            }
-
-            if (WebDavStore.this.mAuthenticated == false ||
-                WebDavStore.this.mAuthCookies == null) {
-                return messages.toArray(new Message[] {});
-            }
-            
             messageBody = getMessagesXml();
 
             headers.put("Brief", "t");
@@ -1038,15 +1074,6 @@ public class WebDavStore extends Store {
                 return;
             }
 
-            if (needAuth()) {
-                authenticate();
-            }
-
-            if (WebDavStore.this.mAuthenticated == false ||
-                WebDavStore.this.mAuthCookies == null) {
-                return;
-            }
-
             /**
              * Fetch message flag info for the array
              */
@@ -1094,28 +1121,11 @@ public class WebDavStore extends Store {
          */
         private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines) throws MessagingException {
             DefaultHttpClient httpclient;
-            try {
-                httpclient = getTrustedHttpClient();
-            } catch (KeyManagementException e) {
-                throw new MessagingException("KeyManagement Exception in fetchMessages()."+ e.getStackTrace());
-            } catch (NoSuchAlgorithmException e) {
-                throw new MessagingException("NoSuchAlgorithm Exception in fetchMessages():" + e.getStackTrace());
-            }
-
+            httpclient = getHttpClient();
+            
             /**
              * We can't hand off to processRequest() since we need the stream to parse.
              */
-            if (needAuth()) {
-                authenticate();
-            }
-
-            if (WebDavStore.this.mAuthenticated == false ||
-                WebDavStore.this.mAuthCookies == null) {
-                throw new MessagingException("Error during authentication in fetchMessages().");
-            }
-
-            httpclient.setCookieStore(WebDavStore.this.mAuthCookies);
-            
             for (int i = 0, count = messages.length; i < count; i++) {
                 WebDavMessage wdMessage;
                 int statusCode = 0;
@@ -1315,7 +1325,6 @@ public class WebDavStore extends Store {
 
             int count = messages.length;
             for (int i = messages.length - 1; i >= 0; i--) {
-                /*            for (int i = 0, count = messages.length; i < count; i++) {*/
                 if (!(messages[i] instanceof WebDavMessage)) {
                     throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
                 }
@@ -1343,15 +1352,6 @@ public class WebDavStore extends Store {
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
                 throws MessagingException {
             String[] uids = new String[messages.length];
-            
-            if (needAuth()) {
-                authenticate();
-            }
-
-            if (WebDavStore.this.mAuthenticated == false ||
-                WebDavStore.this.mAuthCookies == null) {
-                return;
-            }
 
             for (int i = 0, count = messages.length; i < count; i++) {
                 uids[i] = messages[i].getUid();
