@@ -1910,6 +1910,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder localFolder = localStore.getFolder(folder);
+            Message lMessage = localFolder.getMessage(message.getUid());
             
             if (folder.equals(account.getTrashFolderName()))
             {
@@ -1917,7 +1918,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
               {
                 Log.d(Email.LOG_TAG, "Deleting message in trash folder, not copying");
               }
-              message.setFlag(Flag.DELETED, true);
+              lMessage.setFlag(Flag.DELETED, true);
             }
             else
             {
@@ -1936,16 +1937,17 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 fp.add(FetchProfile.Item.ENVELOPE);
                 fp.add(FetchProfile.Item.BODY);
                 // TODO: Turn the fetch/copy/delete into an atomic move
-                localFolder.fetch(new Message[] { message }, fp, null);
-                localFolder.copyMessages(new Message[] { message }, localTrashFolder);
+                localFolder.fetch(new Message[] { lMessage }, fp, null);
+                localFolder.copyMessages(new Message[] { lMessage }, localTrashFolder);
                 if (folder.equals(account.getOutboxFolderName())) {
-                  message.setFlag(Flag.X_DESTROYED, true);
+                  lMessage.setFlag(Flag.X_DESTROYED, true);
                 }
                 else {
-                  message.setFlag(Flag.DELETED, true);
+                  lMessage.setFlag(Flag.DELETED, true);
                 }
               }
             }
+            localFolder.close(false);
             if (listener != null) {
               listener.messageDeleted(account, folder, message);
             }

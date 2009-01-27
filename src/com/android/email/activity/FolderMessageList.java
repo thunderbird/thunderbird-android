@@ -1489,7 +1489,7 @@ public class FolderMessageList extends ExpandableListActivity
         private void addOrUpdateMessage(FolderInfoHolder folder, Message message,
 				boolean sort, boolean notify)
 		{
-          if (folder.deletedUids.remove(message.getUid())){
+          if (folder.deletedUids.contains(message.getUid())){
             return;
           }
             MessageInfoHolder m = getMessage(folder, message.getUid());
