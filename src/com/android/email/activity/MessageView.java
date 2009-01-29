@@ -528,27 +528,19 @@ public class MessageView extends Activity
             
            findSurroundingMessagesUid();
             
-            MessagingListener listener = new MessagingListener()
-            {
-              public void messageDeleted(Account account, String folder, Message message)
-              {
-                if (mNextMessageUid != null) {
-                  onNext();
-                }
-                else if (mPreviousMessageUid != null) {
-                    onPrevious();
-                } else {
-                    finish();
-                }
-              }
-            };
-            MessagingListener waitListener = listener;
-            
             MessagingController.getInstance(getApplication()).deleteMessage(
                 accountForDelete,
                 folderForDelete,
                 messageToDelete,
-                waitListener);
+                null);
+            if (mNextMessageUid != null) {
+              onNext();
+            }
+            else if (mPreviousMessageUid != null) {
+                onPrevious();
+            } else {
+                finish();
+            }
             
   
         }
@@ -847,12 +839,16 @@ public class MessageView extends Activity
 
     private void renderAttachments(Part part, int depth) throws MessagingException {
         String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
+        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
         String name = MimeUtility.getHeaderParameter(contentType, "name");
+        if (name == null)
+        {
+          name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
+        }
         if (name != null) {
             /*
              * We're guaranteed size because LocalStore.fetch puts it there.
              */
-            String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
             int size = Integer.parseInt(MimeUtility.getHeaderParameter(contentDisposition, "size"));
 
             Attachment attachment = new Attachment();

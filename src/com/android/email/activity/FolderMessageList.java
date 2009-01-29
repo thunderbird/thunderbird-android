@@ -395,8 +395,7 @@ public class FolderMessageList extends ExpandableListActivity
             // Lower our priority
             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             // Synchronously load the list of local messages
-            MessagingController.getInstance(getApplication()).listLocalMessages(
-					mAccount, mFolder, mAdapter.mListener);
+            
 			try
 			{
 				Store localStore = Store.getInstance(mAccount.getLocalStoreUri(),
@@ -418,7 +417,12 @@ public class FolderMessageList extends ExpandableListActivity
                 // at it's leisure
                 MessagingController.getInstance(getApplication()).synchronizeMailbox(
 						mAccount, mFolder, mAdapter.mListener);
-            }
+      }
+			else
+			{
+			  MessagingController.getInstance(getApplication()).listLocalMessages(
+	          mAccount, mFolder, mAdapter.mListener);
+			}
         }
     }
 
@@ -611,8 +615,9 @@ public class FolderMessageList extends ExpandableListActivity
 
 		final FolderInfoHolder folder = (FolderInfoHolder) mAdapter
 				.getGroup(groupPosition);
-		if (folder.messages.size() == 0)
+		if (folder.messages.size() == 0 || folder.needsRefresh)
 		{
+		  folder.needsRefresh = false;
 			new Thread(new FolderUpdateWorker(folder.name, false)).start();
         }
     }
@@ -771,24 +776,16 @@ public class FolderMessageList extends ExpandableListActivity
 		{
 		  holder.folder.unreadMessageCount--;
 		}
+		FolderInfoHolder trashHolder = mAdapter.getFolder(mAccount.getTrashFolderName());
+		if (trashHolder != null)
+		{
+		  trashHolder.needsRefresh = true;
+		}
 
     mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
-    if (holder.folder.name.equals(mAccount.getTrashFolderName()) == false) {
-      mAdapter.addOrUpdateMessage(mAccount.getTrashFolderName(), holder.message);
-    }
     
     MessagingController.getInstance(getApplication()).deleteMessage(mAccount,
-        holder.message.getFolder().getName(), holder.message, 
-        new MessagingListener() {
-      @Override
-      public void messageDeleted(Account account, String folder, Message message) {
-       if (account != mAccount) {
-         return;
-       }
-       mAdapter.removeDeletedUid(folder, message.getUid());
-      }
-    }
-    );
+        holder.message.getFolder().getName(), holder.message, null);
 
     }
 
@@ -832,7 +829,6 @@ public class FolderMessageList extends ExpandableListActivity
 	    public void controllerCommandCompleted(boolean moreToDo)
 	    {
 	      Log.v(Email.LOG_TAG, "Empty Trash background task completed");
-	      mAdapter.removeAllDeletedUids(account.getTrashFolderName());
 	    }
 	  };
 	  
@@ -1280,9 +1276,6 @@ public class FolderMessageList extends ExpandableListActivity
                     return;
                 }
 				FolderInfoHolder holder = getFolder(folder);
-//				if (holder != null) {
-//				  holder.deletedUids.clear();
-//				}
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
 			//	mHandler.folderStatus(folder, null);
@@ -1311,7 +1304,6 @@ public class FolderMessageList extends ExpandableListActivity
 				if (holder != null)
 				{
                     holder.lastChecked = 0;
-              //      holder.deletedUids.clear();
                 }
 				mHandler.folderSyncing(null);
             }
@@ -1327,7 +1319,17 @@ public class FolderMessageList extends ExpandableListActivity
                 addOrUpdateMessage(folder, message);
             }
 
+            
+            
             @Override
+              public void messageDeleted(Account account,
+                  String folder, Message message)
+            {
+              synchronizeMailboxRemovedMessage(account,
+                  folder, message);
+            }
+              
+              @Override  
 			public void synchronizeMailboxRemovedMessage(Account account,
 					String folder, Message message)
 			{
@@ -1421,23 +1423,6 @@ public class FolderMessageList extends ExpandableListActivity
 			mAnsweredIcon = getResources().getDrawable(
           R.drawable.ic_mms_answered_small);
         }
-
-		public void removeDeletedUid(String folder, String messageUid) {
-		  FolderInfoHolder f = getFolder(folder);
-      if (f != null)
-      {
-        f.deletedUids.remove(messageUid);
-      }
-		}
-		
-		public void removeAllDeletedUids(String folder)
-		{
-		  FolderInfoHolder f = getFolder(folder);
-      if (f != null)
-      {
-        f.deletedUids.clear();
-      }
-		}
 		
 		public void removeAllMessages(String folder)
 		{
@@ -1465,9 +1450,7 @@ public class FolderMessageList extends ExpandableListActivity
 			{
                 return;
             }
-			if (f.deletedUids.contains(messageUid) == false) {
-			  f.deletedUids.add(messageUid);
-			}
+			
             mHandler.removeMessage(f, m);
         }
 
@@ -1489,9 +1472,6 @@ public class FolderMessageList extends ExpandableListActivity
         private void addOrUpdateMessage(FolderInfoHolder folder, Message message,
 				boolean sort, boolean notify)
 		{
-          if (folder.deletedUids.contains(message.getUid())){
-            return;
-          }
             MessageInfoHolder m = getMessage(folder, message.getUid());
 			if (m == null)
 			{
@@ -1855,7 +1835,8 @@ public class FolderMessageList extends ExpandableListActivity
 
             public boolean lastCheckFailed;
             
-            public List<String> deletedUids = Collections.synchronizedList(new ArrayList<String>());
+            public boolean needsRefresh = false;
+            
             /**
              * Outbox is handled differently from any other folder.
              */

@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -112,8 +113,84 @@ public class MessagingController implements Runnable {
     private boolean mBusy;
     private Application mApplication;
     
+    // Key is accountUuid:folderName:messageUid   ,   value is unimportant
+    private ConcurrentHashMap<String, String> deletedUids = new ConcurrentHashMap<String, String>();
     
+    // Key is accountUuid:folderName   ,  value is a long of the highest message UID ever emptied from Trash
+    private ConcurrentHashMap<String, Long> expungedUid = new ConcurrentHashMap<String, Long>();
 
+    
+    private String createMessageKey(Account account, String folder, Message message)
+    {
+      return account.getUuid() + ":" + folder + ":" + message.getUid();
+    }
+    
+    private String createFolderKey(Account account, String folder)
+    {
+      return account.getUuid() + ":" + folder;
+    }
+    
+    private void suppressMessage(Account account, String folder, Message message)
+    {
+      
+      if (account == null || folder == null || message == null)
+      {
+        return;
+      }
+      String messKey = createMessageKey(account, folder, message);
+      Log.d(Email.LOG_TAG, "Suppressing message with key " + messKey);
+      deletedUids.put(messKey, "true");
+    }
+    
+    private void unsuppressMessage(Account account, String folder, Message message)
+    {
+      if (account == null || folder == null || message == null)
+      {
+        return;
+      }
+      String messKey = createMessageKey(account, folder, message);
+      Log.d(Email.LOG_TAG, "Unsuppressing message with key " + messKey);
+      deletedUids.remove(messKey);
+    }
+    
+    
+    private boolean isMessageSuppressed(Account account, String folder, Message message)
+    {
+      if (account == null || folder == null || message == null)
+      {
+        return false;
+      }
+      String messKey = createMessageKey(account, folder, message);
+      Log.d(Email.LOG_TAG, "Checking suppression of message with key " + messKey);
+      if (deletedUids.containsKey(messKey))
+      {
+        Log.d(Email.LOG_TAG, "Message with key " + messKey + " is suppressed");
+        return true;
+      }
+      Long expungedUidL = expungedUid.get(createFolderKey(account, folder));
+      if (expungedUidL != null)
+      {
+        long expungedUid = expungedUidL;
+        String messageUidS = message.getUid();
+        try
+        {
+          long messageUid = Long.parseLong(messageUidS);
+          if (messageUid <= expungedUid)
+          {
+            return false;
+          }
+        }
+        catch (NumberFormatException nfe)
+        {
+          // Nothing to do
+        }
+      }
+      return false;
+    }
+    
+    
+    
+    
     private MessagingController(Application application) {
         mApplication = application;
         mThread = new Thread(this);
@@ -380,7 +457,9 @@ public class MessagingController implements Runnable {
             Message[] localMessages = localFolder.getMessages(null);
             ArrayList<Message> messages = new ArrayList<Message>();
             for (Message message : localMessages) {
-                if (!message.isSet(Flag.DELETED)) {
+              
+                if (!message.isSet(Flag.DELETED) &&
+                    isMessageSuppressed(account, localFolder.getName(), message) == false) {
                     messages.add(message);
                 }
             }
@@ -689,10 +768,13 @@ s             * critical data as fast as possible, and then we'll fill in the de
                                          * (POP) may not be able to give us headers for
                                          * ENVELOPE, only size.
                                          */
+                                      if (isMessageSuppressed(account, folder, message) == false)
+                                      {
                                         for (MessagingListener l : getListeners()) {
                                             l.synchronizeMailboxNewMessage(account, folder,
                                                     localFolder.getMessage(message.getUid()));
                                         }
+                                      }
                                     }
 
                                 }
@@ -740,7 +822,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
                       messageChanged = true;
                     }
                   }
-                  if (messageChanged) {
+                  if (messageChanged && isMessageSuppressed(account, folder, localMessage) == false)
+                  {
                     for (MessagingListener l : getListeners()) {
                       l.synchronizeMailboxNewMessage(account, folder, localMessage);
                     }
@@ -825,13 +908,15 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
                         // Set a flag indicating this message has now be fully downloaded
                         localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-
-                        // Update the listener with what we've found
-                        for (MessagingListener l : getListeners()) {
-                            l.synchronizeMailboxNewMessage(
-                                    account,
-                                    folder,
-                                    localMessage);
+                        if (isMessageSuppressed(account, folder, localMessage) == false)
+                        {
+                          // Update the listener with what we've found
+                          for (MessagingListener l : getListeners()) {
+                              l.synchronizeMailboxNewMessage(
+                                      account,
+                                      folder,
+                                      localMessage);
+                          }
                         }
                     }
                     catch (MessagingException me) {
@@ -919,13 +1004,15 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     // viewed.
                     localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 }
-
-                // Update the listener with what we've found
-                for (MessagingListener l : getListeners()) {
-                    l.synchronizeMailboxNewMessage(
-                            account,
-                            folder,
-                            localFolder.getMessage(message.getUid()));
+                if (isMessageSuppressed(account, folder, message) == false)
+                {
+                  // Update the listener with what we've found
+                  for (MessagingListener l : getListeners()) {
+                      l.synchronizeMailboxNewMessage(
+                              account,
+                              folder,
+                              localFolder.getMessage(message.getUid()));
+                  }
                 }
             }
             if (Config.LOGV) {
@@ -1898,6 +1985,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
     
     public void deleteMessage(final Account account, final String folder, final Message message,
             final MessagingListener listener) {
+      suppressMessage(account, folder, message);
+      
       put("deleteMessage", null, new Runnable() {
         public void run() {
           deleteMessageSynchronous(account, folder, message, listener);
@@ -1907,53 +1996,60 @@ s             * critical data as fast as possible, and then we'll fill in the de
     
     private void deleteMessageSynchronous(final Account account, final String folder, final Message message,
         MessagingListener listener) {
+      
+      account.getUuid();
+      message.getUid();
+      
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder localFolder = localStore.getFolder(folder);
             Message lMessage = localFolder.getMessage(message.getUid());
-            
-            if (folder.equals(account.getTrashFolderName()))
+            if (lMessage != null)
             {
-              if (Config.LOGD)
-              {
-                Log.d(Email.LOG_TAG, "Deleting message in trash folder, not copying");
-              }
-              lMessage.setFlag(Flag.DELETED, true);
-            }
-            else
-            {
-              Folder localTrashFolder = localStore.getFolder(account.getTrashFolderName());
-              if (localTrashFolder.exists() == false)
-              {
-                localTrashFolder.create(Folder.FolderType.HOLDS_MESSAGES);
-              }
-              if (localTrashFolder.exists() == true)
+              if (folder.equals(account.getTrashFolderName()))
               {
                 if (Config.LOGD)
                 {
-                  Log.d(Email.LOG_TAG, "Deleting message in normal folder, copying");
+                  Log.d(Email.LOG_TAG, "Deleting message in trash folder, not copying");
                 }
-                FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.ENVELOPE);
-                fp.add(FetchProfile.Item.BODY);
-                // TODO: Turn the fetch/copy/delete into an atomic move
-                localFolder.fetch(new Message[] { lMessage }, fp, null);
-                localFolder.copyMessages(new Message[] { lMessage }, localTrashFolder);
-                if (folder.equals(account.getOutboxFolderName())) {
-                  lMessage.setFlag(Flag.X_DESTROYED, true);
+                lMessage.setFlag(Flag.DELETED, true);
+              }
+              else
+              {
+                Folder localTrashFolder = localStore.getFolder(account.getTrashFolderName());
+                if (localTrashFolder.exists() == false)
+                {
+                  localTrashFolder.create(Folder.FolderType.HOLDS_MESSAGES);
                 }
-                else {
-                  lMessage.setFlag(Flag.DELETED, true);
+                if (localTrashFolder.exists() == true)
+                {
+                  if (Config.LOGD)
+                  {
+                    Log.d(Email.LOG_TAG, "Deleting message in normal folder, copying");
+                  }
+                  FetchProfile fp = new FetchProfile();
+                  fp.add(FetchProfile.Item.ENVELOPE);
+                  fp.add(FetchProfile.Item.BODY);
+                  // TODO: Turn the fetch/copy/delete into an atomic move
+                  localFolder.fetch(new Message[] { lMessage }, fp, null);
+                  localFolder.copyMessages(new Message[] { lMessage }, localTrashFolder);
+                  if (folder.equals(account.getOutboxFolderName())) {
+                    lMessage.setFlag(Flag.X_DESTROYED, true);
+                  }
+                  else {
+                    lMessage.setFlag(Flag.DELETED, true);
+                  }
                 }
               }
             }
             localFolder.close(false);
+            unsuppressMessage(account, folder, message);
             if (listener != null) {
               listener.messageDeleted(account, folder, message);
             }
-//            for (MessagingListener l : getListeners()) {
-//              l.folderStatusChanged(account, account.getTrashFolderName());
-//          }
+            for (MessagingListener l : getListeners()) {
+              l.folderStatusChanged(account, account.getTrashFolderName());
+          }
             
             if (Config.LOGD)
           	{
