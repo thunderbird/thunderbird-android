@@ -60,6 +60,8 @@
     <string name="add_attachment_action">Add attachment</string>
     <string name="dump_settings_action">Dump settings</string>
     <string name="empty_trash_action">Empty Trash</string>
+    <string name="thread_action">Thread</string>
+    <string name="unthread_action">Unthread</string>
     <string name="about_action">About</string>
 
     <string name="accounts_context_menu_title">Account options</string>
@@ -111,6 +113,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
  * Keyboard shortcuts
  * Better IMAP support 
  * Saving attachments to SD
+ * Empty Trash
+ * Threading
  * ...and more
 \nPlease note that K-9 does not support most free hotmail accounts and, like many email clients, has some quirks when talking to Microsoft Exchange.
 \nSubmit bug reports, contribute new features and ask questions at http://code.google.com/p/k9mail
@@ -371,6 +375,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     Message\u000AK, N - Next Message\u000AZ - Zoom Out\u000AShift-Z -
     Zoom In\u000aG - Flag</string>
     <string name="message_list_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aG - Flag\u000AQ
+    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aG - Flag\u000AT - Thread\u000AQ
     - Return to Accounts</string>
 </resources>

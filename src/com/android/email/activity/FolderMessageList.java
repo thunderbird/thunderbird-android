@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.ExpandableListActivity;
 import android.app.NotificationManager;
@@ -125,6 +127,9 @@ public class FolderMessageList extends ExpandableListActivity
     private LayoutInflater mInflater;
 
     private Account mAccount;
+    
+    private Menu optionsMenu = null;
+
 
     /**
 	 * Stores the name of the folder that we want to open as soon as possible
@@ -143,6 +148,8 @@ public class FolderMessageList extends ExpandableListActivity
 	private DateFormat dateFormat = null;
 
 	private DateFormat timeFormat = null;
+	
+	private boolean thread = false;
 
 	private DateFormat getDateFormat()
 	{
@@ -527,6 +534,7 @@ public class FolderMessageList extends ExpandableListActivity
 	{
 		final int expandedGroup = savedInstanceState.getInt(
 				STATE_KEY_EXPANDED_GROUP, -1);
+		
 		if (expandedGroup >= 0 && mAdapter.getGroupCount() > expandedGroup)
 		{
             mListView.expandGroup(expandedGroup);
@@ -573,6 +581,8 @@ public class FolderMessageList extends ExpandableListActivity
 		
 		NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notifMgr.cancel(mAccount.getAccountNumber());
+    thread = MessagingController.getInstance(getApplication()).isThreading();
+
 
   }
 
@@ -630,6 +640,7 @@ public class FolderMessageList extends ExpandableListActivity
 	        case KeyEvent.KEYCODE_C: { onCompose(); return true;}
 	        case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
 	        case KeyEvent.KEYCODE_S: { onEditAccount(); return true; }
+	        case KeyEvent.KEYCODE_T: { onToggleThread(); return true; }
 	        case KeyEvent.KEYCODE_H: {
 	            Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
 	            toast.show();
@@ -769,6 +780,20 @@ public class FolderMessageList extends ExpandableListActivity
 	{
         MessageCompose.actionCompose(this, mAccount);
     }
+	
+	private void onToggleThread()
+	{
+	  thread = !thread;
+	  
+	  for (FolderInfoHolder folder : mAdapter.mFolders)
+	  { 
+  	  Collections.sort(folder.messages);
+	  }
+	  mAdapter.notifyDataSetChanged();
+	  setMenuThread();
+	  MessagingController.getInstance(getApplication()).setThreading(thread);
+	  
+	}
 
 	private void onDelete(MessageInfoHolder holder)
 	{
@@ -879,6 +904,9 @@ public class FolderMessageList extends ExpandableListActivity
             case R.id.account_settings:
                 onEditAccount();
                 return true;
+            case R.id.thread:
+              onToggleThread();
+              return true;
 			case R.id.empty_trash:
 				onEmptyTrash(mAccount);
 				return true;
@@ -893,7 +921,23 @@ public class FolderMessageList extends ExpandableListActivity
 	{
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.folder_message_list_option, menu);
+        optionsMenu = menu;
+        setMenuThread();
         return true;
+    }
+    
+    private void setMenuThread()
+    {
+      Menu menu = optionsMenu;
+      if (menu != null)
+      {
+        MenuItem threadItem = menu.findItem(R.id.thread);
+        if (threadItem != null)
+        {
+          threadItem.setTitle(thread ? R.string.unthread_action : R.string.thread_action);
+          threadItem.setIcon(thread ? R.drawable.ic_menu_unthread : R.drawable.ic_menu_thread);
+        }
+      }
     }
 
     @Override
@@ -1864,6 +1908,8 @@ public class FolderMessageList extends ExpandableListActivity
             public String date;
 
             public Date compareDate;
+            
+            public String compareSubject;
 
             public String sender;
             
@@ -1929,8 +1975,52 @@ public class FolderMessageList extends ExpandableListActivity
 
 			public int compareTo(MessageInfoHolder o)
 			{
-                return this.compareDate.compareTo(o.compareDate) * -1;
+			  if (thread)
+			  {
+  			  if (compareSubject == null)
+  			  {
+  			    compareSubject = stripPrefixes(subject).toLowerCase();
+  			  }
+  			  if (o.compareSubject == null)
+  			  {
+  			    o.compareSubject = stripPrefixes(o.subject).toLowerCase();
+  			  }
+  			  int subjCompare = this.compareSubject.compareTo(o.compareSubject);
+  			  if (subjCompare != 0)
+  			  {
+  			    return subjCompare;
+  			  }
+			  }
+			  
+        return this.compareDate.compareTo(o.compareDate) * -1;
             }
+			Pattern pattern = null;
+			String patternString = "^ *(re|fw|fwd): *";
+			private String stripPrefixes(String in)
+			{
+			  synchronized(patternString)
+			  {
+  			  if (pattern == null)
+          {
+            pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE );
+          }
+			  }
+			  Matcher matcher = pattern.matcher(in);
+			  int lastPrefix = -1;
+			  while (matcher.find())
+			  {
+			    lastPrefix = matcher.end();
+			  }
+			  if (lastPrefix > -1 && lastPrefix < in.length() - 1)
+			  {
+			    return in.substring(lastPrefix);
+			  }
+			  else
+			  {
+			    return in;
+			  }
+			}
+			
         }
 
 		class FolderViewHolder

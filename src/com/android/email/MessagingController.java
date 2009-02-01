@@ -108,6 +108,8 @@ public class MessagingController implements Runnable {
     //private Set<MessagingListener> mListeners = Collections.synchronizedSet(new HashSet<MessagingListener>());
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
     
+    private boolean threading = false;
+    
     private MessagingListener checkMailListener = null;
     
     private boolean mBusy;
@@ -2476,5 +2478,15 @@ s             * critical data as fast as possible, and then we'll fill in the de
       {
         addListener(this.checkMailListener);
       }
+    }
+
+    public boolean isThreading()
+    {
+      return threading;
+    }
+
+    public void setThreading(boolean threading)
+    {
+      this.threading = threading;
     }
 }
