@@ -221,86 +221,67 @@ public class MailService extends Service {
         
         private void checkMailDone(Context context, Account doNotUseaccount)
         {
-        	if (accountsWithNewMail.isEmpty())
-        	{
-        		return;
-        	}
-          StringBuffer notice = new StringBuffer();
-          int accountNumber = Email.FETCHING_EMAIL_NOTIFICATION_NO_ACCOUNT;
-          
-          boolean vibrate = false;
-		      String ringtone = null;
-          for (Account thisAccount : Preferences.getPreferences(context).getAccounts()) {
-          	if (thisAccount.isNotifyNewMail())
-          	{
-	          	int unreadMessageCount = 0;
-		          try
-		          {
-	            	unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
-	            	if (unreadMessageCount > 0)
-	            	{
-	            		notice.append(getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
-	            				thisAccount.getDescription()) + "\n");
-	            		if (accountNumber != Email.FETCHING_EMAIL_NOTIFICATION_MULTI_ACCOUNT_ID)   // if already set to Multi, nothing to do
-	            		{
-		            		if (accountNumber == Email.FETCHING_EMAIL_NOTIFICATION_NO_ACCOUNT)   // Haven't set to anything, yet, set to this account number
-		            		{
-		            			accountNumber = thisAccount.getAccountNumber();
-		            		}
-		            		else   // Another account was already set, so there is more than one with new mail
-		            		{
-		            			accountNumber = Email.FETCHING_EMAIL_NOTIFICATION_MULTI_ACCOUNT_ID;
-		            		}
-	            		}
-	            	}
-		          }
-		          catch (MessagingException me)
-		          {
-		          	Log.e(Email.LOG_TAG, "***** MailService *****: couldn't get unread count for account " +
-		          			thisAccount.getDescription(), me);
-		          }
-		          if (accountsWithNewMail.containsKey(thisAccount.getUuid()))
-		          {
-  		          if (ringtone == null)
-  		          {
-  		          	ringtone = thisAccount.getRingtone();
-  		          }
-  		          vibrate |= thisAccount.isVibrate();
-		          }
-          	}
-          }
-          if (notice.length() > 0)
-          {
-	          NotificationManager notifMgr = 
-	          	(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-	          
-	          Notification notif = new Notification(R.drawable.stat_notify_email_generic,
-	              getString(R.string.notification_new_title), System.currentTimeMillis());
-	          
-	          // If only one account has mail, maybe go back to the old way of targetting the account.
-	          Intent i = new Intent(context, Accounts.class);
-	          PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
-          
-				    notif.setLatestEventInfo(context, getString(R.string.notification_new_title),
-				                  notice, pi);
-		
-            Log.v(Email.LOG_TAG, "Using ringtone " + ringtone + " and vibrate = " + vibrate);
+            if (accountsWithNewMail.isEmpty())
+            {
+                return;
+            }
 
-				   // notif.defaults = Notification.DEFAULT_LIGHTS;
-				    notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
-				    if (vibrate) {
-				       notif.defaults |= Notification.DEFAULT_VIBRATE;
-				    }
-				    
-				    notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-            notif.ledARGB = Email.NOTIFICATION_LED_COLOR;
-            notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
-            notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
+            NotificationManager notifMgr =
+                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-				    notifMgr.notify(accountNumber, notif);
-				  }
+            int index = 0;
+            for (Account thisAccount : Preferences.getPreferences(context).getAccounts()) {
+                //No need to filter out accounts that do not require notification
+                //since only the one that require so are in this map
+                if (accountsWithNewMail.containsKey(thisAccount.getUuid()))
+                {
+                    String notice = null;
+                    try
+                    {
+                        int unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
+                        if (unreadMessageCount > 0)
+                        {
+                            notice = getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
+                            thisAccount.getDescription());
+                        }
+                        //Can this ever happen?
+                        else
+                        {
+                            notice = getString(R.string.notification_new_one_account_unknown_unread_count_fmt, (int)accountsWithNewMail.get(thisAccount.getUuid()), thisAccount.getDescription());
+                        }
+                    }
+                    catch (MessagingException me)
+                    {
+                        Log.e(Email.LOG_TAG, "***** MailService *****: couldn't get unread count for account " +
+                            thisAccount.getDescription(), me);
+                        notice = getString(R.string.notification_new_one_account_unknown_unread_count_fmt, (int)accountsWithNewMail.get(thisAccount.getUuid()), thisAccount.getDescription());
+                    }
 
-        }
+                    Notification notif = new Notification(R.drawable.stat_notify_email_generic,
+                        getString(R.string.notification_new_title), System.currentTimeMillis() + (index*1000));
+
+                    Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount, Email.INBOX);
+
+                    PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+
+                    notif.setLatestEventInfo(context, getString(R.string.notification_new_title), notice, pi);
+
+                    String ringtone = thisAccount.getRingtone();
+                    notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
+
+                    if (thisAccount.isVibrate()) {
+                        notif.defaults |= Notification.DEFAULT_VIBRATE;
+                    }
+
+                    notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+                    notif.ledARGB = Email.NOTIFICATION_LED_COLOR;
+                    notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
+                    notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
+
+                    notifMgr.notify(thisAccount.getAccountNumber(), notif);
+                }
+            }//for accounts
+        }//checkMailDone
         
         private void release()
         {

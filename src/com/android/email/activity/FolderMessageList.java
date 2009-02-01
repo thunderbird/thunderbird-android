@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
@@ -80,6 +81,8 @@ import com.android.email.mail.store.LocalStore;
  */
 public class FolderMessageList extends ExpandableListActivity
 {
+    private static final String INTENT_DATA_PATH_SUFFIX = "/accounts";
+    
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
@@ -453,7 +456,8 @@ public class FolderMessageList extends ExpandableListActivity
 	public static Intent actionHandleAccountIntent(Context context,
 			Account account, String initialFolder)
 	{
-        Intent intent = new Intent(context, FolderMessageList.class);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Email.INTENT_DATA_URI_PREFIX + INTENT_DATA_PATH_SUFFIX + "/" + account.getAccountNumber()), context, FolderMessageList.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_ACCOUNT, account);
         intent.putExtra(EXTRA_CLEAR_NOTIFICATION, true);
 		if (initialFolder != null)

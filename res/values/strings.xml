@@ -82,6 +82,7 @@
     <string name="notification_new_title">New email</string>
     <string name="notification_new_scrolling">New email from <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Unread (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
+    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> New Email(s) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
     <string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> accounts</string>
     <string name="notification_unsent_title">Message not sent</string>
 

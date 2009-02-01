@@ -89,6 +89,14 @@
         </activity>
         <activity
             android:name="com.android.email.activity.FolderMessageList">
+            <intent-filter>
+                <action android:name="android.intent.action.view" />
+                <data
+                    android:scheme="content"
+                    android:path="/email/accounts/*"
+                />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.android.email.activity.MessageView">
