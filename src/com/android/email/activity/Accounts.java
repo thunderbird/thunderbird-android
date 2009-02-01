@@ -84,10 +84,6 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     public void onResume() {
         super.onResume();
 
-        NotificationManager notifMgr = (NotificationManager)
-                getSystemService(Context.NOTIFICATION_SERVICE);
-        notifMgr.cancelAll();
-
         refresh();
     }
 
