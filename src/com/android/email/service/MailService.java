@@ -38,7 +38,7 @@ public class MailService extends Service {
     private static final String ACTION_CHECK_MAIL = "com.android.email.intent.action.MAIL_SERVICE_WAKEUP";
     private static final String ACTION_RESCHEDULE = "com.android.email.intent.action.MAIL_SERVICE_RESCHEDULE";
     private static final String ACTION_CANCEL = "com.android.email.intent.action.MAIL_SERVICE_CANCEL";
-    
+
     private Listener mListener = new Listener();
 
     private int mStartId;
@@ -56,7 +56,7 @@ public class MailService extends Service {
         i.setAction(MailService.ACTION_CANCEL);
         context.startService(i);
     }
-    
+
     @Override
     public void onCreate() {
     	super.onCreate();
@@ -76,13 +76,13 @@ public class MailService extends Service {
           MessagingController.getInstance(getApplication()).log("***** MailService *****: checking mail");
                 Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
             //}
-            
+
             MessagingController controller = MessagingController.getInstance(getApplication());
             Listener listener = (Listener)controller.getCheckMailListener();
             if (listener == null)
             {
               MessagingController.getInstance(getApplication()).log("***** MailService *****: starting new check");
-              
+
               mListener.wakeLockAcquire();
               controller.setCheckMailListener(mListener);
               controller.checkMail(this, null, mListener);
@@ -90,7 +90,7 @@ public class MailService extends Service {
             else
             {
               MessagingController.getInstance(getApplication()).log("***** MailService *****: renewing WakeLock");
-              
+
               listener.wakeLockAcquire();
             }
 
@@ -102,7 +102,7 @@ public class MailService extends Service {
                 Log.v(Email.LOG_TAG, "***** MailService *****: cancel");
             }
             MessagingController.getInstance(getApplication()).log("***** MailService *****: cancel");
-            
+
             cancel();
             stopSelf(startId);
         }
@@ -138,16 +138,16 @@ public class MailService extends Service {
         i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
         i.setAction(ACTION_CHECK_MAIL);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
- 
+
         int shortestInterval = -1;
-  
+
         for (Account account : Preferences.getPreferences(this).getAccounts()) {
             if (account.getAutomaticCheckIntervalMinutes() != -1
                     && (account.getAutomaticCheckIntervalMinutes() < shortestInterval || shortestInterval == -1)) {
                 shortestInterval = account.getAutomaticCheckIntervalMinutes();
             }
         }
-    
+
         if (shortestInterval == -1) {
         		Log.v(Email.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
             alarmMgr.cancel(pi);
@@ -155,14 +155,14 @@ public class MailService extends Service {
         else
         {
 	        long delay = (shortestInterval * (60 * 1000));
-	        
+
 	        long nextTime = System.currentTimeMillis() + delay;
 	        String checkString = "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime);
 	        Log.v(Email.LOG_TAG, checkString);
 	        MessagingController.getInstance(getApplication()).log(checkString);
 	        alarmMgr.set(AlarmManager.RTC_WAKEUP, nextTime, pi);
         }
-        
+
     }
 
     public IBinder onBind(Intent intent) {
@@ -172,13 +172,13 @@ public class MailService extends Service {
     class Listener extends MessagingListener {
         HashMap<String, Integer> accountsWithNewMail = new HashMap<String, Integer>();
         private WakeLock wakeLock = null;
-        
+
         // wakelock strategy is to be very conservative.  If there is any reason to release, then release
         // don't want to take the chance of running wild
         public synchronized void wakeLockAcquire()
         {
           WakeLock oldWakeLock = wakeLock;
-        	
+
          	PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         	wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
         	wakeLock.setReferenceCounted(false);
@@ -188,7 +188,7 @@ public class MailService extends Service {
          	{
          	  oldWakeLock.release();
          	}
-        	
+
         }
         public synchronized void wakeLockRelease()
         {
@@ -218,7 +218,7 @@ public class MailService extends Service {
                 accountsWithNewMail.put(account.getUuid(), numNewMessages);
             }
         }
-        
+
         private void checkMailDone(Context context, Account doNotUseaccount)
         {
             if (accountsWithNewMail.isEmpty())
@@ -259,6 +259,7 @@ public class MailService extends Service {
 
                     Notification notif = new Notification(R.drawable.stat_notify_email_generic,
                         getString(R.string.notification_new_title), System.currentTimeMillis() + (index*1000));
+                    notif.number = (int)accountsWithNewMail.get(thisAccount.getUuid());
 
                     Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount, Email.INBOX);
 
@@ -282,7 +283,7 @@ public class MailService extends Service {
                 }
             }//for accounts
         }//checkMailDone
-        
+
         private void release()
         {
           MessagingController controller = MessagingController.getInstance(getApplication());
