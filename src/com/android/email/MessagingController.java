@@ -140,7 +140,7 @@ public class MessagingController implements Runnable {
         return;
       }
       String messKey = createMessageKey(account, folder, message);
-      Log.d(Email.LOG_TAG, "Suppressing message with key " + messKey);
+     // Log.d(Email.LOG_TAG, "Suppressing message with key " + messKey);
       deletedUids.put(messKey, "true");
     }
     
@@ -151,7 +151,7 @@ public class MessagingController implements Runnable {
         return;
       }
       String messKey = createMessageKey(account, folder, message);
-      Log.d(Email.LOG_TAG, "Unsuppressing message with key " + messKey);
+      //Log.d(Email.LOG_TAG, "Unsuppressing message with key " + messKey);
       deletedUids.remove(messKey);
     }
     
@@ -163,10 +163,10 @@ public class MessagingController implements Runnable {
         return false;
       }
       String messKey = createMessageKey(account, folder, message);
-      Log.d(Email.LOG_TAG, "Checking suppression of message with key " + messKey);
+      //Log.d(Email.LOG_TAG, "Checking suppression of message with key " + messKey);
       if (deletedUids.containsKey(messKey))
       {
-        Log.d(Email.LOG_TAG, "Message with key " + messKey + " is suppressed");
+        //Log.d(Email.LOG_TAG, "Message with key " + messKey + " is suppressed");
         return true;
       }
       Long expungedUidL = expungedUid.get(createFolderKey(account, folder));
