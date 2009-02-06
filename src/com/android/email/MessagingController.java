@@ -1533,6 +1533,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
       queuePendingCommand(account, command);
       processPendingCommands(account);
     }
+    
 
     
     
@@ -1983,6 +1984,28 @@ s             * critical data as fast as possible, and then we'll fill in the de
             addErrorMessage(account, e);
 
         }
+    }
+    
+    public void getAccountUnreadCount(final Context context, final Account account, 
+        final MessagingListener l)
+    {
+      Runnable unreadRunnable = new Runnable() {
+        public void run() {
+      
+          int unreadMessageCount = 0;
+          try {
+            unreadMessageCount = account.getUnreadMessageCount(context, mApplication);
+          }
+          catch (MessagingException me) {
+              Log.e(Email.LOG_TAG, "Count not get unread count for account " + account.getDescription(),
+                  me);
+          }
+          l.accountStatusChanged(account, unreadMessageCount);
+        }
+      };
+      
+      
+      putBackground("getAccountUnread:" + account.getDescription(), l, unreadRunnable);
     }
     
     public void deleteMessage(final Account account, final String folder, final Message message,

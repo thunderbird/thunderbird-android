@@ -15,6 +15,10 @@ import com.android.email.mail.Part;
  * changes in this class.
  */
 public class MessagingListener {
+  
+    public void accountStatusChanged(Account account, int unreadMessageCount) {
+    }
+  
     public void listFoldersStarted(Account account) {
     }
 

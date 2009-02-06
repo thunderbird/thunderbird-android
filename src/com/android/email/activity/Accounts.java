@@ -1,6 +1,8 @@
 
 package com.android.email.activity;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -11,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -32,6 +35,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.MessagingController;
+import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.activity.setup.AccountSettings;
@@ -45,6 +49,7 @@ import com.android.email.mail.store.LocalStore.LocalFolder;
 
 public class Accounts extends ListActivity implements OnItemClickListener, OnClickListener {
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
+    private ConcurrentHashMap<String, Integer> unreadMessageCounts = new ConcurrentHashMap<String, Integer>();
     /**
      * Key codes used to open a debug settings screen.
      */
@@ -55,7 +60,56 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
 
     private int mSecretKeyCodeIndex = 0;
     private Account mSelectedContextAccount;
+    
+    private AccountsHandler mHandler = new AccountsHandler();
+    private AccountsAdapter mAdapter;
+    
+    class AccountsHandler extends Handler
+    {
+      private static final int DATA_CHANGED = 1;
 
+      public void handleMessage(android.os.Message msg)
+      {
+        switch (msg.what)
+        {
+          case DATA_CHANGED:
+            if (mAdapter != null)
+            {
+              mAdapter.notifyDataSetChanged();
+            }
+            break;
+          default:
+            super.handleMessage(msg);
+        }
+      }
+      
+      public void dataChanged()
+      {
+              sendEmptyMessage(DATA_CHANGED);
+      }
+
+    }
+    
+    MessagingListener mListener = new MessagingListener() {
+      @Override
+      public void accountStatusChanged(Account account, int unreadMessageCount)
+      {
+        unreadMessageCounts.put(account.getUuid(), unreadMessageCount);
+        mHandler.dataChanged();
+      }
+      
+      @Override
+      public void synchronizeMailboxFinished(
+          Account account,
+          String folder,
+          int totalMessagesInMailbox,
+          int numNewMessages) {
+        MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
+      }
+    };
+
+    private static String UNREAD_MESSAGE_COUNTS = "unreadMessageCounts";
+    private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -67,8 +121,16 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         findViewById(R.id.add_new_account).setOnClickListener(this);
         registerForContextMenu(listView);
 
-        if (icicle != null && icicle.containsKey("selectedContextAccount")) {
+        if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
             mSelectedContextAccount = (Account) icicle.getSerializable("selectedContextAccount");
+        }
+        if (icicle != null)
+        {
+          ConcurrentHashMap<String, Integer> oldUnreadMessageCounts = 
+            (ConcurrentHashMap<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
+          if (oldUnreadMessageCounts != null) {
+            unreadMessageCounts.putAll(oldUnreadMessageCounts);
+          }
         }
     }
 
@@ -76,8 +138,9 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (mSelectedContextAccount != null) {
-            outState.putSerializable("selectedContextAccount", mSelectedContextAccount);
+            outState.putSerializable(SELECTED_CONTEXT_ACCOUNT, mSelectedContextAccount);
         }
+        outState.putSerializable(UNREAD_MESSAGE_COUNTS, unreadMessageCounts);
     }
 
     @Override
@@ -85,11 +148,26 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         super.onResume();
 
         refresh();
+        MessagingController.getInstance(getApplication()).addListener(mListener);
+    }
+    
+    @Override
+    public void onPause()
+    {
+      super.onPause();
+      MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
 
     private void refresh() {
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
-        getListView().setAdapter(new AccountsAdapter(accounts));
+        mAdapter = new AccountsAdapter(accounts);
+        getListView().setAdapter(mAdapter);
+        
+        for (Account account : accounts)
+        {
+          MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
+        }
+        
     }
 
     private void onAddNewAccount() {
@@ -305,7 +383,7 @@ getPackageManager().getPackageInfo(getPackageName(), 0);
         public AccountsAdapter(Account[] accounts) {
             super(Accounts.this, 0, accounts);
         }
-
+        
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Account account = getItem(position);
@@ -329,18 +407,19 @@ getPackageManager().getPackageInfo(getPackageName(), 0);
             if (account.getEmail().equals(account.getDescription())) {
                 holder.email.setVisibility(View.GONE);
             }
-            int unreadMessageCount = 0;
-            try {
-            	unreadMessageCount = account.getUnreadMessageCount(Accounts.this, getApplication());
+
+            Integer unreadMessageCount = unreadMessageCounts.get(account.getUuid());
+            if (unreadMessageCount != null)
+            {
+              holder.newMessageCount.setText(Integer.toString(unreadMessageCount));
+              holder.newMessageCount.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
             }
-            catch (MessagingException me) {
-                /*
-                 * This is not expected to fail under normal circumstances.
-                 */
-                throw new RuntimeException("Unable to get unread count from local store.", me);
+            else
+            {
+              //holder.newMessageCount.setText("-");
+              holder.newMessageCount.setVisibility(View.GONE); 
             }
-            holder.newMessageCount.setText(Integer.toString(unreadMessageCount));
-            holder.newMessageCount.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
+            
             return view;
         }
 
