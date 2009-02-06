@@ -468,13 +468,11 @@ public class Pop3Store extends Store {
                 Integer msgNum = Integer.valueOf(uidParts[0]);
                 String msgUid = uidParts[1];
                 if (unindexedUids.contains(msgUid)) {
-                    if (Config.LOGD) {
-                        Pop3Message message = mUidToMsgMap.get(msgUid);
-                        if (message == null) {
-                            message = new Pop3Message(msgUid, this);
-                        }
-                        indexMessage(msgNum, message);
-                    }
+		    Pop3Message message = mUidToMsgMap.get(msgUid);
+		    if (message == null) {
+			message = new Pop3Message(msgUid, this);
+		    }
+		    indexMessage(msgNum, message);
                 }
             }
         }
