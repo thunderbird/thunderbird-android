@@ -108,7 +108,44 @@ public class MessagingController implements Runnable {
     //private Set<MessagingListener> mListeners = Collections.synchronizedSet(new HashSet<MessagingListener>());
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
     
-    private boolean threading = false;
+    private HashMap<SORT_TYPE, Boolean> sortAscending = new HashMap<SORT_TYPE, Boolean>();
+  
+    public enum SORT_TYPE { 
+      SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
+      SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true), 
+      SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true), 
+      SORT_UNREAD(R.string.sort_unread_first, R.string.sort_unread_last, true),
+      SORT_FLAGGED(R.string.sort_flagged_first, R.string.sort_flagged_last, true), 
+      SORT_ATTACHMENT(R.string.sort_attach_first, R.string.sort_unattached_first, true);
+      
+      private int ascendingToast;
+      private int descendingToast;
+      private boolean defaultAscending;
+      
+      SORT_TYPE(int ascending, int descending, boolean ndefaultAscending)
+      {
+        ascendingToast = ascending;
+        descendingToast = descending;
+        defaultAscending = ndefaultAscending;
+      }
+      
+      public int getToast(boolean ascending)
+      {
+        if (ascending)
+        {
+          return ascendingToast;
+        }
+        else
+        {
+          return descendingToast;
+        }
+      }
+      public boolean isDefaultAscending()
+      {
+        return defaultAscending;
+      }
+    };
+    private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
     
     private MessagingListener checkMailListener = null;
     
@@ -2503,13 +2540,28 @@ s             * critical data as fast as possible, and then we'll fill in the de
       }
     }
 
-    public boolean isThreading()
+    public SORT_TYPE getSortType()
     {
-      return threading;
+      return sortType;
     }
 
-    public void setThreading(boolean threading)
+    public void setSortType(SORT_TYPE sortType)
     {
-      this.threading = threading;
+      this.sortType = sortType;
+    }
+
+    public boolean isSortAscending(SORT_TYPE sortType)
+    {
+      Boolean sortAsc = sortAscending.get(sortType);
+      if (sortAsc == null)
+      {
+        return sortType.isDefaultAscending();
+      }
+      else return sortAsc;
+    }
+
+    public void setSortAscending(SORT_TYPE sortType, boolean nsortAscending)
+    {
+      sortAscending.put(sortType, nsortAscending);
     }
 }

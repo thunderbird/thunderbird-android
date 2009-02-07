@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	<item
-		android:id="@+id/refresh"
-        android:alphabeticShortcut="r"
-		android:title="@string/refresh_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
-    <item
+   <item
 		android:id="@+id/compose"
         android:alphabeticShortcut="c"
 		android:title="@string/compose_action"
 		android:icon="@drawable/ic_menu_compose"
+	/>
+	<item
+		android:id="@+id/set_sort"
+		android:title="@string/sort_by"
+		android:icon="@drawable/ic_menu_set_sort">
+		
+		<menu>
+			<item
+				android:id="@+id/set_sort_date"
+				android:title="@string/sort_by_date"
+			/>
+			<item
+				android:id="@+id/set_sort_subject"
+				android:title="@string/sort_by_subject"
+			/>
+			<item
+				android:id="@+id/set_sort_sender"
+				android:title="@string/sort_by_sender"
+			/>
+			<item
+				android:id="@+id/set_sort_flag"
+				android:title="@string/sort_by_flag"
+			/>
+			<item
+				android:id="@+id/set_sort_unread"
+				android:title="@string/sort_by_unread"
+			/>
+			<item
+				android:id="@+id/set_sort_attach"
+				android:title="@string/sort_by_attach"
+			/>
+		</menu>
+	</item>
+		<item
+		android:id="@+id/reverse_sort"
+		android:title="@string/reverse_sort_action"
+		android:icon="@drawable/ic_menu_reverse_sort"
 	/>
 	<item
 		android:id="@+id/empty_trash"
@@ -28,10 +59,12 @@
 		android:title="@string/account_settings_action"
 		android:icon="@android:drawable/ic_menu_preferences"
 	/>
-	<item
-		android:id="@+id/thread"
-		android:title="@string/thread_action"
-		android:icon="@drawable/ic_menu_thread"
+		<item
+		android:id="@+id/refresh"
+        android:alphabeticShortcut="r"
+		android:title="@string/refresh_action"
+		android:icon="@drawable/ic_menu_refresh"
 	/>
+
 
 </menu>

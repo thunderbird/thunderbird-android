@@ -1,10 +1,12 @@
 package com.android.email.activity;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -41,6 +43,7 @@ import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.MessagingController;
+import static com.android.email.MessagingController.SORT_TYPE;
 import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
@@ -130,8 +133,6 @@ public class FolderMessageList extends ExpandableListActivity
     private LayoutInflater mInflater;
 
     private Account mAccount;
-    
-    private Menu optionsMenu = null;
 
 
     /**
@@ -152,7 +153,9 @@ public class FolderMessageList extends ExpandableListActivity
 
 	private DateFormat timeFormat = null;
 	
-	private boolean thread = false;
+	private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
+	private boolean sortAscending = true;
+	private boolean sortDateAscending = false;
 
 	private DateFormat getDateFormat()
 	{
@@ -577,6 +580,9 @@ public class FolderMessageList extends ExpandableListActivity
 	{
     super.onResume();
 		clearFormats();
+	  sortType = MessagingController.getInstance(getApplication()).getSortType();
+	  sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
+    sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
 
 		MessagingController.getInstance(getApplication()).addListener(
 				mAdapter.mListener);
@@ -585,9 +591,7 @@ public class FolderMessageList extends ExpandableListActivity
 		
 		NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notifMgr.cancel(mAccount.getAccountNumber());
-    thread = MessagingController.getInstance(getApplication()).isThreading();
-
-
+ 
   }
 
     @Override
@@ -644,7 +648,8 @@ public class FolderMessageList extends ExpandableListActivity
 	        case KeyEvent.KEYCODE_C: { onCompose(); return true;}
 	        case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
 	        case KeyEvent.KEYCODE_S: { onEditAccount(); return true; }
-	        case KeyEvent.KEYCODE_T: { onToggleThread(); return true; }
+	        case KeyEvent.KEYCODE_O: { onCycleSort(); return true; }
+	        case KeyEvent.KEYCODE_I: { onToggleSortAscending(); return true; }
 	        case KeyEvent.KEYCODE_H: {
 	            Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
 	            toast.show();
@@ -785,19 +790,57 @@ public class FolderMessageList extends ExpandableListActivity
         MessageCompose.actionCompose(this, mAccount);
     }
 	
-	private void onToggleThread()
+	private void changeSort(SORT_TYPE newSortType)
 	{
-	  thread = !thread;
-	  
-	  for (FolderInfoHolder folder : mAdapter.mFolders)
-	  { 
-  	  Collections.sort(folder.messages);
-	  }
-	  mAdapter.notifyDataSetChanged();
-	  setMenuThread();
-	  MessagingController.getInstance(getApplication()).setThreading(thread);
-	  
+	  sortType = newSortType;
+	  MessagingController.getInstance(getApplication()).setSortType(sortType);
+	  sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
+	  sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
+	  reSort();
 	}
+	
+	private void reSort()
+	{ 
+	  int toastString = sortType.getToast(sortAscending);
+
+    Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
+    toast.show();
+    
+    for (FolderInfoHolder folder : mAdapter.mFolders)
+    { 
+      Collections.sort(folder.messages);
+    }
+    mAdapter.notifyDataSetChanged();
+    
+	}
+	
+	private void onCycleSort()
+	{  
+	  SORT_TYPE[] sorts = SORT_TYPE.values();
+	  int curIndex = 0;
+	  for (int i = 0; i < sorts.length; i++)
+	  {
+	    if (sorts[i] == sortType)
+	    {
+	      curIndex = i;
+	      break;
+	    }
+	  }
+	  curIndex++;
+	  if (curIndex == sorts.length)
+	  {
+	    curIndex = 0;
+	  }
+	  
+	  changeSort(sorts[curIndex]);
+	}
+	
+	private void onToggleSortAscending()
+  {
+	  sortAscending = !sortAscending;
+    MessagingController.getInstance(getApplication()).setSortAscending(sortType, sortAscending);
+	  reSort();
+  }
 
 	private void onDelete(MessageInfoHolder holder)
 	{
@@ -908,40 +951,42 @@ public class FolderMessageList extends ExpandableListActivity
             case R.id.account_settings:
                 onEditAccount();
                 return true;
-            case R.id.thread:
-              onToggleThread();
+            case R.id.set_sort_date:
+              changeSort(SORT_TYPE.SORT_DATE);
               return true;
-			case R.id.empty_trash:
-				onEmptyTrash(mAccount);
-				return true;
+            case R.id.set_sort_subject:
+              changeSort(SORT_TYPE.SORT_SUBJECT);
+              return true;
+            case R.id.set_sort_sender:
+              changeSort(SORT_TYPE.SORT_SENDER);
+              return true;
+            case R.id.set_sort_flag:
+              changeSort(SORT_TYPE.SORT_FLAGGED);
+              return true;
+            case R.id.set_sort_unread:
+              changeSort(SORT_TYPE.SORT_UNREAD);
+              return true;
+            case R.id.set_sort_attach:
+              changeSort(SORT_TYPE.SORT_ATTACHMENT);
+              return true;
+            case R.id.reverse_sort:
+              onToggleSortAscending();
+              return true;
+      			case R.id.empty_trash:
+      				onEmptyTrash(mAccount);
+      				return true;
 
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
+		}  
+  }
 
     @Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.folder_message_list_option, menu);
-        optionsMenu = menu;
-        setMenuThread();
         return true;
-    }
-    
-    private void setMenuThread()
-    {
-      Menu menu = optionsMenu;
-      if (menu != null)
-      {
-        MenuItem threadItem = menu.findItem(R.id.thread);
-        if (threadItem != null)
-        {
-          threadItem.setTitle(thread ? R.string.unthread_action : R.string.thread_action);
-          threadItem.setIcon(thread ? R.drawable.ic_menu_unthread : R.drawable.ic_menu_thread);
-        }
-      }
     }
 
     @Override
@@ -1081,6 +1126,7 @@ public class FolderMessageList extends ExpandableListActivity
 			menu.setHeaderTitle(R.string.folder_context_menu_title);
     }
 	}
+
 
 	private String truncateStatus(String mess)
 	{
@@ -1977,9 +2023,13 @@ public class FolderMessageList extends ExpandableListActivity
                 }
             }
 
+			@Override
 			public int compareTo(MessageInfoHolder o)
 			{
-			  if (thread)
+			  int ascender = (sortAscending ? 1 : -1);
+			  int comparison = 0;
+			  
+			  if (sortType == SORT_TYPE.SORT_SUBJECT)
 			  {
   			  if (compareSubject == null)
   			  {
@@ -1989,15 +2039,35 @@ public class FolderMessageList extends ExpandableListActivity
   			  {
   			    o.compareSubject = stripPrefixes(o.subject).toLowerCase();
   			  }
-  			  int subjCompare = this.compareSubject.compareTo(o.compareSubject);
-  			  if (subjCompare != 0)
-  			  {
-  			    return subjCompare;
-  			  }
+  			  comparison = this.compareSubject.compareTo(o.compareSubject);
 			  }
-			  
-        return this.compareDate.compareTo(o.compareDate) * -1;
-            }
+			  else if (sortType == SORT_TYPE.SORT_SENDER)
+			  {
+			    comparison = this.sender.toLowerCase().compareTo(o.sender.toLowerCase());
+			  }
+			  else if (sortType == SORT_TYPE.SORT_FLAGGED)
+			  {
+			    comparison = (this.flagged ? 0 : 1) - (o.flagged ? 0 : 1); 
+
+			  }
+        else if (sortType == SORT_TYPE.SORT_UNREAD)
+        {
+          comparison = (this.read ? 1 : 0) - (o.read ? 1 : 0); 
+        }
+        else if (sortType == SORT_TYPE.SORT_ATTACHMENT)
+        {
+          comparison = (this.hasAttachments ? 0 : 1) - (o.hasAttachments ? 0 : 1); 
+ 
+        }
+        if (comparison != 0)
+        {
+          return comparison * ascender;
+        }
+
+	       int dateAscender = (sortDateAscending ? 1 : -1);
+
+        return this.compareDate.compareTo(o.compareDate) * dateAscender;
+      }
 			Pattern pattern = null;
 			String patternString = "^ *(re|fw|fwd): *";
 			private String stripPrefixes(String in)

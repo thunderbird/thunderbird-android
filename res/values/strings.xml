@@ -60,8 +60,8 @@
     <string name="add_attachment_action">Add attachment</string>
     <string name="dump_settings_action">Dump settings</string>
     <string name="empty_trash_action">Empty Trash</string>
-    <string name="thread_action">Thread</string>
-    <string name="unthread_action">Unthread</string>
+    <string name="set_sort_action">Choose sort</string>
+    <string name="reverse_sort_action">Reverse sort</string>
     <string name="about_action">About</string>
 
     <string name="accounts_context_menu_title">Account options</string>
@@ -115,7 +115,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
  * Better IMAP support 
  * Saving attachments to SD
  * Empty Trash
- * Threading
+ * Message sorting
  * ...and more
 \nPlease note that K-9 does not support most free hotmail accounts and, like many email clients, has some quirks when talking to Microsoft Exchange.
 \nSubmit bug reports, contribute new features and ask questions at http://code.google.com/p/k9mail
@@ -356,6 +356,27 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
 
     <string name="account_settings_deleted_items_label">Deleted Items Folder</string>
     <string name="account_settings_deleted_items_summary">Set the deleted items folder</string>
+    
+    <string name="sort_earliest_first">Earliest messages first</string>
+    <string name="sort_latest_first">Latest messages first</string>
+    <string name="sort_sender_alpha">Sender alphabetical</string>
+    <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>
+    <string name="sort_subject_alpha">Subject alphabetical</string>
+    <string name="sort_subject_re_alpha">Subject reverse alphabetical</string>
+    <string name="sort_flagged_first">Flagged messages first</string>
+    <string name="sort_flagged_last">Unflagged messages first</string>
+    <string name="sort_unread_first">Unread messages first</string>
+    <string name="sort_unread_last">Read messages first</string>
+    <string name="sort_attach_first">Messages with attachments first</string>
+    <string name="sort_unattached_first">Messages without attachments first</string>
+    
+    <string name="sort_by">Sort by...</string>
+    <string name="sort_by_date">Date</string>
+    <string name="sort_by_sender">Sender</string>
+    <string name="sort_by_subject">Subject</string>
+    <string name="sort_by_flag">Flag</string>
+    <string name="sort_by_unread">Read/unread</string>
+    <string name="sort_by_attach">Attachments</string>
 
     <string name="account_delete_dlg_title">Remove</string>
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from Email.</string>
@@ -376,6 +397,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     Message\u000AK, N - Next Message\u000AZ - Zoom Out\u000AShift-Z -
     Zoom In\u000aG - Flag</string>
     <string name="message_list_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aG - Flag\u000AT - Thread\u000AQ
+    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aG - Flag\u000AO - Sort type\u000AI - Sort order\u000AQ
     - Return to Accounts</string>
 </resources>
