@@ -124,6 +124,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
             mSelectedContextAccount = (Account) icicle.getSerializable("selectedContextAccount");
         }
+        /*
         if (icicle != null)
         {
           ConcurrentHashMap<String, Integer> oldUnreadMessageCounts = 
@@ -131,7 +132,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
           if (oldUnreadMessageCounts != null) {
             unreadMessageCounts.putAll(oldUnreadMessageCounts);
           }
-        }
+        }*/
     }
 
     @Override
@@ -204,7 +205,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     }
 
     private void onOpenAccount(Account account) {
-        FolderMessageList.actionHandleAccount(this, account, Email.INBOX);
+        FolderMessageList.actionHandleAccount(this, account);
     }
 
     public void onClick(View view) {
