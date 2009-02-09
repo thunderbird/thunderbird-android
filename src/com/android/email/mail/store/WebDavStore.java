@@ -992,6 +992,10 @@ public class WebDavStore extends Store {
                 throw new MessagingException(String.format("Invalid message set %d %d", start, end));
             }
 
+            if (start == 0 && end < 10) {
+                end = 10;
+            }
+            
             /** Verify authentication */
             messageBody = getMessagesXml();
 
