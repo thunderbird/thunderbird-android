@@ -26,6 +26,10 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
@@ -41,6 +45,8 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HttpContext;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -88,6 +94,7 @@ public class WebDavStore extends Store {
     private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
     private String mMailboxPath; /* Stores the user specified path to the mailbox */
     private URI mUri;         /* Stores the Uniform Resource Indicator with all connection info */
+    private String mRedirectUrl;
 
     private CookieStore mAuthCookies; /* Stores cookies from authentication */
     private boolean mAuthenticated = false; /* Stores authentication state */
@@ -509,6 +516,13 @@ public class WebDavStore extends Store {
                 this.mAuthPath.equals("") ||
                 this.mAuthPath.equals("/")) {
                 HttpGet httpget = new HttpGet(finalUrl);
+
+                httpclient.addRequestInterceptor(new HttpRequestInterceptor() {
+                        public void process(HttpRequest request, HttpContext context)
+                                                    throws HttpException, IOException {
+                            mRedirectUrl = ((HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST)).toURI() + request.getRequestLine().getUri();
+                        }
+                    });
                 HttpResponse response = httpclient.execute(httpget);
                 HttpEntity entity = response.getEntity();
                 int statusCode = response.getStatusLine().getStatusCode();
@@ -529,7 +543,16 @@ public class WebDavStore extends Store {
                            !matched) {
                         if (tempText.indexOf(" action") >= 0) {
                             String[] tagParts = tempText.split("\"");
-                            loginUrl = finalUrl + tagParts[1];
+                            if (tagParts[1].lastIndexOf('/') < 0 &&
+                                mRedirectUrl != null &&
+                                !mRedirectUrl.equals("")) {
+                                /* We have to do a multi-stage substring here because of potential GET parameters */
+                                mRedirectUrl = mRedirectUrl.substring(0, mRedirectUrl.lastIndexOf('?'));
+                                mRedirectUrl = mRedirectUrl.substring(0, mRedirectUrl.lastIndexOf('/'));
+                                loginUrl = mRedirectUrl + "/" + tagParts[1];
+                            } else {
+                                loginUrl = finalUrl + tagParts[1];
+                            }
                             matched = true;
                         }
                     }
