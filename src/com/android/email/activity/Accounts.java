@@ -1,6 +1,7 @@
 
 package com.android.email.activity;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.AlertDialog;
@@ -186,15 +187,15 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
             mSelectedContextAccount = (Account) icicle.getSerializable("selectedContextAccount");
         }
-        /*
+        
         if (icicle != null)
         {
-          ConcurrentHashMap<String, Integer> oldUnreadMessageCounts = 
-            (ConcurrentHashMap<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
+          Map<String, Integer> oldUnreadMessageCounts = 
+            (Map<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
           if (oldUnreadMessageCounts != null) {
             unreadMessageCounts.putAll(oldUnreadMessageCounts);
           }
-        }*/
+        }
     }
 
     @Override
