@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -64,9 +65,17 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     private AccountsHandler mHandler = new AccountsHandler();
     private AccountsAdapter mAdapter;
     
+    private class AccountSizeChangedHolder {
+      Account account;
+      long oldSize;
+      long newSize;
+    }
+    
     class AccountsHandler extends Handler
     {
       private static final int DATA_CHANGED = 1;
+      private static final int MSG_ACCOUNT_SIZE_CHANGED = 2;
+      private static final int MSG_WORKING_ACCOUNT = 3;
 
       public void handleMessage(android.os.Message msg)
       {
@@ -78,6 +87,29 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
               mAdapter.notifyDataSetChanged();
             }
             break;
+          case MSG_WORKING_ACCOUNT:
+          {
+            Account account = (Account)msg.obj;
+            int res = msg.arg1;
+            String toastText = getString(res, account.getDescription());
+            
+            Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
+            toast.show();
+            break;
+          }
+          case MSG_ACCOUNT_SIZE_CHANGED:
+          {
+            AccountSizeChangedHolder holder = (AccountSizeChangedHolder)msg.obj;
+            Account account = holder.account;
+            Long oldSize = holder.oldSize;
+            Long newSize = holder.newSize;
+            String toastText = getString(R.string.account_size_changed, account.getDescription(), 
+                SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));;
+            
+            Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
+            toast.show();
+            break;
+          }
           default:
             super.handleMessage(msg);
         }
@@ -86,6 +118,28 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
       public void dataChanged()
       {
               sendEmptyMessage(DATA_CHANGED);
+      }
+      
+      public void workingAccount(Account account, int res)
+      {
+              android.os.Message msg = new android.os.Message();
+              msg.what = MSG_WORKING_ACCOUNT;
+              msg.obj = account;
+              msg.arg1 = res;
+       
+              sendMessage(msg);
+      }
+      
+      public void accountSizeChanged(Account account, long oldSize, long newSize)
+      {
+              android.os.Message msg = new android.os.Message();
+              msg.what = MSG_ACCOUNT_SIZE_CHANGED;
+              AccountSizeChangedHolder holder = new AccountSizeChangedHolder();
+              holder.account = account;
+              holder.oldSize = oldSize;
+              holder.newSize = newSize;
+              msg.obj = holder;
+              sendMessage(msg);
       }
 
     }
@@ -96,6 +150,14 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
       {
         unreadMessageCounts.put(account.getUuid(), unreadMessageCount);
         mHandler.dataChanged();
+      }
+      
+      @Override
+      public void accountSizeChanged(Account account, long oldSize, long newSize)
+      {
+
+       mHandler.accountSizeChanged(account, oldSize, newSize);
+ 
       }
       
       @Override
@@ -275,9 +337,28 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
             case R.id.empty_trash:
               onEmptyTrash(account);
               break;
+            case R.id.compact:
+              onCompact(account);
+              break;
+            case R.id.clear:
+              onClear(account);
+              break;
         }
         return true;
     }
+    
+    private void onCompact(Account account)
+    {
+      mHandler.workingAccount(account, R.string.compacting_account);
+      MessagingController.getInstance(getApplication()).compact(account, null);
+    }
+    
+    private void onClear(Account account)
+    {
+      mHandler.workingAccount(account, R.string.clearing_account);
+      MessagingController.getInstance(getApplication()).clear(account, null);
+    }
+
 
     public void onItemClick(AdapterView parent, View view, int position, long id) {
         Account account = (Account)parent.getItemAtPosition(position);

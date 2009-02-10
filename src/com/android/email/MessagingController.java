@@ -2487,7 +2487,65 @@ s             * critical data as fast as possible, and then we'll fill in the de
             }
         });
     }
+    
+    public void compact(final Account account, final MessagingListener ml)
+    {
+      putBackground("compact:" + account.getDescription(), ml, new Runnable() 
+      {
+        public void run()
+        {
+          try
+          {
+            LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), mApplication);
+            long oldSize = localStore.getSize();
+            localStore.compact();
+            long newSize = localStore.getSize();
+            if (ml != null)
+            {
+              ml.accountSizeChanged(account, oldSize, newSize);
+            }
+            for (MessagingListener l : getListeners()) {
+              l.accountSizeChanged(account, oldSize, newSize);
+              l.accountReset(account);
+            }
+          }
+          catch (Exception e)
+          {
+            Log.e(Email.LOG_TAG, "Failed to compact account " + account.getDescription(), e);
+          }
+        }
+      });
+    }
 
+    public void clear(final Account account, final MessagingListener ml)
+    {
+      putBackground("clear:" + account.getDescription(), ml, new Runnable() 
+      {
+        public void run()
+        {
+          try
+          {
+            LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), mApplication);
+            long oldSize = localStore.getSize();
+            localStore.clear();
+            localStore.resetVisibleLimits(account.getDisplayCount());
+            long newSize = localStore.getSize();
+            if (ml != null)
+            {
+              ml.accountSizeChanged(account, oldSize, newSize);
+            }
+            for (MessagingListener l : getListeners()) {
+              l.accountSizeChanged(account, oldSize, newSize);
+              l.accountReset(account);
+            }
+          }
+          catch (Exception e)
+          {
+            Log.e(Email.LOG_TAG, "Failed to compact account " + account.getDescription(), e);
+          }
+        }
+      });
+    }
     public void saveDraft(final Account account, final Message message) {
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);

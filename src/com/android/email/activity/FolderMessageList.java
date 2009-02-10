@@ -191,6 +191,8 @@ public class FolderMessageList extends ExpandableListActivity
 		dateFormat = null;
 		timeFormat = null;
 	}
+	
+	
 
 	class FolderMessageListHandler extends Handler
 	{
@@ -211,6 +213,10 @@ public class FolderMessageList extends ExpandableListActivity
 		private static final int MSG_FOLDER_SYNCING = 18;
 
 		private static final int MSG_SENDING_OUTBOX = 19;
+		
+		private static final int MSG_ACCOUNT_SIZE_CHANGED = 20;
+		
+		private static final int MSG_WORKING_ACCOUNT = 21;
         @Override
 		public void handleMessage(android.os.Message msg)
 		{
@@ -249,6 +255,27 @@ public class FolderMessageList extends ExpandableListActivity
                     mAdapter.notifyDataSetChanged();
                     break;
                 }
+				case MSG_ACCOUNT_SIZE_CHANGED:
+				{
+				  Long[] sizes = (Long[])msg.obj;
+				  String toastText = getString(R.string.account_size_changed, mAccount.getDescription(), 
+				      SizeFormatter.formatSize(getApplication(), sizes[0]), SizeFormatter.formatSize(getApplication(), sizes[1]));;
+				  
+				  Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
+				  toast.show();
+				  break;
+				}
+				case MSG_WORKING_ACCOUNT:
+				{
+				  int res = msg.arg1;
+				  String toastText = getString(res, mAccount.getDescription());
+				  
+	        Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
+          toast.show();
+          break;
+				}
+				
+				
 				case MSG_SYNC_MESSAGES:
 				{
                     FolderInfoHolder folder = (FolderInfoHolder) ((Object[]) msg.obj)[0];
@@ -312,6 +339,15 @@ public class FolderMessageList extends ExpandableListActivity
 			{ folder, messages };
             sendMessage(msg);
         }
+		
+    public void workingAccount(int res)
+    {
+            android.os.Message msg = new android.os.Message();
+            msg.what = MSG_WORKING_ACCOUNT;
+            msg.arg1 = res;
+     
+            sendMessage(msg);
+        }
 
 		public void removeMessage(FolderInfoHolder folder, MessageInfoHolder message)
 		{
@@ -319,6 +355,14 @@ public class FolderMessageList extends ExpandableListActivity
             msg.what = MSG_REMOVE_MESSAGE;
 			msg.obj = new Object[]
 			{ folder, message };
+            sendMessage(msg);
+        }
+		
+	  public void accountSizeChanged(long oldSize, long newSize)
+    {
+            android.os.Message msg = new android.os.Message();
+            msg.what = MSG_ACCOUNT_SIZE_CHANGED;
+            msg.obj = new Long[] { oldSize, newSize };
             sendMessage(msg);
         }
 
@@ -587,6 +631,8 @@ public class FolderMessageList extends ExpandableListActivity
 		MessagingController.getInstance(getApplication()).addListener(
 				mAdapter.mListener);
     mAccount.refresh(Preferences.getPreferences(this));
+    markAllRefresh();
+
     onRefresh(false);
 		
 		NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -628,7 +674,8 @@ public class FolderMessageList extends ExpandableListActivity
              */
 			int position = mListView.getFlatListPosition(ExpandableListView
 					.getPackedPositionForGroup(groupPosition));
-            mListView.setSelectionFromTop(position, 0);
+            
+			mListView.setSelectionFromTop(position, 0);
         }
 
 		final FolderInfoHolder folder = (FolderInfoHolder) mAdapter
@@ -814,6 +861,11 @@ public class FolderMessageList extends ExpandableListActivity
     
 	}
 	
+	private void markAllRefresh()
+	{
+	  mAdapter.mListener.accountReset(mAccount);
+	}
+	
 	private void onCycleSort()
 	{  
 	  SORT_TYPE[] sorts = SORT_TYPE.values();
@@ -975,11 +1027,28 @@ public class FolderMessageList extends ExpandableListActivity
       			case R.id.empty_trash:
       				onEmptyTrash(mAccount);
       				return true;
+      			case R.id.compact:
+      			  onCompact(mAccount);
+      			  return true;
+            case R.id.clear:
+              onClear(mAccount);
+              return true;
 
             default:
                 return super.onOptionsItemSelected(item);
 		}  
   }
+    
+    private void onCompact(Account account)
+    {
+      mHandler.workingAccount(R.string.compacting_account);
+      MessagingController.getInstance(getApplication()).compact(account, null);
+    }
+    private void onClear(Account account)
+    {
+      mHandler.workingAccount(R.string.clearing_account);
+      MessagingController.getInstance(getApplication()).clear(account, null);
+    }
 
     @Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -1185,6 +1254,18 @@ public class FolderMessageList extends ExpandableListActivity
                     }
                 }
 				mHandler.dataChanged();
+            }
+            @Override
+            public void accountReset(Account account)
+            {
+              if (!account.equals(mAccount))
+              {
+                          return;
+                      }
+              for (FolderInfoHolder folder : mFolders)
+              {
+                folder.needsRefresh = true;
+              }
             }
 
             @Override
@@ -1484,6 +1565,16 @@ public class FolderMessageList extends ExpandableListActivity
 				}
 				mHandler.sendingOutbox(false);
 			}
+			
+	   public void accountSizeChanged(Account account, long oldSize, long newSize)
+	    {
+	     if (!account.equals(mAccount))
+       {
+         return;
+       }
+	     mHandler.accountSizeChanged(oldSize, newSize);
+ 
+	    }
 
 			@Override
 			public void messageUidChanged(Account account, String folder,
@@ -1807,19 +1898,20 @@ public class FolderMessageList extends ExpandableListActivity
 				{
                     holder.main.setText(getString(R.string.status_loading_more));
                     holder.progress.setVisibility(View.VISIBLE);
-				} else
+				} 
+				else
 				{
 					if (folder.lastCheckFailed == false)
 					{
 					    holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(), 
 									      mAccount.getDisplayCount()));
-					} else
+					}
+					else
 					{
-                        holder.main.setText(getString(R.string.status_loading_more_failed));
-                    }
+             holder.main.setText(getString(R.string.status_loading_more_failed));
+          }
                     holder.progress.setVisibility(View.GONE);
-                }
-                return view;
+        }                return view;
 			} else
 			{
 				MessageInfoHolder message = (MessageInfoHolder) getChild(groupPosition,

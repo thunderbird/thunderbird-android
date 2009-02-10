@@ -140,7 +140,88 @@ public class LocalStore extends Store implements Serializable {
                 throw new Error("Database upgrade failed!");
             }
         }
+    
+    public long getSize()
+    {
+      long attachmentLength = 0;
+    
+      File[] files = mAttachmentsDir.listFiles();
+      for (File file : files) {
+          if (file.exists()) {
+            attachmentLength += file.length();
+          }
+      }
+      
+      
+      File dbFile = new File(mPath);
+      return dbFile.length() + attachmentLength;
+    }
+    
+    public void compact() throws MessagingException
+    {
+      Log.i(Email.LOG_TAG, "Before prune size = " + getSize());
+      
+      pruneCachedAttachments();
+      Log.i(Email.LOG_TAG, "After prune / before compaction size = " + getSize());
+       
+      mDb.execSQL("VACUUM");
+      Log.i(Email.LOG_TAG, "After compaction size = " + getSize()); 
+    }
 
+    
+    public void clear() throws MessagingException
+    {
+      Log.i(Email.LOG_TAG, "Before prune size = " + getSize());
+      
+      pruneCachedAttachments(true);
+      
+      Log.i(Email.LOG_TAG, "After prune / before compaction size = " + getSize());
+     
+      Log.i(Email.LOG_TAG, "Before clear folder count = " + getFolderCount());
+      Log.i(Email.LOG_TAG, "Before clear message count = " + getMessageCount());
+
+      Log.i(Email.LOG_TAG, "After prune / before clear size = " + getSize());
+      // don't delete messages that are Local, since there is no copy on the server.
+      // Don't delete deleted messages.  They are essentially placeholders for UIDs of messages that have
+      // been deleted locally.  They take up no space, and are indicated with a null date.
+      mDb.execSQL("DELETE FROM messages WHERE date is not null and uid not like 'Local%'"  );
+       
+      compact();
+      Log.i(Email.LOG_TAG, "After clear message count = " + getMessageCount());
+
+      Log.i(Email.LOG_TAG, "After clear size = " + getSize()); 
+    }
+    
+    public int getMessageCount() throws MessagingException {
+        Cursor cursor = null;
+        try {
+            cursor = mDb.rawQuery("SELECT COUNT(*) FROM messages", null);
+            cursor.moveToFirst();
+            int messageCount = cursor.getInt(0);
+            return messageCount;
+        }
+        finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+    
+    public int getFolderCount() throws MessagingException {
+      Cursor cursor = null;
+      try {
+          cursor = mDb.rawQuery("SELECT COUNT(*) FROM folders", null);
+          cursor.moveToFirst();
+          int messageCount = cursor.getInt(0);
+          return messageCount;
+      }
+      finally {
+          if (cursor != null) {
+              cursor.close();
+          }
+      }
+  }
+    
     @Override
     public LocalFolder getFolder(String name) throws MessagingException {
         return new LocalFolder(name);
@@ -204,49 +285,68 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
+    public void pruneCachedAttachments() throws MessagingException {
+      pruneCachedAttachments(false);
+    }
+    
     /**
      * Deletes all cached attachments for the entire store.
      */
-    public void pruneCachedAttachments() throws MessagingException {
+    public void pruneCachedAttachments(boolean force) throws MessagingException {
+
+        if (force)
+        {
+          ContentValues cv = new ContentValues();
+          cv.putNull("content_uri");
+          mDb.update("attachments", cv, null, null);
+        }
         File[] files = mAttachmentsDir.listFiles();
         for (File file : files) {
             if (file.exists()) {
+              if (!force) {
+                Cursor cursor = null;
                 try {
-                    Cursor cursor = null;
-                    try {
-                        cursor = mDb.query(
-                            "attachments",
-                            new String[] { "store_data" },
-                            "id = ?",
-                            new String[] { file.getName() },
-                            null,
-                            null,
-                            null);
-                        if (cursor.moveToNext()) {
-                            if (cursor.getString(0) == null) {
-                                /*
-                                 * If the attachment has no store data it is not recoverable, so
-                                 * we won't delete it.
-                                 */
-                                continue;
-                            }
-                        }
+                  cursor = mDb.query(
+                      "attachments",
+                      new String[] { "store_data" },
+                      "id = ?",
+                      new String[] { file.getName() },
+                      null,
+                      null,
+                      null);
+                  if (cursor.moveToNext()) {
+                      if (cursor.getString(0) == null) {
+                        Log.d(Email.LOG_TAG, "Attachment " + file.getAbsolutePath() + " has no store data, not deleting");
+                          /*
+                           * If the attachment has no store data it is not recoverable, so
+                           * we won't delete it.
+                           */
+                          continue;
+                      }
+                  }
+                }
+                finally {
+                    if (cursor != null) {
+                        cursor.close();
                     }
-                    finally {
-                        if (cursor != null) {
-                            cursor.close();
-                        }
-                    }
-                    ContentValues cv = new ContentValues();
-                    cv.putNull("content_uri");
-                    mDb.update("attachments", cv, "id = ?", new String[] { file.getName() });
+                }
+              }
+              if (!force)
+              {
+                try
+                {
+                  ContentValues cv = new ContentValues();
+                  cv.putNull("content_uri");
+                  mDb.update("attachments", cv, "id = ?", new String[] { file.getName() });
                 }
                 catch (Exception e) {
-                    /*
-                     * If the row has gone away before we got to mark it not-downloaded that's
-                     * okay.
-                     */
-                }
+                  /*
+                   * If the row has gone away before we got to mark it not-downloaded that's
+                   * okay.
+                   */
+                 }
+              }
+                Log.d(Email.LOG_TAG, "Deleting attachment " + file.getAbsolutePath() + ", which is of size " + file.length());
                 if (!file.delete()) {
                     file.deleteOnExit();
                 }
@@ -1292,7 +1392,9 @@ public class LocalStore extends Store implements Serializable {
                 /*
                  * Delete all of the messages' content to save space.
                  */
-                mDb.execSQL(
+              ((LocalFolder) mFolder).deleteAttachments(getUid());
+
+              mDb.execSQL(
                         "UPDATE messages SET " +
                         "subject = NULL, " +
                         "sender_list = NULL, " +
@@ -1307,12 +1409,11 @@ public class LocalStore extends Store implements Serializable {
                         new Object[] {
                                 mId
                         });
-
-                ((LocalFolder) mFolder).deleteAttachments(getUid());
-
+ 
                 /*
                  * Delete all of the messages' attachments to save space.
                  */
+              // shouldn't the trigger take care of this? -- danapple
                 mDb.execSQL("DELETE FROM attachments WHERE id = ?",
                         new Object[] {
                                 mId

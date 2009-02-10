@@ -18,6 +18,14 @@ public class MessagingListener {
   
     public void accountStatusChanged(Account account, int unreadMessageCount) {
     }
+    
+    public void accountSizeChanged(Account account, long oldSize, long newSize)
+    {
+    }
+    
+    public void accountReset(Account account) {
+      
+    }
   
     public void listFoldersStarted(Account account) {
     }
