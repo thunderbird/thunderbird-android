@@ -27,8 +27,6 @@ public final class TrustManagerFactory {
     private static X509TrustManager unsecureTrustManager;
 	private static X509TrustManager localTrustManager;
 	
-	private static SecureX509TrustManager secureTrustManager;
-
     private static X509Certificate[] lastCertChain = null;
     
     private static File keyStoreFile;
@@ -50,21 +48,21 @@ public final class TrustManagerFactory {
     }
 
     private static class SecureX509TrustManager implements X509TrustManager {
-        private static String mHost;
+        private String mHost;
         private static SecureX509TrustManager me;
 
         private SecureX509TrustManager() {
         }
 
 		public static X509TrustManager getInstance(String host) {
-			mHost = host;
 			if (me == null) {
 				me = new SecureX509TrustManager();
 			}
+			me.mHost = host;
 			return me;
 		}
 
-		public static void setHost(String host){
+		public void setHost(String host){
 			mHost = host;
 		}
 
