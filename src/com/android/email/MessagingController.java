@@ -1007,9 +1007,19 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
                     Message localMessage = localFolder.getMessage(message.getUid());
 
-                    // Set a flag indicating that the message has been partially downloaded and
-                    // is ready for view.
-                    localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true);
+                    /*
+                     * Mark the message as fully downloaded if the message size is smaller than
+                     * the FETCH_BODY_SANE_SUGGESTED_SIZE, otherwise mark as only a partial
+                     * download.  This will prevent the system from downloading the same message 
+                     * twice.
+                     */
+                    if (message.getSize() < Store.FETCH_BODY_SANE_SUGGESTED_SIZE) {
+                        localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                    } else {
+                        // Set a flag indicating that the message has been partially downloaded and
+                        // is ready for view.
+                        localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true);
+                    }
                 } else {
                     /*
                      * We have a structure to deal with, from which
