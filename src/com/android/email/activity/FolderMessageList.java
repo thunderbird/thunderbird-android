@@ -2115,7 +2115,6 @@ public class FolderMessageList extends ExpandableListActivity
                 }
             }
 
-			@Override
 			public int compareTo(MessageInfoHolder o)
 			{
 			  int ascender = (sortAscending ? 1 : -1);
