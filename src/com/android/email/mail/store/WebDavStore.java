@@ -479,6 +479,7 @@ public class WebDavStore extends Store {
         String[] urlParts = url.split("/");
         String finalUrl = "";
         String loginUrl = new String();
+        String destinationUrl = new String();
 
         if (this.mAuthPath != null &&
             !this.mAuthPath.equals("") &&
@@ -553,7 +554,15 @@ public class WebDavStore extends Store {
                             } else {
                                 loginUrl = finalUrl + tagParts[1];
                             }
-                            matched = true;
+                        }
+
+                        if (tempText.indexOf("destination") >= 0) {
+                            String[] tagParts = tempText.split("value");
+                            if (tagParts[1] != null) {
+                                String[] valueParts = tagParts[1].split("\"");
+                                destinationUrl = valueParts[1];
+                                matched = true;
+                            }
                         }
                     }
                     istream.close();
@@ -570,8 +579,11 @@ public class WebDavStore extends Store {
             if (this.mMailboxPath != null &&
                 !this.mMailboxPath.equals("")) {
                 pairs.add(new BasicNameValuePair("destination", finalUrl + this.mMailboxPath));
+            } else if (destinationUrl != null &&
+                       !destinationUrl.equals("")) {
+                pairs.add(new BasicNameValuePair("destination", destinationUrl));
             } else {
-                pairs.add(new BasicNameValuePair("destination", url));
+                pairs.add(new BasicNameValuePair("destination", "/"));
             }
             pairs.add(new BasicNameValuePair("flags", "0"));
             pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
