@@ -108,10 +108,9 @@ public class LocalStore extends Store implements Serializable {
 
     
     private void doDbUpgrade ( SQLiteDatabase mDb) {
-            if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, String.format("Upgrading database from %d to %d", mDb
-                        .getVersion(), DB_VERSION));
-            }
+            Log.i(Email.LOG_TAG, String.format("Upgrading database from version %d to version %d", 
+                mDb.getVersion(), DB_VERSION));
+            
             mDb.execSQL("DROP TABLE IF EXISTS folders");
             mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
                     + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT)");
@@ -729,16 +728,23 @@ public class LocalStore extends Store implements Serializable {
         	displayClass = FolderClass.NONE;
         }
 
+        
+        FolderClass defSyncClass = FolderClass.NONE;
+        if (Email.INBOX.equals(getName()))
+        {
+          defSyncClass =  FolderClass.FIRST_CLASS;
+        }
+        
         try
         {
         	syncClass = FolderClass.valueOf(preferences.mSharedPreferences.getString(id  + ".syncMode", 
-        			FolderClass.NONE.name()));
+        			defSyncClass.name()));
         }
         catch (Exception e)
         {
         	Log.e(Email.LOG_TAG, "Unable to load syncMode for " + getName(), e);
 
-        	syncClass = FolderClass.NONE;
+        	syncClass = defSyncClass;
         }
 
     }

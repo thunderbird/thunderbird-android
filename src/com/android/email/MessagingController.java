@@ -428,7 +428,6 @@ public class MessagingController implements Runnable {
                             LocalFolder localFolder = localStore.getFolder(remoteFolders[i].getName());
                             if (!localFolder.exists()) {
                                 localFolder.create(FolderType.HOLDS_MESSAGES, account.getDisplayCount());
-                                localFolder.save(Preferences.getPreferences(mApplication));
                             }
                             remoteFolderNames.add(remoteFolders[i].getName());
                         }
