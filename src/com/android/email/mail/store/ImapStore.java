@@ -1203,6 +1203,8 @@ public class ImapStore extends Store {
             if (isOpen()) {
                 return;
             }
+            
+            boolean authSuccess = false;
 
             mNextCommandTag = 1;
             try
@@ -1277,7 +1279,8 @@ public class ImapStore extends Store {
                 try {
                     // TODO eventually we need to add additional authentication
                     // options such as SASL
-                    executeSimpleCommand("LOGIN " + mUsername + " " + mPassword, true);
+                    executeSimpleCommand("LOGIN \"" + mUsername + "\" \"" + mPassword + "\"", true);
+                    authSuccess = true;
                 } catch (ImapException ie) {
                     throw new AuthenticationFailedException(ie.getAlertText(), ie);
 
@@ -1303,6 +1306,14 @@ public class ImapStore extends Store {
             	{
             		throw ce;
             	}
+            }
+            finally
+            {
+              if (authSuccess == false)
+              {
+                Log.e(Email.LOG_TAG, "Failed to login, closing connection");
+                close();
+              }
             }
         }
 
