@@ -619,11 +619,14 @@ public class MessageView extends Activity
     }
 
     private void onMarkAsUnread() {
+      if (mMessage != null)
+      {
         MessagingController.getInstance(getApplication()).markMessageRead(
                 mAccount,
                 mFolder,
                 mMessage.getUid(),
                 false);
+      }
     }
 
     /**
@@ -669,21 +672,27 @@ public class MessageView extends Activity
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        MessagingController.getInstance(getApplication()).loadAttachment(
-                mAccount,
-                mMessage,
-                attachment.part,
-                new Object[] { true, attachment },
-                mListener);
+        if (mMessage != null)
+        {
+          MessagingController.getInstance(getApplication()).loadAttachment(
+                  mAccount,
+                  mMessage,
+                  attachment.part,
+                  new Object[] { true, attachment },
+                  mListener);
+        }
     }
 
     private void onViewAttachment(Attachment attachment) {
+      if (mMessage != null)
+      {
         MessagingController.getInstance(getApplication()).loadAttachment(
                 mAccount,
                 mMessage,
                 attachment.part,
                 new Object[] { false, attachment },
                 mListener);
+      }
     }
 
     private void onShowPictures() {
@@ -771,16 +780,16 @@ public class MessageView extends Activity
       if (menu != null)
       {
         MenuItem flagItem = menu.findItem(R.id.flag);
-        if (flagItem != null)
+        if (flagItem != null && mMessage != null)
         {
           flagItem.setTitle((mMessage.isSet(Flag.FLAGGED) ? R.string.unflag_action : R.string.flag_action));
         }
       }
     }
-
+    
     public CacheResult service(String url, Map<String, String> headers) {
         String prefix = "http://cid/";
-        if (url.startsWith(prefix)) {
+        if (url.startsWith(prefix) && mMessage != null) {
             try {
                 String contentId = url.substring(prefix.length());
                 final Part part = MimeUtility.findPartByContentId(mMessage, "<" + contentId + ">");
