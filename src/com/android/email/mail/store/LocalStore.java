@@ -94,22 +94,34 @@ public class LocalStore extends Store implements Serializable {
         if (!parentDir.exists()) {
             parentDir.mkdirs();
         }
-        mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
-        if (mDb.getVersion() != DB_VERSION) {
-            doDbUpgrade(mDb);
-        }
-
-
+        
         mAttachmentsDir = new File(mPath + "_att");
         if (!mAttachmentsDir.exists()) {
             mAttachmentsDir.mkdirs();
         }
+        
+        mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
+        if (mDb.getVersion() != DB_VERSION) {
+            doDbUpgrade(mDb, application);
+        }
+        
     }
 
     
-    private void doDbUpgrade ( SQLiteDatabase mDb) {
+    private void doDbUpgrade ( SQLiteDatabase mDb, Application application) {
             Log.i(Email.LOG_TAG, String.format("Upgrading database from version %d to version %d", 
                 mDb.getVersion(), DB_VERSION));
+            
+            try
+            {
+              pruneCachedAttachments(true);
+            }
+            catch (MessagingException me)
+            {
+              Log.e(Email.LOG_TAG, "Exception while force pruning attachments during DB update", me);
+            }
+            
+            AttachmentProvider.clear(application);
             
             mDb.execSQL("DROP TABLE IF EXISTS folders");
             mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "

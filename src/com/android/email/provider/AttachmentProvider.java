@@ -10,6 +10,7 @@ import java.util.List;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -82,6 +83,21 @@ public class AttachmentProvider extends ContentProvider {
         }
         return true;
     }
+    
+    public static void clear(Context lContext) {
+      /*
+       * We use the cache dir as a temporary directory (since Android doesn't give us one) so
+       * on startup we'll clean up any .tmp files from the last run.
+       */
+      File[] files = lContext.getCacheDir().listFiles();
+      for (File file : files) {
+        try {
+          Log.d(Email.LOG_TAG, "Deleting file " + file.getCanonicalPath());
+        }
+        catch (IOException ioe) {}   // No need to log failure to log
+         file.delete();
+      }
+  }
 
     @Override
     public String getType(Uri uri) {
