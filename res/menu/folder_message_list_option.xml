@@ -44,27 +44,27 @@
 		android:icon="@drawable/ic_menu_reverse_sort"
 	/>
 	<item
-		android:id="@+id/refresh"
-        android:alphabeticShortcut="r"
-		android:title="@string/refresh_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
-    <item
-		android:id="@+id/accounts"
-		android:title="@string/accounts_action"
-		android:icon="@drawable/ic_menu_account_list"
-	/>
-		<item
 		android:id="@+id/empty_trash"
         android:alphabeticShortcut="e"
 		android:title="@string/empty_trash_action"
 		android:icon="@drawable/ic_menu_delete"
 	/>
     <item
+		android:id="@+id/accounts"
+		android:title="@string/accounts_action"
+		android:icon="@drawable/ic_menu_account_list"
+	/>
+    <item
 		android:id="@+id/account_settings"
 		android:title="@string/account_settings_action"
 		android:icon="@android:drawable/ic_menu_preferences"
-	/>	
+	/>
+		<item
+		android:id="@+id/refresh"
+        android:alphabeticShortcut="r"
+		android:title="@string/refresh_action"
+		android:icon="@drawable/ic_menu_refresh"
+	/>
 	<item
 		android:id="@+id/compact"
 		android:title="@string/compact_action"
