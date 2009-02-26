@@ -1299,6 +1299,10 @@ public class WebDavStore extends Store {
             headers.put("Brief", "t");
             dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
 
+            if (dataset == null) {
+                throw new MessagingException("Data Set from request was null");
+            }
+            
             uidToReadStatus = dataset.getUidToRead();
 
             for (int i = 0, count = messages.length; i < count; i++) {
