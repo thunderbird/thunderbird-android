@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.UUID;
 
+import com.android.email.mail.Address;
 import com.android.email.mail.Folder;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Store;
@@ -409,6 +410,12 @@ public class Account implements Serializable {
       
       return unreadMessageCount;
     	
+    }
+    
+    // TODO: When there are multiple identities, this method should try all of them
+    public boolean isAnIdentity(Address addr)
+    {
+      return getEmail().equals(addr.getAddress());
     }
 
     public int getDisplayCount() {

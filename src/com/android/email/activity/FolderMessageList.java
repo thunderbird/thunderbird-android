@@ -2055,6 +2055,8 @@ public class FolderMessageList extends ExpandableListActivity
 
             public String sender;
             
+            public String compareCounterparty;
+            
             public String[] recipients;
 
             public boolean hasAttachments;
@@ -2095,13 +2097,23 @@ public class FolderMessageList extends ExpandableListActivity
                     this.read = message.isSet(Flag.SEEN);
                     this.answered = message.isSet(Flag.ANSWERED);
                     this.flagged = message.isSet(Flag.FLAGGED);
-					if (folder.outbox)
-					{
-						this.sender = Address.toFriendly(message
-								.getRecipients(RecipientType.TO));
+                    
+                    Address[] addrs = message.getFrom();
+                      if (addrs.length > 0 && mAccount.isAnIdentity(addrs[0]))
+                      {
+						
+						
+						this.compareCounterparty = Address.toFriendly(message
+                .getRecipients(RecipientType.TO));
+						
+						this.sender = getString(R.string.folder_message_list_to_label) + this.compareCounterparty;
+						
 					} else
 					{
-                        this.sender = Address.toFriendly(message.getFrom());
+                        this.sender = Address.toFriendly(addrs);
+                        
+                        this.compareCounterparty = this.sender;
+                        
                     }
                     this.subject = message.getSubject();
                     this.uid = message.getUid();
@@ -2134,7 +2146,7 @@ public class FolderMessageList extends ExpandableListActivity
 			  }
 			  else if (sortType == SORT_TYPE.SORT_SENDER)
 			  {
-			    comparison = this.sender.toLowerCase().compareTo(o.sender.toLowerCase());
+			    comparison = this.compareCounterparty.toLowerCase().compareTo(o.compareCounterparty.toLowerCase());
 			  }
 			  else if (sortType == SORT_TYPE.SORT_FLAGGED)
 			  {
