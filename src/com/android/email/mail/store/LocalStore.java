@@ -112,15 +112,7 @@ public class LocalStore extends Store implements Serializable {
             Log.i(Email.LOG_TAG, String.format("Upgrading database from version %d to version %d", 
                 mDb.getVersion(), DB_VERSION));
             
-            try
-            {
-              pruneCachedAttachments(true);
-            }
-            catch (MessagingException me)
-            {
-              Log.e(Email.LOG_TAG, "Exception while force pruning attachments during DB update", me);
-            }
-            
+ 
             AttachmentProvider.clear(application);
             
             mDb.execSQL("DROP TABLE IF EXISTS folders");
@@ -149,6 +141,15 @@ public class LocalStore extends Store implements Serializable {
             mDb.setVersion(DB_VERSION);
             if (mDb.getVersion() != DB_VERSION) {
                 throw new Error("Database upgrade failed!");
+            }
+            
+            try
+            {
+              pruneCachedAttachments(true);
+            }
+            catch (Exception me)
+            {
+              Log.e(Email.LOG_TAG, "Exception while force pruning attachments during DB update", me);
             }
         }
     
