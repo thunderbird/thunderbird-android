@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Stack;
 
 import org.apache.james.mime4j.BodyDescriptor;
@@ -36,7 +37,7 @@ public class MimeMessage extends Message {
     protected Address[] mBcc;
     protected Address[] mReplyTo;
     protected Date mSentDate;
-    protected SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
+    protected SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
     protected Body mBody;
     protected int mSize;
  

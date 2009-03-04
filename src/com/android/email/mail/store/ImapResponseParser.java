@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import android.util.Config;
 import android.util.Log;
@@ -20,7 +21,7 @@ import com.android.email.PeekableInputStream;
 import com.android.email.mail.MessagingException;
 
 public class ImapResponseParser {
-    SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z");
+    SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z", Locale.US);
     PeekableInputStream mIn;
     InputStream mActiveLiteral;
 
