@@ -897,8 +897,11 @@ public class FolderMessageList extends ExpandableListActivity
 	
 	private void onToggleSortAscending()
   {
-	  sortAscending = !sortAscending;
-    MessagingController.getInstance(getApplication()).setSortAscending(sortType, sortAscending);
+    MessagingController.getInstance(getApplication()).setSortAscending(sortType, !sortAscending);
+
+    sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
+    sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
+    
 	  reSort();
   }
 
