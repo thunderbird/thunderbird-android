@@ -1436,13 +1436,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
          	Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: could not open remoteSrcFolder " + srcFolder + " read/write");
             return;
         }
-        
-        remoteDestFolder.open(OpenMode.READ_WRITE);
-        if (remoteDestFolder.getMode() != OpenMode.READ_WRITE) {
-          Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: could not open remoteDestFolder " + srcFolder + " read/write");
-            return;
-        }
-        
+ 
         Message remoteMessage = null;
         if (!uid.startsWith("Local")
                 && !uid.contains("-")) {
@@ -1454,10 +1448,23 @@ s             * critical data as fast as possible, and then we'll fill in the de
             Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: remoteMessage " + uid + " does not exist");
             return;
         }
+        
         if (Config.LOGD)
         {
-        	Log.d(Email.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder 
-        	    + ", uid = " + uid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
+          Log.d(Email.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder 
+              + ", uid = " + uid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
+        }
+        if (isCopy == false && destFolder.equals(account.getTrashFolderName()))
+        {
+          Log.d(Email.LOG_TAG, "processingPendingMoveOrCopy doing special case for deleting message");
+          remoteMessage.delete(account.getTrashFolderName());
+          return;
+        }
+
+        remoteDestFolder.open(OpenMode.READ_WRITE);
+        if (remoteDestFolder.getMode() != OpenMode.READ_WRITE) {
+          Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: could not open remoteDestFolder " + srcFolder + " read/write");
+            return;
         }
         
         if (isCopy) {
