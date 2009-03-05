@@ -596,6 +596,10 @@ public class MessageView extends Activity
     
     private void onMove()
     {
+      if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+      {
+        return;
+      }
       if (MessagingController.getInstance(getApplication()).isMoveCapable(mMessage) == false)
       {
        Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
@@ -611,7 +615,11 @@ public class MessageView extends Activity
     
      private void onCopy()
       {
-       if (MessagingController.getInstance(getApplication()).isMoveCapable(mMessage) == false)
+       if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+       {
+         return;
+       }
+       if (MessagingController.getInstance(getApplication()).isCopyCapable(mMessage) == false)
        {
         Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
         toast.show();

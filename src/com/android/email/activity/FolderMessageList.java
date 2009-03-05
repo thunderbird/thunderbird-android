@@ -947,7 +947,7 @@ public class FolderMessageList extends ExpandableListActivity
 	     {
 	       return;
 	     }
-	     if (MessagingController.getInstance(getApplication()).isMoveCapable(holder.message) == false)
+	     if (MessagingController.getInstance(getApplication()).isCopyCapable(holder.message) == false)
        {
         Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
         toast.show();

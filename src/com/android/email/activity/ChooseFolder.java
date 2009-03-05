@@ -145,7 +145,7 @@ public class ChooseFolder extends ListActivity
       {
         return;
       }
-    //  mHandler.progress(false);
+    mHandler.progress(false);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class ChooseFolder extends ListActivity
       {
         return;
       }
-  //    mHandler.progress(false);
+      mHandler.progress(false);
     }
     @Override
     public void listFolders(Account account, Folder[] folders)
