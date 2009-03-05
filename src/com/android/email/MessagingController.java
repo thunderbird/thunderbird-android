@@ -86,8 +86,8 @@ public class MessagingController implements Runnable {
 	// Daniel I. Applebaum Changing to 5k for faster syncing
     private static final int MAX_SMALL_MESSAGE_SIZE = (5 * 1024);
 
-    private static final String PENDING_COMMAND_TRASH =
-        "com.android.email.MessagingController.trash";
+    private static final String PENDING_COMMAND_MOVE_OR_COPY =
+        "com.android.email.MessagingController.moveOrCopy";
     private static final String PENDING_COMMAND_EMPTY_TRASH =
       "com.android.email.MessagingController.emptyTrash";
     private static final String PENDING_COMMAND_SET_FLAG =
@@ -161,7 +161,12 @@ public class MessagingController implements Runnable {
     
     private String createMessageKey(Account account, String folder, Message message)
     {
-      return account.getUuid() + ":" + folder + ":" + message.getUid();
+      return createMessageKey(account, folder, message.getUid());
+    }
+    
+    private String createMessageKey(Account account, String folder, String uid)
+    {
+      return account.getUuid() + ":" + folder + ":" + uid;
     }
     
     private String createFolderKey(Account account, String folder)
@@ -187,7 +192,16 @@ public class MessagingController implements Runnable {
       {
         return;
       }
-      String messKey = createMessageKey(account, folder, message);
+      unsuppressMessage(account, folder, message.getUid());
+    }
+    
+    private void unsuppressMessage(Account account, String folder, String uid)
+    {
+      if (account == null || folder == null || uid == null)
+      {
+        return;
+      }
+      String messKey = createMessageKey(account, folder, uid);
       //Log.d(Email.LOG_TAG, "Unsuppressing message with key " + messKey);
       deletedUids.remove(messKey);
     }
@@ -388,6 +402,9 @@ public class MessagingController implements Runnable {
         for (MessagingListener l : getListeners()) {
             l.listFoldersStarted(account);
         }
+        if (listener != null) {
+          listener.listFoldersStarted(account);
+        }
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder[] localFolders = localStore.getPersonalNamespaces();
@@ -399,10 +416,17 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners()) {
                 l.listFolders(account, localFolders);
             }
+            if (listener != null)
+            {
+              listener.listFolders(account, localFolders);
+            }
         }
         catch (Exception e) {
             for (MessagingListener l : getListeners()) {
                 l.listFoldersFailed(account, e.getMessage());
+            }
+            if (listener != null) {
+              listener.listFoldersFailed(account, e.getMessage());
             }
             addErrorMessage(account, e);
             return;
@@ -410,10 +434,14 @@ public class MessagingController implements Runnable {
         for (MessagingListener l : getListeners()) {
                 l.listFoldersFinished(account);
         }
+        if (listener != null) {
+          listener.listFoldersFinished(account);
+        }
+       
     }
 
     private void doRefreshRemote (final Account account, MessagingListener listener) {
-            put("listFolders", listener, new Runnable() {
+            put("doRefreshRemote", listener, new Runnable() {
                 public void run() {
                     try {
                         Store store = Store.getInstance(account.getStoreUri(), mApplication);
@@ -1213,8 +1241,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	            else if (PENDING_COMMAND_MARK_ALL_AS_READ.equals(command.command)) {
                 processPendingMarkAllAsRead(command, account);
 	            }
-	            else if (PENDING_COMMAND_TRASH.equals(command.command)) {
-	                processPendingTrash(command, account);
+	            else if (PENDING_COMMAND_MOVE_OR_COPY.equals(command.command)) {
+	                processPendingMoveOrCopy(command, account);
 	            }
 	            else if (PENDING_COMMAND_EMPTY_TRASH.equals(command.command)) {
                 processPendingEmptyTrash(command, account);
@@ -1377,46 +1405,69 @@ s             * critical data as fast as possible, and then we'll fill in the de
      * @param account
      * @throws MessagingException
      */
-    private void processPendingTrash(PendingCommand command, Account account)
+    private void processPendingMoveOrCopy(PendingCommand command, Account account)
             throws MessagingException {
-        String folder = command.arguments[0];
+        String srcFolder = command.arguments[0];
         String uid = command.arguments[1];
+        String destFolder = command.arguments[2];
+        String isCopyS = command.arguments[3];
+        
+        boolean isCopy = false;
+        if (isCopyS != null)
+        {
+          isCopy = Boolean.parseBoolean(isCopyS);
+        }
 
-        if (account.getErrorFolderName().equals(folder))
+        if (account.getErrorFolderName().equals(srcFolder))
     		{
     			return;
     		}
 
         Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
-        Folder remoteFolder = remoteStore.getFolder(folder);
-        if (!remoteFolder.exists()) {
-        	Log.w(Email.LOG_TAG, "processingPendingTrash: remoteFolder " + folder + " does not exist");
+        Folder remoteSrcFolder = remoteStore.getFolder(srcFolder);
+        Folder remoteDestFolder = remoteStore.getFolder(destFolder);
+        
+        if (!remoteSrcFolder.exists()) {
+        	Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: remoteFolder " + srcFolder + " does not exist");
             return;
         }
-        remoteFolder.open(OpenMode.READ_WRITE);
-        if (remoteFolder.getMode() != OpenMode.READ_WRITE) {
-         	Log.w(Email.LOG_TAG, "processingPendingTrash: could not open remoteFolder " + folder + " read/write");
+        remoteSrcFolder.open(OpenMode.READ_WRITE);
+        if (remoteSrcFolder.getMode() != OpenMode.READ_WRITE) {
+         	Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: could not open remoteSrcFolder " + srcFolder + " read/write");
+            return;
+        }
+        
+        remoteDestFolder.open(OpenMode.READ_WRITE);
+        if (remoteDestFolder.getMode() != OpenMode.READ_WRITE) {
+          Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: could not open remoteDestFolder " + srcFolder + " read/write");
             return;
         }
         
         Message remoteMessage = null;
         if (!uid.startsWith("Local")
                 && !uid.contains("-")) {
-            remoteMessage = remoteFolder.getMessage(uid);
+       // Why bother with this, perhaps just pass the UID to the store to save a roundtrip?  And check for error returns, of course
+       // Same applies for deletion
+            remoteMessage = remoteSrcFolder.getMessage(uid);      
         }
         if (remoteMessage == null) {
-         	Log.w(Email.LOG_TAG, "processingPendingTrash: remoteMessage " + uid + " does not exist");
-
+            Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: remoteMessage " + uid + " does not exist");
             return;
         }
         if (Config.LOGD)
         {
-        	Log.d(Email.LOG_TAG, "processingPendingTrash: remote trash folder = " + account.getTrashFolderName());
+        	Log.d(Email.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder 
+        	    + ", uid = " + uid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
         }
         
-        remoteMessage.delete(account.getTrashFolderName());
-        
-        remoteFolder.close(true);
+        if (isCopy) {
+          remoteSrcFolder.copyMessages(new Message[] { remoteMessage }, remoteDestFolder);
+        }
+        else {
+          remoteSrcFolder.moveMessages(new Message[] { remoteMessage }, remoteDestFolder);
+        }
+        remoteSrcFolder.close(true);
+        remoteDestFolder.close(true);
         
  
     }
@@ -2054,6 +2105,131 @@ s             * critical data as fast as possible, and then we'll fill in the de
       putBackground("getAccountUnread:" + account.getDescription(), l, unreadRunnable);
     }
     
+    public boolean moveMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
+        final MessagingListener listener)
+    {
+      if (!message.getUid().startsWith("Local")
+          && !message.getUid().contains("-")) { 
+        put("moveMessage", null, new Runnable() {
+          public void run() {
+            moveOrCopyMessageSynchronous(account, srcFolder, message, destFolder, false, listener);
+          }
+        });
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    
+    public boolean isMoveCapable(Message message) {
+      if (!message.getUid().startsWith("Local")
+          && !message.getUid().contains("-")) { 
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    public boolean isCopyCapable(Message message) {
+      return isMoveCapable(message);
+    }
+    
+    public boolean isMoveCapable(final Account account)
+    {
+      try {
+        Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        return localStore.isMoveCapable() && remoteStore.isMoveCapable();
+      }
+      catch (MessagingException me)
+      {
+
+        Log.e(Email.LOG_TAG, "Exception while ascertaining move capability", me);
+        return false;
+       }
+    }
+    public boolean isCopyCapable(final Account account)
+    {
+      try {
+        Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        return localStore.isCopyCapable() && remoteStore.isCopyCapable();
+      }
+      catch (MessagingException me)
+      {
+        Log.e(Email.LOG_TAG, "Exception while ascertaining copy capability", me);
+        return false;
+       }
+    }
+    
+    public boolean copyMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
+        final MessagingListener listener)
+    {
+      if (!message.getUid().startsWith("Local")
+          && !message.getUid().contains("-")) { 
+        put("copyMessage", null, new Runnable() {
+          public void run() {
+            moveOrCopyMessageSynchronous(account, srcFolder, message, destFolder, true, listener);
+          }
+        });
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    
+    private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder, final Message message, 
+        final String destFolder, final boolean isCopy, MessagingListener listener)
+    {
+      try {
+        Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        if (isCopy == false && (remoteStore.isMoveCapable() == false || localStore.isMoveCapable() == false)) {
+          return;
+        }
+        if (isCopy == true && (remoteStore.isCopyCapable() == false || localStore.isCopyCapable() == false)) {
+          return;
+        }
+        
+        Folder localSrcFolder = localStore.getFolder(srcFolder);
+        Folder localDestFolder = localStore.getFolder(destFolder);
+        Message lMessage = localSrcFolder.getMessage(message.getUid());
+        String origUid = message.getUid();
+        if (lMessage != null)
+        {
+          if (Config.LOGD)
+          {
+            Log.d(Email.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder
+                + ", uid = " + origUid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
+          }
+          if (isCopy) {
+            localSrcFolder.copyMessages(new Message[] { message }, localDestFolder);
+          }
+          else {
+            localSrcFolder.moveMessages(new Message[] { message }, localDestFolder);
+            for (MessagingListener l : getListeners()) {
+              l.messageUidChanged(account, srcFolder, origUid, message.getUid());
+            }
+            unsuppressMessage(account, srcFolder, origUid);
+          }
+        }
+        PendingCommand command = new PendingCommand();
+        command.command = PENDING_COMMAND_MOVE_OR_COPY;
+        command.arguments = new String[] { srcFolder, origUid, destFolder, Boolean.toString(isCopy) };
+        queuePendingCommand(account, command);
+        processPendingCommands(account);
+      }
+      catch (MessagingException me) {
+        addErrorMessage(account, me);
+
+          throw new RuntimeException("Error moving message", me);
+      }
+    }
+    
     public void deleteMessage(final Account account, final String folder, final Message message,
             final MessagingListener listener) {
       suppressMessage(account, folder, message);
@@ -2064,12 +2240,9 @@ s             * critical data as fast as possible, and then we'll fill in the de
         }
       });
     }
-    
+  
     private void deleteMessageSynchronous(final Account account, final String folder, final Message message,
         MessagingListener listener) {
-      
-      account.getUuid();
-      message.getUid();
       
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
@@ -2139,10 +2312,18 @@ s             * critical data as fast as possible, and then we'll fill in the de
               queuePendingCommand(account, command);
               processPendingCommands(account);
             }
+            else if  (folder.equals(account.getTrashFolderName()) && account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE)
+            {
+              PendingCommand command = new PendingCommand();
+              command.command = PENDING_COMMAND_SET_FLAG;
+              command.arguments = new String[] { folder, message.getUid(), Boolean.toString(true), Flag.DELETED.toString() };
+              queuePendingCommand(account, command);
+              processPendingCommands(account);
+            }
             else if (account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE) {
                 PendingCommand command = new PendingCommand();
-                command.command = PENDING_COMMAND_TRASH;
-                command.arguments = new String[] { folder, message.getUid() };
+                command.command = PENDING_COMMAND_MOVE_OR_COPY;
+                command.arguments = new String[] { folder, message.getUid(), account.getTrashFolderName(), "false" };
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
             }

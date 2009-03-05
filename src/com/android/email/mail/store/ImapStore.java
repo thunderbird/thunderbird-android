@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -54,6 +55,8 @@ import com.android.email.mail.internet.MimeMultipart;
 import com.android.email.mail.internet.MimeUtility;
 import com.android.email.mail.store.ImapResponseParser.ImapList;
 import com.android.email.mail.store.ImapResponseParser.ImapResponse;
+import com.android.email.mail.store.LocalStore.LocalFolder;
+import com.android.email.mail.store.LocalStore.LocalMessage;
 import com.android.email.mail.transport.CountingOutputStream;
 import com.android.email.mail.transport.EOLConvertingOutputStream;
 import com.beetstra.jutf7.CharsetProvider;
@@ -306,6 +309,17 @@ public class ImapStore extends Store {
             throw new RuntimeException("Unable to decode folder name: " + name, uee);
         }
     }
+    
+    @Override
+    public boolean isMoveCapable() {
+      return true;
+    }
+    
+    @Override
+    public boolean isCopyCapable()
+    {
+      return true;
+    }
 
     class ImapFolder extends Folder {
         private String mName;
@@ -516,6 +530,12 @@ public class ImapStore extends Store {
             catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
+        }
+        
+        @Override
+        public void moveMessages(Message[] messages, Folder folder) throws MessagingException {
+          copyMessages(messages, folder);
+          setFlags(messages, new Flag[] { Flag.DELETED }, true);
         }
 
         @Override
@@ -1351,11 +1371,19 @@ public class ImapStore extends Store {
         }
 
         public ImapResponse readResponse() throws IOException, MessagingException {
+          try {
             return mParser.readResponse();
+          }
+          catch (IOException ioe)
+          {
+            close();
+            throw ioe;
+          }
         }
 
         public String sendCommand(String command, boolean sensitive)
             throws MessagingException, IOException {
+          try {
             open();
             String tag = Integer.toString(mNextCommandTag++);
             String commandToSend = tag + " " + command;
@@ -1374,6 +1402,22 @@ public class ImapStore extends Store {
                 }
             }
             return tag;
+          }
+          catch (IOException ioe)
+          {
+            close();
+            throw ioe;
+          }
+          catch (ImapException ie)
+          {
+            close();
+            throw ie;
+          }
+          catch (MessagingException me)
+          {
+            close();
+            throw me;
+          }
         }
 
         public List<ImapResponse> executeSimpleCommand(String command) throws IOException,

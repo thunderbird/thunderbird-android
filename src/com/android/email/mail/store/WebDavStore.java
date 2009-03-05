@@ -1469,12 +1469,6 @@ public class WebDavStore extends Store {
             Log.e(Email.LOG_TAG, "appendMessages() not implmented");
         }
 
-        
-        @Override
-        public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {
-            Log.e(Email.LOG_TAG, "copyMessages() not implemented");
-        }
-
         @Override
         public Message[] expunge() throws MessagingException {
             /** Do nothing, deletes occur as soon as the call is made rather than flags on the message */

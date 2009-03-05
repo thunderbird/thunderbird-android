@@ -88,7 +88,9 @@ public abstract class Folder {
 
     public abstract void appendMessages(Message[] messages) throws MessagingException;
 
-    public abstract void copyMessages(Message[] msgs, Folder folder) throws MessagingException;
+    public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {} ;
+ 
+    public void moveMessages(Message[] msgs, Folder folder) throws MessagingException {} ;
 
     public abstract void setFlags(Message[] messages, Flag[] flags, boolean value)
             throws MessagingException;

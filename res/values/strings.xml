@@ -14,6 +14,7 @@
     <string name="accounts_title">Your accounts</string>
     <string name="compose_title">Compose</string>
     <string name="debug_title">Debug</string>
+    <string name="choose_folder_title">Choose Folder</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Next</string> <!-- Used as part of a multi-step process -->
@@ -50,6 +51,8 @@
     
     <string name="flag_action">Flag</string>
     <string name="unflag_action">Unflag</string>
+    <string name="move_action">Move</string>
+    <string name="copy_action">Copy</string>
  
     <string name="mark_as_unread_action">Mark as unread</string>
     <string name="move_to_action">Move to</string>
@@ -294,6 +297,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_options_mail_display_count_25">25 Messages</string>
     <string name="account_setup_options_mail_display_count_50">50 Messages</string>
     <string name="account_setup_options_mail_display_count_100">100 Messages</string>
+    
+    <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronized with the server</string>
 
     <string name="account_setup_failed_dlg_title">Setup could not finish</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
@@ -335,6 +340,12 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
+ 
+    <string name="account_settings_folder_target_mode_label">Move/copy destination folders</string>
+    <string name="account_settings_folder_target_mode_all">All</string>
+    <string name="account_settings_folder_target_mode_first_class">Only 1st Class folders</string>
+    <string name="account_settings_folder_target_mode_first_and_second_class">1st and 2nd Class folders</string>
+    <string name="account_settings_folder_target_mode_not_second_class">All except 2nd Class folders</string>
    
     <string name="folder_settings_title">Folder settings</string>
     <string name="folder_settings_folder_display_mode_label">Folder display class</string>
@@ -414,9 +425,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
 
     <string name="message_help_key">Del (or D) - Delete\u000AR -
     Reply\u000AA - Reply All\u000AF - Forward\u000AJ or P - Previous
-    Message\u000AK, N - Next Message\u000AZ - Zoom Out\u000AShift-Z -
+    Message\u000AK, N - Next Message\u000AM - Move\u000AY - Copy\u000AZ - Zoom Out\u000AShift-Z -
     Zoom In\u000aG - Flag</string>
     <string name="message_list_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aG - Flag\u000AO - Sort type\u000AI - Sort order\u000AQ
+    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aM - Move\u000AY - Copy\u000AG - Flag\u000AO - Sort type\u000AI - Sort order\u000AQ
     - Return to Accounts</string>
 </resources>

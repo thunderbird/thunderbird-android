@@ -448,6 +448,15 @@ public class LocalStore extends Store implements Serializable {
             return sb.toString();
         }
     }
+    
+    public boolean isMoveCapable() {
+      return true;
+    }
+    public boolean isCopyCapable() {
+      return true;
+    }
+    
+  
 
     public class LocalFolder extends Folder implements Serializable {
         private String mName;
@@ -967,6 +976,32 @@ public class LocalStore extends Store implements Serializable {
                 throw new MessagingException("copyMessages called with incorrect Folder");
             }
             ((LocalFolder) folder).appendMessages(msgs, true);
+        }
+        
+        @Override
+        public void moveMessages(Message[] msgs, Folder destFolder) throws MessagingException {
+            if (!(destFolder instanceof LocalFolder)) {
+                throw new MessagingException("copyMessages called with incorrect Folder");
+            }
+            
+            LocalFolder lDestFolder = (LocalFolder)destFolder;
+            for (Message message : msgs)
+            {
+              LocalMessage lMessage = (LocalMessage)message;
+                   
+              if (!message.isSet(Flag.SEEN)) {
+                setUnreadMessageCount(getUnreadMessageCount() - 1);
+                lDestFolder.setUnreadMessageCount(destFolder.getUnreadMessageCount() + 1);
+              }
+              
+              message.setUid("Local" + UUID.randomUUID().toString());
+              
+              mDb.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[] {
+                  lDestFolder.getId(), 
+                  message.getUid(),
+                  lMessage.getId() });
+            }
+            
         }
 
         /**

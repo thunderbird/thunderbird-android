@@ -49,6 +49,7 @@ public class Account implements Serializable {
     String mOutboxFolderName;
     FolderMode mFolderDisplayMode;
     FolderMode mFolderSyncMode;
+    FolderMode mFolderTargetMode;
     int mAccountNumber;
     boolean mVibrate;
     String mRingtoneUri;
@@ -85,6 +86,7 @@ public class Account implements Serializable {
         mVibrate = false;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
         mFolderSyncMode = FolderMode.FIRST_CLASS;
+        mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mHideMessageViewButtons = HideButtons.NEVER;
         mRingtoneUri = "content://settings/system/notification_sound";
     }
@@ -159,6 +161,16 @@ public class Account implements Serializable {
         catch (Exception e)
         {
         	mFolderSyncMode = FolderMode.FIRST_CLASS;
+        }
+        
+        try
+        {
+          mFolderTargetMode = FolderMode.valueOf(preferences.mSharedPreferences.getString(mUuid  + ".folderTargetMode", 
+              FolderMode.NOT_SECOND_CLASS.name()));
+        }
+        catch (Exception e)
+        {
+          mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         }
 
     }
@@ -276,6 +288,7 @@ public class Account implements Serializable {
         editor.remove(mUuid + ".lastFullSync");
         editor.remove(mUuid + ".folderDisplayMode");
         editor.remove(mUuid + ".folderSyncMode");
+        editor.remove(mUuid + ".folderTargetMode");
         editor.remove(mUuid + ".hideButtonsEnum");
         editor.commit();
     }
@@ -342,6 +355,7 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".ringtone", mRingtoneUri);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
+        editor.putString(mUuid + ".folderTargetMode", mFolderTargetMode.name());
        
         editor.commit();
     }
@@ -554,6 +568,16 @@ public class Account implements Serializable {
     public void setHideMessageViewButtons(HideButtons hideMessageViewButtons)
     {
       mHideMessageViewButtons = hideMessageViewButtons;
+    }
+
+    public FolderMode getFolderTargetMode()
+    {
+      return mFolderTargetMode;
+    }
+
+    public void setFolderTargetMode(FolderMode folderTargetMode)
+    {
+      mFolderTargetMode = folderTargetMode;
     }
 
 }

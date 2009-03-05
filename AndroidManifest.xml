@@ -59,6 +59,11 @@
             android:label="@string/account_setup_names_title"
             >
         </activity>
+        <activity
+            android:name="com.android.email.activity.ChooseFolder"
+            android:label="@string/choose_folder_title"
+            >
+        </activity>
         <!-- XXX Note: this activity is hacked to ignore config changes,
              since it doesn't currently handle them correctly in code. -->
         <activity

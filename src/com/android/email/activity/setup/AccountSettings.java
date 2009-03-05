@@ -36,6 +36,7 @@ public class AccountSettings extends PreferenceActivity {
     private static final String PREFERENCE_OUTGOING = "outgoing";
     private static final String PREFERENCE_DISPLAY_MODE = "folder_display_mode";
     private static final String PREFERENCE_SYNC_MODE = "folder_sync_mode";
+    private static final String PREFERENCE_TARGET_MODE = "folder_target_mode";
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
 
     private Account mAccount;
@@ -51,6 +52,7 @@ public class AccountSettings extends PreferenceActivity {
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
     private ListPreference mSyncMode;
+    private ListPreference mTargetMode;
     private ListPreference mDeletePolicy;
 
     public static void actionSettings(Context context, Account account) {
@@ -118,6 +120,19 @@ public class AccountSettings extends PreferenceActivity {
                 int index = mSyncMode.findIndexOfValue(summary);
                 mSyncMode.setSummary(mSyncMode.getEntries()[index]);
                 mSyncMode.setValue(summary);
+                return false;
+            }
+        });
+        
+        mTargetMode = (ListPreference) findPreference(PREFERENCE_TARGET_MODE);
+        mTargetMode.setValue(mAccount.getFolderTargetMode().name());
+        mTargetMode.setSummary(mTargetMode.getEntry());
+        mTargetMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mTargetMode.findIndexOfValue(summary);
+                mTargetMode.setSummary(mTargetMode.getEntries()[index]);
+                mTargetMode.setValue(summary);
                 return false;
             }
         });
@@ -225,6 +240,7 @@ public class AccountSettings extends PreferenceActivity {
         mAccount.setVibrate(mAccountVibrate.isChecked());
         mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
         mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
+        mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));

@@ -56,6 +56,8 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
+import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.FolderInfoHolder;
+import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.MessageInfoHolder;
 import com.android.email.mail.Address;
 import com.android.email.mail.Flag;
 import com.android.email.mail.Message;
@@ -78,6 +80,11 @@ public class MessageView extends Activity
     private static final String EXTRA_FOLDER_UIDS = "com.android.email.MessageView_folderUids";
     private static final String EXTRA_NEXT = "com.android.email.MessageView_next";
 
+
+    private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
+
+    private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
+    
     private TextView mFromView;
     private TextView mDateView;
     private TextView mToView;
@@ -149,6 +156,9 @@ public class MessageView extends Activity
             case KeyEvent.KEYCODE_A: { onReplyAll(); return true; }
             case KeyEvent.KEYCODE_R: { onReply(); return true; }
             case KeyEvent.KEYCODE_G: { onFlag(); return true; }
+
+            case KeyEvent.KEYCODE_M: { onMove(); return true; }
+            case KeyEvent.KEYCODE_Y: { onCopy(); return true; }
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P:
             { onPrevious(); return true; }
@@ -583,6 +593,68 @@ public class MessageView extends Activity
         }
       }
   }
+    
+    private void onMove()
+    {
+      if (MessagingController.getInstance(getApplication()).isMoveCapable(mMessage) == false)
+      {
+       Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+       toast.show();
+       return;
+      }
+      Intent intent = new Intent(this, ChooseFolder.class);
+      intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+      intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mFolder);
+      intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageUid);
+      startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
+    }
+    
+     private void onCopy()
+      {
+       if (MessagingController.getInstance(getApplication()).isMoveCapable(mMessage) == false)
+       {
+        Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+        toast.show();
+        return;
+       }
+        Intent intent = new Intent(this, ChooseFolder.class);
+
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mFolder);
+        intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageUid);
+        startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
+      }
+     
+     @Override
+     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       if(resultCode != RESULT_OK)
+         return;
+
+       switch(requestCode) {
+         case ACTIVITY_CHOOSE_FOLDER_MOVE:
+         case ACTIVITY_CHOOSE_FOLDER_COPY:
+           if (data == null)
+             return;
+           String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+           String srcFolderName = data.getStringExtra(ChooseFolder.EXTRA_CUR_FOLDER);
+           String uid = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE_UID);
+           
+           if (uid.equals(mMessageUid) && srcFolderName.equals(mFolder))
+           {
+             
+             switch (requestCode) {
+               case ACTIVITY_CHOOSE_FOLDER_MOVE:
+                 MessagingController.getInstance(getApplication()).moveMessage(mAccount,
+                     srcFolderName, mMessage, destFolderName, null);
+                 break;
+               case ACTIVITY_CHOOSE_FOLDER_COPY:
+                 MessagingController.getInstance(getApplication()).copyMessage(mAccount,
+                     srcFolderName, mMessage, destFolderName, null);
+                 break;
+             }
+           }
+       }
+     }
   
     
     private void onSendAlternate() {
@@ -760,6 +832,12 @@ public class MessageView extends Activity
             case R.id.flag:
               onFlag();
               break;
+            case R.id.move:
+              onMove();
+              break;
+            case R.id.copy:
+              onCopy();
+              break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -771,6 +849,14 @@ public class MessageView extends Activity
         getMenuInflater().inflate(R.menu.message_view_option, menu);
         optionsMenu = menu;
         setMenuFlag();
+        if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+        {
+         menu.findItem(R.id.copy).setVisible(false);
+        }
+       if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+       {
+        menu.findItem(R.id.move).setVisible(false);
+       }
         return true;
     }
     

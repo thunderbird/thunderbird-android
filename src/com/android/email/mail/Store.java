@@ -77,4 +77,12 @@ public abstract class Store {
     public abstract Folder[] getPersonalNamespaces() throws MessagingException;
 
     public abstract void checkSettings() throws MessagingException;
+    
+    public boolean isCopyCapable() {
+      return false;
+    }
+    public boolean isMoveCapable() {
+      return false;
+    }
+
 }

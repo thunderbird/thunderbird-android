@@ -86,6 +86,12 @@ public class FolderMessageList extends ExpandableListActivity
 {
     private static final String INTENT_DATA_PATH_SUFFIX = "/accounts";
     
+
+    private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
+
+    private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
+
+    
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
@@ -723,6 +729,8 @@ public class FolderMessageList extends ExpandableListActivity
                     case KeyEvent.KEYCODE_A: { onReplyAll(message); return true; }
                     case KeyEvent.KEYCODE_R: { onReply(message); return true; }
                     case KeyEvent.KEYCODE_G: { onToggleFlag(message); return true; }
+                    case KeyEvent.KEYCODE_M: { onMove(message); return true; }
+                    case KeyEvent.KEYCODE_Y: { onCopy(message); return true; }
                 }
               }
           }
@@ -913,6 +921,137 @@ public class FolderMessageList extends ExpandableListActivity
 
     }
 
+	 
+	  private void onMove(MessageInfoHolder holder)
+	  {
+      if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+      {
+        return;
+      }
+	    if (MessagingController.getInstance(getApplication()).isMoveCapable(holder.message) == false)
+	     {
+	      Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+        toast.show();
+        return;
+	     }
+	    Intent intent = new Intent(this, ChooseFolder.class);
+	    intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+	    intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
+	    intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, holder.message.getUid());
+	    startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
+	  }
+	  
+	   private void onCopy(MessageInfoHolder holder)
+	    {
+	     if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+	     {
+	       return;
+	     }
+	     if (MessagingController.getInstance(getApplication()).isMoveCapable(holder.message) == false)
+       {
+        Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+        toast.show();
+        return;
+       }
+	      Intent intent = new Intent(this, ChooseFolder.class);
+	      intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+	      intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
+	      intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, holder.message.getUid());
+	      startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
+	    }
+
+	  @Override
+	  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if(resultCode != RESULT_OK)
+	      return;
+
+	    switch(requestCode) {
+	      case ACTIVITY_CHOOSE_FOLDER_MOVE:
+	      case ACTIVITY_CHOOSE_FOLDER_COPY:
+	        if (data == null)
+	          return;
+	        String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+	        String srcFolderName = data.getStringExtra(ChooseFolder.EXTRA_CUR_FOLDER);
+	        String uid = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE_UID);
+	        
+	        FolderInfoHolder srcHolder = mAdapter.getFolder(srcFolderName);
+	        FolderInfoHolder destHolder = mAdapter.getFolder(destFolderName);
+	        if (srcHolder != null && destHolder != null) {
+	          MessageInfoHolder m = mAdapter.getMessage(srcHolder, uid);
+	          if (m != null) {
+              switch (requestCode) {
+                case ACTIVITY_CHOOSE_FOLDER_MOVE:
+                  onMoveChosen(m, destHolder);
+                  break;
+                case ACTIVITY_CHOOSE_FOLDER_COPY:
+                  onCopyChosen(m, destHolder);
+                  break;
+              }
+	          }
+	        }
+	    }
+	  }
+
+	
+	 private void onMoveChosen(MessageInfoHolder holder, FolderInfoHolder folder)
+	  {
+	   if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+     {
+	     return;
+     }
+	   String destFolderName = folder.name;
+	   FolderInfoHolder destHolder = mAdapter.getFolder(destFolderName);
+	   
+	   if (destHolder == null) {
+	     return;
+	   }
+	   
+	   if (holder.read == false && holder.folder.unreadMessageCount > 0)
+	    {
+	      holder.folder.unreadMessageCount--;
+	      destHolder.unreadMessageCount++;
+	    }
+	    
+	    if (destHolder != null)
+	    {
+	      destHolder.needsRefresh = true;
+	    }
+
+	    mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
+	    
+	    MessagingController.getInstance(getApplication()).moveMessage(mAccount,
+	        holder.message.getFolder().getName(), holder.message, destFolderName, null);
+
+	    }
+	 
+	  
+   private void onCopyChosen(MessageInfoHolder holder, FolderInfoHolder folder)
+   {
+     if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+     {
+       return;
+     }
+     String destFolderName = folder.name;
+     FolderInfoHolder destHolder = mAdapter.getFolder(destFolderName);
+     
+     if (destHolder == null) {
+       return;
+     }
+     
+     if (holder.read == false && holder.folder.unreadMessageCount > 0)
+      {
+        destHolder.unreadMessageCount++;
+      }
+      
+      if (destHolder != null)
+      {
+        destHolder.needsRefresh = true;
+      }
+     
+      MessagingController.getInstance(getApplication()).copyMessage(mAccount,
+          holder.message.getFolder().getName(), holder.message, destFolderName, null);
+   }
+
 	private void onReply(MessageInfoHolder holder)
 	{
         MessageCompose.actionReply(this, mAccount, holder.message, false);
@@ -1096,6 +1235,12 @@ public class FolderMessageList extends ExpandableListActivity
                 case R.id.flag:
                   onToggleFlag(holder);
                   break;
+                case R.id.move:
+                  onMove(holder);
+                  break;
+                case R.id.copy:
+                    onCopy(holder);
+                    break;
 				case R.id.send_alternate:
 					onSendAlternate(mAccount, holder);
 					break;
@@ -1177,6 +1322,14 @@ public class FolderMessageList extends ExpandableListActivity
 				  menu.findItem(R.id.flag).setTitle(
               R.string.unflag_action);
 				}
+				if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+		     {
+				  menu.findItem(R.id.copy).setVisible(false);
+		     }
+				if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        {
+         menu.findItem(R.id.move).setVisible(false);
+        }
             }
 		} else if (ExpandableListView.getPackedPositionType(info.packedPosition) == ExpandableListView.PACKED_POSITION_TYPE_GROUP)
 		{
