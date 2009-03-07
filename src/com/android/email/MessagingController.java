@@ -2214,6 +2214,10 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 + ", uid = " + origUid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
           }
           if (isCopy) {
+            FetchProfile fp = new FetchProfile();
+            fp.add(FetchProfile.Item.ENVELOPE);
+            fp.add(FetchProfile.Item.BODY);
+            localSrcFolder.fetch(new Message[] { message }, fp, null);
             localSrcFolder.copyMessages(new Message[] { message }, localDestFolder);
           }
           else {
@@ -2255,6 +2259,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder localFolder = localStore.getFolder(folder);
             Message lMessage = localFolder.getMessage(message.getUid());
+            String origUid = message.getUid();
             if (lMessage != null)
             {
               if (folder.equals(account.getTrashFolderName()))
@@ -2276,20 +2281,11 @@ s             * critical data as fast as possible, and then we'll fill in the de
                 {
                   if (Config.LOGD)
                   {
-                    Log.d(Email.LOG_TAG, "Deleting message in normal folder, copying");
+                    Log.d(Email.LOG_TAG, "Deleting message in normal folder, moving");
                   }
-                  FetchProfile fp = new FetchProfile();
-                  fp.add(FetchProfile.Item.ENVELOPE);
-                  fp.add(FetchProfile.Item.BODY);
-                  // TODO: Turn the fetch/copy/delete into an atomic move
-                  localFolder.fetch(new Message[] { lMessage }, fp, null);
-                  localFolder.copyMessages(new Message[] { lMessage }, localTrashFolder);
-                  if (folder.equals(account.getOutboxFolderName())) {
-                    lMessage.setFlag(Flag.X_DESTROYED, true);
-                  }
-                  else {
-                    lMessage.setFlag(Flag.DELETED, true);
-                  }
+                  
+                  localFolder.moveMessages(new Message[] { message }, localTrashFolder);
+
                 }
               }
             }
@@ -2323,14 +2319,14 @@ s             * critical data as fast as possible, and then we'll fill in the de
             {
               PendingCommand command = new PendingCommand();
               command.command = PENDING_COMMAND_SET_FLAG;
-              command.arguments = new String[] { folder, message.getUid(), Boolean.toString(true), Flag.DELETED.toString() };
+              command.arguments = new String[] { folder, origUid, Boolean.toString(true), Flag.DELETED.toString() };
               queuePendingCommand(account, command);
               processPendingCommands(account);
             }
             else if (account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE) {
                 PendingCommand command = new PendingCommand();
                 command.command = PENDING_COMMAND_MOVE_OR_COPY;
-                command.arguments = new String[] { folder, message.getUid(), account.getTrashFolderName(), "false" };
+                command.arguments = new String[] { folder, origUid, account.getTrashFolderName(), "false" };
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
             }
@@ -2338,7 +2334,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
             {
               PendingCommand command = new PendingCommand();
               command.command = PENDING_COMMAND_SET_FLAG;
-              command.arguments = new String[] { folder, message.getUid(), Boolean.toString(true), Flag.SEEN.toString() };
+              command.arguments = new String[] { folder, origUid, Boolean.toString(true), Flag.SEEN.toString() };
               queuePendingCommand(account, command);
               processPendingCommands(account);
             }

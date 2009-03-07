@@ -1002,28 +1002,27 @@ public class FolderMessageList extends ExpandableListActivity
      {
 	     return;
      }
-	   String destFolderName = folder.name;
-	   FolderInfoHolder destHolder = mAdapter.getFolder(destFolderName);
-	   
-	   if (destHolder == null) {
+//	   String destFolderName = folder.name;
+//	   FolderInfoHolder destHolder = mAdapter.getFolder(destFolderName);
+//	   
+	   if (folder == null) {
 	     return;
 	   }
 	   
-	   if (holder.read == false && holder.folder.unreadMessageCount > 0)
+	   if (holder.read == false )
 	    {
-	      holder.folder.unreadMessageCount--;
-	      destHolder.unreadMessageCount++;
+	      if (holder.folder.unreadMessageCount > 0) {
+	        holder.folder.unreadMessageCount--;
+	      }
+	      folder.unreadMessageCount++;
 	    }
 	    
-	    if (destHolder != null)
-	    {
-	      destHolder.needsRefresh = true;
-	    }
-
+	    folder.needsRefresh = true;
+	    
 	    mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
 	    
 	    MessagingController.getInstance(getApplication()).moveMessage(mAccount,
-	        holder.message.getFolder().getName(), holder.message, destFolderName, null);
+	        holder.message.getFolder().getName(), holder.message, folder.name, null);
 
 	    }
 	 
@@ -1034,25 +1033,19 @@ public class FolderMessageList extends ExpandableListActivity
      {
        return;
      }
-     String destFolderName = folder.name;
-     FolderInfoHolder destHolder = mAdapter.getFolder(destFolderName);
-     
-     if (destHolder == null) {
+     if (folder == null) {
        return;
      }
      
-     if (holder.read == false && holder.folder.unreadMessageCount > 0)
+     if (holder.read == false)
       {
-        destHolder.unreadMessageCount++;
+        folder.unreadMessageCount++;
       }
-      
-      if (destHolder != null)
-      {
-        destHolder.needsRefresh = true;
-      }
+
+      folder.needsRefresh = true;
      
       MessagingController.getInstance(getApplication()).copyMessage(mAccount,
-          holder.message.getFolder().getName(), holder.message, destFolderName, null);
+          holder.message.getFolder().getName(), holder.message, folder.name, null);
    }
 
 	private void onReply(MessageInfoHolder holder)

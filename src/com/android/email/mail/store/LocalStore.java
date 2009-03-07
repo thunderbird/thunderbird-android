@@ -981,25 +981,37 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public void moveMessages(Message[] msgs, Folder destFolder) throws MessagingException {
             if (!(destFolder instanceof LocalFolder)) {
-                throw new MessagingException("copyMessages called with incorrect Folder");
+              throw new MessagingException("copyMessages called with non-LocalFolder");
             }
-            
+
             LocalFolder lDestFolder = (LocalFolder)destFolder;
+            lDestFolder.open(OpenMode.READ_WRITE);
             for (Message message : msgs)
             {
               LocalMessage lMessage = (LocalMessage)message;
                    
               if (!message.isSet(Flag.SEEN)) {
-                setUnreadMessageCount(getUnreadMessageCount() - 1);
-                lDestFolder.setUnreadMessageCount(destFolder.getUnreadMessageCount() + 1);
+                if (getUnreadMessageCount() > 0) {
+                  setUnreadMessageCount(getUnreadMessageCount() - 1);
+                }
+                lDestFolder.setUnreadMessageCount(lDestFolder.getUnreadMessageCount() + 1);
               }
               
-              message.setUid("Local" + UUID.randomUUID().toString());
+              String oldUID = message.getUid();
+  
+              Log.d(Email.LOG_TAG, "Updating folder_id to " + lDestFolder.getId() + " for message with UID "
+                  + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
+  
+              message.setUid("Local" + UUID.randomUUID().toString());          
               
               mDb.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[] {
                   lDestFolder.getId(), 
                   message.getUid(),
                   lMessage.getId() });
+              
+              LocalMessage placeHolder = new LocalMessage(oldUID, this);
+              placeHolder.setFlagInternal(Flag.DELETED, true);
+              appendMessages(new Message[] { placeHolder });
             }
             
         }
