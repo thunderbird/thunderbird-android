@@ -65,6 +65,15 @@ public class Utility {
         return new String(decoded);
     }
 
+    /** Another type of Base64 decoding, return the array of bytes instead of the string */
+    public static byte[] base64Decode(byte[] encoded) {
+        if (encoded == null) {
+            return null;
+        }
+        byte[] decoded = new Base64().decode(encoded);
+        return decoded;
+    }
+
     public static String base64Encode(String s) {
         if (s == null) {
             return s;
@@ -191,5 +200,4 @@ public class Utility {
 //            }
 //        }
     }
-
 }
