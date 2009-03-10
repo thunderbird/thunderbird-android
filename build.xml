@@ -165,6 +165,7 @@
     <target name="dex" depends="compile">
         <echo>Converting compiled files and external libraries into ${outdir}/${dex-file}...</echo>
         <apply executable="${dx}" failonerror="true" parallel="true">
+            <arg value="-JXmx1024m" />
             <arg value="--dex" />
             <arg value="--output=${intermediate-dex-ospath}" />
             <arg path="${outdir-classes-ospath}" />
