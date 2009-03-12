@@ -2275,8 +2275,7 @@ public class FolderMessageList extends ExpandableListActivity
 						
 						this.compareCounterparty = Address.toFriendly(message
                 .getRecipients(RecipientType.TO));
-						
-						this.sender = getString(R.string.folder_message_list_to_label) + this.compareCounterparty;
+						this.sender = String.format(getString(R.string.folder_message_list_to_fmt), this.compareCounterparty);
 						
 					} else
 					{
