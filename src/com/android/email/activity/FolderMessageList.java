@@ -1477,8 +1477,29 @@ public class FolderMessageList extends ExpandableListActivity
                     }
 					if (holder.name.equals(mAccount.getOutboxFolderName()))
 					{
+						holder.displayName = String.format(
+								getString(R.string.special_mailbox_name_outbox_fmt),
+								holder.name);
                         holder.outbox = true;
                     }
+					if (holder.name.equals(mAccount.getDraftsFolderName()))
+					{
+						holder.displayName = String.format(
+								getString(R.string.special_mailbox_name_drafts_fmt),
+								holder.name);
+					}
+					if (holder.name.equals(mAccount.getTrashFolderName()))
+					{
+						holder.displayName = String.format(
+								getString(R.string.special_mailbox_name_trash_fmt),
+								holder.name);
+					}
+					if (holder.name.equals(mAccount.getSentFolderName()))
+					{
+						holder.displayName = String.format(
+								getString(R.string.special_mailbox_name_sent_fmt),
+								holder.name);
+					}
 					if (holder.messages == null)
 					{
                         holder.messages = new ArrayList<MessageInfoHolder>();

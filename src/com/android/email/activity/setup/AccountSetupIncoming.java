@@ -60,6 +60,10 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     private Spinner mSecurityTypeView;
     private Spinner mDeletePolicyView;
     private EditText mImapPathPrefixView;
+    private EditText mImapFolderDrafts;
+    private EditText mImapFolderSent;
+    private EditText mImapFolderTrash;
+    private EditText mImapFolderOutbox;
     private EditText mWebdavPathPrefixView;
     private EditText mWebdavAuthPathView;
     private EditText mWebdavMailboxPathView;
@@ -94,6 +98,10 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
         mDeletePolicyView = (Spinner)findViewById(R.id.account_delete_policy);
         mImapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
+        mImapFolderDrafts = (EditText)findViewById(R.id.account_imap_folder_drafts);
+        mImapFolderSent = (EditText)findViewById(R.id.account_imap_folder_sent);
+        mImapFolderTrash = (EditText)findViewById(R.id.account_imap_folder_trash);
+        mImapFolderOutbox = (EditText)findViewById(R.id.account_imap_folder_outbox);
         mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
         mWebdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
@@ -209,6 +217,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 mAccountSchemes = popSchemes;
 
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
             } else if (uri.getScheme().startsWith("imap")) {
@@ -221,6 +230,11 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 }
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
+                
+                mImapFolderDrafts.setText(mAccount.getDraftsFolderName());
+                mImapFolderSent.setText(mAccount.getSentFolderName());
+                mImapFolderTrash.setText(mAccount.getTrashFolderName());
+                mImapFolderOutbox.setText(mAccount.getOutboxFolderName());
             } else if (uri.getScheme().startsWith("webdav")) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mAccountPorts = webdavPorts;
@@ -228,6 +242,7 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
 
                 /** Hide the unnecessary fields */
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 if (uri.getPath() != null && uri.getPath().length() > 0) {
                     String[] pathParts = uri.getPath().split("\\|");
 
@@ -368,6 +383,10 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
 
         int deleteSpinnerVal = (Integer)((SpinnerOption)mDeletePolicyView.getSelectedItem()).value;
 
+        mAccount.setDraftsFolderName(mImapFolderDrafts.getText().toString());
+        mAccount.setSentFolderName(mImapFolderSent.getText().toString());
+        mAccount.setTrashFolderName(mImapFolderTrash.getText().toString());
+        mAccount.setOutboxFolderName(mImapFolderOutbox.getText().toString());
         mAccount.setDeletePolicy(deleteSpinnerVal);
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
     }

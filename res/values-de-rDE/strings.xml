@@ -48,6 +48,10 @@
   <string name="account_setup_incoming_delete_policy_never_label">Nie</string>
   <string name="account_setup_incoming_imap_path_prefix_hint">Optional</string>
   <string name="account_setup_incoming_imap_path_prefix_label">Präfix für IMAP-Verzeichnis</string>
+  <string name="account_setup_incoming_imap_folder_drafts">Ordner für Entwürfe</string>
+  <string name="account_setup_incoming_imap_folder_sent">Ordner für Gesendete</string>
+  <string name="account_setup_incoming_imap_folder_trash">Ordner für Papierkorb</string>
+  <string name="account_setup_incoming_imap_folder_outbox">Ordner für Postausgang</string>
   <string name="account_setup_incoming_imap_server_label">IMAP-Server</string>
   <string name="account_setup_incoming_password_label">Kennwort</string>
   <string name="account_setup_incoming_pop_server_label">POP3-Server</string>
@@ -185,6 +189,12 @@
   <string name="special_mailbox_name_outbox">Postausgang</string>
   <string name="special_mailbox_name_sent">Gesendet</string>
   <string name="special_mailbox_name_trash">Papierkorb</string>
+
+  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Entwürfe)</string>
+  <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Postausgang)</string>
+  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Gesendet)</string>
+  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Papierkorb)</string>
+
   <string name="status_error">Fehler</string>
   <string name="status_loading">Laden\u2026</string>
   <string name="status_loading_more">Laden von Nachrichten\u2026</string>

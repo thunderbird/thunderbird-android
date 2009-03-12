@@ -116,6 +116,12 @@
     <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="special_mailbox_name_trash">Trash</string>
     <string name="special_mailbox_name_sent">Sent</string>
+    <!-- Mailbox names displayed to user -->
+
+    <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Outbox)</string>
+    <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Drafts)</string>
+    <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Trash)</string>
+    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Sent)</string>
     
     <string name="end_of_folder">No more messages</string>
 
@@ -245,6 +251,12 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
 
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">Optional</string>
+    
+    <string name="account_setup_incoming_imap_folder_drafts">Drafts folder name</string>
+    <string name="account_setup_incoming_imap_folder_sent">Sent folder name</string>
+    <string name="account_setup_incoming_imap_folder_trash">Trash folder name</string>
+    <string name="account_setup_incoming_imap_folder_outbox">Outbox folder name</string>
+    
     <string name="account_setup_incoming_webdav_path_prefix_label">WebDav(Exchange) path</string>
     <string name="account_setup_incoming_webdav_path_prefix_hint">Optional</string>
 
