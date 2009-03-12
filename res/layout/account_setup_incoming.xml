@@ -65,17 +65,6 @@
             android:id="@+id/account_security_type"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
-        <TextView
-            android:id="@+id/account_delete_policy_label"
-            android:text="@string/account_setup_incoming_delete_policy_label"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" />
-        <Spinner
-            android:id="@+id/account_delete_policy"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
         <LinearLayout
             android:id="@+id/imap_path_prefix_section"
             android:layout_width="fill_parent"

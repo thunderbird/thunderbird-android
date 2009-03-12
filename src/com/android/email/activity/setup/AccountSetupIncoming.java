@@ -58,7 +58,6 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     private EditText mServerView;
     private EditText mPortView;
     private Spinner mSecurityTypeView;
-    private Spinner mDeletePolicyView;
     private EditText mImapPathPrefixView;
     private EditText mImapFolderDrafts;
     private EditText mImapFolderSent;
@@ -96,7 +95,6 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
         mServerView = (EditText)findViewById(R.id.account_server);
         mPortView = (EditText)findViewById(R.id.account_port);
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
-        mDeletePolicyView = (Spinner)findViewById(R.id.account_delete_policy);
         mImapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
         mImapFolderDrafts = (EditText)findViewById(R.id.account_imap_folder_drafts);
         mImapFolderSent = (EditText)findViewById(R.id.account_imap_folder_sent);
@@ -119,28 +117,10 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
-        SpinnerOption deletePolicies[] = {
-                new SpinnerOption(Account.DELETE_POLICY_NEVER,
-                        getString(R.string.account_setup_incoming_delete_policy_never_label)),
-                /*new SpinnerOption(Account.DELETE_POLICY_7DAYS,
-                        getString(R.string.account_setup_incoming_delete_policy_7days_label)),*/
-                new SpinnerOption(Account.DELETE_POLICY_ON_DELETE,
-                        getString(R.string.account_setup_incoming_delete_policy_delete_label)),
-                new SpinnerOption(Account.DELETE_POLICY_MARK_AS_READ,
-                            getString(R.string.account_setup_incoming_delete_policy_markread_label)),
-
-        };
-
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, securityTypes);
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
-
-        ArrayAdapter<SpinnerOption> deletePoliciesAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, deletePolicies);
-        deletePoliciesAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mDeletePolicyView.setAdapter(deletePoliciesAdapter);
 
         /*
          * Updates the port when the user changes the security type. This allows
@@ -275,8 +255,6 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 }
             }
 
-            SpinnerOption.setSpinnerOptionValue(mDeletePolicyView, mAccount.getDeletePolicy());
-
             if (uri.getHost() != null) {
                 mServerView.setText(uri.getHost());
             }
@@ -381,13 +359,10 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
             throw new Error(use);
         }
 
-        int deleteSpinnerVal = (Integer)((SpinnerOption)mDeletePolicyView.getSelectedItem()).value;
-
         mAccount.setDraftsFolderName(mImapFolderDrafts.getText().toString());
         mAccount.setSentFolderName(mImapFolderSent.getText().toString());
         mAccount.setTrashFolderName(mImapFolderTrash.getText().toString());
         mAccount.setOutboxFolderName(mImapFolderOutbox.getText().toString());
-        mAccount.setDeletePolicy(deleteSpinnerVal);
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
     }
 
