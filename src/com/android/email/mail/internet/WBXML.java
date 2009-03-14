@@ -113,132 +113,132 @@ class WBXML {
                                  BufferedOutputStream ostream,
                                  CodePage codepage) throws IOException {
         int streamByte = istream.read();
-        int attribute = 0;
-        String currentNamespace = codepage.getCodePageName();
-        String outputBuffer = new String();
-        
-        if (streamByte == -1) {
-            return;
-        }
 
-        /* Process WBXML tokens */
-        if ((streamByte & 15) <= 0x4 && ((streamByte >>> 4) % 4) == 0) {
-            /* Can't switch on a string, so switch on the raw value */
-            switch (streamByte) {
-            case 0x00: /* switch_page */
-                /* Change the current code page based on the next byte */
-                int nextByte = istream.read();
-                if (pageList[nextByte] != null) {
-                    codepage = pageList[nextByte];
-                } 
-                break;
-            case 0x01: /* end */
-                /* Pop the latest entry off the xml stack and close the tag */
-                if (!xmlStack.empty()) {
-                    String tagName = (String) xmlStack.pop();
-                    outputBuffer = "</"+tagName+">";
+        while (streamByte != -1) {
+            int attribute = 0;
+            String currentNamespace = codepage.getCodePageName();
+            String outputBuffer = new String();
+        
+            /* Process WBXML tokens */
+            if ((streamByte & 15) <= 0x4 && ((streamByte >>> 4) % 4) == 0) {
+                /* Can't switch on a string, so switch on the raw value */
+                switch (streamByte) {
+                case 0x00: /* switch_page */
+                    /* Change the current code page based on the next byte */
+                    int nextByte = istream.read();
+                    if (pageList[nextByte] != null) {
+                        codepage = pageList[nextByte];
+                    } 
+                    break;
+                case 0x01: /* end */
+                    /* Pop the latest entry off the xml stack and close the tag */
+                    if (!xmlStack.empty()) {
+                        String tagName = (String) xmlStack.pop();
+                        outputBuffer = "</"+tagName+">";
+                    }
+                    break;
+                case 0x02: /* entity */
+                    break;
+                case 0x03: /* str_i */
+                    StringBuffer inlineString = new StringBuffer(1024);
+                    int stringByte = 0x00;
+                    /* We need to process an indefinitely long string.  The terminator is
+                     * based upon the charset encoding.  We only handle utf-8 right now,
+                     * so our terminator is null (ie, 0x00) */
+                    while ((stringByte = istream.read()) > 0) {
+                        inlineString.append((char) stringByte);
+                    }
+                    outputBuffer = inlineString.toString();
+                    break;
+                case 0x04: /* literal */
+                    break;
+                case 0x40: /* ext_i_0 */
+                    break;
+                case 0x41: /* ext_i_1 */
+                    break;
+                case 0x42: /* ext_i_2 */
+                    break;
+                case 0x43: /* pi */
+                    break;
+                case 0x44: /* literal_c */
+                    break;
+                case 0x80: /* ext_t_0 */
+                    break;
+                case 0x81: /* ext_t_1 */
+                    break;
+                case 0x82: /* ext_t_2 */
+                    break;
+                case 0x83: /* str_t */
+                    break;
+                case 0x84: /* literal_a */
+                    break;
+                case 0xc0: /* ext_0 */
+                    break;
+                case 0xc1: /* ext_1 */
+                    break;
+                case 0xc2: /* ext_2 */
+                    break;
+                case 0xc3: /* opaque */
+                    /* If raw binary data is written to the output buffer, it can invalidate the XML document.
+                     * Instead, append BASE64 to signify the data is base 64 encoded.
+                     */
+                    /* Opaque binary data.  Next byte is the length of the data */
+                    byte dataLength = (byte)istream.read();
+                    byte[] data = new byte[dataLength];
+                    for (int i = 0; i < dataLength; i++) {
+                        data[i] = (byte)istream.read();
+                    }
+                    /* Write the data we have to the output buffer */
+                    outputBuffer = new String("BASE64");
+                    outputBuffer = outputBuffer + Utility.base64Encode(new String(data));
+                    break;
+                case 0xc4: /* literal_ac */
+                    break;
+                    
                 }
-                break;
-            case 0x02: /* entity */
-                break;
-            case 0x03: /* str_i */
-                StringBuffer inlineString = new StringBuffer(1024);
-                int stringByte = 0x00;
-                /* We need to process an indefinitely long string.  The terminator is
-                 * based upon the charset encoding.  We only handle utf-8 right now,
-                 * so our terminator is null (ie, 0x00) */
-                while ((stringByte = istream.read()) > 0) {
-                    inlineString.append((char) stringByte);
-                }
-                outputBuffer = inlineString.toString();
-                break;
-            case 0x04: /* literal */
-                break;
-            case 0x40: /* ext_i_0 */
-                break;
-            case 0x41: /* ext_i_1 */
-                break;
-            case 0x42: /* ext_i_2 */
-                break;
-            case 0x43: /* pi */
-                break;
-            case 0x44: /* literal_c */
-                break;
-            case 0x80: /* ext_t_0 */
-                break;
-            case 0x81: /* ext_t_1 */
-                break;
-            case 0x82: /* ext_t_2 */
-                break;
-            case 0x83: /* str_t */
-                break;
-            case 0x84: /* literal_a */
-                break;
-            case 0xc0: /* ext_0 */
-                break;
-            case 0xc1: /* ext_1 */
-                break;
-            case 0xc2: /* ext_2 */
-                break;
-            case 0xc3: /* opaque */
-                /* If raw binary data is written to the output buffer, it can invalidate the XML document.
-                 * Instead, append BASE64 to signify the data is base 64 encoded.
-                 */
-                /* Opaque binary data.  Next byte is the length of the data */
-                byte dataLength = (byte)istream.read();
-                byte[] data = new byte[dataLength];
-                for (int i = 0; i < dataLength; i++) {
-                    data[i] = (byte)istream.read();
-                }
-                /* Write the data we have to the output buffer */
-                outputBuffer = new String("BASE64");
-                outputBuffer = outputBuffer + Utility.base64Encode(new String(data));
-                //outputBuffer = new String(data, "UTF-8");
-                break;
-            case 0xc4: /* literal_ac */
-                break;
+            } else {
+                /* Process tokens from the code page */
+                String elementName = new String();
+                /* If bit 6 is set, there is content */
+                byte content = (byte)(streamByte & 64);
                 
-            }
-        } else {
-            /* Process tokens from the code page */
-            String elementName = new String();
-            /* If bit 6 is set, there is content */
-            byte content = (byte)(streamByte & 64);
-            
-            if (content > 0) {
-                /* Remove the content flag */
-                streamByte = (streamByte ^ 64);
+                if (content > 0) {
+                    /* Remove the content flag */
+                    streamByte = (streamByte ^ 64);
+                }
+                
+                /* If bit 7 is set, there are attributes */
+                attribute = (streamByte & 128);
+                if (attribute > 0) {
+                    /* Remove the attribute flag */
+                    streamByte = (streamByte ^ 128);
+                }
+                elementName = codepage.getCodePageString(streamByte);
+                outputBuffer = "<"+currentNamespace+":"+elementName;
+                
+                /* If bit 6 is set, it has content */
+                if (content > 0) {
+                    xmlStack.push(currentNamespace+":"+elementName);
+                }
+                
+                if (content > 0 && attribute == 0) {
+                    outputBuffer = outputBuffer + ">";
+                } else if (content == 0 && attribute == 0) {
+                    outputBuffer = outputBuffer + "/>";
+                }
             }
 
-            /* If bit 7 is set, there are attributes */
-            attribute = (streamByte & 128);
-            if (attribute > 0) {
-                /* Remove the attribute flag */
-                streamByte = (streamByte ^ 128);
+            if (outputBuffer.length() > 0) {
+                ostream.write(outputBuffer.getBytes(), 0, outputBuffer.length());
+                ostream.flush();
             }
-            elementName = codepage.getCodePageString(streamByte);
-            outputBuffer = "<"+currentNamespace+":"+elementName;
-
-            /* If bit 6 is set, it has content */
-            if (content > 0) {
-                xmlStack.push(currentNamespace+":"+elementName);
-            }
-
-            if (content > 0 && attribute == 0) {
-                outputBuffer = outputBuffer + ">";
-            } else if (content == 0 && attribute == 0) {
-                outputBuffer = outputBuffer + "/>";
-            }
-        }
-
-        ostream.write(outputBuffer.getBytes(), 0, outputBuffer.length());
-        ostream.flush();
         
-        if (attribute > 0) {
-            processAttributeState(istream, ostream, codepage);
-        }
+            if (attribute > 0) {
+                processAttributeState(istream, ostream, codepage);
+            }
 
-        processTagState(istream, ostream, codepage);
+            streamByte = istream.read();
+        }
     }
 
     private void processAttributeState(BufferedInputStream istream,
@@ -323,7 +323,6 @@ class WBXML {
                 /* Write the data we have to the output buffer */
                 outputBuffer = new String("BASE64");
                 outputBuffer = outputBuffer + Utility.base64Encode(new String(data));
-                //outputBuffer = new String(data, "UTF-8");
                 break;
             case 0xc4: /* literal_ac */
                 break;
@@ -474,13 +473,13 @@ class WBXML {
              * the codepages.
              */
             if (!codepage.getCodePageName().equals(namespaceURI)) {
-                for (int i = 0, count = pageList.length - 1; i < count; i++) {
+                for (int i = 0, count = pageList.length; i < count; i++) {
                     if (pageList[i].getCodePageName().equals(namespaceURI)) {
                         codepage = pageList[i];
                         /* Write the code page change to the stream */
                         try {
                             ostream.write(0x00);
-                            ostream.write(i);
+                            ostream.write(codepage.getCodePageIndex());
                         } catch (IOException ioe) {
                             throw new SAXException("IOException writing page change: " + ioe);
                         }
@@ -553,7 +552,12 @@ class WBXML {
 
         @Override
         public void characters(char ch[], int start, int length) {
-            String hexString = new String(ch, start, 6);
+            String hexString = new String();
+
+            if (length > 6) {
+                hexString = new String(ch, start, 6);
+            }
+
             /* Fix up the tag in the pending buffer if necessary */
             if (pendingBuffer.size() > 0) {
                 int tagByte = pendingBuffer.get(0);
