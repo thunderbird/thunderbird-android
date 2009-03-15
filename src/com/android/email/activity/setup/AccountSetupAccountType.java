@@ -43,6 +43,7 @@ public class AccountSetupAccountType extends Activity implements OnClickListener
         ((Button)findViewById(R.id.pop)).setOnClickListener(this);
         ((Button)findViewById(R.id.imap)).setOnClickListener(this);
         ((Button)findViewById(R.id.webdav)).setOnClickListener(this);
+        ((Button)findViewById(R.id.activesync)).setOnClickListener(this);
 
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
         mMakeDefault = (boolean)getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
@@ -92,6 +93,22 @@ public class AccountSetupAccountType extends Activity implements OnClickListener
         AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
         finish();
     }
+
+    private void onActiveSync() {
+        try {
+            URI uri = new URI(mAccount.getStoreUri());
+            uri = new URI("activesync", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
+            mAccount.setStoreUri(uri.toString());
+        } catch (URISyntaxException use) {
+            /*
+             * This should not happen.
+             */
+            throw new Error(use);
+        }
+
+        AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
+        finish();
+    }
     
     public void onClick(View v) {
         switch (v.getId()) {
@@ -103,6 +120,9 @@ public class AccountSetupAccountType extends Activity implements OnClickListener
                 break;
             case R.id.webdav:
                 onWebDav();
+                break;
+            case R.id.activesync:
+                onActiveSync();
                 break;
         }
     }

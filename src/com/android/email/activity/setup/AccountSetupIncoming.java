@@ -50,7 +50,13 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     private static final String webdavSchemes[] = {
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
     };
-
+    private static final int activesyncPorts[] = {
+        443, 443, 443, 443, 443
+    };
+    private static final String activesyncSchemes[] = {
+        "activesync", "activesync+ssl", "activesync+ssl+", "activesync+tls", "activesync+tls+"
+    };
+    
     private int mAccountPorts[];
     private String mAccountSchemes[];
     private EditText mUsernameView;
@@ -250,6 +256,15 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                         }
                     }
                 }
+            } else if (uri.getScheme().startsWith("activesync")) {
+                serverLabelView.setText(R.string.account_setup_incoming_activesync_server_label);
+                mAccountPorts = activesyncPorts;
+                mAccountSchemes = activesyncSchemes;
+
+                /** Hide the unnecessary fields */
+                findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
             } else {
                 throw new Error("Unknown account type: " + mAccount.getStoreUri());
             }

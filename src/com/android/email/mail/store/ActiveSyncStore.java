@@ -39,7 +39,13 @@ public class ActiveSyncStore extends Store {
     }
 
     public void checkSettings() throws MessagingException {
-
+        if (!protocol.isCommandSupported("checkSettings")) {
+            Log.e(Email.LOG_TAG, "checkSettings() command not supported in ActiveSyncProtocol");
+        } else {
+            if (!protocol.checkSettings()) {
+                throw new MessagingException("checkSettings() failed in ActiveSyncStore");
+            }
+        }
     }
 
     /** ActiveSyncFolder */

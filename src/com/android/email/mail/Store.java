@@ -9,6 +9,7 @@ import com.android.email.mail.store.ImapStore;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.Pop3Store;
 import com.android.email.mail.store.WebDavStore;
+import com.android.email.mail.store.ActiveSyncStore;
 
 /**
  * Store is the access point for an email message store. It's location can be
@@ -57,6 +58,8 @@ public abstract class Store {
                 store = new LocalStore(uri, application);
             } else if (uri.startsWith("webdav")) {
                 store = new WebDavStore(uri);
+            } else if (uri.startsWith("activesync")) {
+                store = new ActiveSyncStore(uri);
             }
 
 

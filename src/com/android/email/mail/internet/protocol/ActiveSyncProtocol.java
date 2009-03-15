@@ -152,7 +152,8 @@ public class ActiveSyncProtocol extends Protocol {
         /** Assign everything for supporting self-signed certificates */
         reg = mHttpClient.getConnectionManager().getSchemeRegistry();
         try {
-            s = new Scheme("https", new TrustedSocketFactory(mHost, true), 443);
+            String host = mHost.replaceAll("https://", "");
+            s = new Scheme("https", new TrustedSocketFactory(host, true), 443);
         } catch (NoSuchAlgorithmException nsa) {
             Log.e(Email.LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
             throw new ProtocolException("NoSuchAlgorithmException in getHttpClient: " + nsa);
