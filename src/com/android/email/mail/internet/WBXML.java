@@ -30,7 +30,7 @@ import com.android.email.CodePage;
  * @version .1
  * @author  Matthew Brace
  */
-class WBXML {
+public class WBXML {
     /* WBXML ActiveSync specific Code Pages */
     public static final int WBXML_VERSION11 = 0x01; /* WBXML 1.1 */
     public static final int WBXML_VERSION13 = 0x03; /* WBXML 1.3 */
