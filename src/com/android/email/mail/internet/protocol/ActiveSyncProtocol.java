@@ -4,13 +4,20 @@ import android.util.Log;
 
 import com.android.email.Email;
 import com.android.email.Utility;
+import com.android.email.mail.Folder;
 import com.android.email.mail.ProtocolException;
-import com.android.email.mail.internet.HttpGeneric;
+import com.android.email.mail.Store;
+import com.android.email.mail.internet.*;
+import com.android.email.mail.internet.WBXML;
 import com.android.email.mail.internet.protocol.Protocol;
+import com.android.email.mail.store.ActiveSyncStore;
 import com.android.email.mail.transport.TrustedSocketFactory;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -19,21 +26,35 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Stack;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.entity.AbstractHttpEntity;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * A class for handling all the protocol level communication and
  * data for the Microsoft Exchange ActiveSync protocol.
  *
- * @version .1
+ * @version .2
  * @author Matthew Brace
  */
 public class ActiveSyncProtocol extends Protocol {
@@ -45,9 +66,13 @@ public class ActiveSyncProtocol extends Protocol {
     private String mAuthString;  /* Stores the base64 encoded string used in headers for authentication */
 
     private DefaultHttpClient mHttpClient = null; /* Stores the HttpClient to be used for requests */
+    private String mFolderSyncKey = "0";             /* Stores the consecutive sync key for states for folders */
+
+    CodePage[] mCodePages;
+    WBXML mWbxmlCoder;
 
     private static enum supportedCommands { /* Stores the supported commands */
-        checkSettings;
+        checkSettings, getFolderHierarchy;
     };
     
     /**
@@ -119,6 +144,7 @@ public class ActiveSyncProtocol extends Protocol {
      * Realistically the entire object should be rebuilt if this fails, but could
      * fail due to network problems, etc.
      */
+    @Override
     public boolean checkSettings() {
         boolean result = false;
         try {
@@ -127,9 +153,9 @@ public class ActiveSyncProtocol extends Protocol {
             processRequest(mHost + "/Microsoft-Server-ActiveSync",
                            "OPTIONS",
                            null,
-                           null,
                            headers,
-                           false);
+                           false,
+                           "");
             result = true;
         } catch (ProtocolException pe) {
             result = false;
@@ -177,11 +203,11 @@ public class ActiveSyncProtocol extends Protocol {
      */
     private DataSet processRequest(String url,
                                    String method,
-                                   String messageBody,
-                                   String contentType,
+                                   AbstractHttpEntity messageEntity,
                                    HashMap<String, String> headers,
-                                   boolean needsParsing) throws ProtocolException {
-        DataSet result = new DataSet();
+                                   boolean needsParsing,
+                                   String dataTag) throws ProtocolException {
+        DataSet result = new DataSet(dataTag);
         DefaultHttpClient httpclient = getHttpClient();
 
         if (url == null) {
@@ -193,14 +219,11 @@ public class ActiveSyncProtocol extends Protocol {
 
         try {
             int statusCode = -1;
-            StringEntity messageEntity = null;
             HttpGeneric httpmethod = new HttpGeneric(url);
             HttpResponse response;
             HttpEntity entity;
 
-            if (messageBody != null) {
-                messageEntity = new StringEntity(messageBody);
-                messageEntity.setContentType(contentType);
+            if (messageEntity != null) {
                 httpmethod.setEntity(messageEntity);
             }
 
@@ -229,7 +252,29 @@ public class ActiveSyncProtocol extends Protocol {
 
             if (entity != null &&
                 needsParsing) {
-                /* Unsupported at this time */
+                try {
+                    String responseContentType = response.getFirstHeader("Content-Type").getValue();
+                    InputStream istream = entity.getContent();
+                    if (responseContentType.startsWith("application/vnd.ms-sync")) {
+                        WBXML decoder = getWbxml();
+                        ByteArrayOutputStream wbxmlStream = new ByteArrayOutputStream();
+                        decoder.convertWbxmlToXml(istream, wbxmlStream);
+                        istream = new BufferedInputStream(new ByteArrayInputStream(wbxmlStream.toByteArray()), 200000);
+                    }
+                    SAXParserFactory spf = SAXParserFactory.newInstance();
+                    SAXParser sp = spf.newSAXParser();
+                    XMLReader xr = sp.getXMLReader();
+                    ParseHandler myHandler = new ParseHandler(result.getContentTag());
+                        
+                    xr.setContentHandler(myHandler);
+                    xr.parse(new InputSource(istream));
+
+                    result = myHandler.getDataSet();
+                } catch (SAXException se) {
+                    Log.e(Email.LOG_TAG, "SAXException in processRequest() " + se + "\nTrace: " + processException(se));
+                } catch (ParserConfigurationException pce) {
+                    Log.e(Email.LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: " + processException(pce));
+                }
             }
         } catch (UnsupportedEncodingException uee) {
             Log.e(Email.LOG_TAG,
@@ -243,6 +288,35 @@ public class ActiveSyncProtocol extends Protocol {
         return result;
     }
 
+    private WBXML getWbxml() {
+        if (mWbxmlCoder == null) {
+            mCodePages = new CodePage[22];
+            mCodePages[0] = new AirSyncCodePage();
+            mCodePages[1] = new ContactsCodePage();
+            mCodePages[2] = new EmailCodePage();
+            mCodePages[3] = new AirNotifyCodePage();
+            mCodePages[4] = new CalendarCodePage();
+            mCodePages[5] = new MoveCodePage();
+            mCodePages[6] = new ItemEstimateCodePage();
+            mCodePages[7] = new FolderHierarchyCodePage();
+            mCodePages[8] = new MeetingResponseCodePage();
+            mCodePages[9] = new TasksCodePage();
+            mCodePages[0xa] = new ResolveRecipientsCodePage();
+            mCodePages[0xb] = new ValidateCertCodePage();
+            mCodePages[0xc] = new Contacts2CodePage();
+            mCodePages[0xd] = new PingCodePage();
+            mCodePages[0xe] = new ProvisionCodePage();
+            mCodePages[0xf] = new SearchCodePage();
+            mCodePages[0x10] = new GALCodePage();
+            mCodePages[0x11] = new AirSyncBaseCodePage();
+            mCodePages[0x12] = new SettingsCodePage();
+            mCodePages[0x13] = new DocumentLibraryCodePage();
+            mCodePages[0x14] = new ItemOperationsCodePage();
+            mWbxmlCoder = new WBXML(mCodePages);
+        } 
+        return mWbxmlCoder;
+    }
+    
     /**
      * Returns a string of the stacktrace for a Throwable to allow for easy inline printing of errors.
      */
@@ -283,15 +357,186 @@ public class ActiveSyncProtocol extends Protocol {
             "\n\nResponse: " + responseText;
 
     }
+
+    @Override
+    public Folder[] getFolderHierarchy(Store store) {
+        ActiveSyncStore astore = (ActiveSyncStore) store;
+        String xmlData = ASXmlRequests.getFolderSyncXml(mFolderSyncKey);
+        ArrayList<Folder> folderList = new ArrayList<Folder>();
+        HashMap<String, String> headers = new HashMap<String, String>();
+        DataSet resultSet = new DataSet("");
+        ByteArrayOutputStream dataIn = new ByteArrayOutputStream();
+        WBXML encoder = getWbxml();
+        ByteArrayEntity messageEntity;
+
+        encoder.convertXmlToWbxml(new ByteArrayInputStream(xmlData.getBytes()),
+                                  dataIn);
+        try {
+            HashMap<String, String> resultData;
+            HashMap<String, String>[] resultSetArray;
+            dataIn.flush();
+
+            messageEntity = new ByteArrayEntity(dataIn.toByteArray());
+            messageEntity.setContentType("application/vnd.ms-sync.wbxml");
+
+            headers.put("MS-ASProtocolVersion", "2.5");
+            headers.put("Content-Type", "application/vnd.ms-sync.wbxml");
+            resultSet = processRequest(mHost + "/Microsoft-Server-ActiveSync?User="+mUsername+"&DeviceId=6F24CAD599A5BF1A690246B8C68FAE8D&DeviceType=PocketPC&Cmd=FolderSync",
+                                       "POST",
+                                       messageEntity,
+                                       headers,
+                                       true,
+                                       "Add");
+
+            resultData = resultSet.getResultData();
+            resultSetArray = resultSet.getResultArray();
+            if (resultData.containsKey("Status") &&
+                resultData.get("Status").equals("1")) {
+                for (int i = 0, count = resultSetArray.length; i < count; i++) {
+                    ActiveSyncStore.ActiveSyncFolder folder = astore.new ActiveSyncFolder(resultSetArray[i].get("DisplayName"),
+                                                                                          resultSetArray[i].get("ServerId"));
+                    folderList.add(folder);
+                }
+            }
+        } catch (IOException ioe) {
+            Log.e(Email.LOG_TAG, "IOException in getFolderHierarchy: " + ioe + "\nTrace: " + processException(ioe));
+        } catch (ProtocolException pe) {
+            Log.e(Email.LOG_TAG, "ProtocolException in getFolderHierachy: " + pe + "\nTrace: " + processException(pe));
+        } catch (Exception e) {
+            Log.e(Email.LOG_TAG, "Exception in getFolderHierarchy: " + e + "\nTrace: " + processException(e));
+        }
+
+        return folderList.toArray(new Folder[] {});
+    }
+
+    /**
+     * Final class with private constructor so it cannot be instantiated.  Holds, processes and
+     * creates the XML requests for ActiveSync.
+     */
+    public static class ASXmlRequests {
+        /** This is never called */
+        private ASXmlRequests() {
+
+        }
+
+        /**
+         * Returns the XML string for the command FolderSync with the supplied syncKey.
+         */
+        public static String getFolderSyncXml(String syncKey) {
+            String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><FolderSync xmlns=\"FolderHierarchy\"><SyncKey>";
+            xml = xml + syncKey + "</SyncKey></FolderSync>";
+            return xml;
+        }
+    }
     
     /**
      * Dataset for all XML parses.
-     * Data is stored in a single format inside the class and is formatted appropriately
-     * depending on the accessor calls made.
+     * There are two sources of data that are stored.
+     * 1) An array of HashMaps of tags and characters contained between open and close tags for
+     * the supplied tag.
+     * 2) A HashMap of tags and characters contained between those tags that don't fall within
+     * the elements of the supplied tag.
+     * For entries that don't require an array of HashMaps for the result, an empty string can
+     * be used.
      */
     public class DataSet {
-        public DataSet() {
+        String contentTag = new String();
+        boolean insideContentTag = false;
+        ArrayList<HashMap> resultSet;
+        HashMap<String, String> resultData;
+        HashMap<String, String> tempResultSet;
+        Stack<String> tagStack;
+        
+        public DataSet(String tag) {
+            contentTag = tag;
+            resultSet = new ArrayList<HashMap>();
+            resultData = new HashMap<String, String>();
+            tempResultSet = new HashMap<String, String>();
+            tagStack = new Stack<String>();
+        }
 
+        public String getContentTag() {
+            return contentTag;
+        }
+        
+        public void push(String tag) {
+            if (tag.equals(contentTag)) {
+                insideContentTag = true;
+            }
+
+            tagStack.push(tag);
+        }
+
+        public void pop() {
+            if (tagStack.peek().equals(contentTag)) {
+                resultSet.add(tempResultSet);
+                insideContentTag = false;
+                tempResultSet = new HashMap<String, String>();
+            }
+
+            tagStack.pop();
+        }
+
+        public void addCharacters(char[] ch, int start, int end) {
+            if (insideContentTag) {
+                tempResultSet.put(tagStack.peek(), new String(ch, start, end));
+            } else {
+                resultData.put(tagStack.peek(), new String(ch, start, end));
+            }
+        }
+
+        public HashMap[] getResultArray() {
+            HashMap<String, String>[] result = new HashMap[resultSet.size()];
+            result = resultSet.toArray(result);
+            return result;
+        }
+
+        public HashMap getResultData() {
+            return resultData;
+        }
+    }
+    
+    /** 
+     * XML Parsing Handler
+     * Can handle all XML handling needs
+     */
+    public class ParseHandler extends DefaultHandler {
+        private DataSet mDataSet;
+        private String mContentTag = "";
+        
+        public DataSet getDataSet() {
+            return this.mDataSet;
+        }
+
+        public ParseHandler(String contentTag) {
+            super();
+            mContentTag = contentTag;
+        }
+        
+        @Override
+        public void startDocument() throws SAXException {
+            this.mDataSet = new DataSet(mContentTag);
+        }
+
+        @Override
+        public void endDocument() throws SAXException {
+            /* Do nothing */
+        }
+
+        @Override
+        public void startElement(String namespaceURI, String localName,
+                                 String qName, Attributes atts) throws SAXException {
+            mDataSet.push(localName);
+        }
+
+        @Override
+        public void endElement(String namespaceURI, String localName, String qName) {
+            mDataSet.pop();
+        }
+
+        @Override
+        public void characters(char ch[], int start, int length) {
+            mDataSet.addCharacters(ch, start, length);
         }
     }
 }

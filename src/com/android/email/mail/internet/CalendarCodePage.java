@@ -1,4 +1,6 @@
-package com.android.email;
+package com.android.email.mail.internet;
+
+import com.android.email.mail.internet.CodePage;
 
 /**
  * This class is the specific code page for Calendar in the ActiveSync protocol.
@@ -7,7 +9,7 @@ package com.android.email;
  * @version 1.0
  * @author  Matthew Brace
  */
-class CalendarCodePage extends CodePage {
+public class CalendarCodePage extends CodePage {
     /**
      * Constructor for CalendarCodePage.  Initializes all of the code page values.
      */

@@ -1,4 +1,6 @@
-package com.android.email;
+package com.android.email.mail.internet;
+
+import com.android.email.mail.internet.CodePage;
 
 /**
  * This class is the specific code page for AirSync in the ActiveSync protocol.
@@ -7,7 +9,7 @@ package com.android.email;
  * @version 1.0
  * @author  Matthew Brace
  */
-class AirSyncCodePage extends CodePage {
+public class AirSyncCodePage extends CodePage {
     /**
      * Constructor for AirSyncCodePage.  Initializes all of the code page values.
      */

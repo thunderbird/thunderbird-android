@@ -1,4 +1,6 @@
-package com.android.email;
+package com.android.email.mail.internet;
+
+import com.android.email.mail.internet.CodePage;
 
 /**
  * This class is the specific code page for GAL in the ActiveSync protocol.
@@ -7,7 +9,7 @@ package com.android.email;
  * @version 1.0
  * @author  Matthew Brace
  */
-class GALCodePage extends CodePage {
+public class GALCodePage extends CodePage {
     /**
      * Constructor for GALCodePage.  Initializes all of the code page values.
      */

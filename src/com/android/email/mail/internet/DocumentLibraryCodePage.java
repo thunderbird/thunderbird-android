@@ -1,4 +1,6 @@
-package com.android.email;
+package com.android.email.mail.internet;
+
+import com.android.email.mail.internet.CodePage;
 
 /**
  * This class is the specific code page for DocumentLibrary in the ActiveSync protocol.
@@ -7,7 +9,7 @@ package com.android.email;
  * @version 1.0
  * @author  Matthew Brace
  */
-class DocumentLibraryCodePage extends CodePage {
+public class DocumentLibraryCodePage extends CodePage {
     /**
      * Constructor for DocumentLibraryCodePage.  Initializes all of the code page values.
      */

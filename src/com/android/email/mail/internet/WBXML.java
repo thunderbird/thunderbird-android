@@ -1,4 +1,4 @@
-package com.android.email;
+package com.android.email.mail.internet;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedInputStream;
@@ -20,7 +20,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.android.email.Utility;
-import com.android.email.CodePage;
+import com.android.email.mail.internet.CodePage;
 
 /**
  * This class represents an entity for converting between WBXML and XML. The process uses
@@ -214,11 +214,16 @@ public class WBXML {
                     streamByte = (streamByte ^ 128);
                 }
                 elementName = codepage.getCodePageString(streamByte);
-                outputBuffer = "<"+currentNamespace+":"+elementName;
+                outputBuffer = "<"+elementName;
+                if (xmlStack.empty()) {
+                    outputBuffer = outputBuffer + " xmlns=\""+currentNamespace+"\"";
+                }
+                //outputBuffer = "<"+currentNamespace+":"+elementName;
                 
                 /* If bit 6 is set, it has content */
                 if (content > 0) {
-                    xmlStack.push(currentNamespace+":"+elementName);
+                    //xmlStack.push(currentNamespace+":"+elementName);
+                    xmlStack.push(elementName);
                 }
                 
                 if (content > 0 && attribute == 0) {
