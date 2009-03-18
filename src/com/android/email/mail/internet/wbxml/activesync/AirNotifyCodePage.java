@@ -1,6 +1,6 @@
-package com.android.email.mail.internet;
+package com.android.email.mail.internet.wbxml.activesync;
 
-import com.android.email.mail.internet.CodePage;
+import com.android.email.mail.internet.wbxml.CodePage;
 
 /**
  * This class is the specific code page for AirNotify in the ActiveSync protocol.

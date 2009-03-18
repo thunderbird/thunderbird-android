@@ -1,4 +1,4 @@
-package com.android.email.mail.internet;
+package com.android.email.mail.internet.wbxml;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedInputStream;
@@ -20,7 +20,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.android.email.Utility;
-import com.android.email.mail.internet.CodePage;
+import com.android.email.mail.internet.wbxml.CodePage;
 
 /**
  * This class represents an entity for converting between WBXML and XML. The process uses

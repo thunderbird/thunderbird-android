@@ -1,4 +1,4 @@
-package com.android.email.mail.internet;
+package com.android.email.mail.internet.wbxml;
 
 import java.util.HashMap;
 
