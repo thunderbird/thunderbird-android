@@ -89,23 +89,23 @@
 			<TextView android:layout_height="wrap_content"
 				android:text="@string/account_setup_incoming_imap_folder_drafts"
 				android:layout_width="fill_parent"></TextView>
-			<EditText android:layout_height="wrap_content"
-				android:id="@+id/account_imap_folder_drafts" android:layout_width="fill_parent"></EditText>
+			<Button android:layout_height="wrap_content"
+				android:id="@+id/account_imap_folder_drafts" android:layout_width="fill_parent"></Button>
 			<TextView android:layout_height="wrap_content"
 				android:text="@string/account_setup_incoming_imap_folder_sent"
 				android:layout_width="fill_parent"></TextView>
-			<EditText android:layout_height="wrap_content"
-				android:id="@+id/account_imap_folder_sent" android:layout_width="fill_parent"></EditText>
+			<Button android:layout_height="wrap_content"
+				android:id="@+id/account_imap_folder_sent" android:layout_width="fill_parent"></Button>
 			<TextView android:layout_height="wrap_content"
 				android:text="@string/account_setup_incoming_imap_folder_trash"
 				android:layout_width="fill_parent"></TextView>
-			<EditText android:layout_height="wrap_content"
-				android:id="@+id/account_imap_folder_trash" android:layout_width="fill_parent"></EditText>
+			<Button android:layout_height="wrap_content"
+				android:id="@+id/account_imap_folder_trash" android:layout_width="fill_parent"></Button>
 			<TextView android:layout_height="wrap_content"
 				android:text="@string/account_setup_incoming_imap_folder_outbox"
 				android:layout_width="fill_parent"></TextView>
-			<EditText android:layout_height="wrap_content"
-				android:id="@+id/account_imap_folder_outbox" android:layout_width="fill_parent"></EditText>
+			<Button android:layout_height="wrap_content"
+				android:id="@+id/account_imap_folder_outbox" android:layout_width="fill_parent"></Button>
 		</LinearLayout>
         <LinearLayout
             android:id="@+id/webdav_path_prefix_section"

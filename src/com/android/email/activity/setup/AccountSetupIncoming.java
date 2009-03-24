@@ -27,10 +27,16 @@ import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
+import com.android.email.activity.ChooseFolder;
 
 public class AccountSetupIncoming extends Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
+    
+    private static final int SELECT_DRAFT_FOLDER = 100;
+    private static final int SELECT_SENT_FOLDER = 101;
+    private static final int SELECT_TRASH_FOLDER = 102;
+    private static final int SELECT_OUTBOX_FOLDER = 103;
 
     private static final int popPorts[] = {
             110, 995, 995, 110, 110
@@ -59,10 +65,10 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     private EditText mPortView;
     private Spinner mSecurityTypeView;
     private EditText mImapPathPrefixView;
-    private EditText mImapFolderDrafts;
-    private EditText mImapFolderSent;
-    private EditText mImapFolderTrash;
-    private EditText mImapFolderOutbox;
+    private Button mImapFolderDrafts;
+    private Button mImapFolderSent;
+    private Button mImapFolderTrash;
+    private Button mImapFolderOutbox;
     private EditText mWebdavPathPrefixView;
     private EditText mWebdavAuthPathView;
     private EditText mWebdavMailboxPathView;
@@ -96,15 +102,19 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
         mPortView = (EditText)findViewById(R.id.account_port);
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
         mImapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
-        mImapFolderDrafts = (EditText)findViewById(R.id.account_imap_folder_drafts);
-        mImapFolderSent = (EditText)findViewById(R.id.account_imap_folder_sent);
-        mImapFolderTrash = (EditText)findViewById(R.id.account_imap_folder_trash);
-        mImapFolderOutbox = (EditText)findViewById(R.id.account_imap_folder_outbox);
+        mImapFolderDrafts = (Button)findViewById(R.id.account_imap_folder_drafts);
+        mImapFolderSent = (Button)findViewById(R.id.account_imap_folder_sent);
+        mImapFolderTrash = (Button)findViewById(R.id.account_imap_folder_trash);
+        mImapFolderOutbox = (Button)findViewById(R.id.account_imap_folder_outbox);
         mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
         mWebdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
         mNextButton = (Button)findViewById(R.id.next);
 
+        mImapFolderDrafts.setOnClickListener(this);
+        mImapFolderSent.setOnClickListener(this);
+        mImapFolderTrash.setOnClickListener(this);
+        mImapFolderOutbox.setOnClickListener(this);
         mNextButton.setOnClickListener(this);
 
         SpinnerOption securityTypes[] = {
@@ -297,6 +307,20 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+        	switch (requestCode) {
+        	case SELECT_DRAFT_FOLDER:
+        		mImapFolderDrafts.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+        		return;
+        	case SELECT_SENT_FOLDER:
+        		mImapFolderSent.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+        		return;
+        	case SELECT_TRASH_FOLDER:
+        		mImapFolderTrash.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+        		return;
+        	case SELECT_OUTBOX_FOLDER:
+        		mImapFolderOutbox.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+        		return;
+        	}
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                 mAccount.save(Preferences.getPreferences(this));
                 finish();
@@ -371,6 +395,45 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
             case R.id.next:
                 onNext();
                 break;
+            case R.id.account_imap_folder_drafts:
+            	selectImapFolder(SELECT_DRAFT_FOLDER);
+            	break;
+            case R.id.account_imap_folder_sent:
+            	selectImapFolder(SELECT_SENT_FOLDER);
+            	break;
+            case R.id.account_imap_folder_trash:
+            	selectImapFolder(SELECT_TRASH_FOLDER);
+            	break;
+            case R.id.account_imap_folder_outbox:
+            	selectImapFolder(SELECT_OUTBOX_FOLDER);
+            	break;
         }
     }
+
+	private void selectImapFolder(int activityCode) {
+		String curFolder = null;
+		switch (activityCode) {
+		case SELECT_DRAFT_FOLDER:
+			curFolder = mImapFolderDrafts.getText().toString();
+			break;
+		case SELECT_SENT_FOLDER:
+			curFolder = mImapFolderSent.getText().toString();
+			break;
+		case SELECT_TRASH_FOLDER:
+			curFolder = mImapFolderTrash.getText().toString();
+			break;
+		case SELECT_OUTBOX_FOLDER:
+			curFolder = mImapFolderOutbox.getText().toString();
+			break;
+		default:
+			throw new IllegalArgumentException(
+					"Cannot select folder for: " + activityCode);	
+		}
+		
+		Intent selectIntent = new Intent(this, ChooseFolder.class);
+		selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+		selectIntent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, curFolder);
+		selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
+	    startActivityForResult(selectIntent, activityCode);
+	}
 }

@@ -35,11 +35,13 @@ public class ChooseFolder extends ListActivity
   ArrayAdapter<String> adapter;
   private ChooseFolderHandler mHandler = new ChooseFolderHandler();
   String heldInbox = null;
+  boolean hideCurrentFolder = true;
 
   public static final String EXTRA_ACCOUNT = "com.android.email.ChooseFolder_account";
   public static final String EXTRA_CUR_FOLDER = "com.android.email.ChooseFolder_curfolder";
   public static final String EXTRA_NEW_FOLDER = "com.android.email.ChooseFolder_newfolder";
   public static final String EXTRA_MESSAGE_UID = "com.android.email.ChooseFolder_messageuid";
+  public static final String EXTRA_SHOW_CURRENT = "com.android.email.ChooseFolder_showcurrent";
 
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -55,6 +57,9 @@ public class ChooseFolder extends ListActivity
     mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
     mUID = intent.getStringExtra(EXTRA_MESSAGE_UID);
     mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
+    if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
+    	hideCurrentFolder = false;
+    }
     if(mFolder == null)
       mFolder = "";
     
@@ -173,7 +178,7 @@ public class ChooseFolder extends ListActivity
         String name = folder.getName();
 
         // Inbox needs to be compared case-insensitively
-        if(name.equals(mFolder) || (Email.INBOX.equalsIgnoreCase(mFolder) && Email.INBOX.equalsIgnoreCase(name))) {
+        if(hideCurrentFolder && (name.equals(mFolder) || (Email.INBOX.equalsIgnoreCase(mFolder) && Email.INBOX.equalsIgnoreCase(name)))) {
           continue;
         }
         try

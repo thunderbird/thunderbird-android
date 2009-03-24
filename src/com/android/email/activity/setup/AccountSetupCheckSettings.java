@@ -34,6 +34,9 @@ import com.android.email.mail.store.TrustManagerFactory;
  * it doesn't correctly deal with restarting while its thread is running.
  */
 public class AccountSetupCheckSettings extends Activity implements OnClickListener {
+	
+	public static final int ACTIVITY_REQUEST_CODE = 1;
+	
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_CHECK_INCOMING = "checkIncoming";
@@ -62,7 +65,7 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
         i.putExtra(EXTRA_ACCOUNT, account);
         i.putExtra(EXTRA_CHECK_INCOMING, checkIncoming);
         i.putExtra(EXTRA_CHECK_OUTGOING, checkOutgoing);
-        context.startActivityForResult(i, 1);
+        context.startActivityForResult(i, ACTIVITY_REQUEST_CODE);
     }
 
     @Override
