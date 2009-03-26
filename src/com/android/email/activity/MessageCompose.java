@@ -575,10 +575,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             }
         }
 
-
-
-        text = appendSignature(text);
-        
+        if (!mSourceMessageProcessed) {
+            text = appendSignature(text);
+        }
 
         TextBody body = new TextBody(text);
 
