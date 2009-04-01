@@ -44,15 +44,20 @@
 		android:icon="@drawable/ic_menu_reverse_sort"
 	/>
 	<item
-		android:id="@+id/refresh"
+		android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
-		android:title="@string/refresh_action"
+		android:title="@string/check_mail_action"
 		android:icon="@drawable/ic_menu_refresh"
 	/>
     <item
 		android:id="@+id/accounts"
 		android:title="@string/accounts_action"
 		android:icon="@drawable/ic_menu_account_list"
+	/>
+	<item
+		android:id="@+id/list_folders"
+		android:title="@string/list_folders_action"
+		android:icon="@drawable/ic_menu_refresh"
 	/>
 		<item
 		android:id="@+id/empty_trash"

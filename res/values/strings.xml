@@ -11,7 +11,7 @@
     <string name="read_attachment_desc">Allows this application to read your Email attachments.</string>
 
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="accounts_title">Your accounts</string>
+    <string name="accounts_title">Accounts</string>
     <string name="compose_title">Compose</string>
     <string name="debug_title">Debug</string>
     <string name="choose_folder_title">Choose Folder</string>
@@ -32,6 +32,9 @@
     <string name="save_draft_action">Save as draft</string>
     <string name="retry_action">Retry</string>
     <string name="refresh_action">Refresh</string>
+    <string name="check_mail_action">Check mail</string>
+    <string name="send_messages_action">Send messages</string>
+    <string name="list_folders_action">List folders</string>
     <string name="mark_all_as_read_action">Mark all messages as read</string> 
     <string name="add_account_action">Add account</string>
     <string name="compose_action">Compose</string>
@@ -130,6 +133,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
 \n
 \nK-9's improved features include: 
  * Better performance
+ * Message refiling
  * Email signatures
  * Bcc-to-self
  * Folder subscriptions

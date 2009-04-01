@@ -9,10 +9,13 @@
         android:id="@+id/empty_trash"
         android:title="@string/empty_trash_action"
     />
-
     <item
-        android:id="@+id/refresh"
-        android:title="@string/refresh_action"
+        android:id="@+id/check_mail"
+        android:title="@string/check_mail_action"
+    />
+    <item
+        android:id="@+id/send_messages"
+        android:title="@string/send_messages_action"
     />
        <item       
         android:id="@+id/folder_settings"

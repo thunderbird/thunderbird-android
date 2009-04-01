@@ -26,7 +26,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 import android.os.Process;
+import android.os.PowerManager.WakeLock;
 import android.util.Config;
 import android.util.Log;
 
@@ -756,12 +758,6 @@ public class MessagingController implements Runnable {
                     remoteUidMap.put(message.getUid(), message);
                 }
 
-
-                
-                
-                
-                
-                
                 /*
                  * Get a list of the messages that are in the remote list but not on the
                  * local store, or messages that are in the local store but failed to download
@@ -780,8 +776,6 @@ public class MessagingController implements Runnable {
                     }
                 }
             }
-
-
 
             /*
              * A list of messages that were downloaded and which did not have the Seen flag set.
@@ -2442,9 +2436,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
   			});
   	   
   	}
-
-    
-    
+   
     /**
      * Checks mail for one or multiple accounts. If account is null all accounts
      * are checked.
@@ -2453,9 +2445,19 @@ s             * critical data as fast as possible, and then we'll fill in the de
      * @param account
      * @param listener
      */
-    public void checkMail(final Context context, final Account account,
+    public void checkMail(final Context context, final Account account, 
+            final boolean ignoreLastCheckedTime,
+            final boolean useManualWakeLock,
             final MessagingListener listener) {
     	
+      if (useManualWakeLock) {
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
+        wakeLock.setReferenceCounted(false);
+        wakeLock.acquire(Email.MANUAL_WAKE_LOCK_TIMEOUT);
+      }
+      
+      
         for (MessagingListener l : getListeners()) {
             l.checkMailStarted(context, account);
         }
@@ -2480,7 +2482,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
 	                for (final Account account : accounts) {
 	                  	final long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
-	                  	if (accountInterval <= 0)
+	                  	if (ignoreLastCheckedTime == false && accountInterval <= 0)
 	                  	{
 		                  	if (Config.LOGV || true)
 		                  	{
@@ -2582,7 +2584,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
 		                    				new Date(folder.getLastChecked()));
 		                    	}
 		                    	
-		                    	if (folder.getLastChecked() > 
+		                    	if (ignoreLastCheckedTime == false && folder.getLastChecked() > 
 		                    		(System.currentTimeMillis() - accountInterval))
 		                    	{
 			                    		if (Config.LOGV) {
@@ -2603,7 +2605,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
 				                    		LocalFolder tLocalFolder = (LocalFolder) localStore.getFolder(folder.getName());
 				                    		tLocalFolder.open(Folder.OpenMode.READ_WRITE);
 				                    						                    		
-				                    		if (tLocalFolder.getLastChecked() > 
+				                    		if (ignoreLastCheckedTime == false && tLocalFolder.getLastChecked() > 
 				                    			    (System.currentTimeMillis() - accountInterval))
 				                    		{
 				                    			if (Config.LOGV) {

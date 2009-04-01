@@ -1121,14 +1121,27 @@ public class FolderMessageList extends ExpandableListActivity
         mHandler.dataChanged();
     }
 	
+	 private void checkMail(final Account account)
+	  {
+	    MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
+	  }
+	private void checkMail(Account account, String folderName)
+	{
+    MessagingController.getInstance(getApplication()).synchronizeMailbox(
+        account, folderName, mAdapter.mListener);
+	}
+	
     @Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		switch (item.getItemId())
 		{
-            case R.id.refresh:
-                onRefresh(true);
+            case R.id.check_mail:
+                checkMail(mAccount);
                 return true;
+            case R.id.list_folders:
+              onRefresh(true);
+              return true;
             case R.id.accounts:
                 onAccounts();
                 return true;
@@ -1247,18 +1260,13 @@ public class FolderMessageList extends ExpandableListActivity
 		{
 			switch (item.getItemId())
 			{
-				case R.id.refresh:
-					if (folder.outbox)
-					{
-							Log.i(Email.LOG_TAG, "sending pending messages from " + folder.name);
-							MessagingController.getInstance(getApplication())
-							.sendPendingMessages(mAccount, null);
-					}
-					else
-					{
+			  case R.id.send_messages:
+			    Log.i(Email.LOG_TAG, "sending pending messages from " + folder.name);
+          MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
+          break;
+        case R.id.check_mail:
 						Log.i(Email.LOG_TAG, "refresh folder " + folder.name);
 						new Thread(new FolderUpdateWorker(folder.name, true)).start();
-					}
 					break;
 				case R.id.folder_settings:
 					Log.i(Email.LOG_TAG, "edit folder settings for " + folder.name);
@@ -1341,6 +1349,13 @@ public class FolderMessageList extends ExpandableListActivity
 			{
 				menu.findItem(R.id.empty_trash).setVisible(false);
         }
+			if (folder.outbox)
+			{
+        menu.findItem(R.id.check_mail).setVisible(false);
+			}
+			else {
+        menu.findItem(R.id.send_messages).setVisible(false);
+			}
 			menu.setHeaderTitle(R.string.folder_context_menu_title);
     }
 	}

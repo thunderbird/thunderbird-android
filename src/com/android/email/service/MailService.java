@@ -85,7 +85,7 @@ public class MailService extends Service {
 
               mListener.wakeLockAcquire();
               controller.setCheckMailListener(mListener);
-              controller.checkMail(this, null, mListener);
+              controller.checkMail(this, null, false, false, mListener);
             }
             else
             {
@@ -157,9 +157,18 @@ public class MailService extends Service {
 	        long delay = (shortestInterval * (60 * 1000));
 
 	        long nextTime = System.currentTimeMillis() + delay;
-	        String checkString = "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime);
-	        Log.v(Email.LOG_TAG, checkString);
-	        MessagingController.getInstance(getApplication()).log(checkString);
+	        try
+	        {
+	          String checkString = "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime);
+	          Log.v(Email.LOG_TAG, checkString);
+	          MessagingController.getInstance(getApplication()).log(checkString);
+	        }
+	        catch (Exception e)
+	        {
+	          // I once got a NullPointerException deep in new Date();
+	          Log.e(Email.LOG_TAG, "Exception while logging", e);
+	        }
+	        
 	        alarmMgr.set(AlarmManager.RTC_WAKEUP, nextTime, pi);
         }
 
@@ -235,10 +244,11 @@ public class MailService extends Service {
                 //since only the one that require so are in this map
                 if (accountsWithNewMail.containsKey(thisAccount.getUuid()))
                 {
+		    int unreadMessageCount = 0;
                     String notice = null;
                     try
                     {
-                        int unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
+                        unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
                         if (unreadMessageCount > 0)
                         {
                             notice = getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
@@ -259,9 +269,12 @@ public class MailService extends Service {
 
                     Notification notif = new Notification(R.drawable.stat_notify_email_generic,
                         getString(R.string.notification_new_title), System.currentTimeMillis() + (index*1000));
-                    notif.number = (int)accountsWithNewMail.get(thisAccount.getUuid());
+              		    if (unreadMessageCount > 0)
+              		    {
+              			notif.number = unreadMessageCount;
+              		    
 
-                    Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount, Email.INBOX);
+                    Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount);
 
                     PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
@@ -280,6 +293,11 @@ public class MailService extends Service {
                     notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
 
                     notifMgr.notify(thisAccount.getAccountNumber(), notif);
+              		    }
+              		    else
+              		    {
+              		      notifMgr.cancel(thisAccount.getAccountNumber());
+              		    }
                 }
             }//for accounts
         }//checkMailDone

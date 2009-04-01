@@ -2,6 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/open"
         android:title="@string/open_action" />
+    <item android:id="@+id/check_mail"
+        android:title="@string/check_mail_action" />
     <item android:id="@+id/empty_trash"
         android:title="@string/empty_trash_action" />
     <item android:id="@+id/edit_account"

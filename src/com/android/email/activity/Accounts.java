@@ -15,6 +15,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -52,6 +54,8 @@ import com.android.email.mail.store.LocalStore.LocalFolder;
 public class Accounts extends ListActivity implements OnItemClickListener, OnClickListener {
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
     private ConcurrentHashMap<String, Integer> unreadMessageCounts = new ConcurrentHashMap<String, Integer>();
+    
+    private ConcurrentHashMap<Account, String> pendingWork = new ConcurrentHashMap<Account, String>();
     /**
      * Key codes used to open a debug settings screen.
      */
@@ -77,6 +81,9 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
       private static final int DATA_CHANGED = 1;
       private static final int MSG_ACCOUNT_SIZE_CHANGED = 2;
       private static final int MSG_WORKING_ACCOUNT = 3;
+      private static final int MSG_PROGRESS = 4;
+      private static final int MSG_FOLDER_SYNCING = 5;
+      private static final int MSG_DEFINITE_PROGRESS = 6;
 
       public void handleMessage(android.os.Message msg)
       {
@@ -111,6 +118,26 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
             toast.show();
             break;
           }
+          case MSG_FOLDER_SYNCING:
+          {
+            String folderName = (String) ((Object[]) msg.obj)[0];
+            String dispString;
+            dispString = getString(R.string.accounts_title);
+            if (folderName != null)
+            {
+              dispString += " (" + getString(R.string.status_loading)
+              + folderName + ")";
+            }
+            setTitle(dispString);
+            break;
+          }
+          case MSG_PROGRESS:
+            setProgressBarIndeterminateVisibility(msg.arg1 != 0);
+            //setProgressBarVisibility(msg.arg1 != 0);
+            break;          
+          case MSG_DEFINITE_PROGRESS:
+            getWindow().setFeatureInt(Window.FEATURE_PROGRESS, msg.arg1);
+              break;
           default:
             super.handleMessage(msg);
         }
@@ -142,6 +169,29 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
               msg.obj = holder;
               sendMessage(msg);
       }
+      
+      public void progress(boolean progress)
+      {
+              android.os.Message msg = new android.os.Message();
+              msg.what = MSG_PROGRESS;
+              msg.arg1 = progress ? 1 : 0;
+              sendMessage(msg);
+      }
+      public void progress(int progress)
+      {
+              android.os.Message msg = new android.os.Message();
+              msg.what = MSG_DEFINITE_PROGRESS;
+              msg.arg1 = progress ;
+              sendMessage(msg);
+      }
+      public void folderSyncing(String folder)
+      {
+              android.os.Message msg = new android.os.Message();
+        msg.what = MSG_FOLDER_SYNCING;
+        msg.obj = new String[]
+        { folder };
+              sendMessage(msg);
+          }
 
     }
     
@@ -151,6 +201,17 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
       {
         unreadMessageCounts.put(account.getUuid(), unreadMessageCount);
         mHandler.dataChanged();
+        pendingWork.remove(account);
+       
+
+        if (pendingWork.isEmpty())
+        {
+          mHandler.progress(Window.PROGRESS_END);
+        }
+        else {
+          int level = (Window.PROGRESS_END / mAdapter.getCount()) * (mAdapter.getCount() - pendingWork.size()) ;
+          mHandler.progress(level);
+        }
       }
       
       @Override
@@ -168,7 +229,27 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
           int totalMessagesInMailbox,
           int numNewMessages) {
         MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
+
+        mHandler.progress(false);
+        mHandler.folderSyncing(null);
       }
+      
+      @Override
+      public void synchronizeMailboxStarted(Account account, String folder)
+      {
+        mHandler.progress(true);
+        mHandler.folderSyncing(account.getDescription()
+            + getString(R.string.notification_bg_title_separator) + folder);
+      }
+
+            @Override
+      public void synchronizeMailboxFailed(Account account, String folder,
+          String message)
+      {
+            mHandler.progress(false);
+            mHandler.folderSyncing(null);
+       }
+
     };
 
     private static String UNREAD_MESSAGE_COUNTS = "unreadMessageCounts";
@@ -176,6 +257,10 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
+        
         setContentView(R.layout.accounts);
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
@@ -226,10 +311,14 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         mAdapter = new AccountsAdapter(accounts);
         getListView().setAdapter(mAdapter);
+        if (accounts.length > 0) {
+          mHandler.progress(Window.PROGRESS_START);
+        }
         
         for (Account account : accounts)
         {
           MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
+          pendingWork.put(account, "true");
         }
         
     }
@@ -242,8 +331,9 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         AccountSettings.actionSettings(this, account);
     }
 
-    private void onRefresh() {
-        MessagingController.getInstance(getApplication()).checkMail(this, null, null);
+    private void onCheckMail(Account account) {
+
+        MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, null);
     }
     
     private void onClearCommands(Account account) {
@@ -268,7 +358,9 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     }
 
     private void onOpenAccount(Account account) {
-        FolderMessageList.actionHandleAccount(this, account, Email.INBOX);
+      //FolderMessageList.actionHandleAccount(this, account);  // Dan's way
+
+         FolderMessageList.actionHandleAccount(this, account, Email.INBOX);  // Everbody else's way
     }
 
     public void onClick(View view) {
@@ -332,6 +424,9 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
             case R.id.open:
                 onOpenAccount(account);
                 break;
+            case R.id.check_mail:
+              onCheckMail(account);
+              break;
             case R.id.clear_pending:
               onClearCommands(account);
               break;
@@ -373,7 +468,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
                 onAddNewAccount();
                 break;
             case R.id.check_mail:
-                onRefresh();
+                onCheckMail(null);
                 break;
             case R.id.compose:
                 onCompose();

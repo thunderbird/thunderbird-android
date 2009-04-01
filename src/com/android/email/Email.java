@@ -118,6 +118,8 @@ public class Email extends Application {
      * Max time (in millis) the wake lock will be held for when background sync is happening 
      */
     public static final int WAKE_LOCK_TIMEOUT = 600000;
+    
+    public static final int MANUAL_WAKE_LOCK_TIMEOUT = 120000;
 
     /**
      * LED color used for the new email notitication
