@@ -684,7 +684,10 @@ public class WebDavStore extends Store {
         if (needAuth()) {
             if (!checkAuth()) {
                 try {
-                    CookieStore cookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
+                    CookieStore cookies = mHttpClient.getCookieStore();
+                    cookies.clear();
+                    mHttpClient.setCookieStore(cookies);
+                    cookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
                     if (cookies != null) {
                         this.mAuthenticated = true;
                         this.mLastAuth = System.currentTimeMillis()/1000;
