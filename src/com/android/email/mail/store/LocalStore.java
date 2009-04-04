@@ -701,7 +701,7 @@ public class LocalStore extends Store implements Serializable {
         public void delete(Preferences preferences) throws MessagingException {
         	String id = getPrefId();
           
-        	SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
+        	SharedPreferences.Editor editor = preferences.getPreferences().edit();
           
         	editor.remove(id + ".displayMode");
           editor.remove(id + ".syncMode");
@@ -712,7 +712,7 @@ public class LocalStore extends Store implements Serializable {
       public void save(Preferences preferences) throws MessagingException {
       		String id = getPrefId();
         
-          SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
+          SharedPreferences.Editor editor = preferences.getPreferences().edit();
           // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
           if (displayClass == FolderClass.NONE && !Email.INBOX.equals(getName()))
           {
@@ -740,7 +740,7 @@ public class LocalStore extends Store implements Serializable {
       		
         try
         {
-        	displayClass = FolderClass.valueOf(preferences.mSharedPreferences.getString(id + ".displayMode", 
+        	displayClass = FolderClass.valueOf(preferences.getPreferences().getString(id + ".displayMode", 
         			FolderClass.NONE.name()));
         }
         catch (Exception e)
@@ -759,7 +759,7 @@ public class LocalStore extends Store implements Serializable {
         
         try
         {
-        	syncClass = FolderClass.valueOf(preferences.mSharedPreferences.getString(id  + ".syncMode", 
+        	syncClass = FolderClass.valueOf(preferences.getPreferences().getString(id  + ".syncMode", 
         			defSyncClass.name()));
         }
         catch (Exception e)
