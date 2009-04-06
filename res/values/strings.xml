@@ -51,7 +51,10 @@
     <string name="mark_as_read_action">Mark as read</string>
     <string name="send_alternate_action">Forward (alternate)</string>
     <string name="send_alternate_chooser_title">Choose sender</string>
-    
+      
+    <string name="mark_all_as_read_dlg_title">Mark all messages as read</string>
+    <string name="mark_all_as_read_dlg_instructions_fmt">Mark all messages in '<xliff:g id="folder">%s</xliff:g>' as read?</string>
+  
     <string name="flag_action">Flag</string>
     <string name="unflag_action">Unflag</string>
     <string name="move_action">Move</string>

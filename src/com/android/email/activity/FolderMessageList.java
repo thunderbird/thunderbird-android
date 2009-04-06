@@ -12,9 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ExpandableListActivity;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -48,6 +51,7 @@ import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.Preferences;
+import com.android.email.activity.Accounts;
 import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.FolderInfoHolder;
 import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.MessageInfoHolder;
 import com.android.email.activity.setup.AccountSettings;
@@ -85,7 +89,8 @@ import com.android.email.mail.store.LocalStore;
 public class FolderMessageList extends ExpandableListActivity
 {
     private static final String INTENT_DATA_PATH_SUFFIX = "/accounts";
-    
+
+    private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
 
@@ -1062,21 +1067,71 @@ public class FolderMessageList extends ExpandableListActivity
 	{
         MessageCompose.actionForward(this, mAccount, holder.message);
     }
-
-	private void onMarkAllAsRead(Account account, FolderInfoHolder folder)
-	{
-		MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount,
-				folder.name);
-		
-		for (MessageInfoHolder holder : folder.messages){
-			holder.read = true;
-		}
-		folder.unreadMessageCount = 0;
-    mHandler.dataChanged();
-
-  		//onRefresh(false);
-	}
 	
+	
+	private Account mSelectedContextAccount = null;
+	private FolderInfoHolder mSelectedContextFolder = null;
+	 private void onMarkAllAsRead(final Account account, final FolderInfoHolder folder)
+	 {
+    mSelectedContextAccount = account;
+	   mSelectedContextFolder = folder;
+    showDialog(DIALOG_MARK_ALL_AS_READ);
+  }
+
+  @Override
+  public Dialog onCreateDialog(int id) {
+    switch (id) {
+      case DIALOG_MARK_ALL_AS_READ:
+        return createMarkAllAsReadDialog();
+    }
+    return super.onCreateDialog(id);
+  }
+  
+  public void onPrepareDialog(int id, Dialog dialog)
+  {
+    switch (id) {
+      case DIALOG_MARK_ALL_AS_READ:
+      ((AlertDialog)dialog).setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+          mSelectedContextFolder.displayName));
+      break;
+      default:
+        super.onPrepareDialog(id, dialog);
+    }
+  }
+
+  private Dialog createMarkAllAsReadDialog()
+  {
+    return new AlertDialog.Builder(this)
+    .setTitle(R.string.mark_all_as_read_dlg_title)
+    .setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+        mSelectedContextFolder.displayName))
+        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int whichButton) {
+            dismissDialog(DIALOG_MARK_ALL_AS_READ);
+            try {
+
+              MessagingController.getInstance(getApplication()).markAllMessagesRead(mSelectedContextAccount, mSelectedContextFolder.name);
+
+              for (MessageInfoHolder holder : mSelectedContextFolder.messages){
+                holder.read = true;
+              }
+              mSelectedContextFolder.unreadMessageCount = 0;
+              mHandler.dataChanged();
+
+
+            } catch (Exception e) {
+              // Ignore
+            }
+          }
+        })
+        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int whichButton) {
+            dismissDialog(DIALOG_MARK_ALL_AS_READ);
+          }
+        })
+        .create();
+  }
+
 	private void onEmptyTrash(final Account account)
 	{
 	  mAdapter.removeAllMessages(account.getTrashFolderName());
