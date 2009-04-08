@@ -93,6 +93,11 @@ public class Email extends Application {
      * the server refers to as the user's Inbox. Placed here to ease use.
      */
     public static final String INBOX = "INBOX";
+    
+    /**
+     * For use when displaying that no folder is selected
+     */
+    public static final String FOLDER_NONE = "-NONE-";
 
     /**
      * Specifies how many messages will be shown in a folder by default. This number is set

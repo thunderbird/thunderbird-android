@@ -272,12 +272,8 @@ public class MailService extends Service {
               		    if (unreadMessageCount > 0)
               		    {
               			notif.number = unreadMessageCount;
-              		    
-// Dan's way
-                    //Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount);
-// Everybody else's way
-                    Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount, Email.INBOX);
-
+            
+                    Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount);
 
                     PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 

@@ -36,12 +36,16 @@ public class ChooseFolder extends ListActivity
   private ChooseFolderHandler mHandler = new ChooseFolderHandler();
   String heldInbox = null;
   boolean hideCurrentFolder = true;
+  boolean showOptionNone = false;
+  boolean showDisplayableOnly = false;
 
   public static final String EXTRA_ACCOUNT = "com.android.email.ChooseFolder_account";
   public static final String EXTRA_CUR_FOLDER = "com.android.email.ChooseFolder_curfolder";
   public static final String EXTRA_NEW_FOLDER = "com.android.email.ChooseFolder_newfolder";
   public static final String EXTRA_MESSAGE_UID = "com.android.email.ChooseFolder_messageuid";
   public static final String EXTRA_SHOW_CURRENT = "com.android.email.ChooseFolder_showcurrent";
+  public static final String EXTRA_SHOW_FOLDER_NONE = "com.android.email.ChooseFolder_showOptionNone";
+  public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.android.email.ChooseFolder_showDisplayableOnly";
 
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -59,6 +63,12 @@ public class ChooseFolder extends ListActivity
     mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
     if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
     	hideCurrentFolder = false;
+    }
+    if (intent.getStringExtra(EXTRA_SHOW_FOLDER_NONE) != null) {
+      showOptionNone = true;
+    }
+    if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) {
+      showDisplayableOnly = true;
     }
     if(mFolder == null)
       mFolder = "";
@@ -88,9 +98,7 @@ public class ChooseFolder extends ListActivity
         {
           destFolderName = heldInbox;
         }
-        
         intent.putExtra(EXTRA_NEW_FOLDER, destFolderName);
-        
         intent.putExtra(EXTRA_MESSAGE_UID, mUID);
         setResult(RESULT_OK, intent);
         finish();
@@ -105,6 +113,7 @@ public class ChooseFolder extends ListActivity
     private static final int MSG_PROGRESS = 2;
 
     private static final int MSG_DATA_CHANGED = 3;
+    private static final int MSG_SET_SELECTED_FOLDER = 4;
 
     public void handleMessage(android.os.Message msg)
     {
@@ -115,6 +124,12 @@ public class ChooseFolder extends ListActivity
           break;
         case MSG_DATA_CHANGED:
           adapter.notifyDataSetChanged();
+          break;
+        case MSG_SET_SELECTED_FOLDER:
+          // TODO: I want this to highlight the chosen folder, but this doesn't work.
+//          getListView().setSelection(msg.arg1);
+//          getListView().setItemChecked(msg.arg1, true);
+          break;
       }
     }
 
@@ -123,6 +138,14 @@ public class ChooseFolder extends ListActivity
       android.os.Message msg = new android.os.Message();
       msg.what = MSG_PROGRESS;
       msg.arg1 = progress ? 1 : 0;
+      sendMessage(msg);
+    }
+    
+    public void setSelectedFolder(int position)
+    {
+      android.os.Message msg = new android.os.Message();
+      msg.what = MSG_SET_SELECTED_FOLDER;
+      msg.arg1 = position;
       sendMessage(msg);
     }
 
@@ -169,7 +192,15 @@ public class ChooseFolder extends ListActivity
       {
         return;
       }
-      Account.FolderMode aMode = account.getFolderTargetMode();
+      Account.FolderMode aMode = Account.FolderMode.ALL;
+      if (showDisplayableOnly)
+      {
+        aMode = account.getFolderDisplayMode();
+      }
+      else
+      {
+        aMode = account.getFolderTargetMode();
+      }
       Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
       ArrayList<String> localFolders = new ArrayList<String>();
 
@@ -204,6 +235,11 @@ public class ChooseFolder extends ListActivity
         
       }
       
+      if (showOptionNone)
+      {
+        localFolders.add("-NONE-");
+      }
+      
       Collections.sort(localFolders, new Comparator<String>() {
         public int compare(String aName, String bName)
         {
@@ -215,11 +251,22 @@ public class ChooseFolder extends ListActivity
           {
             return 1;
           }
+          if (Email.FOLDER_NONE.equalsIgnoreCase(aName))
+          {
+            return 1;
+          }
+          if (Email.FOLDER_NONE.equalsIgnoreCase(bName))
+          {
+            return -1;
+          }
+          
           return aName.compareToIgnoreCase(bName); 
         }
       });
       adapter.setNotifyOnChange(false);
       adapter.clear();
+      int selectedFolder = -1;
+      int position = 0;
       for (String name : localFolders) {
         if (Email.INBOX.equalsIgnoreCase(name))
         {
@@ -229,8 +276,18 @@ public class ChooseFolder extends ListActivity
         else {
           adapter.add(name);
         }
+        
+        if((name.equals(mFolder) || (Email.INBOX.equalsIgnoreCase(mFolder) && Email.INBOX.equalsIgnoreCase(name)))) {
+          selectedFolder = position;
+        }
+        position++;
+      }
+      if (selectedFolder != -1)
+      {
+        mHandler.setSelectedFolder(selectedFolder);
       }
       mHandler.dataChanged();
+      
     }
   };
 }

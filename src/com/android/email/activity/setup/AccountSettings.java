@@ -6,20 +6,28 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.preference.PreferenceActivity;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
+import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
+import android.preference.Preference.OnPreferenceClickListener;
 
 import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
+import com.android.email.activity.ChooseFolder;
 
 public class AccountSettings extends PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
+    
+    private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
     private static final String PREFERENCE_TOP_CATERGORY = "account_settings";
     private static final String PREFERENCE_DESCRIPTION = "account_description";
@@ -38,6 +46,7 @@ public class AccountSettings extends PreferenceActivity {
     private static final String PREFERENCE_SYNC_MODE = "folder_sync_mode";
     private static final String PREFERENCE_TARGET_MODE = "folder_target_mode";
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
+    private static final String PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder";
 
     private Account mAccount;
 
@@ -54,6 +63,7 @@ public class AccountSettings extends PreferenceActivity {
     private ListPreference mSyncMode;
     private ListPreference mTargetMode;
     private ListPreference mDeletePolicy;
+    private Preference mAutoExpandFolder;
 
     public static void actionSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSettings.class);
@@ -196,7 +206,18 @@ public class AccountSettings extends PreferenceActivity {
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.isVibrate());
 
+        mAutoExpandFolder = (Preference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
 
+        mAutoExpandFolder.setSummary(translateFolder(mAccount.getAutoExpandFolderName()));
+        
+        mAutoExpandFolder.setOnPreferenceClickListener(
+            new Preference.OnPreferenceClickListener() {
+              public boolean onPreferenceClick(Preference preference) {
+                onChooseAutoExpandFolder();
+                  return false;
+              }
+          });
+        
         findPreference(PREFERENCE_COMPOSITION).setOnPreferenceClickListener(
                 new Preference.OnPreferenceClickListener() {
                     public boolean onPreferenceClick(Preference preference) {
@@ -245,9 +266,21 @@ public class AccountSettings extends PreferenceActivity {
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));
         mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
+        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
         mAccount.save(Preferences.getPreferences(this));
         Email.setServicesEnabled(this);
         // TODO: refresh folder list here
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+          switch (requestCode) {
+          case SELECT_AUTO_EXPAND_FOLDER:
+            mAutoExpandFolder.setSummary(translateFolder(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER)));
+            return;
+          }
+        }
     }
 
     @Override
@@ -268,6 +301,45 @@ public class AccountSettings extends PreferenceActivity {
 
     private void onOutgoingSettings() {
         AccountSetupOutgoing.actionEditOutgoingSettings(this, mAccount);
+    }
+
+    public void onChooseAutoExpandFolder()
+    {
+        Intent selectIntent = new Intent(this, ChooseFolder.class);
+        selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+
+        selectIntent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mAutoExpandFolder.getSummary());
+        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
+        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_FOLDER_NONE, "yes");
+        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_DISPLAYABLE_ONLY, "yes");
+          startActivityForResult(selectIntent, SELECT_AUTO_EXPAND_FOLDER);
+            
+    }
+    
+    private String translateFolder(String in)
+    {
+
+      if (Email.INBOX.equalsIgnoreCase(in))
+      {
+         return getString(R.string.special_mailbox_name_inbox);
+      }
+      else
+      {
+        return in;
+      }
+    }
+    
+    private String reverseTranslateFolder(String in)
+    {
+
+      if (getString(R.string.special_mailbox_name_inbox).equals(in))
+      {
+         return Email.INBOX;
+      }
+      else
+      {
+        return in;
+      }
     }
 
 }

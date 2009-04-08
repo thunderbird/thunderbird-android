@@ -1,14 +1,9 @@
 package com.android.email.activity;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,12 +41,11 @@ import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.MessagingController;
-import static com.android.email.MessagingController.SORT_TYPE;
 import com.android.email.MessagingListener;
+import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
-import com.android.email.Preferences;
-import com.android.email.activity.Accounts;
+import com.android.email.MessagingController.SORT_TYPE;
 import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.FolderInfoHolder;
 import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.MessageInfoHolder;
 import com.android.email.activity.setup.AccountSettings;
@@ -61,13 +55,11 @@ import com.android.email.mail.Flag;
 import com.android.email.mail.Folder;
 import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
-import com.android.email.mail.Part;
 import com.android.email.mail.Store;
 import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.internet.MimeUtility;
+import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 import com.android.email.mail.store.LocalStore.LocalMessage;
-import com.android.email.mail.store.LocalStore;
 
 /**
  * FolderMessageList is the primary user interface for the program. This
@@ -562,7 +554,12 @@ public class FolderMessageList extends ExpandableListActivity
 		if (savedInstanceState == null)
 		{
             mInitialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
-        }
+            if (mInitialFolder == null)
+            {
+              mInitialFolder = mAccount.getAutoExpandFolderName();
+            }
+    }
+	
 
         /*
 		 * Since the color chip is always the same color for a given account we just
@@ -669,33 +666,34 @@ public class FolderMessageList extends ExpandableListActivity
     }
 
     @Override
-	public void onGroupExpand(int groupPosition)
-	{
-        super.onGroupExpand(groupPosition);
-		if (mExpandedGroup != -1)
-		{
-            mListView.collapseGroup(mExpandedGroup);
-        }
-        mExpandedGroup = groupPosition;
+    public void onGroupExpand(int groupPosition)
+    {
 
-		if (!mRestoringState)
-		{
-            /*
-             * Scroll the selected item to the top of the screen.
-             */
-			int position = mListView.getFlatListPosition(ExpandableListView
-					.getPackedPositionForGroup(groupPosition));
-            
-			mListView.setSelectionFromTop(position, 0);
-        }
+      Log.i(Email.LOG_TAG, "onGroupExpand(" + groupPosition + "), mRestoringState = " + mRestoringState);
+      super.onGroupExpand(groupPosition);
+      if (mExpandedGroup != -1)
+      {
+        mListView.collapseGroup(mExpandedGroup);
+      }
+      mExpandedGroup = groupPosition;
 
-		final FolderInfoHolder folder = (FolderInfoHolder) mAdapter
-				.getGroup(groupPosition);
-		if (folder.messages.size() == 0 || folder.needsRefresh)
-		{
-		  folder.needsRefresh = false;
-			new Thread(new FolderUpdateWorker(folder.name, false)).start();
-        }
+      if (!mRestoringState)
+      {
+        /*
+         * Scroll the selected item to the top of the screen.
+         */
+        int position = mListView.getFlatListPosition(ExpandableListView
+            .getPackedPositionForGroup(groupPosition));
+
+        mListView.setSelectionFromTop(position, 0);
+      }
+
+      final FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getGroup(groupPosition);
+      if (folder.messages.size() == 0 || folder.needsRefresh)
+      {
+        folder.needsRefresh = false;
+        new Thread(new FolderUpdateWorker(folder.name, false)).start();
+      }
     }
 
 
@@ -1456,23 +1454,25 @@ public class FolderMessageList extends ExpandableListActivity
             }
 
             @Override
-			public void listFoldersFinished(Account account)
-			{
-				if (!account.equals(mAccount))
-				{
-                    return;
+            public void listFoldersFinished(Account account)
+            {
+              if (!account.equals(mAccount))
+              {
+                return;
+              }
+              mHandler.progress(false);
+              
+              mHandler.dataChanged();
+              
+              if (mInitialFolder != null && Email.FOLDER_NONE.equals(mInitialFolder) == false)
+              {
+                int groupPosition = getFolderPosition(mInitialFolder);
+                mInitialFolder = null;
+                if (groupPosition != -1)
+                {
+                  mHandler.expandGroup(groupPosition);
                 }
-                mHandler.progress(false);
-				if (mInitialFolder != null)
-				{
-                    int groupPosition = getFolderPosition(mInitialFolder);
-                    mInitialFolder = null;
-					if (groupPosition != -1)
-					{
-                        mHandler.expandGroup(groupPosition);
-                    }
-                }
-				mHandler.dataChanged();
+              }
             }
             @Override
             public void accountReset(Account account)

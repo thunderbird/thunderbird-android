@@ -45,6 +45,13 @@
             android:entryValues="@array/account_settings_hide_buttons_values"
             android:dialogTitle="@string/account_settings_hide_buttons_label" />
 
+		<Preference
+            android:key="account_setup_auto_expand_folder"
+            android:singleLine="true"
+            android:title="@string/account_setup_auto_expand_folder"
+            android:summary=""
+            />
+
 	   	</PreferenceCategory>
 	
     	<PreferenceCategory android:title="@string/account_settings_display_sync">

@@ -47,6 +47,7 @@ public class Account implements Serializable {
     String mSentFolderName;
     String mTrashFolderName;
     String mOutboxFolderName;
+    String mAutoExpandFolderName;
     FolderMode mFolderDisplayMode;
     FolderMode mFolderSyncMode;
     FolderMode mFolderTargetMode;
@@ -128,6 +129,8 @@ public class Account implements Serializable {
                 "Trash");
         mOutboxFolderName = preferences.mSharedPreferences.getString(mUuid  + ".outboxFolderName", 
                 "Outbox");
+        mAutoExpandFolderName = preferences.mSharedPreferences.getString(mUuid  + ".autoExpandFolderName", 
+          "Inbox");
         mAccountNumber = preferences.mSharedPreferences.getInt(mUuid + ".accountNumber", 0);
         mVibrate = preferences.mSharedPreferences.getBoolean(mUuid + ".vibrate", false);
 
@@ -282,6 +285,7 @@ public class Account implements Serializable {
         editor.remove(mUuid + ".sentFolderName");
         editor.remove(mUuid + ".trashFolderName");
         editor.remove(mUuid + ".outboxFolderName");
+        editor.remove(mUuid + ".autoExpandFolderName");
         editor.remove(mUuid + ".accountNumber");
         editor.remove(mUuid + ".vibrate");
         editor.remove(mUuid + ".ringtone");
@@ -349,6 +353,7 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".sentFolderName", mSentFolderName);
         editor.putString(mUuid + ".trashFolderName", mTrashFolderName);
         editor.putString(mUuid + ".outboxFolderName", mOutboxFolderName);
+        editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
         editor.putBoolean(mUuid + ".vibrate", mVibrate);
         editor.putString(mUuid + ".hideButtonsEnum", mHideMessageViewButtons.name());
@@ -517,6 +522,14 @@ public class Account implements Serializable {
     public void setOutboxFolderName(String outboxFolderName) {
         mOutboxFolderName = outboxFolderName;
     }
+    
+    public String getAutoExpandFolderName() {
+      return mAutoExpandFolderName;
+    }
+
+  public void setAutoExpandFolderName(String autoExpandFolderName) {
+      mAutoExpandFolderName = autoExpandFolderName;
+  }
     
     public int getAccountNumber() {
         return mAccountNumber;

@@ -358,9 +358,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     }
 
     private void onOpenAccount(Account account) {
-      //FolderMessageList.actionHandleAccount(this, account);  // Dan's way
-
-         FolderMessageList.actionHandleAccount(this, account, Email.INBOX);  // Everbody else's way
+      FolderMessageList.actionHandleAccount(this, account);
     }
 
     public void onClick(View view) {
