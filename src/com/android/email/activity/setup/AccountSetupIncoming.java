@@ -200,6 +200,11 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
             if (password != null) {
                 mPasswordView.setText(password);
             }
+            
+            mImapFolderDrafts.setText(mAccount.getDraftsFolderName());
+            mImapFolderSent.setText(mAccount.getSentFolderName());
+            mImapFolderTrash.setText(mAccount.getTrashFolderName());
+            mImapFolderOutbox.setText(mAccount.getOutboxFolderName());
 
             if (uri.getScheme().startsWith("pop3")) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
@@ -221,10 +226,6 @@ public class AccountSetupIncoming extends Activity implements OnClickListener {
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
                 
-                mImapFolderDrafts.setText(mAccount.getDraftsFolderName());
-                mImapFolderSent.setText(mAccount.getSentFolderName());
-                mImapFolderTrash.setText(mAccount.getTrashFolderName());
-                mImapFolderOutbox.setText(mAccount.getOutboxFolderName());
             } else if (uri.getScheme().startsWith("webdav")) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mAccountPorts = webdavPorts;
