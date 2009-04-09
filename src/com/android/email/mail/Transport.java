@@ -7,6 +7,9 @@ import com.android.email.mail.transport.WebDavTransport;
 public abstract class Transport {
     protected static final int SOCKET_CONNECT_TIMEOUT = 10000;
 
+    // RFC 1047
+    protected static final int SOCKET_READ_TIMEOUT = 300000;
+
     public synchronized static Transport getInstance(String uri) throws MessagingException {
         if (uri.startsWith("smtp")) {
             return new SmtpTransport(uri);

@@ -28,6 +28,7 @@ import com.android.email.mail.Address;
 import com.android.email.mail.AuthenticationFailedException;
 import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
+import com.android.email.mail.Store;
 import com.android.email.mail.Transport;
 import com.android.email.mail.CertificateValidationException;
 import com.android.email.mail.Message.RecipientType;
@@ -132,6 +133,9 @@ public class SmtpTransport extends Transport {
                 mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
             }
 
+            // RFC 1047
+            mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
+            
             mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), 1024));
             mOut = mSocket.getOutputStream();
 
@@ -286,7 +290,7 @@ public class SmtpTransport extends Transport {
             }
         }
         String ret = sb.toString();
-        if (Config.LOGD) {
+        if (true || Config.LOGD) {
             if (Email.DEBUG) {
                 Log.d(Email.LOG_TAG, "<<< " + ret);
             }
@@ -295,7 +299,7 @@ public class SmtpTransport extends Transport {
     }
 
     private void writeLine(String s) throws IOException {
-        if (Config.LOGD) {
+        if (true || Config.LOGD) {
             if (Email.DEBUG) {
                 Log.d(Email.LOG_TAG, ">>> " + s);
             }
@@ -306,25 +310,33 @@ public class SmtpTransport extends Transport {
         mOut.flush();
     }
 
+    private void checkLine(String line) throws MessagingException
+    {
+	if (line.length() < 1)
+	{
+	   throw new MessagingException("SMTP response is 0 length");
+	}
+        char c = line.charAt(0);
+        if ((c == '4') || (c == '5')) {
+            throw new MessagingException(line);
+        }
+    }
+
     private String executeSimpleCommand(String command) throws IOException, MessagingException {
         if (command != null) {
             writeLine(command);
         }
 
         String line = readLine();
+        checkLine(line);
 
         String result = line;
 
         while (line.length() >= 4 && line.charAt(3) == '-') {
             line = readLine();
+            checkLine(line);
             result += line.substring(3);
         }
-
-        char c = result.charAt(0);
-        if ((c == '4') || (c == '5')) {
-            throw new MessagingException(result);
-        }
-
         return result;
     }
 

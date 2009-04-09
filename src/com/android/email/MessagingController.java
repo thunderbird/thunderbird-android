@@ -19,6 +19,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Application;
 import android.app.Notification;
@@ -111,6 +112,8 @@ public class MessagingController implements Runnable {
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
     
     private HashMap<SORT_TYPE, Boolean> sortAscending = new HashMap<SORT_TYPE, Boolean>();
+    
+    private ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
   
     public enum SORT_TYPE { 
       SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
@@ -1619,6 +1622,56 @@ s             * critical data as fast as possible, and then we'll fill in the de
     	}
     }
     
+    public void addErrorMessage(Account account, String subject, String body)
+    {
+      if (Email.ENABLE_ERROR_FOLDER == false)
+      {
+        return;
+      }
+      if (loopCatch.compareAndSet(false, true) == false)
+      {
+        return;
+      }
+      try
+      {
+        if (body == null || body.length() < 1)
+        {
+          return;
+        }
+        
+        Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+        LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
+        Message[] messages = new Message[1];
+        Message message = new MimeMessage();
+        
+
+        message.setBody(new TextBody(body));
+        message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+        message.setSubject(subject);
+        
+        long nowTime = System.currentTimeMillis();
+        Date nowDate = new Date(nowTime);
+        message.setInternalDate(nowDate);
+        message.setSentDate(nowDate);
+        message.setFrom(new Address(account.getEmail(), "K9mail internal"));
+        messages[0] = message;
+        
+        localFolder.appendMessages(messages);
+        
+        localFolder.deleteMessagesOlderThan(nowTime - (15 * 60 * 1000));
+        
+      }
+      catch (Throwable it)
+      {
+          Log.e(Email.LOG_TAG, "Could not save error message to " + account.getErrorFolderName(), it);
+      }
+      finally
+      {
+        loopCatch.set(false);
+      }
+    }
+    
+    
     
     public void markAllMessagesRead(final Account account, final String folder)
     {
@@ -1667,6 +1720,14 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
             Message message = localFolder.getMessage(uid);
             message.setFlag(flag, newState);
+            
+            // Allows for re-allowing sending of messages that could not be sent
+            if (flag == Flag.FLAGGED && newState == false 
+                && uid != null
+                && account.getOutboxFolderName().equals(folder))
+            {
+              sendCount.remove(uid);
+            }
             
             for (MessagingListener l : getListeners()) {
               l.folderStatusChanged(account, folder);
@@ -1998,7 +2059,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
             localFolder.open(OpenMode.READ_WRITE);
 
             Message[] localMessages = localFolder.getMessages(null);
-
+            boolean anyFlagged = false;
             /*
              * The profile we will use to pull all of the content
              * for a given local message into memory for sending.
@@ -2010,24 +2071,47 @@ s             * critical data as fast as possible, and then we'll fill in the de
             LocalFolder localSentFolder =
                 (LocalFolder) localStore.getFolder(
                         account.getSentFolderName());
-
+            Log.i(Email.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + ((LocalFolder)localFolder).getId() + ") for messages to send");
             Transport transport = Transport.getInstance(account.getTransportUri());
             for (Message message : localMessages) {
               if (message.isSet(Flag.DELETED)) {
                 message.setFlag(Flag.X_DESTROYED, true);
                 continue;
               }
+              if (message.isSet(Flag.FLAGGED)) {
+                Log.i(Email.LOG_TAG, "Skipping sending FLAGGED message " + message.getUid());
+                continue;
+              }
                 try {
+                  AtomicInteger count = new AtomicInteger(0);
+                  AtomicInteger oldCount = sendCount.putIfAbsent(message.getUid(), count);
+                  if (oldCount != null)
+                  {
+                    count = oldCount;
+                  }
+                  Log.i(Email.LOG_TAG, "Send count for message " + message.getUid() + " is " + count.get());
+                  if (count.incrementAndGet() > Email.MAX_SEND_ATTEMPTS)
+                  {
+                    Log.e(Email.LOG_TAG, "Send count for message " + message.getUid() + " has exceeded maximum attempt threshold, flagging");
+                    message.setFlag(Flag.FLAGGED, true);
+                    anyFlagged = true;
+                    continue;
+                  }
+                  
                     localFolder.fetch(new Message[] { message }, fp, null);
                     try {
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
+                        Log.i(Email.LOG_TAG, "Sending message with UID " + message.getUid());
                         transport.sendMessage(message);
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
                         message.setFlag(Flag.SEEN, true);
-                        localFolder.copyMessages(
+
+                        Log.i(Email.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+                        localFolder.moveMessages(
                                 new Message[] { message },
                                 localSentFolder);
-                        
+                        Log.i(Email.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+                       
                         PendingCommand command = new PendingCommand();
                         command.command = PENDING_COMMAND_APPEND;
                         command.arguments =
@@ -2036,7 +2120,6 @@ s             * critical data as fast as possible, and then we'll fill in the de
                                 message.getUid() };
                         queuePendingCommand(account, command);
                         processPendingCommands(account);
-                        message.setFlag(Flag.X_DESTROYED, true);
                     }
                     catch (Exception e) {
                         message.setFlag(Flag.X_SEND_FAILED, true);
@@ -2073,6 +2156,30 @@ s             * critical data as fast as possible, and then we'll fill in the de
             }
             for (MessagingListener l : getListeners()) {
                 l.sendPendingMessagesCompleted(account);
+            }
+            if (anyFlagged)
+            {
+              addErrorMessage(account, mApplication.getString(R.string.send_failure_subject), 
+                  mApplication.getString(R.string.send_failure_body_fmt, Email.ERROR_FOLDER_NAME));
+              
+              NotificationManager notifMgr =
+                (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+              
+              Notification notif = new Notification(R.drawable.stat_notify_email_generic,
+                  mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
+              
+              Intent i = FolderMessageList.actionHandleAccountIntent(mApplication, account, account.getErrorFolderName());
+
+              PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
+
+              notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject),
+                  mApplication.getString(R.string.send_failure_body_abbrev, Email.ERROR_FOLDER_NAME), pi);
+              
+              notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+              notif.ledARGB = Email.NOTIFICATION_LED_SENDING_FAILURE_COLOR;
+              notif.ledOnMS = Email.NOTIFICATION_LED_FAST_ON_TIME;
+              notif.ledOffMS = Email.NOTIFICATION_LED_FAST_OFF_TIME;
+              notifMgr.notify(-1000 - account.getAccountNumber(), notif);
             }
         }
         catch (Exception e) {

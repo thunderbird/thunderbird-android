@@ -645,6 +645,7 @@ public class FolderMessageList extends ExpandableListActivity
 		
 		NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notifMgr.cancel(mAccount.getAccountNumber());
+		notifMgr.cancel(-1000 - mAccount.getAccountNumber());
  
   }
 

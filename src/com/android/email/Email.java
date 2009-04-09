@@ -110,6 +110,8 @@ public class Email extends Application {
      * Number of additioanl messages to load when a user selectes "Load more messages..."
      */
     public static int VISIBLE_LIMIT_INCREMENT = 25;
+    
+    public static int MAX_SEND_ATTEMPTS = 5;
 
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)
@@ -145,6 +147,8 @@ public class Email extends Application {
     public static final int NOTIFICATION_LED_DIM_COLOR = 0x77770077;
     public static final int NOTIFICATION_LED_FAST_ON_TIME = 100;
     public static final int NOTIFICATION_LED_FAST_OFF_TIME = 100;
+    
+    public static final int NOTIFICATION_LED_SENDING_FAILURE_COLOR = 0xffff0000;
 
     // Must not conflict with an account number
     public static final int FETCHING_EMAIL_NOTIFICATION_ID      = -4; 
