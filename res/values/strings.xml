@@ -131,9 +131,12 @@
     
     <string name="send_failure_subject">Failed to send some messages</string>
     <string name="send_failure_body_abbrev">See your <xliff:g id="errorFolder">%s</xliff:g> folder for details.</string>
-    <string name="send_failure_body_fmt">Some messages in your Outbox could not be sent. Those messages are now flagged.  
-    Unflag those messages to allow for more sending attempts.
-    Long-press the Outbox to find the "Send messages" action in order to initiate another sending attempt.\u000A
+    <string name="send_failure_body_fmt">K-9 encountered a problem sending some of your messages. 
+     However, due to the nature of the problem, K-9 cannot be certain if the messages
+    were sent or not.  The recipients may have already received copies of the message.  
+    \u000a\u000aThe messages for which this type of problem occurred are now flagged in your Outbox.  
+    Unflag those messages to allow for more sending attempts. 
+    Long-press the Outbox to find the "Send messages" action in order to initiate another sending attempt.\u000A\u000a
     The <xliff:g id="errorFolder">%s</xliff:g> folder may contain error messages regarding the failures.</string>
     
     <string name="end_of_folder">No more messages</string>
