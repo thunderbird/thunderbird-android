@@ -101,35 +101,35 @@ public class Account implements Serializable {
      * Refresh the account from the stored settings.
      */
     public void refresh(Preferences preferences) {
-        mStoreUri = Utility.base64Decode(preferences.mSharedPreferences.getString(mUuid
+        mStoreUri = Utility.base64Decode(preferences.getPreferences().getString(mUuid
                 + ".storeUri", null));
-        mLocalStoreUri = preferences.mSharedPreferences.getString(mUuid + ".localStoreUri", null);
-        mTransportUri = Utility.base64Decode(preferences.mSharedPreferences.getString(mUuid
+        mLocalStoreUri = preferences.getPreferences().getString(mUuid + ".localStoreUri", null);
+        mTransportUri = Utility.base64Decode(preferences.getPreferences().getString(mUuid
                 + ".transportUri", null));
-        mDescription = preferences.mSharedPreferences.getString(mUuid + ".description", null);
-        mAlwaysBcc = preferences.mSharedPreferences.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
-        mName = preferences.mSharedPreferences.getString(mUuid + ".name", mName);
-        mEmail = preferences.mSharedPreferences.getString(mUuid + ".email", mEmail);
-        mSignature = preferences.mSharedPreferences.getString(mUuid + ".signature", mSignature);
-        mAutomaticCheckIntervalMinutes = preferences.mSharedPreferences.getInt(mUuid
+        mDescription = preferences.getPreferences().getString(mUuid + ".description", null);
+        mAlwaysBcc = preferences.getPreferences().getString(mUuid + ".alwaysBcc", mAlwaysBcc);
+        mName = preferences.getPreferences().getString(mUuid + ".name", mName);
+        mEmail = preferences.getPreferences().getString(mUuid + ".email", mEmail);
+        mSignature = preferences.getPreferences().getString(mUuid + ".signature", mSignature);
+        mAutomaticCheckIntervalMinutes = preferences.getPreferences().getInt(mUuid
                 + ".automaticCheckIntervalMinutes", -1);
-        mDisplayCount = preferences.mSharedPreferences.getInt(mUuid + ".displayCount", -1);
-        mLastAutomaticCheckTime = preferences.mSharedPreferences.getLong(mUuid
+        mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", -1);
+        mLastAutomaticCheckTime = preferences.getPreferences().getLong(mUuid
                 + ".lastAutomaticCheckTime", 0);
-        mNotifyNewMail = preferences.mSharedPreferences.getBoolean(mUuid + ".notifyNewMail", 
+        mNotifyNewMail = preferences.getPreferences().getBoolean(mUuid + ".notifyNewMail", 
                 false);
-        mNotifySync = preferences.mSharedPreferences.getBoolean(mUuid + ".notifyMailCheck", 
+        mNotifySync = preferences.getPreferences().getBoolean(mUuid + ".notifyMailCheck", 
 																   false);
-        mDeletePolicy = preferences.mSharedPreferences.getInt(mUuid + ".deletePolicy", 0);
-        mDraftsFolderName = preferences.mSharedPreferences.getString(mUuid  + ".draftsFolderName", 
+        mDeletePolicy = preferences.getPreferences().getInt(mUuid + ".deletePolicy", 0);
+        mDraftsFolderName = preferences.getPreferences().getString(mUuid  + ".draftsFolderName", 
                 "Drafts");
-        mSentFolderName = preferences.mSharedPreferences.getString(mUuid  + ".sentFolderName", 
+        mSentFolderName = preferences.getPreferences().getString(mUuid  + ".sentFolderName", 
                 "Sent");
-        mTrashFolderName = preferences.mSharedPreferences.getString(mUuid  + ".trashFolderName", 
+        mTrashFolderName = preferences.getPreferences().getString(mUuid  + ".trashFolderName", 
                 "Trash");
-        mOutboxFolderName = preferences.mSharedPreferences.getString(mUuid  + ".outboxFolderName", 
+        mOutboxFolderName = preferences.getPreferences().getString(mUuid  + ".outboxFolderName", 
                 "Outbox");
-        
+
         // Between r418 and r431 (version 0.103), folder names were set empty if the Incoming settings were
         // opened for non-IMAP accounts.  0.103 was never a market release, so perhaps this code
         // should be deleted sometime soon
@@ -151,14 +151,15 @@ public class Account implements Serializable {
         }
         // End of 0.103 repair
         
-        mAutoExpandFolderName = preferences.mSharedPreferences.getString(mUuid  + ".autoExpandFolderName", 
+        mAutoExpandFolderName = preferences.getPreferences().getString(mUuid  + ".autoExpandFolderName", 
           "Inbox");
-        mAccountNumber = preferences.mSharedPreferences.getInt(mUuid + ".accountNumber", 0);
-        mVibrate = preferences.mSharedPreferences.getBoolean(mUuid + ".vibrate", false);
+        
+        mAccountNumber = preferences.getPreferences().getInt(mUuid + ".accountNumber", 0);
+        mVibrate = preferences.getPreferences().getBoolean(mUuid + ".vibrate", false);
 
         try
         {
-          mHideMessageViewButtons = HideButtons.valueOf(preferences.mSharedPreferences.getString(mUuid + ".hideButtonsEnum", 
+          mHideMessageViewButtons = HideButtons.valueOf(preferences.getPreferences().getString(mUuid + ".hideButtonsEnum", 
               HideButtons.NEVER.name()));
         }
         catch (Exception e)
@@ -166,11 +167,11 @@ public class Account implements Serializable {
           mHideMessageViewButtons = HideButtons.NEVER;
         }
 
-        mRingtoneUri = preferences.mSharedPreferences.getString(mUuid  + ".ringtone", 
+        mRingtoneUri = preferences.getPreferences().getString(mUuid  + ".ringtone", 
                 "content://settings/system/notification_sound");
         try
         {
-        	mFolderDisplayMode = FolderMode.valueOf(preferences.mSharedPreferences.getString(mUuid  + ".folderDisplayMode", 
+        	mFolderDisplayMode = FolderMode.valueOf(preferences.getPreferences().getString(mUuid  + ".folderDisplayMode", 
         			FolderMode.NOT_SECOND_CLASS.name()));
         }
         catch (Exception e)
@@ -180,7 +181,7 @@ public class Account implements Serializable {
 
         try
         {
-        	mFolderSyncMode = FolderMode.valueOf(preferences.mSharedPreferences.getString(mUuid  + ".folderSyncMode", 
+        	mFolderSyncMode = FolderMode.valueOf(preferences.getPreferences().getString(mUuid  + ".folderSyncMode", 
         			FolderMode.FIRST_CLASS.name()));
         }
         catch (Exception e)
@@ -190,7 +191,7 @@ public class Account implements Serializable {
         
         try
         {
-          mFolderTargetMode = FolderMode.valueOf(preferences.mSharedPreferences.getString(mUuid  + ".folderTargetMode", 
+          mFolderTargetMode = FolderMode.valueOf(preferences.getPreferences().getString(mUuid  + ".folderTargetMode", 
               FolderMode.NOT_SECOND_CLASS.name()));
         }
         catch (Exception e)
@@ -278,7 +279,7 @@ public class Account implements Serializable {
     }
 
     public void delete(Preferences preferences) {
-        String[] uuids = preferences.mSharedPreferences.getString("accountUuids", "").split(",");
+        String[] uuids = preferences.getPreferences().getString("accountUuids", "").split(",");
         StringBuffer sb = new StringBuffer();
         for (int i = 0, length = uuids.length; i < length; i++) {
             if (!uuids[i].equals(mUuid)) {
@@ -289,7 +290,7 @@ public class Account implements Serializable {
             }
         }
         String accountUuids = sb.toString();
-        SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
+        SharedPreferences.Editor editor = preferences.getPreferences().edit();
         editor.putString("accountUuids", accountUuids);
 
         editor.remove(mUuid + ".storeUri");
@@ -320,9 +321,9 @@ public class Account implements Serializable {
     }
 
     public void save(Preferences preferences) {
-      SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
+      SharedPreferences.Editor editor = preferences.getPreferences().edit();
 
-        if (!preferences.mSharedPreferences.getString("accountUuids", "").contains(mUuid)) {
+        if (!preferences.getPreferences().getString("accountUuids", "").contains(mUuid)) {
             /*
              * When the account is first created we assign it a unique account number. The
              * account number will be unique to that account for the lifetime of the account.
@@ -348,14 +349,10 @@ public class Account implements Serializable {
             }
             mAccountNumber++;
             
-            String accountUuids = preferences.mSharedPreferences.getString("accountUuids", "");
+            String accountUuids = preferences.getPreferences().getString("accountUuids", "");
             accountUuids += (accountUuids.length() != 0 ? "," : "") + mUuid;
-  //          SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
             editor.putString("accountUuids", accountUuids);
-  //          editor.commit();
         }
-
- //       SharedPreferences.Editor editor = preferences.mSharedPreferences.edit();
 
         editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
         editor.putString(mUuid + ".localStoreUri", mLocalStoreUri);

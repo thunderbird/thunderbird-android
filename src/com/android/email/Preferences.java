@@ -3,6 +3,9 @@ package com.android.email;
 
 import java.util.Arrays;
 
+import com.android.email.preferences.Editor;
+import com.android.email.preferences.Storage;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -12,11 +15,19 @@ import android.util.Log;
 public class Preferences {
     private static Preferences preferences;
 
-    public SharedPreferences mSharedPreferences;
+    private Storage mStorage;
 
     private Preferences(Context context) {
-        mSharedPreferences = context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE);
+      mStorage = Storage.getStorage(context);
+      if (mStorage.size() == 0)
+      {
+        Log.i(Email.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
+        Editor editor = mStorage.edit();
+        editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
+        editor.commit();
+      }
     }
+    
 
     /**
      * TODO need to think about what happens if this gets GCed along with the
@@ -40,7 +51,7 @@ public class Preferences {
      * @return
      */
     public Account[] getAccounts() {
-        String accountUuids = mSharedPreferences.getString("accountUuids", null);
+        String accountUuids = getPreferences().getString("accountUuids", null);
         if (accountUuids == null || accountUuids.length() == 0) {
             return new Account[] {};
         }
@@ -64,7 +75,7 @@ public class Preferences {
      * @return
      */
     public Account getDefaultAccount() {
-        String defaultAccountUuid = mSharedPreferences.getString("defaultAccountUuid", null);
+        String defaultAccountUuid = getPreferences().getString("defaultAccountUuid", null);
         Account defaultAccount = null;
         Account[] accounts = getAccounts();
         if (defaultAccountUuid != null) {
@@ -87,37 +98,35 @@ public class Preferences {
     }
 
     public void setDefaultAccount(Account account) {
-        mSharedPreferences.edit().putString("defaultAccountUuid", account.getUuid()).commit();
+        getPreferences().edit().putString("defaultAccountUuid", account.getUuid()).commit();
     }
 
     public void setEnableDebugLogging(boolean value) {
-        mSharedPreferences.edit().putBoolean("enableDebugLogging", value).commit();
+        getPreferences().edit().putBoolean("enableDebugLogging", value).commit();
     }
 
     public boolean geteEnableDebugLogging() {
-        return mSharedPreferences.getBoolean("enableDebugLogging", false);
+        return getPreferences().getBoolean("enableDebugLogging", false);
     }
 
     public void setEnableSensitiveLogging(boolean value) {
-        mSharedPreferences.edit().putBoolean("enableSensitiveLogging", value).commit();
+        getPreferences().edit().putBoolean("enableSensitiveLogging", value).commit();
     }
 
     public boolean getEnableSensitiveLogging() {
-        return mSharedPreferences.getBoolean("enableSensitiveLogging", false);
-    }
-
-    public void save() {
-    }
-
-    public void clear() {
-        mSharedPreferences.edit().clear().commit();
+        return getPreferences().getBoolean("enableSensitiveLogging", false);
     }
 
     public void dump() {
         if (Config.LOGV) {
-            for (String key : mSharedPreferences.getAll().keySet()) {
-                Log.v(Email.LOG_TAG, key + " = " + mSharedPreferences.getAll().get(key));
+            for (String key : getPreferences().getAll().keySet()) {
+                Log.v(Email.LOG_TAG, key + " = " + getPreferences().getAll().get(key));
             }
         }
+    }
+
+    public SharedPreferences getPreferences()
+    {
+      return mStorage;
     }
 }
