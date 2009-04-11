@@ -1299,7 +1299,7 @@ public class ImapStore extends Store {
                 try {
                     // TODO eventually we need to add additional authentication
                     // options such as SASL
-                    executeSimpleCommand("LOGIN \"" + mUsername + "\" \"" + mPassword + "\"", true);
+                    executeSimpleCommand("LOGIN \"" + escapeString(mUsername) + "\" \"" + escapeString(mPassword) + "\"", true);
                     authSuccess = true;
                 } catch (ImapException ie) {
                     throw new AuthenticationFailedException(ie.getAlertText(), ie);
@@ -1379,6 +1379,17 @@ public class ImapStore extends Store {
             close();
             throw ioe;
           }
+        }
+        
+        private String escapeString(String in)
+        {
+          if (in == null)
+          {
+            return null;
+          }
+          String out = in.replaceAll("\\\\", "\\\\\\\\");
+          out = out.replaceAll("\"", "\\\\\"");
+          return out;
         }
 
         public String sendCommand(String command, boolean sensitive)
