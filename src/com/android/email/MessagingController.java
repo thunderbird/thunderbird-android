@@ -1229,6 +1229,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	             * most likely due to a server or IO error and it must be retried before any
 	             * other command processes. This maintains the order of the commands.
 	             */
+	        	try
+	        	{
 	            if (PENDING_COMMAND_APPEND.equals(command.command)) {
 	                processPendingAppend(command, account);
 	            }
@@ -1246,13 +1248,24 @@ s             * critical data as fast as possible, and then we'll fill in the de
 	            }
 	            localStore.removePendingCommand(command);
 	            Log.d(Email.LOG_TAG, "Done processing pending command '" + command + "'");
-
+	        	}
+	        	catch (MessagingException me)
+	        	{
+	        	  if (me.isPermanentFailure())
+	            {
+	        	    Log.e(Email.LOG_TAG, "Failure of command '" + command + "' was permanent, removing command from queue");
+	              localStore.removePendingCommand(processingCommand);
+	            }
+  	        	else
+  	        	{
+  	        	  throw me;
+  	        	}
+	        	}
 	        }
         }
         catch (MessagingException me)
         {
           addErrorMessage(account, me);
-
         	Log.e(Email.LOG_TAG, "Could not process command '" + processingCommand + "'", me);
         	throw me;
         }
@@ -2122,6 +2135,17 @@ s             * critical data as fast as possible, and then we'll fill in the de
                         processPendingCommands(account);
                     }
                     catch (Exception e) {
+                      if (e instanceof MessagingException)
+                      {
+                        MessagingException me = (MessagingException)e;
+                        if (me.isPermanentFailure() == false)
+                        {
+                          // Decrement the counter if the message could not possibly have been sent
+                          int newVal = count.decrementAndGet();
+                          Log.i(Email.LOG_TAG, "Decremented send count for message " + message.getUid() + " to " + newVal 
+                              + "; no possible send");
+                        }
+                      }
                         message.setFlag(Flag.X_SEND_FAILED, true);
                         Log.e(Email.LOG_TAG, "Failed to send message", e);
                         for (MessagingListener l : getListeners()) {

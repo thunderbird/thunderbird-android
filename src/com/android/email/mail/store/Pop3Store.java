@@ -158,16 +158,13 @@ public class Pop3Store extends Store {
              * Run an additional test to see if UIDL is supported on the server. If it's not we
              * can't service this account.
              */
-            try{
-                /*
-                 * If the server doesn't support UIDL it will return a - response, which causes
-                 * executeSimpleCommand to throw a MessagingException, exiting this method.
-                 */
-                folder.executeSimpleCommand("UIDL");
-            }
-            catch (IOException ioe) {
-                throw new MessagingException(null, ioe);
-            }
+            
+            /*
+             * If the server doesn't support UIDL it will return a - response, which causes
+             * executeSimpleCommand to throw a MessagingException, exiting this method.
+             */
+            folder.executeSimpleCommand("UIDL");
+           
         }
         folder.close(false);
     }
@@ -262,14 +259,10 @@ public class Pop3Store extends Store {
                 throw new MessagingException("Unable to open connection to POP server.", ioe);
             }
 
-            try {
-                String response = executeSimpleCommand("STAT");
-                String[] parts = response.split(" ");
-                mMessageCount = Integer.parseInt(parts[1]);
-            }
-            catch (IOException ioe) {
-                throw new MessagingException("Unable to STAT folder.", ioe);
-            }
+            String response = executeSimpleCommand("STAT");
+            String[] parts = response.split(" ");
+            mMessageCount = Integer.parseInt(parts[1]);
+            
             mUidToMsgMap.clear();
             mMsgNumToMsgMap.clear();
             mUidToMsgNumMap.clear();
@@ -448,7 +441,10 @@ public class Pop3Store extends Store {
             HashSet<String> unindexedUids = new HashSet<String>();
             for (String uid : uids) {
                 if (mUidToMsgMap.get(uid) == null) {
-                    unindexedUids.add(uid);
+                  if (Config.LOGD) {
+                    Log.d(Email.LOG_TAG, "Need to index UID " + uid);
+                  }
+                  unindexedUids.add(uid);
                 }
             }
             if (unindexedUids.size() == 0) {
@@ -461,23 +457,30 @@ public class Pop3Store extends Store {
              */
             String response = executeSimpleCommand("UIDL");
             while ((response = readLine()) != null) {
-                if (response.equals(".")) {
-                    break;
+              if (response.equals(".")) {
+                break;
+              }
+              String[] uidParts = response.split(" ");
+              Integer msgNum = Integer.valueOf(uidParts[0]);
+              String msgUid = uidParts[1];
+              if (unindexedUids.contains(msgUid)) {
+                if (Config.LOGD) {
+                  Log.d(Email.LOG_TAG, "Got msgNum " + msgNum + " for UID " + msgUid);
                 }
-                String[] uidParts = response.split(" ");
-                Integer msgNum = Integer.valueOf(uidParts[0]);
-                String msgUid = uidParts[1];
-                if (unindexedUids.contains(msgUid)) {
-		    Pop3Message message = mUidToMsgMap.get(msgUid);
-		    if (message == null) {
-			message = new Pop3Message(msgUid, this);
-		    }
-		    indexMessage(msgNum, message);
+
+                Pop3Message message = mUidToMsgMap.get(msgUid);
+                if (message == null) {
+                  message = new Pop3Message(msgUid, this);
                 }
+                indexMessage(msgNum, message);
+              }
             }
         }
 
         private void indexMessage(int msgNum, Pop3Message message) {
+          if (Config.LOGD){
+            Log.d(Email.LOG_TAG, "Adding index for UID " + message.getUid() + " to msgNum " + msgNum);
+          }
             mMsgNumToMsgMap.put(msgNum, message);
             mUidToMsgMap.put(message.getUid(), message);
             mUidToMsgNumMap.put(message.getUid(), msgNum);
@@ -721,20 +724,18 @@ public class Pop3Store extends Store {
             {
             	throw new MessagingException("Could not get message number for uid " + uids, ioe);
             }
-            try {
-                for (Message message : messages) {
-                    executeSimpleCommand(String.format("DELE %s",
-                            mUidToMsgNumMap.get(message.getUid())));
-                }
+            for (Message message : messages) {
+              
+              Integer msgNum = mUidToMsgNumMap.get(message.getUid());
+              if (msgNum == null)
+              {
+                MessagingException me = new MessagingException("Could not delete message " + message.getUid()
+                    + " because no msgNum found; permanent error");
+                me.setPermanentFailure(true);
+                throw me;
+              }
+              executeSimpleCommand(String.format("DELE %s", msgNum));
             }
-            catch (IOException ioe) {
-                throw new MessagingException("setFlags()", ioe);
-            }
-        }
-
-        @Override
-        public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {
-            throw new UnsupportedOperationException("copyMessages is not supported in POP3");
         }
 
 //        private boolean isRoundTripModeSuggested() {
@@ -814,7 +815,7 @@ public class Pop3Store extends Store {
             return capabilities;
         }
 
-        private String executeSimpleCommand(String command) throws IOException, MessagingException {
+        private String executeSimpleCommand(String command) throws MessagingException {
             try {
                 open(OpenMode.READ_WRITE);
                 if (Config.LOGV)
@@ -837,9 +838,9 @@ public class Pop3Store extends Store {
     
                 return response;
             }
-            catch (IOException e) {
+            catch (Exception e) {
                 closeIO();
-                throw e;
+                throw new MessagingException("Unable to execute POP3 command", e);
             }
         }
 

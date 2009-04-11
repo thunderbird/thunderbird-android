@@ -228,7 +228,7 @@ public class SmtpTransport extends Transport {
         close();
         open();
         Address[] from = message.getFrom();
-
+        boolean possibleSend = false;
         try {
             executeSimpleCommand("MAIL FROM: " + "<" + from[0].getAddress() + ">");
             for (Address address : message.getRecipients(RecipientType.TO)) {
@@ -246,14 +246,21 @@ public class SmtpTransport extends Transport {
             message.writeTo(
                     new EOLConvertingOutputStream(
                             new BufferedOutputStream(mOut, 1024)));
+ 
+            possibleSend = true; // After the "\r\n." is attempted, we may have sent the message
             executeSimpleCommand("\r\n.");
-        } catch (IOException ioe) {
-            throw new MessagingException("Unable to send message", ioe);
+        } catch (Exception e) {
+          MessagingException me = new MessagingException("Unable to send message", e);
+          me.setPermanentFailure(possibleSend);
+          throw me;
         }
         finally
         {
         	close();
         }
+        
+        
+      
     }
 
     public void close() {
