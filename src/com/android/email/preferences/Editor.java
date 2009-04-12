@@ -50,7 +50,7 @@ public class Editor implements android.content.SharedPreferences.Editor
     }
   }
   
-  @Override
+  //@Override
   public android.content.SharedPreferences.Editor clear()
   {
     removeAll = true;
@@ -58,7 +58,7 @@ public class Editor implements android.content.SharedPreferences.Editor
   }
 
   /* This method is poorly defined.  It should throw an Exception on failure */
-  @Override
+  //@Override
   public boolean commit()
   {
     try
@@ -106,7 +106,7 @@ public class Editor implements android.content.SharedPreferences.Editor
     
   }
 
-  @Override
+  //@Override
   public android.content.SharedPreferences.Editor putBoolean(String key,
       boolean value)
   {
@@ -114,7 +114,7 @@ public class Editor implements android.content.SharedPreferences.Editor
     return this;
   }
 
-  @Override
+  //@Override
   public android.content.SharedPreferences.Editor putFloat(String key,
       float value)
   {
@@ -122,21 +122,21 @@ public class Editor implements android.content.SharedPreferences.Editor
     return this;
   }
 
-  @Override
+  //@Override
   public android.content.SharedPreferences.Editor putInt(String key, int value)
   {
     changes.put(key, "" + value);
     return this;
   }
 
-  @Override
+  //@Override
   public android.content.SharedPreferences.Editor putLong(String key, long value)
   {
     changes.put(key, "" + value);
     return this;
   }
 
-  @Override
+  //@Override
   public android.content.SharedPreferences.Editor putString(String key,
       String value)
   {
@@ -151,7 +151,7 @@ public class Editor implements android.content.SharedPreferences.Editor
     return this;
   }
 
-  @Override
+  //@Override
   public android.content.SharedPreferences.Editor remove(String key)
   {
     removals.add(key);

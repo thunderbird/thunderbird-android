@@ -201,25 +201,25 @@ public class Storage implements SharedPreferences
     return storage.size();
   }
   
-  @Override
+  //@Override
   public boolean contains(String key)
   {
     return storage.contains(key);
   }
 
-  @Override
+  //@Override
   public com.android.email.preferences.Editor edit()
   {
     return new com.android.email.preferences.Editor(this);
   }
 
-  @Override
+  //@Override
   public Map<String, String> getAll()
   {
     return storage;
   }
 
-  @Override
+  //@Override
   public boolean getBoolean(String key, boolean defValue)
   {
     String val = storage.get(key);
@@ -230,7 +230,7 @@ public class Storage implements SharedPreferences
     return Boolean.parseBoolean(val);
   }
 
-  @Override
+  //@Override
   public float getFloat(String key, float defValue)
   {
     String val = storage.get(key);
@@ -241,7 +241,7 @@ public class Storage implements SharedPreferences
     return Float.parseFloat(val);
   }
 
-  @Override
+  //@Override
   public int getInt(String key, int defValue)
   {
     String val = storage.get(key);
@@ -252,7 +252,7 @@ public class Storage implements SharedPreferences
     return Integer.parseInt(val);
   }
 
-  @Override
+  //@Override
   public long getLong(String key, long defValue)
   {
     String val = storage.get(key);
@@ -263,7 +263,7 @@ public class Storage implements SharedPreferences
     return Long.parseLong(val);
   }
 
-  @Override
+  //@Override
   public String getString(String key, String defValue)
   {
     String val = storage.get(key);
@@ -274,14 +274,14 @@ public class Storage implements SharedPreferences
     return val;
   }
 
-  @Override
+  //@Override
   public void registerOnSharedPreferenceChangeListener(
       OnSharedPreferenceChangeListener listener)
   {
     listeners.addIfAbsent(listener);    
   }
 
-  @Override
+  //@Override
   public void unregisterOnSharedPreferenceChangeListener(
       OnSharedPreferenceChangeListener listener)
   {
