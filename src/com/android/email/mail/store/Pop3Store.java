@@ -217,7 +217,10 @@ public class Pop3Store extends Store {
                 }
 
                 mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
-
+                if (!isOpen())
+                {
+                  throw new MessagingException("Unable to connect socket");
+                }
 
                 // Eat the banner
                 executeSimpleCommand(null);
@@ -239,6 +242,10 @@ public class Pop3Store extends Store {
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
                         mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
                         mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
+                        if (!isOpen())
+                        {
+                          throw new MessagingException("Unable to connect socket");
+                        }
                     } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
                         throw new MessagingException("TLS not supported but required");
                     }
@@ -269,8 +276,8 @@ public class Pop3Store extends Store {
         }
 
         public boolean isOpen() {
-            return (mIn != null && mOut != null && mSocket != null && mSocket.isConnected() && !mSocket
-                    .isClosed());
+            return (mIn != null && mOut != null && mSocket != null 
+                && mSocket.isConnected() && !mSocket.isClosed());
         }
 
         @Override
@@ -837,6 +844,10 @@ public class Pop3Store extends Store {
                 }
     
                 return response;
+            }
+            catch (MessagingException me)
+            {
+              throw me;
             }
             catch (Exception e) {
                 closeIO();

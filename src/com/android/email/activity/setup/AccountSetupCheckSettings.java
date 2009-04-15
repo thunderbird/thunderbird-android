@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
+
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.email.Account;
+import com.android.email.Email;
 import com.android.email.R;
 import com.android.email.mail.AuthenticationFailedException;
 import com.android.email.mail.MessagingException;
@@ -124,14 +127,17 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
                     setResult(RESULT_OK);
                     finish();
                 } catch (final AuthenticationFailedException afe) {
+                  Log.e(Email.LOG_TAG, "Error while testing settings", afe);
                     showErrorDialog(
                             R.string.account_setup_failed_dlg_auth_message_fmt,
                             afe.getMessage() == null ? "" : afe.getMessage());
                 } catch (final CertificateValidationException cve) {
+                  Log.e(Email.LOG_TAG, "Error while testing settings", cve);
                 	acceptKeyDialog(
                             R.string.account_setup_failed_dlg_certificate_message_fmt,
                             cve);
                 } catch (final Throwable t) {
+                  Log.e(Email.LOG_TAG, "Error while testing settings", t);
                     showErrorDialog(
                             R.string.account_setup_failed_dlg_server_message_fmt,
                             (t.getMessage() == null ? "" : t.getMessage()));
