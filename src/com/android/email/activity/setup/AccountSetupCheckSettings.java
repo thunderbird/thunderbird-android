@@ -177,6 +177,16 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
                         .setTitle(getString(R.string.account_setup_failed_dlg_title))
                         .setMessage(getString(msgResId, args))
                         .setCancelable(true)
+                        .setNegativeButton(
+                                getString(R.string.account_setup_failed_dlg_continue_action),
+
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        mCanceled=false;
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+                                })
                         .setPositiveButton(
                                 getString(R.string.account_setup_failed_dlg_edit_details_action),
                                 new DialogInterface.OnClickListener() {
