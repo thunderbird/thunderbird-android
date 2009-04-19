@@ -3,6 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:padding="6dip"
+    
       >
       <TextView
         android:text="@string/account_setup_basics_instructions"
@@ -10,6 +12,7 @@
         android:layout_width="fill_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?android:attr/textColorPrimary"
+        android:paddingBottom="10dip"
           />
     <EditText
         android:id="@+id/account_email"
@@ -42,7 +45,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="54px"
-        android:background="@drawable/bottombar_565"
+        
         >
         <Button
             android:id="@+id/manual_setup"

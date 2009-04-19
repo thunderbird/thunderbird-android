@@ -5,6 +5,8 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
     android:gravity="center_vertical"
+    android:background="@drawable/folder_message_list_group_background"
+    
     android:paddingLeft="36px"
     android:paddingRight="4px">
     <LinearLayout

@@ -18,7 +18,7 @@
         android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:singleLine="true"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?android:attr/textColorPrimaryInverse"
         android:layout_width="50px"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
@@ -29,7 +29,7 @@
         android:layout_width="110px"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?android:attr/textColorSecondaryInverse"
         android:paddingLeft="3px"
         android:paddingRight="3px"
         android:layout_toLeftOf="@+id/date" />
@@ -38,7 +38,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?android:attr/textColorPrimaryInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10px"

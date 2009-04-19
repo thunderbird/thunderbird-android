@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent" android:layout_width="fill_parent"
-    android:orientation="vertical" android:background="#ffffff">
+    android:orientation="vertical" >
     <ScrollView android:layout_width="fill_parent"
         android:layout_height="0dip" android:layout_weight="1"
         android:scrollbarStyle="outsideInset"
@@ -15,7 +15,7 @@
                     android:id="@+id/to" android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
                     android:hint="@string/message_compose_to_hint" />
@@ -23,7 +23,7 @@
                     android:id="@+id/cc" android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
                     android:hint="@string/message_compose_cc_hint"
@@ -32,7 +32,7 @@
                     android:id="@+id/bcc" android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
                     android:hint="@string/message_compose_bcc_hint"
@@ -42,7 +42,7 @@
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
                     android:hint="@string/message_compose_subject_hint"
@@ -60,7 +60,7 @@
                     android:background="@drawable/divider_horizontal_email" />
             </LinearLayout>
             <EditText android:id="@+id/message_content"
-                android:textColor="?android:attr/textColorSecondaryInverse"
+                android:textColor="?android:attr/textColorSecondary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
@@ -75,7 +75,7 @@
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorSecondaryInverse"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:text="@string/message_compose_quoted_text_label"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true" />

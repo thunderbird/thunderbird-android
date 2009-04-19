@@ -9,7 +9,7 @@
         <TextView
             android:id="@+id/from"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimaryInverse"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -33,7 +33,7 @@
             <TextView
                 android:id="@+id/to_label"
                 android:textSize="10sp"
-                android:textColor="?android:attr/textColorSecondaryInverse"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             <TextView
                 android:id="@+id/to"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorSecondaryInverse"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="10sp"
                 android:layout_width="0dip"
                 android:layout_weight="1.0"
@@ -52,7 +52,7 @@
            <TextView
                 android:id="@+id/date"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimaryInverse"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
@@ -67,7 +67,7 @@
             <TextView
                 android:id="@+id/subject"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorSecondaryInverse"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="10sp"
                 android:textStyle="bold"
                 android:layout_width="0dip"
@@ -89,7 +89,7 @@
         android:visibility="gone">
         <TextView
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorSecondaryInverse"
+            android:textColor="?android:attr/textColorSecondary"
             android:text="@string/message_view_show_pictures_instructions"
             android:layout_gravity="center"
             android:layout_width="0dip"
@@ -106,7 +106,7 @@
         android:id="@+id/message_content"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:background="#ffffff" />
+         />
     <!-- attachments area -->
     <LinearLayout
         android:id="@+id/attachments"
@@ -114,6 +114,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="4dip"
-        android:background="#ffffff">
+        >
     </LinearLayout>
 </merge>

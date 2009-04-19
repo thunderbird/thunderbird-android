@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    
+    android:padding="6dip"
     android:scrollbarStyle="outsideInset">
     <LinearLayout
         android:layout_width="fill_parent"
@@ -82,7 +84,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="54px"
-            android:background="@drawable/bottombar_565">
+            >
             <Button
                 android:id="@+id/next"
                 android:text="@string/next_action"

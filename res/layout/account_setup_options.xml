@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:padding="6dip"
+    
     android:scrollbarStyle="outsideInset">
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,7 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary"
+           />
         <Spinner
             android:id="@+id/account_check_frequency"
             android:layout_height="wrap_content"
@@ -33,16 +36,20 @@
             android:id="@+id/account_default"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
+            android:textColor="?android:attr/textColorPrimary"
             android:text="@string/account_setup_options_default_label" />
         <CheckBox
             android:id="@+id/account_notify"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
+            android:textColor="?android:attr/textColorPrimary"
             android:text="@string/account_setup_options_notify_label" />
         <CheckBox
             android:id="@+id/account_notify_sync"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
+            android:textColor="?android:attr/textColorPrimary"
+
             android:text="@string/account_setup_options_notify_sync_label" />
         <View
             android:layout_width="fill_parent"
@@ -52,7 +59,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="bottom|right"
-            android:background="@drawable/bottombar_565">
+            >
             <Button
                 android:id="@+id/next"
                 android:text="@string/next_action"

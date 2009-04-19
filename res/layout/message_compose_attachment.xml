@@ -15,7 +15,7 @@
 	<TextView
 		android:id="@+id/attachment_name"
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:textColor="?android:attr/textColorSecondaryInverse"
+		android:textColor="?android:attr/textColorSecondary"
 		android:layout_width="1dip"
 		android:layout_height="42px"
 		android:background="@drawable/text_box"

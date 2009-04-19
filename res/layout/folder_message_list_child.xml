@@ -5,7 +5,8 @@
     android:layout_height="38px"
     android:paddingRight="1px"
     android:paddingTop="2px"
-    android:background="@drawable/folder_message_list_child_background">
+    android:background="@drawable/folder_message_list_child_background"
+    >
     <View
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
