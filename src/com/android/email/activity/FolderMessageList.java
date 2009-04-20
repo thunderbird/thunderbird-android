@@ -2199,10 +2199,6 @@ public class FolderMessageList extends ExpandableListActivity
                 {
                   holder.subject.setTextColor(Email.FLAGGED_COLOR);
                 }
-                else
-                {
-                  holder.subject.setTextColor(0xff000000);
-                }
 
                 holder.subject.setText(message.subject);
                 
