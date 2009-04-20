@@ -2199,6 +2199,14 @@ public class FolderMessageList extends ExpandableListActivity
                 {
                   holder.subject.setTextColor(Email.FLAGGED_COLOR);
                 }
+                else
+                {
+
+                  // Removing that block of code from FolderMessageList means that flagging any
+                  // single message in a folder causes random messages to have their subjects
+                  // switch to the flagged color. -danapple
+                  holder.subject.setTextColor(0xff000000);
+                }
 
                 holder.subject.setText(message.subject);
                 
