@@ -75,6 +75,7 @@
         </activity>
         <activity
             android:name="com.android.email.activity.setup.AccountSettings"
+            android:theme="@android:style/Theme"
             android:label="@string/account_settings_title_fmt"
             >
         </activity>
