@@ -1,0 +1,13 @@
+<resources>
+    <style name="Theme.K9Dialog" parent="@android:Theme.Light">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@drawable/popup_background</item>
+        <item name="android:attr/windowTitleStyle">?android:attr/textAppearanceLargeInverse</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowContentOverlay">@drawable/panel_separator</item>
+
+    </style>
+
+
+</resources>
