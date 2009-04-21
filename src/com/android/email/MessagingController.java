@@ -743,6 +743,7 @@ public class MessagingController implements Runnable {
                  */
                 int remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
                 int remoteEnd = remoteMessageCount;
+                
             		if (Config.LOGV) {
             			Log.v(Email.LOG_TAG, "SYNC: About to get messages " + remoteStart + " through "
             					+ remoteEnd + " for folder " + folder);
@@ -778,6 +779,10 @@ public class MessagingController implements Runnable {
                         iter.remove();
                     }
                 }
+            }
+            else if (remoteMessageCount < 0)
+            {
+              throw new Exception("Message count " + remoteMessageCount + " for folder " + folder);
             }
 
             /*

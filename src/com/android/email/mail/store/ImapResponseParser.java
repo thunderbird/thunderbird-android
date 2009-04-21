@@ -255,6 +255,11 @@ public class ImapResponseParser {
         public ImapList getList(int index) {
             return (ImapList)get(index);
         }
+        
+        public Object getObject(int index)
+        {
+          return get(index);
+        }
 
         public String getString(int index) {
             return (String)get(index);

@@ -3,6 +3,7 @@ package com.android.email.mail.store;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,6 +21,7 @@ import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -343,13 +345,18 @@ public class ImapStore extends Store {
 	    prefixedName += mName;
 	    return prefixedName;
 	}
+	
+	private List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException
+	{
+	  return handleUntaggedResponses(mConnection.executeSimpleCommand(command));
+	}
 
         public void open(OpenMode mode) throws MessagingException {
             if (isOpen() && mMode == mode) {
                 // Make sure the connection is valid. If it's not we'll close it down and continue
                 // on to get a new one.
                 try {
-                    mConnection.executeSimpleCommand("NOOP");
+                    executeSimpleCommand("NOOP");
                     return;
                 }
                 catch (IOException ioe) {
@@ -370,18 +377,19 @@ public class ImapStore extends Store {
             // 2 OK [READ-WRITE] Select completed.
             try {
 	
-		if(mPathDelimeter == null){
-		    List<ImapResponse> nameResponses =
-			mConnection.executeSimpleCommand(String.format("LIST \"\" \"*%s\"", encodeFolderName(mName)));
-		    if(nameResponses.size() > 0){
-			mPathDelimeter = nameResponses.get(0).getString(2);
-		    }
-		}
-		String command = String.format("SELECT \"%s\"",
-        encodeFolderName(getPrefixedName()));
-		
-		List<ImapResponse> responses = mConnection.executeSimpleCommand(command);
-
+            		if(mPathDelimeter == null){
+            		    List<ImapResponse> nameResponses =
+            			executeSimpleCommand(String.format("LIST \"\" \"*%s\"", encodeFolderName(mName)));
+            		    if(nameResponses.size() > 0){
+            			mPathDelimeter = nameResponses.get(0).getString(2);
+            		    }
+            		}
+            		String command = String.format("SELECT \"%s\"",
+                    encodeFolderName(getPrefixedName()));
+            		
+            		List<ImapResponse> responses = executeSimpleCommand(command);
+            
+            		mMessageCount = -1;
                 /*
                  * If the command succeeds we expect the folder has been opened read-write
                  * unless we are notified otherwise in the responses.
@@ -389,10 +397,8 @@ public class ImapStore extends Store {
                 mMode = OpenMode.READ_WRITE;
 
                 for (ImapResponse response : responses) {
-                    if (response.mTag == null && response.get(1).equals("EXISTS")) {
-                        mMessageCount = response.getNumber(0);
-                    }
-                    else if (response.mTag != null && response.size() >= 2) {
+                  handleUntaggedResponse(response);
+                  if (response.mTag != null && response.size() >= 2) {
                         if ("[READ-ONLY]".equalsIgnoreCase(response.getString(1))) {
                             mMode = OpenMode.READ_ONLY;
                         }
@@ -523,7 +529,7 @@ public class ImapStore extends Store {
                 uids[i] = messages[i].getUid();
             }
             try {
-                mConnection.executeSimpleCommand(String.format("UID COPY %s \"%s\"",
+                executeSimpleCommand(String.format("UID COPY %s \"%s\"",
                         Utility.combine(uids, ','),
                         encodeFolderName(iFolder.getPrefixedName())));
             }
@@ -548,7 +554,7 @@ public class ImapStore extends Store {
             checkOpen();
             try {
                 int unreadMessageCount = 0;
-                List<ImapResponse> responses = mConnection.executeSimpleCommand(
+                List<ImapResponse> responses = executeSimpleCommand(
                         String.format("STATUS \"%s\" (UNSEEN)",
                                 encodeFolderName(getPrefixedName())));
                 for (ImapResponse response : responses) {
@@ -576,7 +582,7 @@ public class ImapStore extends Store {
             try {
                 try {
                     List<ImapResponse> responses =
-                            mConnection.executeSimpleCommand(String.format("UID SEARCH UID %S", uid));
+                            executeSimpleCommand(String.format("UID SEARCH UID %S", uid));
                     for (ImapResponse response : responses) {
                         if (response.mTag == null && response.get(0).equals("SEARCH")) {
                             for (int i = 1, count = response.size(); i < count; i++) {
@@ -608,21 +614,22 @@ public class ImapStore extends Store {
             checkOpen();
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
-                ArrayList<String> uids = new ArrayList<String>();
-                List<ImapResponse> responses = mConnection
-                        .executeSimpleCommand(String.format("UID SEARCH %d:%d NOT DELETED", start, end));
+                ArrayList<Integer> uids = new ArrayList<Integer>();
+                List<ImapResponse> responses = executeSimpleCommand(String.format("UID SEARCH %d:%d NOT DELETED", start, end));
                 for (ImapResponse response : responses) {
                     if (response.get(0).equals("SEARCH")) {
                         for (int i = 1, count = response.size(); i < count; i++) {
-                            uids.add(response.getString(i));
+                            uids.add(Integer.parseInt(response.getString(i)));
                         }
                     }
                 }
+                // Sort the uids in numerically ascending order
+                Collections.sort(uids);
                 for (int i = 0, count = uids.size(); i < count; i++) {
                     if (listener != null) {
-                        listener.messageStarted(uids.get(i), i, count);
+                        listener.messageStarted("" + uids.get(i), i, count);
                     }
-                    ImapMessage message = new ImapMessage(uids.get(i), this);
+                    ImapMessage message = new ImapMessage("" + uids.get(i), this);
                     messages.add(message);
                     if (listener != null) {
                         listener.messageFinished(message, i, count);
@@ -644,8 +651,7 @@ public class ImapStore extends Store {
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
                 if (uids == null) {
-                    List<ImapResponse> responses = mConnection
-                            .executeSimpleCommand("UID SEARCH 1:* NOT DELETED");
+                    List<ImapResponse> responses = executeSimpleCommand("UID SEARCH 1:* NOT DELETED");
                     ArrayList<String> tempUids = new ArrayList<String>();
                     for (ImapResponse response : responses) {
                         if (response.get(0).equals("SEARCH")) {
@@ -727,6 +733,7 @@ public class ImapStore extends Store {
                 int messageNumber = 0;
                 do {
                     response = mConnection.readResponse();
+                    handleUntaggedResponse(response);
 
                     if (response.mTag == null && response.get(1).equals("FETCH")) {
                         ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
@@ -797,13 +804,30 @@ public class ImapStore extends Store {
                         for (Object o : fp) {
                             if (o instanceof Part) {
                                 Part part = (Part) o;
-                                InputStream bodyStream = fetchList.getLiteral(fetchList.size() - 1);
-                                String contentType = part.getContentType();
-                                String contentTransferEncoding = part.getHeader(
-                                        MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                                part.setBody(MimeUtility.decodeBody(
-                                        bodyStream,
-                                        contentTransferEncoding));
+                                Object literal = fetchList.getObject(fetchList.size() - 1);
+                                if (literal instanceof InputStream)
+                                {
+                                  //Log.i(Email.LOG_TAG, "Part is an InputStream/Literal");
+                                  InputStream bodyStream = (InputStream)literal;
+                                  String contentType = part.getContentType();
+                                  String contentTransferEncoding = part.getHeader(
+                                          MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                  part.setBody(MimeUtility.decodeBody(
+                                          bodyStream,
+                                          contentTransferEncoding));
+                                }
+                                else if (literal instanceof String)
+                                {
+                                  String bodyString = (String)literal;
+
+                                  Log.i(Email.LOG_TAG, "Part is an String: " + bodyString);
+                                  InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
+                                  String contentTransferEncoding = part.getHeader(
+                                      MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                  part.setBody(MimeUtility.decodeBody(
+                                      bodyStream,
+                                      contentTransferEncoding));
+                                }
                             }
                         }
 
@@ -830,10 +854,11 @@ public class ImapStore extends Store {
          * Handle any untagged responses that the caller doesn't care to handle themselves.
          * @param responses
          */
-        private void handleUntaggedResponses(List<ImapResponse> responses) {
+        private List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
             for (ImapResponse response : responses) {
                 handleUntaggedResponse(response);
             }
+            return responses;
         }
 
         /**
@@ -841,8 +866,9 @@ public class ImapStore extends Store {
          * @param response
          */
         private void handleUntaggedResponse(ImapResponse response) {
-            if (response.mTag == null && response.get(1).equals("EXISTS")) {
+            if (response.mTag == null && response.size() > 1 && response.get(1).equals("EXISTS")) {
                 mMessageCount = response.getNumber(0);
+                Log.i(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
             }
         }
 
@@ -1027,6 +1053,7 @@ public class ImapStore extends Store {
                     ImapResponse response;
                     do {
                         response = mConnection.readResponse();
+                        handleUntaggedResponse(response);
                         if (response.mCommandContinuationRequested) {
                             eolOut = new EOLConvertingOutputStream(mConnection.mOut);
                             message.writeTo(eolOut);
@@ -1083,7 +1110,7 @@ public class ImapStore extends Store {
             }   
 	
 	          List<ImapResponse> responses =
-	              mConnection.executeSimpleCommand(
+	              executeSimpleCommand(
 	                      String.format("UID SEARCH (HEADER MESSAGE-ID %s)", messageId));
 	          for (ImapResponse response1 : responses) {
 	              if (response1.mTag == null && response1.get(0).equals("SEARCH")
@@ -1103,7 +1130,7 @@ public class ImapStore extends Store {
         public Message[] expunge() throws MessagingException {
             checkOpen();
             try {
-                handleUntaggedResponses(mConnection.executeSimpleCommand("EXPUNGE"));
+                executeSimpleCommand("EXPUNGE");
             } catch (IOException ioe) {
                 throw ioExceptionHandler(mConnection, ioe);
             }
@@ -1140,7 +1167,7 @@ public class ImapStore extends Store {
 	
 				   
 				    try {
-				        mConnection.executeSimpleCommand(String.format("UID STORE 1:* %sFLAGS.SILENT (%s)",
+				        executeSimpleCommand(String.format("UID STORE 1:* %sFLAGS.SILENT (%s)",
 				                value ? "+" : "-", combineFlags(flags) ));
 				    }
 				    catch (IOException ioe) {
@@ -1172,7 +1199,7 @@ public class ImapStore extends Store {
                 }
             }
             try {
-                mConnection.executeSimpleCommand(String.format("UID STORE %s %sFLAGS.SILENT (%s)",
+                executeSimpleCommand(String.format("UID STORE %s %sFLAGS.SILENT (%s)",
                         Utility.combine(uids, ','),
                         value ? "+" : "-",
                         Utility.combine(flagNames.toArray(new String[flagNames.size()]), ' ')));
