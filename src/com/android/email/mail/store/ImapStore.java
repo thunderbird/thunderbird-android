@@ -386,10 +386,11 @@ public class ImapStore extends Store {
             		}
             		String command = String.format("SELECT \"%s\"",
                     encodeFolderName(getPrefixedName()));
-            		
+
+            		mMessageCount = -1;
+
             		List<ImapResponse> responses = executeSimpleCommand(command);
             
-            		mMessageCount = -1;
                 /*
                  * If the command succeeds we expect the folder has been opened read-write
                  * unless we are notified otherwise in the responses.
@@ -397,7 +398,6 @@ public class ImapStore extends Store {
                 mMode = OpenMode.READ_WRITE;
 
                 for (ImapResponse response : responses) {
-                  handleUntaggedResponse(response);
                   if (response.mTag != null && response.size() >= 2) {
                         if ("[READ-ONLY]".equalsIgnoreCase(response.getString(1))) {
                             mMode = OpenMode.READ_ONLY;
