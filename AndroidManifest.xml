@@ -83,6 +83,7 @@
         
         <activity
             android:name="com.android.email.activity.setup.FolderSettings"
+            android:theme="@android:style/Theme.Dialog"
             android:label="@string/folder_settings_title"
             >
         </activity>
