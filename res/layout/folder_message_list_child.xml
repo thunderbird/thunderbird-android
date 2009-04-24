@@ -39,11 +39,13 @@
         android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:paddingRight="5px"
+        android:paddingLeft="5px"
         android:singleLine="true"
         android:textColor="?android:attr/textColorSecondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/folder_message_list_child_background"
         />
 </RelativeLayout>
