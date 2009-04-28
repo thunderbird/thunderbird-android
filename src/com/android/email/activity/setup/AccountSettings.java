@@ -278,9 +278,10 @@ public class AccountSettings extends PreferenceActivity {
           switch (requestCode) {
           case SELECT_AUTO_EXPAND_FOLDER:
             mAutoExpandFolder.setSummary(translateFolder(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER)));
-            return;
+            break;
           }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
