@@ -133,6 +133,16 @@
             </intent-filter>
  
             <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="text/plain" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="message/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="mailto" />
                 <category android:name="android.intent.category.DEFAULT" />

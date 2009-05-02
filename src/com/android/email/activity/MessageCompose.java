@@ -389,8 +389,62 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     addAttachment(stream);
                 }
             }
-        }
-        else {
+
+            /*
+             * There might be an EXTRA_SUBJECT, EXTRA_TEXT, EXTRA_EMAIL, EXTRA_BCC or EXTRA_CC
+             */
+            
+            String extraSubject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+            String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            String[] extraEmail = intent.getStringArrayExtra(Intent.EXTRA_EMAIL);
+            String[] extraBcc = intent.getStringArrayExtra(Intent.EXTRA_BCC);
+            String[] extraCc = intent.getStringArrayExtra(Intent.EXTRA_CC);
+
+            String addressList = new String();
+            // Cache array size, as per Google's recommendations.
+            int arraySize;
+            int i;
+
+            mSubjectView.setText(extraSubject);
+            mMessageContentView.setText(extraText);
+
+            if (extraEmail != null){
+                arraySize = extraEmail.length;
+                if (arraySize > 1){
+              	    for (i=0; i < (arraySize-1); i++) {
+                        addressList += extraEmail[i]+", ";
+                    }
+                addressList += extraEmail[arraySize-1];
+                }
+            }
+            mToView.setText(addressList);
+            addressList = "";
+
+            if (extraBcc != null){
+                arraySize = extraBcc.length;
+                if (arraySize > 1){
+              	    for (i=0; i < (arraySize-1); i++) {
+                        addressList += extraBcc[i]+", ";
+                    }
+                addressList += extraBcc[arraySize-1];
+                }
+            }
+            mBccView.setText(addressList);
+            addressList = "";
+
+            if (extraCc != null){
+                arraySize = extraCc.length;
+                if (arraySize > 1){
+              	    for (i=0; i < (arraySize-1); i++) {
+                        addressList += extraCc[i]+", ";
+                    }
+                addressList += extraCc[arraySize-1];
+                }
+            }
+            mCcView.setText(addressList);
+            addressList = "";
+
+        } else {
             mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
             mFolder = (String) intent.getStringExtra(EXTRA_FOLDER);
             mSourceMessageUid = (String) intent.getStringExtra(EXTRA_MESSAGE);
