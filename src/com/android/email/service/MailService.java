@@ -41,7 +41,7 @@ public class MailService extends Service {
 
     private Listener mListener = new Listener();
 
-    private int mStartId;
+    //    private int mStartId;
 
     public static void actionReschedule(Context context) {
         Intent i = new Intent();
@@ -68,7 +68,7 @@ public class MailService extends Service {
     	setForeground(true);  // if it gets killed once, it'll never restart
     		Log.v(Email.LOG_TAG, "***** MailService *****: onStart(" + intent + ", " + startId + ")");
         super.onStart(intent, startId);
-        this.mStartId = startId;
+	//        this.mStartId = startId;
 
        // MessagingController.getInstance(getApplication()).addListener(mListener);
         if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
@@ -95,7 +95,7 @@ public class MailService extends Service {
             }
 
             reschedule();
-            stopSelf(startId);
+	    //            stopSelf(startId);
         }
         else if (ACTION_CANCEL.equals(intent.getAction())) {
             if (Config.LOGV) {
@@ -104,7 +104,7 @@ public class MailService extends Service {
             MessagingController.getInstance(getApplication()).log("***** MailService *****: cancel");
 
             cancel();
-            stopSelf(startId);
+	    //            stopSelf(startId);
         }
         else if (ACTION_RESCHEDULE.equals(intent.getAction())) {
             if (Config.LOGV) {
@@ -112,7 +112,7 @@ public class MailService extends Service {
             }
             MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
             reschedule();
-            stopSelf(startId);
+	    //            stopSelf(startId);
         }
     }
 
@@ -179,7 +179,7 @@ public class MailService extends Service {
     }
 
     class Listener extends MessagingListener {
-        HashMap<String, Integer> accountsWithNewMail = new HashMap<String, Integer>();
+        HashMap<String, Integer> accountsChecked = new HashMap<String, Integer>();
         private WakeLock wakeLock = null;
 
         // wakelock strategy is to be very conservative.  If there is any reason to release, then release
@@ -209,7 +209,7 @@ public class MailService extends Service {
         }
         @Override
         public void checkMailStarted(Context context, Account account) {
-            accountsWithNewMail.clear();
+            accountsChecked.clear();
         }
 
         @Override
@@ -223,14 +223,19 @@ public class MailService extends Service {
                 String folder,
                 int totalMessagesInMailbox,
                 int numNewMessages) {
-            if (account.isNotifyNewMail() && numNewMessages > 0) {
-                accountsWithNewMail.put(account.getUuid(), numNewMessages);
+            if (account.isNotifyNewMail()) {
+              Integer existingNewMessages = accountsChecked.get(account.getUuid());
+              if (existingNewMessages == null)
+              {
+                existingNewMessages = 0;
+              }
+              accountsChecked.put(account.getUuid(), existingNewMessages + numNewMessages);
             }
         }
 
         private void checkMailDone(Context context, Account doNotUseaccount)
         {
-            if (accountsWithNewMail.isEmpty())
+            if (accountsChecked.isEmpty())
             {
                 return;
             }
@@ -240,63 +245,52 @@ public class MailService extends Service {
 
             int index = 0;
             for (Account thisAccount : Preferences.getPreferences(context).getAccounts()) {
-                //No need to filter out accounts that do not require notification
-                //since only the one that require so are in this map
-                if (accountsWithNewMail.containsKey(thisAccount.getUuid()))
+                Integer newMailCount = accountsChecked.get(thisAccount.getUuid());
+                int unreadMessageCount = -1;
+                if (newMailCount != null)
                 {
-		    int unreadMessageCount = 0;
-                    String notice = null;
                     try
                     {
                         unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
-                        if (unreadMessageCount > 0)
+                        if (unreadMessageCount > 0 && newMailCount > 0)
                         {
-                            notice = getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
+                            String notice = getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
                             thisAccount.getDescription());
+                            Notification notif = new Notification(R.drawable.stat_notify_email_generic,
+                                getString(R.string.notification_new_title), System.currentTimeMillis() + (index*1000));
+                          
+                            notif.number = unreadMessageCount;
+                    
+                            Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount);
+        
+                            PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+        
+                            notif.setLatestEventInfo(context, getString(R.string.notification_new_title), notice, pi);
+        
+                            String ringtone = thisAccount.getRingtone();
+                            notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
+        
+                            if (thisAccount.isVibrate()) {
+                                notif.defaults |= Notification.DEFAULT_VIBRATE;
+                            }
+        
+                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+                            notif.ledARGB = Email.NOTIFICATION_LED_COLOR;
+                            notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
+                            notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
+        
+                            notifMgr.notify(thisAccount.getAccountNumber(), notif);
                         }
-                        //Can this ever happen?
-                        else
+                        else if (unreadMessageCount == 0)
                         {
-                            notice = getString(R.string.notification_new_one_account_unknown_unread_count_fmt, (int)accountsWithNewMail.get(thisAccount.getUuid()), thisAccount.getDescription());
+                          notifMgr.cancel(thisAccount.getAccountNumber());
                         }
                     }
                     catch (MessagingException me)
                     {
                         Log.e(Email.LOG_TAG, "***** MailService *****: couldn't get unread count for account " +
                             thisAccount.getDescription(), me);
-                        notice = getString(R.string.notification_new_one_account_unknown_unread_count_fmt, (int)accountsWithNewMail.get(thisAccount.getUuid()), thisAccount.getDescription());
                     }
-
-                    Notification notif = new Notification(R.drawable.stat_notify_email_generic,
-                        getString(R.string.notification_new_title), System.currentTimeMillis() + (index*1000));
-              		    if (unreadMessageCount > 0)
-              		    {
-              			notif.number = unreadMessageCount;
-            
-                    Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount);
-
-                    PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
-
-                    notif.setLatestEventInfo(context, getString(R.string.notification_new_title), notice, pi);
-
-                    String ringtone = thisAccount.getRingtone();
-                    notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
-
-                    if (thisAccount.isVibrate()) {
-                        notif.defaults |= Notification.DEFAULT_VIBRATE;
-                    }
-
-                    notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                    notif.ledARGB = Email.NOTIFICATION_LED_COLOR;
-                    notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
-                    notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
-
-                    notifMgr.notify(thisAccount.getAccountNumber(), notif);
-              		    }
-              		    else
-              		    {
-              		      notifMgr.cancel(thisAccount.getAccountNumber());
-              		    }
                 }
             }//for accounts
         }//checkMailDone
@@ -307,7 +301,7 @@ public class MailService extends Service {
           controller.setCheckMailListener(null);
           reschedule();
           wakeLockRelease();
-          stopSelf(mStartId);
+	  //          stopSelf(mStartId);
         }
 
         @Override
