@@ -94,8 +94,9 @@ public class Storage implements SharedPreferences
     long startTime = System.currentTimeMillis();
     Log.i(Email.LOG_TAG, "Loading preferences from DB into Storage");
     Cursor cursor = null;
+    SQLiteDatabase mDb = null;
     try {
-      SQLiteDatabase mDb = openDB();
+      mDb = openDB();
 
       cursor = mDb.rawQuery("SELECT primkey, value FROM preferences_storage", null);
       while (cursor.moveToNext()) {
@@ -111,6 +112,10 @@ public class Storage implements SharedPreferences
     finally {
       if (cursor != null) {
         cursor.close();
+      }
+      if (mDb != null)
+      {
+        mDb.close();
       }
       long endTime = System.currentTimeMillis();
       Log.i(Email.LOG_TAG, "Preferences load took " + (endTime - startTime) + "ms");
@@ -193,6 +198,10 @@ public class Storage implements SharedPreferences
       workingStorage.remove();
       workingChangedKeys.remove();
       mDb.endTransaction();
+      if (mDb != null)
+      {
+        mDb.close();
+      }
     }
   }
   
