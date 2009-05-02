@@ -1068,6 +1068,15 @@ public class MessageView extends Activity
                     } else {
                         Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
                         StringBuffer sb = new StringBuffer();
+                        /*
+                         * Convert plain text to HTML by replacing
+                         * \r?\n with <br> and adding a html/body wrapper as well as escaping & < >
+                         */
+                        text = text.replaceAll("&", "&amp;");
+                        text = text.replaceAll("<", "&lt;");
+                        text = text.replaceAll(">", "&gt;");
+                        text = text.replaceAll("\r?\n", "<br>");
+
                         while (m.find()) {
                             int start = m.start();
                             if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
@@ -1078,12 +1087,6 @@ public class MessageView extends Activity
                             }
                         }
                         m.appendTail(sb);
-
-/*
-                         * Convert plain text to HTML by replacing
-                         * \r?\n with <br> and adding a html/body wrapper.
-                         */
-                        text = sb.toString().replaceAll("\r?\n", "<br>");
 
 
 
