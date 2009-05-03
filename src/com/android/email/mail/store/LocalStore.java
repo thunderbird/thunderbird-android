@@ -119,14 +119,14 @@ public class LocalStore extends Store implements Serializable {
             mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
                     + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT)");
 
-            mDb.execSQL("CREATE INDEX folder_name ON folders (name)");
+            mDb.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
             mDb.execSQL("DROP TABLE IF EXISTS messages");
             mDb.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, folder_id INTEGER, uid TEXT, subject TEXT, "
                     + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
                     + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT)");
 
-            mDb.execSQL("CREATE INDEX msg_uid ON messages (uid, folder_id)");
-            mDb.execSQL("CREATE INDEX msg_folder_id ON messages (folder_id)");
+            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
+            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id ON messages (folder_id)");
             mDb.execSQL("DROP TABLE IF EXISTS attachments");
             mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
                     + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
