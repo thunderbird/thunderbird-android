@@ -61,6 +61,14 @@ import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 import com.android.email.mail.store.LocalStore.LocalMessage;
 
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+
+
 /**
  * FolderMessageList is the primary user interface for the program. This
  * Activity shows a two level list of the Account's folders and each folder's
@@ -160,6 +168,8 @@ public class FolderMessageList extends ExpandableListActivity
 	private boolean sortAscending = true;
 	private boolean sortDateAscending = false;
 
+	private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 120000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
+	
 	private DateFormat getDateFormat()
 	{
 		if (dateFormat == null)
@@ -434,7 +444,7 @@ public class FolderMessageList extends ExpandableListActivity
 	class FolderUpdateWorker implements Runnable
 	{
         String mFolder;
-
+		FolderInfoHolder mHolder;
         boolean mSynchronizeRemote;
 
         /**
@@ -444,9 +454,10 @@ public class FolderMessageList extends ExpandableListActivity
          * @param folder
          * @param synchronizeRemote
          */
-		public FolderUpdateWorker(String folder, boolean synchronizeRemote)
+		public FolderUpdateWorker(FolderInfoHolder folder, boolean synchronizeRemote)
 		{
-            mFolder = folder;
+            mFolder = folder.name;
+			mHolder = folder;
             mSynchronizeRemote = synchronizeRemote;
         }
 
@@ -454,35 +465,46 @@ public class FolderMessageList extends ExpandableListActivity
 		{
             // Lower our priority
             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+			WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email - UpdateWorker");
+			wakeLock.setReferenceCounted(false);
+			wakeLock.acquire(Email.WAKE_LOCK_TIMEOUT);
             // Synchronously load the list of local messages
-            
 			try
 			{
-				Store localStore = Store.getInstance(mAccount.getLocalStoreUri(),
-						getApplication());
-				LocalFolder localFolder = (LocalFolder) localStore.getFolder(mFolder);
-				if (localFolder.getMessageCount() == 0 && localFolder.getLastChecked() <= 0)
+				try
 				{
-					mSynchronizeRemote = true;
+					Store localStore = Store.getInstance(mAccount.getLocalStoreUri(),
+														 getApplication());
+					LocalFolder localFolder = (LocalFolder) localStore.getFolder(mFolder);
+					if (localFolder.getMessageCount() == 0 && localFolder.getLastChecked() <= 0)
+					{
+						mSynchronizeRemote = true;
+					}
+				} catch (MessagingException me)
+				{
+					Log.e(Email.LOG_TAG,
+						  "Unable to get count of local messages for folder " + mFolder, me);
 				}
-			} catch (MessagingException me)
-			{
-				Log.e(Email.LOG_TAG,
-						"Unable to get count of local messages for folder " + mFolder, me);
-			}
 
-			if (mSynchronizeRemote)
-			{
-                // Tell the MessagingController to run a remote update of this folder
-                // at it's leisure
-                MessagingController.getInstance(getApplication()).synchronizeMailbox(
+				if (mSynchronizeRemote)
+				{
+					// Tell the MessagingController to run a remote update of this folder
+					// at it's leisure
+					MessagingController.getInstance(getApplication()).synchronizeMailbox(
 						mAccount, mFolder, mAdapter.mListener);
-      }
-			else
-			{
-			  MessagingController.getInstance(getApplication()).listLocalMessages(
-	          mAccount, mFolder, mAdapter.mListener);
+				}
+				else
+				{
+					MessagingController.getInstance(getApplication()).listLocalMessages(
+						mAccount, mFolder, mAdapter.mListener);
+				}
 			}
+			finally
+			{
+        		wakeLock.release();
+			}
+			
         }
     }
 
@@ -689,12 +711,10 @@ public class FolderMessageList extends ExpandableListActivity
         mListView.setSelectionFromTop(position, 0);
       }
 
-      final FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getGroup(groupPosition);
-      if (folder.messages.size() == 0 || folder.needsRefresh)
-      {
-        folder.needsRefresh = false;
-        new Thread(new FolderUpdateWorker(folder.name, false)).start();
-      }
+      final FolderInfoHolder folder = (FolderInfoHolder) 
+         mAdapter.getGroup(groupPosition);
+            if (folder.messages.size() == 0 || folder.needsRefresh)
+                threadPool.execute(new FolderUpdateWorker(folder, false));
     }
 
 
@@ -1052,6 +1072,7 @@ public class FolderMessageList extends ExpandableListActivity
           holder.message.getFolder().getName(), holder.message, folder.name, null);
    }
 
+
 	private void onReply(MessageInfoHolder holder)
 	{
         MessageCompose.actionReply(this, mAccount, holder.message, false);
@@ -1319,8 +1340,8 @@ public class FolderMessageList extends ExpandableListActivity
           MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
           break;
         case R.id.check_mail:
-						Log.i(Email.LOG_TAG, "refresh folder " + folder.name);
-						new Thread(new FolderUpdateWorker(folder.name, true)).start();
+					Log.i(Email.LOG_TAG, "refresh folder " + folder.name);
+					threadPool.execute(new FolderUpdateWorker(folder, true));
 					break;
 				case R.id.folder_settings:
 					Log.i(Email.LOG_TAG, "edit folder settings for " + folder.name);
@@ -1334,7 +1355,6 @@ public class FolderMessageList extends ExpandableListActivity
 					Log.i(Email.LOG_TAG, "mark all unread messages as read " + folder.name);
 					onMarkAllAsRead(mAccount, folder);
 					break;
-
 			}
 		}
 		
@@ -1400,9 +1420,7 @@ public class FolderMessageList extends ExpandableListActivity
 					.getGroup(groupPosition);
 	
 			if (!folder.name.equals(mAccount.getTrashFolderName()))
-			{
 				menu.findItem(R.id.empty_trash).setVisible(false);
-        }
 			if (folder.outbox)
 			{
         menu.findItem(R.id.check_mail).setVisible(false);
@@ -1614,13 +1632,9 @@ public class FolderMessageList extends ExpandableListActivity
                  */
 				for (int i = 0, count = getGroupCount(); i < count; i++)
 				{
-					if (mListView.isGroupExpanded(i))
-					{
-						final FolderInfoHolder folder = (FolderInfoHolder) mAdapter
-								.getGroup(i);
-						new Thread(new FolderUpdateWorker(folder.name, mRefreshRemote))
-								.start();
-                    }
+					final FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getGroup(i);
+					if(mListView.isGroupExpanded(i))
+						threadPool.execute(new FolderUpdateWorker(folder, mRefreshRemote));
                 }
                 mRefreshRemote = false;
             }
@@ -2268,7 +2282,7 @@ public class FolderMessageList extends ExpandableListActivity
             public boolean lastCheckFailed;
             
             public boolean needsRefresh = false;
-            
+
             /**
              * Outbox is handled differently from any other folder.
              */
