@@ -31,7 +31,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.util.Regex;
-import android.text.util.Linkify;
 import android.util.Config;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -1065,41 +1064,6 @@ public class MessageView extends Activity
             }
             if (part != null) {
                 String text = MimeUtility.getTextFromPart(part);
-                  if (part.getMimeType().equalsIgnoreCase("text/html")) {
-                               markup = new SpannableString(text.replaceAll("cid:", "http://cid/"));
-                               Linkify.addLinks(markup, Linkify.ALL);
-                               text = markup.toString();
-                  } else {
-                               if(text.length() != 0) {
-                                   /*
-                                * Convert plain text to HTML by replacing
-                                * \r?\n with <br> and adding a html/body wrapper.
-                                */
-                                   text = text.replaceAll("&", "&amp;");
-                                   text = text.replaceAll("<", "&lt;");
-                                   text = text.replaceAll(">", "&gt;");
-                                   text = text.replaceAll("\r?\n", "<br/>");
-                                   Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
-                                   StringBuffer sb = new StringBuffer(text.length() + 512);
-                                   sb.append("<html><body>");
-                                   while (m.find()) {
-                                       int start = m.start();
-                                       if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
-                                           m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
-                                       }
-                                       else {
-                                           m.appendReplacement(sb, "$0");
-                                       }
-                                   }
-                                   m.appendTail(sb);
-                                   sb.append("</body></html>");
-                                   markup = new SpannableStringBuilder(sb, 0, sb.length());
-                                   Linkify.addLinks(markup, Linkify.ALL);
-                                   text = markup.toString();
-                               }
-                               else
-                                   text = "<html><body></body></html>";
-                  }
                   /*
                    * TODO this should be smarter, change to regex for img, but consider how to
                    * get background images and a million other things that HTML allows.
@@ -1117,7 +1081,9 @@ public class MessageView extends Activity
                     }
                 }
             }
-   
+  
+
+
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid,
                 final String message) {

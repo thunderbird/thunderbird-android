@@ -15,6 +15,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+import java.util.regex.Matcher;
 import android.content.SharedPreferences;
 
 import org.apache.commons.io.IOUtils;
@@ -26,6 +27,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Config;
 import android.util.Log;
+import android.text.util.Regex;
+import android.text.util.Linkify;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 
 import com.android.email.Email;
 import com.android.email.Preferences;
@@ -57,7 +63,7 @@ import com.android.email.provider.AttachmentProvider;
  * </pre>
  */
 public class LocalStore extends Store implements Serializable {
-    private static final int DB_VERSION = 23;
+    private static final int DB_VERSION = 24;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -1080,6 +1086,13 @@ public class LocalStore extends Store implements Serializable {
                     }
                 }
 
+
+
+                sbHtml = markupContent(sbText,sbHtml);
+                sbText = new StringBuffer();
+
+
+
                 try {
                     ContentValues cv = new ContentValues();
                     cv.put("uid", message.getUid());
@@ -1149,6 +1162,10 @@ public class LocalStore extends Store implements Serializable {
                     throw new MessagingException("Unable to get text for message part", e);
                 }
             }
+
+            sbHtml = markupContent(sbText,sbHtml);
+            sbText = new StringBuffer();
+
 
             try {
                 mDb.execSQL("UPDATE messages SET "
@@ -1423,6 +1440,45 @@ public class LocalStore extends Store implements Serializable {
                 }
             }
         }
+        
+
+        public StringBuffer markupContent(StringBuffer sbText, StringBuffer sbHtml) {
+                if (sbText.length() > 0 && sbHtml.length() == 0) {
+                    sbHtml.append(htmlifyString(sbText.toString()));
+                }
+               
+                Spannable markup = new SpannableString(sbHtml.toString().replaceAll("cid:", "http://cid/"));
+                Linkify.addLinks(markup, Linkify.ALL);
+                StringBuffer sb = new StringBuffer(markup.length());
+                sb.append(markup.toString());
+                return sb;
+
+            }
+        
+        public String htmlifyString(String text) {
+             text = text.replaceAll("&", "&amp;");
+             text = text.replaceAll("<", "&lt;");
+             text = text.replaceAll(">", "&gt;");
+             text = text.replaceAll("\r?\n", "<br/>");
+             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
+             StringBuffer sb = new StringBuffer(text.length() + 512);
+             sb.append("<html><body>");
+             while (m.find()) {
+                 int start = m.start();
+                 if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
+                     m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
+                 }
+                 else {
+                     m.appendReplacement(sb, "$0");
+                 }
+             }
+             m.appendTail(sb);
+             sb.append("</body></html>");
+             text = sb.toString();
+
+            return text;
+        }
+
     }
 
     public class LocalMessage extends MimeMessage {
