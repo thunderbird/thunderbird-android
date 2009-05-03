@@ -24,7 +24,10 @@
     <string name="reply_action">Reply</string>
     <string name="reply_all_action">Reply all</string>
     <string name="delete_action">Delete</string>
+    <string name="archive_action">Archive</string>
+    <string name="delete_all_action">Clear folder</string>
     <string name="forward_action">Forward</string>
+    <string name="move_action">Move</string>
     <string name="continue_action">Continue</string>
     <string name="done_action">Done</string> <!--  Used to complete a multi-step process -->
     <string name="remove_action">Remove</string>
@@ -57,7 +60,6 @@
   
     <string name="flag_action">Flag</string>
     <string name="unflag_action">Unflag</string>
-    <string name="move_action">Move</string>
     <string name="copy_action">Copy</string>
  
     <string name="mark_as_unread_action">Mark as unread</string>
@@ -434,6 +436,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="sort_by_flag">Flag</string>
     <string name="sort_by_unread">Read/unread</string>
     <string name="sort_by_attach">Attachments</string>
+    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Remove</string>
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from Email.</string>
