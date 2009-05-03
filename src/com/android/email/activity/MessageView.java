@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.Process;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.util.Regex;
 import android.text.util.Linkify;
 import android.util.Config;
@@ -43,6 +44,7 @@ import android.view.View.OnClickListener;
 import android.webkit.CacheManager;
 import android.webkit.UrlInterceptHandler;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.webkit.CacheManager.CacheResult;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -71,6 +73,9 @@ import com.android.email.mail.store.LocalStore.LocalAttachmentBody;
 import com.android.email.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.android.email.mail.store.LocalStore.LocalMessage;
 import com.android.email.provider.AttachmentProvider;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class MessageView extends Activity
         implements UrlInterceptHandler, OnClickListener {
@@ -79,6 +84,7 @@ public class MessageView extends Activity
     private static final String EXTRA_MESSAGE = "com.android.email.MessageView_message";
     private static final String EXTRA_FOLDER_UIDS = "com.android.email.MessageView_folderUids";
     private static final String EXTRA_NEXT = "com.android.email.MessageView_next";
+    private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 120000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
 
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -93,6 +99,10 @@ public class MessageView extends Activity
     private LinearLayout mAttachments;
     private View mAttachmentIcon;
     private View mShowPicturesSection;
+    View next;
+    View next_scrolling;
+    View previous;
+    View previous_scrolling;
 
     private Account mAccount;
     private String mFolder;
@@ -123,7 +133,7 @@ public class MessageView extends Activity
           dateFormat = new java.text.SimpleDateFormat(Email.BACKUP_DATE_FORMAT);
         }
       }
-    	return  dateFormat;
+       return  dateFormat;
     }
     private DateFormat getTimeFormat()
     {
@@ -134,12 +144,12 @@ public class MessageView extends Activity
         boolean b24 =  !(timeFormatS == null || timeFormatS.equals("12"));
         timeFormat = new java.text.SimpleDateFormat(b24 ? Email.TIME_FORMAT_24 : Email.TIME_FORMAT_12);
       }
-    	return timeFormat;
+       return timeFormat;
     }
     private void clearFormats()
     {
-    	dateFormat = null;
-    	timeFormat = null;
+	dateFormat = null;
+	timeFormat = null;
     }
 
     private Listener mListener = new Listener();
@@ -171,10 +181,10 @@ public class MessageView extends Activity
                                         }
                                      return true; }
 
-	    case KeyEvent.KEYCODE_H: {
-	        Toast toast = Toast.makeText(this, R.string.message_help_key, Toast.LENGTH_LONG);
-	        toast.show();
-	        return true; }
+           case KeyEvent.KEYCODE_H: {
+               Toast toast = Toast.makeText(this, R.string.message_help_key, Toast.LENGTH_LONG);
+               toast.show();
+               return true; }
             }
            return super.onKeyDown(keyCode, event);
         }
@@ -372,6 +382,7 @@ public class MessageView extends Activity
         mSubjectView = (TextView)findViewById(R.id.subject);
         mDateView = (TextView)findViewById(R.id.date);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
+        mMessageContentView.setWebViewClient(new MessageWebViewClient());
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
@@ -409,28 +420,17 @@ public class MessageView extends Activity
         mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
         mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
        
-        View next = findViewById(R.id.next);
-        View previous = findViewById(R.id.previous);
+        next = findViewById(R.id.next);
+        previous = findViewById(R.id.previous);
         
-        findSurroundingMessagesUid();
        
         setOnClickListener(R.id.next);
         setOnClickListener(R.id.previous);
 
-        next.setEnabled(mNextMessageUid != null );
-        previous.setEnabled(mPreviousMessageUid != null);
- 
-        View next_scrolling = findViewById(R.id.next_scrolling);
+        next_scrolling = findViewById(R.id.next_scrolling);
         
-        if (next_scrolling != null) {
-          next_scrolling.setEnabled(mNextMessageUid != null );
-        }
         
-        View previous_scrolling = findViewById(R.id.previous_scrolling);
-        if (previous_scrolling != null) {
-          previous_scrolling.setEnabled(mPreviousMessageUid != null);
-                  
-        }
+        previous_scrolling = findViewById(R.id.previous_scrolling);
 
         boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
         if (goNext) {
@@ -439,6 +439,7 @@ public class MessageView extends Activity
         
         Account.HideButtons hideButtons = mAccount.getHideMessageViewButtons();
         
+        MessagingController.getInstance(getApplication()).addListener(mListener);
         if (Account.HideButtons.ALWAYS == hideButtons)
         {
           hideButtons();
@@ -459,22 +460,37 @@ public class MessageView extends Activity
               showButtons();
             }
         }
-             
-        MessagingController.getInstance(getApplication()).addListener(mListener);
-        new Thread() {
+        displayMessage(mMessageUid);
+  }
+
+    Thread loaderThread = new Thread() {
             public void run() {
                 // TODO this is a spot that should be eventually handled by a MessagingController
                 // thread pool. We want it in a thread but it can't be blocked by the normal
                 // synchronization stuff in MC.
-                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 MessagingController.getInstance(getApplication()).loadMessageForView(
-                        mAccount,
-                        mFolder,
-                        mMessageUid,
-                        null);
+                    mAccount,
+                    mFolder,
+                    mMessageUid,
+                    null);
             }
-        }.start();
+        };
+
+    private void displayMessage(String uid)
+    {
+        mMessageUid = uid;
+        mAttachments.removeAllViews();
+        findSurroundingMessagesUid();
+        next.setEnabled(mNextMessageUid != null );
+        previous.setEnabled(mPreviousMessageUid != null);
+        if (next_scrolling != null)
+            next_scrolling.setEnabled(mNextMessageUid != null );
+        if (previous_scrolling != null)
+            previous_scrolling.setEnabled(mPreviousMessageUid != null);
+        threadPool.execute(loaderThread);
     }
+    
+    
   private void showButtons()
   {
     View buttons = findViewById(R.id.scrolling_buttons);
@@ -501,19 +517,14 @@ public class MessageView extends Activity
     }
 
     private void findSurroundingMessagesUid() {
-        for (int i = 0, count = mFolderUids.size(); i < count; i++) {
-            String messageUid = mFolderUids.get(i);
-            if (messageUid.equals(mMessageUid)) {
-                if (i != 0) {
-                    mNextMessageUid = mFolderUids.get(i - 1);
-                }
-
-                if (i != count - 1) {
-                    mPreviousMessageUid = mFolderUids.get(i + 1);
-                }
-                break;
-            }
-        }
+        mNextMessageUid = mPreviousMessageUid = null;
+        int i = mFolderUids.indexOf(mMessageUid);
+        if(i < 0)
+            return;
+        if(i != 0)
+            mNextMessageUid = mFolderUids.get(i - 1);
+        if(i != (mFolderUids.size() - 1))
+            mPreviousMessageUid = mFolderUids.get(i + 1);
     }
 
     public void onResume() {
@@ -533,10 +544,11 @@ public class MessageView extends Activity
            String folderForDelete = mFolder;
            Account accountForDelete = mAccount;
 
+           findSurroundingMessagesUid();
+
             // Remove this message's Uid locally
             mFolderUids.remove(messageToDelete.getUid());
             
-           findSurroundingMessagesUid();
             
             MessagingController.getInstance(getApplication()).deleteMessage(
                 accountForDelete,
@@ -551,8 +563,6 @@ public class MessageView extends Activity
             } else {
                 finish();
             }
-            
-  
         }
     }
 
@@ -667,35 +677,27 @@ public class MessageView extends Activity
     
     private void onSendAlternate() {
       if (mMessage != null) {
-  			MessagingController.getInstance(getApplication()).sendAlternate(this, mAccount, mMessage);
+                       MessagingController.getInstance(getApplication()).sendAlternate(this, mAccount, mMessage);
 
       }
   }
 
     private void onNext() {
-      if (mNextMessageUid == null)
-      {
-        Toast.makeText(this,
-            getString(R.string.end_of_folder),
-            Toast.LENGTH_SHORT).show();
-        return;
-      }
-        Bundle extras = new Bundle(1);
-        extras.putBoolean(EXTRA_NEXT, true);
-        MessageView.actionView(this, mAccount, mFolder, mNextMessageUid, mFolderUids, extras);
-        finish();
+        if (mNextMessageUid == null) {
+            Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        displayMessage(mNextMessageUid);
+        next.requestFocus();
     }
 
     private void onPrevious() {
-      if (mPreviousMessageUid == null)
-      {
-        Toast.makeText(this,
-            getString(R.string.end_of_folder),
-            Toast.LENGTH_SHORT).show();
-        return;
-      }
-        MessageView.actionView(this, mAccount, mFolder, mPreviousMessageUid, mFolderUids);
-        finish();
+        if (mPreviousMessageUid == null) {
+            Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        displayMessage(mPreviousMessageUid);
+        previous.requestFocus();
     }
 
     private void onMarkAsUnread() {
@@ -1054,72 +1056,68 @@ public class MessageView extends Activity
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
                 Message message) {
-            SpannableString markup;
+            Spannable markup;
             MessageView.this.mMessage = message;
             try {
-                Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
-                if (part == null) {
-                    part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
-                }
-                if (part != null) {
-                    String text = MimeUtility.getTextFromPart(part);
-                    if (part.getMimeType().equalsIgnoreCase("text/html")) {
-                        text = text.replaceAll("cid:", "http://cid/");
-                    } else {
-                        Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
-                        StringBuffer sb = new StringBuffer();
-                        /*
-                         * Convert plain text to HTML by replacing
-                         * \r?\n with <br> and adding a html/body wrapper as well as escaping & < >
-                         */
-                        text = text.replaceAll("&", "&amp;");
-                        text = text.replaceAll("<", "&lt;");
-                        text = text.replaceAll(">", "&gt;");
-                        text = text.replaceAll("\r?\n", "<br>");
-
-                        while (m.find()) {
-                            int start = m.start();
-                            if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
-                                m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
-                            }
-                            else {
-                                m.appendReplacement(sb, "$0");
-                            }
-                        }
-                        m.appendTail(sb);
-
-
-
-                        text = "<html><body>" + text + "</body></html>";
-
-                    }
-
-
-
-                    /*
-                     * TODO this should be smarter, change to regex for img, but consider how to
-                     * get background images and a million other things that HTML allows.
-                     */
-                    if (text.contains("<img")) {
-                        mHandler.showShowPictures(true);
-                    }
-                    markup = new SpannableString(text);
-                    Linkify.addLinks(markup, Linkify.ALL);
-                    mMessageContentView.loadDataWithBaseURL("email://", markup.toString(), "text/html",
-                            "utf-8", null);
-                }
-                else {
-                    mMessageContentView.loadUrl("file:///android_asset/empty.html");
-                }
-                renderAttachments(mMessage, 0);
+            Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
+            if (part == null) {
+                part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
             }
+            if (part != null) {
+                String text = MimeUtility.getTextFromPart(part);
+                  if (part.getMimeType().equalsIgnoreCase("text/html")) {
+                               markup = new SpannableString(text.replaceAll("cid:", "http://cid/"));
+                               Linkify.addLinks(markup, Linkify.ALL);
+                               text = markup.toString();
+                  } else {
+                               if(text.length() != 0) {
+                                   /*
+                                * Convert plain text to HTML by replacing
+                                * \r?\n with <br> and adding a html/body wrapper.
+                                */
+                                   text = text.replaceAll("&", "&amp;");
+                                   text = text.replaceAll("<", "&lt;");
+                                   text = text.replaceAll(">", "&gt;");
+                                   text = text.replaceAll("\r?\n", "<br/>");
+                                   Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
+                                   StringBuffer sb = new StringBuffer(text.length() + 512);
+                                   sb.append("<html><body>");
+                                   while (m.find()) {
+                                       int start = m.start();
+                                       if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
+                                           m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
+                                       }
+                                       else {
+                                           m.appendReplacement(sb, "$0");
+                                       }
+                                   }
+                                   m.appendTail(sb);
+                                   sb.append("</body></html>");
+                                   markup = new SpannableStringBuilder(sb, 0, sb.length());
+                                   Linkify.addLinks(markup, Linkify.ALL);
+                                   text = markup.toString();
+                               }
+                               else
+                                   text = "<html><body></body></html>";
+                  }
+                  /*
+                   * TODO this should be smarter, change to regex for img, but consider how to
+                   * get background images and a million other things that HTML allows.
+                   */
+                 mHandler.showShowPictures(text.contains("<img"));
+                 mMessageContentView.loadDataWithBaseURL("email://", text, "text/html", "utf-8", null);
+              }
+             else
+                  mMessageContentView.loadUrl("file:///android_asset/empty.html");
+              renderAttachments(mMessage, 0);
+              }
             catch (Exception e) {
-                if (Config.LOGV) {
-                    Log.v(Email.LOG_TAG, "loadMessageForViewBodyAvailable", e);
+                    if (Config.LOGV) {
+                        Log.v(Email.LOG_TAG, "loadMessageForViewBodyAvailable", e);
+                    }
                 }
             }
-        }
-
+   
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid,
                 final String message) {
@@ -1238,4 +1236,16 @@ public class MessageView extends Activity
             }
         }
     }
+
+    class MessageWebViewClient extends WebViewClient
+    {
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl)
+        {
+            Log.e(Email.LOG_TAG,  "WebView: url '"+failingUrl+"' error "+description);
+            String error = String.format(getString(R.string.message_web_view_error).toString(), description);
+            Toast.makeText(MessageView.this, error, Toast.LENGTH_LONG).show();
+        }
+        
+    }
+    
 }
