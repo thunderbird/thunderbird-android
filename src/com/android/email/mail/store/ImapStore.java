@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -1078,9 +1079,6 @@ public class ImapStore extends Store {
                             eolOut.write('\n');
                             eolOut.flush();
                         }
-                        else if (response.mTag == null) {
-                            handleUntaggedResponse(response);
-                        }
                         while (response.more());
                     } while(response.mTag == null);
 
@@ -1510,8 +1508,16 @@ public class ImapStore extends Store {
                 }
 		if (response.mTag != null && response.mTag.equals(tag) == false)
 		{
-		    Log.w(Email.LOG_TAG, "Got tag response from previous command " + response);
-		    responses.clear();
+		    Log.w(Email.LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response);
+		    Iterator<ImapResponse> iter = responses.iterator();
+		    while (iter.hasNext())
+		    {
+		      ImapResponse delResponse = iter.next();
+		      if (delResponse.mTag != null || delResponse.size() < 2 || "EXISTS".equals(delResponse.get(1)) == false)
+		      {
+		        iter.remove();
+		      }
+		    }
 		    response.mTag = null;
 		    continue;
 		}
