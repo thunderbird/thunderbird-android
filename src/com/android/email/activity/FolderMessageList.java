@@ -694,7 +694,7 @@ public class FolderMessageList extends ExpandableListActivity
 
       Log.i(Email.LOG_TAG, "onGroupExpand(" + groupPosition + "), mRestoringState = " + mRestoringState);
       super.onGroupExpand(groupPosition);
-      if (mExpandedGroup != -1)
+      if (mExpandedGroup != -1 && mExpandedGroup != groupPosition)
       {
         mListView.collapseGroup(mExpandedGroup);
       }
