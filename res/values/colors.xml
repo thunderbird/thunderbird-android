@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="folder_message_list_group_background">#cccccc</color>
-	<color name="folder_message_list_child_background">#eeeeee</color>
-    <color name="folder_message_list_child_footer_background">#ffffff</color>
+	<color name="folder_message_list_child_background">#ffffff</color>
+    <color name="folder_message_list_child_footer_background">#eeeeee</color>
 </resources>
