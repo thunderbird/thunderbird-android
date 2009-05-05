@@ -152,7 +152,7 @@ public class Account implements Serializable {
         // End of 0.103 repair
         
         mAutoExpandFolderName = preferences.getPreferences().getString(mUuid  + ".autoExpandFolderName", 
-          "Inbox");
+          "INBOX");
         
         mAccountNumber = preferences.getPreferences().getInt(mUuid + ".accountNumber", 0);
         mVibrate = preferences.getPreferences().getBoolean(mUuid + ".vibrate", false);
