@@ -1089,7 +1089,6 @@ public class LocalStore extends Store implements Serializable {
 
 
                 sbHtml = markupContent(sbText,sbHtml);
-                sbText = new StringBuffer();
 
 
 
@@ -1164,7 +1163,6 @@ public class LocalStore extends Store implements Serializable {
             }
 
             sbHtml = markupContent(sbText,sbHtml);
-            sbText = new StringBuffer();
 
 
             try {
