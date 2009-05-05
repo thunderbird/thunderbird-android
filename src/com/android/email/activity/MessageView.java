@@ -43,7 +43,6 @@ import android.view.View.OnClickListener;
 import android.webkit.CacheManager;
 import android.webkit.UrlInterceptHandler;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.webkit.CacheManager.CacheResult;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -381,7 +380,7 @@ public class MessageView extends Activity
         mSubjectView = (TextView)findViewById(R.id.subject);
         mDateView = (TextView)findViewById(R.id.date);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
-        mMessageContentView.setWebViewClient(new MessageWebViewClient());
+        //mMessageContentView.setWebViewClient(new MessageWebViewClient());
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
@@ -1203,20 +1202,4 @@ public class MessageView extends Activity
         }
     }
 
-    class MessageWebViewClient extends WebViewClient
-    {
-
-        public boolean shouldOverrideKeyEvent (WebView view, KeyEvent event) {
-            return true;
-        }
-
-        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl)
-        {
-            Log.e(Email.LOG_TAG,  "WebView: url '"+failingUrl+"' error "+description);
-            String error = String.format(getString(R.string.message_web_view_error).toString(), description);
-            Toast.makeText(MessageView.this, error, Toast.LENGTH_LONG).show();
-        }
-        
-    }
-    
 }
