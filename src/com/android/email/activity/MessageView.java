@@ -1205,6 +1205,11 @@ public class MessageView extends Activity
 
     class MessageWebViewClient extends WebViewClient
     {
+
+        public boolean shouldOverrideKeyEvent (WebView view, KeyEvent event) {
+            return true;
+        }
+
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl)
         {
             Log.e(Email.LOG_TAG,  "WebView: url '"+failingUrl+"' error "+description);
