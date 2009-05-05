@@ -755,6 +755,7 @@ public class FolderMessageList extends ExpandableListActivity
                     case KeyEvent.KEYCODE_G: { onToggleFlag(message); return true; }
                     case KeyEvent.KEYCODE_M: { onMove(message); return true; }
                     case KeyEvent.KEYCODE_Y: { onCopy(message); return true; }
+                    case KeyEvent.KEYCODE_Z: { onToggleRead(message); return true; }
                 }
               }
           }
@@ -1182,7 +1183,8 @@ public class FolderMessageList extends ExpandableListActivity
 		MessagingController.getInstance(getApplication()).markMessageRead(mAccount,
 				holder.message.getFolder().getName(), holder.uid, !holder.read);
         holder.read = !holder.read;
-        mHandler.dataChanged();
+        //The handler already notified as we have a listener registered with the messaging controller
+        //mHandler.dataChanged();
 
       //  onRefresh(false);
     }
