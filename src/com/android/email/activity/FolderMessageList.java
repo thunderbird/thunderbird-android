@@ -2221,6 +2221,16 @@ public class FolderMessageList extends ExpandableListActivity
                   // switch to the flagged color. -danapple
                   holder.subject.setTextColor(0xff000000);
                 }
+                
+                if (! message.partially_downloaded && !message.downloaded ) {
+                    holder.chip.getBackground().setAlpha(127);
+                    holder.subject.setTextColor(0x60000000);
+                    holder.date.setTextColor(0x60000000);
+                    holder.from.setTextColor(0x60000000);
+                } else {
+                    holder.date.setTextColor(0xff000000);
+                    holder.from.setTextColor(0xff000000);
+                }
 
                 holder.subject.setText(message.subject);
                 
@@ -2329,6 +2339,10 @@ public class FolderMessageList extends ExpandableListActivity
             
             public boolean flagged;
 
+            public boolean downloaded;
+
+            public boolean partially_downloaded;
+
             public Message message;
             
             public FolderInfoHolder folder;
@@ -2357,7 +2371,9 @@ public class FolderMessageList extends ExpandableListActivity
                     this.read = message.isSet(Flag.SEEN);
                     this.answered = message.isSet(Flag.ANSWERED);
                     this.flagged = message.isSet(Flag.FLAGGED);
-                    
+                    this.downloaded = message.isSet(Flag.X_DOWNLOADED_FULL);
+                    this.partially_downloaded = message.isSet(Flag.X_DOWNLOADED_PARTIAL);
+
                     Address[] addrs = message.getFrom();
                       if (addrs.length > 0 && mAccount.isAnIdentity(addrs[0]))
                       {
