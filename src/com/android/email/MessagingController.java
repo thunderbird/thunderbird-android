@@ -753,14 +753,11 @@ public class MessagingController implements Runnable {
                 for (Message thisMess : remoteMessageArray)
                 {
                 	remoteMessages.add(thisMess);
+			remoteUidMap.put(thisMess.getUid(), thisMess);
                 }
              		if (Config.LOGV) {
-            			Log.v(Email.LOG_TAG, "SYNC: Got messages for folder " + folder);
+            			Log.v(Email.LOG_TAG, "SYNC: Got " + remoteUidMap.size() + " messages for folder " + folder);
             		}
-
-                for (Message message : remoteMessages) {
-                    remoteUidMap.put(message.getUid(), message);
-                }
 
                 /*
                  * Get a list of the messages that are in the remote list but not on the
@@ -923,6 +920,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     !localMessage.isSet(Flag.DELETED))
                 {
                     localMessage.setFlag(Flag.X_DESTROYED, true);
+		    //		    Log.d(Email.LOG_TAG, "Destroying message " + localMessage.getUid() + " which isn't in the most recent group on server");
                     for (MessagingListener l : getListeners()) {
                         l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
                     }

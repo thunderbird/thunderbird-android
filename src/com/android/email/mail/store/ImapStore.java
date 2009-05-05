@@ -384,10 +384,13 @@ public class ImapStore extends Store {
             			mPathDelimeter = nameResponses.get(0).getString(2);
             		    }
             		}
+                
+			//                executeSimpleCommand("CLOSE");
+                
             		String command = String.format("SELECT \"%s\"",
                     encodeFolderName(getPrefixedName()));
 
-            		mMessageCount = -1;
+            		//mMessageCount = -1;
 
             		List<ImapResponse> responses = executeSimpleCommand(command);
             
@@ -429,6 +432,11 @@ public class ImapStore extends Store {
         }
 
         public void close(boolean expunge) throws MessagingException {
+	    if (mMessageCount != -1)
+	    {
+	//	close();
+		mMessageCount = -1;
+	    }
             if (!isOpen()) {
                 return;
             }
@@ -436,7 +444,6 @@ public class ImapStore extends Store {
             {
             	expunge();
             }
-            mMessageCount = -1;
             synchronized (this) {
                 releaseConnection(mConnection);
                 mConnection = null;
@@ -584,6 +591,7 @@ public class ImapStore extends Store {
                     List<ImapResponse> responses =
                             executeSimpleCommand(String.format("UID SEARCH UID %S", uid));
                     for (ImapResponse response : responses) {
+			//			Log.d(Email.LOG_TAG, "Got search response: " + response.get(0) + ", size " + response.size());
                         if (response.mTag == null && response.get(0).equals("SEARCH")) {
                             for (int i = 1, count = response.size(); i < count; i++) {
                                 if (uid.equals(response.get(i))) {
@@ -614,15 +622,24 @@ public class ImapStore extends Store {
             checkOpen();
             ArrayList<Message> messages = new ArrayList<Message>();
             try {
+		boolean gotSearchValues = false;
                 ArrayList<Integer> uids = new ArrayList<Integer>();
                 List<ImapResponse> responses = executeSimpleCommand(String.format("UID SEARCH %d:%d NOT DELETED", start, end));
                 for (ImapResponse response : responses) {
+		    //		    Log.d(Email.LOG_TAG, "Got search response: " + response.get(0) + ", size " + response.size());
                     if (response.get(0).equals("SEARCH")) {
+			gotSearchValues = true;
                         for (int i = 1, count = response.size(); i < count; i++) {
+			    //			    Log.d(Email.LOG_TAG, "Got search response UID: " + response.getString(i));
+
                             uids.add(Integer.parseInt(response.getString(i)));
                         }
                     }
                 }
+		if (gotSearchValues == false)
+		{
+		    throw new MessagingException("Did not get proper search response");
+		}
                 // Sort the uids in numerically ascending order
                 Collections.sort(uids);
                 for (int i = 0, count = uids.size(); i < count; i++) {
@@ -868,7 +885,7 @@ public class ImapStore extends Store {
         private void handleUntaggedResponse(ImapResponse response) {
             if (response.mTag == null && response.size() > 1 && response.get(1).equals("EXISTS")) {
                 mMessageCount = response.getNumber(0);
-                Log.i(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
+		//Log.i(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
             }
         }
 
@@ -1135,6 +1152,15 @@ public class ImapStore extends Store {
                 throw ioExceptionHandler(mConnection, ioe);
             }
             return null;
+        }
+
+        private void close() throws MessagingException {
+            checkOpen();
+            try {
+                executeSimpleCommand("CLOSE");
+            } catch (IOException ioe) {
+                
+            }
         }
 
         private String combineFlags(Flag[] flags)
@@ -1467,9 +1493,13 @@ public class ImapStore extends Store {
                 throws IOException, ImapException, MessagingException {
         	if (Config.LOGV)
         	{
-        		Log.v(Email.LOG_TAG, "Sending IMAP command " + command);
+        		Log.v(Email.LOG_TAG, "Sending IMAP command " + command + " on connection " + this.hashCode());
         	}
             String tag = sendCommand(command, sensitive);
+	    if (Config.LOGV)
+            {
+		Log.v(Email.LOG_TAG, "Sent IMAP command " + command + " with tag " + tag);
+	    }
             ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
             ImapResponse response;
             do {
@@ -1478,6 +1508,13 @@ public class ImapStore extends Store {
                 {
                 	Log.v(Email.LOG_TAG, "Got IMAP response " + response);
                 }
+		if (response.mTag != null && response.mTag.equals(tag) == false)
+		{
+		    Log.w(Email.LOG_TAG, "Got tag response from previous command " + response);
+		    responses.clear();
+		    response.mTag = null;
+		    continue;
+		}
                 responses.add(response);
             } while (response.mTag == null);
             if (response.size() < 1 || !response.get(0).equals("OK")) {
