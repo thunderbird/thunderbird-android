@@ -752,7 +752,7 @@ public class ImapStore extends Store {
                 do {
                     response = mConnection.readResponse();
                     handleUntaggedResponse(response);
-
+//Log.v(Email.LOG_TAG, "response for fetch: " + response);
                     if (response.mTag == null && response.get(1).equals("FETCH")) {
                         ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                         String uid = fetchList.getKeyedString("UID");
@@ -884,10 +884,18 @@ public class ImapStore extends Store {
          * @param response
          */
         private void handleUntaggedResponse(ImapResponse response) {
-            if (response.mTag == null && response.size() > 1 && response.get(1).equals("EXISTS")) {
+          if (response.mTag == null && response.size() > 1)
+          {
+            if (response.get(1).equals("EXISTS")) {
                 mMessageCount = response.getNumber(0);
-		//Log.i(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
+                //Log.i(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
             }
+            else if (response.get(1).equals("EXPUNGE") && mMessageCount > 0) {
+              mMessageCount--;
+           //   Log.i(Email.LOG_TAG, "Got untagged EXPUNGE with value " + mMessageCount);
+            }
+          }
+          //Log.i(Email.LOG_TAG, "mMessageCount = " + mMessageCount);
         }
 
         private void parseBodyStructure(ImapList bs, Part part, String id)
@@ -1513,7 +1521,8 @@ public class ImapStore extends Store {
 		    while (iter.hasNext())
 		    {
 		      ImapResponse delResponse = iter.next();
-		      if (delResponse.mTag != null || delResponse.size() < 2 || "EXISTS".equals(delResponse.get(1)) == false)
+		      if (delResponse.mTag != null || delResponse.size() < 2 
+		          || ("EXISTS".equals(delResponse.get(1)) == false && "EXPUNGE".equals(delResponse.get(1)) == false))
 		      {
 		        iter.remove();
 		      }
