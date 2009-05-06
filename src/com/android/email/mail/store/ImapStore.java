@@ -1496,46 +1496,46 @@ public class ImapStore extends Store {
         }
 
         public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive)
-                throws IOException, ImapException, MessagingException {
-        	if (Config.LOGV)
-        	{
-        		Log.v(Email.LOG_TAG, "Sending IMAP command " + command + " on connection " + this.hashCode());
-        	}
-            String tag = sendCommand(command, sensitive);
-	    if (Config.LOGV)
+        throws IOException, ImapException, MessagingException {
+          if (Config.LOGV)
+          {
+            Log.v(Email.LOG_TAG, "Sending IMAP command " + command + " on connection " + this.hashCode());
+          }
+          String tag = sendCommand(command, sensitive);
+          if (Config.LOGV)
+          {
+            Log.v(Email.LOG_TAG, "Sent IMAP command " + command + " with tag " + tag);
+          }
+          ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
+          ImapResponse response;
+          do {
+            response = mParser.readResponse();
+            if (Config.LOGV)
             {
-		Log.v(Email.LOG_TAG, "Sent IMAP command " + command + " with tag " + tag);
-	    }
-            ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
-            ImapResponse response;
-            do {
-                response = mParser.readResponse();
-                if (Config.LOGV)
-                {
-                	Log.v(Email.LOG_TAG, "Got IMAP response " + response);
-                }
-		if (response.mTag != null && response.mTag.equals(tag) == false)
-		{
-		    Log.w(Email.LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response);
-		    Iterator<ImapResponse> iter = responses.iterator();
-		    while (iter.hasNext())
-		    {
-		      ImapResponse delResponse = iter.next();
-		      if (delResponse.mTag != null || delResponse.size() < 2 
-		          || ("EXISTS".equals(delResponse.get(1)) == false && "EXPUNGE".equals(delResponse.get(1)) == false))
-		      {
-		        iter.remove();
-		      }
-		    }
-		    response.mTag = null;
-		    continue;
-		}
-                responses.add(response);
-            } while (response.mTag == null);
-            if (response.size() < 1 || !response.get(0).equals("OK")) {
-                throw new ImapException("Command: " + command + "; response: " + response.toString(), response.getAlertText());
+              Log.v(Email.LOG_TAG, "Got IMAP response " + response);
             }
-            return responses;
+            if (response.mTag != null && response.mTag.equals(tag) == false)
+            {
+              Log.w(Email.LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response);
+              Iterator<ImapResponse> iter = responses.iterator();
+              while (iter.hasNext())
+              {
+                ImapResponse delResponse = iter.next();
+                if (delResponse.mTag != null || delResponse.size() < 2 
+                    || ("EXISTS".equals(delResponse.get(1)) == false && "EXPUNGE".equals(delResponse.get(1)) == false))
+                {
+                  iter.remove();
+                }
+              }
+              response.mTag = null;
+              continue;
+            }
+            responses.add(response);
+          } while (response.mTag == null);
+          if (response.size() < 1 || !response.get(0).equals("OK")) {
+            throw new ImapException("Command: " + command + "; response: " + response.toString(), response.getAlertText());
+          }
+          return responses;
         }
     }
 
