@@ -56,6 +56,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import android.util.Log;
 
 import com.android.email.Email;
+import com.android.email.Utility;
 import com.android.email.mail.CertificateValidationException;
 import com.android.email.mail.FetchProfile;
 import com.android.email.mail.Flag;
@@ -95,6 +96,7 @@ public class WebDavStore extends Store {
     private String mMailboxPath; /* Stores the user specified path to the mailbox */
     private URI mUri;         /* Stores the Uniform Resource Indicator with all connection info */
     private String mRedirectUrl;
+    private String mAuthString;
 
     private CookieStore mAuthCookies; /* Stores cookies from authentication */
     private boolean mAuthenticated = false; /* Stores authentication state */
@@ -198,6 +200,7 @@ public class WebDavStore extends Store {
             }
         }
         mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+        mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
     }
 
 
@@ -410,7 +413,8 @@ public class WebDavStore extends Store {
      */
     public void authenticate() throws MessagingException {
         try {
-            this.mAuthCookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
+            doFBA();
+            //this.mAuthCookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
         } catch (IOException ioe) {
             Log.e(Email.LOG_TAG, "Error during authentication: " + ioe + "\nStack: " + processException(ioe));
             this.mAuthCookies = null;
@@ -472,9 +476,13 @@ public class WebDavStore extends Store {
      * Returns the CookieStore object for later use or null
      * @throws MessagingException 
      */
-    public CookieStore doAuthentication(String username, String password,
-                                        String url) throws IOException, MessagingException {
+    public void doFBA() throws IOException, MessagingException {
+        /*    public CookieStore doAuthentication(String username, String password,
+              String url) throws IOException, MessagingException {*/
         String authPath;
+        String url = this.mUrl;
+        String username = this.mUsername;
+        String password = this.mPassword;
         CookieStore cookies = null;
         String[] urlParts = url.split("/");
         String finalUrl = "";
@@ -498,7 +506,7 @@ public class WebDavStore extends Store {
         }
 
         if (finalUrl.equals("")) {
-            throw new MessagingException("doAuthentication failed, unable to construct URL to post login credentials to.");
+            throw new MessagingException("doFBA failed, unable to construct URL to post login credentials to.");
         }
 
         loginUrl = finalUrl + authPath;
@@ -524,18 +532,10 @@ public class WebDavStore extends Store {
                             mRedirectUrl = ((HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST)).toURI() + request.getRequestLine().getUri();
                         }
                     });
-                HttpResponse response = httpclient.execute(httpget);
-                HttpEntity entity = response.getEntity();
-                int statusCode = response.getStatusLine().getStatusCode();
+                HashMap<String, String> headers = new HashMap<String, String>();
+                InputStream istream = sendRequest(finalUrl, "GET", null, headers, false);
 
-                if (statusCode > 300 ||
-                    statusCode < 200) {
-                    throw new MessagingException("Error during authentication: "+
-                                                 response.getStatusLine().toString()+"\n\n");
-                }
-
-                if (entity != null) {
-                    InputStream istream = entity.getContent();
+                if (istream != null) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
                     String tempText = new String();
                     boolean matched = false;
@@ -551,8 +551,10 @@ public class WebDavStore extends Store {
                                 mRedirectUrl = mRedirectUrl.substring(0, mRedirectUrl.lastIndexOf('?'));
                                 mRedirectUrl = mRedirectUrl.substring(0, mRedirectUrl.lastIndexOf('/'));
                                 loginUrl = mRedirectUrl + "/" + tagParts[1];
+                                this.mAuthPath = "/" + tagParts[1];
                             } else {
                                 loginUrl = finalUrl + tagParts[1];
+                                this.mAuthPath = "/" + tagParts[1];
                             }
                         }
 
@@ -592,33 +594,12 @@ public class WebDavStore extends Store {
 
             try {
                 UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
+                HashMap<String, String> headers = new HashMap<String, String>();
                 String tempUrl = "";
-
-                httppost.setEntity(formEntity);
-
-                /** Perform the actual POST */
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity entity = response.getEntity();
-                int status_code = response.getStatusLine().getStatusCode();
-
-                /** Verify success */
-                if (status_code > 300 ||
-                    status_code < 200) {
-                    throw new MessagingException("Error during authentication: "+
-                                                 response.getStatusLine().toString()+ "\n\n"+
-                                                 getHttpRequestResponse(formEntity, entity));
-                }
-
-                cookies = httpclient.getCookieStore();
-
-                if (cookies == null) {
-                    throw new IOException("Error during authentication: No Cookies");
-                }
+                InputStream istream = sendRequest(loginUrl, "POST", formEntity, headers, false);
 
                 /** Get the URL for the mailbox and set it for the store */
-                if (entity != null) {
-                    InputStream istream = entity.getContent();
-
+                if (istream != null) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 8192);
                     String tempText = "";
 
@@ -646,7 +627,7 @@ public class WebDavStore extends Store {
             throw new CertificateValidationException(e.getMessage(), e);
         }
         
-        return cookies;
+        this.mAuthenticated = true;
     }
 
     public CookieStore getAuthCookies() {
@@ -664,9 +645,11 @@ public class WebDavStore extends Store {
     public DefaultHttpClient getHttpClient() throws MessagingException {
         SchemeRegistry reg;
         Scheme s;
+        boolean needAuth = false;
         
         if (mHttpClient == null) {
             mHttpClient = new DefaultHttpClient();
+            needAuth = true;
         }
 
         reg = mHttpClient.getConnectionManager().getSchemeRegistry();
@@ -681,6 +664,12 @@ public class WebDavStore extends Store {
         }
         reg.register(s);
 
+        if (needAuth) {
+            HashMap<String, String> headers = new HashMap<String, String>();
+            processRequest(this.mUrl, "GET", null, headers, false);
+        }
+
+        /*
         if (needAuth()) {
             if (!checkAuth()) {
                 try {
@@ -708,7 +697,7 @@ public class WebDavStore extends Store {
                 this.mLastAuth = System.currentTimeMillis()/1000;
             }
         }
-
+        */
         return mHttpClient;
     }
 
@@ -755,16 +744,99 @@ public class WebDavStore extends Store {
         return mHttpClient;
     }
 
+    private InputStream sendRequest(String url, String method, StringEntity messageBody, HashMap<String, String> headers, boolean tryAuth)
+                                    throws MessagingException {
+        DefaultHttpClient httpclient;
+        InputStream istream = null;
+
+        if (url == null ||
+            method == null) {
+            return istream;
+        }
+
+        try {
+            httpclient = getHttpClient();
+        } catch (MessagingException me) {
+            Log.e(Email.LOG_TAG, "Generated MessagingException getting HttpClient: " + me);
+            return istream;
+        }
+
+        try {
+            int statusCode = -1;
+            StringEntity messageEntity = null;
+            HttpGeneric httpmethod = new HttpGeneric(url);
+            HttpResponse response;
+            HttpEntity entity;
+
+            if (messageBody != null) {
+                httpmethod.setEntity(messageBody);
+            }
+
+            for (String headerName : headers.keySet()) {
+                httpmethod.setHeader(headerName, headers.get(headerName));
+            }
+
+            if (mAuthString != null && mAuthenticated) {
+                httpmethod.setHeader("Authorization", mAuthString);
+            }
+
+            httpmethod.setMethod(method);
+            response = httpclient.execute(httpmethod);
+            statusCode = response.getStatusLine().getStatusCode();
+
+            entity = response.getEntity();
+
+            if (statusCode == 401) {
+                if (tryAuth) {
+                    mAuthenticated = true;
+                    sendRequest(url, method, messageBody, headers, false);
+                } else {
+                    throw new MessagingException("Invalid username or password for Basic authentication");
+                }
+            } else if (statusCode == 440) {
+                if (tryAuth) {
+                    doFBA();
+                    sendRequest(url, method, messageBody, headers, false);
+                } else {
+                    throw new MessagingException("Authentication failure in sendRequest");
+                }
+            } else if (statusCode < 200 ||
+                       statusCode >= 300) {
+                throw new IOException("Error during request processing: "+
+                                      response.getStatusLine().toString()+ "\n\n"+
+                                      getHttpRequestResponse(messageEntity, entity));
+            } else {
+                if (tryAuth &&
+                    mAuthenticated == false) {
+                    doFBA();
+                    sendRequest(url, method, messageBody, headers, false);
+                }
+            }
+
+            if (entity != null) {
+                istream = entity.getContent();
+            }
+        } catch (UnsupportedEncodingException uee) {
+            Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee + "\nTrace: " + processException(uee));
+        } catch (IOException ioe) {
+            Log.e(Email.LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
+        }
+
+        return istream;
+    }
+
     /**
      * Performs an httprequest to the supplied url using the supplied method.
      * messageBody and headers are optional as not all requests will need them.
      * There are two signatures to support calls that don't require parsing of the response.
      */
-    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers) {
+    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers)
+                                   throws MessagingException {
         return processRequest(url, method, messageBody, headers, true);
     }
 
-    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers, boolean needsParsing) {
+    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers, boolean needsParsing)
+                                   throws MessagingException {
         DataSet dataset = new DataSet();
         DefaultHttpClient httpclient;
 
@@ -781,18 +853,21 @@ public class WebDavStore extends Store {
         }
 
         try {
+            /*
             int statusCode = -1;
+            */
             StringEntity messageEntity = null;
+            /*
             HttpGeneric httpmethod = new HttpGeneric(url);
             HttpResponse response;
             HttpEntity entity;
-
+            */
             if (messageBody != null) {
                 messageEntity = new StringEntity(messageBody);
                 messageEntity.setContentType("text/xml");
-                httpmethod.setEntity(messageEntity);
+                //                httpmethod.setEntity(messageEntity);
             }
-
+            /*
             for (String headerName : headers.keySet()) {
                 httpmethod.setHeader(headerName, headers.get(headerName));
             }
@@ -811,10 +886,12 @@ public class WebDavStore extends Store {
     					getHttpRequestResponse(messageEntity, entity));
             }
 
-            if (entity != null &&
+            if (entity != null &&*/
+            InputStream istream = sendRequest(url, method, messageEntity, headers, true);
+            if (istream != null &&
                 needsParsing) {
                 try {
-                    InputStream istream = entity.getContent();
+                    /*InputStream istream = entity.getContent();*/
                     SAXParserFactory spf = SAXParserFactory.newInstance();
                     SAXParser sp = spf.newSAXParser();
                     XMLReader xr = sp.getXMLReader();
@@ -829,6 +906,8 @@ public class WebDavStore extends Store {
                 } catch (ParserConfigurationException pce) {
                     Log.e(Email.LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: " + processException(pce));
                 }
+
+                istream.close();
             }
         } catch (UnsupportedEncodingException uee) {
             Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee + "\nTrace: " + processException(uee));
@@ -943,9 +1022,13 @@ public class WebDavStore extends Store {
 
             messageBody = getMessageCountXml(isRead);
             headers.put("Brief", "t");
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-            if (dataset != null) {
-                messageCount = dataset.getMessageCount();
+            try {
+                dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+                if (dataset != null) {
+                    messageCount = dataset.getMessageCount();
+                }
+            } catch (MessagingException me) {
+                messageCount = 0;
             }
 
             return messageCount;
@@ -1103,8 +1186,12 @@ public class WebDavStore extends Store {
             messageBody = getMessageUrlsXml(uids);
             headers.put("Brief", "t");
 
-            dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
-            uidToUrl = dataset.getUidToUrl();
+            try {
+                dataset = processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+                uidToUrl = dataset.getUidToUrl();
+            } catch (MessagingException me) {
+                Log.e(Email.LOG_TAG, "MessagingException from processRequest in getMessageUrls(): " + me);
+            }
 
             return uidToUrl;
         }
@@ -1910,9 +1997,11 @@ public class WebDavStore extends Store {
              * not properly encode all characters
              */
             try {
-                end = java.net.URLDecoder.decode(end, "UTF-8");
-                end = java.net.URLEncoder.encode(end, "UTF-8");
-                end = end.replaceAll("\\+", "%20");
+                if (length > 3) {
+                    end = java.net.URLDecoder.decode(end, "UTF-8");
+                    end = java.net.URLEncoder.encode(end, "UTF-8");
+                    end = end.replaceAll("\\+", "%20");
+                }
             } catch (UnsupportedEncodingException uee) {
                 Log.e(Email.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri): " + uee + "\nTrace: " + processException(uee));
             } catch (IllegalArgumentException iae) {
@@ -1928,7 +2017,6 @@ public class WebDavStore extends Store {
             }
 
             url = url + "/" + end;
-
             setURI(URI.create(url));
         }
 
