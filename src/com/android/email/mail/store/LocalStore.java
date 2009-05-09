@@ -63,6 +63,9 @@ import com.android.email.provider.AttachmentProvider;
  * </pre>
  */
 public class LocalStore extends Store implements Serializable {
+  // If you are going to change the DB_VERSION, please also go into Email.java and local for the comment
+  // on LOCAL_UID_PREFIX and follow the instructions there.  If you follow the instructions there,
+  // please delete this comment.
     private static final int DB_VERSION = 24;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
@@ -1011,7 +1014,7 @@ public class LocalStore extends Store implements Serializable {
               Log.d(Email.LOG_TAG, "Updating folder_id to " + lDestFolder.getId() + " for message with UID "
                   + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
   
-              message.setUid("Local" + UUID.randomUUID().toString());          
+              message.setUid(Email.LOCAL_UID_PREFIX + UUID.randomUUID().toString());          
               
               mDb.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[] {
                   lDestFolder.getId(), 
@@ -1051,7 +1054,7 @@ public class LocalStore extends Store implements Serializable {
 
                 String uid = message.getUid();
                 if (uid == null) {
-                    message.setUid("Local" + UUID.randomUUID().toString());
+                    message.setUid(Email.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
                 }
                 else {
                     /*

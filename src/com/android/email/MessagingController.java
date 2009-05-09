@@ -1323,8 +1323,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
         }
 
         Message remoteMessage = null;
-        if (!localMessage.getUid().startsWith("Local")
-                && !localMessage.getUid().contains("-")) {
+        if (!localMessage.getUid().startsWith(Email.LOCAL_UID_PREFIX)) {
             remoteMessage = remoteFolder.getMessage(localMessage.getUid());
         }
 
@@ -1453,8 +1452,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
         }
  
         Message remoteMessage = null;
-        if (!uid.startsWith("Local")
-                && !uid.contains("-")) {
+        if (!uid.startsWith(Email.LOCAL_UID_PREFIX)) {
        // Why bother with this, perhaps just pass the UID to the store to save a roundtrip?  And check for error returns, of course
        // Same applies for deletion
             remoteMessage = remoteSrcFolder.getMessage(uid);      
@@ -1473,6 +1471,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
         {
           Log.d(Email.LOG_TAG, "processingPendingMoveOrCopy doing special case for deleting message");
           remoteMessage.delete(account.getTrashFolderName());
+          remoteSrcFolder.close(true);
           return;
         }
 
@@ -1524,8 +1523,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
             return;
         }
         Message remoteMessage = null;
-        if (!uid.startsWith("Local")
-                && !uid.contains("-")) {
+        if (!uid.startsWith(Email.LOCAL_UID_PREFIX)) {
             remoteMessage = remoteFolder.getMessage(uid);
         }
         if (remoteMessage == null) {
@@ -2245,8 +2243,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
     public boolean moveMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
         final MessagingListener listener)
     {
-      if (!message.getUid().startsWith("Local")
-          && !message.getUid().contains("-")) { 
+      if (!message.getUid().startsWith(Email.LOCAL_UID_PREFIX)) { 
         put("moveMessage", null, new Runnable() {
           public void run() {
             moveOrCopyMessageSynchronous(account, srcFolder, message, destFolder, false, listener);
@@ -2261,8 +2258,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
     }
     
     public boolean isMoveCapable(Message message) {
-      if (!message.getUid().startsWith("Local")
-          && !message.getUid().contains("-")) { 
+      if (!message.getUid().startsWith(Email.LOCAL_UID_PREFIX)) { 
         return true;
       }
       else {
@@ -2304,8 +2300,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
     public boolean copyMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
         final MessagingListener listener)
     {
-      if (!message.getUid().startsWith("Local")
-          && !message.getUid().contains("-")) { 
+      if (!message.getUid().startsWith(Email.LOCAL_UID_PREFIX)) { 
         put("copyMessage", null, new Runnable() {
           public void run() {
             moveOrCopyMessageSynchronous(account, srcFolder, message, destFolder, true, listener);
