@@ -672,12 +672,12 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         return message;
     }
 
-    private String appendSignature(String text) {
+    private String appendSignature (String text) {
         String mSignature;
         mSignature = mAccount.getSignature();
-
-        if (mSignature != null && !mSignature.contentEquals("")) {
-            text += "\n-----\n" + mAccount.getSignature();
+        
+       if (mSignature != null && ! mSignature.contentEquals("")){
+         text += "\n-- \n" + mAccount.getSignature();
         }
 
         return text;
