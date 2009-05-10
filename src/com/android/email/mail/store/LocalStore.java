@@ -25,13 +25,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Config;
 import android.util.Log;
 import android.text.util.Regex;
 import android.text.util.Linkify;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 
 import com.android.email.Email;
 import com.android.email.Preferences;
@@ -56,6 +54,7 @@ import com.android.email.mail.internet.MimeMultipart;
 import com.android.email.mail.internet.MimeUtility;
 import com.android.email.mail.internet.TextBody;
 import com.android.email.provider.AttachmentProvider;
+import java.io.StringReader;
 
 /**
  * <pre>
@@ -1457,29 +1456,53 @@ public class LocalStore extends Store implements Serializable {
             }
         
         public String htmlifyString(String text) {
-             text = text.replaceAll("&", "&amp;");
-             text = text.replaceAll("<", "&lt;");
-             text = text.replaceAll(">", "&gt;");
-             text = text.replaceAll("\r?\n", "<br/>");
-             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
-             StringBuffer sb = new StringBuffer(text.length() + 512);
-             sb.append("<html><body>");
-             while (m.find()) {
-                 int start = m.start();
-                 if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
-                     m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
-                 }
-                 else {
-                     m.appendReplacement(sb, "$0");
-                 }
-             }
-             m.appendTail(sb);
-             sb.append("</body></html>");
-             text = sb.toString();
+            StringReader reader = new StringReader(text);
+            StringBuilder buff = new StringBuilder(text.length() + 512);
+            int c = 0;
+            try {
+                while ((c = reader.read()) != -1) {
+                    switch (c) {
+                        case '&':
+                            buff.append("&amp;");
+                            break;
+                        case '<':
+                            buff.append("&lt;");
+                            break;
+                        case '>':
+                            buff.append("&gt;");
+                            break;
+                        case '\r':
+                            break;
+                        case '\n':
+                            buff.append("<br/>");
+                            break;
+                        default:
+                            buff.append((char)c);
+                    }//switch
+                }
+            } catch (IOException e) {
+                //Should never happen
+                Log.e(Email.LOG_TAG, null, e);
+            }
+            text = buff.toString();
+
+            Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
+            StringBuffer sb = new StringBuffer(text.length() + 512);
+            sb.append("<html><body>");
+            while (m.find()) {
+                int start = m.start();
+                if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
+                    m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
+                } else {
+                    m.appendReplacement(sb, "$0");
+                }
+            }
+            m.appendTail(sb);
+            sb.append("</body></html>");
+            text = sb.toString();
 
             return text;
         }
-
     }
 
     public class LocalMessage extends MimeMessage {
