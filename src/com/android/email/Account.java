@@ -2,7 +2,9 @@
 package com.android.email;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import com.android.email.mail.Address;
@@ -35,9 +37,6 @@ public class Account implements Serializable {
     String mLocalStoreUri;
     String mTransportUri;
     String mDescription;
-    String mName;
-    String mEmail;
-    String mSignature;
     String mAlwaysBcc;
     int mAutomaticCheckIntervalMinutes;
     int mDisplayCount;
@@ -56,6 +55,7 @@ public class Account implements Serializable {
     String mRingtoneUri;
     boolean mNotifySync;
     HideButtons mHideMessageViewButtons;
+    List<Identity> identities;
     
     public enum FolderMode {
     	ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
@@ -83,13 +83,49 @@ public class Account implements Serializable {
         mAccountNumber = -1;
         mNotifyNewMail = true;
         mNotifySync = true;
-        mSignature = "Sent from my Android phone with K-9. Please excuse my brevity.";
         mVibrate = false;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
         mFolderSyncMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mHideMessageViewButtons = HideButtons.NEVER;
         mRingtoneUri = "content://settings/system/notification_sound";
+        
+	identities = new ArrayList<Identity>();
+
+        Identity identity = new Identity();
+        identity.setSignature("Sent from my Android phone with K-9. Please excuse my brevity.");
+        identities.add(identity);
+    }
+    
+    public class Identity implements Serializable
+    {
+      String mName;
+      String mEmail;
+      String mSignature;
+      public String getName()
+      {
+        return mName;
+      }
+      public void setName(String name)
+      {
+        mName = name;
+      }
+      public String getEmail()
+      {
+        return mEmail;
+      }
+      public void setEmail(String email)
+      {
+        mEmail = email;
+      }
+      public String getSignature()
+      {
+        return mSignature;
+      }
+      public void setSignature(String signature)
+      {
+        mSignature = signature;
+      }
     }
 
     Account(Preferences preferences, String uuid) {
@@ -108,9 +144,6 @@ public class Account implements Serializable {
                 + ".transportUri", null));
         mDescription = preferences.getPreferences().getString(mUuid + ".description", null);
         mAlwaysBcc = preferences.getPreferences().getString(mUuid + ".alwaysBcc", mAlwaysBcc);
-        mName = preferences.getPreferences().getString(mUuid + ".name", mName);
-        mEmail = preferences.getPreferences().getString(mUuid + ".email", mEmail);
-        mSignature = preferences.getPreferences().getString(mUuid + ".signature", mSignature);
         mAutomaticCheckIntervalMinutes = preferences.getPreferences().getInt(mUuid
                 + ".automaticCheckIntervalMinutes", -1);
         mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", -1);
@@ -198,8 +231,105 @@ public class Account implements Serializable {
         {
           mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         }
+        
+        identities = loadIdentities(preferences.getPreferences());
 
     }
+    
+    private List<Identity> loadIdentities(SharedPreferences prefs)
+    {
+      List<Identity> newIdentities = new ArrayList<Identity>();
+      int ident = 0;
+      boolean gotOne = false;
+      do
+      {
+        gotOne = false;
+        String name = prefs.getString(mUuid + ".name." + ident, null);
+        String email = prefs.getString(mUuid + ".email." + ident, null);
+        String signature = prefs.getString(mUuid + ".signature." + ident, null);
+        if (email != null)
+        {
+          Identity identity = new Identity();
+          identity.setName(name);
+          identity.setEmail(email);
+          identity.setSignature(signature);
+          newIdentities.add(identity);
+          gotOne = true;
+        } 
+        ident++;
+      } while (gotOne);
+      
+      if (newIdentities.size() == 0)
+      {
+        String name = prefs.getString(mUuid + ".name", null);
+        String email = prefs.getString(mUuid + ".email", null);
+        String signature = prefs.getString(mUuid + ".signature", null);
+        Identity identity = new Identity();
+        identity.setName(name);
+        identity.setEmail(email);
+        identity.setSignature(signature);
+        newIdentities.add(identity);
+      }
+      
+      return newIdentities;
+    }
+    
+    private void deleteIdentities(SharedPreferences prefs, SharedPreferences.Editor editor)
+    {
+      int ident = 0;
+      boolean gotOne = false;
+      do
+      {
+        gotOne = false;
+        String email = prefs.getString(mUuid + ".email." + ident, null);
+        if (email != null)
+        {
+          editor.remove(mUuid + ".name." + ident);
+          editor.remove(mUuid + ".email." + ident);
+          editor.remove(mUuid + ".signature." + ident);
+          gotOne = true;
+        }
+        ident++;
+      } while (gotOne);
+    }
+    
+    private void saveIdentities(SharedPreferences prefs, SharedPreferences.Editor editor)
+    {
+      deleteIdentities(prefs, editor);
+      int ident = 0;
+      
+      for (Identity identity : identities)
+      {
+        editor.putString(mUuid + ".name." + ident, identity.getName());
+        editor.putString(mUuid + ".email." + ident, identity.getEmail());
+        editor.putString(mUuid + ".signature." + ident, identity.getSignature());
+        ident++;
+      }
+    }
+    
+    public List<Identity> getIdentities()
+    {
+      return identities;
+    }
+    
+    public void setIdentities(List<Identity> newIdentities)
+    {
+      identities = newIdentities;
+    }
+    
+//    public void setIdentityAsDefault(int i)
+//    {
+//      if (i == 0)
+//      {
+//        return;
+//      }
+//      if (i < identities.size())
+//      {
+//        Identity oldDefault = identities.get(0);
+//        identities.set(0, identities.get(i));
+//        identities.set(i, oldDefault);
+//      }
+//    }
 
     public String getUuid() {
         return mUuid;
@@ -230,27 +360,27 @@ public class Account implements Serializable {
     }
 
     public String getName() {
-        return mName;
+        return identities.get(0).getName();
     }
 
     public void setName(String name) {
-        this.mName = name;
+        identities.get(0).setName(name);
     }
 
     public String getSignature() {
-        return mSignature;
+        return identities.get(0).getSignature();
     }
 
     public void setSignature(String signature) {
-        this.mSignature = signature;
+        identities.get(0).setSignature(signature);
     }
 
     public String getEmail() {
-        return mEmail;
+        return identities.get(0).getEmail();
     }
 
     public void setEmail(String email) {
-        this.mEmail = email;
+        identities.get(0).setEmail(email);
     }
 
     public String getAlwaysBcc() {
@@ -261,6 +391,14 @@ public class Account implements Serializable {
         this.mAlwaysBcc = alwaysBcc;
     }
 
+    public Identity getIdentity(int i)
+    {
+      if (i < identities.size())
+      {
+        return identities.get(i);
+      }
+      return null;
+    }
     
     public boolean isVibrate() {
         return mVibrate;
@@ -317,6 +455,8 @@ public class Account implements Serializable {
         editor.remove(mUuid + ".folderSyncMode");
         editor.remove(mUuid + ".folderTargetMode");
         editor.remove(mUuid + ".hideButtonsEnum");
+        deleteIdentities(preferences.getPreferences(), editor);
+        
         editor.commit();
     }
 
@@ -358,9 +498,6 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".localStoreUri", mLocalStoreUri);
         editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
         editor.putString(mUuid + ".description", mDescription);
-        editor.putString(mUuid + ".name", mName);
-        editor.putString(mUuid + ".email", mEmail);
-        editor.putString(mUuid + ".signature", mSignature);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
@@ -380,6 +517,8 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
         editor.putString(mUuid + ".folderTargetMode", mFolderTargetMode.name());
+        
+        saveIdentities(preferences.getPreferences(), editor);
        
         editor.commit();
     }
@@ -450,10 +589,16 @@ public class Account implements Serializable {
     	
     }
     
-    // TODO: When there are multiple identities, this method should try all of them
     public boolean isAnIdentity(Address addr)
     {
-      return getEmail().equals(addr.getAddress());
+      for (Identity identity : identities)
+      {
+        if (identity.getEmail().equalsIgnoreCase(addr.getAddress()))
+        {
+          return true;
+        }
+      }
+      return false;
     }
 
     public int getDisplayCount() {

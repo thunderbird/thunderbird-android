@@ -95,6 +95,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
 
     private Account mAccount;
+    private Account.Identity mIdentity;
     private String mFolder;
     private String mSourceMessageUid;
     private Message mSourceMessage;
@@ -450,6 +451,8 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             mSourceMessageUid = (String) intent.getStringExtra(EXTRA_MESSAGE);
         }
         
+        mIdentity = mAccount.getIdentity(0);
+        
         Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
         if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null)
         {
@@ -580,7 +583,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private MimeMessage createMessage() throws MessagingException {
         MimeMessage message = new MimeMessage();
         message.setSentDate(new Date());
-        Address from = new Address(mAccount.getEmail(), mAccount.getName());
+        Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
         message.setFrom(from);
         message.setRecipients(RecipientType.TO, getAddresses(mToView));
         message.setRecipients(RecipientType.CC, getAddresses(mCcView));
@@ -673,11 +676,10 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     }
 
     private String appendSignature (String text) {
-        String mSignature;
-        mSignature = mAccount.getSignature();
+        String mSignature= mIdentity.getSignature();
         
        if (mSignature != null && ! mSignature.contentEquals("")){
-         text += "\n-- \n" + mAccount.getSignature();
+         text += "\n-- \n" + mSignature;
         }
 
         return text;
@@ -976,7 +978,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                 }
                 if (ACTION_REPLY_ALL.equals(action)) {
                     for (Address address : message.getRecipients(RecipientType.TO)) {
-                        if (!address.getAddress().equalsIgnoreCase(mAccount.getEmail())) {
+                        if (!mAccount.isAnIdentity(address)) {
                             addAddress(mToView, address);
                         }
                     }
