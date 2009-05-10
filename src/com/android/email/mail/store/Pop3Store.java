@@ -666,6 +666,9 @@ public class Pop3Store extends Store {
             if (response != null)  {
                 try {
                     message.parse(new Pop3ResponseInputStream(mIn));
+                    if (lines == -1 || !mCapabilities.top) {
+                        message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                    }
                 }
                 catch (MessagingException me) {
                     /*
