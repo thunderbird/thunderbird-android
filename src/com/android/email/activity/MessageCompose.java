@@ -597,7 +597,10 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
          */
 
         String text = mMessageContentView.getText().toString();
-
+        if (!this.mSourceMessageProcessed) {
+            text = appendSignature(text);
+        }
+        
         if (mQuotedTextBar.getVisibility() == View.VISIBLE) {
             String action = getIntent().getAction();
             String quotedText = null;
@@ -627,10 +630,6 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     text += quotedText;
                 }
             }
-        }
-
-        if (!mSourceMessageProcessed) {
-            text = appendSignature(text);
         }
 
         TextBody body = new TextBody(text);
@@ -673,12 +672,12 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         return message;
     }
 
-    private String appendSignature (String text) {
+    private String appendSignature(String text) {
         String mSignature;
         mSignature = mAccount.getSignature();
-        
-       if (mSignature != null && ! mSignature.contentEquals("")){
-         text += "\n-- \n" + mAccount.getSignature();
+
+        if (mSignature != null && !mSignature.contentEquals("")) {
+            text += "\n-----\n" + mAccount.getSignature();
         }
 
         return text;
