@@ -1751,6 +1751,20 @@ s             * critical data as fast as possible, and then we'll fill in the de
       setMessageFlag(account, folder, uid, Flag.SEEN, seen);
     }
     
+    /**
+     * Mark the message with the given account, folder and uid either Seen or not Seen.
+     * @param account
+     * @param folder
+     * @param uid
+     * @param seen
+     */
+    public void markMessageRead(
+            final Account account,
+            final Folder folder,
+            final Message message,
+            final boolean seen) {
+      setMessageFlag(account, folder, message, Flag.SEEN, seen);
+    }
     
     public void setMessageFlag(
         final Account account,
@@ -1766,28 +1780,52 @@ s             * critical data as fast as possible, and then we'll fill in the de
             localFolder.open(OpenMode.READ_WRITE);
 
             Message message = localFolder.getMessage(uid);
-            message.setFlag(flag, newState);
+
+            setMessageFlag(account, localFolder, message, flag, newState);
+
+            localFolder.close(false);
+        }
+        catch (MessagingException me) {
+          addErrorMessage(account, me);
+
+            throw new RuntimeException(me);
+        }
+    }
+
+    public void setMessageFlag(
+        final Account account,
+        final Folder folder,
+        final Message message,
+        final Flag flag,
+        final boolean newState) {
+      // TODO: put this into the background, but right now that causes odd behavior
+      // because the FolderMessageList doesn't have its own cache of the flag states
+        try {
+            String uid = message.getUid();
+            String folderName = folder.getName();
             
+            message.setFlag(flag, newState);
+
             // Allows for re-allowing sending of messages that could not be sent
-            if (flag == Flag.FLAGGED && newState == false 
+            if (flag == Flag.FLAGGED && newState == false
                 && uid != null
-                && account.getOutboxFolderName().equals(folder))
+                && account.getOutboxFolderName().equals(folderName))
             {
               sendCount.remove(uid);
             }
-            
+
             for (MessagingListener l : getListeners()) {
-              l.folderStatusChanged(account, folder);
+              l.folderStatusChanged(account, folderName);
           }
-            
-            if (account.getErrorFolderName().equals(folder))
+
+            if (account.getErrorFolderName().equals(folderName))
         		{
         			return;
         		}
-            
+
             PendingCommand command = new PendingCommand();
             command.command = PENDING_COMMAND_SET_FLAG;
-            command.arguments = new String[] { folder, uid, Boolean.toString(newState), flag.toString() };
+            command.arguments = new String[] { folderName, uid, Boolean.toString(newState), flag.toString() };
             queuePendingCommand(account, command);
             processPendingCommands(account);
         }
@@ -1796,8 +1834,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
             throw new RuntimeException(me);
         }
-    }
-    
+    }//setMesssageFlag
+
     public void clearAllPending(final Account account) 
     {
     	try
@@ -1817,17 +1855,14 @@ s             * critical data as fast as possible, and then we'll fill in the de
             final String uid, MessagingListener listener) {
         put("loadMessageForViewRemote", listener, new Runnable() {
             public void run() {
+                Folder remoteFolder = null;
+                LocalFolder localFolder = null;
                 try {
                     Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-                    LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
+                    localFolder = (LocalFolder) localStore.getFolder(folder);
                     localFolder.open(OpenMode.READ_WRITE);
 
                     Message message = localFolder.getMessage(uid);
-
-                    // This is a view message request, so mark it read
-                    if (!message.isSet(Flag.SEEN)) {
-                        markMessageRead(account, folder, uid, true);
-                    }
 
                     if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
                         /*
@@ -1838,40 +1873,36 @@ s             * critical data as fast as possible, and then we'll fill in the de
                         fp.add(FetchProfile.Item.ENVELOPE);
                         fp.add(FetchProfile.Item.BODY);
                         localFolder.fetch(new Message[] { message }, fp, null);
+                    }
+                    else {
+                        /*
+                         * At this point the message is not available, so we need to download it
+                         * fully if possible.
+                         */
 
-                        for (MessagingListener l : getListeners()) {
-                            l.loadMessageForViewBodyAvailable(account, folder, uid, message);
-                        }
-                        for (MessagingListener l : getListeners()) {
-                            l.loadMessageForViewFinished(account, folder, uid, message);
-                        }
-                        localFolder.close(false);
-                        return;
+                        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+                        remoteFolder = remoteStore.getFolder(folder);
+                        remoteFolder.open(OpenMode.READ_WRITE);
+
+                        // Get the remote message and fully download it
+                        Message remoteMessage = remoteFolder.getMessage(uid);
+                        FetchProfile fp = new FetchProfile();
+                        fp.add(FetchProfile.Item.BODY);
+                        remoteFolder.fetch(new Message[] { remoteMessage }, fp, null);
+
+                        // Store the message locally and load the stored message into memory
+                        localFolder.appendMessages(new Message[] { remoteMessage });
+                        message = localFolder.getMessage(uid);
+                        localFolder.fetch(new Message[] { message }, fp, null);
+
+                        // Mark that this message is now fully synched
+                        message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                     }
 
-                    /*
-                     * At this point the message is not available, so we need to download it
-                     * fully if possible.
-                     */
-
-                    Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
-                    Folder remoteFolder = remoteStore.getFolder(folder);
-                    remoteFolder.open(OpenMode.READ_WRITE);
-
-                    // Get the remote message and fully download it
-                    Message remoteMessage = remoteFolder.getMessage(uid);
-                    FetchProfile fp = new FetchProfile();
-                    fp.add(FetchProfile.Item.BODY);
-                    remoteFolder.fetch(new Message[] { remoteMessage }, fp, null);
-
-                    // Store the message locally and load the stored message into memory
-                    localFolder.appendMessages(new Message[] { remoteMessage });
-                    message = localFolder.getMessage(uid);
-                    localFolder.fetch(new Message[] { message }, fp, null);
-
- 
-                    // Mark that this message is now fully synched
-                    message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                    // This is a view message request, so mark it read
+                    if (!message.isSet(Flag.SEEN)) {
+                        markMessageRead(account, localFolder, message, true);
+                    }
 
                     for (MessagingListener l : getListeners()) {
                         l.loadMessageForViewBodyAvailable(account, folder, uid, message);
@@ -1879,8 +1910,6 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     for (MessagingListener l : getListeners()) {
                         l.loadMessageForViewFinished(account, folder, uid, message);
                     }
-                    remoteFolder.close(false);
-                    localFolder.close(false);
                 }
                 catch (Exception e) {
                     for (MessagingListener l : getListeners()) {
@@ -1889,7 +1918,26 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     addErrorMessage(account, e);
 
                 }
-            }
+                finally {
+                    if (remoteFolder!=null) {
+                        try {
+                            remoteFolder.close(false);
+                        }
+                        catch (MessagingException e) {
+                            Log.w(Email.LOG_TAG, null, e);
+                        }
+                    }
+
+                    if (localFolder!=null) {
+                        try {
+                            localFolder.close(false);
+                        }
+                        catch (MessagingException e) {
+                            Log.w(Email.LOG_TAG, null, e);
+                        }
+                    }
+                }//finally
+            }//run
         });
     }
 
@@ -1904,11 +1952,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
             localFolder.open(OpenMode.READ_WRITE);
 
             Message message = localFolder.getMessage(uid);
-            
-            if (!message.isSet(Flag.SEEN)) {
-              markMessageRead(account, folder, uid, true);
-            }
-            
+                        
             for (MessagingListener l : getListeners()) {
                 l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
             }
@@ -1925,6 +1969,10 @@ s             * critical data as fast as possible, and then we'll fill in the de
             localFolder.fetch(new Message[] {
                 message
             }, fp, null);
+
+            if (!message.isSet(Flag.SEEN)) {
+              markMessageRead(account, localFolder, message, true);
+            }
 
             for (MessagingListener l : getListeners()) {
                 l.loadMessageForViewBodyAvailable(account, folder, uid, message);
@@ -1951,6 +1999,99 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
         }
     }
+
+    public void loadMessageForViewSynchronous(final Account account, final String folder, final String uid,
+        MessagingListener listener) {
+
+        for (MessagingListener l : getListeners()) {
+            l.loadMessageForViewStarted(account, folder, uid);
+        }
+
+        LocalFolder localFolder = null;
+        Folder remoteFolder = null;
+        try {
+            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            localFolder = (LocalFolder) localStore.getFolder(folder);
+            localFolder.open(OpenMode.READ_WRITE);
+
+            Message message = localFolder.getMessage(uid);
+
+            for (MessagingListener l : getListeners()) {
+                l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
+            }
+
+            if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+                remoteFolder = remoteStore.getFolder(folder);
+                remoteFolder.open(OpenMode.READ_WRITE);
+
+                // Get the remote message and fully download it
+                Message remoteMessage = remoteFolder.getMessage(uid);
+                FetchProfile fp = new FetchProfile();
+                fp.add(FetchProfile.Item.BODY);
+                remoteFolder.fetch(new Message[]{remoteMessage}, fp, null);
+
+                // Store the message locally and load the stored message into memory
+                localFolder.appendMessages(new Message[]{remoteMessage});
+                message = localFolder.getMessage(uid);
+                localFolder.fetch(new Message[]{message}, fp, null);
+
+                // Mark that this message is now fully synched
+                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+            }
+            else {
+                FetchProfile fp = new FetchProfile();
+                fp.add(FetchProfile.Item.ENVELOPE);
+                fp.add(FetchProfile.Item.BODY);
+                localFolder.fetch(new Message[]{
+                        message
+                    }, fp, null);
+            }
+
+            if (!message.isSet(Flag.SEEN)) {
+                markMessageRead(account, localFolder, message, true);
+            }
+
+            for (MessagingListener l : getListeners()) {
+                l.loadMessageForViewBodyAvailable(account, folder, uid, message);
+            }
+            if (listener != null) {
+                listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
+            }
+
+            for (MessagingListener l : getListeners()) {
+                l.loadMessageForViewFinished(account, folder, uid, message);
+            }
+            if (listener != null) {
+                listener.loadMessageForViewFinished(account, folder, uid, message);
+            }
+        }
+        catch (Exception e) {
+            for (MessagingListener l : getListeners()) {
+                l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+            }
+            addErrorMessage(account, e);
+        }
+        finally {
+            if (localFolder!=null) {
+                try {
+                    localFolder.close(false);
+                }
+                catch (MessagingException e) {
+                    Log.w(Email.LOG_TAG, null, e);
+                }
+            }
+
+            if (remoteFolder!=null) {
+                try {
+                    remoteFolder.close(false);
+                }
+                catch (MessagingException e) {
+                    Log.w(Email.LOG_TAG, null, e);
+                }
+            }
+        }
+    }//loadMessageForViewSynchronous
 
     /**
      * Attempts to load the attachment specified by part from the given account and message.
