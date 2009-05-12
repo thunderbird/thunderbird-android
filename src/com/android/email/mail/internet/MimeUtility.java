@@ -138,46 +138,51 @@ public class MimeUtility {
 
         try {
             if (part != null && part.getBody() != null) {
-                InputStream in = part.getBody().getInputStream();
-                String mimeType = part.getMimeType();
-                if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*")) {
-                    /*
-                     * Now we read the part into a buffer for further processing. Because
-                     * the stream is now wrapped we'll remove any transfer encoding at this point.
-                     */
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    IOUtils.copy(in, out);
+                Body body = part.getBody();
+                if (body instanceof TextBody) {
+                    return ((TextBody)body).getText();
+                }
+                else {
+                    InputStream in = part.getBody().getInputStream();
+                    String mimeType = part.getMimeType();
+                    if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*")) {
+                        /*
+                         * Now we read the part into a buffer for further processing. Because
+                         * the stream is now wrapped we'll remove any transfer encoding at this point.
+                         */
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        IOUtils.copy(in, out);
 
-                    byte[] bytes = out.toByteArray();
-                    in.close();
-                    out.close();
+                        byte[] bytes = out.toByteArray();
+                        in.close();
+                        out.close();
 
-                    String charset = getHeaderParameter(part.getContentType(), "charset");
-                    /*
-                     * We've got a text part, so let's see if it needs to be processed further.
-                     */
-                    if (charset != null) {
+                        String charset = getHeaderParameter(part.getContentType(), "charset");
                         /*
-                         * See if there is conversion from the MIME charset to the Java one.
+                         * We've got a text part, so let's see if it needs to be processed further.
                          */
-                        mCharsetConverter = Charset.forName(charset);
-                        charset = mCharsetConverter.name();
-                    }
-                    if (charset != null) {
-                        /*
-                         * We've got a charset encoding, so decode using it.
-                         */
-                        return new String(bytes, 0, bytes.length, charset);
-                    }
-                    else {
-                        /*
-                         * No encoding, so use us-ascii, which is the standard.
-                         */
-                        return new String(bytes, 0, bytes.length, "ASCII");
+                        if (charset != null) {
+                            /*
+                             * See if there is conversion from the MIME charset to the Java one.
+                             */
+                            mCharsetConverter = Charset.forName(charset);
+                            charset = mCharsetConverter.name();
+                        }
+                        if (charset != null) {
+                            /*
+                             * We've got a charset encoding, so decode using it.
+                             */
+                            return new String(bytes, 0, bytes.length, charset);
+                        }
+                        else {
+                            /*
+                             * No encoding, so use us-ascii, which is the standard.
+                             */
+                            return new String(bytes, 0, bytes.length, "ASCII");
+                        }
                     }
                 }
-            }
-
+            }//if text body
         }
         catch (Exception e) {
             /*
