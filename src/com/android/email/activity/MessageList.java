@@ -516,7 +516,7 @@ public class MessageList extends ListActivity {
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
             MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(itemPosition);
-            onOpenMessage(mCurrentFolder, message);
+            onOpenMessage( message);
 
             }
 
@@ -673,7 +673,7 @@ public class MessageList extends ListActivity {
         .start();
     }
 
-    private void onOpenMessage(FolderInfoHolder folder, MessageInfoHolder message) {
+    private void onOpenMessage( MessageInfoHolder message) {
         /*
         * We set read=true here for UI performance reasons. The actual value will
         * get picked up on the refresh when the Activity is resumed but that may
@@ -687,16 +687,16 @@ public class MessageList extends ListActivity {
             mHandler.dataChanged();
         }
 
-        if (folder.name.equals(mAccount.getDraftsFolderName())) {
+        if (message.folder.name.equals(mAccount.getDraftsFolderName())) {
             MessageCompose.actionEditDraft(this, mAccount, message.message);
         } else {
             ArrayList<String> folderUids = new ArrayList<String>();
 
-            for (MessageInfoHolder holder : folder.messages) {
+            for (MessageInfoHolder holder : mAdapter.messages) {
                 folderUids.add(holder.uid);
             }
 
-            MessageView.actionView(this, mAccount, folder.name, message.uid, folderUids);
+            MessageView.actionView(this, mAccount, message.folder.name, message.uid, folderUids);
         }
     }
 
@@ -1108,7 +1108,7 @@ public class MessageList extends ListActivity {
 
             switch (item.getItemId()) {
             case R.id.open:
-                onOpenMessage(mCurrentFolder, holder);
+                onOpenMessage(holder);
 
                 break;
 
