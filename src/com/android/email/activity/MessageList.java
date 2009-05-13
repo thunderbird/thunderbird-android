@@ -279,9 +279,7 @@ public class MessageList extends ListActivity {
                     message.dirty = true;
                 }
 
-                Log.e(Email.LOG_TAG, "Called to synchronize messages! " + messages + folder);
                 for (Message message : messages) {
-                    Log.e(Email.LOG_TAG, "Adding or updating message "+message);
                     mAdapter.addOrUpdateMessage(folder, message, true, true);
                 }
                 mAdapter.removeDirtyMessages();                
@@ -508,7 +506,6 @@ public class MessageList extends ListActivity {
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-                    Log.i(Email.LOG_TAG,"got a click for "+itemPosition+ " our list size is " +mAdapter.getCount());
                     // position is zero indexed. sigh
                     if (itemPosition +1 == (mAdapter.getCount() )) {
                         onRefresh(FORCE_REMOTE_SYNC);
@@ -1282,7 +1279,6 @@ public class MessageList extends ListActivity {
             Iterator<MessageInfoHolder> iter = messages.iterator();
                 while(iter.hasNext()) {
                     MessageInfoHolder message = iter.next();
-                    Log.i(Email.LOG_TAG, "I should be removing message "+message);
                     if (message.dirty) {
                         iter.remove();
                         notifyDataSetChanged();
@@ -1323,7 +1319,6 @@ public class MessageList extends ListActivity {
             MessageInfoHolder m = getMessage( message.getUid());
 
             if (m == null) {
-                Log.i(Email.LOG_TAG,"calling messages.add");
                 m = new MessageInfoHolder(message, folder);
                 mAdapter.messages.add(m);
             } else {
@@ -1427,101 +1422,100 @@ public class MessageList extends ListActivity {
                   return view;
 
          }
-         public View getItemView(int position, View convertView, ViewGroup parent) {
-                MessageInfoHolder message = (MessageInfoHolder) getItem(position);
-                View view = mInflater.inflate(R.layout.message_list_item, parent, false);
-                
-                MessageViewHolder holder = (MessageViewHolder) view.getTag();
+       public View getItemView(int position, View convertView, ViewGroup parent) {
+            MessageInfoHolder message = (MessageInfoHolder) getItem(position);
+            View view = mInflater.inflate(R.layout.message_list_item, parent, false);
+            
+            MessageViewHolder holder = (MessageViewHolder) view.getTag();
 
-                if (holder == null) {
-                    holder = new MessageViewHolder();
-                    holder.subject = (TextView) view.findViewById(R.id.subject);
-                    holder.from = (TextView) view.findViewById(R.id.from);
-                    holder.date = (TextView) view.findViewById(R.id.date);
-                    holder.chip = view.findViewById(R.id.chip);
-                    holder.chip.setBackgroundResource(colorChipResId);
+            if (holder == null) {
+                holder = new MessageViewHolder();
+                holder.subject = (TextView) view.findViewById(R.id.subject);
+                holder.from = (TextView) view.findViewById(R.id.from);
+                holder.date = (TextView) view.findViewById(R.id.date);
+                holder.chip = view.findViewById(R.id.chip);
+                holder.chip.setBackgroundResource(colorChipResId);
 
-                    view.setTag(holder);
-                }
-
-                if (message != null) {
-                    holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
-                    holder.subject.setTypeface(null, message.read && !message.flagged ? Typeface.NORMAL  : Typeface.BOLD);
-
-                    if (message.flagged) {
-                        holder.subject.setTextColor(Email.FLAGGED_COLOR);
-                    } else {
-
-                        // Removing that block of code from MessageList means that flagging any
-                        // single message in a folder causes random messages to have their subjects
-                        // switch to the flagged color. -danapple
-                        holder.subject.setTextColor(0xff000000);
-                    }
-
-                    if (! message.partially_downloaded && !message.downloaded) {
-                        holder.chip.getBackground().setAlpha(127);
-                        holder.subject.setTextColor(0x60000000);
-                        holder.date.setTextColor(0x60000000);
-                        holder.from.setTextColor(0x60000000);
-                    } else {
-                        holder.date.setTextColor(0xff000000);
-                        holder.from.setTextColor(0xff000000);
-                    }
-
-                    holder.subject.setText(message.subject);
-
-                    holder.from.setText(message.sender);
-                    holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
-                    holder.date.setText(message.date);
-                    holder.subject.setCompoundDrawablesWithIntrinsicBounds(
-                        message.answered ? mAnsweredIcon : null, // left
-                        null, // top
-                        message.hasAttachments ? mAttachmentIcon : null, // right
-                        null); // bottom
-                } else {
-                    holder.chip.getBackground().setAlpha(0);
-                    holder.subject.setText("No subject");
-                    holder.subject.setTypeface(null, Typeface.NORMAL);
-                    holder.from.setText("No sender");
-                    holder.from.setTypeface(null, Typeface.NORMAL);
-                    holder.date.setText("No date");
-                    holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                }
-                return view;
+                view.setTag(holder);
             }
-         public View getFooterView(int position, View convertView, ViewGroup parent) { 
-                View view;
 
-                if ((convertView != null) && (convertView.getId() == R.layout.message_list_item_footer)) {
-                    view = convertView;
+            if (message != null) {
+                holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
+                holder.subject.setTypeface(null, message.read && !message.flagged ? Typeface.NORMAL  : Typeface.BOLD);
+
+                if (message.flagged) {
+                    holder.subject.setTextColor(Email.FLAGGED_COLOR);
                 } else {
-                    view = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
-                    view.setId(R.layout.message_list_item_footer);
+
+                    // Removing that block of code from MessageList means that flagging any
+                    // single message in a folder causes random messages to have their subjects
+                    // switch to the flagged color. -danapple
+                    holder.subject.setTextColor(0xff000000);
                 }
 
-                FooterViewHolder holder = (FooterViewHolder) view.getTag();
-
-                if (holder == null) {
-                    holder = new FooterViewHolder();
-                    holder.progress = (ProgressBar) view.findViewById(R.id.message_list_progress);
-                    holder.main = (TextView) view.findViewById(R.id.main_text);
-                    view.setTag(holder);
-                }
-
-                if (mCurrentFolder.loading) {
-                    holder.main.setText(getString(R.string.status_loading_more));
-                    mHandler.progress(true);
+                if (! message.partially_downloaded && !message.downloaded) {
+                    holder.chip.getBackground().setAlpha(127);
+                    holder.subject.setTextColor(0x60000000);
+                    holder.date.setTextColor(0x60000000);
+                    holder.from.setTextColor(0x60000000);
                 } else {
-                    if (mCurrentFolder.lastCheckFailed == false) {
-                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(), mAccount.getDisplayCount()));
-                    } else {
-                        holder.main.setText(getString(R.string.status_loading_more_failed));
-                    }
-
+                    holder.date.setTextColor(0xff000000);
+                    holder.from.setTextColor(0xff000000);
                 }
 
-                return view;
+                holder.subject.setText(message.subject);
+
+                holder.from.setText(message.sender);
+                holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
+                holder.date.setText(message.date);
+                holder.subject.setCompoundDrawablesWithIntrinsicBounds(
+                    message.answered ? mAnsweredIcon : null, // left
+                    null, // top
+                    message.hasAttachments ? mAttachmentIcon : null, // right
+                    null); // bottom
+            } else {
+                holder.chip.getBackground().setAlpha(0);
+                holder.subject.setText("No subject");
+                holder.subject.setTypeface(null, Typeface.NORMAL);
+                holder.from.setText("No sender");
+                holder.from.setTypeface(null, Typeface.NORMAL);
+                holder.date.setText("No date");
+                holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             }
+            return view;
+        }
+     public View getFooterView(int position, View convertView, ViewGroup parent) { 
+            View view;
+
+            if ((convertView != null) && (convertView.getId() == R.layout.message_list_item_footer)) {
+                view = convertView;
+            } else {
+                view = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
+                view.setId(R.layout.message_list_item_footer);
+            }
+
+            FooterViewHolder holder = (FooterViewHolder) view.getTag();
+
+            if (holder == null) {
+                holder = new FooterViewHolder();
+                holder.progress = (ProgressBar) view.findViewById(R.id.message_list_progress);
+                holder.main = (TextView) view.findViewById(R.id.main_text);
+                view.setTag(holder);
+            }
+
+            if (mCurrentFolder.loading) {
+                holder.main.setText(getString(R.string.status_loading_more));
+                mHandler.progress(true);
+            } else {
+                if (mCurrentFolder.lastCheckFailed == false) {
+                    holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(), mAccount.getDisplayCount()));
+                } else {
+                    holder.main.setText(getString(R.string.status_loading_more_failed));
+                }
+            }
+
+            return view;
+        }
 
         public boolean hasStableIds() {
             return true;
@@ -1529,7 +1523,7 @@ public class MessageList extends ListActivity {
 
         public boolean isItemSelectable(int position) {
             if (position > 0 && position <= mAdapter.messages.size() ) {
-               return true;
+                return true;
             } else {
                 return false;
             }
