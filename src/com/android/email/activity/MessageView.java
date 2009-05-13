@@ -56,8 +56,8 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
-import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.FolderInfoHolder;
-import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.MessageInfoHolder;
+import com.android.email.activity.FolderList.FolderListAdapter.FolderInfoHolder;
+import com.android.email.activity.MessageList.MessageListAdapter.MessageInfoHolder;
 import com.android.email.mail.Address;
 import com.android.email.mail.Flag;
 import com.android.email.mail.Message;
@@ -350,13 +350,11 @@ public class MessageView extends Activity
         public ImageView iconView;
     }
 
-    public static void actionView(Context context, Account account,
-            String folder, String messageUid, ArrayList<String> folderUids) {
+    public static void actionView(Context context, Account account, String folder, String messageUid, ArrayList<String> folderUids) {
         actionView(context, account, folder, messageUid, folderUids, null);
     }
 
-    public static void actionView(Context context, Account account,
-            String folder, String messageUid, ArrayList<String> folderUids, Bundle extras) {
+    public static void actionView(Context context, Account account, String folder, String messageUid, ArrayList<String> folderUids, Bundle extras) {
         Intent i = new Intent(context, MessageView.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         i.putExtra(EXTRA_FOLDER, folder);
