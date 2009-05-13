@@ -169,95 +169,83 @@ public class FolderList extends ListActivity {
     class FolderListHandler extends Handler {
 
         private static final int MSG_PROGRESS = 2;
-
         private static final int MSG_DATA_CHANGED = 3;
-
         private static final int MSG_EXPAND_GROUP = 5;
-
         private static final int MSG_FOLDER_LOADING = 7;
-
-
         private static final int MSG_SYNC_MESSAGES = 13;
-
-        //private static final int MSG_FOLDER_STATUS = 17;
-
         private static final int MSG_FOLDER_SYNCING = 18;
-
         private static final int MSG_SENDING_OUTBOX = 19;
-
         private static final int MSG_ACCOUNT_SIZE_CHANGED = 20;
-
         private static final int MSG_WORKING_ACCOUNT = 21;
 
         @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
-            case MSG_PROGRESS:
-                setProgressBarIndeterminateVisibility(msg.arg1 != 0);
-                break;
-            case MSG_DATA_CHANGED:
-                 mAdapter.notifyDataSetChanged();
-                 break;
-
-            case MSG_FOLDER_LOADING: {
-                FolderInfoHolder folder = mAdapter.getFolder((String) msg.obj);
-
-                if (folder != null) {
-                    folder.loading = msg.arg1 != 0;
+                case MSG_PROGRESS:
+                    setProgressBarIndeterminateVisibility(msg.arg1 != 0);
+                    break;
+                case MSG_DATA_CHANGED:
+                     mAdapter.notifyDataSetChanged();
+                     break;
+                case MSG_FOLDER_LOADING: {
+                    FolderInfoHolder folder = mAdapter.getFolder((String) msg.obj);
+    
+                    if (folder != null) {
+                        folder.loading = msg.arg1 != 0;
+                    }
+    
+                    break;
                 }
-
-                break;
-            }
-
-            case MSG_ACCOUNT_SIZE_CHANGED: {
-                Long[] sizes = (Long[])msg.obj;
-                String toastText = getString(R.string.account_size_changed, mAccount.getDescription(), SizeFormatter.formatSize(getApplication(), sizes[0]), SizeFormatter.formatSize(getApplication(), sizes[1]));
-                
-                Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
-                toast.show();
-                break;
-            }
-
-            case MSG_WORKING_ACCOUNT: {
-                int res = msg.arg1;
-                String toastText = getString(res, mAccount.getDescription());
-
-                Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
-                toast.show();
-                break;
-            }
-
-
-            case MSG_FOLDER_SYNCING: {
-                String folderName = (String)((Object[]) msg.obj)[0];
-                String dispString;
-                dispString = mAccount.getDescription();
-
-                if (folderName != null) {
-                    dispString += " (" + getString(R.string.status_loading) + folderName + ")";
+    
+                case MSG_ACCOUNT_SIZE_CHANGED: {
+                    Long[] sizes = (Long[])msg.obj;
+                    String toastText = getString(R.string.account_size_changed, mAccount.getDescription(), SizeFormatter.formatSize(getApplication(), sizes[0]), SizeFormatter.formatSize(getApplication(), sizes[1]));
+                    
+                    Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
+                    toast.show();
+                    break;
                 }
-
-                setTitle(dispString);
-
-                break;
-            }
-
-            case MSG_SENDING_OUTBOX: {
-                boolean sending = (msg.arg1 != 0);
-                String dispString;
-                dispString = mAccount.getDescription();
-
-                if (sending) {
-                    dispString += " (" + getString(R.string.status_sending) + ")";
+    
+                case MSG_WORKING_ACCOUNT: {
+                    int res = msg.arg1;
+                    String toastText = getString(res, mAccount.getDescription());
+    
+                    Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
+                    toast.show();
+                    break;
                 }
-
-                setTitle(dispString);
-
-                break;
-            }
-
-            default:
-                super.handleMessage(msg);
+    
+    
+                case MSG_FOLDER_SYNCING: {
+                    String folderName = (String)((Object[]) msg.obj)[0];
+                    String dispString;
+                    dispString = mAccount.getDescription();
+    
+                    if (folderName != null) {
+                        dispString += " (" + getString(R.string.status_loading) + folderName + ")";
+                    }
+    
+                    setTitle(dispString);
+    
+                    break;
+                }
+    
+                case MSG_SENDING_OUTBOX: {
+                    boolean sending = (msg.arg1 != 0);
+                    String dispString;
+                    dispString = mAccount.getDescription();
+    
+                    if (sending) {
+                        dispString += " (" + getString(R.string.status_sending) + ")";
+                    }
+    
+                    setTitle(dispString);
+    
+                    break;
+                }
+    
+                default:
+                    super.handleMessage(msg);
             }
         }
 
@@ -419,10 +407,13 @@ public class FolderList extends ListActivity {
         mListView.setLongClickable(true);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-            final FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(itemPosition);
-
-            MessageList.actionHandleFolder(xxx,mAccount, folder.name);
-
+                if (itemPosition == 0 ) {
+                    return;
+                }
+                if (v.getTag() != null) { 
+                    FolderViewHolder holder = (FolderViewHolder) v.getTag();
+                    MessageList.actionHandleFolder(xxx,mAccount, holder.rawFolderName);
+                }
             }
 
 
@@ -547,7 +538,6 @@ public class FolderList extends ListActivity {
                 }
             }
         }
-
         .start();
     }
 
@@ -705,7 +695,6 @@ public class FolderList extends ListActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
         getMenuInflater().inflate(R.menu.folder_context, menu);
-
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
         if (!folder.name.equals(mAccount.getTrashFolderName()))
@@ -717,7 +706,7 @@ public class FolderList extends ListActivity {
             menu.findItem(R.id.send_messages).setVisible(false);
         }
 
-        menu.setHeaderTitle(R.string.folder_context_menu_title);
+        menu.setHeaderTitle(folder.displayName);
     }
 
 
@@ -733,15 +722,16 @@ public class FolderList extends ListActivity {
         private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
 
         public Object getItem(int position) {
-            return mFolders.get((int)getItemId(position));
+            return mFolders.get(position-1);
         }
+
 
         public long getItemId(int position) {
             return position -1 ;
         }
-
+        private static final int NON_MESSAGE_ITEMS = 1;
         public int getCount() {
-            return mFolders.size();
+            return mFolders.size() + NON_MESSAGE_ITEMS;
         }
 
         public boolean isEnabled(int item) {
@@ -857,9 +847,7 @@ public class FolderList extends ListActivity {
                   }
     
                   mHandler.progress(true);
-    
                   mHandler.folderLoading(folder, true);
-                  //    mHandler.folderStatus(folder, getString(R.string.status_loading));
                   mHandler.folderSyncing(folder);
               }
     
@@ -999,13 +987,10 @@ public class FolderList extends ListActivity {
 
         public View getView(int position, View convertView, ViewGroup parent) {
             if (position == 0 ) {
-            Log.i(Email.LOG_TAG,"Getting a header view for "+position);
                 return getHeaderView(position, convertView, parent);
             } else if (position <= getCount()) {
-            Log.i(Email.LOG_TAG,"Getting a item view for "+position);
                return  getItemView(position, convertView, parent);
             } else {
-                Log.i(Email.LOG_TAG,"Getting a null view for "+position);
                 // XXX TODO - should catch an exception here
                 return null;
             }
@@ -1033,6 +1018,8 @@ public class FolderList extends ListActivity {
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.folder_unread_message_count);
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
+                holder.rawFolderName = folder.name;
+
                 view.setTag(holder);
             }
 
@@ -1041,6 +1028,8 @@ public class FolderList extends ListActivity {
             }
             
             holder.folderName.setText(folder.displayName);
+            
+
 
             String statusText = "";
 
@@ -1077,7 +1066,8 @@ public class FolderList extends ListActivity {
         public boolean hasStableIds() {
             return true;
         }
-         public boolean isItemSelectable(int position) {
+        
+        public boolean isItemSelectable(int position) {
             if (position > 0 && position <= mAdapter.mFolders.size() ) {
                 return true;
             } else {
@@ -1202,6 +1192,7 @@ public class FolderList extends ListActivity {
             public TextView folderStatus;
 
             public TextView newMessageCount;
+            public String rawFolderName;
         }
 
     }
