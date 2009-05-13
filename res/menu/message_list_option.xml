@@ -49,12 +49,6 @@
 		android:title="@string/check_mail_action"
 		android:icon="@drawable/ic_menu_refresh"
 	/>
-	<item
-		android:id="@+id/folder_list"
-        android:alphabeticShortcut="q"
-        android:title="@string/folders_action"
-        android:icon="@drawable/ic_menu_close_clear_cancel"
-	/>
 
 
 </menu>
