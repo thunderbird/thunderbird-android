@@ -104,8 +104,10 @@ public class MessageList extends ListActivity {
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
 
-    private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
+    private static final String EXTRA_FOLDER = "folder";
     private static final String STATE_KEY_LIST = "com.android.email.activity.messagelist_state";
+
+    private static final String STATE_CURRENT_FOLDER = "com.android.email.activity.messagelist_folder";
     private static final String STATE_KEY_SELECTION = "com.android.email.activity.messagelist_selection";
 
     private static final int[] colorChipResIds = new int[] {
@@ -455,25 +457,25 @@ public class MessageList extends ListActivity {
         }
     }
 
-    public static void actionHandleFolder(Context context, Account account, String initialFolder) {
+    public static void actionHandleFolder(Context context, Account account, String folder) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_ACCOUNT, account);
 
-        if (initialFolder != null) {
-            intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
+        if (folder != null) {
+            intent.putExtra(EXTRA_FOLDER, folder);
         }
 
         context.startActivity(intent);
     }
 
-    public static Intent actionHandleFolderIntent(Context context, Account account, String initialFolder) {
+    public static Intent actionHandleFolderIntent(Context context, Account account, String folder) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Email.INTENT_DATA_URI_PREFIX + INTENT_DATA_PATH_SUFFIX + "/" + account.getAccountNumber()), context, MessageList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_ACCOUNT, account);
         intent.putExtra(EXTRA_CLEAR_NOTIFICATION, true);
 
-        if (initialFolder != null) {
-            intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
+        if (folder != null) {
+            intent.putExtra(EXTRA_FOLDER, folder);
         }
 
         return intent;
@@ -506,11 +508,13 @@ public class MessageList extends ListActivity {
         // activity already
 
         if (savedInstanceState == null) {
-            mInitialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
+            mInitialFolder = intent.getStringExtra(EXTRA_FOLDER);
 
             if (mInitialFolder == null) {
                 mInitialFolder = mAccount.getAutoExpandFolderName();
             }
+        } else {
+            mInitialFolder = savedInstanceState.getString(STATE_CURRENT_FOLDER);
         }
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -527,8 +531,7 @@ public class MessageList extends ListActivity {
         * Since the color chip is always the same color for a given account we just
         * cache the id of the chip right here.
          */
-        colorChipResId = colorChipResIds[mAccount.getAccountNumber()
-                                         % colorChipResIds.length];
+        colorChipResId = colorChipResIds[mAccount.getAccountNumber() % colorChipResIds.length];
 
         mAdapter = new MessageListAdapter();
 
@@ -542,17 +545,26 @@ public class MessageList extends ListActivity {
             mRestoringState = false;
         }
 
-        setTitle(mInitialFolder+ " " +mAccount.getDescription());
+        setTitle(
+                    mAccount.getDescription()
+                    + " - " +
+                    mCurrentFolder.displayName
+                    
+                    );
         Log.i(Email.LOG_TAG,"We're about to try to get some messages for "+mInitialFolder);
     }
 
     private void onRestoreListState(Bundle savedInstanceState) {
-
+            String currentFolder = savedInstanceState.getString(STATE_CURRENT_FOLDER);
             int selectedChild = savedInstanceState.getInt( STATE_KEY_SELECTION, -1);
 
             if (selectedChild != 0 ){
                 mListView.setSelection(selectedChild);
             }
+            if (currentFolder != null ) { 
+                mCurrentFolder = mAdapter.getFolder(currentFolder);
+            }
+
 
         mListView.onRestoreInstanceState(savedInstanceState.getParcelable(STATE_KEY_LIST));
     }
@@ -593,6 +605,7 @@ public class MessageList extends ListActivity {
         super.onSaveInstanceState(outState);
         outState.putParcelable(STATE_KEY_LIST, mListView.onSaveInstanceState());
         outState.putInt(STATE_KEY_SELECTION, mListView .getSelectedItemPosition());
+        outState.putString(STATE_CURRENT_FOLDER, mCurrentFolder.name);
     }
 
 
@@ -604,8 +617,6 @@ public class MessageList extends ListActivity {
         case KeyEvent.KEYCODE_C: { onCompose(); return true;}
 
         case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
-
-        case KeyEvent.KEYCODE_S: { onEditAccount(); return true; }
 
         case KeyEvent.KEYCODE_O: { onCycleSort(); return true; }
 
@@ -698,10 +709,6 @@ public class MessageList extends ListActivity {
 
             MessageView.actionView(this, mAccount, message.folder.name, message.uid, folderUids);
         }
-    }
-
-    private void onEditAccount() {
-        AccountSettings.actionSettings(this, mAccount);
     }
 
     private void onEditFolder(Account account, String folderName) {
@@ -1046,11 +1053,6 @@ public class MessageList extends ListActivity {
 
         case R.id.compose:
             onCompose();
-
-            return true;
-
-        case R.id.account_settings:
-            onEditAccount();
 
             return true;
 
