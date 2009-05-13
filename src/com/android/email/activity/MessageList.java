@@ -33,10 +33,12 @@ import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.android.email.Account;
 import com.android.email.Email;
@@ -46,8 +48,8 @@ import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.MessagingController.SORT_TYPE;
-import com.android.email.activity.MessageList.MessageListAdapter.FolderInfoHolder;
-import com.android.email.activity.MessageList.MessageListAdapter.MessageInfoHolder;
+import com.android.email.activity.FolderList.FolderInfoHolder;
+import com.android.email.activity.MessageList.MessageInfoHolder;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Address;
@@ -239,15 +241,6 @@ public class MessageList extends ListActivity {
 
                 break;
 
-            case MSG_FOLDER_LOADING: {
-                if (mCurrentFolder.name == msg.obj) {
-                    mCurrentFolder.loading = msg.arg1 != 0;
-                    mAdapter.notifyDataSetChanged();
-                }
-
-                break;
-            }
-
             case MSG_REMOVE_MESSAGE: {
                 FolderInfoHolder folder = (FolderInfoHolder)((Object[]) msg.obj)[0];
                 MessageInfoHolder message = (MessageInfoHolder)((Object[]) msg.obj)[1];
@@ -281,11 +274,13 @@ public class MessageList extends ListActivity {
                 Message[] messages = (Message[])((Object[]) msg.obj)[1];
                 folder.messages.clear();
 
+                Log.e(Email.LOG_TAG, "Called to synchronize messages! " + messages + folder);
                 for (Message message : messages) {
+                    Log.e(Email.LOG_TAG, "Adding or updating message "+message);
                     mAdapter.addOrUpdateMessage(folder, message, false, false);
                 }
 
-                Collections.sort(folder.messages);
+                Collections.sort(mAdapter.messages);
 
                 mAdapter.notifyDataSetChanged();
                 break;
@@ -338,11 +333,9 @@ public class MessageList extends ListActivity {
         }
 
         public void synchronizeMessages(FolderInfoHolder folder, Message[] messages) {
-
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_SYNC_MESSAGES;
-            msg.obj = new Object[]
-                      { folder, messages };
+            msg.obj = new Object[] { folder, messages };
             sendMessage(msg);
         }
 
@@ -354,11 +347,10 @@ public class MessageList extends ListActivity {
             sendMessage(msg);
         }
 
-        public void removeMessage(FolderInfoHolder folder, MessageInfoHolder message) {
+        public void removeMessage(MessageInfoHolder message) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_REMOVE_MESSAGE;
-            msg.obj = new Object[]
-                      { folder, message };
+            msg.obj = new Object[] { message.folder, message };
             sendMessage(msg);
         }
 
@@ -446,18 +438,15 @@ public class MessageList extends ListActivity {
                         mSynchronizeRemote = true;
                     }
                 } catch (MessagingException me) {
-                    Log.e(Email.LOG_TAG,
-                          "Unable to get count of local messages for folder " + mFolder, me);
+                    Log.e(Email.LOG_TAG, "Unable to get count of local messages for folder " + mFolder, me);
                 }
 
                 if (mSynchronizeRemote) {
                     // Tell the MessagingController to run a remote update of this folder
                     // at it's leisure
-                    MessagingController.getInstance(getApplication()).synchronizeMailbox(
-                        mAccount, mFolder, mAdapter.mListener);
+                    MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, mFolder, mAdapter.mListener);
                 } else {
-                    MessagingController.getInstance(getApplication()).listLocalMessages(
-                        mAccount, mFolder, mAdapter.mListener);
+                    MessagingController.getInstance(getApplication()).listLocalMessages( mAccount, mFolder, mAdapter.mListener);
                 }
             } finally {
                 wakeLock.release();
@@ -524,6 +513,15 @@ public class MessageList extends ListActivity {
             }
         }
 
+        mListView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
+            MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(itemPosition);
+            onOpenMessage(mCurrentFolder, message);
+
+            }
+
+
+        });
 
         /*
         * Since the color chip is always the same color for a given account we just
@@ -533,13 +531,6 @@ public class MessageList extends ListActivity {
                                          % colorChipResIds.length];
 
         mAdapter = new MessageListAdapter();
-
-        final Object previousData = getLastNonConfigurationInstance();
-
-        if (previousData != null) {
-            //noinspection unchecked
-            mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
-        }
 
         mCurrentFolder = mAdapter.getFolder(mInitialFolder);
 
@@ -552,6 +543,7 @@ public class MessageList extends ListActivity {
         }
 
         setTitle(mInitialFolder+ " " +mAccount.getDescription());
+        Log.i(Email.LOG_TAG,"We're about to try to get some messages for "+mInitialFolder);
     }
 
     private void onRestoreListState(Bundle savedInstanceState) {
@@ -566,18 +558,13 @@ public class MessageList extends ListActivity {
     }
 
     @Override
-    public Object onRetainNonConfigurationInstance() {
-        return mAdapter.mFolders;
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         MessagingController.getInstance(getApplication()).removeListener( mAdapter.mListener);
     }
 
     /**
-    * On resume we refresh the folder list (in the background) and we refresh the
+    * On resume we refresh 
     * messages for any folder that is currently open. This guarantees that things
     * like unread message count and read status are updated.
      */
@@ -632,8 +619,8 @@ public class MessageList extends ListActivity {
         }//switch
 
         int position = mListView.getSelectedItemPosition();
-
         try {
+        if (position> 0 ) {
                 MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
 
                 if (message != null) {
@@ -657,32 +644,14 @@ public class MessageList extends ListActivity {
                     case KeyEvent.KEYCODE_Z: { onToggleRead(message); return true; }
                     }
                 }
+            }
         } finally {
             return super.onKeyDown(keyCode, event);
         }
     }//onKeyDown
 
 
-    // XXX TODO make this look like FolderList -- jrv
-    public boolean onItemClick(ListView parent, View v,  int position, long id) {
 
-        if (!mCurrentFolder.outbox && position == mCurrentFolder.messages.size() && !mCurrentFolder.loading) {
-            if (mCurrentFolder.status == null) {
-                MessagingController.getInstance(getApplication()).loadMoreMessages( mAccount, mCurrentFolder.name, mAdapter.mListener);
-                return false;
-            } else {
-                MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, mCurrentFolder.name, mAdapter.mListener);
-                return false;
-            }
-        } else if (position >= mCurrentFolder.messages.size()) {
-            return false;
-        }
-
-        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
-        onOpenMessage(mCurrentFolder, message);
-
-        return true;
-    }
 
     private void onRefresh(final boolean forceRemote) {
         if (forceRemote) {
@@ -693,7 +662,7 @@ public class MessageList extends ListActivity {
 
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                MessagingController.getInstance(getApplication()).listFolders(mAccount, forceRemote, mAdapter.mListener);
+                    MessagingController.getInstance(getApplication()).listLocalMessages(mAccount, mInitialFolder,  mAdapter.mListener);
 
                 if (forceRemote) {
                     MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
@@ -723,7 +692,7 @@ public class MessageList extends ListActivity {
         } else {
             ArrayList<String> folderUids = new ArrayList<String>();
 
-for (MessageInfoHolder holder : folder.messages) {
+            for (MessageInfoHolder holder : folder.messages) {
                 folderUids.add(holder.uid);
             }
 
@@ -763,9 +732,7 @@ for (MessageInfoHolder holder : folder.messages) {
         Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
         toast.show();
 
-for (FolderInfoHolder folder : mAdapter.mFolders) {
-            Collections.sort(folder.messages);
-        }
+        Collections.sort(mAdapter.messages);
 
         mAdapter.notifyDataSetChanged();
 
@@ -815,10 +782,10 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
             trashHolder.needsRefresh = true;
         }
 
-        mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
+        mAdapter.removeMessage(holder);
 
-        MessagingController.getInstance(getApplication()).deleteMessage(mAccount,
-                holder.message.getFolder().getName(), holder.message, null);
+
+        MessagingController.getInstance(getApplication()).deleteMessage(mAccount, holder.message.getFolder().getName(), holder.message, null);
 
     }
 
@@ -883,7 +850,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
             FolderInfoHolder destHolder = mAdapter.getFolder(destFolderName);
 
             if (srcHolder != null && destHolder != null) {
-                MessageInfoHolder m = mAdapter.getMessage(srcHolder, uid);
+                MessageInfoHolder m = mAdapter.getMessage( uid);
 
                 if (m != null) {
                     switch (requestCode) {
@@ -925,10 +892,8 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
 
         folder.needsRefresh = true;
 
-        mAdapter.removeMessage(holder.message.getFolder().getName(), holder.uid);
-
-        MessagingController.getInstance(getApplication()).moveMessage(mAccount,
-                holder.message.getFolder().getName(), holder.message, folder.name, null);
+        mAdapter.removeMessage(holder);
+        MessagingController.getInstance(getApplication()).moveMessage(mAccount, holder.message.getFolder().getName(), holder.message, folder.name, null);
 
     }
 
@@ -1034,21 +999,6 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                .create();
     }
 
-    private void onEmptyTrash(final Account account) {
-        mAdapter.removeAllMessages(account.getTrashFolderName());
-        mHandler.dataChanged();
-
-        MessagingListener listener = new MessagingListener() {
-                                         @Override
-                                         public void controllerCommandCompleted(boolean moreToDo) {
-                                             Log.v(Email.LOG_TAG, "Empty Trash background task completed");
-                                         }
-                                     };
-
-        MessagingController.getInstance(getApplication()).emptyTrash(account, listener);
-    }
-
-
     private void onToggleRead(MessageInfoHolder holder) {
 
         holder.folder.unreadMessageCount += (holder.read ? 1 : -1);
@@ -1057,16 +1007,13 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
             holder.folder.unreadMessageCount = 0;
         }
 
-        MessagingController.getInstance(getApplication()).markMessageRead(mAccount,
-
-                holder.message.getFolder().getName(), holder.uid, !holder.read);
+        MessagingController.getInstance(getApplication()).markMessageRead(mAccount, holder.message.getFolder().getName(), holder.uid, !holder.read);
         holder.read = !holder.read;
     }
 
     private void onToggleFlag(MessageInfoHolder holder) {
 
-        MessagingController.getInstance(getApplication()).setMessageFlag(mAccount,
-                holder.message.getFolder().getName(), holder.uid, Flag.FLAGGED, !holder.flagged);
+        MessagingController.getInstance(getApplication()).setMessageFlag(mAccount, holder.message.getFolder().getName(), holder.uid, Flag.FLAGGED, !holder.flagged);
         holder.flagged = !holder.flagged;
         mHandler.dataChanged();
     }
@@ -1076,8 +1023,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
     }
 
     private void checkMail(Account account, String folderName) {
-        MessagingController.getInstance(getApplication()).synchronizeMailbox(
-            account, folderName, mAdapter.mListener);
+        MessagingController.getInstance(getApplication()).synchronizeMailbox( account, folderName, mAdapter.mListener);
     }
 
     @Override
@@ -1143,34 +1089,9 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
 
             return true;
 
-        case R.id.empty_trash:
-            onEmptyTrash(mAccount);
-
-            return true;
-
-        case R.id.compact:
-            onCompact(mAccount);
-
-            return true;
-
-        case R.id.clear:
-            onClear(mAccount);
-
-            return true;
-
         default:
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void onCompact(Account account) {
-        mHandler.workingAccount(R.string.compacting_account);
-        MessagingController.getInstance(getApplication()).compact(account, null);
-    }
-
-    private void onClear(Account account) {
-        mHandler.workingAccount(R.string.clearing_account);
-        MessagingController.getInstance(getApplication()).clear(account, null);
     }
 
     @Override
@@ -1248,11 +1169,6 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
 
                 break;
 
-            case R.id.empty_trash:
-                onEmptyTrash(mAccount);
-
-                break;
-
             case R.id.mark_all_as_read:
                 Log.i(Email.LOG_TAG, "mark all unread messages as read " + mCurrentFolder.name);
                 onMarkAllAsRead(mAccount, mCurrentFolder);
@@ -1303,410 +1219,85 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
     }
 
     class MessageListAdapter extends BaseAdapter {
-        private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
+        private ArrayList<MessageInfoHolder> messages = new ArrayList<MessageInfoHolder>();
 
         private MessagingListener mListener = new MessagingListener() {
-                                                  @Override
-                                                  public void listFoldersStarted(Account account) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
 
-                                                      mHandler.progress(true);
-                                                  }
 
-                                                  @Override
-                                                  public void listFoldersFailed(Account account, String message) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
 
-                                                      mHandler.progress(false);
-
-                                                      if (Config.LOGV) {
-                                                          Log.v(Email.LOG_TAG, "listFoldersFailed " + message);
-                                                      }
-                                                  }
-
-                                                  @Override
-                                                  public void accountReset(Account account) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                      for (FolderInfoHolder folder : mFolders) {
-                                                          folder.needsRefresh = true;
-                                                      }
-                                                  }
-
-                                                    // JRV  XXX TODO - this method really needs to be renamed
-                                                  @Override
-                                                  public void listFolders(Account account, Folder[] folders) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      ArrayList<FolderInfoHolder> newFolders = new ArrayList<FolderInfoHolder>();
-
-                                                      Account.FolderMode aMode = account.getFolderDisplayMode();
-                                                      Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
-
-                                      for (Folder folder : folders) {
-                                                          try {
-                                                              folder.refresh(prefs);
-                                                              Folder.FolderClass fMode = folder.getDisplayClass();
-
-                                                              if ((aMode == Account.FolderMode.FIRST_CLASS && fMode != Folder.FolderClass.FIRST_CLASS)
-                                                                      || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-                                                                          fMode != Folder.FolderClass.FIRST_CLASS &&
-                                                                          fMode != Folder.FolderClass.SECOND_CLASS)
-                                                                      || (aMode == Account.FolderMode.NOT_SECOND_CLASS && fMode == Folder.FolderClass.SECOND_CLASS)) {
-                                                                  continue;
-                                                              }
-                                                          } catch (MessagingException me) {
-                                                              Log.e(Email.LOG_TAG, "Couldn't get prefs to check for displayability of folder " + folder.getName(), me);
-                                                          }
-
-
-                                                          FolderInfoHolder holder = getFolder(folder.getName());
-
-                                                          if (holder == null) {
-                                                              holder = new FolderInfoHolder();
-                                                          }
-
-                                                          newFolders.add(holder);
-
-                                                          int unreadCount = 0;
-
-                                                          try {
-                                                              folder.open(Folder.OpenMode.READ_WRITE);
-                                                              unreadCount = folder.getUnreadMessageCount();
-                                                          } catch (MessagingException me) {
-                                                              Log.e(Email.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
-                                                          }
-
-                                                          holder.name = folder.getName();
-
-                                                          if (holder.name.equalsIgnoreCase(Email.INBOX)) {
-                                                              holder.displayName = getString(R.string.special_mailbox_name_inbox);
-                                                          } else {
-                                                              holder.displayName = folder.getName();
-                                                          }
-
-                                                          if (holder.name.equals(mAccount.getOutboxFolderName())) {
-                                                              holder.displayName = String.format(
-                                                                                       getString(R.string.special_mailbox_name_outbox_fmt),
-                                                                                       holder.name);
-                                                              holder.outbox = true;
-                                                          }
-
-                                                          if (holder.name.equals(mAccount.getDraftsFolderName())) {
-                                                              holder.displayName = String.format(
-                                                                                       getString(R.string.special_mailbox_name_drafts_fmt),
-                                                                                       holder.name);
-                                                          }
-
-                                                          if (holder.name.equals(mAccount.getTrashFolderName())) {
-                                                              holder.displayName = String.format(
-                                                                                       getString(R.string.special_mailbox_name_trash_fmt),
-                                                                                       holder.name);
-                                                          }
-
-                                                          if (holder.name.equals(mAccount.getSentFolderName())) {
-                                                              holder.displayName = String.format(
-                                                                                       getString(R.string.special_mailbox_name_sent_fmt),
-                                                                                       holder.name);
-                                                          }
-
-                                                          if (holder.messages == null) {
-                                                              holder.messages = new ArrayList<MessageInfoHolder>();
-                                                          }
-
-                                                          holder.lastChecked = folder.getLastChecked();
-
-                                                          String mess = truncateStatus(folder.getStatus());
-
-                                                          holder.status = mess;
-
-                                                          holder.unreadMessageCount = unreadCount;
-
-                                                          try {
-                                                              folder.close(false);
-                                                          } catch (MessagingException me) {
-                                                              Log.e(Email.LOG_TAG, "Folder.close() failed", me);
-                                                          }
-                                                      }
-
-                                                      mFolders.clear();
-
-                                                      mFolders.addAll(newFolders);
-                                                      Collections.sort(mFolders);
-                                                      mHandler.dataChanged();
-
-                                                      /*
-                                                      * We will do this eventually. This restores the state of the list in
-                                                      * the case of a killed Activity but we have some message sync issues to
-                                                      * take care of.
-                                                       */
-                                      //                if (mRestoredState != null) {
-                                      //                    if (Config.LOGV) {
-                                      //                        Log.v(Email.LOG_TAG, "Attempting to restore list state");
-                                      //                    }
-                                      //                    Parcelable listViewState =
-                                      //                    mListView.onRestoreInstanceState(mListViewState);
-                                      //                    mListViewState = null;
-                                      //                }
-                                                      /*
-                                                       * Now we need to refresh any folders that are currently expanded. We do this
-                                                       * in case the status or number of messages has changed.
-                                                       */
-                                                              
-
-            
-                                                    threadPool.execute(new FolderUpdateWorker(mCurrentFolder, mRefreshRemote));
-
-                                                      mRefreshRemote = false;
-                                                  }
-
-                                                  @Override
-                                                  public void listLocalMessagesStarted(Account account, String folder) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      mHandler.progress(true);
-
-                                                      mHandler.folderLoading(folder, true);
-                                                  }
-
-                                                  @Override
-                                                  public void listLocalMessagesFailed(Account account, String folder,
-                                                                                      String message) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      mHandler.progress(false);
-
-                                                      mHandler.folderLoading(folder, false);
-                                                  }
-
-                                                  @Override
-                                                  public void listLocalMessagesFinished(Account account, String folder) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      mHandler.progress(false);
-
-                                                      mHandler.folderLoading(folder, false);
-                                                  }
-
-                                                  @Override
-                                                  public void listLocalMessages(Account account, String folder,
-                                                                                Message[] messages) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      synchronizeMessages(folder, messages);
-                                                  }
-
-                                                  @Override
-                                                  public void synchronizeMailboxStarted(Account account, String folder) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      mHandler.progress(true);
-
-                                                      mHandler.folderLoading(folder, true);
-                                      //    mHandler.folderStatus(folder, getString(R.string.status_loading));
-                                                      mHandler.folderSyncing(folder);
-                                                  }
-
-                                                  @Override
-                                                  public void synchronizeMailboxFinished(Account account, String folder,
-                                                                                         int totalMessagesInMailbox, int numNewMessages) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      FolderInfoHolder holder = getFolder(folder);
-
-                                                      mHandler.progress(false);
-                                                      mHandler.folderLoading(folder, false);
-                                                      // mHandler.folderStatus(folder, null);
-                                                      mHandler.folderSyncing(null);
-
-                                                      onRefresh(false);
-                                                  }
-
-                                                  @Override
-                                                  public void synchronizeMailboxFailed(Account account, String folder,
-                                                                                       String message) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-
-                                                      mHandler.progress(false);
-
-                                                      mHandler.folderLoading(folder, false);
-
-                                                      //   String mess = truncateStatus(message);
-
-                                                      //   mHandler.folderStatus(folder, mess);
-                                                      FolderInfoHolder holder = getFolder(folder);
-
-                                                      if (holder != null) {
-                                                          holder.lastChecked = 0;
-                                                      }
-
-                                                      mHandler.folderSyncing(null);
-                                                  }
-
-                                                  @Override
-                                                  public void synchronizeMailboxNewMessage(Account account, String folder,
-                                                          Message message) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      addOrUpdateMessage(folder, message);
-                                                  }
-
-
-
-                                                  @Override
-                                                  public void messageDeleted(Account account,
-                                                                             String folder, Message message) {
-                                                      synchronizeMailboxRemovedMessage(account,
-                                                                                       folder, message);
-                                                  }
-
-                                                  @Override
-                                                  public void synchronizeMailboxRemovedMessage(Account account,
-                                                          String folder, Message message) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      removeMessage(folder, message.getUid());
-                                                  }
-
-                                                  @Override
-                                                  public void emptyTrashCompleted(Account account) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      onRefresh(false);
-                                                  }
-
-                                                  @Override
-                                                  public void folderStatusChanged(Account account, String folderName) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      onRefresh(false);
-                                                  }
-
-                                                  @Override
-                                                  public void sendPendingMessagesCompleted(Account account) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      mHandler.sendingOutbox(false);
-
-                                                      onRefresh(false);
-                                                  }
-
-                                                  @Override
-                                                  public void sendPendingMessagesStarted(Account account) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      mHandler.sendingOutbox(true);
-                                                  }
-
-                                                  @Override
-                                                  public void sendPendingMessagesFailed(Account account) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      mHandler.sendingOutbox(false);
-                                                  }
-
-                                                  public void accountSizeChanged(Account account, long oldSize, long newSize) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      mHandler.accountSizeChanged(oldSize, newSize);
-
-                                                  }
-
-                                                  @Override
-                                                  public void messageUidChanged(Account account, String folder,
-                                                                                String oldUid, String newUid) {
-                                                      if (mAccount.equals(account)) {
-                                                          FolderInfoHolder holder = getFolder(folder);
-
-                                                          if (holder != null) {
-                                                              for (MessageInfoHolder message : holder.messages) {
-                                                                  if (message.uid.equals(oldUid)) {
-                                                                      message.uid = newUid;
-                                                                      message.message.setUid(newUid);
-                                                                  }
-                                                              }
-                                                          }
-                                                      }
-                                                  }
-                                              };
-
+            @Override
+			public void listLocalMessagesStarted(Account account, String folder)
+			{
+				if (!account.equals(mAccount))
+				{
+                    return;
+                }
+                mHandler.progress(true);
+                mHandler.folderLoading(folder, true);
+            }
+
+            @Override
+			public void listLocalMessagesFailed(Account account, String folder,
+					String message)
+			{
+				if (!account.equals(mAccount))
+				{
+                    return;
+                }
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+            }
+
+            @Override
+			public void listLocalMessagesFinished(Account account, String folder)
+			{
+				if (!account.equals(mAccount))
+				{
+                    return;
+                }
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+            }
+
+            @Override
+			public void listLocalMessages(Account account, String folder,
+					Message[] messages)
+			{
+				if (!account.equals(mAccount))
+				{
+                    return;
+                }
+        
+                if (folder != mInitialFolder) {
+                    return;
+                }
+                
+                synchronizeMessages(folder, messages);
+            }
+
+
+
+        };
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
 
         MessageListAdapter() {
-            mAttachmentIcon = getResources().getDrawable(
-                                  R.drawable.ic_mms_attachment_small);
-            mAnsweredIcon = getResources().getDrawable(
-                                R.drawable.ic_mms_answered_small);
+            mAttachmentIcon = getResources().getDrawable( R.drawable.ic_mms_attachment_small);
+            mAnsweredIcon = getResources().getDrawable( R.drawable.ic_mms_answered_small);
         }
 
-        public void removeAllMessages(String folder) {
-            FolderInfoHolder f = getFolder(folder);
-
-            if (f == null) {
+        public void removeMessage(MessageInfoHolder holder) {
+            if (holder.folder == null) {
                 return;
             }
 
-            for (MessageInfoHolder m : f.messages) {
-                removeMessage(folder, m.uid);
-            }
 
-            f.unreadMessageCount = 0;
-        }
-
-        public void removeMessage(String folder, String messageUid) {
-            FolderInfoHolder f = getFolder(folder);
-
-            if (f == null) {
+            if (holder == null) {
                 return;
             }
 
-            MessageInfoHolder m = getMessage(f, messageUid);
-
-            if (m == null) {
-                return;
-            }
-
-            mHandler.removeMessage(f, m);
+            mAdapter.messages.remove(holder);
+            mHandler.removeMessage(holder);
         }
 
         public void synchronizeMessages(String folder, Message[] messages) {
@@ -1724,17 +1315,20 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
         }
 
         private void addOrUpdateMessage(FolderInfoHolder folder, Message message, boolean sort, boolean notify) {
-            MessageInfoHolder m = getMessage(folder, message.getUid());
+
+            MessageInfoHolder m = getMessage( message.getUid());
 
             if (m == null) {
+            Log.i(Email.LOG_TAG,"calling messages.add");
                 m = new MessageInfoHolder(message, folder);
-                folder.messages.add(m);
+                mAdapter.messages.add(m);
             } else {
+                Log.i(Email.LOG_TAG,"calling m.populate");
                 m.populate(message, folder);
             }
 
             if (sort) {
-                Collections.sort(folder.messages);
+                Collections.sort(mAdapter.messages);
             }
 
             if (notify) {
@@ -1742,8 +1336,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
             }
         }
 
-        private void addOrUpdateMessage(String folder, Message message,
-                                        boolean sort, boolean notify) {
+        private void addOrUpdateMessage(String folder, Message message, boolean sort, boolean notify) {
             FolderInfoHolder f = getFolder(folder);
 
             if (f == null) {
@@ -1753,8 +1346,8 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
             addOrUpdateMessage(f, message, sort, notify);
         }
 
-        public MessageInfoHolder getMessage(FolderInfoHolder folder, String messageUid) {
-            for (MessageInfoHolder message : folder.messages) {
+        public MessageInfoHolder getMessage( String messageUid) {
+            for (MessageInfoHolder message : mAdapter.messages) {
                 if (message.uid.equals(messageUid)) {
                     return message;
                 }
@@ -1764,47 +1357,52 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
         }
 
         public FolderInfoHolder getFolder(String folder) {
-            for (int i = 0, count = getCount(); i < count; i++) {
-                FolderInfoHolder holder = (FolderInfoHolder) getItem(i);
-
-                if (holder != null && holder.name != null && holder.name.equals(folder)) {
+           try {
+             LocalStore localStore = (LocalStore)Store.getInstance( mAccount.getLocalStoreUri(), getApplication());
+            LocalFolder local_folder = localStore.getFolder(folder);
+            FolderInfoHolder holder =   new FolderInfoHolder ((Folder)local_folder);
                      return holder;
-                }
-            }
-
-            return null;
+            } catch (Exception e) {
+                Log.e(Email.LOG_TAG, "getFolder(" + folder + ") goes boom: ",e);
+                return null;
+        }
         }
 
-
         public int getCount() {
-            if (mCurrentFolder == null || mCurrentFolder.messages == null) {
+            if (mAdapter.messages == null || mAdapter.messages.size() == 0) {
                 return 0;
             }
 
-            return mCurrentFolder.messages.size() + 1;
+            return mAdapter.messages.size();
         }
 
         public long getItemId(int position) {
-                MessageInfoHolder holder = mCurrentFolder.messages.get(position);
-                return ((LocalStore.LocalMessage) holder.message).getId();
+            long id;
+                try {
+                MessageInfoHolder holder = mAdapter.messages.get(position);
+                id = ((LocalStore.LocalMessage) holder.message).getId();
+                } catch ( Exception e) {
+                    Log.i(Email.LOG_TAG,"getItemId("+position+") ",e);
+                    id = -1;
+                }
+            return id;
         }
 
         public Object getItem(int position) {
             try {
-                return mCurrentFolder.messages.get(position);
+                return mAdapter.messages.get(position);
             } catch (Exception e) {
-                Log.e(Email.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mCurrentFolder.messages.size(), e);
+                Log.e(Email.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mAdapter.messages.size(), e);
                 return null;
             }
         }
 
          public View getView(int position, View convertView, ViewGroup parent) {
-            /*
-            if (isLastItem) {
+            Log.i(Email.LOG_TAG, "in getView("+position+")");
+            if (position > getCount()) {
                 View view;
 
-                if ((convertView != null)
-                        && (convertView.getId() == R.layout.message_list_item_footer)) {
+                if ((convertView != null) && (convertView.getId() == R.layout.message_list_item_footer)) {
                     view = convertView;
                 } else {
                     view = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
@@ -1825,8 +1423,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                     holder.progress.setVisibility(View.VISIBLE);
                 } else {
                     if (mCurrentFolder.lastCheckFailed == false) {
-                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(),
-                                                          mAccount.getDisplayCount()));
+                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(), mAccount.getDisplayCount()));
                     } else {
                         holder.main.setText(getString(R.string.status_loading_more_failed));
                     }
@@ -1835,13 +1432,11 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                 }
 
                 return view;
-            } */
-            // else {
+            } 
                 MessageInfoHolder message = (MessageInfoHolder) getItem(position);
                 View view;
 
-                if ((convertView != null)
-                        && (convertView.getId() != R.layout.message_list_item_footer)) {
+                if ((convertView != null) && (convertView.getId() != R.layout.message_list_item_footer)) {
                     view = convertView;
                 } else {
                     view = mInflater.inflate(R.layout.message_list_item, parent, false);
@@ -1855,15 +1450,6 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                     holder.from = (TextView) view.findViewById(R.id.from);
                     holder.date = (TextView) view.findViewById(R.id.date);
                     holder.chip = view.findViewById(R.id.chip);
-                    /*
-                    * TODO The line below and the commented lines a bit further down are
-                    * work in progress for outbox status. They should not be removed.
-                     */
-//                    holder.status = (TextView) view.findViewById(R.id.status);
-                    /*
-                     * This will need to move to below if we ever convert this whole thing
-                     * to a combined inbox.
-                     */
                     holder.chip.setBackgroundResource(colorChipResId);
 
                     view.setTag(holder);
@@ -1871,9 +1457,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
 
                 if (message != null) {
                     holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
-
-                    holder.subject.setTypeface(null,
-                                               message.read && !message.flagged ? Typeface.NORMAL  : Typeface.BOLD);
+                    holder.subject.setTypeface(null, message.read && !message.flagged ? Typeface.NORMAL  : Typeface.BOLD);
 
                     if (message.flagged) {
                         holder.subject.setTextColor(Email.FLAGGED_COLOR);
@@ -1923,6 +1507,9 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
 //                }
                 return view;
             //}
+
+
+
         }
 
         public boolean hasStableIds() {
@@ -1933,42 +1520,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                return true;
         }
 
-        public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
-            public String name;
-
-            public String displayName;
-
-            public ArrayList<MessageInfoHolder> messages;
-
-            public long lastChecked;
-
-            public int unreadMessageCount;
-
-            public boolean loading;
-
-            public String status;
-
-            public boolean lastCheckFailed;
-
-            public boolean needsRefresh = false;
-
-            /**
-             * Outbox is handled differently from any other folder.
-             */
-            public boolean outbox;
-
-            public int compareTo(FolderInfoHolder o) {
-                String s1 = this.name;
-                String s2 = o.name;
-
-                if (Email.INBOX.equalsIgnoreCase(s1)) {
-                    return -1;
-                } else if (Email.INBOX.equalsIgnoreCase(s2)) {
-                    return 1;
-                } else
-                    return s1.compareToIgnoreCase(s2);
-            }
-        }
+    }
 
         public class MessageInfoHolder implements Comparable<MessageInfoHolder> {
             public String subject;
@@ -2031,17 +1583,11 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                     Address[] addrs = message.getFrom();
 
                     if (addrs.length > 0 && mAccount.isAnIdentity(addrs[0])) {
-
-
-                        this.compareCounterparty = Address.toFriendly(message
-                                                   .getRecipients(RecipientType.TO));
+                        this.compareCounterparty = Address.toFriendly(message .getRecipients(RecipientType.TO));
                         this.sender = String.format(getString(R.string.message_list_to_fmt), this.compareCounterparty);
-
                     } else {
                         this.sender = Address.toFriendly(addrs);
-
                         this.compareCounterparty = this.sender;
-
                     }
 
                     this.subject = message.getSubject();
@@ -2118,20 +1664,110 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
 
         class MessageViewHolder {
             public TextView subject;
-
             public TextView preview;
-
             public TextView from;
-
             public TextView date;
-
             public View chip;
         }
 
         class FooterViewHolder {
             public ProgressBar progress;
-
             public TextView main;
         }
-    }
+
+      /* THERE IS NO FUCKING REASON THIS IS CLONED HERE */
+    public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
+            public String name;
+
+            public String displayName;
+
+            public ArrayList<MessageInfoHolder> messages;
+
+            public long lastChecked;
+
+            public int unreadMessageCount;
+
+            public boolean loading;
+
+            public String status;
+
+            public boolean lastCheckFailed;
+
+            public boolean needsRefresh = false;
+
+            /**
+             * Outbox is handled differently from any other folder.
+             */
+            public boolean outbox;
+
+            public int compareTo(FolderInfoHolder o) {
+                String s1 = this.name;
+                String s2 = o.name;
+
+                if (Email.INBOX.equalsIgnoreCase(s1)) {
+                    return -1;
+                } else if (Email.INBOX.equalsIgnoreCase(s2)) {
+                    return 1;
+                } else
+                    return s1.compareToIgnoreCase(s2);
+            }
+           
+             public FolderInfoHolder(Folder folder) {
+                    populate(folder);
+             }
+             public void populate (Folder folder) {  
+                      int unreadCount = 0;
+    
+                      try {
+                          folder.open(Folder.OpenMode.READ_WRITE);
+                          unreadCount = folder.getUnreadMessageCount();
+                      } catch (MessagingException me) {
+                          Log.e(Email.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
+                      }
+    
+                      this.name = folder.getName();
+    
+                      if (this.name.equalsIgnoreCase(Email.INBOX)) {
+                          this.displayName = getString(R.string.special_mailbox_name_inbox);
+                      } else {
+                          this.displayName = folder.getName();
+                      }
+    
+                      if (this.name.equals(mAccount.getOutboxFolderName())) {
+                          this.displayName = String.format( getString(R.string.special_mailbox_name_outbox_fmt), this.name);
+                          this.outbox = true;
+                      }
+    
+                      if (this.name.equals(mAccount.getDraftsFolderName())) {
+                          this.displayName = String.format( getString(R.string.special_mailbox_name_drafts_fmt), this.name);
+                      }
+    
+                      if (this.name.equals(mAccount.getTrashFolderName())) {
+                          this.displayName = String.format( getString(R.string.special_mailbox_name_trash_fmt), this.name);
+                      }
+    
+                      if (this.name.equals(mAccount.getSentFolderName())) {
+                          this.displayName = String.format( getString(R.string.special_mailbox_name_sent_fmt), this.name);
+                      }
+    
+                      if (this.messages == null) {
+                          this.messages = new ArrayList<MessageInfoHolder>();
+                      }
+    
+                      this.lastChecked = folder.getLastChecked();
+    
+                      String mess = truncateStatus(folder.getStatus());
+    
+                      this.status = mess;
+    
+                      this.unreadMessageCount = unreadCount;
+    
+                      try {
+                          folder.close(false);
+                      } catch (MessagingException me) {
+                          Log.e(Email.LOG_TAG, "Folder.close() failed", me);
+                      }
+                  }
+        }
+
 }

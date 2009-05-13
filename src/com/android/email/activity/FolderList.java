@@ -48,8 +48,8 @@ import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.MessagingController.SORT_TYPE;
-import com.android.email.activity.FolderList.FolderListAdapter.FolderInfoHolder;
-import com.android.email.activity.MessageList.MessageListAdapter.MessageInfoHolder;
+import com.android.email.activity.FolderList.FolderInfoHolder;
+import com.android.email.activity.MessageList.MessageInfoHolder;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Address;
@@ -841,72 +841,11 @@ public class FolderList extends ListActivity {
                       FolderInfoHolder holder = getFolder(folder.getName());
     
                       if (holder == null) {
-                          holder = new FolderInfoHolder();
+                          holder = new FolderInfoHolder(folder);
                       }
     
                       newFolders.add(holder);
-    
-                      int unreadCount = 0;
-    
-                      try {
-                          folder.open(Folder.OpenMode.READ_WRITE);
-                          unreadCount = folder.getUnreadMessageCount();
-                      } catch (MessagingException me) {
-                          Log.e(Email.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
-                      }
-    
-                      holder.name = folder.getName();
-    
-                      if (holder.name.equalsIgnoreCase(Email.INBOX)) {
-                          holder.displayName = getString(R.string.special_mailbox_name_inbox);
-                      } else {
-                          holder.displayName = folder.getName();
-                      }
-    
-                      if (holder.name.equals(mAccount.getOutboxFolderName())) {
-                          holder.displayName = String.format(
-                                                   getString(R.string.special_mailbox_name_outbox_fmt),
-                                                   holder.name);
-                          holder.outbox = true;
-                      }
-    
-                      if (holder.name.equals(mAccount.getDraftsFolderName())) {
-                          holder.displayName = String.format(
-                                                   getString(R.string.special_mailbox_name_drafts_fmt),
-                                                   holder.name);
-                      }
-    
-                      if (holder.name.equals(mAccount.getTrashFolderName())) {
-                          holder.displayName = String.format(
-                                                   getString(R.string.special_mailbox_name_trash_fmt),
-                                                   holder.name);
-                      }
-    
-                      if (holder.name.equals(mAccount.getSentFolderName())) {
-                          holder.displayName = String.format(
-                                                   getString(R.string.special_mailbox_name_sent_fmt),
-                                                   holder.name);
-                      }
-    
-                      if (holder.messages == null) {
-                          holder.messages = new ArrayList<MessageInfoHolder>();
-                      }
-    
-                      holder.lastChecked = folder.getLastChecked();
-    
-                      String mess = truncateStatus(folder.getStatus());
-    
-                      holder.status = mess;
-    
-                      holder.unreadMessageCount = unreadCount;
-    
-                      try {
-                          folder.close(false);
-                      } catch (MessagingException me) {
-                          Log.e(Email.LOG_TAG, "Folder.close() failed", me);
-                      }
-                  }
-    
+                    } 
                   mFolders.clear();
     
                   mFolders.addAll(newFolders);
@@ -925,6 +864,7 @@ public class FolderList extends ListActivity {
     
                   mRefreshRemote = false;
               }
+              
     
               public void synchronizeMailboxStarted(Account account, String folder) {
                   if (!account.equals(mAccount)) {
@@ -1167,8 +1107,9 @@ public class FolderList extends ListActivity {
             return true;
         }
 
+    }
 
-        public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
+    public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
             public String name;
 
             public String displayName;
@@ -1203,6 +1144,63 @@ public class FolderList extends ListActivity {
                 } else
                     return s1.compareToIgnoreCase(s2);
             }
+           
+             public FolderInfoHolder(Folder folder) {
+                    populate(folder);
+             }
+             public void populate (Folder folder) {  
+                      int unreadCount = 0;
+    
+                      try {
+                          folder.open(Folder.OpenMode.READ_WRITE);
+                          unreadCount = folder.getUnreadMessageCount();
+                      } catch (MessagingException me) {
+                          Log.e(Email.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
+                      }
+    
+                      this.name = folder.getName();
+    
+                      if (this.name.equalsIgnoreCase(Email.INBOX)) {
+                          this.displayName = getString(R.string.special_mailbox_name_inbox);
+                      } else {
+                          this.displayName = folder.getName();
+                      }
+    
+                      if (this.name.equals(mAccount.getOutboxFolderName())) {
+                          this.displayName = String.format( getString(R.string.special_mailbox_name_outbox_fmt), this.name);
+                          this.outbox = true;
+                      }
+    
+                      if (this.name.equals(mAccount.getDraftsFolderName())) {
+                          this.displayName = String.format( getString(R.string.special_mailbox_name_drafts_fmt), this.name);
+                      }
+    
+                      if (this.name.equals(mAccount.getTrashFolderName())) {
+                          this.displayName = String.format( getString(R.string.special_mailbox_name_trash_fmt), this.name);
+                      }
+    
+                      if (this.name.equals(mAccount.getSentFolderName())) {
+                          this.displayName = String.format( getString(R.string.special_mailbox_name_sent_fmt), this.name);
+                      }
+    
+                      if (this.messages == null) {
+                          this.messages = new ArrayList<MessageInfoHolder>();
+                      }
+    
+                      this.lastChecked = folder.getLastChecked();
+    
+                      String mess = truncateStatus(folder.getStatus());
+    
+                      this.status = mess;
+    
+                      this.unreadMessageCount = unreadCount;
+    
+                      try {
+                          folder.close(false);
+                      } catch (MessagingException me) {
+                          Log.e(Email.LOG_TAG, "Folder.close() failed", me);
+                      }
+                  }
         }
 
 
@@ -1215,4 +1213,3 @@ public class FolderList extends ListActivity {
         }
 
     }
-}
