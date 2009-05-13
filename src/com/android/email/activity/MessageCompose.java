@@ -314,8 +314,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             /*
              * This data gets used in onCreate, so grab it here instead of onRestoreIntstanceState
              */
-            mSourceMessageProcessed =
-                savedInstanceState.getBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, false);
+            mSourceMessageProcessed = savedInstanceState.getBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, false);
         }
 
         Intent intent = getIntent();
@@ -372,13 +371,11 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             }
 
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-            if (text != null)
-            {
+            if (text != null) {
             	mMessageContentView.setText(text);
             }
             String subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
-            if (subject != null)
-            {
+            if (subject != null) {
             	mSubjectView.setText(subject);
             }
             
@@ -408,7 +405,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             mSubjectView.setText(extraSubject);
             mMessageContentView.setText(extraText);
 
-            if (extraEmail != null){
+            if (extraEmail != null) {
                 arraySize = extraEmail.length;
                 if (arraySize > 1){
               	    for (i=0; i < (arraySize-1); i++) {
@@ -420,9 +417,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             mToView.setText(addressList);
             addressList = "";
 
-            if (extraBcc != null){
+            if (extraBcc != null) {
                 arraySize = extraBcc.length;
-                if (arraySize > 1){
+                if (arraySize > 1) {
               	    for (i=0; i < (arraySize-1); i++) {
                         addressList += extraBcc[i]+", ";
                     }
@@ -451,16 +448,14 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         }
         
         Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
-        if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null)
-        {
+        if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null) {
           Log.d(Email.LOG_TAG, "Setting message ANSWERED flag to true");
           // TODO: Really, we should wait until we send the message, but that would require saving the original
           // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
             MessagingController.getInstance(getApplication()).setMessageFlag(mAccount, mFolder, mSourceMessageUid, Flag.ANSWERED, true);
         }
 
-        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
-                ACTION_FORWARD.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
+        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_FORWARD.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
             /*
              * If we need to load the message we add ourself as a message listener here
              * so we can kick it off. Normally we add in onResume but we don't
@@ -468,14 +463,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
              * There is no harm in adding twice.
              */
             MessagingController.getInstance(getApplication()).addListener(mListener);
-            MessagingController.getInstance(getApplication()).loadMessageForView(
-                    mAccount,
-                    mFolder,
-                    mSourceMessageUid,
-                    null);
+            MessagingController.getInstance(getApplication()).loadMessageForView( mAccount, mFolder, mSourceMessageUid, null);
         }
-        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) ||
-                    ACTION_EDIT_DRAFT.equals(action)) {
+        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
             //change focus to message body.
             mMessageContentView.requestFocus();
         }
@@ -516,8 +506,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, attachments);
         outState.putBoolean(STATE_KEY_CC_SHOWN, mCcView.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccView.getVisibility() == View.VISIBLE);
-        outState.putBoolean(STATE_KEY_QUOTED_TEXT_SHOWN,
-                mQuotedTextBar.getVisibility() == View.VISIBLE);
+        outState.putBoolean(STATE_KEY_QUOTED_TEXT_SHOWN, mQuotedTextBar.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, mSourceMessageProcessed);
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
     }
@@ -525,22 +514,17 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        ArrayList<Parcelable> attachments = (ArrayList<Parcelable>)
-                savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
+        ArrayList<Parcelable> attachments = (ArrayList<Parcelable>) savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
         mAttachments.removeAllViews();
         for (Parcelable p : attachments) {
             Uri uri = (Uri) p;
             addAttachment(uri);
         }
 
-        mCcView.setVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN) ?
-                View.VISIBLE : View.GONE);
-        mBccView.setVisibility(savedInstanceState.getBoolean(STATE_KEY_BCC_SHOWN) ?
-                View.VISIBLE : View.GONE);
-        mQuotedTextBar.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?
-                View.VISIBLE : View.GONE);
-        mQuotedText.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?
-                View.VISIBLE : View.GONE);
+        mCcView.setVisibility(savedInstanceState.getBoolean(STATE_KEY_CC_SHOWN) ?  View.VISIBLE : View.GONE);
+        mBccView.setVisibility(savedInstanceState.getBoolean(STATE_KEY_BCC_SHOWN) ?  View.VISIBLE : View.GONE);
+        mQuotedTextBar.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?  View.VISIBLE : View.GONE);
+        mQuotedText.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?  View.VISIBLE : View.GONE);
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
         mDraftNeedsSaving = false;
     }
@@ -601,15 +585,12 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         if (mQuotedTextBar.getVisibility() == View.VISIBLE) {
             String action = getIntent().getAction();
             String quotedText = null;
-            Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage,
-                    "text/plain");
+            Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage, "text/plain");
             if (part != null) {
                 quotedText = MimeUtility.getTextFromPart(part);
             }
             if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) {
-                text += String.format(
-                        getString(R.string.message_compose_reply_header_fmt),
-                        Address.toString(mSourceMessage.getFrom()));
+                text += String.format( getString(R.string.message_compose_reply_header_fmt), Address.toString(mSourceMessage.getFrom()));
                 if (quotedText != null) {
                     text += quotedText.replaceAll("(?m)^", ">");
                 }
@@ -619,10 +600,8 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                         getString(R.string.message_compose_fwd_header_fmt),
                         mSourceMessage.getSubject(),
                         Address.toString(mSourceMessage.getFrom()),
-                        Address.toString(
-                                mSourceMessage.getRecipients(RecipientType.TO)),
-                        Address.toString(
-                                mSourceMessage.getRecipients(RecipientType.CC)));
+                        Address.toString( mSourceMessage.getRecipients(RecipientType.TO)),
+                        Address.toString( mSourceMessage.getRecipients(RecipientType.CC)));
                 if (quotedText != null) {
                     text += quotedText;
                 }
@@ -648,15 +627,10 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
             for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
                 Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
-                MimeBodyPart bp = new MimeBodyPart(
-                        new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
-                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"",
-                        attachment.contentType,
-                        attachment.name));
+                MimeBodyPart bp = new MimeBodyPart( new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
+                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"", attachment.contentType, attachment.name));
                 bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
-                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                        String.format("attachment;\n filename=\"%s\"",
-                        attachment.name));
+                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format("attachment;\n filename=\"%s\"", attachment.name));
                 mp.addBodyPart(bp);
             }
 
@@ -726,16 +700,11 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
              * TODO Is it possible for us to be editing a draft with a null source message? Don't
              * think so. Could probably remove below check.
              */
-            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction())
-                    && mSourceMessageUid != null) {
+            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null) {
                 /*
                  * We're sending a previously saved draft, so delete the old draft first.
                  */
-                MessagingController.getInstance(getApplication()).deleteMessage(
-                        mAccount,
-                        mFolder,
-                        mSourceMessage,
-                        null);
+                MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mFolder, mSourceMessage, null);
             }
             MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
         }
@@ -750,12 +719,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     }
 
     private void onSend() {
-        if (getAddresses(mToView).length == 0 &&
-                getAddresses(mCcView).length == 0 &&
-                getAddresses(mBccView).length == 0) {
+        if (getAddresses(mToView).length == 0 && getAddresses(mCcView).length == 0 && getAddresses(mBccView).length == 0) {
             mToView.setError(getString(R.string.message_compose_error_no_recipients));
-            Toast.makeText(this, getString(R.string.message_compose_error_no_recipients),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
         }
         sendOrSaveMessage(false);
@@ -766,11 +732,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private void onDiscard() {
         if (mSourceMessageUid != null) {
             if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null) {
-                MessagingController.getInstance(getApplication()).deleteMessage(
-                        mAccount,
-                        mFolder,
-                        mSourceMessage,
-                        null);
+                MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mFolder, mSourceMessage, null);
             }
         }
         mHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
@@ -818,12 +780,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         attachment.uri = uri;
 
         if (attachment.size == -1 || attachment.name == null) {
-            Cursor metadataCursor = contentResolver.query(
-                    uri,
-                    new String[]{ OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE },
-                    null,
-                    null,
-                    null);
+            Cursor metadataCursor = contentResolver.query( uri, new String[]{ OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE }, null, null, null);
             if (metadataCursor != null) {
                 try {
                     if (metadataCursor.moveToFirst()) {
@@ -844,10 +801,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             attachment.name = uri.getLastPathSegment();
         }
 
-        View view = getLayoutInflater().inflate(
-                R.layout.message_compose_attachment,
-                mAttachments,
-                false);
+        View view = getLayoutInflater().inflate( R.layout.message_compose_attachment, mAttachments, false);
         TextView nameView = (TextView)view.findViewById(R.id.attachment_name);
         ImageButton delete = (ImageButton)view.findViewById(R.id.attachment_delete);
         nameView.setText(attachment.name);
@@ -957,8 +911,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         String action = getIntent().getAction();
         if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) {
             try {
-                if (message.getSubject() != null &&
-                        !message.getSubject().toLowerCase().startsWith("re:")) {
+                if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("re:")) {
                     mSubjectView.setText("Re: " + message.getSubject());
                 }
                 else {
@@ -1000,8 +953,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     if (text != null) {
                         mQuotedTextBar.setVisibility(View.VISIBLE);
                         mQuotedText.setVisibility(View.VISIBLE);
-                        mQuotedText.loadDataWithBaseURL("email://", text, part.getMimeType(),
-                                "utf-8", null);
+                        mQuotedText.loadDataWithBaseURL("email://", text, part.getMimeType(), "utf-8", null);
                     }
                 }
             }
@@ -1014,8 +966,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         }
         else if (ACTION_FORWARD.equals(action)) {
             try {
-                if (message.getSubject() != null &&
-                        !message.getSubject().toLowerCase().startsWith("fwd:")) {
+                if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("fwd:")) {
                     mSubjectView.setText("Fwd: " + message.getSubject());
                 }
                 else {
@@ -1031,8 +982,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     if (text != null) {
                         mQuotedTextBar.setVisibility(View.VISIBLE);
                         mQuotedText.setVisibility(View.VISIBLE);
-                        mQuotedText.loadDataWithBaseURL("email://", text, part.getMimeType(),
-                                "utf-8", null);
+                        mQuotedText.loadDataWithBaseURL("email://", text, part.getMimeType(), "utf-8", null);
                     }
                 }
                 if (!mSourceMessageProcessed) {
@@ -1084,14 +1034,12 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         }
 
         @Override
-        public void loadMessageForViewFinished(Account account, String folder, String uid,
-                Message message) {
+        public void loadMessageForViewFinished(Account account, String folder, String uid, Message message) {
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
         }
 
         @Override
-        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-                final Message message) {
+        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid, final Message message) {
             mSourceMessage = message;
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -1101,22 +1049,14 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         }
 
         @Override
-        public void loadMessageForViewFailed(Account account, String folder, String uid,
-                final String message) {
+        public void loadMessageForViewFailed(Account account, String folder, String uid, final String message) {
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
             // TODO show network error
         }
 
         @Override
-        public void messageUidChanged(
-                Account account,
-                String folder,
-                String oldUid,
-                String newUid) {
-            if (account.equals(mAccount)
-                    && (folder.equals(mFolder)
-                            || (mFolder == null
-                                    && folder.equals(mAccount.getDraftsFolderName())))) {
+        public void messageUidChanged( Account account, String folder, String oldUid, String newUid) {
+            if (account.equals(mAccount) && (folder.equals(mFolder) || (mFolder == null && folder.equals(mAccount.getDraftsFolderName())))) {
                 if (oldUid.equals(mDraftUid)) {
                     mDraftUid = newUid;
                 }
