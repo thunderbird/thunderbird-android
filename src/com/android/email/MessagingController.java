@@ -33,7 +33,7 @@ import android.os.PowerManager.WakeLock;
 import android.util.Config;
 import android.util.Log;
 
-import com.android.email.activity.FolderMessageList;
+import com.android.email.activity.FolderList;
 import com.android.email.mail.Address;
 import com.android.email.mail.Body;
 import com.android.email.mail.FetchProfile;
@@ -515,8 +515,7 @@ public class MessagingController implements Runnable {
      * @param listener
      * @throws MessagingException
      */
-    public void listLocalMessages(final Account account, final String folder,
-            MessagingListener listener) {
+    public void listLocalMessages(final Account account, final String folder, MessagingListener listener) {
         for (MessagingListener l : getListeners()) {
             l.listLocalMessagesStarted(account, folder);
         }
@@ -1730,7 +1729,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
         final Flag flag,
         final boolean newState) {
       // TODO: put this into the background, but right now that causes odd behavior
-      // because the FolderMessageList doesn't have its own cache of the flag states
+      // because the MessageList doesn't have its own cache of the flag states
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder localFolder = localStore.getFolder(folder);
@@ -2196,8 +2195,9 @@ s             * critical data as fast as possible, and then we'll fill in the de
               
               Notification notif = new Notification(R.drawable.stat_notify_email_generic,
                   mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
-              
-              Intent i = FolderMessageList.actionHandleAccountIntent(mApplication, account, account.getErrorFolderName());
+             
+              // JRV XXX TODO - do we want to notify MessageList too? 
+              Intent i = FolderList.actionHandleAccountIntent(mApplication, account, account.getErrorFolderName());
 
               PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
 
@@ -2637,7 +2637,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
                           if (account.isShowOngoing()) {
                             Notification notif = new Notification(R.drawable.ic_menu_refresh, 
                                 context.getString(R.string.notification_bg_send_ticker, account.getDescription()), System.currentTimeMillis());                         
-                            Intent intent = FolderMessageList.actionHandleAccountIntent(context, account, Email.INBOX);
+                            // JRV XXX TODO - do we want to notify MessageList too? 
+                            Intent intent = FolderList.actionHandleAccountIntent(context, account, Email.INBOX);
                             PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
                               notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_send_title), 
                                   account.getDescription() , pi);
@@ -2755,7 +2756,8 @@ s             * critical data as fast as possible, and then we'll fill in the de
   				                    		Notification notif = new Notification(R.drawable.ic_menu_refresh, 
   				                    		    context.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()), 
   				                    		    System.currentTimeMillis());                         
-  			                          Intent intent = FolderMessageList.actionHandleAccountIntent(context, account, Email.INBOX);
+                                      // JRV XXX TODO - do we want to notify MessageList too? 
+  			                          Intent intent = FolderList.actionHandleAccountIntent(context, account, Email.INBOX);
   			                          PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
   			                            notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_sync_title), account.getDescription()
   			                                + context.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
