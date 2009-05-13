@@ -19,7 +19,7 @@ import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
-import com.android.email.activity.FolderMessageList;
+import com.android.email.activity.FolderList;
 
 public class AccountSetupNames extends Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
@@ -89,7 +89,7 @@ public class AccountSetupNames extends Activity implements OnClickListener {
         }
         mAccount.setName(mName.getText().toString());
         mAccount.save(Preferences.getPreferences(this));
-        FolderMessageList.actionHandleAccount(this, mAccount, Email.INBOX);
+        FolderList.actionHandleAccount(this, mAccount, Email.INBOX);
         finish();
     }
 
