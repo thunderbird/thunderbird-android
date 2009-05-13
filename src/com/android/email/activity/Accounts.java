@@ -328,7 +328,6 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     }
 
     private void onCheckMail(Account account) {
-
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, null);
     }
     
