@@ -273,10 +273,8 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
             mSelectedContextAccount = (Account) icicle.getSerializable("selectedContextAccount");
         }
         
-        if (icicle != null)
-        {
-          Map<String, Integer> oldUnreadMessageCounts = 
-            (Map<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
+        if (icicle != null) {
+          Map<String, Integer> oldUnreadMessageCounts = (Map<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
           if (oldUnreadMessageCounts != null) {
             unreadMessageCounts.putAll(oldUnreadMessageCounts);
           }
@@ -301,8 +299,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     }
     
     @Override
-    public void onPause()
-    {
+    public void onPause() {
       super.onPause();
       MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
@@ -315,8 +312,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
           mHandler.progress(Window.PROGRESS_START);
         }
         
-        for (Account account : accounts)
-        {
+        for (Account account : accounts) {
           MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
           pendingWork.put(account, "true");
         }
@@ -340,15 +336,13 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
       MessagingController.getInstance(getApplication()).clearAllPending(account);
     }
   	
-    private void onEmptyTrash(Account account)
-  	{
+    private void onEmptyTrash(Account account) {
   		MessagingController.getInstance(getApplication()).emptyTrash(account, null);
   	}
 
 
     private void onCompose() {
-        Account defaultAccount =
-                Preferences.getPreferences(this).getDefaultAccount();
+        Account defaultAccount = Preferences.getPreferences(this).getDefaultAccount();
         if (defaultAccount != null) {
             MessageCompose.actionCompose(this, defaultAccount);
         }
@@ -384,15 +378,12 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     private Dialog createRemoveAccountDialog() {
         return new AlertDialog.Builder(this)
             .setTitle(R.string.account_delete_dlg_title)
-            .setMessage(getString(R.string.account_delete_dlg_instructions_fmt,
-                    mSelectedContextAccount.getDescription()))
+            .setMessage(getString(R.string.account_delete_dlg_instructions_fmt, mSelectedContextAccount.getDescription()))
             .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dismissDialog(DIALOG_REMOVE_ACCOUNT);
                     try {
-                        ((LocalStore)Store.getInstance(
-                                mSelectedContextAccount.getLocalStoreUri(),
-                                getApplication())).delete();
+                        ((LocalStore)Store.getInstance( mSelectedContextAccount.getLocalStoreUri(), getApplication())).delete();
                     } catch (Exception e) {
                             // Ignore
                     }
@@ -441,14 +432,12 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         return true;
     }
     
-    private void onCompact(Account account)
-    {
+    private void onCompact(Account account) {
       mHandler.workingAccount(account, R.string.compacting_account);
       MessagingController.getInstance(getApplication()).compact(account, null);
     }
     
-    private void onClear(Account account)
-    {
+    private void onClear(Account account) {
       mHandler.workingAccount(account, R.string.clearing_account);
       MessagingController.getInstance(getApplication()).clear(account, null);
     }
@@ -513,8 +502,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     private String getVersionNumber() {
             String version = "?";
             try {
-                    PackageInfo pi =
-getPackageManager().getPackageInfo(getPackageName(), 0);
+                    PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
                     version = pi.versionName;
             } catch (PackageManager.NameNotFoundException e) {
                     //Log.e(TAG, "Package name not found", e);
@@ -585,13 +573,11 @@ getPackageManager().getPackageInfo(getPackageName(), 0);
             }
 
             Integer unreadMessageCount = unreadMessageCounts.get(account.getUuid());
-            if (unreadMessageCount != null)
-            {
+            if (unreadMessageCount != null) {
               holder.newMessageCount.setText(Integer.toString(unreadMessageCount));
               holder.newMessageCount.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
             }
-            else
-            {
+            else {
               //holder.newMessageCount.setText("-");
               holder.newMessageCount.setVisibility(View.GONE); 
             }
