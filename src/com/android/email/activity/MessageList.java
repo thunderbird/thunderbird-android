@@ -971,7 +971,7 @@ public class MessageList extends ListActivity {
 
                                               MessagingController.getInstance(getApplication()).markAllMessagesRead(mSelectedContextAccount, mSelectedContextFolder.name);
 
-                          for (MessageInfoHolder holder : mSelectedContextFolder.messages) {
+                                              for (MessageInfoHolder holder : mSelectedContextFolder.messages) {
                                                   holder.read = true;
                                               }
 
@@ -1328,6 +1328,7 @@ public class MessageList extends ListActivity {
             addOrUpdateMessage(f, message, sort, notify);
         }
 
+        // XXX TODO - make this not use a for loop
         public MessageInfoHolder getMessage( String messageUid) {
             for (MessageInfoHolder message : mAdapter.messages) {
                 if (message.uid.equals(messageUid)) {
@@ -1404,14 +1405,8 @@ public class MessageList extends ListActivity {
          }
          public View getItemView(int position, View convertView, ViewGroup parent) {
                 MessageInfoHolder message = (MessageInfoHolder) getItem(position);
-                View view;
-
-                if ((convertView != null) && (convertView.getId() != R.layout.message_list_item_footer)) {
-                    view = convertView;
-                } else {
-                    view = mInflater.inflate(R.layout.message_list_item, parent, false);
-                }
-
+                View view = mInflater.inflate(R.layout.message_list_item, parent, false);
+                
                 MessageViewHolder holder = (MessageViewHolder) view.getTag();
 
                 if (holder == null) {
