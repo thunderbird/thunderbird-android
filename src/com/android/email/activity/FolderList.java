@@ -655,6 +655,10 @@ public class FolderList extends ListActivity {
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
         switch (item.getItemId()) {
+        case R.id.open_folder:
+            onOpenFolder(folder);
+            break;
+
         case R.id.send_messages:
             Log.i(Email.LOG_TAG, "sending pending messages from " + folder.name);
 
@@ -692,7 +696,10 @@ public class FolderList extends ListActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
         getMenuInflater().inflate(R.menu.folder_context, menu);
+        
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
+        
+        menu.setHeaderTitle((CharSequence) folder.displayName);
 
         if (!folder.name.equals(mAccount.getTrashFolderName()))
             menu.findItem(R.id.empty_trash).setVisible(false);
