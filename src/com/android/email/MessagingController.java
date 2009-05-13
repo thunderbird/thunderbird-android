@@ -777,9 +777,9 @@ s             * critical data as fast as possible, and then we'll fill in the de
                                      * ENVELOPE, only size.
                                      */
                                       if (isMessageSuppressed(account, folder, message) == false) {
+                                    Log.i(Email.LOG_TAG, "place 2 About to notify listeners that we got a new message "+ account + folder + message.getUid());
                                         for (MessagingListener l : getListeners()) {
-                                            l.synchronizeMailboxNewMessage(account, folder,
-                                                localFolder.getMessage(message.getUid()));
+                                            l.synchronizeMailboxNewMessage(account, folder, localFolder.getMessage(message.getUid()));
                                         }
                                     }
                                 }
@@ -1032,8 +1032,9 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     // viewed.
                     localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 }
-                if (isMessageSuppressed(account, folder, message) == false)
-                {
+
+                if (isMessageSuppressed(account, folder, message) == false) {
+                    Log.i(Email.LOG_TAG, "About to notify listeners that we got a new message "+ account + folder + message.getUid());
                     // Update the listener with what we've found
                     for (MessagingListener l : getListeners()) {
                         l.synchronizeMailboxNewMessage( account, folder, localFolder.getMessage(message.getUid()));
