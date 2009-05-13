@@ -1185,6 +1185,19 @@ public class MessageList extends ListActivity {
         private MessagingListener mListener = new MessagingListener() {
 
 
+            @Override
+			public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
+				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
+                    return;
+                }
+
+                addOrUpdateMessage(folder, message, true, true);
+            }
+            
+            @Override
+            public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message) {
+                removeMessage(getMessage( message.getUid()));
+            } 
 
             @Override
 			public void listLocalMessagesStarted(Account account, String folder)
