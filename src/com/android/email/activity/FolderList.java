@@ -407,13 +407,10 @@ public class FolderList extends ListActivity {
         mListView.setLongClickable(true);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-                if (itemPosition == 0 ) {
+                if (id == 0 ) {
                     return;
                 }
-                if (v.getTag() != null) { 
-                    FolderViewHolder holder = (FolderViewHolder) v.getTag();
-                    MessageList.actionHandleFolder(xxx,mAccount, holder.rawFolderName);
-                }
+                MessageList.actionHandleFolder(xxx,mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name);
             }
 
 
@@ -720,14 +717,18 @@ public class FolderList extends ListActivity {
 
     class FolderListAdapter extends BaseAdapter {
         private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
+        
+        public Object getItem(long position) {
+            return getItem((int)position);
+        }
 
         public Object getItem(int position) {
-            return mFolders.get(position-1);
+            return mFolders.get(position - 1);
         }
 
 
         public long getItemId(int position) {
-            return position -1 ;
+            return position ;
         }
         private static final int NON_MESSAGE_ITEMS = 1;
         public int getCount() {

@@ -506,13 +506,16 @@ public class MessageList extends ListActivity {
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-                    // position is zero indexed. sigh
-                    if (itemPosition +1 == (mAdapter.getCount() )) {
-                        onRefresh(FORCE_REMOTE_SYNC);
+                    if (itemPosition == 0 ) {
                         return;
                     }
-                    MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(itemPosition -1);
-                    onOpenMessage( message);
+                    else if ((itemPosition+1) == (mAdapter.getCount() )) {
+                        onRefresh(FORCE_REMOTE_SYNC);
+                        return;
+                    } else { 
+                        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem( itemPosition-1);
+                        onOpenMessage( message);
+                    }
             }
 
 
@@ -1169,9 +1172,16 @@ public class MessageList extends ListActivity {
     
     
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        getMenuInflater().inflate(R.menu.message_list_context, menu);
-        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
+        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position - 1);
     
+        if (message == null) {
+            return;
+        }
+
+        getMenuInflater().inflate(R.menu.message_list_context, menu);
+   
+        menu.setHeaderTitle((CharSequence) message.subject);
+
         if (message.read) {
             menu.findItem(R.id.mark_as_read).setTitle( R.string.mark_as_unread_action);
         }
@@ -1387,6 +1397,10 @@ public class MessageList extends ListActivity {
                     Log.i(Email.LOG_TAG,"getItemId("+position+") ",e);
                 }
             return -1;
+        }
+
+        public Object getItem(long position) {
+            return getItem((int)position);
         }
 
         public Object getItem(int position) {

@@ -181,8 +181,7 @@
             <src path="${gen-folder}" />
             <classpath>
                 <fileset dir="${external-libs-folder}" includes="*.jar"/>
-                <fileset dir="${sdk-location}/platforms/android-1.1/tools/lib/" includes="*.jar"/>
-                <fileset dir="${sdk-location}/platforms/android-1.1/data/" includes="*.jar"/>
+                <fileset dir="${sdk-location}/platforms/android-1.5/" includes="**/*.jar"/>
                 <pathelement path="${main-out-classes}"/>
             </classpath>
          </javac>
