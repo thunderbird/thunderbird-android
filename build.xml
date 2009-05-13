@@ -151,7 +151,7 @@
             <arg value="-I" />
             <arg path="${android-jar}" />
         </exec>
-        <copy overwrite="true" file="src/com/fsck/k9/R.java" tofile="src/com/android/email/R.java">
+        <copy overwrite="true" file="gen/com/fsck/k9/R.java" tofile="gen/com/android/email/R.java">
             <filterset begintoken="package " endtoken=";">
                 <filter token="com.fsck.k9" value="package com.android.email;"/>
             </filterset>
