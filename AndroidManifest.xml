@@ -98,7 +98,7 @@
             android:label="@string/accounts_title">
         </activity>
         <activity
-            android:name="com.android.email.activity.FolderMessageList">
+            android:name="com.android.email.activity.FolderList">
             <intent-filter>
                 <action android:name="android.intent.action.view" />
                 <data
@@ -107,6 +107,9 @@
                 />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.email.activity.MessageList">
         </activity>
         <activity
             android:name="com.android.email.activity.MessageView">
