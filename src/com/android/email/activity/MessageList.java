@@ -502,8 +502,7 @@ for (Message message : messages) {
         }
     }
 
-    public static void actionHandleAccount(Context context, Account account,
-                                           String initialFolder) {
+    public static void actionHandleFolder(Context context, Account account, String initialFolder) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_ACCOUNT, account);
 
@@ -514,14 +513,7 @@ for (Message message : messages) {
         context.startActivity(intent);
     }
 
-    public static void actionHandleAccount(Context context, Account account) {
-
-        actionHandleAccount(context, account, null);
-    }
-
-    public static Intent actionHandleAccountIntent(Context context,
-
-            Account account, String initialFolder) {
+    public static Intent actionHandleFolderIntent(Context context, Account account, String initialFolder) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Email.INTENT_DATA_URI_PREFIX + INTENT_DATA_PATH_SUFFIX + "/" + account.getAccountNumber()), context, MessageList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_ACCOUNT, account);
@@ -532,12 +524,6 @@ for (Message message : messages) {
         }
 
         return intent;
-    }
-
-    public static Intent actionHandleAccountIntent(Context context,
-
-            Account account) {
-        return actionHandleAccountIntent(context, account, null);
     }
 
     @Override
@@ -602,7 +588,7 @@ for (Message message : messages) {
             mRestoringState = false;
         }
 
-        setTitle(mAccount.getDescription());
+        setTitle(mInitialFolder+ " " +mAccount.getDescription());
     }
 
     private void onRestoreListState(Bundle savedInstanceState) {
