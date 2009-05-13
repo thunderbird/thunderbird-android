@@ -868,35 +868,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
             ArrayList<Message> largeMessages = new ArrayList<Message>();
             ArrayList<Message> smallMessages = new ArrayList<Message>();
             for (Message message : unsyncedMessages) {
-                /*
-                 * Some (POP3) servers only support full message download
-                 * and not header/partial so messages may already be downloaded
-                 */
-                if (message.isSet(Flag.X_DOWNLOADED_FULL)) {
-                    try {
-                        // Store the updated message locally
-                        localFolder.appendMessages(new Message[]{ message });
-                        Message localMessage = localFolder.getMessage(message.getUid());
-
-                        // Set a flag indicating this message has now be fully downloaded
-                        localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                        if (isMessageSuppressed(account, folder, localMessage) == false) {
-                            // Update the listener with what we've found
-                            for (MessagingListener l : getListeners()) {
-                                l.synchronizeMailboxNewMessage( account, folder, localMessage);
-                            }
-                        }
-                    } catch (MessagingException me) {
-                        addErrorMessage(account, me);
-                    }
-                }
-                /*
-                 * Sort the messages into two buckets, small and large. Small messages will be
-                 * downloaded fully and large messages will be downloaded in parts. By sorting
-                 * into two buckets we can pipeline the commands for each set of messages
-                 * into a single command to the server saving lots of round trips.
-                 */
-                else if (message.getSize() > (MAX_SMALL_MESSAGE_SIZE)) {
+                if (message.getSize() > (MAX_SMALL_MESSAGE_SIZE)) {
                     largeMessages.add(message);
                 } else {
                     smallMessages.add(message);
