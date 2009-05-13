@@ -41,7 +41,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.webkit.CacheManager;
+import android.webkit.CacheManager;
 import android.webkit.UrlInterceptHandler;
+import android.webkit.PluginData;
 import android.webkit.WebView;
 import android.webkit.CacheManager.CacheResult;
 import android.widget.Button;
@@ -116,6 +118,7 @@ public class MessageView extends Activity
     
     private Menu optionsMenu = null;
     
+    public PluginData getPluginData(String x, Map<String,String> y) {return null;}
     
     private DateFormat getDateFormat()
     {
