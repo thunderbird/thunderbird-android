@@ -98,6 +98,8 @@ public class FolderList extends ListActivity {
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
 
+    private static final boolean REFRESH_REMOTE = true;
+
     private ListView mListView;
 
     private FolderListAdapter mAdapter;
@@ -488,7 +490,7 @@ public class FolderList extends ListActivity {
         mAccount.refresh(Preferences.getPreferences(this));
         markAllRefresh();
 
-        onRefresh(false);
+        onRefresh( !REFRESH_REMOTE );
 
         NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifMgr.cancel(mAccount.getAccountNumber());
@@ -606,7 +608,7 @@ public class FolderList extends ListActivity {
             return true;
 
         case R.id.list_folders:
-            onRefresh(true);
+            onRefresh( REFRESH_REMOTE );
 
             return true;
 
@@ -755,8 +757,6 @@ public class FolderList extends ListActivity {
 
        private MessagingListener mListener = new MessagingListener() {
 
-
-
               @Override
               public void listFoldersStarted(Account account) {
                   if (!account.equals(mAccount)) {
@@ -792,17 +792,6 @@ public class FolderList extends ListActivity {
               }
     
               @Override
-              public void accountReset(Account account) {
-                  if (!account.equals(mAccount)) {
-                      return;
-                  }
-    
-                  for (FolderInfoHolder folder : mFolders) {
-                      folder.needsRefresh = true;
-                  }
-              }
-    
-              @Override
               public void listFolders(Account account, Folder[] folders) {
                   if (!account.equals(mAccount)) {
                       return;
@@ -811,11 +800,11 @@ public class FolderList extends ListActivity {
                   ArrayList<FolderInfoHolder> newFolders = new ArrayList<FolderInfoHolder>();
     
                   Account.FolderMode aMode = account.getFolderDisplayMode();
-                  Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
     
                   for (Folder folder : folders) {
                       try {
-                          folder.refresh(prefs);
+                          folder.refresh( Preferences.getPreferences(getApplication().getApplicationContext()) );
+
                           Folder.FolderClass fMode = folder.getDisplayClass();
     
                           if ((aMode == Account.FolderMode.FIRST_CLASS && fMode != Folder.FolderClass.FIRST_CLASS)
@@ -828,16 +817,18 @@ public class FolderList extends ListActivity {
                       } catch (MessagingException me) {
                           Log.e(Email.LOG_TAG, "Couldn't get prefs to check for displayability of folder " + folder.getName(), me);
                       }
-    
-    
+
                       FolderInfoHolder holder = getFolder(folder.getName());
-    
+
                       if (holder == null) {
                           holder = new FolderInfoHolder(folder);
+                      } else {
+                        holder.populate(folder);
+
                       }
     
                       newFolders.add(holder);
-                    } 
+                  } 
                   mFolders.clear();
     
                   mFolders.addAll(newFolders);
@@ -846,6 +837,17 @@ public class FolderList extends ListActivity {
                   mRefreshRemote = false;
               }
               
+ 
+              @Override
+              public void accountReset(Account account) {
+                  if (!account.equals(mAccount)) {
+                      return;
+                  }
+    
+                  for (FolderInfoHolder folder : mFolders) {
+                      folder.needsRefresh = true;
+                  }
+              }
     
               public void synchronizeMailboxStarted(Account account, String folder) {
                   if (!account.equals(mAccount)) {
@@ -880,7 +882,7 @@ public class FolderList extends ListActivity {
                   // mHandler.folderStatus(folder, null);
                   mHandler.folderSyncing(null);
     
-                  onRefresh(false);
+                  onRefresh( ! REFRESH_REMOTE );
               }
     
               @Override
@@ -921,7 +923,7 @@ public class FolderList extends ListActivity {
                       return;
                   }
     
-                  onRefresh(false);
+                  onRefresh( ! REFRESH_REMOTE);
               }
     
               @Override
@@ -930,7 +932,7 @@ public class FolderList extends ListActivity {
                       return;
                   }
     
-                  onRefresh(false);
+                  onRefresh( !REFRESH_REMOTE);
               }
     
               @Override
@@ -941,7 +943,7 @@ public class FolderList extends ListActivity {
     
                   mHandler.sendingOutbox(false);
     
-                  onRefresh(false);
+                  onRefresh( !REFRESH_REMOTE);
               }
     
               @Override
