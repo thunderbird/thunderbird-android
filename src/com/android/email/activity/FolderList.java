@@ -191,11 +191,10 @@ public class FolderList extends ListActivity {
             switch (msg.what) {
             case MSG_PROGRESS:
                 setProgressBarIndeterminateVisibility(msg.arg1 != 0);
-
                 break;
-                case MSG_DATA_CHANGED:
-                    mAdapter.notifyDataSetChanged();
-                    break;
+            case MSG_DATA_CHANGED:
+                 mAdapter.notifyDataSetChanged();
+                 break;
 
             case MSG_FOLDER_LOADING: {
                 FolderInfoHolder folder = mAdapter.getFolder((String) msg.obj);
@@ -209,10 +208,8 @@ public class FolderList extends ListActivity {
 
             case MSG_ACCOUNT_SIZE_CHANGED: {
                 Long[] sizes = (Long[])msg.obj;
-                String toastText = getString(R.string.account_size_changed, mAccount.getDescription(),
-                                             SizeFormatter.formatSize(getApplication(), sizes[0]), SizeFormatter.formatSize(getApplication(), sizes[1]));
-                ;
-
+                String toastText = getString(R.string.account_size_changed, mAccount.getDescription(), SizeFormatter.formatSize(getApplication(), sizes[0]), SizeFormatter.formatSize(getApplication(), sizes[1]));
+                
                 Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                 toast.show();
                 break;
@@ -234,8 +231,7 @@ public class FolderList extends ListActivity {
                 dispString = mAccount.getDescription();
 
                 if (folderName != null) {
-                    dispString += " (" + getString(R.string.status_loading)
-                                  + folderName + ")";
+                    dispString += " (" + getString(R.string.status_loading) + folderName + ")";
                 }
 
                 setTitle(dispString);
@@ -263,11 +259,9 @@ public class FolderList extends ListActivity {
         }
 
         public void synchronizeMessages(FolderInfoHolder folder, Message[] messages) {
-
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_SYNC_MESSAGES;
-            msg.obj = new Object[]
-                      { folder, messages };
+            msg.obj = new Object[] { folder, messages };
             sendMessage(msg);
         }
 
@@ -307,8 +301,7 @@ public class FolderList extends ListActivity {
         public void folderSyncing(String folder) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_FOLDER_SYNCING;
-            msg.obj = new String[]
-                      { folder };
+            msg.obj = new String[] { folder };
             sendMessage(msg);
         }
 
