@@ -97,9 +97,9 @@ public class FolderList extends ListActivity {
 
     private static final String EXTRA_ACCOUNT = "account";
 
-    private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
-
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
+
+    private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
 
     private ListView mListView;
 
@@ -445,9 +445,6 @@ public class FolderList extends ListActivity {
 
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
-
-        // Take the initial folder into account only if we are *not* restoring the
-        // activity already
 
         if (savedInstanceState == null) {
             mInitialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
@@ -821,7 +818,7 @@ public class FolderList extends ListActivity {
                   Account.FolderMode aMode = account.getFolderDisplayMode();
                   Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
     
-                                          for (Folder folder : folders) {
+                  for (Folder folder : folders) {
                       try {
                           folder.refresh(prefs);
                           Folder.FolderClass fMode = folder.getDisplayClass();
@@ -1013,25 +1010,6 @@ public class FolderList extends ListActivity {
             return folderHolder;
         }
 
-        /**
-        * Gets the group position of the given folder or returns -1 if the folder
-        * is not found.
-        * 
-         * @param folder
-         * @return
-         */
-        public int getFolderPosition(String folder) {
-            for (int i = 0, count = getCount(); i < count; i++) {
-                FolderInfoHolder holder = (FolderInfoHolder) getSelector(i);
-
-                if (holder != null && holder.name.equals(folder)) {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
         public View getView(int itemPosition, View convertView, ViewGroup parent) {
             FolderInfoHolder folder = (FolderInfoHolder) getSelector(itemPosition);
             View view;
@@ -1090,18 +1068,6 @@ public class FolderList extends ListActivity {
 
             return view;
         }
-
-        public int getChildrenCount(int itemPosition) {
-            FolderInfoHolder folder = (FolderInfoHolder) getSelector(itemPosition);
-
-            if (folder == null || folder.messages == null) {
-                return 0;
-            }
-
-            return folder.messages.size() + 1;
-        }
-
-
 
         public boolean hasStableIds() {
             return true;
