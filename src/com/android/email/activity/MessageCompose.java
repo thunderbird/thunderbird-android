@@ -581,7 +581,10 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
          */
 
         String text = mMessageContentView.getText().toString();
-
+        if (!this.mSourceMessageProcessed) {
+            text = appendSignature(text);
+        }
+        
         if (mQuotedTextBar.getVisibility() == View.VISIBLE) {
             String action = getIntent().getAction();
             String quotedText = null;
@@ -606,10 +609,6 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     text += quotedText;
                 }
             }
-        }
-
-        if (!mSourceMessageProcessed) {
-            text = appendSignature(text);
         }
 
         TextBody body = new TextBody(text);
