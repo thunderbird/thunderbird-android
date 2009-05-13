@@ -670,7 +670,7 @@ public class FolderList extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.folder_message_list_option, menu);
+        getMenuInflater().inflate(R.menu.folder_list_option, menu);
         return true;
     }
 
@@ -1099,7 +1099,7 @@ public class FolderList extends ListActivity {
             if (convertView != null) {
                 view = convertView;
             } else {
-                view = mInflater.inflate(R.layout.folder_message_list_group, parent, false);
+                view = mInflater.inflate(R.layout.folder_list_item, parent, false);
             }
 
             FolderViewHolder holder = (FolderViewHolder) view.getTag();

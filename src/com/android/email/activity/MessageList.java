@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ExpandableListActivity;
+import android.app.ListActivity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,12 +31,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.android.email.Account;
 import com.android.email.Email;
@@ -87,7 +87,7 @@ import java.util.concurrent.TimeUnit;
  * not even then.
  */
 
-public class MessageList extends ExpandableListActivity {
+public class MessageList extends ListActivity {
 
     private static final String INTENT_DATA_PATH_SUFFIX = "/accounts";
 
@@ -103,15 +103,8 @@ public class MessageList extends ExpandableListActivity {
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
 
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
-
-    private static final String STATE_KEY_LIST = "com.android.email.activity.folderlist_expandableListState";
-
-    private static final String STATE_KEY_EXPANDED_GROUP = "com.android.email.activity.folderlist_expandedGroup";
-
-    private static final String STATE_KEY_EXPANDED_GROUP_SELECTION = "com.android.email.activity.folderlist_expandedGroupSelection";
-
-    // private static final int UPDATE_FOLDER_ON_EXPAND_INTERVAL_MS = (1000 * 60 *
-    // 3);
+    private static final String STATE_KEY_LIST = "com.android.email.activity.messagelist_state";
+    private static final String STATE_KEY_SELECTION = "com.android.email.activity.messagelist_selection";
 
     private static final int[] colorChipResIds = new int[] {
                 R.drawable.appointment_indicator_leftside_1,
@@ -137,11 +130,13 @@ public class MessageList extends ExpandableListActivity {
                 R.drawable.appointment_indicator_leftside_21,
             };
 
-    private ExpandableListView mListView;
+    private ListView mListView;
 
     private int colorChipResId;
 
     private MessageListAdapter mAdapter;
+
+    private FolderInfoHolder mCurrentFolder;
 
     private LayoutInflater mInflater;
 
@@ -154,7 +149,6 @@ public class MessageList extends ExpandableListActivity {
      */
     private String mInitialFolder;
 
-    private int mExpandedGroup = -1;
 
     private boolean mRestoringState;
 
@@ -245,22 +239,9 @@ public class MessageList extends ExpandableListActivity {
 
                 break;
 
-            case MSG_EXPAND_GROUP:
-                mListView.expandGroup(msg.arg1);
-
-                break;
-
-                /*
-                * The following functions modify the state of the adapter's underlying
-                * list and must be run here, in the main thread, so that
-                * notifyDataSetChanged is run before any further requests are made to
-                * the adapter.
-                 */
             case MSG_FOLDER_LOADING: {
-                FolderInfoHolder folder = mAdapter.getFolder((String) msg.obj);
-
-                if (folder != null) {
-                    folder.loading = msg.arg1 != 0;
+                if (mCurrentFolder.name == msg.obj) {
+                    mCurrentFolder.loading = msg.arg1 != 0;
                     mAdapter.notifyDataSetChanged();
                 }
 
@@ -300,7 +281,7 @@ public class MessageList extends ExpandableListActivity {
                 Message[] messages = (Message[])((Object[]) msg.obj)[1];
                 folder.messages.clear();
 
-for (Message message : messages) {
+                for (Message message : messages) {
                     mAdapter.addOrUpdateMessage(folder, message, false, false);
                 }
 
@@ -407,22 +388,6 @@ for (Message message : messages) {
             sendEmptyMessage(MSG_DATA_CHANGED);
         }
 
-        public void expandGroup(int groupPosition) {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_EXPAND_GROUP;
-            msg.arg1 = groupPosition;
-            sendMessage(msg);
-        }
-
-//  public void folderStatus(String folder, String status)
-//  {
-//   android.os.Message msg = new android.os.Message();
-//   msg.what = MSG_FOLDER_STATUS;
-//   msg.obj = new String[]
-//   { folder, status };
-//   sendMessage(msg);
-//  }
-
         public void folderSyncing(String folder) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_FOLDER_SYNCING;
@@ -474,8 +439,7 @@ for (Message message : messages) {
 
             try {
                 try {
-                    Store localStore = Store.getInstance(mAccount.getLocalStoreUri(),
-                                                         getApplication());
+                    Store localStore = Store.getInstance(mAccount.getLocalStoreUri(), getApplication());
                     LocalFolder localFolder = (LocalFolder) localStore.getFolder(mFolder);
 
                     if (localFolder.getMessageCount() == 0 && localFolder.getLastChecked() <= 0) {
@@ -533,7 +497,7 @@ for (Message message : messages) {
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-        mListView = getExpandableListView();
+        mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
         registerForContextMenu(mListView);
@@ -543,9 +507,6 @@ for (Message message : messages) {
         * slow.
          */
         mListView.setSaveEnabled(false);
-
-        getExpandableListView().setGroupIndicator(
-            getResources().getDrawable(R.drawable.expander_ic_folder));
 
         mInflater = getLayoutInflater();
 
@@ -580,6 +541,8 @@ for (Message message : messages) {
             mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
         }
 
+        mCurrentFolder = mAdapter.getFolder(mInitialFolder);
+
         setListAdapter(mAdapter);
 
         if (savedInstanceState != null) {
@@ -592,22 +555,14 @@ for (Message message : messages) {
     }
 
     private void onRestoreListState(Bundle savedInstanceState) {
-        final int expandedGroup = savedInstanceState.getInt(
-                                      STATE_KEY_EXPANDED_GROUP, -1);
 
-        if (expandedGroup >= 0 && mAdapter.getGroupCount() > expandedGroup) {
-            mListView.expandGroup(expandedGroup);
-            long selectedChild = savedInstanceState.getLong(
-                                     STATE_KEY_EXPANDED_GROUP_SELECTION, -1);
+            int selectedChild = savedInstanceState.getInt( STATE_KEY_SELECTION, -1);
 
-            if (selectedChild != ExpandableListView.PACKED_POSITION_VALUE_NULL) {
-                mListView.setSelection(mListView.getFlatListPosition(selectedChild));
+            if (selectedChild != 0 ){
+                mListView.setSelection(selectedChild);
             }
-        }
 
-        mListView.onRestoreInstanceState(savedInstanceState
-
-                                         .getParcelable(STATE_KEY_LIST));
+        mListView.onRestoreInstanceState(savedInstanceState.getParcelable(STATE_KEY_LIST));
     }
 
     @Override
@@ -618,8 +573,7 @@ for (Message message : messages) {
     @Override
     public void onPause() {
         super.onPause();
-        MessagingController.getInstance(getApplication()).removeListener(
-            mAdapter.mListener);
+        MessagingController.getInstance(getApplication()).removeListener( mAdapter.mListener);
     }
 
     /**
@@ -635,8 +589,7 @@ for (Message message : messages) {
         sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
         sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
 
-        MessagingController.getInstance(getApplication()).addListener(
-            mAdapter.mListener);
+        MessagingController.getInstance(getApplication()).addListener( mAdapter.mListener);
         mAccount.refresh(Preferences.getPreferences(this));
         markAllRefresh();
 
@@ -652,45 +605,7 @@ for (Message message : messages) {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(STATE_KEY_LIST, mListView.onSaveInstanceState());
-        outState.putInt(STATE_KEY_EXPANDED_GROUP, mExpandedGroup);
-        outState.putLong(STATE_KEY_EXPANDED_GROUP_SELECTION, mListView
-                         .getSelectedPosition());
-    }
-
-    @Override
-    public void onGroupCollapse(int groupPosition) {
-        super.onGroupCollapse(groupPosition);
-        mExpandedGroup = -1;
-    }
-
-    @Override
-    public void onGroupExpand(int groupPosition) {
-
-        Log.i(Email.LOG_TAG, "onGroupExpand(" + groupPosition + "), mRestoringState = " + mRestoringState);
-        super.onGroupExpand(groupPosition);
-
-        if (mExpandedGroup != -1 && mExpandedGroup != groupPosition) {
-            mListView.collapseGroup(mExpandedGroup);
-        }
-
-        mExpandedGroup = groupPosition;
-
-        if (!mRestoringState) {
-            /*
-             * Scroll the selected item to the top of the screen.
-             */
-            int position = mListView.getFlatListPosition(ExpandableListView
-                           .getPackedPositionForGroup(groupPosition));
-
-            mListView.setSelectionFromTop(position, 0);
-        }
-
-        final FolderInfoHolder folder = (FolderInfoHolder)
-
-                                        mAdapter.getGroup(groupPosition);
-
-        if (folder.messages.size() == 0 || folder.needsRefresh)
-            threadPool.execute(new FolderUpdateWorker(folder, false));
+        outState.putInt(STATE_KEY_SELECTION, mListView .getSelectedItemPosition());
     }
 
 
@@ -716,18 +631,10 @@ for (Message message : messages) {
         }
         }//switch
 
-        long packedPosition = mListView.getSelectedPosition();
-
-        int group = ExpandableListView
-                    .getPackedPositionGroup(packedPosition);
-
-        int child = ExpandableListView
-                    .getPackedPositionChild(packedPosition);
+        int position = mListView.getSelectedItemPosition();
 
         try {
-            if (group >= 0 && child >= 0) {
-
-                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(group, child);
+                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
 
                 if (message != null) {
                     switch (keyCode) {
@@ -750,37 +657,29 @@ for (Message message : messages) {
                     case KeyEvent.KEYCODE_Z: { onToggleRead(message); return true; }
                     }
                 }
-            }
         } finally {
             return super.onKeyDown(keyCode, event);
         }
     }//onKeyDown
 
 
-    @Override
-    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
-                                int childPosition, long id) {
-        FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getGroup(groupPosition);
+    // XXX TODO make this look like FolderList -- jrv
+    public boolean onItemClick(ListView parent, View v,  int position, long id) {
 
-        if (!folder.outbox && childPosition == folder.messages.size() && !folder.loading) {
-            if (folder.status == null) {
-                MessagingController.getInstance(getApplication()).loadMoreMessages(
-                    mAccount, folder.name, mAdapter.mListener);
+        if (!mCurrentFolder.outbox && position == mCurrentFolder.messages.size() && !mCurrentFolder.loading) {
+            if (mCurrentFolder.status == null) {
+                MessagingController.getInstance(getApplication()).loadMoreMessages( mAccount, mCurrentFolder.name, mAdapter.mListener);
                 return false;
             } else {
-                MessagingController.getInstance(getApplication()).synchronizeMailbox(
-                    mAccount, folder.name, mAdapter.mListener);
+                MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, mCurrentFolder.name, mAdapter.mListener);
                 return false;
             }
-        } else if (childPosition >= folder.messages.size()) {
+        } else if (position >= mCurrentFolder.messages.size()) {
             return false;
         }
 
-        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(
-
-                                        groupPosition, childPosition);
-
-        onOpenMessage(folder, message);
+        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
+        onOpenMessage(mCurrentFolder, message);
 
         return true;
     }
@@ -794,12 +693,10 @@ for (Message message : messages) {
 
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                MessagingController.getInstance(getApplication()).listFolders(mAccount,
-                        forceRemote, mAdapter.mListener);
+                MessagingController.getInstance(getApplication()).listFolders(mAccount, forceRemote, mAdapter.mListener);
 
                 if (forceRemote) {
-                    MessagingController.getInstance(getApplication())
-                    .sendPendingMessages(mAccount, null);
+                    MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
                 }
             }
         }
@@ -830,9 +727,7 @@ for (MessageInfoHolder holder : folder.messages) {
                 folderUids.add(holder.uid);
             }
 
-            MessageView.actionView(this, mAccount, folder.name, message.uid,
-
-                                   folderUids);
+            MessageView.actionView(this, mAccount, folder.name, message.uid, folderUids);
         }
     }
 
@@ -1166,10 +1061,6 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
 
                 holder.message.getFolder().getName(), holder.uid, !holder.read);
         holder.read = !holder.read;
-        //The handler already notified as we have a listener registered with the messaging controller
-        //mHandler.dataChanged();
-
-        //  onRefresh(false);
     }
 
     private void onToggleFlag(MessageInfoHolder holder) {
@@ -1285,28 +1176,18 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.folder_message_list_option, menu);
+        getMenuInflater().inflate(R.menu.message_list_option, menu);
         return true;
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) item
-                                             .getMenuInfo();
-        int groupPosition = ExpandableListView
-                            .getPackedPositionGroup(info.packedPosition);
-        int childPosition = ExpandableListView
-                            .getPackedPositionChild(info.packedPosition);
-        FolderInfoHolder folder = (FolderInfoHolder) mAdapter
-                                  .getGroup(groupPosition);
-
-        if (childPosition >= 0 && childPosition < mAdapter.getChildrenCount(groupPosition)) {
-            MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getChild(
-                                           groupPosition, childPosition);
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
+        MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(info.position);
 
             switch (item.getItemId()) {
             case R.id.open:
-                onOpenMessage(folder, holder);
+                onOpenMessage(mCurrentFolder, holder);
 
                 break;
 
@@ -1355,45 +1236,29 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
 
                 break;
 
-            }
-        } else {
-            switch (item.getItemId()) {
-            case R.id.send_messages:
-                Log.i(Email.LOG_TAG, "sending pending messages from " + folder.name);
-
-                MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
-
-                break;
-
             case R.id.check_mail:
-                Log.i(Email.LOG_TAG, "refresh folder " + folder.name);
+                Log.i(Email.LOG_TAG, "refresh folder " + mCurrentFolder.name);
 
-                threadPool.execute(new FolderUpdateWorker(folder, true));
+                threadPool.execute(new FolderUpdateWorker(mCurrentFolder, true));
 
                 break;
 
             case R.id.folder_settings:
-                Log.i(Email.LOG_TAG, "edit folder settings for " + folder.name);
-
-                onEditFolder(mAccount, folder.name);
+                onEditFolder(mAccount, mCurrentFolder.name);
 
                 break;
 
             case R.id.empty_trash:
-                Log.i(Email.LOG_TAG, "empty trash");
-
                 onEmptyTrash(mAccount);
 
                 break;
 
             case R.id.mark_all_as_read:
-                Log.i(Email.LOG_TAG, "mark all unread messages as read " + folder.name);
-
-                onMarkAllAsRead(mAccount, folder);
+                Log.i(Email.LOG_TAG, "mark all unread messages as read " + mCurrentFolder.name);
+                onMarkAllAsRead(mAccount, mCurrentFolder);
 
                 break;
             }
-        }
 
         return super.onContextItemSelected(item);
     }
@@ -1402,71 +1267,33 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
         MessagingController.getInstance(getApplication()).sendAlternate(this, account, holder.message);
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenuInfo menuInfo) {
+    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
-
-        if (ExpandableListView.getPackedPositionType(info.packedPosition) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-            long packedPosition = info.packedPosition;
-            int groupPosition = ExpandableListView
-                                .getPackedPositionGroup(packedPosition);
-            int childPosition = ExpandableListView
-                                .getPackedPositionChild(packedPosition);
-            FolderInfoHolder folder = (FolderInfoHolder) mAdapter
-                                      .getGroup(groupPosition);
-//   if (folder.outbox)
-//   {
-//                return;
-//            }
-
-            if (childPosition < folder.messages.size()) {
-                getMenuInflater().inflate(R.menu.folder_message_list_context, menu);
-                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getChild(
-                                                groupPosition, childPosition);
-
-                if (message.read) {
-                    menu.findItem(R.id.mark_as_read).setTitle(
-                        R.string.mark_as_unread_action);
-                }
-
-                if (message.flagged) {
-                    menu.findItem(R.id.flag).setTitle(
-                        R.string.unflag_action);
-                }
-
-                if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false) {
-                    menu.findItem(R.id.copy).setVisible(false);
-                }
-
-                if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false) {
-                    menu.findItem(R.id.move).setVisible(false);
-                }
-            }
-        } else if (ExpandableListView.getPackedPositionType(info.packedPosition) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-            getMenuInflater().inflate(R.menu.folder_context, menu);
-
-            long packedPosition = info.packedPosition;
-            int groupPosition = ExpandableListView
-                                .getPackedPositionGroup(packedPosition);
-            FolderInfoHolder folder = (FolderInfoHolder) mAdapter
-                                      .getGroup(groupPosition);
-
-            if (!folder.name.equals(mAccount.getTrashFolderName()))
-                menu.findItem(R.id.empty_trash).setVisible(false);
-
-            if (folder.outbox) {
-                menu.findItem(R.id.check_mail).setVisible(false);
-            } else {
-                menu.findItem(R.id.send_messages).setVisible(false);
-            }
-
-            menu.setHeaderTitle(R.string.folder_context_menu_title);
+    
+    
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        getMenuInflater().inflate(R.menu.message_list_context, menu);
+        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
+    
+        if (message.read) {
+            menu.findItem(R.id.mark_as_read).setTitle(
+                R.string.mark_as_unread_action);
+        }
+    
+        if (message.flagged) {
+            menu.findItem(R.id.flag).setTitle(
+                R.string.unflag_action);
+        }
+    
+        if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false) {
+            menu.findItem(R.id.copy).setVisible(false);
+        }
+    
+        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false) {
+            menu.findItem(R.id.move).setVisible(false);
         }
     }
-
-
+    
     private String truncateStatus(String mess) {
         if (mess != null && mess.length() > 27) {
             mess = mess.substring(0, 27);
@@ -1475,7 +1302,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
         return mess;
     }
 
-    class MessageListAdapter extends BaseExpandableListAdapter {
+    class MessageListAdapter extends BaseAdapter {
         private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
 
         private MessagingListener mListener = new MessagingListener() {
@@ -1502,26 +1329,6 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                                                   }
 
                                                   @Override
-                                                  public void listFoldersFinished(Account account) {
-                                                      if (!account.equals(mAccount)) {
-                                                          return;
-                                                      }
-
-                                                      mHandler.progress(false);
-
-                                                      mHandler.dataChanged();
-
-                                                      if (mInitialFolder != null && Email.FOLDER_NONE.equals(mInitialFolder) == false) {
-                                                          int groupPosition = getFolderPosition(mInitialFolder);
-                                                          mInitialFolder = null;
-
-                                                          if (groupPosition != -1) {
-                                                              mHandler.expandGroup(groupPosition);
-                                                          }
-                                                      }
-                                                  }
-
-                                                  @Override
                                                   public void accountReset(Account account) {
                                                       if (!account.equals(mAccount)) {
                                                           return;
@@ -1532,6 +1339,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                                                       }
                                                   }
 
+                                                    // JRV  XXX TODO - this method really needs to be renamed
                                                   @Override
                                                   public void listFolders(Account account, Folder[] folders) {
                                                       if (!account.equals(mAccount)) {
@@ -1652,13 +1460,10 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                                                        * Now we need to refresh any folders that are currently expanded. We do this
                                                        * in case the status or number of messages has changed.
                                                        */
+                                                              
 
-                                                      for (int i = 0, count = getGroupCount(); i < count; i++) {
-                                                          final FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getGroup(i);
-
-                                                          if (mListView.isGroupExpanded(i))
-                                                              threadPool.execute(new FolderUpdateWorker(folder, mRefreshRemote));
-                                                      }
+            
+                                                    threadPool.execute(new FolderUpdateWorker(mCurrentFolder, mRefreshRemote));
 
                                                       mRefreshRemote = false;
                                                   }
@@ -1853,7 +1658,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                                                           FolderInfoHolder holder = getFolder(folder);
 
                                                           if (holder != null) {
-                                      for (MessageInfoHolder message : holder.messages) {
+                                                              for (MessageInfoHolder message : holder.messages) {
                                                                   if (message.uid.equals(oldUid)) {
                                                                       message.uid = newUid;
                                                                       message.message.setUid(newUid);
@@ -1881,7 +1686,7 @@ for (FolderInfoHolder folder : mAdapter.mFolders) {
                 return;
             }
 
-for (MessageInfoHolder m : f.messages) {
+            for (MessageInfoHolder m : f.messages) {
                 removeMessage(folder, m.uid);
             }
 
@@ -1918,8 +1723,7 @@ for (MessageInfoHolder m : f.messages) {
             addOrUpdateMessage(folder, message, true, true);
         }
 
-        private void addOrUpdateMessage(FolderInfoHolder folder, Message message,
-                                        boolean sort, boolean notify) {
+        private void addOrUpdateMessage(FolderInfoHolder folder, Message message, boolean sort, boolean notify) {
             MessageInfoHolder m = getMessage(folder, message.getUid());
 
             if (m == null) {
@@ -1949,9 +1753,8 @@ for (MessageInfoHolder m : f.messages) {
             addOrUpdateMessage(f, message, sort, notify);
         }
 
-        public MessageInfoHolder getMessage(FolderInfoHolder folder,
-                                            String messageUid) {
-for (MessageInfoHolder message : folder.messages) {
+        public MessageInfoHolder getMessage(FolderInfoHolder folder, String messageUid) {
+            for (MessageInfoHolder message : folder.messages) {
                 if (message.uid.equals(messageUid)) {
                     return message;
                 }
@@ -1960,169 +1763,52 @@ for (MessageInfoHolder message : folder.messages) {
             return null;
         }
 
-        public int getGroupCount() {
-            return mFolders.size();
-        }
-
-        public long getGroupId(int groupPosition) {
-            return groupPosition;
-        }
-
-        public Object getGroup(int groupPosition) {
-            try {
-                return mFolders.get(groupPosition);
-            } catch (Exception e) {
-                Log.e(Email.LOG_TAG, "getGroup(" + groupPosition + "), but mFolders.size() = " + mFolders.size(), e);
-                return null;
-            }
-        }
-
         public FolderInfoHolder getFolder(String folder) {
-            FolderInfoHolder folderHolder = null;
-
-            for (int i = 0, count = getGroupCount(); i < count; i++) {
-                FolderInfoHolder holder = (FolderInfoHolder) getGroup(i);
+            for (int i = 0, count = getCount(); i < count; i++) {
+                FolderInfoHolder holder = (FolderInfoHolder) getItem(i);
 
                 if (holder != null && holder.name != null && holder.name.equals(folder)) {
-                    folderHolder = holder;
+                     return holder;
                 }
             }
 
-            return folderHolder;
+            return null;
         }
 
-        /**
-        * Gets the group position of the given folder or returns -1 if the folder
-        * is not found.
-        * 
-         * @param folder
-         * @return
-         */
-        public int getFolderPosition(String folder) {
-            for (int i = 0, count = getGroupCount(); i < count; i++) {
-                FolderInfoHolder holder = (FolderInfoHolder) getGroup(i);
 
-                if (holder != null && holder.name.equals(folder)) {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        public View getGroupView(int groupPosition, boolean isExpanded,
-                                 View convertView, ViewGroup parent) {
-            FolderInfoHolder folder = (FolderInfoHolder) getGroup(groupPosition);
-            View view;
-
-            if (convertView != null) {
-                view = convertView;
-            } else {
-                view = mInflater.inflate(R.layout.folder_message_list_group, parent,
-                                         false);
-            }
-
-            FolderViewHolder holder = (FolderViewHolder) view.getTag();
-
-            if (holder == null) {
-                holder = new FolderViewHolder();
-                holder.folderName = (TextView) view.findViewById(R.id.folder_name);
-                holder.newMessageCount = (TextView) view
-                                         .findViewById(R.id.folder_unread_message_count);
-                holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
-                view.setTag(holder);
-            }
-
-            if (folder == null) {
-                return view;
-            }
-
-            holder.folderName.setText(folder.displayName);
-
-            String statusText = "";
-
-            if (folder.loading) {
-                statusText = getString(R.string.status_loading);
-            } else if (folder.status != null) {
-                statusText = folder.status;
-            } else if (folder.lastChecked != 0) {
-                Date lastCheckedDate = new Date(folder.lastChecked);
-
-                statusText = (getDateFormat().format(lastCheckedDate) + " " + getTimeFormat()
-                              .format(lastCheckedDate));
-            }
-
-            if (statusText != null) {
-                holder.folderStatus.setText(statusText);
-                holder.folderStatus.setVisibility(View.VISIBLE);
-            } else {
-                holder.folderStatus.setText(null);
-                holder.folderStatus.setVisibility(View.GONE);
-            }
-
-            if (folder.unreadMessageCount != 0) {
-                holder.newMessageCount.setText(Integer
-                                               .toString(folder.unreadMessageCount));
-                holder.newMessageCount.setVisibility(View.VISIBLE);
-            } else {
-                holder.newMessageCount.setVisibility(View.GONE);
-            }
-
-            return view;
-        }
-
-        public int getChildrenCount(int groupPosition) {
-            FolderInfoHolder folder = (FolderInfoHolder) getGroup(groupPosition);
-
-            if (folder == null || folder.messages == null) {
+        public int getCount() {
+            if (mCurrentFolder == null || mCurrentFolder.messages == null) {
                 return 0;
             }
 
-            return folder.messages.size() + 1;
+            return mCurrentFolder.messages.size() + 1;
         }
 
-        public long getChildId(int groupPosition, int childPosition) {
-            FolderInfoHolder folder = (FolderInfoHolder) getGroup(groupPosition);
-
-            if (childPosition < folder.messages.size()) {
-                MessageInfoHolder holder = folder.messages.get(childPosition);
+        public long getItemId(int position) {
+                MessageInfoHolder holder = mCurrentFolder.messages.get(position);
                 return ((LocalStore.LocalMessage) holder.message).getId();
-            } else {
-                return -1;
-            }
         }
 
-        public Object getChild(int groupPosition, int childPosition) {
-            FolderInfoHolder folder = null;
-
+        public Object getItem(int position) {
             try {
-                folder = (FolderInfoHolder) getGroup(groupPosition);
-
-                if (folder == null) {
-                    Log.e(Email.LOG_TAG, "Got null folder while retrieving groupPosition " + groupPosition);
-                }
-
-                return folder.messages.get(childPosition);
+                return mCurrentFolder.messages.get(position);
             } catch (Exception e) {
-                Log.e(Email.LOG_TAG, "getChild(" + groupPosition + ", " + childPosition + "), but folder.messages.size() = " + folder.messages.size(), e);
+                Log.e(Email.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mCurrentFolder.messages.size(), e);
                 return null;
             }
         }
 
-        public View getChildView(int groupPosition, int childPosition,
-                                 boolean isLastChild, View convertView, ViewGroup parent) {
-            FolderInfoHolder folder = (FolderInfoHolder) getGroup(groupPosition);
-
-            if (isLastChild) {
+         public View getView(int position, View convertView, ViewGroup parent) {
+            /*
+            if (isLastItem) {
                 View view;
 
                 if ((convertView != null)
-                        && (convertView.getId() == R.layout.folder_message_list_child_footer)) {
+                        && (convertView.getId() == R.layout.message_list_item_footer)) {
                     view = convertView;
                 } else {
-                    view = mInflater.inflate(R.layout.folder_message_list_child_footer,
-                                             parent, false);
-                    view.setId(R.layout.folder_message_list_child_footer);
+                    view = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
+                    view.setId(R.layout.message_list_item_footer);
                 }
 
                 FooterViewHolder holder = (FooterViewHolder) view.getTag();
@@ -2134,11 +1820,11 @@ for (MessageInfoHolder message : folder.messages) {
                     view.setTag(holder);
                 }
 
-                if (folder.loading) {
+                if (mCurrentFolder.loading) {
                     holder.main.setText(getString(R.string.status_loading_more));
                     holder.progress.setVisibility(View.VISIBLE);
                 } else {
-                    if (folder.lastCheckFailed == false) {
+                    if (mCurrentFolder.lastCheckFailed == false) {
                         holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(),
                                                           mAccount.getDisplayCount()));
                     } else {
@@ -2149,17 +1835,16 @@ for (MessageInfoHolder message : folder.messages) {
                 }
 
                 return view;
-            } else {
-                MessageInfoHolder message = (MessageInfoHolder) getChild(groupPosition,
-                                            childPosition);
+            } */
+            // else {
+                MessageInfoHolder message = (MessageInfoHolder) getItem(position);
                 View view;
 
                 if ((convertView != null)
-                        && (convertView.getId() != R.layout.folder_message_list_child_footer)) {
+                        && (convertView.getId() != R.layout.message_list_item_footer)) {
                     view = convertView;
                 } else {
-                    view = mInflater.inflate(R.layout.folder_message_list_child, parent,
-                                             false);
+                    view = mInflater.inflate(R.layout.message_list_item, parent, false);
                 }
 
                 MessageViewHolder holder = (MessageViewHolder) view.getTag();
@@ -2237,15 +1922,15 @@ for (MessageInfoHolder message : folder.messages) {
 //                    holder.status.setText("");
 //                }
                 return view;
-            }
+            //}
         }
 
         public boolean hasStableIds() {
             return true;
         }
 
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return childPosition < getChildrenCount(groupPosition);
+        public boolean isItemSelectable(int position) {
+               return true;
         }
 
         public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
@@ -2350,7 +2035,7 @@ for (MessageInfoHolder message : folder.messages) {
 
                         this.compareCounterparty = Address.toFriendly(message
                                                    .getRecipients(RecipientType.TO));
-                        this.sender = String.format(getString(R.string.folder_message_list_to_fmt), this.compareCounterparty);
+                        this.sender = String.format(getString(R.string.message_list_to_fmt), this.compareCounterparty);
 
                     } else {
                         this.sender = Address.toFriendly(addrs);
@@ -2429,14 +2114,6 @@ for (MessageInfoHolder message : folder.messages) {
                 }
             }
 
-        }
-
-        class FolderViewHolder {
-            public TextView folderName;
-
-            public TextView folderStatus;
-
-            public TextView newMessageCount;
         }
 
         class MessageViewHolder {

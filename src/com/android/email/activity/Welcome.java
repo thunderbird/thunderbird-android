@@ -23,8 +23,9 @@ public class Welcome extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
+            // XXX JRV TODO  undo this debugging line below:
+         startActivity(new Intent(this, Accounts.class)); finish();
         if (accounts.length == 1) {
             MessageList.actionHandleFolder(this, accounts[0], Email.INBOX);
         } else {
