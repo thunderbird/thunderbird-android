@@ -49,36 +49,11 @@
 		android:title="@string/check_mail_action"
 		android:icon="@drawable/ic_menu_refresh"
 	/>
-    <item
-		android:id="@+id/accounts"
-		android:title="@string/accounts_action"
-		android:icon="@drawable/ic_menu_account_list"
-	/>
 	<item
-		android:id="@+id/list_folders"
-		android:title="@string/list_folders_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
-		<item
-		android:id="@+id/empty_trash"
-        android:alphabeticShortcut="e"
-		android:title="@string/empty_trash_action"
-		android:icon="@drawable/ic_menu_delete"
-	/>
-    <item
-		android:id="@+id/account_settings"
-		android:title="@string/account_settings_action"
-		android:icon="@android:drawable/ic_menu_preferences"
-	/>	
-	<item
-		android:id="@+id/compact"
-		android:title="@string/compact_action"
-		android:icon="@drawable/ic_menu_compact"
-	/>
-	<item
-		android:id="@+id/clear"
-		android:title="@string/clear_action"
-		android:icon="@drawable/ic_menu_clear"
+		android:id="@+id/folder_list"
+        android:alphabeticShortcut="q"
+        android:title="@string/folders_action"
+        android:icon="@drawable/ic_menu_close_clear_cancel"
 	/>
 
 
