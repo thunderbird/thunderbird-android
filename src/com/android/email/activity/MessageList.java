@@ -238,8 +238,7 @@ public class MessageList extends ListActivity {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
             case MSG_PROGRESS:
-                setProgressBarIndeterminateVisibility(msg.arg1 != 0);
-
+                showProgressIndicator(msg.arg1 != 0 );
                 break;
 
             case MSG_DATA_CHANGED:
@@ -1155,6 +1154,22 @@ public class MessageList extends ListActivity {
         MessagingController.getInstance(getApplication()).sendAlternate(this, account, holder.message);
     }
 
+    public void showProgressIndicator(boolean status) {
+
+        ProgressBar bar = (ProgressBar)mListView.findViewById( R.id.message_list_progress);
+        if (bar == null) {
+            return;
+        }   
+
+        bar.setIndeterminate(true);
+        if (status) {
+            bar.setVisibility(bar.VISIBLE);
+        } else {
+            bar.setVisibility(bar.INVISIBLE);
+
+        }
+    }
+
     @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
     
@@ -1491,7 +1506,7 @@ public class MessageList extends ListActivity {
 
                 if (holder == null) {
                     holder = new FooterViewHolder();
-                    holder.progress = (ProgressBar) view.findViewById(R.id.progress);
+                    holder.progress = (ProgressBar) view.findViewById(R.id.message_list_progress);
                     holder.main = (TextView) view.findViewById(R.id.main_text);
                     view.setTag(holder);
                 }
