@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -151,7 +152,7 @@ public class MessageList extends ListActivity {
     * Stores the name of the folder that we want to open as soon as possible
     * after load. It is set to null once the folder has been opened once.
      */
-    private String mInitialFolder;
+    private String mFolderName;
 
 
     private boolean mRestoringState;
@@ -274,17 +275,18 @@ public class MessageList extends ListActivity {
             case MSG_SYNC_MESSAGES: {
                 FolderInfoHolder folder = (FolderInfoHolder)((Object[]) msg.obj)[0];
                 Message[] messages = (Message[])((Object[]) msg.obj)[1];
-                folder.messages.clear();
+
+                for(MessageInfoHolder message : mAdapter.messages) {
+                    message.dirty = true;
+                }
 
                 Log.e(Email.LOG_TAG, "Called to synchronize messages! " + messages + folder);
                 for (Message message : messages) {
                     Log.e(Email.LOG_TAG, "Adding or updating message "+message);
-                    mAdapter.addOrUpdateMessage(folder, message, false, false);
+                    mAdapter.addOrUpdateMessage(folder, message, true, true);
                 }
+                mAdapter.removeDirtyMessages();                
 
-                Collections.sort(mAdapter.messages);
-
-                mAdapter.notifyDataSetChanged();
                 break;
             }
 
@@ -468,19 +470,6 @@ public class MessageList extends ListActivity {
         context.startActivity(intent);
     }
 
-    public static Intent actionHandleFolderIntent(Context context, Account account, String folder) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Email.INTENT_DATA_URI_PREFIX + INTENT_DATA_PATH_SUFFIX + "/" + account.getAccountNumber()), context, MessageList.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(EXTRA_ACCOUNT, account);
-        intent.putExtra(EXTRA_CLEAR_NOTIFICATION, true);
-
-        if (folder != null) {
-            intent.putExtra(EXTRA_FOLDER, folder);
-        }
-
-        return intent;
-    }
-
     @Override
 
     public void onCreate(Bundle savedInstanceState) {
@@ -508,13 +497,13 @@ public class MessageList extends ListActivity {
         // activity already
 
         if (savedInstanceState == null) {
-            mInitialFolder = intent.getStringExtra(EXTRA_FOLDER);
+            mFolderName = intent.getStringExtra(EXTRA_FOLDER);
 
-            if (mInitialFolder == null) {
-                mInitialFolder = mAccount.getAutoExpandFolderName();
+            if (mFolderName == null) {
+                mFolderName = mAccount.getAutoExpandFolderName();
             }
         } else {
-            mInitialFolder = savedInstanceState.getString(STATE_CURRENT_FOLDER);
+            mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
         }
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -535,7 +524,7 @@ public class MessageList extends ListActivity {
 
         mAdapter = new MessageListAdapter();
 
-        mCurrentFolder = mAdapter.getFolder(mInitialFolder);
+        mCurrentFolder = mAdapter.getFolder(mFolderName);
 
         setListAdapter(mAdapter);
 
@@ -551,7 +540,7 @@ public class MessageList extends ListActivity {
                     mCurrentFolder.displayName
                     
                     );
-        Log.i(Email.LOG_TAG,"We're about to try to get some messages for "+mInitialFolder);
+        Log.i(Email.LOG_TAG,"We're about to try to get some messages for "+mFolderName);
     }
 
     private void onRestoreListState(Bundle savedInstanceState) {
@@ -589,8 +578,6 @@ public class MessageList extends ListActivity {
         sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
 
         MessagingController.getInstance(getApplication()).addListener( mAdapter.mListener);
-        mAccount.refresh(Preferences.getPreferences(this));
-        markAllRefresh();
 
         onRefresh(false);
 
@@ -616,7 +603,7 @@ public class MessageList extends ListActivity {
         switch (keyCode) {
         case KeyEvent.KEYCODE_C: { onCompose(); return true;}
 
-        case KeyEvent.KEYCODE_Q: { onAccounts(); return true; }
+        case KeyEvent.KEYCODE_Q: { onShowFolderList(); return true; }
 
         case KeyEvent.KEYCODE_O: { onCycleSort(); return true; }
 
@@ -631,7 +618,7 @@ public class MessageList extends ListActivity {
 
         int position = mListView.getSelectedItemPosition();
         try {
-        if (position> 0 ) {
+               if (position >= 0 ) {
                 MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
 
                 if (message != null) {
@@ -673,7 +660,7 @@ public class MessageList extends ListActivity {
 
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                    MessagingController.getInstance(getApplication()).listLocalMessages(mAccount, mInitialFolder,  mAdapter.mListener);
+                MessagingController.getInstance(getApplication()).listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
 
                 if (forceRemote) {
                     MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
@@ -711,13 +698,15 @@ public class MessageList extends ListActivity {
         }
     }
 
-    private void onEditFolder(Account account, String folderName) {
-        FolderSettings.actionSettings(this, account, folderName);
-    }
-
-
-    private void onAccounts() {
-        startActivity(new Intent(this, Accounts.class));
+    private void onShowFolderList() {
+        // If we're a child activity (say because Welcome dropped us straight to the message list
+        // we won't have a parent activity and we'll need to get back to it
+        if (!isChild ()) {
+            Intent folderList = new Intent(this, FolderList.class);
+            folderList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            folderList.putExtra(EXTRA_ACCOUNT, mAccount);
+            startActivity(folderList);
+        }
         finish();
     }
 
@@ -745,9 +734,6 @@ public class MessageList extends ListActivity {
 
     }
 
-    private void markAllRefresh() {
-        mAdapter.mListener.accountReset(mAccount);
-    }
 
     private void onCycleSort() {
         SORT_TYPE[] sorts = SORT_TYPE.values();
@@ -790,7 +776,6 @@ public class MessageList extends ListActivity {
         }
 
         mAdapter.removeMessage(holder);
-
 
         MessagingController.getInstance(getApplication()).deleteMessage(mAccount, holder.message.getFolder().getName(), holder.message, null);
 
@@ -1038,17 +1023,10 @@ public class MessageList extends ListActivity {
         switch (item.getItemId()) {
         case R.id.check_mail:
             checkMail(mAccount);
-
             return true;
 
-        case R.id.list_folders:
-            onRefresh(true);
-
-            return true;
-
-        case R.id.accounts:
-            onAccounts();
-
+        case R.id.folder_list:
+            onShowFolderList();
             return true;
 
         case R.id.compose:
@@ -1159,23 +1137,6 @@ public class MessageList extends ListActivity {
 
                 break;
 
-            case R.id.check_mail:
-                Log.i(Email.LOG_TAG, "refresh folder " + mCurrentFolder.name);
-
-                threadPool.execute(new FolderUpdateWorker(mCurrentFolder, true));
-
-                break;
-
-            case R.id.folder_settings:
-                onEditFolder(mAccount, mCurrentFolder.name);
-
-                break;
-
-            case R.id.mark_all_as_read:
-                Log.i(Email.LOG_TAG, "mark all unread messages as read " + mCurrentFolder.name);
-                onMarkAllAsRead(mAccount, mCurrentFolder);
-
-                break;
             }
 
         return super.onContextItemSelected(item);
@@ -1194,13 +1155,11 @@ public class MessageList extends ListActivity {
         MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
     
         if (message.read) {
-            menu.findItem(R.id.mark_as_read).setTitle(
-                R.string.mark_as_unread_action);
+            menu.findItem(R.id.mark_as_read).setTitle( R.string.mark_as_unread_action);
         }
     
         if (message.flagged) {
-            menu.findItem(R.id.flag).setTitle(
-                R.string.unflag_action);
+            menu.findItem(R.id.flag).setTitle( R.string.unflag_action);
         }
     
         if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false) {
@@ -1262,15 +1221,12 @@ public class MessageList extends ListActivity {
             }
 
             @Override
-			public void listLocalMessages(Account account, String folder,
-					Message[] messages)
-			{
-				if (!account.equals(mAccount))
-				{
+			public void listLocalMessages(Account account, String folder, Message[] messages) {
+				if (!account.equals(mAccount)) {
                     return;
                 }
         
-                if (folder != mInitialFolder) {
+                if (folder != mFolderName) {
                     return;
                 }
                 
@@ -1287,6 +1243,18 @@ public class MessageList extends ListActivity {
             mAttachmentIcon = getResources().getDrawable( R.drawable.ic_mms_attachment_small);
             mAnsweredIcon = getResources().getDrawable( R.drawable.ic_mms_answered_small);
         }
+
+        public void removeDirtyMessages() {
+            Iterator<MessageInfoHolder> iter = messages.iterator();
+                while(iter.hasNext()) {
+                    MessageInfoHolder message = iter.next();
+                    Log.i(Email.LOG_TAG, "I should be removing message "+message);
+                    if (message.dirty) {
+                        iter.remove();
+                        notifyDataSetChanged();
+                }
+            }
+         }
 
         public void removeMessage(MessageInfoHolder holder) {
             if (holder.folder == null) {
@@ -1321,11 +1289,10 @@ public class MessageList extends ListActivity {
             MessageInfoHolder m = getMessage( message.getUid());
 
             if (m == null) {
-            Log.i(Email.LOG_TAG,"calling messages.add");
+                Log.i(Email.LOG_TAG,"calling messages.add");
                 m = new MessageInfoHolder(message, folder);
                 mAdapter.messages.add(m);
             } else {
-                Log.i(Email.LOG_TAG,"calling m.populate");
                 m.populate(message, folder);
             }
 
@@ -1545,6 +1512,8 @@ public class MessageList extends ListActivity {
 
             public boolean read;
 
+            public boolean dirty;
+
             public boolean answered;
 
             public boolean flagged;
@@ -1567,6 +1536,9 @@ public class MessageList extends ListActivity {
                     Date date = message.getSentDate();
                     this.compareDate = date;
                     this.folder = folder;
+
+                    this.dirty = false;
+
 
                     if (Utility.isDateToday(date)) {
                         this.date = getTimeFormat().format(date);
