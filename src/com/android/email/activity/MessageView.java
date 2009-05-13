@@ -464,7 +464,7 @@ public class MessageView extends Activity
                 // TODO this is a spot that should be eventually handled by a MessagingController
                 // thread pool. We want it in a thread but it can't be blocked by the normal
                 // synchronization stuff in MC.
-                MessagingController.getInstance(getApplication()).loadMessageForView(
+                MessagingController.getInstance(getApplication()).loadMessageForViewSynchronous(
                     mAccount,
                     mFolder,
                     mMessageUid,
