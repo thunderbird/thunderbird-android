@@ -567,10 +567,9 @@ public class FolderList extends ListActivity {
     private void onAccounts() {
         // If we're a child activity (say because Welcome dropped us straight to the message list
         // we won't have a parent activity and we'll need to get back to it
-        if (!isChild ()) {
+        if (isTaskRoot()) {
             startActivity(new Intent(this, Accounts.class));
         }
-
         finish();
     }
 
