@@ -78,9 +78,6 @@ import java.util.concurrent.TimeUnit;
  * operations.
  *
  *
- * TODO some things that are slowing us down: Need a way to remove state such as
- * progress bar and per folder progress on resume if the command has completed.
- *
  * TODO Break out seperate functions for: refresh local folders refresh remote
  * folders refresh open folder local messages refresh open folder remote
  * messages
@@ -568,7 +565,12 @@ public class FolderList extends ListActivity {
 
 
     private void onAccounts() {
-        startActivity(new Intent(this, Accounts.class));
+        // If we're a child activity (say because Welcome dropped us straight to the message list
+        // we won't have a parent activity and we'll need to get back to it
+        if (!isChild ()) {
+            startActivity(new Intent(this, Accounts.class));
+        }
+
         finish();
     }
 
@@ -581,8 +583,6 @@ public class FolderList extends ListActivity {
     private FolderInfoHolder mSelectedContextFolder = null;
 
     private void onEmptyTrash(final Account account) {
-        // JRV TODO RE-ENABLE
-        //        mAdapter.removeAllMessages(account.getTrashFolderName());
         mHandler.dataChanged();
 
         MessagingListener listener = new MessagingListener() {
@@ -802,7 +802,7 @@ public class FolderList extends ListActivity {
                       return;
                   }
     
-                                          for (FolderInfoHolder folder : mFolders) {
+                  for (FolderInfoHolder folder : mFolders) {
                       folder.needsRefresh = true;
                   }
               }
