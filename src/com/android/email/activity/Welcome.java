@@ -26,7 +26,7 @@ public class Welcome extends Activity {
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         if (accounts.length == 1) {
-            MessageList.actionHandleFolder(this, accounts[0], Email.INBOX);
+            MessageList.actionHandleFolder(this, accounts[0], accounts[0].getAutoExpandFolderName());
         } else {
             startActivity(new Intent(this, Accounts.class));
         }
