@@ -102,6 +102,8 @@ public class MessageList extends ListActivity {
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
 
 
+    private static final boolean FORCE_REMOTE_SYNC = true;
+
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
@@ -510,7 +512,13 @@ public class MessageList extends ListActivity {
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-                    MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(itemPosition);
+                    Log.i(Email.LOG_TAG,"got a click for "+itemPosition+ " our list size is " +mAdapter.getCount());
+                    // position is zero indexed. sigh
+                    if (itemPosition +1 == (mAdapter.getCount() )) {
+                        onRefresh(FORCE_REMOTE_SYNC);
+                        return;
+                    }
+                    MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(itemPosition -1);
                     onOpenMessage( message);
             }
 
@@ -580,7 +588,7 @@ public class MessageList extends ListActivity {
 
         MessagingController.getInstance(getApplication()).addListener( mAdapter.mListener);
 
-        onRefresh(false);
+        onRefresh(!FORCE_REMOTE_SYNC);
 
         NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifMgr.cancel(mAccount.getAccountNumber());
@@ -664,11 +672,12 @@ public class MessageList extends ListActivity {
 
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                MessagingController.getInstance(getApplication()).listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
-
                 if (forceRemote) {
+                    MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, mFolderName, mAdapter.mListener);
                     MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
                 }
+                MessagingController.getInstance(getApplication()).listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
+
             }
         }
 
@@ -1351,19 +1360,20 @@ public class MessageList extends ListActivity {
         }
         }
 
+        private static final int NON_MESSAGE_ITEMS = 2;
         public int getCount() {
             if (mAdapter.messages == null || mAdapter.messages.size() == 0) {
-                return 0;
+                return NON_MESSAGE_ITEMS ;
             }
 
-            return mAdapter.messages.size()  ;
+            return mAdapter.messages.size() +NON_MESSAGE_ITEMS  ;
         }
 
         public long getItemId(int position) {
                 try {
-                    MessageInfoHolder message = mAdapter.messages.get(position);
-                    if (message!= null) {
-                        return ((LocalStore.LocalMessage)  message.message).getId();
+                    MessageInfoHolder messageHolder =(MessageInfoHolder) getItem(position);
+                    if (messageHolder != null) {
+                        return ((LocalStore.LocalMessage)  messageHolder.message).getId();
                         //return ((LocalStore.LocalMessage) item.message).getId();
                      }
                 } catch ( Exception e) {
@@ -1374,21 +1384,23 @@ public class MessageList extends ListActivity {
 
         public Object getItem(int position) {
             try {
-                return mAdapter.messages.get(position);
+                if (position < mAdapter.messages.size())  {
+                    return mAdapter.messages.get(position);
+                }
             } catch (Exception e) {
                 Log.e(Email.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mAdapter.messages.size(), e);
-                return null;
             }
+                return null;
         }
 
          public View getView(int position, View convertView, ViewGroup parent) {
             
             if (position == 0 ) {
                 return getHeaderView(position, convertView, parent);
-            } else if (position > (getCount() )) {
+            } else if (position == (getCount() -1 )) {
                 return getFooterView(position, convertView, parent);
             } else { 
-               return  getItemView(position, convertView, parent);
+               return  getItemView(position-1, convertView, parent);
             }
         }
        
