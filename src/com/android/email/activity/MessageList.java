@@ -37,6 +37,7 @@ import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -476,6 +477,7 @@ public class MessageList extends ListActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_NO_TITLE); 
 
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
@@ -508,9 +510,8 @@ public class MessageList extends ListActivity {
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-            MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(itemPosition);
-            onOpenMessage( message);
-
+                    MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(itemPosition);
+                    onOpenMessage( message);
             }
 
 
@@ -594,6 +595,9 @@ public class MessageList extends ListActivity {
         outState.putInt(STATE_KEY_SELECTION, mListView .getSelectedItemPosition());
         outState.putString(STATE_CURRENT_FOLDER, mCurrentFolder.name);
     }
+
+
+
 
 
     @Override
@@ -1025,10 +1029,6 @@ public class MessageList extends ListActivity {
             checkMail(mAccount);
             return true;
 
-        case R.id.folder_list:
-            onShowFolderList();
-            return true;
-
         case R.id.compose:
             onCompose();
 
@@ -1355,19 +1355,20 @@ public class MessageList extends ListActivity {
                 return 0;
             }
 
-            return mAdapter.messages.size();
+            return mAdapter.messages.size()  ;
         }
 
         public long getItemId(int position) {
-            long id;
                 try {
-                MessageInfoHolder holder = mAdapter.messages.get(position);
-                id = ((LocalStore.LocalMessage) holder.message).getId();
+                    MessageInfoHolder message = mAdapter.messages.get(position);
+                    if (message!= null) {
+                        return ((LocalStore.LocalMessage)  message.message).getId();
+                        //return ((LocalStore.LocalMessage) item.message).getId();
+                     }
                 } catch ( Exception e) {
                     Log.i(Email.LOG_TAG,"getItemId("+position+") ",e);
-                    id = -1;
                 }
-            return id;
+            return -1;
         }
 
         public Object getItem(int position) {
@@ -1380,41 +1381,28 @@ public class MessageList extends ListActivity {
         }
 
          public View getView(int position, View convertView, ViewGroup parent) {
-            Log.i(Email.LOG_TAG, "in getView("+position+")");
-            if (position > getCount()) {
-                View view;
+            
+            if (position == 0 ) {
+                return getHeaderView(position, convertView, parent);
+            } else if (position > (getCount() )) {
+                return getFooterView(position, convertView, parent);
+            } else { 
+               return  getItemView(position, convertView, parent);
+            }
+        }
+       
 
-                if ((convertView != null) && (convertView.getId() == R.layout.message_list_item_footer)) {
-                    view = convertView;
-                } else {
-                    view = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
-                    view.setId(R.layout.message_list_item_footer);
-                }
+         public View getHeaderView(int position, View convertView, ViewGroup parent) {
+                  View view = mInflater.inflate(R.layout.message_list_header, parent, false);
+                   TextView title = (TextView) view.findViewById(R.id.folder_name);
+                    Button back = (Button) view.findViewById(R.id.folder_list);
+                    back.setOnClickListener(new Button.OnClickListener() { public void onClick(View v) { onShowFolderList();}});
+                    // XXX TODO - make this keyboard navigable?
+                    title.setText(getFolder(mFolderName).displayName + " - " + mAccount);
+                  return view;
 
-                FooterViewHolder holder = (FooterViewHolder) view.getTag();
-
-                if (holder == null) {
-                    holder = new FooterViewHolder();
-                    holder.progress = (ProgressBar) view.findViewById(R.id.progress);
-                    holder.main = (TextView) view.findViewById(R.id.main_text);
-                    view.setTag(holder);
-                }
-
-                if (mCurrentFolder.loading) {
-                    holder.main.setText(getString(R.string.status_loading_more));
-                    holder.progress.setVisibility(View.VISIBLE);
-                } else {
-                    if (mCurrentFolder.lastCheckFailed == false) {
-                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(), mAccount.getDisplayCount()));
-                    } else {
-                        holder.main.setText(getString(R.string.status_loading_more_failed));
-                    }
-
-                    holder.progress.setVisibility(View.GONE);
-                }
-
-                return view;
-            } 
+         }
+         public View getItemView(int position, View convertView, ViewGroup parent) {
                 MessageInfoHolder message = (MessageInfoHolder) getItem(position);
                 View view;
 
@@ -1480,26 +1468,53 @@ public class MessageList extends ListActivity {
                     holder.date.setText("No date");
                     holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 }
-
-//                if (folder.outbox) {
-//                    holder.status.setText("Sending");
-//                }
-//                else {
-//                    holder.status.setText("");
-//                }
                 return view;
-            //}
+            }
+         public View getFooterView(int position, View convertView, ViewGroup parent) { 
+                View view;
 
+                if ((convertView != null) && (convertView.getId() == R.layout.message_list_item_footer)) {
+                    view = convertView;
+                } else {
+                    view = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
+                    view.setId(R.layout.message_list_item_footer);
+                }
 
+                FooterViewHolder holder = (FooterViewHolder) view.getTag();
 
-        }
+                if (holder == null) {
+                    holder = new FooterViewHolder();
+                    holder.progress = (ProgressBar) view.findViewById(R.id.progress);
+                    holder.main = (TextView) view.findViewById(R.id.main_text);
+                    view.setTag(holder);
+                }
+
+                if (mCurrentFolder.loading) {
+                    holder.main.setText(getString(R.string.status_loading_more));
+                    holder.progress.setVisibility(View.VISIBLE);
+                } else {
+                    if (mCurrentFolder.lastCheckFailed == false) {
+                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(), mAccount.getDisplayCount()));
+                    } else {
+                        holder.main.setText(getString(R.string.status_loading_more_failed));
+                    }
+
+                    holder.progress.setVisibility(View.GONE);
+                }
+
+                return view;
+            }
 
         public boolean hasStableIds() {
             return true;
         }
 
         public boolean isItemSelectable(int position) {
+            if (position > 0 && position <= mAdapter.messages.size() ) {
                return true;
+            } else {
+                return false;
+            }
         }
 
     }
