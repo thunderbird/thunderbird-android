@@ -68,7 +68,7 @@ public class FolderSettings extends PreferenceActivity {
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
-        category.setTitle(getString(R.string.folder_settings_title));
+        category.setTitle(folderName);
        
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);
         mDisplayClass.setValue(mFolder.getDisplayClass().name());
