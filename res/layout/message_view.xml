@@ -58,6 +58,8 @@
 		        <Button
 		            android:id="@+id/previous_scrolling"
 		            android:text="@string/message_view_prev_action"
+                    android:textSize="35px"
+                    android:padding="0px"
 		            android:layout_height="wrap_content"
 		            android:layout_width="0dip"
 		            android:layout_weight="1" />
@@ -70,7 +72,9 @@
 		            android:layout_weight="1" />
 		       <Button
 		            android:id="@+id/next_scrolling"
+                    android:padding="0px"
 		            android:text="@string/message_view_next_action"
+                    android:textSize="35px"
 		            android:layout_height="wrap_content"
 		            android:layout_width="0dip"
 		            android:layout_weight="1" /> 
@@ -87,6 +91,8 @@
         <Button
             android:id="@+id/previous"
             android:text="@string/message_view_prev_action"
+            android:textSize="35px"
+            android:padding="0px"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />
@@ -100,6 +106,8 @@
        <Button
             android:id="@+id/next"
             android:text="@string/message_view_next_action"
+            android:textSize="35px"
+            android:padding="0px"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" /> 
