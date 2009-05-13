@@ -80,9 +80,6 @@ import java.util.concurrent.TimeUnit;
  * operations.
  *
  *
- * TODO some things that are slowing us down: Need a way to remove state such as
- * progress bar and per folder progress on resume if the command has completed.
- *
  * TODO Break out seperate functions for: refresh local folders refresh remote
  * folders refresh open folder local messages refresh open folder remote
  * messages
@@ -627,7 +624,7 @@ public class MessageList extends ListActivity {
         }
         }//switch
 
-        int position = mListView.getSelectedItemPosition();
+        int position = mListView.getSelectedItemPosition() - 1;
         try {
                if (position >= 0 ) {
                 MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
@@ -1092,7 +1089,7 @@ public class MessageList extends ListActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
-        MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(info.position);
+        MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(info.position-1);
 
             switch (item.getItemId()) {
             case R.id.open:
@@ -1513,7 +1510,7 @@ public class MessageList extends ListActivity {
 
                 if (mCurrentFolder.loading) {
                     holder.main.setText(getString(R.string.status_loading_more));
-                    holder.progress.setVisibility(View.VISIBLE);
+                    mHandler.progress(true);
                 } else {
                     if (mCurrentFolder.lastCheckFailed == false) {
                         holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(), mAccount.getDisplayCount()));
@@ -1521,7 +1518,6 @@ public class MessageList extends ListActivity {
                         holder.main.setText(getString(R.string.status_loading_more_failed));
                     }
 
-                    holder.progress.setVisibility(View.GONE);
                 }
 
                 return view;
