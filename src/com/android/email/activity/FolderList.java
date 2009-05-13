@@ -35,6 +35,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.BaseAdapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -409,6 +410,7 @@ public class FolderList extends ListActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_NO_TITLE); 
 
         final FolderList xxx = this;
 
@@ -417,7 +419,7 @@ public class FolderList extends ListActivity {
         mListView.setLongClickable(true);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-            final FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getSelector(itemPosition);
+            final FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(itemPosition);
 
             MessageList.actionHandleFolder(xxx,mAccount, folder.name);
 
@@ -612,11 +614,6 @@ public class FolderList extends ListActivity {
 
             return true;
 
-        case R.id.accounts:
-            onAccounts();
-
-            return true;
-
         case R.id.account_settings:
             onEditAccount();
 
@@ -736,11 +733,11 @@ public class FolderList extends ListActivity {
         private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
 
         public Object getItem(int position) {
-            return mFolders.get(position);
+            return mFolders.get((int)getItemId(position));
         }
 
         public long getItemId(int position) {
-            return position;
+            return position -1 ;
         }
 
         public int getCount() {
@@ -818,7 +815,12 @@ public class FolderList extends ListActivity {
                           Log.e(Email.LOG_TAG, "Couldn't get prefs to check for displayability of folder " + folder.getName(), me);
                       }
 
-                      FolderInfoHolder holder = getFolder(folder.getName());
+                      FolderInfoHolder holder = null;
+
+                      int folderIndex = getFolderIndex(folder.getName());
+                      if (folderIndex >= 0 ) {
+                        holder = (FolderInfoHolder) getItem(folderIndex);
+                      }
 
                       if (holder == null) {
                           holder = new FolderInfoHolder(folder);
@@ -976,50 +978,60 @@ public class FolderList extends ListActivity {
           };
 
 
-        public long getSelectorId(int itemPosition) {
-            return itemPosition;
+        public int getFolderIndex(String folder) {
+            FolderInfoHolder searchHolder = new FolderInfoHolder();
+            searchHolder.name = folder;
+           return   mFolders.indexOf((Object) searchHolder);
         }
 
-        public Object getSelector(int itemPosition) {
-            try {
-                return mFolders.get(itemPosition);
-            } catch (Exception e) {
-                Log.e(Email.LOG_TAG, "getSelector(" + itemPosition + "), but mFolders.size() = " + mFolders.size(), e);
+        public FolderInfoHolder getFolder(String folder) {
+            FolderInfoHolder holder = null;
+
+            int index = getFolderIndex(folder);
+            if(index >= 0 ){
+                holder = (FolderInfoHolder) getItem(index);
+                if (holder != null) {
+                    return holder;
+                }
+             }
+            return null;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (position == 0 ) {
+            Log.i(Email.LOG_TAG,"Getting a header view for "+position);
+                return getHeaderView(position, convertView, parent);
+            } else if (position <= getCount()) {
+            Log.i(Email.LOG_TAG,"Getting a item view for "+position);
+               return  getItemView(position, convertView, parent);
+            } else {
+                Log.i(Email.LOG_TAG,"Getting a null view for "+position);
+                // XXX TODO - should catch an exception here
                 return null;
             }
         }
 
-        public FolderInfoHolder getFolder(String folder) {
-            FolderInfoHolder folderHolder = null;
+         public View getHeaderView(int position, View convertView, ViewGroup parent) {
+             View view = mInflater.inflate(R.layout.folder_list_header, parent, false);
+             TextView title = (TextView) view.findViewById(R.id.account_name);
+             Button back = (Button) view.findViewById(R.id.account_list);
+             back.setOnClickListener(new Button.OnClickListener() { public void onClick(View v) { onAccounts();}});
+             // XXX TODO - make this keyboard navigable?
+             title.setText(mAccount.getDescription());
+            return view;
 
-            for (int i = 0, count = getCount(); i < count; i++) {
-                FolderInfoHolder holder = (FolderInfoHolder) getSelector(i);
+         }
 
-                if (holder != null && holder.name != null && holder.name.equals(folder)) {
-                    folderHolder = holder;
-                }
-            }
-
-            return folderHolder;
-        }
-
-        public View getView(int itemPosition, View convertView, ViewGroup parent) {
-            FolderInfoHolder folder = (FolderInfoHolder) getSelector(itemPosition);
-            View view;
-
-            if (convertView != null) {
-                view = convertView;
-            } else {
-                view = mInflater.inflate(R.layout.folder_list_item, parent, false);
-            }
+        public View getItemView(int itemPosition, View convertView, ViewGroup parent) {
+            FolderInfoHolder folder = (FolderInfoHolder) getItem(itemPosition);
+            View view = mInflater.inflate(R.layout.folder_list_item, parent, false);
 
             FolderViewHolder holder = (FolderViewHolder) view.getTag();
 
             if (holder == null) {
                 holder = new FolderViewHolder();
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
-                holder.newMessageCount = (TextView) view
-                                         .findViewById(R.id.folder_unread_message_count);
+                holder.newMessageCount = (TextView) view.findViewById(R.id.folder_unread_message_count);
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
                 view.setTag(holder);
             }
@@ -1027,7 +1039,7 @@ public class FolderList extends ListActivity {
             if (folder == null) {
                 return view;
             }
-
+            
             holder.folderName.setText(folder.displayName);
 
             String statusText = "";
@@ -1065,6 +1077,14 @@ public class FolderList extends ListActivity {
         public boolean hasStableIds() {
             return true;
         }
+         public boolean isItemSelectable(int position) {
+            if (position > 0 && position <= mAdapter.mFolders.size() ) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
 
     }
 
@@ -1092,6 +1112,15 @@ public class FolderList extends ListActivity {
              */
             public boolean outbox;
 
+
+            public boolean equals(Object o) {
+                if (this.name.equals(((FolderInfoHolder)o).name)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
             public int compareTo(FolderInfoHolder o) {
                 String s1 = this.name;
                 String s2 = o.name;
@@ -1103,7 +1132,11 @@ public class FolderList extends ListActivity {
                 } else
                     return s1.compareToIgnoreCase(s2);
             }
-           
+          
+            // constructor for an empty object for comparisons
+             public FolderInfoHolder() {
+             }
+ 
              public FolderInfoHolder(Folder folder) {
                     populate(folder);
              }
