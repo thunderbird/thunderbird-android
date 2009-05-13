@@ -1123,12 +1123,14 @@ public class FolderList extends ListActivity {
                 String s1 = this.name;
                 String s2 = o.name;
 
-                if (Email.INBOX.equalsIgnoreCase(s1)) {
+                if (Email.INBOX.equalsIgnoreCase(s1) && Email.INBOX.equalsIgnoreCase(s2)) {
+                   return 0;
+                } else if (Email.INBOX.equalsIgnoreCase(s1)) {
                     return -1;
                 } else if (Email.INBOX.equalsIgnoreCase(s2)) {
                     return 1;
                 } else
-                    return s1.compareToIgnoreCase(s2);
+                    return s1.compareTo(s2);
             }
           
             // constructor for an empty object for comparisons
