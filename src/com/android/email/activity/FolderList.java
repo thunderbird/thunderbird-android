@@ -426,9 +426,9 @@ public class FolderList extends ListActivity {
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
             final FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getSelector(itemPosition);
-            //Intent intent = new Intent(parent.this, MessageList.class);
+            Intent messageList = new Intent(parent, com.android.email.activity.MessageList.class);
             MessageList.actionHandleFolder(xxx, mAccount, Email.INBOX);
-           // startActivityForResult(intent);
+            startActivity(messageList);
  
             }
 
