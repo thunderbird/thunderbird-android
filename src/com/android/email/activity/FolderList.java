@@ -754,6 +754,9 @@ public class FolderList extends ListActivity {
         }
 
        private MessagingListener mListener = new MessagingListener() {
+
+
+
               @Override
               public void listFoldersStarted(Account account) {
                   if (!account.equals(mAccount)) {
@@ -840,17 +843,6 @@ public class FolderList extends ListActivity {
                   mFolders.addAll(newFolders);
                   Collections.sort(mFolders);
                   mHandler.dataChanged();
-    
-                  /*
-                   * Now we need to refresh any folders that are currently expanded. We do this
-                   * in case the status or number of messages has changed.
-                   */
-    
-                  for (int i = 0, count = getCount(); i < count; i++) {
-                      final FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getSelector(i);
-    
-                  }
-    
                   mRefreshRemote = false;
               }
               
@@ -868,14 +860,21 @@ public class FolderList extends ListActivity {
               }
     
               @Override
-              public void synchronizeMailboxFinished(Account account, String folder,
-                                                     int totalMessagesInMailbox, int numNewMessages) {
+              public void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox, int numNewMessages) {
                   if (!account.equals(mAccount)) {
                       return;
                   }
     
-                  FolderInfoHolder holder = getFolder(folder);
-    
+                  // There has to be a cheaper way to get at the localFolder object than this
+                  try { 
+                      Folder localFolder = (Folder) Store.getInstance(account.getLocalStoreUri(), getApplication()).getFolder(folder);
+                      getFolder(folder).populate(localFolder);
+                  } 
+                  catch (MessagingException e) {
+
+                  }
+
+
                   mHandler.progress(false);
                   mHandler.folderLoading(folder, false);
                   // mHandler.folderStatus(folder, null);
