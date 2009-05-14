@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -280,10 +279,10 @@ public class MessageList extends ListActivity {
                 }
 
                 for (Message message : messages) {
-                    mAdapter.addOrUpdateMessage(folder, message, true, true);
+                    mAdapter.addOrUpdateMessage(folder, message, true, false);
+                    mAdapter.notifyDataSetChanged();
                 }
                 mAdapter.removeDirtyMessages();                
-
                 break;
             }
 
@@ -545,7 +544,6 @@ public class MessageList extends ListActivity {
                     mCurrentFolder.displayName
                     
                     );
-        Log.i(Email.LOG_TAG,"We're about to try to get some messages for "+mFolderName);
     }
 
     private void onRestoreListState(Bundle savedInstanceState) {
@@ -1291,9 +1289,9 @@ public class MessageList extends ListActivity {
                     MessageInfoHolder message = iter.next();
                     if (message.dirty) {
                         iter.remove();
-                        notifyDataSetChanged();
                 }
             }
+            notifyDataSetChanged();
          }
 
         public void removeMessage(MessageInfoHolder holder) {
