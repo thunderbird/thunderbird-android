@@ -99,6 +99,8 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
     private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
+    
+    private static final String K9MAIL_IDENTITY = "K9mail-Identity";
 
 
     private Account mAccount;
@@ -120,7 +122,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private MultiAutoCompleteTextView mCcView;
     private MultiAutoCompleteTextView mBccView;
     private EditText mSubjectView;
-    private TextView mSignatureView;
+    private EditText mSignatureView;
     private EditText mMessageContentView;
     private LinearLayout mAttachments;
     private View mQuotedTextBar;
@@ -273,7 +275,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         mCcView = (MultiAutoCompleteTextView)findViewById(R.id.cc);
         mBccView = (MultiAutoCompleteTextView)findViewById(R.id.bcc);
         mSubjectView = (EditText)findViewById(R.id.subject);
-        mSignatureView = (TextView)findViewById(R.id.signature);
+        mSignatureView = (EditText)findViewById(R.id.signature);
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
@@ -469,7 +471,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         {
           mIdentity = mAccount.getIdentity(0);
         }
-         
+        
         updateFrom();
         updateSignature();
                
@@ -703,8 +705,6 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     }
 
     private String appendSignature (String text) {
-      // We're grabbing from the text view, because some day I'd like the signature
-      // to be editable.  But that will require saving it specially in the draft
         String signature= mSignatureView.getText().toString();
         
        if (signature != null && ! signature.contentEquals("")){
@@ -742,6 +742,26 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                  */
                 message.setUid(mSourceMessageUid);
             }
+            
+            if (mIdentityChanged)
+            {
+              String signature  = mSignatureView.getText().toString();
+              String name = mIdentity.getName();
+              String email = mIdentity.getEmail();
+              
+              String k9identity = Utility.base64Encode(name) + ":" + Utility.base64Encode(email) 
+              + ":" + Utility.base64Encode(signature);
+              try
+              {
+                Log.d(Email.LOG_TAG, "Saving identity: " + k9identity);
+                message.setHeader(K9MAIL_IDENTITY, k9identity);
+              }
+              catch (MessagingException me)
+              {
+                Log.e(Email.LOG_TAG, "Unable to save identity in message", me);
+              }
+            }
+            
             MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
             mDraftUid = message.getUid();
 
@@ -984,6 +1004,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
+        
+        menu.findItem(R.id.choose_identity).setVisible(mAccount.getIdentities().size() < 2 ? false : true);
+     
         return true;
     }
 
@@ -1140,6 +1163,43 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                 }
                 if (!mSourceMessageProcessed) {
                     loadAttachments(message, 0);
+                }
+                String[] k9identities = message.getHeader(K9MAIL_IDENTITY);
+                if (k9identities.length > 0)
+                {
+                  String k9identity = k9identities[0];
+                
+                  if (k9identity != null)
+                  {
+                    Log.d(Email.LOG_TAG, "Got a saved identity: " + k9identity);
+                    String[] tokens = k9identity.split(":");
+                    String name = null;
+                    String email = null;
+                    String signature = null;
+                    if (tokens.length > 0)
+                    {
+                      name = Utility.base64Decode(tokens[0]);
+                    }
+                    if (tokens.length > 1)
+                    {
+                      email = Utility.base64Decode(tokens[1]);
+                    }
+                    if (tokens.length > 2)
+                    {
+                      signature = Utility.base64Decode(tokens[2]);
+                    }
+                    if (name != null && email != null && signature != null)
+                    {
+                      mIdentity = mAccount.new Identity();
+                      mIdentity.setName(name);
+                      mIdentity.setEmail(email);
+                      mIdentity.setSignature(signature);
+  
+                      mIdentityChanged = true;
+                      updateFrom();
+                      updateSignature();
+                    }
+                  }
                 }
             }
             catch (MessagingException me) {

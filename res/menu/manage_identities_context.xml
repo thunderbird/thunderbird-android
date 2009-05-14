@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/edit"
+        android:title="@string/manage_identities_edit_action" />
+    <item android:id="@+id/up"
+        android:title="@string/manage_identities_move_up_action" />
+    <item android:id="@+id/down"
+        android:title="@string/manage_identities_move_down_action" />
+    <item android:id="@+id/top"
+        android:title="@string/manage_identities_move_top_action" />
+    <item android:id="@+id/remove"
+        android:title="@string/manage_identities_remove_action" />    
+</menu>

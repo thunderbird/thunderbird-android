@@ -136,6 +136,10 @@ public class Account implements Serializable {
       {
         mDescription = description;
       }
+      public String toString()
+      {
+        return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", signature=" + mSignature; 
+      }
     }
 
     Account(Preferences preferences, String uuid) {
@@ -284,18 +288,6 @@ public class Account implements Serializable {
         newIdentities.add(identity);
       }
       
-      // Uncomment the following block, and modify the values, to introduce another identity
-  /*    if (newIdentities.size() == 1)
-      {
-        Identity identity = new Identity();
-        identity.setName("Developer Identity 1");
-        identity.setEmail("username@domain.com");
-        identity.setSignature("Developer Signature 1");
-        identity.setDescription("Developer Identity 1");
-        newIdentities.add(identity);
-      }
-      */
-      
       return newIdentities;
     }
     
@@ -343,20 +335,6 @@ public class Account implements Serializable {
     {
       identities = newIdentities;
     }
-    
-//    public void setIdentityAsDefault(int i)
-//    {
-//      if (i == 0)
-//      {
-//        return;
-//      }
-//      if (i < identities.size())
-//      {
-//        Identity oldDefault = identities.get(0);
-//        identities.set(0, identities.get(i));
-//        identities.set(i, oldDefault);
-//      }
-//    }
 
     public String getUuid() {
         return mUuid;
@@ -620,7 +598,8 @@ public class Account implements Serializable {
     {
       for (Identity identity : identities)
       {
-        if (identity.getEmail().equalsIgnoreCase(addr.getAddress()))
+          String email = identity.getEmail();
+        if (email != null && email.equalsIgnoreCase(addr.getAddress()))
         {
           return true;
         }

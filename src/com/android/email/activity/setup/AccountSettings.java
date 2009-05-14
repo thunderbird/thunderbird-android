@@ -23,15 +23,20 @@ import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.activity.ChooseFolder;
+import com.android.email.activity.ChooseIdentity;
+import com.android.email.activity.ManageIdentities;
 
 public class AccountSettings extends PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
     
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
+    private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
+
     private static final String PREFERENCE_TOP_CATERGORY = "account_settings";
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_COMPOSITION = "composition";
+    private static final String PREFERENCE_MANAGE_IDENTITIES = "manage_identities";
     private static final String PREFERENCE_FREQUENCY = "account_check_frequency";
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
@@ -225,6 +230,14 @@ public class AccountSettings extends PreferenceActivity {
                         return true;
                     }
                 });
+        
+        findPreference(PREFERENCE_MANAGE_IDENTITIES).setOnPreferenceClickListener(
+            new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    onManageIdentities();
+                    return true;
+                }
+            });
 
         findPreference(PREFERENCE_INCOMING).setOnPreferenceClickListener(
                 new Preference.OnPreferenceClickListener() {
@@ -295,6 +308,12 @@ public class AccountSettings extends PreferenceActivity {
     private void onCompositionSettings() {
         AccountSetupComposition.actionEditCompositionSettings(this, mAccount);
     }
+    
+    private void onManageIdentities() {
+      Intent intent = new Intent(this, ManageIdentities.class);
+      intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
+      startActivityForResult(intent, ACTIVITY_MANAGE_IDENTITIES);
+  }
 
     private void onIncomingSettings() {
         AccountSetupIncoming.actionEditIncomingSettings(this, mAccount);

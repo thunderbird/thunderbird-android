@@ -98,7 +98,7 @@
             <WebView android:id="@+id/quoted_text"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent" />
-            <TextView android:id="@+id/signature"
+            <EditText android:id="@+id/signature"
                 android:textColor="?android:attr/textColorSecondary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

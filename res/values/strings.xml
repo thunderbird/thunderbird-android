@@ -408,19 +408,39 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
 
     <string name="account_settings_composition_title">Message composition options</string>
     <string name="account_settings_composition_label">Composing messages</string>
-
+    
+    <string name="account_settings_identities_label">Manage identities</string>
+    
+    <string name="manage_identities_title">Manage identities</string>
+    
+    <string name="manage_identities_context_menu_title">Manage identity</string>
+    
+    <string name="edit_identity_title">Edit identities</string>
+	<string name="new_identity_action">Create new identity</string>
 
     <string name="account_settings_always_bcc_label">Bcc all messages to</string>
     <string name="account_settings_always_bcc_summary">Send this address a copy of every outgoing message</string>
 
+	<string name="manage_identities_edit_action">Edit</string>
+	<string name="manage_identities_move_up_action">Move up</string>
+	<string name="manage_identities_move_down_action">Move down</string>
+	<string name="manage_identities_move_top_action">Move to top / make default</string>
+	<string name="manage_identities_remove_action">Remove</string>
 
+    <string name="edit_identity_description_label">Identity description</string>
+    <string name="edit_identity_description_hint">(Optional)</string>
+    <string name="edit_identity_name_label">Your name</string>
+    <string name="edit_identity_name_hint">(Optional)</string>
+    <string name="edit_identity_email_label">Email address</string>
+    <string name="edit_identity_email_hint">(Required)</string>
+    <string name="edit_identity_signature_label">Signature</string>
+    <string name="edit_identity_signature_hint">(Optional)</string>
+    
     <string name="account_settings_signature_label">Signature</string>
     <string name="account_settings_signature_summary">Append a signature to every message you send</string>
     
     <string name="default_signature">--\nSent from my Android phone with K-9. Please excuse my brevity.</string>
     <string name="default_identity_description">Initial identity</string>
-     <string name="identity_email_lead"> &lt;</string>
-     <string name="identity_email_tail">&gt;</string>
      <string name="choose_identity">Choose identity</string>
      <string name="choose_identity_title">Choose identity</string>
         
