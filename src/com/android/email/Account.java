@@ -93,12 +93,14 @@ public class Account implements Serializable {
 	identities = new ArrayList<Identity>();
 
         Identity identity = new Identity();
-        identity.setSignature("Sent from my Android phone with K-9. Please excuse my brevity.");
+        identity.setSignature(context.getString(R.string.default_signature));
+        identity.setDescription(context.getString(R.string.default_identity_description));
         identities.add(identity);
     }
     
     public class Identity implements Serializable
     {
+      String mDescription;
       String mName;
       String mEmail;
       String mSignature;
@@ -125,6 +127,14 @@ public class Account implements Serializable {
       public void setSignature(String signature)
       {
         mSignature = signature;
+      }
+      public String getDescription()
+      {
+        return mDescription;
+      }
+      public void setDescription(String description)
+      {
+        mDescription = description;
       }
     }
 
@@ -247,12 +257,14 @@ public class Account implements Serializable {
         String name = prefs.getString(mUuid + ".name." + ident, null);
         String email = prefs.getString(mUuid + ".email." + ident, null);
         String signature = prefs.getString(mUuid + ".signature." + ident, null);
+        String description = prefs.getString(mUuid + ".description." + ident, null);
         if (email != null)
         {
           Identity identity = new Identity();
           identity.setName(name);
           identity.setEmail(email);
           identity.setSignature(signature);
+          identity.setDescription(description);
           newIdentities.add(identity);
           gotOne = true;
         } 
@@ -268,8 +280,21 @@ public class Account implements Serializable {
         identity.setName(name);
         identity.setEmail(email);
         identity.setSignature(signature);
+        identity.setDescription(email);
         newIdentities.add(identity);
       }
+      
+      // Uncomment the following block, and modify the values, to introduce another identity
+  /*    if (newIdentities.size() == 1)
+      {
+        Identity identity = new Identity();
+        identity.setName("Developer Identity 1");
+        identity.setEmail("username@domain.com");
+        identity.setSignature("Developer Signature 1");
+        identity.setDescription("Developer Identity 1");
+        newIdentities.add(identity);
+      }
+      */
       
       return newIdentities;
     }
@@ -287,6 +312,7 @@ public class Account implements Serializable {
           editor.remove(mUuid + ".name." + ident);
           editor.remove(mUuid + ".email." + ident);
           editor.remove(mUuid + ".signature." + ident);
+          editor.remove(mUuid + ".description." + ident);
           gotOne = true;
         }
         ident++;
@@ -303,6 +329,7 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".name." + ident, identity.getName());
         editor.putString(mUuid + ".email." + ident, identity.getEmail());
         editor.putString(mUuid + ".signature." + ident, identity.getSignature());
+        editor.putString(mUuid + ".description." + ident, identity.getDescription());
         ident++;
       }
     }

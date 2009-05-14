@@ -30,4 +30,10 @@
 		android:title="@string/discard_action"
 		android:icon="@drawable/ic_menu_close_clear_cancel"
 	/>
+	<item
+		android:id="@+id/choose_identity"
+        android:alphabeticShortcut="i"
+		android:title="@string/choose_identity"
+		android:icon="@drawable/ic_menu_cc"
+	/>
 </menu>

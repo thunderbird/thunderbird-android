@@ -68,6 +68,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private static final String ACTION_FORWARD = "com.android.email.intent.action.FORWARD";
     private static final String ACTION_EDIT_DRAFT = "com.android.email.intent.action.EDIT_DRAFT";
 
+
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_FOLDER = "folder";
     private static final String EXTRA_MESSAGE = "message";
@@ -84,6 +85,10 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         "com.android.email.activity.MessageCompose.stateKeySourceMessageProced";
     private static final String STATE_KEY_DRAFT_UID =
         "com.android.email.activity.MessageCompose.draftUid";
+    private static final String STATE_IDENTITY_CHANGED =
+      "com.android.email.activity.MessageCompose.identityChanged";
+    private static final String STATE_IDENTITY =
+      "com.android.email.activity.MessageCompose.identity";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -93,9 +98,12 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private static final int MSG_DISCARDED_DRAFT = 6;
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
+    private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
+
 
     private Account mAccount;
     private Account.Identity mIdentity;
+    private boolean mIdentityChanged = false;
     private String mFolder;
     private String mSourceMessageUid;
     private Message mSourceMessage;
@@ -106,14 +114,14 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
      */
     private boolean mSourceMessageProcessed = false;
 
+
+    private TextView mFromView;
     private MultiAutoCompleteTextView mToView;
     private MultiAutoCompleteTextView mCcView;
     private MultiAutoCompleteTextView mBccView;
     private EditText mSubjectView;
+    private TextView mSignatureView;
     private EditText mMessageContentView;
-    private Button mSendButton;
-    private Button mDiscardButton;
-    private Button mSaveButton;
     private LinearLayout mAttachments;
     private View mQuotedTextBar;
     private ImageButton mQuotedTextDelete;
@@ -259,10 +267,13 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         mAddressAdapter = new EmailAddressAdapter(this);
         mAddressValidator = new EmailAddressValidator();
 
+
+        mFromView = (TextView)findViewById(R.id.from);
         mToView = (MultiAutoCompleteTextView)findViewById(R.id.to);
         mCcView = (MultiAutoCompleteTextView)findViewById(R.id.cc);
         mBccView = (MultiAutoCompleteTextView)findViewById(R.id.bcc);
         mSubjectView = (EditText)findViewById(R.id.subject);
+        mSignatureView = (TextView)findViewById(R.id.signature);
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
@@ -285,6 +296,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         mCcView.addTextChangedListener(watcher);
         mBccView.addTextChangedListener(watcher);
         mSubjectView.addTextChangedListener(watcher);
+        //mSignatureView.addTextChangedListener(watcher);
         mMessageContentView.addTextChangedListener(watcher);
 
         /*
@@ -296,6 +308,8 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
         mQuotedTextDelete.setOnClickListener(this);
 
+        mFromView.setVisibility(View.GONE);
+               
         mToView.setAdapter(mAddressAdapter);
         mToView.setTokenizer(new Rfc822Tokenizer());
         mToView.setValidator(mAddressValidator);
@@ -451,8 +465,14 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             mSourceMessageUid = (String) intent.getStringExtra(EXTRA_MESSAGE);
         }
         
-        mIdentity = mAccount.getIdentity(0);
-        
+        if (mIdentity == null)
+        {
+          mIdentity = mAccount.getIdentity(0);
+        }
+         
+        updateFrom();
+        updateSignature();
+               
         Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
         if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null)
         {
@@ -523,6 +543,8 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                 mQuotedTextBar.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, mSourceMessageProcessed);
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
+        outState.putSerializable(STATE_IDENTITY, mIdentity);
+        outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
     }
 
     @Override
@@ -545,6 +567,11 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         mQuotedText.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?
                 View.VISIBLE : View.GONE);
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
+        mIdentity = (Account.Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
+        mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
+        updateFrom();
+        updateSignature();
+          
         mDraftNeedsSaving = false;
     }
 
@@ -580,7 +607,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         return addresses;
     }
 
-    private MimeMessage createMessage() throws MessagingException {
+    private MimeMessage createMessage(boolean appendSig) throws MessagingException {
         MimeMessage message = new MimeMessage();
         message.setSentDate(new Date());
         Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
@@ -600,7 +627,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
          */
 
         String text = mMessageContentView.getText().toString();
-        if (!this.mSourceMessageProcessed) {
+        if (appendSig) {
             text = appendSignature(text);
         }
         
@@ -676,10 +703,12 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     }
 
     private String appendSignature (String text) {
-        String mSignature= mIdentity.getSignature();
+      // We're grabbing from the text view, because some day I'd like the signature
+      // to be editable.  But that will require saving it specially in the draft
+        String signature= mSignatureView.getText().toString();
         
-       if (mSignature != null && ! mSignature.contentEquals("")){
-         text += "\n-- \n" + mSignature;
+       if (signature != null && ! signature.contentEquals("")){
+         text += "\n" + signature;
         }
 
         return text;
@@ -692,7 +721,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
          */
         MimeMessage message;
         try {
-            message = createMessage();
+            message = createMessage(!save);  // Only append sig on save
         }
         catch (MessagingException me) {
             Log.e(Email.LOG_TAG, "Failed to create new message for send or save.", me);
@@ -860,11 +889,44 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {
-            return;
-        }
-        addAttachment(data.getData());
-        mDraftNeedsSaving = true;
+      if(resultCode != RESULT_OK)
+        return;
+      if (data == null) {
+        return;
+      }
+      switch(requestCode) {
+        case ACTIVITY_REQUEST_PICK_ATTACHMENT:
+          
+          addAttachment(data.getData());
+          mDraftNeedsSaving = true;
+          break;
+        case ACTIVITY_CHOOSE_IDENTITY:
+          onIdentityChosen(data);
+          break;
+      }
+    }
+    
+    private void onIdentityChosen(Intent intent)
+    {
+      Bundle bundle = intent.getExtras();;
+      mIdentity = (Account.Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY);
+      mIdentityChanged = true;
+      updateFrom();
+      updateSignature();
+    }
+    
+    private void updateFrom()
+    {
+      if (mIdentityChanged)
+      {
+        mFromView.setVisibility(View.VISIBLE);
+      }
+      mFromView.setText(getString(R.string.message_view_from_format, mIdentity.getName(), mIdentity.getEmail()));
+    }
+    
+    private void updateSignature()
+    {
+      mSignatureView.setText(mIdentity.getSignature());
     }
 
     public void onClick(View view) {
@@ -903,10 +965,20 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             case R.id.add_attachment:
                 onAddAttachment();
                 break;
+            case R.id.choose_identity:
+              onChooseIdentity();
+              break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+    
+    private void onChooseIdentity()
+    {
+      Intent intent = new Intent(this, ChooseIdentity.class);
+      intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
+      startActivityForResult(intent, ACTIVITY_CHOOSE_IDENTITY);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

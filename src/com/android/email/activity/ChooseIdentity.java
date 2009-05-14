@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.email.Account;
+import com.android.email.R;
 
 public class ChooseIdentity extends ListActivity
 {
@@ -43,7 +44,13 @@ public class ChooseIdentity extends ListActivity
     List<Account.Identity> identities = mAccount.getIdentities();
     for (Account.Identity identity : identities)
     {
-      adapter.add(identity.getName());
+      String description = identity.getDescription();
+      if (description == null || description.trim().length() == 0)
+      {
+        description = identity.getName() + getApplication().getString(R.string.identity_email_lead) + 
+          identity.getEmail() + getApplication().getString(R.string.identity_email_tail);
+      }
+      adapter.add(description);
     }
 
     setListAdapter(adapter);

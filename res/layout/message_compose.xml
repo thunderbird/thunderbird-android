@@ -11,6 +11,15 @@
             <LinearLayout android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" android:background="#ededed">
+                
+                <TextView android:id="@+id/from"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_marginLeft="6px"
+                    android:layout_marginRight="6px"/>
+                
                 <MultiAutoCompleteTextView
                     android:id="@+id/to" android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -89,6 +98,16 @@
             <WebView android:id="@+id/quoted_text"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent" />
+            <TextView android:id="@+id/signature"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="left|top"
+                android:editable="false"
+                android:minLines="0" android:autoText="true"
+                android:capitalize="sentences" />
         </LinearLayout>
     </ScrollView>
 
