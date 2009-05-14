@@ -485,9 +485,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             if (signature!=null) {
                 mMessageContentView.setText(signature);
             }
+            addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
         }
 
-        addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
         updateTitle();
     }
 
