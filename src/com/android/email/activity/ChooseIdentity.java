@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.email.Account;
 import com.android.email.Preferences;
@@ -93,7 +94,8 @@ public class ChooseIdentity extends ListActivity
                 }
                 else
                 {
-                    // TODO: Raise a toast complaining that this identity has no email address
+                    Toast.makeText(ChooseIdentity.this, getString(R.string.identity_has_no_email),
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });

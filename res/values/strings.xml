@@ -443,7 +443,12 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="default_identity_description">Initial identity</string>
      <string name="choose_identity">Choose identity</string>
      <string name="choose_identity_title">Choose identity</string>
-        
+     
+     <string name="no_identities">Go to Account Settings -&gt; Manage Identities to create identities</string>
+     <string name="no_removable_identity">Cannot remove only identity</string>
+     <string name="identity_has_no_email">Cannot choose an identity which has no email address</string>
+     <string name="identity_will_not_be_saved">Identity choice and signature edits will not be saved with a draft</string>
+       
     <string name="sort_earliest_first">Earliest messages first</string>
     <string name="sort_latest_first">Latest messages first</string>
     <string name="sort_sender_alpha">Sender alphabetical</string>

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.android.email.Account;
@@ -120,7 +121,8 @@ public class ManageIdentities extends ChooseIdentity
                 }
                 else
                 {
-                    // TODO: Raise a toast saying "Cannot remove only identity
+                    Toast.makeText(this, getString(R.string.no_removable_identity),
+                            Toast.LENGTH_LONG).show();
                 }
                 break;
         }

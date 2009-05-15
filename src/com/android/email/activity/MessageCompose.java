@@ -930,6 +930,11 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     {
       Bundle bundle = intent.getExtras();;
       mIdentity = (Account.Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY);
+      if (mIdentityChanged == false)
+      {
+          Toast.makeText(this, getString(R.string.identity_will_not_be_saved),
+                  Toast.LENGTH_LONG).show();
+      }
       mIdentityChanged = true;
       updateFrom();
       updateSignature();
@@ -996,16 +1001,22 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     
     private void onChooseIdentity()
     {
-      Intent intent = new Intent(this, ChooseIdentity.class);
-      intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
-      startActivityForResult(intent, ACTIVITY_CHOOSE_IDENTITY);
+        if (mAccount.getIdentities().size() > 1)
+        {
+          Intent intent = new Intent(this, ChooseIdentity.class);
+          intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
+          startActivityForResult(intent, ACTIVITY_CHOOSE_IDENTITY);
+        }
+        else
+        {
+            Toast.makeText(this, getString(R.string.no_identities),
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
-        
-        menu.findItem(R.id.choose_identity).setVisible(mAccount.getIdentities().size() < 2 ? false : true);
      
         return true;
     }
