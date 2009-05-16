@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
 
+import com.android.email.Email;
 import com.android.email.Utility;
 import com.android.email.mail.MessagingException;
 
@@ -32,14 +34,14 @@ public class MimeHeader {
 //        HEADER_ANDROID_ATTACHMENT_ID,
         HEADER_ANDROID_ATTACHMENT_STORE_DATA
     };
-
+    
     protected ArrayList<Field> mFields = new ArrayList<Field>();
 
     public void clear() {
         mFields.clear();
     }
 
-    public String getFirstHeader(String name) throws MessagingException {
+    public String getFirstHeader(String name) {
         String[] header = getHeader(name);
         if (header == null) {
             return null;
@@ -47,19 +49,28 @@ public class MimeHeader {
         return header[0];
     }
 
-    public void addHeader(String name, String value) throws MessagingException {
+    public void addHeader(String name, String value)  {
         mFields.add(new Field(name, MimeUtility.foldAndEncode(value)));
     }
 
-    public void setHeader(String name, String value) throws MessagingException {
+    public void setHeader(String name, String value)  {
         if (name == null || value == null) {
             return;
         }
         removeHeader(name);
         addHeader(name, value);
     }
+    
+    public List<String> getHeaderNames()
+    {
+        ArrayList<String> names = new ArrayList<String>();
+        for (Field field : mFields) {
+            names.add(field.name);
+        }
+        return names;
+    }
 
-    public String[] getHeader(String name) throws MessagingException {
+    public String[] getHeader(String name)  {
         ArrayList<String> values = new ArrayList<String>();
         for (Field field : mFields) {
             if (field.name.equalsIgnoreCase(name)) {
@@ -72,7 +83,7 @@ public class MimeHeader {
         return values.toArray(new String[] {});
     }
 
-    public void removeHeader(String name) throws MessagingException {
+    public void removeHeader(String name) {
         ArrayList<Field> removeFields = new ArrayList<Field>();
         for (Field field : mFields) {
             if (field.name.equalsIgnoreCase(name)) {

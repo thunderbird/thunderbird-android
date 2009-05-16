@@ -99,14 +99,12 @@ public class Email extends Application {
      */
     public static final String FOLDER_NONE = "-NONE-";
 
- 
-    // The next time the LocalStore.java DB_VERSION is incremented, please delete the current
-    // LOCAL_UID_PREFIX and this comment, and uncomment the K9LOCAL: version of this static string
-    public static final String LOCAL_UID_PREFIX = "Local";
-    //public static final String LOCAL_UID_PREFIX = "K9LOCAL:";
+    public static final String LOCAL_UID_PREFIX = "K9LOCAL:";
     
     public static final String REMOTE_UID_PREFIX = "K9REMOTE:";
  
+    public static final String K9MAIL_IDENTITY = "X-K9mail-Identity";
+    
     /**
      * Specifies how many messages will be shown in a folder by default. This number is set
      * on each new folder and can be incremented with "Load more messages..." by the

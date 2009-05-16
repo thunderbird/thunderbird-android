@@ -99,10 +99,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
     private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
-    
-    private static final String K9MAIL_IDENTITY = "K9mail-Identity";
-
-
+       
     private Account mAccount;
     private Account.Identity mIdentity;
     private boolean mIdentityChanged = false;
@@ -298,7 +295,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         mCcView.addTextChangedListener(watcher);
         mBccView.addTextChangedListener(watcher);
         mSubjectView.addTextChangedListener(watcher);
-        //mSignatureView.addTextChangedListener(watcher);
+        mSignatureView.addTextChangedListener(watcher);
         mMessageContentView.addTextChangedListener(watcher);
 
         /*
@@ -751,15 +748,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
               
               String k9identity = Utility.base64Encode(name) + ":" + Utility.base64Encode(email) 
               + ":" + Utility.base64Encode(signature);
-              try
-              {
-                Log.d(Email.LOG_TAG, "Saving identity: " + k9identity);
-                message.setHeader(K9MAIL_IDENTITY, k9identity);
-              }
-              catch (MessagingException me)
-              {
-                Log.e(Email.LOG_TAG, "Unable to save identity in message", me);
-              }
+              
+              Log.d(Email.LOG_TAG, "Saving identity: " + k9identity);
+              message.setHeader(Email.K9MAIL_IDENTITY, k9identity);
             }
             
             MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
@@ -930,12 +921,13 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     {
       Bundle bundle = intent.getExtras();;
       mIdentity = (Account.Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY);
-      if (mIdentityChanged == false)
-      {
-          Toast.makeText(this, getString(R.string.identity_will_not_be_saved),
-                  Toast.LENGTH_LONG).show();
-      }
+//      if (mIdentityChanged == false)
+//      {
+//          Toast.makeText(this, getString(R.string.identity_will_not_be_saved),
+//                  Toast.LENGTH_LONG).show();
+//      }
       mIdentityChanged = true;
+      mDraftNeedsSaving = true;
       updateFrom();
       updateSignature();
     }
@@ -1175,8 +1167,8 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                 if (!mSourceMessageProcessed) {
                     loadAttachments(message, 0);
                 }
-                String[] k9identities = message.getHeader(K9MAIL_IDENTITY);
-                if (k9identities.length > 0)
+                String[] k9identities = message.getHeader(Email.K9MAIL_IDENTITY);
+                if (k9identities != null && k9identities.length > 0)
                 {
                   String k9identity = k9identities[0];
                 
