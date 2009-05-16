@@ -41,7 +41,7 @@ public class MailService extends Service {
 
     private Listener mListener = new Listener();
 
-    //    private int mStartId;
+    private int mStartId;
 
     public static void actionReschedule(Context context) {
         Intent i = new Intent();
@@ -68,7 +68,7 @@ public class MailService extends Service {
     	setForeground(true);  // if it gets killed once, it'll never restart
     		Log.v(Email.LOG_TAG, "***** MailService *****: onStart(" + intent + ", " + startId + ")");
         super.onStart(intent, startId);
-	//        this.mStartId = startId;
+        this.mStartId = startId;
 
        // MessagingController.getInstance(getApplication()).addListener(mListener);
         if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
@@ -151,6 +151,7 @@ public class MailService extends Service {
         if (shortestInterval == -1) {
         		Log.v(Email.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
             alarmMgr.cancel(pi);
+            stopSelf(mStartId);
         }
         else
         {

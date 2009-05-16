@@ -470,7 +470,14 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             mMessageContentView.requestFocus();
         }
 
-        addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
+        if (!ACTION_EDIT_DRAFT.equals(action)) {
+            String signature = getSignature();
+            if (signature!=null) {
+                mMessageContentView.setText(signature);
+            }
+            addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
+        }
+
         updateTitle();
     }
 
@@ -581,12 +588,9 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
          */
 
         String text = mMessageContentView.getText().toString();
-        if (!this.mSourceMessageProcessed) {
-            text = appendSignature(text);
-        }
-        
+
+        String action = getIntent().getAction();
         if (mQuotedTextBar.getVisibility() == View.VISIBLE) {
-            String action = getIntent().getAction();
             String quotedText = null;
             Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage, "text/plain");
             if (part != null) {
@@ -611,6 +615,17 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             }
         }
 
+        /*
+         * Place holder for when we implement the signature location preference / setting
+         *
+        if (!ACTION_EDIT_DRAFT.equals(action)) {
+            String signature = getSignature();
+            if (signature!=null) {
+                text += signature;
+            }
+        }
+         */
+        
         TextBody body = new TextBody(text);
 
         if (mAttachments.getChildCount() > 0) {
@@ -646,15 +661,16 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         return message;
     }
 
-    private String appendSignature (String text) {
+    private String getSignature() {
         String mSignature;
         mSignature = mAccount.getSignature();
-        
-       if (mSignature != null && ! mSignature.contentEquals("")){
-         text += "\n-- \n" + mAccount.getSignature();
-        }
 
-        return text;
+        if (mSignature != null && !mSignature.contentEquals("")) {
+            return "\n--\n" + mAccount.getSignature();
+        } 
+        else {
+            return null;
+        }
     }
 
 
