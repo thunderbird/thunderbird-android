@@ -14,7 +14,10 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -924,21 +927,44 @@ public class LocalStore extends Store implements Serializable {
                     "LocalStore.getMessages(int, int, MessageRetrievalListener) not yet implemented");
         }
         
-        private void populateHeaders(LocalMessage message)
+        private void populateHeaders(List<LocalMessage> messages)
         {
             Cursor cursor = null;
+            if (messages.size() == 0)
+            {
+                return;
+            }
             try {
+                Map<Long, LocalMessage> popMessages = new HashMap<Long, LocalMessage>();
+                List<String> ids = new ArrayList<String>();
+                StringBuffer questions = new StringBuffer();
+   
+                for (int i = 0; i < messages.size(); i++)
+                {
+                    if (i != 0)
+                    {
+                        questions.append(", ");
+                    }
+                    questions.append("?");
+                    LocalMessage message = messages.get(i);
+                    Long id = message.getId();
+                    ids.add(Long.toString(id));
+                    popMessages.put(id, message);
+                    
+                }
+                
                 cursor = mDb.rawQuery(
-                        "SELECT name, value "
-                                + "FROM headers " + "WHERE message_id = ? ",
-                        new String[] {
-                              Long.toString(message.mId)
-                        });
+                        "SELECT message_id, name, value "
+                                + "FROM headers " + "WHERE message_id in ( " + questions + ") ",
+                                ids.toArray(new String[] {}));
+                                
+                       
                 while (cursor.moveToNext()) {
-                    String name = cursor.getString(0);
-                    String value = cursor.getString(1);
-                    //Log.i(Email.LOG_TAG, "Retrieved header name= " + name + ", value = " + value);
-                    message.addHeader(name, value);
+                    Long id = cursor.getLong(0);
+                    String name = cursor.getString(1);
+                    String value = cursor.getString(2);
+                    //Log.i(Email.LOG_TAG, "Retrieved header name= " + name + ", value = " + value + " for message " + id);
+                    popMessages.get(id).addHeader(name, value);
                 }
             }
             finally
@@ -966,7 +992,9 @@ public class LocalStore extends Store implements Serializable {
                     return null;
                 }
                 populateMessageFromGetMessageCursor(message, cursor);
-                populateHeaders(message);
+                ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
+                messages.add(message);
+                populateHeaders(messages);
             }
             finally {
                 if (cursor != null) {
@@ -979,7 +1007,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
             open(OpenMode.READ_WRITE);
-            ArrayList<Message> messages = new ArrayList<Message>();
+            ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
             Cursor cursor = null;
             try {
                 cursor = mDb.rawQuery(
@@ -992,9 +1020,10 @@ public class LocalStore extends Store implements Serializable {
                 while (cursor.moveToNext()) {
                     LocalMessage message = new LocalMessage(null, this);
                     populateMessageFromGetMessageCursor(message, cursor);
-                    populateHeaders(message);
+                    
                     messages.add(message);
                 }
+                populateHeaders(messages);
             }
             finally {
                 if (cursor != null) {
@@ -1643,6 +1672,7 @@ public class LocalStore extends Store implements Serializable {
                 ((LocalFolder) mFolder).deleteAttachments(getUid());
                 mDb.execSQL("DELETE FROM messages WHERE id = ?",
                         new Object[] { mId });
+                ((LocalFolder)mFolder).deleteHeaders(mId);
             }
 
             /*
