@@ -4,6 +4,7 @@ package com.android.email.activity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -103,6 +104,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private Account mAccount;
     private Account.Identity mIdentity;
     private boolean mIdentityChanged = false;
+    private boolean mSignatureChanged = false;
     private String mFolder;
     private String mSourceMessageUid;
     private Message mSourceMessage;
@@ -290,12 +292,25 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
 
             public void afterTextChanged(android.text.Editable s) { }
         };
+        
+        TextWatcher sigwatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int before, int after) { }
+
+            public void onTextChanged(CharSequence s, int start,
+                                          int before, int count) {
+                mDraftNeedsSaving = true;
+                mSignatureChanged = true;
+            }
+
+            public void afterTextChanged(android.text.Editable s) { }
+        };
 
         mToView.addTextChangedListener(watcher);
         mCcView.addTextChangedListener(watcher);
         mBccView.addTextChangedListener(watcher);
         mSubjectView.addTextChangedListener(watcher);
-        mSignatureView.addTextChangedListener(watcher);
+        mSignatureView.addTextChangedListener(sigwatcher);
         mMessageContentView.addTextChangedListener(watcher);
 
         /*
@@ -740,14 +755,18 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                 message.setUid(mSourceMessageUid);
             }
             
-            if (mIdentityChanged)
+            if (mIdentityChanged || mSignatureChanged)
             {
               String signature  = mSignatureView.getText().toString();
-              String name = mIdentity.getName();
-              String email = mIdentity.getEmail();
+              String k9identity = Utility.base64Encode(signature) ;
+              if (mIdentityChanged)
+              {
               
-              String k9identity = Utility.base64Encode(name) + ":" + Utility.base64Encode(email) 
-              + ":" + Utility.base64Encode(signature);
+                  String name = mIdentity.getName();
+                  String email = mIdentity.getEmail();
+                  
+                  k9identity +=  ":" + Utility.base64Encode(name) + ":" + Utility.base64Encode(email);
+              }
               
               Log.d(Email.LOG_TAG, "Saving identity: " + k9identity);
               message.setHeader(Email.K9MAIL_IDENTITY, k9identity);
@@ -1175,33 +1194,60 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                   if (k9identity != null)
                   {
                     Log.d(Email.LOG_TAG, "Got a saved identity: " + k9identity);
-                    String[] tokens = k9identity.split(":");
+                    StringTokenizer tokens = new StringTokenizer(k9identity, ":", false);
+                    
                     String name = null;
                     String email = null;
                     String signature = null;
-                    if (tokens.length > 0)
+                    if (tokens.hasMoreTokens())
                     {
-                      name = Utility.base64Decode(tokens[0]);
+                      signature = Utility.base64Decode(tokens.nextToken());
                     }
-                    if (tokens.length > 1)
+                    if (tokens.hasMoreTokens())
                     {
-                      email = Utility.base64Decode(tokens[1]);
+                      name = Utility.base64Decode(tokens.nextToken());
                     }
-                    if (tokens.length > 2)
+                    if (tokens.hasMoreTokens())
                     {
-                      signature = Utility.base64Decode(tokens[2]);
+                      email = Utility.base64Decode(tokens.nextToken());
                     }
-                    if (name != null && email != null && signature != null)
+                    
+                    Account.Identity newIdentity= mAccount.new Identity();
+                    if (signature != null)
                     {
-                      mIdentity = mAccount.new Identity();
-                      mIdentity.setName(name);
-                      mIdentity.setEmail(email);
-                      mIdentity.setSignature(signature);
-  
-                      mIdentityChanged = true;
-                      updateFrom();
-                      updateSignature();
+                        newIdentity.setSignature(signature); 
+                        mSignatureChanged = true;
                     }
+                    else
+                    {
+                        newIdentity.setSignature(mIdentity.getSignature());
+                    }
+                    
+                    if (name != null)
+                    {
+                        newIdentity.setName(name);
+                        mIdentityChanged = true;
+                    }
+                    else
+                    {
+                        newIdentity.setName(mIdentity.getName());
+                    }
+                    
+                    if (email != null)
+                    {
+                        newIdentity.setEmail(email);
+                        mIdentityChanged = true;
+                    }
+                    else
+                    {
+                        newIdentity.setEmail(mIdentity.getEmail());
+                    }
+                    
+                    mIdentity = newIdentity;
+                    
+                    updateSignature();
+                    updateFrom();
+                    
                   }
                 }
             }
