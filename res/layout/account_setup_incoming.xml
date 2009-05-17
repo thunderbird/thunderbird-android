@@ -47,6 +47,16 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
         <TextView
+            android:text="@string/account_setup_incoming_security_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <Spinner
+            android:id="@+id/account_security_type"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+        <TextView
             android:text="@string/account_setup_incoming_port_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
@@ -55,16 +65,6 @@
         <EditText
             android:id="@+id/account_port"
             android:singleLine="true"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
-        <TextView
-            android:text="@string/account_setup_incoming_security_label"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" />
-        <Spinner
-            android:id="@+id/account_security_type"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
         <LinearLayout
