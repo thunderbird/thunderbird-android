@@ -1172,10 +1172,8 @@ public class MessageList extends ListActivity {
             } 
 
             @Override
-			public void listLocalMessagesStarted(Account account, String folder)
-			{
-				if (!account.equals(mAccount))
-				{
+			public void listLocalMessagesStarted(Account account, String folder) {
+				if (!account.equals(mAccount)) {
                     return;
                 }
                 mHandler.progress(true);
@@ -1183,11 +1181,8 @@ public class MessageList extends ListActivity {
             }
 
             @Override
-			public void listLocalMessagesFailed(Account account, String folder,
-					String message)
-			{
-				if (!account.equals(mAccount))
-				{
+			public void listLocalMessagesFailed(Account account, String folder, String message) {
+				if (!account.equals(mAccount)) {
                     return;
                 }
                 mHandler.progress(false);
@@ -1195,10 +1190,8 @@ public class MessageList extends ListActivity {
             }
 
             @Override
-			public void listLocalMessagesFinished(Account account, String folder)
-			{
-				if (!account.equals(mAccount))
-				{
+			public void listLocalMessagesFinished(Account account, String folder) {
+				if (!account.equals(mAccount)) {
                     return;
                 }
                 mHandler.progress(false);
