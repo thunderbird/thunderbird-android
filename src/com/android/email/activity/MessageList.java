@@ -423,6 +423,9 @@ public class MessageList extends ListActivity {
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
+        mListView.setFastScrollEnabled(true);
+        mListView.setScrollingCacheEnabled(true);
+
         registerForContextMenu(mListView);
 
         /*
