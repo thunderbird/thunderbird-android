@@ -657,7 +657,7 @@ public class MessageList extends ListActivity {
     private void onShowFolderList() {
         // If we're a child activity (say because Welcome dropped us straight to the message list
         // we won't have a parent activity and we'll need to get back to it
-        if (!isChild ()) {
+        if (isTaskRoot ()) {
             Intent folderList = new Intent(this, FolderList.class);
             folderList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             folderList.putExtra(EXTRA_ACCOUNT, mAccount);
