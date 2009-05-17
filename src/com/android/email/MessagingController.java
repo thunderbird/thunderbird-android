@@ -1,6 +1,5 @@
 
 package com.android.email;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -479,25 +478,30 @@ public class MessagingController implements Runnable {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             Folder localFolder = localStore.getFolder(folder);
             localFolder.open(OpenMode.READ_WRITE);
-            Message[] localMessages = localFolder.getMessages(null);
+            Message[] localMessages = localFolder.getMessages(
+                    new MessageRetrievalListener() {
+                  public void messageStarted(String message, int number, int ofTotal) {}
+                  public void messageFinished(Message message, int number, int ofTotal) {
+	              
+		                if (!message.isSet(Flag.DELETED) && isMessageSuppressed(account, folder, message) == false) {
+		                    //messages.add(message);
+		                    for (MessagingListener l : getListeners()) {
+		                        l.listLocalMessagesAddMessage(account, folder, message);
+		                    }
+		                } else {
+		                    for (MessagingListener l : getListeners()) {
+		                        l.listLocalMessagesRemoveMessage(account, folder, message);
+		                    }
+		
+		                } 
+                        }
+                    } 
+                    );
             ArrayList<Message> messages = new ArrayList<Message>();
-            for (Message message : localMessages) {
-              
-                if (!message.isSet(Flag.DELETED) && isMessageSuppressed(account, localFolder.getName(), message) == false) {
-                    messages.add(message);
-                    for (MessagingListener l : getListeners()) {
-                        l.listLocalMessagesAddMessage(account, folder, message);
-                    }
-                } else {
-                    for (MessagingListener l : getListeners()) {
-                        l.listLocalMessagesRemoveMessage(account, folder, message);
-                    }
-
-                }
-            }
-            for (MessagingListener l : getListeners()) {
-                l.listLocalMessages(account, folder, messages.toArray(new Message[0]));
-            }
+            //for (Message message : localMessages) { } 
+            //for (MessagingListener l : getListeners()) {
+            //    l.listLocalMessages(account, folder, messages.toArray(new Message[0]));
+            //}
             for (MessagingListener l : getListeners()) {
                 l.listLocalMessagesFinished(account, folder);
             }
