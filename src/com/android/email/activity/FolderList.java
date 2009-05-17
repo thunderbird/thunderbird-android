@@ -403,6 +403,8 @@ public class FolderList extends ListActivity {
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
+        mListView.setFastScrollEnabled(true);
+        mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
                 if (id == 0 ) {
@@ -1070,7 +1072,7 @@ public class FolderList extends ListActivity {
         }
 
         public boolean hasStableIds() {
-            return true;
+            return false;
         }
         
         public boolean isItemSelectable(int position) {
