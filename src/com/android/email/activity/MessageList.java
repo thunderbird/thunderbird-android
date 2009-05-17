@@ -1218,7 +1218,10 @@ public class MessageList extends ListActivity {
 				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
                     return;
                 }
-                removeMessage(getMessage( message.getUid()));
+                MessageInfoHolder holder = getMessage(message.getUid());
+                if (holder != null ) {
+                    removeMessage(getMessage( message.getUid()));
+                }
             } 
 
 
