@@ -212,23 +212,15 @@ public class MessageList extends ListActivity {
 
         private static final int MSG_DATA_CHANGED = 3;
 
-        private static final int MSG_EXPAND_GROUP = 5;
-
         private static final int MSG_FOLDER_LOADING = 7;
 
         private static final int MSG_REMOVE_MESSAGE = 11;
 
         private static final int MSG_SYNC_MESSAGES = 13;
 
-        //private static final int MSG_FOLDER_STATUS = 17;
-
         private static final int MSG_FOLDER_SYNCING = 18;
 
         private static final int MSG_SENDING_OUTBOX = 19;
-
-        private static final int MSG_ACCOUNT_SIZE_CHANGED = 20;
-
-        private static final int MSG_WORKING_ACCOUNT = 21;
 
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -250,26 +242,6 @@ public class MessageList extends ListActivity {
                 break;
             }
 
-            case MSG_ACCOUNT_SIZE_CHANGED: {
-                Long[] sizes = (Long[])msg.obj;
-                String toastText = getString(R.string.account_size_changed, mAccount.getDescription(),
-                                             SizeFormatter.formatSize(getApplication(), sizes[0]), SizeFormatter.formatSize(getApplication(), sizes[1]));;
-
-                Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
-                toast.show();
-                break;
-            }
-
-            case MSG_WORKING_ACCOUNT: {
-                int res = msg.arg1;
-                String toastText = getString(res, mAccount.getDescription());
-
-                Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
-                toast.show();
-                break;
-            }
-
-
             case MSG_SYNC_MESSAGES: {
                 FolderInfoHolder folder = (FolderInfoHolder)((Object[]) msg.obj)[0];
                 Message[] messages = (Message[])((Object[]) msg.obj)[1];
@@ -286,18 +258,6 @@ public class MessageList extends ListActivity {
                 break;
             }
 
-//    case MSG_FOLDER_STATUS:
-//    {
-//     String folderName = (String) ((Object[]) msg.obj)[0];
-//     String status = (String) ((Object[]) msg.obj)[1];
-//     FolderInfoHolder folder = mAdapter.getFolder(folderName);
-//     if (folder != null)
-//     {
-//      folder.status = status;
-//      mAdapter.notifyDataSetChanged();
-//     }
-//     break;
-//    }
             case MSG_FOLDER_SYNCING: {
                 String folderName = (String)((Object[]) msg.obj)[0];
                 String dispString;
@@ -339,25 +299,11 @@ public class MessageList extends ListActivity {
             sendMessage(msg);
         }
 
-        public void workingAccount(int res) {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_WORKING_ACCOUNT;
-            msg.arg1 = res;
-
-            sendMessage(msg);
-        }
 
         public void removeMessage(MessageInfoHolder message) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_REMOVE_MESSAGE;
             msg.obj = new Object[] { message.folder, message };
-            sendMessage(msg);
-        }
-
-        public void accountSizeChanged(long oldSize, long newSize) {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_ACCOUNT_SIZE_CHANGED;
-            msg.obj = new Long[] { oldSize, newSize };
             sendMessage(msg);
         }
 
