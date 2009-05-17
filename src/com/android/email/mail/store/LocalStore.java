@@ -1456,7 +1456,11 @@ public class LocalStore extends Store implements Serializable {
                     sbHtml.append(htmlifyString(sbText.toString()));
                 }
                
-                Spannable markup = new SpannableString(sbHtml.toString().replaceAll("cid:", "http://cid/"));
+                String html = sbHtml.toString();
+                if (html.indexOf("cid:")!=-1) {
+                    html = html.replaceAll("cid:", "http://cid/");
+                }
+                Spannable markup = new SpannableString(html);
                 Linkify.addLinks(markup, Linkify.ALL);
                 StringBuffer sb = new StringBuffer(markup.length());
                 sb.append(markup.toString());

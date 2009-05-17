@@ -56,7 +56,8 @@ public class Account implements Serializable {
     String mRingtoneUri;
     boolean mNotifySync;
     HideButtons mHideMessageViewButtons;
-    
+    boolean mIsSignatureBeforeQuotedText;
+
     public enum FolderMode {
     	ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
     }
@@ -90,6 +91,7 @@ public class Account implements Serializable {
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mHideMessageViewButtons = HideButtons.NEVER;
         mRingtoneUri = "content://settings/system/notification_sound";
+        mIsSignatureBeforeQuotedText = false;
     }
 
     Account(Preferences preferences, String uuid) {
@@ -199,6 +201,7 @@ public class Account implements Serializable {
           mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         }
 
+        mIsSignatureBeforeQuotedText = preferences.getPreferences().getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
     }
 
     public String getUuid() {
@@ -317,6 +320,7 @@ public class Account implements Serializable {
         editor.remove(mUuid + ".folderSyncMode");
         editor.remove(mUuid + ".folderTargetMode");
         editor.remove(mUuid + ".hideButtonsEnum");
+        editor.remove(mUuid + ".signatureBeforeQuotedText");
         editor.commit();
     }
 
@@ -380,6 +384,7 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
         editor.putString(mUuid + ".folderTargetMode", mFolderTargetMode.name());
+        editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
        
         editor.commit();
     }
@@ -610,6 +615,14 @@ public class Account implements Serializable {
     public void setFolderTargetMode(FolderMode folderTargetMode)
     {
       mFolderTargetMode = folderTargetMode;
+    }
+
+    public boolean isSignatureBeforeQuotedText() {
+        return mIsSignatureBeforeQuotedText;
+    }
+
+    public void setSignatureBeforeQuotedText(boolean mIsSignatureBeforeQuotedText) {
+        this.mIsSignatureBeforeQuotedText = mIsSignatureBeforeQuotedText;
     }
 
 }

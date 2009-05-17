@@ -2,22 +2,16 @@ package com.android.email.activity.setup;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
+import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import android.widget.RadioButton;
 import com.android.email.Account;
+import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
-import com.android.email.Email;
-import com.android.email.Utility;
 
 public class AccountSetupComposition extends Activity {
 
@@ -29,6 +23,8 @@ public class AccountSetupComposition extends Activity {
     private EditText mAccountEmail;
     private EditText mAccountAlwaysBcc;
     private EditText mAccountName;
+    private RadioButton mAccountSignatureBeforeLocation;
+    private RadioButton mAccountSignatureAfterLocation;
     
 
     public static void actionEditCompositionSettings(Activity context, Account account) {
@@ -66,7 +62,12 @@ public class AccountSetupComposition extends Activity {
 
         mAccountSignature = (EditText)findViewById(R.id.account_signature);
         mAccountSignature.setText(mAccount.getSignature());
-        
+
+        mAccountSignatureBeforeLocation = (RadioButton)findViewById(R.id.account_signature_location_before_quoted_text);
+        mAccountSignatureAfterLocation = (RadioButton)findViewById(R.id.account_signature_location_after_quoted_text);
+        boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
+        mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
+        mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
     }
 
     @Override
@@ -79,7 +80,9 @@ public class AccountSetupComposition extends Activity {
         mAccount.setEmail(mAccountEmail.getText().toString());
         mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString()); 
         mAccount.setName(mAccountName.getText().toString());
-        mAccount.setSignature(mAccountSignature.getText().toString());  
+        mAccount.setSignature(mAccountSignature.getText().toString());
+        boolean isSignatureBeforeQuotedText = mAccountSignatureBeforeLocation.isChecked();
+        mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
 
         mAccount.save(Preferences.getPreferences(this));
     }

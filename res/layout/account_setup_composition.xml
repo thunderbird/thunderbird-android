@@ -56,5 +56,27 @@
             android:singleLine="false"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
+        <TextView
+            android:text="@string/account_settings_signature__location_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <RadioGroup
+            android:id="@+id/account_signature_location"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical" >
+            <RadioButton
+                android:id="@+id/account_signature_location_before_quoted_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_settings_signature__location_before_quoted_text" />
+            <RadioButton
+                android:id="@+id/account_signature_location_after_quoted_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_settings_signature__location_after_quoted_text" />
+        </RadioGroup>
     </LinearLayout>
 </ScrollView>
