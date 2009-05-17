@@ -481,9 +481,11 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         }
 
         if (!ACTION_EDIT_DRAFT.equals(action)) {
-            String signature = getSignature();
-            if (signature!=null) {
-                mMessageContentView.setText(signature);
+            if (mAccount.isSignatureBeforeQuotedText()) {
+                String signature = getSignature();
+                if (signature!=null) {
+                    mMessageContentView.setText(signature);
+                }
             }
             addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
         }
@@ -636,16 +638,13 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
             }
         }
 
-        /*
-         * Place holder for when we implement the signature location preference / setting
-         *
-        if (!ACTION_EDIT_DRAFT.equals(action)) {
+        if (!mAccount.isSignatureBeforeQuotedText()
+            && !ACTION_EDIT_DRAFT.equals(action)) {
             String signature = getSignature();
             if (signature!=null) {
                 text += signature;
             }
-        }
-         */
+        }//if isSignatureBeforeQuotedText DRAFT
         
         TextBody body = new TextBody(text);
 
