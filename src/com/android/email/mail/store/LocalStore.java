@@ -134,7 +134,8 @@ public class LocalStore extends Store implements Serializable {
                     + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT)");
 
             mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
-            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id ON messages (folder_id)");
+            mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id");
+            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_date ON messages (folder_id,internal_date)");
             mDb.execSQL("DROP TABLE IF EXISTS attachments");
             mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
                     + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
@@ -922,7 +923,7 @@ public class LocalStore extends Store implements Serializable {
                 cursor = mDb.rawQuery(
                         "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
                         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
-                                + "FROM messages " + "WHERE uid = ? " + "AND folder_id = ?",
+                                + "FROM messages " + "WHERE uid = ? " + "AND folder_id = ? ",
                         new String[] {
                                 message.getUid(), Long.toString(mFolderId)
                         });
@@ -948,7 +949,9 @@ public class LocalStore extends Store implements Serializable {
                 cursor = mDb.rawQuery(
                         "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
                         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
-                                + "FROM messages " + "WHERE folder_id = ?", new String[] {
+                                + "FROM messages " + "WHERE folder_id = ? ORDER BY internal_date DESC"
+                                // pull out messages most recent first, since that's what the default sort is
+                                , new String[] {
                             Long.toString(mFolderId)
                         });
 
