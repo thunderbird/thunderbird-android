@@ -952,10 +952,16 @@ public class LocalStore extends Store implements Serializable {
                             Long.toString(mFolderId)
                         });
 
+
+                int i = 0;
                 while (cursor.moveToNext()) {
                     LocalMessage message = new LocalMessage(null, this);
                     populateMessageFromGetMessageCursor(message, cursor);
                     messages.add(message);
+                    if (listener != null) {
+                        listener.messageFinished(message, i, -1);
+                    }
+                    i++;
                 }
             }
             finally {

@@ -485,6 +485,14 @@ public class MessagingController implements Runnable {
               
                 if (!message.isSet(Flag.DELETED) && isMessageSuppressed(account, localFolder.getName(), message) == false) {
                     messages.add(message);
+                    for (MessagingListener l : getListeners()) {
+                        l.listLocalMessagesAddMessage(account, folder, message);
+                    }
+                } else {
+                    for (MessagingListener l : getListeners()) {
+                        l.listLocalMessagesRemoveMessage(account, folder, message);
+                    }
+
                 }
             }
             for (MessagingListener l : getListeners()) {

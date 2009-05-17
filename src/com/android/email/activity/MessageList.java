@@ -1208,8 +1208,26 @@ public class MessageList extends ListActivity {
                     return;
                 }
                 
-                synchronizeMessages(folder, messages);
+                //synchronizeMessages(folder, messages);
             }
+            @Override
+            public void listLocalMessagesRemoveMessage(Account account, String folder,Message message) {
+				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
+                    return;
+                }
+                removeMessage(getMessage( message.getUid()));
+            } 
+
+
+            @Override
+			public void listLocalMessagesAddMessage(Account account, String folder, Message message) {
+				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
+                    return;
+                }
+
+                addOrUpdateMessage(folder, message, true, true);
+            }
+            
 
 
 
