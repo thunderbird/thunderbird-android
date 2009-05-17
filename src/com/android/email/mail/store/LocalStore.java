@@ -923,7 +923,7 @@ public class LocalStore extends Store implements Serializable {
                 cursor = mDb.rawQuery(
                         "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
                         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
-                                + "FROM messages " + "WHERE uid = ? " + "AND folder_id = ? ",
+                                + "FROM messages " + "WHERE uid = ? " + "AND folder_id = ?",
                         new String[] {
                                 message.getUid(), Long.toString(mFolderId)
                         });
@@ -946,11 +946,11 @@ public class LocalStore extends Store implements Serializable {
             ArrayList<Message> messages = new ArrayList<Message>();
             Cursor cursor = null;
             try {
+                 // pull out messages most recent first, since that's what the default sort is
                 cursor = mDb.rawQuery(
                         "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
                         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
-                                + "FROM messages " + "WHERE folder_id = ? ORDER BY internal_date DESC"
-                                // pull out messages most recent first, since that's what the default sort is
+                                + "FROM messages " + "WHERE folder_id = ? ORDER BY date DESC"
                                 , new String[] {
                             Long.toString(mFolderId)
                         });
