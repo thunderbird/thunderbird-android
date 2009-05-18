@@ -373,6 +373,7 @@ public class MessageView extends Activity
         super.onCreate(icicle);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_NO_TITLE); 
 
         setContentView(R.layout.message_view);
 
