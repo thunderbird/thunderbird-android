@@ -228,7 +228,7 @@ public class MessageView extends Activity
                     mToView.setText(values[3]);
                     mAttachmentIcon.setVisibility(msg.arg1 == 1 ? View.VISIBLE : View.GONE);
                     if ((msg.arg2 & FLAG_FLAGGED) != 0) {
-                      mSubjectView.setTextColor(Email.FLAGGED_COLOR);
+                      mSubjectView.setTextColor(0xff000000 | Email.FLAGGED_COLOR);
                     }
                     else {
                       mSubjectView.setTextColor(0xff000000);

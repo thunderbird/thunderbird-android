@@ -2211,28 +2211,24 @@ public class FolderMessageList extends ExpandableListActivity
                 holder.subject.setTypeface(null, 
                     message.read && !message.flagged ? Typeface.NORMAL  : Typeface.BOLD);
                 
+                int subjectColor = 0x000000;
+                int alpha = 0xff000000;
+                
                 if (message.flagged)
                 {
-                  holder.subject.setTextColor(Email.FLAGGED_COLOR);
-                }
-                else
-                {
-
-                  // Removing that block of code from FolderMessageList means that flagging any
-                  // single message in a folder causes random messages to have their subjects
-                  // switch to the flagged color. -danapple
-                  holder.subject.setTextColor(0xff000000);
+                    subjectColor = Email.FLAGGED_COLOR;
                 }
                 
                 if (! message.partially_downloaded && !message.downloaded ) {
-                    holder.chip.getBackground().setAlpha(127);
-                    holder.subject.setTextColor(0x60000000);
-                    holder.date.setTextColor(0x60000000);
-                    holder.from.setTextColor(0x60000000);
+                    holder.chip.getBackground().setAlpha(message.read ? 0 : 127);
+                    alpha = 0x60000000;    
                 } else {
-                    holder.date.setTextColor(0xff000000);
-                    holder.from.setTextColor(0xff000000);
+                    alpha = 0xff000000;
                 }
+                
+                holder.subject.setTextColor(alpha | subjectColor);
+                holder.date.setTextColor(alpha);  // The rest is just black (000000) for now
+                holder.from.setTextColor(alpha);
 
                 holder.subject.setText(message.subject);
                 
