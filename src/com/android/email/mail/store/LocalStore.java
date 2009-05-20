@@ -1469,9 +1469,6 @@ public class LocalStore extends Store implements Serializable {
                             break;
                         case '\r':
                             break;
-                        case '\n':
-                            buff.append("<br/>");
-                            break;
                         default:
                             buff.append((char)c);
                     }//switch
@@ -1484,7 +1481,7 @@ public class LocalStore extends Store implements Serializable {
 
             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
             StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><body>");
+            sb.append("<html><body><pre style=\"white-space: pre-wrap;\">");
             while (m.find()) {
                 int start = m.start();
                 if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
@@ -1494,7 +1491,7 @@ public class LocalStore extends Store implements Serializable {
                 }
             }
             m.appendTail(sb);
-            sb.append("</body></html>");
+            sb.append("</pre></body></html>");
             text = sb.toString();
 
             return text;
