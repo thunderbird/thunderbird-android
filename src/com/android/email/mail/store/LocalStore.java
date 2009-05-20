@@ -802,15 +802,14 @@ public class LocalStore extends Store implements Serializable {
                         String htmlContent = cursor.getString(0);
                         String textContent = cursor.getString(1);
 
-                        if (htmlContent != null) {
-                            TextBody body = new TextBody(htmlContent);
-                            MimeBodyPart bp = new MimeBodyPart(body, "text/html");
+                        if (textContent != null) {
+                            LocalTextBody body = new LocalTextBody(textContent, htmlContent);
+                            MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
                             mp.addBodyPart(bp);
                         }
-
-                        if (textContent != null) {
-                            TextBody body = new TextBody(textContent);
-                            MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
+                        else {
+                            TextBody body = new TextBody(htmlContent);
+                            MimeBodyPart bp = new MimeBodyPart(body, "text/html");
                             mp.addBodyPart(bp);
                         }
                     }
@@ -1508,6 +1507,28 @@ public class LocalStore extends Store implements Serializable {
             return text;
         }
     }
+
+    public class LocalTextBody extends TextBody {
+        private String mBodyForDisplay;
+
+        public LocalTextBody(String body) {
+            super(body);
+        }
+
+        public LocalTextBody(String body, String bodyForDisplay) throws MessagingException {
+            super(body);
+            this.mBodyForDisplay = bodyForDisplay;
+        }
+
+        public String getBodyForDisplay() {
+            return mBodyForDisplay;
+        }
+
+        public void setBodyForDisplay(String mBodyForDisplay) {
+            this.mBodyForDisplay = mBodyForDisplay;
+        }
+
+    }//LocalTextBody
 
     public class LocalMessage extends MimeMessage {
         private long mId;

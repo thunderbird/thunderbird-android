@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 import org.apache.commons.io.IOUtils;
 
@@ -26,11 +25,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Process;
 import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.util.Regex;
 import android.util.Config;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -56,8 +51,6 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
-import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.FolderInfoHolder;
-import com.android.email.activity.FolderMessageList.FolderMessageListAdapter.MessageInfoHolder;
 import com.android.email.mail.Address;
 import com.android.email.mail.Flag;
 import com.android.email.mail.Message;
@@ -65,11 +58,10 @@ import com.android.email.mail.MessagingException;
 import com.android.email.mail.Multipart;
 import com.android.email.mail.Part;
 import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.internet.MimeHeader;
 import com.android.email.mail.internet.MimeUtility;
-import com.android.email.mail.store.LocalStore.LocalAttachmentBody;
 import com.android.email.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.android.email.mail.store.LocalStore.LocalMessage;
+import com.android.email.mail.store.LocalStore.LocalTextBody;
 import com.android.email.provider.AttachmentProvider;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -1053,34 +1045,51 @@ public class MessageView extends Activity
 
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
-                Message message) {
+            Message message) {
             Spannable markup;
             MessageView.this.mMessage = message;
             try {
-            Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
-            if (part == null) {
-                part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
-            }
-            if (part != null) {
-                String text = MimeUtility.getTextFromPart(part);
-                  /*
-                   * TODO this should be smarter, change to regex for img, but consider how to
-                   * get background images and a million other things that HTML allows.
-                   */
-                 mHandler.showShowPictures(text.contains("<img"));
-                 mMessageContentView.loadDataWithBaseURL("email://", text, "text/html", "utf-8", null);
-              }
-             else
-                  mMessageContentView.loadUrl("file:///android_asset/empty.html");
-              renderAttachments(mMessage, 0);
-              }
-            catch (Exception e) {
-                    if (Config.LOGV) {
-                        Log.v(Email.LOG_TAG, "loadMessageForViewBodyAvailable", e);
+                String text;
+                Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
+                if (part == null) {
+                    part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
+                    if (part == null) {
+                        text = null;
+                    }
+                    else {
+                        LocalTextBody body = (LocalTextBody)part.getBody();
+                        if (body == null) {
+                            text = null;
+                        }
+                        else {
+                            text = body.getBodyForDisplay();
+                        }
                     }
                 }
+                else {
+                    text = MimeUtility.getTextFromPart(part);
+                }
+
+                if (text != null) {
+                    /*
+                     * TODO this should be smarter, change to regex for img, but consider how to
+                     * get background images and a million other things that HTML allows.
+                     */
+                    mHandler.showShowPictures(text.contains("<img"));
+                    mMessageContentView.loadDataWithBaseURL("email://", text, "text/html", "utf-8", null);
+                }
+                else {
+                    mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                }
+
+                renderAttachments(mMessage, 0);
             }
-  
+            catch (Exception e) {
+                     if (Config.LOGV) {
+                          Log.v(Email.LOG_TAG, "loadMessageForViewBodyAvailable", e);
+                }
+            }
+        }//loadMessageForViewBodyAvailable
 
 
         @Override
