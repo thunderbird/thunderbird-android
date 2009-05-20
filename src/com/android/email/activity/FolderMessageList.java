@@ -2219,7 +2219,7 @@ public class FolderMessageList extends ExpandableListActivity
                     subjectColor = Email.FLAGGED_COLOR;
                 }
                 
-                if (! message.partially_downloaded && !message.downloaded ) {
+                if (!message.downloaded) {
                     holder.chip.getBackground().setAlpha(message.read ? 0 : 127);
                     alpha = 0x60000000;    
                 } else {
