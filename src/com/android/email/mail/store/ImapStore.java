@@ -738,7 +738,12 @@ public class ImapStore extends Store {
                 if (o instanceof Part) {
                     Part part = (Part) o;
                     String partId = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA)[0];
-                    fetchFields.add("BODY.PEEK[" + partId + "]");
+                    if ("TEXT".equals(partId)) {
+                        fetchFields.add(String.format("BODY.PEEK[TEXT]<0.%d>", FETCH_BODY_SANE_SUGGESTED_SIZE));
+                    }
+                    else {
+                        fetchFields.add("BODY.PEEK[" + partId + "]");
+                    }
                 }
             }
 
@@ -1457,6 +1462,7 @@ public class ImapStore extends Store {
             open();
             String tag = Integer.toString(mNextCommandTag++);
             String commandToSend = tag + " " + command;
+            Log.v(Email.LOG_TAG, commandToSend);
             mOut.write(commandToSend.getBytes());
             mOut.write('\r');
             mOut.write('\n');
