@@ -1462,7 +1462,6 @@ public class ImapStore extends Store {
             open();
             String tag = Integer.toString(mNextCommandTag++);
             String commandToSend = tag + " " + command;
-            Log.v(Email.LOG_TAG, commandToSend);
             mOut.write(commandToSend.getBytes());
             mOut.write('\r');
             mOut.write('\n');
