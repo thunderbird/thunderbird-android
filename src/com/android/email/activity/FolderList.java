@@ -70,21 +70,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-
-
 /**
  * FolderList is the primary user interface for the program. This
- * Activity shows a two level list of the Account's folders and each folder's
- * messages. From this Activity the user can perform all standard message
- * operations.
- *
- *
- * TODO Break out seperate functions for: refresh local folders refresh remote
- * folders refresh open folder local messages refresh open folder remote
- * messages
- *
- * And don't refresh remote folders ever unless the user runs a refresh. Maybe
- * not even then.
+ * Activity shows list of the Account's folders 
  */
 
 public class FolderList extends ListActivity {
@@ -109,11 +97,6 @@ public class FolderList extends ListActivity {
 
     private Account mAccount;
 
-
-    /**
-    * Stores the name of the folder that we want to open as soon as possible
-    * after load. It is set to null once the folder has been opened once.
-     */
     private String mInitialFolder;
 
     private boolean mRestoringState;
@@ -457,7 +440,6 @@ public class FolderList extends ListActivity {
         setTitle(mAccount.getDescription());
     }
 
-
     @Override public Object onRetainNonConfigurationInstance() {
         return mAdapter.mFolders;
     }
@@ -488,12 +470,7 @@ public class FolderList extends ListActivity {
 
     }
 
-
-
-
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
         //Shortcuts that work no matter what is selected
 
         switch (keyCode) {
@@ -518,7 +495,6 @@ public class FolderList extends ListActivity {
         return super.onKeyDown(keyCode, event);
     }//onKeyDown
 
-
     private void onRefresh(final boolean forceRemote) {
         if (forceRemote) {
             mRefreshRemote = true;
@@ -538,7 +514,6 @@ public class FolderList extends ListActivity {
         .start();
     }
 
-
     private void onEditAccount() {
         AccountSettings.actionSettings(this, mAccount);
     }
@@ -546,7 +521,6 @@ public class FolderList extends ListActivity {
     private void onEditFolder(Account account, String folderName) {
         FolderSettings.actionSettings(this, account, folderName);
     }
-
 
     private void onAccounts() {
         // If we're a child activity (say because Welcome dropped us straight to the message list
@@ -560,7 +534,6 @@ public class FolderList extends ListActivity {
     private void markAllRefresh() {
         mAdapter.mListener.accountReset(mAccount);
     }
-
 
     private Account mSelectedContextAccount = null;
     private FolderInfoHolder mSelectedContextFolder = null;
@@ -578,8 +551,6 @@ public class FolderList extends ListActivity {
         MessagingController.getInstance(getApplication()).emptyTrash(account, listener);
     }
 
-
-
     private void checkMail(final Account account) {
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
     }
@@ -588,8 +559,7 @@ public class FolderList extends ListActivity {
         MessagingController.getInstance(getApplication()).synchronizeMailbox(account, folderName, mAdapter.mListener);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.check_mail:
             checkMail(mAccount);
@@ -626,11 +596,9 @@ public class FolderList extends ListActivity {
         }
     }
 
-
     private void onOpenFolder(FolderInfoHolder folder) {
               MessageList.actionHandleFolder(this, mAccount, folder.name);
     }
-
 
     private void onCompact(Account account) {
         mHandler.workingAccount(R.string.compacting_account);
@@ -642,15 +610,13 @@ public class FolderList extends ListActivity {
         MessagingController.getInstance(getApplication()).clear(account, null);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.folder_list_option, menu);
         return true;
     }
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    @Override public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
@@ -691,8 +657,7 @@ public class FolderList extends ListActivity {
         return super.onContextItemSelected(item);
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
         getMenuInflater().inflate(R.menu.folder_context, menu);
@@ -712,7 +677,6 @@ public class FolderList extends ListActivity {
 
         menu.setHeaderTitle(folder.displayName);
     }
-
 
     private String truncateStatus(String mess) {
         if (mess != null && mess.length() > 27) {
@@ -1194,7 +1158,6 @@ public class FolderList extends ListActivity {
                       }
                   }
         }
-
 
         class FolderViewHolder {
             public TextView folderName;
