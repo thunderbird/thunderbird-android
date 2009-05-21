@@ -35,7 +35,6 @@ import android.util.Log;
 
 import com.android.email.activity.FolderMessageList;
 import com.android.email.mail.Address;
-import com.android.email.mail.Body;
 import com.android.email.mail.FetchProfile;
 import com.android.email.mail.Flag;
 import com.android.email.mail.Folder;
@@ -86,8 +85,7 @@ public class MessagingController implements Runnable {
      * </pre>
      * So 25k gives good performance and a reasonable data footprint. Sounds good to me.
      */
-	// Daniel I. Applebaum Changing to 5k for faster syncing
-    private static final int MAX_SMALL_MESSAGE_SIZE = (5 * 1024);
+    private static final int MAX_SMALL_MESSAGE_SIZE = Store.FETCH_BODY_SANE_SUGGESTED_SIZE;
 
     private static final String PENDING_COMMAND_MOVE_OR_COPY =
         "com.android.email.MessagingController.moveOrCopy";
