@@ -390,10 +390,13 @@ public class FolderList extends ListActivity {
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
+                Log.v(Email.LOG_TAG,"We're clicking "+itemPosition+" -- "+id);
                 if (id == 0 ) {
+                    onAccounts();
                     return;
+                } else {
+                    MessageList.actionHandleFolder(xxx,mAccount, ((FolderInfoHolder)mAdapter.getItem(id-1)).name);
                 }
-                MessageList.actionHandleFolder(xxx,mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name);
             }
 
 
@@ -691,7 +694,7 @@ public class FolderList extends ListActivity {
         }
 
         public Object getItem(int position) {
-            return mFolders.get(position - 1);
+            return mFolders.get(position);
         }
 
 
@@ -699,6 +702,7 @@ public class FolderList extends ListActivity {
             return position ;
         }
         private static final int NON_MESSAGE_ITEMS = 1;
+ 
         public int getCount() {
             return mFolders.size() + NON_MESSAGE_ITEMS;
         }
@@ -958,7 +962,7 @@ public class FolderList extends ListActivity {
             if (position == 0 ) {
                 return getHeaderView(position, convertView, parent);
             } else if (position <= getCount()) {
-               return  getItemView(position, convertView, parent);
+               return  getItemView(position-1, convertView, parent);
             } else {
                 // XXX TODO - should catch an exception here
                 return null;
@@ -970,6 +974,7 @@ public class FolderList extends ListActivity {
              TextView title = (TextView) view.findViewById(R.id.account_name);
              Button back = (Button) view.findViewById(R.id.account_list);
              back.setOnClickListener(new Button.OnClickListener() { public void onClick(View v) { onAccounts();}});
+             view.setOnClickListener(new View.OnClickListener() { public void onClick(View v) { onAccounts();}});
              // XXX TODO - make this keyboard navigable?
              title.setText(mAccount.getDescription());
             return view;
@@ -997,9 +1002,6 @@ public class FolderList extends ListActivity {
             }
             
             holder.folderName.setText(folder.displayName);
-            
-
-
             String statusText = "";
 
             if (folder.loading) {
@@ -1037,12 +1039,7 @@ public class FolderList extends ListActivity {
         }
         
         public boolean isItemSelectable(int position) {
-            if (position > 0 && position <= mAdapter.mFolders.size() ) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return true;
         }
 
     }
@@ -1162,6 +1159,7 @@ public class FolderList extends ListActivity {
             public TextView folderStatus;
 
             public TextView newMessageCount;
+
             public String rawFolderName;
         }
 

@@ -1391,6 +1391,7 @@ public class MessageList extends ListActivity {
                   View view = mInflater.inflate(R.layout.message_list_header, parent, false);
                    TextView title = (TextView) view.findViewById(R.id.folder_name);
                     Button back = (Button) view.findViewById(R.id.folder_list);
+                    view.setOnClickListener(new View.OnClickListener() { public void onClick(View v) { onShowFolderList();}});
                     back.setOnClickListener(new Button.OnClickListener() { public void onClick(View v) { onShowFolderList();}});
                     // XXX TODO - make this keyboard navigable?
                     title.setText(getFolder(mFolderName).displayName + " - " + mAccount);
