@@ -24,7 +24,7 @@ public abstract class Store {
      * should be returned on FetchProfile.Item.BODY_SANE requests.
      */
     //Matching MessagingController.MAX_SMALL_MESSAGE_SIZE
-    public static final int FETCH_BODY_SANE_SUGGESTED_SIZE = (5 * 1024);
+    public static final int FETCH_BODY_SANE_SUGGESTED_SIZE = (50 * 1024);
 
     protected static final int SOCKET_CONNECT_TIMEOUT = 10000;
     protected static final int SOCKET_READ_TIMEOUT = 60000;
