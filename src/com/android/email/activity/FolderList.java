@@ -535,9 +535,6 @@ public class FolderList extends ListActivity {
         mAdapter.mListener.accountReset(mAccount);
     }
 
-    private Account mSelectedContextAccount = null;
-    private FolderInfoHolder mSelectedContextFolder = null;
-
     private void onEmptyTrash(final Account account) {
         mHandler.dataChanged();
 
