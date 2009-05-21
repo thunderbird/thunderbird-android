@@ -578,9 +578,9 @@ public class MessageList extends ListActivity {
 
                 if (message != null) {
                     switch (keyCode) {
-                    case KeyEvent.KEYCODE_DEL: { onDelete(message); return true;}
+                    case KeyEvent.KEYCODE_DEL: { onDelete(message, position); return true;}
 
-                    case KeyEvent.KEYCODE_D: { onDelete(message); return true;}
+                    case KeyEvent.KEYCODE_D: { onDelete(message, position); return true;}
 
                     case KeyEvent.KEYCODE_F: { onForward(message); return true;}
 
@@ -720,7 +720,7 @@ public class MessageList extends ListActivity {
         reSort();
     }
 
-    private void onDelete(MessageInfoHolder holder) {
+    private void onDelete(MessageInfoHolder holder, int position) {
         if (holder.read == false && holder.folder.unreadMessageCount > 0) {
             holder.folder.unreadMessageCount--;
         }
@@ -732,7 +732,7 @@ public class MessageList extends ListActivity {
         }
 
         mAdapter.removeMessage(holder);
-
+        mListView.setSelection(position+1);
         MessagingController.getInstance(getApplication()).deleteMessage(mAccount, holder.message.getFolder().getName(), holder.message, null);
 
     }
@@ -1045,7 +1045,7 @@ public class MessageList extends ListActivity {
                 break;
 
             case R.id.delete:
-                onDelete(holder);
+                onDelete(holder, info.position);
 
                 break;
 
