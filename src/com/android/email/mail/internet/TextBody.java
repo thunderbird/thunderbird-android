@@ -20,8 +20,10 @@ public class TextBody implements Body {
     }
 
     public void writeTo(OutputStream out) throws IOException, MessagingException {
-        byte[] bytes = mBody.getBytes("UTF-8");
-        out.write(Base64.encodeBase64Chunked(bytes));
+        if (mBody!=null) {
+            byte[] bytes = mBody.getBytes("UTF-8");
+            out.write(Base64.encodeBase64Chunked(bytes));
+        }
     }
     
     /**
@@ -37,7 +39,13 @@ public class TextBody implements Body {
      */
     public InputStream getInputStream() throws MessagingException {
         try {
-            byte[] b = mBody.getBytes("UTF-8");
+            byte[] b;
+            if (mBody!=null) {
+                b = mBody.getBytes("UTF-8");
+            }
+            else {
+                b = new byte[0];
+            }
             return new ByteArrayInputStream(b);
         }
         catch (UnsupportedEncodingException usee) {
