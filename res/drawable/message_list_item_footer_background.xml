@@ -7,5 +7,6 @@
     <item android:state_pressed="true" android:state_selected="false"
         android:drawable="@android:color/transparent" />
     <item android:state_selected="false"
-        android:drawable="@color/message_list_item_footer_background" />
+        android:drawable="@android:color/transparent"
+        />
 </selector>

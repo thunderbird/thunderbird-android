@@ -5,7 +5,7 @@
     android:layout_height="38px"
     android:paddingRight="1px"
     android:paddingTop="2px"
-    android:background="@drawable/message_list_item_background"
+    android:background="@android:color/transparent"
     >
     <View
         android:id="@+id/chip"
@@ -46,6 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/message_list_item_background"
+        android:background="@android:color/transparent"
         />
 </RelativeLayout>

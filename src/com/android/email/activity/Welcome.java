@@ -24,6 +24,10 @@ public class Welcome extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
+
+        setTheme(android.R.style.Theme);
+
+
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         if (accounts.length == 1) {
             MessageList.actionHandleFolder(this, accounts[0], accounts[0].getAutoExpandFolderName());
