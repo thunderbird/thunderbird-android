@@ -803,15 +803,14 @@ public class LocalStore extends Store implements Serializable {
                         String htmlContent = cursor.getString(0);
                         String textContent = cursor.getString(1);
 
-                        if (htmlContent != null) {
-                            TextBody body = new TextBody(htmlContent);
-                            MimeBodyPart bp = new MimeBodyPart(body, "text/html");
+                        if (textContent != null) {
+                            LocalTextBody body = new LocalTextBody(textContent, htmlContent);
+                            MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
                             mp.addBodyPart(bp);
                         }
-
-                        if (textContent != null) {
-                            TextBody body = new TextBody(textContent);
-                            MimeBodyPart bp = new MimeBodyPart(body, "text/plain");
+                        else {
+                            TextBody body = new TextBody(htmlContent);
+                            MimeBodyPart bp = new MimeBodyPart(body, "text/html");
                             mp.addBodyPart(bp);
                         }
                     }
@@ -1097,11 +1096,8 @@ public class LocalStore extends Store implements Serializable {
                     }
                 }
 
-
-
-                sbHtml = markupContent(sbText,sbHtml);
-
-
+                String text = sbText.toString();
+                String html = markupContent(text, sbHtml.toString());
 
                 try {
                     ContentValues cv = new ContentValues();
@@ -1115,8 +1111,8 @@ public class LocalStore extends Store implements Serializable {
                     cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
                     cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
                     cv.put("bcc_list", Address.pack(message.getRecipients(RecipientType.BCC)));
-                    cv.put("html_content", sbHtml.length() > 0 ? sbHtml.toString() : null);
-                    cv.put("text_content", sbText.length() > 0 ? sbText.toString() : null);
+                    cv.put("html_content", html.length() > 0 ? html : null);
+                    cv.put("text_content", text.length() > 0 ? text : null);
                     cv.put("reply_to_list", Address.pack(message.getReplyTo()));
                     cv.put("attachment_count", attachments.size());
                     cv.put("internal_date",  message.getInternalDate() == null
@@ -1173,8 +1169,8 @@ public class LocalStore extends Store implements Serializable {
                 }
             }
 
-            sbHtml = markupContent(sbText,sbHtml);
-
+            String text = sbText.toString();
+            String html = markupContent(text, sbHtml.toString());
 
             try {
                 mDb.execSQL("UPDATE messages SET "
@@ -1197,8 +1193,8 @@ public class LocalStore extends Store implements Serializable {
                                         .getRecipients(RecipientType.CC)),
                                 Address.pack(message
                                         .getRecipients(RecipientType.BCC)),
-                                sbHtml.length() > 0 ? sbHtml.toString() : null,
-                                sbText.length() > 0 ? sbText.toString() : null,
+                                html.length() > 0 ? html : null,
+                                text.length() > 0 ? text : null,
                                 Address.pack(message.getReplyTo()),
                                 attachments.size(),
                                 message.mId
@@ -1451,22 +1447,18 @@ public class LocalStore extends Store implements Serializable {
         }
         
 
-        public StringBuffer markupContent(StringBuffer sbText, StringBuffer sbHtml) {
-                if (sbText.length() > 0 && sbHtml.length() == 0) {
-                    sbHtml.append(htmlifyString(sbText.toString()));
-                }
-               
-                String html = sbHtml.toString();
-                if (html.indexOf("cid:")!=-1) {
-                    html = html.replaceAll("cid:", "http://cid/");
-                }
-                Spannable markup = new SpannableString(html);
-                Linkify.addLinks(markup, Linkify.ALL);
-                StringBuffer sb = new StringBuffer(markup.length());
-                sb.append(markup.toString());
-                return sb;
-
+        public String markupContent(String text, String html) {
+            if (text.length() > 0 && html.length() == 0) {
+                html = htmlifyString(text);
             }
+
+            if (html.indexOf("cid:") != -1) {
+                return html.replaceAll("cid:", "http://cid/");
+            }
+            else {
+                return html;
+            }
+        }
         
         public String htmlifyString(String text) {
             StringReader reader = new StringReader(text);
@@ -1486,9 +1478,6 @@ public class LocalStore extends Store implements Serializable {
                             break;
                         case '\r':
                             break;
-                        case '\n':
-                            buff.append("<br/>");
-                            break;
                         default:
                             buff.append((char)c);
                     }//switch
@@ -1501,7 +1490,7 @@ public class LocalStore extends Store implements Serializable {
 
             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
             StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><body>");
+            sb.append("<html><body><pre style=\"white-space: pre-wrap;\">");
             while (m.find()) {
                 int start = m.start();
                 if (start == 0 || (start != 0 && text.charAt(start - 1) != '@')) {
@@ -1511,12 +1500,34 @@ public class LocalStore extends Store implements Serializable {
                 }
             }
             m.appendTail(sb);
-            sb.append("</body></html>");
+            sb.append("</pre></body></html>");
             text = sb.toString();
 
             return text;
         }
     }
+
+    public class LocalTextBody extends TextBody {
+        private String mBodyForDisplay;
+
+        public LocalTextBody(String body) {
+            super(body);
+        }
+
+        public LocalTextBody(String body, String bodyForDisplay) throws MessagingException {
+            super(body);
+            this.mBodyForDisplay = bodyForDisplay;
+        }
+
+        public String getBodyForDisplay() {
+            return mBodyForDisplay;
+        }
+
+        public void setBodyForDisplay(String mBodyForDisplay) {
+            this.mBodyForDisplay = mBodyForDisplay;
+        }
+
+    }//LocalTextBody
 
     public class LocalMessage extends MimeMessage {
         private long mId;

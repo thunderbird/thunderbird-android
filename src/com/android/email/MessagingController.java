@@ -34,7 +34,6 @@ import android.util.Log;
 
 import com.android.email.activity.FolderList;
 import com.android.email.mail.Address;
-import com.android.email.mail.Body;
 import com.android.email.mail.FetchProfile;
 import com.android.email.mail.Flag;
 import com.android.email.mail.Folder;
@@ -85,8 +84,7 @@ public class MessagingController implements Runnable {
      * </pre>
      * So 25k gives good performance and a reasonable data footprint. Sounds good to me.
      */
-	// Daniel I. Applebaum Changing to 5k for faster syncing
-    private static final int MAX_SMALL_MESSAGE_SIZE = (5 * 1024);
+    private static final int MAX_SMALL_MESSAGE_SIZE = Store.FETCH_BODY_SANE_SUGGESTED_SIZE;
 
     private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.android.email.MessagingController.moveOrCopy";
     private static final String PENDING_COMMAND_EMPTY_TRASH = "com.android.email.MessagingController.emptyTrash";
@@ -714,6 +712,7 @@ public class MessagingController implements Runnable {
                 if (Config.LOGV) {
                     Log.v(Email.LOG_TAG, "SYNC: Got " + remoteUidMap.size() + " messages for folder " + folder);
                 }
+                remoteMessageArray = null;
 
                 /*
                  * Get a list of the messages that are in the remote list but not on the
@@ -746,7 +745,7 @@ public class MessagingController implements Runnable {
 
             /*
              * Fetch the flags and envelope only of the new messages. This is intended to get us
-s             * critical data as fast as possible, and then we'll fill in the details.
+             * critical data as fast as possible, and then we'll fill in the details.
              */
             if (unsyncedMessages.size() > 0) {
 
@@ -873,6 +872,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     }
                 }
             }
+            localMessages = null;
 
             /*
              * Now we download the actual content of messages.
@@ -894,6 +894,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
                     + unsyncedMessages.size() + " un synced messages "
                     + " to fetch for folder " + folder);
             }
+            unsyncedMessages.clear();
 
 
             /*
@@ -939,6 +940,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
             if (Config.LOGV) {
                 Log.v(Email.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
             }
+            smallMessages = null;
 
             /*
              * Now do the large messages that require more round trips.
@@ -1014,7 +1016,7 @@ s             * critical data as fast as possible, and then we'll fill in the de
 
                     // Set a flag indicating this message has been fully downloaded and can be
                     // viewed.
-                    localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                    localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true);
                 }
 
                 if (isMessageSuppressed(account, folder, message) == false) {
@@ -1024,10 +1026,11 @@ s             * critical data as fast as possible, and then we'll fill in the de
                         l.synchronizeMailboxNewMessage( account, folder, localFolder.getMessage(message.getUid()));
                     }
                 }
-            }
+            }//for large messsages
             if (Config.LOGV) {
                 Log.v(Email.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
             }
+            largeMessages = null;
 
 
             /*

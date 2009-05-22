@@ -168,7 +168,7 @@ public class Email extends Application {
     public static final String TIME_FORMAT_12 = "h:mm a";
     public static final String TIME_FORMAT_24 = "H:mm";
     
-    public static final int FLAGGED_COLOR = 0xffff4444;
+    public static final int FLAGGED_COLOR = 0xff4444;
 
     public static final String INTENT_DATA_URI_SCHEMA           = "content";
     public static final String INTENT_DATA_UR_PATH_PREFIX       = "email";
