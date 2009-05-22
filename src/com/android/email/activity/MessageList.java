@@ -1435,7 +1435,7 @@ public class MessageList extends ListActivity {
                 }
 
                 holder.subject.setTextColor(alpha | subjectColor);
-                holder.date.setTextColor(alpha | holder.date.getCurrentTextColor() );  // The rest is just the primary style color
+                holder.date.setTextColor(alpha | holder.date.getCurrentTextColor() );  
                 holder.from.setTextColor(alpha | holder.from.getCurrentTextColor() );
  
 
