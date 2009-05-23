@@ -5,7 +5,8 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_email_thread_open_top_default">
+        android:padding="2dip"
+        android:background="@android:color/transparent">
         <TextView
             android:id="@+id/from"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -79,7 +80,6 @@
         android:id="@+id/show_pictures_section"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#ffefefef"
         android:layout_marginTop="6dip"
         android:paddingLeft="6dip"
         android:paddingRight="3dip"
@@ -105,6 +105,8 @@
     <WebView
         android:id="@+id/message_content"
         android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorPrimary"
+        android:background="@android:color/transparent"
         android:layout_width="fill_parent"
          />
     <!-- attachments area -->

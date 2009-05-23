@@ -87,6 +87,7 @@ public class MessageView extends Activity
     private TextView mDateView;
     private TextView mToView;
     private TextView mSubjectView;
+    private int defaultSubjectColor;
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
     private View mAttachmentIcon;
@@ -148,9 +149,6 @@ public class MessageView extends Activity
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
 
-
-
-
        public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DEL: { onDelete(); return true;}
@@ -181,8 +179,6 @@ public class MessageView extends Activity
             }
            return super.onKeyDown(keyCode, event);
         }
-
-
 
     class MessageViewHandler extends Handler {
         private static final int MSG_PROGRESS = 2;
@@ -226,7 +222,7 @@ public class MessageView extends Activity
                       mSubjectView.setTextColor(0xff000000 | Email.FLAGGED_COLOR);
                     }
                     else {
-                      mSubjectView.setTextColor(0xff000000);
+                      mSubjectView.setTextColor(0xff000000 | defaultSubjectColor );
                     }
                     if ((msg.arg2 & FLAG_ANSWERED) != 0) {
                      Drawable answeredIcon = getResources().getDrawable(
@@ -372,12 +368,16 @@ public class MessageView extends Activity
         mFromView = (TextView)findViewById(R.id.from);
         mToView = (TextView)findViewById(R.id.to);
         mSubjectView = (TextView)findViewById(R.id.subject);
+        defaultSubjectColor = mSubjectView.getCurrentTextColor();
+
+
         mDateView = (TextView)findViewById(R.id.date);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
         //mMessageContentView.setWebViewClient(new MessageWebViewClient());
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
+
 
         mMessageContentView.setVerticalScrollBarEnabled(false);
         mAttachments.setVisibility(View.GONE);
@@ -1077,8 +1077,8 @@ public class MessageView extends Activity
                      * TODO this should be smarter, change to regex for img, but consider how to
                      * get background images and a million other things that HTML allows.
                      */
-                    mHandler.showShowPictures(text.contains("<img"));
                     mMessageContentView.loadDataWithBaseURL("email://", text, "text/html", "utf-8", null);
+                    mHandler.showShowPictures(text.contains("<img"));
                 }
                 else {
                     mMessageContentView.loadUrl("file:///android_asset/empty.html");
