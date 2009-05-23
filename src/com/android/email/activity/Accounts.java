@@ -42,6 +42,7 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
+import com.android.email.activity.setup.Prefs;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.AccountSetupBasics;
 import com.android.email.activity.setup.AccountSetupCheckSettings;
@@ -327,6 +328,11 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         AccountSettings.actionSettings(this, account);
     }
 
+    private void onEditPrefs() {
+        Prefs.actionPrefs(this);
+    }
+
+
     private void onCheckMail(Account account) {
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, null);
     }
@@ -403,6 +409,9 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
         Account account = (Account)getListView().getItemAtPosition(menuInfo.position);
         switch (item.getItemId()) {
+            case R.id.edit_prefs:
+                onEditPrefs();
+                break;
             case R.id.delete_account:
                 onDeleteAccount(account);
                 break;
@@ -452,6 +461,9 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         switch (item.getItemId()) {
             case R.id.add_new_account:
                 onAddNewAccount();
+                break;
+            case R.id.edit_prefs:
+                onEditPrefs();
                 break;
             case R.id.check_mail:
                 onCheckMail(null);

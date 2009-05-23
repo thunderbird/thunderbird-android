@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionCode="199"
     android:versionName="0.199" package="com.fsck.k9">
-    <uses-sdk android:minSdkVersion="3"/>
+    <uses-sdk android:minSdkVersion="1"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
@@ -26,6 +26,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.android.email.activity.setup.Prefs"
+            android:label="@string/prefs_title"
+            >
+        </activity>
         <activity
             android:name="com.android.email.activity.setup.AccountSetupBasics"
             android:label="@string/account_setup_basics_title"
@@ -77,7 +82,6 @@
         </activity>
         <activity
             android:name="com.android.email.activity.setup.AccountSettings"
-            android:theme="@android:style/Theme"
             android:label="@string/account_settings_title_fmt"
             >
         </activity>

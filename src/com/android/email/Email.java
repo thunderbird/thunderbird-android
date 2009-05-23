@@ -227,6 +227,7 @@ public class Email extends Application {
         DEBUG_SENSITIVE = prefs.getEnableSensitiveLogging();
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
 
+        
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
          * doesn't work in Android and MimeMessage does not have access to a Context.

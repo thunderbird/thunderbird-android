@@ -25,7 +25,9 @@
 	<!-- 
 		<item android:id="@+id/search"
 		android:title="@string/search_action" />
-		<item android:id="@+id/preferences"
-		android:title="@string/preferences_action" />
 	-->
+        <item android:id="@+id/edit_prefs"
+        android:title="@string/preferences_action" 
+		android:icon="@drawable/ic_menu_preferences"
+/>
 </menu>

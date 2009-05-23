@@ -108,6 +108,14 @@ public class Preferences {
     public boolean getEnableDebugLogging() {
         return getPreferences().getBoolean("enableDebugLogging", false);
     }
+    
+    public void setTheme(int theme) {
+        getPreferences().edit().putInt("theme", theme).commit();
+    }
+
+    public int getTheme() {
+        return getPreferences().getInt("theme", android.R.style.Theme_Light);
+    } 
 
     public void setEnableSensitiveLogging(boolean value) {
         getPreferences().edit().putBoolean("enableSensitiveLogging", value).commit();

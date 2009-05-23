@@ -1,4 +1,3 @@
-
 package com.android.email.activity;
 
 import com.android.email.Account;
@@ -22,12 +21,8 @@ import android.os.Bundle;
 public class Welcome extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
+        setTheme(Preferences.getPreferences(this).getTheme());
         super.onCreate(icicle);
-
-
-        setTheme(android.R.style.Theme);
-
-
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         if (accounts.length == 1) {
             MessageList.actionHandleFolder(this, accounts[0], accounts[0].getAutoExpandFolderName());
