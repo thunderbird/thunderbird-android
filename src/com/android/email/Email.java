@@ -223,7 +223,7 @@ public class Email extends Application {
         super.onCreate();
         app = this;
         Preferences prefs = Preferences.getPreferences(this);
-        DEBUG = prefs.geteEnableDebugLogging();
+        DEBUG = prefs.getEnableDebugLogging();
         DEBUG_SENSITIVE = prefs.getEnableSensitiveLogging();
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
 

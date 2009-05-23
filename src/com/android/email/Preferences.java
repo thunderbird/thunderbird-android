@@ -105,7 +105,7 @@ public class Preferences {
         getPreferences().edit().putBoolean("enableDebugLogging", value).commit();
     }
 
-    public boolean geteEnableDebugLogging() {
+    public boolean getEnableDebugLogging() {
         return getPreferences().getBoolean("enableDebugLogging", false);
     }
 
