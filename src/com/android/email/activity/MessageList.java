@@ -348,59 +348,6 @@ public class MessageList extends ListActivity {
     * queueing up a remote update of the folder.
      */
 
-    class FolderUpdateWorker implements Runnable {
-        String mFolder;
-        FolderInfoHolder mHolder;
-        boolean mSynchronizeRemote;
-
-        /**
-        * Create a worker for the given folder and specifying whether the worker
-        * should synchronize the remote folder or just the local one.
-        * 
-         * @param folder
-         * @param synchronizeRemote
-         */
-        public FolderUpdateWorker(FolderInfoHolder folder, boolean synchronizeRemote) {
-            mFolder = folder.name;
-            mHolder = folder;
-            mSynchronizeRemote = synchronizeRemote;
-        }
-
-        public void run() {
-            // Lower our priority
-            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email - UpdateWorker");
-            wakeLock.setReferenceCounted(false);
-            wakeLock.acquire(Email.WAKE_LOCK_TIMEOUT);
-            // Synchronously load the list of local messages
-
-            try {
-                try {
-                    Store localStore = Store.getInstance(mAccount.getLocalStoreUri(), getApplication());
-                    LocalFolder localFolder = (LocalFolder) localStore.getFolder(mFolder);
-
-                    if (localFolder.getMessageCount() == 0 && localFolder.getLastChecked() <= 0) {
-                        mSynchronizeRemote = true;
-                    }
-                } catch (MessagingException me) {
-                    Log.e(Email.LOG_TAG, "Unable to get count of local messages for folder " + mFolder, me);
-                }
-
-                if (mSynchronizeRemote) {
-                    // Tell the MessagingController to run a remote update of this folder
-                    // at it's leisure
-                    MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, mFolder, mAdapter.mListener);
-                } else {
-                    MessagingController.getInstance(getApplication()).listLocalMessages( mAccount, mFolder, mAdapter.mListener);
-                }
-            } finally {
-                wakeLock.release();
-            }
-
-        }
-    }
-
     public static void actionHandleFolder(Context context, Account account, String folder) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_ACCOUNT, account);
