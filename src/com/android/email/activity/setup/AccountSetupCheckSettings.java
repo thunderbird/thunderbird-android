@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.android.email.Account;
 import com.android.email.Email;
+import com.android.email.MessagingController;
 import com.android.email.R;
 import com.android.email.mail.AuthenticationFailedException;
 import com.android.email.mail.MessagingException;
@@ -102,6 +103,17 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
                     	setMessage(R.string.account_setup_check_settings_check_incoming_msg);
                     	store = Store.getInstance(mAccount.getStoreUri(), getApplication());
                     	store.checkSettings();
+				        new Thread() {
+	
+				            public void run() {
+				                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+				                MessagingController.getInstance(getApplication()).listFolders(mAccount, true, null);
+                                    MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, Email.INBOX , null);
+				
+				            }
+				        }.start();
+				
+
                     }
                     if (mDestroyed) {
                         return;
