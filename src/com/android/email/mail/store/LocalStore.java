@@ -883,7 +883,7 @@ public class LocalStore extends Store implements Serializable {
             if (from.length > 0) {
                 message.setFrom(from[0]);
             }
-            message.setSentDate(new Date(cursor.getLong(2)));
+            message.setInternalSentDate(new Date(cursor.getLong(2)));
             message.setUid(cursor.getString(3));
             String flagList = cursor.getString(4);
             if (flagList != null && flagList.length() > 0) {
@@ -1532,6 +1532,10 @@ public class LocalStore extends Store implements Serializable {
     public class LocalMessage extends MimeMessage {
         private long mId;
         private int mAttachmentCount;
+    
+        public LocalMessage() {
+        }
+        
 
         LocalMessage(String uid, Folder folder) throws MessagingException {
             this.mUid = uid;

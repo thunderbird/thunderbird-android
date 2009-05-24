@@ -37,7 +37,8 @@ public class MimeMessage extends Message {
     protected Address[] mBcc;
     protected Address[] mReplyTo;
     protected Date mSentDate;
-    protected SimpleDateFormat mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
+    protected SimpleDateFormat mDateFormat;
+   
     protected Body mBody;
     protected int mSize;
  
@@ -107,9 +108,18 @@ public class MimeMessage extends Message {
     }
 
     public void setSentDate(Date sentDate) throws MessagingException {
+        if (mDateFormat == null) {
+                mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
+        }
         setHeader("Date", mDateFormat.format(sentDate));
+        setInternalSentDate(sentDate);
+    }
+
+    public void setInternalSentDate(Date sentDate) throws MessagingException {
         this.mSentDate = sentDate;
     }
+
+
 
     public String getContentType() throws MessagingException {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
