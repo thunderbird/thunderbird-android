@@ -362,6 +362,8 @@ public class MessageList extends ListActivity {
     @Override
 
     public void onCreate(Bundle savedInstanceState) {
+        Log.i(Email.LOG_TAG,"onCreate() entered");
+
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -399,6 +401,7 @@ public class MessageList extends ListActivity {
             mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
         }
 
+        Log.i(Email.LOG_TAG,"onCreate() before setting up listeners");
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
                     if (itemPosition == 0 ) {
@@ -426,6 +429,7 @@ public class MessageList extends ListActivity {
 
         mCurrentFolder = mAdapter.getFolder(mFolderName);
 
+        Log.i(Email.LOG_TAG,"onCreate() got the folder");
         setListAdapter(mAdapter);
 
         if (savedInstanceState != null) {
@@ -440,6 +444,7 @@ public class MessageList extends ListActivity {
                     mCurrentFolder.displayName
                     
                     );
+        Log.i(Email.LOG_TAG,"onCreate() completed");
     }
 
     private void onRestoreListState(Bundle savedInstanceState) {
@@ -1113,7 +1118,7 @@ public class MessageList extends ListActivity {
                     return;
                 }
 
-                addOrUpdateMessage(folder, message, true, true);
+                addOrUpdateMessage(folder, message, false, false);
             }
             
             @Override
@@ -1135,6 +1140,9 @@ public class MessageList extends ListActivity {
 				if (!account.equals(mAccount)) {
                     return;
                 }
+              
+                Collections.sort(mAdapter.messages);
+                mHandler.dataChanged();
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
             }
@@ -1144,6 +1152,10 @@ public class MessageList extends ListActivity {
 				if (!account.equals(mAccount)) {
                     return;
                 }
+
+                Collections.sort(mAdapter.messages);
+                mHandler.dataChanged();
+
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
             }
@@ -1178,7 +1190,12 @@ public class MessageList extends ListActivity {
                     return;
                 }
 
-                addOrUpdateMessage(folder, message, true, true);
+                addOrUpdateMessage(folder, message, false, false);//true, true);
+                if (mAdapter.messages.size() % 10 == 0 ) { 
+                    Collections.sort(mAdapter.messages);
+                    mHandler.dataChanged();
+                }
+
             }
             
 
@@ -1216,6 +1233,9 @@ public class MessageList extends ListActivity {
 
             mAdapter.messages.remove(holder);
             mHandler.removeMessage(holder);
+            Collections.sort(mAdapter.messages);
+            mHandler.dataChanged();
+
         }
 
         public void synchronizeMessages(String folder, Message[] messages) {
@@ -1253,6 +1273,7 @@ public class MessageList extends ListActivity {
         }
 
         private void addOrUpdateMessage(String folder, Message message, boolean sort, boolean notify) {
+            Log.i(Email.LOG_TAG,"addOrUpdateMessage(string variant in");
             FolderInfoHolder f = getFolder(folder);
 
             if (f == null) {
@@ -1264,12 +1285,12 @@ public class MessageList extends ListActivity {
 
         // XXX TODO - make this not use a for loop
         public MessageInfoHolder getMessage( String messageUid) {
-            for (MessageInfoHolder message : mAdapter.messages) {
-                if (message.uid.equals(messageUid)) {
-                    return message;
-                }
-            }
-
+            MessageInfoHolder searchHolder = new MessageInfoHolder();
+            searchHolder.uid = messageUid;
+            int index = mAdapter.messages.indexOf((Object) searchHolder);
+            if (index >= 0) {
+                return (MessageInfoHolder)mAdapter.messages.get( index );
+            } 
             return null;
         }
 
@@ -1299,7 +1320,6 @@ public class MessageList extends ListActivity {
                     MessageInfoHolder messageHolder =(MessageInfoHolder) getItem(position);
                     if (messageHolder != null) {
                         return ((LocalStore.LocalMessage)  messageHolder.message).getId();
-                        //return ((LocalStore.LocalMessage) item.message).getId();
                      }
                 } catch ( Exception e) {
                     Log.i(Email.LOG_TAG,"getItemId("+position+") ",e);
@@ -1490,6 +1510,10 @@ public class MessageList extends ListActivity {
 
             public FolderInfoHolder folder;
 
+
+            // Empty constructor for comparison
+            public MessageInfoHolder() {}
+
             public MessageInfoHolder(Message m, FolderInfoHolder folder) {
                 populate(m, folder);
             }
@@ -1538,6 +1562,15 @@ public class MessageList extends ListActivity {
                     }
                 }
             }
+            
+            public boolean equals(Object o) {
+                if (this.uid.equals(((MessageInfoHolder)o).uid)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
 
             public int compareTo(MessageInfoHolder o) {
                 int ascender = (sortAscending ? 1 : -1);
@@ -1570,6 +1603,7 @@ public class MessageList extends ListActivity {
                 }
 
                 int dateAscender = (sortDateAscending ? 1 : -1);
+
 
                 return this.compareDate.compareTo(o.compareDate) * dateAscender;
             }
