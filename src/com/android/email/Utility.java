@@ -164,12 +164,11 @@ public class Utility {
     }
 
     /**
-     * Returns true if the specified date is within today. Returns false otherwise.
+     * Returns true if the specified date is within 18 hours of "now". Returns false otherwise.
      * @param date
      * @return
      */
     public static boolean isDateToday(Date date) {
-        // TODO But Calendar is so slowwwwwww....
         Date now = new Date();
         if (now.getTime() - 64800000 > date.getTime() || now.getTime() + 64800000 < date.getTime()) {
             return false;
