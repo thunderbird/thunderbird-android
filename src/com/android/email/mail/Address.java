@@ -94,11 +94,11 @@ public class Address {
 
     public String toString() {
         if (mPersonal != null) {
-            if (mPersonal.matches(".*[\\(\\)<>@,;:\\\\\".\\[\\]].*")) {
-                return Utility.quoteString(mPersonal) + " <" + mAddress + ">";
-            } else {
-                return mPersonal + " <" + mAddress + ">";
-            }
+           //   if (mPersonal.matches(".*[\\(\\)<>@,;:\\\\\".\\[\\]].*")) {
+                return "\"" + mPersonal+ "\" " + " <" + mAddress + ">";
+           //  } else {
+           //     return mPersonal + " <" + mAddress + ">";
+           // }
         } else {
             return mAddress;
         }
@@ -184,8 +184,8 @@ public class Address {
     /**
      * Packs an address list into a String that is very quick to read
      * and parse. Packed lists can be unpacked with unpackAddressList()
-     * The packed list is a comma seperated list of:
-     * URLENCODE(address)[;URLENCODE(personal)] 
+     * The packed list is a "\u0000," seperated list of:
+     * address\u0000;personal
      * @param list
      * @return
      */
@@ -197,9 +197,12 @@ public class Address {
         for (int i = 0, count = addresses.length; i < count; i++) {
             Address address = addresses[i];
                 sb.append(address.getAddress());
-                if (address.getPersonal() != null) {
+                String personal = address.getPersonal();
+                if (personal != null) {
                     sb.append(";\u0000");
-                    sb.append(address.getPersonal());
+                    // Escape quotes in the address part on the way in
+                    personal.replaceAll("\"","\\\"");
+                    sb.append(personal);
                 }
                 if (i < count - 1) {
                     sb.append(",\u0000");
