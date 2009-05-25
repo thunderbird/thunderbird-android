@@ -1,5 +1,5 @@
 package com.android.email.activity;
-
+//import android.os.Debug;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -362,8 +362,7 @@ public class MessageList extends ListActivity {
     @Override
 
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(Email.LOG_TAG,"onCreate() entered");
-
+        //Debug.startMethodTracing("k9");
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -401,7 +400,6 @@ public class MessageList extends ListActivity {
             mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
         }
 
-        Log.i(Email.LOG_TAG,"onCreate() before setting up listeners");
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
                     if (itemPosition == 0 ) {
@@ -429,7 +427,6 @@ public class MessageList extends ListActivity {
 
         mCurrentFolder = mAdapter.getFolder(mFolderName);
 
-        Log.i(Email.LOG_TAG,"onCreate() got the folder");
         setListAdapter(mAdapter);
 
         if (savedInstanceState != null) {
@@ -444,7 +441,6 @@ public class MessageList extends ListActivity {
                     mCurrentFolder.displayName
                     
                     );
-        Log.i(Email.LOG_TAG,"onCreate() completed");
     }
 
     private void onRestoreListState(Bundle savedInstanceState) {
@@ -465,6 +461,7 @@ public class MessageList extends ListActivity {
     @Override
     public void onPause() {
         super.onPause();
+        //Debug.stopMethodTracing();
         MessagingController.getInstance(getApplication()).removeListener( mAdapter.mListener);
     }
 
@@ -1118,7 +1115,7 @@ public class MessageList extends ListActivity {
                     return;
                 }
 
-                addOrUpdateMessage(folder, message, false, false);
+                addOrUpdateMessage(folder, message, true, true);
             }
             
             @Override
@@ -1199,8 +1196,6 @@ public class MessageList extends ListActivity {
             }
             
 
-
-
         };
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
@@ -1273,7 +1268,6 @@ public class MessageList extends ListActivity {
         }
 
         private void addOrUpdateMessage(String folder, Message message, boolean sort, boolean notify) {
-            Log.i(Email.LOG_TAG,"addOrUpdateMessage(string variant in");
             FolderInfoHolder f = getFolder(folder);
 
             if (f == null) {
