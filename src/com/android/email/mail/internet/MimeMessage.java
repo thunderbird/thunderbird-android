@@ -43,6 +43,11 @@ public class MimeMessage extends Message {
     protected int mSize;
  
     public MimeMessage() {
+        setGeneratedMessageId();
+    }
+
+
+    public void setGeneratedMessageId () {
         /*
          * Every new messages gets a Message-ID
          */
