@@ -65,7 +65,7 @@ public class LocalStore extends Store implements Serializable {
   // If you are going to change the DB_VERSION, please also go into Email.java and local for the comment
   // on LOCAL_UID_PREFIX and follow the instructions there.  If you follow the instructions there,
   // please delete this comment.
-    private static final int DB_VERSION = 24;
+    private static final int DB_VERSION = 25;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
