@@ -170,13 +170,12 @@ public class Utility {
      */
     public static boolean isDateToday(Date date) {
         // TODO But Calendar is so slowwwwwww....
-        Date today = new Date();
-        if (date.getYear() == today.getYear() &&
-                date.getMonth() == today.getMonth() &&
-                date.getDate() == today.getDate()) {
+        Date now = new Date();
+        if (now.getTime() - 64800000 > date.getTime() || now.getTime() + 64800000 < date.getTime()) {
+            return false;
+        } else {
             return true;
         }
-        return false;
     }
 
     /*
