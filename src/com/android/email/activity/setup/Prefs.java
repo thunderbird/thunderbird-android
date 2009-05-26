@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.preference.PreferenceActivity;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.CheckBoxPreference;
@@ -17,12 +16,13 @@ import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
 import android.preference.Preference.OnPreferenceClickListener;
 
+import com.android.email.K9PreferenceActivity;
 import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
 
-public class Prefs extends PreferenceActivity {
+public class Prefs extends K9PreferenceActivity {
 
     private static final String PREFERENCE_TOP_CATERGORY = "preferences";
     private static final String PREFERENCE_THEME = "theme";

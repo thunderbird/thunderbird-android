@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.app.Activity;
+import com.android.email.K9Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -62,7 +62,7 @@ import com.android.email.mail.internet.TextBody;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalAttachmentBody;
 
-public class MessageCompose extends Activity implements OnClickListener, OnFocusChangeListener {
+public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener {
     private static final String ACTION_REPLY = "com.android.email.intent.action.REPLY";
     private static final String ACTION_REPLY_ALL = "com.android.email.intent.action.REPLY_ALL";
     private static final String ACTION_FORWARD = "com.android.email.intent.action.FORWARD";

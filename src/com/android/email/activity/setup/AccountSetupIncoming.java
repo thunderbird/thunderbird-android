@@ -3,8 +3,8 @@ package com.android.email.activity.setup;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import android.app.Activity;
+import com.android.email.K9Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,7 +29,7 @@ import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.activity.ChooseFolder;
 
-public class AccountSetupIncoming extends Activity implements OnClickListener {
+public class AccountSetupIncoming extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
     

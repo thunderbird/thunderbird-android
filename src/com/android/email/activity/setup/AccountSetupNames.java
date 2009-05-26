@@ -1,7 +1,7 @@
 
 package com.android.email.activity.setup;
 
-import android.app.Activity;
+import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.activity.FolderList;
 
-public class AccountSetupNames extends Activity implements OnClickListener {
+public class AccountSetupNames extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
 
     private EditText mDescription;

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
+import com.android.email.K9ListActivity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -75,7 +75,7 @@ import java.util.concurrent.TimeUnit;
  * Activity shows list of the Account's folders 
  */
 
-public class FolderList extends ListActivity {
+public class FolderList extends K9ListActivity {
 
     private static final String INTENT_DATA_PATH_SUFFIX = "/accounts";
 
@@ -386,7 +386,7 @@ public class FolderList extends ListActivity {
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
-        mListView.setFastScrollEnabled(true);
+        //mListView.setFastScrollEnabled(true); // XXX TODO - reenable when we switch to 1.5
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){

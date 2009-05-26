@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
+import com.android.email.K9ListActivity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -52,7 +52,7 @@ import com.android.email.mail.Store;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 
-public class Accounts extends ListActivity implements OnItemClickListener, OnClickListener {
+public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
     private ConcurrentHashMap<String, Integer> unreadMessageCounts = new ConcurrentHashMap<String, Integer>();
     

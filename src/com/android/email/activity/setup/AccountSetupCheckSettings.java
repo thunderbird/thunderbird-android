@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.email.K9Activity;
 import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.MessagingController;
@@ -37,7 +38,7 @@ import com.android.email.mail.store.TrustManagerFactory;
  * XXX NOTE: The manifest for this app has it ignore config changes, because
  * it doesn't correctly deal with restarting while its thread is running.
  */
-public class AccountSetupCheckSettings extends Activity implements OnClickListener {
+public class AccountSetupCheckSettings extends K9Activity implements OnClickListener {
 	
 	public static final int ACTIVITY_REQUEST_CODE = 1;
 	

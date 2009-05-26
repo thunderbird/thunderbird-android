@@ -12,7 +12,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 
-import android.app.Activity;
+import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -38,7 +38,7 @@ import android.view.View.OnClickListener;
 import android.webkit.CacheManager;
 import android.webkit.CacheManager;
 import android.webkit.UrlInterceptHandler;
-import android.webkit.PluginData;
+// import android.webkit.PluginData; // XXX TODO reenable when we switch to sdk 1.5
 import android.webkit.WebView;
 import android.webkit.CacheManager.CacheResult;
 import android.widget.Button;
@@ -69,7 +69,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class MessageView extends Activity
+public class MessageView extends K9Activity
         implements UrlInterceptHandler, OnClickListener {
     private static final String EXTRA_ACCOUNT = "com.android.email.MessageView_account";
     private static final String EXTRA_FOLDER = "com.android.email.MessageView_folder";
@@ -111,7 +111,7 @@ public class MessageView extends Activity
     
     private Menu optionsMenu = null;
     
-    public PluginData getPluginData(String x, Map<String,String> y) {return null;}
+    // public PluginData getPluginData(String x, Map<String,String> y) {return null;} // XXX TODO reenable when we switch to 1.5
     
     private DateFormat getDateFormat()
     {

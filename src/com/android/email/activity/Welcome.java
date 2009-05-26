@@ -4,7 +4,7 @@ import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.Preferences;
 
-import android.app.Activity;
+import com.android.email.K9Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -18,11 +18,11 @@ import android.os.Bundle;
  * If more than one account is configuref the user is takaen to the Accounts Activity so they
  * can select an account.
  */
-public class Welcome extends Activity {
+public class Welcome extends K9Activity {
     @Override
     public void onCreate(Bundle icicle) {
-        setTheme(Preferences.getPreferences(this).getTheme());
         super.onCreate(icicle);
+
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         if (accounts.length == 1) {
             MessageList.actionHandleFolder(this, accounts[0], accounts[0].getAutoExpandFolderName());

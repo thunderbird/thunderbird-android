@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import android.app.ListActivity;
+import com.android.email.K9ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,7 +27,7 @@ import com.android.email.R;
 import com.android.email.mail.Folder;
 import com.android.email.mail.MessagingException;
 
-public class ChooseFolder extends ListActivity
+public class ChooseFolder extends K9ListActivity
 {
   String mFolder;
   Account mAccount;

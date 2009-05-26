@@ -9,7 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,6 +40,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.android.email.K9ListActivity;
 import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.MessagingController;
@@ -87,7 +87,7 @@ import java.util.concurrent.TimeUnit;
  * not even then.
  */
 
-public class MessageList extends ListActivity {
+public class MessageList extends K9ListActivity {
 
     private static final String INTENT_DATA_PATH_SUFFIX = "/accounts";
 
@@ -371,7 +371,7 @@ public class MessageList extends ListActivity {
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
-        mListView.setFastScrollEnabled(true);
+        //mListView.setFastScrollEnabled(true); // XXX TODO - reenable when we switch to 1.5
         mListView.setScrollingCacheEnabled(true);
 
         registerForContextMenu(mListView);
