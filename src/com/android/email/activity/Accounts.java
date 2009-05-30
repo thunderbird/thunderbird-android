@@ -255,9 +255,26 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private static String UNREAD_MESSAGE_COUNTS = "unreadMessageCounts";
     private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
+
+    private static final String EXTRA_STARTUP = "startup";
+
+
+    public static void actionLaunch(Context context) {
+        Intent intent = new Intent(context, Accounts.class);
+        intent.putExtra(EXTRA_STARTUP, true);
+        context.startActivity(intent);
+    }
+
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        Account[] accounts = Preferences.getPreferences(this).getAccounts();
+        Intent intent = getIntent();
+        boolean startup =(boolean)intent.getBooleanExtra(EXTRA_STARTUP, false);
+
+
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_PROGRESS);
@@ -279,6 +296,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
           if (oldUnreadMessageCounts != null) {
             unreadMessageCounts.putAll(oldUnreadMessageCounts);
           }
+        }
+       if (startup && accounts.length == 1) {
+            intent.putExtra(EXTRA_STARTUP, false);
+            FolderList.actionHandleAccount(this, accounts[0], accounts[0].getAutoExpandFolderName());
         }
     }
 

@@ -23,13 +23,7 @@ public class Welcome extends K9Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        Account[] accounts = Preferences.getPreferences(this).getAccounts();
-        if (accounts.length == 1) {
-            MessageList.actionHandleFolder(this, accounts[0], accounts[0].getAutoExpandFolderName());
-        } else {
-            startActivity(new Intent(this, Accounts.class));
-        }
-        
+        Accounts.actionLaunch(this);
         finish();
     }
 }

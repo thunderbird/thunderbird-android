@@ -366,7 +366,6 @@ public class MessageList extends K9ListActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        requestWindowFeature(Window.FEATURE_NO_TITLE); 
 
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
@@ -402,14 +401,11 @@ public class MessageList extends K9ListActivity {
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-                    if (itemPosition == 0 ) {
-                        return;
-                    }
-                    else if ((itemPosition+1) == (mAdapter.getCount() )) {
+                    if ((itemPosition+1) == (mAdapter.getCount() )) {
                         onRefresh(FORCE_REMOTE_SYNC);
                         return;
                     } else { 
-                        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem( itemPosition-1);
+                        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem( itemPosition);
                         onOpenMessage( message);
                     }
             }
@@ -681,7 +677,7 @@ public class MessageList extends K9ListActivity {
         }
 
         mAdapter.removeMessage(holder);
-        mListView.setSelection(position+1);
+        mListView.setSelection(position);
         MessagingController.getInstance(getApplication()).deleteMessage(mAccount, holder.message.getFolder().getName(), holder.message, null);
 
     }
@@ -985,7 +981,7 @@ public class MessageList extends K9ListActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
-        MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(info.position-1);
+        MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(info.position);
 
             switch (item.getItemId()) {
             case R.id.open:
@@ -1300,7 +1296,7 @@ public class MessageList extends K9ListActivity {
         }
         }
 
-        private static final int NON_MESSAGE_ITEMS = 2;
+        private static final int NON_MESSAGE_ITEMS = 1;
         public int getCount() {
             if (mAdapter.messages == null || mAdapter.messages.size() == 0) {
                 return NON_MESSAGE_ITEMS ;
@@ -1338,27 +1334,14 @@ public class MessageList extends K9ListActivity {
 
          public View getView(int position, View convertView, ViewGroup parent) {
             
-            if (position == 0 ) {
-                return getHeaderView(position, convertView, parent);
-            } else if (position == (getCount() -1 )) {
+            if (position == mAdapter.messages.size()  ) {
                 return getFooterView(position, convertView, parent);
             } else { 
-               return  getItemView(position-1, convertView, parent);
+               return  getItemView(position, convertView, parent);
             }
         }
        
 
-         public View getHeaderView(int position, View convertView, ViewGroup parent) {
-                  View view = mInflater.inflate(R.layout.message_list_header, parent, false);
-                   TextView title = (TextView) view.findViewById(R.id.folder_name);
-                    Button back = (Button) view.findViewById(R.id.folder_list);
-                    view.setOnClickListener(new View.OnClickListener() { public void onClick(View v) { onShowFolderList();}});
-                    back.setOnClickListener(new Button.OnClickListener() { public void onClick(View v) { onShowFolderList();}});
-                    // XXX TODO - make this keyboard navigable?
-                    title.setText(getFolder(mFolderName).displayName + " - " + mAccount);
-                  return view;
-
-         }
        public View getItemView(int position, View convertView, ViewGroup parent) {
             MessageInfoHolder message = (MessageInfoHolder) getItem(position);
             View view = mInflater.inflate(R.layout.message_list_item, parent, false);
@@ -1460,7 +1443,7 @@ public class MessageList extends K9ListActivity {
         }
 
         public boolean isItemSelectable(int position) {
-            if (position > 0 && position <= mAdapter.messages.size() ) {
+            if ( position < mAdapter.messages.size() ) {
                 return true;
             } else {
                 return false;
