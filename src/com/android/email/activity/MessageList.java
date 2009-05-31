@@ -516,7 +516,7 @@ public class MessageList extends K9ListActivity {
         }
         }//switch
 
-        int position = mListView.getSelectedItemPosition() - 1;
+        int position = mListView.getSelectedItemPosition();
         try {
                if (position >= 0 ) {
                 MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
@@ -1064,7 +1064,7 @@ public class MessageList extends K9ListActivity {
     
     
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position - 1);
+        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position );
     
         if (message == null) {
             return;
