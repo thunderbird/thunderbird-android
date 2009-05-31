@@ -969,7 +969,14 @@ public class FolderList extends K9ListActivity {
 
         public View getItemView(int itemPosition, View convertView, ViewGroup parent) {
             FolderInfoHolder folder = (FolderInfoHolder) getItem(itemPosition);
-            View view = mInflater.inflate(R.layout.folder_list_item, parent, false);
+            View view;
+            if ((convertView != null) && (convertView.getId() == R.layout.folder_list_item)) {
+                view = convertView;
+            } else {
+                view = mInflater.inflate(R.layout.folder_list_item, parent, false);
+                view.setId(R.layout.folder_list_item);
+            }
+
 
             FolderViewHolder holder = (FolderViewHolder) view.getTag();
 

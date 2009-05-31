@@ -1344,7 +1344,15 @@ public class MessageList extends K9ListActivity {
 
        public View getItemView(int position, View convertView, ViewGroup parent) {
             MessageInfoHolder message = (MessageInfoHolder) getItem(position);
-            View view = mInflater.inflate(R.layout.message_list_item, parent, false);
+            View view;
+           
+            if ((convertView != null) && (convertView.getId() == R.layout.message_list_item)) {
+                view = convertView;
+            } else {
+                view = mInflater.inflate(R.layout.message_list_item, parent, false);
+                view.setId(R.layout.message_list_item);
+            }
+            
             
             MessageViewHolder holder = (MessageViewHolder) view.getTag();
 
@@ -1355,7 +1363,6 @@ public class MessageList extends K9ListActivity {
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
                 holder.chip.setBackgroundResource(colorChipResId);
-
                 view.setTag(holder);
             }
 
@@ -1404,7 +1411,8 @@ public class MessageList extends K9ListActivity {
                 holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             }
             return view;
-        }
+     }
+
      public View getFooterView(int position, View convertView, ViewGroup parent) { 
             View view;
 
