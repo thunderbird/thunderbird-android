@@ -1371,26 +1371,19 @@ public class MessageList extends K9ListActivity {
                 holder.subject.setTypeface(null, message.read && !message.flagged ? Typeface.NORMAL  : Typeface.BOLD);
 
                 int subjectColor =holder.subject.getCurrentTextColor(); 
-                int alpha = 0xff000000;
-
 
                 if (message.flagged) {
                     subjectColor = Email.FLAGGED_COLOR;
                 } 
 
-                if (!message.downloaded) {
+                if (message.downloaded) {
                     holder.chip.getBackground().setAlpha(message.read ? 0 : 127);
-                    alpha = 0x60000000;
+                    view.getBackground().setAlpha(0);
                 } else {
-                    alpha = 0xff000000;
+                    view.getBackground().setAlpha(127);
                 }
 
-                holder.subject.setTextColor(alpha | subjectColor);
-                holder.date.setTextColor(alpha | holder.date.getCurrentTextColor() );  
-                holder.from.setTextColor(alpha | holder.from.getCurrentTextColor() );
- 
-
-
+                holder.subject.setTextColor( subjectColor);
                 holder.subject.setText(message.subject);
 
                 holder.from.setText(message.sender);

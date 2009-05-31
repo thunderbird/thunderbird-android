@@ -5,7 +5,7 @@
     android:layout_height="38px"
     android:paddingRight="1px"
     android:paddingTop="2px"
-    android:background="@android:color/transparent"
+    android:background="#999999"
     >
     <View
         android:id="@+id/chip"
