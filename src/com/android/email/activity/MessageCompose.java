@@ -566,7 +566,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     private Address[] getAddresses(MultiAutoCompleteTextView view) {
-        Address[] addresses = Address.parse(view.getText().toString().trim());
+        Address[] addresses = Address.parseUnencoded(view.getText().toString().trim());
         return addresses;
     }
 

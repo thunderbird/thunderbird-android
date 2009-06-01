@@ -12,6 +12,7 @@ import org.apache.james.mime4j.field.address.Mailbox;
 import org.apache.james.mime4j.field.address.MailboxList;
 import org.apache.james.mime4j.field.address.NamedMailbox;
 import org.apache.james.mime4j.field.address.parser.ParseException;
+import org.apache.james.mime4j.codec.EncoderUtil;
 
 import android.util.Config;
 import android.util.Log;
@@ -50,6 +51,38 @@ public class Address {
         this.mPersonal = personal;
     }
 
+    /**
+     * Parse a comma separated list of email addresses in human readable format and return an
+     * array of Address objects, RFC-822 encoded.
+     * 
+     * @param addressList
+     * @return An array of 0 or more Addresses.
+     */
+    public static Address[] parseUnencoded(String addressList) {
+        if (addressList != null) {
+            String[] addresses = addressList.split(",");
+            StringBuilder newAddressList = new StringBuilder();
+            String tmp = null;
+            String before = null;
+            String after = null;
+            int pos = -1;
+            for( int i = 0, count = addresses.length; i <  count; i++ ) {
+                tmp = addresses[i];
+                pos = tmp.indexOf("<");
+		if( pos > 1 ) {
+                    before = tmp.substring( 0, pos );
+                    after = tmp.substring( pos );
+                    tmp = EncoderUtil.encodeAddressDisplayName( before ) + after;
+                }
+                if( i > 0 ) {
+                    newAddressList.append( "," );
+                }
+                newAddressList.append( tmp );
+            }
+            addressList = newAddressList.toString();
+        }
+	return Address.parse( addressList );
+    }
     /**
      * Parse a comma separated list of addresses in RFC-822 format and return an
      * array of Address objects.
