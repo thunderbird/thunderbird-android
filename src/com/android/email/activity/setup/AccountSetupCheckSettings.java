@@ -19,8 +19,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.email.K9Activity;
 import com.android.email.Account;
 import com.android.email.Email;
+import com.android.email.MessagingController;
 import com.android.email.R;
 import com.android.email.mail.AuthenticationFailedException;
 import com.android.email.mail.MessagingException;
@@ -36,7 +38,7 @@ import com.android.email.mail.store.TrustManagerFactory;
  * XXX NOTE: The manifest for this app has it ignore config changes, because
  * it doesn't correctly deal with restarting while its thread is running.
  */
-public class AccountSetupCheckSettings extends Activity implements OnClickListener {
+public class AccountSetupCheckSettings extends K9Activity implements OnClickListener {
 	
 	public static final int ACTIVITY_REQUEST_CODE = 1;
 	
@@ -102,6 +104,17 @@ public class AccountSetupCheckSettings extends Activity implements OnClickListen
                     	setMessage(R.string.account_setup_check_settings_check_incoming_msg);
                     	store = Store.getInstance(mAccount.getStoreUri(), getApplication());
                     	store.checkSettings();
+				        new Thread() {
+	
+				            public void run() {
+				                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+				                MessagingController.getInstance(getApplication()).listFolders(mAccount, true, null);
+                                    MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, Email.INBOX , null);
+				
+				            }
+				        }.start();
+				
+
                     }
                     if (mDestroyed) {
                         return;

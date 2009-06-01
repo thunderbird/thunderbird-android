@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
+import com.android.email.K9ListActivity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -42,6 +42,7 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
+import com.android.email.activity.setup.Prefs;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.AccountSetupBasics;
 import com.android.email.activity.setup.AccountSetupCheckSettings;
@@ -51,7 +52,7 @@ import com.android.email.mail.Store;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 
-public class Accounts extends ListActivity implements OnItemClickListener, OnClickListener {
+public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener {
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
     private ConcurrentHashMap<String, Integer> unreadMessageCounts = new ConcurrentHashMap<String, Integer>();
     
@@ -254,9 +255,26 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
 
     private static String UNREAD_MESSAGE_COUNTS = "unreadMessageCounts";
     private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
+
+    private static final String EXTRA_STARTUP = "startup";
+
+
+    public static void actionLaunch(Context context) {
+        Intent intent = new Intent(context, Accounts.class);
+        intent.putExtra(EXTRA_STARTUP, true);
+        context.startActivity(intent);
+    }
+
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        Account[] accounts = Preferences.getPreferences(this).getAccounts();
+        Intent intent = getIntent();
+        boolean startup =(boolean)intent.getBooleanExtra(EXTRA_STARTUP, false);
+
+
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_PROGRESS);
@@ -273,13 +291,15 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
             mSelectedContextAccount = (Account) icicle.getSerializable("selectedContextAccount");
         }
         
-        if (icicle != null)
-        {
-          Map<String, Integer> oldUnreadMessageCounts = 
-            (Map<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
+        if (icicle != null) {
+          Map<String, Integer> oldUnreadMessageCounts = (Map<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
           if (oldUnreadMessageCounts != null) {
             unreadMessageCounts.putAll(oldUnreadMessageCounts);
           }
+        }
+       if (startup && accounts.length == 1) {
+            intent.putExtra(EXTRA_STARTUP, false);
+            FolderList.actionHandleAccount(this, accounts[0], accounts[0].getAutoExpandFolderName());
         }
     }
 
@@ -301,8 +321,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     }
     
     @Override
-    public void onPause()
-    {
+    public void onPause() {
       super.onPause();
       MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
@@ -315,8 +334,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
           mHandler.progress(Window.PROGRESS_START);
         }
         
-        for (Account account : accounts)
-        {
+        for (Account account : accounts) {
           MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
           pendingWork.put(account, "true");
         }
@@ -331,8 +349,12 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         AccountSettings.actionSettings(this, account);
     }
 
-    private void onCheckMail(Account account) {
+    private void onEditPrefs() {
+        Prefs.actionPrefs(this);
+    }
 
+
+    private void onCheckMail(Account account) {
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, null);
     }
     
@@ -340,15 +362,13 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
       MessagingController.getInstance(getApplication()).clearAllPending(account);
     }
   	
-    private void onEmptyTrash(Account account)
-  	{
+    private void onEmptyTrash(Account account) {
   		MessagingController.getInstance(getApplication()).emptyTrash(account, null);
   	}
 
 
     private void onCompose() {
-        Account defaultAccount =
-                Preferences.getPreferences(this).getDefaultAccount();
+        Account defaultAccount = Preferences.getPreferences(this).getDefaultAccount();
         if (defaultAccount != null) {
             MessageCompose.actionCompose(this, defaultAccount);
         }
@@ -358,7 +378,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     }
 
     private void onOpenAccount(Account account) {
-      FolderMessageList.actionHandleAccount(this, account);
+      FolderList.actionHandleAccount(this, account);
     }
 
     public void onClick(View view) {
@@ -384,15 +404,12 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     private Dialog createRemoveAccountDialog() {
         return new AlertDialog.Builder(this)
             .setTitle(R.string.account_delete_dlg_title)
-            .setMessage(getString(R.string.account_delete_dlg_instructions_fmt,
-                    mSelectedContextAccount.getDescription()))
+            .setMessage(getString(R.string.account_delete_dlg_instructions_fmt, mSelectedContextAccount.getDescription()))
             .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     dismissDialog(DIALOG_REMOVE_ACCOUNT);
                     try {
-                        ((LocalStore)Store.getInstance(
-                                mSelectedContextAccount.getLocalStoreUri(),
-                                getApplication())).delete();
+                        ((LocalStore)Store.getInstance( mSelectedContextAccount.getLocalStoreUri(), getApplication())).delete();
                     } catch (Exception e) {
                             // Ignore
                     }
@@ -413,6 +430,9 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
         Account account = (Account)getListView().getItemAtPosition(menuInfo.position);
         switch (item.getItemId()) {
+            case R.id.edit_prefs:
+                onEditPrefs();
+                break;
             case R.id.delete_account:
                 onDeleteAccount(account);
                 break;
@@ -441,14 +461,12 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         return true;
     }
     
-    private void onCompact(Account account)
-    {
+    private void onCompact(Account account) {
       mHandler.workingAccount(account, R.string.compacting_account);
       MessagingController.getInstance(getApplication()).compact(account, null);
     }
     
-    private void onClear(Account account)
-    {
+    private void onClear(Account account) {
       mHandler.workingAccount(account, R.string.clearing_account);
       MessagingController.getInstance(getApplication()).clear(account, null);
     }
@@ -464,6 +482,9 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
         switch (item.getItemId()) {
             case R.id.add_new_account:
                 onAddNewAccount();
+                break;
+            case R.id.edit_prefs:
+                onEditPrefs();
                 break;
             case R.id.check_mail:
                 onCheckMail(null);
@@ -513,8 +534,7 @@ public class Accounts extends ListActivity implements OnItemClickListener, OnCli
     private String getVersionNumber() {
             String version = "?";
             try {
-                    PackageInfo pi =
-getPackageManager().getPackageInfo(getPackageName(), 0);
+                    PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
                     version = pi.versionName;
             } catch (PackageManager.NameNotFoundException e) {
                     //Log.e(TAG, "Package name not found", e);
@@ -585,13 +605,11 @@ getPackageManager().getPackageInfo(getPackageName(), 0);
             }
 
             Integer unreadMessageCount = unreadMessageCounts.get(account.getUuid());
-            if (unreadMessageCount != null)
-            {
+            if (unreadMessageCount != null) {
               holder.newMessageCount.setText(Integer.toString(unreadMessageCount));
               holder.newMessageCount.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
             }
-            else
-            {
+            else {
               //holder.newMessageCount.setText("-");
               holder.newMessageCount.setVisibility(View.GONE); 
             }

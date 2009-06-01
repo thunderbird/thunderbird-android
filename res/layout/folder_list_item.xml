@@ -5,7 +5,7 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="@drawable/folder_message_list_group_background"
+    android:background="@android:color/transparent"
     
     android:paddingLeft="36px"
     android:paddingRight="4px">
@@ -39,7 +39,7 @@
         android:textColor="?android:attr/textColorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/text_box_light"
+        android:background="@drawable/text_box"
         android:paddingLeft="10px"
         android:paddingRight="10px"
         android:minWidth="64px"

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/open_folder"
+        android:title="@string/open_action"
+    />
+    <item
         android:id="@+id/mark_all_as_read"
         android:title="@string/mark_all_as_read_action"
     />
-
     <item
         android:id="@+id/empty_trash"
         android:title="@string/empty_trash_action"

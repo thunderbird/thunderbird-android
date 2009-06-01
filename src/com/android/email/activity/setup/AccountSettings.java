@@ -9,7 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.preference.PreferenceActivity;
+import com.android.email.K9PreferenceActivity;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.CheckBoxPreference;
@@ -24,7 +24,7 @@ import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.activity.ChooseFolder;
 
-public class AccountSettings extends PreferenceActivity {
+public class AccountSettings extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
     
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;

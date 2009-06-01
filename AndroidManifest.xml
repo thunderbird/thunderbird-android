@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="114"
-    android:versionName="0.114" package="com.fsck.k9">
+    android:versionCode="199"
+    android:versionName="0.199" package="com.fsck.k9">
     <uses-sdk android:minSdkVersion="1"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -17,7 +17,7 @@
                 android:description="@string/read_attachment_desc"/>
     <uses-permission android:name="com.android.email.permission.READ_ATTACHMENT"/>
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="K9"
-        android:theme="@android:style/Theme.Light">
+        >
         <activity android:name="com.android.email.activity.Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +26,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.android.email.activity.setup.Prefs"
+            android:label="@string/prefs_title"
+            >
+        </activity>
         <activity
             android:name="com.android.email.activity.setup.AccountSetupBasics"
             android:label="@string/account_setup_basics_title"
@@ -77,7 +82,6 @@
         </activity>
         <activity
             android:name="com.android.email.activity.setup.AccountSettings"
-            android:theme="@android:style/Theme"
             android:label="@string/account_settings_title_fmt"
             >
         </activity>
@@ -98,7 +102,7 @@
             android:label="@string/accounts_title">
         </activity>
         <activity
-            android:name="com.android.email.activity.FolderMessageList">
+            android:name="com.android.email.activity.FolderList">
             <intent-filter>
                 <action android:name="android.intent.action.view" />
                 <data
@@ -107,6 +111,9 @@
                 />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.email.activity.MessageList">
         </activity>
         <activity
             android:name="com.android.email.activity.MessageView">

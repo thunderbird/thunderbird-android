@@ -4,7 +4,7 @@ package com.android.email.activity.setup;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import android.app.Activity;
+import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import com.android.email.R;
  * passed in email address, password and makeDefault are then passed on to the
  * AccountSetupIncoming activity.
  */
-public class AccountSetupAccountType extends Activity implements OnClickListener {
+public class AccountSetupAccountType extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";

@@ -4,7 +4,7 @@ package com.android.email.activity.setup;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import android.app.Activity;
+import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +28,7 @@ import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
 
-public class AccountSetupOutgoing extends Activity implements OnClickListener,
+public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         OnCheckedChangeListener {
     private static final String EXTRA_ACCOUNT = "account";
 

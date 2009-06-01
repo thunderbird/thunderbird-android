@@ -65,7 +65,7 @@ public class LocalStore extends Store implements Serializable {
   // If you are going to change the DB_VERSION, please also go into Email.java and local for the comment
   // on LOCAL_UID_PREFIX and follow the instructions there.  If you follow the instructions there,
   // please delete this comment.
-    private static final int DB_VERSION = 24;
+    private static final int DB_VERSION = 25;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -134,7 +134,8 @@ public class LocalStore extends Store implements Serializable {
                     + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT)");
 
             mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
-            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id ON messages (folder_id)");
+            mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id");
+            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_date ON messages (folder_id,internal_date)");
             mDb.execSQL("DROP TABLE IF EXISTS attachments");
             mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
                     + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
@@ -882,14 +883,14 @@ public class LocalStore extends Store implements Serializable {
             if (from.length > 0) {
                 message.setFrom(from[0]);
             }
-            message.setSentDate(new Date(cursor.getLong(2)));
+            message.setInternalSentDate(new Date(cursor.getLong(2)));
             message.setUid(cursor.getString(3));
             String flagList = cursor.getString(4);
             if (flagList != null && flagList.length() > 0) {
                 String[] flags = flagList.split(",");
                 try {
                     for (String flag : flags) {
-                        message.setFlagInternal(Flag.valueOf(flag.toUpperCase()), true);
+                        message.setFlagInternal(Flag.valueOf(flag), true);
                     }
                 } catch (Exception e) {
                 }
@@ -901,7 +902,7 @@ public class LocalStore extends Store implements Serializable {
             message.setReplyTo(Address.unpack(cursor.getString(9)));
             message.mAttachmentCount = cursor.getInt(10);
             message.setInternalDate(new Date(cursor.getLong(11)));
-            message.setHeader("Message-ID", cursor.getString(12));
+            message.addHeader("Message-ID", cursor.getString(12));
         }
 
         @Override
@@ -944,17 +945,25 @@ public class LocalStore extends Store implements Serializable {
             ArrayList<Message> messages = new ArrayList<Message>();
             Cursor cursor = null;
             try {
+                 // pull out messages most recent first, since that's what the default sort is
                 cursor = mDb.rawQuery(
                         "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
                         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
-                                + "FROM messages " + "WHERE folder_id = ?", new String[] {
+                                + "FROM messages " + "WHERE folder_id = ? ORDER BY date DESC"
+                                , new String[] {
                             Long.toString(mFolderId)
                         });
 
+
+                int i = 0;
                 while (cursor.moveToNext()) {
                     LocalMessage message = new LocalMessage(null, this);
                     populateMessageFromGetMessageCursor(message, cursor);
                     messages.add(message);
+                    if (listener != null) {
+                        listener.messageFinished(message, i, -1);
+                    }
+                    i++;
                 }
             }
             finally {
@@ -1523,6 +1532,13 @@ public class LocalStore extends Store implements Serializable {
     public class LocalMessage extends MimeMessage {
         private long mId;
         private int mAttachmentCount;
+    
+        public LocalMessage() {
+        }
+   
+        // We don't want to do this for local messages
+        @Override public void setGeneratedMessageId () {}
+         
 
         LocalMessage(String uid, Folder folder) throws MessagingException {
             this.mUid = uid;
@@ -1536,6 +1552,33 @@ public class LocalStore extends Store implements Serializable {
         public void parse(InputStream in) throws IOException, MessagingException {
             super.parse(in);
         }
+
+    public void setFrom(Address from) throws MessagingException {
+        if (from != null) {
+            addHeader("From", from.toString());
+            this.mFrom = new Address[] {
+                    from
+                };
+        } else {
+            this.mFrom = null;
+        }
+    }
+
+    public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException {
+        if (type == RecipientType.TO) {
+                addHeader("To", Address.toString(addresses));
+                this.mTo = addresses;
+        } else if (type == RecipientType.CC) {
+                addHeader("CC", Address.toString(addresses));
+                this.mCc = addresses;
+        } else if (type == RecipientType.BCC) {
+                addHeader("BCC", Address.toString(addresses));
+                this.mBcc = addresses;
+        } else {
+            throw new MessagingException("Unrecognized recipient type.");
+        }
+    }
+
 
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);

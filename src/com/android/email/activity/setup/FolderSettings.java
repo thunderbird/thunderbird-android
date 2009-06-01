@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.preference.PreferenceActivity;
+import com.android.email.K9PreferenceActivity;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.CheckBoxPreference;
@@ -24,7 +24,7 @@ import com.android.email.mail.Store;
 import com.android.email.mail.Folder.FolderClass;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 
-public class FolderSettings extends PreferenceActivity {
+public class FolderSettings extends K9PreferenceActivity {
 	
     private static final String EXTRA_FOLDER_NAME = "com.android.email.folderName";
     private static final String EXTRA_ACCOUNT = "com.android.email.account";
@@ -68,7 +68,7 @@ public class FolderSettings extends PreferenceActivity {
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
-        category.setTitle(getString(R.string.folder_settings_title));
+        category.setTitle(folderName);
        
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);
         mDisplayClass.setValue(mFolder.getDisplayClass().name());

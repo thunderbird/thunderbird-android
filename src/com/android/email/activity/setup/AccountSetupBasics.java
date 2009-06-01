@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import android.app.Activity;
+import com.android.email.K9Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -41,7 +41,7 @@ import com.android.email.Utility;
  * activity. If no settings are found the settings are handed off to the
  * AccountSetupAccountType activity.
  */
-public class AccountSetupBasics extends Activity
+public class AccountSetupBasics extends K9Activity
         implements OnClickListener, TextWatcher {
     private final static String EXTRA_ACCOUNT = "com.android.email.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;

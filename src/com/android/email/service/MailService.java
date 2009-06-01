@@ -27,7 +27,7 @@ import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.activity.Accounts;
-import com.android.email.activity.FolderMessageList;
+import com.android.email.activity.FolderList;
 import com.android.email.mail.Folder;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Store;
@@ -262,12 +262,15 @@ public class MailService extends Service {
                           
                             notif.number = unreadMessageCount;
                     
-                            Intent i = FolderMessageList.actionHandleAccountIntent(context, thisAccount);
+                            Intent i = FolderList.actionHandleAccountIntent(context, thisAccount);
         
                             PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
         
                             notif.setLatestEventInfo(context, getString(R.string.notification_new_title), notice, pi);
-        
+
+                            // JRV XXX TODO - Do we also need to notify the messagelist here?
+
+
                             String ringtone = thisAccount.getRingtone();
                             notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
         

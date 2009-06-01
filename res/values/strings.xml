@@ -50,6 +50,8 @@
     <string name="clear_pending_action">Clear pending actions (danger!)</string>
     
     <string name="accounts_action">Accounts</string>
+    <string name="back_to_accounts_action">◀</string>
+    <string name="back_to_folder_list_action">◀</string>
     <string name="read_action">Read</string>
     <string name="mark_as_read_action">Mark as read</string>
     <string name="send_alternate_action">Forward (alternate)</string>
@@ -75,6 +77,7 @@
     <string name="reverse_sort_action">Reverse sort</string>
     <string name="about_action">About</string>
 
+    <string name="prefs_title">Preferences</string>
     <string name="accounts_context_menu_title">Account options</string>
     <string name="folder_context_menu_title">Folder options</string>
 
@@ -189,13 +192,13 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="message_compose_downloading_attachments_toast">Some attachments were not downloaded. They will be downloaded automatically before this message is sent.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not downloaded.</string>
 
-    <string name="folder_message_list_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
  
     <string name="message_view_to_label">To:</string>
     <string name="message_view_attachment_view_action">Open</string>
     <string name="message_view_attachment_download_action">Save</string>
-    <string name="message_view_prev_action">Prev</string>
-    <string name="message_view_next_action">Next</string>
+    <string name="message_view_prev_action">◀</string>
+    <string name="message_view_next_action">▶</string>
     <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Attachment saved to SD card as <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
@@ -463,4 +466,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_signature__location_before_quoted_text">Before quoted messages</string>
     <string name="account_settings_signature__location_after_quoted_text">After quoted messages</string>
+    <string name="setting_theme_dark">Dark</string>
+    <string name="setting_theme_light">Light</string>
+    <string name="display_preferences">Display Preferences</string>
+    <string name="settings_theme_label">Theme</string>
 </resources>

@@ -2,48 +2,50 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="20px"
+    android:layout_height="38px"
     android:paddingRight="1px"
     android:paddingTop="2px"
-    android:background="@drawable/folder_message_list_child_background">
+    android:background="#999999"
+    >
     <View
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
         android:layout_width="4px"
-        android:layout_height="20px"
-        android:layout_centerVertical="true"
-	android:layout_alignParentLeft="true" />
-    <TextView
-        android:id="@+id/date"
-        android:ellipsize="end"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:singleLine="true"
-        android:textColor="?android:attr/textColorPrimary"
-        android:layout_width="50px"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
-    <TextView
-        android:id="@+id/from"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:layout_width="110px"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="?android:attr/textColorSecondary"
-        android:paddingLeft="3px"
-        android:paddingRight="3px"
-        android:layout_toLeftOf="@+id/date" />
+        android:layout_height="fill_parent"
+        android:layout_centerVertical="true" />
     <TextView
         android:id="@+id/subject"
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10px"
-        android:layout_marginRight="1px"
-	android:layout_toRightOf="@+id/chip"
-        android:layout_toLeftOf="@+id/from" />
+        android:layout_marginRight="1px" />
+    <TextView
+        android:id="@+id/from"
+        android:singleLine="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorSecondary"
+        android:paddingLeft="12px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        />
+    <TextView
+        android:id="@+id/date"
+        android:ellipsize="end"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingRight="5px"
+        android:paddingLeft="5px"
+        android:singleLine="true"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        />
 </RelativeLayout>
-

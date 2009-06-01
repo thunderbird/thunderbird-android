@@ -1,7 +1,7 @@
 
 package com.android.email.activity;
 
-import android.app.Activity;
+import com.android.email.K9Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import com.android.email.R;
 
 import java.lang.Integer;
 
-public class Debug extends Activity implements OnCheckedChangeListener {
+public class Debug extends K9Activity implements OnCheckedChangeListener {
     private TextView mVersionView;
     private CheckBox mEnableDebugLoggingView;
     private CheckBox mEnableSensitiveLoggingView;

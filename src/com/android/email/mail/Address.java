@@ -94,11 +94,11 @@ public class Address {
 
     public String toString() {
         if (mPersonal != null) {
-            if (mPersonal.matches(".*[\\(\\)<>@,;:\\\\\".\\[\\]].*")) {
-                return Utility.quoteString(mPersonal) + " <" + mAddress + ">";
-            } else {
-                return mPersonal + " <" + mAddress + ">";
-            }
+           //   if (mPersonal.matches(".*[\\(\\)<>@,;:\\\\\".\\[\\]].*")) {
+                return "\"" + mPersonal+ "\" " + " <" + mAddress + ">";
+           //  } else {
+           //     return mPersonal + " <" + mAddress + ">";
+           // }
         } else {
             return mAddress;
         }
@@ -161,22 +161,22 @@ public class Address {
         int pairEndIndex = 0;
         int addressEndIndex = 0;
         while (pairStartIndex < length) {
-            pairEndIndex = addressList.indexOf(',', pairStartIndex);
+            pairEndIndex = addressList.indexOf(",\u0000", pairStartIndex);
             if (pairEndIndex == -1) {
                 pairEndIndex = length;
             }
-            addressEndIndex = addressList.indexOf(';', pairStartIndex);
+            addressEndIndex = addressList.indexOf(";\u0000", pairStartIndex);
             String address = null;
             String personal = null;
             if (addressEndIndex == -1 || addressEndIndex > pairEndIndex) {
-                address = Utility.fastUrlDecode(addressList.substring(pairStartIndex, pairEndIndex));
+                address = addressList.substring(pairStartIndex, pairEndIndex);
             }
             else {
-                address = Utility.fastUrlDecode(addressList.substring(pairStartIndex, addressEndIndex));
-                personal = Utility.fastUrlDecode(addressList.substring(addressEndIndex + 1, pairEndIndex));
+                address = addressList.substring(pairStartIndex, addressEndIndex);
+                personal =addressList.substring(addressEndIndex + 2, pairEndIndex);
             }
             addresses.add(new Address(address, personal));
-            pairStartIndex = pairEndIndex + 1;
+            pairStartIndex = pairEndIndex + 2;
         }
         return addresses.toArray(new Address[] { });
     }
@@ -184,8 +184,8 @@ public class Address {
     /**
      * Packs an address list into a String that is very quick to read
      * and parse. Packed lists can be unpacked with unpackAddressList()
-     * The packed list is a comma seperated list of:
-     * URLENCODE(address)[;URLENCODE(personal)] 
+     * The packed list is a "\u0000," seperated list of:
+     * address\u0000;personal
      * @param list
      * @return
      */
@@ -196,19 +196,17 @@ public class Address {
         StringBuffer sb = new StringBuffer();
         for (int i = 0, count = addresses.length; i < count; i++) {
             Address address = addresses[i];
-            try {
-                sb.append(URLEncoder.encode(address.getAddress(), "UTF-8"));
-                if (address.getPersonal() != null) {
-                    sb.append(';');
-                    sb.append(URLEncoder.encode(address.getPersonal(), "UTF-8"));
+                sb.append(address.getAddress());
+                String personal = address.getPersonal();
+                if (personal != null) {
+                    sb.append(";\u0000");
+                    // Escape quotes in the address part on the way in
+                    personal.replaceAll("\"","\\\"");
+                    sb.append(personal);
                 }
                 if (i < count - 1) {
-                    sb.append(',');
+                    sb.append(",\u0000");
                 }
-            }
-            catch (UnsupportedEncodingException uee) {
-                return null;
-            }
         }
         return sb.toString();
     }

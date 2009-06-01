@@ -1,7 +1,7 @@
 
 package com.android.email.activity.setup;
 
-import android.app.Activity;
+import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +19,9 @@ import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
-import com.android.email.activity.FolderMessageList;
+import com.android.email.activity.FolderList;
 
-public class AccountSetupNames extends Activity implements OnClickListener {
+public class AccountSetupNames extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
 
     private EditText mDescription;
@@ -89,7 +89,7 @@ public class AccountSetupNames extends Activity implements OnClickListener {
         }
         mAccount.setName(mName.getText().toString());
         mAccount.save(Preferences.getPreferences(this));
-        FolderMessageList.actionHandleAccount(this, mAccount, Email.INBOX);
+        FolderList.actionHandleAccount(this, mAccount, Email.INBOX);
         finish();
     }
 

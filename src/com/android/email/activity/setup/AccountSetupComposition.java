@@ -1,6 +1,6 @@
 package com.android.email.activity.setup;
-
 import android.app.Activity;
+import com.android.email.K9Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +13,7 @@ import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
 
-public class AccountSetupComposition extends Activity {
+public class AccountSetupComposition extends K9Activity {
 
     private static final String EXTRA_ACCOUNT = "account";
 

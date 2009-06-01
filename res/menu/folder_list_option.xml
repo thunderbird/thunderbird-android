@@ -7,43 +7,6 @@
 		android:icon="@drawable/ic_menu_compose"
 	/>
 	<item
-		android:id="@+id/set_sort"
-		android:title="@string/sort_by"
-		android:icon="@drawable/ic_menu_set_sort">
-		
-		<menu>
-			<item
-				android:id="@+id/set_sort_date"
-				android:title="@string/sort_by_date"
-			/>
-			<item
-				android:id="@+id/set_sort_subject"
-				android:title="@string/sort_by_subject"
-			/>
-			<item
-				android:id="@+id/set_sort_sender"
-				android:title="@string/sort_by_sender"
-			/>
-			<item
-				android:id="@+id/set_sort_flag"
-				android:title="@string/sort_by_flag"
-			/>
-			<item
-				android:id="@+id/set_sort_unread"
-				android:title="@string/sort_by_unread"
-			/>
-			<item
-				android:id="@+id/set_sort_attach"
-				android:title="@string/sort_by_attach"
-			/>
-		</menu>
-	</item>
-		<item
-		android:id="@+id/reverse_sort"
-		android:title="@string/reverse_sort_action"
-		android:icon="@drawable/ic_menu_reverse_sort"
-	/>
-	<item
 		android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
 		android:title="@string/check_mail_action"

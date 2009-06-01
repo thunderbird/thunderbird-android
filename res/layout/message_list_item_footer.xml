@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:background="@drawable/folder_message_list_child_footer_background"
+    android:background="@drawable/message_list_item_footer_background"
     android:gravity="center"
     android:orientation="horizontal">
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/message_list_progress"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         style="?android:attr/progressBarStyleSmall"
