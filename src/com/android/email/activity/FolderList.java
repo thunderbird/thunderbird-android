@@ -413,6 +413,9 @@ public class FolderList extends K9ListActivity {
 
             if (mInitialFolder == null) {
                 mInitialFolder = mAccount.getAutoExpandFolderName();
+                if (Email.FOLDER_NONE.equals(mInitialFolder)) {
+                    mInitialFolder = null;
+                }
             }
         }
 

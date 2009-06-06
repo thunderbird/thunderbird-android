@@ -237,7 +237,7 @@ public class ChooseFolder extends K9ListActivity
       
       if (showOptionNone)
       {
-        localFolders.add("-NONE-");
+        localFolders.add(Email.FOLDER_NONE);
       }
       
       Collections.sort(localFolders, new Comparator<String>() {
