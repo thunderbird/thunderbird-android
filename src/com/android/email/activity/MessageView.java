@@ -25,6 +25,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Contacts;
+import android.provider.Contacts.Intents;
 import android.text.Spannable;
 import android.util.Config;
 import android.util.Log;
@@ -383,6 +385,7 @@ public class MessageView extends K9Activity
         mAttachments.setVisibility(View.GONE);
         mAttachmentIcon.setVisibility(View.GONE);
 
+        setOnClickListener(R.id.from);
         setOnClickListener(R.id.reply);
         setOnClickListener(R.id.reply_all);
         setOnClickListener(R.id.delete);
@@ -554,6 +557,34 @@ public class MessageView extends K9Activity
                 onPrevious();
             } else {
                 finish();
+            }
+        }
+    }
+
+    private void onClickSender() {
+        if (mMessage != null) {
+            try {
+                Address senderEmail = mMessage.getFrom()[0];
+                Uri contactUri = Uri.fromParts("mailto", senderEmail.getAddress(), null);
+
+                Intent contactIntent = new Intent(Contacts.Intents.SHOW_OR_CREATE_CONTACT);
+                contactIntent.setData(contactUri);
+
+                // Pass along full E-mail string for possible create dialog
+                contactIntent.putExtra(Contacts.Intents.EXTRA_CREATE_DESCRIPTION,
+                        senderEmail.toString());
+
+                // Only provide personal name hint if we have one
+                String senderPersonal = senderEmail.getPersonal();
+                if (senderPersonal != null) {
+                    contactIntent.putExtra(Intents.Insert.NAME, senderPersonal);
+                }
+
+                startActivity(contactIntent);
+            } catch (MessagingException me) {
+                if (Config.LOGV) {
+                    Log.v(Email.LOG_TAG, "loadMessageForViewHeadersAvailable", me);
+                }
             }
         }
     }
@@ -776,6 +807,9 @@ public class MessageView extends K9Activity
 
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.from:
+                onClickSender();
+                break;
             case R.id.reply:
             case R.id.reply_scrolling:
                 onReply();
