@@ -36,11 +36,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.webkit.CacheManager;
-import android.webkit.CacheManager;
 import android.webkit.UrlInterceptHandler;
 // import android.webkit.PluginData; // XXX TODO reenable when we switch to sdk 1.5
 import android.webkit.WebView;
 import android.webkit.CacheManager.CacheResult;
+import android.webkit.PluginData;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -65,6 +65,8 @@ import com.android.email.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.android.email.mail.store.LocalStore.LocalMessage;
 import com.android.email.mail.store.LocalStore.LocalTextBody;
 import com.android.email.provider.AttachmentProvider;
+import java.net.HttpURLConnection;
+import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -78,6 +80,7 @@ public class MessageView extends K9Activity
     private static final String EXTRA_NEXT = "com.android.email.MessageView_next";
     private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 120000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
 
+    private static final String CID_PREFIX  = "http://cid/";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
 
@@ -876,16 +879,45 @@ public class MessageView extends K9Activity
     }
     
     public CacheResult service(String url, Map<String, String> headers) {
-        String prefix = "http://cid/";
-        if (url.startsWith(prefix) && mMessage != null) {
+        if (url.startsWith(CID_PREFIX) && mMessage != null) {
             try {
-                String contentId = url.substring(prefix.length());
+                String contentId = url.substring(CID_PREFIX.length());
                 final Part part = MimeUtility.findPartByContentId(mMessage, "<" + contentId + ">");
                 if (part != null) {
                     CacheResult cr = new CacheManager.CacheResult();
                     // TODO looks fixed in Mainline, cr.setInputStream
                     // part.getBody().writeTo(cr.getStream());
                     return cr;
+                }
+            }
+            catch (Exception e) {
+                // TODO
+            }
+        }
+        return null;
+    }
+
+    public PluginData getPluginData(String url, Map<String, String> headers) {
+        if (url.startsWith(CID_PREFIX) && mMessage != null) {
+            try {
+                String contentId = url.substring(CID_PREFIX.length());
+                final Part part = MimeUtility.findPartByContentId(mMessage, "<" + contentId + ">");
+                if (part != null) {
+                    Map<String, String[]> splittedHeaders = new HashMap<String, String[]>();
+                    for (String headerName : headers.keySet()) {
+                        String heaverValue = headers.get(headerName);
+                        //There must be a better way to do this split and trim...
+                        String[] headerValues = heaverValue.split(",");
+                        for (int i=0; i<headerValues.length; i++) {
+                            headerValues[i] = headerValues[i].trim();
+                        }
+                        splittedHeaders.put(headerName, headerValues);
+                    }
+                    return new PluginData(
+                        part.getBody().getInputStream(),
+                        part.getSize(),
+                        splittedHeaders,
+                        HttpURLConnection.HTTP_OK);
                 }
             }
             catch (Exception e) {
