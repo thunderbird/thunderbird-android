@@ -37,7 +37,6 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.webkit.CacheManager;
 import android.webkit.UrlInterceptHandler;
-// import android.webkit.PluginData; // XXX TODO reenable when we switch to sdk 1.5
 import android.webkit.WebView;
 import android.webkit.CacheManager.CacheResult;
 import android.webkit.PluginData;
@@ -113,8 +112,6 @@ public class MessageView extends K9Activity
     private DateFormat timeFormat = null;
     
     private Menu optionsMenu = null;
-    
-    // public PluginData getPluginData(String x, Map<String,String> y) {return null;} // XXX TODO reenable when we switch to 1.5
     
     private DateFormat getDateFormat()
     {
