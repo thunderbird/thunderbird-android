@@ -38,17 +38,16 @@
 			/>
 		</menu>
 	</item>
-		<item
-		android:id="@+id/reverse_sort"
-		android:title="@string/reverse_sort_action"
-		android:icon="@drawable/ic_menu_reverse_sort"
-	/>
 	<item
 		android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
 		android:title="@string/check_mail_action"
 		android:icon="@drawable/ic_menu_refresh"
 	/>
-
+    <item
+		android:id="@+id/reverse_sort"
+		android:title="@string/reverse_sort_action"
+		android:icon="@drawable/ic_menu_reverse_sort"
+	/>
 
 </menu>

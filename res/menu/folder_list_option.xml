@@ -6,12 +6,6 @@
 		android:title="@string/compose_action"
 		android:icon="@drawable/ic_menu_compose"
 	/>
-	<item
-		android:id="@+id/check_mail"
-        android:alphabeticShortcut="r"
-		android:title="@string/check_mail_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
     <item
 		android:id="@+id/accounts"
 		android:title="@string/accounts_action"
@@ -22,7 +16,13 @@
 		android:title="@string/list_folders_action"
 		android:icon="@drawable/ic_menu_refresh"
 	/>
-		<item
+	<item
+		android:id="@+id/check_mail"
+        android:alphabeticShortcut="r"
+		android:title="@string/check_mail_action"
+		android:icon="@drawable/ic_menu_refresh"
+	/>
+    <item
 		android:id="@+id/empty_trash"
         android:alphabeticShortcut="e"
 		android:title="@string/empty_trash_action"
