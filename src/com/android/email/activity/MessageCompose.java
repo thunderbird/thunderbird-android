@@ -126,7 +126,7 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
     private LinearLayout mAttachments;
     private View mQuotedTextBar;
     private ImageButton mQuotedTextDelete;
-    private WebView mQuotedText;
+    private EditText mQuotedText;
 
     private boolean mDraftNeedsSaving = false;
 
@@ -274,12 +274,25 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         mCcView = (MultiAutoCompleteTextView)findViewById(R.id.cc);
         mBccView = (MultiAutoCompleteTextView)findViewById(R.id.bcc);
         mSubjectView = (EditText)findViewById(R.id.subject);
-        mSignatureView = (EditText)findViewById(R.id.signature);
+        
+        EditText upperSignature = (EditText)findViewById(R.id.upper_signature);
+        EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
+        
+        if (true)
+        {
+            mSignatureView = lowerSignature;
+            upperSignature.setVisibility(View.GONE); 
+        }
+        else
+        {
+            mSignatureView = upperSignature;
+            lowerSignature.setVisibility(View.GONE);
+        }
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mQuotedTextBar = findViewById(R.id.quoted_text_bar);
         mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
-        mQuotedText = (WebView)findViewById(R.id.quoted_text);
+        mQuotedText = (EditText)findViewById(R.id.quoted_text);
 
         TextWatcher watcher = new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start,
@@ -633,47 +646,22 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
         // XXX TODO - not sure why this won't add header
         // message.setHeader("X-User-Agent", getString(R.string.message_header_mua));
 
-
-
         /*
          * Build the Body that will contain the text of the message. We'll decide where to
          * include it later.
          */
 
         String text = mMessageContentView.getText().toString();
-        if (appendSig) {
+        if (appendSig && false) {
             text = appendSignature(text);
         }
         
         if (mQuotedTextBar.getVisibility() == View.VISIBLE) {
-            String action = getIntent().getAction();
-            String quotedText = null;
-            Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage,
-                    "text/plain");
-            if (part != null) {
-                quotedText = MimeUtility.getTextFromPart(part);
-            }
-            if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) {
-                text += String.format(
-                        getString(R.string.message_compose_reply_header_fmt),
-                        Address.toString(mSourceMessage.getFrom()));
-                if (quotedText != null) {
-                    text += quotedText.replaceAll("(?m)^", ">");
-                }
-            }
-            else if (ACTION_FORWARD.equals(action)) {
-                text += String.format(
-                        getString(R.string.message_compose_fwd_header_fmt),
-                        mSourceMessage.getSubject(),
-                        Address.toString(mSourceMessage.getFrom()),
-                        Address.toString(
-                                mSourceMessage.getRecipients(RecipientType.TO)),
-                        Address.toString(
-                                mSourceMessage.getRecipients(RecipientType.CC)));
-                if (quotedText != null) {
-                    text += quotedText;
-                }
-            }
+            text += "\n" + mQuotedText.getText().toString();
+        }
+        
+        if (appendSig && true) {
+            text = appendSignature(text);
         }
 
         TextBody body = new TextBody(text);
@@ -755,10 +743,12 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                 message.setUid(mSourceMessageUid);
             }
             
+            String k9identity = Utility.base64Encode("" + mMessageContentView.getText().toString().length());
+            
             if (mIdentityChanged || mSignatureChanged)
             {
               String signature  = mSignatureView.getText().toString();
-              String k9identity = Utility.base64Encode(signature) ;
+              k9identity += ":" + Utility.base64Encode(signature) ;
               if (mIdentityChanged)
               {
               
@@ -767,10 +757,10 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                   
                   k9identity +=  ":" + Utility.base64Encode(name) + ":" + Utility.base64Encode(email);
               }
-              
-              Log.d(Email.LOG_TAG, "Saving identity: " + k9identity);
-              message.setHeader(Email.K9MAIL_IDENTITY, k9identity);
             }
+            
+            Log.d(Email.LOG_TAG, "Saving identity: " + k9identity);
+            message.setHeader(Email.K9MAIL_IDENTITY, k9identity);
             
             MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
             mDraftUid = message.getUid();
@@ -1093,6 +1083,21 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                 else {
                     addAddresses(mToView, replyToAddresses = message.getFrom());
                 }
+                
+                Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage,
+                        "text/plain");
+                if (part != null) {
+                    String quotedText = String.format(
+                            getString(R.string.message_compose_reply_header_fmt),
+                            Address.toString(mSourceMessage.getFrom()));
+                    
+                    quotedText += MimeUtility.getTextFromPart(part).replaceAll("(?m)^", ">");
+                    mQuotedText.setText(quotedText);
+
+                    mQuotedTextBar.setVisibility(View.VISIBLE);
+                    mQuotedText.setVisibility(View.VISIBLE);
+                }
+                
                 if (ACTION_REPLY_ALL.equals(action)) {
                     for (Address address : message.getRecipients(RecipientType.TO)) {
                         if (!mAccount.isAnIdentity(address)) {
@@ -1106,20 +1111,6 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                             }
                         }
                         mCcView.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                if (part == null) {
-                    part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-                }
-                if (part != null) {
-                    String text = MimeUtility.getTextFromPart(part);
-                    if (text != null) {
-                        mQuotedTextBar.setVisibility(View.VISIBLE);
-                        mQuotedText.setVisibility(View.VISIBLE);
-                        mQuotedText.loadDataWithBaseURL("email://", text, part.getMimeType(),
-                                "utf-8", null);
                     }
                 }
             }
@@ -1139,18 +1130,26 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                 else {
                     mSubjectView.setText(message.getSubject());
                 }
-
                 Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
                 if (part == null) {
                     part = MimeUtility.findFirstPartByMimeType(message, "text/html");
                 }
                 if (part != null) {
-                    String text = MimeUtility.getTextFromPart(part);
-                    if (text != null) {
+                    String quotedText = MimeUtility.getTextFromPart(part);
+                    if (quotedText != null) {
+                        String text = String.format(
+                                getString(R.string.message_compose_fwd_header_fmt),
+                                mSourceMessage.getSubject(),
+                                Address.toString(mSourceMessage.getFrom()),
+                                Address.toString(
+                                        mSourceMessage.getRecipients(RecipientType.TO)),
+                                Address.toString(
+                                        mSourceMessage.getRecipients(RecipientType.CC)));
+                    
+                        text += quotedText;
+                        mQuotedText.setText(text);
                         mQuotedTextBar.setVisibility(View.VISIBLE);
                         mQuotedText.setVisibility(View.VISIBLE);
-                        mQuotedText.loadDataWithBaseURL("email://", text, part.getMimeType(),
-                                "utf-8", null);
                     }
                 }
                 if (!mSourceMessageProcessed) {
@@ -1178,14 +1177,11 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     addAddresses(mBccView, message.getRecipients(RecipientType.BCC));
                     mBccView.setVisibility(View.VISIBLE);
                 }
-                Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                if (part != null) {
-                    String text = MimeUtility.getTextFromPart(part);
-                    mMessageContentView.setText(text);
-                }
+                
                 if (!mSourceMessageProcessed) {
                     loadAttachments(message, 0);
                 }
+                Integer bodyLength = null;
                 String[] k9identities = message.getHeader(Email.K9MAIL_IDENTITY);
                 if (k9identities != null && k9identities.length > 0)
                 {
@@ -1196,9 +1192,22 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     Log.d(Email.LOG_TAG, "Got a saved identity: " + k9identity);
                     StringTokenizer tokens = new StringTokenizer(k9identity, ":", false);
                     
+                    String bodyLengthS = null;
                     String name = null;
                     String email = null;
                     String signature = null;
+                    if (tokens.hasMoreTokens())
+                    {
+                      bodyLengthS = Utility.base64Decode(tokens.nextToken());
+                      try
+                      {
+                          bodyLength = Integer.parseInt(bodyLengthS);
+                      }
+                      catch (Exception e)
+                      {
+                          Log.e(Email.LOG_TAG, "Unable to parse bodyLength '" + bodyLengthS + "'");
+                      }
+                    }
                     if (tokens.hasMoreTokens())
                     {
                       signature = Utility.base64Decode(tokens.nextToken());
@@ -1249,6 +1258,25 @@ public class MessageCompose extends Activity implements OnClickListener, OnFocus
                     updateFrom();
                     
                   }
+                }
+                Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
+                if (part != null) {
+                    String text = MimeUtility.getTextFromPart(part);
+                    if (bodyLength != null && bodyLength + 1 < text.length())   // + 1 to get rid of the newline we added when saving the draft
+                    {
+                        String bodyText = text.substring(0, bodyLength);
+                        String quotedText = text.substring(bodyLength + 1, text.length());
+
+                        mMessageContentView.setText(bodyText);
+                        mQuotedText.setText(quotedText);
+
+                        mQuotedTextBar.setVisibility(View.VISIBLE);
+                        mQuotedText.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        mMessageContentView.setText(text);
+                    }
                 }
             }
             catch (MessagingException me) {

@@ -76,8 +76,20 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="left|top"
                 android:minLines="3" android:autoText="true"
-                android:capitalize="sentences" />
+                android:capitalize="sentences" 
+                android:hint="@string/message_compose_content_hint" />
         <!--  quoted text bar -->
+            <EditText android:id="@+id/upper_signature"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="left|top"
+                android:editable="false"
+                android:minLines="0" android:autoText="true"
+                android:capitalize="sentences" />
+        
             <RelativeLayout android:id="@+id/quoted_text_bar"
                 android:layout_width="fill_parent"
                 android:layout_height="45px" android:background="@drawable/email_quoted_bar">
@@ -95,10 +107,17 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true" />
             </RelativeLayout>
-            <WebView android:id="@+id/quoted_text"
+            <EditText android:id="@+id/quoted_text"
+            
+            	android:textColor="?android:attr/textColorSecondary"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
-            <EditText android:id="@+id/signature"
+                android:layout_weight="1.0"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="left|top"
+                android:minLines="3" android:autoText="true"
+                android:capitalize="sentences" />
+            <EditText android:id="@+id/lower_signature"
                 android:textColor="?android:attr/textColorSecondary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
