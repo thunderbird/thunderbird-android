@@ -561,8 +561,18 @@ public class FolderList extends K9ListActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case R.id.compose:
+            MessageCompose.actionCompose(this, mAccount);
+
+            return true;
+
         case R.id.check_mail:
             checkMail(mAccount);
+
+            return true;
+
+        case R.id.accounts:
+            onAccounts();
 
             return true;
 
