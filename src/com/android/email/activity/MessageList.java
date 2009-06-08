@@ -1195,6 +1195,7 @@ public class MessageList extends K9ListActivity {
         };
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
+        private View footerView = null;
 
         MessageListAdapter() {
             mAttachmentIcon = getResources().getDrawable( R.drawable.ic_mms_attachment_small);
@@ -1404,27 +1405,19 @@ public class MessageList extends K9ListActivity {
                 holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             }
             return view;
-     }
+        }
 
-     public View getFooterView(int position, View convertView, ViewGroup parent) { 
-            View view;
-
-            if ((convertView != null) && (convertView.getId() == R.layout.message_list_item_footer)) {
-                view = convertView;
-            } else {
-                view = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
-                view.setId(R.layout.message_list_item_footer);
+        public View getFooterView(int position, View convertView, ViewGroup parent) {
+            if (footerView == null) {
+                footerView = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
+                footerView.setId(R.layout.message_list_item_footer);
+                FooterViewHolder holder = new FooterViewHolder();
+                holder.progress = (ProgressBar)footerView.findViewById(R.id.message_list_progress);
+                holder.main = (TextView)footerView.findViewById(R.id.main_text);
+                footerView.setTag(holder);
             }
 
-            FooterViewHolder holder = (FooterViewHolder) view.getTag();
-
-            if (holder == null) {
-                holder = new FooterViewHolder();
-                holder.progress = (ProgressBar) view.findViewById(R.id.message_list_progress);
-                holder.main = (TextView) view.findViewById(R.id.main_text);
-                view.setTag(holder);
-            }
-
+            FooterViewHolder holder = (FooterViewHolder)footerView.getTag();
             if (mCurrentFolder.loading) {
                 holder.main.setText(getString(R.string.status_loading_more));
                 mHandler.progress(true);
@@ -1436,7 +1429,7 @@ public class MessageList extends K9ListActivity {
                 }
             }
 
-            return view;
+            return footerView;
         }
 
         public boolean hasStableIds() {
