@@ -72,6 +72,22 @@
             android:label="@string/choose_folder_title"
             >
         </activity>
+        <activity
+            android:name="com.android.email.activity.ChooseIdentity"
+            android:theme="@style/Theme.K9Dialog"
+            android:label="@string/choose_identity_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.ManageIdentities"
+            android:label="@string/manage_identities_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.EditIdentity"
+            android:label="@string/edit_identity_title"
+            >
+        </activity>
         <!-- XXX Note: this activity is hacked to ignore config changes,
              since it doesn't currently handle them correctly in code. -->
         <activity

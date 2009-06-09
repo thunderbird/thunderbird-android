@@ -14,6 +14,11 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import android.content.SharedPreferences;
@@ -62,10 +67,7 @@ import java.io.StringReader;
  * </pre>
  */
 public class LocalStore extends Store implements Serializable {
-  // If you are going to change the DB_VERSION, please also go into Email.java and local for the comment
-  // on LOCAL_UID_PREFIX and follow the instructions there.  If you follow the instructions there,
-  // please delete this comment.
-    private static final int DB_VERSION = 25;
+    private static final int DB_VERSION = 26;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -73,6 +75,12 @@ public class LocalStore extends Store implements Serializable {
     private File mAttachmentsDir;
     private Application mApplication;
     private String uUid = null;
+
+    private static Set<String> HEADERS_TO_SAVE = new HashSet<String>();
+    static
+    {
+        HEADERS_TO_SAVE.add(Email.K9MAIL_IDENTITY);
+    }
 
     /**
      * @param uri local://localhost/path/to/database/uuid.db
@@ -133,6 +141,10 @@ public class LocalStore extends Store implements Serializable {
                     + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
                     + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT)");
 
+            mDb.execSQL("DROP TABLE IF EXISTS headers");
+            mDb.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
+            mDb.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
+            
             mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
             mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id");
             mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_date ON messages (folder_id,internal_date)");
@@ -149,7 +161,9 @@ public class LocalStore extends Store implements Serializable {
             mDb.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
 
             mDb.execSQL("DROP TRIGGER IF EXISTS delete_message");
-            mDb.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; END;");
+            mDb.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
+                    + "DELETE FROM headers where old.id = message_id; END;");
+            
             mDb.setVersion(DB_VERSION);
             if (mDb.getVersion() != DB_VERSION) {
                 throw new Error("Database upgrade failed!");
@@ -913,6 +927,54 @@ public class LocalStore extends Store implements Serializable {
                     "LocalStore.getMessages(int, int, MessageRetrievalListener) not yet implemented");
         }
 
+        private void populateHeaders(List<LocalMessage> messages)
+        {
+            Cursor cursor = null;
+            if (messages.size() == 0)
+            {
+                return;
+            }
+            try {
+                Map<Long, LocalMessage> popMessages = new HashMap<Long, LocalMessage>();
+                List<String> ids = new ArrayList<String>();
+                StringBuffer questions = new StringBuffer();
+   
+                for (int i = 0; i < messages.size(); i++)
+                {
+                    if (i != 0)
+                    {
+                        questions.append(", ");
+                    }
+                    questions.append("?");
+                    LocalMessage message = messages.get(i);
+                    Long id = message.getId();
+                    ids.add(Long.toString(id));
+                    popMessages.put(id, message);
+                    
+                }
+                
+                cursor = mDb.rawQuery(
+                        "SELECT message_id, name, value "
+                                + "FROM headers " + "WHERE message_id in ( " + questions + ") ",
+                                ids.toArray(new String[] {}));
+                                
+                       
+                while (cursor.moveToNext()) {
+                    Long id = cursor.getLong(0);
+                    String name = cursor.getString(1);
+                    String value = cursor.getString(2);
+                    //Log.i(Email.LOG_TAG, "Retrieved header name= " + name + ", value = " + value + " for message " + id);
+                    popMessages.get(id).addHeader(name, value);
+                }
+            }
+            finally
+            {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+
         @Override
         public Message getMessage(String uid) throws MessagingException {
             open(OpenMode.READ_WRITE);
@@ -930,6 +992,9 @@ public class LocalStore extends Store implements Serializable {
                     return null;
                 }
                 populateMessageFromGetMessageCursor(message, cursor);
+                ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
+                messages.add(message);
+                populateHeaders(messages);
             }
             finally {
                 if (cursor != null) {
@@ -942,7 +1007,7 @@ public class LocalStore extends Store implements Serializable {
         @Override
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
             open(OpenMode.READ_WRITE);
-            ArrayList<Message> messages = new ArrayList<Message>();
+            ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
             Cursor cursor = null;
             try {
                  // pull out messages most recent first, since that's what the default sort is
@@ -959,12 +1024,14 @@ public class LocalStore extends Store implements Serializable {
                 while (cursor.moveToNext()) {
                     LocalMessage message = new LocalMessage(null, this);
                     populateMessageFromGetMessageCursor(message, cursor);
+                    
                     messages.add(message);
                     if (listener != null) {
                         listener.messageFinished(message, i, -1);
                     }
                     i++;
                 }
+                populateHeaders(messages);
             }
             finally {
                 if (cursor != null) {
@@ -1126,6 +1193,7 @@ public class LocalStore extends Store implements Serializable {
                     for (Part attachment : attachments) {
                         saveAttachment(messageId, attachment, copy);
                     }
+                    saveHeaders(messageId, (MimeMessage)message);
                 } catch (Exception e) {
                     throw new MessagingException("Error appending message", e);
                 }
@@ -1204,9 +1272,39 @@ public class LocalStore extends Store implements Serializable {
                     Part attachment = attachments.get(i);
                     saveAttachment(message.mId, attachment, false);
                 }
+                saveHeaders(message.getId(), message);
             } catch (Exception e) {
                 throw new MessagingException("Error appending message", e);
             }
+        }
+
+        private void saveHeaders(long id, MimeMessage message)
+        {
+            deleteHeaders(id);
+            for (String name : message.getHeaderNames())
+            {
+                if (HEADERS_TO_SAVE.contains(name))
+                {
+                    String[] values = message.getHeader(name);
+                    for (String value : values)
+                    {
+                        ContentValues cv = new ContentValues();
+                        cv.put("message_id", id);
+                        cv.put("name", name);
+                        cv.put("value", value);
+                        //Log.i(Email.LOG_TAG, "Saving header name = " + name + ", value = " + value);
+                        mDb.insert("headers", "name", cv);
+                    }
+                }
+            }
+        }
+        
+        private void deleteHeaders(long id)
+        {
+            mDb.execSQL("DELETE FROM headers WHERE id = ?",
+                    new Object[] {
+                            id
+                    });
         }
 
         /**
@@ -1535,10 +1633,6 @@ public class LocalStore extends Store implements Serializable {
     
         public LocalMessage() {
         }
-   
-        // We don't want to do this for local messages
-        @Override public void setGeneratedMessageId () {}
-         
 
         LocalMessage(String uid, Folder folder) throws MessagingException {
             this.mUid = uid;
@@ -1620,16 +1714,19 @@ public class LocalStore extends Store implements Serializable {
                 /*
                  * Delete all of the messages' attachments to save space.
                  */
-              // shouldn't the trigger take care of this? -- danapple
                 mDb.execSQL("DELETE FROM attachments WHERE id = ?",
                         new Object[] {
                                 mId
                         });
+                
+                ((LocalFolder)mFolder).deleteHeaders(mId);
+
             }
             else if (flag == Flag.X_DESTROYED && set) {
                 ((LocalFolder) mFolder).deleteAttachments(getUid());
                 mDb.execSQL("DELETE FROM messages WHERE id = ?",
                         new Object[] { mId });
+                ((LocalFolder)mFolder).deleteHeaders(mId);
             }
 
             /*

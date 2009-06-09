@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Stack;
 
@@ -43,21 +44,9 @@ public class MimeMessage extends Message {
     protected int mSize;
  
     public MimeMessage() {
-        setGeneratedMessageId();
-    }
-
-
-    public void setGeneratedMessageId () {
-        /*
-         * Every new messages gets a Message-ID
-         */
-        try {
             setHeader("Message-ID", generateMessageId());
+
         }
-        catch (MessagingException me) {
-            throw new RuntimeException("Unable to create MimeMessage", me);
-        }
-    }
 
     private String generateMessageId() {
         StringBuffer sb = new StringBuffer();
@@ -280,24 +269,29 @@ public class MimeMessage extends Message {
         }
     }
 
-    protected String getFirstHeader(String name) throws MessagingException {
+    protected String getFirstHeader(String name) {
         return mHeader.getFirstHeader(name);
     }
 
-    public void addHeader(String name, String value) throws MessagingException {
+    public void addHeader(String name, String value)  {
         mHeader.addHeader(name, value);
     }
 
-    public void setHeader(String name, String value) throws MessagingException {
+    public void setHeader(String name, String value) {
         mHeader.setHeader(name, value);
     }
 
-    public String[] getHeader(String name) throws MessagingException {
+    public String[] getHeader(String name) {
         return mHeader.getHeader(name);
     }
 
-    public void removeHeader(String name) throws MessagingException {
+    public void removeHeader(String name) {
         mHeader.removeHeader(name);
+    }
+
+    public List<String> getHeaderNames()
+    {
+        return mHeader.getHeaderNames();
     }
 
     public void writeTo(OutputStream out) throws IOException, MessagingException {

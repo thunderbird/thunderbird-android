@@ -98,6 +98,10 @@
             android:key="composition"
             android:title="@string/account_settings_composition_label" />
 
+        <PreferenceScreen
+            android:key="manage_identities"
+            android:title="@string/account_settings_identities_label" />
+
 
     </PreferenceCategory>
 
