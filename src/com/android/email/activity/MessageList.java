@@ -911,9 +911,9 @@ public class MessageList extends K9ListActivity {
         mHandler.dataChanged();
     }
 
-    private void checkMail(final Account account) {
-        MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
-    }
+//    private void checkMail(final Account account) {
+//        MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
+//    }
 
     private void checkMail(Account account, String folderName) {
         MessagingController.getInstance(getApplication()).synchronizeMailbox( account, folderName, mAdapter.mListener);
@@ -923,7 +923,7 @@ public class MessageList extends K9ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.check_mail:
-            checkMail(mAccount);
+            checkMail(mAccount, mFolderName);
             return true;
 
         case R.id.compose:
