@@ -1371,7 +1371,7 @@ public class MessageList extends K9ListActivity {
                 holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
                 holder.subject.setTypeface(null, message.read && !message.flagged ? Typeface.NORMAL  : Typeface.BOLD);
 
-                int subjectColor =holder.subject.getCurrentTextColor(); 
+                int subjectColor = holder.from.getCurrentTextColor();  // Get from another field that never changes color 
 
                 if (message.flagged) {
                     subjectColor = Email.FLAGGED_COLOR;
@@ -1384,7 +1384,7 @@ public class MessageList extends K9ListActivity {
                     view.getBackground().setAlpha(127);
                 }
 
-                holder.subject.setTextColor( subjectColor);
+                holder.subject.setTextColor( 0xff000000 | subjectColor);
                 holder.subject.setText(message.subject);
 
                 holder.from.setText(message.sender);
