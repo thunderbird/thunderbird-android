@@ -1093,8 +1093,16 @@ public class FolderList extends K9ListActivity {
                     return -1;
                 } else if (Email.INBOX.equalsIgnoreCase(s2)) {
                     return 1;
-                } else
-                    return s1.compareTo(s2);
+                } else {
+                    int ret = s1.compareToIgnoreCase(s2);
+                    if (ret != 0) {
+                        return ret;
+                    }
+                    else {
+                        return s1.compareTo(s2);
+                    }
+                }
+                
             }
           
             // constructor for an empty object for comparisons
