@@ -89,7 +89,9 @@ public class MessageView extends K9Activity
     
     private TextView mFromView;
     private TextView mDateView;
+    private TextView mTimeView;
     private TextView mToView;
+    private TextView mCcView;
     private TextView mSubjectView;
     private int defaultSubjectColor;
     private WebView mMessageContentView;
@@ -217,8 +219,16 @@ public class MessageView extends K9Activity
                     setTitle(values[0]);
                     mSubjectView.setText(values[0]);
                     mFromView.setText(values[1]);
-                    mDateView.setText(values[2]);
-                    mToView.setText(values[3]);
+                    if (values[2]!=null) {
+                        mDateView.setText(values[2]);
+                        mDateView.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        mDateView.setVisibility(View.GONE);
+                    }
+                    mTimeView.setText(values[3]);
+                    mToView.setText(values[4]);
+                    mCcView.setText(values[5]);
                     mAttachmentIcon.setVisibility(msg.arg1 == 1 ? View.VISIBLE : View.GONE);
                     if ((msg.arg2 & FLAG_FLAGGED) != 0) {
                       mSubjectView.setTextColor(0xff000000 | Email.FLAGGED_COLOR);
@@ -289,7 +299,9 @@ public class MessageView extends K9Activity
                 String subject,
                 String from,
                 String date,
+                String time,
                 String to,
+                String cc,
                 boolean hasAttachments,
                 boolean flagged,
                 boolean seen) {
@@ -299,7 +311,7 @@ public class MessageView extends K9Activity
             msg.arg2 += (flagged ? FLAG_FLAGGED : 0);
             msg.arg2 += (seen ? FLAG_ANSWERED : 0);
            
-            msg.obj = new String[] { subject, from, date, to };
+            msg.obj = new String[] { subject, from, date, time, to, cc };
             sendMessage(msg);
         }
 
@@ -369,11 +381,13 @@ public class MessageView extends K9Activity
 
         mFromView = (TextView)findViewById(R.id.from);
         mToView = (TextView)findViewById(R.id.to);
+        mCcView = (TextView)findViewById(R.id.cc);
         mSubjectView = (TextView)findViewById(R.id.subject);
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
 
 
         mDateView = (TextView)findViewById(R.id.date);
+        mTimeView = (TextView)findViewById(R.id.time);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
         //mMessageContentView.setWebViewClient(new MessageWebViewClient());
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
@@ -1078,15 +1092,20 @@ public class MessageView extends K9Activity
     {
       String subjectText = message.getSubject();
       String fromText = Address.toFriendly(message.getFrom());
-      String dateText = Utility.isDateToday(message.getSentDate()) ?
-              getTimeFormat().format(message.getSentDate()) :
-                  getDateFormat().format(message.getSentDate());
+      String dateText = Utility.isDateToday(message.getSentDate()) ? 
+          null :
+          getDateFormat().format(message.getSentDate());
+      String timeText = getTimeFormat().format(message.getSentDate());
       String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
+      String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
+      Log.d(Email.LOG_TAG, ccText);
       boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
       mHandler.setHeaders(subjectText,
               fromText,
               dateText,
+              timeText,
               toText,
+              ccText,
               hasAttachments,
               message.isSet(Flag.FLAGGED),
               message.isSet(Flag.ANSWERED));

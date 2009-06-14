@@ -51,6 +51,41 @@
                 android:singleLine="false"
                 android:ellipsize="none" />
            <TextView
+                android:id="@+id/time"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cc_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/to_container">
+            <TextView
+                android:id="@+id/cc_label"
+                android:textSize="10sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/message_view_cc_label" />
+            <TextView
+                android:id="@+id/cc"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="10sp"
+                android:layout_width="0dip"
+                android:layout_weight="1.0"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4px"
+                android:singleLine="false"
+                android:ellipsize="none" />
+           <TextView
                 android:id="@+id/date"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorPrimary"
@@ -64,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/to_container">
+            android:layout_below="@id/cc_container">
             <TextView
                 android:id="@+id/subject"
                 android:textAppearance="?android:attr/textAppearanceSmall"
