@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionCode="1002"
     android:versionName="1.002" package="com.fsck.k9">
-    <uses-sdk android:minSdkVersion="1"/>
+    <uses-sdk android:minSdkVersion="3"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
