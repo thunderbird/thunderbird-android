@@ -73,11 +73,14 @@ public class MimeMessage extends Message {
 
     protected void parse(InputStream in) throws IOException, MessagingException {
         mHeader.clear();
-        mBody = null;
-        mBcc = null;
-        mTo = null;
         mFrom = null;
+        mTo = null;
+        mCc = null;
+        mBcc = null;
+        mReplyTo = null;
         mSentDate = null;
+        
+        mBody = null;
 
         MimeStreamParser parser = new MimeStreamParser();
         parser.setContentHandler(new MimeMessageBuilder());
