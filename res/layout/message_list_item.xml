@@ -24,19 +24,7 @@
         android:paddingLeft="10px"
         android:layout_marginRight="1px" />
     <TextView
-        android:id="@+id/from"
-        android:singleLine="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="?android:attr/textColorSecondary"
-        android:paddingLeft="12px"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        />
-    <TextView
         android:id="@+id/date"
-        android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:paddingRight="5px"
         android:paddingLeft="5px"
@@ -47,5 +35,18 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
+        />
+    <TextView
+        android:id="@+id/from"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="?android:attr/textColorSecondary"
+        android:paddingLeft="12px"
+        android:layout_toLeftOf="@id/date"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
         />
 </RelativeLayout>
