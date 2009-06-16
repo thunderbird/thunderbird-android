@@ -274,7 +274,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         Intent intent = getIntent();
         boolean startup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, false);
         if (startup && accounts.length == 1) {
-            FolderList.actionHandleAccount(this, accounts[0], accounts[0].getAutoExpandFolderName(), true);
+            FolderList.actionHandleAccount(this, accounts[0], true);
             finish();
         }
         else {
