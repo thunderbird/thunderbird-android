@@ -13,7 +13,7 @@
 	/>
 	<item
 		android:id="@+id/list_folders"
-		android:title="@string/list_folders_action"
+		android:title="@string/refresh_folders_action"
 		android:icon="@drawable/ic_menu_refresh"
 	/>
 	<item

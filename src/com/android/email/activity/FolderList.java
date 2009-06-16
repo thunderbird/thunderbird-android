@@ -4,18 +4,11 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import com.android.email.K9ListActivity;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,9 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.BaseAdapter;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,22 +38,16 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
-import com.android.email.Utility;
 import com.android.email.MessagingController.SORT_TYPE;
 import com.android.email.activity.FolderList.FolderInfoHolder;
 import com.android.email.activity.MessageList.MessageInfoHolder;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
-import com.android.email.mail.Address;
-import com.android.email.mail.Flag;
 import com.android.email.mail.Folder;
 import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Store;
-import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
-import com.android.email.mail.store.LocalStore.LocalMessage;
 
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -86,6 +71,8 @@ public class FolderList extends K9ListActivity {
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
+
+    private static final String EXTRA_STARTUP = "startup";
 
     private static final boolean REFRESH_REMOTE = true;
 
@@ -344,9 +331,10 @@ public class FolderList extends K9ListActivity {
         }
     }
 
-    public static void actionHandleAccount(Context context, Account account, String initialFolder) {
+    private static void actionHandleAccount(Context context, Account account, String initialFolder, boolean startup) {
         Intent intent = new Intent(context, FolderList.class);
         intent.putExtra(EXTRA_ACCOUNT, account);
+        intent.putExtra(EXTRA_STARTUP, startup);
 
         if (initialFolder != null) {
             intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
@@ -355,8 +343,16 @@ public class FolderList extends K9ListActivity {
         context.startActivity(intent);
     }
 
+    public static void actionHandleAccount(Context context, Account account, String initialFolder) {
+        actionHandleAccount(context, account, null, false);
+    }
+
+    public static void actionHandleAccount(Context context, Account account, boolean startup) {
+        actionHandleAccount(context, account, null, startup);
+    }
+
     public static void actionHandleAccount(Context context, Account account) {
-        actionHandleAccount(context, account, null);
+        actionHandleAccount(context, account, null, false);
     }
 
     public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder) {
@@ -378,68 +374,77 @@ public class FolderList extends K9ListActivity {
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
-        final FolderList xxx = this;
-
-        mListView = getListView();
-        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
-        mListView.setLongClickable(true);
-        //mListView.setFastScrollEnabled(true); // XXX TODO - reenable when we switch to 1.5
-        mListView.setScrollingCacheEnabled(true);
-        mListView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-                Log.v(Email.LOG_TAG,"We're clicking "+itemPosition+" -- "+id);
-                    MessageList.actionHandleFolder(xxx,mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name);
-            }
-
-
-        });
-        registerForContextMenu(mListView);
-
-        /*
-        * We manually save and restore the list's state because our adapter is
-        * slow.
-         */
-        mListView.setSaveEnabled(false);
-
-        mInflater = getLayoutInflater();
-
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
-
+        Log.v(Email.LOG_TAG, "savedInstanceState: " + (savedInstanceState==null));
         if (savedInstanceState == null) {
             mInitialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
-
-            if (mInitialFolder == null) {
+            Log.v(Email.LOG_TAG, "EXTRA_INITIAL_FOLDER: " + mInitialFolder);
+            boolean startup = (boolean) intent.getBooleanExtra(EXTRA_STARTUP, false);
+            Log.v(Email.LOG_TAG, "startup: " + startup);
+            if (mInitialFolder == null
+                && startup) {
                 mInitialFolder = mAccount.getAutoExpandFolderName();
                 if (Email.FOLDER_NONE.equals(mInitialFolder)) {
                     mInitialFolder = null;
                 }
             }
         }
-
-
-        mAdapter = new FolderListAdapter();
-
-        final Object previousData = getLastNonConfigurationInstance();
-
-        if (previousData != null) {
-            //noinspection unchecked
-            mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
+        else {
+            mInitialFolder = null;
         }
 
-        setListAdapter(mAdapter);
-
-        if (savedInstanceState != null) {
-            mRestoringState = true;
-            //onRestoreListState(savedInstanceState);
-            mRestoringState = false;
-        }
-
-        setTitle(mAccount.getDescription());
+        Log.v(Email.LOG_TAG, "mInitialFolder: " + mInitialFolder);
         if (mInitialFolder != null) {
-            onOpenFolder(mInitialFolder); 
+            onOpenFolder(mInitialFolder);
+            finish();
+        }
+        else {
+            requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
+            final FolderList xxx = this;
+
+            mListView = getListView();
+            mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
+            mListView.setLongClickable(true);
+            //mListView.setFastScrollEnabled(true); // XXX TODO - reenable when we switch to 1.5
+            mListView.setScrollingCacheEnabled(true);
+            mListView.setOnItemClickListener(new OnItemClickListener() {
+                public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
+                    Log.v(Email.LOG_TAG,"We're clicking "+itemPosition+" -- "+id);
+                        MessageList.actionHandleFolder(xxx,mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name);
+                }
+
+
+            });
+            registerForContextMenu(mListView);
+
+            /*
+            * We manually save and restore the list's state because our adapter is
+            * slow.
+             */
+            mListView.setSaveEnabled(false);
+
+            mInflater = getLayoutInflater();
+
+            mAdapter = new FolderListAdapter();
+
+            final Object previousData = getLastNonConfigurationInstance();
+
+            if (previousData != null) {
+                //noinspection unchecked
+                mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
+            }
+
+            setListAdapter(mAdapter);
+
+            if (savedInstanceState != null) {
+                mRestoringState = true;
+                //onRestoreListState(savedInstanceState);
+                mRestoringState = false;
+            }
+
+            setTitle(mAccount.getDescription());
         }
     }
 
@@ -638,7 +643,7 @@ public class FolderList extends K9ListActivity {
         case R.id.open_folder:
             onOpenFolder(folder);
             break;
-
+        
         case R.id.send_messages:
             Log.i(Email.LOG_TAG, "sending pending messages from " + folder.name);
 

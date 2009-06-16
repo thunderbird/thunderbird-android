@@ -272,34 +272,33 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
-        boolean startup =(boolean)intent.getBooleanExtra(EXTRA_STARTUP, false);
-
-
-
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        requestWindowFeature(Window.FEATURE_PROGRESS);
-        
-        setContentView(R.layout.accounts);
-        ListView listView = getListView();
-        listView.setOnItemClickListener(this);
-        listView.setItemsCanFocus(false);
-        listView.setEmptyView(findViewById(R.id.empty));
-        findViewById(R.id.add_new_account).setOnClickListener(this);
-        registerForContextMenu(listView);
-
-        if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
-            mSelectedContextAccount = (Account) icicle.getSerializable("selectedContextAccount");
+        boolean startup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, false);
+        if (startup && accounts.length == 1) {
+            FolderList.actionHandleAccount(this, accounts[0], accounts[0].getAutoExpandFolderName(), true);
+            finish();
         }
-        
-        if (icicle != null) {
-          Map<String, Integer> oldUnreadMessageCounts = (Map<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
-          if (oldUnreadMessageCounts != null) {
-            unreadMessageCounts.putAll(oldUnreadMessageCounts);
-          }
-        }
-       if (startup && accounts.length == 1) {
-            intent.putExtra(EXTRA_STARTUP, false);
-            FolderList.actionHandleAccount(this, accounts[0], accounts[0].getAutoExpandFolderName());
+        else {
+            requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+            requestWindowFeature(Window.FEATURE_PROGRESS);
+
+            setContentView(R.layout.accounts);
+            ListView listView = getListView();
+            listView.setOnItemClickListener(this);
+            listView.setItemsCanFocus(false);
+            listView.setEmptyView(findViewById(R.id.empty));
+            findViewById(R.id.add_new_account).setOnClickListener(this);
+            registerForContextMenu(listView);
+
+            if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
+                mSelectedContextAccount = (Account) icicle.getSerializable("selectedContextAccount");
+            }
+
+            if (icicle != null) {
+                Map<String, Integer> oldUnreadMessageCounts = (Map<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
+                if (oldUnreadMessageCounts != null) {
+                    unreadMessageCounts.putAll(oldUnreadMessageCounts);
+                }
+            }
         }
     }
 
@@ -378,7 +377,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     private void onOpenAccount(Account account) {
-      FolderList.actionHandleAccount(this, account);
+      FolderList.actionHandleAccount(this, account, true);
     }
 
     public void onClick(View view) {

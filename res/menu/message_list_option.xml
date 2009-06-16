@@ -6,11 +6,22 @@
 		android:title="@string/compose_action"
 		android:icon="@drawable/ic_menu_compose"
 	/>
+    <item
+        android:id="@+id/list_folders"
+        android:alphabeticShortcut="f"
+		android:title="@string/list_folders_action"
+		android:icon="@drawable/ic_menu_navigate"
+    />
+	<item
+		android:id="@+id/check_mail"
+        android:alphabeticShortcut="r"
+		android:title="@string/check_mail_action"
+		android:icon="@drawable/ic_menu_refresh"
+	/>
 	<item
 		android:id="@+id/set_sort"
 		android:title="@string/sort_by"
 		android:icon="@drawable/ic_menu_set_sort">
-		
 		<menu>
 			<item
 				android:id="@+id/set_sort_date"
@@ -38,12 +49,6 @@
 			/>
 		</menu>
 	</item>
-	<item
-		android:id="@+id/check_mail"
-        android:alphabeticShortcut="r"
-		android:title="@string/check_mail_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
     <item
 		android:id="@+id/reverse_sort"
 		android:title="@string/reverse_sort_action"

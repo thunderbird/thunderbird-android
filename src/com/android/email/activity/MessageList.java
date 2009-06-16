@@ -966,6 +966,12 @@ public class MessageList extends K9ListActivity {
 
             return true;
 
+        case R.id.list_folders:
+            FolderList.actionHandleAccount(this, mAccount);
+            finish();
+            
+            return true;
+            
         default:
             return super.onOptionsItemSelected(item);
         }
