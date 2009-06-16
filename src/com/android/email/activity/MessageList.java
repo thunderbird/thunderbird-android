@@ -971,7 +971,17 @@ public class MessageList extends K9ListActivity {
             finish();
             
             return true;
-            
+
+        case R.id.mark_all_as_read:
+            MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, mFolderName);
+
+            return true;
+
+        case R.id.folder_settings:
+            FolderSettings.actionSettings(this, mAccount, mFolderName);
+
+            return true;
+
         default:
             return super.onOptionsItemSelected(item);
         }

@@ -644,6 +644,10 @@ public class FolderList extends K9ListActivity {
             onOpenFolder(folder);
             break;
         
+        case R.id.mark_all_as_read:
+            MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, folder.name);
+            break;
+            
         case R.id.send_messages:
             Log.i(Email.LOG_TAG, "sending pending messages from " + folder.name);
 

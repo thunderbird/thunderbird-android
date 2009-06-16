@@ -6,18 +6,6 @@
 		android:title="@string/compose_action"
 		android:icon="@drawable/ic_menu_compose"
 	/>
-    <item
-        android:id="@+id/list_folders"
-        android:alphabeticShortcut="f"
-		android:title="@string/list_folders_action"
-		android:icon="@drawable/ic_menu_navigate"
-    />
-	<item
-		android:id="@+id/check_mail"
-        android:alphabeticShortcut="r"
-		android:title="@string/check_mail_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
 	<item
 		android:id="@+id/set_sort"
 		android:title="@string/sort_by"
@@ -54,5 +42,26 @@
 		android:title="@string/reverse_sort_action"
 		android:icon="@drawable/ic_menu_reverse_sort"
 	/>
-
+    <item
+        android:id="@+id/list_folders"
+        android:alphabeticShortcut="f"
+		android:title="@string/list_folders_action"
+		android:icon="@drawable/ic_menu_navigate"
+    />
+	<item
+		android:id="@+id/check_mail"
+        android:alphabeticShortcut="r"
+		android:title="@string/check_mail_action"
+		android:icon="@drawable/ic_menu_refresh"
+	/>
+    <item
+		android:id="@+id/mark_all_as_read"
+		android:title="@string/mark_all_as_read_action"
+		android:icon="@drawable/ic_menu_inbox"
+	/>
+    <item
+		android:id="@+id/folder_settings"
+		android:title="@string/folder_settings_action"
+		android:icon="@drawable/ic_menu_preferences"
+	/>
 </menu>
