@@ -364,6 +364,9 @@ public class FolderList extends K9ListActivity {
         if (initialFolder != null) {
             intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
         }
+        else {
+            intent.putExtra(EXTRA_STARTUP, true);
+        }
         return intent;
     }
 
