@@ -15,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
@@ -35,7 +34,6 @@ import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Button;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -45,13 +43,10 @@ import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
-import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.MessagingController.SORT_TYPE;
-import com.android.email.activity.FolderList.FolderInfoHolder;
 import com.android.email.activity.MessageList.MessageInfoHolder;
-import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Address;
 import com.android.email.mail.Flag;
@@ -64,8 +59,6 @@ import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 import com.android.email.mail.store.LocalStore.LocalMessage;
 
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -902,6 +895,7 @@ public class MessageList extends K9ListActivity {
 
         MessagingController.getInstance(getApplication()).markMessageRead(mAccount, holder.message.getFolder().getName(), holder.uid, !holder.read);
         holder.read = !holder.read;
+        mHandler.dataChanged();
     }
 
     private void onToggleFlag(MessageInfoHolder holder) {
@@ -1060,7 +1054,7 @@ public class MessageList extends K9ListActivity {
     }
 
     public void showProgressIndicator(boolean status) {
-
+        setProgressBarIndeterminateVisibility(status);
         ProgressBar bar = (ProgressBar)mListView.findViewById( R.id.message_list_progress);
         if (bar == null) {
             return;
@@ -1120,6 +1114,14 @@ public class MessageList extends K9ListActivity {
 
         private MessagingListener mListener = new MessagingListener() {
 
+            @Override
+			public void synchronizeMailboxStarted(Account account, String folder) {
+				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
+                    return;
+                }
+
+                mHandler.progress(true);
+            }
 
             @Override
 			public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
@@ -1133,7 +1135,26 @@ public class MessageList extends K9ListActivity {
             @Override
             public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message) {
                 removeMessage(getMessage( message.getUid()));
-            } 
+            }
+
+            @Override
+            public void synchronizeMailboxFinished(Account account, String folder,
+                int totalMessagesInMailbox, int numNewMessages)  {
+				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
+                    return;
+                }
+
+                mHandler.progress(false);
+            }
+
+            @Override
+            public void synchronizeMailboxFailed(Account account, String folder, String message) {
+				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
+                    return;
+                }
+
+                Toast.makeText(MessageList.this, message, Toast.LENGTH_LONG).show();
+            }
 
             @Override
 			public void listLocalMessagesStarted(Account account, String folder) {
