@@ -6,20 +6,9 @@
 		android:title="@string/compose_action"
 		android:icon="@drawable/ic_menu_compose"
 	/>
-    <item
-		android:id="@+id/accounts"
-		android:title="@string/accounts_action"
-		android:icon="@drawable/ic_menu_account_list"
-	/>
 	<item
 		android:id="@+id/list_folders"
 		android:title="@string/refresh_folders_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
-	<item
-		android:id="@+id/check_mail"
-        android:alphabeticShortcut="r"
-		android:title="@string/check_mail_action"
 		android:icon="@drawable/ic_menu_refresh"
 	/>
     <item
@@ -27,6 +16,17 @@
         android:alphabeticShortcut="e"
 		android:title="@string/empty_trash_action"
 		android:icon="@drawable/ic_menu_delete"
+	/>
+    <item
+		android:id="@+id/accounts"
+		android:title="@string/accounts_action"
+		android:icon="@drawable/ic_menu_account_list"
+	/>
+	<item
+		android:id="@+id/check_mail"
+        android:alphabeticShortcut="r"
+		android:title="@string/check_mail_action"
+		android:icon="@drawable/ic_menu_refresh"
 	/>
     <item
 		android:id="@+id/account_settings"
@@ -43,6 +43,4 @@
 		android:title="@string/clear_action"
 		android:icon="@drawable/ic_menu_clear"
 	/>
-
-
 </menu>
