@@ -596,10 +596,7 @@ public class MessageList extends K9ListActivity {
         // If we're a child activity (say because Welcome dropped us straight to the message list
         // we won't have a parent activity and we'll need to get back to it
         if (isTaskRoot ()) {
-            Intent folderList = new Intent(this, FolderList.class);
-            folderList.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            folderList.putExtra(EXTRA_ACCOUNT, mAccount);
-            startActivity(folderList);
+            FolderList.actionHandleAccount(this, mAccount);
         }
         finish();
     }
@@ -961,8 +958,7 @@ public class MessageList extends K9ListActivity {
             return true;
 
         case R.id.list_folders:
-            FolderList.actionHandleAccount(this, mAccount);
-            finish();
+            onShowFolderList();
             
             return true;
 
