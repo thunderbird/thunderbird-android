@@ -47,7 +47,10 @@ public class MessagingListener {
     
     public void listLocalMessagesAddMessage(Account account, String folder, Message message) {
     }
-    
+
+    public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {
+    }
+
     public void listLocalMessagesRemoveMessage(Account account, String folder, Message message) {
     }
 

@@ -1461,53 +1461,49 @@ public class MessagingController implements Runnable {
     }
     
     private void processPendingMarkAllAsRead(PendingCommand command, Account account) throws MessagingException {
-				String folder = command.arguments[0];
-				
-	      Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-	      LocalFolder localFolder = (LocalFolder)localStore.getFolder(folder);
-	      localFolder.open(OpenMode.READ_WRITE);
-	      Message[] messages = localFolder.getMessages(null);
-	      for (Message message : messages)
-	      {
-	      	if (message.isSet(Flag.SEEN) == false) 
-	      	{
-	      		message.setFlag(Flag.SEEN, true);
-	      	}
-	      }
-	      localFolder.setUnreadMessageCount(0);
-        for (MessagingListener l : getListeners()) {
-          l.folderStatusChanged(account, folder);
-        }
-				try
-				{
-	        if (account.getErrorFolderName().equals(folder))
-	    		{
-	    			return;
-	    		}
-					
-	        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
-					Folder remoteFolder = remoteStore.getFolder(folder);
-		      
-					if (!remoteFolder.exists()) {
-					    return;
-					}
-					remoteFolder.open(OpenMode.READ_WRITE);
-					if (remoteFolder.getMode() != OpenMode.READ_WRITE) {
-					    return;
-					}
-								
-					remoteFolder.setFlags(new Flag[] { Flag.SEEN }, true);
-					remoteFolder.close(false);
-				}
-				catch (UnsupportedOperationException uoe)
-				{
-					Log.w(Email.LOG_TAG, "Could not mark all server-side as read because store doesn't support operation", uoe);
-				}
-				finally
-				{
-		      localFolder.close(false);
-				}
+        String folder = command.arguments[0];
 
+        Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+        LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
+        localFolder.open(OpenMode.READ_WRITE);
+        Message[] messages = localFolder.getMessages(null);
+        for (Message message : messages) {
+            if (message.isSet(Flag.SEEN) == false) {
+                message.setFlag(Flag.SEEN, true);
+                for (MessagingListener l : getListeners()) {
+                    l.listLocalMessagesUpdateMessage(account, folder, message);
+                }
+            }
+        }
+        localFolder.setUnreadMessageCount(0);
+        for (MessagingListener l : getListeners()) {
+            l.folderStatusChanged(account, folder);
+        }
+        try {
+            if (account.getErrorFolderName().equals(folder)) {
+                return;
+            }
+
+            Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+            Folder remoteFolder = remoteStore.getFolder(folder);
+
+            if (!remoteFolder.exists()) {
+                return;
+            }
+            remoteFolder.open(OpenMode.READ_WRITE);
+            if (remoteFolder.getMode() != OpenMode.READ_WRITE) {
+                return;
+            }
+
+            remoteFolder.setFlags(new Flag[]{Flag.SEEN}, true);
+            remoteFolder.close(false);
+        }
+        catch (UnsupportedOperationException uoe) {
+            Log.w(Email.LOG_TAG, "Could not mark all server-side as read because store doesn't support operation", uoe);
+        }
+        finally {
+            localFolder.close(false);
+        }
     }
 
     static long uidfill = 0;

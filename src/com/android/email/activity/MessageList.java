@@ -1228,8 +1228,17 @@ public class MessageList extends K9ListActivity {
 
             }
             
+            @Override
+			public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {
+				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
+                    return;
+                }
+
+                addOrUpdateMessage(folder, message, false, true);
+            }
 
         };
+        
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
         private View footerView = null;
