@@ -94,6 +94,7 @@ public class MessageList extends K9ListActivity {
     private static final boolean FORCE_REMOTE_SYNC = true;
 
     private static final String EXTRA_ACCOUNT = "account";
+    private static final String EXTRA_STARTUP = "startup";
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
 
@@ -162,6 +163,8 @@ public class MessageList extends K9ListActivity {
     private boolean sortAscending = true;
 
     private boolean sortDateAscending = false;
+
+    private boolean mStartup = false;
 
     private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 120000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
 
@@ -341,9 +344,10 @@ public class MessageList extends K9ListActivity {
     * queueing up a remote update of the folder.
      */
 
-    public static void actionHandleFolder(Context context, Account account, String folder) {
+    public static void actionHandleFolder(Context context, Account account, String folder, boolean startup) {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_ACCOUNT, account);
+        intent.putExtra(EXTRA_STARTUP, startup);
 
         if (folder != null) {
             intent.putExtra(EXTRA_FOLDER, folder);
@@ -353,7 +357,6 @@ public class MessageList extends K9ListActivity {
     }
 
     @Override
-
     public void onCreate(Bundle savedInstanceState) {
         //Debug.startMethodTracing("k9");
         super.onCreate(savedInstanceState);
@@ -378,6 +381,7 @@ public class MessageList extends K9ListActivity {
 
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
+        mStartup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, false);
 
         // Take the initial folder into account only if we are *not* restoring the
         // activity already
@@ -595,8 +599,8 @@ public class MessageList extends K9ListActivity {
     private void onShowFolderList() {
         // If we're a child activity (say because Welcome dropped us straight to the message list
         // we won't have a parent activity and we'll need to get back to it
-        if (isTaskRoot ()) {
-            FolderList.actionHandleAccount(this, mAccount);
+        if (mStartup) {
+            FolderList.actionHandleAccount(this, mAccount, false);
         }
         finish();
     }

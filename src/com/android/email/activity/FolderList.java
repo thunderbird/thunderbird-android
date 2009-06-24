@@ -102,6 +102,8 @@ public class FolderList extends K9ListActivity {
 
     private boolean sortDateAscending = false;
 
+    private boolean mStartup = false;
+
     private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 120000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
 
     private DateFormat getDateFormat() {
@@ -351,10 +353,6 @@ public class FolderList extends K9ListActivity {
         actionHandleAccount(context, account, null, startup);
     }
 
-    public static void actionHandleAccount(Context context, Account account) {
-        actionHandleAccount(context, account, null, false);
-    }
-
     public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Email.INTENT_DATA_URI_PREFIX + INTENT_DATA_PATH_SUFFIX + "/" + account.getAccountNumber()), context, FolderList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -374,7 +372,8 @@ public class FolderList extends K9ListActivity {
         return actionHandleAccountIntent(context, account, null);
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
@@ -383,10 +382,10 @@ public class FolderList extends K9ListActivity {
         if (savedInstanceState == null) {
             mInitialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
             Log.v(Email.LOG_TAG, "EXTRA_INITIAL_FOLDER: " + mInitialFolder);
-            boolean startup = (boolean) intent.getBooleanExtra(EXTRA_STARTUP, false);
-            Log.v(Email.LOG_TAG, "startup: " + startup);
+            mStartup = (boolean) intent.getBooleanExtra(EXTRA_STARTUP, false);
+            Log.v(Email.LOG_TAG, "startup: " + mStartup);
             if (mInitialFolder == null
-                && startup) {
+                && mStartup) {
                 mInitialFolder = mAccount.getAutoExpandFolderName();
                 if (Email.FOLDER_NONE.equals(mInitialFolder)) {
                     mInitialFolder = null;
@@ -399,7 +398,7 @@ public class FolderList extends K9ListActivity {
 
         Log.v(Email.LOG_TAG, "mInitialFolder: " + mInitialFolder);
         if (mInitialFolder != null) {
-            onOpenFolder(mInitialFolder);
+            onOpenFolder(mInitialFolder, true);
             finish();
         }
         else {
@@ -413,12 +412,10 @@ public class FolderList extends K9ListActivity {
             //mListView.setFastScrollEnabled(true); // XXX TODO - reenable when we switch to 1.5
             mListView.setScrollingCacheEnabled(true);
             mListView.setOnItemClickListener(new OnItemClickListener() {
-                public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
+                public void onItemClick(AdapterView parent, View v, int itemPosition, long id) {
                     Log.v(Email.LOG_TAG,"We're clicking "+itemPosition+" -- "+id);
-                        MessageList.actionHandleFolder(xxx,mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name);
+                    MessageList.actionHandleFolder(xxx, mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name, false);
                 }
-
-
             });
             registerForContextMenu(mListView);
 
@@ -536,7 +533,7 @@ public class FolderList extends K9ListActivity {
     private void onAccounts() {
         // If we're a child activity (say because Welcome dropped us straight to the message list
         // we won't have a parent activity and we'll need to get back to it
-        if (isTaskRoot()) {
+        if (mStartup) {
             startActivity(new Intent(this, Accounts.class));
         }
         finish();
@@ -614,12 +611,8 @@ public class FolderList extends K9ListActivity {
         }
     }
 
-    private void onOpenFolder(FolderInfoHolder folder) {
-              onOpenFolder(folder.name);
-    }
-
-    private void onOpenFolder(String folder) {
-              MessageList.actionHandleFolder(this, mAccount, folder);
+    private void onOpenFolder(String folder, boolean startup) {
+        MessageList.actionHandleFolder(this, mAccount, folder, startup);
     }
 
     private void onCompact(Account account) {
@@ -644,7 +637,7 @@ public class FolderList extends K9ListActivity {
 
         switch (item.getItemId()) {
         case R.id.open_folder:
-            onOpenFolder(folder);
+            onOpenFolder(folder.name, false);
             break;
         
         case R.id.mark_all_as_read:
