@@ -1658,22 +1658,6 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException {
-        if (type == RecipientType.TO) {
-                addHeader("To", Address.toString(addresses));
-                this.mTo = addresses;
-        } else if (type == RecipientType.CC) {
-                addHeader("CC", Address.toString(addresses));
-                this.mCc = addresses;
-        } else if (type == RecipientType.BCC) {
-                addHeader("BCC", Address.toString(addresses));
-                this.mBcc = addresses;
-        } else {
-            throw new MessagingException("Unrecognized recipient type.");
-        }
-    }
-
-
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
         }
