@@ -28,6 +28,12 @@ public class Address {
 
     public Address(String address, String personal) {
         this.mAddress = address;
+        if ("".equals(personal)) {
+            personal = null;
+        }
+        if (personal!=null) {
+            personal = personal.trim();
+        }
         this.mPersonal = personal;
     }
 
@@ -48,6 +54,12 @@ public class Address {
     }
 
     public void setPersonal(String personal) {
+        if ("".equals(personal)) {
+            personal = null;
+        }
+        if (personal!=null) {
+            personal = personal.trim();
+        }
         this.mPersonal = personal;
     }
 
@@ -127,11 +139,11 @@ public class Address {
 
     public String toString() {
         if (mPersonal != null) {
-           //   if (mPersonal.matches(".*[\\(\\)<>@,;:\\\\\".\\[\\]].*")) {
-                return "\"" + mPersonal+ "\" " + " <" + mAddress + ">";
-           //  } else {
-           //     return mPersonal + " <" + mAddress + ">";
-           // }
+            // if (mPersonal.matches(".*[\\(\\)<>@,;:\\\\\".\\[\\]].*")) {
+                return Utility.quoteString(mPersonal) + " <" + mAddress + ">";
+            // } else {
+            //     return mPersonal + " <" + mAddress + ">";
+            // }
         } else {
             return mAddress;
         }
