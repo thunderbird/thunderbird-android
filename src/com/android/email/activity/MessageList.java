@@ -599,7 +599,8 @@ public class MessageList extends K9ListActivity {
     private void onShowFolderList() {
         // If we're a child activity (say because Welcome dropped us straight to the message list
         // we won't have a parent activity and we'll need to get back to it
-        if (mStartup) {
+        if (mStartup
+            || isTaskRoot()) {
             FolderList.actionHandleAccount(this, mAccount, false);
         }
         finish();
