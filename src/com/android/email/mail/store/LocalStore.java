@@ -1658,6 +1658,10 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
+    /*
+     * For performance reasons, we add headers instead of setting them (see super implementation)
+     * which removes (expensive) them before adding them
+     */
     @Override
     public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException {
         if (type == RecipientType.TO) {
