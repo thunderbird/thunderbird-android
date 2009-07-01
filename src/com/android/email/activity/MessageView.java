@@ -68,9 +68,8 @@ import com.android.email.mail.store.LocalStore.LocalTextBody;
 import com.android.email.provider.AttachmentProvider;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MessageView extends K9Activity
         implements UrlInterceptHandler, OnClickListener {
@@ -79,7 +78,6 @@ public class MessageView extends K9Activity
     private static final String EXTRA_MESSAGE = "com.android.email.MessageView_message";
     private static final String EXTRA_FOLDER_UIDS = "com.android.email.MessageView_folderUids";
     private static final String EXTRA_NEXT = "com.android.email.MessageView_next";
-    private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 120000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
 
     private static final String CID_PREFIX  = "http://cid/";
 
@@ -116,6 +114,10 @@ public class MessageView extends K9Activity
     private DateFormat timeFormat = null;
     
     private Menu optionsMenu = null;
+
+    //Shall we use more threads? How often will the user move from non-fully-downloaded
+    //messages to another non-fully-downloaded message more than 3 times?
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(3);
     
     private DateFormat getDateFormat()
     {
@@ -472,19 +474,6 @@ public class MessageView extends K9Activity
         displayMessage(mMessageUid);
   }
 
-    Thread loaderThread = new Thread() {
-            public void run() {
-                // TODO this is a spot that should be eventually handled by a MessagingController
-                // thread pool. We want it in a thread but it can't be blocked by the normal
-                // synchronization stuff in MC.
-                MessagingController.getInstance(getApplication()).loadMessageForViewSynchronous(
-                    mAccount,
-                    mFolder,
-                    mMessageUid,
-                    null);
-            }
-        };
-
     private void displayMessage(String uid)
     {
         mMessageUid = uid;
@@ -496,6 +485,17 @@ public class MessageView extends K9Activity
             next_scrolling.setEnabled(mNextMessageUid != null );
         if (previous_scrolling != null)
             previous_scrolling.setEnabled(mPreviousMessageUid != null);
+
+        Runnable loaderThread = new Runnable() {
+            public void run() {
+                MessagingController.getInstance(getApplication()).loadMessageForViewSynchronous(
+                    mAccount,
+                    mFolder,
+                    mMessageUid,
+                    null);
+            }
+        };
+
         threadPool.execute(loaderThread);
     }
     
@@ -1116,6 +1116,10 @@ public class MessageView extends K9Activity
         @Override
         public void loadMessageForViewHeadersAvailable(Account account, String folder, String uid,
                 final Message message) {
+            if (!mMessageUid.equals(uid)) {
+                return;
+            }
+
             MessageView.this.mMessage = message;
             try {
                 setHeaders(account, folder, uid, message);
@@ -1130,7 +1134,10 @@ public class MessageView extends K9Activity
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
             Message message) {
-            Spannable markup;
+            if (!mMessageUid.equals(uid)) {
+                return;
+            }
+            
             MessageView.this.mMessage = message;
             try {
                 String text;
@@ -1179,6 +1186,10 @@ public class MessageView extends K9Activity
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid,
                 final String message) {
+            if (!mMessageUid.equals(uid)) {
+                return;
+            }
+
             mHandler.post(new Runnable() {
                 public void run() {
                     setProgressBarIndeterminateVisibility(false);
@@ -1191,6 +1202,10 @@ public class MessageView extends K9Activity
         @Override
         public void loadMessageForViewFinished(Account account, String folder, String uid,
                 Message message) {
+            if (!mMessageUid.equals(uid)) {
+                return;
+            }
+
             mHandler.post(new Runnable() {
                 public void run() {
                     setProgressBarIndeterminateVisibility(false);
@@ -1200,6 +1215,10 @@ public class MessageView extends K9Activity
 
         @Override
         public void loadMessageForViewStarted(Account account, String folder, String uid) {
+            if (!mMessageUid.equals(uid)) {
+                return;
+            }
+
             mHandler.post(new Runnable() {
                 public void run() {
                     mMessageContentView.loadUrl("file:///android_asset/loading.html");
@@ -1211,6 +1230,10 @@ public class MessageView extends K9Activity
         @Override
         public void loadAttachmentStarted(Account account, Message message,
                 Part part, Object tag, boolean requiresDownload) {
+            if (mMessage!=message) {
+                return;
+            }
+
             mHandler.setAttachmentsEnabled(false);
             mHandler.progress(true);
             if (requiresDownload) {
@@ -1221,6 +1244,10 @@ public class MessageView extends K9Activity
         @Override
         public void loadAttachmentFinished(Account account, Message message,
                 Part part, Object tag) {
+            if (mMessage!=message) {
+                return;
+            }
+
             mHandler.setAttachmentsEnabled(true);
             mHandler.progress(false);
 
@@ -1262,6 +1289,10 @@ public class MessageView extends K9Activity
         @Override
         public void loadAttachmentFailed(Account account, Message message, Part part,
                 Object tag, String reason) {
+            if (mMessage!=message) {
+                return;
+            }
+
             mHandler.setAttachmentsEnabled(true);
             mHandler.progress(false);
             mHandler.networkError();
