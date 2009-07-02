@@ -11,6 +11,7 @@ import java.util.List;
 import com.android.email.Email;
 import com.android.email.Utility;
 import com.android.email.mail.MessagingException;
+import org.apache.james.mime4j.codec.EncoderUtil;
 
 public class MimeHeader {
     /**
@@ -97,10 +98,33 @@ public class MimeHeader {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         for (Field field : mFields) {
             if (!Utility.arrayContains(writeOmitFields, field.name)) {
-                writer.write(field.name + ": " + field.value + "\r\n");
+                String v = field.value;
+
+                if (hasToBeEncoded(v)) {
+                    v = EncoderUtil.encodeEncodedWord(
+                        field.value,
+                        EncoderUtil.Usage.WORD_ENTITY
+                    );
+                }
+
+                writer.write(field.name + ": " + v + "\r\n");
             }
         }
         writer.flush();
+    }
+
+    // encode non printable characters except LF/CR codes.
+    public boolean hasToBeEncoded(String text) {
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c < 0x20 || 0x7e < c) { // non printable
+                if (c != 0x0a && c != 0x0d) { // non LF/CR
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     class Field {
