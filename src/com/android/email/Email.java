@@ -71,7 +71,6 @@ public class Email extends Application {
      * The MIME type(s) of attachments we're not willing to view.
      */
     public static final String[] UNACCEPTABLE_ATTACHMENT_VIEW_TYPES = new String[] {
-        "image/gif",
     };
 
     /**
@@ -85,7 +84,6 @@ public class Email extends Application {
      * The MIME type(s) of attachments we're not willing to download to SD.
      */
     public static final String[] UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
-        "image/gif",
     };
 
     /**
