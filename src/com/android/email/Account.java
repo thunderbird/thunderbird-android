@@ -599,15 +599,20 @@ public class Account implements Serializable {
     
     public boolean isAnIdentity(Address addr)
     {
-      for (Identity identity : identities)
-      {
-          String email = identity.getEmail();
-        if (email != null && email.equalsIgnoreCase(addr.getAddress()))
-        {
-          return true;
+        return findIdentity(addr) != null;
     }
-      }
-      return false;
+    
+    public Identity findIdentity(Address addr)
+    {
+        for (Identity identity : identities)
+        {
+            String email = identity.getEmail();
+          if (email != null && email.equalsIgnoreCase(addr.getAddress()))
+          {
+              return identity;
+          }
+        }
+        return null;
     }
 
     public int getDisplayCount() {
