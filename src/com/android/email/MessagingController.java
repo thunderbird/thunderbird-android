@@ -2646,14 +2646,15 @@ public class MessagingController implements Runnable {
             final boolean ignoreLastCheckedTime,
             final boolean useManualWakeLock,
             final MessagingListener listener) {
-    	
+        
+      WakeLock twakeLock = null;
       if (useManualWakeLock) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
-        wakeLock.setReferenceCounted(false);
-        wakeLock.acquire(Email.MANUAL_WAKE_LOCK_TIMEOUT);
+        twakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
+        twakeLock.setReferenceCounted(false);
+        twakeLock.acquire(Email.MANUAL_WAKE_LOCK_TIMEOUT);
       }
-      
+      final WakeLock wakeLock = twakeLock;
       
         for (MessagingListener l : getListeners()) {
             l.checkMailStarted(context, account);
@@ -2870,7 +2871,10 @@ public class MessagingController implements Runnable {
                   public void run() {
 
 		            	  Log.i(Email.LOG_TAG, "Finished mail sync");
-		             	 
+		            	  if (wakeLock != null)
+		            	  {
+		            	      wakeLock.release();
+		            	  }
 		                for (MessagingListener l : getListeners()) {
 		                    l.checkMailFinished(context, account);
 		                }
