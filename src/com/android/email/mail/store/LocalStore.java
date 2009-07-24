@@ -1021,17 +1021,25 @@ public class LocalStore extends Store implements Serializable {
 
 
                 int i = 0;
+                ArrayList<LocalMessage> messagesForHeaders = new ArrayList<LocalMessage>();
                 while (cursor.moveToNext()) {
                     LocalMessage message = new LocalMessage(null, this);
                     populateMessageFromGetMessageCursor(message, cursor);
                     
                     messages.add(message);
+                    messagesForHeaders.add(message);
+                    if (messagesForHeaders.size() >= 50)
+                    {
+                        populateHeaders(messagesForHeaders);
+                        messagesForHeaders.clear();
+                    }
                     if (listener != null) {
                         listener.messageFinished(message, i, -1);
                     }
                     i++;
                 }
-                populateHeaders(messages);
+                populateHeaders(messagesForHeaders);
+                
             }
             finally {
                 if (cursor != null) {
