@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="K9" default="help">
+
+    <!-- The local.properties file is created and updated by the 'android' tool.
+         It contain the path to the SDK. It should *NOT* be checked in in Version
+         Control Systems. -->
+    <property file="local.properties"/>
+
+    <!-- The build.properties file can be created by you and is never touched
+         by the 'android' tool. This is the place to change some of the default property values
+         used by the Ant rules.
+         Here are some properties you may want to change/update:
+
+         application-package
+             the name of your application package as defined in the manifest. Used by the
+             'uninstall' rule.
+         source-folder
+             the name of the source folder. Default is 'src'.
+         out-folder
+             the name of the output folder. Default is 'bin'.
+
+         Properties related to the SDK location or the project target should be updated
+          using the 'android' tool with the 'update' action.
+
+         This file is an integral part of the build system for your application and
+         should be checked in in Version Control Systems.
+
+         -->
+    <property file="build.properties"/>
+
+    <!-- The default.properties file is created and updated by the 'android' tool, as well
+         as ADT. 
+         This file is an integral part of the build system for your application and
+         should be checked in in Version Control Systems. -->
+    <property file="default.properties"/>
+
+    <!-- Custom Android task to deal with the project target, and import the proper rules.
+         This requires ant 1.6.0 or above. -->
+    <path id="android.antlibs">
+        <pathelement path="${sdk-location}/tools/lib/anttasks.jar" />
+        <pathelement path="${sdk-location}/tools/lib/sdklib.jar" />
+        <pathelement path="${sdk-location}/tools/lib/androidprefs.jar" />
+        <pathelement path="${sdk-location}/tools/lib/apkbuilder.jar" />
+        <pathelement path="${sdk-location}/tools/lib/jarutils.jar" />
+    </path>
+
+    <taskdef name="setup"
+        classname="com.android.ant.SetupTask"
+        classpathref="android.antlibs"/>
+
+     <setup import="false" />
+    <!-- Execute the Android Setup task that will setup some properties specific to the target,
+         and import the rules files.
+         To customize the rules, copy/paste them below the task, and disable import by setting
+         the import attribute to false:
+         
+         This will ensure that the properties are setup correctly but that your customized
+         targets are used.
+    -->
+
+    <!--
+        This rules file is meant to be imported by the custom Ant task:
+            com.android.ant.AndroidInitTask
+
+        The following properties are put in place by the importing task:
+            android-jar, android-aidl, aapt, aidl, and dx
+
+        Additionnaly, the task sets up the following classpath reference:
+            android.target.classpath
+        This is used by the compiler task as the boot classpath.
+    -->
+
+    <!-- Custom tasks -->
+    <taskdef name="aaptexec"
+        classname="com.android.ant.AaptExecLoopTask"
+        classpathref="android.antlibs"/>
+
+    <taskdef name="apkbuilder"
+        classname="com.android.ant.ApkBuilderTask"
+        classpathref="android.antlibs"/>
+
+    <!-- Properties -->
+
+    <property name="android-tools" value="${sdk-location}/tools" />
+
+    <!-- Input directories -->
+    <property name="source-folder" value="src" />
+    <property name="gen-folder" value="gen" />
+    <property name="resource-folder" value="res" />
+    <property name="asset-folder" value="assets" />
+    <property name="source-location" value="${basedir}/${source-folder}" />
+
+    <!-- folder for the 3rd party java libraries -->
+    <property name="external-libs-folder" value="libs" />
+
+    <!-- folder for the native libraries -->
+    <property name="native-libs-folder" value="libs" />
+
+    <!-- Output directories -->
+    <property name="gen-folder" value="gen" />
+    <property name="out-folder" value="bin" />
+    <property name="out-classes" value="${out-folder}/classes" />
+    <property name="out-classes-location" value="${basedir}/${out-classes}"/>
+    <!-- out folders for a parent project if this project is an instrumentation project -->
+    <property name="main-out-folder" value="../${out-folder}" />
+    <property name="main-out-classes" value="${main-out-folder}/classes"/>
+
+    <!-- Intermediate files -->
+    <property name="dex-file" value="classes.dex" />
+    <property name="intermediate-dex" value="${out-folder}/${dex-file}" />
+    <!-- dx does not properly support incorrect / or \ based on the platform
+         and Ant cannot convert them because the parameter is not a valid path.
+         Because of this we have to compute different paths depending on the platform. -->
+    <condition property="intermediate-dex-location"
+            value="${basedir}\${intermediate-dex}"
+            else="${basedir}/${intermediate-dex}" >
+        <os family="windows"/>
+    </condition>
+
+    <!-- The final package file to generate -->
+    <property name="out-debug-package" value="${out-folder}/${ant.project.name}-debug.apk"/>
+
+    <!-- Tools -->
+    <condition property="exe" value=".exe" else=""><os family="windows"/></condition>
+    <property name="adb" value="${android-tools}/adb${exe}"/>
+
+    <!-- rules -->
+
+    <!-- Create the output directories if they don't exist yet. -->
+    <target name="dirs">
+        <echo>Creating output directories if needed...</echo>
+        <mkdir dir="${resource-folder}" />
+        <mkdir dir="${external-libs-folder}" />
+        <mkdir dir="${gen-folder}" />
+        <mkdir dir="${out-folder}" />
+        <mkdir dir="${out-classes}" />
+    </target>
+
+    <!-- Generate the R.java file for this project's resources. -->
+    <target name="resource-src" depends="dirs">
+        <echo>Generating R.java / Manifest.java from the resources...</echo>
+        <exec executable="${aapt}" failonerror="true">
+            <arg value="package" />
+            <arg value="-m" />
+            <arg value="-J" />
+            <arg path="${gen-folder}" />
+            <arg value="-M" />
+            <arg path="AndroidManifest.xml" />
+            <arg value="-S" />
+            <arg path="${resource-folder}" />
+            <arg value="-I" />
+            <arg path="${android-jar}" />
+        </exec>
+        <copy overwrite="true" file="gen/com/fsck/k9/R.java" tofile="gen/com/android/email/R.java">
+            <filterset begintoken="package " endtoken=";">
+                <filter token="com.fsck.k9" value="package com.android.email;"/>
+            </filterset>
+        </copy>
+
+    </target>
+
+    <!-- Generate java classes from .aidl files. -->
+    <target name="aidl" depends="dirs">
+        <echo>Compiling aidl files into Java classes...</echo>
+        <apply executable="${aidl}" failonerror="true">
+            <arg value="-p${android-aidl}" />
+            <arg value="-I${source-folder}" />
+            <arg value="-o${gen-folder}" />
+            <fileset dir="${source-folder}">
+                <include name="**/*.aidl"/>
+            </fileset>
+        </apply>
+    </target>
+
+    <!-- Compile this project's .java files into .class files. -->
+    <target name="compile" depends="resource-src, aidl">
+        <javac encoding="ascii" target="1.5" debug="true" extdirs=""
+                destdir="${out-classes}"
+                bootclasspathref="android.target.classpath">
+            <src path="${source-folder}" />
+            <src path="${gen-folder}" />
+            <classpath>
+                <fileset dir="${external-libs-folder}" includes="*.jar"/>
+                <fileset dir="${sdk-location}/platforms/android-1.5/" includes="**/*.jar"/>
+                <pathelement path="${main-out-classes}"/>
+            </classpath>
+         </javac>
+    </target>
+
+    <!-- Convert this project's .class files into .dex files. -->
+    <target name="dex" depends="compile">
+        <echo>Converting compiled files and external libraries into ${out-folder}/${dex-file}...</echo>
+        <apply executable="${dx}" failonerror="true" parallel="true">
+            <arg value="-JXmx1024m" />
+            <arg value="--dex" />
+            <arg value="--output=${intermediate-dex-location}" />
+            <arg path="${out-classes-location}" />
+            <fileset dir="${external-libs-folder}" includes="*.jar"/>
+        </apply>
+    </target>
+
+    <!-- Put the project's resources into the output package file
+         This actually can create multiple resource package in case
+         Some custom apk with specific configuration have been
+         declared in default.properties.
+         -->
+    <target name="package-resources">
+        <echo>Packaging resources</echo>
+        <aaptexec executable="${aapt}"
+                command="package"
+                manifest="AndroidManifest.xml"
+                resources="${resource-folder}"
+                assets="${asset-folder}"
+                androidjar="${android-jar}"
+                outfolder="${out-folder}"
+                basename="${ant.project.name}" />
+    </target>
+
+    <!-- Package the application and sign it with a debug key.
+         This is the default target when building. It is used for debug. -->
+    <target name="debug" depends="dex, package-resources">
+        <apkbuilder
+                outfolder="${out-folder}"
+                basename="${ant.project.name}"
+                signed="true"
+                verbose="false">
+            <file path="${intermediate-dex}" />
+            <sourcefolder path="${source-folder}" />
+            <jarfolder path="${external-libs-folder}" />
+            <nativefolder path="${native-libs-folder}" />
+        </apkbuilder>
+    </target>
+
+    <!-- Package the application without signing it.
+         This allows for the application to be signed later with an official publishing key. -->
+    <target name="release" depends="dex, package-resources">
+        <apkbuilder
+                outfolder="${out-folder}"
+                basename="${ant.project.name}"
+                signed="false"
+                verbose="false">
+            <file path="${intermediate-dex}" />
+            <sourcefolder path="${source-folder}" />
+            <jarfolder path="${external-libs-folder}" />
+            <nativefolder path="${native-libs-folder}" />
+        </apkbuilder>
+        <echo>Signing ${out-unsigned-package}</echo>
+        <exec executable="jarsigner" failonerror="true">
+            <arg value="-verbose" />
+            <arg value="-storepass" />
+            <arg value="${env.jarpass}" />
+            <arg value="-signedjar" />
+            <arg value="${out-signed-package-ospath}" />
+            <arg value="${out-unsigned-package-ospath}" />
+
+            <arg value="fsckcom" />
+        </exec>
+    </target>
+
+    <!-- Install the package on the default emulator -->
+    <target name="install" depends="debug">
+        <echo>Installing ${out-debug-package} onto default emulator...</echo>
+        <exec executable="${adb}" failonerror="true">
+            <arg value="install" />
+            <arg path="${out-debug-package}" />
+        </exec>
+    </target>
+
+    <target name="reinstall" depends="debug">
+        <echo>Installing ${out-debug-package} onto default emulator...</echo>
+        <exec executable="${adb}" failonerror="true">
+            <arg value="install" />
+            <arg value="-r" />
+            <arg path="${out-debug-package}" />
+        </exec>
+    </target>
+
+    <!-- Uinstall the package from the default emulator -->
+    <target name="uninstall">
+        <echo>Uninstalling ${application-package} from the default emulator...</echo>
+        <exec executable="${adb}" failonerror="true">
+            <arg value="uninstall" />
+            <arg path="${application-package}" />
+        </exec>
+    </target>
+    
+    <target name="help">
+        <!-- displays starts at col 13
+              |13                                                              80| -->
+        <echo>Android Ant Build. Available targets:</echo>
+        <echo>   help:      Displays this help.</echo>
+        <echo>   debug:     Builds the application and sign it with a debug key.</echo>
+        <echo>   release:   Builds the application. The generated apk file must be</echo>
+        <echo>              signed before it is published.</echo>
+        <echo>   install:   Installs the debug package onto a running emulator or</echo>
+        <echo>              device. This can only be used if the application has </echo>
+        <echo>              not yet been installed.</echo>
+        <echo>   reinstall: Installs the debug package on a running emulator or</echo>
+        <echo>              device that already has the application.</echo>
+        <echo>              The signatures must match.</echo>
+        <echo>   uninstall: uninstall the application from a running emulator or</echo>
+        <echo>              device.</echo>
+    </target>
+
+</project>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2008 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="account_settings">
+
+        <EditTextPreference
+            android:key="account_description"
+            android:singleLine="true"
+            android:title="@string/account_settings_description_label"
+            android:summary=""
+            android:dialogTitle="@string/account_settings_description_label" />
+
+        <CheckBoxPreference
+            android:key="account_default"
+            android:title="@string/account_settings_default_label"
+            android:summary="@string/account_settings_default_summary" />
+
+        <ListPreference
+            android:key="account_display_count"
+            android:title="@string/account_settings_mail_display_count_label"
+            android:entries="@array/account_settings_display_count_entries"
+            android:entryValues="@array/account_settings_display_count_values"
+            android:dialogTitle="@string/account_settings_mail_display_count_label" />
+
+       <ListPreference
+            android:key="hide_buttons_enum"
+            android:title="@string/account_settings_hide_buttons_label"
+            android:entries="@array/account_settings_hide_buttons_entries"
+            android:entryValues="@array/account_settings_hide_buttons_values"
+            android:dialogTitle="@string/account_settings_hide_buttons_label" />
+
+		<Preference
+            android:key="account_setup_auto_expand_folder"
+            android:singleLine="true"
+            android:title="@string/account_setup_auto_expand_folder"
+            android:summary=""
+            />
+
+	   	</PreferenceCategory>
+	
+    	<PreferenceCategory android:title="@string/account_settings_display_sync">
+
+        <ListPreference
+            android:key="account_check_frequency"
+            android:title="@string/account_settings_mail_check_frequency_label"
+            android:entries="@array/account_settings_check_frequency_entries"
+            android:entryValues="@array/account_settings_check_frequency_values"
+            android:dialogTitle="@string/account_settings_mail_check_frequency_label" />
+
+
+        <ListPreference
+            android:key="folder_display_mode"
+            android:title="@string/account_settings_folder_display_mode_label"
+            android:entries="@array/account_settings_folder_display_mode_entries"
+            android:entryValues="@array/account_settings_folder_display_mode_values"
+            android:dialogTitle="@string/account_settings_folder_display_mode_label" />
+  
+         <ListPreference
+            android:key="folder_sync_mode"
+            android:title="@string/account_settings_folder_sync_mode_label"
+            android:entries="@array/account_settings_folder_sync_mode_entries"
+            android:entryValues="@array/account_settings_folder_sync_mode_values"
+            android:dialogTitle="@string/account_settings_folder_sync_mode_label" />   
+            
+         <ListPreference
+            android:key="folder_target_mode"
+            android:title="@string/account_settings_folder_target_mode_label"
+            android:entries="@array/account_settings_folder_target_mode_entries"
+            android:entryValues="@array/account_settings_folder_target_mode_values"
+            android:dialogTitle="@string/account_settings_folder_target_mode_label" />
+           
+            
+        <ListPreference
+        	android:key="delete_policy"
+        	android:title="@string/account_setup_incoming_delete_policy_label"
+        	android:entries="@array/account_setup_delete_policy_entries"
+        	android:entryValues="@array/account_setup_delete_policy_values"
+        	android:dialogTitle="@string/account_setup_incoming_delete_policy_label" />
+           
+
+        <PreferenceScreen
+            android:key="composition"
+            android:title="@string/account_settings_composition_label" />
+
+        <PreferenceScreen
+            android:key="manage_identities"
+            android:title="@string/account_settings_identities_label" />
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_settings_notifications">
+
+        <CheckBoxPreference
+            android:key="account_notify"
+            android:title="@string/account_settings_notify_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_notify_summary" />
+
+        <RingtonePreference
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:dependency="account_notify"
+            android:key="account_ringtone"
+            android:title="@string/account_settings_ringtone"
+            android:ringtoneType="notification"
+            android:defaultValue="content://settings/system/notification_sound" />
+
+        <CheckBoxPreference
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:dependency="account_notify"
+            android:key="account_vibrate"
+            android:defaultValue="false"
+            android:title="@string/account_settings_vibrate_enable"
+            android:summary="@string/account_settings_vibrate_summary" />
+
+      <CheckBoxPreference
+            android:key="account_notify_sync"
+            android:title="@string/account_settings_notify_sync_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_notify_sync_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_settings_servers">
+    
+        <PreferenceScreen
+            android:key="incoming"
+            android:title="@string/account_settings_incoming_label" />
+
+        <PreferenceScreen
+            android:key="outgoing"
+            android:title="@string/account_settings_outgoing_label" />
+    </PreferenceCategory>
+
+  
+
+</PreferenceScreen>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    
+    android:scrollbarStyle="outsideInset">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        <TextView
+            android:text="@string/edit_identity_description_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <EditText
+            android:id="@+id/description"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" 
+            android:hint="@string/edit_identity_description_hint"
+            />
+        <TextView
+            android:text="@string/edit_identity_name_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <EditText
+            android:id="@+id/name"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" 
+            android:hint="@string/edit_identity_name_hint"
+            />
+        <TextView
+            android:text="@string/edit_identity_email_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" 
+            />
+        <EditText
+            android:id="@+id/email"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" 
+            android:hint="@string/edit_identity_email_hint"
+            />
+            <!-- 
+        <TextView
+            android:text="@string/edit_identity_always_bcc_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <EditText
+            android:id="@+id/account_always_bcc"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
+            -->
+        <TextView
+            android:text="@string/edit_identity_signature_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <EditText
+            android:id="@+id/signature"
+            android:singleLine="false"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" 
+            android:hint="@string/edit_identity_signature_hint"
+            />
+    </LinearLayout>
+</ScrollView>

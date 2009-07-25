@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="1005"
+    android:versionName="1.005" package="com.fsck.k9">
+    <uses-sdk android:minSdkVersion="3"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <permission android:name="com.android.email.permission.READ_ATTACHMENT"
+                android:permissionGroup="android.permission-group.MESSAGES"
+                android:protectionLevel="dangerous"
+                android:label="@string/read_attachment_label"
+                android:description="@string/read_attachment_desc"/>
+    <uses-permission android:name="com.android.email.permission.READ_ATTACHMENT"/>
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="K9"
+        >
+        <activity android:name="com.android.email.activity.Welcome">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.android.email.activity.setup.Prefs"
+            android:label="@string/prefs_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.setup.AccountSetupBasics"
+            android:label="@string/account_setup_basics_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.setup.AccountSetupAccountType"
+            android:label="@string/account_setup_account_type_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.setup.AccountSetupIncoming"
+            android:label="@string/account_setup_incoming_title"
+            >
+        </activity>
+        <activity 
+            android:name="com.android.email.activity.setup.AccountSetupComposition" 
+            android:label="@string/account_settings_composition_title" 
+        > 
+        </activity>
+        <activity
+            android:name="com.android.email.activity.setup.AccountSetupOutgoing"
+            android:label="@string/account_setup_outgoing_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.setup.AccountSetupOptions"
+            android:label="@string/account_setup_options_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.setup.AccountSetupNames"
+            android:label="@string/account_setup_names_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.ChooseFolder"
+            android:theme="@style/Theme.K9Dialog"
+            android:label="@string/choose_folder_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.ChooseIdentity"
+            android:theme="@style/Theme.K9Dialog"
+            android:label="@string/choose_identity_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.ManageIdentities"
+            android:label="@string/manage_identities_title"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.EditIdentity"
+            android:label="@string/edit_identity_title"
+            >
+        </activity>
+        <!-- XXX Note: this activity is hacked to ignore config changes,
+             since it doesn't currently handle them correctly in code. -->
+        <activity
+            android:name="com.android.email.activity.setup.AccountSetupCheckSettings"
+            android:label="@string/account_setup_check_settings_title"
+            android:configChanges="keyboardHidden|orientation"
+            >
+        </activity>
+        <activity
+            android:name="com.android.email.activity.setup.AccountSettings"
+            android:label="@string/account_settings_title_fmt"
+            >
+        </activity>
+        
+        <activity
+            android:name="com.android.email.activity.setup.FolderSettings"
+            android:theme="@android:style/Theme.Dialog"
+            android:label="@string/folder_settings_title"
+            >
+        </activity>
+
+        <activity
+            android:name="com.android.email.activity.Debug"
+            android:label="@string/debug_title">
+        </activity>
+        <activity
+            android:name="com.android.email.activity.Accounts"
+            android:label="@string/accounts_title">
+        </activity>
+        <activity
+            android:name="com.android.email.activity.FolderList">
+            <intent-filter>
+                <action android:name="android.intent.action.view" />
+                <data
+                    android:scheme="content"
+                    android:path="/email/accounts/*"
+                />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.email.activity.MessageList">
+        </activity>
+        <activity
+            android:name="com.android.email.activity.MessageView">
+        </activity>
+        <activity
+            android:name="com.android.email.activity.MessageCompose"
+            android:label="@string/app_name"
+            android:enabled="false"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <data android:scheme="mailto" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="image/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+            <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="text/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+ 
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="text/plain" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="message/*" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="mailto" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <receiver android:name="com.android.email.service.BootReceiver"
+              android:enabled="true"
+              >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.android.email.service.MailService"
+            android:enabled="false"
+            >
+        </service>
+        <provider
+            android:name="com.android.email.provider.AttachmentProvider"
+            android:authorities="com.fsck.k9.attachmentprovider"
+            android:multiprocess="true"
+            android:grantUriPermissions="true"
+            android:readPermission="com.android.email.permission.READ_ATTACHMENT"
+            />
+    </application>
+</manifest>
