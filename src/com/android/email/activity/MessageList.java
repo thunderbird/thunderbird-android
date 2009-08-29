@@ -821,9 +821,12 @@ public class MessageList extends K9ListActivity {
 
     private Account mSelectedContextAccount = null;
     private FolderInfoHolder mSelectedContextFolder = null;
-    private void onMarkAllAsRead(final Account account, final FolderInfoHolder folder) {
+    
+    
+    private void onMarkAllAsRead(final Account account, final String folder) {
         mSelectedContextAccount = account;
-        mSelectedContextFolder = folder;
+         
+        mSelectedContextFolder = mAdapter.getFolder(folder);
         showDialog(DIALOG_MARK_ALL_AS_READ);
     }
 
@@ -968,8 +971,8 @@ public class MessageList extends K9ListActivity {
             return true;
 
         case R.id.mark_all_as_read:
-            MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, mFolderName);
-
+            onMarkAllAsRead(mAccount, mFolderName);
+           
             return true;
 
         case R.id.folder_settings:
