@@ -268,6 +268,17 @@ public class MessageList extends K9ListActivity {
 
                 break;
             }
+            
+            case MSG_FOLDER_LOADING:
+            {
+                FolderInfoHolder folder = mAdapter.getFolder((String) msg.obj);
+                if (folder != null)
+                {
+                    folder.loading = msg.arg1 != 0;
+                    mAdapter.notifyDataSetChanged();
+                }
+                break;
+            }
 
             case MSG_SENDING_OUTBOX: {
                 boolean sending = (msg.arg1 != 0);
@@ -399,6 +410,12 @@ public class MessageList extends K9ListActivity {
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
                     if ((itemPosition+1) == (mAdapter.getCount() )) {
+                        
+                        MessagingController.getInstance(getApplication()).loadMoreMessages(
+                                                mAccount,
+                                                mFolderName,
+                                                mAdapter.mListener);
+                        
                         onRefresh(FORCE_REMOTE_SYNC);
                         return;
                     } else { 
@@ -1125,21 +1142,11 @@ public class MessageList extends K9ListActivity {
                 }
 
                 mHandler.progress(true);
+                mHandler.folderLoading(folder, true);
+                mHandler.folderSyncing(folder);
             }
 
-            @Override
-			public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
-				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
-                    return;
-                }
-
-                addOrUpdateMessage(folder, message, true, true);
-            }
             
-            @Override
-            public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message) {
-                removeMessage(getMessage( message.getUid()));
-            }
 
             @Override
             public void synchronizeMailboxFinished(Account account, String folder,
@@ -1149,6 +1156,8 @@ public class MessageList extends K9ListActivity {
                 }
 
                 mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.folderSyncing(null);
             }
 
             @Override
@@ -1158,6 +1167,23 @@ public class MessageList extends K9ListActivity {
                 }
 
                 Toast.makeText(MessageList.this, message, Toast.LENGTH_LONG).show();
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.folderSyncing(null);
+            }
+            
+            @Override
+            public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
+                if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
+                    return;
+                }
+
+                addOrUpdateMessage(folder, message, true, true);
+            }
+            
+            @Override
+            public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message) {
+                removeMessage(getMessage( message.getUid()));
             }
 
             @Override
