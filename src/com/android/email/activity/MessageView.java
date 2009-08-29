@@ -1282,7 +1282,15 @@ public class MessageView extends K9Activity
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(uri);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(intent);
+                try
+                {
+                    startActivity(intent);
+                }
+                catch (Exception e)
+                {
+                    Toast toast = Toast.makeText(MessageView.this, e.getMessage(), Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         }
 

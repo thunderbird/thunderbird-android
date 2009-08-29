@@ -894,16 +894,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onIdentityChosen(Intent intent)
     {
       Bundle bundle = intent.getExtras();;
-      mIdentity = (Account.Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY);
-//      if (mIdentityChanged == false)
-//      {
-//          Toast.makeText(this, getString(R.string.identity_will_not_be_saved),
-//                  Toast.LENGTH_LONG).show();
-//      }
-      mIdentityChanged = true;
-      mDraftNeedsSaving = true;
-      updateFrom();
-      updateSignature();
+      switchToIdentity( (Account.Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY));
+    }
+    
+    private void switchToIdentity(Account.Identity identity)
+    {
+        mIdentity = identity;
+        mIdentityChanged = true;
+        mDraftNeedsSaving = true;
+        updateFrom();
+        updateSignature();  
     }
     
     private void updateFrom()
@@ -1062,17 +1062,52 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mQuotedText.setVisibility(View.VISIBLE);
                 }
                 
+                if (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action))
+                {
+                    Account.Identity useIdentity = null;
+                    for (Address address : message.getRecipients(RecipientType.TO)) {
+                        Account.Identity identity = mAccount.findIdentity(address);
+                        if (identity != null) {
+                            useIdentity = identity;
+                            break;
+                        }
+                    }
+                    if (useIdentity == null)
+                    {
+                        if (message.getRecipients(RecipientType.CC).length > 0) {
+                            for (Address address : message.getRecipients(RecipientType.CC)) {
+                                Account.Identity identity = mAccount.findIdentity(address);
+                                if (identity != null) {
+                                    useIdentity = identity;
+                                    break;
+                                }  
+                            }
+                        }
+                    }
+                    if (useIdentity != null)
+                    {
+                        Account.Identity defaultIdentity = mAccount.getIdentity(0);
+                        if (useIdentity != defaultIdentity)
+                        {
+                            switchToIdentity(useIdentity);
+                        }
+                    } 
+                }
+                
                 if (ACTION_REPLY_ALL.equals(action)) {
                     for (Address address : message.getRecipients(RecipientType.TO)) {
+                        Account.Identity identity = mAccount.findIdentity(address);
                         if (!mAccount.isAnIdentity(address)) {
                             addAddress(mToView, address);
                         }
+                        
                     }
                     if (message.getRecipients(RecipientType.CC).length > 0) {
                         for (Address address : message.getRecipients(RecipientType.CC)) {
-                            if (!Utility.arrayContains(replyToAddresses, address)) {
+                            if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
                                 addAddress(mCcView, address);
                             }
+                            
                         }
                         mCcView.setVisibility(View.VISIBLE);
                     }

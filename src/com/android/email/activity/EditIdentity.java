@@ -3,6 +3,7 @@ package com.android.email.activity;
 import java.util.List;
 
 import com.android.email.Account;
+import com.android.email.K9Activity;
 import com.android.email.Preferences;
 import com.android.email.R;
 
@@ -12,7 +13,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-public class EditIdentity extends Activity
+public class EditIdentity extends K9Activity
 {
 
     public static final String EXTRA_IDENTITY = "com.android.email.EditIdentity_identity";

@@ -15,10 +15,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.email.Account;
+import com.android.email.K9ListActivity;
 import com.android.email.Preferences;
 import com.android.email.R;
 
-public class ChooseIdentity extends ListActivity
+public class ChooseIdentity extends K9ListActivity
 {
     Account mAccount;
     String	mUID;

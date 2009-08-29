@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.app.AlertDialog;
@@ -46,7 +47,6 @@ import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.MessagingController.SORT_TYPE;
-import com.android.email.activity.MessageList.MessageInfoHolder;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Address;
 import com.android.email.mail.Flag;
@@ -268,6 +268,17 @@ public class MessageList extends K9ListActivity {
 
                 break;
             }
+            
+            case MSG_FOLDER_LOADING:
+            {
+                FolderInfoHolder folder = mAdapter.getFolder((String) msg.obj);
+                if (folder != null)
+                {
+                    folder.loading = msg.arg1 != 0;
+                    mAdapter.notifyDataSetChanged();
+                }
+                break;
+            }
 
             case MSG_SENDING_OUTBOX: {
                 boolean sending = (msg.arg1 != 0);
@@ -399,6 +410,12 @@ public class MessageList extends K9ListActivity {
         mListView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
                     if ((itemPosition+1) == (mAdapter.getCount() )) {
+                        
+                        MessagingController.getInstance(getApplication()).loadMoreMessages(
+                                                mAccount,
+                                                mFolderName,
+                                                mAdapter.mListener);
+                        
                         onRefresh(FORCE_REMOTE_SYNC);
                         return;
                     } else { 
@@ -624,10 +641,18 @@ public class MessageList extends K9ListActivity {
         Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
         toast.show();
 
-        Collections.sort(mAdapter.messages);
+        sortMessages();
 
         mAdapter.notifyDataSetChanged();
 
+    }
+    
+    private void sortMessages()
+    {
+        synchronized(mAdapter.messages)
+        {
+            Collections.sort(mAdapter.messages);
+        } 
     }
 
 
@@ -821,9 +846,12 @@ public class MessageList extends K9ListActivity {
 
     private Account mSelectedContextAccount = null;
     private FolderInfoHolder mSelectedContextFolder = null;
-    private void onMarkAllAsRead(final Account account, final FolderInfoHolder folder) {
+    
+    
+    private void onMarkAllAsRead(final Account account, final String folder) {
         mSelectedContextAccount = account;
-        mSelectedContextFolder = folder;
+         
+        mSelectedContextFolder = mAdapter.getFolder(folder);
         showDialog(DIALOG_MARK_ALL_AS_READ);
     }
 
@@ -968,8 +996,8 @@ public class MessageList extends K9ListActivity {
             return true;
 
         case R.id.mark_all_as_read:
-            MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, mFolderName);
-
+            onMarkAllAsRead(mAccount, mFolderName);
+           
             return true;
 
         case R.id.folder_settings:
@@ -1111,7 +1139,7 @@ public class MessageList extends K9ListActivity {
     }
 
     class MessageListAdapter extends BaseAdapter {
-        private ArrayList<MessageInfoHolder> messages = new ArrayList<MessageInfoHolder>();
+        private List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
         private MessagingListener mListener = new MessagingListener() {
 
@@ -1122,21 +1150,11 @@ public class MessageList extends K9ListActivity {
                 }
 
                 mHandler.progress(true);
+                mHandler.folderLoading(folder, true);
+                mHandler.folderSyncing(folder);
             }
 
-            @Override
-			public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
-				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
-                    return;
-                }
-
-                addOrUpdateMessage(folder, message, true, true);
-            }
             
-            @Override
-            public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message) {
-                removeMessage(getMessage( message.getUid()));
-            }
 
             @Override
             public void synchronizeMailboxFinished(Account account, String folder,
@@ -1146,6 +1164,8 @@ public class MessageList extends K9ListActivity {
                 }
 
                 mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.folderSyncing(null);
             }
 
             @Override
@@ -1155,6 +1175,23 @@ public class MessageList extends K9ListActivity {
                 }
 
                 Toast.makeText(MessageList.this, message, Toast.LENGTH_LONG).show();
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.folderSyncing(null);
+            }
+            
+            @Override
+            public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
+                if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
+                    return;
+                }
+
+                addOrUpdateMessage(folder, message, true, true);
+            }
+            
+            @Override
+            public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message) {
+                removeMessage(getMessage( message.getUid()));
             }
 
             @Override
@@ -1172,7 +1209,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
               
-                Collections.sort(mAdapter.messages);
+				sortMessages();
                 mHandler.dataChanged();
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
@@ -1184,7 +1221,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
 
-                Collections.sort(mAdapter.messages);
+				sortMessages();
                 mHandler.dataChanged();
 
                 mHandler.progress(false);
@@ -1223,7 +1260,7 @@ public class MessageList extends K9ListActivity {
 
                 addOrUpdateMessage(folder, message, false, false);//true, true);
                 if (mAdapter.messages.size() % 10 == 0 ) { 
-                    Collections.sort(mAdapter.messages);
+                    sortMessages();
                     mHandler.dataChanged();
                 }
 
@@ -1272,7 +1309,7 @@ public class MessageList extends K9ListActivity {
 
             mAdapter.messages.remove(holder);
             mHandler.removeMessage(holder);
-            Collections.sort(mAdapter.messages);
+            sortMessages();
             mHandler.dataChanged();
 
         }
@@ -1303,7 +1340,7 @@ public class MessageList extends K9ListActivity {
             }
 
             if (sort) {
-                Collections.sort(mAdapter.messages);
+                sortMessages();
             }
 
             if (notify) {
