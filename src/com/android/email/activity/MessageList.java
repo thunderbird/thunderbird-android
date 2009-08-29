@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.app.AlertDialog;
@@ -46,7 +47,6 @@ import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.MessagingController.SORT_TYPE;
-import com.android.email.activity.MessageList.MessageInfoHolder;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Address;
 import com.android.email.mail.Flag;
@@ -641,10 +641,18 @@ public class MessageList extends K9ListActivity {
         Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
         toast.show();
 
-        Collections.sort(mAdapter.messages);
+        sortMessages();
 
         mAdapter.notifyDataSetChanged();
 
+    }
+    
+    private void sortMessages()
+    {
+        synchronized(mAdapter.messages)
+        {
+            Collections.sort(mAdapter.messages);
+        } 
     }
 
 
@@ -1131,7 +1139,7 @@ public class MessageList extends K9ListActivity {
     }
 
     class MessageListAdapter extends BaseAdapter {
-        private ArrayList<MessageInfoHolder> messages = new ArrayList<MessageInfoHolder>();
+        private List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
         private MessagingListener mListener = new MessagingListener() {
 
@@ -1201,7 +1209,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
               
-                Collections.sort(mAdapter.messages);
+				sortMessages();
                 mHandler.dataChanged();
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
@@ -1213,7 +1221,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
 
-                Collections.sort(mAdapter.messages);
+				sortMessages();
                 mHandler.dataChanged();
 
                 mHandler.progress(false);
@@ -1252,7 +1260,7 @@ public class MessageList extends K9ListActivity {
 
                 addOrUpdateMessage(folder, message, false, false);//true, true);
                 if (mAdapter.messages.size() % 10 == 0 ) { 
-                    Collections.sort(mAdapter.messages);
+                    sortMessages();
                     mHandler.dataChanged();
                 }
 
@@ -1301,7 +1309,7 @@ public class MessageList extends K9ListActivity {
 
             mAdapter.messages.remove(holder);
             mHandler.removeMessage(holder);
-            Collections.sort(mAdapter.messages);
+            sortMessages();
             mHandler.dataChanged();
 
         }
@@ -1332,7 +1340,7 @@ public class MessageList extends K9ListActivity {
             }
 
             if (sort) {
-                Collections.sort(mAdapter.messages);
+                sortMessages();
             }
 
             if (notify) {
