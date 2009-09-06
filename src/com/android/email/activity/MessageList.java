@@ -1298,12 +1298,11 @@ public class MessageList extends K9ListActivity {
          }
 
         public void removeMessage(MessageInfoHolder holder) {
-            if (holder.folder == null) {
+            if (holder == null) {
                 return;
             }
 
-
-            if (holder == null) {
+            if (holder.folder == null) {
                 return;
             }
 
