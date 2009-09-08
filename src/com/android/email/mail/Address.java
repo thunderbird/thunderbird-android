@@ -1,25 +1,22 @@
 
 package com.android.email.mail;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.text.util.Rfc822Token;
+import android.text.util.Rfc822Tokenizer;
 
 import org.apache.james.mime4j.field.address.AddressList;
 import org.apache.james.mime4j.field.address.Mailbox;
 import org.apache.james.mime4j.field.address.MailboxList;
 import org.apache.james.mime4j.field.address.NamedMailbox;
 import org.apache.james.mime4j.field.address.parser.ParseException;
-import org.apache.james.mime4j.codec.EncoderUtil;
 
-import android.util.Config;
 import android.util.Log;
 
 import com.android.email.Email;
 import com.android.email.Utility;
-import com.android.email.mail.internet.MimeUtility;
+
+import java.util.List;
+import java.util.ArrayList;
 
 public class Address {
     String mAddress;
@@ -71,30 +68,16 @@ public class Address {
      * @return An array of 0 or more Addresses.
      */
     public static Address[] parseUnencoded(String addressList) {
-        if (addressList != null) {
-            String[] addresses = addressList.split(",");
-            StringBuilder newAddressList = new StringBuilder();
-            String tmp = null;
-            String before = null;
-            String after = null;
-            int pos = -1;
-            for( int i = 0, count = addresses.length; i <  count; i++ ) {
-                tmp = addresses[i];
-                pos = tmp.indexOf("<");
-		if( pos > 1 ) {
-                    before = tmp.substring( 0, pos );
-                    after = tmp.substring( pos );
-                    tmp = EncoderUtil.encodeAddressDisplayName( before ) + after;
-                }
-                if( i > 0 ) {
-                    newAddressList.append( "," );
-                }
-                newAddressList.append( tmp );
+        List<Address> addresses = new ArrayList<Address>();
+        if (addressList!=null) {
+            Rfc822Token[] tokens =  Rfc822Tokenizer.tokenize(addressList);
+            for (Rfc822Token token : tokens) {
+                addresses.add(new Address(token.getAddress(), token.getName()));
             }
-            addressList = newAddressList.toString();
         }
-	return Address.parse( addressList );
+        return addresses.toArray(new Address[0]);
     }
+    
     /**
      * Parse a comma separated list of addresses in RFC-822 format and return an
      * array of Address objects.
