@@ -144,8 +144,8 @@
   <string name="message_view_attachment_view_action">Abrir</string>
   <string name="message_view_datetime_fmt">dd MMM aaaa hh:mm a</string>
   <string name="message_view_fetching_attachment_toast">Recuperando datos adjuntos.</string>
-  <string name="message_view_next_action">Siguiente mensaje</string>
-  <string name="message_view_prev_action">Mensaje anterior</string>
+  <string name="message_view_prev_action">◀</string>
+  <string name="message_view_next_action">▶</string>
   <string name="message_view_show_pictures_action">Mostrar imágenes</string>
   <string name="message_view_show_pictures_instructions">Seleccione \"Mostrar imágenes\" para visualizar las imágenes integradas.</string>
   <string name="message_view_status_attachment_not_saved">No se pueden guardar los datos adjuntos en una tarjeta SD.</string>

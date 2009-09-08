@@ -144,8 +144,8 @@
   <string name="message_view_attachment_view_action">Apri</string>
   <string name="message_view_datetime_fmt">GGG mm aaaa hh:mm a</string>
   <string name="message_view_fetching_attachment_toast">Recupero allegato in corso.</string>
-  <string name="message_view_next_action">Messaggio successivo</string>
-  <string name="message_view_prev_action">Messaggio precedente</string>
+  <string name="message_view_prev_action">◀</string>
+  <string name="message_view_next_action">▶</string>
   <string name="message_view_show_pictures_action">Mostra immagini</string>
   <string name="message_view_show_pictures_instructions">Selezionare \"Mostra immagini\" per visualizzare le immagini incorporate.</string>
   <string name="message_view_status_attachment_not_saved">Impossibile salvare l'allegato sulla scheda SD.</string>
