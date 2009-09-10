@@ -328,16 +328,29 @@ public class MessagingController implements Runnable {
     }
     
     private void putBackground(String description, MessagingListener listener, Runnable runnable) {
-      try {
-          Command command = new Command();
-          command.listener = listener;
-          command.runnable = runnable;
-          command.description = description;
-          backCommands.put(command);
-      }
-      catch (InterruptedException ie) {
-          throw new Error(ie);
-      }
+	int retries = 10;
+	Exception e = null;
+        while (retries-- > 0)
+	{
+	    try {
+		Command command = new Command();
+		command.listener = listener;
+		command.runnable = runnable;
+		command.description = description;
+		backCommands.put(command);
+	    }
+	    catch (InterruptedException ie) {
+		try
+		{
+		    Thread.sleep(200);
+		}
+		catch (InterruptedException ne)
+		{
+		}
+		e = ie;
+	    }
+	}
+	throw new Error(e);
     }
 
 
