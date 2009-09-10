@@ -1,6 +1,7 @@
 
 package com.android.email.service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -30,6 +31,7 @@ import com.android.email.activity.Accounts;
 import com.android.email.activity.FolderList;
 import com.android.email.mail.Folder;
 import com.android.email.mail.MessagingException;
+import com.android.email.mail.Pusher;
 import com.android.email.mail.Store;
 
 /**
@@ -38,6 +40,7 @@ public class MailService extends Service {
     private static final String ACTION_CHECK_MAIL = "com.android.email.intent.action.MAIL_SERVICE_WAKEUP";
     private static final String ACTION_RESCHEDULE = "com.android.email.intent.action.MAIL_SERVICE_RESCHEDULE";
     private static final String ACTION_CANCEL = "com.android.email.intent.action.MAIL_SERVICE_CANCEL";
+    private static final String ACTION_REFRESH_PUSHERS = "com.android.email.intent.action.MAIL_SERVICE_REFRESH_PUSHERS";
 
     private Listener mListener = new Listener();
 
@@ -114,6 +117,16 @@ public class MailService extends Service {
             reschedule();
 	    //            stopSelf(startId);
         }
+        else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction()))
+        {
+            Log.i(Email.LOG_TAG, "Refreshing pushers");
+            Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
+            for (Pusher pusher : pushers)
+            {
+                pusher.refresh();
+            }
+            schedulePushers();
+        }
     }
 
     @Override
@@ -133,12 +146,14 @@ public class MailService extends Service {
     }
 
     private void reschedule() {
+        reschedulePushers();
+        
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
         i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
         i.setAction(ACTION_CHECK_MAIL);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-
+        
         int shortestInterval = -1;
 
         for (Account account : Preferences.getPreferences(this).getAccounts()) {
@@ -173,6 +188,56 @@ public class MailService extends Service {
 	        alarmMgr.set(AlarmManager.RTC_WAKEUP, nextTime, pi);
         }
 
+    }
+    
+    private void reschedulePushers()
+    {
+        Log.i(Email.LOG_TAG, "Rescheduling pushers");
+        Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
+        for (Pusher pusher : pushers)
+        {
+           pusher.stop();
+        }
+  
+        for (Account account : Preferences.getPreferences(this).getAccounts()) {
+            if (account.getAutomaticCheckIntervalMinutes() > 0)
+            {
+                Log.i(Email.LOG_TAG, "Setting up pushers for account " + account.getDescription());
+                Pusher pusher = MessagingController.getInstance(getApplication()).setupPushing(account);
+                if (pusher != null)
+                {
+                    Log.i(Email.LOG_TAG, "Starting configured pusher for account " + account.getDescription());
+                    pusher.start();
+                }
+            }
+        }
+        schedulePushers();
+    }
+    
+    private void schedulePushers()
+    {
+        int minInterval = -1;
+        
+        Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
+        for (Pusher pusher : pushers)
+        {
+            int interval = pusher.getRefreshInterval();
+            if (interval != -1 && (interval < minInterval || minInterval == -1))
+            {
+                minInterval = interval;
+            }
+        }
+        if (minInterval != -1)
+        {
+
+            AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            long nextTime = System.currentTimeMillis() + minInterval;
+            Intent i = new Intent();
+            i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
+            i.setAction(ACTION_REFRESH_PUSHERS);
+            PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+            alarmMgr.set(AlarmManager.RTC_WAKEUP, nextTime, pi);
+        }
     }
 
     public IBinder onBind(Intent intent) {
@@ -244,46 +309,16 @@ public class MailService extends Service {
             NotificationManager notifMgr =
                 (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-            int index = 0;
             for (Account thisAccount : Preferences.getPreferences(context).getAccounts()) {
                 Integer newMailCount = accountsChecked.get(thisAccount.getUuid());
-                int unreadMessageCount = -1;
                 if (newMailCount != null)
                 {
                     try
                     {
-                        unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
+                        int  unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
                         if (unreadMessageCount > 0 && newMailCount > 0)
                         {
-                            String notice = getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
-                            thisAccount.getDescription());
-                            Notification notif = new Notification(R.drawable.stat_notify_email_generic,
-                                getString(R.string.notification_new_title), System.currentTimeMillis() + (index*1000));
-                          
-                            notif.number = unreadMessageCount;
-                    
-                            Intent i = FolderList.actionHandleAccountIntent(context, thisAccount);
-        
-                            PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
-        
-                            notif.setLatestEventInfo(context, getString(R.string.notification_new_title), notice, pi);
-
-                            // JRV XXX TODO - Do we also need to notify the messagelist here?
-
-
-                            String ringtone = thisAccount.getRingtone();
-                            notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
-        
-                            if (thisAccount.isVibrate()) {
-                                notif.defaults |= Notification.DEFAULT_VIBRATE;
-                            }
-        
-                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                            notif.ledARGB = Email.NOTIFICATION_LED_COLOR;
-                            notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
-                            notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
-        
-                            notifMgr.notify(thisAccount.getAccountNumber(), notif);
+                            MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount, unreadMessageCount);
                         }
                         else if (unreadMessageCount == 0)
                         {
@@ -298,7 +333,8 @@ public class MailService extends Service {
                 }
             }//for accounts
         }//checkMailDone
-
+        
+        
         private void release()
         {
           MessagingController controller = MessagingController.getInstance(getApplication());

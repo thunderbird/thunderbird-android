@@ -33,7 +33,7 @@ public class Email extends Application {
      * If this is enabled there will be additional logging information sent to
      * Log.d, including protocol dumps.
      */
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
 
     /**
      * If this is enabled than logging that normally hides sensitive information
@@ -131,6 +131,9 @@ public class Email extends Application {
     public static final int WAKE_LOCK_TIMEOUT = 600000;
     
     public static final int MANUAL_WAKE_LOCK_TIMEOUT = 120000;
+    
+    public static final int PUSH_WAKE_LOCK_TIMEOUT = 30000;
+
 
     /**
      * LED color used for the new email notitication

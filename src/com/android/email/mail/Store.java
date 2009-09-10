@@ -2,6 +2,7 @@
 package com.android.email.mail;
 
 import java.util.HashMap;
+import java.util.List;
 
 import android.app.Application;
 
@@ -84,6 +85,12 @@ public abstract class Store {
     }
     public boolean isMoveCapable() {
       return false;
+    }
+    
+
+    public Pusher getPusher(PushReceiver receiver, List<String> names)
+    {
+        return null;
     }
 
 }
