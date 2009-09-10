@@ -1821,6 +1821,37 @@ public class ImapStore extends Store {
             listeningThread = new Thread(runner);
             listeningThread.start();
         }
+
+        protected List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
+            int oldMessageCount = mMessageCount;
+
+	    super.handleUntaggedResponses(responses);
+
+	    Log.i(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
+	    if (oldMessageCount > 0 && mMessageCount > oldMessageCount)
+		{
+		    try
+		    {
+			Message[] messageArray = getMessages(oldMessageCount + 1, mMessageCount, null);
+			List<Message> messages = new ArrayList<Message>();
+			for (Message message : messageArray)
+			    {
+				messages.add(message);
+			    }
+			
+			receiver.messagesArrived(getName(), messages);
+		    }
+		    catch (Exception e)
+		    {
+			receiver.pushError("Exception while processing Push untagged responses", e);
+		    }
+
+		}
+
+            return responses;
+        }
+
+
         
         protected void handleUntaggedResponse(ImapResponse response)
         {
@@ -1833,24 +1864,6 @@ public class ImapStore extends Store {
                     {
                         Object type = response.get(1);
                         
-                        if ("EXISTS".equals(type))
-                        {
-                            int seqnum = response.getNumber(0);
-                            
-                            Log.i(Email.LOG_TAG, "Handling untagged EXISTS with seq '" + seqnum + "': " + response);
-                            Log.i(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
-                            if (oldMessageCount > 0 && mMessageCount > oldMessageCount)
-                            {
-                                Message[] messageArray = getMessages(oldMessageCount + 1, mMessageCount, null);
-                                List<Message> messages = new ArrayList<Message>();
-                                for (Message message : messageArray)
-                                {
-                                    messages.add(message);
-                                }
-                                
-                                receiver.messagesArrived(getName(), messages);
-                            }
-                        }
                         if ("EXPUNGE".equals(type))
                         {
                             int seqnum = response.getNumber(0);;
