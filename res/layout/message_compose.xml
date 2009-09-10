@@ -27,6 +27,8 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
+                    android:inputType="textEmailAddress|textMultiLine"
+                    android:imeOptions="actionNext"
                     android:hint="@string/message_compose_to_hint" />
                 <MultiAutoCompleteTextView
                     android:id="@+id/cc" android:layout_width="fill_parent"
@@ -35,6 +37,8 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
+                    android:inputType="textEmailAddress|textMultiLine"
+                    android:imeOptions="actionNext"
                     android:hint="@string/message_compose_cc_hint"
                     android:visibility="gone" />
                 <MultiAutoCompleteTextView
@@ -44,6 +48,8 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
+                    android:inputType="textEmailAddress|textMultiLine"
+                    android:imeOptions="actionNext"
                     android:hint="@string/message_compose_bcc_hint"
                     android:visibility="gone" />
                 <EditText android:id="@+id/subject"
@@ -55,7 +61,9 @@
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
                     android:hint="@string/message_compose_subject_hint"
-                    android:autoText="true" android:capitalize="sentences" />
+                    android:inputType="textEmailSubject|textAutoCorrect|textCapSentences|textImeMultiLine" 
+                    android:imeOptions="actionNext"
+                    />
                 <!--
                     Empty container for storing attachments. We'll stick
                     instances of message_compose_attachment.xml in here.
@@ -75,9 +83,11 @@
                 android:layout_weight="1.0"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="left|top"
-                android:minLines="3" android:autoText="true"
-                android:capitalize="sentences" 
-                android:hint="@string/message_compose_content_hint" />
+                android:minLines="3" 
+                android:hint="@string/message_compose_content_hint" 
+                android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+                android:imeOptions="actionDone|flagNoEnterAction"
+                />
         <!--  quoted text bar -->
             <EditText android:id="@+id/upper_signature"
                 android:textColor="?android:attr/textColorSecondary"
