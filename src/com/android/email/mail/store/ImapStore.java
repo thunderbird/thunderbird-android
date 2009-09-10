@@ -1853,7 +1853,6 @@ public class ImapStore extends Store {
                         }
                         if ("EXPUNGE".equals(type))
                         {
-			    oldMessageCount--;
                             int seqnum = response.getNumber(0);;
                             
                             Log.i(Email.LOG_TAG, "NOT Handling untagged EXPUNGE with seq '" + seqnum + "': " + response);
