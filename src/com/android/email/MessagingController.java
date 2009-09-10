@@ -338,6 +338,7 @@ public class MessagingController implements Runnable {
 		command.runnable = runnable;
 		command.description = description;
 		backCommands.put(command);
+		return;
 	    }
 	    catch (InterruptedException ie) {
 		try
@@ -3123,7 +3124,7 @@ public class MessagingController implements Runnable {
             
             public synchronized void pushComplete()
             {
-                Log.i(Email.LOG_TAG, "Releasing WakeLock for Pushing");
+                Log.i(Email.LOG_TAG, "Considering releasing WakeLock for Pushing");
                 if (wakeLock != null)
                 {
                     if (refCount > 0)
@@ -3134,6 +3135,7 @@ public class MessagingController implements Runnable {
                     {
                         try
                         {
+                            Log.i(Email.LOG_TAG, "Releasing WakeLock for Pushing");
                             wakeLock.release();
                         }
                         catch (Exception e)
@@ -3212,6 +3214,9 @@ public class MessagingController implements Runnable {
             Store store = Store.getInstance(account.getStoreUri(), mApplication);
             List<String> names = new ArrayList<String>();
             names.add("INBOX");
+            names.add("CarlnDave");
+            names.add("Janet");
+            names.add("k-9");
             pusher = store.getPusher(receiver, names);
             if (pusher != null)
             {
