@@ -1657,7 +1657,7 @@ public class LocalStore extends Store implements Serializable {
 
     public void setFrom(Address from) throws MessagingException {
         if (from != null) {
-            addHeader("From", from.toString());
+            addHeader("From", from.toEncodedString());
             this.mFrom = new Address[] {
                     from
                 };
@@ -1677,7 +1677,7 @@ public class LocalStore extends Store implements Serializable {
                 removeHeader("To");
                 this.mTo = null;
             } else {
-                addHeader("To", Address.toString(addresses));
+                addHeader("To", Address.toEncodedString(addresses));
                 this.mTo = addresses;
             }
         } else if (type == RecipientType.CC) {
@@ -1685,7 +1685,7 @@ public class LocalStore extends Store implements Serializable {
                 removeHeader("CC");
                 this.mCc = null;
             } else {
-                addHeader("CC", Address.toString(addresses));
+                addHeader("CC", Address.toEncodedString(addresses));
                 this.mCc = addresses;
             }
         } else if (type == RecipientType.BCC) {
@@ -1693,7 +1693,7 @@ public class LocalStore extends Store implements Serializable {
                 removeHeader("BCC");
                 this.mBcc = null;
             } else {
-                addHeader("BCC", Address.toString(addresses));
+                addHeader("BCC", Address.toEncodedString(addresses));
                 this.mBcc = addresses;
             }
         } else {

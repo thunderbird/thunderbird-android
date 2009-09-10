@@ -175,7 +175,7 @@ public class MimeMessage extends Message {
                 removeHeader("To");
                 this.mTo = null;
             } else {
-                setHeader("To", Address.toString(addresses));
+                setHeader("To", Address.toEncodedString(addresses));
                 this.mTo = addresses;
             }
         } else if (type == RecipientType.CC) {
@@ -183,7 +183,7 @@ public class MimeMessage extends Message {
                 removeHeader("CC");
                 this.mCc = null;
             } else {
-                setHeader("CC", Address.toString(addresses));
+                setHeader("CC", Address.toEncodedString(addresses));
                 this.mCc = addresses;
             }
         } else if (type == RecipientType.BCC) {
@@ -191,7 +191,7 @@ public class MimeMessage extends Message {
                 removeHeader("BCC");
                 this.mBcc = null;
             } else {
-                setHeader("BCC", Address.toString(addresses));
+                setHeader("BCC", Address.toEncodedString(addresses));
                 this.mBcc = addresses;
             }
         } else {
@@ -223,7 +223,7 @@ public class MimeMessage extends Message {
 
     public void setFrom(Address from) throws MessagingException {
         if (from != null) {
-            setHeader("From", from.toString());
+            setHeader("From", from.toEncodedString());
             this.mFrom = new Address[] {
                     from
                 };
@@ -244,7 +244,7 @@ public class MimeMessage extends Message {
             removeHeader("Reply-to");
             mReplyTo = null;
         } else {
-            setHeader("Reply-to", Address.toString(replyTo));
+            setHeader("Reply-to", Address.toEncodedString(replyTo));
             mReplyTo = replyTo;
         }
     }

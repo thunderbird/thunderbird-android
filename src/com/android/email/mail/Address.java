@@ -17,6 +17,7 @@ import com.android.email.Utility;
 
 import java.util.List;
 import java.util.ArrayList;
+import org.apache.james.mime4j.codec.EncoderUtil;
 
 public class Address {
     String mAddress;
@@ -120,6 +121,7 @@ public class Address {
         return super.equals(o);
     }
 
+    @Override
     public String toString() {
         if (mPersonal != null) {
             // if (mPersonal.matches(".*[\\(\\)<>@,;:\\\\\".\\[\\]].*")) {
@@ -139,6 +141,30 @@ public class Address {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < addresses.length; i++) {
             sb.append(addresses[i].toString());
+            if (i < addresses.length - 1) {
+                sb.append(',');
+            }
+        }
+        return sb.toString();
+    }
+
+    public String toEncodedString() {
+        if (mPersonal != null) {
+            String s = EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
+            Log.v(Email.LOG_TAG, s);
+            return s;
+        } else {
+            return mAddress;
+        }
+    }
+
+    public static String toEncodedString(Address[] addresses) {
+        if (addresses == null) {
+            return null;
+        }
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < addresses.length; i++) {
+            sb.append(addresses[i].toEncodedString());
             if (i < addresses.length - 1) {
                 sb.append(',');
             }
