@@ -1797,7 +1797,7 @@ public class ImapStore extends Store {
                         catch (Exception e)
                         {
                             idling.set(false);
-                            Log.e(Email.LOG_TAG, "Got exception wihle idling", e);
+                            Log.e(Email.LOG_TAG, "Got exception while idling", e);
                             try
                             {
                                 close(false);
@@ -1806,11 +1806,20 @@ public class ImapStore extends Store {
                             {
                                 Log.e(Email.LOG_TAG, "Got exception while closing for exception", me);
                             }
+                            try
+                            {
+                                Thread.sleep(1000);
+                            }
+                            catch (Exception ie)
+                            {
+                                Log.e(Email.LOG_TAG, "Got exception while delaying after push exception", ie);
+                            }
                         }
                     }
                     try
                     {
                         close(false);
+                        receiver.pushComplete();
                     }
                     catch (Exception me)
                     {
@@ -1825,58 +1834,30 @@ public class ImapStore extends Store {
         protected List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
             int oldMessageCount = mMessageCount;
 
-	    super.handleUntaggedResponses(responses);
+            super.handleUntaggedResponses(responses);
 
-	    Log.i(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
-	    if (oldMessageCount > 0 && mMessageCount > oldMessageCount)
-		{
-		    try
-		    {
-			Message[] messageArray = getMessages(oldMessageCount + 1, mMessageCount, null);
-			List<Message> messages = new ArrayList<Message>();
-			for (Message message : messageArray)
-			    {
-				messages.add(message);
-			    }
-			
-			receiver.messagesArrived(getName(), messages);
-		    }
-		    catch (Exception e)
-		    {
-			receiver.pushError("Exception while processing Push untagged responses", e);
-		    }
-
-		}
-
-            return responses;
-        }
-
-
-        
-        protected void handleUntaggedResponse(ImapResponse response)
-        {
-            int oldMessageCount = mMessageCount;
-                super.handleUntaggedResponse(response);
+            Log.i(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
+            if (oldMessageCount > 0 && mMessageCount > oldMessageCount)
+            {
                 try
                 {
-                    Log.d(Email.LOG_TAG, "Handling response" + response);
-                    if (response.mTag == null && response.size() > 1)
+                    Message[] messageArray = getMessages(oldMessageCount + 1, mMessageCount, null);
+                    List<Message> messages = new ArrayList<Message>();
+                    for (Message message : messageArray)
                     {
-                        Object type = response.get(1);
-                        
-                        if ("EXPUNGE".equals(type))
-                        {
-                            int seqnum = response.getNumber(0);;
-                            
-                            Log.i(Email.LOG_TAG, "NOT Handling untagged EXPUNGE with seq '" + seqnum + "': " + response);
-                        }
+                        messages.add(message);
                     }
+
+                    receiver.messagesArrived(getName(), messages);
                 }
                 catch (Exception e)
                 {
-                    Log.e(Email.LOG_TAG, "Exception while processing response " + response, e);
+                    receiver.pushError("Exception while processing Push untagged responses", e);
                 }
-            
+
+            }
+
+            return responses;
         }
 
         public void stop() throws MessagingException
@@ -1896,10 +1877,17 @@ public class ImapStore extends Store {
             {
                 if (response.size() > 1)
                 {
-                    if ("EXISTS".equals(response.get(1)) || "EXPUNGE".equals(response.get(1)))
+                    boolean started = false;
+                    Object responseType = response.get(1);
+                    if ("EXISTS".equals(responseType) || "EXPUNGE".equals(responseType) ||
+                        "FETCH".equals(responseType))
                     {
-                        receiver.pushInProgress();
-                        Log.i(Email.LOG_TAG, "Got async untagged EXISTS or EXPUNGE: " + response);
+                        if (started == false)
+                        {
+                            receiver.pushInProgress();
+                            started = true;
+                        }
+                        Log.i(Email.LOG_TAG, "Got useful async untagged response: " + response);
                         try
                         {
                             sendContinuation("DONE");
