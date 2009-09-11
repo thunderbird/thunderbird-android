@@ -144,8 +144,8 @@
   <string name="message_view_attachment_view_action">Ouvrir</string>
   <string name="message_view_datetime_fmt">MMM jj aaaa hh:mm a</string>
   <string name="message_view_fetching_attachment_toast">Récupération de la pièce jointe.</string>
-  <string name="message_view_next_action">Message suivant</string>
-  <string name="message_view_prev_action">Message préc</string>
+  <string name="message_view_prev_action">◀</string>
+  <string name="message_view_next_action">▶</string>
   <string name="message_view_show_pictures_action">Afficher les images</string>
   <string name="message_view_show_pictures_instructions">Sélectionnez \"Afficher les images\" pour afficher les images intégrées.</string>
   <string name="message_view_status_attachment_not_saved">Impossible d\'enregistrer la pièce jointe sur la carte SD.</string>

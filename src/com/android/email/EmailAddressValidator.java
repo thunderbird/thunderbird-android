@@ -1,10 +1,8 @@
 
 package com.android.email;
 
-import com.android.email.mail.Address;
+import android.text.util.Rfc822Tokenizer;
 
-import android.util.Config;
-import android.util.Log;
 import android.widget.AutoCompleteTextView.Validator;
 
 public class EmailAddressValidator implements Validator {
@@ -13,6 +11,6 @@ public class EmailAddressValidator implements Validator {
     }
 
     public boolean isValid(CharSequence text) {
-        return Address.parseUnencoded(text.toString()).length > 0;
+        return Rfc822Tokenizer.tokenize(text).length > 0;
     }
 }

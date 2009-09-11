@@ -391,9 +391,6 @@ public class FolderList extends K9ListActivity {
             if (mInitialFolder == null
                 && mStartup) {
                 mInitialFolder = mAccount.getAutoExpandFolderName();
-                if (Email.FOLDER_NONE.equals(mInitialFolder)) {
-                    mInitialFolder = null;
-                }
             }
         }
         else {
@@ -401,7 +398,8 @@ public class FolderList extends K9ListActivity {
         }
 
         Log.v(Email.LOG_TAG, "mInitialFolder: " + mInitialFolder);
-        if (mInitialFolder != null) {
+        if (mInitialFolder != null
+            && !Email.FOLDER_NONE.equals(mInitialFolder)) {
             onOpenFolder(mInitialFolder, true);
             finish();
         }
