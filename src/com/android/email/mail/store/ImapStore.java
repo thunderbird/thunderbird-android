@@ -31,6 +31,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -341,6 +342,7 @@ public class ImapStore extends Store {
     class ImapFolder extends Folder {
         private String mName;
         protected int mMessageCount = -1;
+        protected int uidNext = -1;
         protected ImapConnection mConnection;
         private OpenMode mMode;
         private boolean mExists;
@@ -425,12 +427,28 @@ public class ImapStore extends Store {
     
     	        for (ImapResponse response : responses) {
     	            if (response.mTag != null && response.size() >= 2) {
-    	                if ("[READ-ONLY]".equalsIgnoreCase(response.getString(1))) {
-    	                    mMode = OpenMode.READ_ONLY;
+    	                Object bracketedObj = response.get(1);
+    	                if (bracketedObj instanceof ImapList)
+    	                {
+    	                    ImapList bracketed = (ImapList)bracketedObj;
+    	                    
+    	                    if (bracketed.size() > 0)
+    	                    {
+    	                        Object keyObj = bracketed.get(0);
+    	                        if (keyObj instanceof String)
+    	                        {
+    	                            String key = (String)keyObj;
+    	                        
+        	                        if ("READ-ONLY".equalsIgnoreCase(key)) {
+        	                            mMode = OpenMode.READ_ONLY;
+        	                        }
+        	                        else if ("READ-WRITE".equalsIgnoreCase(key)) {
+        	                            mMode = OpenMode.READ_WRITE;
+        	                        }
+    	                        }
+    	                    }
     	                }
-    	                else if ("[READ-WRITE]".equalsIgnoreCase(response.getString(1))) {
-    	                    mMode = OpenMode.READ_WRITE;
-    	                }
+    	                
     	            }
     	        }
     
@@ -918,6 +936,29 @@ public class ImapStore extends Store {
             if (response.get(1).equals("EXISTS")) {
                 mMessageCount = response.getNumber(0);
                 Log.i(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
+            }
+            if (response.get(0).equals("OK") && response.size() > 1) {
+                Object bracketedObj = response.get(1);
+                if (bracketedObj instanceof ImapList)
+                {
+                    ImapList bracketed = (ImapList)bracketedObj;
+                    
+                    if (bracketed.size() > 1)
+                    {
+                        Object keyObj = bracketed.get(0);
+                        if (keyObj instanceof String)
+                        {
+                            String key = (String)keyObj;
+                            if ("UIDNEXT".equals(key))
+                            {
+                                uidNext = bracketed.getNumber(1);
+                                Log.i(Email.LOG_TAG, "Got UidNext = " + uidNext);
+                            }
+                        }
+                    }
+                    
+                    
+                }
             }
             else if (response.get(1).equals("EXPUNGE") && mMessageCount > 0) {
               mMessageCount--;
@@ -1768,6 +1809,7 @@ public class ImapStore extends Store {
                     {
                         try
                         {
+                            int oldUidNext = uidNext;
                             List<ImapResponse> responses = internalOpen(OpenMode.READ_ONLY);
                             if (mConnection == null)
                             {
@@ -1787,12 +1829,25 @@ public class ImapStore extends Store {
                             {
                                 handleUntaggedResponses(responses);
                             }
-                            
-                            Log.i(Email.LOG_TAG, "About to IDLE " + getName());
-                            
-                            idling.set(true);
-                            executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
-                            idling.set(false);
+                            if (oldUidNext != -1 && uidNext > oldUidNext)
+                            {
+                                Log.i(Email.LOG_TAG, "Needs sync from uid " + oldUidNext  + " to " + uidNext);
+                                List<Message> messages = new ArrayList<Message>();
+                                for (int uid = oldUidNext; uid < uidNext; uid++ )
+                                {
+                                    ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
+                                    messages.add(message);
+                                }
+                                pushMessages(messages);
+                            }
+                            else
+                            {
+                                Log.i(Email.LOG_TAG, "About to IDLE " + getName());
+                                
+                                idling.set(true);
+                                executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
+                                idling.set(false);
+                            }
                         } 
                         catch (Exception e)
                         {
@@ -1808,7 +1863,7 @@ public class ImapStore extends Store {
                             }
                             try
                             {
-                                Thread.sleep(1000);
+                                Thread.sleep(10000);
                             }
                             catch (Exception ie)
                             {
@@ -1847,8 +1902,8 @@ public class ImapStore extends Store {
                     {
                         messages.add(message);
                     }
-
-                    receiver.messagesArrived(getName(), messages);
+                    pushMessages(messages);
+                    
                 }
                 catch (Exception e)
                 {
@@ -1858,6 +1913,27 @@ public class ImapStore extends Store {
             }
 
             return responses;
+        }
+        
+        private void pushMessages(List<Message> messages)
+        {
+            receiver.messagesArrived(getName(), messages);
+            
+            for (Message message : messages)
+            {
+                if (message.isSet(Flag.X_DOWNLOADED_FULL) || message.isSet(Flag.X_DOWNLOADED_PARTIAL))
+                {
+                    String uidS = message.getUid();
+                    int uid = Integer.parseInt(uidS);
+                    Log.i(Email.LOG_TAG, "Before Message uid = " + uid + ", uidNext = " + uidNext);
+                    if (uid >= uidNext)
+                    {
+                        uidNext = uid + 1;
+                    }        
+    
+                    Log.i(Email.LOG_TAG, "After Message uid = " + uid + ", uidNext = " + uidNext);
+                }
+            }
         }
 
         public void stop() throws MessagingException

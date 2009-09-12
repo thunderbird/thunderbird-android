@@ -91,7 +91,7 @@ public class ImapResponseParser {
     public Object readToken() throws IOException {
         while (true) {
             Object token = parseToken();
-            if (token == null || !token.equals(")")) {
+            if (token == null || !token.equals(")") || !token.equals("]")) {
                 return token;
             }
         }
@@ -107,9 +107,14 @@ public class ImapResponseParser {
             int ch = mIn.peek();
             if (ch == '(') {
                 return parseList();
+            } else if (ch == '[') {
+                return parseSequence();
             } else if (ch == ')') {
                 expect(')');
                 return ")";
+            } else if (ch == ']') {
+                    expect(']');
+                    return "]";
             } else if (ch == '"') {
                 return parseQuoted();
             } else if (ch == '{') {
@@ -169,6 +174,26 @@ public class ImapResponseParser {
         }
         return list;
     }
+    
+    private ImapList parseSequence() throws IOException {
+        expect('[');
+        ImapList list = new ImapList();
+        Object token;
+        while (true) {
+            token = parseToken();
+            if (token == null) {
+                break;
+            } else if (token instanceof InputStream) {
+                list.add(token);
+                break;
+            } else if (token.equals("]")) {
+                break;
+            } else {
+                list.add(token);
+            }
+        }
+        return list;
+    }
 
     private String parseAtom() throws IOException {
         StringBuffer sb = new StringBuffer();
@@ -178,6 +203,7 @@ public class ImapResponseParser {
             if (ch == -1) {
                 throw new IOException("parseAtom(): end of stream reached");
             } else if (ch == '(' || ch == ')' || ch == '{' || ch == ' ' ||
+                    ch == '[' || ch == ']' ||
             // docs claim that flags are \ atom but atom isn't supposed to
                     // contain
                     // * and some falgs contain *

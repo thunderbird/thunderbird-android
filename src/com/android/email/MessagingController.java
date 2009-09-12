@@ -3290,7 +3290,7 @@ public class MessagingController implements Runnable {
                     localFolder= (LocalFolder) localStore.getFolder(folderName);
                     localFolder.open(OpenMode.READ_WRITE);
                     remoteFolder.open(OpenMode.READ_WRITE);
-                    
+
                     downloadMessages(account, remoteFolder, localFolder, messages);
                     int unreadCount = 0;
                     for (Message message : messages)
@@ -3300,47 +3300,46 @@ public class MessagingController implements Runnable {
                             unreadCount++;
                         }
                     }
-		    localFolder.setLastChecked(System.currentTimeMillis());
-		    localFolder.setStatus(null);
+                //    localFolder.setLastChecked(System.currentTimeMillis());
+                    localFolder.setStatus("Pushed mail arrived");
 
-		    int unreadMessageCount = 0;
+                    int unreadMessageCount = 0;
                     if (unreadCount > 0)
                     {
                         localFolder.setUnreadMessageCount(localFolder.getUnreadMessageCount() + unreadCount);
 
-			unreadMessageCount = account.getUnreadMessageCount(mApplication, mApplication);
+                        unreadMessageCount = account.getUnreadMessageCount(mApplication, mApplication);
 
                         //setLocalUnreadCountToRemote(localFolder, remoteFolder, messages.size());
                         notifyAccount(mApplication, account, unreadMessageCount);
                     }
-		    else
-		    {
-			unreadMessageCount = account.getUnreadMessageCount(mApplication, mApplication);
-		    }
-
-		    for (MessagingListener l : getListeners())
+                    else
                     {
-			l.folderStatusChanged(account, folderName);
-			l.accountStatusChanged(account, unreadMessageCount);
+                        unreadMessageCount = account.getUnreadMessageCount(mApplication, mApplication);
+                    }
+
+                    for (MessagingListener l : getListeners())
+                    {
+                        l.folderStatusChanged(account, folderName);
+                        l.accountStatusChanged(account, unreadMessageCount);
                     }
 
                 }
                 catch (Exception e)
                 {
-		    String rootMessage = getRootCauseMessage(e);
-		    String errorMessage = "Push failed: " + rootMessage;
-		    try
-		    {
-			localFolder.setLastChecked(System.currentTimeMillis());
-			localFolder.setStatus(errorMessage);
-		    }
-		    catch (Exception se)
-		    {
-			Log.e(Email.LOG_TAG, "Unable to set failed status on localFolder", se);
-		    }
-		    for (MessagingListener l : getListeners()) {
-			l.synchronizeMailboxFailed( account, folderName, errorMessage);
-		    }
+                    String rootMessage = getRootCauseMessage(e);
+                    String errorMessage = "Push failed: " + rootMessage;
+                    try
+                    {
+                        localFolder.setStatus(errorMessage);
+                    }
+                    catch (Exception se)
+                    {
+                        Log.e(Email.LOG_TAG, "Unable to set failed status on localFolder", se);
+                    }
+                    for (MessagingListener l : getListeners()) {
+                        l.synchronizeMailboxFailed( account, folderName, errorMessage);
+                    }
                     addErrorMessage(account, e);
                 }
                 finally
@@ -3369,7 +3368,7 @@ public class MessagingController implements Runnable {
                     }
                     latch.countDown();
                 }
-                
+
             }
         });
         try
@@ -3382,5 +3381,5 @@ public class MessagingController implements Runnable {
         }
         Log.i(Email.LOG_TAG, "Latch released");
     }
-    
+
 }
