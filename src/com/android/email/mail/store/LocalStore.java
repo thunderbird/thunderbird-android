@@ -67,7 +67,7 @@ import java.io.StringReader;
  * </pre>
  */
 public class LocalStore extends Store implements Serializable {
-    private static final int DB_VERSION = 26;
+    private static final int DB_VERSION = 28;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -133,7 +133,7 @@ public class LocalStore extends Store implements Serializable {
             
             mDb.execSQL("DROP TABLE IF EXISTS folders");
             mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                    + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT)");
+                    + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT)");
 
             mDb.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
             mDb.execSQL("DROP TABLE IF EXISTS messages");
@@ -273,10 +273,10 @@ public class LocalStore extends Store implements Serializable {
 
 
         try {
-            cursor = mDb.rawQuery("SELECT name, id, unread_count, visible_limit, last_updated, status FROM folders", null);
+            cursor = mDb.rawQuery("SELECT name, id, unread_count, visible_limit, last_updated, status, push_state FROM folders", null);
             while (cursor.moveToNext()) {
             	LocalFolder folder = new LocalFolder(cursor.getString(0));
-              folder.open(cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5));
+              folder.open(cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6));
           
               folders.add(folder);
             }
@@ -492,6 +492,7 @@ public class LocalStore extends Store implements Serializable {
     		private FolderClass displayClass = FolderClass.NONE;
     		private FolderClass syncClass = FolderClass.NONE;
     		private String prefId = null;
+    		private String mPushState = null;
 
         public LocalFolder(String name) {
             this.mName = name;
@@ -514,7 +515,7 @@ public class LocalStore extends Store implements Serializable {
           }
           Cursor cursor = null;
           try {
-            cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status FROM folders "
+            cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status, push_state FROM folders "
                 + "where folders.name = ?",
                 new String[] {
                     mName
@@ -524,7 +525,7 @@ public class LocalStore extends Store implements Serializable {
               int folderId = cursor.getInt(0);
               if (folderId > 0)
               {
-                open(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getLong(3), cursor.getString(4));
+                open(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getLong(3), cursor.getString(4), cursor.getString(5));
               }
             } else {
               create(FolderType.HOLDS_MESSAGES);
@@ -538,11 +539,12 @@ public class LocalStore extends Store implements Serializable {
           }
         }
         
-        private void open(int id, int unreadCount, int visibleLimit, long lastChecked, String status) throws MessagingException
+        private void open(int id, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState) throws MessagingException
         {
          	mFolderId = id;
           mUnreadMessageCount = unreadCount;
           mVisibleLimit = visibleLimit;
+          mPushState = pushState;
           super.setStatus(status);
           // Only want to set the local variable stored in the super class.  This class 
           // does a DB update on setLastChecked
@@ -675,6 +677,17 @@ public class LocalStore extends Store implements Serializable {
         	super.setStatus(status);
           mDb.execSQL("UPDATE folders SET status = ? WHERE id = ?",
                   new Object[] { status, mFolderId });
+        }
+        public void setPushState(String pushState) throws MessagingException
+        {
+            open(OpenMode.READ_WRITE);
+            mPushState = pushState;
+          mDb.execSQL("UPDATE folders SET push_state = ? WHERE id = ?",
+                  new Object[] { pushState, mFolderId });
+        }
+        public String getPushState()
+        {
+            return mPushState;
         }
         @Override
       	public FolderClass getDisplayClass()
@@ -1139,6 +1152,11 @@ public class LocalStore extends Store implements Serializable {
                     message.setUid(Email.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
                 }
                 else {
+                    Message oldMessage = getMessage(message.getUid());
+                    if (oldMessage != null && oldMessage.isSet(Flag.SEEN) == false)
+                    {
+                       setUnreadMessageCount(getUnreadMessageCount() - 1);
+                    }
                     /*
                      * The message may already exist in this Folder, so delete it first.
                      */
@@ -1202,6 +1220,10 @@ public class LocalStore extends Store implements Serializable {
                         saveAttachment(messageId, attachment, copy);
                     }
                     saveHeaders(messageId, (MimeMessage)message);
+                    if (message.isSet(Flag.SEEN) == false)
+                    {
+                       setUnreadMessageCount(getUnreadMessageCount() + 1);
+                    }
                 } catch (Exception e) {
                     throw new MessagingException("Error appending message", e);
                 }
@@ -1760,7 +1782,8 @@ public class LocalStore extends Store implements Serializable {
              * Update the unread count on the folder.
              */
             try {
-                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED || flag == Flag.SEEN) {
+                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED 
+                        || (flag == Flag.SEEN && !isSet(Flag.DELETED))) {
                     LocalFolder folder = (LocalFolder)mFolder;
                     if (set && !isSet(Flag.SEEN)) {
                         folder.setUnreadMessageCount(folder.getUnreadMessageCount() - 1);

@@ -109,6 +109,17 @@ public abstract class Folder {
     public abstract String getName();
 
     public abstract Flag[] getPermanentFlags() throws MessagingException;
+    
+    /**
+     * 
+     * @param oldPushState
+     * @param message
+     * @return empty string to clear the pushState, null to leave the state as-is
+     */
+    public String getNewPushState(String oldPushState, Message message)
+    {
+        return null;
+    }
 
     public boolean supportsFetchingFlags() {
         return true;

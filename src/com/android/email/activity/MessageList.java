@@ -1174,7 +1174,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
 
-                Toast.makeText(MessageList.this, message, Toast.LENGTH_LONG).show();
+//                Toast.makeText(MessageList.this, message, Toast.LENGTH_LONG).show();
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
                 mHandler.folderSyncing(null);
@@ -1334,6 +1334,8 @@ public class MessageList extends K9ListActivity {
             if (m == null) {
                 m = new MessageInfoHolder(message, folder);
                 mAdapter.messages.add(m);
+            } else if (message.isSet(Flag.DELETED)) {
+                removeMessage(m);
             } else {
                 m.populate(message, folder);
             }

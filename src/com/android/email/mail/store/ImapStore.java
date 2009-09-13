@@ -653,8 +653,16 @@ public class ImapStore extends Store {
             return null;
         }
 
+        
         @Override
         public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
+                throws MessagingException {
+            
+            
+            return getMessages(start, end, false, listener);
+        }
+        
+        protected Message[] getMessages(int start, int end, boolean includeDeleted, MessageRetrievalListener listener)
                 throws MessagingException {
             if (start < 1 || end < 1 || end < start) {
                 throw new MessagingException(
@@ -666,7 +674,7 @@ public class ImapStore extends Store {
             try {
 		boolean gotSearchValues = false;
                 ArrayList<Integer> uids = new ArrayList<Integer>();
-                List<ImapResponse> responses = executeSimpleCommand(String.format("UID SEARCH %d:%d NOT DELETED", start, end));
+                List<ImapResponse> responses = executeSimpleCommand(String.format("UID SEARCH %d:%d" + (includeDeleted ? "" : " NOT DELETED"), start, end));
                 for (ImapResponse response : responses) {
 		    //		    Log.d(Email.LOG_TAG, "Got search response: " + response.get(0) + ", size " + response.size());
                     if (response.get(0).equals("SEARCH")) {
@@ -799,7 +807,7 @@ public class ImapStore extends Store {
                 do {
                     response = mConnection.readResponse();
                     handleUntaggedResponse(response);
-//Log.v(Email.LOG_TAG, "response for fetch: " + response);
+Log.v(Email.LOG_TAG, "response for fetch: " + response);
                     if (response.mTag == null && response.get(1).equals("FETCH")) {
                         ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                         String uid = fetchList.getKeyedString("UID");
@@ -1276,6 +1284,35 @@ public class ImapStore extends Store {
 				        throw ioExceptionHandler(mConnection, ioe);
 				    }
 				}
+        
+        public String getNewPushState(String oldPushStateS, Message message)
+        {
+            try
+            {
+                String messageUidS = message.getUid();
+                int messageUid = Integer.parseInt(messageUidS);
+                ImapPushState oldPushState = ImapPushState.parse(oldPushStateS);
+//                Log.d(Email.LOG_TAG, "getNewPushState comparing oldUidNext " + oldPushState.uidNext 
+//                        + " to message uid " + messageUid);
+                if (messageUid >= oldPushState.uidNext)
+                {
+                    int uidNext = messageUid + 1;
+                    ImapPushState newPushState = new ImapPushState(uidNext);
+                    //Log.d(Email.LOG_TAG, "newPushState = " + newPushState);
+                    return newPushState.toString();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.e(Email.LOG_TAG, "Exception while updated push state", e);
+                return null;
+            }
+        }
+        
 
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
                 throws MessagingException {
@@ -1585,7 +1622,7 @@ public class ImapStore extends Store {
             mOut.write('\n');
             mOut.flush();
            
-            if (Email.DEBUG) {
+            if (true || Email.DEBUG) {
                 if (sensitive && !Email.DEBUG_SENSITIVE) {
                     Log.d(Email.LOG_TAG, ">>> "
                             + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
@@ -1638,7 +1675,7 @@ public class ImapStore extends Store {
           ImapResponse response;
           do {
             response = mParser.readResponse();
-            if (Email.DEBUG)
+            if (true || Email.DEBUG)
             {
               Log.d(Email.LOG_TAG, "Got IMAP response " + response);
             }
@@ -1688,7 +1725,8 @@ public class ImapStore extends Store {
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
         }
-
+        
+        
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
@@ -1801,15 +1839,29 @@ public class ImapStore extends Store {
 
         public void start() throws MessagingException
         {
+ 
             Runnable runner = new Runnable()
             {
                 public void run()
                 {
+    
                     while (stop.get() != true)
                     {
                         try
                         {
-                            int oldUidNext = uidNext;
+                            int oldUidNext = -1;
+                            try
+                            {
+                                String pushStateS = receiver.getPushState(getName());
+                                ImapPushState pushState = ImapPushState.parse(pushStateS);
+                                oldUidNext = pushState.uidNext;
+                                Log.i(Email.LOG_TAG, "Got oldUidNext " + oldUidNext);
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(Email.LOG_TAG, "Unable to get oldUidNext", e);
+                            }
+                           
                             List<ImapResponse> responses = internalOpen(OpenMode.READ_ONLY);
                             if (mConnection == null)
                             {
@@ -1829,16 +1881,30 @@ public class ImapStore extends Store {
                             {
                                 handleUntaggedResponses(responses);
                             }
-                            if (oldUidNext != -1 && uidNext > oldUidNext)
+                            if (uidNext > oldUidNext)
                             {
-                                Log.i(Email.LOG_TAG, "Needs sync from uid " + oldUidNext  + " to " + uidNext);
+                                int startUid = oldUidNext;
+                                if (startUid < uidNext - 100)
+                                {
+                                    startUid = uidNext - 100;
+                                }
+                                if (startUid < 1)
+                                {
+                                    startUid = 1;
+                                }
+                                
+                                Log.i(Email.LOG_TAG, "Needs sync from uid " + startUid  + " to " + uidNext);
                                 List<Message> messages = new ArrayList<Message>();
-                                for (int uid = oldUidNext; uid < uidNext; uid++ )
+                                for (int uid = startUid; uid < uidNext; uid++ )
                                 {
                                     ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
                                     messages.add(message);
                                 }
-                                pushMessages(messages);
+                                if (messages.size() > 0)
+                                {
+                                    pushMessages(messages, true);
+                                }
+                                
                             }
                             else
                             {
@@ -1886,7 +1952,10 @@ public class ImapStore extends Store {
             listeningThread.start();
         }
 
+        List<Integer> flagSyncMsgSeqs = new ArrayList<Integer>();
+        
         protected List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
+            flagSyncMsgSeqs.clear();
             int oldMessageCount = mMessageCount;
 
             super.handleUntaggedResponses(responses);
@@ -1894,45 +1963,82 @@ public class ImapStore extends Store {
             Log.i(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
             if (oldMessageCount > 0 && mMessageCount > oldMessageCount)
             {
-                try
-                {
-                    Message[] messageArray = getMessages(oldMessageCount + 1, mMessageCount, null);
-                    List<Message> messages = new ArrayList<Message>();
-                    for (Message message : messageArray)
-                    {
-                        messages.add(message);
-                    }
-                    pushMessages(messages);
-                    
-                }
-                catch (Exception e)
-                {
-                    receiver.pushError("Exception while processing Push untagged responses", e);
-                }
-
+                syncMessages(oldMessageCount + 1, mMessageCount, true);
+            }
+            for (Integer msgSeq : flagSyncMsgSeqs)
+            {
+                syncMessages(msgSeq, msgSeq, false);
             }
 
             return responses;
         }
         
-        private void pushMessages(List<Message> messages)
+        private void syncMessages(int start, int end, boolean newArrivals)
         {
-            receiver.messagesArrived(getName(), messages);
-            
-            for (Message message : messages)
+            try
             {
-                if (message.isSet(Flag.X_DOWNLOADED_FULL) || message.isSet(Flag.X_DOWNLOADED_PARTIAL))
+                Message[] messageArray = null;
+ 
+                messageArray = getMessages(start, end, true, null);
+                
+                List<Message> messages = new ArrayList<Message>();
+                for (Message message : messageArray)
                 {
-                    String uidS = message.getUid();
-                    int uid = Integer.parseInt(uidS);
-                    Log.i(Email.LOG_TAG, "Before Message uid = " + uid + ", uidNext = " + uidNext);
-                    if (uid >= uidNext)
-                    {
-                        uidNext = uid + 1;
-                    }        
-    
-                    Log.i(Email.LOG_TAG, "After Message uid = " + uid + ", uidNext = " + uidNext);
+                    messages.add(message);
                 }
+                pushMessages(messages, newArrivals);
+                
+            }
+            catch (Exception e)
+            {
+                receiver.pushError("Exception while processing Push untagged responses", e);
+            }
+        }
+        
+        protected void handleUntaggedResponse(ImapResponse response) {
+            super.handleUntaggedResponse(response);
+            if (response.mTag == null && response.size() > 1)
+            {
+                try
+                {
+                    Object responseType = response.get(1);
+                    if ("FETCH".equals(responseType))
+                    {
+                        int msgSeq = response.getNumber(0);
+                        Log.d(Email.LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq);
+                        flagSyncMsgSeqs.add(msgSeq);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Could not handle untagged FETCH", e);
+                }
+            }
+          }
+
+        
+        private void pushMessages(List<Message> messages, boolean newArrivals)
+        {
+            RuntimeException holdException = null;
+            try
+            {
+                if (newArrivals)
+                {
+                    receiver.messagesArrived(getName(), messages);
+                }
+                else
+                {
+                    receiver.messagesFlagsChanged(getName(), messages);
+                }
+            }
+            catch (RuntimeException e)
+            {
+               holdException = e; 
+            }
+            
+            if (holdException != null)
+            {
+                throw holdException;
             }
         }
 
@@ -2055,5 +2161,51 @@ public class ImapStore extends Store {
     private interface UntaggedHandler
     {
         void handleAsyncUntaggedResponse(ImapResponse respose);
+    }
+    
+    protected static class ImapPushState
+    {
+        protected int uidNext;
+        protected ImapPushState(int nUidNext)
+        {
+            uidNext = nUidNext;
+        }
+        protected static ImapPushState parse(String pushState)
+        {
+            int newUidNext = -1;
+            if (pushState != null)
+            {
+                StringTokenizer tokenizer = new StringTokenizer(pushState, ";");
+                while (tokenizer.hasMoreTokens())
+                {
+                    StringTokenizer thisState = new StringTokenizer(tokenizer.nextToken(), "=");
+                    if (thisState.hasMoreTokens())
+                    {
+                        String key = thisState.nextToken();
+                        
+                        if ("uidNext".equals(key) && thisState.hasMoreTokens())
+                        {
+                            String value = thisState.nextToken();
+                            try
+                            {
+                                newUidNext = Integer.parseInt(value);
+                              //  Log.i(Email.LOG_TAG, "Parsed uidNext " + newUidNext);
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(Email.LOG_TAG, "Unable to part uidNext value " + value, e);
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            return new ImapPushState(newUidNext);
+        }
+        public String toString()
+        {
+            return "uidNext=" + uidNext;
+        }
+        
     }
 }

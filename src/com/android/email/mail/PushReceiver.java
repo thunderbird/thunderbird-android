@@ -1,12 +1,14 @@
 package com.android.email.mail;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface PushReceiver
 {
     public void pushInProgress();
     public void pushComplete();
-    public void messagesArrived(String folderName, Collection<Message> mess);
-    public void messagesDeleted(String folderName, Collection<String> messageUids);
+    public void messagesArrived(String folderName, List<Message> mess);
+    public void messagesFlagsChanged(String folderName, List<Message> mess);
+    public String getPushState(String folderName);
     public void pushError(String errorMessage, Exception e);
 }
