@@ -3282,11 +3282,11 @@ public class MessagingController implements Runnable {
         {
             Store store = Store.getInstance(account.getStoreUri(), mApplication);
             List<String> names = new ArrayList<String>();
-//            names.add("INBOX");
-//            names.add("CarlnDave");
+            names.add("INBOX");
+//           names.add("CarlnDave");
 //            names.add("Janet");
 //            names.add("k-9");
-            names.add("MyIncTmp");
+//            names.add("MyIncTmp");
             pusher = store.getPusher(receiver, names);
             if (pusher != null)
             {
