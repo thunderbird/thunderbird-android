@@ -59,11 +59,6 @@ import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 import com.android.email.mail.store.LocalStore.LocalMessage;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-
 
 /**
  * MessageList is the primary user interface for the program. This
@@ -82,8 +77,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MessageList extends K9ListActivity {
 
-    private static final String INTENT_DATA_PATH_SUFFIX = "/accounts";
-
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -95,8 +88,6 @@ public class MessageList extends K9ListActivity {
 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_STARTUP = "startup";
-
-    private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
 
     private static final String EXTRA_FOLDER = "folder";
     private static final String STATE_KEY_LIST = "com.android.email.activity.messagelist_state";
@@ -147,11 +138,6 @@ public class MessageList extends K9ListActivity {
      */
     private String mFolderName;
 
-
-    private boolean mRestoringState;
-
-    private boolean mRefreshRemote;
-
     private MessageListHandler mHandler = new MessageListHandler();
 
     private DateFormat dateFormat = null;
@@ -165,8 +151,6 @@ public class MessageList extends K9ListActivity {
     private boolean sortDateAscending = false;
 
     private boolean mStartup = false;
-
-    private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 120000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
 
     private DateFormat getDateFormat() {
         if (dateFormat == null) {
@@ -440,9 +424,7 @@ public class MessageList extends K9ListActivity {
         setListAdapter(mAdapter);
 
         if (savedInstanceState != null) {
-            mRestoringState = true;
             onRestoreListState(savedInstanceState);
-            mRestoringState = false;
         }
 
         setTitle(
@@ -566,9 +548,6 @@ public class MessageList extends K9ListActivity {
 
 
     private void onRefresh(final boolean forceRemote) {
-        if (forceRemote) {
-            mRefreshRemote = true;
-        }
 
         new Thread() {
 

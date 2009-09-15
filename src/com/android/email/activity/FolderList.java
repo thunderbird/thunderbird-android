@@ -42,8 +42,6 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
-import com.android.email.MessagingController.SORT_TYPE;
-import com.android.email.activity.FolderList.FolderInfoHolder;
 import com.android.email.activity.MessageList.MessageInfoHolder;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
@@ -90,21 +88,11 @@ public class FolderList extends K9ListActivity {
 
     private String mInitialFolder;
 
-    private boolean mRestoringState;
-
-    private boolean mRefreshRemote;
-
     private FolderListHandler mHandler = new FolderListHandler();
 
     private DateFormat dateFormat = null;
 
     private DateFormat timeFormat = null;
-
-    private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
-
-    private boolean sortAscending = true;
-
-    private boolean sortDateAscending = false;
 
     private boolean mStartup = false;
 
@@ -440,12 +428,6 @@ public class FolderList extends K9ListActivity {
 
             setListAdapter(mAdapter);
 
-            if (savedInstanceState != null) {
-                mRestoringState = true;
-                //onRestoreListState(savedInstanceState);
-                mRestoringState = false;
-            }
-
             setTitle(mAccount.getDescription());
         }
     }
@@ -506,9 +488,6 @@ public class FolderList extends K9ListActivity {
     }//onKeyDown
 
     private void onRefresh(final boolean forceRemote) {
-        if (forceRemote) {
-            mRefreshRemote = true;
-        }
 
         new Thread() {
 
@@ -893,7 +872,6 @@ public class FolderList extends K9ListActivity {
                   mFolders.addAll(newFolders);
                   Collections.sort(mFolders);
                   mHandler.dataChanged();
-                  mRefreshRemote = false;
               }
               
  
