@@ -117,7 +117,7 @@ public class MessageView extends K9Activity
 
     //Shall we use more threads? How often will the user move from non-fully-downloaded
     //messages to another non-fully-downloaded message more than 3 times?
-    private final ExecutorService threadPool = Executors.newFixedThreadPool(3);
+ //   private final ExecutorService threadPool = Executors.newFixedThreadPool(3);
     
     private DateFormat getDateFormat()
     {
@@ -486,17 +486,13 @@ public class MessageView extends K9Activity
         if (previous_scrolling != null)
             previous_scrolling.setEnabled(mPreviousMessageUid != null);
 
-        Runnable loaderThread = new Runnable() {
-            public void run() {
-                MessagingController.getInstance(getApplication()).loadMessageForViewSynchronous(
-                    mAccount,
-                    mFolder,
-                    mMessageUid,
-                    null);
-            }
-        };
-
-        threadPool.execute(loaderThread);
+        MessagingController.getInstance(getApplication()).loadMessageForView(
+            mAccount,
+            mFolder,
+            mMessageUid,
+            null);
+            
+        
     }
     
     
@@ -539,12 +535,12 @@ public class MessageView extends K9Activity
     public void onResume() {
         super.onResume();
         clearFormats();
-        MessagingController.getInstance(getApplication()).addListener(mListener);
+        //MessagingController.getInstance(getApplication()).addListener(mListener);
     }
 
     public void onPause() {
         super.onPause();
-        MessagingController.getInstance(getApplication()).removeListener(mListener);
+        //MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
     
     private void onDelete() {
