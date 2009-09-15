@@ -150,9 +150,7 @@ public class Address {
 
     public String toEncodedString() {
         if (mPersonal != null) {
-            String s = EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
-            Log.v(Email.LOG_TAG, s);
-            return s;
+            return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
         }
