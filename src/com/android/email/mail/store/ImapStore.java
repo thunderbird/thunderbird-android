@@ -1622,7 +1622,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
             mOut.write('\n');
             mOut.flush();
            
-            if (true || Email.DEBUG) {
+            if (Email.DEBUG) {
                 if (sensitive && !Email.DEBUG_SENSITIVE) {
                     Log.d(Email.LOG_TAG, ">>> "
                             + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
@@ -1662,7 +1662,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
         
         public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
         throws IOException, ImapException, MessagingException {
-          if (true || Email.DEBUG)
+          if (Email.DEBUG)
           {
             Log.d(Email.LOG_TAG, "Sending IMAP command " + command + " on connection " + this.hashCode());
           }
@@ -1675,7 +1675,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
           ImapResponse response;
           do {
             response = mParser.readResponse();
-            if (true || Email.DEBUG)
+            if (Email.DEBUG)
             {
               Log.d(Email.LOG_TAG, "Got IMAP response " + response);
             }
@@ -1844,7 +1844,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
             {
                 public void run()
                 {
-    
+                    Log.i(Email.LOG_TAG, "Pusher for " + getName() + " is running");
                     while (stop.get() != true)
                     {
                         try
@@ -1941,6 +1941,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
                     {
                         close(false);
                         receiver.pushComplete();
+                        Log.i(Email.LOG_TAG, "Pusher for " + getName() + " is exiting");
                     }
                     catch (Exception me)
                     {
