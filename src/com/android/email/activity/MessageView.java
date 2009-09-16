@@ -450,7 +450,7 @@ public class MessageView extends K9Activity
         
         Account.HideButtons hideButtons = mAccount.getHideMessageViewButtons();
         
-        MessagingController.getInstance(getApplication()).addListener(mListener);
+   //    MessagingController.getInstance(getApplication()).addListener(mListener);
         if (Account.HideButtons.ALWAYS == hideButtons)
         {
           hideButtons();
@@ -490,7 +490,7 @@ public class MessageView extends K9Activity
             mAccount,
             mFolder,
             mMessageUid,
-            null);
+            mListener);
             
         
     }
@@ -535,14 +535,8 @@ public class MessageView extends K9Activity
     public void onResume() {
         super.onResume();
         clearFormats();
-        //MessagingController.getInstance(getApplication()).addListener(mListener);
     }
 
-    public void onPause() {
-        super.onPause();
-        //MessagingController.getInstance(getApplication()).removeListener(mListener);
-    }
-    
     private void onDelete() {
         if (mMessage != null) {
            Message messageToDelete = mMessage;
@@ -553,7 +547,6 @@ public class MessageView extends K9Activity
 
             // Remove this message's Uid locally
             mFolderUids.remove(messageToDelete.getUid());
-            
             
             MessagingController.getInstance(getApplication()).deleteMessage(
                 accountForDelete,

@@ -1745,7 +1745,7 @@ public class MessagingController implements Runnable {
     }
 
     private void loadMessageForViewRemote(final Account account, final String folder,
-            final String uid, MessagingListener listener) {
+            final String uid, final MessagingListener listener) {
         put("loadMessageForViewRemote", listener, new Runnable() {
             public void run() {
                 Folder remoteFolder = null;
@@ -1797,8 +1797,16 @@ public class MessagingController implements Runnable {
                         markMessageRead(account, localFolder, message, true);
                     }
 
+                    if (listener != null)
+                    {
+                        listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
+                    }
                     for (MessagingListener l : getListeners()) {
                         l.loadMessageForViewBodyAvailable(account, folder, uid, message);
+                    }
+                    if (listener != null)
+                    {
+                        listener.loadMessageForViewFinished(account, folder, uid, message);
                     }
                     for (MessagingListener l : getListeners()) {
                         l.loadMessageForViewFinished(account, folder, uid, message);
@@ -1849,6 +1857,10 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners()) {
                 l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
             }
+            if (listener != null)
+            {
+                listener.loadMessageForViewHeadersAvailable(account, folder, uid, message);
+            }
             
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
                 loadMessageForViewRemote(account, folder, uid, listener);
@@ -1893,98 +1905,98 @@ public class MessagingController implements Runnable {
         }
     }
 
-    public void loadMessageForViewSynchronous(final Account account, final String folder, final String uid,
-        MessagingListener listener) {
-
-        for (MessagingListener l : getListeners()) {
-            l.loadMessageForViewStarted(account, folder, uid);
-        }
-
-        LocalFolder localFolder = null;
-        Folder remoteFolder = null;
-        try {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-            localFolder = (LocalFolder) localStore.getFolder(folder);
-            localFolder.open(OpenMode.READ_WRITE);
-
-            Message message = localFolder.getMessage(uid);
-
-            for (MessagingListener l : getListeners()) {
-                l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
-            }
-
-            if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
-                Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
-                remoteFolder = remoteStore.getFolder(folder);
-                remoteFolder.open(OpenMode.READ_WRITE);
-
-                // Get the remote message and fully download it
-                Message remoteMessage = remoteFolder.getMessage(uid);
-                FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.BODY);
-                remoteFolder.fetch(new Message[]{remoteMessage}, fp, null);
-
-                // Store the message locally and load the stored message into memory
-                localFolder.appendMessages(new Message[]{remoteMessage});
-                message = localFolder.getMessage(uid);
-                localFolder.fetch(new Message[]{message}, fp, null);
-
-                // Mark that this message is now fully synched
-                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            }
-            else {
-                FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.ENVELOPE);
-                fp.add(FetchProfile.Item.BODY);
-                localFolder.fetch(new Message[]{
-                        message
-                    }, fp, null);
-            }
-
-            if (!message.isSet(Flag.SEEN)) {
-                markMessageRead(account, localFolder, message, true);
-            }
-
-            for (MessagingListener l : getListeners()) {
-                l.loadMessageForViewBodyAvailable(account, folder, uid, message);
-            }
-            if (listener != null) {
-                listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
-            }
-
-            for (MessagingListener l : getListeners()) {
-                l.loadMessageForViewFinished(account, folder, uid, message);
-            }
-            if (listener != null) {
-                listener.loadMessageForViewFinished(account, folder, uid, message);
-            }
-        }
-        catch (Exception e) {
-            for (MessagingListener l : getListeners()) {
-                l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
-            }
-            addErrorMessage(account, e);
-        }
-        finally {
-            if (localFolder!=null) {
-                try {
-                    localFolder.close(false);
-                }
-                catch (MessagingException e) {
-                    Log.w(Email.LOG_TAG, null, e);
-                }
-            }
-
-            if (remoteFolder!=null) {
-                try {
-                    remoteFolder.close(false);
-                }
-                catch (MessagingException e) {
-                    Log.w(Email.LOG_TAG, null, e);
-                }
-            }
-        }
-    }//loadMessageForViewSynchronous
+//    public void loadMessageForViewSynchronous(final Account account, final String folder, final String uid,
+//        MessagingListener listener) {
+//
+//        for (MessagingListener l : getListeners()) {
+//            l.loadMessageForViewStarted(account, folder, uid);
+//        }
+//
+//        LocalFolder localFolder = null;
+//        Folder remoteFolder = null;
+//        try {
+//            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+//            localFolder = (LocalFolder) localStore.getFolder(folder);
+//            localFolder.open(OpenMode.READ_WRITE);
+//
+//            Message message = localFolder.getMessage(uid);
+//
+//            for (MessagingListener l : getListeners()) {
+//                l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
+//            }
+//
+//            if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
+//                Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+//                remoteFolder = remoteStore.getFolder(folder);
+//                remoteFolder.open(OpenMode.READ_WRITE);
+//
+//                // Get the remote message and fully download it
+//                Message remoteMessage = remoteFolder.getMessage(uid);
+//                FetchProfile fp = new FetchProfile();
+//                fp.add(FetchProfile.Item.BODY);
+//                remoteFolder.fetch(new Message[]{remoteMessage}, fp, null);
+//
+//                // Store the message locally and load the stored message into memory
+//                localFolder.appendMessages(new Message[]{remoteMessage});
+//                message = localFolder.getMessage(uid);
+//                localFolder.fetch(new Message[]{message}, fp, null);
+//
+//                // Mark that this message is now fully synched
+//                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+//            }
+//            else {
+//                FetchProfile fp = new FetchProfile();
+//                fp.add(FetchProfile.Item.ENVELOPE);
+//                fp.add(FetchProfile.Item.BODY);
+//                localFolder.fetch(new Message[]{
+//                        message
+//                    }, fp, null);
+//            }
+//
+//            if (!message.isSet(Flag.SEEN)) {
+//                markMessageRead(account, localFolder, message, true);
+//            }
+//
+//            for (MessagingListener l : getListeners()) {
+//                l.loadMessageForViewBodyAvailable(account, folder, uid, message);
+//            }
+//            if (listener != null) {
+//                listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
+//            }
+//
+//            for (MessagingListener l : getListeners()) {
+//                l.loadMessageForViewFinished(account, folder, uid, message);
+//            }
+//            if (listener != null) {
+//                listener.loadMessageForViewFinished(account, folder, uid, message);
+//            }
+//        }
+//        catch (Exception e) {
+//            for (MessagingListener l : getListeners()) {
+//                l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+//            }
+//            addErrorMessage(account, e);
+//        }
+//        finally {
+//            if (localFolder!=null) {
+//                try {
+//                    localFolder.close(false);
+//                }
+//                catch (MessagingException e) {
+//                    Log.w(Email.LOG_TAG, null, e);
+//                }
+//            }
+//
+//            if (remoteFolder!=null) {
+//                try {
+//                    remoteFolder.close(false);
+//                }
+//                catch (MessagingException e) {
+//                    Log.w(Email.LOG_TAG, null, e);
+//                }
+//            }
+//        }
+//    }//loadMessageForViewSynchronous
 
     /**
      * Attempts to load the attachment specified by part from the given account and message.
@@ -1998,7 +2010,7 @@ public class MessagingController implements Runnable {
             final Message message,
             final Part part,
             final Object tag,
-            MessagingListener listener) {
+            final MessagingListener listener) {
         /*
          * Check if the attachment has already been downloaded. If it has there's no reason to
          * download it, so we just tell the listener that it's ready to go.
@@ -2008,9 +2020,16 @@ public class MessagingController implements Runnable {
                 for (MessagingListener l : getListeners()) {
                     l.loadAttachmentStarted(account, message, part, tag, false);
                 }
+                if (listener != null) {
+                    listener.loadAttachmentStarted(account, message, part, tag, false);
+                }
 
                 for (MessagingListener l : getListeners()) {
                     l.loadAttachmentFinished(account, message, part, tag);
+                }
+
+                if (listener != null) {
+                    listener.loadAttachmentFinished(account, message, part, tag);
                 }
                 return;
             }
@@ -2024,6 +2043,9 @@ public class MessagingController implements Runnable {
 
         for (MessagingListener l : getListeners()) {
             l.loadAttachmentStarted(account, message, part, tag, true);
+        }
+        if (listener != null) {
+            listener.loadAttachmentStarted(account, message, part, tag, false);
         }
 
         put("loadAttachment", listener, new Runnable() {
@@ -2058,6 +2080,9 @@ public class MessagingController implements Runnable {
                     for (MessagingListener l : getListeners()) {
                         l.loadAttachmentFinished(account, message, part, tag);
                     }
+                    if (listener != null) {
+                        listener.loadAttachmentFinished(account, message, part, tag);
+                }
                 }
                 catch (MessagingException me) {
                     if (Config.LOGV) {
@@ -2065,6 +2090,9 @@ public class MessagingController implements Runnable {
                     }
                     for (MessagingListener l : getListeners()) {
                         l.loadAttachmentFailed(account, message, part, tag, me.getMessage());
+                    }
+                    if (listener != null) {
+                        listener.loadAttachmentFailed(account, message, part, tag, me.getMessage());
                     }
                     addErrorMessage(account, me);
 
