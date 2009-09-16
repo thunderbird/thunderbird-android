@@ -49,6 +49,7 @@ public class Account implements Serializable {
     String mAutoExpandFolderName;
     FolderMode mFolderDisplayMode;
     FolderMode mFolderSyncMode;
+    FolderMode mFolderPushMode;
     FolderMode mFolderTargetMode;
     int mAccountNumber;
     boolean mVibrate;
@@ -87,6 +88,7 @@ public class Account implements Serializable {
         mVibrate = false;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
         mFolderSyncMode = FolderMode.FIRST_CLASS;
+        mFolderPushMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mHideMessageViewButtons = HideButtons.NEVER;
         mRingtoneUri = "content://settings/system/notification_sound";
@@ -237,6 +239,17 @@ public class Account implements Serializable {
         {
         	mFolderSyncMode = FolderMode.FIRST_CLASS;
         }
+        
+        try
+        {
+            mFolderPushMode = FolderMode.valueOf(preferences.getPreferences().getString(mUuid  + ".folderPushMode", 
+                    FolderMode.FIRST_CLASS.name()));
+        }
+        catch (Exception e)
+        {
+            mFolderPushMode = FolderMode.FIRST_CLASS;
+        }
+        
         
         try
         {
@@ -460,6 +473,7 @@ public class Account implements Serializable {
         editor.remove(mUuid + ".lastFullSync");
         editor.remove(mUuid + ".folderDisplayMode");
         editor.remove(mUuid + ".folderSyncMode");
+        editor.remove(mUuid + ".folderPushMode");
         editor.remove(mUuid + ".folderTargetMode");
         editor.remove(mUuid + ".hideButtonsEnum");
         editor.remove(mUuid + ".signatureBeforeQuotedText");
@@ -523,6 +537,7 @@ public class Account implements Serializable {
         editor.putString(mUuid + ".ringtone", mRingtoneUri);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
+        editor.putString(mUuid + ".folderPushMode", mFolderPushMode.name());
         editor.putString(mUuid + ".folderTargetMode", mFolderTargetMode.name());
         editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
        
@@ -740,6 +755,16 @@ public class Account implements Serializable {
 		{
 			mFolderSyncMode = syncMode;
 		}
+		
+		public FolderMode getFolderPushMode()
+        {
+            return mFolderPushMode;
+        }
+
+        public void setFolderPushMode(FolderMode syncMode)
+        {
+            mFolderPushMode = syncMode;
+        }
 
     public boolean isShowOngoing()
     {

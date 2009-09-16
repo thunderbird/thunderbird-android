@@ -491,6 +491,7 @@ public class LocalStore extends Store implements Serializable {
         private int mVisibleLimit = -1;
     		private FolderClass displayClass = FolderClass.NONE;
     		private FolderClass syncClass = FolderClass.NONE;
+            private FolderClass pushClass = FolderClass.SECOND_CLASS;
     		private String prefId = null;
     		private String mPushState = null;
 
@@ -500,7 +501,9 @@ public class LocalStore extends Store implements Serializable {
             if (Email.INBOX.equals(getName()))
             {
               syncClass =  FolderClass.FIRST_CLASS;
+              pushClass =  FolderClass.FIRST_CLASS;
             }
+            
      
         }
 
@@ -714,6 +717,25 @@ public class LocalStore extends Store implements Serializable {
     			return syncClass;
     			
     		}
+        
+        public FolderClass getPushClass()
+        {
+            if (FolderClass.NONE == pushClass)
+            {
+                return syncClass;
+            }
+            else
+            {
+                return pushClass;
+            }
+        }
+    
+    public FolderClass getRawPushClass()
+        {
+            
+            return pushClass;
+            
+        }
 
     		public void setDisplayClass(FolderClass displayClass)
     		{
@@ -724,6 +746,10 @@ public class LocalStore extends Store implements Serializable {
     		{
     			this.syncClass = syncClass;
     		}
+    		public void setPushClass(FolderClass pushClass)
+            {
+                this.pushClass = pushClass;
+            }
     		
     		private String getPrefId() throws MessagingException
     		{
@@ -770,6 +796,15 @@ public class LocalStore extends Store implements Serializable {
           {
            	editor.putString(id + ".syncMode", syncClass.name());
           }
+          
+          if (pushClass == FolderClass.SECOND_CLASS && !Email.INBOX.equals(getName()))
+          {
+            editor.remove(id + ".pushMode");
+          }
+          else
+          {
+            editor.putString(id + ".pushMode", pushClass.name());
+          }
          
           editor.commit();
       }
@@ -806,6 +841,24 @@ public class LocalStore extends Store implements Serializable {
         	Log.e(Email.LOG_TAG, "Unable to load syncMode for " + getName(), e);
 
         	syncClass = defSyncClass;
+        }
+        
+        FolderClass defPushClass = FolderClass.SECOND_CLASS;
+        if (Email.INBOX.equals(getName()))
+        {
+          defPushClass =  FolderClass.FIRST_CLASS;
+        }
+        
+        try
+        {
+            pushClass = FolderClass.valueOf(preferences.getPreferences().getString(id  + ".pushMode", 
+                    defPushClass.name()));
+        }
+        catch (Exception e)
+        {
+            Log.e(Email.LOG_TAG, "Unable to load pushMode for " + getName(), e);
+
+            pushClass = defPushClass;
         }
 
     }

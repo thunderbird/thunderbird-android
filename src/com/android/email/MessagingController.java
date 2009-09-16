@@ -107,7 +107,6 @@ public class MessagingController implements Runnable {
     private BlockingQueue<Command> backCommands = new LinkedBlockingQueue<Command>();
 
     private Thread mThread;
-    //private Set<MessagingListener> mListeners = Collections.synchronizedSet(new HashSet<MessagingListener>());
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
     
     private HashMap<SORT_TYPE, Boolean> sortAscending = new HashMap<SORT_TYPE, Boolean>();
@@ -147,6 +146,8 @@ public class MessagingController implements Runnable {
     private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
     
     private MessagingListener checkMailListener = null;
+    
+    private MemorizingListener memorizingListener = new MemorizingListener();
     
     private boolean mBusy;
     private Application mApplication;
@@ -231,6 +232,10 @@ public class MessagingController implements Runnable {
         mApplication = application;
         mThread = new Thread(this);
         mThread.start();
+        if (memorizingListener != null)
+        {
+            addListener(memorizingListener);
+        }
     }
     
     public void log(String logmess) {
@@ -357,6 +362,10 @@ public class MessagingController implements Runnable {
 
     public void addListener(MessagingListener listener) {
         mListeners.add(listener);
+        if (memorizingListener != null && listener != null)
+        {
+            memorizingListener.refreshOther(listener);
+        }
     }
 
     public void removeListener(MessagingListener listener) {
@@ -2868,46 +2877,34 @@ public class MessagingController implements Runnable {
 		                    for (final Folder folder : localStore.getPersonalNamespaces())
 		                    {
 		                    	
-		                    	folder.open(Folder.OpenMode.READ_WRITE);
-		                    	folder.refresh(prefs);
-		                    	
-		                    	Folder.FolderClass fDisplayMode = folder.getDisplayClass();
-		                    	Folder.FolderClass fSyncMode = folder.getSyncClass();
+		                        folder.open(Folder.OpenMode.READ_WRITE);
+		                        folder.refresh(prefs);
 
-		                    	if ((aDisplayMode == Account.FolderMode.FIRST_CLASS && 
-		                    					fDisplayMode != Folder.FolderClass.FIRST_CLASS) 
-		                    			|| (aDisplayMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-		                      					fDisplayMode != Folder.FolderClass.FIRST_CLASS &&
-		                      					fDisplayMode != Folder.FolderClass.SECOND_CLASS) 
-		                      		|| (aDisplayMode == Account.FolderMode.NOT_SECOND_CLASS &&
-		                      					fDisplayMode == Folder.FolderClass.SECOND_CLASS))
-		                      {
-		                    		// Never sync a folder that isn't displayed
-			                    	if (Config.LOGV) {
-			                    		Log.v(Email.LOG_TAG, "Not syncing folder " + folder.getName() + 
-			                    				" which is in display mode " + fDisplayMode + " while account is in display mode " + aDisplayMode);
-			                    	}
+		                        Folder.FolderClass fDisplayClass = folder.getDisplayClass();
+		                        Folder.FolderClass fSyncClass = folder.getSyncClass();
 
-		                       	continue;
-		                      }
+		                        if (modeMismatch(aDisplayMode, fDisplayClass))
+		                        {
+		                            // Never sync a folder that isn't displayed
+		                            if (Config.LOGV) {
+		                                Log.v(Email.LOG_TAG, "Not syncing folder " + folder.getName() + 
+		                                        " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
+		                            }
 
-		                    	if ((aSyncMode == Account.FolderMode.FIRST_CLASS && 
-		                    			fSyncMode != Folder.FolderClass.FIRST_CLASS)
-		                    			|| (aSyncMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-		                      					fSyncMode != Folder.FolderClass.FIRST_CLASS &&
-		                      					fSyncMode != Folder.FolderClass.SECOND_CLASS) 
-		                    			|| (aSyncMode == Account.FolderMode.NOT_SECOND_CLASS &&
-		                    					fSyncMode == Folder.FolderClass.SECOND_CLASS))
-		                      {
-		                    		// Do not sync folders in the wrong class
-			                    	if (Config.LOGV) {
-			                    		Log.v(Email.LOG_TAG, "Not syncing folder " + folder.getName() + 
-			                    				" which is in sync mode " + fSyncMode + " while account is in sync mode " + aSyncMode);
-			                    	}
+		                            continue;
+		                        }
 
-		                       	continue;
-		                      }
-	                    	
+		                        if (modeMismatch(aSyncMode, fSyncClass))
+		                        {
+		                            // Do not sync folders in the wrong class
+		                            if (Config.LOGV) {
+		                                Log.v(Email.LOG_TAG, "Not syncing folder " + folder.getName() + 
+		                                        " which is in sync mode " + fSyncClass + " while account is in sync mode " + aSyncMode);
+		                            }
+
+		                            continue;
+		                        }
+
 		                    	
 	
 		                    	if (Config.LOGV) {
@@ -3135,6 +3132,24 @@ public class MessagingController implements Runnable {
             addErrorMessage(account, e);
         }
     }
+    
+    private boolean modeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode)
+    {
+        if ((aMode == Account.FolderMode.FIRST_CLASS && 
+                fMode != Folder.FolderClass.FIRST_CLASS) 
+                || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
+                        fMode != Folder.FolderClass.FIRST_CLASS &&
+                        fMode != Folder.FolderClass.SECOND_CLASS) 
+                        || (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
+                                fMode == Folder.FolderClass.SECOND_CLASS))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     class Command {
         public Runnable runnable;
@@ -3306,13 +3321,47 @@ public class MessagingController implements Runnable {
         };
         try
         {
-            Store store = Store.getInstance(account.getStoreUri(), mApplication);
+            Preferences prefs = Preferences.getPreferences(mApplication);
+            
+            Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
+            Account.FolderMode aPushMode = account.getFolderPushMode();
+
             List<String> names = new ArrayList<String>();
-            names.add("INBOX");
-            names.add("CarlnDave");
-            names.add("Janet");
-            names.add("k-9");
-//            names.add("MyIncTmp");
+            
+            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            for (final Folder folder : localStore.getPersonalNamespaces())
+            {
+                folder.open(Folder.OpenMode.READ_WRITE);
+                folder.refresh(prefs);
+
+                Folder.FolderClass fDisplayClass = folder.getDisplayClass();
+                Folder.FolderClass fPushClass = folder.getPushClass();
+
+                if (modeMismatch(aDisplayMode, fDisplayClass))
+                {
+                    // Never push a folder that isn't displayed
+                    if (Config.LOGV) {
+                        Log.v(Email.LOG_TAG, "Not pushing folder " + folder.getName() + 
+                                " which is in display class " + fDisplayClass + " while account is in display mode " + aDisplayMode);
+                    }
+
+                    continue;
+                }
+
+                if (modeMismatch(aPushMode, fPushClass))
+                {
+                    // Do not push folders in the wrong class
+                    if (Config.LOGV) {
+                        Log.v(Email.LOG_TAG, "Not pushing folder " + folder.getName() + 
+                                " which is in push mode " + fPushClass + " while account is in push mode " + aPushMode);
+                    }
+
+                    continue;
+                }
+                Log.i(Email.LOG_TAG, "Starting pusher for " + account.getDescription() + ":" + folder.getName());
+                names.add(folder.getName());
+            }
+            Store store = Store.getInstance(account.getStoreUri(), mApplication);
             pusher = store.getPusher(receiver, names);
             if (pusher != null)
             {
@@ -3437,6 +3486,96 @@ public class MessagingController implements Runnable {
             Log.e(Email.LOG_TAG, "Interrupted while awaiting latch release", e);
         }
         Log.i(Email.LOG_TAG, "Latch released");
+    }
+    enum MemorizingState { STARTED, FINISHED, FAILED};
+    class MemorizingListener extends MessagingListener
+    {
+        Account syncingAccount;
+        String syncingFolder;
+        String syncingMessage;
+        int syncingTotalMessagesInMailbox;
+        int syncingNumNewMessages;
+        
+        Account sendingAccount;
+        
+        MemorizingState syncingState = null;
+        MemorizingState sendingState = null;
+        
+        public synchronized void synchronizeMailboxStarted(Account account, String folder) {
+            syncingState = MemorizingState.STARTED;
+            syncingAccount = account;
+            syncingFolder = folder;
+        }
+
+        public synchronized void synchronizeMailboxFinished(Account account, String folder,
+                int totalMessagesInMailbox, int numNewMessages) {
+            syncingState = MemorizingState.FINISHED;
+            syncingAccount = account;
+            syncingFolder = folder;
+            syncingTotalMessagesInMailbox = totalMessagesInMailbox;
+            syncingNumNewMessages = numNewMessages;
+        }
+
+        public synchronized void synchronizeMailboxFailed(Account account, String folder,
+                String message) {
+            syncingState = MemorizingState.FAILED;
+            syncingAccount = account;
+            syncingFolder = folder;
+            syncingMessage = message;
+        }
+        synchronized void refreshOther(MessagingListener other)
+        {
+            if (other != null)
+            {
+                if (syncingState != null)
+                {
+                    switch (syncingState)
+                    {
+                        case STARTED:
+                            other.synchronizeMailboxStarted(syncingAccount, syncingFolder);
+                            break;
+                        case FINISHED:
+                            other.synchronizeMailboxFinished(syncingAccount, syncingFolder, 
+                                        syncingTotalMessagesInMailbox, syncingNumNewMessages);
+                            break;
+                        case FAILED:
+                            other.synchronizeMailboxFailed(syncingAccount, syncingFolder,
+                                    syncingMessage);
+                            break;
+                    }
+                }
+                if (sendingState != null)
+                {
+                    switch (sendingState)
+                    {
+                        case STARTED:
+                            other.sendPendingMessagesStarted(sendingAccount);
+                            break;
+                        case FINISHED:
+                            other.sendPendingMessagesCompleted(sendingAccount);
+                            break;
+                        case FAILED:
+                            other.sendPendingMessagesFailed(sendingAccount);
+                            break;
+                    }
+                }
+            }
+        }
+        
+        public synchronized void sendPendingMessagesStarted(Account account) {
+            sendingState = MemorizingState.STARTED;
+            sendingAccount = account;
+        }
+
+        public synchronized void sendPendingMessagesCompleted(Account account) {
+            sendingState = MemorizingState.FINISHED;
+            sendingAccount = account;
+        }
+        
+        public synchronized void sendPendingMessagesFailed(Account account) {
+            sendingState = MemorizingState.FAILED;
+            sendingAccount = account;
+        }
     }
 
 }

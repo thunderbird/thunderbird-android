@@ -149,6 +149,10 @@ public abstract class Folder {
 		{
 			return getDisplayClass();
 		}
+		public FolderClass getPushClass()
+        {
+            return getSyncClass();
+        }
 		
     public void refresh(Preferences preferences) throws MessagingException
     {
