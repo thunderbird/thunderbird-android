@@ -1918,7 +1918,6 @@ public class ImapStore extends Store {
                         catch (Exception e)
                         {
                             idling.set(false);
-                            Log.e(Email.LOG_TAG, "Got exception while idling", e);
                             try
                             {
                                 close(false);
@@ -1927,13 +1926,21 @@ public class ImapStore extends Store {
                             {
                                 Log.e(Email.LOG_TAG, "Got exception while closing for exception", me);
                             }
-                            try
+                            if (stop.get() == true)
                             {
-                                Thread.sleep(10000);
+                                Log.i(Email.LOG_TAG, "Got exception while idling, but stop is set");
                             }
-                            catch (Exception ie)
+                            else
                             {
-                                Log.e(Email.LOG_TAG, "Got exception while delaying after push exception", ie);
+                                Log.e(Email.LOG_TAG, "Got exception while idling", e);
+                                try
+                                {
+                                    Thread.sleep(10000);
+                                }
+                                catch (Exception ie)
+                                {
+                                    Log.e(Email.LOG_TAG, "Got exception while delaying after push exception", ie);
+                                }
                             }
                         }
                     }
@@ -2047,9 +2054,14 @@ public class ImapStore extends Store {
         {
             stop.set(true);
             
-            if (listeningThread != null)
+            if (mConnection != null)
             {
-                listeningThread.interrupt();
+                Log.v(Email.LOG_TAG, "Closing mConnection to stop pushing");
+                mConnection.close();
+            }
+            else
+            {
+                Log.w(Email.LOG_TAG, "Attempt to interrupt null mConnection to stop pushing" + " on folderPusher " + getName());
             }
         }
         
@@ -2139,10 +2151,12 @@ public class ImapStore extends Store {
 
         public void stop()
         {
+            Log.i(Email.LOG_TAG, "Requested stop of IMAP pusher");
             for (ImapFolderPusher folderPusher : folderPushers)
             {
                 try
                 {
+                    Log.i(Email.LOG_TAG, "Requesting stop of IMAP folderPusher " + folderPusher.getName());
                     folderPusher.stop();
                 }
                 catch (Exception e)

@@ -101,8 +101,6 @@ public class MessagingController implements Runnable {
     private static final String PENDING_COMMAND_SET_FLAG = "com.android.email.MessagingController.setFlag";
     private static final String PENDING_COMMAND_APPEND = "com.android.email.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.android.email.MessagingController.markAllAsRead";
-    private static final String PENDING_COMMAND_CLEAR_ALL_PENDING = "com.android.email.MessagingController.clearAllPending";
-
 
     private static MessagingController inst = null;
     private BlockingQueue<Command> mCommands = new LinkedBlockingQueue<Command>();
@@ -114,6 +112,8 @@ public class MessagingController implements Runnable {
     private HashMap<SORT_TYPE, Boolean> sortAscending = new HashMap<SORT_TYPE, Boolean>();
     
     private ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
+    
+    ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
     
     private final ExecutorService threadPool = Executors.newFixedThreadPool(3);
   
@@ -3217,9 +3217,7 @@ public class MessagingController implements Runnable {
     {
       sortAscending.put(sortType, nsortAscending);
     }
-    
-    HashMap<Account, Pusher> pushers = new HashMap<Account, Pusher>();
-    
+
     public Collection<Pusher> getPushers()
     {
         return pushers.values();
@@ -3399,6 +3397,19 @@ public class MessagingController implements Runnable {
         {
             pusher.stop();
         }
+    }
+    
+    public void stopAllPushing()
+    {
+        Log.i(Email.LOG_TAG, "Stopping all pushers");
+        Iterator<Pusher> iter = pushers.values().iterator();
+        while (iter.hasNext())
+        {
+            Pusher pusher = iter.next();
+            iter.remove();
+            pusher.stop();
+        }
+        
     }
     
     public void messagesArrived(final Account account, final String folderName, final List<Message> messages, final boolean doNotify)

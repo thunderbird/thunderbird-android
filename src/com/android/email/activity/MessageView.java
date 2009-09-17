@@ -114,10 +114,6 @@ public class MessageView extends K9Activity
     private DateFormat timeFormat = null;
     
     private Menu optionsMenu = null;
-
-    //Shall we use more threads? How often will the user move from non-fully-downloaded
-    //messages to another non-fully-downloaded message more than 3 times?
- //   private final ExecutorService threadPool = Executors.newFixedThreadPool(3);
     
     private DateFormat getDateFormat()
     {

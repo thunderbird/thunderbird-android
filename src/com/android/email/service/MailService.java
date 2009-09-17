@@ -193,11 +193,7 @@ public class MailService extends Service {
     private void reschedulePushers()
     {
         Log.i(Email.LOG_TAG, "Rescheduling pushers");
-        Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
-        for (Pusher pusher : pushers)
-        {
-           pusher.stop();
-        }
+        MessagingController.getInstance(getApplication()).stopAllPushing();
   
         for (Account account : Preferences.getPreferences(this).getAccounts()) {
             if (account.getAutomaticCheckIntervalMinutes() > 0)
@@ -232,6 +228,8 @@ public class MailService extends Service {
 
             AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
             long nextTime = System.currentTimeMillis() + minInterval;
+            String checkString = "Next pusher refresh scheduled for " + new Date(nextTime);
+            Log.d(Email.LOG_TAG, checkString);
             Intent i = new Intent();
             i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
             i.setAction(ACTION_REFRESH_PUSHERS);
