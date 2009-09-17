@@ -807,7 +807,7 @@ public class ImapStore extends Store {
                 do {
                     response = mConnection.readResponse();
                     handleUntaggedResponse(response);
-Log.v(Email.LOG_TAG, "response for fetch: " + response);
+                    Log.v(Email.LOG_TAG, "response for fetch: " + response);
                     if (response.mTag == null && response.get(1).equals("FETCH")) {
                         ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                         String uid = fetchList.getKeyedString("UID");
@@ -893,7 +893,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
                                 {
                                   String bodyString = (String)literal;
 
-                                  Log.i(Email.LOG_TAG, "Part is an String: " + bodyString);
+                                  Log.v(Email.LOG_TAG, "Part is an String: " + bodyString);
                                   InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
                                   String contentTransferEncoding = part.getHeader(
                                       MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
@@ -943,7 +943,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
           {
             if (response.get(1).equals("EXISTS")) {
                 mMessageCount = response.getNumber(0);
-                Log.i(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
+                Log.d(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
             }
             if (response.get(0).equals("OK") && response.size() > 1) {
                 Object bracketedObj = response.get(1);
@@ -960,7 +960,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
                             if ("UIDNEXT".equals(key))
                             {
                                 uidNext = bracketed.getNumber(1);
-                                Log.i(Email.LOG_TAG, "Got UidNext = " + uidNext);
+                                Log.d(Email.LOG_TAG, "Got UidNext = " + uidNext);
                             }
                         }
                     }
@@ -970,7 +970,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
             }
             else if (response.get(1).equals("EXPUNGE") && mMessageCount > 0) {
               mMessageCount--;
-              Log.i(Email.LOG_TAG, "Got untagged EXPUNGE with value " + mMessageCount);
+              Log.d(Email.LOG_TAG, "Got untagged EXPUNGE with value " + mMessageCount);
             }
           }
           //Log.i(Email.LOG_TAG, "mMessageCount = " + mMessageCount);
@@ -1448,7 +1448,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
                                 {
                                     if (Email.DEBUG)
                                     {
-                                        Log.d(Email.LOG_TAG, "Saving capability '" + capability + "' for connection " + this.hashCode());
+                                        Log.v(Email.LOG_TAG, "Saving capability '" + capability + "' for connection " + this.hashCode());
                                     }
                                     capabilities.add((String)capability);
                                 }
@@ -1534,10 +1534,10 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
         {
             if (Email.DEBUG)
             {
-                Log.d(Email.LOG_TAG, "Connection " + this.hashCode() + " has " + capabilities.size() + " capabilities");
+                Log.v(Email.LOG_TAG, "Connection " + this.hashCode() + " has " + capabilities.size() + " capabilities");
                 for (String capability : capabilities)
                 {
-                    Log.d(Email.LOG_TAG, "Have capability '" + capability + "'");
+                    Log.v(Email.LOG_TAG, "Have capability '" + capability + "'");
                 }
             }
             return capabilities.contains("IDLE");
@@ -1606,7 +1606,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
             mOut.flush();
             
             if (Email.DEBUG) {
-                Log.d(Email.LOG_TAG, ">>> " + continuation);
+                Log.v(Email.LOG_TAG, ">>> " + continuation);
             }
             
         }
@@ -1624,10 +1624,10 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
            
             if (Email.DEBUG) {
                 if (sensitive && !Email.DEBUG_SENSITIVE) {
-                    Log.d(Email.LOG_TAG, ">>> "
+                    Log.v(Email.LOG_TAG, ">>> "
                             + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
                 } else {
-                    Log.d(Email.LOG_TAG, ">>> " + commandToSend);
+                    Log.v(Email.LOG_TAG, ">>> " + commandToSend);
                 }
             }
             
@@ -1664,12 +1664,12 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
         throws IOException, ImapException, MessagingException {
           if (Email.DEBUG)
           {
-            Log.d(Email.LOG_TAG, "Sending IMAP command " + command + " on connection " + this.hashCode());
+            Log.v(Email.LOG_TAG, "Sending IMAP command " + command + " on connection " + this.hashCode());
           }
           String tag = sendCommand(command, sensitive);
           if (Email.DEBUG)
           {
-            Log.d(Email.LOG_TAG, "Sent IMAP command " + command + " with tag " + tag);
+            Log.v(Email.LOG_TAG, "Sent IMAP command " + command + " with tag " + tag);
           }
           ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
           ImapResponse response;
@@ -1677,7 +1677,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
             response = mParser.readResponse();
             if (Email.DEBUG)
             {
-              Log.d(Email.LOG_TAG, "Got IMAP response " + response);
+              Log.v(Email.LOG_TAG, "Got IMAP response " + response);
             }
             if (response.mTag != null && response.mTag.equals(tag) == false)
             {
@@ -1961,7 +1961,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
 
             super.handleUntaggedResponses(responses);
 
-            Log.i(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
+            Log.d(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
             if (oldMessageCount > 0 && mMessageCount > oldMessageCount)
             {
                 syncMessages(oldMessageCount + 1, mMessageCount, true);
@@ -2055,7 +2055,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
         
         public void handleAsyncUntaggedResponse(ImapResponse response)
         {
-            Log.i(Email.LOG_TAG, "Got async response: " + response);
+            Log.v(Email.LOG_TAG, "Got async response: " + response);
             if (response.mTag == null)
             {
                 if (response.size() > 1)
@@ -2070,7 +2070,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
                             receiver.pushInProgress();
                             started = true;
                         }
-                        Log.i(Email.LOG_TAG, "Got useful async untagged response: " + response);
+                        Log.d(Email.LOG_TAG, "Got useful async untagged response: " + response);
                         try
                         {
                             sendContinuation("DONE");
@@ -2085,7 +2085,7 @@ Log.v(Email.LOG_TAG, "response for fetch: " + response);
                 {
                     if ("idling".equals(response.get(0)))
                     {
-                        Log.i(Email.LOG_TAG, "Idling");
+                        Log.d(Email.LOG_TAG, "Idling");
                         receiver.pushComplete();
                     }
                 }

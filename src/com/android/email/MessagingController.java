@@ -300,10 +300,10 @@ public class MessagingController implements Runnable {
                 
                 if (command != null) {
                   commandDescription = command.description;
-                  Log.d(Email.LOG_TAG, "Running background command '" + command.description + "'");
+                  Log.i(Email.LOG_TAG, "Running background command '" + command.description + "'");
                   mBusy = true;
                   command.runnable.run();
-                  Log.d(Email.LOG_TAG, "Background command '" + command.description + "' completed");
+                  Log.i(Email.LOG_TAG, "Background command '" + command.description + "' completed");
                   for (MessagingListener l : getListeners()) {
                       l.controllerCommandCompleted(mCommands.size() > 0);
                   }
@@ -320,43 +320,38 @@ public class MessagingController implements Runnable {
     }
 
     private void put(String description, MessagingListener listener, Runnable runnable) {
-        try {
-            Command command = new Command();
-            command.listener = listener;
-            command.runnable = runnable;
-            command.description = description;
-            mCommands.put(command);
-        }
-        catch (InterruptedException ie) {
-            throw new Error(ie);
-        }
+        putCommand(mCommands, description, listener, runnable);
     }
-    
+
     private void putBackground(String description, MessagingListener listener, Runnable runnable) {
-	int retries = 10;
-	Exception e = null;
+        putCommand(backCommands, description, listener, runnable);
+    }
+
+    private void putCommand(BlockingQueue<Command> queue, String description, MessagingListener listener, Runnable runnable) {
+        int retries = 10;
+        Exception e = null;
         while (retries-- > 0)
-	{
-	    try {
-		Command command = new Command();
-		command.listener = listener;
-		command.runnable = runnable;
-		command.description = description;
-		backCommands.put(command);
-		return;
-	    }
-	    catch (InterruptedException ie) {
-		try
-		{
-		    Thread.sleep(200);
-		}
-		catch (InterruptedException ne)
-		{
-		}
-		e = ie;
-	    }
-	}
-	throw new Error(e);
+        {
+            try {
+                Command command = new Command();
+                command.listener = listener;
+                command.runnable = runnable;
+                command.description = description;
+                queue.put(command);
+                return;
+            }
+            catch (InterruptedException ie) {
+                try
+                {
+                    Thread.sleep(200);
+                }
+                catch (InterruptedException ne)
+                {
+                }
+                e = ie;
+            }
+        }
+        throw new Error(e);
     }
 
 
@@ -1910,14 +1905,14 @@ public class MessagingController implements Runnable {
                         markMessageRead(account, localFolder, message, true);
                     }
                     
-                    if (listener != null)
+                    if (listener != null && !getListeners().contains(listener))
                     {
                         listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
                     }
                     for (MessagingListener l : getListeners()) {
                         l.loadMessageForViewBodyAvailable(account, folder, uid, message);
                     }
-                    if (listener != null)
+                    if (listener != null && !getListeners().contains(listener))
                     {
                         listener.loadMessageForViewFinished(account, folder, uid, message);
                     }
@@ -1928,6 +1923,10 @@ public class MessagingController implements Runnable {
                 catch (Exception e) {
                     for (MessagingListener l : getListeners()) {
                         l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+                    }
+                    if (listener != null && !getListeners().contains(listener))
+                    {
+                        listener.loadMessageForViewFailed(account, folder, uid, e.getMessage());
                     }
                     addErrorMessage(account, e);
 
@@ -1956,66 +1955,78 @@ public class MessagingController implements Runnable {
     }
 
     public void loadMessageForView(final Account account, final String folder, final String uid,
-            MessagingListener listener) {
-        for (MessagingListener l : getListeners()) {
-            l.loadMessageForViewStarted(account, folder, uid);
-        }
-        try {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-            LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
-            localFolder.open(OpenMode.READ_WRITE);
-
-            Message message = localFolder.getMessage(uid);
-                        
-            for (MessagingListener l : getListeners()) {
-                l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
+            final MessagingListener listener) {
+        put("loadMessageForView", listener, new Runnable() {
+            public void run() {
+                for (MessagingListener l : getListeners()) {
+                    l.loadMessageForViewStarted(account, folder, uid);
+                }
+                if (listener != null && !getListeners().contains(listener))
+                {
+                    listener.loadMessageForViewStarted(account, folder, uid);
+                }
+                try {
+                    Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+                    LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
+                    localFolder.open(OpenMode.READ_WRITE);
+        
+                    Message message = localFolder.getMessage(uid);
+                                
+                    for (MessagingListener l : getListeners()) {
+                        l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
+                    }
+                    if (listener != null && !getListeners().contains(listener))
+                    {
+                        listener.loadMessageForViewHeadersAvailable(account, folder, uid, message);
+                    }
+                    
+                    if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                        loadMessageForViewRemote(account, folder, uid, listener);
+                        localFolder.close(false);
+                        return;
+                    }
+        
+                    FetchProfile fp = new FetchProfile();
+                    fp.add(FetchProfile.Item.ENVELOPE);
+                    fp.add(FetchProfile.Item.BODY);
+                    localFolder.fetch(new Message[] {
+                        message
+                    }, fp, null);
+                    localFolder.close(false);
+                    if (!message.isSet(Flag.SEEN)) {
+                      markMessageRead(account, localFolder, message, true);
+                    }
+        
+                    for (MessagingListener l : getListeners()) {
+                        l.loadMessageForViewBodyAvailable(account, folder, uid, message);
+                    }
+                    if (listener != null && !getListeners().contains(listener))
+                    {
+                    	listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
+                    }
+        
+                    for (MessagingListener l : getListeners()) {
+                        l.loadMessageForViewFinished(account, folder, uid, message);
+                    }
+                    if (listener != null && !getListeners().contains(listener))
+                    {
+                    	listener.loadMessageForViewFinished(account, folder, uid, message);
+                    }
+                    
+                }
+                catch (Exception e) {
+                    for (MessagingListener l : getListeners()) {
+                        l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+                    }
+                    if (listener != null && !getListeners().contains(listener))
+                    {
+                        listener.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+                    }
+                    addErrorMessage(account, e);
+        
+                }
             }
-            if (listener != null)
-            {
-                listener.loadMessageForViewHeadersAvailable(account, folder, uid, message);
-            }
-            
-            if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
-                loadMessageForViewRemote(account, folder, uid, listener);
-                localFolder.close(false);
-                return;
-            }
-
-            FetchProfile fp = new FetchProfile();
-            fp.add(FetchProfile.Item.ENVELOPE);
-            fp.add(FetchProfile.Item.BODY);
-            localFolder.fetch(new Message[] {
-                message
-            }, fp, null);
-
-            if (!message.isSet(Flag.SEEN)) {
-              markMessageRead(account, localFolder, message, true);
-            }
-
-            for (MessagingListener l : getListeners()) {
-                l.loadMessageForViewBodyAvailable(account, folder, uid, message);
-            }
-            if (listener != null)
-            {
-            	listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
-            }
-
-            for (MessagingListener l : getListeners()) {
-                l.loadMessageForViewFinished(account, folder, uid, message);
-            }
-            if (listener != null)
-            {
-            	listener.loadMessageForViewFinished(account, folder, uid, message);
-            }
-            localFolder.close(false);
-        }
-        catch (Exception e) {
-            for (MessagingListener l : getListeners()) {
-                l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
-            }
-            addErrorMessage(account, e);
-
-        }
+         });
     }
 
 //    public void loadMessageForViewSynchronous(final Account account, final String folder, final String uid,
