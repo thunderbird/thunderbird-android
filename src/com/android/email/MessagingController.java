@@ -17,6 +17,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -112,6 +114,8 @@ public class MessagingController implements Runnable {
     private HashMap<SORT_TYPE, Boolean> sortAscending = new HashMap<SORT_TYPE, Boolean>();
     
     private ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
+    
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(3);
   
     public enum SORT_TYPE { 
       SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
@@ -1956,15 +1960,16 @@ public class MessagingController implements Runnable {
 
     public void loadMessageForView(final Account account, final String folder, final String uid,
             final MessagingListener listener) {
-        put("loadMessageForView", listener, new Runnable() {
+        for (MessagingListener l : getListeners()) {
+            l.loadMessageForViewStarted(account, folder, uid);
+        }
+        if (listener != null && !getListeners().contains(listener))
+        {
+            listener.loadMessageForViewStarted(account, folder, uid);
+        }
+        threadPool.execute(new Runnable() {
             public void run() {
-                for (MessagingListener l : getListeners()) {
-                    l.loadMessageForViewStarted(account, folder, uid);
-                }
-                if (listener != null && !getListeners().contains(listener))
-                {
-                    listener.loadMessageForViewStarted(account, folder, uid);
-                }
+                
                 try {
                     Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
                     LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
