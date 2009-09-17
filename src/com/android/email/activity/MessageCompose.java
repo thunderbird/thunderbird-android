@@ -500,14 +500,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         updateFrom();
         updateSignature();
                
-        Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
-        if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null) {
-          Log.d(Email.LOG_TAG, "Setting message ANSWERED flag to true");
-          // TODO: Really, we should wait until we send the message, but that would require saving the original
-          // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
-            MessagingController.getInstance(getApplication()).setMessageFlag(mAccount, mFolder, mSourceMessageUid, Flag.ANSWERED, true);
-        }
-
         if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_FORWARD.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
             /*
              * If we need to load the message we add ourself as a message listener here
@@ -525,6 +517,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         if (!ACTION_EDIT_DRAFT.equals(action)) {
             addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
+        }
+
+        Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
+        if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null) {
+          Log.d(Email.LOG_TAG, "Setting message ANSWERED flag to true");
+          // TODO: Really, we should wait until we send the message, but that would require saving the original
+          // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
+            MessagingController.getInstance(getApplication()).setMessageFlag(mAccount, mFolder, mSourceMessageUid, Flag.ANSWERED, true);
         }
 
         updateTitle();

@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -105,6 +107,8 @@ public class MessagingController implements Runnable {
     private HashMap<SORT_TYPE, Boolean> sortAscending = new HashMap<SORT_TYPE, Boolean>();
     
     private ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
+  
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(3);
   
     public enum SORT_TYPE { 
       SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
@@ -287,10 +291,10 @@ public class MessagingController implements Runnable {
                 
                 if (command != null) {
                   commandDescription = command.description;
-                  Log.d(Email.LOG_TAG, "Running background command '" + command.description + "'");
+                  Log.i(Email.LOG_TAG, "Running background command '" + command.description + "'");
                   mBusy = true;
                   command.runnable.run();
-                  Log.d(Email.LOG_TAG, "Background command '" + command.description + "' completed");
+                  Log.i(Email.LOG_TAG, "Background command '" + command.description + "' completed");
                   for (MessagingListener l : getListeners()) {
                       l.controllerCommandCompleted(mCommands.size() > 0);
                   }
@@ -307,25 +311,20 @@ public class MessagingController implements Runnable {
     }
 
     private void put(String description, MessagingListener listener, Runnable runnable) {
-        try {
-            Command command = new Command();
-            command.listener = listener;
-            command.runnable = runnable;
-            command.description = description;
-            mCommands.put(command);
+        putCommand(mCommands, description, listener, runnable);
         }
-        catch (InterruptedException ie) {
-            throw new Error(ie);
-        }
-    }
-    
+
     private void putBackground(String description, MessagingListener listener, Runnable runnable) {
+        putCommand(backCommands, description, listener, runnable);
+        }
+    
+    private void putCommand(BlockingQueue<Command> queue, String description, MessagingListener listener, Runnable runnable) {
       try {
           Command command = new Command();
           command.listener = listener;
           command.runnable = runnable;
           command.description = description;
-          backCommands.put(command);
+                queue.put(command);
       }
       catch (InterruptedException ie) {
           throw new Error(ie);
@@ -1797,14 +1796,14 @@ public class MessagingController implements Runnable {
                         markMessageRead(account, localFolder, message, true);
                     }
 
-                    if (listener != null)
+                    if (listener != null && !getListeners().contains(listener))
                     {
                         listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
                     }
                     for (MessagingListener l : getListeners()) {
                         l.loadMessageForViewBodyAvailable(account, folder, uid, message);
                     }
-                    if (listener != null)
+                    if (listener != null && !getListeners().contains(listener))
                     {
                         listener.loadMessageForViewFinished(account, folder, uid, message);
                     }
@@ -1815,6 +1814,10 @@ public class MessagingController implements Runnable {
                 catch (Exception e) {
                     for (MessagingListener l : getListeners()) {
                         l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+                    }
+                    if (listener != null && !getListeners().contains(listener))
+                    {
+                        listener.loadMessageForViewFailed(account, folder, uid, e.getMessage());
                     }
                     addErrorMessage(account, e);
 
@@ -1843,10 +1846,17 @@ public class MessagingController implements Runnable {
     }
 
     public void loadMessageForView(final Account account, final String folder, final String uid,
-            MessagingListener listener) {
+            final MessagingListener listener) {
         for (MessagingListener l : getListeners()) {
             l.loadMessageForViewStarted(account, folder, uid);
         }
+                if (listener != null && !getListeners().contains(listener))
+                {
+                    listener.loadMessageForViewStarted(account, folder, uid);
+                }
+        threadPool.execute(new Runnable() {
+            public void run() {
+                
         try {
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
@@ -1857,7 +1867,7 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners()) {
                 l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
             }
-            if (listener != null)
+                    if (listener != null && !getListeners().contains(listener))
             {
                 listener.loadMessageForViewHeadersAvailable(account, folder, uid, message);
             }
@@ -1874,7 +1884,7 @@ public class MessagingController implements Runnable {
             localFolder.fetch(new Message[] {
                 message
             }, fp, null);
-
+                    localFolder.close(false);
             if (!message.isSet(Flag.SEEN)) {
               markMessageRead(account, localFolder, message, true);
             }
@@ -1882,7 +1892,7 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners()) {
                 l.loadMessageForViewBodyAvailable(account, folder, uid, message);
             }
-            if (listener != null)
+                    if (listener != null && !getListeners().contains(listener))
             {
             	listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
             }
@@ -1890,19 +1900,25 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners()) {
                 l.loadMessageForViewFinished(account, folder, uid, message);
             }
-            if (listener != null)
+                    if (listener != null && !getListeners().contains(listener))
             {
             	listener.loadMessageForViewFinished(account, folder, uid, message);
             }
-            localFolder.close(false);
+                    
         }
         catch (Exception e) {
             for (MessagingListener l : getListeners()) {
                 l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
             }
+                    if (listener != null && !getListeners().contains(listener))
+                    {
+                        listener.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+                    }
             addErrorMessage(account, e);
 
         }
+    }
+         });
     }
 
 //    public void loadMessageForViewSynchronous(final Account account, final String folder, final String uid,
