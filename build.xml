@@ -42,7 +42,9 @@
         <pathelement path="${sdk-location}/tools/lib/androidprefs.jar" />
         <pathelement path="${sdk-location}/tools/lib/apkbuilder.jar" />
         <pathelement path="${sdk-location}/tools/lib/jarutils.jar" />
-    </path>
+	</path>
+
+	<property environment="env"/>
 
     <taskdef name="setup"
         classname="com.android.ant.SetupTask"
@@ -122,6 +124,9 @@
 
     <!-- The final package file to generate -->
     <property name="out-debug-package" value="${out-folder}/${ant.project.name}-debug.apk"/>
+    <property name="out-unsigned-package" value="${out-folder}/${ant.project.name}-unsigned.apk"/>
+    <property name="out-signed-package" value="${out-folder}/${ant.project.name}-signed.apk"/>
+
 
     <!-- Tools -->
     <condition property="exe" value=".exe" else=""><os family="windows"/></condition>
@@ -252,10 +257,10 @@
         <exec executable="jarsigner" failonerror="true">
             <arg value="-verbose" />
             <arg value="-storepass" />
-            <arg value="${env.jarpass}" />
+			<arg value="${env.jarpass}" />
             <arg value="-signedjar" />
-            <arg value="${out-signed-package-ospath}" />
-            <arg value="${out-unsigned-package-ospath}" />
+            <arg value="${out-signed-package}" />
+            <arg value="${out-unsigned-package}" />
 
             <arg value="fsckcom" />
         </exec>
