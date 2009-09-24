@@ -1380,8 +1380,6 @@ public class MessagingController implements Runnable {
  
         Message remoteMessage = null;
         if (!uid.startsWith(Email.LOCAL_UID_PREFIX)) {
-       // Why bother with this, perhaps just pass the UID to the store to save a roundtrip?  And check for error returns, of course
-       // Same applies for deletion
             remoteMessage = remoteSrcFolder.getMessage(uid);      
         }
         if (remoteMessage == null) {

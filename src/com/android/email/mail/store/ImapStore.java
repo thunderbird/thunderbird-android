@@ -585,31 +585,7 @@ public class ImapStore extends Store {
 
         @Override
         public Message getMessage(String uid) throws MessagingException {
-            checkOpen();
-
-            try {
-                try {
-                    List<ImapResponse> responses =
-                            executeSimpleCommand(String.format("UID SEARCH UID %S", uid));
-                    for (ImapResponse response : responses) {
-			//			Log.d(Email.LOG_TAG, "Got search response: " + response.get(0) + ", size " + response.size());
-                        if (response.mTag == null && response.get(0).equals("SEARCH")) {
-                            for (int i = 1, count = response.size(); i < count; i++) {
-                                if (uid.equals(response.get(i))) {
-                                    return new ImapMessage(uid, this);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (MessagingException me) {
-                    return null;
-                }
-            }
-            catch (IOException ioe) {
-                throw ioExceptionHandler(mConnection, ioe);
-            }
-            return null;
+	    return new ImapMessage(uid, this);
         }
 
         @Override
