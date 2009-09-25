@@ -1490,8 +1490,6 @@ public class MessagingController implements Runnable {
  
         Message remoteMessage = null;
         if (!uid.startsWith(Email.LOCAL_UID_PREFIX)) {
-       // Why bother with this, perhaps just pass the UID to the store to save a roundtrip?  And check for error returns, of course
-       // Same applies for deletion
             remoteMessage = remoteSrcFolder.getMessage(uid);      
         }
         if (remoteMessage == null) {
@@ -1640,7 +1638,7 @@ public class MessagingController implements Runnable {
     		Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
     		LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
     		Message[] messages = new Message[1];
-    		Message message = new MimeMessage();
+    		MimeMessage message = new MimeMessage();
     		ByteArrayOutputStream baos = new ByteArrayOutputStream();
     		PrintStream ps = new PrintStream(baos);
     		t.printStackTrace(ps);
@@ -1652,7 +1650,7 @@ public class MessagingController implements Runnable {
     		long nowTime = System.currentTimeMillis();
     		Date nowDate = new Date(nowTime);
     		message.setInternalDate(nowDate);
-    		message.setSentDate(nowDate);
+    		message.addSentDate(nowDate);
     		message.setFrom(new Address(account.getEmail(), "K9mail internal"));
     		messages[0] = message;
     		
@@ -1691,7 +1689,7 @@ public class MessagingController implements Runnable {
         Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
         LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
         Message[] messages = new Message[1];
-        Message message = new MimeMessage();
+        MimeMessage message = new MimeMessage();
         
 
         message.setBody(new TextBody(body));
@@ -1701,7 +1699,7 @@ public class MessagingController implements Runnable {
         long nowTime = System.currentTimeMillis();
         Date nowDate = new Date(nowTime);
         message.setInternalDate(nowDate);
-        message.setSentDate(nowDate);
+        message.addSentDate(nowDate);
         message.setFrom(new Address(account.getEmail(), "K9mail internal"));
         messages[0] = message;
         

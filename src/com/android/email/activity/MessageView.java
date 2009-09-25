@@ -1106,6 +1106,9 @@ public class MessageView extends K9Activity
             }
 
             MessageView.this.mMessage = message;
+            if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                mMessageContentView.loadUrl("file:///android_asset/downloading.html");
+            }
             try {
                 setHeaders(account, folder, uid, message);
             }
@@ -1207,7 +1210,7 @@ public class MessageView extends K9Activity
             mHandler.post(new Runnable() {
                 public void run() {
                     mMessageContentView.loadUrl("file:///android_asset/loading.html");
-                    setProgressBarIndeterminateVisibility(true);
+                   setProgressBarIndeterminateVisibility(true);
                 }
             });
         }

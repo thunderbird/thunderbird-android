@@ -42,7 +42,9 @@
         <pathelement path="${sdk-location}/tools/lib/androidprefs.jar" />
         <pathelement path="${sdk-location}/tools/lib/apkbuilder.jar" />
         <pathelement path="${sdk-location}/tools/lib/jarutils.jar" />
-    </path>
+	</path>
+
+	<property environment="env"/>
 
     <taskdef name="setup"
         classname="com.android.ant.SetupTask"
@@ -96,6 +98,9 @@
     <!-- folder for the native libraries -->
     <property name="native-libs-folder" value="libs" />
 
+    <!-- folder for the java libraries already in AOP but not in the official SDK -->
+    <property name="compile-only-libs-folder" value="compile-only-libs" />
+
     <!-- Output directories -->
     <property name="gen-folder" value="gen" />
     <property name="out-folder" value="bin" />
@@ -119,6 +124,9 @@
 
     <!-- The final package file to generate -->
     <property name="out-debug-package" value="${out-folder}/${ant.project.name}-debug.apk"/>
+    <property name="out-unsigned-package" value="${out-folder}/${ant.project.name}-unsigned.apk"/>
+    <property name="out-signed-package" value="${out-folder}/${ant.project.name}-signed.apk"/>
+
 
     <!-- Tools -->
     <condition property="exe" value=".exe" else=""><os family="windows"/></condition>
@@ -181,6 +189,7 @@
             <src path="${gen-folder}" />
             <classpath>
                 <fileset dir="${external-libs-folder}" includes="*.jar"/>
+                <fileset dir="${compile-only-libs-folder}" includes="*.jar"/>
                 <fileset dir="${sdk-location}/platforms/android-1.5/" includes="**/*.jar"/>
                 <pathelement path="${main-out-classes}"/>
             </classpath>
@@ -248,10 +257,10 @@
         <exec executable="jarsigner" failonerror="true">
             <arg value="-verbose" />
             <arg value="-storepass" />
-            <arg value="${env.jarpass}" />
+			<arg value="${env.jarpass}" />
             <arg value="-signedjar" />
-            <arg value="${out-signed-package-ospath}" />
-            <arg value="${out-unsigned-package-ospath}" />
+            <arg value="${out-signed-package}" />
+            <arg value="${out-unsigned-package}" />
 
             <arg value="fsckcom" />
         </exec>
@@ -283,7 +292,12 @@
             <arg path="${application-package}" />
         </exec>
     </target>
-    
+
+    <target name="clean">
+        <delete dir="${out-folder}" />
+        <delete dir="${gen-folder}" />
+    </target>
+
     <target name="help">
         <!-- displays starts at col 13
               |13                                                              80| -->

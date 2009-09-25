@@ -8,13 +8,13 @@
   <string name="account_settings_default_label">Account predefinito</string>
   <string name="account_settings_default_summary">Invia messaggio e-mail da questo account per impostazione predefinita</string>
   <string name="account_settings_description_label">Nome account</string>
-  <string name="account_settings_incoming_label">Impostazioni in arrivo</string>
+  <string name="account_settings_incoming_label">Configurazione posta in arrivo</string>
   <string name="account_settings_incoming_summary">Configura il server di posta in arrivo</string>
   <string name="account_settings_mail_check_frequency_label">Frequenza controllo e-mail</string>
   <string name="account_settings_name_label">Nome</string>
   <string name="account_settings_notify_label">Notifiche e-mail</string>
   <string name="account_settings_notify_summary">Notifica nella barra di stato all'arrivo di un messaggio e-mail</string>
-  <string name="account_settings_outgoing_label">Impostazioni in uscita</string>
+  <string name="account_settings_outgoing_label">Configurazione posta in uscita</string>
   <string name="account_settings_outgoing_summary">Configura il server di posta in uscita</string>
   <string name="account_settings_show_combined_label">Mostra Posta in arrivo combinata</string>
   <string name="account_settings_title_fmt">Impostazioni account</string>
@@ -32,8 +32,8 @@
   <string name="account_setup_basics_password_hint">Password</string>
   <string name="account_setup_basics_title">Configura e-mail</string>
   <string name="account_setup_check_settings_canceling_msg">Annullamento in corso\u2026</string>
-  <string name="account_setup_check_settings_check_incoming_msg">Verifica in corso delle impostazioni del server posta in arrivo\u2026</string>
-  <string name="account_setup_check_settings_check_outgoing_msg">Verifica delle impostazioni del server posta in uscita\u2026</string>
+  <string name="account_setup_check_settings_check_incoming_msg">Verifica in corso delle impostazioni del server di posta in arrivo\u2026</string>
+  <string name="account_setup_check_settings_check_outgoing_msg">Verifica delle impostazioni del server di posta in uscita\u2026</string>
   <string name="account_setup_check_settings_finishing_msg">Completamento in corso\u2026</string>
   <string name="account_setup_check_settings_retr_info_msg">Recupero delle informazioni sull'account in corso\u2026</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Nome utente o password non corretta.\n(<xliff:g id="error">%s</xliff:g>)</string>
@@ -63,7 +63,7 @@
   <string name="account_setup_names_account_name_label">Assegnare un nome a questo account (opzionale):</string>
   <string name="account_setup_names_instructions">L'account è stato configurato e il messaggio inviato.</string>
   <string name="account_setup_names_title">Configura e-mail</string>
-  <string name="account_setup_names_user_name_label">Digitare il nome (visualizza su messaggi in uscita):</string>
+  <string name="account_setup_names_user_name_label">Digitare il nome (visualizzato su messaggi in uscita):</string>
   <string name="account_setup_options_default_label">Invia messaggio da questo account per impostazione predefinita.</string>
   <string name="account_setup_options_mail_check_frequency_10min">Ogni 10 minuti</string>
   <string name="account_setup_options_mail_check_frequency_15min">Ogni 15 minuti</string>
@@ -89,25 +89,25 @@
   <string name="account_setup_outgoing_security_tls_label">TLS (sempre)</string>
   <string name="account_setup_outgoing_security_tls_optional_label">TLS (se disponibile)</string>
   <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
-  <string name="account_setup_outgoing_title">Impostazioni server in uscita</string>
+  <string name="account_setup_outgoing_title">Configurazione server di posta in uscita</string>
   <string name="account_setup_outgoing_username_label">Nome utente</string>
   <string name="accounts_action">Account</string>
   <string name="accounts_context_menu_title">Opzioni account</string>
   <string name="accounts_title">Account personali</string>
-  <string name="accounts_welcome">Configurazione programma e-mail.\n\nUtilizzare un account e-mail con il programma e-mail.\n\nQuasi tutti i più noti account e-mail possono essere configurati in pochi passaggi.</string>
+  <string name="accounts_welcome">Configurazione programma e-mail.\n\nUtilizzare un account e-mail con il programma.\n\nQuasi tutti i più noti account e-mail possono essere configurati in pochi passaggi.</string>
   <string name="add_account_action">Aggiungi account</string>
   <string name="add_attachment_action">Aggiungi allegato</string>
   <string name="add_cc_bcc_action">Aggiungi Cc/Ccn</string>
-  <string name="app_name">Programma e-mail</string>
+  <string name="app_name">Posta</string>
   <string name="cancel_action">Annulla</string>
   <string name="combined_inbox_label">Messaggi recenti da tutti gli account</string>
-  <string name="combined_inbox_list_title">Tutta la Posta in arrivo di E-mail</string>
-  <string name="combined_inbox_title">Tutta la posta di E-mail</string>
+  <string name="combined_inbox_list_title">Tutta la Posta in arrivo</string>
+  <string name="combined_inbox_title">Tutta la posta</string>
   <string name="compose_action">Componi</string>
   <string name="compose_title">Componi</string>
   <string name="continue_action">Continua</string>
-  <string name="debug_enable_debug_logging_label">Abilitare la registrazione extra debug?</string>
-  <string name="debug_enable_sensitive_logging_label">Abilitare la registrazione di debug delle informazioni riservate? (Nei log possono venire visualizzate le password.)</string>
+  <string name="debug_enable_debug_logging_label">Abilitare la registrazione di informazioni di debug aggiuntive?</string>
+  <string name="debug_enable_sensitive_logging_label">Abilitare la registrazione di informazioni di debug riservate? (Nei log possono venire visualizzate le password.)</string>
   <string name="debug_title">Debug</string>
   <string name="debug_version_fmt">Versione: <xliff:g id="version">%s</xliff:g></string>
   <string name="delete_action">Elimina</string>
@@ -165,11 +165,11 @@
   <string name="provider_note_live">Solo alcuni account \"Plus\" comprendono l'accesso POP
         consentendo il collegamento del programma. Se non è possibile accedere con
         l'indirizzo email e la password corretti, è possibile che non sia stato pagato un account
-        \"Plus\". Lanciare il browser Internet per accedere al questi
+        \"Plus\". Lanciare il browser Internet per accedere a questi
         account email.</string>
   <string name="provider_note_yahoo">Gli account gratuiti di Yahoo! Mail funzionano solamente su reti wireless T-Mobile. Gli utenti Yahoo! Mail Plus devono configurare manualmente le impostazioni POP.</string>
   <string name="read_action">Letto</string>
-  <string name="read_attachment_desc">Consente all'applicazione di leggere allegati email.</string>
+  <string name="read_attachment_desc">Consente all'applicazione di leggere gli allegati delle email.</string>
   <string name="read_attachment_label">leggere allegati email</string>
   <string name="refresh_action">Aggiorna</string>
   <string name="remove_account_action">Rimuovi account</string>
@@ -192,7 +192,7 @@
   <string name="status_network_error">Errore di connessione</string>
   <string name="status_sending">Invio in corso\u2026</string>
   <string name="view_hide_details_action">Visualizza/Nascondi dettagli</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_title">Certificato sconosciuto</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta Chiave</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifiuta Chiave</string>
 </resources>

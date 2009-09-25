@@ -104,19 +104,30 @@ public class MimeMessage extends Message {
         return mSentDate;
     }
 
-    public void setSentDate(Date sentDate) throws MessagingException {
+    /**
+     * Sets the sent date object member as well as *adds* the 'Date' header
+     * instead of setting it (for performance reasons).
+     *
+     * @see #mSentDate
+     * @param sentDate
+     * @throws com.android.email.mail.MessagingException
+     */
+    public void addSentDate(Date sentDate) throws MessagingException {
         if (mDateFormat == null) {
-                mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
+            mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         }
-        setHeader("Date", mDateFormat.format(sentDate));
+        addHeader("Date", mDateFormat.format(sentDate));
         setInternalSentDate(sentDate);
+    }
+
+    public void setSentDate(Date sentDate) throws MessagingException {
+        removeHeader("Date");
+        addSentDate(sentDate);
     }
 
     public void setInternalSentDate(Date sentDate) throws MessagingException {
         this.mSentDate = sentDate;
     }
-
-
 
     public String getContentType() throws MessagingException {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);

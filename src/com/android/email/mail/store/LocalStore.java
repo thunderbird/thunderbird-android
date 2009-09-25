@@ -963,7 +963,7 @@ public class LocalStore extends Store implements Serializable {
             if (from.length > 0) {
                 message.setFrom(from[0]);
             }
-            message.setInternalSentDate(new Date(cursor.getLong(2)));
+            message.addSentDate(new Date(cursor.getLong(2)));
             message.setUid(cursor.getString(3));
             String flagList = cursor.getString(4);
             if (flagList != null && flagList.length() > 0) {

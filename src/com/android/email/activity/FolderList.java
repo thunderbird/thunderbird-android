@@ -398,6 +398,7 @@ public class FolderList extends K9ListActivity {
         }
         else {
             mInitialFolder = null;
+            mStartup = false;
         }
 
         Log.v(Email.LOG_TAG, "mInitialFolder: " + mInitialFolder);
@@ -531,7 +532,9 @@ public class FolderList extends K9ListActivity {
         // we won't have a parent activity and we'll need to get back to it
         if (mStartup
             || isTaskRoot()) {
-            startActivity(new Intent(this, Accounts.class));
+            Intent intent = new Intent(this, Accounts.class);
+            intent.putExtra(Accounts.EXTRA_STARTUP, false);
+            startActivity(intent);
         }
         finish();
     }

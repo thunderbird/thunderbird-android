@@ -70,10 +70,15 @@ public class Address {
      */
     public static Address[] parseUnencoded(String addressList) {
         List<Address> addresses = new ArrayList<Address>();
-        if (addressList!=null) {
+        if (addressList!=null
+            && !"".equals(addressList)) {
             Rfc822Token[] tokens =  Rfc822Tokenizer.tokenize(addressList);
             for (Rfc822Token token : tokens) {
-                addresses.add(new Address(token.getAddress(), token.getName()));
+                String address = token.getAddress();
+                if (address!=null
+                    && !"".equals(address)) {
+                    addresses.add(new Address(token.getAddress(), token.getName()));
+                }
             }
         }
         return addresses.toArray(new Address[0]);
@@ -88,7 +93,8 @@ public class Address {
      */
     public static Address[] parse(String addressList) {
         ArrayList<Address> addresses = new ArrayList<Address>();
-        if (addressList == null) {
+        if (addressList == null
+            && !"".equals(addressList)) {
             return new Address[] {};
         }
         try {
@@ -150,9 +156,7 @@ public class Address {
 
     public String toEncodedString() {
         if (mPersonal != null) {
-            String s = EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
-            Log.v(Email.LOG_TAG, s);
-            return s;
+            return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
         }

@@ -516,7 +516,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         if (!ACTION_EDIT_DRAFT.equals(action)) {
-            addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
+            String bccAddress = mAccount.getAlwaysBcc();
+            if (bccAddress!=null
+                && !"".equals(bccAddress)) {
+                addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
+            }
         }
         
         Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
@@ -626,7 +630,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private MimeMessage createMessage(boolean appendSig) throws MessagingException {
         MimeMessage message = new MimeMessage();
-        message.setSentDate(new Date());
+        message.addSentDate(new Date());
         Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
         message.setFrom(from);
         message.setRecipients(RecipientType.TO, getAddresses(mToView));
