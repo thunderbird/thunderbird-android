@@ -184,6 +184,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
         </receiver>
         <service
             android:name="com.android.email.service.MailService"

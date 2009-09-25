@@ -134,17 +134,25 @@ public class FolderList extends K9ListActivity {
 
         private static final int MSG_PROGRESS = 2;
         private static final int MSG_DATA_CHANGED = 3;
-        private static final int MSG_EXPAND_GROUP = 5;
         private static final int MSG_FOLDER_LOADING = 7;
         private static final int MSG_SYNC_MESSAGES = 13;
         private static final int MSG_FOLDER_SYNCING = 18;
         private static final int MSG_SENDING_OUTBOX = 19;
         private static final int MSG_ACCOUNT_SIZE_CHANGED = 20;
         private static final int MSG_WORKING_ACCOUNT = 21;
+        private static final int MSG_NEW_FOLDERS = 22;
 
         @Override
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
+                case MSG_NEW_FOLDERS:
+                    ArrayList<FolderInfoHolder> newFolders = (ArrayList<FolderInfoHolder>)msg.obj;
+                    mAdapter.mFolders.clear();
+                    
+                    mAdapter.mFolders.addAll(newFolders);
+                    
+                    mHandler.dataChanged();
+                    break;
                 case MSG_PROGRESS:
                     setProgressBarIndeterminateVisibility(msg.arg1 != 0);
                     break;
@@ -217,6 +225,13 @@ public class FolderList extends K9ListActivity {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_SYNC_MESSAGES;
             msg.obj = new Object[] { folder, messages };
+            sendMessage(msg);
+        }
+        
+        public void newFolders(ArrayList<FolderInfoHolder> newFolders) {
+            android.os.Message msg = new android.os.Message();
+            msg.obj = newFolders;
+            msg.what = MSG_NEW_FOLDERS;
             sendMessage(msg);
         }
 
@@ -542,10 +557,6 @@ public class FolderList extends K9ListActivity {
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
     }
 
-    private void checkMail(Account account, String folderName) {
-        MessagingController.getInstance(getApplication()).synchronizeMailbox(account, folderName, mAdapter.mListener);
-    }
-
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.compose:
@@ -867,11 +878,9 @@ public class FolderList extends K9ListActivity {
     
                       newFolders.add(holder);
                   } 
-                  mFolders.clear();
-    
-                  mFolders.addAll(newFolders);
-                  Collections.sort(mFolders);
-                  mHandler.dataChanged();
+                  Collections.sort(newFolders);
+                  mHandler.newFolders(newFolders);
+                  
               }
               
  
@@ -907,8 +916,8 @@ public class FolderList extends K9ListActivity {
                       Folder localFolder = (Folder) Store.getInstance(account.getLocalStoreUri(), getApplication()).getFolder(folder);
                       getFolder(folder).populate(localFolder);
                   } 
-                  catch (MessagingException e) {
-
+                  catch (Exception e) {
+                      Log.e(Email.LOG_TAG, "Exception while populating folder", e);
                   }
 
 
@@ -1210,7 +1219,7 @@ public class FolderList extends K9ListActivity {
                           this.messages = new ArrayList<MessageInfoHolder>();
                       }
     
-                      this.lastChecked = folder.getLastChecked();
+                      this.lastChecked = folder.getLastCheckedDisplay();
     
                       String mess = truncateStatus(folder.getStatus());
     

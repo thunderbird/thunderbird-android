@@ -20,9 +20,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.io.output.NullWriter;
 
@@ -103,8 +105,7 @@ public class MessagingController implements Runnable {
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.android.email.MessagingController.markAllAsRead";
 
     private static MessagingController inst = null;
-    private BlockingQueue<Command> mCommands = new LinkedBlockingQueue<Command>();
-    private BlockingQueue<Command> backCommands = new LinkedBlockingQueue<Command>();
+    private BlockingQueue<Command> mCommands = new PriorityBlockingQueue<Command>();
 
     private Thread mThread;
     private Set<MessagingListener> mListeners = new CopyOnWriteArraySet<MessagingListener>();
@@ -294,20 +295,15 @@ public class MessagingController implements Runnable {
         while (true) {
           String commandDescription = null;
             try {
-                Command command = mCommands.poll();
-                if (command == null) {
-                	 command = backCommands.poll();
-                }
-                if (command == null) {
-                	command = mCommands.poll(1, TimeUnit.SECONDS);
-                }
+                Command command = mCommands.take();
                 
                 if (command != null) {
                   commandDescription = command.description;
-                  Log.i(Email.LOG_TAG, "Running background command '" + command.description + "'");
+                  String ground = (command.isForeground ? "Foreground" : "Background" );
+                  Log.i(Email.LOG_TAG, "Running " + ground + " command '" + command.description + "'");
                   mBusy = true;
                   command.runnable.run();
-                  Log.i(Email.LOG_TAG, "Background command '" + command.description + "' completed");
+                  Log.i(Email.LOG_TAG, ground + " Command '" + command.description + "' completed");
                   for (MessagingListener l : getListeners()) {
                       l.controllerCommandCompleted(mCommands.size() > 0);
                   }
@@ -324,14 +320,14 @@ public class MessagingController implements Runnable {
     }
 
     private void put(String description, MessagingListener listener, Runnable runnable) {
-        putCommand(mCommands, description, listener, runnable);
+        putCommand(mCommands, description, listener, runnable, true);
     }
 
     private void putBackground(String description, MessagingListener listener, Runnable runnable) {
-        putCommand(backCommands, description, listener, runnable);
+        putCommand(mCommands, description, listener, runnable, false);
     }
 
-    private void putCommand(BlockingQueue<Command> queue, String description, MessagingListener listener, Runnable runnable) {
+    private void putCommand(BlockingQueue<Command> queue, String description, MessagingListener listener, Runnable runnable, boolean isForeground) {
         int retries = 10;
         Exception e = null;
         while (retries-- > 0)
@@ -341,6 +337,7 @@ public class MessagingController implements Runnable {
                 command.listener = listener;
                 command.runnable = runnable;
                 command.description = description;
+                command.isForeground = isForeground;
                 queue.put(command);
                 return;
             }
@@ -3167,12 +3164,38 @@ public class MessagingController implements Runnable {
         }
     }
 
-    class Command {
+    static AtomicInteger sequencing = new AtomicInteger(0);
+    class Command implements Comparable {
         public Runnable runnable;
 
         public MessagingListener listener;
 
         public String description;
+        
+        boolean isForeground;
+        
+        int sequence = sequencing.getAndIncrement();
+
+        public int compareTo(Object arg0)
+        {
+            if (arg0 instanceof Command)
+            {
+                Command other = (Command)arg0;
+                if (other.isForeground == true && isForeground == false)
+                {
+                    return 1;
+                }
+                else if (other.isForeground == false && isForeground == true)
+                {
+                    return -1;
+                }
+                else 
+                {
+                    return (sequence - other.sequence);
+                }
+            }
+            return 0;
+        }
     }
 
     public MessagingListener getCheckMailListener()
@@ -3375,13 +3398,21 @@ public class MessagingController implements Runnable {
                 Log.i(Email.LOG_TAG, "Starting pusher for " + account.getDescription() + ":" + folder.getName());
                 names.add(folder.getName());
             }
-            Store store = Store.getInstance(account.getStoreUri(), mApplication);
-            pusher = store.getPusher(receiver, names);
-            if (pusher != null)
+            if (names.size() > 0)
             {
-                pushers.put(account, pusher);
+                Store store = Store.getInstance(account.getStoreUri(), mApplication);
+                pusher = store.getPusher(receiver, names);
+                if (pusher != null)
+                {
+                    pushers.put(account, pusher);
+                }
+                return pusher;
             }
-            return pusher;
+            else
+            {
+                return null;
+            }
+            
         }
         catch (Exception e)
         {
@@ -3442,7 +3473,7 @@ public class MessagingController implements Runnable {
                             unreadCount++;
                         }
                     }
-                    localFolder.setLastChecked(System.currentTimeMillis());
+                    localFolder.setLastCheckedDisplay(System.currentTimeMillis());
                     localFolder.setStatus(null);
 
                     int unreadMessageCount = account.getUnreadMessageCount(mApplication, mApplication);

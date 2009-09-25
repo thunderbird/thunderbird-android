@@ -626,31 +626,7 @@ public class ImapStore extends Store {
 
         @Override
         public Message getMessage(String uid) throws MessagingException {
-            checkOpen();
-
-            try {
-                try {
-                    List<ImapResponse> responses =
-                            executeSimpleCommand(String.format("UID SEARCH UID %S", uid));
-                    for (ImapResponse response : responses) {
-			//			Log.d(Email.LOG_TAG, "Got search response: " + response.get(0) + ", size " + response.size());
-                        if (response.mTag == null && response.get(0).equals("SEARCH")) {
-                            for (int i = 1, count = response.size(); i < count; i++) {
-                                if (uid.equals(response.get(i))) {
-                                    return new ImapMessage(uid, this);
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (MessagingException me) {
-                    return null;
-                }
-            }
-            catch (IOException ioe) {
-                throw ioExceptionHandler(mConnection, ioe);
-            }
-            return null;
+            return new ImapMessage(uid, this);
         }
 
         
@@ -1808,12 +1784,17 @@ public class ImapStore extends Store {
         }
     }
     
+    public static int MAX_DELAY_TIME = 240000;
+    public static int NORMAL_DELAY_TIME = 10000;
+    
     public class ImapFolderPusher extends ImapFolder implements UntaggedHandler
     {
         PushReceiver receiver = null;
         Thread listeningThread = null;
         AtomicBoolean stop = new AtomicBoolean(false);
         AtomicBoolean idling = new AtomicBoolean(false);
+        private int delayTime = NORMAL_DELAY_TIME;
+        
         public ImapFolderPusher(ImapStore store, String name, PushReceiver nReceiver)
         {
             super(store, name);
@@ -1913,6 +1894,7 @@ public class ImapStore extends Store {
                                 idling.set(true);
                                 executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
                                 idling.set(false);
+                                delayTime = NORMAL_DELAY_TIME;
                             }
                         } 
                         catch (Exception e)
@@ -1935,7 +1917,12 @@ public class ImapStore extends Store {
                                 Log.e(Email.LOG_TAG, "Got exception while idling", e);
                                 try
                                 {
-                                    Thread.sleep(10000);
+                                    Thread.sleep(delayTime);
+                                    delayTime *= 2;
+                                    if (delayTime > MAX_DELAY_TIME)
+                                    {
+                                        delayTime = MAX_DELAY_TIME;
+                                    }
                                 }
                                 catch (Exception ie)
                                 {

@@ -19,7 +19,10 @@ import android.os.SystemClock;
 import android.util.Config;
 import android.util.Log;
 import android.text.TextUtils;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.NetworkInfo.State;
 
 import com.android.email.Account;
 import com.android.email.Email;
@@ -41,15 +44,27 @@ public class MailService extends Service {
     private static final String ACTION_RESCHEDULE = "com.android.email.intent.action.MAIL_SERVICE_RESCHEDULE";
     private static final String ACTION_CANCEL = "com.android.email.intent.action.MAIL_SERVICE_CANCEL";
     private static final String ACTION_REFRESH_PUSHERS = "com.android.email.intent.action.MAIL_SERVICE_REFRESH_PUSHERS";
+    private static final String CONNECTIVITY_CHANGE = "com.android.email.intent.action.MAIL_SERVICE_CONNECTIVITY_CHANGE";
 
+    private static final String HAS_CONNECTIVITY = "com.android.email.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
+    
     private Listener mListener = new Listener();
+    
+    private State state = null;
 
     private int mStartId;
-
+ 
     public static void actionReschedule(Context context) {
         Intent i = new Intent();
         i.setClass(context, MailService.class);
         i.setAction(MailService.ACTION_RESCHEDULE);
+        context.startService(i);
+    }
+    
+    private static void checkMail(Context context) {
+        Intent i = new Intent();
+        i.setClass(context, MailService.class);
+        i.setAction(MailService.ACTION_CHECK_MAIL);
         context.startService(i);
     }
 
@@ -57,6 +72,14 @@ public class MailService extends Service {
         Intent i = new Intent();
         i.setClass(context, MailService.class);
         i.setAction(MailService.ACTION_CANCEL);
+        context.startService(i);
+    }
+    
+    public static void connectivityChange(Context context, boolean hasConnectivity)  {
+        Intent i = new Intent();
+        i.setClass(context, MailService.class);
+        i.setAction(MailService.CONNECTIVITY_CHANGE);
+        i.putExtra(HAS_CONNECTIVITY, hasConnectivity);
         context.startService(i);
     }
 
@@ -68,6 +91,27 @@ public class MailService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+        state = State.DISCONNECTED;
+        if (connectivityManager != null)
+        {
+            NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+            if (netInfo != null)
+            {
+                state = netInfo.getState();
+            
+                if (state == State.CONNECTED)
+                {   
+                    Log.i(Email.LOG_TAG, "Currently connected to a network");
+                }
+                else
+                {
+                    Log.i(Email.LOG_TAG, "Current network state = " + state);
+                }
+            }
+        }
+        
+        
     	setForeground(true);  // if it gets killed once, it'll never restart
     		Log.v(Email.LOG_TAG, "***** MailService *****: onStart(" + intent + ", " + startId + ")");
         super.onStart(intent, startId);
@@ -79,22 +123,24 @@ public class MailService extends Service {
           MessagingController.getInstance(getApplication()).log("***** MailService *****: checking mail");
                 Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
             //}
-
-            MessagingController controller = MessagingController.getInstance(getApplication());
-            Listener listener = (Listener)controller.getCheckMailListener();
-            if (listener == null)
+            if (state == State.CONNECTED)
             {
-              MessagingController.getInstance(getApplication()).log("***** MailService *****: starting new check");
-
-              mListener.wakeLockAcquire();
-              controller.setCheckMailListener(mListener);
-              controller.checkMail(this, null, false, false, mListener);
-            }
-            else
-            {
-              MessagingController.getInstance(getApplication()).log("***** MailService *****: renewing WakeLock");
-
-              listener.wakeLockAcquire();
+                MessagingController controller = MessagingController.getInstance(getApplication());
+                Listener listener = (Listener)controller.getCheckMailListener();
+                if (listener == null)
+                {
+                  MessagingController.getInstance(getApplication()).log("***** MailService *****: starting new check");
+    
+                  mListener.wakeLockAcquire();
+                  controller.setCheckMailListener(mListener);
+                  controller.checkMail(this, null, false, false, mListener);
+                }
+                else
+                {
+                  MessagingController.getInstance(getApplication()).log("***** MailService *****: renewing WakeLock");
+    
+                  listener.wakeLockAcquire();
+                }
             }
 
             reschedule();
@@ -115,17 +161,42 @@ public class MailService extends Service {
             }
             MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
             reschedule();
+            reschedulePushers();
 	    //            stopSelf(startId);
         }
         else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction()))
         {
-            Log.i(Email.LOG_TAG, "Refreshing pushers");
-            Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
-            for (Pusher pusher : pushers)
+            try
             {
-                pusher.refresh();
+                if (state == State.CONNECTED)
+                {
+                    Log.i(Email.LOG_TAG, "Refreshing pushers");
+                    Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
+                    for (Pusher pusher : pushers)
+                    {
+                        pusher.refresh();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.e(Email.LOG_TAG, "Exception while refreshing pushers", e);
             }
             schedulePushers();
+        }
+        else if (CONNECTIVITY_CHANGE.equals(intent.getAction()))
+        {
+            boolean hasConnectivity = intent.getBooleanExtra(HAS_CONNECTIVITY, true);
+            Log.i(Email.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity);
+            if (hasConnectivity)
+            {
+                reschedulePushers();
+                checkMail(getApplication());
+            }
+            else
+            {
+                stopPushers();
+            }
         }
     }
 
@@ -146,8 +217,6 @@ public class MailService extends Service {
     }
 
     private void reschedule() {
-        reschedulePushers();
-        
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
         i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
@@ -190,14 +259,18 @@ public class MailService extends Service {
 
     }
     
+    private void stopPushers()
+    {
+        MessagingController.getInstance(getApplication()).stopAllPushing();
+    }
+    
     private void reschedulePushers()
     {
         Log.i(Email.LOG_TAG, "Rescheduling pushers");
-        MessagingController.getInstance(getApplication()).stopAllPushing();
-  
-        for (Account account : Preferences.getPreferences(this).getAccounts()) {
-            if (account.getAutomaticCheckIntervalMinutes() > 0)
-            {
+        stopPushers();
+        if (state == State.CONNECTED)   
+        {
+            for (Account account : Preferences.getPreferences(this).getAccounts()) {
                 Log.i(Email.LOG_TAG, "Setting up pushers for account " + account.getDescription());
                 Pusher pusher = MessagingController.getInstance(getApplication()).setupPushing(account);
                 if (pusher != null)
@@ -206,8 +279,9 @@ public class MailService extends Service {
                     pusher.start();
                 }
             }
+            schedulePushers();
         }
-        schedulePushers();
+        
     }
     
     private void schedulePushers()
