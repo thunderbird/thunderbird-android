@@ -630,7 +630,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private MimeMessage createMessage(boolean appendSig) throws MessagingException {
         MimeMessage message = new MimeMessage();
-        message.setSentDate(new Date());
+        message.addSentDate(new Date());
         Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
         message.setFrom(from);
         message.setRecipients(RecipientType.TO, getAddresses(mToView));
