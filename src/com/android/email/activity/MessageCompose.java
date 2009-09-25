@@ -516,7 +516,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         if (!ACTION_EDIT_DRAFT.equals(action)) {
-            addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
+            String bccAddress = mAccount.getAlwaysBcc();
+            if (bccAddress!=null
+                && !"".equals(bccAddress)) {
+                addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
+            }
         }
 
         Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
