@@ -256,7 +256,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private static String UNREAD_MESSAGE_COUNTS = "unreadMessageCounts";
     private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
 
-    private static final String EXTRA_STARTUP = "startup";
+    public static final String EXTRA_STARTUP = "startup";
 
 
     public static void actionLaunch(Context context) {
