@@ -145,6 +145,9 @@
     Long-press the Outbox to find the "Send messages" action in order to initiate another sending attempt.\u000A\u000a
     The <xliff:g id="errorFolder">%s</xliff:g> folder may contain error messages regarding the failures.</string>
     
+    <string name="alert_header">K-9 alert</string>
+    <string name="no_connection_alert">Syncing and sending suspended due to lack of network.</string>
+    
     <string name="end_of_folder">No more messages</string>
 
     <string name="accounts_welcome">

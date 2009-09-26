@@ -12,17 +12,14 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.os.SystemClock;
 import android.util.Config;
 import android.util.Log;
-import android.text.TextUtils;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.net.NetworkInfo.State;
 
 import com.android.email.Account;
 import com.android.email.Email;
@@ -30,12 +27,8 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
-import com.android.email.activity.Accounts;
-import com.android.email.activity.FolderList;
-import com.android.email.mail.Folder;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Pusher;
-import com.android.email.mail.Store;
 
 /**
  */
@@ -45,6 +38,7 @@ public class MailService extends Service {
     private static final String ACTION_CANCEL = "com.android.email.intent.action.MAIL_SERVICE_CANCEL";
     private static final String ACTION_REFRESH_PUSHERS = "com.android.email.intent.action.MAIL_SERVICE_REFRESH_PUSHERS";
     private static final String CONNECTIVITY_CHANGE = "com.android.email.intent.action.MAIL_SERVICE_CONNECTIVITY_CHANGE";
+    private static final String CANCEL_CONNECTIVITY_NOTICE = "com.android.email.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
 
     private static final String HAS_CONNECTIVITY = "com.android.email.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
     
@@ -188,6 +182,7 @@ public class MailService extends Service {
         {
             boolean hasConnectivity = intent.getBooleanExtra(HAS_CONNECTIVITY, true);
             Log.i(Email.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity);
+            notifyConnectionStatus(hasConnectivity);
             if (hasConnectivity)
             {
                 reschedulePushers();
@@ -197,6 +192,39 @@ public class MailService extends Service {
             {
                 stopPushers();
             }
+        }
+        else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
+        {
+            notifyConnectionStatus(true);
+        }
+    }
+    
+    private void notifyConnectionStatus(boolean hasConnectivity)
+    {
+        NotificationManager notifMgr =
+            (NotificationManager)getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (hasConnectivity == false)
+        {
+            String notice = getApplication().getString(R.string.no_connection_alert);
+            String header = getApplication().getString(R.string.alert_header);
+            
+            
+            Notification notif = new Notification(R.drawable.stat_notify_email_generic,
+                    header, System.currentTimeMillis());
+            
+            Intent i = new Intent();
+            i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
+            i.setAction(MailService.CANCEL_CONNECTIVITY_NOTICE);
+    
+            PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+    
+            notif.setLatestEventInfo(getApplication(), header, notice, pi);
+    
+            notifMgr.notify(Email.CONNECTIVITY_ID, notif); 
+        }
+        else
+        {
+            notifMgr.cancel(Email.CONNECTIVITY_ID);
         }
     }
 
