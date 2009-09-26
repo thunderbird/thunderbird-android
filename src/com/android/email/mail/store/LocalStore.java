@@ -1151,9 +1151,7 @@ public class LocalStore extends Store implements Serializable {
               LocalMessage lMessage = (LocalMessage)message;
                    
               if (!message.isSet(Flag.SEEN)) {
-                if (getUnreadMessageCount() > 0) {
-                  setUnreadMessageCount(getUnreadMessageCount() - 1);
-                }
+                setUnreadMessageCount(getUnreadMessageCount() - 1);
                 lDestFolder.setUnreadMessageCount(lDestFolder.getUnreadMessageCount() + 1);
               }
               
@@ -1171,6 +1169,7 @@ public class LocalStore extends Store implements Serializable {
               
               LocalMessage placeHolder = new LocalMessage(oldUID, this);
               placeHolder.setFlagInternal(Flag.DELETED, true);
+              placeHolder.setFlagInternal(Flag.SEEN, true);
               appendMessages(new Message[] { placeHolder });
             }
             
