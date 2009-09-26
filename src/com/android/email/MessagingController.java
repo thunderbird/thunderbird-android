@@ -300,7 +300,7 @@ public class MessagingController implements Runnable {
                 if (command != null) {
                   commandDescription = command.description;
                   String ground = (command.isForeground ? "Foreground" : "Background" );
-                  Log.i(Email.LOG_TAG, "Running " + ground + " command '" + command.description + "'");
+                  Log.i(Email.LOG_TAG, "Running " + ground + " command '" + command.description + "', seq = " + command.sequence);
                   mBusy = true;
                   command.runnable.run();
                   Log.i(Email.LOG_TAG, ground + " Command '" + command.description + "' completed");
@@ -494,49 +494,72 @@ public class MessagingController implements Runnable {
      * @param listener
      * @throws MessagingException
      */
-    public void listLocalMessages(final Account account, final String folder, MessagingListener listener) {
+    public void listLocalMessages(final Account account, final String folder, final MessagingListener listener) {
         for (MessagingListener l : getListeners()) {
             l.listLocalMessagesStarted(account, folder);
         }
 
-        try {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-            Folder localFolder = localStore.getFolder(folder);
-            localFolder.open(OpenMode.READ_WRITE);
-            Message[] localMessages = localFolder.getMessages(
-                    new MessageRetrievalListener() {
-                  public void messageStarted(String message, int number, int ofTotal) {}
-                  public void messageFinished(Message message, int number, int ofTotal) {
-	              
-		                if (!message.isSet(Flag.DELETED) && isMessageSuppressed(account, folder, message) == false) {
-		                    //messages.add(message);
-		                    for (MessagingListener l : getListeners()) {
-		                        l.listLocalMessagesAddMessage(account, folder, message);
-		                    }
-		                } else {
-		                    for (MessagingListener l : getListeners()) {
-		                        l.listLocalMessagesRemoveMessage(account, folder, message);
-		                    }
-		
-		                } 
-                        }
-                    } 
-                    );
-            ArrayList<Message> messages = new ArrayList<Message>();
-            //for (Message message : localMessages) { } 
-            //for (MessagingListener l : getListeners()) {
-            //    l.listLocalMessages(account, folder, messages.toArray(new Message[0]));
-            //}
-            for (MessagingListener l : getListeners()) {
-                l.listLocalMessagesFinished(account, folder);
-            }
+        if (listener != null && getListeners().contains(listener) == false)
+        {
+            listener.listLocalMessagesStarted(account, folder);
         }
-        catch (Exception e) {
-            for (MessagingListener l : getListeners()) {
-                l.listLocalMessagesFailed(account, folder, e.getMessage());
+        
+        put("listLocalMessages-" + account.getDescription() + ":" + folder, listener, new Runnable() {
+            public void run() {
+
+            try {
+                Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+                Folder localFolder = localStore.getFolder(folder);
+                localFolder.open(OpenMode.READ_WRITE);
+                Message[] localMessages = localFolder.getMessages(
+                        new MessageRetrievalListener() {
+                      public void messageStarted(String message, int number, int ofTotal) {}
+                      public void messageFinished(Message message, int number, int ofTotal) {
+    	              
+    		                if (!message.isSet(Flag.DELETED) && isMessageSuppressed(account, folder, message) == false) {
+    		                    //messages.add(message);
+    		                    for (MessagingListener l : getListeners()) {
+    		                        l.listLocalMessagesAddMessage(account, folder, message);
+    		                    }
+    		                    if (listener != null && getListeners().contains(listener) == false) {
+    		                        listener.listLocalMessagesAddMessage(account, folder, message);
+                                }
+    		                } else {
+    		                    for (MessagingListener l : getListeners()) {
+    		                        l.listLocalMessagesRemoveMessage(account, folder, message);
+    		                    }
+    		                    if (listener != null && getListeners().contains(listener) == false) {
+                                    listener.listLocalMessagesRemoveMessage(account, folder, message);
+                                }
+    		
+    		                } 
+                            }
+                        } 
+                        );
+                ArrayList<Message> messages = new ArrayList<Message>();
+                //for (Message message : localMessages) { } 
+                //for (MessagingListener l : getListeners()) {
+                //    l.listLocalMessages(account, folder, messages.toArray(new Message[0]));
+                //}
+                for (MessagingListener l : getListeners()) {
+                    l.listLocalMessagesFinished(account, folder);
+                }
+                if (listener != null && getListeners().contains(listener) == false)
+                {
+                    listener.listLocalMessagesFinished(account, folder);
+                }
             }
-            addErrorMessage(account, e);
-        }
+            catch (Exception e) {
+                for (MessagingListener l : getListeners()) {
+                    l.listLocalMessagesFailed(account, folder, e.getMessage());
+                }
+                if (listener != null && getListeners().contains(listener) == false)
+                {
+                    listener.listLocalMessagesFailed(account, folder, e.getMessage());
+                }
+                addErrorMessage(account, e);
+            }
+            }});
     }
 
     public void loadMoreMessages(Account account, String folder, MessagingListener listener) {
