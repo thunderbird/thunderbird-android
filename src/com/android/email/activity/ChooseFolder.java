@@ -77,16 +77,10 @@ public class ChooseFolder extends K9ListActivity
 
     setListAdapter(adapter);
 
-    new Thread()
-    {
-      public void run()
-      {
-        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+   
         MessagingController.getInstance(getApplication()).listFolders(mAccount,
             false, mListener);
 
-      }
-    }.start();
 
     this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {  
       public void onItemClick(AdapterView adapterview, View view, int i, long l)

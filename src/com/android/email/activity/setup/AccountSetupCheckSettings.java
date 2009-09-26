@@ -104,17 +104,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     	setMessage(R.string.account_setup_check_settings_check_incoming_msg);
                     	store = Store.getInstance(mAccount.getStoreUri(), getApplication());
                     	store.checkSettings();
-				        new Thread() {
-	
-				            public void run() {
-				                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-				                MessagingController.getInstance(getApplication()).listFolders(mAccount, true, null);
-                                    MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, Email.INBOX , null);
+				        
+				        MessagingController.getInstance(getApplication()).listFolders(mAccount, true, null);
+                        MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, Email.INBOX , null);
 				
-				            }
-				        }.start();
-				
-
                     }
                     if (mDestroyed) {
                         return;

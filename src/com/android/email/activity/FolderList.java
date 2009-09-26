@@ -505,18 +505,8 @@ public class FolderList extends K9ListActivity {
 
     private void onRefresh(final boolean forceRemote) {
 
-        new Thread() {
-
-            public void run() {
-                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-                MessagingController.getInstance(getApplication()).listFolders(mAccount, forceRemote, mAdapter.mListener);
-
-                if (forceRemote) {
-                    MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
-                }
-            }
-        }
-        .start();
+        MessagingController.getInstance(getApplication()).listFolders(mAccount, forceRemote, mAdapter.mListener);
+            
     }
 
     private void onEditAccount() {

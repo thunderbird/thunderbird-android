@@ -116,7 +116,7 @@ public class MessagingController implements Runnable {
     
     ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
     
-    private final ExecutorService threadPool = Executors.newFixedThreadPool(3);
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(5);
   
     public enum SORT_TYPE { 
       SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
@@ -385,45 +385,48 @@ public class MessagingController implements Runnable {
      * @param listener
      * @throws MessagingException
      */
-    public void listFolders( final Account account, boolean refreshRemote, MessagingListener listener) {
-        for (MessagingListener l : getListeners()) {
-            l.listFoldersStarted(account);
-        }
-        if (listener != null) {
-          listener.listFoldersStarted(account);
-        }
-        try {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-            Folder[] localFolders = localStore.getPersonalNamespaces();
-
-            if ( refreshRemote || localFolders == null || localFolders.length == 0) {
-                doRefreshRemote(account, listener);
-                return;
-            }
-            for (MessagingListener l : getListeners()) {
-                l.listFolders(account, localFolders);
-            }
-            if (listener != null) {
-              listener.listFolders(account, localFolders);
-            }
-        }
-        catch (Exception e) {
-            for (MessagingListener l : getListeners()) {
-                l.listFoldersFailed(account, e.getMessage());
-            }
-            if (listener != null) {
-              listener.listFoldersFailed(account, e.getMessage());
-            }
-            addErrorMessage(account, e);
-            return;
-        }
-        for (MessagingListener l : getListeners()) {
-                l.listFoldersFinished(account);
-        }
-        if (listener != null) {
-          listener.listFoldersFinished(account);
-        }
-       
+    public void listFolders( final Account account, final boolean refreshRemote, final MessagingListener listener) {
+        threadPool.execute(new Runnable() {
+            public void run()
+            {
+                for (MessagingListener l : getListeners()) {
+                    l.listFoldersStarted(account);
+                }
+                if (listener != null) {
+                  listener.listFoldersStarted(account);
+                }
+                try {
+                    Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+                    Folder[] localFolders = localStore.getPersonalNamespaces();
+        
+                    if ( refreshRemote || localFolders == null || localFolders.length == 0) {
+                        doRefreshRemote(account, listener);
+                        return;
+                    }
+                    for (MessagingListener l : getListeners()) {
+                        l.listFolders(account, localFolders);
+                    }
+                    if (listener != null) {
+                      listener.listFolders(account, localFolders);
+                    }
+                }
+                catch (Exception e) {
+                    for (MessagingListener l : getListeners()) {
+                        l.listFoldersFailed(account, e.getMessage());
+                    }
+                    if (listener != null) {
+                      listener.listFoldersFailed(account, e.getMessage());
+                    }
+                    addErrorMessage(account, e);
+                    return;
+                }
+                for (MessagingListener l : getListeners()) {
+                        l.listFoldersFinished(account);
+                }
+                if (listener != null) {
+                  listener.listFoldersFinished(account);
+                }
+            }});
     }
 
     private void doRefreshRemote (final Account account, MessagingListener listener) {
@@ -504,7 +507,7 @@ public class MessagingController implements Runnable {
             listener.listLocalMessagesStarted(account, folder);
         }
         
-        put("listLocalMessages-" + account.getDescription() + ":" + folder, listener, new Runnable() {
+        threadPool.execute(new Runnable() {
             public void run() {
 
             try {
