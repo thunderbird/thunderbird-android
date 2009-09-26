@@ -332,10 +332,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         if (accounts.length > 0) {
           mHandler.progress(Window.PROGRESS_START);
         }
-        
+        pendingWork.clear();
         for (Account account : accounts) {
-          MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
           pendingWork.put(account, "true");
+          MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
+          
         }
         
     }

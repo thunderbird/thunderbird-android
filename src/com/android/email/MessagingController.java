@@ -307,7 +307,7 @@ public class MessagingController implements Runnable {
                   for (MessagingListener l : getListeners()) {
                       l.controllerCommandCompleted(mCommands.size() > 0);
                   }
-                  if (command.listener != null && !mListeners.contains(command.listener)) {
+                  if (command.listener != null && !getListeners().contains(command.listener)) {
                     command.listener.controllerCommandCompleted(mCommands.size() > 0);
                   }
 	            }
