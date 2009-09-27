@@ -601,7 +601,7 @@ public class MessagingController implements Runnable {
      * @param listener
      */
     public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener) {
-        put("synchronizeMailbox", listener, new Runnable() {
+        putBackground("synchronizeMailbox", listener, new Runnable() {
             public void run() {
                 synchronizeMailboxSynchronous(account, folder, listener);
             }
@@ -2312,7 +2312,7 @@ public class MessagingController implements Runnable {
      */
     public void sendPendingMessages(final Account account,
             MessagingListener listener) {
-        put("sendPendingMessages", listener, new Runnable() {
+        putBackground("sendPendingMessages", listener, new Runnable() {
             public void run() {
                 sendPendingMessagesSynchronous(account);
             }
@@ -2859,7 +2859,7 @@ public class MessagingController implements Runnable {
         for (MessagingListener l : getListeners()) {
             l.checkMailStarted(context, account);
         }
-        put("checkMail", listener, new Runnable() {
+        putBackground("checkMail", listener, new Runnable() {
             public void run() {
 
                 final NotificationManager notifMgr = (NotificationManager)context
