@@ -314,6 +314,7 @@ public class FolderList extends K9ListActivity {
             }
         };
         MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, folder.name, listener);
+        sendMail(mAccount);
     }
 
     private static void actionHandleAccount(Context context, Account account, String initialFolder, boolean startup) {
@@ -525,6 +526,10 @@ public class FolderList extends K9ListActivity {
     private void checkMail(final Account account) {
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
     }
+    
+    private void sendMail(Account account) {
+        MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
+    }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -538,6 +543,11 @@ public class FolderList extends K9ListActivity {
 
             return true;
 
+        case R.id.send_messages:
+            Log.i(Email.LOG_TAG, "sending pending messages");
+
+            MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
+            return true;
         case R.id.accounts:
             onAccounts();
 
@@ -608,8 +618,7 @@ public class FolderList extends K9ListActivity {
             
         case R.id.send_messages:
             Log.i(Email.LOG_TAG, "sending pending messages from " + folder.name);
-
-            MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
+            sendMail(mAccount);
 
             break;
 

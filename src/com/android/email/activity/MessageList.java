@@ -877,12 +877,13 @@ public class MessageList extends K9ListActivity {
         mHandler.dataChanged();
     }
 
-//    private void checkMail(final Account account) {
-//        MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
-//    }
-
     private void checkMail(Account account, String folderName) {
         MessagingController.getInstance(getApplication()).synchronizeMailbox( account, folderName, mAdapter.mListener);
+        sendMail(account);
+    }
+    
+    private void sendMail(Account account) {
+        MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
     }
 
     @Override
@@ -890,6 +891,9 @@ public class MessageList extends K9ListActivity {
         switch (item.getItemId()) {
         case R.id.check_mail:
             checkMail(mAccount, mFolderName);
+            return true;
+        case R.id.send_messages:
+            sendMail(mAccount);
             return true;
 
         case R.id.compose:
@@ -956,6 +960,13 @@ public class MessageList extends K9ListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_list_option, menu);
+        
+        if (mCurrentFolder.outbox) {
+            menu.findItem(R.id.check_mail).setVisible(false);
+        } else {
+            menu.findItem(R.id.send_messages).setVisible(false);
+        }
+        
         return true;
     }
 
