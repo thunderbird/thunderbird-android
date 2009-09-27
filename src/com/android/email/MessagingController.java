@@ -600,10 +600,10 @@ public class MessagingController implements Runnable {
      * @param folder
      * @param listener
      */
-    public void synchronizeMailbox(final Account account, final String folder, MessagingListener listener) {
+    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener) {
         put("synchronizeMailbox", listener, new Runnable() {
             public void run() {
-                synchronizeMailboxSynchronous(account, folder);
+                synchronizeMailboxSynchronous(account, folder, listener);
             }
         });
     }
@@ -616,7 +616,7 @@ public class MessagingController implements Runnable {
      *
      * TODO Break this method up into smaller chunks.
      */
-    public void synchronizeMailboxSynchronous(final Account account, final String folder) {
+    public void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener) {
         /*
          * We don't ever sync the Outbox.
          */
@@ -634,6 +634,9 @@ public class MessagingController implements Runnable {
 
         for (MessagingListener l : getListeners()) {
             l.synchronizeMailboxStarted(account, folder);
+        }
+        if (listener != null && getListeners().contains(listener) == false) {
+            listener.synchronizeMailboxStarted(account, folder);
         }
         LocalFolder tLocalFolder = null;
         Exception commandException = null;
@@ -695,6 +698,9 @@ public class MessagingController implements Runnable {
                         for (MessagingListener l : getListeners()) {
                             l.synchronizeMailboxFinished(account, folder, 0, 0);
                         }
+                        if (listener != null && getListeners().contains(listener) == false) {
+                            listener.synchronizeMailboxFinished(account, folder, 0, 0);
+                        }
                         Log.i(Email.LOG_TAG, "Done synchronizing folder " + folder);
                         return;
                     }
@@ -738,7 +744,7 @@ public class MessagingController implements Runnable {
 
             Message[] remoteMessageArray = new Message[0];
             final ArrayList<Message> remoteMessages = new ArrayList<Message>();
-            final ArrayList<Message> unsyncedMessages = new ArrayList<Message>();
+          //  final ArrayList<Message> unsyncedMessages = new ArrayList<Message>();
             HashMap<String, Message> remoteUidMap = new HashMap<String, Message>();
 
             if (Config.LOGV) {
@@ -772,18 +778,18 @@ public class MessagingController implements Runnable {
                  * local store, or messages that are in the local store but failed to download
                  * on the last sync. These are the new messages that we will download.
                  */
-                Iterator<Message> iter = remoteMessages.iterator();
-                while (iter.hasNext()) {
-                    Message message = iter.next();
-                    Message localMessage = localUidMap.get(message.getUid());
-                    if (localMessage == null ||
-                        (!localMessage.isSet(Flag.DELETED) &&
-                        !localMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
-                        !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))) {
-                        unsyncedMessages.add(message);
-                        iter.remove();
-                    }
-                }
+//                Iterator<Message> iter = remoteMessages.iterator();
+//                while (iter.hasNext()) {
+//                    Message message = iter.next();
+//                    Message localMessage = localUidMap.get(message.getUid());
+//                    if (localMessage == null ||
+//                        (!localMessage.isSet(Flag.DELETED) &&
+//                        !localMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
+//                        !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))) {
+//                        unsyncedMessages.add(message);
+//                        iter.remove();
+//                    }
+//                }
             }
             else if (remoteMessageCount < 0) {
                 throw new Exception("Message count " + remoteMessageCount + " for folder " + folder);
@@ -799,6 +805,9 @@ public class MessagingController implements Runnable {
                     for (MessagingListener l : getListeners()) {
                         l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
                     }
+                    if (listener != null && getListeners().contains(listener) == false) {
+                        listener.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                    }
                 }
             }
             localMessages = null;
@@ -806,7 +815,7 @@ public class MessagingController implements Runnable {
             /*
              * Now we download the actual content of messages.
              */
-            int newMessages = downloadMessages(account, remoteFolder, localFolder, unsyncedMessages);
+            int newMessages = downloadMessages(account, remoteFolder, localFolder, remoteMessages);
             
             setLocalUnreadCountToRemote(localFolder, remoteFolder,  newMessages);
 
@@ -829,12 +838,19 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners()) {
                 l.synchronizeMailboxFinished( account, folder, remoteMessageCount, newMessages);
             }
+            if (listener != null && getListeners().contains(listener) == false) {
+                listener.synchronizeMailboxFinished( account, folder, remoteMessageCount, newMessages);
+            }
+            
 
            if (commandException != null) {
                 String rootMessage = getRootCauseMessage(commandException);
                 localFolder.setStatus(rootMessage);
                 for (MessagingListener l : getListeners()) {
                     l.synchronizeMailboxFailed( account, folder, rootMessage);
+                }
+                if (listener != null && getListeners().contains(listener) == false) {
+                    listener.synchronizeMailboxFailed( account, folder, rootMessage);
                 }
             }
 
@@ -865,6 +881,12 @@ public class MessagingController implements Runnable {
                     account,
                     folder,
                     rootMessage);
+            }
+            if (listener != null && getListeners().contains(listener) == false) {
+                listener.synchronizeMailboxFailed(
+                        account,
+                        folder,
+                        rootMessage);
             }
             addErrorMessage(account, e);
             log("Failed synchronizing folder " +
@@ -3001,7 +3023,7 @@ public class MessagingController implements Runnable {
 				                    		}
 			                          try
 			                          {
-			                            synchronizeMailboxSynchronous(account, folder.getName());
+			                            synchronizeMailboxSynchronous(account, folder.getName(), listener);
 			                          }
 				                    	  
 		                            finally {

@@ -289,55 +289,31 @@ public class FolderList extends K9ListActivity {
     * queueing up a remote update of the folder.
      */
 
-    class FolderUpdateWorker implements Runnable {
-        String mFolder;
-        FolderInfoHolder mHolder;
-        boolean mSynchronizeRemote;
-
-        /**
-        * Create a worker for the given folder and specifying whether the worker
-        * should synchronize the remote folder or just the local one.
-        * 
-         * @param folder
-         * @param synchronizeRemote
-         */
-        public FolderUpdateWorker(FolderInfoHolder folder, boolean synchronizeRemote) {
-            mFolder = folder.name;
-            mHolder = folder;
-            mSynchronizeRemote = synchronizeRemote;
-        }
-
-        public void run() {
-            // Lower our priority
-            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email - UpdateWorker");
-            wakeLock.setReferenceCounted(false);
-            wakeLock.acquire(Email.WAKE_LOCK_TIMEOUT);
-            // Synchronously load the list of local messages
-
-            try {
-                try {
-                    Store localStore = Store.getInstance(mAccount.getLocalStoreUri(), getApplication());
-                    LocalFolder localFolder = (LocalFolder) localStore.getFolder(mFolder);
-
-                    if (localFolder.getMessageCount() == 0 && localFolder.getLastChecked() <= 0) {
-                        mSynchronizeRemote = true;
-                    }
-                } catch (MessagingException me) {
-                    Log.e(Email.LOG_TAG, "Unable to get count of local messages for folder " + mFolder, me);
+    private void checkMail(FolderInfoHolder folder)
+    {
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        final WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email - UpdateWorker");
+        wakeLock.setReferenceCounted(false);
+        wakeLock.acquire(Email.WAKE_LOCK_TIMEOUT);
+        MessagingListener listener = new MessagingListener()
+        {
+            public void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox, int numNewMessages) {
+                if (!account.equals(mAccount)) {
+                    return;
                 }
-
-                if (mSynchronizeRemote) {
-                    // Tell the MessagingController to run a remote update of this folder
-                    // at it's leisure
-                    MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mFolder, mAdapter.mListener);
-                }
-            } finally {
-                wakeLock.release();
+                wakeLock.release(); 
             }
-
-        }
+  
+            @Override
+            public void synchronizeMailboxFailed(Account account, String folder,
+                                                 String message) {
+                if (!account.equals(mAccount)) {
+                    return;
+                }
+                wakeLock.release(); 
+            }
+        };
+        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, folder.name, listener);
     }
 
     private static void actionHandleAccount(Context context, Account account, String initialFolder, boolean startup) {
@@ -639,8 +615,7 @@ public class FolderList extends K9ListActivity {
 
         case R.id.check_mail:
             Log.i(Email.LOG_TAG, "refresh folder " + folder.name);
-
-            threadPool.execute(new FolderUpdateWorker(folder, true));
+            checkMail(folder);
 
             break;
 
