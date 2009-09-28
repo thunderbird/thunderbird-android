@@ -10,9 +10,9 @@ public abstract class Folder {
     public enum OpenMode {
         READ_WRITE, READ_ONLY,
     }
-    
+    // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
     public enum FolderClass {
-    	NONE, FIRST_CLASS, SECOND_CLASS;
+    	NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS;
     }
     
     public enum FolderType {
@@ -157,7 +157,7 @@ public abstract class Folder {
 
    	public FolderClass getDisplayClass()
 		{
-			return FolderClass.NONE;
+			return FolderClass.NO_CLASS;
 		}
 		
 		public FolderClass getSyncClass()

@@ -489,8 +489,8 @@ public class LocalStore extends Store implements Serializable {
         private long mFolderId = -1;
         private int mUnreadMessageCount = -1;
         private int mVisibleLimit = -1;
-    		private FolderClass displayClass = FolderClass.NONE;
-    		private FolderClass syncClass = FolderClass.NONE;
+    		private FolderClass displayClass = FolderClass.NO_CLASS;
+    		private FolderClass syncClass = FolderClass.INHERITED;
             private FolderClass pushClass = FolderClass.SECOND_CLASS;
     		private String prefId = null;
     		private String mPushState = null;
@@ -701,9 +701,9 @@ public class LocalStore extends Store implements Serializable {
         @Override
     		public FolderClass getSyncClass()
     		{
-    			if (FolderClass.NONE == syncClass)
+    			if (FolderClass.INHERITED == syncClass)
     			{
-    				return displayClass;
+    				return getDisplayClass();
     			}
     			else
     			{
@@ -713,16 +713,15 @@ public class LocalStore extends Store implements Serializable {
         
         public FolderClass getRawSyncClass()
     		{
-    			
     			return syncClass;
     			
     		}
         
         public FolderClass getPushClass()
         {
-            if (FolderClass.NONE == pushClass)
+            if (FolderClass.INHERITED == pushClass)
             {
-                return syncClass;
+                return getSyncClass();
             }
             else
             {
@@ -732,7 +731,6 @@ public class LocalStore extends Store implements Serializable {
     
     public FolderClass getRawPushClass()
         {
-            
             return pushClass;
             
         }
@@ -779,7 +777,7 @@ public class LocalStore extends Store implements Serializable {
         
           SharedPreferences.Editor editor = preferences.getPreferences().edit();
           // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-          if (displayClass == FolderClass.NONE && !Email.INBOX.equals(getName()))
+          if (displayClass == FolderClass.NO_CLASS && !Email.INBOX.equals(getName()))
           {
           	editor.remove(id + ".displayMode");
           }
@@ -788,7 +786,7 @@ public class LocalStore extends Store implements Serializable {
            	editor.putString(id + ".displayMode", displayClass.name());
           }
           
-          if (syncClass == FolderClass.NONE && !Email.INBOX.equals(getName()))
+          if (syncClass == FolderClass.INHERITED && !Email.INBOX.equals(getName()))
           {
           	editor.remove(id + ".syncMode");
           }
@@ -815,17 +813,21 @@ public class LocalStore extends Store implements Serializable {
         try
         {
         	displayClass = FolderClass.valueOf(preferences.getPreferences().getString(id + ".displayMode", 
-        			FolderClass.NONE.name()));
+        			FolderClass.NO_CLASS.name()));
         }
         catch (Exception e)
         {
          	Log.e(Email.LOG_TAG, "Unable to load displayMode for " + getName(), e);
 
-        	displayClass = FolderClass.NONE;
+        	displayClass = FolderClass.NO_CLASS;
+        }
+        if (displayClass == FolderClass.NONE)
+        {
+            displayClass = FolderClass.NO_CLASS;
         }
 
         
-        FolderClass defSyncClass = FolderClass.NONE;
+        FolderClass defSyncClass = FolderClass.INHERITED;
         if (Email.INBOX.equals(getName()))
         {
           defSyncClass =  FolderClass.FIRST_CLASS;
@@ -841,6 +843,10 @@ public class LocalStore extends Store implements Serializable {
         	Log.e(Email.LOG_TAG, "Unable to load syncMode for " + getName(), e);
 
         	syncClass = defSyncClass;
+        }
+        if (syncClass == FolderClass.NONE)
+        {
+            syncClass = FolderClass.INHERITED;
         }
         
         FolderClass defPushClass = FolderClass.SECOND_CLASS;
@@ -859,6 +865,10 @@ public class LocalStore extends Store implements Serializable {
             Log.e(Email.LOG_TAG, "Unable to load pushMode for " + getName(), e);
 
             pushClass = defPushClass;
+        }
+        if (pushClass == FolderClass.NONE)
+        {
+            pushClass = FolderClass.INHERITED;
         }
 
     }
