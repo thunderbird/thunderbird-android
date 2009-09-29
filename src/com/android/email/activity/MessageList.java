@@ -787,13 +787,10 @@ public class MessageList extends K9ListActivity {
 
 
     private Account mSelectedContextAccount = null;
-    private FolderInfoHolder mSelectedContextFolder = null;
-    
     
     private void onMarkAllAsRead(final Account account, final String folder) {
         mSelectedContextAccount = account;
-         
-        mSelectedContextFolder = mCurrentFolder;
+    
         showDialog(DIALOG_MARK_ALL_AS_READ);
     }
 
@@ -802,6 +799,7 @@ public class MessageList extends K9ListActivity {
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
             return createMarkAllAsReadDialog();
+            
         }
 
         return super.onCreateDialog(id);
@@ -811,7 +809,7 @@ public class MessageList extends K9ListActivity {
         switch (id) {
         case DIALOG_MARK_ALL_AS_READ:
             ((AlertDialog)dialog).setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                             mSelectedContextFolder.displayName));
+                                             mCurrentFolder.displayName));
 
             break;
 
@@ -824,20 +822,20 @@ public class MessageList extends K9ListActivity {
         return new AlertDialog.Builder(this)
                .setTitle(R.string.mark_all_as_read_dlg_title)
                .setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                     mSelectedContextFolder.displayName))
+                                     mCurrentFolder.displayName))
                .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
                                       public void onClick(DialogInterface dialog, int whichButton) {
                                           dismissDialog(DIALOG_MARK_ALL_AS_READ);
 
                                           try {
 
-                                              MessagingController.getInstance(getApplication()).markAllMessagesRead(mSelectedContextAccount, mSelectedContextFolder.name);
+                                              MessagingController.getInstance(getApplication()).markAllMessagesRead(mSelectedContextAccount, mCurrentFolder.name);
 
-                                              for (MessageInfoHolder holder : mSelectedContextFolder.messages) {
+                                              for (MessageInfoHolder holder : mCurrentFolder.messages) {
                                                   holder.read = true;
                                               }
 
-                                              mSelectedContextFolder.unreadMessageCount = 0;
+                                              mCurrentFolder.unreadMessageCount = 0;
 
                                               mHandler.dataChanged();
 
