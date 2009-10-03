@@ -222,22 +222,6 @@ public class MessageList extends K9ListActivity {
                 break;
             }
 
-            case MSG_SYNC_MESSAGES: {
-                FolderInfoHolder folder = (FolderInfoHolder)((Object[]) msg.obj)[0];
-                Message[] messages = (Message[])((Object[]) msg.obj)[1];
-
-                for(MessageInfoHolder message : mAdapter.messages) {
-                    message.dirty = true;
-                }
-
-                for (Message message : messages) {
-                    mAdapter.addOrUpdateMessage(folder, message, true, false);
-                    mAdapter.notifyDataSetChanged();
-                }
-                mAdapter.removeDirtyMessages();                
-                break;
-            }
-
             case MSG_FOLDER_SYNCING: {
                 String folderName = (String)((Object[]) msg.obj)[0];
                 String dispString;
@@ -282,14 +266,6 @@ public class MessageList extends K9ListActivity {
                 super.handleMessage(msg);
             }
         }
-
-        public void synchronizeMessages(FolderInfoHolder folder, Message[] messages) {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_SYNC_MESSAGES;
-            msg.obj = new Object[] { folder, messages };
-            sendMessage(msg);
-        }
-
 
         public void removeMessage(MessageInfoHolder message) {
             android.os.Message msg = new android.os.Message();
@@ -1146,7 +1122,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
 
-                addOrUpdateMessage(folder, message, true, true);
+                addOrUpdateMessage(folder, message, true);
             }
             
             @Override
@@ -1219,7 +1195,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
 
-                addOrUpdateMessage(folder, message, false, false);//true, true);
+                addOrUpdateMessage(folder, message, false);
                 if (mAdapter.messages.size() % 10 == 0 ) { 
                     sortMessages();
                     mHandler.dataChanged();
@@ -1233,7 +1209,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
 
-                addOrUpdateMessage(folder, message, false, true);
+                addOrUpdateMessage(folder, message, false);
             }
 
         };
@@ -1246,17 +1222,6 @@ public class MessageList extends K9ListActivity {
             mAttachmentIcon = getResources().getDrawable( R.drawable.ic_mms_attachment_small);
             mAnsweredIcon = getResources().getDrawable( R.drawable.ic_mms_answered_small);
         }
-
-        public void removeDirtyMessages() {
-            Iterator<MessageInfoHolder> iter = messages.iterator();
-                while(iter.hasNext()) {
-                    MessageInfoHolder message = iter.next();
-                    if (message.dirty) {
-                        iter.remove();
-                }
-            }
-            notifyDataSetChanged();
-         }
 
         public void removeMessage(MessageInfoHolder holder) {
             if (holder == null) {
@@ -1274,31 +1239,26 @@ public class MessageList extends K9ListActivity {
 
         }
 
-        public void synchronizeMessages(String folder, Message[] messages) {
-            FolderInfoHolder f = mCurrentFolder;
-
-            if (f == null) {
-                return;
-            }
-
-            mHandler.synchronizeMessages(f, messages);
-        }
-
         public void addOrUpdateMessage(String folder, Message message) {
-            addOrUpdateMessage(folder, message, true, true);
+            addOrUpdateMessage(folder, message, true);
         }
 
-        private void addOrUpdateMessage(FolderInfoHolder folder, Message message, boolean sort, boolean notify) {
+        private void addOrUpdateMessage(FolderInfoHolder folder, Message message, boolean sort) {
 
             MessageInfoHolder m = getMessage( message.getUid());
 
+            boolean notify = false;
             if (m == null) {
                 m = new MessageInfoHolder(message, folder);
                 mAdapter.messages.add(m);
-            } else if (message.isSet(Flag.DELETED)) {
-                removeMessage(m);
+                notify = true;
             } else {
-                m.populate(message, folder);
+                if (message.isSet(Flag.DELETED)) {
+                    removeMessage(m);
+                    notify = true;
+                } else {
+                    notify = m.populate(message, folder);
+                }
             }
 
             if (sort) {
@@ -1310,14 +1270,14 @@ public class MessageList extends K9ListActivity {
             }
         }
 
-        private void addOrUpdateMessage(String folder, Message message, boolean sort, boolean notify) {
+        private void addOrUpdateMessage(String folder, Message message, boolean sort) {
             FolderInfoHolder f = mCurrentFolder;
 
             if (f == null) {
                 return;
             }
 
-            addOrUpdateMessage(f, message, sort, notify);
+            addOrUpdateMessage(f, message, sort);
         }
 
         // XXX TODO - make this not use a for loop
@@ -1516,8 +1476,6 @@ public class MessageList extends K9ListActivity {
 
             public boolean read;
 
-            public boolean dirty;
-
             public boolean answered;
 
             public boolean flagged;
@@ -1538,15 +1496,17 @@ public class MessageList extends K9ListActivity {
                 populate(m, folder);
             }
 
-            public void populate(Message m, FolderInfoHolder folder) {
+            public boolean populate(Message m, FolderInfoHolder folder) {
+                if (this.message!=null
+                    && m.getInternalDate().equals(this.message.getInternalDate())) {
+                    return false;
+                }
+
                 try {
                     LocalMessage message = (LocalMessage) m;
                     Date date = message.getSentDate();
                     this.compareDate = date;
                     this.folder = folder;
-
-                    this.dirty = false;
-
 
                     if (Utility.isDateToday(date)) {
                         this.date = getTimeFormat().format(date);
@@ -1576,10 +1536,13 @@ public class MessageList extends K9ListActivity {
 
                     this.uid = message.getUid();
                     this.message = m;
+
+                    return true;
                 } catch (MessagingException me) {
                     if (Config.LOGV) {
                         Log.v(Email.LOG_TAG, "Unable to load message info", me);
                     }
+                    return false;
                 }
             }
             

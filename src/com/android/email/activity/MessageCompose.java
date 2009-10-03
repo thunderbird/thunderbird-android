@@ -675,9 +675,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
                 Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
                 MimeBodyPart bp = new MimeBodyPart( new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
-                bp.setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"", attachment.contentType, attachment.name));
-                bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
-                bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format("attachment;\n filename=\"%s\"", attachment.name));
+                bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"", attachment.contentType, attachment.name));
+                bp.addHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
+                bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format("attachment;\n filename=\"%s\"", attachment.name));
                 mp.addBodyPart(bp);
             }
 
@@ -749,7 +749,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
             
             Log.d(Email.LOG_TAG, "Saving identity: " + k9identity);
-            message.setHeader(Email.K9MAIL_IDENTITY, k9identity);
+            message.addHeader(Email.K9MAIL_IDENTITY, k9identity);
             
             MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
             mDraftUid = message.getUid();

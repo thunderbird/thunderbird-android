@@ -44,9 +44,8 @@ public class MimeMessage extends Message {
     protected int mSize;
  
     public MimeMessage() {
-            setHeader("Message-ID", generateMessageId());
-
-        }
+        addHeader("Message-ID", generateMessageId());
+    }
 
     private String generateMessageId() {
         StringBuffer sb = new StringBuffer();
