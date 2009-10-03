@@ -764,12 +764,7 @@ public class MessageList extends K9ListActivity {
         MessageCompose.actionForward(this, mAccount, holder.message);
     }
 
-
-    private Account mSelectedContextAccount = null;
-    
-    private void onMarkAllAsRead(final Account account, final String folder) {
-        mSelectedContextAccount = account;
-    
+    private void onMarkAllAsRead(final Account account, final String folder) {    
         showDialog(DIALOG_MARK_ALL_AS_READ);
     }
 
@@ -808,7 +803,7 @@ public class MessageList extends K9ListActivity {
 
                                           try {
 
-                                              MessagingController.getInstance(getApplication()).markAllMessagesRead(mSelectedContextAccount, mCurrentFolder.name);
+                                              MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, mCurrentFolder.name);
 
                                               for (MessageInfoHolder holder : mCurrentFolder.messages) {
                                                   holder.read = true;
