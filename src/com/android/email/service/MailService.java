@@ -219,6 +219,7 @@ public class MailService extends Service {
             PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
     
             notif.setLatestEventInfo(getApplication(), header, notice, pi);
+            notif.flags = Notification.FLAG_ONGOING_EVENT;
     
             notifMgr.notify(Email.CONNECTIVITY_ID, notif); 
         }
