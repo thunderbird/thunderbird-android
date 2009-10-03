@@ -42,6 +42,7 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
+import com.android.email.activity.MessageList.FolderInfoHolder;
 import com.android.email.activity.MessageList.MessageInfoHolder;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
@@ -71,6 +72,8 @@ public class FolderList extends K9ListActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
+    
+    private static final String STATE_CURRENT_FOLDER = "com.android.email.activity.folderlist_folder";
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
 
@@ -95,6 +98,7 @@ public class FolderList extends K9ListActivity {
     private DateFormat timeFormat = null;
 
     private boolean mStartup = false;
+    
 
     private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 120000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
 
@@ -359,7 +363,7 @@ public class FolderList extends K9ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        String savedFolderName = null;
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
         Log.v(Email.LOG_TAG, "savedInstanceState: " + (savedInstanceState==null));
@@ -376,6 +380,7 @@ public class FolderList extends K9ListActivity {
         else {
             mInitialFolder = null;
             mStartup = false;
+            savedFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
         }
 
         Log.v(Email.LOG_TAG, "mInitialFolder: " + mInitialFolder);
@@ -420,8 +425,13 @@ public class FolderList extends K9ListActivity {
             }
 
             setListAdapter(mAdapter);
-
+            
             setTitle(mAccount.getDescription());
+            
+            if (savedFolderName != null)
+            {
+                mSelectedContextFolder = mAdapter.getFolder(savedFolderName);
+            }
         }
     }
 
@@ -453,6 +463,15 @@ public class FolderList extends K9ListActivity {
         notifMgr.cancel(mAccount.getAccountNumber());
         notifMgr.cancel(-1000 - mAccount.getAccountNumber());
 
+    }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mSelectedContextFolder != null)
+        {
+            outState.putString(STATE_CURRENT_FOLDER, mSelectedContextFolder.name);
+        }
     }
 
     @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -641,13 +660,10 @@ public class FolderList extends K9ListActivity {
         return super.onContextItemSelected(item);
     }
     
-    private Account mSelectedContextAccount = null;
     private FolderInfoHolder mSelectedContextFolder = null;
     
     
     private void onMarkAllAsRead(final Account account, final String folder) {
-        mSelectedContextAccount = account;
-         
         mSelectedContextFolder = mAdapter.getFolder(folder);
         showDialog(DIALOG_MARK_ALL_AS_READ);
     }
@@ -687,7 +703,7 @@ public class FolderList extends K9ListActivity {
 
                                           try {
 
-                                              MessagingController.getInstance(getApplication()).markAllMessagesRead(mSelectedContextAccount, mSelectedContextFolder.name);
+                                              MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, mSelectedContextFolder.name);
 
                                               for (MessageInfoHolder holder : mSelectedContextFolder.messages) {
                                                   holder.read = true;
