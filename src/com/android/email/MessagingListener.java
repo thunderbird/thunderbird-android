@@ -1,6 +1,8 @@
 
 package com.android.email;
 
+import java.util.List;
+
 import android.content.Context;
 
 import com.android.email.mail.Folder;
@@ -45,7 +47,7 @@ public class MessagingListener {
     public void listLocalMessages(Account account, String folder, Message[] messages) {
     }
     
-    public void listLocalMessagesAddMessage(Account account, String folder, Message message) {
+    public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
     }
 
     public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {

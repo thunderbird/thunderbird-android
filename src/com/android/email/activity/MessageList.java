@@ -214,23 +214,28 @@ public class MessageList extends K9ListActivity {
                 break;
 
             case MSG_REMOVE_MESSAGE: {
-                MessageInfoHolder message = (MessageInfoHolder)((Object[]) msg.obj)[1];
-                mAdapter.messages.remove(message);
+                List<MessageInfoHolder> messages = (List<MessageInfoHolder>)((Object[]) msg.obj)[0];
+                for (MessageInfoHolder message : messages)
+                {
+                    mAdapter.messages.remove(message);
+                }
                 mAdapter.notifyDataSetChanged();
                 break;
             }
             
             case MSG_ADD_MESSAGE: {
-                MessageInfoHolder message = (MessageInfoHolder)((Object[]) msg.obj)[1];
-                
-                int index = Collections.binarySearch( mAdapter.messages, message);
-                
-                if (index < 0)
+                List<MessageInfoHolder> messages = (List<MessageInfoHolder>)((Object[]) msg.obj)[0];
+                for (MessageInfoHolder message : messages)
                 {
-                    index = (index * -1) - 1;
+                    int index = Collections.binarySearch( mAdapter.messages, message);
+                    
+                    if (index < 0)
+                    {
+                        index = (index * -1) - 1;
+                    }
+                    
+                    mAdapter.messages.add(index, message);
                 }
-                
-                mAdapter.messages.add(index, message);
                 mAdapter.notifyDataSetChanged();
                 break;
             }
@@ -279,17 +284,17 @@ public class MessageList extends K9ListActivity {
             }
         }
 
-        public void removeMessage(MessageInfoHolder message) {
+        public void removeMessage(List<MessageInfoHolder> messages) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_REMOVE_MESSAGE;
-            msg.obj = new Object[] { message.folder, message };
+            msg.obj = new Object[] { messages };
             sendMessage(msg);
         }
         
-        public void addMessage(MessageInfoHolder message) {
+        public void addMessages(List<MessageInfoHolder> messages) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_ADD_MESSAGE;
-            msg.obj = new Object[] { message.folder, message };
+            msg.obj = new Object[] { messages };
             sendMessage(msg);
         }
         
@@ -1196,12 +1201,12 @@ public class MessageList extends K9ListActivity {
 
 
             @Override
-			public void listLocalMessagesAddMessage(Account account, String folder, Message message) {
+			public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
 				if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
                     return;
                 }
 
-                addOrUpdateMessage(folder, message);
+                addOrUpdateMessages(folder, messages);
 
             }
             
@@ -1225,38 +1230,21 @@ public class MessageList extends K9ListActivity {
             mAnsweredIcon = getResources().getDrawable( R.drawable.ic_mms_answered_small);
         }
 
+        public void removeMessages(List<MessageInfoHolder> holders) {
+            if (holders == null) {
+                return;
+            }
+
+            mHandler.removeMessage(holders);
+
+        }
+        
         public void removeMessage(MessageInfoHolder holder) {
-            if (holder == null) {
-                return;
-            }
-
-            if (holder.folder == null) {
-                return;
-            }
-
-            mHandler.removeMessage(holder);
-
+            List<MessageInfoHolder> messages = new ArrayList<MessageInfoHolder>();
+            messages.add(holder);
+            removeMessages(messages);
         }
-
-        private void addOrUpdateMessage(FolderInfoHolder folder, Message message) {
-
-            MessageInfoHolder m = getMessage( message.getUid());
-
-            if (m == null) {
-                m = new MessageInfoHolder(message, folder);
-                mHandler.addMessage(m);
-            } else {
-                if (message.isSet(Flag.DELETED)) {
-                    removeMessage(m);
-                } else {
-                    m.populate(message, folder);
-                    mHandler.sortMessages();
-                }
-            }
-            
-            
-        }
-
+        
         private void addOrUpdateMessage(String folder, Message message) {
             FolderInfoHolder f = mCurrentFolder;
 
@@ -1265,6 +1253,60 @@ public class MessageList extends K9ListActivity {
             }
 
             addOrUpdateMessage(f, message);
+        }
+        
+        private void addOrUpdateMessage(FolderInfoHolder folder, Message message) {
+            List<Message> messages = new ArrayList<Message>();
+            messages.add(message);
+            addOrUpdateMessages(folder, messages);
+        }
+
+        private void addOrUpdateMessages(String folder, List<Message> messages) {
+            FolderInfoHolder f = mCurrentFolder;
+
+            if (f == null) {
+                return;
+            }
+
+            addOrUpdateMessages(f, messages);
+        }
+        private void addOrUpdateMessages(FolderInfoHolder folder, List<Message> messages) {
+            boolean needsSort = false;
+            List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
+            List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
+
+            for (Message message : messages)
+            {
+                MessageInfoHolder m = getMessage( message.getUid());
+    
+                if (m == null) 
+                {
+                    m = new MessageInfoHolder(message, folder);
+                    messagesToAdd.add(m);
+                } else {
+                    if (message.isSet(Flag.DELETED)) {
+                        messagesToRemove.add(m);
+                        
+                    } else {
+                        m.populate(message, folder);
+                        needsSort = true;
+                        
+                    }
+                }
+        }
+
+            if (messagesToRemove.size() > 0)
+            {
+                removeMessages(messagesToRemove);
+            }
+            if (messagesToAdd.size() > 0)
+            {
+                mHandler.addMessages(messagesToAdd);
+            }
+            if (needsSort)
+            {
+                mHandler.sortMessages();
+            }
         }
 
         // XXX TODO - make this not use a for loop

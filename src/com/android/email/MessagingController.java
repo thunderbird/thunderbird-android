@@ -509,24 +509,26 @@ public class MessagingController implements Runnable {
         
         threadPool.execute(new Runnable() {
             public void run() {
-
+                Folder localFolder = null;
             try {
                 Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-                Folder localFolder = localStore.getFolder(folder);
+                localFolder = localStore.getFolder(folder);
                 localFolder.open(OpenMode.READ_WRITE);
-                Message[] localMessages = localFolder.getMessages(
+                localFolder.getMessages(
                         new MessageRetrievalListener() {
+                            List<Message> pendingMessages = new ArrayList<Message>();
+                            int totalDone = 0;
                       public void messageStarted(String message, int number, int ofTotal) {}
                       public void messageFinished(Message message, int number, int ofTotal) {
     	              
     		                if (!message.isSet(Flag.DELETED) && isMessageSuppressed(account, folder, message) == false) {
-    		                    //messages.add(message);
-    		                    for (MessagingListener l : getListeners()) {
-    		                        l.listLocalMessagesAddMessage(account, folder, message);
+    		                    pendingMessages.add(message);
+    		                    totalDone++;
+    		                    if (totalDone < 5 || pendingMessages.size() > 4)
+    		                    {
+    		                        callbackPending();
     		                    }
-    		                    if (listener != null && getListeners().contains(listener) == false) {
-    		                        listener.listLocalMessagesAddMessage(account, folder, message);
-                                }
+    		                    
     		                } else {
     		                    for (MessagingListener l : getListeners()) {
     		                        l.listLocalMessagesRemoveMessage(account, folder, message);
@@ -537,13 +539,21 @@ public class MessagingController implements Runnable {
     		
     		                } 
                             }
+                      public void messagesFinished(int number) {
+                          callbackPending();
+                      }
+                      private void callbackPending()
+                      {
+                          for (MessagingListener l : getListeners()) {
+                              l.listLocalMessagesAddMessages(account, folder, pendingMessages);
+                          }
+                          if (listener != null && getListeners().contains(listener) == false) {
+                              listener.listLocalMessagesAddMessages(account, folder, pendingMessages);
+                          }
+                          pendingMessages.clear();
+                      }
                         } 
                         );
-                ArrayList<Message> messages = new ArrayList<Message>();
-                //for (Message message : localMessages) { } 
-                //for (MessagingListener l : getListeners()) {
-                //    l.listLocalMessages(account, folder, messages.toArray(new Message[0]));
-                //}
                 for (MessagingListener l : getListeners()) {
                     l.listLocalMessagesFinished(account, folder);
                 }
@@ -561,6 +571,20 @@ public class MessagingController implements Runnable {
                     listener.listLocalMessagesFailed(account, folder, e.getMessage());
                 }
                 addErrorMessage(account, e);
+            }
+            finally
+            {
+                if (localFolder != null)
+                {
+                    try
+                    {
+                        localFolder.close(false);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(Email.LOG_TAG, "Exception while closing folder", e);
+                    }
+                }
             }
             }});
     }
@@ -1046,6 +1070,8 @@ public class MessagingController implements Runnable {
 
                     public void messageStarted(String uid, int number, int ofTotal) {
                     }
+
+                    public void messagesFinished(int total) {}
                 });
             // If a message didn't exist, messageFinished won't be called, but we shouldn't try again
             // If we got here, nothing failed
@@ -1110,6 +1136,8 @@ public class MessagingController implements Runnable {
 
             public void messageStarted(String uid, int number, int ofTotal) {
             }
+
+            public void messagesFinished(int total) {}
         });
 
         Log.d(Email.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
@@ -2325,11 +2353,12 @@ public class MessagingController implements Runnable {
      * @param listener
      */
     public void sendPendingMessagesSynchronous(final Account account) {
+        Folder localFolder = null;
         try {
             Store localStore = Store.getInstance(
                     account.getLocalStoreUri(),
                     mApplication);
-            Folder localFolder = localStore.getFolder(
+            localFolder = localStore.getFolder(
                     account.getOutboxFolderName());
             if (!localFolder.exists()) {
                 return;
@@ -2481,6 +2510,20 @@ public class MessagingController implements Runnable {
             }
             addErrorMessage(account, e);
 
+        }
+        finally
+        {
+            if (localFolder != null)
+            {
+                try
+                {
+                    localFolder.close(false);
+                }
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Exception while closing folder", e);
+                }
+            }
         }
     }
     

@@ -1123,7 +1123,9 @@ public class LocalStore extends Store implements Serializable {
                     i++;
                 }
                 populateHeaders(messagesForHeaders);
-                
+                if (listener != null) {
+                    listener.messagesFinished(i);
+                }
             }
             finally {
                 if (cursor != null) {
