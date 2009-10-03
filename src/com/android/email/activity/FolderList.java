@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Process;
 import android.util.Config;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -42,21 +41,15 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
-import com.android.email.activity.MessageList.FolderInfoHolder;
-import com.android.email.activity.MessageList.MessageInfoHolder;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Folder;
 import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Store;
-import com.android.email.mail.store.LocalStore.LocalFolder;
 
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * FolderList is the primary user interface for the program. This
@@ -89,8 +82,6 @@ public class FolderList extends K9ListActivity {
 
     private Account mAccount;
 
-    private String mInitialFolder;
-
     private FolderListHandler mHandler = new FolderListHandler();
 
     private DateFormat dateFormat = null;
@@ -98,9 +89,6 @@ public class FolderList extends K9ListActivity {
     private DateFormat timeFormat = null;
 
     private boolean mStartup = false;
-    
-
-    private static final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1, 120000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue());
 
     private DateFormat getDateFormat() {
         if (dateFormat == null) {
@@ -362,37 +350,38 @@ public class FolderList extends K9ListActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        String initialFolder;
+
         super.onCreate(savedInstanceState);
         String savedFolderName = null;
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
         Log.v(Email.LOG_TAG, "savedInstanceState: " + (savedInstanceState==null));
         if (savedInstanceState == null) {
-            mInitialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
-            Log.v(Email.LOG_TAG, "EXTRA_INITIAL_FOLDER: " + mInitialFolder);
+            initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
+            Log.v(Email.LOG_TAG, "EXTRA_INITIAL_FOLDER: " + initialFolder);
             mStartup = (boolean) intent.getBooleanExtra(EXTRA_STARTUP, false);
             Log.v(Email.LOG_TAG, "startup: " + mStartup);
-            if (mInitialFolder == null
+            if (initialFolder == null
                 && mStartup) {
-                mInitialFolder = mAccount.getAutoExpandFolderName();
+                initialFolder = mAccount.getAutoExpandFolderName();
             }
         }
         else {
-            mInitialFolder = null;
+            initialFolder = null;
             mStartup = false;
             savedFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
         }
 
-        Log.v(Email.LOG_TAG, "mInitialFolder: " + mInitialFolder);
-        if (mInitialFolder != null
-            && !Email.FOLDER_NONE.equals(mInitialFolder)) {
-            onOpenFolder(mInitialFolder, true);
+        Log.v(Email.LOG_TAG, "mInitialFolder: " + initialFolder);
+        if (initialFolder != null
+            && !Email.FOLDER_NONE.equals(initialFolder)) {
+            onOpenFolder(initialFolder, true);
             finish();
         }
         else {
             requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
-            final FolderList xxx = this;
 
             mListView = getListView();
             mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
@@ -402,7 +391,7 @@ public class FolderList extends K9ListActivity {
             mListView.setOnItemClickListener(new OnItemClickListener() {
                 public void onItemClick(AdapterView parent, View v, int itemPosition, long id) {
                     Log.v(Email.LOG_TAG,"We're clicking "+itemPosition+" -- "+id);
-                    MessageList.actionHandleFolder(xxx, mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name, false);
+                    MessageList.actionHandleFolder(FolderList.this, mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name, false);
                 }
             });
             registerForContextMenu(mListView);
@@ -704,10 +693,6 @@ public class FolderList extends K9ListActivity {
                                           try {
 
                                               MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, mSelectedContextFolder.name);
-
-                                              for (MessageInfoHolder holder : mSelectedContextFolder.messages) {
-                                                  holder.read = true;
-                                              }
 
                                               mSelectedContextFolder.unreadMessageCount = 0;
 
@@ -1111,8 +1096,6 @@ public class FolderList extends K9ListActivity {
 
             public String displayName;
 
-            public ArrayList<MessageInfoHolder> messages;
-
             public long lastChecked;
 
             public int unreadMessageCount;
@@ -1202,11 +1185,7 @@ public class FolderList extends K9ListActivity {
                       if (this.name.equals(mAccount.getSentFolderName())) {
                           this.displayName = String.format( getString(R.string.special_mailbox_name_sent_fmt), this.name);
                       }
-    
-                      if (this.messages == null) {
-                          this.messages = new ArrayList<MessageInfoHolder>();
-                      }
-    
+
                       this.lastChecked = folder.getLastCheckedDisplay();
     
                       String mess = truncateStatus(folder.getStatus());
