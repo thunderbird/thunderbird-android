@@ -264,6 +264,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         intent.putExtra(EXTRA_STARTUP, true);
         context.startActivity(intent);
     }
+    
+    public static void listAccounts(Context context) {
+        Intent intent = new Intent(context, Accounts.class);
+        intent.putExtra(EXTRA_STARTUP, false);
+        context.startActivity(intent);
+    }
 
 
     @Override

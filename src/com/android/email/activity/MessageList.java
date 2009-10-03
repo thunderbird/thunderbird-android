@@ -498,7 +498,9 @@ public class MessageList extends K9ListActivity {
         switch (keyCode) {
         case KeyEvent.KEYCODE_C: { onCompose(); return true;}
 
-        case KeyEvent.KEYCODE_Q: { onShowFolderList(); return true; }
+        case KeyEvent.KEYCODE_Q: 
+        case KeyEvent.KEYCODE_BACK:
+            { onShowFolderList(); return true; }
 
         case KeyEvent.KEYCODE_O: { onCycleSort(); return true; }
 
@@ -575,12 +577,8 @@ public class MessageList extends K9ListActivity {
     }
 
     private void onShowFolderList() {
-        // If we're a child activity (say because Welcome dropped us straight to the message list
-        // we won't have a parent activity and we'll need to get back to it
-        if (mStartup
-            || isTaskRoot()) {
-            FolderList.actionHandleAccount(this, mAccount, false);
-        }
+        FolderList.actionHandleAccount(this, mAccount, false);
+        
         finish();
     }
 
@@ -607,7 +605,12 @@ public class MessageList extends K9ListActivity {
         mAdapter.notifyDataSetChanged();
 
     }
-    
+
+    private void onAccounts() {
+        Accounts.listAccounts(this);                                                                                                                                        
+        finish();
+    }
+        
     private void sortMessages()
     {
         synchronized(mAdapter.messages)
@@ -899,6 +902,11 @@ public class MessageList extends K9ListActivity {
 
             return true;
 
+        case R.id.accounts:
+            onAccounts();                                                                                                                                                          
+
+            return true;                                                                                                                                                           
+            
         case R.id.set_sort_date:
             changeSort(SORT_TYPE.SORT_DATE);
 

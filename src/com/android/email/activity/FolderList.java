@@ -459,7 +459,8 @@ public class FolderList extends K9ListActivity {
         //Shortcuts that work no matter what is selected
 
         switch (keyCode) {
-        case KeyEvent.KEYCODE_Q: {
+        case KeyEvent.KEYCODE_Q: 
+        case KeyEvent.KEYCODE_BACK: {
             onAccounts();
             return true;
         }
@@ -495,14 +496,8 @@ public class FolderList extends K9ListActivity {
     }
 
     private void onAccounts() {
-        // If we're a child activity (say because Welcome dropped us straight to the message list
-        // we won't have a parent activity and we'll need to get back to it
-        if (mStartup
-            || isTaskRoot()) {
-            Intent intent = new Intent(this, Accounts.class);
-            intent.putExtra(Accounts.EXTRA_STARTUP, false);
-            startActivity(intent);
-        }
+        Accounts.listAccounts(this);
+        
         finish();
     }
 
