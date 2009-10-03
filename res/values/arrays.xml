@@ -81,6 +81,7 @@
        <item>@string/account_settings_folder_sync_mode_first_class</item>
        <item>@string/account_settings_folder_sync_mode_first_and_second_class</item>
        <item>@string/account_settings_folder_sync_mode_not_second_class</item>
+       <item>@string/account_settings_folder_sync_mode_none</item>
     </string-array>
 
     <string-array name="account_settings_folder_sync_mode_values">
@@ -88,6 +89,7 @@
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
         <item>NOT_SECOND_CLASS</item> 
+        <item>NONE</item>
     </string-array>
     
     <string-array name="account_settings_folder_push_mode_entries">
@@ -95,6 +97,7 @@
        <item>@string/account_settings_folder_push_mode_first_class</item>
        <item>@string/account_settings_folder_push_mode_first_and_second_class</item>
        <item>@string/account_settings_folder_push_mode_not_second_class</item>
+       <item>@string/account_settings_folder_push_mode_none</item>
     </string-array>
 
     <string-array name="account_settings_folder_push_mode_values">
@@ -102,6 +105,7 @@
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
         <item>NOT_SECOND_CLASS</item> 
+        <item>NONE</item>
     </string-array>
     
     <string-array name="account_settings_folder_target_mode_entries">

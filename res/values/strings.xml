@@ -384,12 +384,14 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
+    <string name="account_settings_folder_sync_mode_none">None</string>
  
     <string name="account_settings_folder_push_mode_label">Folder push mode</string>
     <string name="account_settings_folder_push_mode_all">All</string>
     <string name="account_settings_folder_push_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_folder_push_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_push_mode_not_second_class">All except 2nd Class folders</string>
+    <string name="account_settings_folder_push_mode_none">None</string>
  
     <string name="account_settings_folder_target_mode_label">Move/copy destination folders</string>
     <string name="account_settings_folder_target_mode_all">All</string>

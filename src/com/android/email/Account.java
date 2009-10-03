@@ -60,7 +60,7 @@ public class Account implements Serializable {
     List<Identity> identities;
 
     public enum FolderMode {
-    	ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
+    	NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
     }
     
     public enum HideButtons {
@@ -588,6 +588,10 @@ public class Account implements Serializable {
       			folder.getName().equals(getSentFolderName()) == false &&
       			folder.getName().equals(getErrorFolderName()) == false)
       	{
+      	    if (aMode == Account.FolderMode.NONE)
+      	    {
+      	        continue;
+      	    }
       		if (aMode == Account.FolderMode.FIRST_CLASS && 
         			fMode != Folder.FolderClass.FIRST_CLASS)
           {
