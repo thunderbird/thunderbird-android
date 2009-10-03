@@ -67,7 +67,7 @@ import java.io.StringReader;
  * </pre>
  */
 public class LocalStore extends Store implements Serializable {
-    private static final int DB_VERSION = 28;
+    private static final int DB_VERSION = 29;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -133,7 +133,7 @@ public class LocalStore extends Store implements Serializable {
             
             mDb.execSQL("DROP TABLE IF EXISTS folders");
             mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                    + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT)");
+                    + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER)");
 
             mDb.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
             mDb.execSQL("DROP TABLE IF EXISTS messages");
@@ -273,10 +273,10 @@ public class LocalStore extends Store implements Serializable {
 
 
         try {
-            cursor = mDb.rawQuery("SELECT name, id, unread_count, visible_limit, last_updated, status, push_state FROM folders", null);
+            cursor = mDb.rawQuery("SELECT name, id, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders", null);
             while (cursor.moveToNext()) {
             	LocalFolder folder = new LocalFolder(cursor.getString(0));
-              folder.open(cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6));
+              folder.open(cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7));
           
               folders.add(folder);
             }
@@ -518,7 +518,7 @@ public class LocalStore extends Store implements Serializable {
           }
           Cursor cursor = null;
           try {
-            cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status, push_state FROM folders "
+            cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders "
                 + "where folders.name = ?",
                 new String[] {
                     mName
@@ -528,7 +528,7 @@ public class LocalStore extends Store implements Serializable {
               int folderId = cursor.getInt(0);
               if (folderId > 0)
               {
-                open(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getLong(3), cursor.getString(4), cursor.getString(5));
+                open(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getLong(3), cursor.getString(4), cursor.getString(5), cursor.getLong(6) );
               }
             } else {
               create(FolderType.HOLDS_MESSAGES);
@@ -542,7 +542,7 @@ public class LocalStore extends Store implements Serializable {
           }
         }
         
-        private void open(int id, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState) throws MessagingException
+        private void open(int id, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed) throws MessagingException
         {
          	mFolderId = id;
           mUnreadMessageCount = unreadCount;
@@ -552,6 +552,7 @@ public class LocalStore extends Store implements Serializable {
           // Only want to set the local variable stored in the super class.  This class 
           // does a DB update on setLastChecked
           super.setLastChecked(lastChecked);
+          super.setLastPush(lastPushed);
         }
 
         @Override
@@ -660,6 +661,13 @@ public class LocalStore extends Store implements Serializable {
           mDb.execSQL("UPDATE folders SET last_updated = ? WHERE id = ?",
                   new Object[] { lastChecked, mFolderId });
       }
+        
+        public void setLastPush(long lastChecked) throws MessagingException {
+            open(OpenMode.READ_WRITE);
+            super.setLastPush(lastChecked);
+            mDb.execSQL("UPDATE folders SET last_pushed = ? WHERE id = ?",
+                    new Object[] { lastChecked, mFolderId });
+        }
 
         public int getVisibleLimit() throws MessagingException {
             open(OpenMode.READ_WRITE);

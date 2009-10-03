@@ -6,7 +6,7 @@ import com.android.email.Preferences;
 public abstract class Folder {
 		private String status = null;
 		private long lastChecked = 0;
-		private long lastCheckedDisplay = 0;
+		private long lastPush = 0;
     public enum OpenMode {
         READ_WRITE, READ_ONLY,
     }
@@ -138,21 +138,22 @@ public abstract class Folder {
 
 		public void setLastChecked(long lastChecked) throws MessagingException
 		{
-		    if (lastChecked > lastCheckedDisplay)
-		    {
-		        setLastCheckedDisplay(lastChecked);
-		    };
 			this.lastChecked = lastChecked;
 		}
 		
-		public long getLastCheckedDisplay()
+		public long getLastPush()
 		{
-		    return lastCheckedDisplay;
+		    return lastPush;
 		}
 
-		public void setLastCheckedDisplay(long lastCheckedDisplay)
+		public void setLastPush(long lastCheckedDisplay) throws MessagingException
 		{
-		    this.lastCheckedDisplay = lastCheckedDisplay;
+		    this.lastPush = lastCheckedDisplay;
+		}
+		
+		public long getLastUpdate()
+		{
+		    return Math.max(getLastChecked(), getLastPush());
 		}
 
    	public FolderClass getDisplayClass()

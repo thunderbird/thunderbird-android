@@ -3520,7 +3520,7 @@ public class MessagingController implements Runnable {
                             unreadCount++;
                         }
                     }
-                    localFolder.setLastCheckedDisplay(System.currentTimeMillis());
+                    localFolder.setLastPush(System.currentTimeMillis());
                     localFolder.setStatus(null);
 
                     int unreadMessageCount = account.getUnreadMessageCount(mApplication, mApplication);

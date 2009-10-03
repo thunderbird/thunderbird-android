@@ -1186,7 +1186,7 @@ public class FolderList extends K9ListActivity {
                           this.displayName = String.format( getString(R.string.special_mailbox_name_sent_fmt), this.name);
                       }
 
-                      this.lastChecked = folder.getLastCheckedDisplay();
+                      this.lastChecked = folder.getLastUpdate();
     
                       String mess = truncateStatus(folder.getStatus());
     
