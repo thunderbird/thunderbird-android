@@ -876,6 +876,7 @@ public class FolderList extends K9ListActivity {
                   mHandler.progress(true);
                   mHandler.folderLoading(folder, true);
                   mHandler.folderSyncing(folder);
+                  mHandler.dataChanged();
               }
     
               @Override
@@ -883,23 +884,37 @@ public class FolderList extends K9ListActivity {
                   if (!account.equals(mAccount)) {
                       return;
                   }
+                  mHandler.progress(false);
+                  mHandler.folderLoading(folder, false);
+                  // mHandler.folderStatus(folder, null);
+                  mHandler.folderSyncing(null);
+
+                  refreshFolder(account, folder);
     
+              }
+              
+              private void refreshFolder(Account account, String folderName)
+              {
                   // There has to be a cheaper way to get at the localFolder object than this
                   try { 
-                      Folder localFolder = (Folder) Store.getInstance(account.getLocalStoreUri(), getApplication()).getFolder(folder);
-                      getFolder(folder).populate(localFolder);
+                      if (account != null && folderName != null)
+                      {
+                          Folder localFolder = (Folder) Store.getInstance(account.getLocalStoreUri(), getApplication()).getFolder(folderName);
+                          if (localFolder != null)
+                          {
+                              FolderInfoHolder folderHolder = getFolder(folderName);
+                              if (folderHolder != null)
+                              {
+                                  folderHolder.populate(localFolder);
+                                  mHandler.dataChanged();
+                              }
+                          }
+                      }
                   } 
                   catch (Exception e) {
                       Log.e(Email.LOG_TAG, "Exception while populating folder", e);
                   }
 
-
-                  mHandler.progress(false);
-                  mHandler.folderLoading(folder, false);
-                  // mHandler.folderStatus(folder, null);
-                  mHandler.folderSyncing(null);
-    
-                  onRefresh( ! REFRESH_REMOTE );
               }
     
               @Override
@@ -924,6 +939,8 @@ public class FolderList extends K9ListActivity {
                   }
     
                   mHandler.folderSyncing(null);
+
+                  mHandler.dataChanged();
               }
     
     
@@ -939,8 +956,7 @@ public class FolderList extends K9ListActivity {
                   if (!account.equals(mAccount)) {
                       return;
                   }
-    
-                  onRefresh( ! REFRESH_REMOTE);
+                  refreshFolder(account, mAccount.getTrashFolderName());
               }
     
               @Override
@@ -948,8 +964,7 @@ public class FolderList extends K9ListActivity {
                   if (!account.equals(mAccount)) {
                       return;
                   }
-    
-                  onRefresh( !REFRESH_REMOTE);
+                  refreshFolder(account, folderName);
               }
     
               @Override
@@ -959,8 +974,7 @@ public class FolderList extends K9ListActivity {
                   }
     
                   mHandler.sendingOutbox(false);
-    
-                  onRefresh( !REFRESH_REMOTE);
+                  refreshFolder(account, mAccount.getOutboxFolderName());
               }
     
               @Override
@@ -970,6 +984,8 @@ public class FolderList extends K9ListActivity {
                   }
     
                   mHandler.sendingOutbox(true);
+
+                  mHandler.dataChanged();
               }
     
               @Override
@@ -979,6 +995,7 @@ public class FolderList extends K9ListActivity {
                   }
     
                   mHandler.sendingOutbox(false);
+                  refreshFolder(account, mAccount.getOutboxFolderName());
               }
     
               public void accountSizeChanged(Account account, long oldSize, long newSize) {
