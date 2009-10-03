@@ -495,7 +495,7 @@ public class MessageList extends K9ListActivity {
         case KeyEvent.KEYCODE_C: { onCompose(); return true;}
 
         case KeyEvent.KEYCODE_Q: 
-        case KeyEvent.KEYCODE_BACK:
+        //case KeyEvent.KEYCODE_BACK:
             { onShowFolderList(); return true; }
 
         case KeyEvent.KEYCODE_O: { onCycleSort(); return true; }
@@ -573,7 +573,10 @@ public class MessageList extends K9ListActivity {
     }
 
     private void onShowFolderList() {
-        FolderList.actionHandleAccount(this, mAccount, false);
+        if (mStartup || isTaskRoot())
+        {
+            FolderList.actionHandleAccount(this, mAccount, false);
+        }
         
         finish();
     }

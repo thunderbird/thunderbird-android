@@ -468,7 +468,8 @@ public class FolderList extends K9ListActivity {
 
         switch (keyCode) {
         case KeyEvent.KEYCODE_Q: 
-        case KeyEvent.KEYCODE_BACK: {
+        //case KeyEvent.KEYCODE_BACK: 
+        {
             onAccounts();
             return true;
         }
@@ -504,7 +505,10 @@ public class FolderList extends K9ListActivity {
     }
 
     private void onAccounts() {
-        Accounts.listAccounts(this);
+        if (mStartup || isTaskRoot()) 
+        {
+            Accounts.listAccounts(this);
+        }
         
         finish();
     }
