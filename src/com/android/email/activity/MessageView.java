@@ -151,6 +151,15 @@ public class MessageView extends K9Activity
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
 
+
+    @Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+
+	onKeyDown(event.getKeyCode(), event);
+
+	return super.dispatchKeyEvent(event);
+    }
+
        public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DEL: { onDelete(); return true;}
