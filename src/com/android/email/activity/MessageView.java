@@ -154,10 +154,17 @@ public class MessageView extends K9Activity
 
     @Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
+	boolean ret = false;
 
-	onKeyDown(event.getKeyCode(), event);
-
-	return super.dispatchKeyEvent(event);
+	if (KeyEvent.ACTION_DOWN == event.getAction())
+	{
+	    ret = onKeyDown(event.getKeyCode(), event);
+	}
+	if (ret == false)
+	{
+	    ret = super.dispatchKeyEvent(event);
+	}
+	return ret;
     }
 
        public boolean onKeyDown(int keyCode, KeyEvent event) {

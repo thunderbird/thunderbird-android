@@ -127,7 +127,6 @@ public class FolderList extends K9ListActivity {
         private static final int MSG_PROGRESS = 2;
         private static final int MSG_DATA_CHANGED = 3;
         private static final int MSG_FOLDER_LOADING = 7;
-        private static final int MSG_SYNC_MESSAGES = 13;
         private static final int MSG_FOLDER_SYNCING = 18;
         private static final int MSG_SENDING_OUTBOX = 19;
         private static final int MSG_ACCOUNT_SIZE_CHANGED = 20;
@@ -213,13 +212,6 @@ public class FolderList extends K9ListActivity {
             }
         }
 
-        public void synchronizeMessages(FolderInfoHolder folder, Message[] messages) {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_SYNC_MESSAGES;
-            msg.obj = new Object[] { folder, messages };
-            sendMessage(msg);
-        }
-        
         public void newFolders(ArrayList<FolderInfoHolder> newFolders) {
             android.os.Message msg = new android.os.Message();
             msg.obj = newFolders;

@@ -551,6 +551,19 @@ public class MessageList extends K9ListActivity {
 
 
     private void onOpenMessage( MessageInfoHolder message) {
+
+        if (message.folder.name.equals(mAccount.getDraftsFolderName())) {
+            MessageCompose.actionEditDraft(this, mAccount, message.message);
+        } else {
+	    // Need to get the list before the sort starts
+            ArrayList<String> folderUids = new ArrayList<String>();
+
+            for (MessageInfoHolder holder : mAdapter.messages) {
+                folderUids.add(holder.uid);
+            }
+
+            MessageView.actionView(this, mAccount, message.folder.name, message.uid, folderUids);
+        }
         /*
         * We set read=true here for UI performance reasons. The actual value will
         * get picked up on the refresh when the Activity is resumed but that may
@@ -564,17 +577,6 @@ public class MessageList extends K9ListActivity {
             mHandler.sortMessages();
         }
 
-        if (message.folder.name.equals(mAccount.getDraftsFolderName())) {
-            MessageCompose.actionEditDraft(this, mAccount, message.message);
-        } else {
-            ArrayList<String> folderUids = new ArrayList<String>();
-
-            for (MessageInfoHolder holder : mAdapter.messages) {
-                folderUids.add(holder.uid);
-            }
-
-            MessageView.actionView(this, mAccount, message.folder.name, message.uid, folderUids);
-        }
     }
 
     private void onShowFolderList() {
