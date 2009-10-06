@@ -458,7 +458,7 @@ public class MessageView extends K9Activity
         else // Account.HideButtons.KEYBOARD_AVAIL
         {
             final Configuration config = this.getResources().getConfiguration();
-            if (config.keyboardHidden == Configuration.KEYBOARDHIDDEN_NO )
+            if (config.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO )
             {
               hideButtons();
             }
