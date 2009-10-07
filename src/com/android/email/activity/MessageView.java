@@ -155,7 +155,7 @@ public class MessageView extends K9Activity
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
 
-       public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DEL: { onDelete(); return true;}
             case KeyEvent.KEYCODE_D: { onDelete(); return true;}
@@ -171,20 +171,30 @@ public class MessageView extends K9Activity
             { onPrevious(); return true; }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K: { onNext(); return true; }
-            case KeyEvent.KEYCODE_Z: { if (event.isShiftPressed()) {
-                                            mMessageContentView.zoomIn();
-                                        } else {
-                                            mMessageContentView.zoomOut();
-                                        }
-                                     return true; }
-
-           case KeyEvent.KEYCODE_H: {
+            case KeyEvent.KEYCODE_Z: { 
+                if (event.isShiftPressed()) {
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            mMessageContentView.zoomIn();
+                        }
+                    });
+                } else {
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            mMessageContentView.zoomOut();
+                        }
+                    });
+                }
+                return true; 
+            }
+            case KeyEvent.KEYCODE_H: {
                Toast toast = Toast.makeText(this, R.string.message_help_key, Toast.LENGTH_LONG);
                toast.show();
-               return true; }
+               return true; 
             }
-           return super.onKeyDown(keyCode, event);
         }
+        return super.onKeyDown(keyCode, event);
+    }
 
     class MessageViewHandler extends Handler {
         private static final int MSG_PROGRESS = 2;
@@ -1162,11 +1172,20 @@ public class MessageView extends K9Activity
                      * TODO this should be smarter, change to regex for img, but consider how to
                      * get background images and a million other things that HTML allows.
                      */
-                    mMessageContentView.loadDataWithBaseURL("email://", text, "text/html", "utf-8", null);
+                    final String emailText = text;
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/html", "utf-8", null);
+                        }
+                    });
                     mHandler.showShowPictures(text.contains("<img"));
                 }
                 else {
-                    mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                        }
+                    });
                 }
 
                 renderAttachments(mMessage, 0);
@@ -1218,7 +1237,7 @@ public class MessageView extends K9Activity
             mHandler.post(new Runnable() {
                 public void run() {
                     mMessageContentView.loadUrl("file:///android_asset/loading.html");
-                   setProgressBarIndeterminateVisibility(true);
+                    setProgressBarIndeterminateVisibility(true);
                 }
             });
         }
