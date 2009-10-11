@@ -2558,6 +2558,7 @@ public class MessagingController implements Runnable {
         final MessagingListener listener)
     {
       if (!message.getUid().startsWith(Email.LOCAL_UID_PREFIX)) { 
+          suppressMessage(account, srcFolder, message);
         put("moveMessage", null, new Runnable() {
           public void run() {
             moveOrCopyMessageSynchronous(account, srcFolder, message, destFolder, false, listener);
