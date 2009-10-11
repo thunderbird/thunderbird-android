@@ -332,6 +332,11 @@ public class ImapStore extends Store {
     {
       return true;
     }
+    @Override
+    public boolean isPushCapable()
+    {
+      return true;
+    }
     
     @Override
     public Pusher getPusher(PushReceiver receiver, List<String> names)

@@ -86,7 +86,9 @@ public abstract class Store {
     public boolean isMoveCapable() {
       return false;
     }
-    
+    public boolean isPushCapable() {
+        return false;
+    }
 
     public Pusher getPusher(PushReceiver receiver, List<String> names)
     {

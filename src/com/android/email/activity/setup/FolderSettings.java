@@ -54,18 +54,30 @@ public class FolderSettings extends K9PreferenceActivity {
         String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
         Account mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
         
-				try
-				{
-					Store localStore = Store.getInstance(mAccount.getLocalStoreUri(),
-							getApplication());
-					mFolder = (LocalFolder) localStore.getFolder(folderName);
-					mFolder.refresh(Preferences.getPreferences(this));
-				}
-				catch (MessagingException me)
-				{
-					Log.e(Email.LOG_TAG, "Unable to edit folder " + folderName + " preferences", me);
-					return;
-				}
+		try
+		{
+			Store localStore = Store.getInstance(mAccount.getLocalStoreUri(),
+					getApplication());
+			mFolder = (LocalFolder) localStore.getFolder(folderName);
+			mFolder.refresh(Preferences.getPreferences(this));
+		}
+		catch (MessagingException me)
+		{
+			Log.e(Email.LOG_TAG, "Unable to edit folder " + folderName + " preferences", me);
+			return;
+		}
+				
+		boolean isPushCapable = false;
+        Store store = null;
+        try
+        {
+            store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+            isPushCapable = store.isPushCapable();
+        }
+        catch (Exception e)
+        {
+            Log.e(Email.LOG_TAG, "Could not get remote store", e);
+        }
 
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
@@ -99,6 +111,7 @@ public class FolderSettings extends K9PreferenceActivity {
         });
         
         mPushClass = (ListPreference) findPreference(PREFERENCE_PUSH_CLASS);
+        mPushClass.setEnabled(isPushCapable);
         mPushClass.setValue(mFolder.getRawPushClass().name());
         mPushClass.setSummary(mPushClass.getEntry());
         mPushClass.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

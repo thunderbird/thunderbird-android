@@ -3338,10 +3338,26 @@ public class MessagingController implements Runnable {
     
     public Pusher setupPushing(final Account account)
     {
+ 
         Pusher pusher = pushers.get(account);
         if (pusher != null)
         {
             return pusher;
+        }
+        Store store = null;
+        try
+        {
+            store = Store.getInstance(account.getStoreUri(), mApplication);
+            if (store.isPushCapable() == false)
+            {
+                Log.i(Email.LOG_TAG, "Account " + account.getDescription() + " is not push capable, skipping");
+                return null;
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e(Email.LOG_TAG, "Could not get remote store", e);
+            return null;
         }
         final MessagingController controller = this;
         PushReceiver receiver = new PushReceiver()
@@ -3490,7 +3506,6 @@ public class MessagingController implements Runnable {
             }
             if (names.size() > 0)
             {
-                Store store = Store.getInstance(account.getStoreUri(), mApplication);
                 pusher = store.getPusher(receiver, names);
                 if (pusher != null)
                 {
@@ -3500,6 +3515,7 @@ public class MessagingController implements Runnable {
             }
             else
             {
+                Log.i(Email.LOG_TAG, "No folders are configured for pushing in account " + account.getDescription());
                 return null;
             }
             
