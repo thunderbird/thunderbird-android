@@ -1739,6 +1739,10 @@ public class MessagingController implements Runnable {
     		
     		localFolder.deleteMessagesOlderThan(nowTime - (15 * 60 * 1000));
     		
+    		for (MessagingListener l : getListeners()) {
+                l.folderStatusChanged(account, localFolder.getName());
+            }
+    		
     	}
     	catch (Throwable it)
     	{

@@ -1567,6 +1567,28 @@ public class LocalStore extends Store implements Serializable {
         	open(OpenMode.READ_ONLY);
         	mDb.execSQL("DELETE FROM messages WHERE folder_id = ? and date < ?", new Object[] {
               Long.toString(mFolderId), new Long(cutoff) } );	
+        	resetUnreadCount();
+        }
+        
+        private void resetUnreadCount()
+        {
+            try
+            {
+                int newUnread = 0;
+                Message[] messages = getMessages(null);
+                for (Message message : messages)
+                {
+                    if (message.isSet(Flag.SEEN) == false)
+                    {
+                        newUnread++;
+                    }
+                }
+                setUnreadMessageCount(newUnread);
+            }
+            catch (Exception e)
+            {
+                Log.e(Email.LOG_TAG, "Unable to fetch all messages from LocalStore", e);
+            }
         }
 
         @Override
