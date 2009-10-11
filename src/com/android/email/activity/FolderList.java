@@ -436,7 +436,6 @@ public class FolderList extends K9ListActivity {
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
         mAccount.refresh(Preferences.getPreferences(this));
-        markAllRefresh();
 
         onRefresh( !REFRESH_REMOTE );
 
@@ -503,10 +502,6 @@ public class FolderList extends K9ListActivity {
         }
         
         finish();
-    }
-
-    private void markAllRefresh() {
-        mAdapter.mListener.accountReset(mAccount);
     }
 
     private void onEmptyTrash(final Account account) {
@@ -799,7 +794,7 @@ public class FolderList extends K9ListActivity {
                   }
     
                   mHandler.progress(false);
-    
+                  MessagingController.getInstance(getApplication()).refreshListener(mAdapter.mListener);
                   mHandler.dataChanged();
     
               }
@@ -850,18 +845,6 @@ public class FolderList extends K9ListActivity {
                   Collections.sort(newFolders);
                   mHandler.newFolders(newFolders);
                   
-              }
-              
- 
-              @Override
-              public void accountReset(Account account) {
-                  if (!account.equals(mAccount)) {
-                      return;
-                  }
-    
-                  for (FolderInfoHolder folder : mFolders) {
-                      folder.needsRefresh = true;
-                  }
               }
     
               public void synchronizeMailboxStarted(Account account, String folder) {
@@ -937,6 +920,21 @@ public class FolderList extends K9ListActivity {
                   mHandler.folderSyncing(null);
 
                   mHandler.dataChanged();
+              }
+              
+              @Override
+              public void setPushActive(Account account, String folderName, boolean enabled)
+              {
+                  if (!account.equals(mAccount)) {
+                      return;
+                  }
+                  FolderInfoHolder holder = getFolder(folderName);
+                  
+                  if (holder != null) {
+                      holder.pushActive = enabled;
+
+                      mHandler.dataChanged();
+                  }
               }
     
     
@@ -1074,6 +1072,11 @@ public class FolderList extends K9ListActivity {
                 statusText = (getDateFormat().format(lastCheckedDate) + " " + getTimeFormat()
                               .format(lastCheckedDate));
             }
+            
+            if (folder.pushActive)
+            {
+                statusText = getString(R.string.folder_push_active_symbol) + statusText;
+            }
 
             if (statusText != null) {
                 holder.folderStatus.setText(statusText);
@@ -1116,10 +1119,10 @@ public class FolderList extends K9ListActivity {
             public boolean loading;
 
             public String status;
+            
+            public boolean pushActive;
 
             public boolean lastCheckFailed;
-
-            public boolean needsRefresh = false;
 
             /**
              * Outbox is handled differently from any other folder.

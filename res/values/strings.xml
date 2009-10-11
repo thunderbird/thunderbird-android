@@ -217,6 +217,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="mailbox_select_dlg_new_mailbox_action">New folder</string>
 
     <string name="new_mailbox_dlg_title">New folder name</string>
+    
+    <string name="folder_push_active_symbol">(Push)</string>
 
     <string name="message_copied_toast">Message copied</string>
     <string name="message_moved_toast">Message moved</string>

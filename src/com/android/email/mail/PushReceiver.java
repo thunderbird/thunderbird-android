@@ -1,6 +1,5 @@
 package com.android.email.mail;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface PushReceiver
@@ -11,4 +10,5 @@ public interface PushReceiver
     public void messagesFlagsChanged(String folderName, List<Message> mess);
     public String getPushState(String folderName);
     public void pushError(String errorMessage, Exception e);
+    public void setPushActive(String folderName, boolean enabled);
 }

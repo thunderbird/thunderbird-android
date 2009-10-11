@@ -24,11 +24,7 @@ public class MessagingListener {
     public void accountSizeChanged(Account account, long oldSize, long newSize)
     {
     }
-    
-    public void accountReset(Account account) {
-      
-    }
-  
+
     public void listFoldersStarted(Account account) {
     }
 
@@ -127,6 +123,11 @@ public class MessagingListener {
 
     public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
 
+    }
+    
+    public void setPushActive(Account account, String folderName, boolean enabled)
+    {
+        
     }
 
     public void loadAttachmentStarted(

@@ -1896,15 +1896,18 @@ public class ImapStore extends Store {
                             {
                                 Log.i(Email.LOG_TAG, "About to IDLE " + getName());
                                 
+                                receiver.setPushActive(getName(), true);
                                 idling.set(true);
                                 executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
                                 idling.set(false);
+                                receiver.setPushActive(getName(), false);
                                 delayTime = NORMAL_DELAY_TIME;
                             }
                         } 
                         catch (Exception e)
                         {
                             idling.set(false);
+                            receiver.setPushActive(getName(), false);
                             try
                             {
                                 close(false);

@@ -358,6 +358,11 @@ public class MessagingController implements Runnable {
 
     public void addListener(MessagingListener listener) {
         mListeners.add(listener);
+        refreshListener(listener);
+    }
+    
+    public void refreshListener(MessagingListener listener)
+    {
         if (memorizingListener != null && listener != null)
         {
             memorizingListener.refreshOther(listener);
@@ -3135,7 +3140,6 @@ public class MessagingController implements Runnable {
             }
             for (MessagingListener l : getListeners()) {
               l.accountSizeChanged(account, oldSize, newSize);
-              l.accountReset(account);
             }
           }
           catch (Exception e)
@@ -3165,7 +3169,6 @@ public class MessagingController implements Runnable {
             }
             for (MessagingListener l : getListeners()) {
               l.accountSizeChanged(account, oldSize, newSize);
-              l.accountReset(account);
             }
           }
           catch (Exception e)
@@ -3460,6 +3463,13 @@ public class MessagingController implements Runnable {
                     }
                 }
             }
+            
+            public void setPushActive(String folderName, boolean enabled)
+            {
+                for (MessagingListener l : getListeners()) {
+                    l.setPushActive(account, folderName, enabled);
+                  }
+            }
 
         };
         try
@@ -3651,94 +3661,159 @@ public class MessagingController implements Runnable {
         }
         Log.i(Email.LOG_TAG, "Latch released");
     }
-    enum MemorizingState { STARTED, FINISHED, FAILED};
+    enum MemorizingState { STARTED, FINISHED, FAILED };
+    
+    class Memory
+    {
+        Account account;
+        String folderName;
+        MemorizingState syncingState = null;
+        MemorizingState sendingState = null;
+        MemorizingState pushingState = null;
+        String failureMessage = null;
+        
+        Memory(Account nAccount, String nFolderName)
+        {
+            account = nAccount;
+            folderName = nFolderName;
+        }
+        
+        String getKey()
+        {
+            return getMemoryKey(account, folderName);
+        }
+        
+        
+    }
+    static String getMemoryKey(Account taccount, String tfolderName)
+    {
+        return taccount.getDescription() + ":" + tfolderName;
+    }
     class MemorizingListener extends MessagingListener
     {
-        Account syncingAccount;
-        String syncingFolder;
-        String syncingMessage;
+        HashMap<String, Memory> memories = new HashMap<String, Memory>(31);
         int syncingTotalMessagesInMailbox;
         int syncingNumNewMessages;
         
-        Account sendingAccount;
-        
-        MemorizingState syncingState = null;
-        MemorizingState sendingState = null;
+        Memory getMemory(Account account, String folderName)
+        {
+            Memory memory = memories.get(getMemoryKey(account, folderName));
+            if (memory == null)
+            {
+                memory = new Memory(account, folderName);
+                memories.put(memory.getKey(), memory);
+            }
+            return memory;
+        }
         
         public synchronized void synchronizeMailboxStarted(Account account, String folder) {
-            syncingState = MemorizingState.STARTED;
-            syncingAccount = account;
-            syncingFolder = folder;
+            Memory memory = getMemory(account, folder);
+            memory.syncingState = MemorizingState.STARTED;
         }
 
         public synchronized void synchronizeMailboxFinished(Account account, String folder,
                 int totalMessagesInMailbox, int numNewMessages) {
-            syncingState = MemorizingState.FINISHED;
-            syncingAccount = account;
-            syncingFolder = folder;
+            Memory memory = getMemory(account, folder);
+            memory.syncingState = MemorizingState.FINISHED;            
             syncingTotalMessagesInMailbox = totalMessagesInMailbox;
             syncingNumNewMessages = numNewMessages;
         }
 
         public synchronized void synchronizeMailboxFailed(Account account, String folder,
                 String message) {
-            syncingState = MemorizingState.FAILED;
-            syncingAccount = account;
-            syncingFolder = folder;
-            syncingMessage = message;
+
+            Memory memory = getMemory(account, folder);
+            memory.syncingState = MemorizingState.FAILED;
+            memory.failureMessage = message;
         }
         synchronized void refreshOther(MessagingListener other)
         {
             if (other != null)
             {
-                if (syncingState != null)
+                
+                Memory syncStarted = null;
+                Memory sendStarted = null;
+                
+                for (Memory memory : memories.values())
                 {
-                    switch (syncingState)
+                    
+                    if (memory.syncingState != null)
                     {
-                        case STARTED:
-                            other.synchronizeMailboxStarted(syncingAccount, syncingFolder);
-                            break;
-                        case FINISHED:
-                            other.synchronizeMailboxFinished(syncingAccount, syncingFolder, 
-                                        syncingTotalMessagesInMailbox, syncingNumNewMessages);
-                            break;
-                        case FAILED:
-                            other.synchronizeMailboxFailed(syncingAccount, syncingFolder,
-                                    syncingMessage);
-                            break;
+                        switch (memory.syncingState)
+                        {
+                            case STARTED:
+                                syncStarted = memory;
+                                break;
+                            case FINISHED:
+                                other.synchronizeMailboxFinished(memory.account, memory.folderName, 
+                                            syncingTotalMessagesInMailbox, syncingNumNewMessages);
+                                break;
+                            case FAILED:
+                                other.synchronizeMailboxFailed(memory.account, memory.folderName,
+                                        memory.failureMessage);
+                                break;
+                        }
+                    }
+                
+                    if (memory.sendingState != null)
+                    {
+                        switch (memory.sendingState)
+                        {
+                            case STARTED:
+                                sendStarted = memory;
+                                break;
+                            case FINISHED:
+                                other.sendPendingMessagesCompleted(memory.account);
+                                break;
+                            case FAILED:
+                                other.sendPendingMessagesFailed(memory.account);
+                                break;
+                        }
+                    }
+                    if (memory.pushingState != null)
+                    {
+                        switch (memory.pushingState)
+                        {
+                            case STARTED:
+                                other.setPushActive(memory.account, memory.folderName, true);
+                                break;
+                            case FINISHED:
+                                other.setPushActive(memory.account, memory.folderName, false);
+                                break;
+                        }
                     }
                 }
-                if (sendingState != null)
+                
+                if (syncStarted != null)
                 {
-                    switch (sendingState)
-                    {
-                        case STARTED:
-                            other.sendPendingMessagesStarted(sendingAccount);
-                            break;
-                        case FINISHED:
-                            other.sendPendingMessagesCompleted(sendingAccount);
-                            break;
-                        case FAILED:
-                            other.sendPendingMessagesFailed(sendingAccount);
-                            break;
-                    }
+                    other.synchronizeMailboxStarted(syncStarted.account, syncStarted.folderName);
                 }
+                if (sendStarted != null)
+                {
+                    other.sendPendingMessagesStarted(sendStarted.account);
+                }
+                
             }
+        }
+        @Override
+        public synchronized void setPushActive(Account account, String folderName, boolean active) {
+            Memory memory = getMemory(account, folderName);
+            memory.pushingState = (active ? MemorizingState.STARTED : MemorizingState.FINISHED);
         }
         
         public synchronized void sendPendingMessagesStarted(Account account) {
-            sendingState = MemorizingState.STARTED;
-            sendingAccount = account;
+            Memory memory = getMemory(account, null);
+            memory.sendingState = MemorizingState.STARTED;
         }
 
         public synchronized void sendPendingMessagesCompleted(Account account) {
-            sendingState = MemorizingState.FINISHED;
-            sendingAccount = account;
+            Memory memory = getMemory(account, null);
+            memory.sendingState = MemorizingState.FINISHED;
         }
         
         public synchronized void sendPendingMessagesFailed(Account account) {
-            sendingState = MemorizingState.FAILED;
-            sendingAccount = account;
+            Memory memory = getMemory(account, null);
+            memory.sendingState = MemorizingState.FAILED;
         }
     }
 
