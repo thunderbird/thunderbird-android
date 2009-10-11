@@ -3671,6 +3671,9 @@ public class MessagingController implements Runnable {
         MemorizingState sendingState = null;
         MemorizingState pushingState = null;
         String failureMessage = null;
+
+        int syncingTotalMessagesInMailbox;
+        int syncingNumNewMessages;
         
         Memory(Account nAccount, String nFolderName)
         {
@@ -3692,8 +3695,6 @@ public class MessagingController implements Runnable {
     class MemorizingListener extends MessagingListener
     {
         HashMap<String, Memory> memories = new HashMap<String, Memory>(31);
-        int syncingTotalMessagesInMailbox;
-        int syncingNumNewMessages;
         
         Memory getMemory(Account account, String folderName)
         {
@@ -3715,8 +3716,8 @@ public class MessagingController implements Runnable {
                 int totalMessagesInMailbox, int numNewMessages) {
             Memory memory = getMemory(account, folder);
             memory.syncingState = MemorizingState.FINISHED;            
-            syncingTotalMessagesInMailbox = totalMessagesInMailbox;
-            syncingNumNewMessages = numNewMessages;
+            memory.syncingTotalMessagesInMailbox = totalMessagesInMailbox;
+            memory.syncingNumNewMessages = numNewMessages;
         }
 
         public synchronized void synchronizeMailboxFailed(Account account, String folder,
@@ -3746,7 +3747,7 @@ public class MessagingController implements Runnable {
                                 break;
                             case FINISHED:
                                 other.synchronizeMailboxFinished(memory.account, memory.folderName, 
-                                            syncingTotalMessagesInMailbox, syncingNumNewMessages);
+                                            memory.syncingTotalMessagesInMailbox, memory.syncingNumNewMessages);
                                 break;
                             case FAILED:
                                 other.synchronizeMailboxFailed(memory.account, memory.folderName,
