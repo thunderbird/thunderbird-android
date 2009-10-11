@@ -32,8 +32,9 @@ public class Email extends Application {
     /**
      * If this is enabled there will be additional logging information sent to
      * Log.d, including protocol dumps.
+     * Controlled by Preferences at run-time
      */
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /**
      * If this is enabled than logging that normally hides sensitive information

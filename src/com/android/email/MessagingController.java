@@ -244,7 +244,10 @@ public class MessagingController implements Runnable {
     }
     
     public void log(String logmess) {
-      Log.d(Email.LOG_TAG, logmess);
+        if (Email.DEBUG)
+        {
+            Log.d(Email.LOG_TAG, logmess);
+        }
       if (Email.logFile != null) {
         FileOutputStream fos = null;
         try {
@@ -656,9 +659,7 @@ public class MessagingController implements Runnable {
             return;
         }
         String debugLine = "Synchronizing folder " + account.getDescription() + ":" + folder;
-        if (Config.LOGV) {
-            Log.v(Email.LOG_TAG, debugLine);
-        }
+        Log.i(Email.LOG_TAG, debugLine);
         log(debugLine);
 
         for (MessagingListener l : getListeners()) {
@@ -670,8 +671,8 @@ public class MessagingController implements Runnable {
         LocalFolder tLocalFolder = null;
         Exception commandException = null;
         try {
-            if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "SYNC: About to process pending commands for folder " +
+            if (Email.DEBUG) {
+                Log.d(Email.LOG_TAG, "SYNC: About to process pending commands for folder " +
                     account.getDescription() + ":" + folder);
             }
        		try {
@@ -688,7 +689,7 @@ public class MessagingController implements Runnable {
              * Get the message list from the local store and create an index of
              * the uids within the list.
              */
-            if (Config.LOGV) {
+            if (Email.DEBUG) {
                 Log.v(Email.LOG_TAG, "SYNC: About to get local folder " + folder);
             }
             final LocalStore localStore = (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
@@ -701,12 +702,12 @@ public class MessagingController implements Runnable {
                 localUidMap.put(message.getUid(), message);
             }
 
-            if (Config.LOGV) {
+            if (Email.DEBUG) {
                 Log.v(Email.LOG_TAG, "SYNC: About to get remote store for " + folder);
             }
 
             Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
-            if (Config.LOGV) {
+            if (Email.DEBUG) {
                 Log.v(Email.LOG_TAG, "SYNC: About to get remote folder " + folder);
             }
 
@@ -758,7 +759,7 @@ public class MessagingController implements Runnable {
             /*
              * Open the remote folder. This pre-loads certain metadata like message count.
              */
-            if (Config.LOGV) {
+            if (Email.DEBUG) {
                 Log.v(Email.LOG_TAG, "SYNC: About to open remote folder " + folder);
             }
             remoteFolder.open(OpenMode.READ_WRITE);
@@ -776,7 +777,7 @@ public class MessagingController implements Runnable {
           //  final ArrayList<Message> unsyncedMessages = new ArrayList<Message>();
             HashMap<String, Message> remoteUidMap = new HashMap<String, Message>();
 
-            if (Config.LOGV) {
+            if (Email.DEBUG) {
                 Log.v(Email.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " +
                     remoteMessageCount);
             }
@@ -788,7 +789,7 @@ public class MessagingController implements Runnable {
                 int remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
                 int remoteEnd = remoteMessageCount;
 
-                if (Config.LOGV) {
+                if (Email.DEBUG) {
             			Log.v(Email.LOG_TAG, "SYNC: About to get messages " + remoteStart + " through " + remoteEnd + " for folder " + folder);
                 }
 
@@ -797,7 +798,7 @@ public class MessagingController implements Runnable {
                     remoteMessages.add(thisMess);
                     remoteUidMap.put(thisMess.getUid(), thisMess);
                 }
-                if (Config.LOGV) {
+                if (Email.DEBUG) {
                     Log.v(Email.LOG_TAG, "SYNC: Got " + remoteUidMap.size() + " messages for folder " + folder);
                 }
                 remoteMessageArray = null;
@@ -858,7 +859,7 @@ public class MessagingController implements Runnable {
 
             remoteFolder.close(false);
             localFolder.close(false);
-            if (Config.LOGD) {
+            if (Email.DEBUG) {
             	log( "Done synchronizing folder " +
                     account.getDescription() + ":" + folder + " @ " + new Date() +
                     " with " + newMessages + " new messages");
@@ -965,14 +966,19 @@ public class MessagingController implements Runnable {
                 {
                     if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
-                        Log.d(Email.LOG_TAG, "Message with uid " + message.getUid() + " is not downloaded at all");
+                        if (Email.DEBUG)
+                        {
+                            Log.v(Email.LOG_TAG, "Message with uid " + message.getUid() + " is not downloaded at all");
+                        }
                         
                         unsyncedMessages.add(message);
                     }
                     else
                     {
-                        Log.d(Email.LOG_TAG, "Message with uid " + message.getUid() + " is partially or fully downloaded");
-                        
+                        if (Email.DEBUG)
+                        {
+                            Log.v(Email.LOG_TAG, "Message with uid " + message.getUid() + " is partially or fully downloaded");
+                        }
                         // Store the updated message locally
                         localFolder.appendMessages(new Message[] { message });
                         
@@ -988,7 +994,10 @@ public class MessagingController implements Runnable {
                 }
                 else
                 {
-                    Log.d(Email.LOG_TAG, "Message with uid " + message.getUid() + " is already downloaded");
+                    if (Email.DEBUG)
+                    {
+                        Log.v(Email.LOG_TAG, "Message with uid " + message.getUid() + " is already downloaded");
+                    }
                     String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
                     if (newPushState != null)
                     {
@@ -999,8 +1008,8 @@ public class MessagingController implements Runnable {
             }
         }
 
-        Log.d(Email.LOG_TAG, "SYNC: Have " + unsyncedMessages.size() + " unsynced messages");
-
+        Log.i(Email.LOG_TAG, "SYNC: Have " + unsyncedMessages.size() + " unsynced messages");
+        
         messages.clear();
         final ArrayList<Message> largeMessages = new ArrayList<Message>();
         final ArrayList<Message> smallMessages = new ArrayList<Message>();
@@ -1018,7 +1027,10 @@ public class MessagingController implements Runnable {
             }
             fp.add(FetchProfile.Item.ENVELOPE);
 
-            Log.v(Email.LOG_TAG, "SYNC: About to sync " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
+            if (Email.DEBUG)
+            {
+                Log.d(Email.LOG_TAG, "SYNC: About to sync " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
+            }
 
             remoteFolder.fetch(unsyncedMessages.toArray(new Message[0]), fp,
                 new MessageRetrievalListener() {
@@ -1057,8 +1069,11 @@ public class MessagingController implements Runnable {
                                 if (isMessageSuppressed(account, folder, message) == false) {
                                     Message localMessage = localFolder.getMessage(message.getUid());
                                     syncFlags(localMessage, message);
-                                    Log.i(Email.LOG_TAG, "About to notify listeners that we got a new unsynced message "
-                                            + account + ":" + folder + ":" + message.getUid());
+                                    if (Email.DEBUG)
+                                    {
+                                        Log.v(Email.LOG_TAG, "About to notify listeners that we got a new unsynced message "
+                                                + account + ":" + folder + ":" + message.getUid());
+                                    }
                                     for (MessagingListener l : getListeners()) {
                                         l.synchronizeMailboxNewMessage(account, folder, localMessage);
                                     }
@@ -1088,17 +1103,17 @@ public class MessagingController implements Runnable {
                     localFolder.setPushState(newPushState);
                 }
             }
-            if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
-            }
+            Log.i(Email.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
+           
 
         }
 
       
-        Log.d(Email.LOG_TAG, "SYNC: Have "
+        Log.i(Email.LOG_TAG, "SYNC: Have "
                 + largeMessages.size() + " large messages and "
                 + smallMessages.size() + " small messages out of "
                 + unsyncedMessages.size() + " unsynced messages");
+        
         unsyncedMessages.clear();
         
         /*
@@ -1111,7 +1126,7 @@ public class MessagingController implements Runnable {
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
 
-        Log.d(Email.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
+        Log.i(Email.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
 
         remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
                 fp, new MessageRetrievalListener() {
@@ -1124,8 +1139,11 @@ public class MessagingController implements Runnable {
 
                     // Set a flag indicating this message has now be fully downloaded
                     localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                    Log.i(Email.LOG_TAG, "About to notify listeners that we got a new small message "
-                            + account + ":" + folder + ":" + message.getUid());
+                    if (Email.DEBUG)
+                    {
+                        Log.v(Email.LOG_TAG, "About to notify listeners that we got a new small message "
+                                + account + ":" + folder + ":" + message.getUid());
+                    }
                     // Update the listener with what we've found
                     for (MessagingListener l : getListeners()) {
                         l.synchronizeMailboxNewMessage( account, folder, localMessage);
@@ -1145,7 +1163,7 @@ public class MessagingController implements Runnable {
             public void messagesFinished(int total) {}
         });
 
-        Log.d(Email.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
+        Log.i(Email.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
         smallMessages.clear();
 
         /*
@@ -1154,7 +1172,7 @@ public class MessagingController implements Runnable {
         fp.clear();
         fp.add(FetchProfile.Item.STRUCTURE);
 
-        Log.d(Email.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
+        Log.i(Email.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
 
         remoteFolder.fetch(largeMessages.toArray(new Message[largeMessages.size()]), fp, null);
         for (Message message : largeMessages) {
@@ -1223,16 +1241,18 @@ public class MessagingController implements Runnable {
                 // viewed.
                 localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true);
             }
-
-            Log.i(Email.LOG_TAG, "About to notify listeners that we got a new large message "
-                    + account + ":" + folder + ":" + message.getUid());
+            if (Email.DEBUG)
+            {
+                Log.v(Email.LOG_TAG, "About to notify listeners that we got a new large message "
+                        + account + ":" + folder + ":" + message.getUid());
+            }
             // Update the listener with what we've found
             for (MessagingListener l : getListeners()) {
                 l.synchronizeMailboxNewMessage( account, folder, localFolder.getMessage(message.getUid()));
 
             }
         }//for large messsages
-        Log.d(Email.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
+        Log.i(Email.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
 
         largeMessages.clear();
 
@@ -1243,7 +1263,7 @@ public class MessagingController implements Runnable {
         if (remoteFolder.supportsFetchingFlags()) {
 
           
-            Log.d(Email.LOG_TAG, "SYNC: About to sync flags for "
+            Log.i(Email.LOG_TAG, "SYNC: About to sync flags for "
                         + syncFlagMessages.size() + " remote messages for folder " + folder);
             
 
@@ -1261,7 +1281,7 @@ public class MessagingController implements Runnable {
                 }
             }
         }
-        Log.d(Email.LOG_TAG, "SYNC: Synced remote messages for folder " + folder);
+        Log.i(Email.LOG_TAG, "SYNC: Synced remote messages for folder " + folder);
         
         return newMessages.get();
             }
@@ -1322,9 +1342,8 @@ public class MessagingController implements Runnable {
                     processPendingCommandsSynchronous(account);
                 }
                 catch (MessagingException me) {
-                    if (Config.LOGV) {
-                        Log.v(Email.LOG_TAG, "processPendingCommands", me);
-                    }
+                    Log.e(Email.LOG_TAG, "processPendingCommands", me);
+                    
                     addErrorMessage(account, me);
 
                     /*
@@ -1346,7 +1365,10 @@ public class MessagingController implements Runnable {
         {
 	        for (PendingCommand command : commands) {
 	        	processingCommand = command;
-	        	Log.d(Email.LOG_TAG, "Processing pending command '" + command + "'");
+	        	if (Email.DEBUG)
+	        	{
+	        	    Log.d(Email.LOG_TAG, "Processing pending command '" + command + "'");
+	        	}
 	            /*
 	             * We specifically do not catch any exceptions here. If a command fails it is
 	             * most likely due to a server or IO error and it must be retried before any
@@ -1370,7 +1392,10 @@ public class MessagingController implements Runnable {
                 processPendingEmptyTrash(command, account);
 	            }
 	            localStore.removePendingCommand(command);
-	            Log.d(Email.LOG_TAG, "Done processing pending command '" + command + "'");
+	            if (Email.DEBUG)
+	            {
+	                Log.d(Email.LOG_TAG, "Done processing pending command '" + command + "'");
+	            }
 	        	}
 	        	catch (MessagingException me)
 	        	{
@@ -1578,14 +1603,17 @@ public class MessagingController implements Runnable {
             return;
         }
         
-        if (Config.LOGD)
+        if (Email.DEBUG)
         {
           Log.d(Email.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder 
               + ", uid = " + uid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
         }
         if (isCopy == false && destFolder.equals(account.getTrashFolderName()))
         {
-          Log.d(Email.LOG_TAG, "processingPendingMoveOrCopy doing special case for deleting message");
+            if (Email.DEBUG)
+            {
+                Log.d(Email.LOG_TAG, "processingPendingMoveOrCopy doing special case for deleting message");
+            }
           remoteMessage.delete(account.getTrashFolderName());
           remoteSrcFolder.close(true);
           return;
@@ -1807,7 +1835,8 @@ public class MessagingController implements Runnable {
     
     public void markAllMessagesRead(final Account account, final String folder)
     {
-    	Log.v(Email.LOG_TAG, "Marking all messages in " + account.getDescription() + ":" + folder + " as read");
+        
+        Log.i(Email.LOG_TAG, "Marking all messages in " + account.getDescription() + ":" + folder + " as read");
       List<String> args = new ArrayList<String>();
       args.add(folder);
       PendingCommand command = new PendingCommand();
@@ -2294,7 +2323,7 @@ public class MessagingController implements Runnable {
                     }
                 }
                 catch (MessagingException me) {
-                    if (Config.LOGV) {
+                    if (Email.DEBUG) {
                         Log.v(Email.LOG_TAG, "", me);
                     }
                     for (MessagingListener l : getListeners()) {
@@ -2652,11 +2681,9 @@ public class MessagingController implements Runnable {
         String origUid = message.getUid();
         if (lMessage != null)
         {
-          if (Config.LOGD)
-          {
-            Log.d(Email.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder
+          Log.i(Email.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder
                 + ", uid = " + origUid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
-          }
+          
           if (isCopy) {
             FetchProfile fp = new FetchProfile();
             fp.add(FetchProfile.Item.ENVELOPE);
@@ -2708,7 +2735,7 @@ public class MessagingController implements Runnable {
             {
               if (folder.equals(account.getTrashFolderName()))
               {
-                if (Config.LOGD)
+                if (Email.DEBUG)
                 {
                   Log.d(Email.LOG_TAG, "Deleting message in trash folder, not copying");
                 }
@@ -2723,7 +2750,7 @@ public class MessagingController implements Runnable {
                 }
                 if (localTrashFolder.exists() == true)
                 {
-                  if (Config.LOGD)
+                  if (Email.DEBUG)
                   {
                     Log.d(Email.LOG_TAG, "Deleting message in normal folder, moving");
                   }
@@ -2742,7 +2769,7 @@ public class MessagingController implements Runnable {
               l.folderStatusChanged(account, account.getTrashFolderName());
           }
             
-            if (Config.LOGD)
+            if (Email.DEBUG)
           	{
             	Log.d(Email.LOG_TAG, "Delete policy for account " + account.getDescription() + " is " + account.getDeletePolicy());
           	}
@@ -2784,7 +2811,7 @@ public class MessagingController implements Runnable {
             }
             else
             {
-            	if (Config.LOGD)
+            	if (Email.DEBUG)
             	{
             		Log.d(Email.LOG_TAG, "Delete policy " + account.getDeletePolicy() + " prevents delete from server");
             	}
@@ -2840,7 +2867,7 @@ public class MessagingController implements Runnable {
 
   	public void sendAlternate(final Context context, Account account, Message message)
   	{
-  			if (Config.LOGD)
+  			if (Email.DEBUG)
   			{
   				Log.d(Email.LOG_TAG, "About to load message " + account.getDescription() + ":" + message.getFolder().getName()
   						+ ":" + message.getUid() + " for sendAlternate");
@@ -2852,7 +2879,7 @@ public class MessagingController implements Runnable {
   				public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
               Message message)
   				{
-  					if (Config.LOGD)
+  					if (Email.DEBUG)
   					{
   						Log.d(Email.LOG_TAG, "Got message " + account.getDescription() + ":" + folder
   								+ ":" + message.getUid() + " for sendAlternate");
@@ -2935,18 +2962,14 @@ public class MessagingController implements Runnable {
 	                  	final long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
 	                  	if (ignoreLastCheckedTime == false && accountInterval <= 0)
 	                  	{
-		                  	if (Config.LOGV || true)
-		                  	{
-		                  		Log.v(Email.LOG_TAG, "Skipping synchronizing account " + account.getDescription());
-		                  	}
+		                  	Log.i(Email.LOG_TAG, "Skipping synchronizing account " + account.getDescription());
+		                  	
 
 	                  		continue;
 	                  	}
 
-	                  	if (Config.LOGV || true)
-	                  	{
-	                  		Log.v(Email.LOG_TAG, "Synchronizing account " + account.getDescription());
-	                  	}
+	                  	Log.i(Email.LOG_TAG, "Synchronizing account " + account.getDescription());
+	                  	
                     	putBackground("sendPending " + account.getDescription(), null, new Runnable() {
                         public void run() {
                           if (account.isShowOngoing()) {
@@ -2998,7 +3021,7 @@ public class MessagingController implements Runnable {
 		                        if (modeMismatch(aDisplayMode, fDisplayClass))
 		                        {
 		                            // Never sync a folder that isn't displayed
-		                            if (Config.LOGV) {
+		                            if (Email.DEBUG) {
 		                                Log.v(Email.LOG_TAG, "Not syncing folder " + folder.getName() + 
 		                                        " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
 		                            }
@@ -3009,7 +3032,7 @@ public class MessagingController implements Runnable {
 		                        if (modeMismatch(aSyncMode, fSyncClass))
 		                        {
 		                            // Do not sync folders in the wrong class
-		                            if (Config.LOGV) {
+		                            if (Email.DEBUG) {
 		                                Log.v(Email.LOG_TAG, "Not syncing folder " + folder.getName() + 
 		                                        " which is in sync mode " + fSyncClass + " while account is in sync mode " + aSyncMode);
 		                            }
@@ -3019,7 +3042,7 @@ public class MessagingController implements Runnable {
 
 		                    	
 	
-		                    	if (Config.LOGV) {
+		                    	if (Email.DEBUG) {
 		                    		Log.v(Email.LOG_TAG, "Folder " + folder.getName() + " was last synced @ " +
 		                    				new Date(folder.getLastChecked()));
 		                    	}
@@ -3027,7 +3050,7 @@ public class MessagingController implements Runnable {
 		                    	if (ignoreLastCheckedTime == false && folder.getLastChecked() > 
 		                    		(System.currentTimeMillis() - accountInterval))
 		                    	{
-			                    		if (Config.LOGV) {
+			                    		if (Email.DEBUG) {
 			                    			Log.v(Email.LOG_TAG, "Not syncing folder " + folder.getName()
 			                    					+ ", previously synced @ " + new Date(folder.getLastChecked())
 			                    							+ " which would be too recent for the account period");
@@ -3048,7 +3071,7 @@ public class MessagingController implements Runnable {
 				                    		if (ignoreLastCheckedTime == false && tLocalFolder.getLastChecked() > 
 				                    			    (System.currentTimeMillis() - accountInterval))
 				                    		{
-				                    			if (Config.LOGV) {
+				                    			if (Email.DEBUG) {
 					                    			Log.v(Email.LOG_TAG, "Not running Command for folder " + folder.getName()
 					                    					+ ", previously synced @ " + new Date(folder.getLastChecked())
 					                    							+ " which would be too recent for the account period");
@@ -3382,12 +3405,18 @@ public class MessagingController implements Runnable {
                 }
                 wakeLock.acquire(Email.PUSH_WAKE_LOCK_TIMEOUT);
                 refCount++;
-                Log.i(Email.LOG_TAG, "Acquired WakeLock for Pushing");
+                if (Email.DEBUG)
+                {
+                    Log.d(Email.LOG_TAG, "Acquired WakeLock for Pushing");
+                }
             }
             
             public synchronized void pushComplete()
             {
-                Log.i(Email.LOG_TAG, "Considering releasing WakeLock for Pushing");
+                if (Email.DEBUG)
+                {
+                    Log.d(Email.LOG_TAG, "Considering releasing WakeLock for Pushing");
+                }
                 if (wakeLock != null)
                 {
                     if (refCount > 0)
@@ -3398,7 +3427,10 @@ public class MessagingController implements Runnable {
                     {
                         try
                         {
-                            Log.i(Email.LOG_TAG, "Releasing WakeLock for Pushing");
+                            if (Email.DEBUG)
+                            {
+                                Log.d(Email.LOG_TAG, "Releasing WakeLock for Pushing");
+                            }
                             wakeLock.release();
                         }
                         catch (Exception e)
@@ -3498,7 +3530,7 @@ public class MessagingController implements Runnable {
                 if (modeMismatch(aDisplayMode, fDisplayClass))
                 {
                     // Never push a folder that isn't displayed
-                    if (Config.LOGV) {
+                    if (Email.DEBUG) {
                         Log.v(Email.LOG_TAG, "Not pushing folder " + folder.getName() + 
                                 " which is in display class " + fDisplayClass + " while account is in display mode " + aDisplayMode);
                     }
@@ -3509,7 +3541,7 @@ public class MessagingController implements Runnable {
                 if (modeMismatch(aPushMode, fPushClass))
                 {
                     // Do not push folders in the wrong class
-                    if (Config.LOGV) {
+                    if (Email.DEBUG) {
                         Log.v(Email.LOG_TAG, "Not pushing folder " + folder.getName() + 
                                 " which is in push mode " + fPushClass + " while account is in push mode " + aPushMode);
                     }

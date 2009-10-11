@@ -788,7 +788,10 @@ public class ImapStore extends Store {
                 do {
                     response = mConnection.readResponse();
                     handleUntaggedResponse(response);
-                    Log.v(Email.LOG_TAG, "response for fetch: " + response);
+                    if (Email.DEBUG)
+                    {
+                        Log.v(Email.LOG_TAG, "response for fetch: " + response);
+                    }
                     if (response.mTag == null && response.get(1).equals("FETCH")) {
                         ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                         String uid = fetchList.getKeyedString("UID");
@@ -874,7 +877,10 @@ public class ImapStore extends Store {
                                 {
                                   String bodyString = (String)literal;
 
-                                  Log.v(Email.LOG_TAG, "Part is an String: " + bodyString);
+                                  if (Email.DEBUG)
+                                  {
+                                      Log.v(Email.LOG_TAG, "Part is an String: " + bodyString);
+                                  }
                                   InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
                                   String contentTransferEncoding = part.getHeader(
                                       MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
@@ -924,7 +930,10 @@ public class ImapStore extends Store {
           {
             if (response.get(1).equals("EXISTS")) {
                 mMessageCount = response.getNumber(0);
-                Log.d(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
+                if (Email.DEBUG)
+                {
+                    Log.d(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
+                }
             }
             if (response.get(0).equals("OK") && response.size() > 1) {
                 Object bracketedObj = response.get(1);
@@ -941,7 +950,10 @@ public class ImapStore extends Store {
                             if ("UIDNEXT".equals(key))
                             {
                                 uidNext = bracketed.getNumber(1);
-                                Log.d(Email.LOG_TAG, "Got UidNext = " + uidNext);
+                                if (Email.DEBUG)
+                                {
+                                    Log.d(Email.LOG_TAG, "Got UidNext = " + uidNext);
+                                }
                             }
                         }
                     }
@@ -951,7 +963,10 @@ public class ImapStore extends Store {
             }
             else if (response.get(1).equals("EXPUNGE") && mMessageCount > 0) {
               mMessageCount--;
-              Log.d(Email.LOG_TAG, "Got untagged EXPUNGE with value " + mMessageCount);
+              if (Email.DEBUG)
+              {
+                  Log.d(Email.LOG_TAG, "Got untagged EXPUNGE with value " + mMessageCount);
+              }
             }
           }
           //Log.i(Email.LOG_TAG, "mMessageCount = " + mMessageCount);
@@ -1963,7 +1978,10 @@ public class ImapStore extends Store {
 
             super.handleUntaggedResponses(responses);
 
-            Log.d(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
+            if (Email.DEBUG)
+            {
+                Log.d(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
+            }
             if (oldMessageCount > 0 && mMessageCount > oldMessageCount)
             {
                 syncMessages(oldMessageCount + 1, mMessageCount, true);
@@ -2008,7 +2026,10 @@ public class ImapStore extends Store {
                     if ("FETCH".equals(responseType))
                     {
                         int msgSeq = response.getNumber(0);
-                        Log.d(Email.LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq);
+                        if (Email.DEBUG)
+                        {
+                            Log.d(Email.LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq);
+                        }
                         flagSyncMsgSeqs.add(msgSeq);
                     }
                 }
@@ -2051,7 +2072,10 @@ public class ImapStore extends Store {
             
             if (mConnection != null)
             {
-                Log.v(Email.LOG_TAG, "Closing mConnection to stop pushing");
+                if (Email.DEBUG)
+                {
+                    Log.v(Email.LOG_TAG, "Closing mConnection to stop pushing");
+                }
                 mConnection.close();
             }
             else
@@ -2062,7 +2086,10 @@ public class ImapStore extends Store {
         
         public void handleAsyncUntaggedResponse(ImapResponse response)
         {
-            Log.v(Email.LOG_TAG, "Got async response: " + response);
+            if (Email.DEBUG)
+            {
+                Log.v(Email.LOG_TAG, "Got async response: " + response);
+            }
             if (response.mTag == null)
             {
                 if (response.size() > 1)
@@ -2077,7 +2104,10 @@ public class ImapStore extends Store {
                             receiver.pushInProgress();
                             started = true;
                         }
-                        Log.d(Email.LOG_TAG, "Got useful async untagged response: " + response);
+                        if (Email.DEBUG)
+                        {
+                            Log.d(Email.LOG_TAG, "Got useful async untagged response: " + response);
+                        }
                         try
                         {
                             sendContinuation("DONE");
@@ -2092,7 +2122,10 @@ public class ImapStore extends Store {
                 {
                     if ("idling".equals(response.get(0)))
                     {
-                        Log.d(Email.LOG_TAG, "Idling");
+                        if (Email.DEBUG)
+                        {
+                            Log.d(Email.LOG_TAG, "Idling");
+                        }
                         receiver.pushComplete();
                     }
                 }
