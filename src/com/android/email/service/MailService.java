@@ -186,7 +186,8 @@ public class MailService extends Service {
             if (hasConnectivity)
             {
                 reschedulePushers();
-                checkMail(getApplication());
+		// TODO: Make it send pending outgoing messages here
+                //checkMail(getApplication());
             }
             else
             {
