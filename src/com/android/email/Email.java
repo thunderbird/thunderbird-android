@@ -63,9 +63,7 @@ public class Email extends Application {
      * The MIME type(s) of attachments we're willing to view.
      */
     public static final String[] ACCEPTABLE_ATTACHMENT_VIEW_TYPES = new String[] {
-        "image/*",
-        "audio/*",
-        "text/*",
+        "*/*",
     };
 
     /**

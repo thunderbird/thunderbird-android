@@ -1292,7 +1292,7 @@ public class MessageView extends K9Activity
                 }
                 catch (Exception e)
                 {
-                    Toast toast = Toast.makeText(MessageView.this, e.getMessage(), Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(MessageView.this, getString(R.string.message_view_no_viewer, attachment.contentType), Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
