@@ -47,6 +47,7 @@ import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.MessagingController.SORT_TYPE;
+import com.android.email.activity.FolderList.FolderInfoHolder;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Address;
 import com.android.email.mail.Flag;
@@ -418,6 +419,13 @@ public class MessageList extends K9ListActivity {
         colorChipResId = colorChipResIds[mAccount.getAccountNumber() % colorChipResIds.length];
 
         mAdapter = new MessageListAdapter();
+        
+        final Object previousData = getLastNonConfigurationInstance();
+
+        if (previousData != null) {
+            //noinspection unchecked
+            mAdapter.messages.addAll((List<MessageInfoHolder>) previousData);
+        }
 
         mCurrentFolder = mAdapter.getFolder(mFolderName);
 
@@ -489,8 +497,9 @@ public class MessageList extends K9ListActivity {
     }
 
 
-
-
+    @Override public Object onRetainNonConfigurationInstance() {
+        return mAdapter.messages;
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
