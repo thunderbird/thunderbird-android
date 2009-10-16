@@ -1992,6 +1992,10 @@ public class ImapStore extends Store {
 
             super.handleUntaggedResponses(responses);
 
+            List<Integer> flagSyncMsgSeqsCopy = new ArrayList<Integer>();
+            flagSyncMsgSeqsCopy.addAll(flagSyncMsgSeqs);
+            
+            
             if (Email.DEBUG)
             {
                 Log.d(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
@@ -2000,7 +2004,12 @@ public class ImapStore extends Store {
             {
                 syncMessages(oldMessageCount + 1, mMessageCount, true);
             }
-            for (Integer msgSeq : flagSyncMsgSeqs)
+            if (Email.DEBUG)
+            {
+                Log.d(Email.LOG_TAG, "There are " + flagSyncMsgSeqsCopy + " messages needing flag sync");
+            }
+            // TODO: Identify ranges and call syncMessages on said identified ranges
+            for (Integer msgSeq : flagSyncMsgSeqsCopy)
             {
                 syncMessages(msgSeq, msgSeq, false);
             }
