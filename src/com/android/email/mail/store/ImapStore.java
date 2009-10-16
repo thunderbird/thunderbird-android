@@ -93,7 +93,7 @@ public class ImapStore extends Store {
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
     
     private static final int IDLE_READ_TIMEOUT = 29 * 60 * 1000; // 29 minutes
-    private static final int IDLE_REFRESH_INTERVAL = 20 * 60 * 2000; // 20 minutes
+    private static final int IDLE_REFRESH_INTERVAL = 20 * 60 * 1000; // 20 minutes
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
 
@@ -797,7 +797,11 @@ public class ImapStore extends Store {
                         String uid = fetchList.getKeyedString("UID");
 
                         Message message = messageMap.get(uid);
-
+                        if (message == null)
+                        {
+                            Log.w(Email.LOG_TAG, "Do not have message in messageMap for UID " + uid);
+                            continue;
+                        }
                         if (listener != null) {
                             listener.messageStarted(uid, messageNumber++, messageMap.size());
                         }
@@ -1813,6 +1817,7 @@ public class ImapStore extends Store {
         Thread listeningThread = null;
         AtomicBoolean stop = new AtomicBoolean(false);
         AtomicBoolean idling = new AtomicBoolean(false);
+        AtomicBoolean doneSent = new AtomicBoolean(false);
         private int delayTime = NORMAL_DELAY_TIME;
         
         public ImapFolderPusher(ImapStore store, String name, PushReceiver nReceiver)
@@ -1825,6 +1830,14 @@ public class ImapStore extends Store {
             if (idling.get())
             {
                 receiver.pushInProgress();
+                sendDone();
+            }
+        }
+        
+        private void sendDone() throws IOException, MessagingException
+        {
+            if (doneSent.compareAndSet(false, true) == true)
+            {
                 sendContinuation("DONE");
             }
         }
@@ -1913,6 +1926,7 @@ public class ImapStore extends Store {
                                 
                                 receiver.setPushActive(getName(), true);
                                 idling.set(true);
+                                doneSent.set(false);
                                 executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
                                 idling.set(false);
                                 receiver.setPushActive(getName(), false);
@@ -2110,7 +2124,7 @@ public class ImapStore extends Store {
                         }
                         try
                         {
-                            sendContinuation("DONE");
+                            sendDone();
                         }
                         catch (Exception e)
                         {

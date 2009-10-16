@@ -327,13 +327,20 @@ public class MailService extends Service {
                 minInterval = interval;
             }
         }
+        if (Email.DEBUG)
+        {
+            Log.v(Email.LOG_TAG, "Pusher refresh interval = " + minInterval);
+        }
         if (minInterval != -1)
         {
 
             AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
             long nextTime = System.currentTimeMillis() + minInterval;
             String checkString = "Next pusher refresh scheduled for " + new Date(nextTime);
-            Log.d(Email.LOG_TAG, checkString);
+            if (Email.DEBUG)
+            {
+                Log.d(Email.LOG_TAG, checkString);
+            }
             Intent i = new Intent();
             i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
             i.setAction(ACTION_REFRESH_PUSHERS);
