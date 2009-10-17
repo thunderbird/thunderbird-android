@@ -1663,13 +1663,11 @@ public class MessagingController implements Runnable {
         Folder remoteDestFolder = remoteStore.getFolder(destFolder);
         
         if (!remoteSrcFolder.exists()) {
-        	Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: remoteFolder " + srcFolder + " does not exist");
-            return;
+        	throw new MessagingException("processingPendingMoveOrCopy: remoteFolder " + srcFolder + " does not exist", true);
         }
         remoteSrcFolder.open(OpenMode.READ_WRITE);
         if (remoteSrcFolder.getMode() != OpenMode.READ_WRITE) {
-         	Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: could not open remoteSrcFolder " + srcFolder + " read/write");
-            return;
+            throw new MessagingException("processingPendingMoveOrCopy: could not open remoteSrcFolder " + srcFolder + " read/write", true);
         }
  
         Message remoteMessage = null;
@@ -1677,8 +1675,7 @@ public class MessagingController implements Runnable {
             remoteMessage = remoteSrcFolder.getMessage(uid);      
         }
         if (remoteMessage == null) {
-            Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: remoteMessage " + uid + " does not exist");
-            return;
+            throw new MessagingException("processingPendingMoveOrCopy: remoteMessage " + uid + " does not exist", true);
         }
         
         if (Email.DEBUG)
@@ -1699,8 +1696,7 @@ public class MessagingController implements Runnable {
 
         remoteDestFolder.open(OpenMode.READ_WRITE);
         if (remoteDestFolder.getMode() != OpenMode.READ_WRITE) {
-          Log.w(Email.LOG_TAG, "processingPendingMoveOrCopy: could not open remoteDestFolder " + srcFolder + " read/write");
-            return;
+            throw new MessagingException("processingPendingMoveOrCopy: could not open remoteDestFolder " + srcFolder + " read/write", true);
         }
         
         if (isCopy) {

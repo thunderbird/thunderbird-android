@@ -360,10 +360,22 @@ public class ImapStore extends Store {
 
 	public String getPrefixedName() {
 	    String prefixedName = "";
-	    if(mPathPrefix != null && mPathPrefix.length() > 0 && !Email.INBOX.equalsIgnoreCase(mName)){
-		prefixedName += mPathPrefix + mPathDelimeter;
+	    if (!Email.INBOX.equalsIgnoreCase(mName))
+	    {
+	        String prefix = mPathPrefix;
+	        String delim = mPathDelimeter;
+	        
+    	    if (prefix != null && delim != null)
+    	    {
+    	        prefix = prefix.trim();
+    	        delim = delim.trim();
+    	        if (prefix.length() > 0 && delim.length() > 0)
+    	        {
+    	            prefixedName += mPathPrefix + mPathDelimeter;
+    	        }
+    	    }
 	    }
-
+	    
 	    prefixedName += mName;
 	    return prefixedName;
 	}
@@ -1744,10 +1756,11 @@ public class ImapStore extends Store {
         	}
         	else
         	{
-  	        Folder remoteTrashFolder = iFolder.getStore().getFolder(trashFolderName);
+  	        ImapFolder remoteTrashFolder = (ImapFolder)iFolder.getStore().getFolder(trashFolderName);
   	        /*
   	         * Attempt to copy the remote message to the remote trash folder.
   	         */
+  	        remoteTrashFolder.mExists = false;  // Force redetection of Trash folder; some desktops delete it
   	        if (!remoteTrashFolder.exists()) {
   	            /*
   	             * If the remote trash folder doesn't exist we try to create it.
@@ -1767,9 +1780,8 @@ public class ImapStore extends Store {
   	        }
   	        else
   	        {
-  	 //     		Toast.makeText(context, R.string.message_delete_failed, Toast.LENGTH_SHORT).show();
-  	
-  	         	Log.e(Email.LOG_TAG, "IMAPMessage.delete: remote Trash folder " + trashFolderName + " does not exist and could not be created");
+  	          throw new MessagingException("IMAPMessage.delete: remote Trash folder " + trashFolderName + " does not exist and could not be created"
+  	                  , true);
   	        }
         	}
         }
