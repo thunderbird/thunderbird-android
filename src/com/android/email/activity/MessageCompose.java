@@ -1294,16 +1294,31 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     class Listener extends MessagingListener {
         @Override
         public void loadMessageForViewStarted(Account account, String folder, String uid) {
+            if (mSourceMessageUid==null
+                || !mSourceMessageUid.equals(uid)) {
+                return;
+            }
+
             mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
         }
 
         @Override
         public void loadMessageForViewFinished(Account account, String folder, String uid, Message message) {
+            if (mSourceMessageUid==null
+                || !mSourceMessageUid.equals(uid)) {
+                return;
+            }
+
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
         }
 
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid, final Message message) {
+            if (mSourceMessageUid==null
+                || !mSourceMessageUid.equals(uid)) {
+                return;
+            }
+
             mSourceMessage = message;
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -1314,6 +1329,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid, final String message) {
+            if (mSourceMessageUid==null
+                || !mSourceMessageUid.equals(uid)) {
+                return;
+            }
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
             // TODO show network error
         }
