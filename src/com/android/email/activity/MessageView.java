@@ -183,18 +183,28 @@ public class MessageView extends K9Activity
             { onPrevious(); return true; }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K: { onNext(); return true; }
-            case KeyEvent.KEYCODE_Z: { if (event.isShiftPressed()) {
+            case KeyEvent.KEYCODE_Z: { 
+                if (event.isShiftPressed()) {
+                    mHandler.post(new Runnable() {
+                        public void run() {
                                             mMessageContentView.zoomIn();
+                        }
+                    });
                                         } else {
+                    mHandler.post(new Runnable() {
+                        public void run() {
                                             mMessageContentView.zoomOut();
                                         }
-                                     return true; }
-
+                    });
+                }
+                return true; 
+            }
            case KeyEvent.KEYCODE_H: {
                Toast toast = Toast.makeText(this, R.string.message_help_key, Toast.LENGTH_LONG);
                toast.show();
-               return true; }
+               return true; 
             }
+        }
            return super.onKeyDown(keyCode, event);
         }
 
@@ -1123,7 +1133,11 @@ public class MessageView extends K9Activity
 
             MessageView.this.mMessage = message;
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
+                mHandler.post(new Runnable() {
+                    public void run() {
                 mMessageContentView.loadUrl("file:///android_asset/downloading.html");
+            }
+                });
             }
             try {
                 setHeaders(account, folder, uid, message);
@@ -1170,11 +1184,20 @@ public class MessageView extends K9Activity
                      * TODO this should be smarter, change to regex for img, but consider how to
                      * get background images and a million other things that HTML allows.
                      */
-                    mMessageContentView.loadDataWithBaseURL("email://", text, "text/html", "utf-8", null);
+                    final String emailText = text;
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/html", "utf-8", null);
+                        }
+                    });
                     mHandler.showShowPictures(text.contains("<img"));
                 }
                 else {
+                    mHandler.post(new Runnable() {
+                        public void run() {
                     mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                }
+                    });
                 }
 
                 renderAttachments(mMessage, 0);

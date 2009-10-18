@@ -258,6 +258,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         context.startActivity(i);
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -268,7 +269,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mAddressAdapter = new EmailAddressAdapter(this);
         mAddressValidator = new EmailAddressValidator();
 
-
         mFromView = (TextView)findViewById(R.id.from);
         mToView = (MultiAutoCompleteTextView)findViewById(R.id.to);
         mCcView = (MultiAutoCompleteTextView)findViewById(R.id.cc);
@@ -277,7 +277,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         
         EditText upperSignature = (EditText)findViewById(R.id.upper_signature);
         EditText lowerSignature = (EditText)findViewById(R.id.lower_signature);
-        
         
         mMessageContentView = (EditText)findViewById(R.id.message_content);
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
@@ -497,6 +496,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         mSignatureView.addTextChangedListener(sigwatcher);
         
+        if (!mSourceMessageProcessed) {
         updateFrom();
         updateSignature();
                
@@ -509,10 +509,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
              */
             MessagingController.getInstance(getApplication()).addListener(mListener);
             MessagingController.getInstance(getApplication()).loadMessageForView( mAccount, mFolder, mSourceMessageUid, null);
-        }
-        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
-            //change focus to message body.
-            mMessageContentView.requestFocus();
         }
 
         if (!ACTION_EDIT_DRAFT.equals(action)) {
@@ -532,6 +528,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         updateTitle();
+    }
+
+        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
+            //change focus to message body.
+            mMessageContentView.requestFocus();
+        }
     }
 
     public void onResume() {
@@ -771,6 +773,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                  */
                 MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mFolder, mSourceMessage, null);
             }
+            if (mDraftUid != null) {
+                /*
+                 * Message was auto-saved (screen rotation) so delete that draft before sending
+                 */
+                Message draftMessage = new MimeMessage();
+                draftMessage.setUid(mDraftUid);
+                MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
+            }
             MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
         }
     }
@@ -799,6 +809,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null) {
                 MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mFolder, mSourceMessage, null);
             }
+        }
+        if (mDraftUid != null) {
+           Message draftMessage = new MimeMessage();
+           MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
         }
         mHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         mDraftNeedsSaving = false;
@@ -1292,16 +1306,31 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     class Listener extends MessagingListener {
         @Override
         public void loadMessageForViewStarted(Account account, String folder, String uid) {
+            if (mSourceMessageUid==null
+                || !mSourceMessageUid.equals(uid)) {
+                return;
+            }
+
             mHandler.sendEmptyMessage(MSG_PROGRESS_ON);
         }
 
         @Override
         public void loadMessageForViewFinished(Account account, String folder, String uid, Message message) {
+            if (mSourceMessageUid==null
+                || !mSourceMessageUid.equals(uid)) {
+                return;
+            }
+
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
         }
 
         @Override
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid, final Message message) {
+            if (mSourceMessageUid==null
+                || !mSourceMessageUid.equals(uid)) {
+                return;
+            }
+
             mSourceMessage = message;
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -1312,6 +1341,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid, final String message) {
+            if (mSourceMessageUid==null
+                || !mSourceMessageUid.equals(uid)) {
+                return;
+            }
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
             // TODO show network error
         }
