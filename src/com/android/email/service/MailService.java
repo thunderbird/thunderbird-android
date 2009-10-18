@@ -55,12 +55,12 @@ public class MailService extends Service {
         context.startService(i);
     }
     
-    private static void checkMail(Context context) {
-        Intent i = new Intent();
-        i.setClass(context, MailService.class);
-        i.setAction(MailService.ACTION_CHECK_MAIL);
-        context.startService(i);
-    }
+//    private static void checkMail(Context context) {
+//        Intent i = new Intent();
+//        i.setClass(context, MailService.class);
+//        i.setAction(MailService.ACTION_CHECK_MAIL);
+//        context.startService(i);
+//    }
 
     public static void actionCancel(Context context)  {
         Intent i = new Intent();
@@ -85,118 +85,134 @@ public class MailService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-        ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
-        state = State.DISCONNECTED;
-        if (connectivityManager != null)
-        {
-            NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-            if (netInfo != null)
-            {
-                state = netInfo.getState();
-            
-                if (state == State.CONNECTED)
-                {   
-                    Log.i(Email.LOG_TAG, "Currently connected to a network");
-                }
-                else
-                {
-                    Log.i(Email.LOG_TAG, "Current network state = " + state);
-                }
-            }
-        }
         
-        
-    	setForeground(true);  // if it gets killed once, it'll never restart
-    		Log.v(Email.LOG_TAG, "***** MailService *****: onStart(" + intent + ", " + startId + ")");
-        super.onStart(intent, startId);
-        this.mStartId = startId;
-
-       // MessagingController.getInstance(getApplication()).addListener(mListener);
-        if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
-            //if (Config.LOGV) {
-          MessagingController.getInstance(getApplication()).log("***** MailService *****: checking mail");
-                Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
-            //}
-            if (state == State.CONNECTED)
-            {
-                MessagingController controller = MessagingController.getInstance(getApplication());
-                Listener listener = (Listener)controller.getCheckMailListener();
-                if (listener == null)
-                {
-                  MessagingController.getInstance(getApplication()).log("***** MailService *****: starting new check");
-    
-                  mListener.wakeLockAcquire();
-                  controller.setCheckMailListener(mListener);
-                  controller.checkMail(this, null, false, false, mListener);
-                }
-                else
-                {
-                  MessagingController.getInstance(getApplication()).log("***** MailService *****: renewing WakeLock");
-    
-                  listener.wakeLockAcquire();
-                }
-            }
-
-            reschedule();
-	    //            stopSelf(startId);
-        }
-        else if (ACTION_CANCEL.equals(intent.getAction())) {
-            if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "***** MailService *****: cancel");
-            }
-            MessagingController.getInstance(getApplication()).log("***** MailService *****: cancel");
-
-            cancel();
-	    //            stopSelf(startId);
-        }
-        else if (ACTION_RESCHEDULE.equals(intent.getAction())) {
-            if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "***** MailService *****: reschedule");
-            }
-            MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
-            reschedule();
-            reschedulePushers();
-	    //            stopSelf(startId);
-        }
-        else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction()))
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
+        wakeLock.setReferenceCounted(false);
+        wakeLock.acquire(Email.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
+        try
         {
-            try
+           
+            ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+            state = State.DISCONNECTED;
+            if (connectivityManager != null)
             {
-                if (state == State.CONNECTED)
+                NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+                if (netInfo != null)
                 {
-                    Log.i(Email.LOG_TAG, "Refreshing pushers");
-                    Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
-                    for (Pusher pusher : pushers)
+                    state = netInfo.getState();
+                
+                    if (state == State.CONNECTED)
+                    {   
+                        Log.i(Email.LOG_TAG, "Currently connected to a network");
+                    }
+                    else
                     {
-                        pusher.refresh();
+                        Log.i(Email.LOG_TAG, "Current network state = " + state);
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Log.e(Email.LOG_TAG, "Exception while refreshing pushers", e);
+            
+            
+        	setForeground(true);  // if it gets killed once, it'll never restart
+        		Log.v(Email.LOG_TAG, "***** MailService *****: onStart(" + intent + ", " + startId + ")");
+            super.onStart(intent, startId);
+            this.mStartId = startId;
+    
+           // MessagingController.getInstance(getApplication()).addListener(mListener);
+            if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
+                //if (Config.LOGV) {
+              MessagingController.getInstance(getApplication()).log("***** MailService *****: checking mail");
+                    Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
+                //}
+                if (state == State.CONNECTED)
+                {
+                    MessagingController controller = MessagingController.getInstance(getApplication());
+                    Listener listener = (Listener)controller.getCheckMailListener();
+                    if (listener == null)
+                    {
+                      MessagingController.getInstance(getApplication()).log("***** MailService *****: starting new check");
+        
+                      mListener.wakeLockAcquire();
+                      controller.setCheckMailListener(mListener);
+                      controller.checkMail(this, null, false, false, mListener);
+                    }
+                    else
+                    {
+                      MessagingController.getInstance(getApplication()).log("***** MailService *****: renewing WakeLock");
+        
+                      listener.wakeLockAcquire();
+                    }
+                }
+    
+                reschedule();
+    	    //            stopSelf(startId);
             }
-            schedulePushers();
-        }
-        else if (CONNECTIVITY_CHANGE.equals(intent.getAction()))
-        {
-            boolean hasConnectivity = intent.getBooleanExtra(HAS_CONNECTIVITY, true);
-            Log.i(Email.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity);
-            notifyConnectionStatus(hasConnectivity);
-            if (hasConnectivity)
-            {
+            else if (ACTION_CANCEL.equals(intent.getAction())) {
+                if (Config.LOGV) {
+                    Log.v(Email.LOG_TAG, "***** MailService *****: cancel");
+                }
+                MessagingController.getInstance(getApplication()).log("***** MailService *****: cancel");
+    
+                cancel();
+    	    //            stopSelf(startId);
+            }
+            else if (ACTION_RESCHEDULE.equals(intent.getAction())) {
+                if (Config.LOGV) {
+                    Log.v(Email.LOG_TAG, "***** MailService *****: reschedule");
+                }
+                MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
+                reschedule();
                 reschedulePushers();
-		// TODO: Make it send pending outgoing messages here
-                //checkMail(getApplication());
+    	    //            stopSelf(startId);
             }
-            else
+            else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction()))
             {
-                stopPushers();
+                schedulePushers();
+                try
+                {
+                    if (state == State.CONNECTED)
+                    {
+                        Log.i(Email.LOG_TAG, "Refreshing pushers");
+                        Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
+                        for (Pusher pusher : pushers)
+                        {
+                            pusher.refresh();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Exception while refreshing pushers", e);
+                }
+            }
+            else if (CONNECTIVITY_CHANGE.equals(intent.getAction()))
+            {
+                boolean hasConnectivity = intent.getBooleanExtra(HAS_CONNECTIVITY, true);
+                Log.i(Email.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity);
+                notifyConnectionStatus(hasConnectivity);
+                if (hasConnectivity)
+                {
+                    reschedulePushers();
+    		// TODO: Make it send pending outgoing messages here
+                    //checkMail(getApplication());
+                }
+                else
+                {
+                    stopPushers();
+                }
+            }
+            else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
+            {
+                notifyConnectionStatus(true);
             }
         }
-        else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
+        finally
         {
-            notifyConnectionStatus(true);
+            if (wakeLock != null)
+            {
+                wakeLock.release();
+            }
         }
     }
     
