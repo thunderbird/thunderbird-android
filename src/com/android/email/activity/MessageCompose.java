@@ -773,6 +773,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                  */
                 MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mFolder, mSourceMessage, null);
             }
+            if (mDraftUid != null) {
+                /*
+                 * Message was auto-saved (screen rotation) so delete that draft before sending
+                 */
+                Message draftMessage = new MimeMessage();
+                draftMessage.setUid(mDraftUid);
+                MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
+            }
             MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
         }
     }
@@ -801,6 +809,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null) {
                 MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mFolder, mSourceMessage, null);
             }
+        }
+        if (mDraftUid != null) {
+           Message draftMessage = new MimeMessage();
+           MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
         }
         mHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         mDraftNeedsSaving = false;
