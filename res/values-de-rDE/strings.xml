@@ -176,8 +176,8 @@ Willkommen zum K-9 Mail Setup.  K-9 ist eine Open-Source E-Mail-Anwendung für A
     <string name="message_view_to_label">An:</string>
     <string name="message_view_attachment_view_action">Öffnen</string>
     <string name="message_view_attachment_download_action">Speichern</string>
-    <string name="message_view_prev_action">◀</string>
-    <string name="message_view_next_action">▶</string>
+    <string name="message_view_prev_action">\u25BC</string>
+    <string name="message_view_next_action">\u25B2</string>
     <string name="message_view_datetime_fmt">dd MMM yyyy HH:mm</string>
     <string name="message_view_status_attachment_saved">Anlage auf SD-Karte gespeichert als <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Nicht möglich Anlage auf SD-Karte zu speichern.</string>

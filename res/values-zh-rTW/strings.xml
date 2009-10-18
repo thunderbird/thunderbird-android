@@ -144,8 +144,8 @@
   <string name="message_view_attachment_view_action">開啟</string>
   <string name="message_view_datetime_fmt">yyyy MMM dd hh:mm a</string>
   <string name="message_view_fetching_attachment_toast">正在取得附件。</string>
-  <string name="message_view_prev_action">◀</string>
-  <string name="message_view_next_action">▶</string>
+  <string name="message_view_prev_action">\u25BC</string>
+  <string name="message_view_next_action">\u25B2</string>
   <string name="message_view_show_pictures_action">顯示圖片</string>
   <string name="message_view_show_pictures_instructions">選取 \"顯示圖片\" 即可顯示內嵌的圖片。</string>
   <string name="message_view_status_attachment_not_saved">無法將附件儲存到 SD 卡。</string>
