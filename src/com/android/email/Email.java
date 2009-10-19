@@ -132,6 +132,8 @@ public class Email extends Application {
     public static final int MANUAL_WAKE_LOCK_TIMEOUT = 120000;
     
     public static final int PUSH_WAKE_LOCK_TIMEOUT = 30000;
+    
+    public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 30000;
 
 
     /**
