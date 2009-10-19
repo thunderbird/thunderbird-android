@@ -66,8 +66,6 @@ import java.util.concurrent.TimeUnit;
 
 public class FolderList extends K9ListActivity {
 
-    private static final String INTENT_DATA_PATH_SUFFIX = "/accounts";
-
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final String EXTRA_ACCOUNT = "account";
@@ -329,7 +327,7 @@ public class FolderList extends K9ListActivity {
                 if (mSynchronizeRemote) {
                     // Tell the MessagingController to run a remote update of this folder
                     // at it's leisure
-                    MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mFolder, mAdapter.mListener);
+                    MessagingController.getInstance(getApplication()).synchronizeMailbox(FolderList.this, mAccount, mFolder, mAdapter.mListener);
                 }
             } finally {
                 wakeLock.release();
@@ -359,7 +357,11 @@ public class FolderList extends K9ListActivity {
     }
 
     public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Email.INTENT_DATA_URI_PREFIX + INTENT_DATA_PATH_SUFFIX + "/" + account.getAccountNumber()), context, FolderList.class);
+        Intent intent = new Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("email://accounts/" + account.getAccountNumber()),
+            context,
+            FolderList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_ACCOUNT, account);
         intent.putExtra(EXTRA_CLEAR_NOTIFICATION, true);
@@ -580,10 +582,6 @@ public class FolderList extends K9ListActivity {
 
     private void checkMail(final Account account) {
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
-    }
-
-    private void checkMail(Account account, String folderName) {
-        MessagingController.getInstance(getApplication()).synchronizeMailbox(account, folderName, mAdapter.mListener);
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {

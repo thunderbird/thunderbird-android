@@ -87,6 +87,7 @@
     <string name="status_loading">Loading\u2026</string>
     <string name="status_loading_more">Loading messages\u2026</string>
     <string name="status_network_error">Connection error</string>
+    <string name="status_invalid_id_error">Message not found</string>
     <string name="status_error">Error</string> <!-- Used in Outbox when a message has failed to send -->
     <string name="status_sending">Sending\u2026</string> <!-- Used in Outbox when a message is currently sending -->
     <string name="status_loading_more_failed">Retry loading more messages</string>

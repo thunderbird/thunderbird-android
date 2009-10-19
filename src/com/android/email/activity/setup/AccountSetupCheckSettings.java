@@ -109,7 +109,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 				            public void run() {
 				                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 				                MessagingController.getInstance(getApplication()).listFolders(mAccount, true, null);
-                                    MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, Email.INBOX , null);
+                                    MessagingController.getInstance(getApplication()).synchronizeMailbox(AccountSetupCheckSettings.this, mAccount, Email.INBOX , null);
 				
 				            }
 				        }.start();

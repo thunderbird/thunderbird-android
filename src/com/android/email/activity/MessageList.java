@@ -89,6 +89,7 @@ public class MessageList extends K9ListActivity {
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
+    
     private static final boolean FORCE_REMOTE_SYNC = true;
 
     private static final String EXTRA_ACCOUNT = "account";
@@ -409,6 +410,7 @@ public class MessageList extends K9ListActivity {
                     if ((itemPosition+1) == (mAdapter.getCount() )) {
                         
                         MessagingController.getInstance(getApplication()).loadMoreMessages(
+                                                MessageList.this,
                                                 mAccount,
                                                 mFolderName,
                                                 mAdapter.mListener);
@@ -572,7 +574,7 @@ public class MessageList extends K9ListActivity {
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 if (forceRemote) {
-                    MessagingController.getInstance(getApplication()).synchronizeMailbox( mAccount, mFolderName, mAdapter.mListener);
+                    MessagingController.getInstance(getApplication()).synchronizeMailbox(MessageList.this, mAccount, mFolderName, mAdapter.mListener);
                     MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
                 }
                 MessagingController.getInstance(getApplication()).listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
@@ -920,7 +922,7 @@ public class MessageList extends K9ListActivity {
 //    }
 
     private void checkMail(Account account, String folderName) {
-        MessagingController.getInstance(getApplication()).synchronizeMailbox( account, folderName, mAdapter.mListener);
+        MessagingController.getInstance(getApplication()).synchronizeMailbox(this, account, folderName, mAdapter.mListener);
     }
 
     @Override
@@ -1164,7 +1166,7 @@ public class MessageList extends K9ListActivity {
             }
             
             @Override
-            public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
+            public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {
                 if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
                     return;
                 }
@@ -1192,7 +1194,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
               
-		mHandler.sortMessages();
+		        mHandler.sortMessages();
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
             }
@@ -1203,7 +1205,7 @@ public class MessageList extends K9ListActivity {
                     return;
                 }
 
-		mHandler.sortMessages();
+		        mHandler.sortMessages();
                 mHandler.progress(false);
                 mHandler.folderLoading(folder, false);
             }

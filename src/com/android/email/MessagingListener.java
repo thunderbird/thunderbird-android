@@ -3,8 +3,12 @@ package com.android.email;
 
 import android.content.Context;
 
+import android.net.Uri;
+import android.util.Log;
+import com.android.email.mail.Address;
 import com.android.email.mail.Folder;
 import com.android.email.mail.Message;
+import com.android.email.mail.MessagingException;
 import com.android.email.mail.Part;
 
 /**
@@ -15,7 +19,7 @@ import com.android.email.mail.Part;
  * changes in this class.
  */
 public class MessagingListener {
-  
+
     public void accountStatusChanged(Account account, int unreadMessageCount) {
     }
     
@@ -63,7 +67,27 @@ public class MessagingListener {
     public void synchronizeMailboxStarted(Account account, String folder) {
     }
 
-    public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
+    public final void synchronizeMailboxNewMessage(Context context, Account account, String folder, Message message) {
+        try {
+            Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
+            android.content.Intent intent = new android.content.Intent(Intent.ACTION_EMAIL_RECEIVED, uri);
+            intent.putExtra(Intent.EXTRA_ACCOUNT, account.getDescription());
+            intent.putExtra(Intent.EXTRA_FOLDER, folder);
+            intent.putExtra(Intent.EXTRA_SENT_DATE, message.getSentDate());
+            intent.putExtra(Intent.EXTRA_FROM, Address.toString(message.getFrom()));
+            intent.putExtra(Intent.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
+            intent.putExtra(Intent.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
+            intent.putExtra(Intent.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
+            intent.putExtra(Intent.EXTRA_SUBJECT, message.getSubject());
+            context.sendBroadcast(intent);
+            Log.d(Email.LOG_TAG, "Broadcasted intent: " + message.getSubject());
+        }
+        catch (MessagingException e) {
+            Log.w(Email.LOG_TAG, "Account=" + account.getName() + " folder=" + folder + "message uid=" + message.getUid(), e);
+        }
+    }
+
+    public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {
     }
 
     public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message) {
@@ -92,7 +116,7 @@ public class MessagingListener {
             Message message) {
     }
 
-    public void loadMessageForViewFailed(Account account, String folder, String uid, String message) {
+    public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t) {
     }
 
     public void checkMailStarted(Context context, Account account) {

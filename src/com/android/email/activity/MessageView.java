@@ -27,7 +27,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.Contacts;
 import android.provider.Contacts.Intents;
-import android.text.Spannable;
 import android.util.Config;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -52,6 +51,7 @@ import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
+import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.mail.Address;
@@ -68,8 +68,7 @@ import com.android.email.mail.store.LocalStore.LocalTextBody;
 import com.android.email.provider.AttachmentProvider;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.List;
 
 public class MessageView extends K9Activity
         implements UrlInterceptHandler, OnClickListener {
@@ -206,6 +205,8 @@ public class MessageView extends K9Activity
         private static final int MSG_ATTACHMENT_NOT_SAVED = 8;
         private static final int MSG_SHOW_SHOW_PICTURES = 9;
         private static final int MSG_FETCHING_ATTACHMENT = 10;
+        private static final int MSG_INVALID_ID_ERROR = 11;
+
         private static final int FLAG_FLAGGED = 1;
         private static final int FLAG_ANSWERED = 2;
 
@@ -262,6 +263,10 @@ public class MessageView extends K9Activity
                 case MSG_NETWORK_ERROR:
                     Toast.makeText(MessageView.this,
                             R.string.status_network_error, Toast.LENGTH_LONG).show();
+                    break;
+                case MSG_INVALID_ID_ERROR:
+                    Toast.makeText(MessageView.this,
+                            R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
                     break;
                 case MSG_ATTACHMENT_SAVED:
                     Toast.makeText(MessageView.this, String.format(
@@ -329,6 +334,10 @@ public class MessageView extends K9Activity
 
         public void networkError() {
             sendEmptyMessage(MSG_NETWORK_ERROR);
+        }
+
+        public void invalidIdError() {
+            sendEmptyMessage(MSG_INVALID_ID_ERROR);
         }
 
         public void attachmentSaved(String filename) {
@@ -436,21 +445,61 @@ public class MessageView extends K9Activity
         setTitle("");
 
         Intent intent = getIntent();
-        mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
-        mFolder = intent.getStringExtra(EXTRA_FOLDER);
-        mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
-        mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
+        Uri uri = intent.getData();
+        
+        if (uri==null) {
+            mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+            mFolder = intent.getStringExtra(EXTRA_FOLDER);
+            mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
+            mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
+
+            Log.v(Email.LOG_TAG, "mAccount number: " + mAccount.getAccountNumber());
+            Log.v(Email.LOG_TAG, "mFolder: " + mFolder);
+            Log.v(Email.LOG_TAG, "mMessageUid: " + mMessageUid);
+        }
+        else {
+            Log.v(Email.LOG_TAG, "uri: " + uri.toString());
+            List<String> segmentList = uri.getPathSegments();
+            Log.v(Email.LOG_TAG, "segmentList size: " + segmentList.size());
+            if (segmentList.size()==3) {
+                String accountId = segmentList.get(0);
+                Account[] accounts = Preferences.getPreferences(this).getAccounts();
+                Log.v(Email.LOG_TAG, "account.length: " + accounts.length);
+                boolean found = false;
+                for (Account account : accounts) {
+                    Log.v(Email.LOG_TAG, "account: name=" + account.getDescription() + " number=" + account.getAccountNumber());
+                    if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
+                        mAccount = account;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    //TODO: Use ressource to externalize message
+                    Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                mFolder = segmentList.get(1);
+                mMessageUid = segmentList.get(2);
+                mFolderUids = new ArrayList<String>();
+            }
+            else {
+                for (String segment : segmentList) {
+                    Log.v(Email.LOG_TAG, "segment: " + segment);
+                }
+                //TODO: Use ressource to externalize message
+                Toast.makeText(this, "Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
        
         next = findViewById(R.id.next);
         previous = findViewById(R.id.previous);
-        
        
         setOnClickListener(R.id.next);
         setOnClickListener(R.id.previous);
 
         next_scrolling = findViewById(R.id.next_scrolling);
-        
-        
         previous_scrolling = findViewById(R.id.previous_scrolling);
 
         boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
@@ -460,7 +509,7 @@ public class MessageView extends K9Activity
         
         Account.HideButtons hideButtons = mAccount.getHideMessageViewButtons();
         
-   //    MessagingController.getInstance(getApplication()).addListener(mListener);
+        //MessagingController.getInstance(getApplication()).addListener(mListener);
         if (Account.HideButtons.ALWAYS == hideButtons)
         {
           hideButtons();
@@ -1200,7 +1249,7 @@ public class MessageView extends K9Activity
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid,
-                final String message) {
+                final Throwable t) {
             if (!mMessageUid.equals(uid)) {
                 return;
             }
@@ -1208,7 +1257,12 @@ public class MessageView extends K9Activity
             mHandler.post(new Runnable() {
                 public void run() {
                     setProgressBarIndeterminateVisibility(false);
-                    mHandler.networkError();
+                    if (t instanceof IllegalArgumentException) {
+                        mHandler.invalidIdError();
+                    }
+                    else {
+                        mHandler.networkError();
+                    }
                     mMessageContentView.loadUrl("file:///android_asset/empty.html");
                 }
             });
