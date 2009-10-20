@@ -227,6 +227,8 @@ public class MessagingController implements Runnable {
         mApplication = application;
         mThread = new Thread(this);
         mThread.start();
+
+        addListener(new IntentBroadcastingMessagingListener());
     }
     
     public void log(String logmess) {
