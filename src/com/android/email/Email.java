@@ -171,10 +171,6 @@ public class Email extends Application {
     
     public static final int FLAGGED_COLOR = 0xff4444;
 
-    public static final String INTENT_DATA_URI_SCHEMA           = "content";
-    public static final String INTENT_DATA_UR_PATH_PREFIX       = "email";
-    public static final String INTENT_DATA_URI_PREFIX           = INTENT_DATA_URI_SCHEMA + "://" + INTENT_DATA_UR_PATH_PREFIX;
-
     /**
      * Called throughout the application when the number of accounts has changed. This method
      * enables or disables the Compose activity, the boot receiver and the service based on
@@ -240,6 +236,9 @@ public class Email extends Application {
          */
    
         setServicesEnabled(this);
+        
+
+        MailService.appStarted(this);
 
     }
 }

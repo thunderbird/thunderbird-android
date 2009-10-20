@@ -119,20 +119,40 @@
         </activity>
         <activity
             android:name="com.android.email.activity.FolderList">
+            <!--
             <intent-filter>
-                <action android:name="android.intent.action.view" />
+                <action android:name="android.intent.action.VIEW" />
                 <data
-                    android:scheme="content"
-                    android:path="/email/accounts/*"
+                    android:scheme="email"
+                    android:host="accounts"
                 />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+            -->
         </activity>
         <activity
             android:name="com.android.email.activity.MessageList">
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:scheme="email"
+                    android:host="folders"
+                />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name="com.android.email.activity.MessageView">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:scheme="email"
+                    android:host="messages"
+                />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.android.email.activity.MessageCompose"

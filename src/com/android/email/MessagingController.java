@@ -953,6 +953,8 @@ public class MessagingController implements Runnable {
 
            if (commandException != null) {
                 String rootMessage = getRootCauseMessage(commandException);
+                Log.e(Email.LOG_TAG, "Root cause failure in " + account.getDescription() + ":" +
+                        tLocalFolder.getName() + " was '" + rootMessage + "'");
                 localFolder.setStatus(rootMessage);
                 for (MessagingListener l : getListeners()) {
                     l.synchronizeMailboxFailed( account, folder, rootMessage);
@@ -1066,6 +1068,7 @@ public class MessagingController implements Runnable {
                         localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, message.isSet(Flag.X_DOWNLOADED_PARTIAL));
 
                         for (MessagingListener l : getListeners()) {
+                            l.synchronizeMailboxAddOrUpdateMessage( account, folder, localMessage);
                             l.synchronizeMailboxNewMessage( account, folder, localMessage);
                         }
                     }
@@ -1153,7 +1156,7 @@ public class MessagingController implements Runnable {
                                                 + account + ":" + folder + ":" + message.getUid());
                                     }
                                     for (MessagingListener l : getListeners()) {
-                                        l.synchronizeMailboxNewMessage(account, folder, localMessage);
+                                        l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                                     }
                                 }
                             }
@@ -1224,7 +1227,8 @@ public class MessagingController implements Runnable {
                     }
                     // Update the listener with what we've found
                     for (MessagingListener l : getListeners()) {
-                        l.synchronizeMailboxNewMessage( account, folder, localMessage);
+                        l.synchronizeMailboxAddOrUpdateMessage( account, folder, localMessage);
+                        l.synchronizeMailboxNewMessage(account, folder, localMessage);
                     }
 
                 }
@@ -1326,7 +1330,9 @@ public class MessagingController implements Runnable {
             }
             // Update the listener with what we've found
             for (MessagingListener l : getListeners()) {
-                l.synchronizeMailboxNewMessage( account, folder, localFolder.getMessage(message.getUid()));
+                Message localMessage = localFolder.getMessage(message.getUid());
+                l.synchronizeMailboxAddOrUpdateMessage( account, folder, localMessage);
+                l.synchronizeMailboxNewMessage(account, folder, localMessage);
 
             }
         }//for large messsages
@@ -1354,12 +1360,12 @@ public class MessagingController implements Runnable {
                 
               if (messageChanged && isMessageSuppressed(account, folder, localMessage) == false) {
                     for (MessagingListener l : getListeners()) {
-                        l.synchronizeMailboxNewMessage(account, folder, localMessage);
+                        l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                     }
                 }
             }
         }
-        Log.i(Email.LOG_TAG, "SYNC: Synced remote messages for folder " + folder);
+        Log.i(Email.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
         
         return newMessages.get();
             }
@@ -2109,11 +2115,11 @@ public class MessagingController implements Runnable {
                 }
                 catch (Exception e) {
                     for (MessagingListener l : getListeners()) {
-                        l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+                        l.loadMessageForViewFailed(account, folder, uid, e);
                     }
                     if (listener != null && !getListeners().contains(listener))
                     {
-                        listener.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+                        listener.loadMessageForViewFailed(account, folder, uid, e);
                     }
                     addErrorMessage(account, e);
 
@@ -2204,11 +2210,11 @@ public class MessagingController implements Runnable {
                 }
                 catch (Exception e) {
                     for (MessagingListener l : getListeners()) {
-                        l.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+                        l.loadMessageForViewFailed(account, folder, uid, e);
                     }
                     if (listener != null && !getListeners().contains(listener))
                     {
-                        listener.loadMessageForViewFailed(account, folder, uid, e.getMessage());
+                        listener.loadMessageForViewFailed(account, folder, uid, e);
                     }
                     addErrorMessage(account, e);
         

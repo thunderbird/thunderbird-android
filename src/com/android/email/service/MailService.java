@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.NetworkInfo.State;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -27,12 +28,16 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
+import com.android.email.mail.Address;
+import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Pusher;
+import com.android.email.EmailReceivedIntent;
 
 /**
  */
 public class MailService extends Service {
+    private static final String ACTION_APP_STARTED = "com.android.email.intent.action.MAIL_SERVICE_APP_STARTED";
     private static final String ACTION_CHECK_MAIL = "com.android.email.intent.action.MAIL_SERVICE_WAKEUP";
     private static final String ACTION_RESCHEDULE = "com.android.email.intent.action.MAIL_SERVICE_RESCHEDULE";
     private static final String ACTION_CANCEL = "com.android.email.intent.action.MAIL_SERVICE_CANCEL";
@@ -52,6 +57,13 @@ public class MailService extends Service {
         Intent i = new Intent();
         i.setClass(context, MailService.class);
         i.setAction(MailService.ACTION_RESCHEDULE);
+        context.startService(i);
+    }
+    
+    public static void appStarted(Context context) {
+        Intent i = new Intent();
+        i.setClass(context, MailService.class);
+        i.setAction(MailService.ACTION_APP_STARTED);
         context.startService(i);
     }
     
@@ -205,6 +217,10 @@ public class MailService extends Service {
             else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
             {
                 notifyConnectionStatus(true);
+            }
+            else if (ACTION_APP_STARTED.equals(intent.getAction()))
+            {
+                setupListener(this);
             }
         }
         finally
@@ -483,4 +499,33 @@ public class MailService extends Service {
         	}
         }
     }
+    public void setupListener(final Context context)
+    {
+        Log.i(Email.LOG_TAG, "Setting up listener for new mail Intents");
+        MessagingController.getInstance(getApplication()).addListener(new MessagingListener()
+        {
+            public final void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
+                try {
+                  Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
+                  android.content.Intent intent = new android.content.Intent(EmailReceivedIntent.ACTION_EMAIL_RECEIVED, uri);
+                  intent.putExtra(EmailReceivedIntent.EXTRA_ACCOUNT, account.getDescription());
+                  intent.putExtra(EmailReceivedIntent.EXTRA_FOLDER, folder);
+                  intent.putExtra(EmailReceivedIntent.EXTRA_SENT_DATE, message.getSentDate());
+                  intent.putExtra(EmailReceivedIntent.EXTRA_FROM, Address.toString(message.getFrom()));
+                  intent.putExtra(EmailReceivedIntent.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
+                  intent.putExtra(EmailReceivedIntent.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
+                  intent.putExtra(EmailReceivedIntent.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
+                  intent.putExtra(EmailReceivedIntent.EXTRA_SUBJECT, message.getSubject());
+                  context.sendBroadcast(intent);
+                  Log.i(Email.LOG_TAG, "Broadcasted intent: " + message.getSubject());
+          }
+              catch (MessagingException e) {
+                  Log.w(Email.LOG_TAG, "Account=" + account.getName() + " folder=" + folder + "message uid=" + message.getUid(), e);
+              }
+            }
+        }
+        );
+        
+    }
+    
 }

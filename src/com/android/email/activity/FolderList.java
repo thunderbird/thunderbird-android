@@ -58,8 +58,6 @@ import android.os.PowerManager.WakeLock;
 
 public class FolderList extends K9ListActivity {
 
-    private static final String INTENT_DATA_PATH_SUFFIX = "/accounts";
-
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final String EXTRA_ACCOUNT = "account";
@@ -322,7 +320,11 @@ public class FolderList extends K9ListActivity {
     }
 
     public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Email.INTENT_DATA_URI_PREFIX + INTENT_DATA_PATH_SUFFIX + "/" + account.getAccountNumber()), context, FolderList.class);
+        Intent intent = new Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("email://accounts/" + account.getAccountNumber()),
+            context,
+            FolderList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_ACCOUNT, account);
         intent.putExtra(EXTRA_CLEAR_NOTIFICATION, true);

@@ -47,7 +47,6 @@ import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.MessagingController.SORT_TYPE;
-import com.android.email.activity.FolderList.FolderInfoHolder;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Address;
 import com.android.email.mail.Flag;
@@ -560,7 +559,6 @@ public class MessageList extends K9ListActivity {
 
 
     private void onOpenMessage( MessageInfoHolder message) {
-
         if (message.folder.name.equals(mAccount.getDraftsFolderName())) {
             MessageCompose.actionEditDraft(this, mAccount, message.message);
         } else {
@@ -878,7 +876,7 @@ public class MessageList extends K9ListActivity {
     }
 
     private void checkMail(Account account, String folderName) {
-        MessagingController.getInstance(getApplication()).synchronizeMailbox( account, folderName, mAdapter.mListener);
+        MessagingController.getInstance(getApplication()).synchronizeMailbox(account, folderName, mAdapter.mListener);
         sendMail(account);
     }
     
@@ -1142,7 +1140,7 @@ public class MessageList extends K9ListActivity {
             }
             
             @Override
-            public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
+            public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {
                 if (!account.equals(mAccount) || !folder.equals(mFolderName)) {
                     return;
                 }

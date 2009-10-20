@@ -28,6 +28,6 @@
 	<item
 		android:id="@+id/about"
         android:title="@string/about_action"
-		android:icon="@drawable/ic_menu_preferences"
+		android:icon="@android:drawable/ic_menu_info_details"
 	/>
 </menu>

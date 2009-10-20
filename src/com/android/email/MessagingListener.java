@@ -5,8 +5,12 @@ import java.util.List;
 
 import android.content.Context;
 
+import android.net.Uri;
+import android.util.Log;
+import com.android.email.mail.Address;
 import com.android.email.mail.Folder;
 import com.android.email.mail.Message;
+import com.android.email.mail.MessagingException;
 import com.android.email.mail.Part;
 
 /**
@@ -64,6 +68,9 @@ public class MessagingListener {
     public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
     }
 
+    public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {
+    }
+
     public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message) {
     }
 
@@ -90,7 +97,7 @@ public class MessagingListener {
             Message message) {
     }
 
-    public void loadMessageForViewFailed(Account account, String folder, String uid, String message) {
+    public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t) {
     }
 
     public void checkMailStarted(Context context, Account account) {
