@@ -225,7 +225,7 @@ public class MailService extends Service {
             }
             else if (ACTION_APP_STARTED.equals(intent.getAction()))
             {
-                setupListener(this);
+                    // Not needed for now, but might be useful later
             }
         }
         finally
@@ -507,34 +507,6 @@ public class MailService extends Service {
         	  release();
         	}
         }
-    }
-    public void setupListener(final Context context)
-    {
-        Log.i(Email.LOG_TAG, "Setting up listener for new mail Intents");
-        MessagingController.getInstance(getApplication()).addListener(new MessagingListener()
-        {
-            public final void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
-                try {
-                  Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
-                  android.content.Intent intent = new android.content.Intent(EmailReceivedIntent.ACTION_EMAIL_RECEIVED, uri);
-                  intent.putExtra(EmailReceivedIntent.EXTRA_ACCOUNT, account.getDescription());
-                  intent.putExtra(EmailReceivedIntent.EXTRA_FOLDER, folder);
-                  intent.putExtra(EmailReceivedIntent.EXTRA_SENT_DATE, message.getSentDate());
-                  intent.putExtra(EmailReceivedIntent.EXTRA_FROM, Address.toString(message.getFrom()));
-                  intent.putExtra(EmailReceivedIntent.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
-                  intent.putExtra(EmailReceivedIntent.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
-                  intent.putExtra(EmailReceivedIntent.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
-                  intent.putExtra(EmailReceivedIntent.EXTRA_SUBJECT, message.getSubject());
-                  context.sendBroadcast(intent);
-                  Log.i(Email.LOG_TAG, "Broadcasted intent: " + message.getSubject());
-          }
-              catch (MessagingException e) {
-                  Log.w(Email.LOG_TAG, "Account=" + account.getName() + " folder=" + folder + "message uid=" + message.getUid(), e);
-              }
-            }
-        }
-        );
-        
     }
     
 }

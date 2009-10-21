@@ -6,13 +6,16 @@ import java.io.File;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.util.Config;
+import android.net.Uri;
 import android.util.Log;
 
 import com.android.email.activity.MessageCompose;
+import com.android.email.mail.Address;
+import com.android.email.mail.Message;
+import com.android.email.mail.MessagingException;
 import com.android.email.mail.internet.BinaryTempFileBody;
-import com.android.email.mail.internet.MimeMessage;
 import com.android.email.service.BootReceiver;
 import com.android.email.service.MailService;
 
@@ -171,6 +174,22 @@ public class Email extends Application {
     
     public static final int FLAGGED_COLOR = 0xff4444;
 
+    public class Intents {
+
+        public class EmailReceived {
+            public static final String ACTION_EMAIL_RECEIVED    = "com.android.email.intent.action.EMAIL_RECEIVED";
+            public static final String EXTRA_ACCOUNT            = "com.android.email.intent.extra.ACCOUNT";
+            public static final String EXTRA_FOLDER             = "com.android.email.intent.extra.FOLDER";
+            public static final String EXTRA_SENT_DATE          = "com.android.email.intent.extra.SENT_DATE";
+            public static final String EXTRA_FROM               = "com.android.email.intent.extra.FROM";
+            public static final String EXTRA_TO                 = "com.android.email.intent.extra.TO";
+            public static final String EXTRA_CC                 = "com.android.email.intent.extra.CC";
+            public static final String EXTRA_BCC                = "com.android.email.intent.extra.BCC";
+            public static final String EXTRA_SUBJECT            = "com.android.email.intent.extra.SUBJECT";
+        }
+        
+    }
+
     /**
      * Called throughout the application when the number of accounts has changed. This method
      * enables or disables the Compose activity, the boot receiver and the service based on
@@ -224,7 +243,6 @@ public class Email extends Application {
         DEBUG_SENSITIVE = prefs.getEnableSensitiveLogging();
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
 
-        
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
          * doesn't work in Android and MimeMessage does not have access to a Context.
@@ -237,9 +255,30 @@ public class Email extends Application {
    
         setServicesEnabled(this);
         
+        MessagingController.getInstance(this).addListener(new MessagingListener() {
+            @Override
+            public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
+                try {
+                    Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
+                    Intent intent = new Intent(Email.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, uri);
+                    intent.putExtra(Email.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
+                    intent.putExtra(Email.Intents.EmailReceived.EXTRA_FOLDER, folder);
+                    intent.putExtra(Email.Intents.EmailReceived.EXTRA_SENT_DATE, message.getSentDate());
+                    intent.putExtra(Email.Intents.EmailReceived.EXTRA_FROM, Address.toString(message.getFrom()));
+                    intent.putExtra(Email.Intents.EmailReceived.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
+                    intent.putExtra(Email.Intents.EmailReceived.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
+                    intent.putExtra(Email.Intents.EmailReceived.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
+                    intent.putExtra(Email.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
+                    Email.this.sendBroadcast(intent);
+                    Log.d(Email.LOG_TAG, "Broadcasted intent: " + message.getSubject());
+                }
+                catch (MessagingException e) {
+                    Log.w(Email.LOG_TAG, "Account=" + account.getName() + " folder=" + folder + "message uid=" + message.getUid(), e);
+                }
+            }
+        });
 
         MailService.appStarted(this);
-
     }
 }
 

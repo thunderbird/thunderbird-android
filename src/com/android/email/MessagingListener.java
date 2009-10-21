@@ -5,12 +5,8 @@ import java.util.List;
 
 import android.content.Context;
 
-import android.net.Uri;
-import android.util.Log;
-import com.android.email.mail.Address;
 import com.android.email.mail.Folder;
 import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
 import com.android.email.mail.Part;
 
 /**
