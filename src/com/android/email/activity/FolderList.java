@@ -327,7 +327,7 @@ public class FolderList extends K9ListActivity {
                 if (mSynchronizeRemote) {
                     // Tell the MessagingController to run a remote update of this folder
                     // at it's leisure
-                    MessagingController.getInstance(getApplication()).synchronizeMailbox(FolderList.this, mAccount, mFolder, mAdapter.mListener);
+                    MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mFolder, mAdapter.mListener);
                 }
             } finally {
                 wakeLock.release();

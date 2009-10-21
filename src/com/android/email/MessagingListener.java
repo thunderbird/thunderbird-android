@@ -63,7 +63,7 @@ public class MessagingListener {
     public void synchronizeMailboxStarted(Account account, String folder) {
     }
 
-    public void synchronizeMailboxNewMessage(Context context, Account account, String folder, Message message) {
+    public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
     }
 
     public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message) {

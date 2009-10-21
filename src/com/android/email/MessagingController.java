@@ -227,8 +227,6 @@ public class MessagingController implements Runnable {
         mApplication = application;
         mThread = new Thread(this);
         mThread.start();
-
-        addListener(new IntentBroadcastingMessagingListener());
     }
     
     public void log(String logmess) {
@@ -513,12 +511,12 @@ public class MessagingController implements Runnable {
         }
     }
 
-    public void loadMoreMessages(Context context, Account account, String folder, MessagingListener listener) {
+    public void loadMoreMessages(Account account, String folder, MessagingListener listener) {
         try {
             LocalStore localStore = (LocalStore) Store.getInstance( account.getLocalStoreUri(), mApplication);
             LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
             localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
-            synchronizeMailbox(context, account, folder, listener);
+            synchronizeMailbox(account, folder, listener);
         }
         catch (MessagingException me) {
           addErrorMessage(account, me);
@@ -548,10 +546,10 @@ public class MessagingController implements Runnable {
      * @param folder
      * @param listener
      */
-    public void synchronizeMailbox(final Context context, final Account account, final String folder, MessagingListener listener) {
+    public void synchronizeMailbox(final Account account, final String folder, MessagingListener listener) {
         put("synchronizeMailbox", listener, new Runnable() {
             public void run() {
-                synchronizeMailboxSynchronous(context, account, folder);
+                synchronizeMailboxSynchronous(account, folder);
             }
         });
     }
@@ -564,7 +562,7 @@ public class MessagingController implements Runnable {
      *
      * TODO Break this method up into smaller chunks.
      */
-    public void synchronizeMailboxSynchronous(final Context context, final Account account, final String folder) {
+    public void synchronizeMailboxSynchronous(final Account account, final String folder) {
         /*
          * We don't ever sync the Outbox.
          */
@@ -929,7 +927,7 @@ public class MessagingController implements Runnable {
                         }
                         if (newMessageUidList.contains(message.getUid())) {
                             for (MessagingListener l : getListeners()) {
-                                l.synchronizeMailboxNewMessage(context, account, folder, localMessage);
+                                l.synchronizeMailboxNewMessage(account, folder, localMessage);
                             }
                         }
                     }
@@ -1035,7 +1033,7 @@ public class MessagingController implements Runnable {
                 }
                 if (newMessageUidList.contains(message.getUid())) {
                     for (MessagingListener l : getListeners()) {
-                        l.synchronizeMailboxNewMessage(context, account, folder, localMessage);
+                        l.synchronizeMailboxNewMessage(account, folder, localMessage);
                     }
                 }
             }//for large messsages
@@ -2896,7 +2894,7 @@ public class MessagingController implements Runnable {
 				                    		}
 			                          try
 			                          {
-			                            synchronizeMailboxSynchronous(context, account, folder.getName());
+			                            synchronizeMailboxSynchronous(account, folder.getName());
 			                          }
 				                    	  
 		                            finally {

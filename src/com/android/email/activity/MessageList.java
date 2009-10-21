@@ -410,7 +410,6 @@ public class MessageList extends K9ListActivity {
                     if ((itemPosition+1) == (mAdapter.getCount() )) {
                         
                         MessagingController.getInstance(getApplication()).loadMoreMessages(
-                                                MessageList.this,
                                                 mAccount,
                                                 mFolderName,
                                                 mAdapter.mListener);
@@ -574,7 +573,7 @@ public class MessageList extends K9ListActivity {
             public void run() {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 if (forceRemote) {
-                    MessagingController.getInstance(getApplication()).synchronizeMailbox(MessageList.this, mAccount, mFolderName, mAdapter.mListener);
+                    MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, mFolderName, mAdapter.mListener);
                     MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
                 }
                 MessagingController.getInstance(getApplication()).listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
@@ -922,7 +921,7 @@ public class MessageList extends K9ListActivity {
 //    }
 
     private void checkMail(Account account, String folderName) {
-        MessagingController.getInstance(getApplication()).synchronizeMailbox(this, account, folderName, mAdapter.mListener);
+        MessagingController.getInstance(getApplication()).synchronizeMailbox(account, folderName, mAdapter.mListener);
     }
 
     @Override
