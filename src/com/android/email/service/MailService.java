@@ -174,8 +174,13 @@ public class MailService extends Service {
                     Log.v(Email.LOG_TAG, "***** MailService *****: reschedule");
                 }
                 MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
-                reschedule();
-                reschedulePushers();
+                boolean polling = reschedule();
+                boolean pushing = reschedulePushers();
+                if (polling == false && pushing == false)
+                {
+                    Log.i(Email.LOG_TAG, "Neither pushing nor polling, so stopping");
+                    stopSelf(startId);
+                }
     	    //            stopSelf(startId);
             }
             else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction()))
@@ -278,7 +283,8 @@ public class MailService extends Service {
         alarmMgr.cancel(pi);
     }
 
-    private void reschedule() {
+    private boolean reschedule() {
+        boolean polling = true;
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
         i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
@@ -297,7 +303,7 @@ public class MailService extends Service {
         if (shortestInterval == -1) {
         		Log.v(Email.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
             alarmMgr.cancel(pi);
-            stopSelf(mStartId);
+            polling = false;
         }
         else
         {
@@ -318,7 +324,7 @@ public class MailService extends Service {
 	        
 	        alarmMgr.set(AlarmManager.RTC_WAKEUP, nextTime, pi);
         }
-
+        return polling;
     }
     
     private void stopPushers()
@@ -326,8 +332,9 @@ public class MailService extends Service {
         MessagingController.getInstance(getApplication()).stopAllPushing();
     }
     
-    private void reschedulePushers()
+    private boolean reschedulePushers()
     {
+        boolean pushing = false;
         Log.i(Email.LOG_TAG, "Rescheduling pushers");
         stopPushers();
         if (state == State.CONNECTED)   
@@ -337,12 +344,14 @@ public class MailService extends Service {
                 Pusher pusher = MessagingController.getInstance(getApplication()).setupPushing(account);
                 if (pusher != null)
                 {
+                    pushing = true;
                     Log.i(Email.LOG_TAG, "Starting configured pusher for account " + account.getDescription());
                     pusher.start();
                 }
             }
             schedulePushers();
         }
+        return pushing;
         
     }
     
