@@ -186,10 +186,10 @@ public class MessageView extends K9Activity
                 if (event.isShiftPressed()) {
                     mHandler.post(new Runnable() {
                         public void run() {
-                                            mMessageContentView.zoomIn();
+                        	mMessageContentView.zoomIn();
                         }
                     });
-                                        } else {
+                } else {
                     mHandler.post(new Runnable() {
                         public void run() {
                                             mMessageContentView.zoomOut();
@@ -458,56 +458,64 @@ public class MessageView extends K9Activity
 
         Intent intent = getIntent();
         Uri uri = intent.getData();
-        
-        if (uri==null) {
-        mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
-        mFolder = intent.getStringExtra(EXTRA_FOLDER);
-        mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
-        mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
-       
-            Log.v(Email.LOG_TAG, "mAccount number: " + mAccount.getAccountNumber());
-            Log.v(Email.LOG_TAG, "mFolder: " + mFolder);
-            Log.v(Email.LOG_TAG, "mMessageUid: " + mMessageUid);
+
+        if (icicle!=null) {
+            mAccount = (Account) icicle.getSerializable(EXTRA_ACCOUNT);
+            mFolder = icicle.getString(EXTRA_FOLDER);
+            mMessageUid = icicle.getString(EXTRA_MESSAGE);
+            mFolderUids = icicle.getStringArrayList(EXTRA_FOLDER_UIDS);
         }
         else {
-            Log.v(Email.LOG_TAG, "uri: " + uri.toString());
-            List<String> segmentList = uri.getPathSegments();
-            Log.v(Email.LOG_TAG, "segmentList size: " + segmentList.size());
-            if (segmentList.size()==3) {
-                String accountId = segmentList.get(0);
-                Account[] accounts = Preferences.getPreferences(this).getAccounts();
-                Log.v(Email.LOG_TAG, "account.length: " + accounts.length);
-                boolean found = false;
-                for (Account account : accounts) {
-                    Log.v(Email.LOG_TAG, "account: name=" + account.getDescription() + " number=" + account.getAccountNumber());
-                    if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
-                        mAccount = account;
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    //TODO: Use ressource to externalize message
-                    Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
-                    return;
-                }
-                mFolder = segmentList.get(1);
-                mMessageUid = segmentList.get(2);
-                mFolderUids = new ArrayList<String>();
+            if (uri==null) {
+                mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+                mFolder = intent.getStringExtra(EXTRA_FOLDER);
+                mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
+                mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
+
+                Log.v(Email.LOG_TAG, "mAccount number: " + mAccount.getAccountNumber());
+                Log.v(Email.LOG_TAG, "mFolder: " + mFolder);
+                Log.v(Email.LOG_TAG, "mMessageUid: " + mMessageUid);
             }
             else {
-                for (String segment : segmentList) {
-                    Log.v(Email.LOG_TAG, "segment: " + segment);
+                Log.v(Email.LOG_TAG, "uri: " + uri.toString());
+                List<String> segmentList = uri.getPathSegments();
+                Log.v(Email.LOG_TAG, "segmentList size: " + segmentList.size());
+                if (segmentList.size()==3) {
+                    String accountId = segmentList.get(0);
+                    Account[] accounts = Preferences.getPreferences(this).getAccounts();
+                    Log.v(Email.LOG_TAG, "account.length: " + accounts.length);
+                    boolean found = false;
+                    for (Account account : accounts) {
+                        Log.v(Email.LOG_TAG, "account: name=" + account.getDescription() + " number=" + account.getAccountNumber());
+                        if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
+                            mAccount = account;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        //TODO: Use ressource to externalize message
+                        Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    mFolder = segmentList.get(1);
+                    mMessageUid = segmentList.get(2);
+                    mFolderUids = new ArrayList<String>();
                 }
-                //TODO: Use ressource to externalize message
-                Toast.makeText(this, "Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG).show();
-                return;
+                else {
+                    for (String segment : segmentList) {
+                        Log.v(Email.LOG_TAG, "segment: " + segment);
+                    }
+                    //TODO: Use ressource to externalize message
+                    Toast.makeText(this, "Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG).show();
+                    return;
+                }
             }
         }
        
         next = findViewById(R.id.next);
         previous = findViewById(R.id.previous);
-        
+
         setOnClickListener(R.id.next);
         setOnClickListener(R.id.previous);
 
@@ -521,7 +529,7 @@ public class MessageView extends K9Activity
         
         Account.HideButtons hideButtons = mAccount.getHideMessageViewButtons();
         
-   //    MessagingController.getInstance(getApplication()).addListener(mListener);
+        //MessagingController.getInstance(getApplication()).addListener(mListener);
         if (Account.HideButtons.ALWAYS == hideButtons)
         {
           hideButtons();
@@ -545,6 +553,15 @@ public class MessageView extends K9Activity
         displayMessage(mMessageUid);
   }
 
+    @Override
+    protected void onSaveInstanceState (Bundle outState)
+    {
+        outState.putSerializable(EXTRA_ACCOUNT, mAccount);
+        outState.putString(EXTRA_FOLDER, mFolder);
+        outState.putString(EXTRA_MESSAGE, mMessageUid);
+        outState.putStringArrayList(EXTRA_FOLDER_UIDS, mFolderUids);
+    }
+
     private void displayMessage(String uid)
     {
         mMessageUid = uid;
@@ -562,8 +579,6 @@ public class MessageView extends K9Activity
             mFolder,
             mMessageUid,
             mListener);
-            
-        
     }
     
     
@@ -607,7 +622,7 @@ public class MessageView extends K9Activity
         super.onResume();
         clearFormats();
     }
-    
+
     private void onDelete() {
         if (mMessage != null) {
            Message messageToDelete = mMessage;
