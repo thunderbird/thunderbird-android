@@ -6,12 +6,13 @@ import com.android.email.Preferences;
 public abstract class Folder {
 		private String status = null;
 		private long lastChecked = 0;
+		private long lastPush = 0;
     public enum OpenMode {
         READ_WRITE, READ_ONLY,
     }
-    
+    // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
     public enum FolderClass {
-    	NONE, FIRST_CLASS, SECOND_CLASS;
+    	NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS;
     }
     
     public enum FolderType {
@@ -109,6 +110,17 @@ public abstract class Folder {
     public abstract String getName();
 
     public abstract Flag[] getPermanentFlags() throws MessagingException;
+    
+    /**
+     * 
+     * @param oldPushState
+     * @param message
+     * @return empty string to clear the pushState, null to leave the state as-is
+     */
+    public String getNewPushState(String oldPushState, Message message)
+    {
+        return null;
+    }
 
     public boolean supportsFetchingFlags() {
         return true;
@@ -129,15 +141,34 @@ public abstract class Folder {
 			this.lastChecked = lastChecked;
 		}
 		
+		public long getLastPush()
+		{
+		    return lastPush;
+		}
+
+		public void setLastPush(long lastCheckedDisplay) throws MessagingException
+		{
+		    this.lastPush = lastCheckedDisplay;
+		}
+		
+		public long getLastUpdate()
+		{
+		    return Math.max(getLastChecked(), getLastPush());
+		}
+
    	public FolderClass getDisplayClass()
 		{
-			return FolderClass.NONE;
+			return FolderClass.NO_CLASS;
 		}
 		
 		public FolderClass getSyncClass()
 		{
 			return getDisplayClass();
 		}
+		public FolderClass getPushClass()
+        {
+            return getSyncClass();
+        }
 		
     public void refresh(Preferences preferences) throws MessagingException
     {
@@ -154,6 +185,5 @@ public abstract class Folder {
 			this.status = status;
 		}
 
-
-
+  
 }

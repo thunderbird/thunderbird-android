@@ -76,7 +76,14 @@
             android:title="@string/account_settings_folder_sync_mode_label"
             android:entries="@array/account_settings_folder_sync_mode_entries"
             android:entryValues="@array/account_settings_folder_sync_mode_values"
-            android:dialogTitle="@string/account_settings_folder_sync_mode_label" />   
+            android:dialogTitle="@string/account_settings_folder_sync_mode_label" />  
+            
+         <ListPreference
+            android:key="folder_push_mode"
+            android:title="@string/account_settings_folder_push_mode_label"
+            android:entries="@array/account_settings_folder_push_mode_entries"
+            android:entryValues="@array/account_settings_folder_push_mode_values"
+            android:dialogTitle="@string/account_settings_folder_push_mode_label" />   
             
          <ListPreference
             android:key="folder_target_mode"

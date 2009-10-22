@@ -12,6 +12,7 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
@@ -24,17 +25,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.SSLException;
 
-import android.util.Config;
 import android.util.Log;
 
 import com.android.email.Email;
@@ -48,6 +52,8 @@ import com.android.email.mail.Message;
 import com.android.email.mail.MessageRetrievalListener;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Part;
+import com.android.email.mail.PushReceiver;
+import com.android.email.mail.Pusher;
 import com.android.email.mail.Store;
 import com.android.email.mail.CertificateValidationException;
 import com.android.email.mail.Folder.FolderType;
@@ -85,6 +91,9 @@ public class ImapStore extends Store {
     public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
+    
+    private static final int IDLE_READ_TIMEOUT = 29 * 60 * 1000; // 29 minutes
+    private static final int IDLE_REFRESH_INTERVAL = 20 * 60 * 1000; // 20 minutes
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
 
@@ -323,11 +332,23 @@ public class ImapStore extends Store {
     {
       return true;
     }
+    @Override
+    public boolean isPushCapable()
+    {
+      return true;
+    }
+    
+    @Override
+    public Pusher getPusher(PushReceiver receiver, List<String> names)
+    {
+        return new ImapPusher(this, receiver, names);
+    }
 
     class ImapFolder extends Folder {
         private String mName;
-        private int mMessageCount = -1;
-        private ImapConnection mConnection;
+        protected int mMessageCount = -1;
+        protected int uidNext = -1;
+        protected ImapConnection mConnection;
         private OpenMode mMode;
         private boolean mExists;
         private ImapStore store = null;
@@ -339,89 +360,126 @@ public class ImapStore extends Store {
 
 	public String getPrefixedName() {
 	    String prefixedName = "";
-	    if(mPathPrefix != null && mPathPrefix.length() > 0 && !Email.INBOX.equalsIgnoreCase(mName)){
-		prefixedName += mPathPrefix + mPathDelimeter;
+	    if (!Email.INBOX.equalsIgnoreCase(mName))
+	    {
+	        String prefix = mPathPrefix;
+	        String delim = mPathDelimeter;
+	        
+    	    if (prefix != null && delim != null)
+    	    {
+    	        prefix = prefix.trim();
+    	        delim = delim.trim();
+    	        if (prefix.length() > 0 && delim.length() > 0)
+    	        {
+    	            prefixedName += mPathPrefix + mPathDelimeter;
+    	        }
+    	    }
 	    }
-
+	    
 	    prefixedName += mName;
 	    return prefixedName;
 	}
 	
-	private List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException
+	protected List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException
 	{
 	  return handleUntaggedResponses(mConnection.executeSimpleCommand(command));
 	}
-
-        public void open(OpenMode mode) throws MessagingException {
-            if (isOpen() && mMode == mode) {
-                // Make sure the connection is valid. If it's not we'll close it down and continue
-                // on to get a new one.
-                try {
-                    executeSimpleCommand("NOOP");
-                    return;
-                }
-                catch (IOException ioe) {
-                    ioExceptionHandler(mConnection, ioe);
-                }
-            }
-            synchronized (this) {
-                mConnection = getConnection();
-            }
-            // * FLAGS (\Answered \Flagged \Deleted \Seen \Draft NonJunk
-            // $MDNSent)
-            // * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft
-            // NonJunk $MDNSent \*)] Flags permitted.
-            // * 23 EXISTS
-            // * 0 RECENT
-            // * OK [UIDVALIDITY 1125022061] UIDs valid
-            // * OK [UIDNEXT 57576] Predicted next UID
-            // 2 OK [READ-WRITE] Select completed.
-            try {
 	
-            		if(mPathDelimeter == null){
-            		    List<ImapResponse> nameResponses =
-            			executeSimpleCommand(String.format("LIST \"\" \"*%s\"", encodeFolderName(mName)));
-            		    if(nameResponses.size() > 0){
-            			mPathDelimeter = nameResponses.get(0).getString(2);
-            		    }
-            		}
-                
-			//                executeSimpleCommand("CLOSE");
-                
-            		String command = String.format("SELECT \"%s\"",
-                    encodeFolderName(getPrefixedName()));
+	protected List<ImapResponse> executeSimpleCommand(String command, boolean sensitve, UntaggedHandler untaggedHandler) throws MessagingException, IOException
+    {
+      return handleUntaggedResponses(mConnection.executeSimpleCommand(command, sensitve, untaggedHandler));
+    }
+	
+	public void open(OpenMode mode) throws MessagingException
+	{
+	    internalOpen(mode);
+	}
 
-            		//mMessageCount = -1;
-
-            		List<ImapResponse> responses = executeSimpleCommand(command);
-            
-                /*
-                 * If the command succeeds we expect the folder has been opened read-write
-                 * unless we are notified otherwise in the responses.
-                 */
-                mMode = OpenMode.READ_WRITE;
-
-                for (ImapResponse response : responses) {
-                  if (response.mTag != null && response.size() >= 2) {
-                        if ("[READ-ONLY]".equalsIgnoreCase(response.getString(1))) {
-                            mMode = OpenMode.READ_ONLY;
-                        }
-                        else if ("[READ-WRITE]".equalsIgnoreCase(response.getString(1))) {
-                            mMode = OpenMode.READ_WRITE;
-                        }
-                    }
-                }
-
-                if (mMessageCount == -1) {
-                    throw new MessagingException(
-                            "Did not find message count with command '" + command + "'");
-                }
-                mExists = true;
-
-            } catch (IOException ioe) {
-                throw ioExceptionHandler(mConnection, ioe);
-            }
-        }
+    	public List<ImapResponse> internalOpen(OpenMode mode) throws MessagingException {
+    	    if (isOpen() && mMode == mode) {
+    	        // Make sure the connection is valid. If it's not we'll close it down and continue
+    	        // on to get a new one.
+    	        try {
+    	            List<ImapResponse> responses = executeSimpleCommand("NOOP");
+    	            return responses;
+    	        }
+    	        catch (IOException ioe) {
+    	            ioExceptionHandler(mConnection, ioe);
+    	        }
+    	    }
+    	    synchronized (this) {
+    	        mConnection = getConnection();
+    	    }
+    	    // * FLAGS (\Answered \Flagged \Deleted \Seen \Draft NonJunk
+    	    // $MDNSent)
+    	    // * OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft
+    	    // NonJunk $MDNSent \*)] Flags permitted.
+    	    // * 23 EXISTS
+    	    // * 0 RECENT
+    	    // * OK [UIDVALIDITY 1125022061] UIDs valid
+    	    // * OK [UIDNEXT 57576] Predicted next UID
+    	    // 2 OK [READ-WRITE] Select completed.
+    	    try {
+    
+    	        if(mPathDelimeter == null){
+    	            List<ImapResponse> nameResponses =
+    	                executeSimpleCommand(String.format("LIST \"\" \"*%s\"", encodeFolderName(mName)));
+    	            if(nameResponses.size() > 0){
+    	                mPathDelimeter = nameResponses.get(0).getString(2);
+    	            }
+    	        }
+    
+    	        //                executeSimpleCommand("CLOSE");
+    
+    	        String command = String.format("SELECT \"%s\"",
+    	                encodeFolderName(getPrefixedName()));
+    
+    	         List<ImapResponse> responses = executeSimpleCommand(command);
+    	        
+    	        /*
+    	         * If the command succeeds we expect the folder has been opened read-write
+    	         * unless we are notified otherwise in the responses.
+    	         */
+    	        mMode = OpenMode.READ_WRITE;
+    
+    	        for (ImapResponse response : responses) {
+    	            if (response.mTag != null && response.size() >= 2) {
+    	                Object bracketedObj = response.get(1);
+    	                if (bracketedObj instanceof ImapList)
+    	                {
+    	                    ImapList bracketed = (ImapList)bracketedObj;
+    	                    
+    	                    if (bracketed.size() > 0)
+    	                    {
+    	                        Object keyObj = bracketed.get(0);
+    	                        if (keyObj instanceof String)
+    	                        {
+    	                            String key = (String)keyObj;
+    	                        
+        	                        if ("READ-ONLY".equalsIgnoreCase(key)) {
+        	                            mMode = OpenMode.READ_ONLY;
+        	                        }
+        	                        else if ("READ-WRITE".equalsIgnoreCase(key)) {
+        	                            mMode = OpenMode.READ_WRITE;
+        	                        }
+    	                        }
+    	                    }
+    	                }
+    	                
+    	            }
+    	        }
+    
+    	        if (mMessageCount == -1) {
+    	            throw new MessagingException(
+    	                    "Did not find message count with command '" + command + "'");
+    	        }
+    	        mExists = true;
+    	        return null;
+    	    } catch (IOException ioe) {
+    	        throw ioExceptionHandler(mConnection, ioe);
+    	    }
+    	   
+    	}
 
         public boolean isOpen() {
             return mConnection != null;
@@ -585,11 +643,19 @@ public class ImapStore extends Store {
 
         @Override
         public Message getMessage(String uid) throws MessagingException {
-	    return new ImapMessage(uid, this);
+            return new ImapMessage(uid, this);
         }
 
+        
         @Override
         public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
+                throws MessagingException {
+            
+            
+            return getMessages(start, end, false, listener);
+        }
+        
+        protected Message[] getMessages(int start, int end, boolean includeDeleted, MessageRetrievalListener listener)
                 throws MessagingException {
             if (start < 1 || end < 1 || end < start) {
                 throw new MessagingException(
@@ -601,7 +667,7 @@ public class ImapStore extends Store {
             try {
 		boolean gotSearchValues = false;
                 ArrayList<Integer> uids = new ArrayList<Integer>();
-                List<ImapResponse> responses = executeSimpleCommand(String.format("UID SEARCH %d:%d NOT DELETED", start, end));
+                List<ImapResponse> responses = executeSimpleCommand(String.format("UID SEARCH %d:%d" + (includeDeleted ? "" : " NOT DELETED"), start, end));
                 for (ImapResponse response : responses) {
 		    //		    Log.d(Email.LOG_TAG, "Got search response: " + response.get(0) + ", size " + response.size());
                     if (response.get(0).equals("SEARCH")) {
@@ -734,13 +800,20 @@ public class ImapStore extends Store {
                 do {
                     response = mConnection.readResponse();
                     handleUntaggedResponse(response);
-//Log.v(Email.LOG_TAG, "response for fetch: " + response);
+                    if (Email.DEBUG)
+                    {
+                        Log.v(Email.LOG_TAG, "response for fetch: " + response);
+                    }
                     if (response.mTag == null && response.get(1).equals("FETCH")) {
                         ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                         String uid = fetchList.getKeyedString("UID");
 
                         Message message = messageMap.get(uid);
-
+                        if (message == null)
+                        {
+                            Log.w(Email.LOG_TAG, "Do not have message in messageMap for UID " + uid);
+                            continue;
+                        }
                         if (listener != null) {
                             listener.messageStarted(uid, messageNumber++, messageMap.size());
                         }
@@ -784,8 +857,8 @@ public class ImapStore extends Store {
                                     parseBodyStructure(bs, message, "TEXT");
                                 }
                                 catch (MessagingException e) {
-                                    if (Config.LOGV) {
-                                        Log.v(Email.LOG_TAG, "Error handling message", e);
+                                    if (Email.DEBUG) {
+                                        Log.d(Email.LOG_TAG, "Error handling message", e);
                                     }
                                     message.setBody(null);
                                 }
@@ -820,7 +893,10 @@ public class ImapStore extends Store {
                                 {
                                   String bodyString = (String)literal;
 
-                                  Log.i(Email.LOG_TAG, "Part is an String: " + bodyString);
+                                  if (Email.DEBUG)
+                                  {
+                                      Log.v(Email.LOG_TAG, "Part is an String: " + bodyString);
+                                  }
                                   InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
                                   String contentTransferEncoding = part.getHeader(
                                       MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
@@ -854,7 +930,7 @@ public class ImapStore extends Store {
          * Handle any untagged responses that the caller doesn't care to handle themselves.
          * @param responses
          */
-        private List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
+        protected List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
             for (ImapResponse response : responses) {
                 handleUntaggedResponse(response);
             }
@@ -865,16 +941,48 @@ public class ImapStore extends Store {
          * Handle an untagged response that the caller doesn't care to handle themselves.
          * @param response
          */
-        private void handleUntaggedResponse(ImapResponse response) {
+        protected void handleUntaggedResponse(ImapResponse response) {
           if (response.mTag == null && response.size() > 1)
           {
             if (response.get(1).equals("EXISTS")) {
                 mMessageCount = response.getNumber(0);
-                //Log.i(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
+                if (Email.DEBUG)
+                {
+                    Log.d(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount);
+                }
+            }
+            if (response.get(0).equals("OK") && response.size() > 1) {
+                Object bracketedObj = response.get(1);
+                if (bracketedObj instanceof ImapList)
+                {
+                    ImapList bracketed = (ImapList)bracketedObj;
+                    
+                    if (bracketed.size() > 1)
+                    {
+                        Object keyObj = bracketed.get(0);
+                        if (keyObj instanceof String)
+                        {
+                            String key = (String)keyObj;
+                            if ("UIDNEXT".equals(key))
+                            {
+                                uidNext = bracketed.getNumber(1);
+                                if (Email.DEBUG)
+                                {
+                                    Log.d(Email.LOG_TAG, "Got UidNext = " + uidNext);
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                }
             }
             else if (response.get(1).equals("EXPUNGE") && mMessageCount > 0) {
               mMessageCount--;
-           //   Log.i(Email.LOG_TAG, "Got untagged EXPUNGE with value " + mMessageCount);
+              if (Email.DEBUG)
+              {
+                  Log.d(Email.LOG_TAG, "Got untagged EXPUNGE with value " + mMessageCount);
+              }
             }
           }
           //Log.i(Email.LOG_TAG, "mMessageCount = " + mMessageCount);
@@ -1073,7 +1181,7 @@ public class ImapStore extends Store {
                     } while(response.mTag == null);
 
                     String newUid = getUidFromMessageId(message);
-                    if (Config.LOGD)
+                    if (Email.DEBUG)
                     {
                     	Log.d(Email.LOG_TAG, "Got UID " + newUid + " for message");
                     }          
@@ -1102,14 +1210,14 @@ public class ImapStore extends Store {
 	          String[] messageIdHeader = message.getHeader("Message-ID");
 
 	          if (messageIdHeader == null || messageIdHeader.length == 0) {
-	          	if (Config.LOGD)
+	          	if (Email.DEBUG)
 	            {
 	          		Log.d(Email.LOG_TAG, "Did not get a message-id in order to search for UID");
 	            }
 	            return null;
 	          }
 	          String messageId = messageIdHeader[0];
-	          if (Config.LOGD)
+	          if (Email.DEBUG)
             {
             	Log.d(Email.LOG_TAG, "Looking for UID for message with message-id " + messageId);
             }   
@@ -1188,6 +1296,35 @@ public class ImapStore extends Store {
 				        throw ioExceptionHandler(mConnection, ioe);
 				    }
 				}
+        
+        public String getNewPushState(String oldPushStateS, Message message)
+        {
+            try
+            {
+                String messageUidS = message.getUid();
+                int messageUid = Integer.parseInt(messageUidS);
+                ImapPushState oldPushState = ImapPushState.parse(oldPushStateS);
+//                Log.d(Email.LOG_TAG, "getNewPushState comparing oldUidNext " + oldPushState.uidNext 
+//                        + " to message uid " + messageUid);
+                if (messageUid >= oldPushState.uidNext)
+                {
+                    int uidNext = messageUid + 1;
+                    ImapPushState newPushState = new ImapPushState(uidNext);
+                    //Log.d(Email.LOG_TAG, "newPushState = " + newPushState);
+                    return newPushState.toString();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.e(Email.LOG_TAG, "Exception while updated push state", e);
+                return null;
+            }
+        }
+        
 
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
                 throws MessagingException {
@@ -1259,6 +1396,7 @@ public class ImapStore extends Store {
         private OutputStream mOut;
         private ImapResponseParser mParser;
         private int mNextCommandTag;
+        protected Set<String> capabilities = new HashSet<String>();
 
         public void open() throws IOException, MessagingException {
             if (isOpen()) {
@@ -1297,23 +1435,44 @@ public class ImapStore extends Store {
                     mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                 }
 
-                mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
+                setReadTimeout(Store.SOCKET_READ_TIMEOUT);
 
                 mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
                         1024));
                 mParser = new ImapResponseParser(mIn);
                 mOut = mSocket.getOutputStream();
 
-                // BANNER
                 mParser.readResponse();
-
+                List<ImapResponse> responses = executeSimpleCommand("CAPABILITY");
+                if (responses.size() != 2) {
+                    throw new MessagingException("Invalid CAPABILITY response received");
+                }
+                capabilities.clear();
+                for (ImapResponse response : responses)
+                {
+                    if (response.mTag == null)
+                    {
+                        if (response.size() > 0)
+                        {
+                            for (Object capability : response)
+                            {
+                                if (capability instanceof String)
+                                {
+                                    if (Email.DEBUG)
+                                    {
+                                        Log.v(Email.LOG_TAG, "Saving capability '" + capability + "' for connection " + this.hashCode());
+                                    }
+                                    capabilities.add((String)capability);
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+                
                 if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
                         || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
-                    // CAPABILITY
-                    List<ImapResponse> responses = executeSimpleCommand("CAPABILITY");
-                    if (responses.size() != 2) {
-                        throw new MessagingException("Invalid CAPABILITY response received");
-                    }
+                   
                     if (responses.get(0).contains("STARTTLS")) {
                         // STARTTLS
                         executeSimpleCommand("STARTTLS");
@@ -1377,6 +1536,24 @@ public class ImapStore extends Store {
               }
             }
         }
+        
+        protected void setReadTimeout(int millis) throws SocketException
+        {
+            mSocket.setSoTimeout(millis);
+        }
+        
+        protected boolean isIdleCapable()
+        {
+            if (Email.DEBUG)
+            {
+                Log.v(Email.LOG_TAG, "Connection " + this.hashCode() + " has " + capabilities.size() + " capabilities");
+                for (String capability : capabilities)
+                {
+                    Log.v(Email.LOG_TAG, "Have capability '" + capability + "'");
+                }
+            }
+            return capabilities.contains("IDLE");
+        }
 
         public boolean isOpen() {
             return (mIn != null && mOut != null && mSocket != null && mSocket.isConnected() && !mSocket
@@ -1432,6 +1609,19 @@ public class ImapStore extends Store {
           out = out.replaceAll("\"", "\\\\\"");
           return out;
         }
+        
+        public void sendContinuation(String continuation) throws IOException
+        {
+            mOut.write(continuation.getBytes());
+            mOut.write('\r');
+            mOut.write('\n');
+            mOut.flush();
+            
+            if (Email.DEBUG) {
+                Log.v(Email.LOG_TAG, ">>> " + continuation);
+            }
+            
+        }
 
         public String sendCommand(String command, boolean sensitive)
             throws MessagingException, IOException {
@@ -1443,16 +1633,16 @@ public class ImapStore extends Store {
             mOut.write('\r');
             mOut.write('\n');
             mOut.flush();
-            if (Config.LOGD) {
-                if (Email.DEBUG) {
-                    if (sensitive && !Email.DEBUG_SENSITIVE) {
-                        Log.d(Email.LOG_TAG, ">>> "
-                                + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
-                    } else {
-                        Log.d(Email.LOG_TAG, ">>> " + commandToSend);
-                    }
+           
+            if (Email.DEBUG) {
+                if (sensitive && !Email.DEBUG_SENSITIVE) {
+                    Log.v(Email.LOG_TAG, ">>> "
+                            + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
+                } else {
+                    Log.v(Email.LOG_TAG, ">>> " + commandToSend);
                 }
             }
+            
             return tag;
           }
           catch (IOException ioe)
@@ -1476,15 +1666,20 @@ public class ImapStore extends Store {
                 ImapException, MessagingException {
             return executeSimpleCommand(command, false);
         }
-
-        public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive)
+        
+        public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
+        ImapException, MessagingException {
+            return executeSimpleCommand(command, sensitive, null);
+        }
+        
+        public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
         throws IOException, ImapException, MessagingException {
-          if (Config.LOGV)
+          if (Email.DEBUG)
           {
             Log.v(Email.LOG_TAG, "Sending IMAP command " + command + " on connection " + this.hashCode());
           }
           String tag = sendCommand(command, sensitive);
-          if (Config.LOGV)
+          if (Email.DEBUG)
           {
             Log.v(Email.LOG_TAG, "Sent IMAP command " + command + " with tag " + tag);
           }
@@ -1492,7 +1687,7 @@ public class ImapStore extends Store {
           ImapResponse response;
           do {
             response = mParser.readResponse();
-            if (Config.LOGV)
+            if (Email.DEBUG)
             {
               Log.v(Email.LOG_TAG, "Got IMAP response " + response);
             }
@@ -1511,6 +1706,10 @@ public class ImapStore extends Store {
               }
               response.mTag = null;
               continue;
+            }
+            if (untaggedHandler != null)
+            {
+                untaggedHandler.handleAsyncUntaggedResponse(response);
             }
             responses.add(response);
           } while (response.mTag == null);
@@ -1538,7 +1737,8 @@ public class ImapStore extends Store {
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
         }
-
+        
+        
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
@@ -1556,10 +1756,11 @@ public class ImapStore extends Store {
         	}
         	else
         	{
-  	        Folder remoteTrashFolder = iFolder.getStore().getFolder(trashFolderName);
+  	        ImapFolder remoteTrashFolder = (ImapFolder)iFolder.getStore().getFolder(trashFolderName);
   	        /*
   	         * Attempt to copy the remote message to the remote trash folder.
   	         */
+  	        remoteTrashFolder.mExists = false;  // Force redetection of Trash folder; some desktops delete it
   	        if (!remoteTrashFolder.exists()) {
   	            /*
   	             * If the remote trash folder doesn't exist we try to create it.
@@ -1569,7 +1770,7 @@ public class ImapStore extends Store {
   	        }
   	
   	        if (remoteTrashFolder.exists()) {
-  	        	if (Config.LOGD)
+  	        	if (Email.DEBUG)
   	        	{
   	        		Log.d(Email.LOG_TAG, "IMAPMessage.delete: copying remote message to " + trashFolderName);
   	        	}
@@ -1579,9 +1780,8 @@ public class ImapStore extends Store {
   	        }
   	        else
   	        {
-  	 //     		Toast.makeText(context, R.string.message_delete_failed, Toast.LENGTH_SHORT).show();
-  	
-  	         	Log.e(Email.LOG_TAG, "IMAPMessage.delete: remote Trash folder " + trashFolderName + " does not exist and could not be created");
+  	          throw new MessagingException("IMAPMessage.delete: remote Trash folder " + trashFolderName + " does not exist and could not be created"
+  	                  , true);
   	        }
         	}
         }
@@ -1618,5 +1818,472 @@ public class ImapStore extends Store {
         public void setAlertText(String alertText) {
             mAlertText = alertText;
         }
+    }
+    
+    public static int MAX_DELAY_TIME = 240000;
+    public static int NORMAL_DELAY_TIME = 10000;
+    
+    public class ImapFolderPusher extends ImapFolder implements UntaggedHandler
+    {
+        PushReceiver receiver = null;
+        Thread listeningThread = null;
+        AtomicBoolean stop = new AtomicBoolean(false);
+        AtomicBoolean idling = new AtomicBoolean(false);
+        AtomicBoolean doneSent = new AtomicBoolean(false);
+        private int delayTime = NORMAL_DELAY_TIME;
+        
+        public ImapFolderPusher(ImapStore store, String name, PushReceiver nReceiver)
+        {
+            super(store, name);
+            receiver = nReceiver;
+        }
+        public void refresh() throws IOException, MessagingException
+        {
+            if (idling.get())
+            {
+                receiver.pushInProgress();
+                sendDone();
+            }
+        }
+        
+        private void sendDone() throws IOException, MessagingException
+        {
+            if (doneSent.compareAndSet(false, true) == true)
+            {
+                sendContinuation("DONE");
+            }
+        }
+        
+        private void sendContinuation(String continuation)
+            throws MessagingException, IOException 
+        {
+            if (mConnection != null)
+            {
+                mConnection.sendContinuation(continuation);
+            }
+        }
+
+        public void start() throws MessagingException
+        {
+ 
+            Runnable runner = new Runnable()
+            {
+                public void run()
+                {
+                    Log.i(Email.LOG_TAG, "Pusher for " + getName() + " is running");
+                    while (stop.get() != true)
+                    {
+                        try
+                        {
+                            int oldUidNext = -1;
+                            try
+                            {
+                                String pushStateS = receiver.getPushState(getName());
+                                ImapPushState pushState = ImapPushState.parse(pushStateS);
+                                oldUidNext = pushState.uidNext;
+                                Log.i(Email.LOG_TAG, "Got oldUidNext " + oldUidNext);
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(Email.LOG_TAG, "Unable to get oldUidNext", e);
+                            }
+                           
+                            List<ImapResponse> responses = internalOpen(OpenMode.READ_ONLY);
+                            if (mConnection == null)
+                            {
+                                receiver.pushError("Could not establish connection for IDLE", null);
+                                throw new MessagingException("Could not establish connection for IDLE");
+
+                            }
+                            if (mConnection.isIdleCapable() == false)
+                            {
+                                stop.set(true);
+                                receiver.pushError("IMAP server is not IDLE capable: " + mConnection.toString(), null);
+                                throw new MessagingException("IMAP server is not IDLE capable:" + mConnection.toString());
+                            }
+                            mConnection.setReadTimeout(IDLE_READ_TIMEOUT);
+                            
+                            if (responses != null)
+                            {
+                                handleUntaggedResponses(responses);
+                            }
+                            if (uidNext > oldUidNext)
+                            {
+                                int startUid = oldUidNext;
+                                if (startUid < uidNext - 100)
+                                {
+                                    startUid = uidNext - 100;
+                                }
+                                if (startUid < 1)
+                                {
+                                    startUid = 1;
+                                }
+                                
+                                Log.i(Email.LOG_TAG, "Needs sync from uid " + startUid  + " to " + uidNext);
+                                List<Message> messages = new ArrayList<Message>();
+                                for (int uid = startUid; uid < uidNext; uid++ )
+                                {
+                                    ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
+                                    messages.add(message);
+                                }
+                                if (messages.size() > 0)
+                                {
+                                    pushMessages(messages, true);
+                                }
+                                
+                            }
+                            else
+                            {
+                                Log.i(Email.LOG_TAG, "About to IDLE " + getName());
+                                
+                                receiver.setPushActive(getName(), true);
+                                idling.set(true);
+                                doneSent.set(false);
+                                executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
+                                idling.set(false);
+                                receiver.setPushActive(getName(), false);
+                                delayTime = NORMAL_DELAY_TIME;
+                            }
+                        } 
+                        catch (Exception e)
+                        {
+                            idling.set(false);
+                            receiver.setPushActive(getName(), false);
+                            try
+                            {
+                                close(false);
+                            }
+                            catch (Exception me)
+                            {
+                                Log.e(Email.LOG_TAG, "Got exception while closing for exception", me);
+                            }
+                            if (stop.get() == true)
+                            {
+                                Log.i(Email.LOG_TAG, "Got exception while idling, but stop is set");
+                            }
+                            else
+                            {
+                                Log.e(Email.LOG_TAG, "Got exception while idling", e);
+                                try
+                                {
+                                    Thread.sleep(delayTime);
+                                    delayTime *= 2;
+                                    if (delayTime > MAX_DELAY_TIME)
+                                    {
+                                        delayTime = MAX_DELAY_TIME;
+                                    }
+                                }
+                                catch (Exception ie)
+                                {
+                                    Log.e(Email.LOG_TAG, "Got exception while delaying after push exception", ie);
+                                }
+                            }
+                        }
+                    }
+                    try
+                    {
+                        close(false);
+                        receiver.pushComplete();
+                        Log.i(Email.LOG_TAG, "Pusher for " + getName() + " is exiting");
+                    }
+                    catch (Exception me)
+                    {
+                        Log.e(Email.LOG_TAG, "Got exception while closing", me);
+                    }
+                }
+            };
+            listeningThread = new Thread(runner);
+            listeningThread.start();
+        }
+
+        List<Integer> flagSyncMsgSeqs = new ArrayList<Integer>();
+        
+        protected List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
+            flagSyncMsgSeqs.clear();
+            int oldMessageCount = mMessageCount;
+
+            super.handleUntaggedResponses(responses);
+
+            List<Integer> flagSyncMsgSeqsCopy = new ArrayList<Integer>();
+            flagSyncMsgSeqsCopy.addAll(flagSyncMsgSeqs);
+            
+            
+            if (Email.DEBUG)
+            {
+                Log.d(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
+            }
+            if (oldMessageCount > 0 && mMessageCount > oldMessageCount)
+            {
+                syncMessages(oldMessageCount + 1, mMessageCount, true);
+            }
+            if (Email.DEBUG)
+            {
+                Log.d(Email.LOG_TAG, "There are " + flagSyncMsgSeqsCopy + " messages needing flag sync");
+            }
+            // TODO: Identify ranges and call syncMessages on said identified ranges
+            for (Integer msgSeq : flagSyncMsgSeqsCopy)
+            {
+                syncMessages(msgSeq, msgSeq, false);
+            }
+
+            return responses;
+        }
+        
+        private void syncMessages(int start, int end, boolean newArrivals)
+        {
+            try
+            {
+                Message[] messageArray = null;
+ 
+                messageArray = getMessages(start, end, true, null);
+                
+                List<Message> messages = new ArrayList<Message>();
+                for (Message message : messageArray)
+                {
+                    messages.add(message);
+                }
+                pushMessages(messages, newArrivals);
+                
+            }
+            catch (Exception e)
+            {
+                receiver.pushError("Exception while processing Push untagged responses", e);
+            }
+        }
+        
+        protected void handleUntaggedResponse(ImapResponse response) {
+            super.handleUntaggedResponse(response);
+            if (response.mTag == null && response.size() > 1)
+            {
+                try
+                {
+                    Object responseType = response.get(1);
+                    if ("FETCH".equals(responseType))
+                    {
+                        int msgSeq = response.getNumber(0);
+                        if (Email.DEBUG)
+                        {
+                            Log.d(Email.LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq);
+                        }
+                        flagSyncMsgSeqs.add(msgSeq);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Could not handle untagged FETCH", e);
+                }
+            }
+          }
+
+        
+        private void pushMessages(List<Message> messages, boolean newArrivals)
+        {
+            RuntimeException holdException = null;
+            try
+            {
+                if (newArrivals)
+                {
+                    receiver.messagesArrived(getName(), messages);
+                }
+                else
+                {
+                    receiver.messagesFlagsChanged(getName(), messages);
+                }
+            }
+            catch (RuntimeException e)
+            {
+               holdException = e; 
+            }
+            
+            if (holdException != null)
+            {
+                throw holdException;
+            }
+        }
+
+        public void stop() throws MessagingException
+        {
+            stop.set(true);
+            
+            if (mConnection != null)
+            {
+                if (Email.DEBUG)
+                {
+                    Log.v(Email.LOG_TAG, "Closing mConnection to stop pushing");
+                }
+                mConnection.close();
+            }
+            else
+            {
+                Log.w(Email.LOG_TAG, "Attempt to interrupt null mConnection to stop pushing" + " on folderPusher " + getName());
+            }
+        }
+        
+        public void handleAsyncUntaggedResponse(ImapResponse response)
+        {
+            if (Email.DEBUG)
+            {
+                Log.v(Email.LOG_TAG, "Got async response: " + response);
+            }
+            if (response.mTag == null)
+            {
+                if (response.size() > 1)
+                {
+                    boolean started = false;
+                    Object responseType = response.get(1);
+                    if ("EXISTS".equals(responseType) || "EXPUNGE".equals(responseType) ||
+                        "FETCH".equals(responseType))
+                    {
+                        if (started == false)
+                        {
+                            receiver.pushInProgress();
+                            started = true;
+                        }
+                        if (Email.DEBUG)
+                        {
+                            Log.d(Email.LOG_TAG, "Got useful async untagged response: " + response);
+                        }
+                        try
+                        {
+                            sendDone();
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e(Email.LOG_TAG, "Exception while sending DONE", e);
+                        }
+                    }
+                }
+                else if (response.size() > 0)
+                {
+                    if ("idling".equals(response.get(0)))
+                    {
+                        if (Email.DEBUG)
+                        {
+                            Log.d(Email.LOG_TAG, "Idling");
+                        }
+                        receiver.pushComplete();
+                    }
+                }
+            }
+        }
+    }
+    
+    public class ImapPusher implements Pusher
+    {
+        List<ImapFolderPusher> folderPushers = new ArrayList<ImapFolderPusher>();
+        
+        public ImapPusher(ImapStore store, PushReceiver receiver, List<String> folderNames)
+        {
+            for (String folderName : folderNames)
+            {
+                ImapFolderPusher pusher = new ImapFolderPusher(store, folderName, receiver);
+                folderPushers.add(pusher);
+            }
+        }
+
+        public void refresh()
+        {
+            for (ImapFolderPusher folderPusher : folderPushers)
+            {
+                try
+                {
+                    folderPusher.refresh();
+                }
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Got exception while refreshing");
+                }
+            }
+            
+        }
+
+        public void start()
+        {
+            for (ImapFolderPusher folderPusher : folderPushers)
+            {
+                try
+                {
+                    folderPusher.start();
+                }
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Got exception while starting");
+                }
+            }
+        }
+
+        public void stop()
+        {
+            Log.i(Email.LOG_TAG, "Requested stop of IMAP pusher");
+            for (ImapFolderPusher folderPusher : folderPushers)
+            {
+                try
+                {
+                    Log.i(Email.LOG_TAG, "Requesting stop of IMAP folderPusher " + folderPusher.getName());
+                    folderPusher.stop();
+                }
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Got exception while stopping", e);
+                }
+            }
+            folderPushers.clear();
+        }
+
+        public int getRefreshInterval()
+        {
+            return IDLE_REFRESH_INTERVAL; 
+        }
+        
+    }
+    private interface UntaggedHandler
+    {
+        void handleAsyncUntaggedResponse(ImapResponse respose);
+    }
+    
+    protected static class ImapPushState
+    {
+        protected int uidNext;
+        protected ImapPushState(int nUidNext)
+        {
+            uidNext = nUidNext;
+        }
+        protected static ImapPushState parse(String pushState)
+        {
+            int newUidNext = -1;
+            if (pushState != null)
+            {
+                StringTokenizer tokenizer = new StringTokenizer(pushState, ";");
+                while (tokenizer.hasMoreTokens())
+                {
+                    StringTokenizer thisState = new StringTokenizer(tokenizer.nextToken(), "=");
+                    if (thisState.hasMoreTokens())
+                    {
+                        String key = thisState.nextToken();
+                        
+                        if ("uidNext".equals(key) && thisState.hasMoreTokens())
+                        {
+                            String value = thisState.nextToken();
+                            try
+                            {
+                                newUidNext = Integer.parseInt(value);
+                              //  Log.i(Email.LOG_TAG, "Parsed uidNext " + newUidNext);
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(Email.LOG_TAG, "Unable to part uidNext value " + value, e);
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            return new ImapPushState(newUidNext);
+        }
+        public String toString()
+        {
+            return "uidNext=" + uidNext;
+        }
+        
     }
 }

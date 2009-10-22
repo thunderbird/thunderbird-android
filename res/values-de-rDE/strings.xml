@@ -368,9 +368,10 @@ Willkommen zum K-9 Mail Setup.  K-9 ist eine Open-Source E-Mail-Anwendung für A
     <string name="folder_settings_folder_display_mode_second_class">Nebenordner</string>
  
     <string name="folder_settings_folder_sync_mode_label">Synchronisationsklasse</string>
-    <string name="folder_settings_folder_sync_mode_normal">Wie Anzeigeklasse</string>
+    <string name="folder_settings_folder_sync_mode_normal">Keine</string>
     <string name="folder_settings_folder_sync_mode_first_class">Hauptordner</string>
     <string name="folder_settings_folder_sync_mode_second_class">Nebenordner</string>
+     <string name="folder_settings_folder_sync_mode_inherited">Wie Anzeigeklasse</string>
    
     <string name="account_settings_incoming_label">Einstellungen Posteingang</string>
     <string name="account_settings_incoming_summary">Einstellungen für Posteingangsserver bearbeiten.</string>

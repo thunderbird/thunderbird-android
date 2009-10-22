@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +26,7 @@ import com.android.email.R;
 import com.android.email.activity.ChooseFolder;
 import com.android.email.activity.ChooseIdentity;
 import com.android.email.activity.ManageIdentities;
+import com.android.email.mail.Store;
 
 public class AccountSettings extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
@@ -49,6 +51,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_OUTGOING = "outgoing";
     private static final String PREFERENCE_DISPLAY_MODE = "folder_display_mode";
     private static final String PREFERENCE_SYNC_MODE = "folder_sync_mode";
+    private static final String PREFERENCE_PUSH_MODE = "folder_push_mode";
     private static final String PREFERENCE_TARGET_MODE = "folder_target_mode";
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
     private static final String PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder";
@@ -66,6 +69,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
     private ListPreference mSyncMode;
+    private ListPreference mPushMode;
     private ListPreference mTargetMode;
     private ListPreference mDeletePolicy;
     private Preference mAutoExpandFolder;
@@ -82,6 +86,18 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
 
+        boolean isPushCapable = false;
+        Store store = null;
+        try
+        {
+            store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+            isPushCapable = store.isPushCapable();
+        }
+        catch (Exception e)
+        {
+            Log.e(Email.LOG_TAG, "Could not get remote store", e);
+        }
+        
         addPreferencesFromResource(R.xml.account_settings_preferences);
 
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
@@ -135,6 +151,20 @@ public class AccountSettings extends K9PreferenceActivity {
                 int index = mSyncMode.findIndexOfValue(summary);
                 mSyncMode.setSummary(mSyncMode.getEntries()[index]);
                 mSyncMode.setValue(summary);
+                return false;
+            }
+        });
+        
+        mPushMode = (ListPreference) findPreference(PREFERENCE_PUSH_MODE);
+        mPushMode.setEnabled(isPushCapable);
+        mPushMode.setValue(mAccount.getFolderPushMode().name());
+        mPushMode.setSummary(mPushMode.getEntry());
+        mPushMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mPushMode.findIndexOfValue(summary);
+                mPushMode.setSummary(mPushMode.getEntries()[index]);
+                mPushMode.setValue(summary);
                 return false;
             }
         });
@@ -274,6 +304,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setVibrate(mAccountVibrate.isChecked());
         mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
         mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
+        mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();

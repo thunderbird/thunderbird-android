@@ -35,6 +35,7 @@ public class Email extends Application {
     /**
      * If this is enabled there will be additional logging information sent to
      * Log.d, including protocol dumps.
+     * Controlled by Preferences at run-time
      */
     public static boolean DEBUG = false;
 
@@ -65,9 +66,7 @@ public class Email extends Application {
      * The MIME type(s) of attachments we're willing to view.
      */
     public static final String[] ACCEPTABLE_ATTACHMENT_VIEW_TYPES = new String[] {
-        "image/*",
-        "audio/*",
-        "text/*",
+        "*/*",
     };
 
     /**
@@ -134,6 +133,11 @@ public class Email extends Application {
     public static final int WAKE_LOCK_TIMEOUT = 600000;
     
     public static final int MANUAL_WAKE_LOCK_TIMEOUT = 120000;
+    
+    public static final int PUSH_WAKE_LOCK_TIMEOUT = 30000;
+    
+    public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 30000;
+
 
     /**
      * LED color used for the new email notitication
@@ -161,6 +165,7 @@ public class Email extends Application {
     public static final int FETCHING_EMAIL_NOTIFICATION_ID      = -4; 
     public static final int FETCHING_EMAIL_NOTIFICATION_MULTI_ACCOUNT_ID      = -1;
     public static final int FETCHING_EMAIL_NOTIFICATION_NO_ACCOUNT = -2;
+    public static final int CONNECTIVITY_ID = -3;
     
     // Backup formats in case they can't be fetched from the system
     public static final String BACKUP_DATE_FORMAT = "MM-dd-yyyy";
@@ -237,7 +242,7 @@ public class Email extends Application {
         DEBUG = prefs.getEnableDebugLogging();
         DEBUG_SENSITIVE = prefs.getEnableSensitiveLogging();
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
-        
+
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
          * doesn't work in Android and MimeMessage does not have access to a Context.
@@ -249,7 +254,7 @@ public class Email extends Application {
          */
    
         setServicesEnabled(this);
-
+        
         MessagingController.getInstance(this).addListener(new MessagingListener() {
             @Override
             public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
@@ -272,6 +277,8 @@ public class Email extends Application {
                 }
             }
         });
+
+        MailService.appStarted(this);
     }
 }
 

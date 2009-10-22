@@ -113,10 +113,6 @@ public class MessageView extends K9Activity
     private DateFormat timeFormat = null;
     
     private Menu optionsMenu = null;
-
-    //Shall we use more threads? How often will the user move from non-fully-downloaded
-    //messages to another non-fully-downloaded message more than 3 times?
- //   private final ExecutorService threadPool = Executors.newFixedThreadPool(3);
     
     private DateFormat getDateFormat()
     {
@@ -154,7 +150,23 @@ public class MessageView extends K9Activity
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+    @Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+	boolean ret = false;
+
+	if (KeyEvent.ACTION_DOWN == event.getAction())
+	{
+	    ret = onKeyDown(event.getKeyCode(), event);
+	}
+	if (ret == false)
+	{
+	    ret = super.dispatchKeyEvent(event);
+	}
+	return ret;
+    }
+
+       public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DEL: { onDelete(); return true;}
             case KeyEvent.KEYCODE_D: { onDelete(); return true;}
@@ -174,26 +186,26 @@ public class MessageView extends K9Activity
                 if (event.isShiftPressed()) {
                     mHandler.post(new Runnable() {
                         public void run() {
-                            mMessageContentView.zoomIn();
+                                            mMessageContentView.zoomIn();
                         }
                     });
-                } else {
+                                        } else {
                     mHandler.post(new Runnable() {
                         public void run() {
-                            mMessageContentView.zoomOut();
-                        }
+                                            mMessageContentView.zoomOut();
+                                        }
                     });
                 }
                 return true; 
             }
-            case KeyEvent.KEYCODE_H: {
+           case KeyEvent.KEYCODE_H: {
                Toast toast = Toast.makeText(this, R.string.message_help_key, Toast.LENGTH_LONG);
                toast.show();
                return true; 
             }
         }
-        return super.onKeyDown(keyCode, event);
-    }
+           return super.onKeyDown(keyCode, event);
+        }
 
     class MessageViewHandler extends Handler {
         private static final int MSG_PROGRESS = 2;
@@ -448,11 +460,11 @@ public class MessageView extends K9Activity
         Uri uri = intent.getData();
         
         if (uri==null) {
-            mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
-            mFolder = intent.getStringExtra(EXTRA_FOLDER);
-            mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
-            mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
-
+        mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+        mFolder = intent.getStringExtra(EXTRA_FOLDER);
+        mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
+        mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
+       
             Log.v(Email.LOG_TAG, "mAccount number: " + mAccount.getAccountNumber());
             Log.v(Email.LOG_TAG, "mFolder: " + mFolder);
             Log.v(Email.LOG_TAG, "mMessageUid: " + mMessageUid);
@@ -495,7 +507,7 @@ public class MessageView extends K9Activity
        
         next = findViewById(R.id.next);
         previous = findViewById(R.id.previous);
-       
+        
         setOnClickListener(R.id.next);
         setOnClickListener(R.id.previous);
 
@@ -509,7 +521,7 @@ public class MessageView extends K9Activity
         
         Account.HideButtons hideButtons = mAccount.getHideMessageViewButtons();
         
-        //MessagingController.getInstance(getApplication()).addListener(mListener);
+   //    MessagingController.getInstance(getApplication()).addListener(mListener);
         if (Account.HideButtons.ALWAYS == hideButtons)
         {
           hideButtons();
@@ -521,7 +533,7 @@ public class MessageView extends K9Activity
         else // Account.HideButtons.KEYBOARD_AVAIL
         {
             final Configuration config = this.getResources().getConfiguration();
-            if (config.keyboardHidden == Configuration.KEYBOARDHIDDEN_NO )
+            if (config.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO )
             {
               hideButtons();
             }
@@ -595,7 +607,7 @@ public class MessageView extends K9Activity
         super.onResume();
         clearFormats();
     }
-
+    
     private void onDelete() {
         if (mMessage != null) {
            Message messageToDelete = mMessage;
@@ -1172,8 +1184,8 @@ public class MessageView extends K9Activity
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
                 mHandler.post(new Runnable() {
                     public void run() {
-                        mMessageContentView.loadUrl("file:///android_asset/downloading.html");
-                    }
+                mMessageContentView.loadUrl("file:///android_asset/downloading.html");
+            }
                 });
             }
             try {
@@ -1232,8 +1244,8 @@ public class MessageView extends K9Activity
                 else {
                     mHandler.post(new Runnable() {
                         public void run() {
-                            mMessageContentView.loadUrl("file:///android_asset/empty.html");
-                        }
+                    mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                }
                     });
                 }
 
@@ -1261,7 +1273,7 @@ public class MessageView extends K9Activity
                         mHandler.invalidIdError();
                     }
                     else {
-                        mHandler.networkError();
+                    mHandler.networkError();
                     }
                     mMessageContentView.loadUrl("file:///android_asset/empty.html");
                 }
@@ -1291,7 +1303,7 @@ public class MessageView extends K9Activity
             mHandler.post(new Runnable() {
                 public void run() {
                     mMessageContentView.loadUrl("file:///android_asset/loading.html");
-                    setProgressBarIndeterminateVisibility(true);
+                   setProgressBarIndeterminateVisibility(true);
                 }
             });
         }
@@ -1357,7 +1369,7 @@ public class MessageView extends K9Activity
                 }
                 catch (Exception e)
                 {
-                    Toast toast = Toast.makeText(MessageView.this, e.getMessage(), Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(MessageView.this, getString(R.string.message_view_no_viewer, attachment.contentType), Toast.LENGTH_LONG);
                     toast.show();
                 }
             }

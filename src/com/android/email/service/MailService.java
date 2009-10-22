@@ -1,6 +1,7 @@
 
 package com.android.email.service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -11,14 +12,15 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.net.NetworkInfo.State;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.os.SystemClock;
 import android.util.Config;
 import android.util.Log;
-import android.text.TextUtils;
-import android.net.Uri;
 
 import com.android.email.Account;
 import com.android.email.Email;
@@ -26,34 +28,64 @@ import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.R;
-import com.android.email.activity.Accounts;
-import com.android.email.activity.FolderList;
-import com.android.email.mail.Folder;
+import com.android.email.mail.Address;
+import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
-import com.android.email.mail.Store;
+import com.android.email.mail.Pusher;
+import com.android.email.EmailReceivedIntent;
 
 /**
  */
 public class MailService extends Service {
+    private static final String ACTION_APP_STARTED = "com.android.email.intent.action.MAIL_SERVICE_APP_STARTED";
     private static final String ACTION_CHECK_MAIL = "com.android.email.intent.action.MAIL_SERVICE_WAKEUP";
     private static final String ACTION_RESCHEDULE = "com.android.email.intent.action.MAIL_SERVICE_RESCHEDULE";
     private static final String ACTION_CANCEL = "com.android.email.intent.action.MAIL_SERVICE_CANCEL";
+    private static final String ACTION_REFRESH_PUSHERS = "com.android.email.intent.action.MAIL_SERVICE_REFRESH_PUSHERS";
+    private static final String CONNECTIVITY_CHANGE = "com.android.email.intent.action.MAIL_SERVICE_CONNECTIVITY_CHANGE";
+    private static final String CANCEL_CONNECTIVITY_NOTICE = "com.android.email.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
 
+    private static final String HAS_CONNECTIVITY = "com.android.email.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
+    
     private Listener mListener = new Listener();
+    
+    private State state = null;
 
     private int mStartId;
-
+ 
     public static void actionReschedule(Context context) {
         Intent i = new Intent();
         i.setClass(context, MailService.class);
         i.setAction(MailService.ACTION_RESCHEDULE);
         context.startService(i);
     }
+    
+    public static void appStarted(Context context) {
+        Intent i = new Intent();
+        i.setClass(context, MailService.class);
+        i.setAction(MailService.ACTION_APP_STARTED);
+        context.startService(i);
+    }
+    
+//    private static void checkMail(Context context) {
+//        Intent i = new Intent();
+//        i.setClass(context, MailService.class);
+//        i.setAction(MailService.ACTION_CHECK_MAIL);
+//        context.startService(i);
+//    }
 
     public static void actionCancel(Context context)  {
         Intent i = new Intent();
         i.setClass(context, MailService.class);
         i.setAction(MailService.ACTION_CANCEL);
+        context.startService(i);
+    }
+    
+    public static void connectivityChange(Context context, boolean hasConnectivity)  {
+        Intent i = new Intent();
+        i.setClass(context, MailService.class);
+        i.setAction(MailService.CONNECTIVITY_CHANGE);
+        i.putExtra(HAS_CONNECTIVITY, hasConnectivity);
         context.startService(i);
     }
 
@@ -65,54 +97,173 @@ public class MailService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-    	setForeground(true);  // if it gets killed once, it'll never restart
-    		Log.v(Email.LOG_TAG, "***** MailService *****: onStart(" + intent + ", " + startId + ")");
-        super.onStart(intent, startId);
-        this.mStartId = startId;
-
-       // MessagingController.getInstance(getApplication()).addListener(mListener);
-        if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
-            //if (Config.LOGV) {
-          MessagingController.getInstance(getApplication()).log("***** MailService *****: checking mail");
-                Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
-            //}
-
-            MessagingController controller = MessagingController.getInstance(getApplication());
-            Listener listener = (Listener)controller.getCheckMailListener();
-            if (listener == null)
+        
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
+        wakeLock.setReferenceCounted(false);
+        wakeLock.acquire(Email.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
+        try
+        {
+           
+            ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+            state = State.DISCONNECTED;
+            if (connectivityManager != null)
             {
-              MessagingController.getInstance(getApplication()).log("***** MailService *****: starting new check");
-
-              mListener.wakeLockAcquire();
-              controller.setCheckMailListener(mListener);
-              controller.checkMail(this, null, false, false, mListener);
+                NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+                if (netInfo != null)
+                {
+                    state = netInfo.getState();
+                
+                    if (state == State.CONNECTED)
+                    {   
+                        Log.i(Email.LOG_TAG, "Currently connected to a network");
+                    }
+                    else
+                    {
+                        Log.i(Email.LOG_TAG, "Current network state = " + state);
+                    }
+                }
             }
-            else
+            
+            
+        	setForeground(true);  // if it gets killed once, it'll never restart
+        		Log.v(Email.LOG_TAG, "***** MailService *****: onStart(" + intent + ", " + startId + ")");
+            super.onStart(intent, startId);
+            this.mStartId = startId;
+    
+           // MessagingController.getInstance(getApplication()).addListener(mListener);
+            if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
+                //if (Config.LOGV) {
+              MessagingController.getInstance(getApplication()).log("***** MailService *****: checking mail");
+                    Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
+                //}
+                if (state == State.CONNECTED)
+                {
+                    MessagingController controller = MessagingController.getInstance(getApplication());
+                    Listener listener = (Listener)controller.getCheckMailListener();
+                    if (listener == null)
+                    {
+                      MessagingController.getInstance(getApplication()).log("***** MailService *****: starting new check");
+        
+                      mListener.wakeLockAcquire();
+                      controller.setCheckMailListener(mListener);
+                      controller.checkMail(this, null, false, false, mListener);
+                    }
+                    else
+                    {
+                      MessagingController.getInstance(getApplication()).log("***** MailService *****: renewing WakeLock");
+        
+                      listener.wakeLockAcquire();
+                    }
+                }
+    
+                reschedule();
+    	    //            stopSelf(startId);
+            }
+            else if (ACTION_CANCEL.equals(intent.getAction())) {
+                if (Config.LOGV) {
+                    Log.v(Email.LOG_TAG, "***** MailService *****: cancel");
+                }
+                MessagingController.getInstance(getApplication()).log("***** MailService *****: cancel");
+    
+                cancel();
+    	    //            stopSelf(startId);
+            }
+            else if (ACTION_RESCHEDULE.equals(intent.getAction())) {
+                if (Config.LOGV) {
+                    Log.v(Email.LOG_TAG, "***** MailService *****: reschedule");
+                }
+                MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
+                boolean polling = reschedule();
+                boolean pushing = reschedulePushers();
+                if (polling == false && pushing == false)
+                {
+                    Log.i(Email.LOG_TAG, "Neither pushing nor polling, so stopping");
+                    stopSelf(startId);
+                }
+    	    //            stopSelf(startId);
+            }
+            else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction()))
             {
-              MessagingController.getInstance(getApplication()).log("***** MailService *****: renewing WakeLock");
-
-              listener.wakeLockAcquire();
+                schedulePushers();
+                try
+                {
+                    if (state == State.CONNECTED)
+                    {
+                        Log.i(Email.LOG_TAG, "Refreshing pushers");
+                        Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
+                        for (Pusher pusher : pushers)
+                        {
+                            pusher.refresh();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Exception while refreshing pushers", e);
+                }
             }
-
-            reschedule();
-	    //            stopSelf(startId);
+            else if (CONNECTIVITY_CHANGE.equals(intent.getAction()))
+            {
+                boolean hasConnectivity = intent.getBooleanExtra(HAS_CONNECTIVITY, true);
+                Log.i(Email.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity);
+                notifyConnectionStatus(hasConnectivity);
+                if (hasConnectivity)
+                {
+                    reschedulePushers();
+    		// TODO: Make it send pending outgoing messages here
+                    //checkMail(getApplication());
+                }
+                else
+                {
+                    stopPushers();
+                }
+            }
+            else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
+            {
+                notifyConnectionStatus(true);
+            }
+            else if (ACTION_APP_STARTED.equals(intent.getAction()))
+            {
+                    // Not needed for now, but might be useful later
+            }
         }
-        else if (ACTION_CANCEL.equals(intent.getAction())) {
-            if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "***** MailService *****: cancel");
+        finally
+        {
+            if (wakeLock != null)
+            {
+                wakeLock.release();
             }
-            MessagingController.getInstance(getApplication()).log("***** MailService *****: cancel");
-
-            cancel();
-	    //            stopSelf(startId);
         }
-        else if (ACTION_RESCHEDULE.equals(intent.getAction())) {
-            if (Config.LOGV) {
-                Log.v(Email.LOG_TAG, "***** MailService *****: reschedule");
-            }
-            MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
-            reschedule();
-	    //            stopSelf(startId);
+    }
+    
+    private void notifyConnectionStatus(boolean hasConnectivity)
+    {
+        NotificationManager notifMgr =
+            (NotificationManager)getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (hasConnectivity == false)
+        {
+            String notice = getApplication().getString(R.string.no_connection_alert);
+            String header = getApplication().getString(R.string.alert_header);
+            
+            
+            Notification notif = new Notification(R.drawable.stat_notify_email_generic,
+                    header, System.currentTimeMillis());
+            
+            Intent i = new Intent();
+            i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
+            i.setAction(MailService.CANCEL_CONNECTIVITY_NOTICE);
+    
+            PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+    
+            notif.setLatestEventInfo(getApplication(), header, notice, pi);
+            notif.flags = Notification.FLAG_ONGOING_EVENT;
+    
+            notifMgr.notify(Email.CONNECTIVITY_ID, notif); 
+        }
+        else
+        {
+            notifMgr.cancel(Email.CONNECTIVITY_ID);
         }
     }
 
@@ -132,13 +283,14 @@ public class MailService extends Service {
         alarmMgr.cancel(pi);
     }
 
-    private void reschedule() {
+    private boolean reschedule() {
+        boolean polling = true;
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent();
         i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
         i.setAction(ACTION_CHECK_MAIL);
         PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-
+        
         int shortestInterval = -1;
 
         for (Account account : Preferences.getPreferences(this).getAccounts()) {
@@ -151,7 +303,7 @@ public class MailService extends Service {
         if (shortestInterval == -1) {
         		Log.v(Email.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
             alarmMgr.cancel(pi);
-            stopSelf(mStartId);
+            polling = false;
         }
         else
         {
@@ -172,7 +324,70 @@ public class MailService extends Service {
 	        
 	        alarmMgr.set(AlarmManager.RTC_WAKEUP, nextTime, pi);
         }
+        return polling;
+    }
+    
+    private void stopPushers()
+    {
+        MessagingController.getInstance(getApplication()).stopAllPushing();
+    }
+    
+    private boolean reschedulePushers()
+    {
+        boolean pushing = false;
+        Log.i(Email.LOG_TAG, "Rescheduling pushers");
+        stopPushers();
+        if (state == State.CONNECTED)   
+        {
+            for (Account account : Preferences.getPreferences(this).getAccounts()) {
+                Log.i(Email.LOG_TAG, "Setting up pushers for account " + account.getDescription());
+                Pusher pusher = MessagingController.getInstance(getApplication()).setupPushing(account);
+                if (pusher != null)
+                {
+                    pushing = true;
+                    Log.i(Email.LOG_TAG, "Starting configured pusher for account " + account.getDescription());
+                    pusher.start();
+                }
+            }
+            schedulePushers();
+        }
+        return pushing;
+        
+    }
+    
+    private void schedulePushers()
+    {
+        int minInterval = -1;
+        
+        Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
+        for (Pusher pusher : pushers)
+        {
+            int interval = pusher.getRefreshInterval();
+            if (interval != -1 && (interval < minInterval || minInterval == -1))
+            {
+                minInterval = interval;
+            }
+        }
+        if (Email.DEBUG)
+        {
+            Log.v(Email.LOG_TAG, "Pusher refresh interval = " + minInterval);
+        }
+        if (minInterval != -1)
+        {
 
+            AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            long nextTime = System.currentTimeMillis() + minInterval;
+            String checkString = "Next pusher refresh scheduled for " + new Date(nextTime);
+            if (Email.DEBUG)
+            {
+                Log.d(Email.LOG_TAG, checkString);
+            }
+            Intent i = new Intent();
+            i.setClassName(getApplication().getPackageName(), "com.android.email.service.MailService");
+            i.setAction(ACTION_REFRESH_PUSHERS);
+            PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+            alarmMgr.set(AlarmManager.RTC_WAKEUP, nextTime, pi);
+        }
     }
 
     public IBinder onBind(Intent intent) {
@@ -244,46 +459,16 @@ public class MailService extends Service {
             NotificationManager notifMgr =
                 (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-            int index = 0;
             for (Account thisAccount : Preferences.getPreferences(context).getAccounts()) {
                 Integer newMailCount = accountsChecked.get(thisAccount.getUuid());
-                int unreadMessageCount = -1;
                 if (newMailCount != null)
                 {
                     try
                     {
-                        unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
+                        int  unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
                         if (unreadMessageCount > 0 && newMailCount > 0)
                         {
-                            String notice = getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
-                            thisAccount.getDescription());
-                            Notification notif = new Notification(R.drawable.stat_notify_email_generic,
-                                getString(R.string.notification_new_title), System.currentTimeMillis() + (index*1000));
-                          
-                            notif.number = unreadMessageCount;
-                    
-                            Intent i = FolderList.actionHandleAccountIntent(context, thisAccount);
-        
-                            PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
-        
-                            notif.setLatestEventInfo(context, getString(R.string.notification_new_title), notice, pi);
-
-                            // JRV XXX TODO - Do we also need to notify the messagelist here?
-
-
-                            String ringtone = thisAccount.getRingtone();
-                            notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
-        
-                            if (thisAccount.isVibrate()) {
-                                notif.defaults |= Notification.DEFAULT_VIBRATE;
-                            }
-        
-                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                            notif.ledARGB = Email.NOTIFICATION_LED_COLOR;
-                            notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
-                            notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
-        
-                            notifMgr.notify(thisAccount.getAccountNumber(), notif);
+                            MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount, unreadMessageCount);
                         }
                         else if (unreadMessageCount == 0)
                         {
@@ -298,7 +483,8 @@ public class MailService extends Service {
                 }
             }//for accounts
         }//checkMailDone
-
+        
+        
         private void release()
         {
           MessagingController controller = MessagingController.getInstance(getApplication());
@@ -322,4 +508,5 @@ public class MailService extends Service {
         	}
         }
     }
+    
 }

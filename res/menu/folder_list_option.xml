@@ -34,6 +34,11 @@
 		android:icon="@android:drawable/ic_menu_preferences"
 	/>	
 	<item
+		android:id="@+id/send_messages"
+		android:title="@string/send_messages_action"
+		android:icon="@drawable/ic_menu_refresh"
+	/>
+	<item
 		android:id="@+id/compact"
 		android:title="@string/compact_action"
 		android:icon="@drawable/ic_menu_compact"

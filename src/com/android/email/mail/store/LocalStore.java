@@ -67,7 +67,7 @@ import java.io.StringReader;
  * </pre>
  */
 public class LocalStore extends Store implements Serializable {
-    private static final int DB_VERSION = 26;
+    private static final int DB_VERSION = 29;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -133,7 +133,7 @@ public class LocalStore extends Store implements Serializable {
             
             mDb.execSQL("DROP TABLE IF EXISTS folders");
             mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                    + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT)");
+                    + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER)");
 
             mDb.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
             mDb.execSQL("DROP TABLE IF EXISTS messages");
@@ -273,10 +273,10 @@ public class LocalStore extends Store implements Serializable {
 
 
         try {
-            cursor = mDb.rawQuery("SELECT name, id, unread_count, visible_limit, last_updated, status FROM folders", null);
+            cursor = mDb.rawQuery("SELECT name, id, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders", null);
             while (cursor.moveToNext()) {
             	LocalFolder folder = new LocalFolder(cursor.getString(0));
-              folder.open(cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5));
+              folder.open(cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7));
           
               folders.add(folder);
             }
@@ -489,9 +489,11 @@ public class LocalStore extends Store implements Serializable {
         private long mFolderId = -1;
         private int mUnreadMessageCount = -1;
         private int mVisibleLimit = -1;
-    		private FolderClass displayClass = FolderClass.NONE;
-    		private FolderClass syncClass = FolderClass.NONE;
+    		private FolderClass displayClass = FolderClass.NO_CLASS;
+    		private FolderClass syncClass = FolderClass.INHERITED;
+            private FolderClass pushClass = FolderClass.SECOND_CLASS;
     		private String prefId = null;
+    		private String mPushState = null;
 
         public LocalFolder(String name) {
             this.mName = name;
@@ -499,7 +501,9 @@ public class LocalStore extends Store implements Serializable {
             if (Email.INBOX.equals(getName()))
             {
               syncClass =  FolderClass.FIRST_CLASS;
+              pushClass =  FolderClass.FIRST_CLASS;
             }
+            
      
         }
 
@@ -514,7 +518,7 @@ public class LocalStore extends Store implements Serializable {
           }
           Cursor cursor = null;
           try {
-            cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status FROM folders "
+            cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders "
                 + "where folders.name = ?",
                 new String[] {
                     mName
@@ -524,7 +528,7 @@ public class LocalStore extends Store implements Serializable {
               int folderId = cursor.getInt(0);
               if (folderId > 0)
               {
-                open(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getLong(3), cursor.getString(4));
+                open(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getLong(3), cursor.getString(4), cursor.getString(5), cursor.getLong(6) );
               }
             } else {
               create(FolderType.HOLDS_MESSAGES);
@@ -538,15 +542,17 @@ public class LocalStore extends Store implements Serializable {
           }
         }
         
-        private void open(int id, int unreadCount, int visibleLimit, long lastChecked, String status) throws MessagingException
+        private void open(int id, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed) throws MessagingException
         {
          	mFolderId = id;
           mUnreadMessageCount = unreadCount;
           mVisibleLimit = visibleLimit;
+          mPushState = pushState;
           super.setStatus(status);
           // Only want to set the local variable stored in the super class.  This class 
           // does a DB update on setLastChecked
           super.setLastChecked(lastChecked);
+          super.setLastPush(lastPushed);
         }
 
         @Override
@@ -655,6 +661,13 @@ public class LocalStore extends Store implements Serializable {
           mDb.execSQL("UPDATE folders SET last_updated = ? WHERE id = ?",
                   new Object[] { lastChecked, mFolderId });
       }
+        
+        public void setLastPush(long lastChecked) throws MessagingException {
+            open(OpenMode.READ_WRITE);
+            super.setLastPush(lastChecked);
+            mDb.execSQL("UPDATE folders SET last_pushed = ? WHERE id = ?",
+                    new Object[] { lastChecked, mFolderId });
+        }
 
         public int getVisibleLimit() throws MessagingException {
             open(OpenMode.READ_WRITE);
@@ -676,6 +689,17 @@ public class LocalStore extends Store implements Serializable {
           mDb.execSQL("UPDATE folders SET status = ? WHERE id = ?",
                   new Object[] { status, mFolderId });
         }
+        public void setPushState(String pushState) throws MessagingException
+        {
+            open(OpenMode.READ_WRITE);
+            mPushState = pushState;
+          mDb.execSQL("UPDATE folders SET push_state = ? WHERE id = ?",
+                  new Object[] { pushState, mFolderId });
+        }
+        public String getPushState()
+        {
+            return mPushState;
+        }
         @Override
       	public FolderClass getDisplayClass()
     		{
@@ -685,9 +709,9 @@ public class LocalStore extends Store implements Serializable {
         @Override
     		public FolderClass getSyncClass()
     		{
-    			if (FolderClass.NONE == syncClass)
+    			if (FolderClass.INHERITED == syncClass)
     			{
-    				return displayClass;
+    				return getDisplayClass();
     			}
     			else
     			{
@@ -697,10 +721,27 @@ public class LocalStore extends Store implements Serializable {
         
         public FolderClass getRawSyncClass()
     		{
-    			
     			return syncClass;
     			
     		}
+        
+        public FolderClass getPushClass()
+        {
+            if (FolderClass.INHERITED == pushClass)
+            {
+                return getSyncClass();
+            }
+            else
+            {
+                return pushClass;
+            }
+        }
+    
+    public FolderClass getRawPushClass()
+        {
+            return pushClass;
+            
+        }
 
     		public void setDisplayClass(FolderClass displayClass)
     		{
@@ -711,6 +752,10 @@ public class LocalStore extends Store implements Serializable {
     		{
     			this.syncClass = syncClass;
     		}
+    		public void setPushClass(FolderClass pushClass)
+            {
+                this.pushClass = pushClass;
+            }
     		
     		private String getPrefId() throws MessagingException
     		{
@@ -740,7 +785,7 @@ public class LocalStore extends Store implements Serializable {
         
           SharedPreferences.Editor editor = preferences.getPreferences().edit();
           // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-          if (displayClass == FolderClass.NONE && !Email.INBOX.equals(getName()))
+          if (displayClass == FolderClass.NO_CLASS && !Email.INBOX.equals(getName()))
           {
           	editor.remove(id + ".displayMode");
           }
@@ -749,13 +794,22 @@ public class LocalStore extends Store implements Serializable {
            	editor.putString(id + ".displayMode", displayClass.name());
           }
           
-          if (syncClass == FolderClass.NONE && !Email.INBOX.equals(getName()))
+          if (syncClass == FolderClass.INHERITED && !Email.INBOX.equals(getName()))
           {
           	editor.remove(id + ".syncMode");
           }
           else
           {
            	editor.putString(id + ".syncMode", syncClass.name());
+          }
+          
+          if (pushClass == FolderClass.SECOND_CLASS && !Email.INBOX.equals(getName()))
+          {
+            editor.remove(id + ".pushMode");
+          }
+          else
+          {
+            editor.putString(id + ".pushMode", pushClass.name());
           }
          
           editor.commit();
@@ -767,17 +821,21 @@ public class LocalStore extends Store implements Serializable {
         try
         {
         	displayClass = FolderClass.valueOf(preferences.getPreferences().getString(id + ".displayMode", 
-        			FolderClass.NONE.name()));
+        			FolderClass.NO_CLASS.name()));
         }
         catch (Exception e)
         {
          	Log.e(Email.LOG_TAG, "Unable to load displayMode for " + getName(), e);
 
-        	displayClass = FolderClass.NONE;
+        	displayClass = FolderClass.NO_CLASS;
+        }
+        if (displayClass == FolderClass.NONE)
+        {
+            displayClass = FolderClass.NO_CLASS;
         }
 
         
-        FolderClass defSyncClass = FolderClass.NONE;
+        FolderClass defSyncClass = FolderClass.INHERITED;
         if (Email.INBOX.equals(getName()))
         {
           defSyncClass =  FolderClass.FIRST_CLASS;
@@ -793,6 +851,32 @@ public class LocalStore extends Store implements Serializable {
         	Log.e(Email.LOG_TAG, "Unable to load syncMode for " + getName(), e);
 
         	syncClass = defSyncClass;
+        }
+        if (syncClass == FolderClass.NONE)
+        {
+            syncClass = FolderClass.INHERITED;
+        }
+        
+        FolderClass defPushClass = FolderClass.SECOND_CLASS;
+        if (Email.INBOX.equals(getName()))
+        {
+          defPushClass =  FolderClass.FIRST_CLASS;
+        }
+        
+        try
+        {
+            pushClass = FolderClass.valueOf(preferences.getPreferences().getString(id  + ".pushMode", 
+                    defPushClass.name()));
+        }
+        catch (Exception e)
+        {
+            Log.e(Email.LOG_TAG, "Unable to load pushMode for " + getName(), e);
+
+            pushClass = defPushClass;
+        }
+        if (pushClass == FolderClass.NONE)
+        {
+            pushClass = FolderClass.INHERITED;
         }
 
     }
@@ -1039,7 +1123,9 @@ public class LocalStore extends Store implements Serializable {
                     i++;
                 }
                 populateHeaders(messagesForHeaders);
-                
+                if (listener != null) {
+                    listener.messagesFinished(i);
+                }
             }
             finally {
                 if (cursor != null) {
@@ -1085,9 +1171,7 @@ public class LocalStore extends Store implements Serializable {
               LocalMessage lMessage = (LocalMessage)message;
                    
               if (!message.isSet(Flag.SEEN)) {
-                if (getUnreadMessageCount() > 0) {
-                  setUnreadMessageCount(getUnreadMessageCount() - 1);
-                }
+                setUnreadMessageCount(getUnreadMessageCount() - 1);
                 lDestFolder.setUnreadMessageCount(lDestFolder.getUnreadMessageCount() + 1);
               }
               
@@ -1105,6 +1189,7 @@ public class LocalStore extends Store implements Serializable {
               
               LocalMessage placeHolder = new LocalMessage(oldUID, this);
               placeHolder.setFlagInternal(Flag.DELETED, true);
+              placeHolder.setFlagInternal(Flag.SEEN, true);
               appendMessages(new Message[] { placeHolder });
             }
             
@@ -1139,6 +1224,11 @@ public class LocalStore extends Store implements Serializable {
                     message.setUid(Email.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
                 }
                 else {
+                    Message oldMessage = getMessage(message.getUid());
+                    if (oldMessage != null && oldMessage.isSet(Flag.SEEN) == false)
+                    {
+                       setUnreadMessageCount(getUnreadMessageCount() - 1);
+                    }
                     /*
                      * The message may already exist in this Folder, so delete it first.
                      */
@@ -1202,6 +1292,10 @@ public class LocalStore extends Store implements Serializable {
                         saveAttachment(messageId, attachment, copy);
                     }
                     saveHeaders(messageId, (MimeMessage)message);
+                    if (message.isSet(Flag.SEEN) == false)
+                    {
+                       setUnreadMessageCount(getUnreadMessageCount() + 1);
+                    }
                 } catch (Exception e) {
                     throw new MessagingException("Error appending message", e);
                 }
@@ -1473,6 +1567,28 @@ public class LocalStore extends Store implements Serializable {
         	open(OpenMode.READ_ONLY);
         	mDb.execSQL("DELETE FROM messages WHERE folder_id = ? and date < ?", new Object[] {
               Long.toString(mFolderId), new Long(cutoff) } );	
+        	resetUnreadCount();
+        }
+        
+        private void resetUnreadCount()
+        {
+            try
+            {
+                int newUnread = 0;
+                Message[] messages = getMessages(null);
+                for (Message message : messages)
+                {
+                    if (message.isSet(Flag.SEEN) == false)
+                    {
+                        newUnread++;
+                    }
+                }
+                setUnreadMessageCount(newUnread);
+            }
+            catch (Exception e)
+            {
+                Log.e(Email.LOG_TAG, "Unable to fetch all messages from LocalStore", e);
+            }
         }
 
         @Override
@@ -1760,7 +1876,8 @@ public class LocalStore extends Store implements Serializable {
              * Update the unread count on the folder.
              */
             try {
-                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED || flag == Flag.SEEN) {
+                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED 
+                        || (flag == Flag.SEEN && !isSet(Flag.DELETED))) {
                     LocalFolder folder = (LocalFolder)mFolder;
                     if (set && !isSet(Flag.SEEN)) {
                         folder.setUnreadMessageCount(folder.getUnreadMessageCount() - 1);

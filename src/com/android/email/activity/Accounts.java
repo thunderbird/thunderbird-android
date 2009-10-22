@@ -264,6 +264,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         intent.putExtra(EXTRA_STARTUP, true);
         context.startActivity(intent);
     }
+    
+    public static void listAccounts(Context context) {
+        Intent intent = new Intent(context, Accounts.class);
+        intent.putExtra(EXTRA_STARTUP, false);
+        context.startActivity(intent);
+    }
 
 
     @Override
@@ -332,10 +338,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         if (accounts.length > 0) {
           mHandler.progress(Window.PROGRESS_START);
         }
-        
+        pendingWork.clear();
         for (Account account : accounts) {
-          MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
           pendingWork.put(account, "true");
+          MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
+          
         }
         
     }

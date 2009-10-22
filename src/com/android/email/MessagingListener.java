@@ -1,6 +1,8 @@
 
 package com.android.email;
 
+import java.util.List;
+
 import android.content.Context;
 
 import com.android.email.mail.Folder;
@@ -15,18 +17,14 @@ import com.android.email.mail.Part;
  * changes in this class.
  */
 public class MessagingListener {
-
+  
     public void accountStatusChanged(Account account, int unreadMessageCount) {
     }
     
     public void accountSizeChanged(Account account, long oldSize, long newSize)
     {
     }
-    
-    public void accountReset(Account account) {
-      
-    }
-  
+
     public void listFoldersStarted(Account account) {
     }
 
@@ -45,7 +43,7 @@ public class MessagingListener {
     public void listLocalMessages(Account account, String folder, Message[] messages) {
     }
     
-    public void listLocalMessagesAddMessage(Account account, String folder, Message message) {
+    public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages) {
     }
 
     public void listLocalMessagesUpdateMessage(Account account, String folder, Message message) {
@@ -128,6 +126,11 @@ public class MessagingListener {
 
     public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
 
+    }
+    
+    public void setPushActive(Account account, String folderName, boolean enabled)
+    {
+        
     }
 
     public void loadAttachmentStarted(

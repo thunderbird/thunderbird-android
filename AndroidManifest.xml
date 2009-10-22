@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="1011"
-    android:versionName="1.011" package="com.fsck.k9">
+    android:versionCode="1105"
+    android:versionName="1.105" package="com.fsck.k9">
     <uses-sdk android:minSdkVersion="3"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -203,6 +203,9 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
         <service
