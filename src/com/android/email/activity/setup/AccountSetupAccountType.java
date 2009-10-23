@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.email.Account;
 import com.android.email.R;
+import com.android.email.activity.SizeFormatter;
 
 /**
  * Prompts the user to select an account type. The account type, along with the
@@ -53,14 +55,12 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
             URI uri = new URI(mAccount.getStoreUri());
             uri = new URI("pop3", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
             mAccount.setStoreUri(uri.toString());
-        } catch (URISyntaxException use) {
-            /*
-             * This should not happen.
-             */
-            throw new Error(use);
+            AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
+            finish();
+        } catch (Exception use) {
+            failure(use);
         }
-        AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
-        finish();
+        
     }
 
     private void onImap() {
@@ -68,14 +68,12 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
             URI uri = new URI(mAccount.getStoreUri());
             uri = new URI("imap", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
             mAccount.setStoreUri(uri.toString());
-        } catch (URISyntaxException use) {
-            /*
-             * This should not happen.
-             */
-            throw new Error(use);
+            AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
+            finish();
+        } catch (Exception use) {
+            failure(use);
         }
-        AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
-        finish();
+        
     }
 
     private void onWebDav() {
@@ -83,14 +81,12 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
             URI uri = new URI(mAccount.getStoreUri());
             uri = new URI("webdav", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
             mAccount.setStoreUri(uri.toString());
-        } catch (URISyntaxException use) {
-            /*
-             * This should not happen.
-             */
-            throw new Error(use);
+            AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
+            finish();
+        } catch (Exception use) {
+            failure(use);
         }
-        AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
-        finish();
+        
     }
     
     public void onClick(View v) {
@@ -105,5 +101,12 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
                 onWebDav();
                 break;
         }
+    }
+    private void failure(Exception use)
+    {
+        String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
+        
+        Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
+        toast.show();
     }
 }
