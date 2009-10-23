@@ -120,9 +120,11 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void validateFields() {
+        String email = mEmailView.getText().toString();
         boolean valid = Utility.requiredFieldValid(mEmailView)
                 && Utility.requiredFieldValid(mPasswordView)
-                && mEmailValidator.isValid(mEmailView.getText().toString());
+                && mEmailValidator.isValid(email);
+                /*&& email.contains("@"); */ // Not sure if this is a good idea or not
         mNextButton.setEnabled(valid);
         mManualSetupButton.setEnabled(valid);
         /*
@@ -181,7 +183,7 @@ public class AccountSetupBasics extends K9Activity
     private void finishAutoSetup() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        String[] emailParts = email.split("@");
+        String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
         URI incomingUri = null;
@@ -233,7 +235,7 @@ public class AccountSetupBasics extends K9Activity
     private void onNext() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        String[] emailParts = email.split("@");
+        String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
         mProvider = findProviderForDomain(domain);
@@ -271,7 +273,7 @@ public class AccountSetupBasics extends K9Activity
     private void onManualSetup() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-        String[] emailParts = email.split("@");
+        String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
 
@@ -364,6 +366,15 @@ public class AccountSetupBasics extends K9Activity
             Log.e(Email.LOG_TAG, "Error while trying to load provider settings.", e);
         }
         return null;
+    }
+    
+    private String[] splitEmail(String email)
+    {
+        String[] retParts = new String[2];
+        String[] emailParts = email.split("@");
+        retParts[0] = (emailParts.length > 0 ) ? emailParts[0] : "";
+        retParts[1] = (emailParts.length > 1 ) ? emailParts[1] : "";
+        return retParts;
     }
 
     static class Provider implements Serializable {
