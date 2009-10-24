@@ -47,6 +47,7 @@ import com.android.email.MessagingListener;
 import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.MessagingController.SORT_TYPE;
+import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Address;
 import com.android.email.mail.Flag;
@@ -598,6 +599,10 @@ public class MessageList extends K9ListActivity {
     private void onCompose() {
         MessageCompose.actionCompose(this, mAccount);
     }
+    
+    private void onEditAccount() {
+        AccountSettings.actionSettings(this, mAccount);
+    }
 
     private void changeSort(SORT_TYPE newSortType) {
         sortType = newSortType;
@@ -951,6 +956,11 @@ public class MessageList extends K9ListActivity {
 
         case R.id.folder_settings:
             FolderSettings.actionSettings(this, mAccount, mFolderName);
+
+            return true;
+            
+        case R.id.account_settings:
+            onEditAccount();
 
             return true;
 
