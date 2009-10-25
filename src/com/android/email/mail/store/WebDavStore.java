@@ -442,7 +442,7 @@ public class WebDavStore extends Store {
     }
     
     // For flag:
-    http://www.devnewsgroups.net/group/microsoft.public.exchange.development/topic27175.aspx
+//    http://www.devnewsgroups.net/group/microsoft.public.exchange.development/topic27175.aspx
     //"<m:0x10900003>1</m:0x10900003>" & _
     
     private String getMoveOrCopyMessagesReadXml(String[] urls, boolean isMove) {
