@@ -588,7 +588,7 @@ public class ImapStore extends Store {
           if (folder instanceof ImapFolder == false) {
             throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
           }
-          ImapFolder iFolder = (ImapFolder)folder;
+          ImapFolder iFolder = (ImapFolder)folder;  
             checkOpen();
             String[] uids = new String[messages.length];
             for (int i = 0, count = messages.length; i < count; i++) {
@@ -1674,14 +1674,21 @@ public class ImapStore extends Store {
         
         public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive, UntaggedHandler untaggedHandler)
         throws IOException, ImapException, MessagingException {
+            String commandToLog = command;
+            if (sensitive && !Email.DEBUG_SENSITIVE)
+            {
+                commandToLog = "*sensitive*";
+            }
+            
+            
           if (Email.DEBUG)
           {
-            Log.v(Email.LOG_TAG, "Sending IMAP command " + command + " on connection " + this.hashCode());
+            Log.v(Email.LOG_TAG, "Sending IMAP command " + commandToLog + " on connection " + this.hashCode());
           }
           String tag = sendCommand(command, sensitive);
           if (Email.DEBUG)
           {
-            Log.v(Email.LOG_TAG, "Sent IMAP command " + command + " with tag " + tag);
+            Log.v(Email.LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag);
           }
           ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
           ImapResponse response;
@@ -1714,7 +1721,7 @@ public class ImapStore extends Store {
             responses.add(response);
           } while (response.mTag == null);
           if (response.size() < 1 || !response.get(0).equals("OK")) {
-            throw new ImapException("Command: " + command + "; response: " + response.toString(), response.getAlertText());
+            throw new ImapException("Command: " + commandToLog + "; response: " + response.toString(), response.getAlertText());
           }
           return responses;
         }
