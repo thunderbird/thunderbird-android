@@ -155,6 +155,7 @@
 Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based on the standard Android Mail client.
 \n
 \nK-9's improved features include: 
+ * Push mail using IMAP IDLE
  * Better performance
  * Message refiling
  * Email signatures
@@ -502,7 +503,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Remove</string>
-    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from Email.</string>
+    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9.</string>
 
     <string name="provider_note_yahoo">Free Yahoo! Mail accounts only work over T-Mobile wireless networks. Yahoo! Mail Plus users should configure POP settings manually.</string>
     <string name="provider_note_live">Only some \"Plus\" accounts include POP access
