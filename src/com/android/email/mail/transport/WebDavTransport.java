@@ -41,6 +41,7 @@ import android.util.Log;
 
 import com.android.email.Email;
 import com.android.email.PeekableInputStream;
+import com.android.email.Utility;
 import com.android.email.codec.binary.Base64;
 import com.android.email.mail.Address;
 import com.android.email.mail.AuthenticationFailedException;
@@ -94,90 +95,15 @@ public class WebDavTransport extends Transport {
         Log.d(Email.LOG_TAG, ">>> open called on WebDavTransport ");
         store.getHttpClient();
     }
-
-//    public void sendMessage(Message message) throws MessagingException {
-//        Address[] from = message.getFrom();
-//        
-//    }
     
     public void close() {
     }
     
-    public String generateTempURI(String subject) {
-    	String encodedSubject = URLEncoder.encode(subject);
-    	return store.getUrl()  + "/drafts/" + encodedSubject + ".eml";
-    }
-    public String generateSendURI() {
-    	return store.getUrl() +  "/##DavMailSubmissionURI##/";
-    }
-    
     public void sendMessage(Message message) throws MessagingException {
-        Log.d(Email.LOG_TAG, ">>> sendMessage called.");
+        
+        store.sendMessages(new Message[] { message });
 
-        DefaultHttpClient httpclient;
-        httpclient = store.getHttpClient();
-        HttpGeneric httpmethod;
-        HttpResponse response;
-        StringEntity bodyEntity;
-        int statusCode;
-        String subject;
-        ByteArrayOutputStream out;
-        try {
-        	try {
-        		subject = message.getSubject();
-        	} catch (MessagingException e) {
-        		Log.e(Email.LOG_TAG, "MessagingException while retrieving Subject: " + e);
-        		subject = "";
-        	}
-        	try {
-        		out = new ByteArrayOutputStream(message.getSize());
-        	} catch (MessagingException e) {
-        		Log.e(Email.LOG_TAG, "MessagingException while getting size of message: " + e);
-        		out = new ByteArrayOutputStream();
-        	}
-        	open();
-        	message.writeTo(
-        			new EOLConvertingOutputStream(
-        					new BufferedOutputStream(out, 1024)));
-
-        	bodyEntity = new StringEntity(out.toString(), "UTF-8");
-        	bodyEntity.setContentType("message/rfc822");
-
-        	httpmethod = store.new HttpGeneric(generateTempURI(subject));
-        	httpmethod.setMethod("PUT");
-        	httpmethod.setEntity(bodyEntity);
-
-        	response = httpclient.execute(httpmethod);
-        	statusCode = response.getStatusLine().getStatusCode();
-
-        	if (statusCode < 200 ||
-        			statusCode > 300) {
-    			throw new IOException("Sending Message: Error while trying to upload to drafts folder: "+
-    					response.getStatusLine().toString()+ "\n\n"+
-    					WebDavStore.getHttpRequestResponse(bodyEntity, response.getEntity()));
-        	}
         	
-            httpmethod = store.new HttpGeneric(generateTempURI(subject));
-        	httpmethod.setMethod("MOVE");
-        	httpmethod.setHeader("Destination", generateSendURI());
-
-        	response = httpclient.execute(httpmethod);
-        	statusCode = response.getStatusLine().getStatusCode();
-
-        	if (statusCode < 200 ||
-        			statusCode > 300) {
-    			throw new IOException("Sending Message: Error while trying to move finished draft to Outbox: "+
-    					response.getStatusLine().toString()+ "\n\n"+
-    					WebDavStore.getHttpRequestResponse(null, response.getEntity()));
-        	}
-
-        } catch (UnsupportedEncodingException uee) {
-        	Log.e(Email.LOG_TAG, "UnsupportedEncodingException in sendMessage() " + uee);
-        } catch (IOException ioe) {
-        	Log.e(Email.LOG_TAG, "IOException in sendMessage() " + ioe);
-        	throw new MessagingException("Unable to send message"+ioe.getMessage(), ioe);
-        }
-        Log.d(Email.LOG_TAG, ">>> getMessageCount finished");
     }
 
 }

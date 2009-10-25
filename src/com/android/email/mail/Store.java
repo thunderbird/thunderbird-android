@@ -89,6 +89,14 @@ public abstract class Store {
     public boolean isPushCapable() {
         return false;
     }
+    public boolean isSendCapable()
+    {
+        return false;
+    }
+    
+    public void sendMessages(Message[] messages) throws MessagingException
+    {
+    }
 
     public Pusher getPusher(PushReceiver receiver, List<String> names)
     {
