@@ -406,6 +406,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
         return super.onCreateDialog(id);
     }
+    
+    public void onPrepareDialog(int id, Dialog d) {
+        switch (id) {
+            case DIALOG_REMOVE_ACCOUNT:
+                AlertDialog alert = (AlertDialog) d;
+                alert.setMessage(getString(R.string.account_delete_dlg_instructions_fmt,
+                        mSelectedContextAccount.getDescription()));
+                break;
+        }
+
+        super.onPrepareDialog(id, d);
+    }
+
 
     private Dialog createRemoveAccountDialog() {
         return new AlertDialog.Builder(this)
