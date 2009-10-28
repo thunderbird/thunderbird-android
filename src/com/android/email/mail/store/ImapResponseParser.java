@@ -22,6 +22,9 @@ import com.android.email.mail.MessagingException;
 
 public class ImapResponseParser {
     SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z", Locale.US);
+
+    SimpleDateFormat badDateTimeFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US);
+    
     PeekableInputStream mIn;
     InputStream mActiveLiteral;
 
@@ -208,7 +211,7 @@ public class ImapResponseParser {
                     // contain
                     // * and some falgs contain *
                     // ch == '%' || ch == '*' ||
-                    ch == '%' ||
+//                    ch == '%' ||
                     // TODO probably should not allow \ and should recognize
                     // it as a flag instead
                     // ch == '"' || ch == '\' ||
@@ -301,7 +304,7 @@ public class ImapResponseParser {
 
         public Date getDate(int index) throws MessagingException {
             try {
-                return mDateTimeFormat.parse(getString(index));
+                return parseDate(getString(index));
             } catch (ParseException pe) {
                 throw new MessagingException("Unable to parse IMAP datetime", pe);
             }
@@ -338,11 +341,31 @@ public class ImapResponseParser {
                 if (value == null) {
                     return null;
                 }
-                return mDateTimeFormat.parse(value);
+                return parseDate(value);
             } catch (ParseException pe) {
                 throw new MessagingException("Unable to parse IMAP datetime", pe);
             }
         }
+        
+        private Date parseDate(String value) throws ParseException
+        {
+            try
+            {
+                synchronized(mDateTimeFormat)
+                {
+                    return mDateTimeFormat.parse(value);
+                }
+            }
+            catch (Exception e)
+            {
+                synchronized(badDateTimeFormat)
+                {
+                    return badDateTimeFormat.parse(value);
+                }
+            }
+            
+        }
+        
     }
 
     /**
