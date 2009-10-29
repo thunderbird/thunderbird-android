@@ -16,7 +16,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@android:color/primary_text_light"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"/>
                 
@@ -24,7 +24,7 @@
                     android:id="@+id/to" android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@android:color/primary_text_light"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
                     android:inputType="textEmailAddress|textMultiLine"
@@ -34,7 +34,7 @@
                     android:id="@+id/cc" android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@android:color/primary_text_light"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
                     android:inputType="textEmailAddress|textMultiLine"
@@ -45,7 +45,7 @@
                     android:id="@+id/bcc" android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@android:color/primary_text_light"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
                     android:inputType="textEmailAddress|textMultiLine"
@@ -57,7 +57,7 @@
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@android:color/primary_text_light"
                     android:layout_marginLeft="6px"
                     android:layout_marginRight="6px"
                     android:hint="@string/message_compose_subject_hint"
@@ -77,7 +77,7 @@
                     android:background="@drawable/divider_horizontal_email" />
             </LinearLayout>
             <EditText android:id="@+id/message_content"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@android:color/primary_text_light"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
@@ -90,7 +90,7 @@
                 />
         <!--  quoted text bar -->
             <EditText android:id="@+id/upper_signature"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@android:color/primary_text_light"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
@@ -106,7 +106,7 @@
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@android:color/primary_text_light"
                     android:text="@string/message_compose_quoted_text_label"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true" />
@@ -119,7 +119,7 @@
             </RelativeLayout>
             <EditText android:id="@+id/quoted_text"
             
-            	android:textColor="?android:attr/textColorSecondary"
+            	android:textColor="@android:color/primary_text_light"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
@@ -128,7 +128,7 @@
                 android:minLines="3" android:autoText="true"
                 android:capitalize="sentences" />
             <EditText android:id="@+id/lower_signature"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@android:color/primary_text_light"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
