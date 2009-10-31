@@ -1,8 +1,6 @@
 
 package com.android.email;
 
-import java.util.Arrays;
-
 import com.android.email.preferences.Editor;
 import com.android.email.preferences.Storage;
 
@@ -99,30 +97,6 @@ public class Preferences {
 
     public void setDefaultAccount(Account account) {
         getPreferences().edit().putString("defaultAccountUuid", account.getUuid()).commit();
-    }
-
-    public void setEnableDebugLogging(boolean value) {
-        getPreferences().edit().putBoolean("enableDebugLogging", value).commit();
-    }
-
-    public boolean getEnableDebugLogging() {
-        return getPreferences().getBoolean("enableDebugLogging", false);
-    }
-    
-    public void setTheme(int theme) {
-        getPreferences().edit().putInt("theme", theme).commit();
-    }
-
-    public int getTheme() {
-        return getPreferences().getInt("theme", android.R.style.Theme_Light);
-    } 
-
-    public void setEnableSensitiveLogging(boolean value) {
-        getPreferences().edit().putBoolean("enableSensitiveLogging", value).commit();
-    }
-
-    public boolean getEnableSensitiveLogging() {
-        return getPreferences().getBoolean("enableSensitiveLogging", false);
     }
 
     public void dump() {

@@ -175,8 +175,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
 </string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
-    <string name="debug_enable_debug_logging_label">Enable extra debug logging?</string>
-    <string name="debug_enable_sensitive_logging_label">Enable sensitive information debug logging? (May show passwords in logs.)</string>
+    <string name="debug_enable_debug_logging_title">Enable debug logging?</string>
+    <string name="debug_enable_debug_logging_summary">Log extra information for diagnostics</string>
+    <string name="debug_enable_sensitive_logging_title">Log sensitive information(May show passwords in logs.)</string>
+    <string name="debug_enable_sensitive_logging_summary">May show passwords in logs.</string>
 
     <string name="message_header_mua">K-9 for Android <xliff:g id="version">%s</xliff:g></string>
 
@@ -530,5 +532,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="setting_theme_dark">Dark</string>
     <string name="setting_theme_light">Light</string>
     <string name="display_preferences">Display Preferences</string>
+    <string name="debug_preferences">Diagnostic Preferences</string>
     <string name="settings_theme_label">Theme</string>
 </resources>

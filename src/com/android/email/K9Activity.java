@@ -1,6 +1,5 @@
 package com.android.email;
 
-import com.android.email.Preferences;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,7 +8,7 @@ import android.os.Bundle;
 public class K9Activity extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
-        setTheme(Preferences.getPreferences(this).getTheme());
+        setTheme(Email.getK9Theme());
         super.onCreate(icicle);
     }
 

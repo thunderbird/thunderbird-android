@@ -24,8 +24,20 @@
             android:entries="@array/settings_theme_entries"
             android:entryValues="@array/settings_theme_values"
             android:dialogTitle="@string/settings_theme_label" />
-
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/debug_preferences" android:key="debug_preferences">
+    
+   <CheckBoxPreference
+    	android:key="debug_logging"
+    	android:title="@string/debug_enable_debug_logging_title"
+    	android:summary="@string/debug_enable_debug_logging_summary"
+    	/>
+    <CheckBoxPreference
+    	android:key="sensitive_logging"
+    	android:title="@string/debug_enable_sensitive_logging_title"
+    	android:summary="@string/debug_enable_sensitive_logging_summary"
+    	/>
+   </PreferenceCategory>
 
   
 

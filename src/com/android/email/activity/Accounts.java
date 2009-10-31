@@ -57,15 +57,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private ConcurrentHashMap<String, Integer> unreadMessageCounts = new ConcurrentHashMap<String, Integer>();
     
     private ConcurrentHashMap<Account, String> pendingWork = new ConcurrentHashMap<Account, String>();
-    /**
-     * Key codes used to open a debug settings screen.
-     */
-    private static int[] secretKeyCodes = {
-            KeyEvent.KEYCODE_D, KeyEvent.KEYCODE_E, KeyEvent.KEYCODE_B, KeyEvent.KEYCODE_U,
-            KeyEvent.KEYCODE_G
-    };
-
-    private int mSecretKeyCodeIndex = 0;
+  
     private Account mSelectedContextAccount;
     
     private AccountsHandler mHandler = new AccountsHandler();
@@ -581,15 +573,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getKeyCode() == secretKeyCodes[mSecretKeyCodeIndex]) {
-            mSecretKeyCodeIndex++;
-            if (mSecretKeyCodeIndex == secretKeyCodes.length) {
-                mSecretKeyCodeIndex = 0;
-                startActivity(new Intent(this, Debug.class));
-            }
-        } else {
-            mSecretKeyCodeIndex = 0;
-        }
         return super.onKeyDown(keyCode, event);
     }
     

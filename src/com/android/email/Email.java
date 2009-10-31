@@ -7,6 +7,7 @@ import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
@@ -24,6 +25,8 @@ public class Email extends Application {
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
     
+    
+    private static int theme = android.R.style.Theme_Light; 
     /**
      * Some log messages can be sent to a file, so that the logs
      * can be read using unprivileged access (eg. Terminal Emulator)
@@ -233,14 +236,25 @@ public class Email extends Application {
             MailService.actionReschedule(context);
         }
     }
+    
+    public static void save(SharedPreferences preferences)
+    {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("enableDebugLogging", Email.DEBUG);
+        editor.putBoolean("enableSensitiveLogging", Email.DEBUG_SENSITIVE);
+        editor.putInt("theme", theme);
+        editor.commit();
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         app = this;
         Preferences prefs = Preferences.getPreferences(this);
-        DEBUG = prefs.getEnableDebugLogging();
-        DEBUG_SENSITIVE = prefs.getEnableSensitiveLogging();
+        SharedPreferences sprefs = prefs.getPreferences();
+        DEBUG = sprefs.getBoolean("enableDebugLogging", false);
+        DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
+        Email.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
 
         /*
@@ -279,6 +293,16 @@ public class Email extends Application {
         });
 
         MailService.appStarted(this);
+    }
+
+    public static int getK9Theme()
+    {
+        return theme;
+    }
+
+    public static void setK9Theme(int ntheme)
+    {
+        theme = ntheme;
     }
 }
 
