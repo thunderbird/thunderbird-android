@@ -25,8 +25,14 @@ public class Email extends Application {
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
     
+    public enum BACKGROUND_OPS
+    {
+        WHEN_CHECKED, ALWAYS, NEVER  
+    }
     
     private static int theme = android.R.style.Theme_Light; 
+    
+    private static BACKGROUND_OPS backgroundOps = BACKGROUND_OPS.WHEN_CHECKED;
     /**
      * Some log messages can be sent to a file, so that the logs
      * can be read using unprivileged access (eg. Terminal Emulator)
@@ -242,6 +248,7 @@ public class Email extends Application {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("enableDebugLogging", Email.DEBUG);
         editor.putBoolean("enableSensitiveLogging", Email.DEBUG_SENSITIVE);
+        editor.putString("backgroundOperations", Email.backgroundOps.toString());
         editor.putInt("theme", theme);
         editor.commit();
     }
@@ -254,6 +261,16 @@ public class Email extends Application {
         SharedPreferences sprefs = prefs.getPreferences();
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
+        
+        try
+        {
+            setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString("backgroundOperations", "WHEN_CHECKED")));
+        }
+        catch (Exception e)
+        {
+            setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
+        }
+        
         Email.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
 
@@ -303,6 +320,21 @@ public class Email extends Application {
     public static void setK9Theme(int ntheme)
     {
         theme = ntheme;
+    }
+
+    public static BACKGROUND_OPS getBackgroundOps()
+    {
+        return backgroundOps;
+    }
+
+    public static void setBackgroundOps(BACKGROUND_OPS backgroundOps)
+    {
+        Email.backgroundOps = backgroundOps;
+    }
+    
+    public static void setBackgroundOps(String nbackgroundOps)
+    {
+        Email.backgroundOps = BACKGROUND_OPS.valueOf(nbackgroundOps);
     }
 }
 

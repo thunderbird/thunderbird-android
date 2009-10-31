@@ -43,6 +43,7 @@ public class MailService extends Service {
     private static final String ACTION_CANCEL = "com.android.email.intent.action.MAIL_SERVICE_CANCEL";
     private static final String ACTION_REFRESH_PUSHERS = "com.android.email.intent.action.MAIL_SERVICE_REFRESH_PUSHERS";
     private static final String CONNECTIVITY_CHANGE = "com.android.email.intent.action.MAIL_SERVICE_CONNECTIVITY_CHANGE";
+    private static final String BACKGROUND_DATA_CHANGED = "com.android.email.intent.action.MAIL_SERVICE_BACKGROUND_DATA_CHANGED";
     private static final String CANCEL_CONNECTIVITY_NOTICE = "com.android.email.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
 
     private static final String HAS_CONNECTIVITY = "com.android.email.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
@@ -50,7 +51,7 @@ public class MailService extends Service {
     private Listener mListener = new Listener();
     
     private State state = null;
-
+ 
     private int mStartId;
  
     public static void actionReschedule(Context context) {
@@ -88,6 +89,13 @@ public class MailService extends Service {
         i.putExtra(HAS_CONNECTIVITY, hasConnectivity);
         context.startService(i);
     }
+    
+    public static void backgroundDataChanged(Context context)  {
+        Intent i = new Intent();
+        i.setClass(context, MailService.class);
+        i.setAction(MailService.BACKGROUND_DATA_CHANGED);
+        context.startService(i);
+    }
 
     @Override
     public void onCreate() {
@@ -102,10 +110,13 @@ public class MailService extends Service {
         WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(Email.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
+        
         try
         {
            
             ConnectivityManager connectivityManager = (ConnectivityManager)getApplication().getSystemService(Context.CONNECTIVITY_SERVICE);
+            boolean doBackground = true;
+
             state = State.DISCONNECTED;
             if (connectivityManager != null)
             {
@@ -113,21 +124,18 @@ public class MailService extends Service {
                 if (netInfo != null)
                 {
                     state = netInfo.getState();
-                
-                    if (state == State.CONNECTED)
-                    {   
-                        Log.i(Email.LOG_TAG, "Currently connected to a network");
-                    }
-                    else
-                    {
-                        Log.i(Email.LOG_TAG, "Current network state = " + state);
-                    }
                 }
+                boolean backgroundData = connectivityManager.getBackgroundDataSetting();
+                
+                Email.BACKGROUND_OPS bOps = Email.getBackgroundOps();
+                doBackground = (backgroundData == true && bOps != Email.BACKGROUND_OPS.NEVER) 
+                    | (backgroundData == false && bOps == Email.BACKGROUND_OPS.ALWAYS);
+            
             }
             
-            
         	setForeground(true);  // if it gets killed once, it'll never restart
-        		Log.v(Email.LOG_TAG, "***** MailService *****: onStart(" + intent + ", " + startId + ")");
+        		Log.i(Email.LOG_TAG, "MailService.onStart(" + intent + ", " + startId 
+        		        + "), state = " + state + ", doBackground = " + doBackground);
             super.onStart(intent, startId);
             this.mStartId = startId;
     
@@ -137,7 +145,7 @@ public class MailService extends Service {
               MessagingController.getInstance(getApplication()).log("***** MailService *****: checking mail");
                     Log.v(Email.LOG_TAG, "***** MailService *****: checking mail");
                 //}
-                if (state == State.CONNECTED)
+                if (state == State.CONNECTED && doBackground)
                 {
                     MessagingController controller = MessagingController.getInstance(getApplication());
                     Listener listener = (Listener)controller.getCheckMailListener();
@@ -174,8 +182,17 @@ public class MailService extends Service {
                     Log.v(Email.LOG_TAG, "***** MailService *****: reschedule");
                 }
                 MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
-                boolean polling = reschedule();
-                boolean pushing = reschedulePushers();
+                boolean polling = false;
+                boolean pushing = false;
+                if (state == State.CONNECTED && doBackground)
+                {
+                        polling = reschedule();
+                        pushing = reschedulePushers();
+                }
+                else
+                {
+                    stopPushers();
+                }
                 if (polling == false && pushing == false)
                 {
                     Log.i(Email.LOG_TAG, "Neither pushing nor polling, so stopping");
@@ -188,7 +205,7 @@ public class MailService extends Service {
                 schedulePushers();
                 try
                 {
-                    if (state == State.CONNECTED)
+                    if (state == State.CONNECTED && doBackground)
                     {
                         Log.i(Email.LOG_TAG, "Refreshing pushers");
                         Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
@@ -203,21 +220,15 @@ public class MailService extends Service {
                     Log.e(Email.LOG_TAG, "Exception while refreshing pushers", e);
                 }
             }
-            else if (CONNECTIVITY_CHANGE.equals(intent.getAction()))
+            else if (CONNECTIVITY_CHANGE.equals(intent.getAction()) ||
+                    BACKGROUND_DATA_CHANGED.equals(intent.getAction()))
             {
+                actionReschedule(this);
                 boolean hasConnectivity = intent.getBooleanExtra(HAS_CONNECTIVITY, true);
-                Log.i(Email.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity);
+       
+                Log.i(Email.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
+                
                 notifyConnectionStatus(hasConnectivity);
-                if (hasConnectivity)
-                {
-                    reschedulePushers();
-    		// TODO: Make it send pending outgoing messages here
-                    //checkMail(getApplication());
-                }
-                else
-                {
-                    stopPushers();
-                }
             }
             else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
             {
@@ -313,7 +324,7 @@ public class MailService extends Service {
 	        try
 	        {
 	          String checkString = "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime);
-	          Log.v(Email.LOG_TAG, checkString);
+	          Log.i(Email.LOG_TAG, checkString);
 	          MessagingController.getInstance(getApplication()).log(checkString);
 	        }
 	        catch (Exception e)

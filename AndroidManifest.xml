@@ -207,6 +207,9 @@
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED" />
+            </intent-filter>
         </receiver>
         <service
             android:name="com.android.email.service.MailService"

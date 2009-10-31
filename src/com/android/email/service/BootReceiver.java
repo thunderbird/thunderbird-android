@@ -27,5 +27,9 @@ public class BootReceiver extends BroadcastReceiver {
             boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
             MailService.connectivityChange(context, !noConnectivity);
         }
+        else if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(intent.getAction())) {
+            MailService.backgroundDataChanged(context);
+        }
+        
     }
 }

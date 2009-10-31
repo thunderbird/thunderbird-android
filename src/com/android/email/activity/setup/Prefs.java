@@ -22,17 +22,22 @@ import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
+import com.android.email.service.MailService;
 
 public class Prefs extends K9PreferenceActivity {
 
     private static final String PREFERENCE_TOP_CATERGORY = "preferences";
     private static final String PREFERENCE_THEME = "theme";
+    private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
     private ListPreference mTheme;
+    private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
+    
+    private String initBackgroundOps;
     
 
     public static void actionPrefs(Context context) {
@@ -60,6 +65,20 @@ public class Prefs extends K9PreferenceActivity {
             }
         });
         
+        mBackgroundOps = (ListPreference) findPreference(PREFERENCE_BACKGROUND_OPS);
+        initBackgroundOps = Email.getBackgroundOps().toString();
+        mBackgroundOps.setValue(initBackgroundOps);
+        mBackgroundOps.setSummary(mBackgroundOps.getEntry());
+        mBackgroundOps.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = mBackgroundOps.findIndexOfValue(summary);
+                mBackgroundOps.setSummary(mBackgroundOps.getEntries()[index]);
+                mBackgroundOps.setValue(summary);
+                return false;
+            }
+        });
+        
         mDebugLogging = (CheckBoxPreference)findPreference(PREFERENCE_DEBUG_LOGGING);
         mSensitiveLogging = (CheckBoxPreference)findPreference(PREFERENCE_SENSITIVE_LOGGING);
 
@@ -78,7 +97,13 @@ public class Prefs extends K9PreferenceActivity {
         Email.setK9Theme(mTheme.getValue().equals("dark") ? android.R.style.Theme : android.R.style.Theme_Light);
         Email.DEBUG = mDebugLogging.isChecked();
         Email.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
+        String newBackgroundOps = mBackgroundOps.getValue();
+        Email.setBackgroundOps(newBackgroundOps);
         Email.save(preferences);
+        if (newBackgroundOps.equals(initBackgroundOps) == false)
+        {
+            MailService.backgroundDataChanged(this);
+        }
     }
     
     @Override

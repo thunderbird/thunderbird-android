@@ -184,5 +184,16 @@
         <item>dark</item>
     </string-array>
     
+    <string-array name="background_ops_entries">
+    	<item>@string/background_ops_enabled</item>
+    	<item>@string/background_ops_always</item>
+        <item>@string/background_ops_never</item>
+    </string-array>
     
+    <string-array name="background_ops_values">
+    <item>WHEN_CHECKED</item>
+    <item>ALWAYS</item>
+    <item>NEVER</item>    
+    </string-array>
+   
 </resources>

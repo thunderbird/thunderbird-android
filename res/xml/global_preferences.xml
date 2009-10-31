@@ -25,6 +25,16 @@
             android:entryValues="@array/settings_theme_values"
             android:dialogTitle="@string/settings_theme_label" />
     </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">
+        <ListPreference
+            android:key="background_ops"
+            android:title="@string/background_ops_label"
+            android:entries="@array/background_ops_entries"
+            android:entryValues="@array/background_ops_values"
+            android:dialogTitle="@string/background_ops_label" />
+     </PreferenceCategory>
+   
     <PreferenceCategory android:title="@string/debug_preferences" android:key="debug_preferences">
     
    <CheckBoxPreference
