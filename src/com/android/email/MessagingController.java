@@ -1009,10 +1009,7 @@ public class MessagingController implements Runnable {
     private void setLocalUnreadCountToRemote(LocalFolder localFolder, Folder remoteFolder, int newMessageCount) throws MessagingException
     {
         int remoteUnreadMessageCount = remoteFolder.getUnreadMessageCount();
-        if (remoteUnreadMessageCount == -1) {
-            localFolder.setUnreadMessageCount(localFolder.getUnreadMessageCount() + newMessageCount);
-        }
-        else {
+        if (remoteUnreadMessageCount != -1) {
             localFolder.setUnreadMessageCount(remoteUnreadMessageCount);
         }
     }
