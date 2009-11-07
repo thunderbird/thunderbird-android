@@ -13,6 +13,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -153,14 +155,12 @@ public class SmtpTransport extends Transport {
                     localHost = localAddress.getHostName();
                 }
             } catch (Exception e) {
-                if (Config.LOGD) {
-                    if (Email.DEBUG) {
-                        Log.d(Email.LOG_TAG, "Unable to look up localhost");
-                    }
+                if (Email.DEBUG) {
+                    Log.d(Email.LOG_TAG, "Unable to look up localhost");
                 }
             }
 
-            String result = executeSimpleCommand("EHLO " + localHost);
+            List<String> results = executeSimpleCommand("EHLO " + localHost);
 
             /*
              * TODO may need to add code to fall back to HELO I switched it from
@@ -172,7 +172,7 @@ public class SmtpTransport extends Transport {
              */
             if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
                     || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
-                if (result.contains("-STARTTLS")) {
+                if (results.contains("STARTTLS")) {
                     executeSimpleCommand("STARTTLS");
 
                     SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -190,7 +190,7 @@ public class SmtpTransport extends Transport {
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
                      * Exim.
                      */
-                    result = executeSimpleCommand("EHLO " + localHost);
+                    results = executeSimpleCommand("EHLO " + localHost);
                 } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
                     throw new MessagingException("TLS not supported but required");
                 }
@@ -199,8 +199,19 @@ public class SmtpTransport extends Transport {
             /*
              * result contains the results of the EHLO in concatenated form
              */
-            boolean authLoginSupported = result.matches(".*AUTH.*LOGIN.*$");
-            boolean authPlainSupported = result.matches(".*AUTH.*PLAIN.*$");
+            boolean authLoginSupported = false;
+            boolean authPlainSupported = false; 
+            for (String result : results)
+            {
+                if (result.matches(".*AUTH.*LOGIN.*$") == true)
+                {
+                    authLoginSupported = true;
+                }
+                if (result.matches(".*AUTH.*PLAIN.*$") == true)
+                {
+                    authPlainSupported = true;
+                }
+            }
 
             if (mUsername != null && mUsername.length() > 0 && mPassword != null
                     && mPassword.length() > 0) {
@@ -297,19 +308,16 @@ public class SmtpTransport extends Transport {
             }
         }
         String ret = sb.toString();
-        if (true || Config.LOGD) {
-            if (Email.DEBUG) {
-                Log.d(Email.LOG_TAG, "<<< " + ret);
-            }
+        if (Email.DEBUG) {
+            Log.d(Email.LOG_TAG, "SMTP <<< " + ret);
         }
+        
         return ret;
     }
 
     private void writeLine(String s) throws IOException {
-        if (true || Config.LOGD) {
-            if (Email.DEBUG) {
-                Log.d(Email.LOG_TAG, ">>> " + s);
-            }
+        if (Email.DEBUG) {
+            Log.d(Email.LOG_TAG, "SMTP >>> " + s);
         }
         mOut.write(s.getBytes());
         mOut.write('\r');
@@ -329,22 +337,32 @@ public class SmtpTransport extends Transport {
         }
     }
 
-    private String executeSimpleCommand(String command) throws IOException, MessagingException {
+    private List<String> executeSimpleCommand(String command) throws IOException, MessagingException {
+        List<String> results = new ArrayList<String>();
         if (command != null) {
             writeLine(command);
         }
-
-        String line = readLine();
-        checkLine(line);
-
-        String result = line;
-
-        while (line.length() >= 4 && line.charAt(3) == '-') {
-            line = readLine();
+        
+        boolean cont = false;
+        do
+        {
+            String line = readLine();
             checkLine(line);
-            result += line.substring(3);
-        }
-        return result;
+            if (line.length() > 4)
+            {
+                results.add(line.substring(4));
+                if (line.charAt(3) == '-')
+                {
+                    cont = true;
+                }
+                else
+                {
+                    cont = false;
+                }
+            }
+        } while (cont);
+        return results;
+
     }
 
 
