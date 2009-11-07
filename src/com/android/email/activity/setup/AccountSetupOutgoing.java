@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -21,9 +22,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.android.email.Account;
+import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.Utility;
@@ -203,14 +206,15 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             } else {
                 updatePortFromSecurityType();
             }
-        } catch (URISyntaxException use) {
+
+            validateFields();
+        } catch (Exception e) {
             /*
              * We should always be able to parse our own settings.
              */
-            throw new Error(use);
+            failure(e);
         }
 
-        validateFields();
     }
 
     @Override
@@ -260,14 +264,15 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
                     Integer.parseInt(mPortView.getText().toString()), null, null, null);
             mAccount.setTransportUri(uri.toString());
-        } catch (URISyntaxException use) {
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+        } catch (Exception e) {
             /*
              * It's unrecoverable if we cannot create a URI from components that
              * we validated to be safe.
              */
-            throw new Error(use);
+            failure(e);
         }
-        AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+        
     }
 
     public void onClick(View v) {
@@ -281,5 +286,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mRequireLoginSettingsView.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         validateFields();
+    }
+    private void failure(Exception use)
+    {
+        Log.e(Email.LOG_TAG, "Failure", use);
+        String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
+        
+        Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
+        toast.show();
     }
 }

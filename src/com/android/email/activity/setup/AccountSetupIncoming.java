@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.email.Account;
 import com.android.email.Email;
@@ -257,7 +258,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     }
                 }
             } else {
-                throw new Error("Unknown account type: " + mAccount.getStoreUri());
+                throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
             for (int i = 0; i < mAccountSchemes.length; i++) {
@@ -275,14 +276,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             } else {
                 updatePortFromSecurityType();
             }
-        } catch (URISyntaxException use) {
-            /*
-             * We should always be able to parse our own settings.
-             */
-            throw new Error(use);
+
+            validateFields();
+        } catch (Exception e) {
+            failure(e);
         }
 
-        validateFields();
     }
 
     @Override
@@ -301,8 +300,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void updatePortFromSecurityType() {
-        int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
-        mPortView.setText(Integer.toString(mAccountPorts[securityType]));
+        if (mAccountPorts != null)
+        {
+            int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
+            mPortView.setText(Integer.toString(mAccountPorts[securityType]));
+        }
     }
 
     @Override
@@ -356,8 +358,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     private void onNext() {
-        int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
         try {
+            int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
             String path = null;
             if (mAccountSchemes[securityType].startsWith("imap")) {
                 path = "/" + mImapPathPrefixView.getText();
@@ -376,38 +378,43 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     null, // query
                     null);
             mAccount.setStoreUri(uri.toString());
-        } catch (URISyntaxException use) {
-            /*
-             * It's unrecoverable if we cannot create a URI from components that
-             * we validated to be safe.
-             */
-            throw new Error(use);
+            
+
+            mAccount.setDraftsFolderName(mImapFolderDrafts.getText().toString());
+            mAccount.setSentFolderName(mImapFolderSent.getText().toString());
+            mAccount.setTrashFolderName(mImapFolderTrash.getText().toString());
+            mAccount.setOutboxFolderName(mImapFolderOutbox.getText().toString());
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
+        } catch (Exception e) {
+            failure(e);
         }
 
-        mAccount.setDraftsFolderName(mImapFolderDrafts.getText().toString());
-        mAccount.setSentFolderName(mImapFolderSent.getText().toString());
-        mAccount.setTrashFolderName(mImapFolderTrash.getText().toString());
-        mAccount.setOutboxFolderName(mImapFolderOutbox.getText().toString());
-        AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
     }
 
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.next:
-                onNext();
-                break;
-            case R.id.account_imap_folder_drafts:
-            	selectImapFolder(SELECT_DRAFT_FOLDER);
-            	break;
-            case R.id.account_imap_folder_sent:
-            	selectImapFolder(SELECT_SENT_FOLDER);
-            	break;
-            case R.id.account_imap_folder_trash:
-            	selectImapFolder(SELECT_TRASH_FOLDER);
-            	break;
-            case R.id.account_imap_folder_outbox:
-            	selectImapFolder(SELECT_OUTBOX_FOLDER);
-            	break;
+        try
+        {
+            switch (v.getId()) {
+                case R.id.next:
+                    onNext();
+                    break;
+                case R.id.account_imap_folder_drafts:
+                	selectImapFolder(SELECT_DRAFT_FOLDER);
+                	break;
+                case R.id.account_imap_folder_sent:
+                	selectImapFolder(SELECT_SENT_FOLDER);
+                	break;
+                case R.id.account_imap_folder_trash:
+                	selectImapFolder(SELECT_TRASH_FOLDER);
+                	break;
+                case R.id.account_imap_folder_outbox:
+                	selectImapFolder(SELECT_OUTBOX_FOLDER);
+                	break;
+            }
+        }
+        catch (Exception e)
+        {
+            failure(e);
         }
     }
 
@@ -437,4 +444,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 		selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
 	    startActivityForResult(selectIntent, activityCode);
 	}
+	
+	private void failure(Exception use)
+    {
+	    Log.e(Email.LOG_TAG, "Failure", use);
+        String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
+        
+        Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
+        toast.show();
+    }
 }

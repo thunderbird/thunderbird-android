@@ -8,12 +8,14 @@ import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.email.Account;
+import com.android.email.Email;
 import com.android.email.R;
 import com.android.email.activity.SizeFormatter;
 
@@ -104,6 +106,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     }
     private void failure(Exception use)
     {
+        Log.e(Email.LOG_TAG, "Failure", use);
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
         
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);

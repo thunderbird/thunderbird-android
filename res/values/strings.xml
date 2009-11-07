@@ -323,7 +323,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP before SMTP</string>
     <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDav(Exchange) before SMTP</string>
 
-	<string name="account_setup_bad_uri">Invalid account: <xliff:g id="err_mess">%s</xliff:g></string>
+	<string name="account_setup_bad_uri">Invalid setup: <xliff:g id="err_mess">%s</xliff:g></string>
 
     <string name="account_setup_options_title">Account options</string>
     
