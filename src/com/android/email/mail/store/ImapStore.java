@@ -421,11 +421,19 @@ public class ImapStore extends Store {
     	    // 2 OK [READ-WRITE] Select completed.
     	    try {
     
-    	        if(mPathDelimeter == null){
+    	        if(mPathDelimeter == null)
+    	        {
     	            List<ImapResponse> nameResponses =
     	                executeSimpleCommand(String.format("LIST \"\" \"*%s\"", encodeFolderName(mName)));
-    	            if(nameResponses.size() > 0){
-    	                mPathDelimeter = nameResponses.get(0).getString(2);
+    	            for (ImapResponse response : nameResponses) {
+    	                if (response.get(0).equals("LIST")) 
+    	                {
+    	                    mPathDelimeter = nameResponses.get(0).getString(2);
+    	                    if (Email.DEBUG)
+    	                    {
+    	                        Log.d(Email.LOG_TAG, "Got path delimeter '" + mPathDelimeter + "'");
+    	                    }
+    	                }
     	            }
     	        }
     
@@ -942,6 +950,7 @@ public class ImapStore extends Store {
          * @param response
          */
         protected void handleUntaggedResponse(ImapResponse response) {
+            //Log.i(Email.LOG_TAG, "Got response with size " + response.size() + ": " + response);
           if (response.mTag == null && response.size() > 1)
           {
             if (response.get(1).equals("EXISTS")) {
@@ -984,6 +993,34 @@ public class ImapStore extends Store {
                   Log.d(Email.LOG_TAG, "Got untagged EXPUNGE with value " + mMessageCount);
               }
             }
+//            if (response.size() > 1) {
+//                Object bracketedObj = response.get(1);
+//                if (bracketedObj instanceof ImapList)
+//                {
+//                    ImapList bracketed = (ImapList)bracketedObj;
+//                    
+//                    if (bracketed.size() > 0)
+//                    {
+//                        Object keyObj = bracketed.get(0);
+//                        if (keyObj instanceof String)
+//                        {
+//                            String key = (String)keyObj;
+//                            if ("ALERT".equals(key))
+//                            {
+//                                StringBuffer sb = new StringBuffer();
+//                                for (int i = 2, count = response.size(); i < count; i++) {
+//                                    sb.append(response.get(i).toString());
+//                                    sb.append(' ');
+//                                }
+//                                
+//                                Log.w(Email.LOG_TAG, "ALERT: " + sb.toString());
+//                            }
+//                        }
+//                    }
+//                    
+//                    
+//                }
+//            }
           }
           //Log.i(Email.LOG_TAG, "mMessageCount = " + mMessageCount);
         }
