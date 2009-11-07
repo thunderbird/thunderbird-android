@@ -1872,7 +1872,7 @@ public class ImapStore extends Store {
 
         public void start() throws MessagingException
         {
- 
+            receiver.pushInProgress();
             Runnable runner = new Runnable()
             {
                 public void run()
