@@ -137,23 +137,47 @@ public class AccountSetupBasics extends K9Activity
 
     private String getOwnerName() {
         String name = null;
-        String projection[] = {
-            ContactMethods.NAME
-        };
-        Cursor c = getContentResolver().query(
-                Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"), projection, null, null,
-                null);
-        if (c.getCount() > 0) {
-            c.moveToFirst();
-            name = c.getString(0);
-            c.close();
-        }
-
-        if (name == null || name.length() == 0) {
-            Account account = Preferences.getPreferences(this).getDefaultAccount();
-            if (account != null) {
-                name = account.getName();
+        try
+        {
+            String projection[] = {
+                ContactMethods.NAME
+            };
+            Cursor c = getContentResolver().query(
+                    // TODO: For Android 2.0, needs to change to ContactsContract.People...
+                    Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"), projection, null, null,
+                    null);
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                name = c.getString(0);
+                c.close();
             }
+        }
+        catch (Exception e)
+        {
+            Log.e(Email.LOG_TAG, "Could not get owner name, using default account name", e);
+        }
+        if (name == null || name.length() == 0) {
+            try
+            {
+                name = getDefaultAccountName();
+            }
+            catch (Exception e)
+            {
+                Log.e(Email.LOG_TAG, "Could not get default account name", e);
+            }
+        }
+        if (name == null) {
+            name = "";
+        }
+        return name;
+    }
+    
+    private String getDefaultAccountName()
+    {
+        String name = null;
+        Account account = Preferences.getPreferences(this).getDefaultAccount();
+        if (account != null) {
+            name = account.getName();
         }
         return name;
     }
