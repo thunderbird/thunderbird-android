@@ -150,9 +150,7 @@ Willkommen zum K-9 Mail Setup.  K-9 ist eine Open-Source E-Mail-Anwendung für A
 </string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
-    <string name="debug_enable_debug_logging_label">Zusätzliches Debug-Logging aktivieren?</string>
-    <string name="debug_enable_sensitive_logging_label">Debug-Logging für vertrauliche Informationen aktivieren? (Möglicherweise werden Kennwörter in Logs angezeigt.)</string>
-
+    
     <string name="combined_inbox_title">Alle E-Mails</string>
     <string name="combined_inbox_label">Neueste Nachrichten aller Konten</string>
     <string name="combined_inbox_list_title">Globaler Posteingang</string> <!-- Inbox here should be the same as mailbox_name_inbox -->

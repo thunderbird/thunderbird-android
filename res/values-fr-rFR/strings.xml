@@ -106,8 +106,6 @@
   <string name="compose_action">Composer</string>
   <string name="compose_title">Composer</string>
   <string name="continue_action">Continuer</string>
-  <string name="debug_enable_debug_logging_label">Activer la connexion avec débogage supplémentaire ?</string>
-  <string name="debug_enable_sensitive_logging_label">Activer la connexion avec débogage des informations sensibles ? (Peut afficher les mots de passe dans les journaux.)</string>
   <string name="debug_title">Déboguer</string>
   <string name="debug_version_fmt">Version : <xliff:g id="version">%s</xliff:g></string>
   <string name="delete_action">Supprimer</string>

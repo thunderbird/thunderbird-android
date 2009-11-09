@@ -106,8 +106,6 @@
   <string name="compose_action">Componi</string>
   <string name="compose_title">Componi</string>
   <string name="continue_action">Continua</string>
-  <string name="debug_enable_debug_logging_label">Abilitare la registrazione di informazioni di debug aggiuntive?</string>
-  <string name="debug_enable_sensitive_logging_label">Abilitare la registrazione di informazioni di debug riservate? (Nei log possono venire visualizzate le password.)</string>
   <string name="debug_title">Debug</string>
   <string name="debug_version_fmt">Versione: <xliff:g id="version">%s</xliff:g></string>
   <string name="delete_action">Elimina</string>

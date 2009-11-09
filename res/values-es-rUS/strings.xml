@@ -106,8 +106,6 @@
   <string name="compose_action">Redactar</string>
   <string name="compose_title">Redactar</string>
   <string name="continue_action">Continuar</string>
-  <string name="debug_enable_debug_logging_label">¿Habilitar depuración adicional en inicio de sesión?</string>
-  <string name="debug_enable_sensitive_logging_label">¿Habilitar depuración de información sensitiva en inicio de sesión? (Puede mostrar contraseñas en los registros).</string>
   <string name="debug_title">Depuración</string>
   <string name="debug_version_fmt">Versión: <xliff:g id="version">%s</xliff:g></string>
   <string name="delete_action">Eliminar</string>
