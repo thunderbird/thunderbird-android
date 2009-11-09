@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+     <item android:state_checked="true" android:state_focused="true"
+          android:drawable="@drawable/checkbox_on_background_focus_yellow" />
+
+     <item android:state_checked="false" android:state_focused="true"
+          android:drawable="@drawable/checkbox_off_background_focus_yellow" />
+
+     <item android:state_checked="false"
+          android:drawable="@drawable/checkbox_off_background" />
+
+     <item android:state_checked="true"
+          android:drawable="@drawable/checkbox_on_background" />
+
+</selector>

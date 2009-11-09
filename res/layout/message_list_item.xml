@@ -11,18 +11,29 @@
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
         android:layout_width="4px"
+        android:paddingRight="5px"
         android:layout_height="fill_parent"
         android:layout_centerVertical="true" />
+    <!-- http://stackoverflow.com/questions/1121192/android-custom-listview-unable-to-click-on-items -->
+    <CheckBox
+        android:id="@+id/selected_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:button="@drawable/checkbox"
+        android:layout_toRightOf="@+id/chip"
+        android:layout_centerVertical="true"
+        android:focusable="false"
+    />
     <TextView
         android:id="@+id/subject"
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10px"
-        android:layout_marginRight="1px" />
+        android:layout_marginRight="1px"
+        android:layout_toRightOf="@+id/selected_checkbox"/>
     <TextView
         android:id="@+id/date"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -44,9 +55,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorSecondary"
-        android:paddingLeft="12px"
         android:layout_toLeftOf="@id/date"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@+id/selected_checkbox"
         android:layout_alignParentBottom="true"
         />
 </RelativeLayout>

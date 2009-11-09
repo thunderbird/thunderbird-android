@@ -106,8 +106,6 @@
   <string name="compose_action">撰寫</string>
   <string name="compose_title">撰寫</string>
   <string name="continue_action">繼續</string>
-  <string name="debug_enable_debug_logging_label">啟用額外的偵錯記錄？</string>
-  <string name="debug_enable_sensitive_logging_label">啟用機密資訊偵錯記錄？(可能會在記錄中顯示密碼。)</string>
   <string name="debug_title">偵錯</string>
   <string name="debug_version_fmt">版本：<xliff:g id="version">%s</xliff:g></string>
   <string name="delete_action">刪除</string>

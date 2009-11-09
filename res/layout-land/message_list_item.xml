@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10px"
         android:layout_marginRight="1px"
-	android:layout_toRightOf="@+id/chip"
+        android:layout_toRightOf="@+id/chip"
         android:layout_toLeftOf="@+id/from" />
 </RelativeLayout>
 

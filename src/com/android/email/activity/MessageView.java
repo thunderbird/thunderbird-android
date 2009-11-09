@@ -262,13 +262,20 @@ public class MessageView extends K9Activity
                       mSubjectView.setTextColor(0xff000000 | defaultSubjectColor );
                     }
                     if ((msg.arg2 & FLAG_ANSWERED) != 0) {
-                     Drawable answeredIcon = getResources().getDrawable(
-                          R.drawable.ic_mms_answered_small);
-                     mSubjectView.setCompoundDrawablesWithIntrinsicBounds(
-                          answeredIcon, // left 
-                              null, // top
-                              null, // right 
-                              null); // bottom
+                        Drawable answeredIcon = getResources().getDrawable(
+                            R.drawable.ic_mms_answered_small);
+                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(
+                            answeredIcon, // left
+                            null, // top
+                            null, // right
+                            null); // bottom
+                    }
+                    else {
+                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(
+                            null, // left
+                            null, // top
+                            null, // right
+                            null); // bottom
                     }
                     
                     break;

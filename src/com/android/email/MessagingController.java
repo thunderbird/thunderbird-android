@@ -1066,7 +1066,9 @@ public class MessagingController implements Runnable {
 
                         for (MessagingListener l : getListeners()) {
                             l.synchronizeMailboxAddOrUpdateMessage( account, folder, localMessage);
-                            l.synchronizeMailboxNewMessage( account, folder, localMessage);
+                            if (!localMessage.isSet(Flag.SEEN)) {
+                                l.synchronizeMailboxNewMessage( account, folder, localMessage);
+                            }
                         }
                     }
                 }
@@ -1225,7 +1227,9 @@ public class MessagingController implements Runnable {
                     // Update the listener with what we've found
                     for (MessagingListener l : getListeners()) {
                         l.synchronizeMailboxAddOrUpdateMessage( account, folder, localMessage);
-                        l.synchronizeMailboxNewMessage(account, folder, localMessage);
+                        if (!localMessage.isSet(Flag.SEEN)) {
+                            l.synchronizeMailboxNewMessage(account, folder, localMessage);
+                        }
                     }
 
                 }
@@ -1329,8 +1333,9 @@ public class MessagingController implements Runnable {
             for (MessagingListener l : getListeners()) {
                 Message localMessage = localFolder.getMessage(message.getUid());
                 l.synchronizeMailboxAddOrUpdateMessage( account, folder, localMessage);
-                l.synchronizeMailboxNewMessage(account, folder, localMessage);
-
+                if (!localMessage.isSet(Flag.SEEN)) {
+                    l.synchronizeMailboxNewMessage(account, folder, localMessage);
+                }
             }
         }//for large messsages
         Log.i(Email.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
