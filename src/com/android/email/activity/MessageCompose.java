@@ -315,6 +315,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mSubjectView.addTextChangedListener(watcher);
         
         mMessageContentView.addTextChangedListener(watcher);
+        mQuotedText.addTextChangedListener(watcher);
 
         /*
          * We set this to invisible by default. Other methods will turn it back on if it's
