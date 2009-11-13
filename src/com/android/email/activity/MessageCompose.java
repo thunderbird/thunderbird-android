@@ -426,54 +426,52 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             
             String extraSubject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
             String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
-            String[] extraEmail = intent.getStringArrayExtra(Intent.EXTRA_EMAIL);
-            String[] extraBcc = intent.getStringArrayExtra(Intent.EXTRA_BCC);
-            String[] extraCc = intent.getStringArrayExtra(Intent.EXTRA_CC);
-
-            String addressList = new String();
-            // Cache array size, as per Google's recommendations.
-            int arraySize;
-            int i;
 
             mSubjectView.setText(extraSubject);
             mMessageContentView.setText(extraText);
 
+            String[] extraEmail = intent.getStringArrayExtra(Intent.EXTRA_EMAIL);
+            String[] extraCc = intent.getStringArrayExtra(Intent.EXTRA_CC);
+            String[] extraBcc = intent.getStringArrayExtra(Intent.EXTRA_BCC);
+            
+            String addressList;
+            // Cache array size, as per Google's recommendations.
+            int arraySize;
+            int i;
+
+            addressList = "";
             if (extraEmail != null) {
                 arraySize = extraEmail.length;
-                if (arraySize > 1){
-              	    for (i=0; i < (arraySize-1); i++) {
+                if (arraySize > 1) {
+                    for (i=0; i < arraySize; i++) {
                         addressList += extraEmail[i]+", ";
                     }
-                addressList += extraEmail[arraySize-1];
                 }
             }
             mToView.setText(addressList);
-            addressList = "";
 
-            if (extraBcc != null) {
-                arraySize = extraBcc.length;
-                if (arraySize > 1) {
-              	    for (i=0; i < (arraySize-1); i++) {
-                        addressList += extraBcc[i]+", ";
-                    }
-                addressList += extraBcc[arraySize-1];
-                }
-            }
-            mBccView.setText(addressList);
             addressList = "";
-
-            if (extraCc != null){
+            if (extraCc != null) {
                 arraySize = extraCc.length;
-                if (arraySize > 1){
-              	    for (i=0; i < (arraySize-1); i++) {
+                if (arraySize > 1) {
+                    for (i=0; i < arraySize; i++) {
                         addressList += extraCc[i]+", ";
                     }
-                addressList += extraCc[arraySize-1];
                 }
             }
             mCcView.setText(addressList);
+            
             addressList = "";
-
+            if (extraBcc != null) {
+                arraySize = extraBcc.length;
+                if (arraySize > 1) {
+                    for (i=0; i < arraySize; i++) {
+                        addressList += extraBcc[i]+", ";
+                    }
+                }
+            }
+            mBccView.setText(addressList);
+            
         } else {
             mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
             mFolder = (String) intent.getStringExtra(EXTRA_FOLDER);
