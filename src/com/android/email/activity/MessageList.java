@@ -1634,7 +1634,7 @@ public class MessageList extends K9ListActivity {
             }
 
             Pattern pattern = null;
-            String patternString = "^ *(re|fw|fwd): *";
+            String patternString = "^ *(re|aw|fw|fwd): *";
             private String stripPrefixes(String in) {
                 synchronized (patternString) {
                     if (pattern == null) {
