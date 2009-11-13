@@ -456,9 +456,6 @@ public class MessageView extends K9Activity
 
         setOnClickListener(R.id.show_pictures);
 
-        // UrlInterceptRegistry.registerHandler(this);
-
-        mMessageContentView.getSettings().setBlockNetworkImage(true);
         mMessageContentView.getSettings().setSupportZoom(true);
 
         setTitle("");
@@ -507,7 +504,7 @@ public class MessageView extends K9Activity
                     }
                     mFolder = segmentList.get(1);
                     mMessageUid = segmentList.get(2);
-                    mFolderUids = new ArrayList<String>();
+                    mFolderUids = new ArrayList<String>();                    
                 }
                 else {
                     for (String segment : segmentList) {
@@ -572,6 +569,7 @@ public class MessageView extends K9Activity
     private void displayMessage(String uid)
     {
         mMessageUid = uid;
+        mMessageContentView.getSettings().setBlockNetworkImage(true);
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
         next.setEnabled(mNextMessageUid != null );
