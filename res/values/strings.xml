@@ -37,7 +37,7 @@
     <string name="refresh_action">Refresh</string>
     <string name="check_mail_action">Check mail</string>
     <string name="send_messages_action">Send messages</string>
-    <string name="list_folders_action">List folders</string>
+    <string name="list_folders_action">Folder list</string>
     <string name="refresh_folders_action">Refresh folders</string>
     <string name="mark_all_as_read_action">Mark all messages as read</string> 
     <string name="add_account_action">Add account</string>
