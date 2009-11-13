@@ -1487,6 +1487,7 @@ public class MessagingController implements Runnable {
 	        	{
 	        	  if (me.isPermanentFailure())
 	            {
+	        	      addErrorMessage(account, me);
 	        	    Log.e(Email.LOG_TAG, "Failure of command '" + command + "' was permanent, removing command from queue");
 	              localStore.removePendingCommand(processingCommand);
 	            }
