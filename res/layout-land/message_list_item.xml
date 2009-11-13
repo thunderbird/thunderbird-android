@@ -2,15 +2,15 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="20px"
-    android:paddingRight="1px"
-    android:paddingTop="2px"
+    android:layout_height="20dip"
+    android:paddingRight="1dip"
+    android:paddingTop="2dip"
     android:background="@drawable/message_list_item_background">
     <View
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
-        android:layout_width="4px"
-        android:layout_height="20px"
+        android:layout_width="4dip"
+        android:layout_height="20dip"
         android:layout_centerVertical="true"
 	android:layout_alignParentLeft="true" />
     <TextView
@@ -19,19 +19,19 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:singleLine="true"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_width="50px"
+        android:layout_width="50dip"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
     <TextView
         android:id="@+id/from"
         android:ellipsize="end"
         android:singleLine="true"
-        android:layout_width="110px"
+        android:layout_width="110dip"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorSecondary"
-        android:paddingLeft="3px"
-        android:paddingRight="3px"
+        android:paddingLeft="3dip"
+        android:paddingRight="3dip"
         android:layout_toLeftOf="@+id/date" />
     <TextView
         android:id="@+id/subject"
@@ -41,8 +41,8 @@
         android:textColor="?android:attr/textColorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10px"
-        android:layout_marginRight="1px"
+        android:paddingLeft="10dip"
+        android:layout_marginRight="1dip"
 	android:layout_toRightOf="@+id/chip"
         android:layout_toLeftOf="@+id/from" />
 </RelativeLayout>

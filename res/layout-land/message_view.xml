@@ -22,19 +22,19 @@
             <include layout="@layout/message_view_header" />
             <View
        	     	android:layout_width="fill_parent"
-        	 	android:layout_height="0px"
+        	 	android:layout_height="0dip"
          	 	android:layout_weight="1" /> 
 			<LinearLayout
 		    	android:id="@+id/scrolling_buttons"
 		        android:orientation="horizontal"
 		        android:layout_width="fill_parent"
-		        android:layout_height="57px"
+		        android:layout_height="57dip"
 		        android:background="@drawable/ic_email_thread_open_bottom_default"
 		        android:gravity="center_vertical">
 		        <Button
 		            android:id="@+id/previous_scrolling"
 		            android:text="@string/message_view_prev_action"
-                    android:textSize="35px"
+                    android:textSize="35dip"
 		            android:layout_height="wrap_content"
 		            android:layout_width="0dip"
                     android:padding="0dip"
@@ -60,7 +60,7 @@
 		         <Button
 		            android:id="@+id/next_scrolling"
 		            android:text="@string/message_view_next_action"
-                    android:textSize="35px"
+                    android:textSize="35dip"
 		            android:layout_height="wrap_content"
 		            android:layout_width="0dip"
                     android:padding="0dip"
@@ -73,13 +73,13 @@
     	android:id="@+id/bottom_buttons"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="57px"
+        android:layout_height="57dip"
         android:background="@drawable/ic_email_thread_open_bottom_default"
         android:gravity="center_vertical">
         <Button
             android:id="@+id/previous"
             android:text="@string/message_view_prev_action"
-            android:textSize="35px"
+            android:textSize="35dip"
             android:layout_height="wrap_content"
             android:padding="0dip"
             android:layout_width="0dip"
@@ -105,7 +105,7 @@
          <Button
             android:id="@+id/next"
             android:text="@string/message_view_next_action"
-            android:textSize="35px"
+            android:textSize="35dip"
             android:padding="0dip"
             android:layout_height="wrap_content"
             android:layout_width="0dip"

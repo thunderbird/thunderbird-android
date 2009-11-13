@@ -2,15 +2,15 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="38px"
-    android:paddingRight="1px"
-    android:paddingTop="2px"
+    android:layout_height="38dip"
+    android:paddingRight="1dip"
+    android:paddingTop="2dip"
     android:background="#999999"
     >
     <View
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
-        android:layout_width="4px"
+        android:layout_width="4dip"
         android:layout_height="fill_parent"
         android:layout_centerVertical="true" />
     <TextView
@@ -21,13 +21,13 @@
         android:textColor="?android:attr/textColorPrimary"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10px"
-        android:layout_marginRight="1px" />
+        android:paddingLeft="10dip"
+        android:layout_marginRight="1dip" />
     <TextView
         android:id="@+id/date"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:paddingRight="5px"
-        android:paddingLeft="5px"
+        android:paddingRight="5dip"
+        android:paddingLeft="5dip"
         android:singleLine="true"
         android:textColor="?android:attr/textColorSecondary"
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorSecondary"
-        android:paddingLeft="12px"
+        android:paddingLeft="12dip"
         android:layout_toLeftOf="@id/date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"

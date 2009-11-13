@@ -16,12 +16,12 @@
             android:layout_alignParentLeft="true"
             android:singleLine="true"
             android:ellipsize="end"
-            android:paddingRight="6px" />
+            android:paddingRight="6dip" />
         <View
             android:id="@+id/attachment"
             android:background="@drawable/ic_email_attachment_small"
-            android:layout_width="22px"
-            android:layout_height="22px"
+            android:layout_width="22dip"
+            android:layout_height="22dip"
             android:layout_toRightOf="@id/from"
             android:layout_alignTop="@id/from" />
         <LinearLayout
@@ -47,7 +47,7 @@
                 android:layout_width="0dip"
                 android:layout_weight="1.0"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4px"
+                android:layout_marginLeft="4dip"
                 android:singleLine="false"
                 android:ellipsize="none" />
            <TextView
@@ -82,7 +82,7 @@
                 android:layout_width="0dip"
                 android:layout_weight="1.0"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4px"
+                android:layout_marginLeft="4dip"
                 android:singleLine="false"
                 android:ellipsize="none" />
            <TextView

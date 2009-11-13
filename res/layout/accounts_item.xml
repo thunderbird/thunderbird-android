@@ -6,12 +6,12 @@
     android:orientation="horizontal"
     android:gravity="center_vertical"
     
-    android:paddingRight="4px">
+    android:paddingRight="4dip">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="6px">
+        android:paddingLeft="6dip">
         <TextView
             android:id="@+id/description"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -27,7 +27,7 @@
     </LinearLayout>
     <View
         android:layout_height="fill_parent"
-        android:layout_width="0px"
+        android:layout_width="0dip"
         android:layout_weight="1" />
     <TextView
         android:id="@+id/new_message_count"
@@ -38,8 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/text_box"
-        android:paddingLeft="10px"
-        android:paddingRight="10px"
-        android:minWidth="64px"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:minWidth="64dip"
         android:gravity="right" />
 </LinearLayout>

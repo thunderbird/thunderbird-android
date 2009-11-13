@@ -7,8 +7,8 @@
     android:gravity="center_vertical"
     android:background="@android:color/transparent"
     
-    android:paddingLeft="36px"
-    android:paddingRight="4px">
+    android:paddingLeft="36dip"
+    android:paddingRight="4dip">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
     </LinearLayout>
     <View
         android:layout_height="fill_parent"
-        android:layout_width="0px"
+        android:layout_width="0dip"
         android:layout_weight="1" />
     <TextView
         android:id="@+id/folder_unread_message_count"
@@ -40,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/text_box"
-        android:paddingLeft="10px"
-        android:paddingRight="10px"
-        android:minWidth="64px"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:minWidth="64dip"
         android:gravity="right" />
 </LinearLayout>

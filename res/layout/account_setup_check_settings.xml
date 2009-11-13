@@ -16,7 +16,7 @@
         android:gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?android:attr/textColorPrimary"
-        android:paddingBottom="6px" />
+        android:paddingBottom="6dip" />
     <ProgressBar
         android:id="@+id/progress"
         android:layout_height="wrap_content"
@@ -24,11 +24,11 @@
         style="?android:attr/progressBarStyleHorizontal" />
     <View
         android:layout_width="fill_parent"
-        android:layout_height="0px"
+        android:layout_height="0dip"
         android:layout_weight="1" />
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="54px"
+        android:layout_height="54dip"
         
         >
         <Button

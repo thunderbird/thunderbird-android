@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         style="?android:attr/progressBarStyleSmall"
-        android:paddingRight="10px"
+        android:paddingRight="10dip"
         />
     <TextView
         android:id="@+id/main_text"

@@ -17,16 +17,16 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/primary_text_light"
-                    android:layout_marginLeft="6px"
-                    android:layout_marginRight="6px"/>
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"/>
                 
                 <MultiAutoCompleteTextView
                     android:id="@+id/to" android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/primary_text_light"
-                    android:layout_marginLeft="6px"
-                    android:layout_marginRight="6px"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"
                     android:inputType="textEmailAddress|textMultiLine"
                     android:imeOptions="actionNext"
                     android:hint="@string/message_compose_to_hint" />
@@ -35,8 +35,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/primary_text_light"
-                    android:layout_marginLeft="6px"
-                    android:layout_marginRight="6px"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"
                     android:inputType="textEmailAddress|textMultiLine"
                     android:imeOptions="actionNext"
                     android:hint="@string/message_compose_cc_hint"
@@ -46,8 +46,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/primary_text_light"
-                    android:layout_marginLeft="6px"
-                    android:layout_marginRight="6px"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"
                     android:inputType="textEmailAddress|textMultiLine"
                     android:imeOptions="actionNext"
                     android:hint="@string/message_compose_bcc_hint"
@@ -58,8 +58,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/primary_text_light"
-                    android:layout_marginLeft="6px"
-                    android:layout_marginRight="6px"
+                    android:layout_marginLeft="6dip"
+                    android:layout_marginRight="6dip"
                     android:hint="@string/message_compose_subject_hint"
                     android:inputType="textEmailSubject|textAutoCorrect|textCapSentences|textImeMultiLine" 
                     android:imeOptions="actionNext"
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
                 <View android:layout_width="fill_parent"
-                    android:layout_height="1px"
+                    android:layout_height="1dip"
                     android:background="@drawable/divider_horizontal_email" />
             </LinearLayout>
             <EditText android:id="@+id/message_content"
@@ -102,7 +102,7 @@
         
             <RelativeLayout android:id="@+id/quoted_text_bar"
                 android:layout_width="fill_parent"
-                android:layout_height="45px" android:background="@drawable/email_quoted_bar">
+                android:layout_height="45dip" android:background="@drawable/email_quoted_bar">
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"

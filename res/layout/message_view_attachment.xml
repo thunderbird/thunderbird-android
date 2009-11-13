@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="4px">
+    android:paddingBottom="4dip">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="4px">
+        android:paddingLeft="4dip">
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -15,13 +15,13 @@
             android:gravity="center_vertical">
             <ImageView
                 android:id="@+id/attachment_icon"
-                android:layout_width="62px"
-                android:layout_height="62px"
+                android:layout_width="62dip"
+                android:layout_height="62dip"
                 android:src="@drawable/attached_image_placeholder"
-                android:layout_marginLeft="4px"
-                android:layout_marginRight="4px"
-                android:layout_marginBottom="4px"
-                android:layout_marginTop="4px" />
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="4dip"
+                android:layout_marginBottom="4dip"
+                android:layout_marginTop="4dip" />
             <TextView
                 android:id="@+id/attachment_name"
                 android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
                 android:singleLine="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/attachment_name"
-                android:layout_marginTop="6px" />
+                android:layout_marginTop="6dip" />
             <Button
                 android:id="@+id/view"
                 android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                 android:layout_toLeftOf="@id/download"
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_below="@id/attachment_name"
-                android:layout_marginTop="6px" />
+                android:layout_marginTop="6dip" />
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
