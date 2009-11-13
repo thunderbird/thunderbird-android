@@ -228,7 +228,7 @@ public class ChooseFolder extends K9ListActivity
         localFolders.add(folder.getName());
         
       }
-      
+
       if (showOptionNone)
       {
         localFolders.add(Email.FOLDER_NONE);
@@ -237,6 +237,14 @@ public class ChooseFolder extends K9ListActivity
       Collections.sort(localFolders, new Comparator<String>() {
         public int compare(String aName, String bName)
         {
+          if (Email.FOLDER_NONE.equalsIgnoreCase(aName))
+          {
+            return -1;
+          }
+          if (Email.FOLDER_NONE.equalsIgnoreCase(bName))
+          {
+            return 1;
+          }
           if (Email.INBOX.equalsIgnoreCase(aName))
           {
             return -1;
@@ -244,14 +252,6 @@ public class ChooseFolder extends K9ListActivity
           if (Email.INBOX.equalsIgnoreCase(bName))
           {
             return 1;
-          }
-          if (Email.FOLDER_NONE.equalsIgnoreCase(aName))
-          {
-            return 1;
-          }
-          if (Email.FOLDER_NONE.equalsIgnoreCase(bName))
-          {
-            return -1;
           }
           
           return aName.compareToIgnoreCase(bName); 
