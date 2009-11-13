@@ -363,7 +363,7 @@ public class MessageList extends K9ListActivity {
         mListView = getListView();
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
-        //mListView.setFastScrollEnabled(true); // XXX TODO - reenable when we switch to 1.5
+        mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(true);
 
         registerForContextMenu(mListView);

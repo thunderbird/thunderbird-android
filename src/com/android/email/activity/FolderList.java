@@ -380,7 +380,7 @@ public class FolderList extends K9ListActivity {
             mListView = getListView();
             mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
             mListView.setLongClickable(true);
-            //mListView.setFastScrollEnabled(true); // XXX TODO - reenable when we switch to 1.5
+            mListView.setFastScrollEnabled(true);
             mListView.setScrollingCacheEnabled(true);
             mListView.setOnItemClickListener(new OnItemClickListener() {
                 public void onItemClick(AdapterView parent, View v, int itemPosition, long id) {
