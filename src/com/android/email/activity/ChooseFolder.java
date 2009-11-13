@@ -53,7 +53,7 @@ public class ChooseFolder extends K9ListActivity
     super.onCreate(savedInstanceState);
 
     requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-    
+    getListView().setFastScrollEnabled(true);
     getListView().setTextFilterEnabled(true);
     getListView().setItemsCanFocus(false);
     getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
