@@ -24,6 +24,11 @@
         <item>@string/account_setup_options_mail_check_frequency_15min</item>
         <item>@string/account_setup_options_mail_check_frequency_30min</item>
         <item>@string/account_setup_options_mail_check_frequency_1hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_2hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_3hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_6hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_12hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_24hour</item>
     </string-array>
 
     <string-array name="account_settings_check_frequency_values">
@@ -34,6 +39,11 @@
         <item>15</item>
         <item>30</item>
         <item>60</item>  
+        <item>120</item>  
+        <item>180</item>  
+        <item>360</item>  
+        <item>720</item>  
+        <item>1440</item>  
     </string-array>
     
     <string-array name="account_settings_display_count_entries">

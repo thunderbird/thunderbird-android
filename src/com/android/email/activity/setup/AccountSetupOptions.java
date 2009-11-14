@@ -67,7 +67,18 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
                         getString(R.string.account_setup_options_mail_check_frequency_30min)),
                 new SpinnerOption(60,
                         getString(R.string.account_setup_options_mail_check_frequency_1hour)),
-        };
+                new SpinnerOption(120,
+                        getString(R.string.account_setup_options_mail_check_frequency_2hour)),
+                new SpinnerOption(180,
+                        getString(R.string.account_setup_options_mail_check_frequency_3hour)),
+                new SpinnerOption(360,
+                        getString(R.string.account_setup_options_mail_check_frequency_6hour)),
+                new SpinnerOption(720,
+                        getString(R.string.account_setup_options_mail_check_frequency_12hour)),
+                new SpinnerOption(1440,
+                        getString(R.string.account_setup_options_mail_check_frequency_24hour)),
+                       
+                        };
 
         ArrayAdapter<SpinnerOption> checkFrequenciesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, checkFrequencies);

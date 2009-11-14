@@ -330,7 +330,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="compact_action">Compact</string>
    <string name="clear_action">Clear all data (danger!)</string>
 
-    <string name="account_setup_options_mail_check_frequency_label">Email checking frequency</string>
+    <string name="account_setup_options_mail_check_frequency_label">Folder poll check frequency</string>
     <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
     <string name="account_setup_options_mail_check_frequency_1min">Every minute</string>
@@ -339,6 +339,12 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     <string name="account_setup_options_mail_check_frequency_15min">Every 15 minutes</string>
     <string name="account_setup_options_mail_check_frequency_30min">Every 30 minutes</string>
     <string name="account_setup_options_mail_check_frequency_1hour">Every hour</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">Every 2 hours</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">Every 3 hours</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">Every 6 hours</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">Every 12 hours</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">Every 24 hours</string>
+    
     <string name="account_setup_options_default_label">Send email from this account by default</string>
     <string name="account_setup_options_notify_label">Notify me when email arrives</string>
     <string name="account_setup_options_notify_sync_label">Notify me while email is being checked</string>
@@ -377,25 +383,25 @@ Welcome to K-9 Mail setup.  K-9 is an open source email client for Android based
     
     <string name="account_settings_display_sync">Display and synchronization</string>
     
-    <string name="account_settings_mail_check_frequency_label">Email check frequency</string>
+    <string name="account_settings_mail_check_frequency_label">Folder poll check frequency</string>
     <string name="account_settings_second_class_check_frequency_label">2nd class check frequency</string>
     
     <string name="account_settings_mail_display_count_label">Number of emails to display</string>
       
-    <string name="account_settings_folder_display_mode_label">Folder display mode</string>
+    <string name="account_settings_folder_display_mode_label">Folders to display</string>
     <string name="account_settings_folder_display_mode_all">All</string>
     <string name="account_settings_folder_display_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
 
-    <string name="account_settings_folder_sync_mode_label">Folder sync mode</string>
+    <string name="account_settings_folder_sync_mode_label">Folders to check with poll</string>
     <string name="account_settings_folder_sync_mode_all">All</string>
     <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
     <string name="account_settings_folder_sync_mode_none">None</string>
  
-    <string name="account_settings_folder_push_mode_label">Push email check</string>
+    <string name="account_settings_folder_push_mode_label">Folders to check with push</string>
     <string name="account_settings_folder_push_mode_all">All</string>
     <string name="account_settings_folder_push_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_folder_push_mode_first_and_second_class">1st and 2nd Class folders</string>
