@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+	android:layout_height="fill_parent"
+    android:layout_width="fill_parent">
+
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_marginBottom="54dip" 
     android:padding="6dip"
-    
     android:scrollbarStyle="outsideInset">
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
@@ -55,20 +59,21 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1" />
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="bottom|right"
-            >
-            <Button
-                android:id="@+id/next"
-                android:text="@string/next_action"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:minWidth="@dimen/button_minWidth"
-                android:drawableRight="@drawable/button_indicator_next"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
-        </RelativeLayout>
     </LinearLayout>
-</ScrollView>
+	</ScrollView>
+    <RelativeLayout 
+        android:layout_marginTop="-54dip" 
+        android:gravity="bottom|right"
+        android:layout_height="wrap_content" 
+        android:layout_width="fill_parent">
+		<Button
+			android:id="@+id/next"
+			android:text="@string/next_action"
+            android:layout_width="wrap_content"
+            android:minWidth="@dimen/button_minWidth"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/button_indicator_next"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="false" />
+	</RelativeLayout>
+</LinearLayout>
