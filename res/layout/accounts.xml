@@ -31,8 +31,8 @@
         </LinearLayout>
     </ScrollView>
     <RelativeLayout 
-        android:layout_marginTop="-50dip" 
-        android:gravity="bottom" 
+        android:layout_marginTop="-54dip" 
+        android:gravity="bottom|right" 
         android:layout_height="wrap_content" 
         android:layout_width="fill_parent">
         <Button
