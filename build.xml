@@ -182,7 +182,7 @@
 
     <!-- Compile this project's .java files into .class files. -->
     <target name="compile" depends="resource-src, aidl">
-        <javac encoding="ascii" target="1.5" debug="true" extdirs=""
+        <javac encoding="ascii" target="1.6" debug="true" extdirs=""
                 destdir="${out-classes}"
                 bootclasspathref="android.target.classpath">
             <src path="${source-folder}" />
@@ -190,7 +190,7 @@
             <classpath>
                 <fileset dir="${external-libs-folder}" includes="*.jar"/>
                 <fileset dir="${compile-only-libs-folder}" includes="*.jar"/>
-                <fileset dir="${sdk-location}/platforms/android-1.5/" includes="**/*.jar"/>
+                <fileset dir="${sdk-location}/platforms/android-1.6/" includes="**/*.jar"/>
                 <pathelement path="${main-out-classes}"/>
             </classpath>
          </javac>
