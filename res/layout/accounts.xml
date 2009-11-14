@@ -14,7 +14,7 @@
 			android:layout_height="wrap_content" 
 			android:layout_width="fill_parent">
     <ScrollView
-        android:layout_marginBottom="50dip" 
+        android:layout_marginBottom="54dip" 
         android:layout_height="wrap_content" 
         android:layout_width="fill_parent">
         <LinearLayout

@@ -39,6 +39,7 @@
         android:layout_weight="1" />
     <RelativeLayout
         android:layout_width="fill_parent"
+        android:gravity="bottom|right" 
         android:layout_height="54dip"
         >
         <Button
