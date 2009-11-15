@@ -74,9 +74,9 @@ public class EmailAddressAdapter extends ResourceCursorAdapter {
             String filter = DatabaseUtils.sqlEscapeString(constraint.toString() + '%');
 
             StringBuilder s = new StringBuilder();
-            s.append("(people.name LIKE ");
+            s.append("("+People.NAME+" LIKE ");
             s.append(filter);
-            s.append(") OR (contact_methods.data LIKE ");
+            s.append(") OR ("+ContactMethods.DATA+" LIKE ");
             s.append(filter);
             s.append(")");
 
