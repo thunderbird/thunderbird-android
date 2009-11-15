@@ -250,9 +250,6 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
         mAccount.setOutboxFolderName(getString(R.string.special_mailbox_name_outbox));
         mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
-        if (incomingUri.toString().startsWith("imap")) {
-            mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
-        }
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, true);
     }
 

@@ -216,6 +216,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
+                mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
+                
+                
             } else if (uri.getScheme().startsWith("imap")) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
                 mAccountPorts = imapPorts;
@@ -226,7 +229,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
-                
+                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
             } else if (uri.getScheme().startsWith("webdav")) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mAccountPorts = webdavPorts;
@@ -257,6 +260,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         }
                     }
                 }
+                mAccount.setDeletePolicy(Account.DELETE_POLICY_ON_DELETE);
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
