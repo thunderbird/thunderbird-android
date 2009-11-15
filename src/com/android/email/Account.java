@@ -93,6 +93,8 @@ public class Account implements Serializable {
         mHideMessageViewButtons = HideButtons.NEVER;
         mRingtoneUri = "content://settings/system/notification_sound";
         mIsSignatureBeforeQuotedText = false;
+
+        mAutoExpandFolderName = "INBOX";
         
         identities = new ArrayList<Identity>();
 
