@@ -21,12 +21,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.SSLException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -36,12 +38,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.StringEntity;
@@ -113,7 +116,7 @@ public class WebDavStore extends Store {
 
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
     private boolean mSecure;
-    private DefaultHttpClient mHttpClient = null;
+    private WebDavHttpClient mHttpClient = null;
 
     /**
      * webdav://user:password@server:port CONNECTION_SECURITY_NONE
@@ -509,7 +512,7 @@ public class WebDavStore extends Store {
         String responseText = "";
         String requestText = "";
         if (response != null) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getContent()), 8192);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(WebDavHttpClient.getUngzippedContent(response)), 8192);
             String tempText = "";
 
             while ((tempText = reader.readLine()) != null) {
@@ -517,7 +520,7 @@ public class WebDavStore extends Store {
             }
         }
         if (request != null) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(request.getContent()), 8192);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(WebDavHttpClient.getUngzippedContent(response)), 8192);
             String tempText = "";
 
             while ((tempText = reader.readLine()) != null) {
@@ -571,12 +574,12 @@ public class WebDavStore extends Store {
 
         try {
             /* Browser Client */
-            DefaultHttpClient httpclient = mHttpClient;
+            WebDavHttpClient httpclient = mHttpClient;
 
             /**
              * This is in a separate block because I really don't like how it's done.
              * This basically scrapes the OWA login page for the form submission URL.
-             * UGLY!
+             * UGLY!WebDavHttpClient
              * Added an if-check to see if there's a user supplied authentication path for FBA
              */
             if (this.mAuthPath == null ||
@@ -630,7 +633,7 @@ public class WebDavStore extends Store {
 
 
             /** Build the POST data to use */
-            ArrayList<BasicNameValuePair> pairs = new ArrayList();
+            ArrayList<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
             pairs.add(new BasicNameValuePair("username", username));
             pairs.add(new BasicNameValuePair("password", password));
             if (this.mMailboxPath != null &&
@@ -698,13 +701,13 @@ public class WebDavStore extends Store {
         return mUrl;
     }
 
-    public DefaultHttpClient getHttpClient() throws MessagingException {
+    public WebDavHttpClient getHttpClient() throws MessagingException {
         SchemeRegistry reg;
         Scheme s;
         boolean needAuth = false;
         
         if (mHttpClient == null) {
-            mHttpClient = new DefaultHttpClient();
+            mHttpClient = new WebDavHttpClient();
             needAuth = true;
         }
 
@@ -758,9 +761,9 @@ public class WebDavStore extends Store {
         return mHttpClient;
     }
     
-    public DefaultHttpClient getTrustedHttpClient() throws KeyManagementException, NoSuchAlgorithmException{
+    public WebDavHttpClient getTrustedHttpClient() throws KeyManagementException, NoSuchAlgorithmException{
         if (mHttpClient == null) {
-            mHttpClient = new DefaultHttpClient();
+            mHttpClient = new WebDavHttpClient();
             SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
             Scheme s = new Scheme("https",new TrustedSocketFactory(mHost,mSecure),443);
             reg.register(s);
@@ -782,7 +785,7 @@ public class WebDavStore extends Store {
 
     private InputStream sendRequest(String url, String method, StringEntity messageBody, HashMap<String, String> headers, boolean tryAuth)
                                     throws MessagingException {
-        DefaultHttpClient httpclient;
+        WebDavHttpClient httpclient;
         InputStream istream = null;
 
         if (url == null ||
@@ -812,7 +815,7 @@ public class WebDavStore extends Store {
             }
 
             httpmethod.setMethod(method);
-            response = httpclient.execute(httpmethod);
+            response = httpclient.executeOverride(httpmethod);
             statusCode = response.getStatusLine().getStatusCode();
 
             entity = response.getEntity();
@@ -845,7 +848,7 @@ public class WebDavStore extends Store {
             }
 
             if (entity != null) {
-                istream = entity.getContent();
+                istream = WebDavHttpClient.getUngzippedContent(entity);
             }
         } catch (UnsupportedEncodingException uee) {
             Log.e(Email.LOG_TAG, "UnsupportedEncodingException: " + uee + "\nTrace: " + processException(uee));
@@ -1349,7 +1352,7 @@ public class WebDavStore extends Store {
          * Fetches the full messages or up to lines lines and passes them to the message parser.
          */
         private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines) throws MessagingException {
-            DefaultHttpClient httpclient;
+            WebDavHttpClient httpclient;
             httpclient = getHttpClient();
             
             /**
@@ -1391,7 +1394,7 @@ public class WebDavStore extends Store {
                     if (mAuthString != null && mAuthenticated) {
                         httpget.setHeader("Authorization", mAuthString);
                     }
-                    response = httpclient.execute(httpget);
+                    response = httpclient.executeOverride(httpget);
                     
                     statusCode = response.getStatusLine().getStatusCode();
 
@@ -1412,7 +1415,7 @@ public class WebDavStore extends Store {
                         BufferedReader reader;
                         int currentLines = 0;
                             
-                        istream = entity.getContent();
+                        istream = WebDavHttpClient.getUngzippedContent(entity);
                             
                         if (lines != -1) {
                             reader = new BufferedReader(new InputStreamReader(istream), 8192);
@@ -1667,7 +1670,7 @@ public class WebDavStore extends Store {
             Message[] retMessages = new Message[messages.length];
             int ind = 0;
             
-            DefaultHttpClient httpclient = getHttpClient();
+            WebDavHttpClient httpclient = getHttpClient();
             
             for (Message message : messages)
             {
@@ -1719,7 +1722,7 @@ public class WebDavStore extends Store {
                         httpmethod.setHeader("Authorization", mAuthString);
                     }
     
-                    response = httpclient.execute(httpmethod);
+                    response = httpclient.executeOverride(httpmethod);
                     statusCode = response.getStatusLine().getStatusCode();
     
                     if (statusCode < 200 ||
@@ -2236,5 +2239,50 @@ public class WebDavStore extends Store {
                 METHOD_NAME = method;
             }
         }
+    }
+    public static class WebDavHttpClient extends DefaultHttpClient
+    {
+        /*
+        * Copyright (C) 2007 The Android Open Source Project
+        *
+        * Licensed under the Apache License, Version 2.0 (the "License");
+        * you may not use this file except in compliance with the License.
+        * You may obtain a copy of the License at
+        *
+        *      http://www.apache.org/licenses/LICENSE-2.0
+        *
+        * Unless required by applicable law or agreed to in writing, software
+        * distributed under the License is distributed on an "AS IS" BASIS,
+        * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        * See the License for the specific language governing permissions and
+        * limitations under the License.
+        */
+        public static void modifyRequestToAcceptGzipResponse(HttpRequest request) {
+            Log.i(Email.LOG_TAG, "Requesting gzipped data");
+            request.addHeader("Accept-Encoding", "gzip");
+        }
+        public static InputStream getUngzippedContent(HttpEntity entity)
+        throws IOException {
+            InputStream responseStream = entity.getContent();
+            if (responseStream == null) return responseStream;
+            Header header = entity.getContentEncoding();
+            if (header == null) return responseStream;
+            String contentEncoding = header.getValue();
+            if (contentEncoding == null) return responseStream;
+            if (contentEncoding.contains("gzip")) 
+            {
+                Log.i(Email.LOG_TAG, "Response is gzipped");
+                responseStream = new GZIPInputStream(responseStream);
+            }
+            return responseStream;
+        }
+        
+        
+        public HttpResponse executeOverride(HttpUriRequest request) throws IOException
+        {
+            modifyRequestToAcceptGzipResponse(request);
+            return super.execute(request);
+        }
+        
     }
 }
