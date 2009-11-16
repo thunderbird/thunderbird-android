@@ -30,6 +30,9 @@
             android:key="account_default"
             android:title="@string/account_settings_default_label"
             android:summary="@string/account_settings_default_summary" />
+	   	</PreferenceCategory>
+	
+		<PreferenceCategory android:title="@string/account_settings_message_lists">
 
         <ListPreference
             android:key="account_display_count"
@@ -37,6 +40,9 @@
             android:entries="@array/account_settings_display_count_entries"
             android:entryValues="@array/account_settings_display_count_values"
             android:dialogTitle="@string/account_settings_mail_display_count_label" />
+	   	</PreferenceCategory>
+	
+		<PreferenceCategory android:title="@string/account_settings_message_view">
 
        <ListPreference
             android:key="hide_buttons_enum"
@@ -45,17 +51,9 @@
             android:entryValues="@array/account_settings_hide_buttons_values"
             android:dialogTitle="@string/account_settings_hide_buttons_label" />
 
-		<Preference
-            android:key="account_setup_auto_expand_folder"
-            android:singleLine="true"
-            android:title="@string/account_setup_auto_expand_folder"
-            android:summary=""
-            />
-
 	   	</PreferenceCategory>
 	
-    	<PreferenceCategory android:title="@string/account_settings_display_sync">
-
+		<PreferenceCategory android:title="@string/account_settings_sync">
         <ListPreference
             android:key="account_check_frequency"
             android:title="@string/account_settings_mail_check_frequency_label"
@@ -78,6 +76,29 @@
             android:dialogTitle="@string/account_settings_folder_push_mode_label" />   
             
         <ListPreference
+        	android:key="delete_policy"
+        	android:title="@string/account_setup_incoming_delete_policy_label"
+        	android:entries="@array/account_setup_delete_policy_entries"
+        	android:entryValues="@array/account_setup_delete_policy_values"
+        	android:dialogTitle="@string/account_setup_incoming_delete_policy_label" />
+            
+        <PreferenceScreen
+            android:key="incoming"
+			android:title="@string/account_settings_incoming_label"
+			android:summary="@string/account_settings_incoming_summary"
+			/>
+
+	   	</PreferenceCategory>
+	
+	<PreferenceCategory android:title="@string/account_settings_folders">
+
+		<Preference
+            android:key="account_setup_auto_expand_folder"
+            android:singleLine="true"
+            android:title="@string/account_setup_auto_expand_folder"
+            android:summary=""
+            />
+        <ListPreference
             android:key="folder_display_mode"
             android:title="@string/account_settings_folder_display_mode_label"
             android:entries="@array/account_settings_folder_display_mode_entries"
@@ -91,23 +112,30 @@
             android:entryValues="@array/account_settings_folder_target_mode_values"
             android:dialogTitle="@string/account_settings_folder_target_mode_label" />
            
-            
-        <ListPreference
-        	android:key="delete_policy"
-        	android:title="@string/account_setup_incoming_delete_policy_label"
-        	android:entries="@array/account_setup_delete_policy_entries"
-        	android:entryValues="@array/account_setup_delete_policy_values"
-        	android:dialogTitle="@string/account_setup_incoming_delete_policy_label" />
            
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_settings_composition">
 
         <PreferenceScreen
             android:key="composition"
-            android:title="@string/account_settings_composition_label" />
+			android:summary="@string/account_settings_composition_summary"
+			android:title="@string/account_settings_composition_label"
+
+			/>
 
         <PreferenceScreen
             android:key="manage_identities"
-            android:title="@string/account_settings_identities_label" />
+			android:title="@string/account_settings_identities_label"
+			android:summary="@string/account_settings_identities_summary"
+		   />
 
+        <PreferenceScreen
+            android:key="outgoing"
+			android:title="@string/account_settings_outgoing_label"
+			android:summary="@string/account_settings_outgoing_summary"
+		
+			/>
 
     </PreferenceCategory>
 
@@ -142,18 +170,5 @@
             android:summary="@string/account_settings_notify_sync_summary" />
 
     </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/account_settings_servers">
-    
-        <PreferenceScreen
-            android:key="incoming"
-            android:title="@string/account_settings_incoming_label" />
-
-        <PreferenceScreen
-            android:key="outgoing"
-            android:title="@string/account_settings_outgoing_label" />
-    </PreferenceCategory>
-
-  
 
 </PreferenceScreen>
