@@ -496,43 +496,45 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mSignatureView.addTextChangedListener(sigwatcher);
         
         if (!mSourceMessageProcessed) {
-        updateFrom();
-        updateSignature();
-               
-        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_FORWARD.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
-            /*
-             * If we need to load the message we add ourself as a message listener here
-             * so we can kick it off. Normally we add in onResume but we don't
-             * want to reload the message every time the activity is resumed.
-             * There is no harm in adding twice.
-             */
-            MessagingController.getInstance(getApplication()).addListener(mListener);
-            MessagingController.getInstance(getApplication()).loadMessageForView( mAccount, mFolder, mSourceMessageUid, null);
-        }
+            updateFrom();
+            updateSignature();
 
-        if (!ACTION_EDIT_DRAFT.equals(action)) {
-            String bccAddress = mAccount.getAlwaysBcc();
-            if (bccAddress!=null
-                && !"".equals(bccAddress)) {
-                addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
+            if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_FORWARD.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
+                /*
+                 * If we need to load the message we add ourself as a message listener here
+                 * so we can kick it off. Normally we add in onResume but we don't
+                 * want to reload the message every time the activity is resumed.
+                 * There is no harm in adding twice.
+                 */
+                MessagingController.getInstance(getApplication()).addListener(mListener);
+                MessagingController.getInstance(getApplication()).loadMessageForView( mAccount, mFolder, mSourceMessageUid, null);
             }
-        }
-        
-        Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
-        if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null) {
-          Log.d(Email.LOG_TAG, "Setting message ANSWERED flag to true");
-          // TODO: Really, we should wait until we send the message, but that would require saving the original
-          // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
-            MessagingController.getInstance(getApplication()).setMessageFlag(mAccount, mFolder, mSourceMessageUid, Flag.ANSWERED, true);
-        }
 
-        updateTitle();
-    }
+            if (!ACTION_EDIT_DRAFT.equals(action)) {
+                String bccAddress = mAccount.getAlwaysBcc();
+                if (bccAddress!=null
+                    && !"".equals(bccAddress)) {
+                    addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
+                }
+            }
+
+            Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
+            if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null) {
+              Log.d(Email.LOG_TAG, "Setting message ANSWERED flag to true");
+              // TODO: Really, we should wait until we send the message, but that would require saving the original
+              // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
+                MessagingController.getInstance(getApplication()).setMessageFlag(mAccount, mFolder, mSourceMessageUid, Flag.ANSWERED, true);
+            }
+
+            updateTitle();
+        }
 
         if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
             //change focus to message body.
             mMessageContentView.requestFocus();
         }
+
+        mDraftNeedsSaving = false;
     }
 
     public void onResume() {
@@ -819,6 +821,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     private void onSave() {
+        mDraftNeedsSaving = true;
         saveIfNeeded();
         finish();
     }
