@@ -1077,7 +1077,7 @@ public class FolderList extends K9ListActivity {
             
             if (folder.pushActive)
             {
-                statusText = statusText + " "+ getString(R.string.folder_push_active_symbol);
+                statusText = getString(R.string.folder_push_active_symbol) + " "+ statusText;
             }
 
             if (statusText != null) {
