@@ -848,15 +848,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void addAttachment(Uri uri, int size, String name) {
         ContentResolver contentResolver = getContentResolver();
 
-        String contentType = contentResolver.getType(uri);
-
-        if (contentType == null) {
-            contentType = "";
-        }
-
         Attachment attachment = new Attachment();
         attachment.name = name;
-        attachment.contentType = contentType;
         attachment.size = size;
         attachment.uri = uri;
 
@@ -881,6 +874,30 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (attachment.name == null) {
             attachment.name = uri.getLastPathSegment();
         }
+
+        String contentType = contentResolver.getType(uri);
+
+        if (contentType == null) {
+            boolean found = false;
+            if (attachment.name!=null) {
+                int index = attachment.name.lastIndexOf('.');
+                if (index!=-1) {
+                    String extension = attachment.name.substring(index+1).toLowerCase();
+                    for (int i=0; i<Email.CONTENT_TYPE_BY_EXTENSION_MAP.length; i++) {
+                        if (Email.CONTENT_TYPE_BY_EXTENSION_MAP[i][0].equals(extension)) {
+                            contentType = Email.CONTENT_TYPE_BY_EXTENSION_MAP[i][1];
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!found) {
+                contentType = "application/octet-stream";
+            }
+        }
+
+        attachment.contentType = contentType;
 
         View view = getLayoutInflater().inflate( R.layout.message_compose_attachment, mAttachments, false);
         TextView nameView = (TextView)view.findViewById(R.id.attachment_name);
