@@ -982,6 +982,7 @@ public class MessageView extends K9Activity
         return true;
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_view_option, menu);
@@ -997,7 +998,13 @@ public class MessageView extends K9Activity
        }
         return true;
     }
-    
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        setMenuFlag();
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     private void setMenuFlag()
     {
       Menu menu = optionsMenu;
