@@ -2,7 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-	android:layout_height="fill_parent"
+    android:layout_height="fill_parent"
     android:layout_width="fill_parent">
 
 <ScrollView
@@ -21,11 +21,19 @@
             android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorPrimary"
-           />
+            />
         <Spinner
             android:id="@+id/account_check_frequency"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
+        <CheckBox
+            android:id="@+id/account_enable_push"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textColor="?android:attr/textColorPrimary"
+            android:text="@string/account_setup_options_enable_push_label"
+            android:summary="@string/account_setup_options_enable_push_summary"
+           />
         <TextView
             android:text="@string/account_setup_options_mail_display_count_label"
             android:layout_height="wrap_content"
@@ -60,20 +68,20 @@
             android:layout_height="fill_parent"
             android:layout_weight="1" />
     </LinearLayout>
-	</ScrollView>
+    </ScrollView>
     <RelativeLayout 
         android:layout_marginTop="-54dip" 
         android:gravity="bottom|right"
         android:layout_height="wrap_content" 
         android:layout_width="fill_parent">
-		<Button
-			android:id="@+id/next"
-			android:text="@string/next_action"
+        <Button
+            android:id="@+id/next"
+            android:text="@string/next_action"
             android:layout_width="wrap_content"
             android:minWidth="@dimen/button_minWidth"
             android:layout_height="wrap_content"
             android:drawableRight="@drawable/button_indicator_next"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="false" />
-	</RelativeLayout>
+    </RelativeLayout>
 </LinearLayout>

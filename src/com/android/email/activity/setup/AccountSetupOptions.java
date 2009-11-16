@@ -5,6 +5,7 @@ import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.Spinner;
 import com.android.email.Account;
 import com.android.email.Email;
 import com.android.email.Preferences;
+import com.android.email.mail.Store;
 import com.android.email.R;
 
 public class AccountSetupOptions extends K9Activity implements OnClickListener {
@@ -29,6 +31,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
     private CheckBox mNotifyView;
     private CheckBox mNotifySyncView;
+    private CheckBox mPushEnable;
 
     private Account mAccount;
 
@@ -49,6 +52,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mDefaultView = (CheckBox)findViewById(R.id.account_default);
         mNotifyView = (CheckBox)findViewById(R.id.account_notify);
         mNotifySyncView = (CheckBox)findViewById(R.id.account_notify_sync);
+        mPushEnable = (CheckBox)findViewById(R.id.account_enable_push);
 
         findViewById(R.id.next).setOnClickListener(this);
 
@@ -114,6 +118,27 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
                 .getAutomaticCheckIntervalMinutes());
         SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
                 .getDisplayCount());
+
+
+        boolean isPushCapable = false;
+        try
+        {
+			Store store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+            isPushCapable = store.isPushCapable();
+        }
+        catch (Exception e)
+        {
+            Log.e(Email.LOG_TAG, "Could not get remote store", e);
+        }
+
+
+		if(!isPushCapable) {
+			mPushEnable.setVisibility(View.GONE);
+		} else {
+            mPushEnable.setChecked(true);
+		}
+
+
     }
 
     private void onDone() {
@@ -124,6 +149,13 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
                 .getSelectedItem()).value);
         mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView
                 .getSelectedItem()).value);
+
+		if (mPushEnable.isChecked()) {
+			mAccount.setFolderPushMode(Account.FolderMode.FIRST_CLASS);
+		} else {
+			mAccount.setFolderPushMode(Account.FolderMode.NONE);
+        }
+
         mAccount.save(Preferences.getPreferences(this));
         if (mDefaultView.isChecked()) {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);

@@ -344,7 +344,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android based 
     <string name="account_setup_options_mail_check_frequency_6hour">Every 6 hours</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Every 12 hours</string>
     <string name="account_setup_options_mail_check_frequency_24hour">Every 24 hours</string>
-    
+
+
+    <string name="account_setup_options_enable_push_label">Enable server push for this account</string>
+    <string name="account_setup_options_enable_push_summary">If your server supports it, new messages will appear instantly. This option can dramatically improve or hurt performance.</string>
+
     <string name="account_setup_options_default_label">Send mail from this account by default</string>
     <string name="account_setup_options_notify_label">Notify me when mail arrives</string>
     <string name="account_setup_options_notify_sync_label">Notify me while mail is being checked</string>
