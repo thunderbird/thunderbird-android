@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.webkit.WebSettings;
 import android.webkit.CacheManager;
 import android.webkit.UrlInterceptHandler;
 import android.webkit.WebView;
@@ -429,13 +430,21 @@ public class MessageView extends K9Activity
         mDateView = (TextView)findViewById(R.id.date);
         mTimeView = (TextView)findViewById(R.id.time);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
-        //mMessageContentView.setWebViewClient(new MessageWebViewClient());
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
 
 
-        mMessageContentView.setVerticalScrollBarEnabled(false);
+        mMessageContentView.setVerticalScrollBarEnabled(true);
+        mMessageContentView.setVerticalScrollbarOverlay(true);
+        mMessageContentView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
+        final WebSettings webSettings = mMessageContentView.getSettings();
+
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+
         mAttachments.setVisibility(View.GONE);
         mAttachmentIcon.setVisibility(View.GONE);
 
@@ -456,7 +465,6 @@ public class MessageView extends K9Activity
 
         setOnClickListener(R.id.show_pictures);
 
-        mMessageContentView.getSettings().setSupportZoom(true);
 
         setTitle("");
 
