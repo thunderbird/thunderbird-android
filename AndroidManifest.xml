@@ -7,7 +7,9 @@
 	   android:targetSdkVersion="4"
 	   />
    <supports-screens
-
+		largeScreens="true"
+		normalScreens="true"
+		smallScreens="true"
 	/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
