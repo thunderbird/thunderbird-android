@@ -45,12 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
         <CheckBox
-            android:id="@+id/account_default"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textColor="?android:attr/textColorPrimary"
-            android:text="@string/account_setup_options_default_label" />
-        <CheckBox
             android:id="@+id/account_notify"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"

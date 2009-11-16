@@ -27,7 +27,6 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
     private Spinner mDisplayCountView;
     
-    private CheckBox mDefaultView;
 
     private CheckBox mNotifyView;
     private CheckBox mNotifySyncView;
@@ -49,7 +48,6 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
         mCheckFrequencyView = (Spinner)findViewById(R.id.account_check_frequency);
         mDisplayCountView = (Spinner)findViewById(R.id.account_display_count);
-        mDefaultView = (CheckBox)findViewById(R.id.account_default);
         mNotifyView = (CheckBox)findViewById(R.id.account_notify);
         mNotifySyncView = (CheckBox)findViewById(R.id.account_notify_sync);
         mPushEnable = (CheckBox)findViewById(R.id.account_enable_push);
@@ -107,11 +105,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mDisplayCountView.setAdapter(displayCountsAdapter);
         
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
-        boolean makeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
-        if (mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()) || makeDefault) {
-            mDefaultView.setChecked(true);
-        }
         mNotifyView.setChecked(mAccount.isNotifyNewMail());
         mNotifySyncView.setChecked(mAccount.isShowOngoing());
         SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
@@ -157,7 +151,8 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         }
 
         mAccount.save(Preferences.getPreferences(this));
-        if (mDefaultView.isChecked()) {
+        if (mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()) ||
+			getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false) ) {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);
         }
         Email.setServicesEnabled(this);
