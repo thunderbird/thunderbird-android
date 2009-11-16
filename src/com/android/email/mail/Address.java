@@ -130,11 +130,7 @@ public class Address {
     @Override
     public String toString() {
         if (mPersonal != null) {
-            // if (mPersonal.matches(".*[\\(\\)<>@,;:\\\\\".\\[\\]].*")) {
-                return Utility.quoteString(mPersonal) + " <" + mAddress + ">";
-            // } else {
-            //     return mPersonal + " <" + mAddress + ">";
-            // }
+            return Utility.quoteString(mPersonal) + " <" + mAddress + ">";
         } else {
             return mAddress;
         }
