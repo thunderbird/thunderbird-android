@@ -127,6 +127,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private View mQuotedTextBar;
     private ImageButton mQuotedTextDelete;
     private EditText mQuotedText;
+    
+    private String mReferences;
+    private String mInReplyTo;
 
     private boolean mDraftNeedsSaving = false;
 
@@ -640,8 +643,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         message.setRecipients(RecipientType.CC, getAddresses(mCcView));
         message.setRecipients(RecipientType.BCC, getAddresses(mBccView));
         message.setSubject(mSubjectView.getText().toString());
-        // XXX TODO - not sure why this won't add header
-        // message.setHeader("X-User-Agent", getString(R.string.message_header_mua));
+        message.setHeader("X-User-Agent", getString(R.string.message_header_mua));
+        
+        if (mInReplyTo != null) {
+        	message.setInReplyTo(mInReplyTo);
+        }
+       
+        if (mReferences != null) {
+        	message.setReferences(mReferences);
+        }
+        
 
         /*
          * Build the Body that will contain the text of the message. We'll decide where to
@@ -1085,6 +1096,26 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     addAddresses(mToView, replyToAddresses = message.getFrom());
                 }
                 
+                if (message.getMessageId() != null && message.getMessageId().length() > 0) {
+                	String messageId = message.getMessageId();
+                	mInReplyTo = messageId;
+                	
+                    if (message.getReferences() != null && message.getReferences().length > 0) {
+                    	StringBuffer buffy = new StringBuffer();
+                    	for (int i=0; i < message.getReferences().length; i++) 
+                    		buffy.append(message.getReferences()[i]);
+                    	
+                    	mReferences = buffy.toString() + " " + mInReplyTo;
+                    } 
+                    else {
+                    	mReferences = mInReplyTo;
+                    }
+
+                } 
+                else {
+                	Log.d(Email.LOG_TAG, "could not get Message-ID.");
+                }
+                                             
                 Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage,
                         "text/plain");
                 if (part != null) {

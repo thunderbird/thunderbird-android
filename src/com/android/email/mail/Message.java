@@ -66,6 +66,14 @@ public abstract class Message implements Part, Body {
 
     public abstract void setReplyTo(Address[] from) throws MessagingException;
 
+    public abstract String getMessageId() throws MessagingException;
+    
+    public abstract void setInReplyTo(String inReplyTo) throws MessagingException;
+    
+    public abstract String[] getReferences() throws MessagingException;
+    
+    public abstract void setReferences(String references) throws MessagingException;
+    
     public abstract Body getBody() throws MessagingException;
 
     public abstract String getContentType() throws MessagingException;

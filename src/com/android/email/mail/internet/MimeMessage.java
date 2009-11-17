@@ -19,6 +19,9 @@ import org.apache.james.mime4j.MimeStreamParser;
 import org.apache.james.mime4j.field.DateTimeField;
 import org.apache.james.mime4j.field.Field;
 
+import android.util.Log;
+
+import com.android.email.Email;
 import com.android.email.mail.Address;
 import com.android.email.mail.Body;
 import com.android.email.mail.BodyPart;
@@ -37,6 +40,11 @@ public class MimeMessage extends Message {
     protected Address[] mCc;
     protected Address[] mBcc;
     protected Address[] mReplyTo;
+    
+    protected String mMessageId;
+    protected String[] mReferences;
+    protected String[] mInReplyTo;
+    
     protected Date mSentDate;
     protected SimpleDateFormat mDateFormat;
    
@@ -56,6 +64,7 @@ public class MimeMessage extends Message {
         sb.append(".");
         sb.append(Long.toString(System.currentTimeMillis()));
         sb.append("@email.android.com>");
+        
         return sb.toString();
     }
 
@@ -77,6 +86,11 @@ public class MimeMessage extends Message {
         mCc = null;
         mBcc = null;
         mReplyTo = null;
+        
+        mMessageId = null;
+        mReferences = null;
+        mInReplyTo = null;
+        
         mSentDate = null;
         
         mBody = null;
@@ -259,6 +273,28 @@ public class MimeMessage extends Message {
         }
     }
 
+    public String getMessageId() throws MessagingException {
+    	if (mMessageId == null) {
+    		mMessageId = getFirstHeader("Message-ID");
+    	}
+    	return mMessageId; 
+    }
+    
+    public void setInReplyTo(String inReplyTo) throws MessagingException {
+    	setHeader("In-Reply-To", inReplyTo);
+    }
+    
+    public String[] getReferences() throws MessagingException {
+    	if (mReferences == null) {
+    		mReferences = getHeader("References");
+    	}
+    	return mReferences;
+    }
+    
+    public void setReferences(String references) throws MessagingException {
+    	setHeader("References", references);
+    }
+    
     public void saveChanges() throws MessagingException {
         throw new MessagingException("saveChanges not yet implemented");
     }
