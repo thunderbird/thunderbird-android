@@ -35,6 +35,7 @@ import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.CheckBox;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -353,6 +354,19 @@ public class MessageList extends K9ListActivity {
         context.startActivity(intent);
     }
 
+	public void onListItemClick(ListView parent, View v, int position, long id) {
+        if ((position+1) == (mAdapter.getCount() )) {
+            MessagingController.getInstance(getApplication()).loadMoreMessages(
+                                    mAccount,
+                                    mFolderName,
+                                    mAdapter.mListener);
+            return;
+        } else {
+            MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem( position);
+            onOpenMessage( message);
+        }
+	}
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         //Debug.startMethodTracing("k9");
@@ -393,24 +407,8 @@ public class MessageList extends K9ListActivity {
             mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
         }
 
-        mListView.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView parent, View v, int itemPosition, long id){
-                    if ((itemPosition+1) == (mAdapter.getCount() )) {
-                        
-                        MessagingController.getInstance(getApplication()).loadMoreMessages(
-                                                mAccount,
-                                                mFolderName,
-                                                mAdapter.mListener);                        
-
-                        return;
-                    } else { 
-                        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem( itemPosition);
-                        onOpenMessage( message);
-                    }
-            }
 
 
-        });
 
         /*
         * Since the color chip is always the same color for a given account we just
@@ -1417,6 +1415,7 @@ public class MessageList extends K9ListActivity {
                 holder.from = (TextView) view.findViewById(R.id.from);
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
+
                 holder.chip.setBackgroundResource(colorChipResId);
                 view.setTag(holder);
             }
