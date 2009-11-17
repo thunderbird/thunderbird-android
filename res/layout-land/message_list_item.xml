@@ -19,7 +19,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:singleLine="true"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_width="50dip"
+        android:layout_width="70dip"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
     <TextView
@@ -43,7 +43,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
         android:layout_marginRight="1dip"
-	android:layout_toRightOf="@+id/chip"
+	    android:layout_toRightOf="@+id/chip"
         android:layout_toLeftOf="@+id/from" />
 </RelativeLayout>
-
