@@ -2,17 +2,26 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="20dip"
+    android:layout_height="wrap_content"
     android:paddingRight="1dip"
     android:paddingTop="2dip"
     android:background="@drawable/message_list_item_background">
+	<CheckBox
+		android:id="@+id/flagged"
+		android:layout_width="wrap_content"
+		android:layout_height="23dip"
+		android:focusable="false"
+		style="?android:attr/starStyle"
+		android:layout_gravity="center_vertical"
+		android:layout_alignParentRight="true"
+		/>
     <View
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
         android:layout_width="4dip"
         android:layout_height="20dip"
         android:layout_centerVertical="true"
-	android:layout_alignParentLeft="true" />
+	    android:layout_alignParentLeft="true" />
     <TextView
         android:id="@+id/date"
         android:ellipsize="end"
@@ -21,7 +30,7 @@
         android:textColor="?android:attr/textColorPrimary"
         android:layout_width="70dip"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
+        android:layout_toLeftOf="@+id/flagged" />
     <TextView
         android:id="@+id/from"
         android:ellipsize="end"
