@@ -82,12 +82,11 @@ public abstract class Folder {
      * @param listener
      */
     public abstract Message[] getMessages(MessageRetrievalListener listener)
-            throws MessagingException;
+           throws MessagingException;
 
-
-    public abstract Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted)
-            throws MessagingException;
-
+    public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
+           return getMessages(listener);
+    }
 
     public abstract Message[] getMessages(String[] uids, MessageRetrievalListener listener)
             throws MessagingException;

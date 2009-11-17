@@ -493,11 +493,6 @@ public class Pop3Store extends Store {
             mUidToMsgNumMap.put(message.getUid(), msgNum);
         }
 
-		@Override
-        public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
-            return getMessages(listener);
-        }
-
         @Override
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
             throw new UnsupportedOperationException("Pop3: No getMessages");

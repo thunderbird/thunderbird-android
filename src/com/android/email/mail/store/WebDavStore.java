@@ -1248,10 +1248,6 @@ public class WebDavStore extends Store {
             return messages.toArray(new Message[] {});
         }
  
-		@Override
-        public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
-            return getMessages(listener);
-        }
 
         @Override
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {

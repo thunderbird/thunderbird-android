@@ -709,10 +709,6 @@ public class ImapStore extends Store {
             return messages.toArray(new Message[] {});
         }
 
-		@Override
-        public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
-            return getMessages(listener);
-        }
 
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
             return getMessages(null, listener);
