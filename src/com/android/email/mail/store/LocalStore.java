@@ -67,7 +67,7 @@ import java.io.StringReader;
  * </pre>
  */
 public class LocalStore extends Store implements Serializable {
-    private static final int DB_VERSION = 29;
+    private static final int DB_VERSION = 30;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -130,14 +130,16 @@ public class LocalStore extends Store implements Serializable {
             
  
             AttachmentProvider.clear(application);
-            
+           
+		if ( mDb.getVersion() < 29 ) {
+
             mDb.execSQL("DROP TABLE IF EXISTS folders");
             mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
                     + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER)");
 
             mDb.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
             mDb.execSQL("DROP TABLE IF EXISTS messages");
-            mDb.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, folder_id INTEGER, uid TEXT, subject TEXT, "
+            mDb.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
                     + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
                     + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT)");
 
@@ -163,7 +165,13 @@ public class LocalStore extends Store implements Serializable {
             mDb.execSQL("DROP TRIGGER IF EXISTS delete_message");
             mDb.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
                     + "DELETE FROM headers where old.id = message_id; END;");
-            
+			}
+
+			else if ( mDb.getVersion() < 30 ) {
+				mDb.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");	
+				mDb.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
+			}
+
             mDb.setVersion(DB_VERSION);
             if (mDb.getVersion() != DB_VERSION) {
                 throw new Error("Database upgrade failed!");
@@ -1090,6 +1098,11 @@ public class LocalStore extends Store implements Serializable {
 
         @Override
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException {
+			return getMessages(listener, true);
+		} 
+			
+        @Override
+        public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
             open(OpenMode.READ_WRITE);
             ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
             Cursor cursor = null;
@@ -1098,8 +1111,11 @@ public class LocalStore extends Store implements Serializable {
                 cursor = mDb.rawQuery(
                         "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
                         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
-                                + "FROM messages " + "WHERE folder_id = ? ORDER BY date DESC"
-                                , new String[] {
+                        + "FROM messages " 
+						+ "WHERE " 
+						+ (includeDeleted ? "" : "deleted = 0")
+						+ " folder_id = ? ORDER BY date DESC"
+                        , new String[] {
                             Long.toString(mFolderId)
                         });
 
@@ -1840,6 +1856,7 @@ public class LocalStore extends Store implements Serializable {
 
               mDb.execSQL(
                         "UPDATE messages SET " +
+						"deleted = 1," +
                         "subject = NULL, " +
                         "sender_list = NULL, " +
                         "date = NULL, " +
@@ -1897,7 +1914,7 @@ public class LocalStore extends Store implements Serializable {
             /*
              * Set the flags on the message.
              */
-            mDb.execSQL("UPDATE messages " + "SET flags = ? " + "WHERE id = ?", new Object[] {
+            mDb.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[] {
                     Utility.combine(getFlags(), ',').toUpperCase(), mId
             });
         }

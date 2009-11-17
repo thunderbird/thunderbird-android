@@ -623,7 +623,8 @@ public class MessagingController implements Runnable {
                             public void messagesFinished(int number) {
                             }
 
-                        } 
+                        },
+                        true // Skip deleted messages    
                 );
                 MessageContainer messCont = new MessageContainer();
                 messCont.last = true;
