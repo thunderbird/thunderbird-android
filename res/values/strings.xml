@@ -182,7 +182,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="debug_enable_sensitive_logging_title">Log sensitive information(May show passwords in logs.)</string>
     <string name="debug_enable_sensitive_logging_summary">May show passwords in logs.</string>
 
-    <string name="message_header_mua">K-9 for Android <xliff:g id="version">%s</xliff:g></string>
+    <string name="message_header_mua">K-9 for Android</string>
 
     <string name="combined_inbox_title">All Email</string>
     <string name="combined_inbox_label">Recent messages from all accounts</string>
