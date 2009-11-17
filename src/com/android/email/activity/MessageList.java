@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -1415,20 +1416,36 @@ public class MessageList extends K9ListActivity {
                 holder.from = (TextView) view.findViewById(R.id.from);
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
+				holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
+				holder.flagged.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					// Perform action on clicks
+				MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
+				onToggleFlag(message);
+				}
+				});
 
                 holder.chip.setBackgroundResource(colorChipResId);
                 view.setTag(holder);
             }
 
+
             if (message != null) {
                 holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
-                holder.subject.setTypeface(null, message.read && !message.flagged ? Typeface.NORMAL  : Typeface.BOLD);
+                holder.subject.setTypeface(null, message.read ? Typeface.NORMAL  : Typeface.BOLD);
 
                 int subjectColor = holder.from.getCurrentTextColor();  // Get from another field that never changes color 
 
+				holder.flagged.setTag((Integer)position);
+
                 if (message.flagged) {
-                    subjectColor = Email.FLAGGED_COLOR;
-                } 
+					holder.flagged.setChecked(true);
+                } else {
+					holder.flagged.setChecked(false);
+				}
+
+
+
 
                 if (message.downloaded) {
                     holder.chip.getBackground().setAlpha(message.read ? 0 : 127);
@@ -1663,6 +1680,7 @@ public class MessageList extends K9ListActivity {
             public TextView preview;
             public TextView from;
             public TextView date;
+			public CheckBox flagged;
             public View chip;
         }
 

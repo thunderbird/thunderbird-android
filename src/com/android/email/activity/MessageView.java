@@ -257,11 +257,11 @@ public class MessageView extends K9Activity
                     mCcView.setText(values[5]);
                     mAttachmentIcon.setVisibility(msg.arg1 == 1 ? View.VISIBLE : View.GONE);
                     if ((msg.arg2 & FLAG_FLAGGED) != 0) {
-                      mSubjectView.setTextColor(0xff000000 | Email.FLAGGED_COLOR);
+
+
                     }
-                    else {
-                      mSubjectView.setTextColor(0xff000000 | defaultSubjectColor );
-                    }
+                    mSubjectView.setTextColor(0xff000000 | defaultSubjectColor );
+
                     if ((msg.arg2 & FLAG_ANSWERED) != 0) {
                         Drawable answeredIcon = getResources().getDrawable(
                             R.drawable.ic_mms_answered_small);
