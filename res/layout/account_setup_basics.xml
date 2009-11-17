@@ -4,7 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="6dip"
-    
       >
       <TextView
         android:text="@string/account_setup_basics_instructions"
