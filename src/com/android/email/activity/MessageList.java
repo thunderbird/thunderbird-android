@@ -563,13 +563,13 @@ public class MessageList extends K9ListActivity {
             MessageCompose.actionEditDraft(this, mAccount, message.message);
         } else {
 	    // Need to get the list before the sort starts
-            ArrayList<String> folderUids = new ArrayList<String>();
+            ArrayList<String> messageUids = new ArrayList<String>();
 
             for (MessageInfoHolder holder : mAdapter.messages) {
-                folderUids.add(holder.uid);
+                messageUids.add(holder.uid);
             }
 
-            MessageView.actionView(this, mAccount, message.folder.name, message.uid, folderUids);
+            MessageView.actionView(this, mAccount, message.folder.name, message.uid, messageUids);
         }
         /*
         * We set read=true here for UI performance reasons. The actual value will
@@ -659,12 +659,6 @@ public class MessageList extends K9ListActivity {
         if (holder.read == false && holder.folder.unreadMessageCount > 0) {
             holder.folder.unreadMessageCount--;
         }
-
-//        FolderInfoHolder trashHolder = mAdapter.getFolder(mAccount.getTrashFolderName());
-//
-//        if (trashHolder != null) {
-//            trashHolder.needsRefresh = true;
-//        }
 
         mAdapter.removeMessage(holder);
         mListView.setSelection(position);

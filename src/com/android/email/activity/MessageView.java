@@ -77,7 +77,7 @@ public class MessageView extends K9Activity
     private static final String EXTRA_ACCOUNT = "com.android.email.MessageView_account";
     private static final String EXTRA_FOLDER = "com.android.email.MessageView_folder";
     private static final String EXTRA_MESSAGE = "com.android.email.MessageView_message";
-    private static final String EXTRA_FOLDER_UIDS = "com.android.email.MessageView_folderUids";
+    private static final String EXTRA_MESSAGE_UIDS = "com.android.email.MessageView_messageUids";
     private static final String EXTRA_NEXT = "com.android.email.MessageView_next";
 
     private static final String CID_PREFIX  = "http://cid/";
@@ -106,7 +106,7 @@ public class MessageView extends K9Activity
     private Account mAccount;
     private String mFolder;
     private String mMessageUid;
-    private ArrayList<String> mFolderUids;
+    private ArrayList<String> mMessageUids;
 
     private Message mMessage;
     private String mNextMessageUid = null;
@@ -409,7 +409,7 @@ public class MessageView extends K9Activity
         i.putExtra(EXTRA_ACCOUNT, account);
         i.putExtra(EXTRA_FOLDER, folder);
         i.putExtra(EXTRA_MESSAGE, messageUid);
-        i.putExtra(EXTRA_FOLDER_UIDS, folderUids);
+        i.putExtra(EXTRA_MESSAGE_UIDS, folderUids);
         if (extras != null) {
             i.putExtras(extras);
         }
@@ -487,14 +487,14 @@ public class MessageView extends K9Activity
             mAccount = (Account) icicle.getSerializable(EXTRA_ACCOUNT);
             mFolder = icicle.getString(EXTRA_FOLDER);
             mMessageUid = icicle.getString(EXTRA_MESSAGE);
-            mFolderUids = icicle.getStringArrayList(EXTRA_FOLDER_UIDS);
+            mMessageUids = icicle.getStringArrayList(EXTRA_MESSAGE_UIDS);
         }
         else {
             if (uri==null) {
                 mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
                 mFolder = intent.getStringExtra(EXTRA_FOLDER);
                 mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
-                mFolderUids = intent.getStringArrayListExtra(EXTRA_FOLDER_UIDS);
+                mMessageUids = intent.getStringArrayListExtra(EXTRA_MESSAGE_UIDS);
 
                 Log.v(Email.LOG_TAG, "mAccount number: " + mAccount.getAccountNumber());
                 Log.v(Email.LOG_TAG, "mFolder: " + mFolder);
@@ -524,7 +524,7 @@ public class MessageView extends K9Activity
                     }
                     mFolder = segmentList.get(1);
                     mMessageUid = segmentList.get(2);
-                    mFolderUids = new ArrayList<String>();                    
+                    mMessageUids = new ArrayList<String>();                    
                 }
                 else {
                     for (String segment : segmentList) {
@@ -583,7 +583,7 @@ public class MessageView extends K9Activity
         outState.putSerializable(EXTRA_ACCOUNT, mAccount);
         outState.putString(EXTRA_FOLDER, mFolder);
         outState.putString(EXTRA_MESSAGE, mMessageUid);
-        outState.putStringArrayList(EXTRA_FOLDER_UIDS, mFolderUids);
+        outState.putStringArrayList(EXTRA_MESSAGE_UIDS, mMessageUids);
     }
 
     private void displayMessage(String uid)
@@ -634,13 +634,13 @@ public class MessageView extends K9Activity
 
     private void findSurroundingMessagesUid() {
         mNextMessageUid = mPreviousMessageUid = null;
-        int i = mFolderUids.indexOf(mMessageUid);
+        int i = mMessageUids.indexOf(mMessageUid);
         if(i < 0)
             return;
         if(i != 0)
-            mNextMessageUid = mFolderUids.get(i - 1);
-        if(i != (mFolderUids.size() - 1))
-            mPreviousMessageUid = mFolderUids.get(i + 1);
+            mNextMessageUid = mMessageUids.get(i - 1);
+        if(i != (mMessageUids.size() - 1))
+            mPreviousMessageUid = mMessageUids.get(i + 1);
     }
 
     public void onResume() {
@@ -657,7 +657,7 @@ public class MessageView extends K9Activity
            findSurroundingMessagesUid();
 
             // Remove this message's Uid locally
-            mFolderUids.remove(messageToDelete.getUid());
+            mMessageUids.remove(messageToDelete.getUid());
             
             MessagingController.getInstance(getApplication()).deleteMessage(
                 accountForDelete,
