@@ -65,17 +65,10 @@ import com.android.email.mail.store.LocalStore.LocalMessage;
 
 /**
  * MessageList is the primary user interface for the program. This
- * Activity shows a two level list of the Account's folders and each folder's
- * messages. From this Activity the user can perform all standard message
+ * Activity shows a list of messages.
+ * From this Activity the user can perform all standard message
  * operations.
  *
- *
- * TODO Break out seperate functions for: refresh local folders refresh remote
- * folders refresh open folder local messages refresh open folder remote
- * messages
- *
- * And don't refresh remote folders ever unless the user runs a refresh. Maybe
- * not even then.
  */
 
 public class MessageList extends K9ListActivity {
