@@ -43,6 +43,7 @@ import android.webkit.WebView;
 import android.webkit.CacheManager.CacheResult;
 import android.webkit.PluginData;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -91,6 +92,7 @@ public class MessageView extends K9Activity
     private TextView mToView;
     private TextView mCcView;
     private TextView mSubjectView;
+    private CheckBox mFlagged;
     private int defaultSubjectColor;
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
@@ -257,10 +259,12 @@ public class MessageView extends K9Activity
                     mCcView.setText(values[5]);
                     mAttachmentIcon.setVisibility(msg.arg1 == 1 ? View.VISIBLE : View.GONE);
                     if ((msg.arg2 & FLAG_FLAGGED) != 0) {
-
-
+                        mFlagged.setChecked(true);
+                    } else {
+                        mFlagged.setChecked(false);
                     }
                     mSubjectView.setTextColor(0xff000000 | defaultSubjectColor );
+
 
                     if ((msg.arg2 & FLAG_ANSWERED) != 0) {
                         Drawable answeredIcon = getResources().getDrawable(
@@ -433,6 +437,14 @@ public class MessageView extends K9Activity
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
+
+
+        mFlagged = (CheckBox)findViewById(R.id.flagged);
+        mFlagged.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) { onFlag(); } });
+
+
+
 
 
         mMessageContentView.setVerticalScrollBarEnabled(true);

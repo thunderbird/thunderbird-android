@@ -7,6 +7,15 @@
         android:layout_height="wrap_content"
         android:padding="2dip"
         android:background="@android:color/transparent">
+    <CheckBox
+        android:id="@+id/flagged"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        style="?android:attr/starStyle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        />
         <TextView
             android:id="@+id/from"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -50,15 +59,26 @@
                 android:layout_marginLeft="4dip"
                 android:singleLine="false"
                 android:ellipsize="none" />
+        </LinearLayout>
            <TextView
                 android:id="@+id/time"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorPrimary"
+                android:textSize="10sp"
                 android:layout_width="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_below="@id/flagged"
                 android:layout_alignParentRight="true"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+           <TextView
+                android:id="@+id/date"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="10sp"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_width="wrap_content"
+                android:gravity="bottom|right"
+                android:layout_below="@id/time"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content" />
         <LinearLayout
             android:id="@+id/cc_container"
             android:layout_width="fill_parent"
@@ -85,14 +105,6 @@
                 android:layout_marginLeft="4dip"
                 android:singleLine="false"
                 android:ellipsize="none" />
-           <TextView
-                android:id="@+id/date"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
