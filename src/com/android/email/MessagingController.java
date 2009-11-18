@@ -2469,6 +2469,33 @@ public class MessagingController implements Runnable {
         });
     }
 
+
+	public boolean messagesPendingSend(final Account account) {
+		try {
+			Folder localFolder = null;
+            Store localStore = Store.getInstance(
+                    account.getLocalStoreUri(),
+                    mApplication);
+            localFolder = localStore.getFolder(
+                    account.getOutboxFolderName());
+            if (!localFolder.exists()) {
+                return false;
+            }
+
+            localFolder.open(OpenMode.READ_WRITE);
+
+            int localMessages = localFolder.getMessageCount();
+			localFolder.close(false);
+			if (localMessages > 0) {
+				return true;
+			}
+		}
+        catch (Exception e) {
+            Log.e(Email.LOG_TAG, "Exception while checking for unsent messages", e);
+        }
+		return false;
+	}
+
     /**
      * Attempt to send any messages that are sitting in the Outbox.
      * @param account
@@ -3056,6 +3083,7 @@ public class MessagingController implements Runnable {
 	                  	
                     	putBackground("sendPending " + account.getDescription(), null, new Runnable() {
                         public void run() {
+                        if ( messagesPendingSend(account)) {
                           if (account.isShowOngoing()) {
                             Notification notif = new Notification(R.drawable.ic_menu_refresh, 
                                 context.getString(R.string.notification_bg_send_ticker, account.getDescription()), System.currentTimeMillis());                         
@@ -3085,8 +3113,9 @@ public class MessagingController implements Runnable {
                         	  }
                           }
                         }
-                    	}
-                    	);
+                        }
+                        }
+                        );
 	                    try
 	                    {
 	                    	Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
