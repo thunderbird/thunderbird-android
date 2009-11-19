@@ -29,12 +29,15 @@ import android.provider.Contacts;
 import android.provider.Contacts.Intents;
 import android.util.Config;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.MotionEvent;
 import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
 import android.webkit.CacheManager;
@@ -111,6 +114,12 @@ public class MessageView extends K9Activity
     private Message mMessage;
     private String mNextMessageUid = null;
     private String mPreviousMessageUid = null;
+
+    private static final float SWIPE_MIN_DISTANCE_DIP = 100.0f;
+    private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
+    private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 200f;
+
+    private GestureDetector gestureDetector;
 
     private DateFormat dateFormat = null;
     private DateFormat timeFormat = null;
@@ -419,6 +428,7 @@ public class MessageView extends K9Activity
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
+
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_NO_TITLE); 
 
@@ -434,6 +444,7 @@ public class MessageView extends K9Activity
         mDateView = (TextView)findViewById(R.id.date);
         mTimeView = (TextView)findViewById(R.id.time);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
+
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
@@ -441,11 +452,8 @@ public class MessageView extends K9Activity
 
         mFlagged = (CheckBox)findViewById(R.id.flagged);
         mFlagged.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) { onFlag(); } });
-
-
-
-
+            public void onClick(View v) { onFlag(); }
+        });
 
         mMessageContentView.setVerticalScrollBarEnabled(true);
         mMessageContentView.setVerticalScrollbarOverlay(true);
@@ -545,6 +553,10 @@ public class MessageView extends K9Activity
 
         next_scrolling = findViewById(R.id.next_scrolling);
         previous_scrolling = findViewById(R.id.previous_scrolling);
+
+
+        // Gesture detection
+        gestureDetector = new GestureDetector(new MyGestureDetector());
 
         boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
         if (goNext) {
@@ -917,6 +929,12 @@ public class MessageView extends K9Activity
     private void onShowPictures() {
         mMessageContentView.getSettings().setBlockNetworkImage(false);
         mShowPicturesSection.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev){
+        super.dispatchTouchEvent(ev);
+        return gestureDetector.onTouchEvent(ev);
     }
 
     public void onClick(View view) {
@@ -1461,5 +1479,37 @@ public class MessageView extends K9Activity
             }
         }
     }
+
+
+
+    class MyGestureDetector extends SimpleOnGestureListener {
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+        // Convert the dips to pixels
+        final float mGestureScale = getResources().getDisplayMetrics().density;
+       int min_distance = (int) (SWIPE_MIN_DISTANCE_DIP * mGestureScale + 0.5f);
+       int min_velocity = (int) (SWIPE_THRESHOLD_VELOCITY_DIP * mGestureScale + 0.5f);
+       int max_off_path = (int) (SWIPE_MAX_OFF_PATH_DIP * mGestureScale + 0.5f);
+
+
+        try {
+            if (Math.abs(e1.getY() - e2.getY()) > max_off_path )
+                return false;
+            // right to left swipe
+            if(e1.getX() - e2.getX() > min_distance && Math.abs(velocityX) > min_velocity ) {
+                onPrevious();
+            }  else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity) {
+                onNext();
+            }
+        } catch (Exception e) {
+            // nothing
+        }
+        return false;
+    }
+
+
+}
+
 
 }
