@@ -1933,7 +1933,7 @@ public class ImapStore extends Store {
                                 Log.e(Email.LOG_TAG, "Unable to get oldUidNext", e);
                             }
                            
-                            List<ImapResponse> responses = internalOpen(OpenMode.READ_ONLY);
+                            List<ImapResponse> responses = internalOpen(OpenMode.READ_WRITE);
                             if (mConnection == null)
                             {
                                 receiver.pushError("Could not establish connection for IDLE", null);
