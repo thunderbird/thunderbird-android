@@ -1498,9 +1498,9 @@ public class MessageView extends K9Activity
                 return false;
             // right to left swipe
             if(e1.getX() - e2.getX() > min_distance && Math.abs(velocityX) > min_velocity ) {
-                onPrevious();
-            }  else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity) {
                 onNext();
+            }  else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity) {
+                onPrevious();
             }
         } catch (Exception e) {
             // nothing
