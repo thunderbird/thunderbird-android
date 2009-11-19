@@ -445,10 +445,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             addressList = "";
             if (extraEmail != null) {
                 arraySize = extraEmail.length;
-                if (arraySize > 1) {
-                    for (i=0; i < arraySize; i++) {
-                        addressList += extraEmail[i]+", ";
-                    }
+                for (i=0; i < arraySize; i++) {
+                    addressList += extraEmail[i]+", ";
                 }
             }
             mToView.setText(addressList);
@@ -456,10 +454,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             addressList = "";
             if (extraCc != null) {
                 arraySize = extraCc.length;
-                if (arraySize > 1) {
-                    for (i=0; i < arraySize; i++) {
-                        addressList += extraCc[i]+", ";
-                    }
+                for (i=0; i < arraySize; i++) {
+                    addressList += extraCc[i]+", ";
                 }
             }
             mCcView.setText(addressList);
@@ -467,10 +463,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             addressList = "";
             if (extraBcc != null) {
                 arraySize = extraBcc.length;
-                if (arraySize > 1) {
-                    for (i=0; i < arraySize; i++) {
-                        addressList += extraBcc[i]+", ";
-                    }
+                for (i=0; i < arraySize; i++) {
+                    addressList += extraBcc[i]+", ";
                 }
             }
             mBccView.setText(addressList);
