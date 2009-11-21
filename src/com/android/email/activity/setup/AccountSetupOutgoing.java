@@ -32,23 +32,23 @@ import com.android.email.R;
 import com.android.email.Utility;
 
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
-        OnCheckedChangeListener {
+            OnCheckedChangeListener {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
     private static final int smtpPorts[] = {
-            25, 465, 465, 25, 25
+        25, 465, 465, 25, 25
     };
 
     private static final String smtpSchemes[] = {
-            "smtp", "smtp+ssl", "smtp+ssl+", "smtp+tls", "smtp+tls+"
+        "smtp", "smtp+ssl", "smtp+ssl+", "smtp+tls", "smtp+tls+"
     };
     private static final int webdavPorts[] = {
         80, 443, 443, 443, 443
     };
     private static final String webdavSchemes[] = {
-    	"webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
+        "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
     };
 
     private EditText mUsernameView;
@@ -82,18 +82,18 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         setContentView(R.layout.account_setup_outgoing);
 
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
-        
-        try {
-			if (new URI(mAccount.getStoreUri()).getScheme().startsWith("webdav")) {
-				mAccount.setTransportUri(mAccount.getStoreUri());
-				AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
-			}
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-        
+        try {
+            if (new URI(mAccount.getStoreUri()).getScheme().startsWith("webdav")) {
+                mAccount.setTransportUri(mAccount.getStoreUri());
+                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+            }
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
         mUsernameView = (EditText)findViewById(R.id.account_username);
         mPasswordView = (EditText)findViewById(R.id.account_password);
         mServerView = (EditText)findViewById(R.id.account_server);
@@ -107,13 +107,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mRequireLoginView.setOnCheckedChangeListener(this);
 
         SpinnerOption securityTypes[] = {
-                new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
-                new SpinnerOption(1,
-                        getString(R.string.account_setup_incoming_security_ssl_optional_label)),
-                new SpinnerOption(2, getString(R.string.account_setup_incoming_security_ssl_label)),
-                new SpinnerOption(3,
-                        getString(R.string.account_setup_incoming_security_tls_optional_label)),
-                new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
+            new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
+            new SpinnerOption(1,
+            getString(R.string.account_setup_incoming_security_ssl_optional_label)),
+            new SpinnerOption(2, getString(R.string.account_setup_incoming_security_ssl_label)),
+            new SpinnerOption(3,
+            getString(R.string.account_setup_incoming_security_tls_optional_label)),
+            new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
@@ -225,12 +225,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     private void validateFields() {
         mNextButton
-                .setEnabled(
-                        Utility.domainFieldValid(mServerView) && 
-                        Utility.requiredFieldValid(mPortView) && 
-                        (!mRequireLoginView.isChecked() || 
-                                (Utility.requiredFieldValid(mUsernameView) && 
-                                        Utility.requiredFieldValid(mPasswordView))));
+        .setEnabled(
+            Utility.domainFieldValid(mServerView) &&
+            Utility.requiredFieldValid(mPortView) &&
+            (!mRequireLoginView.isChecked() ||
+             (Utility.requiredFieldValid(mUsernameView) &&
+              Utility.requiredFieldValid(mPasswordView))));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
@@ -259,10 +259,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             String userInfo = null;
             if (mRequireLoginView.isChecked()) {
                 userInfo = mUsernameView.getText().toString() + ":"
-                        + mPasswordView.getText().toString();
+                           + mPasswordView.getText().toString();
             }
             uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
-                    Integer.parseInt(mPortView.getText().toString()), null, null, null);
+                          Integer.parseInt(mPortView.getText().toString()), null, null, null);
             mAccount.setTransportUri(uri.toString());
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
         } catch (Exception e) {
@@ -272,14 +272,14 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
              */
             failure(e);
         }
-        
+
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.next:
-                onNext();
-                break;
+        case R.id.next:
+            onNext();
+            break;
         }
     }
 
@@ -287,11 +287,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mRequireLoginSettingsView.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         validateFields();
     }
-    private void failure(Exception use)
-    {
+    private void failure(Exception use) {
         Log.e(Email.LOG_TAG, "Failure", use);
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
-        
+
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
         toast.show();
     }

@@ -25,7 +25,7 @@ public class AccountSetupComposition extends K9Activity {
     private EditText mAccountName;
     private RadioButton mAccountSignatureBeforeLocation;
     private RadioButton mAccountSignatureAfterLocation;
-    
+
 
     public static void actionEditCompositionSettings(Activity context, Account account) {
         Intent i = new Intent(context, AccountSetupComposition.class);
@@ -53,7 +53,7 @@ public class AccountSetupComposition extends K9Activity {
 
         mAccountName = (EditText)findViewById(R.id.account_name);
         mAccountName.setText(mAccount.getName());
-        
+
         mAccountEmail = (EditText)findViewById(R.id.account_email);
         mAccountEmail.setText(mAccount.getEmail());
 
@@ -78,7 +78,7 @@ public class AccountSetupComposition extends K9Activity {
 
     private void saveSettings() {
         mAccount.setEmail(mAccountEmail.getText().toString());
-        mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString()); 
+        mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
         mAccount.setName(mAccountName.getText().toString());
         mAccount.setSignature(mAccountSignature.getText().toString());
         boolean isSignatureBeforeQuotedText = mAccountSignatureBeforeLocation.isChecked();
@@ -103,7 +103,7 @@ public class AccountSetupComposition extends K9Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                mAccount.save(Preferences.getPreferences(this));
-                finish();
+        mAccount.save(Preferences.getPreferences(this));
+        finish();
     }
 }

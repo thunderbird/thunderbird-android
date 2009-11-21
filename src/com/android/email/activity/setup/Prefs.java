@@ -36,9 +36,9 @@ public class Prefs extends K9PreferenceActivity {
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
-    
+
     private String initBackgroundOps;
-    
+
 
     public static void actionPrefs(Context context) {
         Intent i = new Intent(context, Prefs.class);
@@ -64,7 +64,7 @@ public class Prefs extends K9PreferenceActivity {
                 return false;
             }
         });
-        
+
         mBackgroundOps = (ListPreference) findPreference(PREFERENCE_BACKGROUND_OPS);
         initBackgroundOps = Email.getBackgroundOps().toString();
         mBackgroundOps.setValue(initBackgroundOps);
@@ -78,13 +78,13 @@ public class Prefs extends K9PreferenceActivity {
                 return false;
             }
         });
-        
+
         mDebugLogging = (CheckBoxPreference)findPreference(PREFERENCE_DEBUG_LOGGING);
         mSensitiveLogging = (CheckBoxPreference)findPreference(PREFERENCE_SENSITIVE_LOGGING);
 
         mDebugLogging.setChecked(Email.DEBUG);
         mSensitiveLogging.setChecked(Email.DEBUG_SENSITIVE);
-        
+
     }
 
     @Override
@@ -100,12 +100,11 @@ public class Prefs extends K9PreferenceActivity {
         String newBackgroundOps = mBackgroundOps.getValue();
         Email.setBackgroundOps(newBackgroundOps);
         Email.save(preferences);
-        if (newBackgroundOps.equals(initBackgroundOps) == false)
-        {
+        if (newBackgroundOps.equals(initBackgroundOps) == false) {
             MailService.backgroundDataChanged(this);
         }
     }
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

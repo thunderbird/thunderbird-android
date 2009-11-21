@@ -42,7 +42,7 @@ import com.android.email.Utility;
  * AccountSetupAccountType activity.
  */
 public class AccountSetupBasics extends K9Activity
-        implements OnClickListener, TextWatcher {
+            implements OnClickListener, TextWatcher {
     private final static String EXTRA_ACCOUNT = "com.android.email.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;
     private final static String STATE_KEY_PROVIDER =
@@ -122,9 +122,9 @@ public class AccountSetupBasics extends K9Activity
     private void validateFields() {
         String email = mEmailView.getText().toString();
         boolean valid = Utility.requiredFieldValid(mEmailView)
-                && Utility.requiredFieldValid(mPasswordView)
-                && mEmailValidator.isValid(email);
-                /*&& email.contains("@"); */ // Not sure if this is a good idea or not
+                        && Utility.requiredFieldValid(mPasswordView)
+                        && mEmailValidator.isValid(email);
+        /*&& email.contains("@"); */ // Not sure if this is a good idea or not
         mNextButton.setEnabled(valid);
         mManualSetupButton.setEnabled(valid);
         /*
@@ -137,32 +137,26 @@ public class AccountSetupBasics extends K9Activity
 
     private String getOwnerName() {
         String name = null;
-        try
-        {
+        try {
             String projection[] = {
                 ContactMethods.NAME
             };
             Cursor c = getContentResolver().query(
-                    // TODO: For Android 2.0, needs to change to ContactsContract.People...
-                    Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"), projection, null, null,
-                    null);
+                           // TODO: For Android 2.0, needs to change to ContactsContract.People...
+                           Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"), projection, null, null,
+                           null);
             if (c.getCount() > 0) {
                 c.moveToFirst();
                 name = c.getString(0);
                 c.close();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(Email.LOG_TAG, "Could not get owner name, using default account name", e);
         }
         if (name == null || name.length() == 0) {
-            try
-            {
+            try {
                 name = getDefaultAccountName();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e(Email.LOG_TAG, "Could not get default account name", e);
             }
         }
@@ -171,9 +165,8 @@ public class AccountSetupBasics extends K9Activity
         }
         return name;
     }
-    
-    private String getDefaultAccountName()
-    {
+
+    private String getDefaultAccountName() {
         String name = null;
         Account account = Preferences.getPreferences(this).getDefaultAccount();
         if (account != null) {
@@ -187,18 +180,18 @@ public class AccountSetupBasics extends K9Activity
         if (id == DIALOG_NOTE) {
             if (mProvider != null && mProvider.note != null) {
                 return new AlertDialog.Builder(this)
-                    .setMessage(mProvider.note)
-                    .setPositiveButton(
-                            getString(R.string.okay_action),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finishAutoSetup();
-                                }
-                            })
-                    .setNegativeButton(
-                            getString(R.string.cancel_action),
-                            null)
-                    .create();
+                       .setMessage(mProvider.note)
+                       .setPositiveButton(
+                           getString(R.string.okay_action),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAutoSetup();
+                    }
+                })
+                       .setNegativeButton(
+                           getString(R.string.cancel_action),
+                           null)
+                       .create();
             }
         }
         return null;
@@ -220,8 +213,8 @@ public class AccountSetupBasics extends K9Activity
 
             URI incomingUriTemplate = mProvider.incomingUriTemplate;
             incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUsername + ":"
-                    + password, incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null,
-                    null, null);
+                                  + password, incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null,
+                                  null, null);
 
             String outgoingUsername = mProvider.outgoingUsernameTemplate;
             outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
@@ -230,8 +223,8 @@ public class AccountSetupBasics extends K9Activity
 
             URI outgoingUriTemplate = mProvider.outgoingUriTemplate;
             outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUsername + ":"
-                    + password, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
-                    null, null);
+                                  + password, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
+                                  null, null);
         } catch (URISyntaxException use) {
             /*
              * If there is some problem with the URI we give up and go on to
@@ -271,8 +264,7 @@ public class AccountSetupBasics extends K9Activity
 
         if (mProvider.note != null) {
             showDialog(DIALOG_NOTE);
-        }
-        else {
+        } else {
             finishAutoSetup();
         }
     }
@@ -303,7 +295,7 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setEmail(email);
         try {
             URI uri = new URI("placeholder", user + ":" + password, "mail." + domain, -1, null,
-                    null, null);
+                              null, null);
             mAccount.setStoreUri(uri.toString());
             mAccount.setTransportUri(uri.toString());
         } catch (URISyntaxException use) {
@@ -323,12 +315,12 @@ public class AccountSetupBasics extends K9Activity
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.next:
-                onNext();
-                break;
-            case R.id.manual_setup:
-                onManualSetup();
-                break;
+        case R.id.next:
+            onNext();
+            break;
+        case R.id.manual_setup:
+            onManualSetup();
+            break;
         }
     }
 
@@ -343,8 +335,7 @@ public class AccountSetupBasics extends K9Activity
         int resId = xml.getAttributeResourceValue(null, name, 0);
         if (resId == 0) {
             return xml.getAttributeValue(null, name);
-        }
-        else {
+        } else {
             return getString(resId);
         }
     }
@@ -363,34 +354,29 @@ public class AccountSetupBasics extends K9Activity
                     provider.label = getXmlAttribute(xml, "label");
                     provider.domain = getXmlAttribute(xml, "domain");
                     provider.note = getXmlAttribute(xml, "note");
-                }
-                else if (xmlEventType == XmlResourceParser.START_TAG
-                        && "incoming".equals(xml.getName())
-                        && provider != null) {
+                } else if (xmlEventType == XmlResourceParser.START_TAG
+                           && "incoming".equals(xml.getName())
+                           && provider != null) {
                     provider.incomingUriTemplate = new URI(getXmlAttribute(xml, "uri"));
                     provider.incomingUsernameTemplate = getXmlAttribute(xml, "username");
-                }
-                else if (xmlEventType == XmlResourceParser.START_TAG
-                        && "outgoing".equals(xml.getName())
-                        && provider != null) {
+                } else if (xmlEventType == XmlResourceParser.START_TAG
+                           && "outgoing".equals(xml.getName())
+                           && provider != null) {
                     provider.outgoingUriTemplate = new URI(getXmlAttribute(xml, "uri"));
                     provider.outgoingUsernameTemplate = getXmlAttribute(xml, "username");
-                }
-                else if (xmlEventType == XmlResourceParser.END_TAG
-                        && "provider".equals(xml.getName())
-                        && provider != null) {
+                } else if (xmlEventType == XmlResourceParser.END_TAG
+                           && "provider".equals(xml.getName())
+                           && provider != null) {
                     return provider;
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.e(Email.LOG_TAG, "Error while trying to load provider settings.", e);
         }
         return null;
     }
-    
-    private String[] splitEmail(String email)
-    {
+
+    private String[] splitEmail(String email) {
         String[] retParts = new String[2];
         String[] emailParts = email.split("@");
         retParts[0] = (emailParts.length > 0 ) ? emailParts[0] : "";

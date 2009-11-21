@@ -25,17 +25,17 @@ import com.android.email.mail.Folder.FolderClass;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 
 public class FolderSettings extends K9PreferenceActivity {
-	
+
     private static final String EXTRA_FOLDER_NAME = "com.android.email.folderName";
     private static final String EXTRA_ACCOUNT = "com.android.email.account";
-    
+
     private static final String PREFERENCE_TOP_CATERGORY = "folder_settings";
     private static final String PREFERENCE_DISPLAY_CLASS = "folder_settings_folder_display_mode";
     private static final String PREFERENCE_SYNC_CLASS = "folder_settings_folder_sync_mode";
     private static final String PREFERENCE_PUSH_CLASS = "folder_settings_folder_push_mode";
 
     private LocalFolder mFolder;
-    
+
     private ListPreference mDisplayClass;
     private ListPreference mSyncClass;
     private ListPreference mPushClass;
@@ -53,29 +53,23 @@ public class FolderSettings extends K9PreferenceActivity {
 
         String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
         Account mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
-        
-		try
-		{
-			Store localStore = Store.getInstance(mAccount.getLocalStoreUri(),
-					getApplication());
-			mFolder = (LocalFolder) localStore.getFolder(folderName);
-			mFolder.refresh(Preferences.getPreferences(this));
-		}
-		catch (MessagingException me)
-		{
-			Log.e(Email.LOG_TAG, "Unable to edit folder " + folderName + " preferences", me);
-			return;
-		}
-				
-		boolean isPushCapable = false;
+
+        try {
+            Store localStore = Store.getInstance(mAccount.getLocalStoreUri(),
+                                                 getApplication());
+            mFolder = (LocalFolder) localStore.getFolder(folderName);
+            mFolder.refresh(Preferences.getPreferences(this));
+        } catch (MessagingException me) {
+            Log.e(Email.LOG_TAG, "Unable to edit folder " + folderName + " preferences", me);
+            return;
+        }
+
+        boolean isPushCapable = false;
         Store store = null;
-        try
-        {
+        try {
             store = Store.getInstance(mAccount.getStoreUri(), getApplication());
             isPushCapable = store.isPushCapable();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(Email.LOG_TAG, "Could not get remote store", e);
         }
 
@@ -83,7 +77,7 @@ public class FolderSettings extends K9PreferenceActivity {
 
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
         category.setTitle(folderName);
-       
+
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);
         mDisplayClass.setValue(mFolder.getDisplayClass().name());
         mDisplayClass.setSummary(mDisplayClass.getEntry());
@@ -109,7 +103,7 @@ public class FolderSettings extends K9PreferenceActivity {
                 return false;
             }
         });
-        
+
         mPushClass = (ListPreference) findPreference(PREFERENCE_PUSH_CLASS);
         mPushClass.setEnabled(isPushCapable);
         mPushClass.setValue(mFolder.getRawPushClass().name());
@@ -128,30 +122,24 @@ public class FolderSettings extends K9PreferenceActivity {
     @Override
     public void onResume() {
         super.onResume();
-        try
-        {
-        	mFolder.refresh(Preferences.getPreferences(this));
-        }
-        catch (MessagingException me)
-        {
-        	Log.e(Email.LOG_TAG, "Could not refresh folder preferences for folder " + mFolder.getName(), me);
+        try {
+            mFolder.refresh(Preferences.getPreferences(this));
+        } catch (MessagingException me) {
+            Log.e(Email.LOG_TAG, "Could not refresh folder preferences for folder " + mFolder.getName(), me);
         }
     }
 
     private void saveSettings() {
-    	mFolder.setDisplayClass(FolderClass.valueOf(mDisplayClass.getValue()));
-     	mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
-     	mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
-        	
-     	try
-     	{
-     		mFolder.save(Preferences.getPreferences(this));
-     		Email.setServicesEnabled(this);
-     	}
-      catch (MessagingException me)
-      {
-      	Log.e(Email.LOG_TAG, "Could not refresh folder preferences for folder " + mFolder.getName(), me);
-      }
+        mFolder.setDisplayClass(FolderClass.valueOf(mDisplayClass.getValue()));
+        mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
+        mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
+
+        try {
+            mFolder.save(Preferences.getPreferences(this));
+            Email.setServicesEnabled(this);
+        } catch (MessagingException me) {
+            Log.e(Email.LOG_TAG, "Could not refresh folder preferences for folder " + mFolder.getName(), me);
+        }
     }
 
     @Override
@@ -162,5 +150,5 @@ public class FolderSettings extends K9PreferenceActivity {
         return super.onKeyDown(keyCode, event);
     }
 
- 
+
 }

@@ -33,26 +33,26 @@ import com.android.email.activity.ChooseFolder;
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
-    
+
     private static final int SELECT_DRAFT_FOLDER = 100;
     private static final int SELECT_SENT_FOLDER = 101;
     private static final int SELECT_TRASH_FOLDER = 102;
     private static final int SELECT_OUTBOX_FOLDER = 103;
 
     private static final int popPorts[] = {
-            110, 995, 995, 110, 110
+        110, 995, 995, 110, 110
     };
     private static final String popSchemes[] = {
-            "pop3", "pop3+ssl", "pop3+ssl+", "pop3+tls", "pop3+tls+"
+        "pop3", "pop3+ssl", "pop3+ssl+", "pop3+tls", "pop3+tls+"
     };
     private static final int imapPorts[] = {
-            143, 993, 993, 143, 143
+        143, 993, 993, 143, 143
     };
     private static final String imapSchemes[] = {
-            "imap", "imap+ssl", "imap+ssl+", "imap+tls", "imap+tls+"
+        "imap", "imap+ssl", "imap+ssl+", "imap+tls", "imap+tls+"
     };
     private static final int webdavPorts[] = {
-            80, 443, 443, 443, 443
+        80, 443, 443, 443, 443
     };
     private static final String webdavSchemes[] = {
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
@@ -119,13 +119,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mNextButton.setOnClickListener(this);
 
         SpinnerOption securityTypes[] = {
-                new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
-                new SpinnerOption(1,
-                        getString(R.string.account_setup_incoming_security_ssl_optional_label)),
-                new SpinnerOption(2, getString(R.string.account_setup_incoming_security_ssl_label)),
-                new SpinnerOption(3,
-                        getString(R.string.account_setup_incoming_security_tls_optional_label)),
-                new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
+            new SpinnerOption(0, getString(R.string.account_setup_incoming_security_none_label)),
+            new SpinnerOption(1,
+            getString(R.string.account_setup_incoming_security_ssl_optional_label)),
+            new SpinnerOption(2, getString(R.string.account_setup_incoming_security_ssl_label)),
+            new SpinnerOption(3,
+            getString(R.string.account_setup_incoming_security_tls_optional_label)),
+            new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
@@ -201,7 +201,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             if (password != null) {
                 mPasswordView.setText(password);
             }
-            
+
             mImapFolderDrafts.setText(mAccount.getDraftsFolderName());
             mImapFolderSent.setText(mAccount.getSentFolderName());
             mImapFolderTrash.setText(mAccount.getTrashFolderName());
@@ -217,8 +217,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
-                
-                
+
+
             } else if (uri.getScheme().startsWith("imap")) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
                 mAccountPorts = imapPorts;
@@ -249,17 +249,17 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     for (int i = 0, count = pathParts.length; i < count; i++) {
                         if (i == 0) {
                             if (pathParts[0] != null &&
-                                pathParts[0].length() > 1) {
+                                    pathParts[0].length() > 1) {
                                 mWebdavPathPrefixView.setText(pathParts[0].substring(1));
                             }
                         } else if (i == 1) {
                             if (pathParts[1] != null &&
-                                pathParts[1].length() > 1) {
+                                    pathParts[1].length() > 1) {
                                 mWebdavAuthPathView.setText(pathParts[1]);
                             }
                         } else if (i == 2) {
                             if (pathParts[2] != null &&
-                                pathParts[2].length() > 1) {
+                                    pathParts[2].length() > 1) {
                                 mWebdavMailboxPathView.setText(pathParts[2]);
                             }
                         }
@@ -301,16 +301,15 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
     private void validateFields() {
         mNextButton
-                .setEnabled(Utility.requiredFieldValid(mUsernameView)
-                        && Utility.requiredFieldValid(mPasswordView)
-                        && Utility.domainFieldValid(mServerView)
-                        && Utility.requiredFieldValid(mPortView));
+        .setEnabled(Utility.requiredFieldValid(mUsernameView)
+                    && Utility.requiredFieldValid(mPasswordView)
+                    && Utility.domainFieldValid(mServerView)
+                    && Utility.requiredFieldValid(mPortView));
         Utility.setCompoundDrawablesAlpha(mNextButton, mNextButton.isEnabled() ? 255 : 128);
     }
 
     private void updatePortFromSecurityType() {
-        if (mAccountPorts != null)
-        {
+        if (mAccountPorts != null) {
             int securityType = (Integer)((SpinnerOption)mSecurityTypeView.getSelectedItem()).value;
             mPortView.setText(Integer.toString(mAccountPorts[securityType]));
         }
@@ -319,20 +318,20 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-        	switch (requestCode) {
-        	case SELECT_DRAFT_FOLDER:
-        		mImapFolderDrafts.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
-        		return;
-        	case SELECT_SENT_FOLDER:
-        		mImapFolderSent.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
-        		return;
-        	case SELECT_TRASH_FOLDER:
-        		mImapFolderTrash.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
-        		return;
-        	case SELECT_OUTBOX_FOLDER:
-        		mImapFolderOutbox.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
-        		return;
-        	}
+            switch (requestCode) {
+            case SELECT_DRAFT_FOLDER:
+                mImapFolderDrafts.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+                return;
+            case SELECT_SENT_FOLDER:
+                mImapFolderSent.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+                return;
+            case SELECT_TRASH_FOLDER:
+                mImapFolderTrash.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+                return;
+            case SELECT_OUTBOX_FOLDER:
+                mImapFolderOutbox.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+                return;
+            }
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                 mAccount.save(Preferences.getPreferences(this));
                 finish();
@@ -344,13 +343,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 try {
                     URI oldUri = new URI(mAccount.getTransportUri());
                     URI uri = new URI(
-                            oldUri.getScheme(),
-                            mUsernameView.getText() + ":" + mPasswordView.getText(),
-                            oldUri.getHost(),
-                            oldUri.getPort(),
-                            null,
-                            null,
-                            null);
+                        oldUri.getScheme(),
+                        mUsernameView.getText() + ":" + mPasswordView.getText(),
+                        oldUri.getHost(),
+                        oldUri.getPort(),
+                        null,
+                        null,
+                        null);
                     mAccount.setTransportUri(uri.toString());
                 } catch (URISyntaxException use) {
                     /*
@@ -379,15 +378,15 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             URI uri = new URI(
-                    mAccountSchemes[securityType],
-                    mUsernameView.getText() + ":" + mPasswordView.getText(),
-                    mServerView.getText().toString(),
-                    Integer.parseInt(mPortView.getText().toString()),
-                    path, // path
-                    null, // query
-                    null);
+                mAccountSchemes[securityType],
+                mUsernameView.getText() + ":" + mPasswordView.getText(),
+                mServerView.getText().toString(),
+                Integer.parseInt(mPortView.getText().toString()),
+                path, // path
+                null, // query
+                null);
             mAccount.setStoreUri(uri.toString());
-            
+
 
             mAccount.setDraftsFolderName(mImapFolderDrafts.getText().toString());
             mAccount.setSentFolderName(mImapFolderSent.getText().toString());
@@ -401,64 +400,60 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     }
 
     public void onClick(View v) {
-        try
-        {
+        try {
             switch (v.getId()) {
-                case R.id.next:
-                    onNext();
-                    break;
-                case R.id.account_imap_folder_drafts:
-                	selectImapFolder(SELECT_DRAFT_FOLDER);
-                	break;
-                case R.id.account_imap_folder_sent:
-                	selectImapFolder(SELECT_SENT_FOLDER);
-                	break;
-                case R.id.account_imap_folder_trash:
-                	selectImapFolder(SELECT_TRASH_FOLDER);
-                	break;
-                case R.id.account_imap_folder_outbox:
-                	selectImapFolder(SELECT_OUTBOX_FOLDER);
-                	break;
+            case R.id.next:
+                onNext();
+                break;
+            case R.id.account_imap_folder_drafts:
+                selectImapFolder(SELECT_DRAFT_FOLDER);
+                break;
+            case R.id.account_imap_folder_sent:
+                selectImapFolder(SELECT_SENT_FOLDER);
+                break;
+            case R.id.account_imap_folder_trash:
+                selectImapFolder(SELECT_TRASH_FOLDER);
+                break;
+            case R.id.account_imap_folder_outbox:
+                selectImapFolder(SELECT_OUTBOX_FOLDER);
+                break;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             failure(e);
         }
     }
 
-	private void selectImapFolder(int activityCode) {
-		String curFolder = null;
-		switch (activityCode) {
-		case SELECT_DRAFT_FOLDER:
-			curFolder = mImapFolderDrafts.getText().toString();
-			break;
-		case SELECT_SENT_FOLDER:
-			curFolder = mImapFolderSent.getText().toString();
-			break;
-		case SELECT_TRASH_FOLDER:
-			curFolder = mImapFolderTrash.getText().toString();
-			break;
-		case SELECT_OUTBOX_FOLDER:
-			curFolder = mImapFolderOutbox.getText().toString();
-			break;
-		default:
-			throw new IllegalArgumentException(
-					"Cannot select folder for: " + activityCode);	
-		}
-		
-		Intent selectIntent = new Intent(this, ChooseFolder.class);
-		selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
-		selectIntent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, curFolder);
-		selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
-	    startActivityForResult(selectIntent, activityCode);
-	}
-	
-	private void failure(Exception use)
-    {
-	    Log.e(Email.LOG_TAG, "Failure", use);
+    private void selectImapFolder(int activityCode) {
+        String curFolder = null;
+        switch (activityCode) {
+        case SELECT_DRAFT_FOLDER:
+            curFolder = mImapFolderDrafts.getText().toString();
+            break;
+        case SELECT_SENT_FOLDER:
+            curFolder = mImapFolderSent.getText().toString();
+            break;
+        case SELECT_TRASH_FOLDER:
+            curFolder = mImapFolderTrash.getText().toString();
+            break;
+        case SELECT_OUTBOX_FOLDER:
+            curFolder = mImapFolderOutbox.getText().toString();
+            break;
+        default:
+            throw new IllegalArgumentException(
+                "Cannot select folder for: " + activityCode);
+        }
+
+        Intent selectIntent = new Intent(this, ChooseFolder.class);
+        selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        selectIntent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, curFolder);
+        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
+        startActivityForResult(selectIntent, activityCode);
+    }
+
+    private void failure(Exception use) {
+        Log.e(Email.LOG_TAG, "Failure", use);
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
-        
+
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
         toast.show();
     }

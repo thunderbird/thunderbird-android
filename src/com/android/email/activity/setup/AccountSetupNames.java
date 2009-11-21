@@ -59,7 +59,7 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
             }
         };
         mName.addTextChangedListener(validationTextWatcher);
-        
+
         mName.setKeyListener(TextKeyListener.getInstance(false, Capitalize.WORDS));
 
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
@@ -95,9 +95,9 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.done:
-                onNext();
-                break;
+        case R.id.done:
+            onNext();
+            break;
         }
     }
 }

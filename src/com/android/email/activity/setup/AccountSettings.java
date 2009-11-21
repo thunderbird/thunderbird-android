@@ -30,7 +30,7 @@ import com.android.email.mail.Store;
 
 public class AccountSettings extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
-    
+
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
@@ -88,16 +88,13 @@ public class AccountSettings extends K9PreferenceActivity {
 
         boolean isPushCapable = false;
         Store store = null;
-        try
-        {
+        try {
             store = Store.getInstance(mAccount.getStoreUri(), getApplication());
             isPushCapable = store.isPushCapable();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(Email.LOG_TAG, "Could not get remote store", e);
         }
-        
+
         addPreferencesFromResource(R.xml.account_settings_preferences);
 
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
@@ -128,7 +125,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
-        
+
         mDisplayMode = (ListPreference) findPreference(PREFERENCE_DISPLAY_MODE);
         mDisplayMode.setValue(mAccount.getFolderDisplayMode().name());
         mDisplayMode.setSummary(mDisplayMode.getEntry());
@@ -141,7 +138,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
- 
+
         mSyncMode = (ListPreference) findPreference(PREFERENCE_SYNC_MODE);
         mSyncMode.setValue(mAccount.getFolderSyncMode().name());
         mSyncMode.setSummary(mSyncMode.getEntry());
@@ -154,7 +151,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
-        
+
         mPushMode = (ListPreference) findPreference(PREFERENCE_PUSH_MODE);
         mPushMode.setEnabled(isPushCapable);
         mPushMode.setValue(mAccount.getFolderPushMode().name());
@@ -168,7 +165,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
-        
+
         mTargetMode = (ListPreference) findPreference(PREFERENCE_TARGET_MODE);
         mTargetMode.setValue(mAccount.getFolderTargetMode().name());
         mTargetMode.setSummary(mTargetMode.getEntry());
@@ -181,7 +178,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
-        
+
         mDeletePolicy = (ListPreference) findPreference(PREFERENCE_DELETE_POLICY);
         mDeletePolicy.setValue("" + mAccount.getDeletePolicy());
         mDeletePolicy.setSummary(mDeletePolicy.getEntry());
@@ -207,10 +204,10 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
-        
+
         mAccountDefault = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT);
         mAccountDefault.setChecked(
-                mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
+            mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
 
         mAccountHideButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
         mAccountHideButtons.setValue("" + mAccount.getHideMessageViewButtons());
@@ -224,7 +221,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 return false;
             }
         });
-           
+
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
         mAccountNotify.setChecked(mAccount.isNotifyNewMail());
 
@@ -244,46 +241,46 @@ public class AccountSettings extends K9PreferenceActivity {
         mAutoExpandFolder = (Preference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
 
         mAutoExpandFolder.setSummary(translateFolder(mAccount.getAutoExpandFolderName()));
-        
+
         mAutoExpandFolder.setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener() {
-              public boolean onPreferenceClick(Preference preference) {
+        new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
                 onChooseAutoExpandFolder();
-                  return false;
-              }
-          });
-        
+                return false;
+            }
+        });
+
         findPreference(PREFERENCE_COMPOSITION).setOnPreferenceClickListener(
-                new Preference.OnPreferenceClickListener() {
-                    public boolean onPreferenceClick(Preference preference) {
-                        onCompositionSettings();
-                        return true;
-                    }
-                });
+        new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                onCompositionSettings();
+                return true;
+            }
+        });
 
         findPreference(PREFERENCE_MANAGE_IDENTITIES).setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    onManageIdentities();
-                    return true;
-                }
-            });
+        new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                onManageIdentities();
+                return true;
+            }
+        });
 
         findPreference(PREFERENCE_INCOMING).setOnPreferenceClickListener(
-                new Preference.OnPreferenceClickListener() {
-                    public boolean onPreferenceClick(Preference preference) {
-                        onIncomingSettings();
-                        return true;
-                    }
-                });
+        new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                onIncomingSettings();
+                return true;
+            }
+        });
 
         findPreference(PREFERENCE_OUTGOING).setOnPreferenceClickListener(
-                new Preference.OnPreferenceClickListener() {
-                    public boolean onPreferenceClick(Preference preference) {
-                        onOutgoingSettings();
-                        return true;
-                    }
-                });
+        new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                onOutgoingSettings();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -315,15 +312,15 @@ public class AccountSettings extends K9PreferenceActivity {
         Email.setServicesEnabled(this);
         // TODO: refresh folder list here
     }
-    
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-          switch (requestCode) {
-          case SELECT_AUTO_EXPAND_FOLDER:
-            mAutoExpandFolder.setSummary(translateFolder(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER)));
-            break;
-          }
+            switch (requestCode) {
+            case SELECT_AUTO_EXPAND_FOLDER:
+                mAutoExpandFolder.setSummary(translateFolder(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER)));
+                break;
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -341,10 +338,10 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private void onManageIdentities() {
-      Intent intent = new Intent(this, ManageIdentities.class);
-      intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
-      startActivityForResult(intent, ACTIVITY_MANAGE_IDENTITIES);
-  }
+        Intent intent = new Intent(this, ManageIdentities.class);
+        intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
+        startActivityForResult(intent, ACTIVITY_MANAGE_IDENTITIES);
+    }
 
     private void onIncomingSettings() {
         AccountSetupIncoming.actionEditIncomingSettings(this, mAccount);
@@ -354,8 +351,7 @@ public class AccountSettings extends K9PreferenceActivity {
         AccountSetupOutgoing.actionEditOutgoingSettings(this, mAccount);
     }
 
-    public void onChooseAutoExpandFolder()
-    {
+    public void onChooseAutoExpandFolder() {
         Intent selectIntent = new Intent(this, ChooseFolder.class);
         selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
 
@@ -363,34 +359,26 @@ public class AccountSettings extends K9PreferenceActivity {
         selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
         selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_FOLDER_NONE, "yes");
         selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_DISPLAYABLE_ONLY, "yes");
-          startActivityForResult(selectIntent, SELECT_AUTO_EXPAND_FOLDER);
-            
-    }
-    
-    private String translateFolder(String in)
-    {
+        startActivityForResult(selectIntent, SELECT_AUTO_EXPAND_FOLDER);
 
-      if (Email.INBOX.equalsIgnoreCase(in))
-      {
-         return getString(R.string.special_mailbox_name_inbox);
-      }
-      else
-      {
-        return in;
-      }
     }
-    
-    private String reverseTranslateFolder(String in)
-    {
 
-      if (getString(R.string.special_mailbox_name_inbox).equals(in))
-      {
-         return Email.INBOX;
-      }
-      else
-      {
-        return in;
-      }
+    private String translateFolder(String in) {
+
+        if (Email.INBOX.equalsIgnoreCase(in)) {
+            return getString(R.string.special_mailbox_name_inbox);
+        } else {
+            return in;
+        }
+    }
+
+    private String reverseTranslateFolder(String in) {
+
+        if (getString(R.string.special_mailbox_name_inbox).equals(in)) {
+            return Email.INBOX;
+        } else {
+            return in;
+        }
     }
 
 }

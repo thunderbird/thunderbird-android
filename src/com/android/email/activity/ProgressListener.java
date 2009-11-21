@@ -16,7 +16,7 @@ public interface ProgressListener {
      * @param indeterminate
      */
     void showProgress(Context context, String title, String message, long currentProgress,
-            long maxProgress, boolean indeterminate);
+                      long maxProgress, boolean indeterminate);
 
     /**
      * @param context
@@ -27,7 +27,7 @@ public interface ProgressListener {
      * @param indeterminate
      */
     void updateProgress(Context context, String title, String message, long currentProgress,
-            long maxProgress, boolean indeterminate);
+                        long maxProgress, boolean indeterminate);
 
     /**
      * @param context

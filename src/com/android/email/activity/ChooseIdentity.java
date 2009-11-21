@@ -19,10 +19,9 @@ import com.android.email.K9ListActivity;
 import com.android.email.Preferences;
 import com.android.email.R;
 
-public class ChooseIdentity extends K9ListActivity
-{
+public class ChooseIdentity extends K9ListActivity {
     Account mAccount;
-    String	mUID;
+    String mUID;
     ArrayAdapter<String> adapter;
     private ChooseIdentityHandler mHandler = new ChooseIdentityHandler();
 
@@ -32,8 +31,7 @@ public class ChooseIdentity extends K9ListActivity
     protected List<Account.Identity> identities = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -52,86 +50,71 @@ public class ChooseIdentity extends K9ListActivity
 
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         refreshView();
     }
 
 
-    protected void refreshView()
-    {
+    protected void refreshView() {
         adapter.clear();
 
         identities = mAccount.getIdentities();
-        for (Account.Identity identity : identities)
-        {
+        for (Account.Identity identity : identities) {
             String email = identity.getEmail();
             String description = identity.getDescription();
-            if (description == null || description.trim().length() == 0)
-            {
-                 description = getString(R.string.message_view_from_format, identity.getName(), identity.getEmail());
+            if (description == null || description.trim().length() == 0) {
+                description = getString(R.string.message_view_from_format, identity.getName(), identity.getEmail());
             }
             adapter.add(description);
         }
 
     }
 
-    protected void setupClickListeners()
-    {
-        this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            public void onItemClick(AdapterView adapterview, View view, int i, long l)
-            {
+    protected void setupClickListeners() {
+        this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView adapterview, View view, int i, long l) {
                 Account.Identity identity = mAccount.getIdentity(i);
                 String email = identity.getEmail();
-                if (email != null && email.trim().equals("") == false)
-                {
-                  Intent intent = new Intent();
-  
-                  intent.putExtra(EXTRA_IDENTITY, mAccount.getIdentity(i));
-                  setResult(RESULT_OK, intent);
-                  finish();
-                }
-                else
-                {
+                if (email != null && email.trim().equals("") == false) {
+                    Intent intent = new Intent();
+
+                    intent.putExtra(EXTRA_IDENTITY, mAccount.getIdentity(i));
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else {
                     Toast.makeText(ChooseIdentity.this, getString(R.string.identity_has_no_email),
-                            Toast.LENGTH_LONG).show();
+                                   Toast.LENGTH_LONG).show();
                 }
             }
         });
 
     }
 
-    class ChooseIdentityHandler extends Handler
-    {
+    class ChooseIdentityHandler extends Handler {
 
         private static final int MSG_PROGRESS = 2;
         private static final int MSG_DATA_CHANGED = 3;
 
-        public void handleMessage(android.os.Message msg)
-        {
-            switch (msg.what)
-            {
-                case MSG_PROGRESS:
-                    setProgressBarIndeterminateVisibility(msg.arg1 != 0);
-                    break;
-                case MSG_DATA_CHANGED:
-                    adapter.notifyDataSetChanged();
-                    break;
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+            case MSG_PROGRESS:
+                setProgressBarIndeterminateVisibility(msg.arg1 != 0);
+                break;
+            case MSG_DATA_CHANGED:
+                adapter.notifyDataSetChanged();
+                break;
             }
         }
 
-        public void progress(boolean progress)
-        {
+        public void progress(boolean progress) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_PROGRESS;
             msg.arg1 = progress ? 1 : 0;
             sendMessage(msg);
         }
 
-        public void dataChanged()
-        {
+        public void dataChanged() {
             sendEmptyMessage(MSG_DATA_CHANGED);
         }
     }

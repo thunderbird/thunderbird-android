@@ -62,7 +62,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         } catch (Exception use) {
             failure(use);
         }
-        
+
     }
 
     private void onImap() {
@@ -75,7 +75,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         } catch (Exception use) {
             failure(use);
         }
-        
+
     }
 
     private void onWebDav() {
@@ -88,27 +88,26 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         } catch (Exception use) {
             failure(use);
         }
-        
+
     }
-    
+
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.pop:
-                onPop();
-                break;
-            case R.id.imap:
-                onImap();
-                break;
-            case R.id.webdav:
-                onWebDav();
-                break;
+        case R.id.pop:
+            onPop();
+            break;
+        case R.id.imap:
+            onImap();
+            break;
+        case R.id.webdav:
+            onWebDav();
+            break;
         }
     }
-    private void failure(Exception use)
-    {
+    private void failure(Exception use) {
         Log.e(Email.LOG_TAG, "Failure", use);
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
-        
+
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
         toast.show();
     }
