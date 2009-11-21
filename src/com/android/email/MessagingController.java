@@ -2168,7 +2168,11 @@ public class MessagingController implements Runnable {
                     LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
                     localFolder.open(OpenMode.READ_WRITE);
         
-                    Message message = localFolder.getMessage(uid);
+                    LocalMessage message = (LocalMessage)localFolder.getMessage(uid);
+                    if (message==null
+                        || message.getId()==0) {
+                        throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
+                    }
                                 
                     for (MessagingListener l : getListeners()) {
                         l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
