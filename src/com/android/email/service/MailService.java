@@ -250,6 +250,7 @@ public class MailService extends Service {
     
     private void notifyConnectionStatus(boolean hasConnectivity)
     {
+	if (true) return;
         NotificationManager notifMgr =
             (NotificationManager)getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
         if (hasConnectivity == false)
