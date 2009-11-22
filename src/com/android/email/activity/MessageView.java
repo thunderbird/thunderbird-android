@@ -13,6 +13,11 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 
 import com.android.email.K9Activity;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -839,6 +844,7 @@ public class MessageView extends K9Activity
             return;
         }
         displayMessage(mNextMessageUid);
+        mTopView.startAnimation(outToLeftAnimation());
         next.requestFocus();
     }
 
@@ -848,6 +854,7 @@ public class MessageView extends K9Activity
             return;
         }
         displayMessage(mPreviousMessageUid);
+        mTopView.startAnimation(inFromRightAnimation());
         previous.requestFocus();
     }
 
@@ -1485,5 +1492,23 @@ public class MessageView extends K9Activity
 
     }
 
+    private Animation inFromRightAnimation() {
+        return slideAnimation(0.0f, +1.0f);
+    }
 
+    private Animation outToLeftAnimation() {
+        return slideAnimation(0.0f, -1.0f);
+    }
+
+    private Animation slideAnimation(float right, float left) {
+
+        Animation slide = new TranslateAnimation(
+            Animation.RELATIVE_TO_PARENT,  right, Animation.RELATIVE_TO_PARENT,  left,
+            Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f
+        );
+        slide.setDuration(500);
+        slide.setFillBefore(true);
+        slide.setInterpolator(new AccelerateInterpolator());
+        return slide;
+    }
 }
