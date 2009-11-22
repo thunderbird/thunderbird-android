@@ -485,7 +485,7 @@ public class MessageView extends K9Activity
         final WebSettings webSettings = mMessageContentView.getSettings();
 
         webSettings.setSupportZoom(true);
-        webSettings.setBuiltInZoomControls(true);
+        //webSettings.setBuiltInZoomControls(true);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
 
         mAttachments.setVisibility(View.GONE);
