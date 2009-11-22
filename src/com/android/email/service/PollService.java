@@ -145,14 +145,9 @@ public class PollService extends CoreService
                     try
                     {
                         int  unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
-                        if (unreadMessageCount > 0 && newMailCount > 0)
-                        {
-                            MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount, unreadMessageCount);
-                        }
-                        else if (unreadMessageCount == 0)
-                        {
-                            MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount, unreadMessageCount);
-                        }
+                        MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount, 
+                                newMailCount, unreadMessageCount);
+                        
                     }
                     catch (MessagingException me)
                     {

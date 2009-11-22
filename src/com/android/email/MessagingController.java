@@ -1119,7 +1119,10 @@ public class MessagingController implements Runnable {
                     public void messageFinished(Message message, int number, int ofTotal) {
                         try {
                             if (!message.isSet(Flag.SEEN)) {
-                                newMessages.incrementAndGet();
+                                if ( account.isNotifySelfNewMail() || account.isAnIdentity(message.getFrom()) == false)
+                                {
+                                    newMessages.incrementAndGet();
+                                }
                             }
 
                             // Store the new message locally
@@ -3325,14 +3328,16 @@ public class MessagingController implements Runnable {
       });
     }
     
-    public void notifyAccount(Context context, Account thisAccount, int unreadMessageCount)
+    public void notifyAccount(Context context, Account thisAccount, int newMailCount, int unreadMessageCount)
     {
+        Log.i(Email.LOG_TAG, "notifyAccount Account " + thisAccount.getDescription() + ", newMailCount = " + newMailCount
+                + ", unreadMessageCount = " + unreadMessageCount);
         boolean isNotifyAccount = thisAccount.isNotifyNewMail();
         if (isNotifyAccount)
         {
             NotificationManager notifMgr =
                 (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-            if (unreadMessageCount > 0)
+            if (newMailCount > 0 && unreadMessageCount > 0)
             {
                 String notice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
                 thisAccount.getDescription());
@@ -3744,7 +3749,7 @@ public class MessagingController implements Runnable {
                     localFolder.open(OpenMode.READ_WRITE);
                     remoteFolder.open(OpenMode.READ_WRITE);
 
-                    downloadMessages(account, remoteFolder, localFolder, messages);
+                    int newCount = downloadMessages(account, remoteFolder, localFolder, messages);
                     int unreadCount = 0;
                     for (Message message : messages)
                     {
@@ -3759,11 +3764,11 @@ public class MessagingController implements Runnable {
                     int unreadMessageCount = account.getUnreadMessageCount(mApplication, mApplication);
                     if (doNotify && unreadCount > 0)
                     {
-                        notifyAccount(mApplication, account, unreadMessageCount);
+                        notifyAccount(mApplication, account, newCount, unreadMessageCount);
                     }
                     if (unreadCount == 0)
                     {
-                        notifyAccount(mApplication, account, unreadMessageCount);
+                        notifyAccount(mApplication, account, newCount, unreadMessageCount);
                     }
 
                     for (MessagingListener l : getListeners())

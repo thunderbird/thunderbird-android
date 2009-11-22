@@ -42,6 +42,7 @@ public class Account implements Serializable {
     int mDisplayCount;
     long mLastAutomaticCheckTime;
     boolean mNotifyNewMail;
+    boolean mNotifySelfNewMail;
     String mDraftsFolderName;
     String mSentFolderName;
     String mTrashFolderName;
@@ -86,6 +87,7 @@ public class Account implements Serializable {
         mNotifyNewMail = true;
         mNotifySync = true;
         mVibrate = false;
+        mNotifySelfNewMail = true;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
         mFolderSyncMode = FolderMode.FIRST_CLASS;
         mFolderPushMode = FolderMode.FIRST_CLASS;
@@ -618,6 +620,23 @@ public class Account implements Serializable {
     	
     }
     
+    public boolean isAnIdentity(Address[] addrs)
+    {
+        if (addrs == null)
+        {
+            return false;
+        }
+        for (Address addr : addrs)
+        {
+            if (findIdentity(addr) != null)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     public boolean isAnIdentity(Address addr)
     {
         return findIdentity(addr) != null;
@@ -808,6 +827,16 @@ public class Account implements Serializable {
 
     public void setSignatureBeforeQuotedText(boolean mIsSignatureBeforeQuotedText) {
         this.mIsSignatureBeforeQuotedText = mIsSignatureBeforeQuotedText;
+    }
+
+    public boolean isNotifySelfNewMail()
+    {
+        return mNotifySelfNewMail;
+    }
+
+    public void setNotifySelfNewMail(boolean notifySelfNewMail)
+    {
+        mNotifySelfNewMail = notifySelfNewMail;
     }
 
 }
