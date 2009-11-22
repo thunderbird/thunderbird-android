@@ -175,11 +175,10 @@ public class MailService extends CoreService {
             else if (CONNECTIVITY_CHANGE.equals(intent.getAction()) ||
                     BACKGROUND_DATA_CHANGED.equals(intent.getAction()))
             {
+                notifyConnectionStatus(hasConnectivity);
                 rescheduleAll(hasConnectivity, doBackground, startIdObj);
                 startIdObj = null;
                 Log.i(Email.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
-                
-                notifyConnectionStatus(hasConnectivity);
             }
             else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
             {
@@ -212,6 +211,7 @@ public class MailService extends CoreService {
 
     private void notifyConnectionStatus(boolean hasConnectivity)
     {
+        if (true) return;
         NotificationManager notifMgr =
             (NotificationManager)getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
         if (hasConnectivity == false)
