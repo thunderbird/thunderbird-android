@@ -44,6 +44,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_HIDE_BUTTONS = "hide_buttons_enum";
     private static final String PREFERENCE_NOTIFY = "account_notify";
+    private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
     private static final String PREFERENCE_RINGTONE = "account_ringtone";
@@ -63,6 +64,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mDisplayCount;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
+    private CheckBoxPreference mAccountNotifySelf;
     private ListPreference mAccountHideButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
@@ -224,6 +226,9 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
         mAccountNotify.setChecked(mAccount.isNotifyNewMail());
+        
+        mAccountNotifySelf = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_SELF);
+        mAccountNotifySelf.setChecked(mAccount.isNotifySelfNewMail());
 
         mAccountNotifySync = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_SYNC);
         mAccountNotifySync.setChecked(mAccount.isShowOngoing());
@@ -295,6 +300,7 @@ public class AccountSettings extends K9PreferenceActivity {
         }
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
+        mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));

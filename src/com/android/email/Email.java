@@ -393,6 +393,7 @@ public class Email extends Application {
             public static final String EXTRA_CC                 = "com.android.email.intent.extra.CC";
             public static final String EXTRA_BCC                = "com.android.email.intent.extra.BCC";
             public static final String EXTRA_SUBJECT            = "com.android.email.intent.extra.SUBJECT";
+            public static final String EXTRA_FROM_SELF          = "com.android.email.intent.extra.FROM_SELF";
         }
         
     }
@@ -512,6 +513,7 @@ public class Email extends Application {
                     intent.putExtra(Email.Intents.EmailReceived.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
                     intent.putExtra(Email.Intents.EmailReceived.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
                     intent.putExtra(Email.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
+                    intent.putExtra(Email.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
                     Email.this.sendBroadcast(intent);
                     Log.d(Email.LOG_TAG, "Broadcasted intent: " + message.getSubject());
                 }

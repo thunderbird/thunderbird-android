@@ -146,6 +146,13 @@
             android:title="@string/account_settings_notify_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_notify_summary" />
+            
+       <CheckBoxPreference
+            android:key="account_notify_self"
+            android:dependency="account_notify"
+            android:title="@string/account_settings_notify_self_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_notify_self_summary" />
 
         <RingtonePreference
             android:layout="?android:attr/preferenceLayoutChild"

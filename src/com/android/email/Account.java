@@ -173,6 +173,8 @@ public class Account implements Serializable {
                 + ".lastAutomaticCheckTime", 0);
         mNotifyNewMail = preferences.getPreferences().getBoolean(mUuid + ".notifyNewMail", 
                 false);
+        mNotifySelfNewMail = preferences.getPreferences().getBoolean(mUuid + ".notifySelfNewMail", 
+                true);
         mNotifySync = preferences.getPreferences().getBoolean(mUuid + ".notifyMailCheck", 
 																   false);
         mDeletePolicy = preferences.getPreferences().getInt(mUuid + ".deletePolicy", 0);
@@ -465,6 +467,7 @@ public class Account implements Serializable {
         editor.remove(mUuid + ".automaticCheckIntervalMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
         editor.remove(mUuid + ".notifyNewMail");
+        editor.remove(mUuid + ".notifySelfNewMail");
         editor.remove(mUuid + ".deletePolicy");
         editor.remove(mUuid + ".draftsFolderName");
         editor.remove(mUuid + ".sentFolderName");
@@ -528,6 +531,7 @@ public class Account implements Serializable {
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
+        editor.putBoolean(mUuid + ".notifySelfNewMail", mNotifySelfNewMail);
         editor.putBoolean(mUuid + ".notifyMailCheck", mNotifySync);
         editor.putInt(mUuid + ".deletePolicy", mDeletePolicy);
         editor.putString(mUuid + ".draftsFolderName", mDraftsFolderName);
