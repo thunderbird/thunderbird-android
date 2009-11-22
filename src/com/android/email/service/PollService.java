@@ -9,7 +9,6 @@ import com.android.email.MessagingListener;
 import com.android.email.Preferences;
 import com.android.email.mail.MessagingException;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
@@ -139,9 +138,6 @@ public class PollService extends CoreService
                 return;
             }
 
-            NotificationManager notifMgr =
-                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-
             for (Account thisAccount : Preferences.getPreferences(context).getAccounts()) {
                 Integer newMailCount = accountsChecked.get(thisAccount.getUuid());
                 if (newMailCount != null)
@@ -155,7 +151,7 @@ public class PollService extends CoreService
                         }
                         else if (unreadMessageCount == 0)
                         {
-                          notifMgr.cancel(thisAccount.getAccountNumber());
+                            MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount, unreadMessageCount);
                         }
                     }
                     catch (MessagingException me)

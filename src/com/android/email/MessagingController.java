@@ -3330,34 +3330,42 @@ public class MessagingController implements Runnable {
         boolean isNotifyAccount = thisAccount.isNotifyNewMail();
         if (isNotifyAccount)
         {
-            String notice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
-            thisAccount.getDescription());
-            Notification notif = new Notification(R.drawable.stat_notify_email_generic,
-                context.getString(R.string.notification_new_title), System.currentTimeMillis());
-          
-            notif.number = unreadMessageCount;
-    
-            Intent i = FolderList.actionHandleAccountIntent(context, thisAccount);
-    
-            PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
-    
-            notif.setLatestEventInfo(context, context.getString(R.string.notification_new_title), notice, pi);
-    
-            String ringtone = thisAccount.getRingtone();
-            notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
-    
-            if (thisAccount.isVibrate()) {
-                notif.defaults |= Notification.DEFAULT_VIBRATE;
-            }
-    
-            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-            notif.ledARGB = Email.NOTIFICATION_LED_COLOR;
-            notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
-            notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
-    
             NotificationManager notifMgr =
                 (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notifMgr.notify(thisAccount.getAccountNumber(), notif); 
+            if (unreadMessageCount > 0)
+            {
+                String notice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
+                thisAccount.getDescription());
+                Notification notif = new Notification(R.drawable.stat_notify_email_generic,
+                    context.getString(R.string.notification_new_title), System.currentTimeMillis());
+              
+                notif.number = unreadMessageCount;
+        
+                Intent i = FolderList.actionHandleAccountIntent(context, thisAccount);
+        
+                PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+        
+                notif.setLatestEventInfo(context, context.getString(R.string.notification_new_title), notice, pi);
+        
+                String ringtone = thisAccount.getRingtone();
+                notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
+        
+                if (thisAccount.isVibrate()) {
+                    notif.defaults |= Notification.DEFAULT_VIBRATE;
+                }
+        
+                notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+                notif.ledARGB = Email.NOTIFICATION_LED_COLOR;
+                notif.ledOnMS = Email.NOTIFICATION_LED_ON_TIME;
+                notif.ledOffMS = Email.NOTIFICATION_LED_OFF_TIME;
+        
+                
+                notifMgr.notify(thisAccount.getAccountNumber(), notif); 
+            }
+            else
+            {
+                notifMgr.cancel(thisAccount.getAccountNumber());
+            }
         }
     }
 
@@ -3750,6 +3758,10 @@ public class MessagingController implements Runnable {
 
                     int unreadMessageCount = account.getUnreadMessageCount(mApplication, mApplication);
                     if (doNotify && unreadCount > 0)
+                    {
+                        notifyAccount(mApplication, account, unreadMessageCount);
+                    }
+                    if (unreadCount == 0)
                     {
                         notifyAccount(mApplication, account, unreadMessageCount);
                     }
