@@ -58,10 +58,8 @@ public class ImapResponseParser {
             response.mTag = parseTaggedResponse();
             readTokens(response);
         }
-        if (Config.LOGD) {
-            if (Email.DEBUG) {
-                Log.d(Email.LOG_TAG, "<<< " + response.toString());
-            }
+        if (Email.DEBUG) {
+            Log.v(Email.LOG_TAG, "<<< " + response.toString());
         }
         return response;
     }

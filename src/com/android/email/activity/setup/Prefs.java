@@ -101,7 +101,7 @@ public class Prefs extends K9PreferenceActivity {
         Email.setBackgroundOps(newBackgroundOps);
         Email.save(preferences);
         if (newBackgroundOps.equals(initBackgroundOps) == false) {
-            MailService.backgroundDataChanged(this);
+            MailService.backgroundDataChanged(this, null);
         }
     }
 

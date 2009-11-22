@@ -68,6 +68,7 @@ import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 import com.android.email.mail.store.LocalStore.LocalMessage;
 import com.android.email.mail.store.LocalStore.PendingCommand;
+import com.android.email.service.SleepService;
 
 /**
  * Starts a long running (application) Thread that will run through commands
@@ -3514,52 +3515,44 @@ public class MessagingController implements Runnable {
         final MessagingController controller = this;
         PushReceiver receiver = new PushReceiver()
         {
-            WakeLock wakeLock = null;
-            int refCount = 0;
-            public synchronized void pushInProgress()
+            ThreadLocal<WakeLock> threadWakeLock = new ThreadLocal<WakeLock>();
+            public void acquireWakeLock()
             {
+                WakeLock wakeLock = threadWakeLock.get();
                 if (wakeLock == null)
                 {
                     PowerManager pm = (PowerManager) mApplication.getSystemService(Context.POWER_SERVICE);
                     wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
                     wakeLock.setReferenceCounted(false);
+                    threadWakeLock.set(wakeLock);
                 }
                 wakeLock.acquire(Email.PUSH_WAKE_LOCK_TIMEOUT);
-                refCount++;
                 if (Email.DEBUG)
                 {
-                    Log.d(Email.LOG_TAG, "Acquired WakeLock for Pushing");
+                    Log.d(Email.LOG_TAG, "Acquired WakeLock for Pushing for thread " + Thread.currentThread().getName());
                 }
             }
             
-            public synchronized void pushComplete()
+            public void releaseWakeLock()
             {
                 if (Email.DEBUG)
                 {
                     Log.d(Email.LOG_TAG, "Considering releasing WakeLock for Pushing");
                 }
+                WakeLock wakeLock = threadWakeLock.get();
                 if (wakeLock != null)
                 {
-                    if (refCount > 0)
+                   
+                    if (Email.DEBUG)
                     {
-                        refCount--;
+                        Log.d(Email.LOG_TAG, "Releasing WakeLock for Pushing for thread " + Thread.currentThread().getName());
                     }
-                    if (refCount == 0)
-                    {
-                        try
-                        {
-                            if (Email.DEBUG)
-                            {
-                                Log.d(Email.LOG_TAG, "Releasing WakeLock for Pushing");
-                            }
-                            wakeLock.release();
-                        }
-                        catch (Exception e)
-                        {
-                            Log.e(Email.LOG_TAG, "Failed to release WakeLock", e);
-                        }
-                    }
+                    wakeLock.release();
                 }
+                else
+                {
+                    Log.e(Email.LOG_TAG, "No WakeLock waiting to be released for thread " + Thread.currentThread().getName());
+                }        
             }
             
             public void messagesFlagsChanged(String folderName,
@@ -3571,6 +3564,11 @@ public class MessagingController implements Runnable {
             public void messagesArrived(String folderName, List<Message> messages)
             {
                 controller.messagesArrived(account, folderName, messages, true);
+            }
+            
+            public void sleep(long millis)
+            {
+                SleepService.sleep(mApplication, millis, threadWakeLock.get(), Email.PUSH_WAKE_LOCK_TIMEOUT);
             }
 
             public void pushError(String errorMessage, Exception e)
@@ -3975,6 +3973,8 @@ public class MessagingController implements Runnable {
             memory.sendingState = MemorizingState.FAILED;
         }
     }
+    
+    
     
     class MessageContainer
     {

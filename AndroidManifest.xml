@@ -203,12 +203,33 @@
             <intent-filter>
                 <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.android.email.service.BroadcastReceiver.wakeLockRelease"/>
+            </intent-filter>
+              <intent-filter>
+                <action android:name="com.android.email.service.BroadcastReceiver.scheduleIntent"/>
+            </intent-filter>
         </receiver>
         <service
             android:name="com.android.email.service.MailService"
-            android:enabled="false"
+            android:enabled="true"
             >
         </service>
+        <service
+             android:name="com.android.email.service.PushService"
+             android:enabled="true"
+             >
+         </service>
+         <service
+             android:name="com.android.email.service.PollService"
+             android:enabled="true"
+            >
+         </service>
+         <service
+             android:name="com.android.email.service.SleepService"
+             android:enabled="true"
+             >
+         </service>
         <provider
             android:name="com.android.email.provider.AttachmentProvider"
             android:authorities="com.fsck.k9.attachmentprovider"

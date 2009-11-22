@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -314,7 +315,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
 
         }
-
     }
 
     private void onAddNewAccount() {

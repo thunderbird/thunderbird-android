@@ -143,11 +143,13 @@ public class Email extends Application {
     
     public static final int MANUAL_WAKE_LOCK_TIMEOUT = 120000;
     
-    public static final int PUSH_WAKE_LOCK_TIMEOUT = 40000;
+    public static final int PUSH_WAKE_LOCK_TIMEOUT = 60000;
     
     public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 30000;
 
-    public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 10000;
+    public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
+
+
     /**
      * LED color used for the new email notitication
      */
@@ -401,42 +403,56 @@ public class Email extends Application {
      * whether any accounts are configured.
      */
     public static void setServicesEnabled(Context context) {
-        setServicesEnabled(context, Preferences.getPreferences(context).getAccounts().length > 0);
+       
+        int acctLength = Preferences.getPreferences(context).getAccounts().length;
+        
+        setServicesEnabled(context, acctLength > 0, null);
+        
+    }
+    
+    public static void setServicesEnabled(Context context, Integer wakeLockId) {
+        setServicesEnabled(context, Preferences.getPreferences(context).getAccounts().length > 0, wakeLockId);
     }
 
-    public static void setServicesEnabled(Context context, boolean enabled) {
+    public static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
+        
         PackageManager pm = context.getPackageManager();
+        
         if (!enabled && pm.getComponentEnabledSetting(new ComponentName(context, MailService.class)) ==
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
             /*
              * If no accounts now exist but the service is still enabled we're about to disable it
              * so we'll reschedule to kill off any existing alarms.
              */
-            MailService.actionReschedule(context);
+            MailService.actionReschedule(context, wakeLockId);
         }
-        pm.setComponentEnabledSetting(
-                new ComponentName(context, MessageCompose.class),
-                enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        pm.setComponentEnabledSetting(
-                new ComponentName(context, BootReceiver.class),
-                enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        pm.setComponentEnabledSetting(
-                new ComponentName(context, MailService.class),
-                enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
+        Class[] classes = { MessageCompose.class, BootReceiver.class, MailService.class };
+        
+        for (Class clazz : classes)
+        {
+                
+            boolean alreadyEnabled = pm.getComponentEnabledSetting(new ComponentName(context, clazz)) == 
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+        
+            if (enabled != alreadyEnabled)
+            {
+                pm.setComponentEnabledSetting(
+                        new ComponentName(context, clazz),
+                        enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
+                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                        PackageManager.DONT_KILL_APP);
+            }
+        }
+        
         if (enabled && pm.getComponentEnabledSetting(new ComponentName(context, MailService.class)) ==
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
             /*
              * And now if accounts do exist then we've just enabled the service and we want to
              * schedule alarms for the new accounts.
              */
-            MailService.actionReschedule(context);
+            MailService.actionReschedule(context, wakeLockId);
         }
+        
     }
     
     public static void save(SharedPreferences preferences)
@@ -505,7 +521,6 @@ public class Email extends Application {
             }
         });
 
-        MailService.appStarted(this);
     }
 
     public static int getK9Theme()
