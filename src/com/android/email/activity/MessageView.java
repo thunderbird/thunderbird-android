@@ -1465,6 +1465,20 @@ public class MessageView extends K9Activity
 
     class MyGestureDetector extends SimpleOnGestureListener {
         @Override
+        public boolean onDoubleTap(MotionEvent ev) {
+            super.onDoubleTap(ev);
+            int height = getResources().getDisplayMetrics().heightPixels;
+            if (ev.getRawY() < (height/4)) {
+                mTopView.fullScroll(mTopView.FOCUS_UP);
+
+            } else if (ev.getRawY() > (height - height/4)) {
+                mTopView.fullScroll(mTopView.FOCUS_DOWN);
+
+            }
+            return false;
+        }
+
+        @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
             // Convert the dips to pixels
