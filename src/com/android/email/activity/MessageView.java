@@ -49,6 +49,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,6 +98,7 @@ public class MessageView extends K9Activity
     private TextView mSubjectView;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
+    private ScrollView mTopView;
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
     private View mAttachmentIcon;
@@ -461,6 +463,7 @@ public class MessageView extends K9Activity
 
         mDateView = (TextView)findViewById(R.id.date);
         mTimeView = (TextView)findViewById(R.id.time);
+        mTopView = (ScrollView)findViewById(R.id.top_view);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
@@ -609,10 +612,13 @@ public class MessageView extends K9Activity
     private void displayMessage(String uid) {
         mMessageUid = uid;
         mMessageContentView.getSettings().setBlockNetworkImage(true);
+
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
+
         next.setEnabled(mNextMessageUid != null );
         previous.setEnabled(mPreviousMessageUid != null);
+
         if (next_scrolling != null)
             next_scrolling.setEnabled(mNextMessageUid != null );
         if (previous_scrolling != null)
@@ -623,6 +629,9 @@ public class MessageView extends K9Activity
             mFolder,
             mMessageUid,
             mListener);
+
+        mTopView.scrollTo(0, 0);
+        mMessageContentView.scrollTo(0, 0);
     }
 
 
