@@ -3504,7 +3504,6 @@ public class MessagingController implements Runnable {
     
     public Pusher setupPushing(final Account account)
     {
- 
         Pusher pusher = pushers.get(account);
         if (pusher != null)
         {
@@ -3750,23 +3749,15 @@ public class MessagingController implements Runnable {
                     remoteFolder.open(OpenMode.READ_WRITE);
 
                     int newCount = downloadMessages(account, remoteFolder, localFolder, messages);
-                    int unreadCount = 0;
-                    for (Message message : messages)
-                    {
-                        if (message.isSet(Flag.SEEN) == false)
-                        {
-                            unreadCount++;
-                        }
-                    }
                     localFolder.setLastPush(System.currentTimeMillis());
                     localFolder.setStatus(null);
 
                     int unreadMessageCount = account.getUnreadMessageCount(mApplication, mApplication);
-                    if (doNotify && unreadCount > 0)
+                    if (doNotify && newCount > 0 && unreadMessageCount > 0)
                     {
                         notifyAccount(mApplication, account, newCount, unreadMessageCount);
                     }
-                    if (unreadCount == 0)
+                    if (unreadMessageCount == 0)
                     {
                         notifyAccount(mApplication, account, newCount, unreadMessageCount);
                     }
