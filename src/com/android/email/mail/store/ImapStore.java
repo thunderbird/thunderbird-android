@@ -1978,15 +1978,19 @@ public class ImapStore extends Store {
                             }
                             else
                             {
-                                Log.i(Email.LOG_TAG, "About to IDLE " + getName());
+				
+                                if (stop.get() != true)
+                                {
+                                    Log.i(Email.LOG_TAG, "About to IDLE " + getName());
                                 
-                                receiver.setPushActive(getName(), true);
-                                idling.set(true);
-                                doneSent.set(false);
-                                executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
-                                idling.set(false);
-                                receiver.setPushActive(getName(), false);
-                                delayTime = NORMAL_DELAY_TIME;
+				    receiver.setPushActive(getName(), true);
+				    idling.set(true);
+				    doneSent.set(false);
+				    executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
+				    idling.set(false);
+				    receiver.setPushActive(getName(), false);
+				    delayTime = NORMAL_DELAY_TIME;
+				}
                             }
                         } 
                         catch (Exception e)
