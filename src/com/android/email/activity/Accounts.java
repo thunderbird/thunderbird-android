@@ -263,7 +263,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             listView.setOnItemClickListener(this);
             listView.setItemsCanFocus(false);
             listView.setEmptyView(findViewById(R.id.empty));
-            findViewById(R.id.add_new_account).setOnClickListener(this);
+            findViewById(R.id.next).setOnClickListener(this);
             registerForContextMenu(listView);
 
             if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
@@ -357,7 +357,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
     public void onClick(View view) {
-        if (view.getId() == R.id.add_new_account) {
+        if (view.getId() == R.id.next) {
             onAddNewAccount();
         }
     }

@@ -3,12 +3,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
 	android:layout_height="fill_parent"
-    android:padding="6dip"
     android:layout_width="fill_parent">
  
 <ScrollView
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:padding="6dip"
     android:layout_marginBottom="54dip" 
     android:fadingEdge="none"
     android:scrollbarStyle="outsideInset">
@@ -89,19 +89,5 @@
             android:layout_weight="1" />
     </LinearLayout>
 	</ScrollView>
-    <RelativeLayout 
-        android:layout_marginTop="-54dip" 
-        android:gravity="bottom|right" 
-        android:layout_height="wrap_content" 
-        android:layout_width="fill_parent">
-		<Button
-			android:id="@+id/next"
-			android:text="@string/next_action"
-            android:layout_width="wrap_content"
-            android:minWidth="@dimen/button_minWidth"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/button_indicator_next"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="false" />
-	</RelativeLayout>
+    <include layout="@layout/wizard_next" />
 </LinearLayout>
