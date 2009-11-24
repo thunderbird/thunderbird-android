@@ -1,6 +1,7 @@
-perl -pi -e's|\@string/app_name|K-9 Email BETA|' AndroidManifest.xml
-perl -pi -e's/com(.)fsck(.)k9/com$1fsck$2k9beta/' build.xml AndroidManifest.xml
+perl -pi -e's|\@string/app_name|\@string/beta_app_name|g' AndroidManifest.xml
+perl -pi -e's/"com.fsck.k9"/"com.fsck.k9beta"/g' build.xml AndroidManifest.xml
+perl -pi -e's|com/fsck/k9/R.java|com/fsck/k9beta/R.java|g' build.xml
 ant $@
-perl -pi -e's/com(.)fsck(.)k9beta/com$1fsck$2k9/' build.xml AndroidManifest.xml
-perl -pi -e's|K-9 Email BETA|\@string/app_name|' AndroidManifest.xml
-perl -pi -e's/K9-BETA/K9/' AndroidManifest.xml
+perl -pi -e's/com\.fsck\.k9beta/com.fsck.k9/g' build.xml AndroidManifest.xml
+perl -pi -e's|com/fsck/k9beta/R.java|com/fsck/k9/R.java|g' build.xml
+perl -pi -e's|\@string/beta_app_name|\@string/app_name|g' AndroidManifest.xml
