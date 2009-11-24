@@ -126,6 +126,7 @@
     <property name="out-debug-package" value="${out-folder}/${ant.project.name}-debug.apk"/>
     <property name="out-unsigned-package" value="${out-folder}/${ant.project.name}-unsigned.apk"/>
     <property name="out-signed-package" value="${out-folder}/${ant.project.name}-signed.apk"/>
+    <property name="out-zipaligned-package" value="${out-folder}/${ant.project.name}-signed-zipaligned.apk"/>
 
 
     <!-- Tools -->
@@ -263,6 +264,11 @@
             <arg value="${out-unsigned-package}" />
 
             <arg value="fsckcom" />
+        </exec>
+        <exec executable="zipalign" failonerror="true">
+            <arg value="4"/>
+            <arg value="${out-signed-package}" />
+            <arg value="${out-zipaligned-package}" />
         </exec>
     </target>
 
