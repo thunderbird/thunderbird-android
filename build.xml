@@ -282,6 +282,23 @@
         </exec>
     </target>
 
+    <target name="upload" depends="release">
+        <echo>Uploading to Google Code using Google::Code::Upload</echo>
+        <exec executable="googlecode_upload.pl" failonerror="true">
+            <arg value="--summary" />
+            <arg value="${ant.project.name} ${version-number}"/>
+            <arg value="--project" />
+            <arg value="k9mail"/>
+            <arg value="--user"/>
+            <arg value="${gcode-user}" />
+            <arg value="--pass"/>
+            <arg value="${gcode-pass}" />
+            <arg value="--labels"/>
+            <arg value="Type-Installer"/>
+            <arg value="${out-zipaligned-package}"/>
+        </exec>
+    </target>
+
     <!-- Install the package on the default emulator -->
     <target name="install" depends="debug">
         <echo>Installing ${out-debug-package} onto default emulator...</echo>
