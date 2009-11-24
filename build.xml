@@ -122,12 +122,22 @@
         <os family="windows"/>
     </condition>
 
+    <!-- A bloody hack, but a useful and quick one -->
+    <target name="get-version">
+    <exec executable="perl" failonerror="true" outputproperty="version-code" errorproperty="version-error">
+        <!-- yes, ant needs &quot; for " in doublequoted strings. -->
+        <arg line="-ne'/android:versionCode.*?=.*?&quot;(\d+)&quot;/ ? print $1 : undef ' AndroidManifest.xml" />
+    </exec>
+    <echo>Building version number ${version-code}</echo>
+    </target>
+
     <!-- The final package file to generate -->
+    <target name="filenames" depends="get-version">
     <property name="out-debug-package" value="${out-folder}/${ant.project.name}-debug.apk"/>
     <property name="out-unsigned-package" value="${out-folder}/${ant.project.name}-unsigned.apk"/>
     <property name="out-signed-package" value="${out-folder}/${ant.project.name}-signed.apk"/>
-    <property name="out-zipaligned-package" value="${out-folder}/${ant.project.name}-signed-zipaligned.apk"/>
-
+    <property name="out-zipaligned-package" value="${out-folder}/${ant.project.name}-signed-zipaligned-${version-code}.apk"/>
+    </target>
 
     <!-- Tools -->
     <condition property="exe" value=".exe" else=""><os family="windows"/></condition>
@@ -136,7 +146,7 @@
     <!-- rules -->
 
     <!-- Create the output directories if they don't exist yet. -->
-    <target name="dirs">
+    <target name="dirs" depends="filenames">
         <echo>Creating output directories if needed...</echo>
         <mkdir dir="${resource-folder}" />
         <mkdir dir="${external-libs-folder}" />
