@@ -2060,7 +2060,7 @@ public class ImapStore extends Store {
             {
                 Log.d(Email.LOG_TAG, "oldMessageCount = " + oldMessageCount + ", new mMessageCount = " + mMessageCount);
             }
-            if (oldMessageCount > 0 && mMessageCount > oldMessageCount)
+            if (oldMessageCount >= 0 && mMessageCount > oldMessageCount)
             {
                 syncMessages(oldMessageCount + 1, mMessageCount, true);
             }
