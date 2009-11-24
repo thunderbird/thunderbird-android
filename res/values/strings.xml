@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">K-9 Mail</string>
+    <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
