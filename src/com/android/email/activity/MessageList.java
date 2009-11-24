@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +17,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Process;
 import android.util.Config;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -41,6 +39,9 @@ import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.android.email.K9ListActivity;
 import com.android.email.Account;
 import com.android.email.Email;
@@ -1438,6 +1439,10 @@ public class MessageList extends K9ListActivity {
                 });
 
                 holder.chip.setBackgroundResource(colorChipResId);
+                holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
+                if (holder.selected!=null) {
+                    holder.selected.setOnCheckedChangeListener(holder);
+                }
                 view.setTag(holder);
             }
 
@@ -1477,6 +1482,10 @@ public class MessageList extends K9ListActivity {
                     null, // top
                     message.hasAttachments ? mAttachmentIcon : null, // right
                     null); // bottom
+                holder.position = position;
+                if (holder.selected!=null) {
+                    holder.selected.setChecked(message.selected);
+                }
             } else {
                 holder.chip.getBackground().setAlpha(0);
                 holder.subject.setText("No subject");
@@ -1485,6 +1494,10 @@ public class MessageList extends K9ListActivity {
                 holder.from.setTypeface(null, Typeface.NORMAL);
                 holder.date.setText("No date");
                 holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                holder.position = -1;
+                if (holder.selected!=null) {
+                    holder.selected.setChecked(false);
+                }
             }
             return view;
         }
@@ -1564,11 +1577,15 @@ public class MessageList extends K9ListActivity {
 
         public FolderInfoHolder folder;
 
+        public boolean selected;
 
         // Empty constructor for comparison
-        public MessageInfoHolder() {}
+        public MessageInfoHolder() {
+            this.selected = false;
+        }
 
         public MessageInfoHolder(Message m, FolderInfoHolder folder) {
+            this();
             populate(m, folder);
         }
 
@@ -1686,14 +1703,25 @@ public class MessageList extends K9ListActivity {
         }
 
     }
-
-    class MessageViewHolder {
+    
+    class MessageViewHolder
+        implements OnCheckedChangeListener {
         public TextView subject;
         public TextView preview;
         public TextView from;
         public TextView date;
         public CheckBox flagged;
         public View chip;
+        public CheckBox selected;
+        public int position = -1;
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (position!=-1) {
+                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
+                message.selected = isChecked;
+            }
+        }
     }
 
     class FooterViewHolder {
