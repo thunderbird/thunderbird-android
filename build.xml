@@ -286,7 +286,7 @@
         <echo>Uploading to Google Code using Google::Code::Upload</echo>
         <exec executable="googlecode_upload.pl" failonerror="true">
             <arg value="--summary" />
-            <arg value="${ant.project.name} ${version-number}"/>
+            <arg value="${ant.project.name} ${version-code}"/>
             <arg value="--project" />
             <arg value="k9mail"/>
             <arg value="--user"/>
