@@ -120,6 +120,7 @@ public class MessageList extends K9ListActivity
     };
 
     private ListView mListView;
+    private String mSelectedWidget = "star";
 
     private int colorChipResId;
 
@@ -553,33 +554,50 @@ public class MessageList extends K9ListActivity
 
             case KeyEvent.KEYCODE_DPAD_LEFT:
             {
-                View v = mListView.getSelectedView();
-                ViewGroup vg = (ViewGroup) v;
-                vg.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
-                ImageButton delete = (ImageButton) v.findViewById(R.id.delete);
-                Button flagged = (Button) v.findViewById(R.id.flagged);
-                CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
 
-                if (delete.getVisibility() == View.VISIBLE)
+                int first = mListView.getFirstVisiblePosition();
+                int count = mListView.getChildCount();
+                for (int i=0; i<count; i++)
                 {
-                    delete.setVisibility(View.GONE);
-                    flagged.setVisibility(View.VISIBLE);
-                    selected.setVisibility(View.GONE);
+                    View vx = (View)mListView.getChildAt(i);
+
+                    ImageButton deletex = (ImageButton) vx.findViewById(R.id.delete);
+                    Button flaggedx = (Button) vx.findViewById(R.id.flagged);
+                    CheckBox selectedx = (CheckBox) vx.findViewById(R.id.selected_checkbox);
+                    if (mSelectedWidget == "star")
+                    {
+
+                        flaggedx.setVisibility(View.GONE);
+                        deletex.setVisibility(View.VISIBLE);
+                        selectedx.setVisibility(View.GONE);
+                    }
+                    else if (mSelectedWidget == "delete")
+                    {
+                        flaggedx.setVisibility(View.GONE);
+                        deletex.setVisibility(View.GONE);
+                        selectedx.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        flaggedx.setVisibility(View.VISIBLE);
+                        deletex.setVisibility(View.GONE);
+                        selectedx.setVisibility(View.GONE);
+                    }
+
                 }
-                else if (flagged.getVisibility() == View.VISIBLE)
+                if (mSelectedWidget == "star")
                 {
-                    delete.setVisibility(View.GONE);
-                    flagged.setVisibility(View.GONE);
-                    selected.setVisibility(View.VISIBLE);
-
+                    mSelectedWidget="delete";
+                }
+                else if (mSelectedWidget == "delete")
+                {
+                    mSelectedWidget="multiselect";
                 }
                 else
                 {
-                    delete.setVisibility(View.VISIBLE);
-                    flagged.setVisibility(View.GONE);
-                    selected.setVisibility(View.GONE);
-
+                    mSelectedWidget="star";
                 }
+
                 return true;
             }
             case KeyEvent.KEYCODE_DPAD_RIGHT:
