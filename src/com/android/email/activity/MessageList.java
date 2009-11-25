@@ -25,7 +25,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -34,6 +36,8 @@ import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -545,6 +549,53 @@ public class MessageList extends K9ListActivity
 
         switch (keyCode)
         {
+
+
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+            {
+                View v = mListView.getSelectedView();
+                ViewGroup vg = (ViewGroup) v;
+                vg.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+                ImageButton delete = (ImageButton) v.findViewById(R.id.delete);
+                if (delete.getVisibility() == View.GONE)
+                {
+                    delete.setVisibility(View.VISIBLE);
+                    delete.setFocusable(true);
+                    delete.setFocusableInTouchMode(true);
+                    if (delete.requestFocus())
+                    {
+                        v.setFocusable(false);
+                        Log.v(Email.LOG_TAG, "is in touch mode");
+                    }
+                    Button flagged = (Button) v.findViewById(R.id.flagged);
+                    flagged.setVisibility(View.GONE);
+                }
+                else
+                {
+                    // Delete was already visible
+                    delete.requestFocus();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+            {
+                View v = mListView.getSelectedView();
+                Button flagged = (Button) v.findViewById(R.id.flagged);
+                if (flagged.getVisibility() == View.GONE)
+                {
+                    ImageButton delete = (ImageButton) v.findViewById(R.id.delete);
+                    delete.setVisibility(View.GONE);
+                    flagged.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    // flagged was already visible. give it focus
+                    flagged.requestFocus();
+                }
+                return true;
+            }
+
+
             case KeyEvent.KEYCODE_C:
             {
                 onCompose();
@@ -584,6 +635,8 @@ public class MessageList extends K9ListActivity
             if (position >= 0)
             {
                 MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
+
+
 
                 if (message != null)
                 {
@@ -778,8 +831,8 @@ public class MessageList extends K9ListActivity
         }
 
         mAdapter.removeMessage(holder);
-        mListView.setSelection(position);
         MessagingController.getInstance(getApplication()).deleteMessage(mAccount, holder.message.getFolder().getName(), holder.message, null);
+        mListView.setSelection(position);
 
     }
 
@@ -1681,6 +1734,34 @@ public class MessageList extends K9ListActivity
             }
 
 
+            holder.delete = (ImageButton) view.findViewById(R.id.delete);
+            holder.delete.setOnClickListener(new OnClickListener()
+            {
+                public void onClick(View v)
+                {
+                    // Perform action on clicks
+                    MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
+                    onDelete(message, (Integer)v.getTag());
+                }
+            });
+            holder.delete.setOnFocusChangeListener(new OnFocusChangeListener()
+            {
+                public void onFocusChange(View v, boolean x)
+                {
+                    if (x)
+                    {
+                        Log.v(Email.LOG_TAG, "Focus! ");
+                    }
+                    else
+                    {
+                        Log.v(Email.LOG_TAG, "unfocus! ");
+                    }
+                }
+            });
+
+
+
+
             if (message != null)
             {
                 holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
@@ -1688,7 +1769,16 @@ public class MessageList extends K9ListActivity
 
                 int subjectColor = holder.from.getCurrentTextColor();  // Get from another field that never changes color
 
+
+
+                holder.delete.setVisibility(View.GONE);
+                holder.flagged.setVisibility(View.VISIBLE);
+                // XXX TODO there has to be some way to walk our view hierarchy and get this
                 holder.flagged.setTag((Integer)position);
+                holder.delete.setTag((Integer)position);
+
+
+
 
                 if (message.flagged)
                 {
@@ -2008,6 +2098,7 @@ public class MessageList extends K9ListActivity
         public TextView from;
         public TextView date;
         public CheckBox flagged;
+        public ImageButton delete;
         public View chip;
         public CheckBox selected;
         public int position = -1;
