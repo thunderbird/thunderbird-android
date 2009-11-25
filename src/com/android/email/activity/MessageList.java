@@ -1795,23 +1795,6 @@ public class MessageList extends K9ListActivity
                     onDelete(message, (Integer)v.getTag());
                 }
             });
-            holder.delete.setOnFocusChangeListener(new OnFocusChangeListener()
-            {
-                public void onFocusChange(View v, boolean x)
-                {
-                    if (x)
-                    {
-                        Log.v(Email.LOG_TAG, "Focus! ");
-                    }
-                    else
-                    {
-                        Log.v(Email.LOG_TAG, "unfocus! ");
-                    }
-                }
-            });
-
-
-
 
             if (message != null)
             {
