@@ -94,6 +94,11 @@ public class MessageList extends K9ListActivity
     private static final String STATE_CURRENT_FOLDER = "com.android.email.activity.messagelist_folder";
     private static final String STATE_KEY_SELECTION = "com.android.email.activity.messagelist_selection";
 
+
+    private static final int WIDGET_FLAG = 1;
+    private static final int WIDGET_DELETE = 2;
+    private static final int WIDGET_MULTISELECT = 3;
+
     private static final int[] colorChipResIds = new int[]
     {
         R.drawable.appointment_indicator_leftside_1,
@@ -120,7 +125,7 @@ public class MessageList extends K9ListActivity
     };
 
     private ListView mListView;
-    private String mSelectedWidget = "star";
+    private int mSelectedWidget = WIDGET_FLAG;
 
     private int colorChipResId;
 
@@ -554,67 +559,12 @@ public class MessageList extends K9ListActivity
 
             case KeyEvent.KEYCODE_DPAD_LEFT:
             {
-
-                int first = mListView.getFirstVisiblePosition();
-                int count = mListView.getChildCount();
-                for (int i=0; i<count; i++)
-                {
-                    View vx = (View)mListView.getChildAt(i);
-
-                    ImageButton deletex = (ImageButton) vx.findViewById(R.id.delete);
-                    Button flaggedx = (Button) vx.findViewById(R.id.flagged);
-                    CheckBox selectedx = (CheckBox) vx.findViewById(R.id.selected_checkbox);
-                    if (mSelectedWidget == "star")
-                    {
-
-                        flaggedx.setVisibility(View.GONE);
-                        deletex.setVisibility(View.VISIBLE);
-                        selectedx.setVisibility(View.GONE);
-                    }
-                    else if (mSelectedWidget == "delete")
-                    {
-                        flaggedx.setVisibility(View.GONE);
-                        deletex.setVisibility(View.GONE);
-                        selectedx.setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
-                        flaggedx.setVisibility(View.VISIBLE);
-                        deletex.setVisibility(View.GONE);
-                        selectedx.setVisibility(View.GONE);
-                    }
-
-                }
-                if (mSelectedWidget == "star")
-                {
-                    mSelectedWidget="delete";
-                }
-                else if (mSelectedWidget == "delete")
-                {
-                    mSelectedWidget="multiselect";
-                }
-                else
-                {
-                    mSelectedWidget="star";
-                }
-
+                cycleVisibleWidgets(true);
                 return true;
             }
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             {
-                View v = mListView.getSelectedView();
-                Button flagged = (Button) v.findViewById(R.id.flagged);
-                if (flagged.getVisibility() == View.GONE)
-                {
-                    ImageButton delete = (ImageButton) v.findViewById(R.id.delete);
-                    delete.setVisibility(View.GONE);
-                    flagged.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    // flagged was already visible. give it focus
-                    flagged.requestFocus();
-                }
+                cycleVisibleWidgets(false);
                 return true;
             }
 
@@ -764,6 +714,84 @@ public class MessageList extends K9ListActivity
             mHandler.sortMessages();
         }
 
+    }
+
+    public void cycleVisibleWidgets(boolean ascending)
+    {
+        if (ascending)
+        {
+
+            if (mSelectedWidget == WIDGET_FLAG)
+            {
+                mSelectedWidget=WIDGET_DELETE;
+            }
+            else if (mSelectedWidget == WIDGET_DELETE)
+            {
+                mSelectedWidget=WIDGET_MULTISELECT;
+            }
+            else
+            {
+                mSelectedWidget=WIDGET_FLAG;
+            }
+
+        }
+        else
+        {
+            if (mSelectedWidget == WIDGET_FLAG)
+            {
+                mSelectedWidget=WIDGET_MULTISELECT;
+            }
+            else if (mSelectedWidget == WIDGET_DELETE)
+            {
+                mSelectedWidget=WIDGET_FLAG;
+            }
+            else
+            {
+                mSelectedWidget=WIDGET_DELETE;
+            }
+
+
+
+        }
+        int count = mListView.getChildCount();
+        for (int i=0; i<count; i++)
+        {
+            setVisibleWidgetsForListItem(mListView.getChildAt(i), mSelectedWidget);
+        }
+    }
+
+
+    private void setVisibleWidgetsForListItem(View v, int nextWidget)
+    {
+
+        ImageButton delete = (ImageButton) v.findViewById(R.id.delete);
+        Button flagged = (Button) v.findViewById(R.id.flagged);
+        CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
+
+        if (flagged == null || delete == null || selected == null)
+        {
+            return;
+        }
+
+        if (nextWidget == WIDGET_DELETE)
+        {
+
+            flagged.setVisibility(View.GONE);
+            delete.setVisibility(View.VISIBLE);
+            selected.setVisibility(View.GONE);
+        }
+        else if (nextWidget == WIDGET_MULTISELECT)
+        {
+            flagged.setVisibility(View.GONE);
+            delete.setVisibility(View.GONE);
+            selected.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            flagged.setVisibility(View.VISIBLE);
+            delete.setVisibility(View.GONE);
+            selected.setVisibility(View.GONE);
+        }
     }
 
     private void onShowFolderList()
@@ -1793,10 +1821,8 @@ public class MessageList extends K9ListActivity
                 int subjectColor = holder.from.getCurrentTextColor();  // Get from another field that never changes color
 
 
-                holder.selected.setVisibility(View.GONE);
-                holder.delete.setVisibility(View.GONE);
-                holder.flagged.setVisibility(View.VISIBLE);
 
+                setVisibleWidgetsForListItem(view, mSelectedWidget);
                 // XXX TODO there has to be some way to walk our view hierarchy and get this
                 holder.flagged.setTag((Integer)position);
                 holder.delete.setTag((Integer)position);
@@ -1840,6 +1866,7 @@ public class MessageList extends K9ListActivity
                 holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 holder.position = -1;
                 holder.selected.setChecked(false);
+                holder.flagged.setChecked(false);
             }
             return view;
         }
