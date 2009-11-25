@@ -95,9 +95,10 @@ public class MessageList extends K9ListActivity
     private static final String STATE_KEY_SELECTION = "com.android.email.activity.messagelist_selection";
 
 
-    private static final int WIDGET_FLAG = 1;
-    private static final int WIDGET_DELETE = 2;
-    private static final int WIDGET_MULTISELECT = 3;
+    private static final int WIDGET_NONE = 1;
+    private static final int WIDGET_FLAG = 2;
+    private static final int WIDGET_DELETE = 3;
+    private static final int WIDGET_MULTISELECT = 4;
 
     private static final int[] colorChipResIds = new int[]
     {
@@ -729,6 +730,10 @@ public class MessageList extends K9ListActivity
             {
                 mSelectedWidget=WIDGET_MULTISELECT;
             }
+            else if (mSelectedWidget == WIDGET_MULTISELECT)
+            {
+                mSelectedWidget=WIDGET_NONE;
+            }
             else
             {
                 mSelectedWidget=WIDGET_FLAG;
@@ -739,15 +744,19 @@ public class MessageList extends K9ListActivity
         {
             if (mSelectedWidget == WIDGET_FLAG)
             {
+                mSelectedWidget=WIDGET_NONE;
+            }
+            else if (mSelectedWidget == WIDGET_NONE)
+            {
                 mSelectedWidget=WIDGET_MULTISELECT;
             }
-            else if (mSelectedWidget == WIDGET_DELETE)
-            {
-                mSelectedWidget=WIDGET_FLAG;
-            }
-            else
+            else if (mSelectedWidget == WIDGET_MULTISELECT)
             {
                 mSelectedWidget=WIDGET_DELETE;
+            }
+            else // if (mSelectedWidget == WIDGET_DELETE)
+            {
+                mSelectedWidget=WIDGET_FLAG;
             }
 
 
@@ -772,6 +781,18 @@ public class MessageList extends K9ListActivity
         {
             return;
         }
+
+        if (nextWidget == WIDGET_NONE)
+        {
+            v.findViewById(R.id.widgets).setVisibility(View.GONE);
+            return;
+        }
+        else
+        {
+            v.findViewById(R.id.widgets).setVisibility(View.VISIBLE);
+        }
+
+
 
         if (nextWidget == WIDGET_DELETE)
         {

@@ -25,6 +25,7 @@
         android:paddingLeft="10dip"
         android:layout_toLeftOf="@id/widgets"
         android:layout_toRightOf="@+id/chip"
+        android:layout_alignWithParentIfMissing="true"
         android:layout_marginRight="1dip" />
     <TextView
         android:id="@+id/date"
@@ -39,7 +40,7 @@
         android:layout_toLeftOf="@id/widgets"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
-
+        android:layout_alignWithParentIfMissing="true"
         />
       <TextView
          android:id="@+id/from"
