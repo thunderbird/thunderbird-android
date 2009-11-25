@@ -1,6 +1,7 @@
 package com.android.email;
 
-public class EmailReceivedIntent {
+public class EmailReceivedIntent
+{
 
     public static final String ACTION_EMAIL_RECEIVED = "com.android.email.intent.action.EMAIL_RECEIVED";
     public static final String EXTRA_ACCOUNT    = "com.android.email.intent.extra.ACCOUNT";

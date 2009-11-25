@@ -29,7 +29,8 @@ import android.widget.TextView;
 
 import com.android.email.mail.Address;
 
-public class EmailAddressAdapter extends ResourceCursorAdapter {
+public class EmailAddressAdapter extends ResourceCursorAdapter
+{
     public static final int NAME_INDEX = 1;
 
     public static final int DATA_INDEX = 2;
@@ -38,20 +39,23 @@ public class EmailAddressAdapter extends ResourceCursorAdapter {
 
     private ContentResolver mContentResolver;
 
-    private static final String[] PROJECTION = {
-            ContactMethods._ID, // 0
-            ContactMethods.NAME, // 1
-            ContactMethods.DATA
-    // 2
+    private static final String[] PROJECTION =
+    {
+        ContactMethods._ID, // 0
+        ContactMethods.NAME, // 1
+        ContactMethods.DATA
+        // 2
     };
 
-    public EmailAddressAdapter(Context context) {
+    public EmailAddressAdapter(Context context)
+    {
         super(context, R.layout.recipient_dropdown_item, null);
         mContentResolver = context.getContentResolver();
     }
 
     @Override
-    public final String convertToString(Cursor cursor) {
+    public final String convertToString(Cursor cursor)
+    {
         String name = cursor.getString(NAME_INDEX);
         String address = cursor.getString(DATA_INDEX);
 
@@ -59,7 +63,8 @@ public class EmailAddressAdapter extends ResourceCursorAdapter {
     }
 
     @Override
-    public final void bindView(View view, Context context, Cursor cursor) {
+    public final void bindView(View view, Context context, Cursor cursor)
+    {
         TextView text1 = (TextView)view.findViewById(R.id.text1);
         TextView text2 = (TextView)view.findViewById(R.id.text2);
         text1.setText(cursor.getString(NAME_INDEX));
@@ -67,10 +72,12 @@ public class EmailAddressAdapter extends ResourceCursorAdapter {
     }
 
     @Override
-    public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
+    public Cursor runQueryOnBackgroundThread(CharSequence constraint)
+    {
         String where = null;
 
-        if (constraint != null) {
+        if (constraint != null)
+        {
             String filter = DatabaseUtils.sqlEscapeString(constraint.toString() + '%');
 
             StringBuilder s = new StringBuilder();

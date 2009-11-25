@@ -13,7 +13,8 @@ import com.android.email.Utility;
 import com.android.email.mail.MessagingException;
 import org.apache.james.mime4j.codec.EncoderUtil;
 
-public class MimeHeader {
+public class MimeHeader
+{
     /**
      * Application specific header that contains Store specific information about an attachment.
      * In IMAP this contains the IMAP BODYSTRUCTURE part id so that the ImapStore can later
@@ -30,7 +31,8 @@ public class MimeHeader {
     /**
      * Fields that should be omitted when writing the header using writeTo()
      */
-    private static final String[] writeOmitFields = {
+    private static final String[] writeOmitFields =
+    {
 //        HEADER_ANDROID_ATTACHMENT_DOWNLOADED,
 //        HEADER_ANDROID_ATTACHMENT_ID,
         HEADER_ANDROID_ATTACHMENT_STORE_DATA
@@ -38,24 +40,30 @@ public class MimeHeader {
 
     protected ArrayList<Field> mFields = new ArrayList<Field>();
 
-    public void clear() {
+    public void clear()
+    {
         mFields.clear();
     }
 
-    public String getFirstHeader(String name) {
+    public String getFirstHeader(String name)
+    {
         String[] header = getHeader(name);
-        if (header == null) {
+        if (header == null)
+        {
             return null;
         }
         return header[0];
     }
 
-    public void addHeader(String name, String value)  {
+    public void addHeader(String name, String value)
+    {
         mFields.add(new Field(name, MimeUtility.foldAndEncode(value)));
     }
 
-    public void setHeader(String name, String value)  {
-        if (name == null || value == null) {
+    public void setHeader(String name, String value)
+    {
+        if (name == null || value == null)
+        {
             return;
         }
         removeHeader(name);
@@ -65,46 +73,58 @@ public class MimeHeader {
     public List<String> getHeaderNames()
     {
         ArrayList<String> names = new ArrayList<String>();
-        for (Field field : mFields) {
+        for (Field field : mFields)
+        {
             names.add(field.name);
         }
         return names;
     }
 
-    public String[] getHeader(String name)  {
+    public String[] getHeader(String name)
+    {
         ArrayList<String> values = new ArrayList<String>();
-        for (Field field : mFields) {
-            if (field.name.equalsIgnoreCase(name)) {
+        for (Field field : mFields)
+        {
+            if (field.name.equalsIgnoreCase(name))
+            {
                 values.add(field.value);
             }
         }
-        if (values.size() == 0) {
+        if (values.size() == 0)
+        {
             return null;
         }
         return values.toArray(new String[] {});
     }
 
-    public void removeHeader(String name) {
+    public void removeHeader(String name)
+    {
         ArrayList<Field> removeFields = new ArrayList<Field>();
-        for (Field field : mFields) {
-            if (field.name.equalsIgnoreCase(name)) {
+        for (Field field : mFields)
+        {
+            if (field.name.equalsIgnoreCase(name))
+            {
                 removeFields.add(field);
             }
         }
         mFields.removeAll(removeFields);
     }
 
-    public void writeTo(OutputStream out) throws IOException, MessagingException {
+    public void writeTo(OutputStream out) throws IOException, MessagingException
+    {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
-        for (Field field : mFields) {
-            if (!Utility.arrayContains(writeOmitFields, field.name)) {
+        for (Field field : mFields)
+        {
+            if (!Utility.arrayContains(writeOmitFields, field.name))
+            {
                 String v = field.value;
 
-                if (hasToBeEncoded(v)) {
+                if (hasToBeEncoded(v))
+                {
                     v = EncoderUtil.encodeEncodedWord(
-                        field.value,
-                        EncoderUtil.Usage.WORD_ENTITY
-                    );
+                            field.value,
+                            EncoderUtil.Usage.WORD_ENTITY
+                        );
                 }
 
                 writer.write(field.name + ": " + v + "\r\n");
@@ -114,11 +134,15 @@ public class MimeHeader {
     }
 
     // encode non printable characters except LF/CR codes.
-    public boolean hasToBeEncoded(String text) {
-        for (int i = 0; i < text.length(); i++) {
+    public boolean hasToBeEncoded(String text)
+    {
+        for (int i = 0; i < text.length(); i++)
+        {
             char c = text.charAt(i);
-            if (c < 0x20 || 0x7e < c) { // non printable
-                if (c != 0x0a && c != 0x0d) { // non LF/CR
+            if (c < 0x20 || 0x7e < c)   // non printable
+            {
+                if (c != 0x0a && c != 0x0d)   // non LF/CR
+                {
                     return true;
                 }
             }
@@ -127,12 +151,14 @@ public class MimeHeader {
         return false;
     }
 
-    class Field {
+    class Field
+    {
         String name;
 
         String value;
 
-        public Field(String name, String value) {
+        public Field(String name, String value)
+        {
             this.name = name;
             this.value = value;
         }

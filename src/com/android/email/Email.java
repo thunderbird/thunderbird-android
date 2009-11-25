@@ -20,18 +20,19 @@ import com.android.email.mail.internet.BinaryTempFileBody;
 import com.android.email.service.BootReceiver;
 import com.android.email.service.MailService;
 
-public class Email extends Application {
+public class Email extends Application
+{
     public static Application app = null;
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
-    
+
     public enum BACKGROUND_OPS
     {
-        WHEN_CHECKED, ALWAYS, NEVER  
+        WHEN_CHECKED, ALWAYS, NEVER
     }
-    
-    private static int theme = android.R.style.Theme_Light; 
-    
+
+    private static int theme = android.R.style.Theme_Light;
+
     private static BACKGROUND_OPS backgroundOps = BACKGROUND_OPS.WHEN_CHECKED;
     /**
      * Some log messages can be sent to a file, so that the logs
@@ -67,34 +68,39 @@ public class Email extends Application {
      * item in the list. The entire list will be used to filter down attachments that are added
      * with Intent.ACTION_SEND.
      */
-    public static final String[] ACCEPTABLE_ATTACHMENT_SEND_TYPES = new String[] {
+    public static final String[] ACCEPTABLE_ATTACHMENT_SEND_TYPES = new String[]
+    {
         "*/*"
     };
 
     /**
      * The MIME type(s) of attachments we're willing to view.
      */
-    public static final String[] ACCEPTABLE_ATTACHMENT_VIEW_TYPES = new String[] {
+    public static final String[] ACCEPTABLE_ATTACHMENT_VIEW_TYPES = new String[]
+    {
         "*/*",
     };
 
     /**
      * The MIME type(s) of attachments we're not willing to view.
      */
-    public static final String[] UNACCEPTABLE_ATTACHMENT_VIEW_TYPES = new String[] {
+    public static final String[] UNACCEPTABLE_ATTACHMENT_VIEW_TYPES = new String[]
+    {
     };
 
     /**
      * The MIME type(s) of attachments we're willing to download to SD.
      */
-    public static final String[] ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
+    public static final String[] ACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[]
+    {
         "*/*",
     };
 
     /**
      * The MIME type(s) of attachments we're not willing to download to SD.
      */
-    public static final String[] UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[] {
+    public static final String[] UNACCEPTABLE_ATTACHMENT_DOWNLOAD_TYPES = new String[]
+    {
     };
 
     /**
@@ -102,18 +108,18 @@ public class Email extends Application {
      * the server refers to as the user's Inbox. Placed here to ease use.
      */
     public static final String INBOX = "INBOX";
-    
+
     /**
      * For use when displaying that no folder is selected
      */
     public static final String FOLDER_NONE = "-NONE-";
 
     public static final String LOCAL_UID_PREFIX = "K9LOCAL:";
- 
+
     public static final String REMOTE_UID_PREFIX = "K9REMOTE:";
- 
+
     public static final String K9MAIL_IDENTITY = "X-K9mail-Identity";
-    
+
     /**
      * Specifies how many messages will be shown in a folder by default. This number is set
      * on each new folder and can be incremented with "Load more messages..." by the
@@ -125,7 +131,7 @@ public class Email extends Application {
      * Number of additioanl messages to load when a user selectes "Load more messages..."
      */
     public static int VISIBLE_LIMIT_INCREMENT = 25;
-    
+
     public static int MAX_SEND_ATTEMPTS = 5;
 
     /**
@@ -135,16 +141,16 @@ public class Email extends Application {
      * 6.8MB downloaded but only 5MB saved.
      */
     public static final int MAX_ATTACHMENT_DOWNLOAD_SIZE = (5 * 1024 * 1024);
-    
+
     /**
-     * Max time (in millis) the wake lock will be held for when background sync is happening 
+     * Max time (in millis) the wake lock will be held for when background sync is happening
      */
     public static final int WAKE_LOCK_TIMEOUT = 600000;
-    
+
     public static final int MANUAL_WAKE_LOCK_TIMEOUT = 120000;
-    
+
     public static final int PUSH_WAKE_LOCK_TIMEOUT = 60000;
-    
+
     public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 30000;
 
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
@@ -158,38 +164,39 @@ public class Email extends Application {
     /**
      * Time the LED is on when blicking on new email notification
      */
-    public static final int NOTIFICATION_LED_ON_TIME = 500; 
+    public static final int NOTIFICATION_LED_ON_TIME = 500;
 
     /**
      * Time the LED is off when blicking on new email notification
      */
     public static final int NOTIFICATION_LED_OFF_TIME = 2000;
-    
+
     public static final boolean NOTIFICATION_LED_WHILE_SYNCING = false;
     public static final int NOTIFICATION_LED_DIM_COLOR = 0x77770077;
     public static final int NOTIFICATION_LED_FAST_ON_TIME = 100;
     public static final int NOTIFICATION_LED_FAST_OFF_TIME = 100;
-    
+
     public static final int NOTIFICATION_LED_SENDING_FAILURE_COLOR = 0xffff0000;
 
     // Must not conflict with an account number
-    public static final int FETCHING_EMAIL_NOTIFICATION_ID      = -4; 
+    public static final int FETCHING_EMAIL_NOTIFICATION_ID      = -4;
     public static final int FETCHING_EMAIL_NOTIFICATION_MULTI_ACCOUNT_ID      = -1;
     public static final int FETCHING_EMAIL_NOTIFICATION_NO_ACCOUNT = -2;
     public static final int CONNECTIVITY_ID = -3;
-    
+
     // Backup formats in case they can't be fetched from the system
     public static final String BACKUP_DATE_FORMAT = "MM-dd-yyyy";
     public static final String TIME_FORMAT_12 = "h:mm a";
     public static final String TIME_FORMAT_24 = "H:mm";
-    
+
     public static final int FLAGGED_COLOR = 0xff4444;
 
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
      * + png
      */
-    public static final String[][] CONTENT_TYPE_BY_EXTENSION_MAP = new String[][] {
+    public static final String[][] CONTENT_TYPE_BY_EXTENSION_MAP = new String[][]
+    {
         { "",       "application/octet-stream" },
         { "323",    "text/h323"},
         { "acx",    "application/internet-property-stream"},
@@ -381,9 +388,11 @@ public class Email extends Application {
         { "zip",    "application/zip"}
     };
 
-    public class Intents {
+    public class Intents
+    {
 
-        public class EmailReceived {
+        public class EmailReceived
+        {
             public static final String ACTION_EMAIL_RECEIVED    = "com.android.email.intent.action.EMAIL_RECEIVED";
             public static final String EXTRA_ACCOUNT            = "com.android.email.intent.extra.ACCOUNT";
             public static final String EXTRA_FOLDER             = "com.android.email.intent.extra.FOLDER";
@@ -395,7 +404,7 @@ public class Email extends Application {
             public static final String EXTRA_SUBJECT            = "com.android.email.intent.extra.SUBJECT";
             public static final String EXTRA_FROM_SELF          = "com.android.email.intent.extra.FROM_SELF";
         }
-        
+
     }
 
     /**
@@ -403,24 +412,28 @@ public class Email extends Application {
      * enables or disables the Compose activity, the boot receiver and the service based on
      * whether any accounts are configured.
      */
-    public static void setServicesEnabled(Context context) {
-       
+    public static void setServicesEnabled(Context context)
+    {
+
         int acctLength = Preferences.getPreferences(context).getAccounts().length;
-        
+
         setServicesEnabled(context, acctLength > 0, null);
-        
+
     }
-    
-    public static void setServicesEnabled(Context context, Integer wakeLockId) {
+
+    public static void setServicesEnabled(Context context, Integer wakeLockId)
+    {
         setServicesEnabled(context, Preferences.getPreferences(context).getAccounts().length > 0, wakeLockId);
     }
 
-    public static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
-        
+    public static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId)
+    {
+
         PackageManager pm = context.getPackageManager();
-        
+
         if (!enabled && pm.getComponentEnabledSetting(new ComponentName(context, MailService.class)) ==
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
+        {
             /*
              * If no accounts now exist but the service is still enabled we're about to disable it
              * so we'll reschedule to kill off any existing alarms.
@@ -428,34 +441,35 @@ public class Email extends Application {
             MailService.actionReschedule(context, wakeLockId);
         }
         Class[] classes = { MessageCompose.class, BootReceiver.class, MailService.class };
-        
+
         for (Class clazz : classes)
         {
-                
-            boolean alreadyEnabled = pm.getComponentEnabledSetting(new ComponentName(context, clazz)) == 
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-        
+
+            boolean alreadyEnabled = pm.getComponentEnabledSetting(new ComponentName(context, clazz)) ==
+                                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+
             if (enabled != alreadyEnabled)
             {
                 pm.setComponentEnabledSetting(
-                        new ComponentName(context, clazz),
-                        enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
-                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                        PackageManager.DONT_KILL_APP);
+                    new ComponentName(context, clazz),
+                    enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
             }
         }
-        
+
         if (enabled && pm.getComponentEnabledSetting(new ComponentName(context, MailService.class)) ==
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
+        {
             /*
              * And now if accounts do exist then we've just enabled the service and we want to
              * schedule alarms for the new accounts.
              */
             MailService.actionReschedule(context, wakeLockId);
         }
-        
+
     }
-    
+
     public static void save(SharedPreferences preferences)
     {
         SharedPreferences.Editor editor = preferences.edit();
@@ -467,14 +481,15 @@ public class Email extends Application {
     }
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
         app = this;
         Preferences prefs = Preferences.getPreferences(this);
         SharedPreferences sprefs = prefs.getPreferences();
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
-        
+
         try
         {
             setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString("backgroundOperations", "WHEN_CHECKED")));
@@ -483,7 +498,7 @@ public class Email extends Application {
         {
             setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
         }
-        
+
         Email.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
 
@@ -493,16 +508,19 @@ public class Email extends Application {
          */
         BinaryTempFileBody.setTempDirectory(getCacheDir());
 
-        /* 
+        /*
          * Enable background sync of messages
          */
-   
+
         setServicesEnabled(this);
-        
-        MessagingController.getInstance(this).addListener(new MessagingListener() {
+
+        MessagingController.getInstance(this).addListener(new MessagingListener()
+        {
             @Override
-            public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
-                try {
+            public void synchronizeMailboxNewMessage(Account account, String folder, Message message)
+            {
+                try
+                {
                     Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
                     Intent intent = new Intent(Email.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, uri);
                     intent.putExtra(Email.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
@@ -517,7 +535,8 @@ public class Email extends Application {
                     Email.this.sendBroadcast(intent);
                     Log.d(Email.LOG_TAG, "Broadcasted intent: " + message.getSubject());
                 }
-                catch (MessagingException e) {
+                catch (MessagingException e)
+                {
                     Log.w(Email.LOG_TAG, "Account=" + account.getName() + " folder=" + folder + "message uid=" + message.getUid(), e);
                 }
             }
@@ -544,7 +563,7 @@ public class Email extends Application {
     {
         Email.backgroundOps = backgroundOps;
     }
-    
+
     public static void setBackgroundOps(String nbackgroundOps)
     {
         Email.backgroundOps = BACKGROUND_OPS.valueOf(nbackgroundOps);

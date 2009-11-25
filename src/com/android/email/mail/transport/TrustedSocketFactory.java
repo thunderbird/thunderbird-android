@@ -19,47 +19,55 @@ import org.apache.http.params.HttpParams;
 
 import com.android.email.mail.store.TrustManagerFactory;
 
-public class TrustedSocketFactory implements LayeredSocketFactory {
-	private SSLSocketFactory mSocketFactory;
-	private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
-	
-	public TrustedSocketFactory(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException{
+public class TrustedSocketFactory implements LayeredSocketFactory
+{
+    private SSLSocketFactory mSocketFactory;
+    private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
+
+    public TrustedSocketFactory(String host, boolean secure) throws NoSuchAlgorithmException, KeyManagementException
+    {
         SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, new TrustManager[] {
-                TrustManagerFactory.get(host, secure)
+        sslContext.init(null, new TrustManager[]
+        {
+            TrustManagerFactory.get(host, secure)
         }, new SecureRandom());
         mSocketFactory = sslContext.getSocketFactory();
         mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();
         mSchemeSocketFactory.setHostnameVerifier(
-        		org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-	}
+            org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+    }
 
-	public Socket connectSocket(Socket sock, String host, int port,
-			InetAddress localAddress, int localPort, HttpParams params)
-			throws IOException, UnknownHostException, ConnectTimeoutException {
-		return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
-	}
+    public Socket connectSocket(Socket sock, String host, int port,
+                                InetAddress localAddress, int localPort, HttpParams params)
+    throws IOException, UnknownHostException, ConnectTimeoutException
+    {
+        return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
+    }
 
-	public Socket createSocket() throws IOException {
-		return mSocketFactory.createSocket();
-	}
+    public Socket createSocket() throws IOException
+    {
+        return mSocketFactory.createSocket();
+    }
 
-	public boolean isSecure(Socket sock) throws IllegalArgumentException {
-		return mSchemeSocketFactory.isSecure(sock);
-	}
-	public Socket createSocket(
-	        final Socket socket,
-	        final String host,
-	        final int port,
-	        final boolean autoClose
-	    ) throws IOException, UnknownHostException {
-	        SSLSocket sslSocket = (SSLSocket) mSocketFactory.createSocket(
-	              socket,
-	              host,
-	              port,
-	              autoClose
-	        );
-	        //hostnameVerifier.verify(host, sslSocket);
-	        // verifyHostName() didn't blowup - good!
-	        return sslSocket;
-	    }}
+    public boolean isSecure(Socket sock) throws IllegalArgumentException
+    {
+        return mSchemeSocketFactory.isSecure(sock);
+    }
+    public Socket createSocket(
+        final Socket socket,
+        final String host,
+        final int port,
+        final boolean autoClose
+    ) throws IOException, UnknownHostException
+    {
+        SSLSocket sslSocket = (SSLSocket) mSocketFactory.createSocket(
+                                  socket,
+                                  host,
+                                  port,
+                                  autoClose
+                              );
+        //hostnameVerifier.verify(host, sslSocket);
+        // verifyHostName() didn't blowup - good!
+        return sslSocket;
+    }
+}

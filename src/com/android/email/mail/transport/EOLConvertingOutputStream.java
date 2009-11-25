@@ -4,17 +4,22 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class EOLConvertingOutputStream extends FilterOutputStream {
+public class EOLConvertingOutputStream extends FilterOutputStream
+{
     int lastChar;
 
-    public EOLConvertingOutputStream(OutputStream out) {
+    public EOLConvertingOutputStream(OutputStream out)
+    {
         super(out);
     }
 
     @Override
-    public void write(int oneByte) throws IOException {
-        if (oneByte == '\n') {
-            if (lastChar != '\r') {
+    public void write(int oneByte) throws IOException
+    {
+        if (oneByte == '\n')
+        {
+            if (lastChar != '\r')
+            {
                 super.write('\r');
             }
         }
@@ -23,8 +28,10 @@ public class EOLConvertingOutputStream extends FilterOutputStream {
     }
 
     @Override
-    public void flush() throws IOException {
-        if (lastChar == '\r') {
+    public void flush() throws IOException
+    {
+        if (lastChar == '\r')
+        {
             super.write('\n');
             lastChar = '\n';
         }

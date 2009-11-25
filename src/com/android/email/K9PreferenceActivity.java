@@ -5,9 +5,11 @@ import android.os.Bundle;
 
 
 
-public class K9PreferenceActivity extends PreferenceActivity {
+public class K9PreferenceActivity extends PreferenceActivity
+{
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(Bundle icicle)
+    {
         setTheme(Email.getK9Theme());
         super.onCreate(icicle);
     }

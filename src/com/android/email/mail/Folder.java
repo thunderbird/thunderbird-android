@@ -3,19 +3,23 @@ package com.android.email.mail;
 import com.android.email.Preferences;
 
 
-public abstract class Folder {
-		private String status = null;
-		private long lastChecked = 0;
-		private long lastPush = 0;
-    public enum OpenMode {
+public abstract class Folder
+{
+    private String status = null;
+    private long lastChecked = 0;
+    private long lastPush = 0;
+    public enum OpenMode
+    {
         READ_WRITE, READ_ONLY,
     }
     // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
-    public enum FolderClass {
-    	NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS;
+    public enum FolderClass
+    {
+        NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS;
     }
-    
-    public enum FolderType {
+
+    public enum FolderType
+    {
         HOLDS_FOLDERS, HOLDS_MESSAGES,
     }
 
@@ -51,10 +55,11 @@ public abstract class Folder {
     public abstract boolean create(FolderType type) throws MessagingException;
 
     /**
-     * Create a new folder with a specified display limit.  Not abstract to allow 
+     * Create a new folder with a specified display limit.  Not abstract to allow
      * remote folders to not override or worry about this call if they don't care to.
      */
-    public boolean create(FolderType type, int displayLimit) throws MessagingException {
+    public boolean create(FolderType type, int displayLimit) throws MessagingException
+    {
         return create(type);
     }
 
@@ -70,7 +75,7 @@ public abstract class Folder {
     public abstract Message getMessage(String uid) throws MessagingException;
 
     public abstract Message[] getMessages(int start, int end, MessageRetrievalListener listener)
-            throws MessagingException;
+    throws MessagingException;
 
     /**
      * Fetches the given list of messages. The specified listener is notified as
@@ -82,41 +87,42 @@ public abstract class Folder {
      * @param listener
      */
     public abstract Message[] getMessages(MessageRetrievalListener listener)
-           throws MessagingException;
+    throws MessagingException;
 
-    public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException {
-           return getMessages(listener);
+    public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException
+    {
+        return getMessages(listener);
     }
 
     public abstract Message[] getMessages(String[] uids, MessageRetrievalListener listener)
-            throws MessagingException;
+    throws MessagingException;
 
     public abstract void appendMessages(Message[] messages) throws MessagingException;
 
     public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {} ;
- 
+
     public void moveMessages(Message[] msgs, Folder folder) throws MessagingException {} ;
 
     public abstract void setFlags(Message[] messages, Flag[] flags, boolean value)
-            throws MessagingException;
-    
-		public abstract void setFlags(Flag[] flags, boolean value) throws MessagingException;
+    throws MessagingException;
+
+    public abstract void setFlags(Flag[] flags, boolean value) throws MessagingException;
 
     public abstract String getUidFromMessageId(Message message) throws MessagingException;
 
     public abstract Message[] expunge() throws MessagingException;
 
     public abstract void fetch(Message[] messages, FetchProfile fp,
-            MessageRetrievalListener listener) throws MessagingException;
+                               MessageRetrievalListener listener) throws MessagingException;
 
     public abstract void delete(boolean recurse) throws MessagingException;
 
     public abstract String getName();
 
     public abstract Flag[] getPermanentFlags() throws MessagingException;
-    
+
     /**
-     * 
+     *
      * @param oldPushState
      * @param message
      * @return empty string to clear the pushState, null to leave the state as-is
@@ -126,68 +132,70 @@ public abstract class Folder {
         return null;
     }
 
-    public boolean supportsFetchingFlags() {
+    public boolean supportsFetchingFlags()
+    {
         return true;
     }//isFlagSupported
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return getName();
     }
 
-		public long getLastChecked()
-		{
-			return lastChecked;
-		}
+    public long getLastChecked()
+    {
+        return lastChecked;
+    }
 
-		public void setLastChecked(long lastChecked) throws MessagingException
-		{
-			this.lastChecked = lastChecked;
-		}
-		
-		public long getLastPush()
-		{
-		    return lastPush;
-		}
+    public void setLastChecked(long lastChecked) throws MessagingException
+    {
+        this.lastChecked = lastChecked;
+    }
 
-		public void setLastPush(long lastCheckedDisplay) throws MessagingException
-		{
-		    this.lastPush = lastCheckedDisplay;
-		}
-		
-		public long getLastUpdate()
-		{
-		    return Math.max(getLastChecked(), getLastPush());
-		}
+    public long getLastPush()
+    {
+        return lastPush;
+    }
 
-   	public FolderClass getDisplayClass()
-		{
-			return FolderClass.NO_CLASS;
-		}
-		
-		public FolderClass getSyncClass()
-		{
-			return getDisplayClass();
-		}
-		public FolderClass getPushClass()
-        {
-            return getSyncClass();
-        }
-		
+    public void setLastPush(long lastCheckedDisplay) throws MessagingException
+    {
+        this.lastPush = lastCheckedDisplay;
+    }
+
+    public long getLastUpdate()
+    {
+        return Math.max(getLastChecked(), getLastPush());
+    }
+
+    public FolderClass getDisplayClass()
+    {
+        return FolderClass.NO_CLASS;
+    }
+
+    public FolderClass getSyncClass()
+    {
+        return getDisplayClass();
+    }
+    public FolderClass getPushClass()
+    {
+        return getSyncClass();
+    }
+
     public void refresh(Preferences preferences) throws MessagingException
     {
 
     }
 
-		public String getStatus()
-		{
-			return status;
-		}
+    public String getStatus()
+    {
+        return status;
+    }
 
-		public void setStatus(String status) throws MessagingException
-		{
-			this.status = status;
-		}
+    public void setStatus(String status) throws MessagingException
+    {
+        this.status = status;
+    }
 
-  
+
 }

@@ -24,7 +24,8 @@ import com.android.email.Preferences;
 import com.android.email.R;
 import com.android.email.service.MailService;
 
-public class Prefs extends K9PreferenceActivity {
+public class Prefs extends K9PreferenceActivity
+{
 
     private static final String PREFERENCE_TOP_CATERGORY = "preferences";
     private static final String PREFERENCE_THEME = "theme";
@@ -40,13 +41,15 @@ public class Prefs extends K9PreferenceActivity {
     private String initBackgroundOps;
 
 
-    public static void actionPrefs(Context context) {
+    public static void actionPrefs(Context context)
+    {
         Intent i = new Intent(context, Prefs.class);
         context.startActivity(i);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
 
@@ -55,8 +58,10 @@ public class Prefs extends K9PreferenceActivity {
         mTheme = (ListPreference) findPreference(PREFERENCE_THEME);
         mTheme.setValue(String.valueOf(Email.getK9Theme() == android.R.style.Theme ? "dark" : "light"));
         mTheme.setSummary(mTheme.getEntry());
-        mTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mTheme.findIndexOfValue(summary);
                 mTheme.setSummary(mTheme.getEntries()[index]);
@@ -69,8 +74,10 @@ public class Prefs extends K9PreferenceActivity {
         initBackgroundOps = Email.getBackgroundOps().toString();
         mBackgroundOps.setValue(initBackgroundOps);
         mBackgroundOps.setSummary(mBackgroundOps.getEntry());
-        mBackgroundOps.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mBackgroundOps.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mBackgroundOps.findIndexOfValue(summary);
                 mBackgroundOps.setSummary(mBackgroundOps.getEntries()[index]);
@@ -88,11 +95,13 @@ public class Prefs extends K9PreferenceActivity {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
     }
 
-    private void saveSettings() {
+    private void saveSettings()
+    {
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
         Email.setK9Theme(mTheme.getValue().equals("dark") ? android.R.style.Theme : android.R.style.Theme_Light);
         Email.DEBUG = mDebugLogging.isChecked();
@@ -100,14 +109,17 @@ public class Prefs extends K9PreferenceActivity {
         String newBackgroundOps = mBackgroundOps.getValue();
         Email.setBackgroundOps(newBackgroundOps);
         Email.save(preferences);
-        if (newBackgroundOps.equals(initBackgroundOps) == false) {
+        if (newBackgroundOps.equals(initBackgroundOps) == false)
+        {
             MailService.backgroundDataChanged(this, null);
         }
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
             saveSettings();
         }
         return super.onKeyDown(keyCode, event);

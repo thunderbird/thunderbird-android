@@ -18,9 +18,11 @@ import android.os.Bundle;
  * If more than one account is configuref the user is takaen to the Accounts Activity so they
  * can select an account.
  */
-public class Welcome extends K9Activity {
+public class Welcome extends K9Activity
+{
     @Override
-    public void onCreate(Bundle icicle) {
+    public void onCreate(Bundle icicle)
+    {
         super.onCreate(icicle);
 
         Accounts.actionLaunch(this);

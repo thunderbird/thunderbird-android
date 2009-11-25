@@ -36,7 +36,8 @@ import com.android.email.mail.CertificateValidationException;
 import com.android.email.mail.Message.RecipientType;
 import com.android.email.mail.store.TrustManagerFactory;
 
-public class SmtpTransport extends Transport {
+public class SmtpTransport extends Transport
+{
     public static final int CONNECTION_SECURITY_NONE = 0;
 
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
@@ -74,70 +75,94 @@ public class SmtpTransport extends Transport {
      *
      * @param _uri
      */
-    public SmtpTransport(String _uri) throws MessagingException {
+    public SmtpTransport(String _uri) throws MessagingException
+    {
         URI uri;
-        try {
+        try
+        {
             uri = new URI(_uri);
-        } catch (URISyntaxException use) {
+        }
+        catch (URISyntaxException use)
+        {
             throw new MessagingException("Invalid SmtpTransport URI", use);
         }
 
         String scheme = uri.getScheme();
-        if (scheme.equals("smtp")) {
+        if (scheme.equals("smtp"))
+        {
             mConnectionSecurity = CONNECTION_SECURITY_NONE;
             mPort = 25;
-        } else if (scheme.equals("smtp+tls")) {
+        }
+        else if (scheme.equals("smtp+tls"))
+        {
             mConnectionSecurity = CONNECTION_SECURITY_TLS_OPTIONAL;
             mPort = 25;
-        } else if (scheme.equals("smtp+tls+")) {
+        }
+        else if (scheme.equals("smtp+tls+"))
+        {
             mConnectionSecurity = CONNECTION_SECURITY_TLS_REQUIRED;
             mPort = 25;
-        } else if (scheme.equals("smtp+ssl+")) {
+        }
+        else if (scheme.equals("smtp+ssl+"))
+        {
             mConnectionSecurity = CONNECTION_SECURITY_SSL_REQUIRED;
             mPort = 465;
-        } else if (scheme.equals("smtp+ssl")) {
+        }
+        else if (scheme.equals("smtp+ssl"))
+        {
             mConnectionSecurity = CONNECTION_SECURITY_SSL_OPTIONAL;
             mPort = 465;
-        } else {
+        }
+        else
+        {
             throw new MessagingException("Unsupported protocol");
         }
 
         mHost = uri.getHost();
 
-        if (uri.getPort() != -1) {
+        if (uri.getPort() != -1)
+        {
             mPort = uri.getPort();
         }
 
-        if (uri.getUserInfo() != null) {
+        if (uri.getUserInfo() != null)
+        {
             String[] userInfoParts = uri.getUserInfo().split(":", 2);
             mUsername = userInfoParts[0];
-            if (userInfoParts.length > 1) {
+            if (userInfoParts.length > 1)
+            {
                 mPassword = userInfoParts[1];
             }
         }
     }
 
-    public void open() throws MessagingException {
-        try {
+    public void open() throws MessagingException
+    {
+        try
+        {
             SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
             if (mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED ||
-                    mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL) {
+                    mConnectionSecurity == CONNECTION_SECURITY_SSL_OPTIONAL)
+            {
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-                sslContext.init(null, new TrustManager[] {
-                        TrustManagerFactory.get(mHost, secure)
+                sslContext.init(null, new TrustManager[]
+                {
+                    TrustManagerFactory.get(mHost, secure)
                 }, new SecureRandom());
                 mSocket = sslContext.getSocketFactory().createSocket();
                 mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                 mSecure = true;
-            } else {
+            }
+            else
+            {
                 mSocket = new Socket();
                 mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
             }
 
             // RFC 1047
             mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
-            
+
             mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), 1024));
             mOut = mSocket.getOutputStream();
 
@@ -145,17 +170,22 @@ public class SmtpTransport extends Transport {
             executeSimpleCommand(null);
 
             String localHost = "localhost.localdomain";
-            try {
+            try
+            {
                 InetAddress localAddress = InetAddress.getLocalHost();
-                if (! localAddress.isLoopbackAddress()) {
+                if (! localAddress.isLoopbackAddress())
+                {
                     // The loopback address will resolve to 'localhost'
-                    // some mail servers only accept qualified hostnames, so make sure 
+                    // some mail servers only accept qualified hostnames, so make sure
                     // never to override "localhost.localdomain" with "localhost"
                     // TODO - this is a hack. but a better hack than what was there before
                     localHost = localAddress.getHostName();
                 }
-            } catch (Exception e) {
-                if (Email.DEBUG) {
+            }
+            catch (Exception e)
+            {
+                if (Email.DEBUG)
+                {
                     Log.d(Email.LOG_TAG, "Unable to look up localhost");
                 }
             }
@@ -171,19 +201,22 @@ public class SmtpTransport extends Transport {
              * if not.
              */
             if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
-                    || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
-                if (results.contains("STARTTLS")) {
+                    || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED)
+            {
+                if (results.contains("STARTTLS"))
+                {
                     executeSimpleCommand("STARTTLS");
 
                     SSLContext sslContext = SSLContext.getInstance("TLS");
                     boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
-                    sslContext.init(null, new TrustManager[] {
-                            TrustManagerFactory.get(mHost, secure)
+                    sslContext.init(null, new TrustManager[]
+                    {
+                        TrustManagerFactory.get(mHost, secure)
                     }, new SecureRandom());
                     mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
-                            true);
+                              true);
                     mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
-                            1024));
+                                                  1024));
                     mOut = mSocket.getOutputStream();
                     mSecure = true;
                     /*
@@ -191,7 +224,9 @@ public class SmtpTransport extends Transport {
                      * Exim.
                      */
                     results = executeSimpleCommand("EHLO " + localHost);
-                } else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED) {
+                }
+                else if (mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED)
+                {
                     throw new MessagingException("TLS not supported but required");
                 }
             }
@@ -200,7 +235,7 @@ public class SmtpTransport extends Transport {
              * result contains the results of the EHLO in concatenated form
              */
             boolean authLoginSupported = false;
-            boolean authPlainSupported = false; 
+            boolean authPlainSupported = false;
             for (String result : results)
             {
                 if (result.matches(".*AUTH.*LOGIN.*$") == true)
@@ -214,80 +249,107 @@ public class SmtpTransport extends Transport {
             }
 
             if (mUsername != null && mUsername.length() > 0 && mPassword != null
-                    && mPassword.length() > 0) {
-                if (authPlainSupported) {
+                    && mPassword.length() > 0)
+            {
+                if (authPlainSupported)
+                {
                     saslAuthPlain(mUsername, mPassword);
                 }
-                else if (authLoginSupported) {
+                else if (authLoginSupported)
+                {
                     saslAuthLogin(mUsername, mPassword);
                 }
-                else {
+                else
+                {
                     throw new MessagingException("No valid authentication mechanism found.");
                 }
             }
-        } catch (SSLException e) {
+        }
+        catch (SSLException e)
+        {
             throw new CertificateValidationException(e.getMessage(), e);
-        } catch (GeneralSecurityException gse) {
+        }
+        catch (GeneralSecurityException gse)
+        {
             throw new MessagingException(
-                    "Unable to open connection to SMTP server due to security error.", gse);
-        } catch (IOException ioe) {
+                "Unable to open connection to SMTP server due to security error.", gse);
+        }
+        catch (IOException ioe)
+        {
             throw new MessagingException("Unable to open connection to SMTP server.", ioe);
         }
     }
 
-    public void sendMessage(Message message) throws MessagingException {
+    public void sendMessage(Message message) throws MessagingException
+    {
         close();
         open();
         Address[] from = message.getFrom();
         boolean possibleSend = false;
-        try {
+        try
+        {
             executeSimpleCommand("MAIL FROM: " + "<" + from[0].getAddress() + ">");
-            for (Address address : message.getRecipients(RecipientType.TO)) {
+            for (Address address : message.getRecipients(RecipientType.TO))
+            {
                 executeSimpleCommand("RCPT TO: " + "<" + address.getAddress() + ">");
             }
-            for (Address address : message.getRecipients(RecipientType.CC)) {
+            for (Address address : message.getRecipients(RecipientType.CC))
+            {
                 executeSimpleCommand("RCPT TO: " + "<" + address.getAddress() + ">");
             }
-            for (Address address : message.getRecipients(RecipientType.BCC)) {
+            for (Address address : message.getRecipients(RecipientType.BCC))
+            {
                 executeSimpleCommand("RCPT TO: " + "<" + address.getAddress() + ">");
             }
             message.setRecipients(RecipientType.BCC, null);
             executeSimpleCommand("DATA");
             // TODO byte stuffing
             message.writeTo(
-                    new EOLConvertingOutputStream(
-                            new BufferedOutputStream(mOut, 1024)));
- 
+                new EOLConvertingOutputStream(
+                    new BufferedOutputStream(mOut, 1024)));
+
             possibleSend = true; // After the "\r\n." is attempted, we may have sent the message
             executeSimpleCommand("\r\n.");
-        } catch (Exception e) {
-          MessagingException me = new MessagingException("Unable to send message", e);
-          me.setPermanentFailure(possibleSend);
-          throw me;
+        }
+        catch (Exception e)
+        {
+            MessagingException me = new MessagingException("Unable to send message", e);
+            me.setPermanentFailure(possibleSend);
+            throw me;
         }
         finally
         {
-        	close();
+            close();
         }
-        
-        
-      
+
+
+
     }
 
-    public void close() {
-        try {
+    public void close()
+    {
+        try
+        {
             mIn.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
 
         }
-        try {
+        try
+        {
             mOut.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
 
         }
-        try {
+        try
+        {
             mSocket.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
 
         }
         mIn = null;
@@ -295,28 +357,38 @@ public class SmtpTransport extends Transport {
         mSocket = null;
     }
 
-    private String readLine() throws IOException {
+    private String readLine() throws IOException
+    {
         StringBuffer sb = new StringBuffer();
         int d;
-        while ((d = mIn.read()) != -1) {
-            if (((char)d) == '\r') {
+        while ((d = mIn.read()) != -1)
+        {
+            if (((char)d) == '\r')
+            {
                 continue;
-            } else if (((char)d) == '\n') {
+            }
+            else if (((char)d) == '\n')
+            {
                 break;
-            } else {
+            }
+            else
+            {
                 sb.append((char)d);
             }
         }
         String ret = sb.toString();
-        if (Email.DEBUG) {
+        if (Email.DEBUG)
+        {
             Log.d(Email.LOG_TAG, "SMTP <<< " + ret);
         }
-        
+
         return ret;
     }
 
-    private void writeLine(String s) throws IOException {
-        if (Email.DEBUG) {
+    private void writeLine(String s) throws IOException
+    {
+        if (Email.DEBUG)
+        {
             Log.d(Email.LOG_TAG, "SMTP >>> " + s);
         }
         mOut.write(s.getBytes());
@@ -327,22 +399,25 @@ public class SmtpTransport extends Transport {
 
     private void checkLine(String line) throws MessagingException
     {
-	if (line.length() < 1)
-	{
-	   throw new MessagingException("SMTP response is 0 length");
-	}
+        if (line.length() < 1)
+        {
+            throw new MessagingException("SMTP response is 0 length");
+        }
         char c = line.charAt(0);
-        if ((c == '4') || (c == '5')) {
+        if ((c == '4') || (c == '5'))
+        {
             throw new MessagingException(line);
         }
     }
 
-    private List<String> executeSimpleCommand(String command) throws IOException, MessagingException {
+    private List<String> executeSimpleCommand(String command) throws IOException, MessagingException
+    {
         List<String> results = new ArrayList<String>();
-        if (command != null) {
+        if (command != null)
+        {
             writeLine(command);
         }
-        
+
         boolean cont = false;
         do
         {
@@ -360,7 +435,8 @@ public class SmtpTransport extends Transport {
                     cont = false;
                 }
             }
-        } while (cont);
+        }
+        while (cont);
         return results;
 
     }
@@ -384,32 +460,40 @@ public class SmtpTransport extends Transport {
 //    S: 235 2.0.0 OK Authenticated
 
     private void saslAuthLogin(String username, String password) throws MessagingException,
-        AuthenticationFailedException, IOException {
-        try {
+                AuthenticationFailedException, IOException
+    {
+        try
+        {
             executeSimpleCommand("AUTH LOGIN");
             executeSimpleCommand(new String(Base64.encodeBase64(username.getBytes())));
             executeSimpleCommand(new String(Base64.encodeBase64(password.getBytes())));
         }
-        catch (MessagingException me) {
-            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
+        catch (MessagingException me)
+        {
+            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3')
+            {
                 throw new AuthenticationFailedException("AUTH LOGIN failed (" + me.getMessage()
-                        + ")");
+                                                        + ")");
             }
             throw me;
         }
     }
 
     private void saslAuthPlain(String username, String password) throws MessagingException,
-            AuthenticationFailedException, IOException {
+                AuthenticationFailedException, IOException
+    {
         byte[] data = ("\000" + username + "\000" + password).getBytes();
         data = new Base64().encode(data);
-        try {
+        try
+        {
             executeSimpleCommand("AUTH PLAIN " + new String(data));
         }
-        catch (MessagingException me) {
-            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3') {
+        catch (MessagingException me)
+        {
+            if (me.getMessage().length() > 1 && me.getMessage().charAt(1) == '3')
+            {
                 throw new AuthenticationFailedException("AUTH PLAIN failed (" + me.getMessage()
-                        + ")");
+                                                        + ")");
             }
             throw me;
         }

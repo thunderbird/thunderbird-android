@@ -19,7 +19,8 @@ import com.android.email.mail.store.WebDavStore;
  * performance on mobile devices. Implementations of this class should focus on
  * making as few network connections as possible.
  */
-public abstract class Store {
+public abstract class Store
+{
     /**
      * A global suggestion to Store implementors on how much of the body
      * should be returned on FetchProfile.Item.BODY_SANE requests.
@@ -48,26 +49,37 @@ public abstract class Store {
      * @return
      * @throws MessagingException
      */
-    public synchronized static Store getInstance(String uri, Application application) throws MessagingException {
+    public synchronized static Store getInstance(String uri, Application application) throws MessagingException
+    {
         Store store = mStores.get(uri);
-        if (store == null) {
-            if (uri.startsWith("imap")) {
+        if (store == null)
+        {
+            if (uri.startsWith("imap"))
+            {
                 store = new ImapStore(uri);
-            } else if (uri.startsWith("pop3")) {
+            }
+            else if (uri.startsWith("pop3"))
+            {
                 store = new Pop3Store(uri);
-            } else if (uri.startsWith("local")) {
+            }
+            else if (uri.startsWith("local"))
+            {
                 store = new LocalStore(uri, application);
-            } else if (uri.startsWith("webdav")) {
+            }
+            else if (uri.startsWith("webdav"))
+            {
                 store = new WebDavStore(uri);
             }
 
 
-            if (store != null) {
+            if (store != null)
+            {
                 mStores.put(uri, store);
             }
         }
 
-        if (store == null) {
+        if (store == null)
+        {
             throw new MessagingException("Unable to locate an applicable Store for " + uri);
         }
 
@@ -79,21 +91,24 @@ public abstract class Store {
     public abstract Folder[] getPersonalNamespaces() throws MessagingException;
 
     public abstract void checkSettings() throws MessagingException;
-    
-    public boolean isCopyCapable() {
-      return false;
+
+    public boolean isCopyCapable()
+    {
+        return false;
     }
-    public boolean isMoveCapable() {
-      return false;
+    public boolean isMoveCapable()
+    {
+        return false;
     }
-    public boolean isPushCapable() {
+    public boolean isPushCapable()
+    {
         return false;
     }
     public boolean isSendCapable()
     {
         return false;
     }
-    
+
     public void sendMessages(Message[] messages) throws MessagingException
     {
     }

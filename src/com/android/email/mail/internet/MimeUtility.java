@@ -26,29 +26,36 @@ import com.android.email.mail.MessagingException;
 import com.android.email.mail.Multipart;
 import com.android.email.mail.Part;
 
-public class MimeUtility {
+public class MimeUtility
+{
 
- 
-    public static String unfold(String s) {
-        if (s == null) {
+
+    public static String unfold(String s)
+    {
+        if (s == null)
+        {
             return null;
         }
         return s.replaceAll("\r|\n", "");
     }
 
-    public static String decode(String s) {
-        if (s == null) {
+    public static String decode(String s)
+    {
+        if (s == null)
+        {
             return null;
         }
         return DecoderUtil.decodeEncodedWords(s);
     }
 
-    public static String unfoldAndDecode(String s) {
+    public static String unfoldAndDecode(String s)
+    {
         return decode(unfold(s));
     }
 
     // TODO implement proper foldAndEncode
-    public static String foldAndEncode(String s) {
+    public static String foldAndEncode(String s)
+    {
         return s;
     }
 
@@ -63,22 +70,29 @@ public class MimeUtility {
      * @param name
      * @return
      */
-    public static String getHeaderParameter(String header, String name) {
-        if (header == null) {
+    public static String getHeaderParameter(String header, String name)
+    {
+        if (header == null)
+        {
             return null;
         }
         header = header.replaceAll("\r|\n", "");
         String[] parts = header.split(";");
-        if (name == null) {
+        if (name == null)
+        {
             return parts[0];
         }
-        for (String part : parts) {
-            if (part.trim().toLowerCase().startsWith(name.toLowerCase())) {
+        for (String part : parts)
+        {
+            if (part.trim().toLowerCase().startsWith(name.toLowerCase()))
+            {
                 String parameter = part.split("=", 2)[1].trim();
-                if (parameter.startsWith("\"") && parameter.endsWith("\"")) {
+                if (parameter.startsWith("\"") && parameter.endsWith("\""))
+                {
                     return parameter.substring(1, parameter.length() - 1);
                 }
-                else {
+                else
+                {
                     return parameter;
                 }
             }
@@ -87,38 +101,50 @@ public class MimeUtility {
     }
 
     public static Part findFirstPartByMimeType(Part part, String mimeType)
-            throws MessagingException {
-        if (part.getBody() instanceof Multipart) {
+    throws MessagingException
+    {
+        if (part.getBody() instanceof Multipart)
+        {
             Multipart multipart = (Multipart)part.getBody();
-            for (int i = 0, count = multipart.getCount(); i < count; i++) {
+            for (int i = 0, count = multipart.getCount(); i < count; i++)
+            {
                 BodyPart bodyPart = multipart.getBodyPart(i);
                 Part ret = findFirstPartByMimeType(bodyPart, mimeType);
-                if (ret != null) {
+                if (ret != null)
+                {
                     return ret;
                 }
             }
         }
-        else if (part.getMimeType().equalsIgnoreCase(mimeType)) {
+        else if (part.getMimeType().equalsIgnoreCase(mimeType))
+        {
             return part;
         }
         return null;
     }
 
-    public static Part findPartByContentId(Part part, String contentId) throws Exception {
-        if (part.getBody() instanceof Multipart) {
+    public static Part findPartByContentId(Part part, String contentId) throws Exception
+    {
+        if (part.getBody() instanceof Multipart)
+        {
             Multipart multipart = (Multipart)part.getBody();
-            for (int i = 0, count = multipart.getCount(); i < count; i++) {
+            for (int i = 0, count = multipart.getCount(); i < count; i++)
+            {
                 BodyPart bodyPart = multipart.getBodyPart(i);
                 Part ret = findPartByContentId(bodyPart, contentId);
-                if (ret != null) {
+                if (ret != null)
+                {
                     return ret;
                 }
             }
         }
         String[] header = part.getHeader("Content-ID");
-        if (header != null) {
-            for (String s : header) {
-                if (s.equals(contentId)) {
+        if (header != null)
+        {
+            for (String s : header)
+            {
+                if (s.equals(contentId))
+                {
                     return part;
                 }
             }
@@ -133,19 +159,25 @@ public class MimeUtility {
      * @return
      * @throws IOException
      */
-    public static String getTextFromPart(Part part) {
-       Charset mCharsetConverter;
+    public static String getTextFromPart(Part part)
+    {
+        Charset mCharsetConverter;
 
-        try {
-            if (part != null && part.getBody() != null) {
+        try
+        {
+            if (part != null && part.getBody() != null)
+            {
                 Body body = part.getBody();
-                if (body instanceof TextBody) {
+                if (body instanceof TextBody)
+                {
                     return ((TextBody)body).getText();
                 }
-                else {
+                else
+                {
                     InputStream in = part.getBody().getInputStream();
                     String mimeType = part.getMimeType();
-                    if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*")) {
+                    if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*"))
+                    {
                         /*
                          * Now we read the part into a buffer for further processing. Because
                          * the stream is now wrapped we'll remove any transfer encoding at this point.
@@ -161,20 +193,23 @@ public class MimeUtility {
                         /*
                          * We've got a text part, so let's see if it needs to be processed further.
                          */
-                        if (charset != null) {
+                        if (charset != null)
+                        {
                             /*
                              * See if there is conversion from the MIME charset to the Java one.
                              */
                             mCharsetConverter = Charset.forName(charset);
                             charset = mCharsetConverter.name();
                         }
-                        if (charset != null) {
+                        if (charset != null)
+                        {
                             /*
                              * We've got a charset encoding, so decode using it.
                              */
                             return new String(bytes, 0, bytes.length, charset);
                         }
-                        else {
+                        else
+                        {
                             /*
                              * No encoding, so use us-ascii, which is the standard.
                              */
@@ -184,7 +219,8 @@ public class MimeUtility {
                 }
             }//if text body
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             /*
              * If we are not able to process the body there's nothing we can do about it. Return
              * null and let the upper layers handle the missing content.
@@ -201,10 +237,11 @@ public class MimeUtility {
      * * /*.
      * @return
      */
-    public static boolean mimeTypeMatches(String mimeType, String matchAgainst) {
-      Pattern p = Pattern.compile(matchAgainst.replaceAll("\\*", "\\.\\*"),
-          Pattern.CASE_INSENSITIVE);
-      return p.matcher(mimeType).matches();
+    public static boolean mimeTypeMatches(String mimeType, String matchAgainst)
+    {
+        Pattern p = Pattern.compile(matchAgainst.replaceAll("\\*", "\\.\\*"),
+                                    Pattern.CASE_INSENSITIVE);
+        return p.matcher(mimeType).matches();
     }
 
     /**
@@ -214,11 +251,14 @@ public class MimeUtility {
      * as image/* or * /*.
      * @return
      */
-    public static boolean mimeTypeMatches(String mimeType, String[] matchAgainst) {
-        for (String matchType : matchAgainst) {
-          if (mimeTypeMatches(mimeType, matchType)) {
-            return true;
-          }
+    public static boolean mimeTypeMatches(String mimeType, String[] matchAgainst)
+    {
+        for (String matchType : matchAgainst)
+        {
+            if (mimeTypeMatches(mimeType, matchType))
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -227,17 +267,21 @@ public class MimeUtility {
      * Removes any content transfer encoding from the stream and returns a Body.
      */
     public static Body decodeBody(InputStream in, String contentTransferEncoding)
-            throws IOException {
+    throws IOException
+    {
         /*
          * We'll remove any transfer encoding by wrapping the stream.
          */
-        if (contentTransferEncoding != null) {
+        if (contentTransferEncoding != null)
+        {
             contentTransferEncoding =
                 MimeUtility.getHeaderParameter(contentTransferEncoding, null);
-            if ("quoted-printable".equalsIgnoreCase(contentTransferEncoding)) {
+            if ("quoted-printable".equalsIgnoreCase(contentTransferEncoding))
+            {
                 in = new QuotedPrintableInputStream(in);
             }
-            else if ("base64".equalsIgnoreCase(contentTransferEncoding)) {
+            else if ("base64".equalsIgnoreCase(contentTransferEncoding))
+            {
                 in = new Base64InputStream(in);
             }
         }
@@ -260,11 +304,13 @@ public class MimeUtility {
      * @throws MessagingException
      */
     public static void collectParts(Part part, ArrayList<Part> viewables,
-            ArrayList<Part> attachments) throws MessagingException {
+                                    ArrayList<Part> attachments) throws MessagingException
+    {
         String disposition = part.getDisposition();
         String dispositionType = null;
         String dispositionFilename = null;
-        if (disposition != null) {
+        if (disposition != null)
+        {
             dispositionType = MimeUtility.getHeaderParameter(disposition, null);
             dispositionFilename = MimeUtility.getHeaderParameter(disposition, "filename");
         }
@@ -273,17 +319,19 @@ public class MimeUtility {
          * A best guess that this part is intended to be an attachment and not inline.
          */
         boolean attachment = ("attachment".equalsIgnoreCase(dispositionType))
-                || (dispositionFilename != null)
-                && (!"inline".equalsIgnoreCase(dispositionType));
+                             || (dispositionFilename != null)
+                             && (!"inline".equalsIgnoreCase(dispositionType));
 
         /*
          * If the part is Multipart but not alternative it's either mixed or
          * something we don't know about, which means we treat it as mixed
          * per the spec. We just process it's pieces recursively.
          */
-        if (part.getBody() instanceof Multipart) {
+        if (part.getBody() instanceof Multipart)
+        {
             Multipart mp = (Multipart)part.getBody();
-            for (int i = 0; i < mp.getCount(); i++) {
+            for (int i = 0; i < mp.getCount(); i++)
+            {
                 collectParts(mp.getBodyPart(i), viewables, attachments);
             }
         }
@@ -291,7 +339,8 @@ public class MimeUtility {
          * If the part is an embedded message we just continue to process
          * it, pulling any viewables or attachments into the running list.
          */
-        else if (part.getBody() instanceof Message) {
+        else if (part.getBody() instanceof Message)
+        {
             Message message = (Message)part.getBody();
             collectParts(message, viewables, attachments);
         }
@@ -299,20 +348,23 @@ public class MimeUtility {
          * If the part is HTML and it got this far it's part of a mixed (et
          * al) and should be rendered inline.
          */
-        else if ((!attachment) && (part.getMimeType().equalsIgnoreCase("text/html"))) {
+        else if ((!attachment) && (part.getMimeType().equalsIgnoreCase("text/html")))
+        {
             viewables.add(part);
         }
         /*
          * If the part is plain text and it got this far it's part of a
          * mixed (et al) and should be rendered inline.
          */
-        else if ((!attachment) && (part.getMimeType().equalsIgnoreCase("text/plain"))) {
+        else if ((!attachment) && (part.getMimeType().equalsIgnoreCase("text/plain")))
+        {
             viewables.add(part);
         }
         /*
          * Finally, if it's nothing else we will include it as an attachment.
          */
-        else {
+        else
+        {
             attachments.add(part);
         }
     }

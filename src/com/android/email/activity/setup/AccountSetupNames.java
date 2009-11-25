@@ -21,7 +21,8 @@ import com.android.email.R;
 import com.android.email.Utility;
 import com.android.email.activity.FolderList;
 
-public class AccountSetupNames extends K9Activity implements OnClickListener {
+public class AccountSetupNames extends K9Activity implements OnClickListener
+{
     private static final String EXTRA_ACCOUNT = "account";
 
     private EditText mDescription;
@@ -32,14 +33,16 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
 
     private Button mDoneButton;
 
-    public static void actionSetNames(Context context, Account account) {
+    public static void actionSetNames(Context context, Account account)
+    {
         Intent i = new Intent(context, AccountSetupNames.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         context.startActivity(i);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_names);
         mDescription = (EditText)findViewById(R.id.account_description);
@@ -47,15 +50,19 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         mDoneButton = (Button)findViewById(R.id.done);
         mDoneButton.setOnClickListener(this);
 
-        TextWatcher validationTextWatcher = new TextWatcher() {
-            public void afterTextChanged(Editable s) {
+        TextWatcher validationTextWatcher = new TextWatcher()
+        {
+            public void afterTextChanged(Editable s)
+            {
                 validateFields();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
             }
 
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
             }
         };
         mName.addTextChangedListener(validationTextWatcher);
@@ -70,21 +77,26 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
          * just leave the saved value alone.
          */
         // mDescription.setText(mAccount.getDescription());
-        if (mAccount.getName() != null) {
+        if (mAccount.getName() != null)
+        {
             mName.setText(mAccount.getName());
         }
-        if (!Utility.requiredFieldValid(mName)) {
+        if (!Utility.requiredFieldValid(mName))
+        {
             mDoneButton.setEnabled(false);
         }
     }
 
-    private void validateFields() {
+    private void validateFields()
+    {
         mDoneButton.setEnabled(Utility.requiredFieldValid(mName));
         Utility.setCompoundDrawablesAlpha(mDoneButton, mDoneButton.isEnabled() ? 255 : 128);
     }
 
-    private void onNext() {
-        if (Utility.requiredFieldValid(mDescription)) {
+    private void onNext()
+    {
+        if (Utility.requiredFieldValid(mDescription))
+        {
             mAccount.setDescription(mDescription.getText().toString());
         }
         mAccount.setName(mName.getText().toString());
@@ -93,11 +105,13 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         finish();
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.done:
-            onNext();
-            break;
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.done:
+                onNext();
+                break;
         }
     }
 }

@@ -4,7 +4,8 @@ package com.android.email.mail;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public interface Part {
+public interface Part
+{
     public void addHeader(String name, String value) throws MessagingException;
 
     public void removeHeader(String name) throws MessagingException;
@@ -20,7 +21,7 @@ public interface Part {
     public String[] getHeader(String name) throws MessagingException;
 
     public int getSize() throws MessagingException;
-    
+
     public boolean isMimeType(String mimeType) throws MessagingException;
 
     public String getMimeType() throws MessagingException;

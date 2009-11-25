@@ -18,8 +18,9 @@ import android.util.Log;
 
 import com.android.email.Email;
 
-public class BootReceiver extends BroadcastReceiver {
-    
+public class BootReceiver extends BroadcastReceiver
+{
+
     public static String WAKE_LOCK_RELEASE = "com.android.email.service.BroadcastReceiver.wakeLockRelease";
     public static String FIRE_INTENT = "com.android.email.service.BroadcastReceiver.fireIntent";
     public static String SCHEDULE_INTENT = "com.android.email.service.BroadcastReceiver.scheduleIntent";
@@ -28,10 +29,10 @@ public class BootReceiver extends BroadcastReceiver {
     public static String WAKE_LOCK_ID = "com.android.email.service.BroadcastReceiver.wakeLockId";
     public static String ALARMED_INTENT = "com.android.email.service.BroadcastReceiver.pendingIntent";
     public static String AT_TIME = "com.android.email.service.BroadcastReceiver.atTime";
-    
+
     private static ConcurrentHashMap<Integer, WakeLock> wakeLocks = new ConcurrentHashMap<Integer, WakeLock>();
     private static AtomicInteger wakeLockSeq = new AtomicInteger(0);
-    
+
     private Integer getWakeLock(Context context)
     {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -42,7 +43,7 @@ public class BootReceiver extends BroadcastReceiver {
         wakeLocks.put(tmpWakeLockId, wakeLock);
         return tmpWakeLockId;
     }
-    
+
     private void releaseWakeLock(Integer wakeLockId)
     {
         if (wakeLockId != null)
@@ -58,31 +59,37 @@ public class BootReceiver extends BroadcastReceiver {
             }
         }
     }
-    
-    public void onReceive(Context context, Intent intent) {
+
+    public void onReceive(Context context, Intent intent)
+    {
         Integer tmpWakeLockId = getWakeLock(context);
         try
         {
-         	Log.i(Email.LOG_TAG, "BootReceiver.onReceive" + intent);
-    
-            if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-             	Email.setServicesEnabled(context, tmpWakeLockId);
-             	tmpWakeLockId = null;
+            Log.i(Email.LOG_TAG, "BootReceiver.onReceive" + intent);
+
+            if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()))
+            {
+                Email.setServicesEnabled(context, tmpWakeLockId);
+                tmpWakeLockId = null;
             }
-            else if (Intent.ACTION_DEVICE_STORAGE_LOW.equals(intent.getAction())) {
+            else if (Intent.ACTION_DEVICE_STORAGE_LOW.equals(intent.getAction()))
+            {
                 MailService.actionCancel(context, tmpWakeLockId);
                 tmpWakeLockId = null;
             }
-            else if (Intent.ACTION_DEVICE_STORAGE_OK.equals(intent.getAction())) {
+            else if (Intent.ACTION_DEVICE_STORAGE_OK.equals(intent.getAction()))
+            {
                 MailService.actionReschedule(context, tmpWakeLockId);
                 tmpWakeLockId = null;
             }
-            else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
+            else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()))
+            {
                 boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
                 MailService.connectivityChange(context, !noConnectivity, tmpWakeLockId);
                 tmpWakeLockId = null;
             }
-            else if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(intent.getAction())) {
+            else if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(intent.getAction()))
+            {
                 MailService.backgroundDataChanged(context, tmpWakeLockId);
                 tmpWakeLockId = null;
             }
@@ -90,7 +97,7 @@ public class BootReceiver extends BroadcastReceiver {
             {
                 Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
                 String alarmedAction = alarmedIntent.getAction();
-    
+
                 Log.i(Email.LOG_TAG, "BootReceiver Got alarm to fire alarmedIntent " + alarmedAction);
                 alarmedIntent.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
                 tmpWakeLockId = null;
@@ -104,21 +111,21 @@ public class BootReceiver extends BroadcastReceiver {
                 long atTime = intent.getLongExtra(AT_TIME, -1);
                 Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
                 Log.i(Email.LOG_TAG,"BootReceiver Scheduling intent " + alarmedIntent + " for " + new Date(atTime));
-                
+
                 PendingIntent pi = buildPendingIntent(context, intent);
                 AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-                
-                alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi);   
+
+                alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi);
             }
             else if (CANCEL_INTENT.equals(intent.getAction()))
             {
                 Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
                 Log.i(Email.LOG_TAG, "BootReceiver Canceling alarmedIntent " + alarmedIntent);
-                
+
                 PendingIntent pi = buildPendingIntent(context, intent);
-    
+
                 AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-                alarmMgr.cancel(pi);   
+                alarmMgr.cancel(pi);
             }
             else if (BootReceiver.WAKE_LOCK_RELEASE.equals(intent.getAction()))
             {
@@ -135,7 +142,7 @@ public class BootReceiver extends BroadcastReceiver {
             releaseWakeLock(tmpWakeLockId);
         }
     }
-    
+
     private PendingIntent buildPendingIntent(Context context, Intent intent)
     {
         Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
@@ -149,7 +156,7 @@ public class BootReceiver extends BroadcastReceiver {
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
         return pi;
     }
-    
+
     public static void scheduleIntent(Context context, long atTime, Intent alarmedIntent)
     {
         Log.i(Email.LOG_TAG, "BootReceiver Got request to schedule alarmedIntent " + alarmedIntent.getAction());
@@ -160,7 +167,7 @@ public class BootReceiver extends BroadcastReceiver {
         i.putExtra(AT_TIME, atTime);
         context.sendBroadcast(i);
     }
-    
+
     public static void cancelIntent(Context context, Intent alarmedIntent)
     {
         Log.i(Email.LOG_TAG, "BootReceiver Got request to cancel alarmedIntent " + alarmedIntent.getAction());
@@ -170,7 +177,7 @@ public class BootReceiver extends BroadcastReceiver {
         i.putExtra(ALARMED_INTENT, alarmedIntent);
         context.sendBroadcast(i);
     }
-    
+
     public static void releaseWakeLock(Context context, int wakeLockId)
     {
         Log.i(Email.LOG_TAG, "BootReceiver Got request to release wakeLock " + wakeLockId);

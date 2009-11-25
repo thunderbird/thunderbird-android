@@ -1,10 +1,12 @@
 
 package com.android.email.mail;
 
-public abstract class BodyPart implements Part {
+public abstract class BodyPart implements Part
+{
     protected Multipart mParent;
 
-    public Multipart getParent() {
+    public Multipart getParent()
+    {
         return mParent;
     }
 }

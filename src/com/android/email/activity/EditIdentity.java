@@ -13,7 +13,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-public class EditIdentity extends K9Activity {
+public class EditIdentity extends K9Activity
+{
 
     public static final String EXTRA_IDENTITY = "com.android.email.EditIdentity_identity";
     public static final String EXTRA_IDENTITY_INDEX = "com.android.email.EditIdentity_identity_index";
@@ -29,14 +30,16 @@ public class EditIdentity extends K9Activity {
     private EditText mNameView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         mIdentity = (Account.Identity)getIntent().getSerializableExtra(EXTRA_IDENTITY);
         mIdentityIndex = getIntent().getIntExtra(EXTRA_IDENTITY_INDEX, -1);
         mAccount = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
 
-        if (mIdentityIndex == -1) {
+        if (mIdentityIndex == -1)
+        {
             mIdentity = mAccount.new Identity();
         }
 
@@ -46,7 +49,8 @@ public class EditIdentity extends K9Activity {
          * If we're being reloaded we override the original account with the one
          * we saved
          */
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_IDENTITY)) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_IDENTITY))
+        {
             mIdentity = (Account.Identity)savedInstanceState.getSerializable(EXTRA_IDENTITY);
         }
 
@@ -67,11 +71,13 @@ public class EditIdentity extends K9Activity {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
     }
 
-    private void saveIdentity() {
+    private void saveIdentity()
+    {
 
         mIdentity.setDescription(mDescriptionView.getText().toString());
         mIdentity.setEmail(mEmailView.getText().toString());
@@ -80,9 +86,12 @@ public class EditIdentity extends K9Activity {
         mIdentity.setSignature(mSignatureView.getText().toString());
 
         List<Account.Identity> identities = mAccount.getIdentities();
-        if (mIdentityIndex == -1) {
+        if (mIdentityIndex == -1)
+        {
             identities.add(mIdentity);
-        } else {
+        }
+        else
+        {
             identities.remove(mIdentityIndex);
             identities.add(mIdentityIndex, mIdentity);
         }
@@ -93,8 +102,10 @@ public class EditIdentity extends K9Activity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
             saveIdentity();
             return true;
         }
@@ -102,7 +113,8 @@ public class EditIdentity extends K9Activity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_IDENTITY, mIdentity);
     }

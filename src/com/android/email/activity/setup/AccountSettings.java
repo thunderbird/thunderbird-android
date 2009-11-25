@@ -28,7 +28,8 @@ import com.android.email.activity.ChooseIdentity;
 import com.android.email.activity.ManageIdentities;
 import com.android.email.mail.Store;
 
-public class AccountSettings extends K9PreferenceActivity {
+public class AccountSettings extends K9PreferenceActivity
+{
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
@@ -76,24 +77,29 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mDeletePolicy;
     private Preference mAutoExpandFolder;
 
-    public static void actionSettings(Context context, Account account) {
+    public static void actionSettings(Context context, Account account)
+    {
         Intent i = new Intent(context, AccountSettings.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         context.startActivity(i);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
 
         boolean isPushCapable = false;
         Store store = null;
-        try {
+        try
+        {
             store = Store.getInstance(mAccount.getStoreUri(), getApplication());
             isPushCapable = store.isPushCapable();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.e(Email.LOG_TAG, "Could not get remote store", e);
         }
 
@@ -105,8 +111,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountDescription = (EditTextPreference) findPreference(PREFERENCE_DESCRIPTION);
         mAccountDescription.setSummary(mAccount.getDescription());
         mAccountDescription.setText(mAccount.getDescription());
-        mAccountDescription.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mAccountDescription.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 mAccountDescription.setSummary(summary);
                 mAccountDescription.setText(summary);
@@ -118,8 +126,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mCheckFrequency = (ListPreference) findPreference(PREFERENCE_FREQUENCY);
         mCheckFrequency.setValue(String.valueOf(mAccount.getAutomaticCheckIntervalMinutes()));
         mCheckFrequency.setSummary(mCheckFrequency.getEntry());
-        mCheckFrequency.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mCheckFrequency.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mCheckFrequency.findIndexOfValue(summary);
                 mCheckFrequency.setSummary(mCheckFrequency.getEntries()[index]);
@@ -131,8 +141,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mDisplayMode = (ListPreference) findPreference(PREFERENCE_DISPLAY_MODE);
         mDisplayMode.setValue(mAccount.getFolderDisplayMode().name());
         mDisplayMode.setSummary(mDisplayMode.getEntry());
-        mDisplayMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mDisplayMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mDisplayMode.findIndexOfValue(summary);
                 mDisplayMode.setSummary(mDisplayMode.getEntries()[index]);
@@ -144,8 +156,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mSyncMode = (ListPreference) findPreference(PREFERENCE_SYNC_MODE);
         mSyncMode.setValue(mAccount.getFolderSyncMode().name());
         mSyncMode.setSummary(mSyncMode.getEntry());
-        mSyncMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mSyncMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mSyncMode.findIndexOfValue(summary);
                 mSyncMode.setSummary(mSyncMode.getEntries()[index]);
@@ -158,8 +172,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mPushMode.setEnabled(isPushCapable);
         mPushMode.setValue(mAccount.getFolderPushMode().name());
         mPushMode.setSummary(mPushMode.getEntry());
-        mPushMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mPushMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mPushMode.findIndexOfValue(summary);
                 mPushMode.setSummary(mPushMode.getEntries()[index]);
@@ -171,8 +187,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mTargetMode = (ListPreference) findPreference(PREFERENCE_TARGET_MODE);
         mTargetMode.setValue(mAccount.getFolderTargetMode().name());
         mTargetMode.setSummary(mTargetMode.getEntry());
-        mTargetMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mTargetMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mTargetMode.findIndexOfValue(summary);
                 mTargetMode.setSummary(mTargetMode.getEntries()[index]);
@@ -184,8 +202,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mDeletePolicy = (ListPreference) findPreference(PREFERENCE_DELETE_POLICY);
         mDeletePolicy.setValue("" + mAccount.getDeletePolicy());
         mDeletePolicy.setSummary(mDeletePolicy.getEntry());
-        mDeletePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mDeletePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mDeletePolicy.findIndexOfValue(summary);
                 mDeletePolicy.setSummary(mDeletePolicy.getEntries()[index]);
@@ -197,8 +217,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mDisplayCount = (ListPreference) findPreference(PREFERENCE_DISPLAY_COUNT);
         mDisplayCount.setValue(String.valueOf(mAccount.getDisplayCount()));
         mDisplayCount.setSummary(mDisplayCount.getEntry());
-        mDisplayCount.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mDisplayCount.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mDisplayCount.findIndexOfValue(summary);
                 mDisplayCount.setSummary(mDisplayCount.getEntries()[index]);
@@ -214,8 +236,10 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountHideButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
         mAccountHideButtons.setValue("" + mAccount.getHideMessageViewButtons());
         mAccountHideButtons.setSummary(mAccountHideButtons.getEntry());
-        mAccountHideButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        mAccountHideButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
                 final String summary = newValue.toString();
                 int index = mAccountHideButtons.findIndexOfValue(summary);
                 mAccountHideButtons.setSummary(mAccountHideButtons.getEntries()[index]);
@@ -226,7 +250,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
         mAccountNotify.setChecked(mAccount.isNotifyNewMail());
-        
+
         mAccountNotifySelf = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_SELF);
         mAccountNotifySelf.setChecked(mAccount.isNotifySelfNewMail());
 
@@ -248,40 +272,50 @@ public class AccountSettings extends K9PreferenceActivity {
         mAutoExpandFolder.setSummary(translateFolder(mAccount.getAutoExpandFolderName()));
 
         mAutoExpandFolder.setOnPreferenceClickListener(
-        new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
+            new Preference.OnPreferenceClickListener()
+        {
+            public boolean onPreferenceClick(Preference preference)
+            {
                 onChooseAutoExpandFolder();
                 return false;
             }
         });
 
         findPreference(PREFERENCE_COMPOSITION).setOnPreferenceClickListener(
-        new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
+            new Preference.OnPreferenceClickListener()
+        {
+            public boolean onPreferenceClick(Preference preference)
+            {
                 onCompositionSettings();
                 return true;
             }
         });
 
         findPreference(PREFERENCE_MANAGE_IDENTITIES).setOnPreferenceClickListener(
-        new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
+            new Preference.OnPreferenceClickListener()
+        {
+            public boolean onPreferenceClick(Preference preference)
+            {
                 onManageIdentities();
                 return true;
             }
         });
 
         findPreference(PREFERENCE_INCOMING).setOnPreferenceClickListener(
-        new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
+            new Preference.OnPreferenceClickListener()
+        {
+            public boolean onPreferenceClick(Preference preference)
+            {
                 onIncomingSettings();
                 return true;
             }
         });
 
         findPreference(PREFERENCE_OUTGOING).setOnPreferenceClickListener(
-        new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
+            new Preference.OnPreferenceClickListener()
+        {
+            public boolean onPreferenceClick(Preference preference)
+            {
                 onOutgoingSettings();
                 return true;
             }
@@ -289,13 +323,16 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         mAccount.refresh(Preferences.getPreferences(this));
     }
 
-    private void saveSettings() {
-        if (mAccountDefault.isChecked()) {
+    private void saveSettings()
+    {
+        if (mAccountDefault.isChecked())
+        {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);
         }
         mAccount.setDescription(mAccountDescription.getText());
@@ -320,44 +357,54 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-            case SELECT_AUTO_EXPAND_FOLDER:
-                mAutoExpandFolder.setSummary(translateFolder(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER)));
-                break;
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case SELECT_AUTO_EXPAND_FOLDER:
+                    mAutoExpandFolder.setSummary(translateFolder(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER)));
+                    break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
             saveSettings();
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    private void onCompositionSettings() {
+    private void onCompositionSettings()
+    {
         AccountSetupComposition.actionEditCompositionSettings(this, mAccount);
     }
 
-    private void onManageIdentities() {
+    private void onManageIdentities()
+    {
         Intent intent = new Intent(this, ManageIdentities.class);
         intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
         startActivityForResult(intent, ACTIVITY_MANAGE_IDENTITIES);
     }
 
-    private void onIncomingSettings() {
+    private void onIncomingSettings()
+    {
         AccountSetupIncoming.actionEditIncomingSettings(this, mAccount);
     }
 
-    private void onOutgoingSettings() {
+    private void onOutgoingSettings()
+    {
         AccountSetupOutgoing.actionEditOutgoingSettings(this, mAccount);
     }
 
-    public void onChooseAutoExpandFolder() {
+    public void onChooseAutoExpandFolder()
+    {
         Intent selectIntent = new Intent(this, ChooseFolder.class);
         selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
 
@@ -369,20 +416,28 @@ public class AccountSettings extends K9PreferenceActivity {
 
     }
 
-    private String translateFolder(String in) {
+    private String translateFolder(String in)
+    {
 
-        if (Email.INBOX.equalsIgnoreCase(in)) {
+        if (Email.INBOX.equalsIgnoreCase(in))
+        {
             return getString(R.string.special_mailbox_name_inbox);
-        } else {
+        }
+        else
+        {
             return in;
         }
     }
 
-    private String reverseTranslateFolder(String in) {
+    private String reverseTranslateFolder(String in)
+    {
 
-        if (getString(R.string.special_mailbox_name_inbox).equals(in)) {
+        if (getString(R.string.special_mailbox_name_inbox).equals(in))
+        {
             return Email.INBOX;
-        } else {
+        }
+        else
+        {
             return in;
         }
     }

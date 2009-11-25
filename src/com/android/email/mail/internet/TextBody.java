@@ -12,43 +12,53 @@ import com.android.email.codec.binary.Base64;
 import com.android.email.mail.Body;
 import com.android.email.mail.MessagingException;
 
-public class TextBody implements Body {
+public class TextBody implements Body
+{
     String mBody;
 
-    public TextBody(String body) {
+    public TextBody(String body)
+    {
         this.mBody = body;
     }
 
-    public void writeTo(OutputStream out) throws IOException, MessagingException {
-        if (mBody!=null) {
+    public void writeTo(OutputStream out) throws IOException, MessagingException
+    {
+        if (mBody!=null)
+        {
             byte[] bytes = mBody.getBytes("UTF-8");
             out.write(Base64.encodeBase64Chunked(bytes));
         }
     }
-    
+
     /**
-     * Get the text of the body in it's unencoded format. 
+     * Get the text of the body in it's unencoded format.
      * @return
      */
-    public String getText() {
+    public String getText()
+    {
         return mBody;
     }
 
     /**
      * Returns an InputStream that reads this body's text in UTF-8 format.
      */
-    public InputStream getInputStream() throws MessagingException {
-        try {
+    public InputStream getInputStream() throws MessagingException
+    {
+        try
+        {
             byte[] b;
-            if (mBody!=null) {
+            if (mBody!=null)
+            {
                 b = mBody.getBytes("UTF-8");
             }
-            else {
+            else
+            {
                 b = new byte[0];
             }
             return new ByteArrayInputStream(b);
         }
-        catch (UnsupportedEncodingException usee) {
+        catch (UnsupportedEncodingException usee)
+        {
             return null;
         }
     }

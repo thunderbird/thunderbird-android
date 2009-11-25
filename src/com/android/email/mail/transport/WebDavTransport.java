@@ -57,7 +57,8 @@ import com.android.email.mail.store.WebDavStore.HttpGeneric;
 import com.android.email.mail.store.WebDavStore.DataSet;
 import com.android.email.mail.store.WebDavStore.WebDavHandler;
 
-public class WebDavTransport extends Transport {
+public class WebDavTransport extends Transport
+{
     public static final int CONNECTION_SECURITY_NONE = 0;
     public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
     public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
@@ -75,7 +76,7 @@ public class WebDavTransport extends Transport {
     Socket mSocket;
     PeekableInputStream mIn;
     OutputStream mOut;
-	private WebDavStore store;
+    private WebDavStore store;
 
     /**
      * webdav://user:password@server:port CONNECTION_SECURITY_NONE
@@ -86,24 +87,28 @@ public class WebDavTransport extends Transport {
      *
      * @param _uri
      */
-    public WebDavTransport(String _uri) throws MessagingException {
-    	store = new WebDavStore(_uri);
+    public WebDavTransport(String _uri) throws MessagingException
+    {
+        store = new WebDavStore(_uri);
         Log.d(Email.LOG_TAG, ">>> New WebDavTransport creation complete");
     }
 
-    public void open() throws MessagingException {
+    public void open() throws MessagingException
+    {
         Log.d(Email.LOG_TAG, ">>> open called on WebDavTransport ");
         store.getHttpClient();
     }
-    
-    public void close() {
+
+    public void close()
+    {
     }
-    
-    public void sendMessage(Message message) throws MessagingException {
-        
+
+    public void sendMessage(Message message) throws MessagingException
+    {
+
         store.sendMessages(new Message[] { message });
 
-        	
+
     }
 
 }

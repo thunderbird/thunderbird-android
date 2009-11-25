@@ -13,7 +13,8 @@ import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.R;
 
-public class AccountSetupComposition extends K9Activity {
+public class AccountSetupComposition extends K9Activity
+{
 
     private static final String EXTRA_ACCOUNT = "account";
 
@@ -27,7 +28,8 @@ public class AccountSetupComposition extends K9Activity {
     private RadioButton mAccountSignatureAfterLocation;
 
 
-    public static void actionEditCompositionSettings(Activity context, Account account) {
+    public static void actionEditCompositionSettings(Activity context, Account account)
+    {
         Intent i = new Intent(context, AccountSetupComposition.class);
         i.setAction(Intent.ACTION_EDIT);
         i.putExtra(EXTRA_ACCOUNT, account);
@@ -36,7 +38,8 @@ public class AccountSetupComposition extends K9Activity {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
@@ -47,7 +50,8 @@ public class AccountSetupComposition extends K9Activity {
          * If we're being reloaded we override the original account with the one
          * we saved
          */
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT))
+        {
             mAccount = (Account)savedInstanceState.getSerializable(EXTRA_ACCOUNT);
         }
 
@@ -71,12 +75,14 @@ public class AccountSetupComposition extends K9Activity {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         mAccount.refresh(Preferences.getPreferences(this));
     }
 
-    private void saveSettings() {
+    private void saveSettings()
+    {
         mAccount.setEmail(mAccountEmail.getText().toString());
         mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
         mAccount.setName(mAccountName.getText().toString());
@@ -88,21 +94,25 @@ public class AccountSetupComposition extends K9Activity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
             saveSettings();
         }
         return super.onKeyDown(keyCode, event);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_ACCOUNT, mAccount);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         mAccount.save(Preferences.getPreferences(this));
         finish();
     }

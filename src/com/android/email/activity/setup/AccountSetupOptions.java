@@ -18,7 +18,8 @@ import com.android.email.Preferences;
 import com.android.email.mail.Store;
 import com.android.email.R;
 
-public class AccountSetupOptions extends K9Activity implements OnClickListener {
+public class AccountSetupOptions extends K9Activity implements OnClickListener
+{
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
@@ -34,7 +35,8 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
     private Account mAccount;
 
-    public static void actionOptions(Context context, Account account, boolean makeDefault) {
+    public static void actionOptions(Context context, Account account, boolean makeDefault)
+    {
         Intent i = new Intent(context, AccountSetupOptions.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
@@ -42,7 +44,8 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_options);
 
@@ -54,7 +57,8 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
         findViewById(R.id.next).setOnClickListener(this);
 
-        SpinnerOption checkFrequencies[] = {
+        SpinnerOption checkFrequencies[] =
+        {
             new SpinnerOption(-1,
             getString(R.string.account_setup_options_mail_check_frequency_never)),
             new SpinnerOption(1,
@@ -88,7 +92,8 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCheckFrequencyView.setAdapter(checkFrequenciesAdapter);
 
-        SpinnerOption displayCounts[] = {
+        SpinnerOption displayCounts[] =
+        {
             new SpinnerOption(10,
             getString(R.string.account_setup_options_mail_display_count_10)),
             new SpinnerOption(25,
@@ -115,24 +120,31 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
 
         boolean isPushCapable = false;
-        try {
+        try
+        {
             Store store = Store.getInstance(mAccount.getStoreUri(), getApplication());
             isPushCapable = store.isPushCapable();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.e(Email.LOG_TAG, "Could not get remote store", e);
         }
 
 
-        if (!isPushCapable) {
+        if (!isPushCapable)
+        {
             mPushEnable.setVisibility(View.GONE);
-        } else {
+        }
+        else
+        {
             mPushEnable.setChecked(true);
         }
 
 
     }
 
-    private void onDone() {
+    private void onDone()
+    {
         mAccount.setDescription(mAccount.getEmail());
         mAccount.setNotifyNewMail(mNotifyView.isChecked());
         mAccount.setShowOngoing(mNotifySyncView.isChecked());
@@ -141,15 +153,19 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView
                                            .getSelectedItem()).value);
 
-        if (mPushEnable.isChecked()) {
+        if (mPushEnable.isChecked())
+        {
             mAccount.setFolderPushMode(Account.FolderMode.FIRST_CLASS);
-        } else {
+        }
+        else
+        {
             mAccount.setFolderPushMode(Account.FolderMode.NONE);
         }
 
         mAccount.save(Preferences.getPreferences(this));
         if (mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()) ||
-                getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false) ) {
+                getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false))
+        {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);
         }
         Email.setServicesEnabled(this);
@@ -157,11 +173,13 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         finish();
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.next:
-            onDone();
-            break;
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.next:
+                onDone();
+                break;
         }
     }
 }

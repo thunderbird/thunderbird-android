@@ -14,15 +14,15 @@ import com.android.email.Email;
 
 public class SleepService extends CoreService
 {
-    
+
     private static String ALARM_FIRED = "com.android.email.service.SleepService.ALARM_FIRED";
     private static String LATCH_ID = "com.android.email.service.SleepService.LATCH_ID_EXTRA";
-    
-    
+
+
     private static ConcurrentHashMap<Integer, SleepDatum> sleepData = new ConcurrentHashMap<Integer, SleepDatum>();
-    
+
     private static AtomicInteger latchId = new AtomicInteger();
-    
+
     public static void sleep(Context context, long sleepTime, WakeLock wakeLock, long wakeLockTimeout)
     {
         Integer id = latchId.getAndIncrement();
@@ -34,7 +34,7 @@ public class SleepService extends CoreService
         CountDownLatch latch = new CountDownLatch(1);
         sleepDatum.latch = latch;
         sleepData.put(id, sleepDatum);
-        
+
         Intent i = new Intent();
         i.setClassName(context.getPackageName(), "com.android.email.service.SleepService");
         i.putExtra(LATCH_ID, id);
@@ -57,7 +57,7 @@ public class SleepService extends CoreService
                 {
                     Log.d(Email.LOG_TAG, "SleepService latch timed out for id = " + id + ", thread " + Thread.currentThread().getName());
                 }
-                // don't call endSleep here or remove the sleepDatum here, instead of the following block.  
+                // don't call endSleep here or remove the sleepDatum here, instead of the following block.
                 // We might not get the wakeLock before
                 // falling asleep again, so we have to get the wakeLock *first*  The alarmed version will
                 // already be running in a WakeLock due to the nature of AlarmManager
@@ -68,7 +68,7 @@ public class SleepService extends CoreService
                     // OK, we have the wakeLock, now we can remove the sleepDatum
                     sleepData.remove(id);
                 }
-                
+
             }
         }
         catch (InterruptedException ie)
@@ -86,7 +86,7 @@ public class SleepService extends CoreService
             Log.w(Email.LOG_TAG, "SleepService sleep time too short: requested was " + sleepTime + ", actual was " + actualSleep);
         }
     }
-    
+
     private static void endSleep(Integer id)
     {
         if (id != -1)
@@ -118,13 +118,13 @@ public class SleepService extends CoreService
             }
         }
     }
-    
+
     private static void reacquireWakeLock(SleepDatum sleepDatum)
     {
         WakeLock wakeLock = sleepDatum.wakeLock;
         if (wakeLock != null)
         {
-            synchronized(wakeLock)
+            synchronized (wakeLock)
             {
                 long timeout = sleepDatum.timeout;
                 if (Email.DEBUG)
@@ -139,13 +139,14 @@ public class SleepService extends CoreService
     @Override
     public void startService(Intent intent, int startId)
     {
-        if (intent.getAction().startsWith(ALARM_FIRED)) {
+        if (intent.getAction().startsWith(ALARM_FIRED))
+        {
             Integer id = intent.getIntExtra(LATCH_ID, -1);
             endSleep(id);
         }
         stopSelf(startId);
     }
-    
+
     private static class SleepDatum
     {
         CountDownLatch latch;

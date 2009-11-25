@@ -20,15 +20,17 @@ import com.android.email.FixedLengthInputStream;
 import com.android.email.PeekableInputStream;
 import com.android.email.mail.MessagingException;
 
-public class ImapResponseParser {
+public class ImapResponseParser
+{
     SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z", Locale.US);
 
     SimpleDateFormat badDateTimeFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US);
-    
+
     PeekableInputStream mIn;
     InputStream mActiveLiteral;
 
-    public ImapResponseParser(PeekableInputStream in) {
+    public ImapResponseParser(PeekableInputStream in)
+    {
         this.mIn = in;
     }
 
@@ -39,39 +41,51 @@ public class ImapResponseParser {
      * @return
      * @throws IOException
      */
-    public ImapResponse readResponse() throws IOException {
+    public ImapResponse readResponse() throws IOException
+    {
         ImapResponse response = new ImapResponse();
-        if (mActiveLiteral != null) {
+        if (mActiveLiteral != null)
+        {
             while (mActiveLiteral.read() != -1)
                 ;
             mActiveLiteral = null;
         }
         int ch = mIn.peek();
-        if (ch == '*') {
+        if (ch == '*')
+        {
             parseUntaggedResponse();
             readTokens(response);
-        } else if (ch == '+') {
+        }
+        else if (ch == '+')
+        {
             response.mCommandContinuationRequested =
-                    parseCommandContinuationRequest();
+                parseCommandContinuationRequest();
             readTokens(response);
-        } else {
+        }
+        else
+        {
             response.mTag = parseTaggedResponse();
             readTokens(response);
         }
-        if (Email.DEBUG) {
+        if (Email.DEBUG)
+        {
             Log.v(Email.LOG_TAG, "<<< " + response.toString());
         }
         return response;
     }
 
-    private void readTokens(ImapResponse response) throws IOException {
+    private void readTokens(ImapResponse response) throws IOException
+    {
         response.clear();
         Object token;
-        while ((token = readToken()) != null) {
-            if (response != null) {
+        while ((token = readToken()) != null)
+        {
+            if (response != null)
+            {
                 response.add(token);
             }
-            if (mActiveLiteral != null) {
+            if (mActiveLiteral != null)
+            {
                 break;
             }
         }
@@ -89,136 +103,192 @@ public class ImapResponseParser {
      *         tokens.
      * @throws IOException
      */
-    public Object readToken() throws IOException {
-        while (true) {
+    public Object readToken() throws IOException
+    {
+        while (true)
+        {
             Object token = parseToken();
-            if (token == null || !token.equals(")") || !token.equals("]")) {
+            if (token == null || !token.equals(")") || !token.equals("]"))
+            {
                 return token;
             }
         }
     }
 
-    private Object parseToken() throws IOException {
-        if (mActiveLiteral != null) {
+    private Object parseToken() throws IOException
+    {
+        if (mActiveLiteral != null)
+        {
             while (mActiveLiteral.read() != -1)
                 ;
             mActiveLiteral = null;
         }
-        while (true) {
+        while (true)
+        {
             int ch = mIn.peek();
-            if (ch == '(') {
+            if (ch == '(')
+            {
                 return parseList();
-            } else if (ch == '[') {
+            }
+            else if (ch == '[')
+            {
                 return parseSequence();
-            } else if (ch == ')') {
+            }
+            else if (ch == ')')
+            {
                 expect(')');
                 return ")";
-            } else if (ch == ']') {
-                    expect(']');
-                    return "]";
-            } else if (ch == '"') {
+            }
+            else if (ch == ']')
+            {
+                expect(']');
+                return "]";
+            }
+            else if (ch == '"')
+            {
                 return parseQuoted();
-            } else if (ch == '{') {
+            }
+            else if (ch == '{')
+            {
                 mActiveLiteral = parseLiteral();
                 return mActiveLiteral;
-            } else if (ch == ' ') {
+            }
+            else if (ch == ' ')
+            {
                 expect(' ');
-            } else if (ch == '\r') {
+            }
+            else if (ch == '\r')
+            {
                 expect('\r');
                 expect('\n');
                 return null;
-            } else if (ch == '\n') {
+            }
+            else if (ch == '\n')
+            {
                 expect('\n');
                 return null;
-            } else if (ch == '\t') {
-                  expect('\t');
-            } else {
+            }
+            else if (ch == '\t')
+            {
+                expect('\t');
+            }
+            else
+            {
                 return parseAtom();
             }
         }
     }
 
-    private boolean parseCommandContinuationRequest() throws IOException {
+    private boolean parseCommandContinuationRequest() throws IOException
+    {
         expect('+');
         expect(' ');
         return true;
     }
 
     // * OK [UIDNEXT 175] Predicted next UID
-    private void parseUntaggedResponse() throws IOException {
+    private void parseUntaggedResponse() throws IOException
+    {
         expect('*');
         expect(' ');
     }
 
     // 3 OK [READ-WRITE] Select completed.
-    private String parseTaggedResponse() throws IOException {
+    private String parseTaggedResponse() throws IOException
+    {
         String tag = readStringUntil(' ');
         return tag;
     }
 
-    private ImapList parseList() throws IOException {
+    private ImapList parseList() throws IOException
+    {
         expect('(');
         ImapList list = new ImapList();
         Object token;
-        while (true) {
+        while (true)
+        {
             token = parseToken();
-            if (token == null) {
+            if (token == null)
+            {
                 break;
-            } else if (token instanceof InputStream) {
-                list.add(token);
-                break;
-            } else if (token.equals(")")) {
-                break;
-            } else {
-                list.add(token);
             }
-        }
-        return list;
-    }
-    
-    private ImapList parseSequence() throws IOException {
-        expect('[');
-        ImapList list = new ImapList();
-        Object token;
-        while (true) {
-            token = parseToken();
-            if (token == null) {
-                break;
-            } else if (token instanceof InputStream) {
+            else if (token instanceof InputStream)
+            {
                 list.add(token);
                 break;
-            } else if (token.equals("]")) {
+            }
+            else if (token.equals(")"))
+            {
                 break;
-            } else {
+            }
+            else
+            {
                 list.add(token);
             }
         }
         return list;
     }
 
-    private String parseAtom() throws IOException {
+    private ImapList parseSequence() throws IOException
+    {
+        expect('[');
+        ImapList list = new ImapList();
+        Object token;
+        while (true)
+        {
+            token = parseToken();
+            if (token == null)
+            {
+                break;
+            }
+            else if (token instanceof InputStream)
+            {
+                list.add(token);
+                break;
+            }
+            else if (token.equals("]"))
+            {
+                break;
+            }
+            else
+            {
+                list.add(token);
+            }
+        }
+        return list;
+    }
+
+    private String parseAtom() throws IOException
+    {
         StringBuffer sb = new StringBuffer();
         int ch;
-        while (true) {
+        while (true)
+        {
             ch = mIn.peek();
-            if (ch == -1) {
+            if (ch == -1)
+            {
                 throw new IOException("parseAtom(): end of stream reached");
-            } else if (ch == '(' || ch == ')' || ch == '{' || ch == ' ' ||
-                    ch == '[' || ch == ']' ||
-            // docs claim that flags are \ atom but atom isn't supposed to
-                    // contain
-                    // * and some falgs contain *
-                    // ch == '%' || ch == '*' ||
+            }
+            else if (ch == '(' || ch == ')' || ch == '{' || ch == ' ' ||
+                     ch == '[' || ch == ']' ||
+                     // docs claim that flags are \ atom but atom isn't supposed to
+                     // contain
+                     // * and some falgs contain *
+                     // ch == '%' || ch == '*' ||
 //                    ch == '%' ||
-                    // TODO probably should not allow \ and should recognize
-                    // it as a flag instead
-                    // ch == '"' || ch == '\' ||
-                    ch == '"' || (ch >= 0x00 && ch <= 0x1f) || ch == 0x7f) {
-                if (sb.length() == 0) {
+                     // TODO probably should not allow \ and should recognize
+                     // it as a flag instead
+                     // ch == '"' || ch == '\' ||
+                     ch == '"' || (ch >= 0x00 && ch <= 0x1f) || ch == 0x7f)
+            {
+                if (sb.length() == 0)
+                {
                     throw new IOException(String.format("parseAtom(): (%04x %c)", (int)ch, ch));
                 }
                 return sb.toString();
-            } else {
+            }
+            else
+            {
                 sb.append((char)mIn.read());
             }
         }
@@ -231,7 +301,8 @@ public class ImapResponseParser {
      * @param mListener
      * @throws IOException
      */
-    private InputStream parseLiteral() throws IOException {
+    private InputStream parseLiteral() throws IOException
+    {
         expect('{');
         int size = Integer.parseInt(readStringUntil('}'));
         expect('\r');
@@ -247,29 +318,37 @@ public class ImapResponseParser {
      * @param mListener
      * @throws IOException
      */
-    private String parseQuoted() throws IOException {
+    private String parseQuoted() throws IOException
+    {
         expect('"');
         return readStringUntil('"');
     }
 
-    private String readStringUntil(char end) throws IOException {
+    private String readStringUntil(char end) throws IOException
+    {
         StringBuffer sb = new StringBuffer();
         int ch;
-        while ((ch = mIn.read()) != -1) {
-            if (ch == end) {
+        while ((ch = mIn.read()) != -1)
+        {
+            if (ch == end)
+            {
                 return sb.toString();
-            } else {
+            }
+            else
+            {
                 sb.append((char)ch);
             }
         }
         throw new IOException("readQuotedString(): end of stream reached");
     }
 
-    private int expect(char ch) throws IOException {
+    private int expect(char ch) throws IOException
+    {
         int d;
-        if ((d = mIn.read()) != ch) {
+        if ((d = mIn.read()) != ch)
+        {
             throw new IOException(String.format("Expected %04x (%c) but got %04x (%c)", (int)ch,
-                    ch, d, (char)d));
+                                                ch, d, (char)d));
         }
         return d;
     }
@@ -278,92 +357,113 @@ public class ImapResponseParser {
      * Represents an IMAP LIST response and is also the base class for the
      * ImapResponse.
      */
-    public class ImapList extends ArrayList<Object> {
-        public ImapList getList(int index) {
+    public class ImapList extends ArrayList<Object>
+    {
+        public ImapList getList(int index)
+        {
             return (ImapList)get(index);
         }
-        
+
         public Object getObject(int index)
         {
-          return get(index);
+            return get(index);
         }
 
-        public String getString(int index) {
+        public String getString(int index)
+        {
             return (String)get(index);
         }
 
-        public InputStream getLiteral(int index) {
+        public InputStream getLiteral(int index)
+        {
             return (InputStream)get(index);
         }
 
-        public int getNumber(int index) {
+        public int getNumber(int index)
+        {
             return Integer.parseInt(getString(index));
         }
 
-        public Date getDate(int index) throws MessagingException {
-            try {
+        public Date getDate(int index) throws MessagingException
+        {
+            try
+            {
                 return parseDate(getString(index));
-            } catch (ParseException pe) {
+            }
+            catch (ParseException pe)
+            {
                 throw new MessagingException("Unable to parse IMAP datetime", pe);
             }
         }
 
-        public Object getKeyedValue(Object key) {
-            for (int i = 0, count = size(); i < count; i++) {
-                if (get(i).equals(key)) {
+        public Object getKeyedValue(Object key)
+        {
+            for (int i = 0, count = size(); i < count; i++)
+            {
+                if (get(i).equals(key))
+                {
                     return get(i + 1);
                 }
             }
             return null;
         }
 
-        public ImapList getKeyedList(Object key) {
+        public ImapList getKeyedList(Object key)
+        {
             return (ImapList)getKeyedValue(key);
         }
 
-        public String getKeyedString(Object key) {
+        public String getKeyedString(Object key)
+        {
             return (String)getKeyedValue(key);
         }
 
-        public InputStream getKeyedLiteral(Object key) {
+        public InputStream getKeyedLiteral(Object key)
+        {
             return (InputStream)getKeyedValue(key);
         }
 
-        public int getKeyedNumber(Object key) {
+        public int getKeyedNumber(Object key)
+        {
             return Integer.parseInt(getKeyedString(key));
         }
 
-        public Date getKeyedDate(Object key) throws MessagingException {
-            try {
+        public Date getKeyedDate(Object key) throws MessagingException
+        {
+            try
+            {
                 String value = getKeyedString(key);
-                if (value == null) {
+                if (value == null)
+                {
                     return null;
                 }
                 return parseDate(value);
-            } catch (ParseException pe) {
+            }
+            catch (ParseException pe)
+            {
                 throw new MessagingException("Unable to parse IMAP datetime", pe);
             }
         }
-        
+
         private Date parseDate(String value) throws ParseException
         {
             try
             {
-                synchronized(mDateTimeFormat)
+                synchronized (mDateTimeFormat)
                 {
                     return mDateTimeFormat.parse(value);
                 }
             }
             catch (Exception e)
             {
-                synchronized(badDateTimeFormat)
+                synchronized (badDateTimeFormat)
                 {
                     return badDateTimeFormat.parse(value);
                 }
             }
-            
+
         }
-        
+
     }
 
     /**
@@ -375,34 +475,43 @@ public class ImapResponseParser {
      * does not contain the entire response the caller must call more() to
      * continue reading the response until more returns false.
      */
-    public class ImapResponse extends ImapList {
+    public class ImapResponse extends ImapList
+    {
         private boolean mCompleted;
 
         boolean mCommandContinuationRequested;
         String mTag;
 
-        public boolean more() throws IOException {
-            if (mCompleted) {
+        public boolean more() throws IOException
+        {
+            if (mCompleted)
+            {
                 return false;
             }
             readTokens(this);
             return true;
         }
 
-        public String getAlertText() {
-            if (size() > 1 && "[ALERT]".equals(get(1))) {
+        public String getAlertText()
+        {
+            if (size() > 1 && "[ALERT]".equals(get(1)))
+            {
                 StringBuffer sb = new StringBuffer();
-                for (int i = 2, count = size(); i < count; i++) {
+                for (int i = 2, count = size(); i < count; i++)
+                {
                     sb.append(get(i).toString());
                     sb.append(' ');
                 }
                 return sb.toString();
-            } else {
+            }
+            else
+            {
                 return null;
             }
         }
 
-        public String toString() {
+        public String toString()
+        {
             return "#" + mTag + "# " + super.toString();
         }
     }

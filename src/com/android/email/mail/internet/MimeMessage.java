@@ -33,38 +33,42 @@ import com.android.email.mail.Part;
  * An implementation of Message that stores all of it's metadata in RFC 822 and
  * RFC 2045 style headers.
  */
-public class MimeMessage extends Message {
+public class MimeMessage extends Message
+{
     protected MimeHeader mHeader = new MimeHeader();
     protected Address[] mFrom;
     protected Address[] mTo;
     protected Address[] mCc;
     protected Address[] mBcc;
     protected Address[] mReplyTo;
-    
+
     protected String mMessageId;
     protected String[] mReferences;
     protected String[] mInReplyTo;
-    
+
     protected Date mSentDate;
     protected SimpleDateFormat mDateFormat;
-   
+
     protected Body mBody;
     protected int mSize;
- 
-    public MimeMessage() {
+
+    public MimeMessage()
+    {
         addHeader("Message-ID", generateMessageId());
     }
 
-    private String generateMessageId() {
+    private String generateMessageId()
+    {
         StringBuffer sb = new StringBuffer();
         sb.append("<");
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 24; i++)
+        {
             sb.append(Integer.toString((int)(Math.random() * 35), 36));
         }
         sb.append(".");
         sb.append(Long.toString(System.currentTimeMillis()));
         sb.append("@email.android.com>");
-        
+
         return sb.toString();
     }
 
@@ -75,24 +79,26 @@ public class MimeMessage extends Message {
      * @throws IOException
      * @throws MessagingException
      */
-    public MimeMessage(InputStream in) throws IOException, MessagingException {
+    public MimeMessage(InputStream in) throws IOException, MessagingException
+    {
         parse(in);
     }
 
-    protected void parse(InputStream in) throws IOException, MessagingException {
+    protected void parse(InputStream in) throws IOException, MessagingException
+    {
         mHeader.clear();
         mFrom = null;
         mTo = null;
         mCc = null;
         mBcc = null;
         mReplyTo = null;
-        
+
         mMessageId = null;
         mReferences = null;
         mInReplyTo = null;
-        
+
         mSentDate = null;
-        
+
         mBody = null;
 
         MimeStreamParser parser = new MimeStreamParser();
@@ -100,17 +106,23 @@ public class MimeMessage extends Message {
         parser.parse(new EOLConvertingInputStream(in));
     }
 
-    public Date getReceivedDate() throws MessagingException {
+    public Date getReceivedDate() throws MessagingException
+    {
         return null;
     }
 
-    public Date getSentDate() throws MessagingException {
-        if (mSentDate == null) {
-            try {
+    public Date getSentDate() throws MessagingException
+    {
+        if (mSentDate == null)
+        {
+            try
+            {
                 DateTimeField field = (DateTimeField)Field.parse("Date: "
-                        + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
+                                      + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
                 mSentDate = field.getDate();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
 
             }
         }
@@ -125,46 +137,60 @@ public class MimeMessage extends Message {
      * @param sentDate
      * @throws com.android.email.mail.MessagingException
      */
-    public void addSentDate(Date sentDate) throws MessagingException {
-        if (mDateFormat == null) {
+    public void addSentDate(Date sentDate) throws MessagingException
+    {
+        if (mDateFormat == null)
+        {
             mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         }
         addHeader("Date", mDateFormat.format(sentDate));
         setInternalSentDate(sentDate);
     }
 
-    public void setSentDate(Date sentDate) throws MessagingException {
+    public void setSentDate(Date sentDate) throws MessagingException
+    {
         removeHeader("Date");
         addSentDate(sentDate);
     }
 
-    public void setInternalSentDate(Date sentDate) throws MessagingException {
+    public void setInternalSentDate(Date sentDate) throws MessagingException
+    {
         this.mSentDate = sentDate;
     }
 
-    public String getContentType() throws MessagingException {
+    public String getContentType() throws MessagingException
+    {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        if (contentType == null) {
+        if (contentType == null)
+        {
             return "text/plain";
-        } else {
+        }
+        else
+        {
             return contentType.toLowerCase();
         }
     }
 
-    public String getDisposition() throws MessagingException {
+    public String getDisposition() throws MessagingException
+    {
         String contentDisposition = getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
-        if (contentDisposition == null) {
+        if (contentDisposition == null)
+        {
             return null;
-        } else {
+        }
+        else
+        {
             return contentDisposition;
         }
     }
 
-    public String getMimeType() throws MessagingException {
+    public String getMimeType() throws MessagingException
+    {
         return MimeUtility.getHeaderParameter(getContentType(), null);
     }
 
-    public int getSize() throws MessagingException {
+    public int getSize() throws MessagingException
+    {
         return mSize;
     }
 
@@ -172,53 +198,81 @@ public class MimeMessage extends Message {
      * Returns a list of the given recipient type from this message. If no addresses are
      * found the method returns an empty array.
      */
-    public Address[] getRecipients(RecipientType type) throws MessagingException {
-        if (type == RecipientType.TO) {
-            if (mTo == null) {
+    public Address[] getRecipients(RecipientType type) throws MessagingException
+    {
+        if (type == RecipientType.TO)
+        {
+            if (mTo == null)
+            {
                 mTo = Address.parse(MimeUtility.unfold(getFirstHeader("To")));
             }
             return mTo;
-        } else if (type == RecipientType.CC) {
-            if (mCc == null) {
+        }
+        else if (type == RecipientType.CC)
+        {
+            if (mCc == null)
+            {
                 mCc = Address.parse(MimeUtility.unfold(getFirstHeader("CC")));
             }
             return mCc;
-        } else if (type == RecipientType.BCC) {
-            if (mBcc == null) {
+        }
+        else if (type == RecipientType.BCC)
+        {
+            if (mBcc == null)
+            {
                 mBcc = Address.parse(MimeUtility.unfold(getFirstHeader("BCC")));
             }
             return mBcc;
-        } else {
+        }
+        else
+        {
             throw new MessagingException("Unrecognized recipient type.");
         }
     }
 
-    public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException {
-        if (type == RecipientType.TO) {
-            if (addresses == null || addresses.length == 0) {
+    public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException
+    {
+        if (type == RecipientType.TO)
+        {
+            if (addresses == null || addresses.length == 0)
+            {
                 removeHeader("To");
                 this.mTo = null;
-            } else {
+            }
+            else
+            {
                 setHeader("To", Address.toEncodedString(addresses));
                 this.mTo = addresses;
             }
-        } else if (type == RecipientType.CC) {
-            if (addresses == null || addresses.length == 0) {
+        }
+        else if (type == RecipientType.CC)
+        {
+            if (addresses == null || addresses.length == 0)
+            {
                 removeHeader("CC");
                 this.mCc = null;
-            } else {
+            }
+            else
+            {
                 setHeader("CC", Address.toEncodedString(addresses));
                 this.mCc = addresses;
             }
-        } else if (type == RecipientType.BCC) {
-            if (addresses == null || addresses.length == 0) {
+        }
+        else if (type == RecipientType.BCC)
+        {
+            if (addresses == null || addresses.length == 0)
+            {
                 removeHeader("BCC");
                 this.mBcc = null;
-            } else {
+            }
+            else
+            {
                 setHeader("BCC", Address.toEncodedString(addresses));
                 this.mBcc = addresses;
             }
-        } else {
+        }
+        else
+        {
             throw new MessagingException("Unrecognized recipient type.");
         }
     }
@@ -226,18 +280,23 @@ public class MimeMessage extends Message {
     /**
      * Returns the unfolded, decoded value of the Subject header.
      */
-    public String getSubject() throws MessagingException {
+    public String getSubject() throws MessagingException
+    {
         return MimeUtility.unfoldAndDecode(getFirstHeader("Subject"));
     }
 
-    public void setSubject(String subject) throws MessagingException {
+    public void setSubject(String subject) throws MessagingException
+    {
         setHeader("Subject", subject);
     }
 
-    public Address[] getFrom() throws MessagingException {
-        if (mFrom == null) {
+    public Address[] getFrom() throws MessagingException
+    {
+        if (mFrom == null)
+        {
             String list = MimeUtility.unfold(getFirstHeader("From"));
-            if (list == null || list.length() == 0) {
+            if (list == null || list.length() == 0)
+            {
                 list = MimeUtility.unfold(getFirstHeader("Sender"));
             }
             mFrom = Address.parse(list);
@@ -245,96 +304,123 @@ public class MimeMessage extends Message {
         return mFrom;
     }
 
-    public void setFrom(Address from) throws MessagingException {
-        if (from != null) {
+    public void setFrom(Address from) throws MessagingException
+    {
+        if (from != null)
+        {
             setHeader("From", from.toEncodedString());
-            this.mFrom = new Address[] {
-                    from
-                };
-        } else {
+            this.mFrom = new Address[]
+            {
+                from
+            };
+        }
+        else
+        {
             this.mFrom = null;
         }
     }
 
-    public Address[] getReplyTo() throws MessagingException {
-        if (mReplyTo == null) {
+    public Address[] getReplyTo() throws MessagingException
+    {
+        if (mReplyTo == null)
+        {
             mReplyTo = Address.parse(MimeUtility.unfold(getFirstHeader("Reply-to")));
         }
         return mReplyTo;
     }
 
-    public void setReplyTo(Address[] replyTo) throws MessagingException {
-        if (replyTo == null || replyTo.length == 0) {
+    public void setReplyTo(Address[] replyTo) throws MessagingException
+    {
+        if (replyTo == null || replyTo.length == 0)
+        {
             removeHeader("Reply-to");
             mReplyTo = null;
-        } else {
+        }
+        else
+        {
             setHeader("Reply-to", Address.toEncodedString(replyTo));
             mReplyTo = replyTo;
         }
     }
 
-    public String getMessageId() throws MessagingException {
-    	if (mMessageId == null) {
-    		mMessageId = getFirstHeader("Message-ID");
-    	}
-    	return mMessageId; 
+    public String getMessageId() throws MessagingException
+    {
+        if (mMessageId == null)
+        {
+            mMessageId = getFirstHeader("Message-ID");
+        }
+        return mMessageId;
     }
-    
-    public void setInReplyTo(String inReplyTo) throws MessagingException {
-    	setHeader("In-Reply-To", inReplyTo);
+
+    public void setInReplyTo(String inReplyTo) throws MessagingException
+    {
+        setHeader("In-Reply-To", inReplyTo);
     }
-    
-    public String[] getReferences() throws MessagingException {
-    	if (mReferences == null) {
-    		mReferences = getHeader("References");
-    	}
-    	return mReferences;
+
+    public String[] getReferences() throws MessagingException
+    {
+        if (mReferences == null)
+        {
+            mReferences = getHeader("References");
+        }
+        return mReferences;
     }
-    
-    public void setReferences(String references) throws MessagingException {
-    	setHeader("References", references);
+
+    public void setReferences(String references) throws MessagingException
+    {
+        setHeader("References", references);
     }
-    
-    public void saveChanges() throws MessagingException {
+
+    public void saveChanges() throws MessagingException
+    {
         throw new MessagingException("saveChanges not yet implemented");
     }
 
-    public Body getBody() throws MessagingException {
+    public Body getBody() throws MessagingException
+    {
         return mBody;
     }
 
-    public void setBody(Body body) throws MessagingException {
+    public void setBody(Body body) throws MessagingException
+    {
         this.mBody = body;
-        if (body instanceof com.android.email.mail.Multipart) {
+        if (body instanceof com.android.email.mail.Multipart)
+        {
             com.android.email.mail.Multipart multipart = ((com.android.email.mail.Multipart)body);
             multipart.setParent(this);
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, multipart.getContentType());
             setHeader("MIME-Version", "1.0");
         }
-        else if (body instanceof TextBody) {
+        else if (body instanceof TextBody)
+        {
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n charset=utf-8",
-                    getMimeType()));
+                      getMimeType()));
             setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
         }
     }
 
-    protected String getFirstHeader(String name) {
+    protected String getFirstHeader(String name)
+    {
         return mHeader.getFirstHeader(name);
     }
 
-    public void addHeader(String name, String value)  {
+    public void addHeader(String name, String value)
+    {
         mHeader.addHeader(name, value);
     }
 
-    public void setHeader(String name, String value) {
+    public void setHeader(String name, String value)
+    {
         mHeader.setHeader(name, value);
     }
 
-    public String[] getHeader(String name) {
+    public String[] getHeader(String name)
+    {
         return mHeader.getHeader(name);
     }
 
-    public void removeHeader(String name) {
+    public void removeHeader(String name)
+    {
         mHeader.removeHeader(name);
     }
 
@@ -343,140 +429,183 @@ public class MimeMessage extends Message {
         return mHeader.getHeaderNames();
     }
 
-    public void writeTo(OutputStream out) throws IOException, MessagingException {
+    public void writeTo(OutputStream out) throws IOException, MessagingException
+    {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         mHeader.writeTo(out);
         writer.write("\r\n");
         writer.flush();
-        if (mBody != null) {
+        if (mBody != null)
+        {
             mBody.writeTo(out);
         }
     }
 
-    public InputStream getInputStream() throws MessagingException {
+    public InputStream getInputStream() throws MessagingException
+    {
         return null;
     }
 
-    class MimeMessageBuilder implements ContentHandler {
+    class MimeMessageBuilder implements ContentHandler
+    {
         private Stack stack = new Stack();
 
-        public MimeMessageBuilder() {
+        public MimeMessageBuilder()
+        {
         }
 
-        private void expect(Class c) {
-            if (!c.isInstance(stack.peek())) {
+        private void expect(Class c)
+        {
+            if (!c.isInstance(stack.peek()))
+            {
                 throw new IllegalStateException("Internal stack error: " + "Expected '"
-                        + c.getName() + "' found '" + stack.peek().getClass().getName() + "'");
+                                                + c.getName() + "' found '" + stack.peek().getClass().getName() + "'");
             }
         }
 
-        public void startMessage() {
-            if (stack.isEmpty()) {
+        public void startMessage()
+        {
+            if (stack.isEmpty())
+            {
                 stack.push(MimeMessage.this);
-            } else {
+            }
+            else
+            {
                 expect(Part.class);
-                try {
+                try
+                {
                     MimeMessage m = new MimeMessage();
                     ((Part)stack.peek()).setBody(m);
                     stack.push(m);
-                } catch (MessagingException me) {
+                }
+                catch (MessagingException me)
+                {
                     throw new Error(me);
                 }
             }
         }
 
-        public void endMessage() {
+        public void endMessage()
+        {
             expect(MimeMessage.class);
             stack.pop();
         }
 
-        public void startHeader() {
+        public void startHeader()
+        {
             expect(Part.class);
         }
 
-        public void field(String fieldData) {
+        public void field(String fieldData)
+        {
             expect(Part.class);
-            try {
+            try
+            {
                 String[] tokens = fieldData.split(":", 2);
                 ((Part)stack.peek()).addHeader(tokens[0], tokens[1].trim());
-            } catch (MessagingException me) {
+            }
+            catch (MessagingException me)
+            {
                 throw new Error(me);
             }
         }
 
-        public void endHeader() {
+        public void endHeader()
+        {
             expect(Part.class);
         }
 
-        public void startMultipart(BodyDescriptor bd) {
+        public void startMultipart(BodyDescriptor bd)
+        {
             expect(Part.class);
 
             Part e = (Part)stack.peek();
-            try {
+            try
+            {
                 MimeMultipart multiPart = new MimeMultipart(e.getContentType());
                 e.setBody(multiPart);
                 stack.push(multiPart);
-            } catch (MessagingException me) {
+            }
+            catch (MessagingException me)
+            {
                 throw new Error(me);
             }
         }
 
-        public void body(BodyDescriptor bd, InputStream in) throws IOException {
+        public void body(BodyDescriptor bd, InputStream in) throws IOException
+        {
             expect(Part.class);
             Body body = MimeUtility.decodeBody(in, bd.getTransferEncoding());
-            try {
+            try
+            {
                 ((Part)stack.peek()).setBody(body);
-            } catch (MessagingException me) {
+            }
+            catch (MessagingException me)
+            {
                 throw new Error(me);
             }
         }
 
-        public void endMultipart() {
+        public void endMultipart()
+        {
             stack.pop();
         }
 
-        public void startBodyPart() {
+        public void startBodyPart()
+        {
             expect(MimeMultipart.class);
 
-            try {
+            try
+            {
                 MimeBodyPart bodyPart = new MimeBodyPart();
                 ((MimeMultipart)stack.peek()).addBodyPart(bodyPart);
                 stack.push(bodyPart);
-            } catch (MessagingException me) {
+            }
+            catch (MessagingException me)
+            {
                 throw new Error(me);
             }
         }
 
-        public void endBodyPart() {
+        public void endBodyPart()
+        {
             expect(BodyPart.class);
             stack.pop();
         }
 
-        public void epilogue(InputStream is) throws IOException {
+        public void epilogue(InputStream is) throws IOException
+        {
             expect(MimeMultipart.class);
             StringBuffer sb = new StringBuffer();
             int b;
-            while ((b = is.read()) != -1) {
+            while ((b = is.read()) != -1)
+            {
                 sb.append((char)b);
             }
             // ((Multipart) stack.peek()).setEpilogue(sb.toString());
         }
 
-        public void preamble(InputStream is) throws IOException {
+        public void preamble(InputStream is) throws IOException
+        {
             expect(MimeMultipart.class);
             StringBuffer sb = new StringBuffer();
             int b;
-            while ((b = is.read()) != -1) {
+            while ((b = is.read()) != -1)
+            {
                 sb.append((char)b);
             }
-            try {
+            try
+            {
                 ((MimeMultipart)stack.peek()).setPreamble(sb.toString());
-            } catch (MessagingException me) {
+            }
+            catch (MessagingException me)
+            {
                 throw new Error(me);
             }
         }
 
-        public void raw(InputStream is) throws IOException {
+        public void raw(InputStream is) throws IOException
+        {
             throw new UnsupportedOperationException("Not supported");
         }
     }

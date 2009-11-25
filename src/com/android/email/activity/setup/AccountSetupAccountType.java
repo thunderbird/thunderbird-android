@@ -24,7 +24,8 @@ import com.android.email.activity.SizeFormatter;
  * passed in email address, password and makeDefault are then passed on to the
  * AccountSetupIncoming activity.
  */
-public class AccountSetupAccountType extends K9Activity implements OnClickListener {
+public class AccountSetupAccountType extends K9Activity implements OnClickListener
+{
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
@@ -33,7 +34,8 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
 
     private boolean mMakeDefault;
 
-    public static void actionSelectAccountType(Context context, Account account, boolean makeDefault) {
+    public static void actionSelectAccountType(Context context, Account account, boolean makeDefault)
+    {
         Intent i = new Intent(context, AccountSetupAccountType.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
@@ -41,7 +43,8 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_account_type);
         ((Button)findViewById(R.id.pop)).setOnClickListener(this);
@@ -52,59 +55,74 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         mMakeDefault = (boolean)getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
     }
 
-    private void onPop() {
-        try {
+    private void onPop()
+    {
+        try
+        {
             URI uri = new URI(mAccount.getStoreUri());
             uri = new URI("pop3", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
             mAccount.setStoreUri(uri.toString());
             AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
             finish();
-        } catch (Exception use) {
+        }
+        catch (Exception use)
+        {
             failure(use);
         }
 
     }
 
-    private void onImap() {
-        try {
+    private void onImap()
+    {
+        try
+        {
             URI uri = new URI(mAccount.getStoreUri());
             uri = new URI("imap", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
             mAccount.setStoreUri(uri.toString());
             AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
             finish();
-        } catch (Exception use) {
+        }
+        catch (Exception use)
+        {
             failure(use);
         }
 
     }
 
-    private void onWebDav() {
-        try {
+    private void onWebDav()
+    {
+        try
+        {
             URI uri = new URI(mAccount.getStoreUri());
             uri = new URI("webdav", uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
             mAccount.setStoreUri(uri.toString());
             AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
             finish();
-        } catch (Exception use) {
+        }
+        catch (Exception use)
+        {
             failure(use);
         }
 
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.pop:
-            onPop();
-            break;
-        case R.id.imap:
-            onImap();
-            break;
-        case R.id.webdav:
-            onWebDav();
-            break;
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.pop:
+                onPop();
+                break;
+            case R.id.imap:
+                onImap();
+                break;
+            case R.id.webdav:
+                onWebDav();
+                break;
         }
     }
-    private void failure(Exception use) {
+    private void failure(Exception use)
+    {
         Log.e(Email.LOG_TAG, "Failure", use);
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
 

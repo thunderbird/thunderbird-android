@@ -4,8 +4,10 @@ package com.android.email.mail;
 import java.util.Date;
 import java.util.HashSet;
 
-public abstract class Message implements Part, Body {
-    public enum RecipientType {
+public abstract class Message implements Part, Body
+{
+    public enum RecipientType
+    {
         TO, CC, BCC,
     }
 
@@ -17,15 +19,18 @@ public abstract class Message implements Part, Body {
 
     protected Folder mFolder;
 
-    public String getUid() {
+    public String getUid()
+    {
         return mUid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(String uid)
+    {
         this.mUid = uid;
     }
 
-    public Folder getFolder() {
+    public Folder getFolder()
+    {
         return mFolder;
     }
 
@@ -33,11 +38,13 @@ public abstract class Message implements Part, Body {
 
     public abstract void setSubject(String subject) throws MessagingException;
 
-    public Date getInternalDate() {
+    public Date getInternalDate()
+    {
         return mInternalDate;
     }
 
-    public void setInternalDate(Date internalDate) {
+    public void setInternalDate(Date internalDate)
+    {
         this.mInternalDate = internalDate;
     }
 
@@ -50,10 +57,12 @@ public abstract class Message implements Part, Body {
     public abstract Address[] getRecipients(RecipientType type) throws MessagingException;
 
     public abstract void setRecipients(RecipientType type, Address[] addresses)
-            throws MessagingException;
+    throws MessagingException;
 
-    public void setRecipient(RecipientType type, Address address) throws MessagingException {
-        setRecipients(type, new Address[] {
+    public void setRecipient(RecipientType type, Address address) throws MessagingException
+    {
+        setRecipients(type, new Address[]
+        {
             address
         });
     }
@@ -67,13 +76,13 @@ public abstract class Message implements Part, Body {
     public abstract void setReplyTo(Address[] from) throws MessagingException;
 
     public abstract String getMessageId() throws MessagingException;
-    
+
     public abstract void setInReplyTo(String inReplyTo) throws MessagingException;
-    
+
     public abstract String[] getReferences() throws MessagingException;
-    
+
     public abstract void setReferences(String references) throws MessagingException;
-    
+
     public abstract Body getBody() throws MessagingException;
 
     public abstract String getContentType() throws MessagingException;
@@ -88,23 +97,29 @@ public abstract class Message implements Part, Body {
 
     public abstract void setBody(Body body) throws MessagingException;
 
-    public boolean isMimeType(String mimeType) throws MessagingException {
+    public boolean isMimeType(String mimeType) throws MessagingException
+    {
         return getContentType().startsWith(mimeType);
     }
-    
+
     public void delete(String trashFolderName) throws MessagingException {} ;
 
     /*
-     * TODO Refactor Flags at some point to be able to store user defined flags. 
+     * TODO Refactor Flags at some point to be able to store user defined flags.
      */
-    public Flag[] getFlags() {
+    public Flag[] getFlags()
+    {
         return mFlags.toArray(new Flag[] {});
     }
 
-    public void setFlag(Flag flag, boolean set) throws MessagingException {
-        if (set) {
+    public void setFlag(Flag flag, boolean set) throws MessagingException
+    {
+        if (set)
+        {
             mFlags.add(flag);
-        } else {
+        }
+        else
+        {
             mFlags.remove(flag);
         }
     }
@@ -114,13 +129,16 @@ public abstract class Message implements Part, Body {
      * @param flags
      * @param set
      */
-    public void setFlags(Flag[] flags, boolean set) throws MessagingException {
-        for (Flag flag : flags) {
+    public void setFlags(Flag[] flags, boolean set) throws MessagingException
+    {
+        for (Flag flag : flags)
+        {
             setFlag(flag, set);
         }
     }
 
-    public boolean isSet(Flag flag) {
+    public boolean isSet(Flag flag)
+    {
         return mFlags.contains(flag);
     }
 

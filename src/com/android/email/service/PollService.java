@@ -22,43 +22,45 @@ public class PollService extends CoreService
     private static String STOP_SERVICE = "com.android.email.service.PollService.stopService";
 
     private Listener mListener = new Listener();
- 
-    public static void startService(Context context) {
+
+    public static void startService(Context context)
+    {
         Intent i = new Intent();
         i.setClass(context, PollService.class);
         i.setAction(PollService.START_SERVICE);
         context.startService(i);
     }
-    
-    public static void stopService(Context context) {
+
+    public static void stopService(Context context)
+    {
         Intent i = new Intent();
         i.setClass(context, PollService.class);
         i.setAction(PollService.STOP_SERVICE);
         context.startService(i);
     }
-    
+
     @Override
     public void startService(Intent intent, int startId)
     {
-        if (START_SERVICE.equals(intent.getAction())) 
+        if (START_SERVICE.equals(intent.getAction()))
         {
             Log.i(Email.LOG_TAG, "PollService started with startId = " + startId);
-            
+
             MessagingController controller = MessagingController.getInstance(getApplication());
             Listener listener = (Listener)controller.getCheckMailListener();
             if (listener == null)
             {
-              MessagingController.getInstance(getApplication()).log("***** PollService *****: starting new check");
-              mListener.setStartId(startId);
-              mListener.wakeLockAcquire();
-              controller.setCheckMailListener(mListener);
-              controller.checkMail(this, null, false, false, mListener);
+                MessagingController.getInstance(getApplication()).log("***** PollService *****: starting new check");
+                mListener.setStartId(startId);
+                mListener.wakeLockAcquire();
+                controller.setCheckMailListener(mListener);
+                controller.checkMail(this, null, false, false, mListener);
             }
             else
             {
-              MessagingController.getInstance(getApplication()).log("***** PollService *****: renewing WakeLock");
-              listener.setStartId(startId);
-              listener.wakeLockAcquire();
+                MessagingController.getInstance(getApplication()).log("***** PollService *****: renewing WakeLock");
+                listener.setStartId(startId);
+                listener.wakeLockAcquire();
             }
         }
         else if (STOP_SERVICE.equals(intent.getAction()))
@@ -66,16 +68,17 @@ public class PollService extends CoreService
             Log.i(Email.LOG_TAG, "PollService stopping");
             stopSelf();
         }
-        
+
     }
-    
+
     @Override
     public IBinder onBind(Intent arg0)
     {
         return null;
     }
-    
-    class Listener extends MessagingListener {
+
+    class Listener extends MessagingListener
+    {
         HashMap<String, Integer> accountsChecked = new HashMap<String, Integer>();
         private WakeLock wakeLock = null;
         private int startId = -1;
@@ -84,7 +87,7 @@ public class PollService extends CoreService
         // don't want to take the chance of running wild
         public synchronized void wakeLockAcquire()
         {
-          WakeLock oldWakeLock = wakeLock;
+            WakeLock oldWakeLock = wakeLock;
 
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
             wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
@@ -93,7 +96,7 @@ public class PollService extends CoreService
 
             if (oldWakeLock != null)
             {
-              oldWakeLock.release();
+                oldWakeLock.release();
             }
 
         }
@@ -106,28 +109,32 @@ public class PollService extends CoreService
             }
         }
         @Override
-        public void checkMailStarted(Context context, Account account) {
+        public void checkMailStarted(Context context, Account account)
+        {
             accountsChecked.clear();
         }
 
         @Override
-        public void checkMailFailed(Context context, Account account, String reason) {
+        public void checkMailFailed(Context context, Account account, String reason)
+        {
             release();
         }
 
         @Override
         public void synchronizeMailboxFinished(
-                Account account,
-                String folder,
-                int totalMessagesInMailbox,
-                int numNewMessages) {
-            if (account.isNotifyNewMail()) {
-              Integer existingNewMessages = accountsChecked.get(account.getUuid());
-              if (existingNewMessages == null)
-              {
-                existingNewMessages = 0;
-              }
-              accountsChecked.put(account.getUuid(), existingNewMessages + numNewMessages);
+            Account account,
+            String folder,
+            int totalMessagesInMailbox,
+            int numNewMessages)
+        {
+            if (account.isNotifyNewMail())
+            {
+                Integer existingNewMessages = accountsChecked.get(account.getUuid());
+                if (existingNewMessages == null)
+                {
+                    existingNewMessages = 0;
+                }
+                accountsChecked.put(account.getUuid(), existingNewMessages + numNewMessages);
             }
         }
 
@@ -138,40 +145,42 @@ public class PollService extends CoreService
                 return;
             }
 
-            for (Account thisAccount : Preferences.getPreferences(context).getAccounts()) {
+            for (Account thisAccount : Preferences.getPreferences(context).getAccounts())
+            {
                 Integer newMailCount = accountsChecked.get(thisAccount.getUuid());
                 if (newMailCount != null)
                 {
                     try
                     {
                         int  unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
-                        MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount, 
+                        MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount,
                                 newMailCount, unreadMessageCount);
-                        
+
                     }
                     catch (MessagingException me)
                     {
                         Log.e(Email.LOG_TAG, "***** PollService *****: couldn't get unread count for account " +
-                            thisAccount.getDescription(), me);
+                              thisAccount.getDescription(), me);
                     }
                 }
             }//for accounts
         }//checkMailDone
-        
-        
+
+
         private void release()
         {
-          MessagingController controller = MessagingController.getInstance(getApplication());
-          controller.setCheckMailListener(null);
-          MailService.rescheduleCheck(PollService.this, null);
-          wakeLockRelease();
-          Log.i(Email.LOG_TAG, "PollService stopping with startId = " + startId);
-          
-          stopSelf(startId);
+            MessagingController controller = MessagingController.getInstance(getApplication());
+            controller.setCheckMailListener(null);
+            MailService.rescheduleCheck(PollService.this, null);
+            wakeLockRelease();
+            Log.i(Email.LOG_TAG, "PollService stopping with startId = " + startId);
+
+            stopSelf(startId);
         }
 
         @Override
-        public void checkMailFinished(Context context, Account account) {
+        public void checkMailFinished(Context context, Account account)
+        {
 
             Log.v(Email.LOG_TAG, "***** PollService *****: checkMailFinished");
             try
@@ -180,7 +189,7 @@ public class PollService extends CoreService
             }
             finally
             {
-              release();
+                release();
             }
         }
         public int getStartId()
@@ -192,5 +201,5 @@ public class PollService extends CoreService
             this.startId = startId;
         }
     }
-    
+
 }

@@ -63,7 +63,8 @@ import com.android.email.mail.internet.TextBody;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalAttachmentBody;
 
-public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener {
+public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
+{
     private static final String ACTION_REPLY = "com.android.email.intent.action.REPLY";
     private static final String ACTION_REPLY_ALL = "com.android.email.intent.action.REPLY_ALL";
     private static final String ACTION_FORWARD = "com.android.email.intent.action.FORWARD";
@@ -139,40 +140,43 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     private String mDraftUid;
 
-    private Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler()
+    {
         @Override
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-            case MSG_PROGRESS_ON:
-                setProgressBarIndeterminateVisibility(true);
-                break;
-            case MSG_PROGRESS_OFF:
-                setProgressBarIndeterminateVisibility(false);
-                break;
-            case MSG_UPDATE_TITLE:
-                updateTitle();
-                break;
-            case MSG_SKIPPED_ATTACHMENTS:
-                Toast.makeText(
-                    MessageCompose.this,
-                    getString(R.string.message_compose_attachments_skipped_toast),
-                    Toast.LENGTH_LONG).show();
-                break;
-            case MSG_SAVED_DRAFT:
-                Toast.makeText(
-                    MessageCompose.this,
-                    getString(R.string.message_saved_toast),
-                    Toast.LENGTH_LONG).show();
-                break;
-            case MSG_DISCARDED_DRAFT:
-                Toast.makeText(
-                    MessageCompose.this,
-                    getString(R.string.message_discarded_toast),
-                    Toast.LENGTH_LONG).show();
-                break;
-            default:
-                super.handleMessage(msg);
-                break;
+        public void handleMessage(android.os.Message msg)
+        {
+            switch (msg.what)
+            {
+                case MSG_PROGRESS_ON:
+                    setProgressBarIndeterminateVisibility(true);
+                    break;
+                case MSG_PROGRESS_OFF:
+                    setProgressBarIndeterminateVisibility(false);
+                    break;
+                case MSG_UPDATE_TITLE:
+                    updateTitle();
+                    break;
+                case MSG_SKIPPED_ATTACHMENTS:
+                    Toast.makeText(
+                        MessageCompose.this,
+                        getString(R.string.message_compose_attachments_skipped_toast),
+                        Toast.LENGTH_LONG).show();
+                    break;
+                case MSG_SAVED_DRAFT:
+                    Toast.makeText(
+                        MessageCompose.this,
+                        getString(R.string.message_saved_toast),
+                        Toast.LENGTH_LONG).show();
+                    break;
+                case MSG_DISCARDED_DRAFT:
+                    Toast.makeText(
+                        MessageCompose.this,
+                        getString(R.string.message_discarded_toast),
+                        Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    super.handleMessage(msg);
+                    break;
             }
         }
     };
@@ -182,7 +186,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private Validator mAddressValidator;
 
 
-    class Attachment implements Serializable {
+    class Attachment implements Serializable
+    {
         public String name;
         public String contentType;
         public long size;
@@ -195,7 +200,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param context
      * @param account
      */
-    public static void actionCompose(Context context, Account account) {
+    public static void actionCompose(Context context, Account account)
+    {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         context.startActivity(i);
@@ -213,14 +219,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         Context context,
         Account account,
         Message message,
-        boolean replyAll) {
+        boolean replyAll)
+    {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
         i.putExtra(EXTRA_MESSAGE, message.getUid());
-        if (replyAll) {
+        if (replyAll)
+        {
             i.setAction(ACTION_REPLY_ALL);
-        } else {
+        }
+        else
+        {
             i.setAction(ACTION_REPLY);
         }
         context.startActivity(i);
@@ -232,7 +242,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param account
      * @param message
      */
-    public static void actionForward(Context context, Account account, Message message) {
+    public static void actionForward(Context context, Account account, Message message)
+    {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
@@ -251,7 +262,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param folder
      * @param message
      */
-    public static void actionEditDraft(Context context, Account account, Message message) {
+    public static void actionEditDraft(Context context, Account account, Message message)
+    {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_ACCOUNT, account);
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
@@ -261,7 +273,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -286,24 +299,28 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mQuotedTextDelete = (ImageButton)findViewById(R.id.quoted_text_delete);
         mQuotedText = (EditText)findViewById(R.id.quoted_text);
 
-        TextWatcher watcher = new TextWatcher() {
+        TextWatcher watcher = new TextWatcher()
+        {
             public void beforeTextChanged(CharSequence s, int start,
             int before, int after) { }
 
             public void onTextChanged(CharSequence s, int start,
-            int before, int count) {
+                                      int before, int count)
+            {
                 mDraftNeedsSaving = true;
             }
 
             public void afterTextChanged(android.text.Editable s) { }
         };
 
-        TextWatcher sigwatcher = new TextWatcher() {
+        TextWatcher sigwatcher = new TextWatcher()
+        {
             public void beforeTextChanged(CharSequence s, int start,
             int before, int after) { }
 
             public void onTextChanged(CharSequence s, int start,
-            int before, int count) {
+                                      int before, int count)
+            {
                 mDraftNeedsSaving = true;
                 mSignatureChanged = true;
             }
@@ -345,7 +362,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         mSubjectView.setOnFocusChangeListener(this);
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
+        {
             /*
              * This data gets used in onCreate, so grab it here instead of onRestoreIntstanceState
              */
@@ -356,12 +374,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         String action = intent.getAction();
 
-        if (Intent.ACTION_VIEW.equals(action) || Intent.ACTION_SENDTO.equals(action)) {
+        if (Intent.ACTION_VIEW.equals(action) || Intent.ACTION_SENDTO.equals(action))
+        {
             /*
              * Someone has clicked a mailto: link. The address is in the URI.
              */
             mAccount = Preferences.getPreferences(this).getDefaultAccount();
-            if (mAccount == null) {
+            if (mAccount == null)
+            {
                 /*
                  * There are no accounts set up. This should not have happened. Prompt the
                  * user to set up an account as an acceptable bailout.
@@ -371,28 +391,36 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 finish();
                 return;
             }
-            if (intent.getData() != null) {
+            if (intent.getData() != null)
+            {
                 Uri uri = intent.getData();
-                try {
-                    if (uri.getScheme().equalsIgnoreCase("mailto")) {
+                try
+                {
+                    if (uri.getScheme().equalsIgnoreCase("mailto"))
+                    {
                         Address[] addresses = Address.parse(uri.getSchemeSpecificPart());
                         addAddresses(mToView, addresses);
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     /*
                      * If we can't extract any information from the URI it's okay. They can
                      * still compose a message.
                      */
                 }
             }
-        } else if (Intent.ACTION_SEND.equals(action)) {
+        }
+        else if (Intent.ACTION_SEND.equals(action))
+        {
             /*
              * Someone is trying to compose an email with an attachment, probably Pictures.
              * The Intent should contain an EXTRA_STREAM with the data to attach.
              */
 
             mAccount = Preferences.getPreferences(this).getDefaultAccount();
-            if (mAccount == null) {
+            if (mAccount == null)
+            {
                 /*
                  * There are no accounts set up. This should not have happened. Prompt the
                  * user to set up an account as an acceptable bailout.
@@ -404,18 +432,22 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-            if (text != null) {
+            if (text != null)
+            {
                 mMessageContentView.setText(text);
             }
             String subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
-            if (subject != null) {
+            if (subject != null)
+            {
                 mSubjectView.setText(subject);
             }
 
             String type = intent.getType();
             Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-            if (stream != null && type != null) {
-                if (MimeUtility.mimeTypeMatches(type, Email.ACCEPTABLE_ATTACHMENT_SEND_TYPES)) {
+            if (stream != null && type != null)
+            {
+                if (MimeUtility.mimeTypeMatches(type, Email.ACCEPTABLE_ATTACHMENT_SEND_TYPES))
+                {
                     addAttachment(stream);
                 }
             }
@@ -440,56 +472,70 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             int i;
 
             addressList = "";
-            if (extraEmail != null) {
+            if (extraEmail != null)
+            {
                 arraySize = extraEmail.length;
-                for (i=0; i < arraySize; i++) {
+                for (i=0; i < arraySize; i++)
+                {
                     addressList += extraEmail[i]+", ";
                 }
             }
             mToView.setText(addressList);
 
             addressList = "";
-            if (extraCc != null) {
+            if (extraCc != null)
+            {
                 arraySize = extraCc.length;
-                for (i=0; i < arraySize; i++) {
+                for (i=0; i < arraySize; i++)
+                {
                     addressList += extraCc[i]+", ";
                 }
             }
             mCcView.setText(addressList);
 
             addressList = "";
-            if (extraBcc != null) {
+            if (extraBcc != null)
+            {
                 arraySize = extraBcc.length;
-                for (i=0; i < arraySize; i++) {
+                for (i=0; i < arraySize; i++)
+                {
                     addressList += extraBcc[i]+", ";
                 }
             }
             mBccView.setText(addressList);
 
-        } else {
+        }
+        else
+        {
             mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
             mFolder = (String) intent.getStringExtra(EXTRA_FOLDER);
             mSourceMessageUid = (String) intent.getStringExtra(EXTRA_MESSAGE);
         }
 
-        if (mIdentity == null) {
+        if (mIdentity == null)
+        {
             mIdentity = mAccount.getIdentity(0);
         }
 
-        if (mAccount.isSignatureBeforeQuotedText()) {
+        if (mAccount.isSignatureBeforeQuotedText())
+        {
             mSignatureView = upperSignature;
             lowerSignature.setVisibility(View.GONE);
-        } else {
+        }
+        else
+        {
             mSignatureView = lowerSignature;
             upperSignature.setVisibility(View.GONE);
         }
         mSignatureView.addTextChangedListener(sigwatcher);
 
-        if (!mSourceMessageProcessed) {
+        if (!mSourceMessageProcessed)
+        {
             updateFrom();
             updateSignature();
 
-            if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_FORWARD.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
+            if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_FORWARD.equals(action) || ACTION_EDIT_DRAFT.equals(action))
+            {
                 /*
                  * If we need to load the message we add ourself as a message listener here
                  * so we can kick it off. Normally we add in onResume but we don't
@@ -497,19 +543,22 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                  * There is no harm in adding twice.
                  */
                 MessagingController.getInstance(getApplication()).addListener(mListener);
-                MessagingController.getInstance(getApplication()).loadMessageForView( mAccount, mFolder, mSourceMessageUid, null);
+                MessagingController.getInstance(getApplication()).loadMessageForView(mAccount, mFolder, mSourceMessageUid, null);
             }
 
-            if (!ACTION_EDIT_DRAFT.equals(action)) {
+            if (!ACTION_EDIT_DRAFT.equals(action))
+            {
                 String bccAddress = mAccount.getAlwaysBcc();
                 if (bccAddress!=null
-                        && !"".equals(bccAddress)) {
+                        && !"".equals(bccAddress))
+                {
                     addAddress(mBccView, new Address(mAccount.getAlwaysBcc(), ""));
                 }
             }
 
             Log.d(Email.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
-            if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null) {
+            if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null)
+            {
                 Log.d(Email.LOG_TAG, "Setting message ANSWERED flag to true");
                 // TODO: Really, we should wait until we send the message, but that would require saving the original
                 // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
@@ -519,7 +568,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             updateTitle();
         }
 
-        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_EDIT_DRAFT.equals(action)) {
+        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action) || ACTION_EDIT_DRAFT.equals(action))
+        {
             //change focus to message body.
             mMessageContentView.requestFocus();
         }
@@ -527,12 +577,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftNeedsSaving = false;
     }
 
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         MessagingController.getInstance(getApplication()).addListener(mListener);
     }
 
-    public void onPause() {
+    public void onPause()
+    {
         super.onPause();
         saveIfNeeded();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
@@ -547,11 +599,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Quoted text,
      */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
         saveIfNeeded();
         ArrayList<Uri> attachments = new ArrayList<Uri>();
-        for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
+        for (int i = 0, count = mAttachments.getChildCount(); i < count; i++)
+        {
             View view = mAttachments.getChildAt(i);
             Attachment attachment = (Attachment) view.getTag();
             attachments.add(attachment.uri);
@@ -567,11 +621,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
         super.onRestoreInstanceState(savedInstanceState);
         ArrayList<Parcelable> attachments = (ArrayList<Parcelable>) savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
         mAttachments.removeAllViews();
-        for (Parcelable p : attachments) {
+        for (Parcelable p : attachments)
+        {
             Uri uri = (Uri) p;
             addAttachment(uri);
         }
@@ -589,39 +645,51 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftNeedsSaving = false;
     }
 
-    private void updateTitle() {
-        if (mSubjectView.getText().length() == 0) {
+    private void updateTitle()
+    {
+        if (mSubjectView.getText().length() == 0)
+        {
             setTitle(R.string.compose_title);
-        } else {
+        }
+        else
+        {
             setTitle(mSubjectView.getText().toString());
         }
     }
 
-    public void onFocusChange(View view, boolean focused) {
-        if (!focused) {
+    public void onFocusChange(View view, boolean focused)
+    {
+        if (!focused)
+        {
             updateTitle();
         }
     }
 
-    private void addAddresses(MultiAutoCompleteTextView view, Address[] addresses) {
-        if (addresses == null) {
+    private void addAddresses(MultiAutoCompleteTextView view, Address[] addresses)
+    {
+        if (addresses == null)
+        {
             return;
         }
-        for (Address address : addresses) {
+        for (Address address : addresses)
+        {
             addAddress(view, address);
         }
     }
 
-    private void addAddress(MultiAutoCompleteTextView view, Address address) {
+    private void addAddress(MultiAutoCompleteTextView view, Address address)
+    {
         view.append(address + ", ");
     }
 
-    private Address[] getAddresses(MultiAutoCompleteTextView view) {
+    private Address[] getAddresses(MultiAutoCompleteTextView view)
+    {
         Address[] addresses = Address.parseUnencoded(view.getText().toString().trim());
         return addresses;
     }
 
-    private MimeMessage createMessage(boolean appendSig) throws MessagingException {
+    private MimeMessage createMessage(boolean appendSig) throws MessagingException
+    {
         MimeMessage message = new MimeMessage();
         message.addSentDate(new Date());
         Address from = new Address(mIdentity.getEmail(), mIdentity.getName());
@@ -632,11 +700,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         message.setSubject(mSubjectView.getText().toString());
         message.setHeader("X-User-Agent", getString(R.string.message_header_mua));
 
-        if (mInReplyTo != null) {
+        if (mInReplyTo != null)
+        {
             message.setInReplyTo(mInReplyTo);
         }
 
-        if (mReferences != null) {
+        if (mReferences != null)
+        {
             message.setReferences(mReferences);
         }
 
@@ -647,22 +717,26 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
          */
 
         String text = mMessageContentView.getText().toString();
-        if (appendSig && mAccount.isSignatureBeforeQuotedText()) {
+        if (appendSig && mAccount.isSignatureBeforeQuotedText())
+        {
             text = appendSignature(text);
         }
 
-        if (mQuotedTextBar.getVisibility() == View.VISIBLE) {
+        if (mQuotedTextBar.getVisibility() == View.VISIBLE)
+        {
             text += "\n" + mQuotedText.getText().toString();
         }
 
 
-        if (appendSig && mAccount.isSignatureBeforeQuotedText() == false) {
+        if (appendSig && mAccount.isSignatureBeforeQuotedText() == false)
+        {
             text = appendSignature(text);
         }
 
         TextBody body = new TextBody(text);
 
-        if (mAttachments.getChildCount() > 0) {
+        if (mAttachments.getChildCount() > 0)
+        {
             /*
              * The message has attachments that need to be included. First we add the part
              * containing the text that will be sent and then we include each attachment.
@@ -673,9 +747,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mp = new MimeMultipart();
             mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
 
-            for (int i = 0, count = mAttachments.getChildCount(); i < count; i++) {
+            for (int i = 0, count = mAttachments.getChildCount(); i < count; i++)
+            {
                 Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
-                MimeBodyPart bp = new MimeBodyPart( new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
+                MimeBodyPart bp = new MimeBodyPart(new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"", attachment.contentType, attachment.name));
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
                 bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format("attachment;\n filename=\"%s\"", attachment.name));
@@ -683,7 +758,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             message.setBody(mp);
-        } else {
+        }
+        else
+        {
             /*
              * No attachments to include, just stick the text body in the message and call
              * it good.
@@ -694,35 +771,45 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return message;
     }
 
-    private String appendSignature (String text) {
+    private String appendSignature(String text)
+    {
         String signature= mSignatureView.getText().toString();
 
-        if (signature != null && ! signature.contentEquals("")) {
+        if (signature != null && ! signature.contentEquals(""))
+        {
             text += "\n" + signature;
         }
 
         return text;
     }
 
-    private void sendOrSaveMessage(boolean save) {
+    private void sendOrSaveMessage(boolean save)
+    {
         /*
          * Create the message from all the data the user has entered.
          */
         MimeMessage message;
-        try {
+        try
+        {
             message = createMessage(!save);  // Only append sig on save
-        } catch (MessagingException me) {
+        }
+        catch (MessagingException me)
+        {
             Log.e(Email.LOG_TAG, "Failed to create new message for send or save.", me);
             throw new RuntimeException("Failed to create a new message for send or save.", me);
         }
 
-        if (save) {
+        if (save)
+        {
             /*
              * Save a draft
              */
-            if (mDraftUid != null) {
+            if (mDraftUid != null)
+            {
                 message.setUid(mDraftUid);
-            } else if (ACTION_EDIT_DRAFT.equals(getIntent().getAction())) {
+            }
+            else if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()))
+            {
                 /*
                  * We're saving a previously saved draft, so update the new message's uid
                  * to the old message's uid.
@@ -732,10 +819,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             String k9identity = Utility.base64Encode("" + mMessageContentView.getText().toString().length());
 
-            if (mIdentityChanged || mSignatureChanged) {
+            if (mIdentityChanged || mSignatureChanged)
+            {
                 String signature  = mSignatureView.getText().toString();
                 k9identity += ":" + Utility.base64Encode(signature) ;
-                if (mIdentityChanged) {
+                if (mIdentityChanged)
+                {
 
                     String name = mIdentity.getName();
                     String email = mIdentity.getEmail();
@@ -751,43 +840,52 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mDraftUid = message.getUid();
 
             // Don't display the toast if the user is just changing the orientation
-            if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0) {
+            if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0)
+            {
                 mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
             }
-        } else {
+        }
+        else
+        {
             /*
              * Send the message
              * TODO Is it possible for us to be editing a draft with a null source message? Don't
              * think so. Could probably remove below check.
              */
-            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null) {
+            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null)
+            {
                 /*
                  * We're sending a previously saved draft, so delete the old draft first.
                  */
-                MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mFolder, mSourceMessage, null);
+                MessagingController.getInstance(getApplication()).deleteMessage(mAccount, mFolder, mSourceMessage, null);
             }
-            if (mDraftUid != null) {
+            if (mDraftUid != null)
+            {
                 /*
                  * Message was auto-saved (screen rotation) so delete that draft before sending
                  */
                 Message draftMessage = new MimeMessage();
                 draftMessage.setUid(mDraftUid);
-                MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
+                MessagingController.getInstance(getApplication()).deleteMessage(mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
             }
             MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
         }
     }
 
-    private void saveIfNeeded() {
-        if (!mDraftNeedsSaving) {
+    private void saveIfNeeded()
+    {
+        if (!mDraftNeedsSaving)
+        {
             return;
         }
         mDraftNeedsSaving = false;
         sendOrSaveMessage(true);
     }
 
-    private void onSend() {
-        if (getAddresses(mToView).length == 0 && getAddresses(mCcView).length == 0 && getAddresses(mBccView).length == 0) {
+    private void onSend()
+    {
+        if (getAddresses(mToView).length == 0 && getAddresses(mCcView).length == 0 && getAddresses(mBccView).length == 0)
+        {
             mToView.setError(getString(R.string.message_compose_error_no_recipients));
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
@@ -797,28 +895,34 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         finish();
     }
 
-    private void onDiscard() {
-        if (mSourceMessageUid != null) {
-            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null) {
-                MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mFolder, mSourceMessage, null);
+    private void onDiscard()
+    {
+        if (mSourceMessageUid != null)
+        {
+            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null)
+            {
+                MessagingController.getInstance(getApplication()).deleteMessage(mAccount, mFolder, mSourceMessage, null);
             }
         }
-        if (mDraftUid != null) {
+        if (mDraftUid != null)
+        {
             Message draftMessage = new MimeMessage();
-            MessagingController.getInstance(getApplication()).deleteMessage( mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
+            MessagingController.getInstance(getApplication()).deleteMessage(mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
         }
         mHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         mDraftNeedsSaving = false;
         finish();
     }
 
-    private void onSave() {
+    private void onSave()
+    {
         mDraftNeedsSaving = true;
         saveIfNeeded();
         finish();
     }
 
-    private void onAddCcBcc() {
+    private void onAddCcBcc()
+    {
         mCcView.setVisibility(View.VISIBLE);
         mBccView.setVisibility(View.VISIBLE);
     }
@@ -826,18 +930,21 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * Kick off a picker for whatever kind of MIME types we'll accept and let Android take over.
      */
-    private void onAddAttachment() {
+    private void onAddAttachment()
+    {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType(Email.ACCEPTABLE_ATTACHMENT_SEND_TYPES[0]);
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_ATTACHMENT);
     }
 
-    private void addAttachment(Uri uri) {
+    private void addAttachment(Uri uri)
+    {
         addAttachment(uri, -1, null);
     }
 
-    private void addAttachment(Uri uri, int size, String name) {
+    private void addAttachment(Uri uri, int size, String name)
+    {
         ContentResolver contentResolver = getContentResolver();
 
         Attachment attachment = new Attachment();
@@ -845,38 +952,52 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         attachment.size = size;
         attachment.uri = uri;
 
-        if (attachment.size == -1 || attachment.name == null) {
-            Cursor metadataCursor = contentResolver.query( uri, new String[] { OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE }, null, null, null);
-            if (metadataCursor != null) {
-                try {
-                    if (metadataCursor.moveToFirst()) {
-                        if (attachment.name == null) {
+        if (attachment.size == -1 || attachment.name == null)
+        {
+            Cursor metadataCursor = contentResolver.query(uri, new String[] { OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE }, null, null, null);
+            if (metadataCursor != null)
+            {
+                try
+                {
+                    if (metadataCursor.moveToFirst())
+                    {
+                        if (attachment.name == null)
+                        {
                             attachment.name = metadataCursor.getString(0);
                         }
-                        if (attachment.size == -1) {
+                        if (attachment.size == -1)
+                        {
                             attachment.size = metadataCursor.getInt(1);
                         }
                     }
-                } finally {
+                }
+                finally
+                {
                     metadataCursor.close();
                 }
             }
         }
 
-        if (attachment.name == null) {
+        if (attachment.name == null)
+        {
             attachment.name = uri.getLastPathSegment();
         }
 
         String contentType = contentResolver.getType(uri);
 
-        if (contentType == null) {
+        if (contentType == null)
+        {
             boolean found = false;
-            if (attachment.name!=null) {
+            if (attachment.name!=null)
+            {
                 int index = attachment.name.lastIndexOf('.');
-                if (index!=-1) {
+                if (index!=-1)
+                {
                     String extension = attachment.name.substring(index+1).toLowerCase();
-                    for (int i=0; i<Email.CONTENT_TYPE_BY_EXTENSION_MAP.length; i++) {
-                        if (Email.CONTENT_TYPE_BY_EXTENSION_MAP[i][0].equals(extension)) {
+                    for (int i=0; i<Email.CONTENT_TYPE_BY_EXTENSION_MAP.length; i++)
+                    {
+                        if (Email.CONTENT_TYPE_BY_EXTENSION_MAP[i][0].equals(extension))
+                        {
                             contentType = Email.CONTENT_TYPE_BY_EXTENSION_MAP[i][1];
                             found = true;
                             break;
@@ -884,14 +1005,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
             }
-            if (!found) {
+            if (!found)
+            {
                 contentType = "application/octet-stream";
             }
         }
 
         attachment.contentType = contentType;
 
-        View view = getLayoutInflater().inflate( R.layout.message_compose_attachment, mAttachments, false);
+        View view = getLayoutInflater().inflate(R.layout.message_compose_attachment, mAttachments, false);
         TextView nameView = (TextView)view.findViewById(R.id.attachment_name);
         ImageButton delete = (ImageButton)view.findViewById(R.id.attachment_delete);
         nameView.setText(attachment.name);
@@ -902,30 +1024,35 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         if (resultCode != RESULT_OK)
             return;
-        if (data == null) {
+        if (data == null)
+        {
             return;
         }
-        switch (requestCode) {
-        case ACTIVITY_REQUEST_PICK_ATTACHMENT:
+        switch (requestCode)
+        {
+            case ACTIVITY_REQUEST_PICK_ATTACHMENT:
 
-            addAttachment(data.getData());
-            mDraftNeedsSaving = true;
-            break;
-        case ACTIVITY_CHOOSE_IDENTITY:
-            onIdentityChosen(data);
-            break;
+                addAttachment(data.getData());
+                mDraftNeedsSaving = true;
+                break;
+            case ACTIVITY_CHOOSE_IDENTITY:
+                onIdentityChosen(data);
+                break;
         }
     }
 
-    private void onIdentityChosen(Intent intent) {
+    private void onIdentityChosen(Intent intent)
+    {
         Bundle bundle = intent.getExtras();;
-        switchToIdentity( (Account.Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY));
+        switchToIdentity((Account.Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY));
     }
 
-    private void switchToIdentity(Account.Identity identity) {
+    private void switchToIdentity(Account.Identity identity)
+    {
         mIdentity = identity;
         mIdentityChanged = true;
         mDraftNeedsSaving = true;
@@ -933,74 +1060,86 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         updateSignature();
     }
 
-    private void updateFrom() {
-        if (mIdentityChanged) {
+    private void updateFrom()
+    {
+        if (mIdentityChanged)
+        {
             mFromView.setVisibility(View.VISIBLE);
         }
         mFromView.setText(getString(R.string.message_view_from_format, mIdentity.getName(), mIdentity.getEmail()));
     }
 
-    private void updateSignature() {
+    private void updateSignature()
+    {
         mSignatureView.setText(mIdentity.getSignature());
     }
 
-    public void onClick(View view) {
-        switch (view.getId()) {
-        case R.id.attachment_delete:
-            /*
-             * The view is the delete button, and we have previously set the tag of
-             * the delete button to the view that owns it. We don't use parent because the
-             * view is very complex and could change in the future.
-             */
-            mAttachments.removeView((View) view.getTag());
-            mDraftNeedsSaving = true;
-            break;
-        case R.id.quoted_text_delete:
-            mQuotedTextBar.setVisibility(View.GONE);
-            mQuotedText.setVisibility(View.GONE);
-            mDraftNeedsSaving = true;
-            break;
+    public void onClick(View view)
+    {
+        switch (view.getId())
+        {
+            case R.id.attachment_delete:
+                /*
+                 * The view is the delete button, and we have previously set the tag of
+                 * the delete button to the view that owns it. We don't use parent because the
+                 * view is very complex and could change in the future.
+                 */
+                mAttachments.removeView((View) view.getTag());
+                mDraftNeedsSaving = true;
+                break;
+            case R.id.quoted_text_delete:
+                mQuotedTextBar.setVisibility(View.GONE);
+                mQuotedText.setVisibility(View.GONE);
+                mDraftNeedsSaving = true;
+                break;
         }
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.send:
-            onSend();
-            break;
-        case R.id.save:
-            onSave();
-            break;
-        case R.id.discard:
-            onDiscard();
-            break;
-        case R.id.add_cc_bcc:
-            onAddCcBcc();
-            break;
-        case R.id.add_attachment:
-            onAddAttachment();
-            break;
-        case R.id.choose_identity:
-            onChooseIdentity();
-            break;
-        default:
-            return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.send:
+                onSend();
+                break;
+            case R.id.save:
+                onSave();
+                break;
+            case R.id.discard:
+                onDiscard();
+                break;
+            case R.id.add_cc_bcc:
+                onAddCcBcc();
+                break;
+            case R.id.add_attachment:
+                onAddAttachment();
+                break;
+            case R.id.choose_identity:
+                onChooseIdentity();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
         return true;
     }
 
-    private void onChooseIdentity() {
-        if (mAccount.getIdentities().size() > 1) {
+    private void onChooseIdentity()
+    {
+        if (mAccount.getIdentities().size() > 1)
+        {
             Intent intent = new Intent(this, ChooseIdentity.class);
             intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
             startActivityForResult(intent, ACTIVITY_CHOOSE_IDENTITY);
-        } else {
+        }
+        else
+        {
             Toast.makeText(this, getString(R.string.no_identities),
                            Toast.LENGTH_LONG).show();
         }
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
 
@@ -1010,29 +1149,41 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * Returns true if all attachments were able to be attached, otherwise returns false.
      */
-    private boolean loadAttachments(Part part, int depth) throws MessagingException {
-        if (part.getBody() instanceof Multipart) {
+    private boolean loadAttachments(Part part, int depth) throws MessagingException
+    {
+        if (part.getBody() instanceof Multipart)
+        {
             Multipart mp = (Multipart) part.getBody();
             boolean ret = true;
-            for (int i = 0, count = mp.getCount(); i < count; i++) {
-                if (!loadAttachments(mp.getBodyPart(i), depth + 1)) {
+            for (int i = 0, count = mp.getCount(); i < count; i++)
+            {
+                if (!loadAttachments(mp.getBodyPart(i), depth + 1))
+                {
                     ret = false;
                 }
             }
             return ret;
-        } else {
+        }
+        else
+        {
             String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
             String name = MimeUtility.getHeaderParameter(contentType, "name");
-            if (name != null) {
+            if (name != null)
+            {
                 Body body = part.getBody();
-                if (body != null && body instanceof LocalAttachmentBody) {
+                if (body != null && body instanceof LocalAttachmentBody)
+                {
                     final Uri uri = ((LocalAttachmentBody) body).getContentUri();
-                    mHandler.post(new Runnable() {
-                        public void run() {
+                    mHandler.post(new Runnable()
+                    {
+                        public void run()
+                        {
                             addAttachment(uri);
                         }
                     });
-                } else {
+                }
+                else
+                {
                     return false;
                 }
             }
@@ -1045,13 +1196,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * depending on the type of message being composed.
      * @param message
      */
-    private void processSourceMessage(Message message) {
+    private void processSourceMessage(Message message)
+    {
         String action = getIntent().getAction();
-        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) {
-            try {
-                if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("re:")) {
+        if (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action))
+        {
+            try
+            {
+                if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("re:"))
+                {
                     mSubjectView.setText("Re: " + message.getSubject());
-                } else {
+                }
+                else
+                {
                     mSubjectView.setText(message.getSubject());
                 }
                 /*
@@ -1059,33 +1216,43 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                  * or sender address.
                  */
                 Address[] replyToAddresses;
-                if (message.getReplyTo().length > 0) {
+                if (message.getReplyTo().length > 0)
+                {
                     addAddresses(mToView, replyToAddresses = message.getReplyTo());
-                } else {
+                }
+                else
+                {
                     addAddresses(mToView, replyToAddresses = message.getFrom());
                 }
 
-                if (message.getMessageId() != null && message.getMessageId().length() > 0) {
+                if (message.getMessageId() != null && message.getMessageId().length() > 0)
+                {
                     String messageId = message.getMessageId();
                     mInReplyTo = messageId;
 
-                    if (message.getReferences() != null && message.getReferences().length > 0) {
+                    if (message.getReferences() != null && message.getReferences().length > 0)
+                    {
                         StringBuffer buffy = new StringBuffer();
                         for (int i=0; i < message.getReferences().length; i++)
                             buffy.append(message.getReferences()[i]);
 
                         mReferences = buffy.toString() + " " + mInReplyTo;
-                    } else {
+                    }
+                    else
+                    {
                         mReferences = mInReplyTo;
                     }
 
-                } else {
+                }
+                else
+                {
                     Log.d(Email.LOG_TAG, "could not get Message-ID.");
                 }
 
                 Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage,
                             "text/plain");
-                if (part != null) {
+                if (part != null)
+                {
                     String quotedText = String.format(
                                             getString(R.string.message_compose_reply_header_fmt),
                                             Address.toString(mSourceMessage.getFrom()));
@@ -1097,45 +1264,60 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mQuotedText.setVisibility(View.VISIBLE);
                 }
 
-                if (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action)) {
+                if (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action))
+                {
                     Account.Identity useIdentity = null;
-                    for (Address address : message.getRecipients(RecipientType.TO)) {
+                    for (Address address : message.getRecipients(RecipientType.TO))
+                    {
                         Account.Identity identity = mAccount.findIdentity(address);
-                        if (identity != null) {
+                        if (identity != null)
+                        {
                             useIdentity = identity;
                             break;
                         }
                     }
-                    if (useIdentity == null) {
-                        if (message.getRecipients(RecipientType.CC).length > 0) {
-                            for (Address address : message.getRecipients(RecipientType.CC)) {
+                    if (useIdentity == null)
+                    {
+                        if (message.getRecipients(RecipientType.CC).length > 0)
+                        {
+                            for (Address address : message.getRecipients(RecipientType.CC))
+                            {
                                 Account.Identity identity = mAccount.findIdentity(address);
-                                if (identity != null) {
+                                if (identity != null)
+                                {
                                     useIdentity = identity;
                                     break;
                                 }
                             }
                         }
                     }
-                    if (useIdentity != null) {
+                    if (useIdentity != null)
+                    {
                         Account.Identity defaultIdentity = mAccount.getIdentity(0);
-                        if (useIdentity != defaultIdentity) {
+                        if (useIdentity != defaultIdentity)
+                        {
                             switchToIdentity(useIdentity);
                         }
                     }
                 }
 
-                if (ACTION_REPLY_ALL.equals(action)) {
-                    for (Address address : message.getRecipients(RecipientType.TO)) {
+                if (ACTION_REPLY_ALL.equals(action))
+                {
+                    for (Address address : message.getRecipients(RecipientType.TO))
+                    {
                         Account.Identity identity = mAccount.findIdentity(address);
-                        if (!mAccount.isAnIdentity(address)) {
+                        if (!mAccount.isAnIdentity(address))
+                        {
                             addAddress(mToView, address);
                         }
 
                     }
-                    if (message.getRecipients(RecipientType.CC).length > 0) {
-                        for (Address address : message.getRecipients(RecipientType.CC)) {
-                            if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address)) {
+                    if (message.getRecipients(RecipientType.CC).length > 0)
+                    {
+                        for (Address address : message.getRecipients(RecipientType.CC))
+                        {
+                            if (!mAccount.isAnIdentity(address) && !Utility.arrayContains(replyToAddresses, address))
+                            {
                                 addAddress(mCcView, address);
                             }
 
@@ -1143,26 +1325,37 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         mCcView.setVisibility(View.VISIBLE);
                     }
                 }
-            } catch (MessagingException me) {
+            }
+            catch (MessagingException me)
+            {
                 /*
                  * This really should not happen at this point but if it does it's okay.
                  * The user can continue composing their message.
                  */
             }
-        } else if (ACTION_FORWARD.equals(action)) {
-            try {
-                if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("fwd:")) {
+        }
+        else if (ACTION_FORWARD.equals(action))
+        {
+            try
+            {
+                if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("fwd:"))
+                {
                     mSubjectView.setText("Fwd: " + message.getSubject());
-                } else {
+                }
+                else
+                {
                     mSubjectView.setText(message.getSubject());
                 }
                 Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                if (part == null) {
+                if (part == null)
+                {
                     part = MimeUtility.findFirstPartByMimeType(message, "text/html");
                 }
-                if (part != null) {
+                if (part != null)
+                {
                     String quotedText = MimeUtility.getTextFromPart(part);
-                    if (quotedText != null) {
+                    if (quotedText != null)
+                    {
                         String text = String.format(
                                           getString(R.string.message_compose_fwd_header_fmt),
                                           mSourceMessage.getSubject(),
@@ -1178,39 +1371,51 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         mQuotedText.setVisibility(View.VISIBLE);
                     }
                 }
-                if (!mSourceMessageProcessed) {
-                    if (!loadAttachments(message, 0)) {
+                if (!mSourceMessageProcessed)
+                {
+                    if (!loadAttachments(message, 0))
+                    {
                         mHandler.sendEmptyMessage(MSG_SKIPPED_ATTACHMENTS);
                     }
                 }
-            } catch (MessagingException me) {
+            }
+            catch (MessagingException me)
+            {
                 /*
                  * This really should not happen at this point but if it does it's okay.
                  * The user can continue composing their message.
                  */
             }
-        } else if (ACTION_EDIT_DRAFT.equals(action)) {
-            try {
+        }
+        else if (ACTION_EDIT_DRAFT.equals(action))
+        {
+            try
+            {
                 mSubjectView.setText(message.getSubject());
                 addAddresses(mToView, message.getRecipients(RecipientType.TO));
-                if (message.getRecipients(RecipientType.CC).length > 0) {
+                if (message.getRecipients(RecipientType.CC).length > 0)
+                {
                     addAddresses(mCcView, message.getRecipients(RecipientType.CC));
                     mCcView.setVisibility(View.VISIBLE);
                 }
-                if (message.getRecipients(RecipientType.BCC).length > 0) {
+                if (message.getRecipients(RecipientType.BCC).length > 0)
+                {
                     addAddresses(mBccView, message.getRecipients(RecipientType.BCC));
                     mBccView.setVisibility(View.VISIBLE);
                 }
 
-                if (!mSourceMessageProcessed) {
+                if (!mSourceMessageProcessed)
+                {
                     loadAttachments(message, 0);
                 }
                 Integer bodyLength = null;
                 String[] k9identities = message.getHeader(Email.K9MAIL_IDENTITY);
-                if (k9identities != null && k9identities.length > 0) {
+                if (k9identities != null && k9identities.length > 0)
+                {
                     String k9identity = k9identities[0];
 
-                    if (k9identity != null) {
+                    if (k9identity != null)
+                    {
                         Log.d(Email.LOG_TAG, "Got a saved identity: " + k9identity);
                         StringTokenizer tokens = new StringTokenizer(k9identity, ":", false);
 
@@ -1218,43 +1423,59 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         String name = null;
                         String email = null;
                         String signature = null;
-                        if (tokens.hasMoreTokens()) {
+                        if (tokens.hasMoreTokens())
+                        {
                             bodyLengthS = Utility.base64Decode(tokens.nextToken());
-                            try {
+                            try
+                            {
                                 bodyLength = Integer.parseInt(bodyLengthS);
-                            } catch (Exception e) {
+                            }
+                            catch (Exception e)
+                            {
                                 Log.e(Email.LOG_TAG, "Unable to parse bodyLength '" + bodyLengthS + "'");
                             }
                         }
-                        if (tokens.hasMoreTokens()) {
+                        if (tokens.hasMoreTokens())
+                        {
                             signature = Utility.base64Decode(tokens.nextToken());
                         }
-                        if (tokens.hasMoreTokens()) {
+                        if (tokens.hasMoreTokens())
+                        {
                             name = Utility.base64Decode(tokens.nextToken());
                         }
-                        if (tokens.hasMoreTokens()) {
+                        if (tokens.hasMoreTokens())
+                        {
                             email = Utility.base64Decode(tokens.nextToken());
                         }
 
                         Account.Identity newIdentity= mAccount.new Identity();
-                        if (signature != null) {
+                        if (signature != null)
+                        {
                             newIdentity.setSignature(signature);
                             mSignatureChanged = true;
-                        } else {
+                        }
+                        else
+                        {
                             newIdentity.setSignature(mIdentity.getSignature());
                         }
 
-                        if (name != null) {
+                        if (name != null)
+                        {
                             newIdentity.setName(name);
                             mIdentityChanged = true;
-                        } else {
+                        }
+                        else
+                        {
                             newIdentity.setName(mIdentity.getName());
                         }
 
-                        if (email != null) {
+                        if (email != null)
+                        {
                             newIdentity.setEmail(email);
                             mIdentityChanged = true;
-                        } else {
+                        }
+                        else
+                        {
                             newIdentity.setEmail(mIdentity.getEmail());
                         }
 
@@ -1266,9 +1487,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
                 Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                if (part != null) {
+                if (part != null)
+                {
                     String text = MimeUtility.getTextFromPart(part);
-                    if (bodyLength != null && bodyLength + 1 < text.length()) { // + 1 to get rid of the newline we added when saving the draft
+                    if (bodyLength != null && bodyLength + 1 < text.length())   // + 1 to get rid of the newline we added when saving the draft
+                    {
                         String bodyText = text.substring(0, bodyLength);
                         String quotedText = text.substring(bodyLength + 1, text.length());
 
@@ -1277,11 +1500,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
                         mQuotedTextBar.setVisibility(View.VISIBLE);
                         mQuotedText.setVisibility(View.VISIBLE);
-                    } else {
+                    }
+                    else
+                    {
                         mMessageContentView.setText(text);
                     }
                 }
-            } catch (MessagingException me) {
+            }
+            catch (MessagingException me)
+            {
                 // TODO
             }
         }
@@ -1289,11 +1516,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftNeedsSaving = false;
     }
 
-    class Listener extends MessagingListener {
+    class Listener extends MessagingListener
+    {
         @Override
-        public void loadMessageForViewStarted(Account account, String folder, String uid) {
+        public void loadMessageForViewStarted(Account account, String folder, String uid)
+        {
             if (mSourceMessageUid==null
-                    || !mSourceMessageUid.equals(uid)) {
+                    || !mSourceMessageUid.equals(uid))
+            {
                 return;
             }
 
@@ -1301,9 +1531,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         @Override
-        public void loadMessageForViewFinished(Account account, String folder, String uid, Message message) {
+        public void loadMessageForViewFinished(Account account, String folder, String uid, Message message)
+        {
             if (mSourceMessageUid==null
-                    || !mSourceMessageUid.equals(uid)) {
+                    || !mSourceMessageUid.equals(uid))
+            {
                 return;
             }
 
@@ -1311,24 +1543,30 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         @Override
-        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid, final Message message) {
+        public void loadMessageForViewBodyAvailable(Account account, String folder, String uid, final Message message)
+        {
             if (mSourceMessageUid==null
-                    || !mSourceMessageUid.equals(uid)) {
+                    || !mSourceMessageUid.equals(uid))
+            {
                 return;
             }
 
             mSourceMessage = message;
-            runOnUiThread(new Runnable() {
-                public void run() {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
                     processSourceMessage(message);
                 }
             });
         }
 
         @Override
-        public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t) {
+        public void loadMessageForViewFailed(Account account, String folder, String uid, Throwable t)
+        {
             if (mSourceMessageUid==null
-                    || !mSourceMessageUid.equals(uid)) {
+                    || !mSourceMessageUid.equals(uid))
+            {
                 return;
             }
             mHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
@@ -1336,15 +1574,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         @Override
-        public void messageUidChanged( Account account, String folder, String oldUid, String newUid) {
-            if (account.equals(mAccount) && (folder.equals(mFolder) || (mFolder == null && folder.equals(mAccount.getDraftsFolderName())))) {
-                if (oldUid.equals(mDraftUid)) {
+        public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
+        {
+            if (account.equals(mAccount) && (folder.equals(mFolder) || (mFolder == null && folder.equals(mAccount.getDraftsFolderName()))))
+            {
+                if (oldUid.equals(mDraftUid))
+                {
                     mDraftUid = newUid;
                 }
-                if (oldUid.equals(mSourceMessageUid)) {
+                if (oldUid.equals(mSourceMessageUid))
+                {
                     mSourceMessageUid = newUid;
                 }
-                if (mSourceMessage != null && (oldUid.equals(mSourceMessage.getUid()))) {
+                if (mSourceMessage != null && (oldUid.equals(mSourceMessage.getUid())))
+                {
                     mSourceMessage.setUid(newUid);
                 }
             }

@@ -10,22 +10,24 @@ import android.net.Uri;
 import android.util.Config;
 import android.util.Log;
 
-public class Preferences {
+public class Preferences
+{
     private static Preferences preferences;
 
     private Storage mStorage;
 
-    private Preferences(Context context) {
-      mStorage = Storage.getStorage(context);
-      if (mStorage.size() == 0)
-      {
-        Log.i(Email.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
-        Editor editor = mStorage.edit();
-        editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
-        editor.commit();
-      }
+    private Preferences(Context context)
+    {
+        mStorage = Storage.getStorage(context);
+        if (mStorage.size() == 0)
+        {
+            Log.i(Email.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
+            Editor editor = mStorage.edit();
+            editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
+            editor.commit();
+        }
     }
-    
+
 
     /**
      * TODO need to think about what happens if this gets GCed along with the
@@ -35,8 +37,10 @@ public class Preferences {
      *
      * @return
      */
-    public static synchronized Preferences getPreferences(Context context) {
-        if (preferences == null) {
+    public static synchronized Preferences getPreferences(Context context)
+    {
+        if (preferences == null)
+        {
             preferences = new Preferences(context);
         }
         return preferences;
@@ -48,20 +52,24 @@ public class Preferences {
      *
      * @return
      */
-    public Account[] getAccounts() {
+    public Account[] getAccounts()
+    {
         String accountUuids = getPreferences().getString("accountUuids", null);
-        if (accountUuids == null || accountUuids.length() == 0) {
+        if (accountUuids == null || accountUuids.length() == 0)
+        {
             return new Account[] {};
         }
         String[] uuids = accountUuids.split(",");
         Account[] accounts = new Account[uuids.length];
-        for (int i = 0, length = uuids.length; i < length; i++) {
+        for (int i = 0, length = uuids.length; i < length; i++)
+        {
             accounts[i] = new Account(this, uuids[i]);
         }
         return accounts;
     }
 
-    public Account getAccountByContentUri(Uri uri) {
+    public Account getAccountByContentUri(Uri uri)
+    {
         return new Account(this, uri.getPath().substring(1));
     }
 
@@ -72,21 +80,27 @@ public class Preferences {
      *
      * @return
      */
-    public Account getDefaultAccount() {
+    public Account getDefaultAccount()
+    {
         String defaultAccountUuid = getPreferences().getString("defaultAccountUuid", null);
         Account defaultAccount = null;
         Account[] accounts = getAccounts();
-        if (defaultAccountUuid != null) {
-            for (Account account : accounts) {
-                if (account.getUuid().equals(defaultAccountUuid)) {
+        if (defaultAccountUuid != null)
+        {
+            for (Account account : accounts)
+            {
+                if (account.getUuid().equals(defaultAccountUuid))
+                {
                     defaultAccount = account;
                     break;
                 }
             }
         }
 
-        if (defaultAccount == null) {
-            if (accounts.length > 0) {
+        if (defaultAccount == null)
+        {
+            if (accounts.length > 0)
+            {
                 defaultAccount = accounts[0];
                 setDefaultAccount(defaultAccount);
             }
@@ -95,13 +109,17 @@ public class Preferences {
         return defaultAccount;
     }
 
-    public void setDefaultAccount(Account account) {
+    public void setDefaultAccount(Account account)
+    {
         getPreferences().edit().putString("defaultAccountUuid", account.getUuid()).commit();
     }
 
-    public void dump() {
-        if (Config.LOGV) {
-            for (String key : getPreferences().getAll().keySet()) {
+    public void dump()
+    {
+        if (Config.LOGV)
+        {
+            for (String key : getPreferences().getAll().keySet())
+            {
                 Log.v(Email.LOG_TAG, key + " = " + getPreferences().getAll().get(key));
             }
         }
@@ -109,6 +127,6 @@ public class Preferences {
 
     public SharedPreferences getPreferences()
     {
-      return mStorage;
+        return mStorage;
     }
 }

@@ -11,21 +11,23 @@ public class PushService extends CoreService
 {
     private static String START_SERVICE = "com.android.email.service.PushService.startService";
     private static String STOP_SERVICE = "com.android.email.service.PushService.stopService";
-    
-    public static void startService(Context context) {
+
+    public static void startService(Context context)
+    {
         Intent i = new Intent();
         i.setClass(context, PushService.class);
         i.setAction(PushService.START_SERVICE);
         context.startService(i);
     }
-    
-    public static void stopService(Context context) {
+
+    public static void stopService(Context context)
+    {
         Intent i = new Intent();
         i.setClass(context, PushService.class);
         i.setAction(PushService.STOP_SERVICE);
         context.startService(i);
     }
-    
+
     @Override
     public void startService(Intent intent, int startId)
     {
@@ -38,9 +40,9 @@ public class PushService extends CoreService
             Log.i(Email.LOG_TAG, "PushService stopping with startId = " + startId);
             stopSelf(startId);
         }
-        
+
     }
-    
+
     @Override
     public IBinder onBind(Intent arg0)
     {

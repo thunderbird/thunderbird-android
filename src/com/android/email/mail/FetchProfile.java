@@ -13,15 +13,17 @@ import java.util.ArrayList;
  *      Part:                   Indicates that the given Part should be fetched. The provider
  *                              is expected have previously created the given BodyPart and stored
  *                              any information it needs to download the content.
- * </pre>            
+ * </pre>
  */
-public class FetchProfile extends ArrayList {
+public class FetchProfile extends ArrayList
+{
     /**
      * Default items available for pre-fetching. It should be expected that any
      * item fetched by using these items could potentially include all of the
      * previous items.
      */
-    public enum Item {
+    public enum Item
+    {
         /**
          * Download the flags of the message.
          */
@@ -39,7 +41,7 @@ public class FetchProfile extends ArrayList {
          * The provider should, if possible, fill in a properly formatted MIME structure in
          * the message without actually downloading any message data. If the provider is not
          * capable of this operation it should specifically set the body of the message to null
-         * so that upper levels can detect that a full body download is needed. 
+         * so that upper levels can detect that a full body download is needed.
          */
         STRUCTURE,
 
@@ -48,7 +50,7 @@ public class FetchProfile extends ArrayList {
          * This should generaly be around 50kB.
          */
         BODY_SANE,
-        
+
         /**
          * The entire message.
          */
