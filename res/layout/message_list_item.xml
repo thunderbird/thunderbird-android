@@ -13,26 +13,7 @@
         android:layout_width="4dip"
         android:layout_height="fill_parent"
         android:layout_centerVertical="true" />
-	<CheckBox
-		android:id="@+id/flagged"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:focusable="false"
-		style="?android:attr/starStyle"
-		android:layout_gravity="center_vertical"
-		android:layout_alignParentRight="true"
-		/>
-    <!-- http://stackoverflow.com/questions/1121192/android-custom-listview-unable-to-click-on-items -->
-    <CheckBox
-        android:id="@+id/selected_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:button="@drawable/checkbox"
-        android:layout_toRightOf="@+id/chip"
-        android:layout_centerVertical="true"
-        android:focusable="false"
-         android:text=""
-    />
+    <include layout="@layout/message_list_widgets" android:id="@+id/widgets" /> 
     <TextView
         android:id="@+id/subject"
         android:ellipsize="end"
@@ -42,8 +23,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
-        android:layout_toLeftOf="@id/flagged"
-        android:layout_toRightOf="@+id/selected_checkbox"
+        android:layout_toLeftOf="@id/widgets"
+        android:layout_toRightOf="@+id/chip"
         android:layout_marginRight="1dip" />
     <TextView
         android:id="@+id/date"
@@ -51,24 +32,27 @@
         android:paddingRight="5dip"
         android:paddingLeft="5dip"
         android:singleLine="true"
+        android:gravity="right|bottom"
         android:textColor="?android:attr/textColorSecondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/flagged"
+        android:layout_toLeftOf="@id/widgets"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
+
         />
-    <TextView
-        android:id="@+id/from"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="?android:attr/textColorSecondary"
-        android:paddingLeft="12dip"
+      <TextView
+         android:id="@+id/from"
+         android:ellipsize="end"
+         android:singleLine="true"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textAppearance="?android:attr/textAppearanceSmall"
+         android:textColor="?android:attr/textColorSecondary"
+         android:paddingLeft="12dip"
+         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/date"
-        android:layout_toRightOf="@+id/selected_checkbox"
-        android:layout_alignParentBottom="true"
-		/>
+         android:layout_toRightOf="@id/chip"
+         />
+
 </RelativeLayout>

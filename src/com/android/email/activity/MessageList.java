@@ -557,23 +557,28 @@ public class MessageList extends K9ListActivity
                 ViewGroup vg = (ViewGroup) v;
                 vg.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
                 ImageButton delete = (ImageButton) v.findViewById(R.id.delete);
-                if (delete.getVisibility() == View.GONE)
+                Button flagged = (Button) v.findViewById(R.id.flagged);
+                CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
+
+                if (delete.getVisibility() == View.VISIBLE)
                 {
-                    delete.setVisibility(View.VISIBLE);
-                    delete.setFocusable(true);
-                    delete.setFocusableInTouchMode(true);
-                    if (delete.requestFocus())
-                    {
-                        v.setFocusable(false);
-                        Log.v(Email.LOG_TAG, "is in touch mode");
-                    }
-                    Button flagged = (Button) v.findViewById(R.id.flagged);
+                    delete.setVisibility(View.GONE);
+                    flagged.setVisibility(View.VISIBLE);
+                    selected.setVisibility(View.GONE);
+                }
+                else if (flagged.getVisibility() == View.VISIBLE)
+                {
+                    delete.setVisibility(View.GONE);
                     flagged.setVisibility(View.GONE);
+                    selected.setVisibility(View.VISIBLE);
+
                 }
                 else
                 {
-                    // Delete was already visible
-                    delete.requestFocus();
+                    delete.setVisibility(View.VISIBLE);
+                    flagged.setVisibility(View.GONE);
+                    selected.setVisibility(View.GONE);
+
                 }
                 return true;
             }
@@ -1770,26 +1775,17 @@ public class MessageList extends K9ListActivity
                 int subjectColor = holder.from.getCurrentTextColor();  // Get from another field that never changes color
 
 
-
+                holder.selected.setVisibility(View.GONE);
                 holder.delete.setVisibility(View.GONE);
                 holder.flagged.setVisibility(View.VISIBLE);
+
                 // XXX TODO there has to be some way to walk our view hierarchy and get this
                 holder.flagged.setTag((Integer)position);
                 holder.delete.setTag((Integer)position);
 
 
-
-
-                if (message.flagged)
-                {
-                    holder.flagged.setChecked(true);
-                }
-                else
-                {
-                    holder.flagged.setChecked(false);
-                }
-
-
+                holder.flagged.setChecked(message.flagged);
+                holder.selected.setChecked(message.selected);
 
 
                 if (message.downloaded)
@@ -1814,10 +1810,6 @@ public class MessageList extends K9ListActivity
                     message.hasAttachments ? mAttachmentIcon : null, // right
                     null); // bottom
                 holder.position = position;
-                if (holder.selected!=null)
-                {
-                    holder.selected.setChecked(message.selected);
-                }
             }
             else
             {
@@ -1829,10 +1821,7 @@ public class MessageList extends K9ListActivity
                 holder.date.setText("No date");
                 holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 holder.position = -1;
-                if (holder.selected!=null)
-                {
-                    holder.selected.setChecked(false);
-                }
+                holder.selected.setChecked(false);
             }
             return view;
         }
