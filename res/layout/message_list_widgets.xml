@@ -18,7 +18,7 @@
                  android:id="@+id/flagged"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:focusable="true"
+                 android:focusable="false"
                  style="?android:attr/starStyle"
                  android:layout_gravity="center_vertical"
                 />
@@ -29,7 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:focusable="false"
+                    android:focusable="true"
                     android:button="@drawable/checkbox"
                     android:text=""
                  />
