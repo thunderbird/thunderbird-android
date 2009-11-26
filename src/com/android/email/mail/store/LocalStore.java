@@ -46,6 +46,7 @@ import com.android.email.mail.FetchProfile;
 import com.android.email.mail.Flag;
 import com.android.email.mail.Folder;
 import com.android.email.mail.Message;
+import com.android.email.mail.MessageRemovalListener;
 import com.android.email.mail.MessageRetrievalListener;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Part;
@@ -610,9 +611,9 @@ public class LocalStore extends Store implements Serializable
                 cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders "
                                       + "where folders.name = ?",
                                       new String[]
-                {
-                    mName
-                });
+                                      {
+                                          mName
+                                      });
 
                 if (cursor.moveToFirst())
                 {
@@ -705,10 +706,10 @@ public class LocalStore extends Store implements Serializable
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
             mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
-            {
-                mName,
-                Email.DEFAULT_VISIBLE_LIMIT
-            });
+                        {
+                            mName,
+                            Email.DEFAULT_VISIBLE_LIMIT
+                        });
             return true;
         }
 
@@ -719,10 +720,10 @@ public class LocalStore extends Store implements Serializable
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
             mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
-            {
-                mName,
-                visibleLimit
-            });
+                        {
+                            mName,
+                            visibleLimit
+                        });
             return true;
         }
 
@@ -745,9 +746,9 @@ public class LocalStore extends Store implements Serializable
             {
                 cursor = mDb.rawQuery("SELECT COUNT(*) FROM messages WHERE messages.folder_id = ?",
                                       new String[]
-                {
-                    Long.toString(mFolderId)
-                });
+                                      {
+                                          Long.toString(mFolderId)
+                                      });
                 cursor.moveToFirst();
                 int messageCount = cursor.getInt(0);
                 return messageCount;
@@ -797,6 +798,23 @@ public class LocalStore extends Store implements Serializable
         {
             open(OpenMode.READ_WRITE);
             return mVisibleLimit;
+        }
+
+        public void purgeToVisibleLimit(MessageRemovalListener listener) throws MessagingException
+        {
+            open(OpenMode.READ_WRITE);
+            Message[] messages = getMessages(null);
+            for (int i = 0; i < messages.length; i++)
+            {
+                if (i >= mVisibleLimit)
+                {
+                    if (listener != null)
+                    {
+                        listener.messageRemoved(messages[i]);
+                    }
+                    messages[i].setFlag(Flag.X_DESTROYED, true);
+                }
+            }
         }
 
 
@@ -1060,19 +1078,19 @@ public class LocalStore extends Store implements Serializable
                         cursor = mDb.query(
                                      "attachments",
                                      new String[]
-                        {
-                            "id",
-                            "size",
-                            "name",
-                            "mime_type",
-                            "store_data",
-                            "content_uri"
-                        },
-                        "message_id = ?",
-                        new String[] { Long.toString(localMessage.mId) },
-                        null,
-                        null,
-                        null);
+                                     {
+                                         "id",
+                                         "size",
+                                         "name",
+                                         "mime_type",
+                                         "store_data",
+                                         "content_uri"
+                                     },
+                                     "message_id = ?",
+                                     new String[] { Long.toString(localMessage.mId) },
+                                     null,
+                                     null,
+                                     null);
 
                         while (cursor.moveToNext())
                         {
@@ -1227,9 +1245,9 @@ public class LocalStore extends Store implements Serializable
                              + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
                              + "FROM messages " + "WHERE uid = ? " + "AND folder_id = ?",
                              new String[]
-                {
-                    message.getUid(), Long.toString(mFolderId)
-                });
+                             {
+                                 message.getUid(), Long.toString(mFolderId)
+                             });
                 if (!cursor.moveToNext())
                 {
                     return null;
@@ -1272,9 +1290,9 @@ public class LocalStore extends Store implements Serializable
                              + (includeDeleted ? "" : "deleted = 0")
                              + " folder_id = ? ORDER BY date DESC"
                              , new String[]
-                {
-                    Long.toString(mFolderId)
-                });
+                             {
+                                 Long.toString(mFolderId)
+                             });
 
 
                 int i = 0;
@@ -1369,11 +1387,11 @@ public class LocalStore extends Store implements Serializable
                 message.setUid(Email.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
 
                 mDb.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[]
-                {
-                    lDestFolder.getId(),
-                    message.getUid(),
-                    lMessage.getId()
-                });
+                            {
+                                lDestFolder.getId(),
+                                message.getUid(),
+                                lMessage.getId()
+                            });
 
                 LocalMessage placeHolder = new LocalMessage(oldUID, this);
                 placeHolder.setFlagInternal(Flag.DELETED, true);
@@ -1561,27 +1579,27 @@ public class LocalStore extends Store implements Serializable
                             + "html_content = ?, text_content = ?, reply_to_list = ?, "
                             + "attachment_count = ? WHERE id = ?",
                             new Object[]
-                {
-                    message.getUid(),
-                    message.getSubject(),
-                    Address.pack(message.getFrom()),
-                    message.getSentDate() == null ? System
-                    .currentTimeMillis() : message.getSentDate()
-                    .getTime(),
-                    Utility.combine(message.getFlags(), ',').toUpperCase(),
-                    mFolderId,
-                    Address.pack(message
-                    .getRecipients(RecipientType.TO)),
-                    Address.pack(message
-                    .getRecipients(RecipientType.CC)),
-                    Address.pack(message
-                    .getRecipients(RecipientType.BCC)),
-                    html.length() > 0 ? html : null,
-                    text.length() > 0 ? text : null,
-                    Address.pack(message.getReplyTo()),
-                    attachments.size(),
-                    message.mId
-                });
+                            {
+                                message.getUid(),
+                                message.getSubject(),
+                                Address.pack(message.getFrom()),
+                                message.getSentDate() == null ? System
+                                .currentTimeMillis() : message.getSentDate()
+                                .getTime(),
+                                Utility.combine(message.getFlags(), ',').toUpperCase(),
+                                mFolderId,
+                                Address.pack(message
+                                             .getRecipients(RecipientType.TO)),
+                                Address.pack(message
+                                             .getRecipients(RecipientType.CC)),
+                                Address.pack(message
+                                             .getRecipients(RecipientType.BCC)),
+                                html.length() > 0 ? html : null,
+                                text.length() > 0 ? text : null,
+                                Address.pack(message.getReplyTo()),
+                                attachments.size(),
+                                message.mId
+                            });
 
                 for (int i = 0, count = attachments.size(); i < count; i++)
                 {
@@ -1621,9 +1639,9 @@ public class LocalStore extends Store implements Serializable
         {
             mDb.execSQL("DELETE FROM headers WHERE id = ?",
                         new Object[]
-            {
-                id
-            });
+                        {
+                            id
+                        });
         }
 
         /**
@@ -1802,9 +1820,9 @@ public class LocalStore extends Store implements Serializable
         {
             open(OpenMode.READ_ONLY);
             mDb.execSQL("DELETE FROM messages WHERE folder_id = ? and date < ?", new Object[]
-            {
-                Long.toString(mFolderId), new Long(cutoff)
-            });
+                        {
+                            Long.toString(mFolderId), new Long(cutoff)
+                        });
             resetUnreadCount();
         }
 
@@ -1840,9 +1858,9 @@ public class LocalStore extends Store implements Serializable
                 deleteAttachments(message.getUid());
             }
             mDb.execSQL("DELETE FROM folders WHERE id = ?", new Object[]
-            {
-                Long.toString(mFolderId),
-            });
+                        {
+                            Long.toString(mFolderId),
+                        });
         }
 
         @Override
@@ -2158,18 +2176,18 @@ public class LocalStore extends Store implements Serializable
                     "reply_to_list = NULL " +
                     "WHERE id = ?",
                     new Object[]
-                {
-                    mId
-                });
+                    {
+                        mId
+                    });
 
                 /*
                  * Delete all of the messages' attachments to save space.
                  */
                 mDb.execSQL("DELETE FROM attachments WHERE id = ?",
                             new Object[]
-                {
-                    mId
-                });
+                            {
+                                mId
+                            });
 
                 ((LocalFolder)mFolder).deleteHeaders(mId);
 
@@ -2213,9 +2231,9 @@ public class LocalStore extends Store implements Serializable
              * Set the flags on the message.
              */
             mDb.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
-            {
-                Utility.combine(getFlags(), ',').toUpperCase(), mId
-            });
+                        {
+                            Utility.combine(getFlags(), ',').toUpperCase(), mId
+                        });
         }
     }
 
