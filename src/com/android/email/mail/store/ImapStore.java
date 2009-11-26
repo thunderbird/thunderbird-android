@@ -1951,17 +1951,20 @@ public class ImapStore extends Store {
                             {
                                 handleUntaggedResponses(responses);
                             }
-                            if (uidNext > oldUidNext)
+
+
+			    int startUid = oldUidNext;
+			    if (startUid < uidNext - 100)
                             {
-                                int startUid = oldUidNext;
-                                if (startUid < uidNext - 100)
-                                {
-                                    startUid = uidNext - 100;
-                                }
-                                if (startUid < 1)
-                                {
-                                    startUid = 1;
-                                }
+				startUid = uidNext - 100;
+			    }
+			    if (startUid < 1)
+                            {
+				startUid = 1;
+                            }
+
+                            if (uidNext > startUid)
+                            {
                                 
                                 Log.i(Email.LOG_TAG, "Needs sync from uid " + startUid  + " to " + uidNext);
                                 List<Message> messages = new ArrayList<Message>();
