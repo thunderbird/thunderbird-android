@@ -72,9 +72,9 @@ import com.android.email.mail.store.LocalStore.LocalMessage;
  *
  */
 
-public class MessageList 
-    extends K9Activity
-    implements OnClickListener, AdapterView.OnItemClickListener
+public class MessageList
+            extends K9Activity
+            implements OnClickListener, AdapterView.OnItemClickListener
 {
 
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
@@ -86,7 +86,7 @@ public class MessageList
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_STARTUP = "startup";
     private static final String EXTRA_FOLDER  = "folder";
-    
+
     private static final String STATE_KEY_LIST = "com.android.email.activity.messagelist_state";
     private static final String STATE_CURRENT_FOLDER = "com.android.email.activity.messagelist_folder";
     private static final String STATE_KEY_SELECTION = "com.android.email.activity.messagelist_selection";
@@ -424,7 +424,7 @@ public class MessageList
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(this);
-        
+
         registerForContextMenu(mListView);
 
         /*
@@ -2172,8 +2172,8 @@ public class MessageList
                         mSelectedCount++;
                         if (mSelectedCount==1)
                         {
-                            //TODO: Fade in animation
-                            mBatchButtonArea.setVisibility(View.VISIBLE);
+
+                            showBatchButtons();
                         }
                     }
                     else
@@ -2181,14 +2181,23 @@ public class MessageList
                         mSelectedCount--;
                         if (mSelectedCount==0)
                         {
-                            //TODO: Fade out animation
-                            mBatchButtonArea.setVisibility(View.GONE);
+                            hideBatchButtons();
                         }
                     }
                     message.selected = isChecked;
                 }
             }
         }
+    }
+    private void hideBatchButtons()
+    {
+        //TODO: Fade out animation
+        mBatchButtonArea.setVisibility(View.GONE);
+    }
+    private void showBatchButtons()
+    {
+        //TODO: Fade in animation
+        mBatchButtonArea.setVisibility(View.VISIBLE);
     }
 
     class FooterViewHolder
@@ -2332,8 +2341,7 @@ public class MessageList
                 String folderName = messageList.get(0).getFolder().getName();
                 MessagingController.getInstance(getApplication()).deleteMessageList(mAccount, folderName, messageList, null);
                 mSelectedCount = 0;
-                //TODO: Fade out animation
-                mBatchButtonArea.setVisibility(View.GONE);
+                hideBatchButtons();
             }
             else
             {
@@ -2346,5 +2354,6 @@ public class MessageList
             Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }
