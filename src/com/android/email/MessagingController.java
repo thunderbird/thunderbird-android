@@ -2228,6 +2228,14 @@ public class MessagingController implements Runnable
     {
         setMessageFlag(account, folder, message, Flag.SEEN, seen);
     }
+    
+    public void setFlag(final Account account, final String folder, final Message[] messages, final Flag flag, final boolean newState)
+    {
+        for (Message message : messages)
+        {
+            setMessageFlag(account, folder, message.getUid(), flag, newState);
+        }
+    }
 
     public void setMessageFlag(
         final Account account,
@@ -3061,6 +3069,20 @@ public class MessagingController implements Runnable
 
         putBackground("getAccountUnread:" + account.getDescription(), l, unreadRunnable);
     }
+    
+    public int moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
+                            final MessagingListener listener)
+    {
+        int messagesMoved = 0;
+        for (Message message : messages)
+        {
+            if (moveMessage(account, srcFolder, message, destFolder, listener))
+            {
+                messagesMoved++;
+            }
+        }
+        return messagesMoved;
+    }
 
     public boolean moveMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
                                final MessagingListener listener)
@@ -3128,7 +3150,20 @@ public class MessagingController implements Runnable
             return false;
         }
     }
-
+    
+    public int copyMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
+            final MessagingListener listener)
+    {
+        int messagesCopied = 0;
+        for (Message message : messages)
+        {
+            if (copyMessage(account, srcFolder, message, destFolder, listener))
+            {
+                messagesCopied++;
+            }
+        }
+        return messagesCopied;
+    }
     public boolean copyMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
                                final MessagingListener listener)
     {
@@ -3205,7 +3240,16 @@ public class MessagingController implements Runnable
             throw new RuntimeException("Error moving message", me);
         }
     }
-
+    
+    
+    public void deleteMessages(final Account account, final String folder, final Message[] messages,
+            final MessagingListener listener)
+    {
+        for (Message message : messages)
+        {
+            deleteMessage(account, folder, message, listener);
+        }
+    }
     public void deleteMessage(final Account account, final String folder, final Message message,
                               final MessagingListener listener)
     {
