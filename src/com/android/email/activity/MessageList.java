@@ -25,30 +25,26 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ImageButton;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
 
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.android.email.K9ListActivity;
 import com.android.email.Account;
 import com.android.email.Email;
+import com.android.email.K9Activity;
 import com.android.email.MessagingController;
 import com.android.email.MessagingListener;
 import com.android.email.R;
@@ -76,7 +72,9 @@ import com.android.email.mail.store.LocalStore.LocalMessage;
  *
  */
 
-public class MessageList extends K9ListActivity
+public class MessageList 
+    extends K9Activity
+    implements OnClickListener, AdapterView.OnItemClickListener
 {
 
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
@@ -87,13 +85,12 @@ public class MessageList extends K9ListActivity
 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_STARTUP = "startup";
-
-    private static final String EXTRA_FOLDER = "folder";
+    private static final String EXTRA_FOLDER  = "folder";
+    
     private static final String STATE_KEY_LIST = "com.android.email.activity.messagelist_state";
-
     private static final String STATE_CURRENT_FOLDER = "com.android.email.activity.messagelist_folder";
     private static final String STATE_KEY_SELECTION = "com.android.email.activity.messagelist_selection";
-
+    private static final String STATE_KEY_SELECTED_COUNT = "com.android.email.activity.messagelist_selected_count";
 
     private static final int WIDGET_NONE = 1;
     private static final int WIDGET_FLAG = 2;
@@ -158,6 +155,13 @@ public class MessageList extends K9ListActivity
     private boolean sortDateAscending = false;
 
     private boolean mStartup = false;
+
+    private int mSelectedCount = 0;
+
+    private View mBatchButtonArea;
+    private Button mBatchReadButton;
+    private Button mBatchDeleteButton;
+    private Button mBatchFlagButton;
 
     private DateFormat getDateFormat()
     {
@@ -386,7 +390,8 @@ public class MessageList extends K9ListActivity
         context.startActivity(intent);
     }
 
-    public void onListItemClick(ListView parent, View v, int position, long id)
+    @Override
+    public void onItemClick(AdapterView parent, View v, int position, long id)
     {
         if ((position+1) == (mAdapter.getCount()))
         {
@@ -411,12 +416,15 @@ public class MessageList extends K9ListActivity
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-        mListView = getListView();
+        setContentView(R.layout.message_list);
+
+        mListView = (ListView) findViewById(R.id.message_list);
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(true);
-
+        mListView.setOnItemClickListener(this);
+        
         registerForContextMenu(mListView);
 
         /*
@@ -426,6 +434,14 @@ public class MessageList extends K9ListActivity
         mListView.setSaveEnabled(false);
 
         mInflater = getLayoutInflater();
+
+        mBatchButtonArea = findViewById(R.id.batch_button_area);
+        mBatchReadButton = (Button) findViewById(R.id.batch_read_button);
+        mBatchReadButton.setOnClickListener(this);
+        mBatchDeleteButton = (Button) findViewById(R.id.batch_delete_button);
+        mBatchDeleteButton.setOnClickListener(this);
+        mBatchFlagButton = (Button) findViewById(R.id.batch_flag_button);
+        mBatchFlagButton.setOnClickListener(this);
 
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
@@ -446,10 +462,8 @@ public class MessageList extends K9ListActivity
         else
         {
             mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
+            mSelectedCount  = savedInstanceState.getInt(STATE_KEY_SELECTED_COUNT);
         }
-
-
-
 
         /*
         * Since the color chip is always the same color for a given account we just
@@ -469,7 +483,7 @@ public class MessageList extends K9ListActivity
 
         mCurrentFolder = mAdapter.getFolder(mFolderName);
 
-        setListAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         if (savedInstanceState != null)
         {
@@ -541,6 +555,7 @@ public class MessageList extends K9ListActivity
         outState.putParcelable(STATE_KEY_LIST, mListView.onSaveInstanceState());
         outState.putInt(STATE_KEY_SELECTION, mListView .getSelectedItemPosition());
         outState.putString(STATE_CURRENT_FOLDER, mCurrentFolder.name);
+        outState.putInt(STATE_KEY_SELECTED_COUNT, mSelectedCount);
     }
 
 
@@ -1833,8 +1848,10 @@ public class MessageList extends K9ListActivity
 
 
                 holder.flagged.setChecked(message.flagged);
+                //So that the mSelectedCount is only incremented/decremented
+                //when a user checks the checkbox (vs code)
+                holder.position = -1;
                 holder.selected.setChecked(message.selected);
-
 
                 if (message.downloaded)
                 {
@@ -1868,6 +1885,7 @@ public class MessageList extends K9ListActivity
                 holder.from.setTypeface(null, Typeface.NORMAL);
                 holder.date.setText("No date");
                 holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                //WARNING: Order of the next 2 lines matter
                 holder.position = -1;
                 holder.selected.setChecked(false);
                 holder.flagged.setChecked(false);
@@ -2147,7 +2165,28 @@ public class MessageList extends K9ListActivity
             if (position!=-1)
             {
                 MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
-                message.selected = isChecked;
+                if (message.selected!=isChecked)
+                {
+                    if (isChecked)
+                    {
+                        mSelectedCount++;
+                        if (mSelectedCount==1)
+                        {
+                            //TODO: Fade in animation
+                            mBatchButtonArea.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    else
+                    {
+                        mSelectedCount--;
+                        if (mSelectedCount==0)
+                        {
+                            //TODO: Fade out animation
+                            mBatchButtonArea.setVisibility(View.GONE);
+                        }
+                    }
+                    message.selected = isChecked;
+                }
             }
         }
     }
@@ -2265,6 +2304,46 @@ public class MessageList extends K9ListActivity
             {
                 Log.e(Email.LOG_TAG, "Folder.close() failed", me);
             }
+        }
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        if (v==mBatchDeleteButton)
+        {
+            List<Message> messageList = new ArrayList<Message>();
+            //TODO: Optimize i.e. batch all these operations
+            for (MessageInfoHolder holder : mAdapter.messages)
+            {
+                if (holder.selected)
+                {
+                    if (holder.read == false && holder.folder.unreadMessageCount > 0)
+                    {
+                        holder.folder.unreadMessageCount--;
+                    }
+                    mAdapter.removeMessage(holder);
+                    messageList.add(holder.message);
+                }
+            }
+            if (!messageList.isEmpty())
+            {
+                //We assume that all messages are in the same folder
+                String folderName = messageList.get(0).getFolder().getName();
+                MessagingController.getInstance(getApplication()).deleteMessageList(mAccount, folderName, messageList, null);
+                mSelectedCount = 0;
+                //TODO: Fade out animation
+                mBatchButtonArea.setVisibility(View.GONE);
+            }
+            else
+            {
+                //Should not happen
+                Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
+            }
+        }
+        else
+        {
+            Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show();
         }
     }
 

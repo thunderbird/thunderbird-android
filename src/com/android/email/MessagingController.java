@@ -3240,16 +3240,27 @@ public class MessagingController implements Runnable
             throw new RuntimeException("Error moving message", me);
         }
     }
-    
-    
-    public void deleteMessages(final Account account, final String folder, final Message[] messages,
-            final MessagingListener listener)
+
+    public void deleteMessageList(final Account account, final String folder, final List<Message> messageList,
+        final MessagingListener listener)
     {
-        for (Message message : messages)
+        for (Message message : messageList)
         {
-            deleteMessage(account, folder, message, listener);
+            suppressMessage(account, folder, message);
         }
+
+        put("deleteMessageList", null, new Runnable()
+        {
+            public void run()
+            {
+                for (Message message : messageList)
+                {
+                    deleteMessageSynchronous(account, folder, message, listener);
+                }
+            }
+        });
     }
+
     public void deleteMessage(final Account account, final String folder, final Message message,
                               final MessagingListener listener)
     {
