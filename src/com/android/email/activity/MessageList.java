@@ -744,10 +744,12 @@ public class MessageList
             else if (mSelectedWidget == WIDGET_DELETE)
             {
                 mSelectedWidget=WIDGET_MULTISELECT;
+                showBatchButtons();
             }
             else if (mSelectedWidget == WIDGET_MULTISELECT)
             {
                 mSelectedWidget=WIDGET_NONE;
+                hideBatchButtons();
             }
             else
             {
@@ -764,10 +766,12 @@ public class MessageList
             else if (mSelectedWidget == WIDGET_NONE)
             {
                 mSelectedWidget=WIDGET_MULTISELECT;
+                showBatchButtons();
             }
             else if (mSelectedWidget == WIDGET_MULTISELECT)
             {
                 mSelectedWidget=WIDGET_DELETE;
+                hideBatchButtons();
             }
             else // if (mSelectedWidget == WIDGET_DELETE)
             {
@@ -2173,7 +2177,7 @@ public class MessageList
                         if (mSelectedCount==1)
                         {
 
-                            showBatchButtons();
+                            enableBatchButtons();
                         }
                     }
                     else
@@ -2181,13 +2185,28 @@ public class MessageList
                         mSelectedCount--;
                         if (mSelectedCount==0)
                         {
-                            hideBatchButtons();
+                            disableBatchButtons();
                         }
                     }
                     message.selected = isChecked;
                 }
             }
         }
+    }
+
+    private void enableBatchButtons()
+    {
+        mBatchDeleteButton.setEnabled(true);
+        mBatchReadButton.setEnabled(true);
+        mBatchFlagButton.setEnabled(true);
+    }
+
+    private void disableBatchButtons()
+    {
+        mBatchDeleteButton.setEnabled(false);
+        mBatchReadButton.setEnabled(false);
+        mBatchFlagButton.setEnabled(false);
+
     }
     private void hideBatchButtons()
     {
@@ -2196,6 +2215,14 @@ public class MessageList
     }
     private void showBatchButtons()
     {
+        if (mSelectedCount==0)
+        {
+            disableBatchButtons();
+        }
+        else
+        {
+            enableBatchButtons();
+        }
         //TODO: Fade in animation
         mBatchButtonArea.setVisibility(View.VISIBLE);
     }
