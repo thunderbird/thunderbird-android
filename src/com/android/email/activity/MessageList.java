@@ -1708,8 +1708,7 @@ public class MessageList
             {
                 LocalStore localStore = (LocalStore)Store.getInstance(mAccount.getLocalStoreUri(), getApplication());
                 LocalFolder local_folder = localStore.getFolder(folder);
-                FolderInfoHolder holder =   new FolderInfoHolder((Folder)local_folder);
-                return holder;
+                return new FolderInfoHolder((Folder)local_folder);
             }
             catch (Exception e)
             {
