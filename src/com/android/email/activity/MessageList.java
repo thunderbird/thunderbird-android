@@ -2174,7 +2174,7 @@ public class MessageList
                     if (isChecked)
                     {
                         mSelectedCount++;
-                        if (mSelectedCount==1)
+                        if (mSelectedCount > 0)
                         {
 
                             enableBatchButtons();
