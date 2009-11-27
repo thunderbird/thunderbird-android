@@ -96,6 +96,11 @@ public class MessageView extends K9Activity
 
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
 
+    private java.text.DateFormat mDateFormat;
+
+    private java.text.DateFormat mTimeFormat;
+
+
     private TextView mFromView;
     private TextView mDateView;
     private TextView mTimeView;
@@ -129,44 +134,7 @@ public class MessageView extends K9Activity
 
     private GestureDetector gestureDetector;
 
-    private DateFormat dateFormat = null;
-    private DateFormat timeFormat = null;
-
     private Menu optionsMenu = null;
-
-    private DateFormat getDateFormat()
-    {
-        if (dateFormat == null)
-        {
-            String dateFormatS = android.provider.Settings.System.getString(getContentResolver(),
-                                 android.provider.Settings.System.DATE_FORMAT);
-            if (dateFormatS != null)
-            {
-                dateFormat = new java.text.SimpleDateFormat(dateFormatS);
-            }
-            else
-            {
-                dateFormat = new java.text.SimpleDateFormat(Email.BACKUP_DATE_FORMAT);
-            }
-        }
-        return  dateFormat;
-    }
-    private DateFormat getTimeFormat()
-    {
-        if (timeFormat == null)
-        {
-            String timeFormatS = android.provider.Settings.System.getString(getContentResolver(),
-                                 android.provider.Settings.System.TIME_12_24);
-            boolean b24 =  !(timeFormatS == null || timeFormatS.equals("12"));
-            timeFormat = new java.text.SimpleDateFormat(b24 ? Email.TIME_FORMAT_24 : Email.TIME_FORMAT_12);
-        }
-        return timeFormat;
-    }
-    private void clearFormats()
-    {
-        dateFormat = null;
-        timeFormat = null;
-    }
 
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
@@ -520,6 +488,11 @@ public class MessageView extends K9Activity
 
         setContentView(R.layout.message_view);
 
+        mDateFormat = android.text.format.DateFormat.getDateFormat(this);   // short format
+        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
+
+
+
         mFromView = (TextView)findViewById(R.id.from);
         mToView = (TextView)findViewById(R.id.to);
         mCcView = (TextView)findViewById(R.id.cc);
@@ -770,7 +743,6 @@ public class MessageView extends K9Activity
     public void onResume()
     {
         super.onResume();
-        clearFormats();
     }
 
     private void onDelete()
@@ -1410,8 +1382,8 @@ public class MessageView extends K9Activity
         String fromText = Address.toFriendly(message.getFrom());
         String dateText = Utility.isDateToday(message.getSentDate()) ?
                           null :
-                          getDateFormat().format(message.getSentDate());
-        String timeText = getTimeFormat().format(message.getSentDate());
+                          mDateFormat.format(message.getSentDate());
+        String timeText = mTimeFormat.format(message.getSentDate());
         String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
         String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
         Log.d(Email.LOG_TAG, ccText);

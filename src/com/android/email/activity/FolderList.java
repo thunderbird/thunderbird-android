@@ -1,6 +1,5 @@
 package com.android.email.activity;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -18,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Config;
 import android.util.Log;
+import android.text.format.DateFormat;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -83,51 +83,12 @@ public class FolderList extends K9ListActivity
 
     private FolderListHandler mHandler = new FolderListHandler();
 
-    private DateFormat dateFormat = null;
-
-    private DateFormat timeFormat = null;
-
     private boolean mStartup = false;
 
-    private DateFormat getDateFormat()
-    {
-        if (dateFormat == null)
-        {
-            String dateFormatS = android.provider.Settings.System.getString(getContentResolver(),
-                                 android.provider.Settings.System.DATE_FORMAT);
+    private java.text.DateFormat mDateFormat;
 
-            if (dateFormatS != null)
-            {
-                dateFormat = new java.text.SimpleDateFormat(dateFormatS);
-            }
-            else
-            {
-                dateFormat = new java.text.SimpleDateFormat(Email.BACKUP_DATE_FORMAT);
-            }
-        }
+    private java.text.DateFormat mTimeFormat;
 
-        return dateFormat;
-    }
-
-    private DateFormat getTimeFormat()
-    {
-
-        if (timeFormat == null)
-        {
-            String timeFormatS = android.provider.Settings.System.getString(getContentResolver(),
-                                 android.provider.Settings.System.TIME_12_24);
-            boolean b24 =  !(timeFormatS == null || timeFormatS.equals("12"));
-            timeFormat = new java.text.SimpleDateFormat(b24 ? Email.TIME_FORMAT_24 : Email.TIME_FORMAT_12);
-        }
-
-        return timeFormat;
-    }
-
-    private void clearFormats()
-    {
-        dateFormat = null;
-        timeFormat = null;
-    }
 
     class FolderListHandler extends Handler
     {
@@ -393,6 +354,10 @@ public class FolderList extends K9ListActivity
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
         Log.v(Email.LOG_TAG, "savedInstanceState: " + (savedInstanceState==null));
+
+        mDateFormat = android.text.format.DateFormat.getDateFormat(this);   // short format
+        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
+
         if (savedInstanceState == null)
         {
             initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
@@ -486,7 +451,6 @@ public class FolderList extends K9ListActivity
     @Override public void onResume()
     {
         super.onResume();
-        clearFormats();
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
         mAccount.refresh(Preferences.getPreferences(this));
@@ -1233,8 +1197,8 @@ public class FolderList extends K9ListActivity
             {
                 Date lastCheckedDate = new Date(folder.lastChecked);
 
-                statusText = (getDateFormat().format(lastCheckedDate) + " " + getTimeFormat()
-                              .format(lastCheckedDate));
+                statusText = mTimeFormat.format(lastCheckedDate) + " "+
+                             mDateFormat.format(lastCheckedDate);
             }
 
             if (folder.pushActive)

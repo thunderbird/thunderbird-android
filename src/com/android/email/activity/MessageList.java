@@ -1,6 +1,5 @@
 package com.android.email.activity;
 //import android.os.Debug;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -17,6 +16,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.format.DateFormat;
 import android.util.Config;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -135,6 +135,10 @@ public class MessageList
 
     private Account mAccount;
 
+    private java.text.DateFormat mDateFormat;
+
+    private java.text.DateFormat mTimeFormat;
+
 
     /**
     * Stores the name of the folder that we want to open as soon as possible
@@ -143,10 +147,6 @@ public class MessageList
     private String mFolderName;
 
     private MessageListHandler mHandler = new MessageListHandler();
-
-    private DateFormat dateFormat = null;
-
-    private DateFormat timeFormat = null;
 
     private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
 
@@ -162,48 +162,6 @@ public class MessageList
     private Button mBatchReadButton;
     private Button mBatchDeleteButton;
     private Button mBatchFlagButton;
-
-    private DateFormat getDateFormat()
-    {
-        if (dateFormat == null)
-        {
-            String dateFormatS = android.provider.Settings.System.getString(getContentResolver(),
-                                 android.provider.Settings.System.DATE_FORMAT);
-
-            if (dateFormatS != null)
-            {
-                dateFormat = new java.text.SimpleDateFormat(dateFormatS);
-            }
-            else
-            {
-                dateFormat = new java.text.SimpleDateFormat(Email.BACKUP_DATE_FORMAT);
-            }
-        }
-
-        return dateFormat;
-    }
-
-    private DateFormat getTimeFormat()
-    {
-
-        if (timeFormat == null)
-        {
-            String timeFormatS = android.provider.Settings.System.getString(getContentResolver(),
-                                 android.provider.Settings.System.TIME_12_24);
-            boolean b24 =  !(timeFormatS == null || timeFormatS.equals("12"));
-            timeFormat = new java.text.SimpleDateFormat(b24 ? Email.TIME_FORMAT_24 : Email.TIME_FORMAT_12);
-        }
-
-        return timeFormat;
-    }
-
-    private void clearFormats()
-    {
-        dateFormat = null;
-        timeFormat = null;
-    }
-
-
 
     class MessageListHandler extends Handler
     {
@@ -401,10 +359,12 @@ public class MessageList
                 mAdapter.mListener);
             return;
         }
-        else if (mSelectedWidget == WIDGET_MULTISELECT) {
+        else if (mSelectedWidget == WIDGET_MULTISELECT)
+        {
             CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
             selected.setChecked(!selected.isChecked());
-        } else
+        }
+        else
         {
             MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
             onOpenMessage(message);
@@ -427,6 +387,11 @@ public class MessageList
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(this);
+
+
+        mDateFormat = android.text.format.DateFormat.getDateFormat(this);   // short format
+        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
+
 
         registerForContextMenu(mListView);
 
@@ -536,7 +501,6 @@ public class MessageList
     public void onResume()
     {
         super.onResume();
-        clearFormats();
         sortType = MessagingController.getInstance(getApplication()).getSortType();
         sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
         sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
@@ -626,7 +590,7 @@ public class MessageList
         {
             if (position >= 0)
             {
-                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position); 
+                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
 
 
                 if (message != null)
@@ -2013,12 +1977,13 @@ public class MessageList
 
                 if (Utility.isDateToday(date))
                 {
-                    this.date = getTimeFormat().format(date);
+                    this.date = mTimeFormat.format(date);
                 }
                 else
                 {
-                    this.date = getDateFormat().format(date);
+                    this.date = mDateFormat.format(date);
                 }
+
 
                 this.hasAttachments = message.getAttachmentCount() > 0;
 
