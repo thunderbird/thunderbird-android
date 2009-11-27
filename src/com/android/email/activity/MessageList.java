@@ -401,7 +401,10 @@ public class MessageList
                 mAdapter.mListener);
             return;
         }
-        else
+        else if (mSelectedWidget == WIDGET_MULTISELECT) {
+            CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
+            selected.setChecked(!selected.isChecked());
+        } else
         {
             MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
             onOpenMessage(message);
@@ -623,8 +626,7 @@ public class MessageList
         {
             if (position >= 0)
             {
-                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
-
+                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position); 
 
 
                 if (message != null)

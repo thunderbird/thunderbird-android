@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:focusable="true"
+                android:focusable="false"
                 android:button="@drawable/checkbox"
                 android:background="@drawable/checkbox_background"
                 />
