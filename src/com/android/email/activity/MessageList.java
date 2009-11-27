@@ -703,50 +703,65 @@ public class MessageList
         if (ascending)
         {
 
-            if (mSelectedWidget == WIDGET_FLAG)
+            switch (mSelectedWidget)
             {
-                mSelectedWidget=WIDGET_DELETE;
-            }
-            else if (mSelectedWidget == WIDGET_DELETE)
-            {
-                mSelectedWidget=WIDGET_MULTISELECT;
-                showBatchButtons();
-            }
-            else if (mSelectedWidget == WIDGET_MULTISELECT)
-            {
-                mSelectedWidget=WIDGET_NONE;
-                hideBatchButtons();
-            }
-            else
-            {
-                mSelectedWidget=WIDGET_FLAG;
-            }
+                case WIDGET_FLAG:
+                {
+                    mSelectedWidget = WIDGET_DELETE;
+                    break;
+                }
+                case WIDGET_DELETE:
+                {
+                    mSelectedWidget = WIDGET_MULTISELECT;
+                    showBatchButtons();
+                    break;
+                }
+                case WIDGET_MULTISELECT:
+                {
+                    mSelectedWidget = WIDGET_NONE;
+                    hideBatchButtons();
+                    break;
+                }
+                case WIDGET_NONE:
+                {
+                    mSelectedWidget = WIDGET_FLAG;
+                    break;
+                }
 
+            }
         }
         else
         {
-            if (mSelectedWidget == WIDGET_FLAG)
+            switch (mSelectedWidget)
             {
-                mSelectedWidget=WIDGET_NONE;
-            }
-            else if (mSelectedWidget == WIDGET_NONE)
-            {
-                mSelectedWidget=WIDGET_MULTISELECT;
-                showBatchButtons();
-            }
-            else if (mSelectedWidget == WIDGET_MULTISELECT)
-            {
-                mSelectedWidget=WIDGET_DELETE;
-                hideBatchButtons();
-            }
-            else // if (mSelectedWidget == WIDGET_DELETE)
-            {
-                mSelectedWidget=WIDGET_FLAG;
-            }
+                case WIDGET_FLAG:
+                {
+                    mSelectedWidget=WIDGET_NONE;
+                    break;
+                }
+                case WIDGET_NONE:
+                {
+                    mSelectedWidget=WIDGET_MULTISELECT;
+                    showBatchButtons();
+                    break;
+                }
+                case WIDGET_MULTISELECT:
 
+                {
+                    mSelectedWidget=WIDGET_DELETE;
+                    hideBatchButtons();
+                    break;
+                }
+                case WIDGET_DELETE:
+                {
+                    mSelectedWidget=WIDGET_FLAG;
+                }
 
+            }
 
         }
+
+
         int count = mListView.getChildCount();
         for (int i=0; i<count; i++)
         {
