@@ -1994,10 +1994,14 @@ public class LocalStore extends Store implements Serializable
             }
             text = buff.toString();
             text = text.replaceAll("\\s*([-=_]{30,}+)\\s*","<hr />");
+            text = text.replaceAll("(?m)^(.{50,}[\\w,:;+/])\\s*[\r\n]{1,4}(?!\\W)","$1 ");
+
+            text = text.replaceAll("(?m)[\r\n]{3,}","\n\n");
+
 
             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
             StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><body><pre style=\"white-space: pre-wrap;\">");
+            sb.append("<html><body><pre style=\"white-space: pre-wrap; word-wrap:break-word; \">");
             while (m.find())
             {
                 int start = m.start();
