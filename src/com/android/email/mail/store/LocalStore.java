@@ -1993,6 +1993,7 @@ public class LocalStore extends Store implements Serializable
                 Log.e(Email.LOG_TAG, null, e);
             }
             text = buff.toString();
+            text = text.replaceAll("\\s*([-=_]{30,}+)\\s*","<hr />");
 
             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
             StringBuffer sb = new StringBuffer(text.length() + 512);
@@ -2009,6 +2010,10 @@ public class LocalStore extends Store implements Serializable
                     m.appendReplacement(sb, "$0");
                 }
             }
+           
+  
+
+ 
             m.appendTail(sb);
             sb.append("</pre></body></html>");
             text = sb.toString();
