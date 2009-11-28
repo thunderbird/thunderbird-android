@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -99,14 +100,20 @@ public class ImapStore extends Store
     private static final int IDLE_REFRESH_INTERVAL = 20 * 60 * 1000; // 20 minutes
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
+    
+    private static final String CAPABILITY_IDLE = "IDLE";
+    private static final String COMMAND_IDLE = "IDLE";
+    private static final String CAPABILITY_NAMESPACE = "NAMESPACE";
+    private static final String COMMAND_NAMESPACE = "NAMESPACE";
 
     private String mHost;
     private int mPort;
     private String mUsername;
     private String mPassword;
     private int mConnectionSecurity;
-    private String mPathPrefix;
-    private String mPathDelimeter;
+    private volatile String mPathPrefix;
+    private volatile String mCombinedPrefix = null;
+    private volatile String mPathDelimeter;
 
     private LinkedList<ImapConnection> mConnections =
         new LinkedList<ImapConnection>();
@@ -196,6 +203,10 @@ public class ImapStore extends Store
         if ((uri.getPath() != null) && (uri.getPath().length() > 0))
         {
             mPathPrefix = uri.getPath().substring(1);
+            if (mPathPrefix != null && mPathPrefix.trim().length() == 0)
+            {
+                mPathPrefix = null;
+            }
         }
 
         mModifiedUtf7Charset = new CharsetProvider().charsetForName("X-RFC-3501");
@@ -217,6 +228,34 @@ public class ImapStore extends Store
         return folder;
     }
 
+    private String getCombinedPrefix()
+    {
+        if (mCombinedPrefix == null)
+        {
+            if (mPathPrefix != null)
+            {
+                String tmpPrefix = mPathPrefix.trim();
+                String tmpDelim = (mPathDelimeter != null ? mPathDelimeter.trim() : "");
+                if (tmpPrefix.endsWith(tmpDelim))
+                {
+                    mCombinedPrefix = tmpPrefix;
+                }
+                else if (tmpPrefix.length() > 0)
+                {
+                    mCombinedPrefix = tmpPrefix + tmpDelim;
+                }
+                else
+                {
+                    mCombinedPrefix = "";
+                }
+            }
+            else
+            {
+                mCombinedPrefix = "";
+            }
+        }
+        return mCombinedPrefix;
+    }
 
     @Override
     public Folder[] getPersonalNamespaces() throws MessagingException
@@ -225,13 +264,10 @@ public class ImapStore extends Store
         try
         {
             ArrayList<Folder> folders = new ArrayList<Folder>();
-            if (mPathPrefix == null)
-            {
-                mPathPrefix = "";
-            }
+           
             List<ImapResponse> responses =
                 connection.executeSimpleCommand(String.format("LIST \"\" \"%s*\"",
-                                                mPathPrefix));
+                                                getCombinedPrefix()));
 
             for (ImapResponse response : responses)
             {
@@ -243,6 +279,7 @@ public class ImapStore extends Store
                     if (mPathDelimeter == null)
                     {
                         mPathDelimeter = response.getString(2);
+                        mCombinedPrefix = null;
                     }
 
                     if (folder.equalsIgnoreCase(Email.INBOX))
@@ -251,13 +288,14 @@ public class ImapStore extends Store
                     }
                     else
                     {
-                        if (mPathPrefix.length() > 0)
+                        
+                        if (getCombinedPrefix().length() > 0)
                         {
-                            if (folder.length() >= mPathPrefix.length() + 1)
+                            if (folder.length() >= getCombinedPrefix().length())
                             {
-                                folder = folder.substring(mPathPrefix.length() + 1);
+                                folder = folder.substring(getCombinedPrefix().length());
                             }
-                            if (!decodeFolderName(response.getString(3)).equals(mPathPrefix + mPathDelimeter + folder))
+                            if (!decodeFolderName(response.getString(3)).equals(getCombinedPrefix() + folder))
                             {
                                 includeFolder = false;
                             }
@@ -406,12 +444,7 @@ public class ImapStore extends Store
         return true;
     }
 
-    @Override
-    public Pusher getPusher(PushReceiver receiver, List<String> names)
-    {
-        return new ImapPusher(this, receiver, names);
-    }
-
+ 
     class ImapFolder extends Folder
     {
         private String mName;
@@ -433,18 +466,7 @@ public class ImapStore extends Store
             String prefixedName = "";
             if (!Email.INBOX.equalsIgnoreCase(mName))
             {
-                String prefix = mPathPrefix;
-                String delim = mPathDelimeter;
-
-                if (prefix != null && delim != null)
-                {
-                    prefix = prefix.trim();
-                    delim = delim.trim();
-                    if (prefix.length() > 0 && delim.length() > 0)
-                    {
-                        prefixedName += mPathPrefix + mPathDelimeter;
-                    }
-                }
+                prefixedName = getCombinedPrefix();
             }
 
             prefixedName += mName;
@@ -503,7 +525,7 @@ public class ImapStore extends Store
             // 2 OK [READ-WRITE] Select completed.
             try
             {
-
+                
                 if (mPathDelimeter == null)
                 {
                     List<ImapResponse> nameResponses =
@@ -512,7 +534,7 @@ public class ImapStore extends Store
                     {
                         if (response.get(0).equals("LIST"))
                         {
-                            mPathDelimeter = nameResponses.get(0).getString(2);
+                            mPathDelimeter = response.getString(2);
                             if (Email.DEBUG)
                             {
                                 Log.d(Email.LOG_TAG, "Got path delimeter '" + mPathDelimeter + "' for " + getLogId());
@@ -1168,6 +1190,37 @@ public class ImapStore extends Store
             }
             return responses;
         }
+        
+        protected void handlePossibleUidNext(ImapResponse response)
+        {
+            if (response.get(0).equals("OK") && response.size() > 1)
+            {
+                Object bracketedObj = response.get(1);
+                if (bracketedObj instanceof ImapList)
+                {
+                    ImapList bracketed = (ImapList)bracketedObj;
+
+                    if (bracketed.size() > 1)
+                    {
+                        Object keyObj = bracketed.get(0);
+                        if (keyObj instanceof String)
+                        {
+                            String key = (String)keyObj;
+                            if ("UIDNEXT".equals(key))
+                            {
+                                uidNext = bracketed.getNumber(1);
+                                if (Email.DEBUG)
+                                {
+                                    Log.d(Email.LOG_TAG, "Got UidNext = " + uidNext + " for " + getLogId());
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
 
         /**
          * Handle an untagged response that the caller doesn't care to handle themselves.
@@ -1186,34 +1239,9 @@ public class ImapStore extends Store
                         Log.d(Email.LOG_TAG, "Got untagged EXISTS with value " + mMessageCount + " for " + getLogId());
                     }
                 }
-                if (response.get(0).equals("OK") && response.size() > 1)
-                {
-                    Object bracketedObj = response.get(1);
-                    if (bracketedObj instanceof ImapList)
-                    {
-                        ImapList bracketed = (ImapList)bracketedObj;
-
-                        if (bracketed.size() > 1)
-                        {
-                            Object keyObj = bracketed.get(0);
-                            if (keyObj instanceof String)
-                            {
-                                String key = (String)keyObj;
-                                if ("UIDNEXT".equals(key))
-                                {
-                                    uidNext = bracketed.getNumber(1);
-                                    if (Email.DEBUG)
-                                    {
-                                        Log.d(Email.LOG_TAG, "Got UidNext = " + uidNext + " for " + getLogId());
-                                    }
-                                }
-                            }
-                        }
-
-
-                    }
-                }
-                else if (response.get(1).equals("EXPUNGE") && mMessageCount > 0)
+                handlePossibleUidNext(response);
+                
+                if (response.get(1).equals("EXPUNGE") && mMessageCount > 0)
                 {
                     mMessageCount--;
                     if (Email.DEBUG)
@@ -1873,6 +1901,61 @@ public class ImapStore extends Store
                 {
                     throw new AuthenticationFailedException(null, me);
                 }
+                if (Email.DEBUG)
+                {
+                    Log.d(Email.LOG_TAG, "NAMESPACE = " + hasCapability(CAPABILITY_NAMESPACE) 
+                            + ", mPathPrefix = " + mPathPrefix);
+                }
+                if (mPathPrefix == null)
+                {
+                    if (hasCapability(CAPABILITY_NAMESPACE))
+                    {
+                        Log.i(Email.LOG_TAG, "mPathPrefix is unset and server has NAMESPACE capability");
+                        List<ImapResponse> namespaceResponses =
+                            executeSimpleCommand(COMMAND_NAMESPACE);
+                        for (ImapResponse response : namespaceResponses)
+                        {
+                            if (response.get(0).equals(COMMAND_NAMESPACE))
+                            {
+                                if (Email.DEBUG)
+                                {
+                                    Log.d(Email.LOG_TAG, "Got NAMESPACE response " + response + " on " + getLogId());
+                                }
+                                
+                                Object personalNamespaces = response.get(1);
+                                if (personalNamespaces != null && personalNamespaces instanceof ImapList)
+                                {
+                                    if (Email.DEBUG)
+                                    {
+                                        Log.d(Email.LOG_TAG, "Got personal namespaces: " + personalNamespaces);
+                                    }
+                                    ImapList bracketed = (ImapList)personalNamespaces;
+                                    Object firstNamespace = bracketed.get(0);
+                                    if (firstNamespace != null && firstNamespace instanceof ImapList)
+                                    {
+                                        if (Email.DEBUG)
+                                        {
+                                            Log.d(Email.LOG_TAG, "Got first personal namespaces: " + firstNamespace);
+                                        }
+                                        bracketed = (ImapList)firstNamespace;
+                                        mPathPrefix = bracketed.getString(0);
+                                        mPathDelimeter = bracketed.getString(1);
+                                        mCombinedPrefix = null;
+                                        if (Email.DEBUG)
+                                        {
+                                            Log.d(Email.LOG_TAG, "Got path '" + mPathPrefix + "' and separator '" + mPathDelimeter + "'");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Log.i(Email.LOG_TAG, "mPathPrefix is unset but server does not have NAMESPACE capability");
+                        mPathPrefix = "";
+                    }
+                } 
             }
             catch (SSLException e)
             {
@@ -1922,7 +2005,12 @@ public class ImapStore extends Store
 //                    Log.v(Email.LOG_TAG, "Have capability '" + capability + "' for " + getLogId());
 //                }
             }
-            return capabilities.contains("IDLE");
+            return capabilities.contains(CAPABILITY_IDLE);
+        }
+        
+        protected boolean hasCapability(String capability)
+        {
+            return capabilities.contains(capability);
         }
 
         private boolean isOpen()
@@ -2287,7 +2375,7 @@ public class ImapStore extends Store
             }
         }
 
-        public void start() throws MessagingException
+        public void start() 
         {
             Runnable runner = new Runnable()
             {
@@ -2297,7 +2385,6 @@ public class ImapStore extends Store
                     Log.i(Email.LOG_TAG, "Pusher starting for " + getLogId());
                     while (stop.get() != true)
                     {
-
                         try
                         {
                             int oldUidNext = -1;
@@ -2332,17 +2419,17 @@ public class ImapStore extends Store
                             {
                                 handleUntaggedResponses(responses);
                             }
-                            if (uidNext > oldUidNext)
+                            int startUid = oldUidNext;
+                            if (startUid < uidNext - 10)
                             {
-                                int startUid = oldUidNext;
-                                if (startUid < uidNext - 100)
-                                {
-                                    startUid = uidNext - 100;
-                                }
-                                if (startUid < 1)
-                                {
-                                    startUid = 1;
-                                }
+                                startUid = uidNext - 10;
+                            }
+                            if (startUid < 1)
+                            {
+                                startUid = 1;
+                            }
+                            if (uidNext > startUid)
+                            {
 
                                 Log.i(Email.LOG_TAG, "Needs sync from uid " + startUid  + " to " + uidNext + " for " + getLogId());
                                 List<Message> messages = new ArrayList<Message>();
@@ -2359,7 +2446,7 @@ public class ImapStore extends Store
                             }
                             else
                             {
-                                if (stop.get() != true)
+                                if (stop.get() == false)
                                 {
                                     List<ImapResponse> untaggedResponses = null;
                                     if (storedUntaggedResponses.size() > 0)
@@ -2378,8 +2465,11 @@ public class ImapStore extends Store
                                         idling.set(false);
 
                                     }
-                                    storedUntaggedResponses.clear();
-                                    processUntaggedResponses(untaggedResponses);
+                                    if (stop.get() == false)
+                                    {
+                                        storedUntaggedResponses.clear();
+                                        processUntaggedResponses(untaggedResponses);
+                                    }
                                     delayTime.set(NORMAL_DELAY_TIME);
                                 }
                             }
@@ -2404,6 +2494,7 @@ public class ImapStore extends Store
                             }
                             else
                             {
+                                receiver.pushError("Push error: " + e.getMessage(), null);
                                 Log.e(Email.LOG_TAG, "Got exception while idling for " + getLogId(), e);
                                 int delayTimeInt = delayTime.get();
                                 receiver.sleep(delayTimeInt);
@@ -2453,25 +2544,34 @@ public class ImapStore extends Store
                     }
                     storedUntaggedResponses.add(response);
                 }
+                handlePossibleUidNext(response);
             }
         }
 
         protected void processUntaggedResponses(List<ImapResponse> responses)
         {
+            boolean skipSync = false;
             int oldMessageCount = mMessageCount;
+            if (oldMessageCount == -1)
+            {
+                skipSync = true;
+            }
             List<Integer> flagSyncMsgSeqs = new ArrayList<Integer>();
 
             for (ImapResponse response : responses)
             {
                 oldMessageCount += processUntaggedResponse(oldMessageCount, response, flagSyncMsgSeqs);
             }
-            if (oldMessageCount < 0)
+            if (skipSync == false)
             {
-                oldMessageCount = 0;
-            }
-            if (mMessageCount > oldMessageCount)
-            {
-                syncMessages(oldMessageCount + 1, mMessageCount, true);
+                if (oldMessageCount < 0)
+                {
+                    oldMessageCount = 0;
+                }
+                if (mMessageCount > oldMessageCount)
+                {
+                    syncMessages(oldMessageCount + 1, mMessageCount, true);
+                }
             }
             if (Email.DEBUG)
             {
@@ -2610,10 +2710,13 @@ public class ImapStore extends Store
             }
         }
 
-        public void stop() throws MessagingException
+        public void stop()
         {
             stop.set(true);
-
+            if (listeningThread != null)
+            {
+                listeningThread.interrupt();
+            }
             if (mConnection != null)
             {
                 if (Email.DEBUG)
@@ -2634,109 +2737,143 @@ public class ImapStore extends Store
             {
                 Log.v(Email.LOG_TAG, "Got async response: " + response);
             }
-            if (response.mTag == null)
+            if (stop.get() == true)
             {
-                if (response.size() > 1)
+                if (Email.DEBUG)
                 {
-                    boolean started = false;
-                    Object responseType = response.get(1);
-                    if ("EXISTS".equals(responseType) || "EXPUNGE".equals(responseType) ||
-                            "FETCH".equals(responseType))
+                    Log.d(Email.LOG_TAG, "Got async untagged response: " + response + ", but stop is set for " + getLogId());
+                }
+                try
+                {
+                    sendDone();
+                }
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
+                } 
+            }
+            else
+            {
+                if (response.mTag == null)
+                {
+                    if (response.size() > 1)
                     {
-                        if (started == false)
+                        boolean started = false;
+                        Object responseType = response.get(1);
+                        if ("EXISTS".equals(responseType) || "EXPUNGE".equals(responseType) ||
+                                "FETCH".equals(responseType))
                         {
-                            receiver.acquireWakeLock();
-                            started = true;
-                        }
-                        if (Email.DEBUG)
-                        {
-                            Log.d(Email.LOG_TAG, "Got useful async untagged response: " + response + " for " + getLogId());
-                        }
-                        try
-                        {
-                            sendDone();
-                        }
-                        catch (Exception e)
-                        {
-                            Log.e(Email.LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
+                            if (started == false)
+                            {
+                                receiver.acquireWakeLock();
+                                started = true;
+                            }
+                            if (Email.DEBUG)
+                            {
+                                Log.d(Email.LOG_TAG, "Got useful async untagged response: " + response + " for " + getLogId());
+                            }
+                            try
+                            {
+                                sendDone();
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(Email.LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
+                            }
                         }
                     }
-                }
-                else if (response.size() > 0)
-                {
-                    if ("idling".equals(response.get(0)))
+                    else if (response.size() > 0)
                     {
-                        if (Email.DEBUG)
+                        if ("idling".equals(response.get(0)))
                         {
-                            Log.d(Email.LOG_TAG, "Idling " + getLogId());
+                            if (Email.DEBUG)
+                            {
+                                Log.d(Email.LOG_TAG, "Idling " + getLogId());
+                            }
+                            receiver.releaseWakeLock();
                         }
-                        receiver.releaseWakeLock();
                     }
                 }
             }
         }
     }
+    @Override
+    public Pusher getPusher(PushReceiver receiver)
+    {
+        return new ImapPusher(this, receiver);
+    }
 
     public class ImapPusher implements Pusher
     {
-        List<ImapFolderPusher> folderPushers = new ArrayList<ImapFolderPusher>();
+        final ImapStore mStore;
+        final PushReceiver mReceiver;
+    
+        HashMap<String, ImapFolderPusher> folderPushers = new HashMap<String, ImapFolderPusher>();
 
-        public ImapPusher(ImapStore store, PushReceiver receiver, List<String> folderNames)
+        public ImapPusher(ImapStore store, PushReceiver receiver)
         {
-            for (String folderName : folderNames)
+            mStore = store;
+            mReceiver = receiver;
+        }
+        
+        @Override
+        public void start(List<String> folderNames)
+        {
+            stop();
+            synchronized(folderPushers)
             {
-                ImapFolderPusher pusher = new ImapFolderPusher(store, folderName, receiver);
-                folderPushers.add(pusher);
+                for (String folderName : folderNames)
+                {
+                    ImapFolderPusher pusher = folderPushers.get(folderName);
+                    if (pusher == null)
+                    {
+                        pusher = new ImapFolderPusher(mStore, folderName, mReceiver);
+                        folderPushers.put(folderName, pusher);
+                        pusher.start();
+                    }
+                }
             }
         }
 
+        @Override
         public void refresh()
         {
-            for (ImapFolderPusher folderPusher : folderPushers)
+            synchronized(folderPushers)
             {
-                try
+                for (ImapFolderPusher folderPusher : folderPushers.values())
                 {
-                    folderPusher.refresh();
-                }
-                catch (Exception e)
-                {
-                    Log.e(Email.LOG_TAG, "Got exception while refreshing for " + folderPusher.getName(), e);
-                }
-            }
-
-        }
-
-        public void start()
-        {
-            for (ImapFolderPusher folderPusher : folderPushers)
-            {
-                try
-                {
-                    folderPusher.start();
-                }
-                catch (Exception e)
-                {
-                    Log.e(Email.LOG_TAG, "Got exception while starting " + folderPusher.getName(), e);
+                    try
+                    {
+                        folderPusher.refresh();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(Email.LOG_TAG, "Got exception while refreshing for " + folderPusher.getName(), e);
+                    }
                 }
             }
         }
-
+        
+        @Override
         public void stop()
         {
             Log.i(Email.LOG_TAG, "Requested stop of IMAP pusher");
-            for (ImapFolderPusher folderPusher : folderPushers)
+            synchronized(folderPushers)
             {
-                try
+                for (ImapFolderPusher folderPusher : folderPushers.values())
                 {
-                    Log.i(Email.LOG_TAG, "Requesting stop of IMAP folderPusher " + folderPusher.getName());
-                    folderPusher.stop();
+                    try
+                    {
+                        Log.i(Email.LOG_TAG, "Requesting stop of IMAP folderPusher " + folderPusher.getName());
+                        folderPusher.stop();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(Email.LOG_TAG, "Got exception while stopping " + folderPusher.getName(), e);
+                    }
                 }
-                catch (Exception e)
-                {
-                    Log.e(Email.LOG_TAG, "Got exception while stopping " + folderPusher.getName(), e);
-                }
+                folderPushers.clear();
             }
-            folderPushers.clear();
         }
 
         public int getRefreshInterval()

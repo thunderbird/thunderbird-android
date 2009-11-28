@@ -1,9 +1,11 @@
 package com.android.email.mail;
 
+import java.util.List;
+
 
 public interface Pusher
 {
-    public void start();
+    public void start(List<String> folderNames);
     public void refresh();
     public void stop();
     /**

@@ -3995,147 +3995,15 @@ public class MessagingController implements Runnable
         return pushers.values();
     }
 
-    public Pusher setupPushing(final Account account)
+    public boolean setupPushing(final Account account)
     {
-        Pusher pusher = pushers.get(account);
-        if (pusher != null)
-        {
-            return pusher;
-        }
-        Store store = null;
         try
         {
-            store = Store.getInstance(account.getStoreUri(), mApplication);
-            if (store.isPushCapable() == false)
+            Pusher previousPusher = pushers.remove(account);
+            if (previousPusher != null)
             {
-                Log.i(Email.LOG_TAG, "Account " + account.getDescription() + " is not push capable, skipping");
-                return null;
+                previousPusher.stop();
             }
-        }
-        catch (Exception e)
-        {
-            Log.e(Email.LOG_TAG, "Could not get remote store", e);
-            return null;
-        }
-        final MessagingController controller = this;
-        PushReceiver receiver = new PushReceiver()
-        {
-            ThreadLocal<WakeLock> threadWakeLock = new ThreadLocal<WakeLock>();
-            public void acquireWakeLock()
-            {
-                WakeLock wakeLock = threadWakeLock.get();
-                if (wakeLock == null)
-                {
-                    PowerManager pm = (PowerManager) mApplication.getSystemService(Context.POWER_SERVICE);
-                    wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email");
-                    wakeLock.setReferenceCounted(false);
-                    threadWakeLock.set(wakeLock);
-                }
-                wakeLock.acquire(Email.PUSH_WAKE_LOCK_TIMEOUT);
-                if (Email.DEBUG)
-                {
-                    Log.d(Email.LOG_TAG, "Acquired WakeLock for Pushing for thread " + Thread.currentThread().getName());
-                }
-            }
-
-            public void releaseWakeLock()
-            {
-                if (Email.DEBUG)
-                {
-                    Log.d(Email.LOG_TAG, "Considering releasing WakeLock for Pushing");
-                }
-                WakeLock wakeLock = threadWakeLock.get();
-                if (wakeLock != null)
-                {
-
-                    if (Email.DEBUG)
-                    {
-                        Log.d(Email.LOG_TAG, "Releasing WakeLock for Pushing for thread " + Thread.currentThread().getName());
-                    }
-                    wakeLock.release();
-                }
-                else
-                {
-                    Log.e(Email.LOG_TAG, "No WakeLock waiting to be released for thread " + Thread.currentThread().getName());
-                }
-            }
-
-            public void messagesFlagsChanged(Folder folder,
-                                             List<Message> messages)
-            {
-                controller.messagesArrived(account, folder, messages, true);
-
-            }
-            public void messagesArrived(Folder folder, List<Message> messages)
-            {
-                controller.messagesArrived(account, folder, messages, false);
-            }
-
-            public void sleep(long millis)
-            {
-                SleepService.sleep(mApplication, millis, threadWakeLock.get(), Email.PUSH_WAKE_LOCK_TIMEOUT);
-            }
-
-            public void pushError(String errorMessage, Exception e)
-            {
-                String errMess = errorMessage;
-                String body = null;
-
-                if (errMess == null && e != null)
-                {
-                    errMess = e.getMessage();
-                }
-                body = errMess;
-                if (e != null)
-                {
-                    body = e.toString();
-                }
-                controller.addErrorMessage(account, errMess, body);
-            }
-
-            public String getPushState(String folderName)
-            {
-                LocalFolder localFolder = null;
-                try
-                {
-                    LocalStore localStore = (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
-                    localFolder= (LocalFolder) localStore.getFolder(folderName);
-                    localFolder.open(OpenMode.READ_WRITE);
-                    return localFolder.getPushState();
-                }
-                catch (Exception e)
-                {
-                    Log.e(Email.LOG_TAG, "Unable to get push state from account " + account.getDescription()
-                          + ", folder " + folderName, e);
-                    return null;
-                }
-                finally
-                {
-                    if (localFolder != null)
-                    {
-                        try
-                        {
-                            localFolder.close(false);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.e(Email.LOG_TAG, "Unable to close folder '" + folderName + "' in account " + account.getDescription(), e);
-                        }
-                    }
-                }
-            }
-
-            public void setPushActive(String folderName, boolean enabled)
-            {
-                for (MessagingListener l : getListeners())
-                {
-                    l.setPushActive(account, folderName, enabled);
-                }
-            }
-
-        };
-        try
-        {
             Preferences prefs = Preferences.getPreferences(mApplication);
 
             Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
@@ -4178,19 +4046,46 @@ public class MessagingController implements Runnable
                 Log.i(Email.LOG_TAG, "Starting pusher for " + account.getDescription() + ":" + folder.getName());
                 names.add(folder.getName());
             }
+            
             if (names.size() > 0)
             {
-                pusher = store.getPusher(receiver, names);
-                if (pusher != null)
+                PushReceiver receiver = new MessagingControllerPushReceiver(mApplication, account, this);
+                
+                try
                 {
-                    pushers.put(account, pusher);
+                    Store store = Store.getInstance(account.getStoreUri(), mApplication);
+                    if (store.isPushCapable() == false)
+                    {
+                        Log.i(Email.LOG_TAG, "Account " + account.getDescription() + " is not push capable, skipping");
+                        return false;
+                    }
+                    Pusher pusher = store.getPusher(receiver);
+                    Pusher oldPusher = null;
+                    if (pusher != null)
+                    {
+                        oldPusher = pushers.putIfAbsent(account, pusher);
+                    }
+                    if (oldPusher != null)
+                    {
+                        pusher = oldPusher;
+                    }
+                    else
+                    {
+                        pusher.start(names);
+                    }
                 }
-                return pusher;
+                catch (Exception e)
+                {
+                    Log.e(Email.LOG_TAG, "Could not get remote store", e);
+                    return false;
+                }
+                
+                return true;
             }
             else
             {
                 Log.i(Email.LOG_TAG, "No folders are configured for pushing in account " + account.getDescription());
-                return null;
+                return false;
             }
 
         }
@@ -4198,16 +4093,7 @@ public class MessagingController implements Runnable
         {
             Log.e(Email.LOG_TAG, "Got exception while setting up pushing", e);
         }
-        return null;
-    }
-
-    public void stopPushing(Account account)
-    {
-        Pusher pusher = pushers.remove(account);
-        if (pusher != null)
-        {
-            pusher.stop();
-        }
+        return false;
     }
 
     public void stopAllPushing()
@@ -4220,7 +4106,6 @@ public class MessagingController implements Runnable
             iter.remove();
             pusher.stop();
         }
-
     }
 
     public void messagesArrived(final Account account, final Folder remoteFolder, final List<Message> messages, final boolean flagSyncOnly)
@@ -4239,7 +4124,6 @@ public class MessagingController implements Runnable
                     LocalStore localStore = (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
                     localFolder= (LocalFolder) localStore.getFolder(remoteFolder.getName());
                     localFolder.open(OpenMode.READ_WRITE);
-                    remoteFolder.open(OpenMode.READ_WRITE);
 
                     int newCount = downloadMessages(account, remoteFolder, localFolder, messages, flagSyncOnly);
                     setLocalUnreadCountToRemote(localFolder, remoteFolder,  messages.size());

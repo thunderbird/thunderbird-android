@@ -831,6 +831,12 @@ public class Account implements Serializable
         }
         return super.equals(o);
     }
+    
+    @Override
+    public int hashCode()
+    {
+        return mUuid.hashCode();
+    }
 
     public FolderMode getFolderDisplayMode()
     {

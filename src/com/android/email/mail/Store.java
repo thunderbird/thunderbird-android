@@ -113,7 +113,7 @@ public abstract class Store
     {
     }
 
-    public Pusher getPusher(PushReceiver receiver, List<String> names)
+    public Pusher getPusher(PushReceiver receiver)
     {
         return null;
     }

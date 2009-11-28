@@ -69,8 +69,8 @@ public class BootReceiver extends BroadcastReceiver
 
             if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()))
             {
-                Email.setServicesEnabled(context, tmpWakeLockId);
-                tmpWakeLockId = null;
+                //Email.setServicesEnabled(context, tmpWakeLockId);
+                //tmpWakeLockId = null;
             }
             else if (Intent.ACTION_DEVICE_STORAGE_LOW.equals(intent.getAction()))
             {

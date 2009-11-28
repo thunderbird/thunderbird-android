@@ -361,13 +361,7 @@ public class MailService extends CoreService
                 for (Account account : Preferences.getPreferences(MailService.this).getAccounts())
                 {
                     Log.i(Email.LOG_TAG, "Setting up pushers for account " + account.getDescription());
-                    Pusher pusher = MessagingController.getInstance(getApplication()).setupPushing(account);
-                    if (pusher != null)
-                    {
-                        pushing = true;
-                        Log.i(Email.LOG_TAG, "Starting configured pusher for account " + account.getDescription());
-                        pusher.start();
-                    }
+                    pushing |= MessagingController.getInstance(getApplication()).setupPushing(account);
                 }
                 if (pushing)
                 {
