@@ -34,7 +34,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
@@ -94,8 +93,7 @@ public class MessageList
 
     private static final int WIDGET_NONE = 1;
     private static final int WIDGET_FLAG = 2;
-    private static final int WIDGET_DELETE = 3;
-    private static final int WIDGET_MULTISELECT = 4;
+    private static final int WIDGET_MULTISELECT = 3;
 
     private static final int[] colorChipResIds = new int[]
     {
@@ -707,11 +705,6 @@ public class MessageList
             {
                 case WIDGET_FLAG:
                 {
-                    mSelectedWidget = WIDGET_DELETE;
-                    break;
-                }
-                case WIDGET_DELETE:
-                {
                     mSelectedWidget = WIDGET_MULTISELECT;
                     showBatchButtons();
                     break;
@@ -746,15 +739,10 @@ public class MessageList
                     break;
                 }
                 case WIDGET_MULTISELECT:
-
-                {
-                    mSelectedWidget=WIDGET_DELETE;
-                    hideBatchButtons();
-                    break;
-                }
-                case WIDGET_DELETE:
                 {
                     mSelectedWidget=WIDGET_FLAG;
+                    hideBatchButtons();
+                    break;
                 }
 
             }
@@ -773,11 +761,10 @@ public class MessageList
     private void setVisibleWidgetsForListItem(View v, int nextWidget)
     {
 
-        ImageButton delete = (ImageButton) v.findViewById(R.id.delete);
         Button flagged = (Button) v.findViewById(R.id.flagged);
         CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
 
-        if (flagged == null || delete == null || selected == null)
+        if (flagged == null || selected == null)
         {
             return;
         }
@@ -794,23 +781,14 @@ public class MessageList
 
 
 
-        if (nextWidget == WIDGET_DELETE)
-        {
-
-            flagged.setVisibility(View.GONE);
-            delete.setVisibility(View.VISIBLE);
-            selected.setVisibility(View.GONE);
-        }
-        else if (nextWidget == WIDGET_MULTISELECT)
+        if (nextWidget == WIDGET_MULTISELECT)
         {
             flagged.setVisibility(View.GONE);
-            delete.setVisibility(View.GONE);
             selected.setVisibility(View.VISIBLE);
         }
         else
         {
             flagged.setVisibility(View.VISIBLE);
-            delete.setVisibility(View.GONE);
             selected.setVisibility(View.GONE);
         }
     }
@@ -1805,17 +1783,6 @@ public class MessageList
             }
 
 
-            holder.delete = (ImageButton) view.findViewById(R.id.delete);
-            holder.delete.setOnClickListener(new OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    // Perform action on clicks
-                    MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
-                    onDelete(message, (Integer)v.getTag());
-                }
-            });
-
             if (message != null)
             {
                 holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
@@ -1828,7 +1795,6 @@ public class MessageList
                 setVisibleWidgetsForListItem(view, mSelectedWidget);
                 // XXX TODO there has to be some way to walk our view hierarchy and get this
                 holder.flagged.setTag((Integer)position);
-                holder.delete.setTag((Integer)position);
 
 
                 holder.flagged.setChecked(message.flagged);
@@ -2139,7 +2105,6 @@ public class MessageList
         public TextView from;
         public TextView date;
         public CheckBox flagged;
-        public ImageButton delete;
         public View chip;
         public CheckBox selected;
         public int position = -1;

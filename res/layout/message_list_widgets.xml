@@ -5,15 +5,6 @@
         android:layout_width="30dip"
         android:layout_height="30dip"
         >
-         <ImageButton
-                 android:id="@+id/delete"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentLeft="true"
-                 android:focusable="true"
-                 style="?android:attr/buttonStyleSmall"
-                 android:src="@drawable/ic_delete"
-                 />
          <CheckBox
                  android:id="@+id/flagged"
                  android:layout_width="wrap_content"
