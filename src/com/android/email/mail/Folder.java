@@ -37,7 +37,7 @@ public abstract class Folder
      *
      * @param expunge If true all deleted messages will be expunged.
      */
-    public abstract void close(boolean expunge) throws MessagingException;
+    public abstract void close(boolean expunge);
 
     /**
      * @return True if further commands are not expected to have to open the

@@ -1149,14 +1149,7 @@ public class WebDavStore extends Store
         {
             if (tmpFolder != null)
             {
-                try
-                {
-                    tmpFolder.close(false);
-                }
-                catch (MessagingException me)
-                {
-                    Log.e(Email.LOG_TAG, "Caught MessagingException while closing folder " + tmpFolder.getName());
-                }
+                tmpFolder.close(false);
             }
         }
     }
@@ -1384,7 +1377,7 @@ public class WebDavStore extends Store
         }
 
         @Override
-        public void close(boolean expunge) throws MessagingException
+        public void close(boolean expunge) 
         {
             this.mMessageCount = 0;
             this.mUnreadMessageCount = 0;

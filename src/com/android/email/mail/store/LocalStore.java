@@ -549,7 +549,7 @@ public class LocalStore extends Store implements Serializable
             sb.append(": ");
             for (String argument : arguments)
             {
-                sb.append("  ");
+                sb.append(", ");
                 sb.append(argument);
                 //sb.append("\n");
             }
@@ -728,11 +728,18 @@ public class LocalStore extends Store implements Serializable
         }
 
         @Override
-        public void close(boolean expunge) throws MessagingException
+        public void close(boolean expunge)
         {
-            if (expunge)
+            try
             {
-                expunge();
+                if (expunge)
+                {
+                    expunge();
+                }
+            }
+            catch (MessagingException me)
+            {
+                Log.e(Email.LOG_TAG, "Unable to close LocalFolder " + getName(), me);
             }
             mFolderId = -1;
         }
@@ -804,16 +811,14 @@ public class LocalStore extends Store implements Serializable
         {
             open(OpenMode.READ_WRITE);
             Message[] messages = getMessages(null);
-            for (int i = 0; i < messages.length; i++)
+            for (int i = mVisibleLimit; i < messages.length; i++)
             {
-                if (i >= mVisibleLimit)
+                if (listener != null)
                 {
-                    if (listener != null)
-                    {
-                        listener.messageRemoved(messages[i]);
-                    }
-                    messages[i].setFlag(Flag.X_DESTROYED, true);
+                    listener.messageRemoved(messages[i]);
                 }
+                messages[i].setFlag(Flag.X_DESTROYED, true);
+                
             }
         }
 

@@ -196,11 +196,17 @@ public class MessageList
                 case MSG_REMOVE_MESSAGE:
                 {
                     List<MessageInfoHolder> messages = (List<MessageInfoHolder>)((Object[]) msg.obj)[0];
+                    
                     for (MessageInfoHolder message : messages)
                     {
+                        if (message != null && message.selected && mSelectedCount > 0)
+                        {
+                            mSelectedCount--;
+                        }
                         mAdapter.messages.remove(message);
                     }
                     mAdapter.notifyDataSetChanged();
+                    configureBatchButtons();
                     break;
                 }
 
@@ -875,11 +881,6 @@ public class MessageList
 
     private void onDelete(MessageInfoHolder holder, int position)
     {
-        if (holder.read == false && holder.folder.unreadMessageCount > 0)
-        {
-            holder.folder.unreadMessageCount--;
-        }
-
         mAdapter.removeMessage(holder);
         MessagingController.getInstance(getApplication()).deleteMessage(mAccount, holder.message.getFolder().getName(), holder.message, null);
         mListView.setSelection(position);
@@ -986,14 +987,6 @@ public class MessageList
             return;
         }
 
-        if (holder.read == false)
-        {
-            if (holder.folder.unreadMessageCount > 0)
-            {
-                holder.folder.unreadMessageCount--;
-            }
-        }
-
         mAdapter.removeMessage(holder);
         MessagingController.getInstance(getApplication()).moveMessage(mAccount, holder.message.getFolder().getName(), holder.message, folderName, null);
 
@@ -1085,8 +1078,6 @@ public class MessageList
                         holder.read = true;
                     }
 
-                    mCurrentFolder.unreadMessageCount = 0;
-
                     mHandler.sortMessages();
 
 
@@ -1111,15 +1102,7 @@ public class MessageList
 
     private void onToggleRead(MessageInfoHolder holder)
     {
-
-        holder.folder.unreadMessageCount += (holder.read ? 1 : -1);
-
-        if (holder.folder.unreadMessageCount < 0)
-        {
-            holder.folder.unreadMessageCount = 0;
-        }
-
-        MessagingController.getInstance(getApplication()).markMessageRead(mAccount, holder.message.getFolder().getName(), holder.uid, !holder.read);
+        MessagingController.getInstance(getApplication()).setFlag(mAccount, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
         holder.read = !holder.read;
         mHandler.sortMessages();
     }
@@ -1127,7 +1110,7 @@ public class MessageList
     private void onToggleFlag(MessageInfoHolder holder)
     {
 
-        MessagingController.getInstance(getApplication()).setMessageFlag(mAccount, holder.message.getFolder().getName(), holder.uid, Flag.FLAGGED, !holder.flagged);
+        MessagingController.getInstance(getApplication()).setFlag(mAccount, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
         holder.flagged = !holder.flagged;
         mHandler.sortMessages();
     }
@@ -1661,16 +1644,24 @@ public class MessageList
 
         public FolderInfoHolder getFolder(String folder)
         {
+            LocalFolder local_folder = null;
             try
             {
                 LocalStore localStore = (LocalStore)Store.getInstance(mAccount.getLocalStoreUri(), getApplication());
-                LocalFolder local_folder = localStore.getFolder(folder);
+                local_folder = localStore.getFolder(folder);
                 return new FolderInfoHolder((Folder)local_folder);
             }
             catch (Exception e)
             {
                 Log.e(Email.LOG_TAG, "getFolder(" + folder + ") goes boom: ",e);
                 return null;
+            }
+            finally
+            {
+                if (local_folder != null)
+                {
+                    local_folder.close(false);
+                }
             }
         }
 
@@ -2121,20 +2112,12 @@ public class MessageList
                     if (isChecked)
                     {
                         mSelectedCount++;
-                        if (mSelectedCount > 0)
-                        {
-
-                            enableBatchButtons();
-                        }
                     }
-                    else
+                    else if (mSelectedCount > 0)
                     {
                         mSelectedCount--;
-                        if (mSelectedCount==0)
-                        {
-                            disableBatchButtons();
-                        }
                     }
+                    showBatchButtons();
                     message.selected = isChecked;
                 }
             }
@@ -2162,6 +2145,17 @@ public class MessageList
     }
     private void showBatchButtons()
     {
+        configureBatchButtons();
+        //TODO: Fade in animation
+        mBatchButtonArea.setVisibility(View.VISIBLE);
+    }
+    
+    private void configureBatchButtons()
+    {
+        if (mSelectedCount < 0)
+        {
+            mSelectedCount = 0;
+        }
         if (mSelectedCount==0)
         {
             disableBatchButtons();
@@ -2170,8 +2164,6 @@ public class MessageList
         {
             enableBatchButtons();
         }
-        //TODO: Fade in animation
-        mBatchButtonArea.setVisibility(View.VISIBLE);
     }
 
     class FooterViewHolder
@@ -2180,46 +2172,20 @@ public class MessageList
         public TextView main;
     }
 
-    /* THERE IS NO FUCKING REASON THIS IS CLONED HERE */
-    public class FolderInfoHolder implements Comparable<FolderInfoHolder>
+    public class FolderInfoHolder 
     {
         public String name;
 
         public String displayName;
 
-        public long lastChecked;
-
-        public int unreadMessageCount;
-
         public boolean loading;
 
-        public String status;
-
         public boolean lastCheckFailed;
-
-        public boolean needsRefresh = false;
 
         /**
          * Outbox is handled differently from any other folder.
          */
         public boolean outbox;
-
-        public int compareTo(FolderInfoHolder o)
-        {
-            String s1 = this.name;
-            String s2 = o.name;
-
-            if (Email.INBOX.equalsIgnoreCase(s1))
-            {
-                return -1;
-            }
-            else if (Email.INBOX.equalsIgnoreCase(s2))
-            {
-                return 1;
-            }
-            else
-                return s1.compareToIgnoreCase(s2);
-        }
 
         public FolderInfoHolder(Folder folder)
         {
@@ -2227,18 +2193,6 @@ public class MessageList
         }
         public void populate(Folder folder)
         {
-            int unreadCount = 0;
-
-            try
-            {
-                folder.open(Folder.OpenMode.READ_WRITE);
-                unreadCount = folder.getUnreadMessageCount();
-            }
-            catch (MessagingException me)
-            {
-                Log.e(Email.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
-            }
-
             this.name = folder.getName();
 
             if (this.name.equalsIgnoreCase(Email.INBOX))
@@ -2270,63 +2224,55 @@ public class MessageList
             {
                 this.displayName = String.format(getString(R.string.special_mailbox_name_sent_fmt), this.name);
             }
-
-            this.lastChecked = folder.getLastChecked();
-
-            String mess = truncateStatus(folder.getStatus());
-
-            this.status = mess;
-
-            this.unreadMessageCount = unreadCount;
-
-            try
-            {
-                folder.close(false);
-            }
-            catch (MessagingException me)
-            {
-                Log.e(Email.LOG_TAG, "Folder.close() failed", me);
-            }
         }
     }
 
     @Override
     public void onClick(View v)
     {
-        if (v==mBatchDeleteButton)
+        
+        List<Message> messageList = new ArrayList<Message>();
+        for (MessageInfoHolder holder : mAdapter.messages)
         {
-            List<Message> messageList = new ArrayList<Message>();
-            //TODO: Optimize i.e. batch all these operations
-            for (MessageInfoHolder holder : mAdapter.messages)
+            if (holder.selected)
             {
-                if (holder.selected)
+                if (v == mBatchDeleteButton)
                 {
-                    if (holder.read == false && holder.folder.unreadMessageCount > 0)
-                    {
-                        holder.folder.unreadMessageCount--;
-                    }
                     mAdapter.removeMessage(holder);
-                    messageList.add(holder.message);
                 }
+                else if (v == mBatchFlagButton)
+                {
+                    holder.flagged = true;
+                }
+                else if (v == mBatchReadButton)
+                {
+                    holder.read = true;
+                }
+                messageList.add(holder.message);
             }
-            if (!messageList.isEmpty())
+        }
+        
+       
+        if (!messageList.isEmpty())
+        {
+            if (mBatchDeleteButton == v)
             {
-                //We assume that all messages are in the same folder
-                String folderName = messageList.get(0).getFolder().getName();
-                MessagingController.getInstance(getApplication()).deleteMessageList(mAccount, folderName, messageList, null);
+                MessagingController.getInstance(getApplication()).deleteMessageList(mAccount, mCurrentFolder.name, messageList, null);
                 mSelectedCount = 0;
-                hideBatchButtons();
+                configureBatchButtons();
             }
             else
             {
-                //Should not happen
-                Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
+                MessagingController.getInstance(getApplication()).setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), 
+                                                (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), true);
             }
         }
         else
         {
-            Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show();
+            //Should not happen
+            Toast.makeText(this, R.string.no_message_seletected_toast, Toast.LENGTH_SHORT).show();
         }
+        mHandler.sortMessages();
     }
 
 

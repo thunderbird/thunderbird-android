@@ -1373,14 +1373,8 @@ public class FolderList extends K9ListActivity
 
             this.unreadMessageCount = unreadCount;
 
-            try
-            {
-                folder.close(false);
-            }
-            catch (MessagingException me)
-            {
-                Log.e(Email.LOG_TAG, "Folder.close() failed", me);
-            }
+            folder.close(false);
+            
         }
     }
 

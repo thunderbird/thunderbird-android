@@ -562,7 +562,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Log.d(Email.LOG_TAG, "Setting message ANSWERED flag to true");
                 // TODO: Really, we should wait until we send the message, but that would require saving the original
                 // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
-                MessagingController.getInstance(getApplication()).setMessageFlag(mAccount, mFolder, mSourceMessageUid, Flag.ANSWERED, true);
+                MessagingController.getInstance(getApplication()).setFlag(mAccount, mFolder, new String[] { mSourceMessageUid }, Flag.ANSWERED, true);
             }
 
             updateTitle();

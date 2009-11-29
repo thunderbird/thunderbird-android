@@ -844,8 +844,8 @@ public class MessageView extends K9Activity
     {
         if (mMessage != null)
         {
-            MessagingController.getInstance(getApplication()).setMessageFlag(mAccount,
-                    mMessage.getFolder().getName(), mMessage.getUid(), Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
+            MessagingController.getInstance(getApplication()).setFlag(mAccount,
+                    mMessage.getFolder().getName(), new String[] { mMessage.getUid() }, Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
             try
             {
                 mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
@@ -970,10 +970,11 @@ public class MessageView extends K9Activity
     {
         if (mMessage != null)
         {
-            MessagingController.getInstance(getApplication()).markMessageRead(
+            MessagingController.getInstance(getApplication()).setFlag(
                 mAccount,
                 mFolder,
-                mMessage.getUid(),
+                new String[] { mMessage.getUid() },
+                Flag.SEEN,
                 false);
         }
     }

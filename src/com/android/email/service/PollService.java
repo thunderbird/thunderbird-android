@@ -150,18 +150,7 @@ public class PollService extends CoreService
                 Integer newMailCount = accountsChecked.get(thisAccount.getUuid());
                 if (newMailCount != null)
                 {
-                    try
-                    {
-                        int  unreadMessageCount = thisAccount.getUnreadMessageCount(context, getApplication());
-                        MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount,
-                                newMailCount, unreadMessageCount);
-
-                    }
-                    catch (MessagingException me)
-                    {
-                        Log.e(Email.LOG_TAG, "***** PollService *****: couldn't get unread count for account " +
-                              thisAccount.getDescription(), me);
-                    }
+                    MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount, newMailCount);
                 }
             }//for accounts
         }//checkMailDone

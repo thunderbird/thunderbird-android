@@ -613,7 +613,7 @@ public class ImapStore extends Store
             return mMode;
         }
 
-        public void close(boolean expunge) throws MessagingException
+        public void close(boolean expunge)
         {
             if (mMessageCount != -1)
             {
@@ -624,9 +624,16 @@ public class ImapStore extends Store
             {
                 return;
             }
-            if (expunge)
+            try
             {
-                expunge();
+                if (expunge)
+                {
+                    expunge();
+                }
+            }
+            catch (MessagingException me)
+            {
+                Log.e(Email.LOG_TAG, "Unable to expunge remote folder " + getName(), me);
             }
             synchronized (this)
             {
