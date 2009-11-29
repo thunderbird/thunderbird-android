@@ -845,6 +845,11 @@ public class Pop3Store extends Store
         public void delete(boolean recurse) throws MessagingException
         {
         }
+        
+        public void delete(Message[] msgs, String trashFolderName) throws MessagingException
+        {
+            setFlags(msgs, new Flag[] { Flag.DELETED }, true);
+        }
 
         @Override
         public String getUidFromMessageId(Message message) throws MessagingException
