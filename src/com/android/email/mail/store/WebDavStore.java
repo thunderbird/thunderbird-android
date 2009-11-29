@@ -1254,22 +1254,22 @@ public class WebDavStore extends Store
         @Override
         public void copyMessages(Message[] messages, Folder folder) throws MessagingException
         {
-            moveOrCopyMessages(messages, folder, false);
+            moveOrCopyMessages(messages, folder.getName(), false);
         }
 
         @Override
         public void moveMessages(Message[] messages, Folder folder) throws MessagingException
         {
-            moveOrCopyMessages(messages, folder, true);
+            moveOrCopyMessages(messages, folder.getName(), true);
         }
-
-        private void moveOrCopyMessages(Message[] messages, Folder folder, boolean isMove) throws MessagingException
+        
+        @Override
+        public void delete(Message[] msgs, String trashFolderName) throws MessagingException
         {
-
-            if (folder instanceof WebDavFolder == false)
-            {
-                throw new MessagingException("moveMessages passed non-WebDavFolder");
-            }
+            moveOrCopyMessages(msgs, trashFolderName, true);
+        }
+        private void moveOrCopyMessages(Message[] messages, String folderName, boolean isMove) throws MessagingException
+        {
             String[] uids = new String[messages.length];
 
             for (int i = 0, count = messages.length; i < count; i++)
@@ -1292,14 +1292,12 @@ public class WebDavStore extends Store
             }
 
             messageBody = getMoveOrCopyMessagesReadXml(urls, isMove);
-            WebDavFolder destFolder = (WebDavFolder)store.getFolder(folder.getName());
+            WebDavFolder destFolder = (WebDavFolder)store.getFolder(folderName);
             headers.put("Destination", destFolder.mFolderUrl);
             headers.put("Brief", "t");
             headers.put("If-Match", "*");
             String action = (isMove ? "BMOVE" : "BCOPY");
             Log.i(Email.LOG_TAG, "Moving " + messages.length + " messages to " + destFolder.mFolderUrl);
-
-
 
             processRequest(mFolderUrl, action, messageBody, headers, false);
 
