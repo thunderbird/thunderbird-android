@@ -463,14 +463,12 @@ public class Email extends Application
 
     }
 
-    public static void save(SharedPreferences preferences)
+    public static void save(SharedPreferences.Editor editor)
     {
-        SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("enableDebugLogging", Email.DEBUG);
         editor.putBoolean("enableSensitiveLogging", Email.DEBUG_SENSITIVE);
         editor.putString("backgroundOperations", Email.backgroundOps.toString());
         editor.putInt("theme", theme);
-        editor.commit();
     }
 
     @Override

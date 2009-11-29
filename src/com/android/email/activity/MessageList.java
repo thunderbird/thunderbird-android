@@ -16,7 +16,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.DateFormat;
 import android.util.Config;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -387,9 +386,6 @@ public class MessageList
         mListView.setOnItemClickListener(this);
 
 
-        mDateFormat = android.text.format.DateFormat.getDateFormat(this);   // short format
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
-
 
         registerForContextMenu(mListView);
 
@@ -499,6 +495,10 @@ public class MessageList
     public void onResume()
     {
         super.onResume();
+
+        mDateFormat = DateFormatter.getDateFormat(this); 
+        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
+
         sortType = MessagingController.getInstance(getApplication()).getSortType();
         sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
         sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
@@ -2103,6 +2103,7 @@ public class MessageList
         public TextView subject;
         public TextView preview;
         public TextView from;
+        public TextView time;
         public TextView date;
         public CheckBox flagged;
         public View chip;

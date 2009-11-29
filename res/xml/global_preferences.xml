@@ -24,6 +24,13 @@
             android:entries="@array/settings_theme_entries"
             android:entryValues="@array/settings_theme_values"
             android:dialogTitle="@string/settings_theme_label" />
+            
+            <ListPreference
+            android:key="dateFormat"
+            android:title="@string/date_format_label"
+            android:entries="@array/date_formats"
+            android:entryValues="@array/date_formats"
+            android:dialogTitle="@string/date_format_label" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">

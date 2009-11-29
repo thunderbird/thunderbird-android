@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -488,10 +487,6 @@ public class MessageView extends K9Activity
 
         setContentView(R.layout.message_view);
 
-        mDateFormat = android.text.format.DateFormat.getDateFormat(this);   // short format
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
-
-
 
         mFromView = (TextView)findViewById(R.id.from);
         mToView = (TextView)findViewById(R.id.to);
@@ -743,6 +738,11 @@ public class MessageView extends K9Activity
     public void onResume()
     {
         super.onResume();
+
+        mDateFormat = DateFormatter.getDateFormat(this);
+        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
+
+
     }
 
     private void onDelete()

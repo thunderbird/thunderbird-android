@@ -3,37 +3,31 @@ package com.android.email.activity.setup;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceScreen;
-import android.preference.RingtonePreference;
-import android.preference.Preference.OnPreferenceClickListener;
+import android.view.KeyEvent;
 
-import com.android.email.K9PreferenceActivity;
-import com.android.email.Account;
 import com.android.email.Email;
+import com.android.email.K9PreferenceActivity;
 import com.android.email.Preferences;
 import com.android.email.R;
+import com.android.email.activity.DateFormatter;
 import com.android.email.service.MailService;
 
 public class Prefs extends K9PreferenceActivity
 {
 
-    private static final String PREFERENCE_TOP_CATERGORY = "preferences";
     private static final String PREFERENCE_THEME = "theme";
+    private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
     private ListPreference mTheme;
+    private ListPreference mDateFormat;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
@@ -66,6 +60,33 @@ public class Prefs extends K9PreferenceActivity
                 int index = mTheme.findIndexOfValue(summary);
                 mTheme.setSummary(mTheme.getEntries()[index]);
                 mTheme.setValue(summary);
+                return false;
+            }
+        });
+        
+        mDateFormat = (ListPreference) findPreference(PREFERENCE_DATE_FORMAT);
+        String[] formats = DateFormatter.getFormats(this);
+        CharSequence[] entries = new CharSequence[formats.length];
+        CharSequence[] values = new CharSequence[formats.length];
+        for (int i = 0 ; i < formats.length; i++)
+        {
+            String format = formats[i];
+            entries[i] = DateFormatter.getSampleDate(this, format);;
+            values[i] = format;
+        }
+        mDateFormat.setEntries(entries);
+        mDateFormat.setEntryValues(values); 
+        
+        mDateFormat.setValue(DateFormatter.getFormat(this));
+        mDateFormat.setSummary(mDateFormat.getEntry());
+        mDateFormat.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mDateFormat.findIndexOfValue(summary);
+                mDateFormat.setSummary(mDateFormat.getEntries()[index]);
+                mDateFormat.setValue(summary);
                 return false;
             }
         });
@@ -108,7 +129,10 @@ public class Prefs extends K9PreferenceActivity
         Email.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         String newBackgroundOps = mBackgroundOps.getValue();
         Email.setBackgroundOps(newBackgroundOps);
-        Email.save(preferences);
+        Editor editor = preferences.edit();
+        Email.save(editor);
+        DateFormatter.setDateFormat(editor, mDateFormat.getValue());
+        editor.commit();
         if (newBackgroundOps.equals(initBackgroundOps) == false)
         {
             MailService.backgroundDataChanged(this, null);

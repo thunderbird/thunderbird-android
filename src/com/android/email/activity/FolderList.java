@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Config;
 import android.util.Log;
-import android.text.format.DateFormat;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -355,9 +354,6 @@ public class FolderList extends K9ListActivity
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
         Log.v(Email.LOG_TAG, "savedInstanceState: " + (savedInstanceState==null));
 
-        mDateFormat = android.text.format.DateFormat.getDateFormat(this);   // short format
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
-
         if (savedInstanceState == null)
         {
             initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
@@ -451,6 +447,9 @@ public class FolderList extends K9ListActivity
     @Override public void onResume()
     {
         super.onResume();
+
+        mDateFormat = DateFormatter.getDateFormat(this);
+        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
         mAccount.refresh(Preferences.getPreferences(this));
