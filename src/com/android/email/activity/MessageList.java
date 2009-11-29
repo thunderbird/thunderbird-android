@@ -882,7 +882,7 @@ public class MessageList
     private void onDelete(MessageInfoHolder holder, int position)
     {
         mAdapter.removeMessage(holder);
-        MessagingController.getInstance(getApplication()).deleteMessage(mAccount, holder.message.getFolder().getName(), holder.message, null);
+        MessagingController.getInstance(getApplication()).deleteMessages(mAccount, holder.message.getFolder().getName(), new Message[] { holder.message }, null);
         mListView.setSelection(position);
 
     }
@@ -2257,7 +2257,7 @@ public class MessageList
         {
             if (mBatchDeleteButton == v)
             {
-                MessagingController.getInstance(getApplication()).deleteMessageList(mAccount, mCurrentFolder.name, messageList, null);
+                MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
                 mSelectedCount = 0;
                 configureBatchButtons();
             }

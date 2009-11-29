@@ -768,6 +768,47 @@ public class ImapStore extends Store
             copyMessages(messages, folder);
             setFlags(messages, new Flag[] { Flag.DELETED }, true);
         }
+        
+        public void delete(Message[] messages, String trashFolderName) throws MessagingException
+        {
+            if (getName().equals(trashFolderName))
+            {
+                setFlags(messages, new Flag[] { Flag.DELETED }, true);
+                expunge();
+            }
+            else
+            {
+                ImapFolder remoteTrashFolder = (ImapFolder)getStore().getFolder(trashFolderName);
+                /*
+                 * Attempt to copy the remote message to the remote trash folder.
+                 */
+                remoteTrashFolder.mExists = false;  // Force redetection of Trash folder; some desktops delete it
+                if (!remoteTrashFolder.exists())
+                {
+                    /*
+                     * If the remote trash folder doesn't exist we try to create it.
+                     */
+                    Log.i(Email.LOG_TAG, "IMAPMessage.delete: attempting to create remote '" + trashFolderName + "' folder for " + getLogId());
+                    remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
+                }
+
+                if (remoteTrashFolder.exists())
+                {
+                    if (Email.DEBUG)
+                    {
+                        Log.d(Email.LOG_TAG, "IMAPMessage.delete: copying remote " + messages.length + " messages to '" + trashFolderName + "' for " + getLogId());
+                    }
+                    moveMessages(messages, remoteTrashFolder);
+                    expunge();
+                }
+                else
+                {
+                    throw new MessagingException("IMAPMessage.delete: remote Trash folder " + trashFolderName + " does not exist and could not be created for " + getLogId()
+                                                 , true);
+                }
+            }
+        }
+
 
         @Override
         public int getMessageCount()
@@ -2256,46 +2297,8 @@ public class ImapStore extends Store
         @Override
         public void delete(String trashFolderName) throws MessagingException
         {
-            ImapFolder iFolder = (ImapFolder)getFolder();
-            if (iFolder.getName().equals(trashFolderName))
-            {
-                setFlag(Flag.DELETED, true);
-                iFolder.expunge();
-            }
-            else
-            {
-                ImapFolder remoteTrashFolder = (ImapFolder)iFolder.getStore().getFolder(trashFolderName);
-                /*
-                 * Attempt to copy the remote message to the remote trash folder.
-                 */
-                remoteTrashFolder.mExists = false;  // Force redetection of Trash folder; some desktops delete it
-                if (!remoteTrashFolder.exists())
-                {
-                    /*
-                     * If the remote trash folder doesn't exist we try to create it.
-                     */
-                    Log.i(Email.LOG_TAG, "IMAPMessage.delete: attempting to create remote '" + trashFolderName + "' folder for " + iFolder.getLogId());
-                    remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
-                }
-
-                if (remoteTrashFolder.exists())
-                {
-                    if (Email.DEBUG)
-                    {
-                        Log.d(Email.LOG_TAG, "IMAPMessage.delete: copying remote message to '" + trashFolderName + "' for " + iFolder.getLogId());
-                    }
-                    iFolder.copyMessages(new Message[] { this }, remoteTrashFolder);
-                    setFlag(Flag.DELETED, true);
-                    iFolder.expunge();
-                }
-                else
-                {
-                    throw new MessagingException("IMAPMessage.delete: remote Trash folder " + trashFolderName + " does not exist and could not be created for " + iFolder.getLogId()
-                                                 , true);
-                }
-            }
+            getFolder().delete(new Message[] { this }, trashFolderName);
         }
-
     }
 
     class ImapBodyPart extends MimeBodyPart

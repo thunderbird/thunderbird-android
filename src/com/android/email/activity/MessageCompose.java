@@ -857,7 +857,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 /*
                  * We're sending a previously saved draft, so delete the old draft first.
                  */
-                MessagingController.getInstance(getApplication()).deleteMessage(mAccount, mFolder, mSourceMessage, null);
+                MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mFolder, new Message[] { mSourceMessage }, null);
             }
             if (mDraftUid != null)
             {
@@ -866,7 +866,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                  */
                 Message draftMessage = new MimeMessage();
                 draftMessage.setUid(mDraftUid);
-                MessagingController.getInstance(getApplication()).deleteMessage(mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
+                MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mAccount.getDraftsFolderName(), new Message[] { draftMessage }, null);
             }
             MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
         }
@@ -901,13 +901,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null)
             {
-                MessagingController.getInstance(getApplication()).deleteMessage(mAccount, mFolder, mSourceMessage, null);
+                MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mFolder, new Message[] { mSourceMessage }, null);
             }
         }
         if (mDraftUid != null)
         {
             Message draftMessage = new MimeMessage();
-            MessagingController.getInstance(getApplication()).deleteMessage(mAccount, mAccount.getDraftsFolderName(), draftMessage, null);
+            MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mAccount.getDraftsFolderName(), new Message[] { draftMessage }, null);
         }
         mHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         mDraftNeedsSaving = false;
