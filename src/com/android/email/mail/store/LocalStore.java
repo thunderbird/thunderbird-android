@@ -267,8 +267,8 @@ public class LocalStore extends Store implements Serializable
         Log.i(Email.LOG_TAG, "After prune / before clear size = " + getSize());
         // don't delete messages that are Local, since there is no copy on the server.
         // Don't delete deleted messages.  They are essentially placeholders for UIDs of messages that have
-        // been deleted locally.  They take up no space, and are indicated with a null date.
-        mDb.execSQL("DELETE FROM messages WHERE date is not null and uid not like 'Local%'");
+        // been deleted locally.  They take up insignificant space
+        mDb.execSQL("DELETE FROM messages WHERE deleted = 0 and uid not like 'Local%'");
 
         compact();
         Log.i(Email.LOG_TAG, "After clear message count = " + getMessageCount());
@@ -829,7 +829,7 @@ public class LocalStore extends Store implements Serializable
         public void purgeToVisibleLimit(MessageRemovalListener listener) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
-            Message[] messages = getMessages(null);
+            Message[] messages = getMessages(null, false);
             for (int i = mVisibleLimit; i < messages.length; i++)
             {
                 if (listener != null)

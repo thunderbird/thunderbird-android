@@ -2067,7 +2067,7 @@ public class MessagingController implements Runnable
         Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
         LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
         localFolder.open(OpenMode.READ_WRITE);
-        Message[] messages = localFolder.getMessages(null);
+        Message[] messages = localFolder.getMessages(null, false);
         for (Message message : messages)
         {
             if (message.isSet(Flag.SEEN) == false)
