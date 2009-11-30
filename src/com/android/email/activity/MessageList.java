@@ -212,6 +212,7 @@ public class MessageList
 
                 case MSG_ADD_MESSAGE:
                 {
+                    boolean wasEmpty = mAdapter.messages.isEmpty();
                     List<MessageInfoHolder> messages = (List<MessageInfoHolder>)((Object[]) msg.obj)[0];
                     for (MessageInfoHolder message : messages)
                     {
@@ -224,6 +225,9 @@ public class MessageList
 
                         mAdapter.messages.add(index, message);
                     }
+
+                    if (wasEmpty)
+                        mListView.setSelection(0);
                     mAdapter.notifyDataSetChanged();
                     break;
                 }
