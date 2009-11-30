@@ -124,6 +124,13 @@ public class MessageView extends K9Activity
     private ArrayList<String> mMessageUids;
 
     private Message mMessage;
+
+    private static final int PREVIOUS = 1;
+    private static final int NEXT = 1;
+
+    private int mLastDirection = PREVIOUS;
+
+
     private String mNextMessageUid = null;
     private String mPreviousMessageUid = null;
 
@@ -763,7 +770,16 @@ public class MessageView extends K9Activity
                 folderForDelete,
                 new Message[] { messageToDelete },
                 null);
-            if (mNextMessageUid != null)
+
+            if (mLastDirection == NEXT && mNextMessageUid != null)
+            {
+                onNext();
+            }
+            else if (mLastDirection == PREVIOUS && mPreviousMessageUid != null)
+            {
+                onPrevious();
+            }
+            else if (mNextMessageUid != null)
             {
                 onNext();
             }
@@ -771,6 +787,9 @@ public class MessageView extends K9Activity
             {
                 onPrevious();
             }
+
+
+
             else
             {
                 finish();
@@ -949,6 +968,7 @@ public class MessageView extends K9Activity
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
         }
+        mLastDirection = NEXT;
         displayMessage(mNextMessageUid);
         mTopView.startAnimation(outToLeftAnimation());
         next.requestFocus();
@@ -961,6 +981,8 @@ public class MessageView extends K9Activity
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
         }
+        
+        mLastDirection = PREVIOUS;
         displayMessage(mPreviousMessageUid);
         mTopView.startAnimation(inFromRightAnimation());
         previous.requestFocus();
