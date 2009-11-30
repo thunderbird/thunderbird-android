@@ -3847,7 +3847,7 @@ public class MessagingController implements Runnable
 
                 notifMgr.notify(thisAccount.getAccountNumber(), notif);
             }
-            else
+            else if (unreadMessageCount == 0)
             {
                 notifMgr.cancel(thisAccount.getAccountNumber());
             }
