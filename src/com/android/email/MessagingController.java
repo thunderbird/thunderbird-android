@@ -719,7 +719,7 @@ public class MessagingController implements Runnable
                         }
 
                     },
-                    true // Skip deleted messages
+                    false // Skip deleted messages
                     );
                     MessageContainer messCont = new MessageContainer();
                     messCont.last = true;
