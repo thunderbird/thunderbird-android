@@ -196,7 +196,7 @@ public class MessageList
                 case MSG_REMOVE_MESSAGE:
                 {
                     List<MessageInfoHolder> messages = (List<MessageInfoHolder>)((Object[]) msg.obj)[0];
-                    
+
                     for (MessageInfoHolder message : messages)
                     {
                         if (message != null && message.selected && mSelectedCount > 0)
@@ -506,7 +506,7 @@ public class MessageList
     {
         super.onResume();
 
-        mDateFormat = DateFormatter.getDateFormat(this); 
+        mDateFormat = DateFormatter.getDateFormat(this);
         mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
 
         sortType = MessagingController.getInstance(getApplication()).getSortType();
@@ -550,13 +550,28 @@ public class MessageList
 
             case KeyEvent.KEYCODE_DPAD_LEFT:
             {
-                cycleVisibleWidgets(true);
-                return true;
+                if (mBatchButtonArea.hasFocus())
+                {
+                    return false;
+                }
+                else
+                {
+
+                    cycleVisibleWidgets(true);
+                    return true;
+                }
             }
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             {
-                cycleVisibleWidgets(false);
-                return true;
+                if (mBatchButtonArea.hasFocus())
+                {
+                    return false;
+                }
+                else
+                {
+                    cycleVisibleWidgets(false);
+                    return true;
+                }
             }
 
 
@@ -2153,7 +2168,7 @@ public class MessageList
         //TODO: Fade in animation
         mBatchButtonArea.setVisibility(View.VISIBLE);
     }
-    
+
     private void configureBatchButtons()
     {
         if (mSelectedCount < 0)
@@ -2176,7 +2191,7 @@ public class MessageList
         public TextView main;
     }
 
-    public class FolderInfoHolder 
+    public class FolderInfoHolder
     {
         public String name;
 
@@ -2234,7 +2249,7 @@ public class MessageList
     @Override
     public void onClick(View v)
     {
-        
+
         List<Message> messageList = new ArrayList<Message>();
         for (MessageInfoHolder holder : mAdapter.messages)
         {
@@ -2255,8 +2270,8 @@ public class MessageList
                 messageList.add(holder.message);
             }
         }
-        
-       
+
+
         if (!messageList.isEmpty())
         {
             if (mBatchDeleteButton == v)
@@ -2267,8 +2282,8 @@ public class MessageList
             }
             else
             {
-                MessagingController.getInstance(getApplication()).setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), 
-                                                (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), true);
+                MessagingController.getInstance(getApplication()).setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
+                        (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), true);
             }
         }
         else
