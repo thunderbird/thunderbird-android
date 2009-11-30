@@ -126,7 +126,7 @@ public class MessageView extends K9Activity
     private Message mMessage;
 
     private static final int PREVIOUS = 1;
-    private static final int NEXT = 1;
+    private static final int NEXT = 2;
 
     private int mLastDirection = PREVIOUS;
 
