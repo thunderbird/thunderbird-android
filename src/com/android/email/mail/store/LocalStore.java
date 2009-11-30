@@ -1292,7 +1292,7 @@ public class LocalStore extends Store implements Serializable
                              + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
                              + "FROM messages "
                              + "WHERE "
-                             + (includeDeleted ? "" : "deleted = 0")
+                             + (includeDeleted ? "" : "deleted = 0 AND ")
                              + " folder_id = ? ORDER BY date DESC"
                              , new String[]
                              {
