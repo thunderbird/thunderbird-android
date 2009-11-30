@@ -69,7 +69,7 @@ import java.io.StringReader;
  */
 public class LocalStore extends Store implements Serializable
 {
-    private static final int DB_VERSION = 30;
+    private static final int DB_VERSION = 31;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -164,7 +164,8 @@ public class LocalStore extends Store implements Serializable
 
             mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
             mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id");
-            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_date ON messages (folder_id,internal_date)");
+            mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
             mDb.execSQL("DROP TABLE IF EXISTS attachments");
             mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
                         + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
@@ -186,6 +187,11 @@ public class LocalStore extends Store implements Serializable
         {
             mDb.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
             mDb.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
+        }
+        else if (mDb.getVersion() < 31)
+        {
+            mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
         }
 
         mDb.setVersion(DB_VERSION);
