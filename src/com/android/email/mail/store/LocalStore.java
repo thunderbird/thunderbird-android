@@ -69,7 +69,7 @@ import java.io.StringReader;
  */
 public class LocalStore extends Store implements Serializable
 {
-    private static final int DB_VERSION = 31;
+    private static final int DB_VERSION = 32;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -145,6 +145,8 @@ public class LocalStore extends Store implements Serializable
 
         AttachmentProvider.clear(application);
 
+        // schema version 29 was when we moved to incremental updates
+        // in the case of a new db or a < v29 db, we blow away and start from scratch
         if (mDb.getVersion() < 29)
         {
 
@@ -182,17 +184,28 @@ public class LocalStore extends Store implements Serializable
             mDb.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
                         + "DELETE FROM headers where old.id = message_id; END;");
         }
+        else
+        { // in the case that we're starting out at 29 or newer, run all the needed updates
 
-        else if (mDb.getVersion() < 30)
-        {
-            mDb.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
-            mDb.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
+            if (mDb.getVersion() < 30)
+            {
+                mDb.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
+            }
+            if (mDb.getVersion() < 31)
+            {
+                mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+                mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+            }
+            if (mDb.getVersion() < 32)
+            {
+                mDb.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
+
+
+            }
+
+
         }
-        else if (mDb.getVersion() < 31)
-        {
-            mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
-            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
-        }
+
 
         mDb.setVersion(DB_VERSION);
         if (mDb.getVersion() != DB_VERSION)
@@ -617,9 +630,9 @@ public class LocalStore extends Store implements Serializable
                 cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders "
                                       + "where folders.name = ?",
                                       new String[]
-                                      {
-                                          mName
-                                      });
+                {
+                    mName
+                });
 
                 if (cursor.moveToFirst())
                 {
@@ -712,10 +725,10 @@ public class LocalStore extends Store implements Serializable
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
             mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
-                        {
-                            mName,
-                            Email.DEFAULT_VISIBLE_LIMIT
-                        });
+            {
+                mName,
+                Email.DEFAULT_VISIBLE_LIMIT
+            });
             return true;
         }
 
@@ -726,10 +739,10 @@ public class LocalStore extends Store implements Serializable
                 throw new MessagingException("Folder " + mName + " already exists.");
             }
             mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
-                        {
-                            mName,
-                            visibleLimit
-                        });
+            {
+                mName,
+                visibleLimit
+            });
             return true;
         }
 
@@ -759,9 +772,9 @@ public class LocalStore extends Store implements Serializable
             {
                 cursor = mDb.rawQuery("SELECT COUNT(*) FROM messages WHERE messages.folder_id = ?",
                                       new String[]
-                                      {
-                                          Long.toString(mFolderId)
-                                      });
+                {
+                    Long.toString(mFolderId)
+                });
                 cursor.moveToFirst();
                 int messageCount = cursor.getInt(0);
                 return messageCount;
@@ -824,7 +837,7 @@ public class LocalStore extends Store implements Serializable
                     listener.messageRemoved(messages[i]);
                 }
                 messages[i].setFlag(Flag.X_DESTROYED, true);
-                
+
             }
         }
 
@@ -1089,19 +1102,19 @@ public class LocalStore extends Store implements Serializable
                         cursor = mDb.query(
                                      "attachments",
                                      new String[]
-                                     {
-                                         "id",
-                                         "size",
-                                         "name",
-                                         "mime_type",
-                                         "store_data",
-                                         "content_uri"
-                                     },
-                                     "message_id = ?",
-                                     new String[] { Long.toString(localMessage.mId) },
-                                     null,
-                                     null,
-                                     null);
+                        {
+                            "id",
+                            "size",
+                            "name",
+                            "mime_type",
+                            "store_data",
+                            "content_uri"
+                        },
+                        "message_id = ?",
+                        new String[] { Long.toString(localMessage.mId) },
+                        null,
+                        null,
+                        null);
 
                         while (cursor.moveToNext())
                         {
@@ -1249,6 +1262,7 @@ public class LocalStore extends Store implements Serializable
             open(OpenMode.READ_WRITE);
             LocalMessage message = new LocalMessage(uid, this);
             Cursor cursor = null;
+
             try
             {
                 cursor = mDb.rawQuery(
@@ -1256,9 +1270,9 @@ public class LocalStore extends Store implements Serializable
                              + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
                              + "FROM messages " + "WHERE uid = ? " + "AND folder_id = ?",
                              new String[]
-                             {
-                                 message.getUid(), Long.toString(mFolderId)
-                             });
+                {
+                    message.getUid(), Long.toString(mFolderId)
+                });
                 if (!cursor.moveToNext())
                 {
                     return null;
@@ -1301,9 +1315,9 @@ public class LocalStore extends Store implements Serializable
                              + (includeDeleted ? "" : "deleted = 0 AND ")
                              + " folder_id = ? ORDER BY date DESC"
                              , new String[]
-                             {
-                                 Long.toString(mFolderId)
-                             });
+                {
+                    Long.toString(mFolderId)
+                });
 
 
                 int i = 0;
@@ -1398,11 +1412,11 @@ public class LocalStore extends Store implements Serializable
                 message.setUid(Email.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
 
                 mDb.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[]
-                            {
-                                lDestFolder.getId(),
-                                message.getUid(),
-                                lMessage.getId()
-                            });
+                {
+                    lDestFolder.getId(),
+                    message.getUid(),
+                    lMessage.getId()
+                });
 
                 LocalMessage placeHolder = new LocalMessage(oldUID, this);
                 placeHolder.setFlagInternal(Flag.DELETED, true);
@@ -1502,6 +1516,7 @@ public class LocalStore extends Store implements Serializable
                     cv.put("date", message.getSentDate() == null
                            ? System.currentTimeMillis() : message.getSentDate().getTime());
                     cv.put("flags", Utility.combine(message.getFlags(), ',').toUpperCase());
+                    cv.put("deleted", message.isSet(Flag.DELETED) ? 1 : 0);
                     cv.put("folder_id", mFolderId);
                     cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
                     cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
@@ -1590,27 +1605,27 @@ public class LocalStore extends Store implements Serializable
                             + "html_content = ?, text_content = ?, reply_to_list = ?, "
                             + "attachment_count = ? WHERE id = ?",
                             new Object[]
-                            {
-                                message.getUid(),
-                                message.getSubject(),
-                                Address.pack(message.getFrom()),
-                                message.getSentDate() == null ? System
-                                .currentTimeMillis() : message.getSentDate()
-                                .getTime(),
-                                Utility.combine(message.getFlags(), ',').toUpperCase(),
-                                mFolderId,
-                                Address.pack(message
-                                             .getRecipients(RecipientType.TO)),
-                                Address.pack(message
-                                             .getRecipients(RecipientType.CC)),
-                                Address.pack(message
-                                             .getRecipients(RecipientType.BCC)),
-                                html.length() > 0 ? html : null,
-                                text.length() > 0 ? text : null,
-                                Address.pack(message.getReplyTo()),
-                                attachments.size(),
-                                message.mId
-                            });
+                {
+                    message.getUid(),
+                    message.getSubject(),
+                    Address.pack(message.getFrom()),
+                    message.getSentDate() == null ? System
+                    .currentTimeMillis() : message.getSentDate()
+                    .getTime(),
+                    Utility.combine(message.getFlags(), ',').toUpperCase(),
+                    mFolderId,
+                    Address.pack(message
+                    .getRecipients(RecipientType.TO)),
+                    Address.pack(message
+                    .getRecipients(RecipientType.CC)),
+                    Address.pack(message
+                    .getRecipients(RecipientType.BCC)),
+                    html.length() > 0 ? html : null,
+                    text.length() > 0 ? text : null,
+                    Address.pack(message.getReplyTo()),
+                    attachments.size(),
+                    message.mId
+                });
 
                 for (int i = 0, count = attachments.size(); i < count; i++)
                 {
@@ -1650,9 +1665,9 @@ public class LocalStore extends Store implements Serializable
         {
             mDb.execSQL("DELETE FROM headers WHERE id = ?",
                         new Object[]
-                        {
-                            id
-                        });
+            {
+                id
+            });
         }
 
         /**
@@ -1831,9 +1846,9 @@ public class LocalStore extends Store implements Serializable
         {
             open(OpenMode.READ_ONLY);
             mDb.execSQL("DELETE FROM messages WHERE folder_id = ? and date < ?", new Object[]
-                        {
-                            Long.toString(mFolderId), new Long(cutoff)
-                        });
+            {
+                Long.toString(mFolderId), new Long(cutoff)
+            });
             resetUnreadCount();
         }
 
@@ -1869,9 +1884,9 @@ public class LocalStore extends Store implements Serializable
                 deleteAttachments(message.getUid());
             }
             mDb.execSQL("DELETE FROM folders WHERE id = ?", new Object[]
-                        {
-                            Long.toString(mFolderId),
-                        });
+            {
+                Long.toString(mFolderId),
+            });
         }
 
         @Override
@@ -2025,10 +2040,10 @@ public class LocalStore extends Store implements Serializable
                     m.appendReplacement(sb, "$0");
                 }
             }
-           
-  
 
- 
+
+
+
             m.appendTail(sb);
             sb.append("</pre></body></html>");
             text = sb.toString();
@@ -2196,18 +2211,18 @@ public class LocalStore extends Store implements Serializable
                     "reply_to_list = NULL " +
                     "WHERE id = ?",
                     new Object[]
-                    {
-                        mId
-                    });
+                {
+                    mId
+                });
 
                 /*
                  * Delete all of the messages' attachments to save space.
                  */
                 mDb.execSQL("DELETE FROM attachments WHERE id = ?",
                             new Object[]
-                            {
-                                mId
-                            });
+                {
+                    mId
+                });
 
                 ((LocalFolder)mFolder).deleteHeaders(mId);
 
@@ -2251,9 +2266,9 @@ public class LocalStore extends Store implements Serializable
              * Set the flags on the message.
              */
             mDb.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
-                        {
-                            Utility.combine(getFlags(), ',').toUpperCase(), mId
-                        });
+            {
+                Utility.combine(getFlags(), ',').toUpperCase(), mId
+            });
         }
     }
 
