@@ -2083,6 +2083,30 @@ public class LocalStore extends Store implements Serializable
     {
         private long mId;
         private int mAttachmentCount;
+        private String mSubject;
+
+        @Override
+        public String getSubject() throws MessagingException
+        {
+            if (mSubject != null)
+            {
+                return mSubject;
+            }
+            else
+            {
+                return super.getSubject();
+            }
+        }
+
+        @Override
+        public void setSubject(String subject) throws MessagingException
+        {
+            mSubject = subject;
+            super.setSubject(subject);
+        }
+
+
+
 
         public LocalMessage()
         {
