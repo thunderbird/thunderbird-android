@@ -2249,7 +2249,7 @@ public class MessageList
     @Override
     public void onClick(View v)
     {
-
+        boolean newState = false;
         List<Message> messageList = new ArrayList<Message>();
         for (MessageInfoHolder holder : mAdapter.messages)
         {
@@ -2261,16 +2261,38 @@ public class MessageList
                 }
                 else if (v == mBatchFlagButton)
                 {
-                    holder.flagged = true;
+                    if (!holder.flagged) {
+                        newState = true;
+                    }
                 }
                 else if (v == mBatchReadButton)
                 {
-                    holder.read = true;
+                    if (!holder.read) {
+                        newState = true;
+                    }
                 }
                 messageList.add(holder.message);
             }
         }
 
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                if (v == mBatchDeleteButton)
+                {
+                    //nothing
+                }
+                else if (v == mBatchFlagButton)
+                {
+                    holder.flagged = newState;
+                }
+                else if (v == mBatchReadButton)
+                {
+                    holder.read = newState;
+                }
+            }
+        }
 
         if (!messageList.isEmpty())
         {
@@ -2283,7 +2305,7 @@ public class MessageList
             else
             {
                 MessagingController.getInstance(getApplication()).setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
-                        (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), true);
+                        (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
             }
         }
         else
