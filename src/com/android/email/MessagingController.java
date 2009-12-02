@@ -1876,6 +1876,10 @@ public class MessagingController implements Runnable
     }
     private void queueMoveOrCopy(Account account, String srcFolder, String destFolder, boolean isCopy, String uids[])
     {
+        if (account.getErrorFolderName().equals(srcFolder))
+        {
+            return;
+        }
         PendingCommand command = new PendingCommand();
         command.command = PENDING_COMMAND_MOVE_OR_COPY;
         
@@ -1905,6 +1909,10 @@ public class MessagingController implements Runnable
         try
         {
             String srcFolder = command.arguments[0];
+            if (account.getErrorFolderName().equals(srcFolder))
+            {
+                return;
+            }
             String destFolder = command.arguments[1];
             String isCopyS = command.arguments[2];
             Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
