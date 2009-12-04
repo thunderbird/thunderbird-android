@@ -105,9 +105,9 @@ public class MessagingController implements Runnable
      */
     private static final int MAX_SMALL_MESSAGE_SIZE = Store.FETCH_BODY_SANE_SUGGESTED_SIZE;
 
-    private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.android.email.MessagingController.moveOrCopy";
+    private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.android.email.MessagingController.moveOrCopyBulk";
     private static final String PENDING_COMMAND_EMPTY_TRASH = "com.android.email.MessagingController.emptyTrash";
-    private static final String PENDING_COMMAND_SET_FLAG = "com.android.email.MessagingController.setFlag";
+    private static final String PENDING_COMMAND_SET_FLAG = "com.android.email.MessagingController.setFlagBulk";
     private static final String PENDING_COMMAND_APPEND = "com.android.email.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.android.email.MessagingController.markAllAsRead";
 
@@ -1201,7 +1201,7 @@ public class MessagingController implements Runnable
                         }
                     }
                 }
-                else
+                else if (localMessage.isSet(Flag.DELETED) == false)
                 {
                     if (Email.DEBUG)
                     {
@@ -1216,7 +1216,7 @@ public class MessagingController implements Runnable
                     {
                         if (Email.DEBUG)
                         {
-                            Log.v(Email.LOG_TAG, "Message with uid " + message.getUid() + " is downloaded, even partially; trying again");
+                            Log.v(Email.LOG_TAG, "Message with uid " + message.getUid() + " is not downloaded, even partially; trying again");
                         }
                         unsyncedMessages.add(message);
                     }
