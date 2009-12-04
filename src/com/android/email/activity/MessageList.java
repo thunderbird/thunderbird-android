@@ -462,12 +462,6 @@ public class MessageList
             onRestoreListState(savedInstanceState);
         }
 
-        setTitle(
-            mAccount.getDescription()
-            + " - " +
-            mCurrentFolder.displayName
-
-        );
     }
 
     private void onRestoreListState(Bundle savedInstanceState)
@@ -514,12 +508,20 @@ public class MessageList
         sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
-
+        mAdapter.messages.clear();
+        mAdapter.notifyDataSetChanged();
         MessagingController.getInstance(getApplication()).listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
 
         NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifMgr.cancel(mAccount.getAccountNumber());
         notifMgr.cancel(-1000 - mAccount.getAccountNumber());
+
+        setTitle(
+            mAccount.getDescription()
+            + " - " +
+            mCurrentFolder.displayName
+
+        );
 
     }
 
