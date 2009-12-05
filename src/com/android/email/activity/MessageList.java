@@ -132,11 +132,6 @@ public class MessageList
 
     private Account mAccount;
 
-    private java.text.DateFormat mDateFormat;
-
-    private java.text.DateFormat mTimeFormat;
-
-
     /**
     * Stores the name of the folder that we want to open as soon as possible
     * after load. It is set to null once the folder has been opened once.
@@ -499,9 +494,6 @@ public class MessageList
     public void onResume()
     {
         super.onResume();
-
-        mDateFormat = DateFormatter.getDateFormat(this);
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
 
         sortType = MessagingController.getInstance(getApplication()).getSortType();
         sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
@@ -1970,11 +1962,11 @@ public class MessageList
 
                 if (Utility.isDateToday(date))
                 {
-                    this.date = mTimeFormat.format(date);
+                    this.date = getTimeFormat().format(date);
                 }
                 else
                 {
-                    this.date = mDateFormat.format(date);
+                    this.date = getDateFormat().format(date);
                 }
 
 

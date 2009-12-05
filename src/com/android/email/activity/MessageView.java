@@ -95,11 +95,6 @@ public class MessageView extends K9Activity
 
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
 
-    private java.text.DateFormat mDateFormat;
-
-    private java.text.DateFormat mTimeFormat;
-
-
     private TextView mFromView;
     private TextView mDateView;
     private TextView mTimeView;
@@ -745,11 +740,6 @@ public class MessageView extends K9Activity
     public void onResume()
     {
         super.onResume();
-
-        mDateFormat = DateFormatter.getDateFormat(this);
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
-
-
     }
 
     private void onDelete()
@@ -1405,8 +1395,8 @@ public class MessageView extends K9Activity
         String fromText = Address.toFriendly(message.getFrom());
         String dateText = Utility.isDateToday(message.getSentDate()) ?
                           null :
-                          mDateFormat.format(message.getSentDate());
-        String timeText = mTimeFormat.format(message.getSentDate());
+                          getDateFormat().format(message.getSentDate());
+        String timeText = getTimeFormat().format(message.getSentDate());
         String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
         String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
         Log.d(Email.LOG_TAG, ccText);

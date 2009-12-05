@@ -84,11 +84,6 @@ public class FolderList extends K9ListActivity
 
     private boolean mStartup = false;
 
-    private java.text.DateFormat mDateFormat;
-
-    private java.text.DateFormat mTimeFormat;
-
-
     class FolderListHandler extends Handler
     {
 
@@ -447,9 +442,6 @@ public class FolderList extends K9ListActivity
     @Override public void onResume()
     {
         super.onResume();
-
-        mDateFormat = DateFormatter.getDateFormat(this);
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
         mAccount.refresh(Preferences.getPreferences(this));
@@ -1196,8 +1188,8 @@ public class FolderList extends K9ListActivity
             {
                 Date lastCheckedDate = new Date(folder.lastChecked);
 
-                statusText = mTimeFormat.format(lastCheckedDate) + " "+
-                             mDateFormat.format(lastCheckedDate);
+                statusText = getTimeFormat().format(lastCheckedDate) + " "+
+                             getDateFormat().format(lastCheckedDate);
             }
 
             if (folder.pushActive)
