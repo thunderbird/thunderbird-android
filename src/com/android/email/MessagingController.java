@@ -105,9 +105,11 @@ public class MessagingController implements Runnable
      */
     private static final int MAX_SMALL_MESSAGE_SIZE = Store.FETCH_BODY_SANE_SUGGESTED_SIZE;
 
-    private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.android.email.MessagingController.moveOrCopyBulk";
+    private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.android.email.MessagingController.moveOrCopy";
+    private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.android.email.MessagingController.moveOrCopyBulk";
     private static final String PENDING_COMMAND_EMPTY_TRASH = "com.android.email.MessagingController.emptyTrash";
-    private static final String PENDING_COMMAND_SET_FLAG = "com.android.email.MessagingController.setFlagBulk";
+    private static final String PENDING_COMMAND_SET_FLAG_BULK = "com.android.email.MessagingController.setFlagBulk";
+    private static final String PENDING_COMMAND_SET_FLAG = "com.android.email.MessagingController.setFlag";
     private static final String PENDING_COMMAND_APPEND = "com.android.email.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.android.email.MessagingController.markAllAsRead";
 
@@ -1216,7 +1218,8 @@ public class MessagingController implements Runnable
                     {
                         if (Email.DEBUG)
                         {
-                            Log.v(Email.LOG_TAG, "Message with uid " + message.getUid() + " is not downloaded, even partially; trying again");
+                            Log.v(Email.LOG_TAG, "Message with uid " + message.getUid() 
+                                    + " is not downloaded, even partially; trying again");
                         }
                         unsyncedMessages.add(message);
                     }
@@ -1677,17 +1680,25 @@ public class MessagingController implements Runnable
                     {
                         processPendingAppend(command, account);
                     }
-                    else if (PENDING_COMMAND_SET_FLAG.equals(command.command))
+                    else if (PENDING_COMMAND_SET_FLAG_BULK.equals(command.command))
                     {
                         processPendingSetFlag(command, account);
+                    }
+                    else if (PENDING_COMMAND_SET_FLAG.equals(command.command))
+                    {
+                        processPendingSetFlagOld(command, account);
                     }
                     else if (PENDING_COMMAND_MARK_ALL_AS_READ.equals(command.command))
                     {
                         processPendingMarkAllAsRead(command, account);
                     }
-                    else if (PENDING_COMMAND_MOVE_OR_COPY.equals(command.command))
+                    else if (PENDING_COMMAND_MOVE_OR_COPY_BULK.equals(command.command))
                     {
                         processPendingMoveOrCopy(command, account);
+                    }
+                    else if (PENDING_COMMAND_MOVE_OR_COPY.equals(command.command))
+                    {
+                        processPendingMoveOrCopyOld(command, account);
                     }
                     else if (PENDING_COMMAND_EMPTY_TRASH.equals(command.command))
                     {
@@ -1881,7 +1892,7 @@ public class MessagingController implements Runnable
             return;
         }
         PendingCommand command = new PendingCommand();
-        command.command = PENDING_COMMAND_MOVE_OR_COPY;
+        command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK;
         
         int length = 3 + uids.length;
         command.arguments = new String[length];
@@ -1996,7 +2007,7 @@ public class MessagingController implements Runnable
     private void queueSetFlag(Account account, String folderName, String newState, String flag, String[] uids)
     {
         PendingCommand command = new PendingCommand();
-        command.command = PENDING_COMMAND_SET_FLAG;
+        command.command = PENDING_COMMAND_SET_FLAG_BULK;
         int length = 3 + uids.length;
         command.arguments = new String[length];
         command.arguments[0] = folderName;
@@ -2064,8 +2075,131 @@ public class MessagingController implements Runnable
             {
                 remoteFolder.close(false);
             }
+        } 
+    }
+    
+    // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
+    // Eventually, it should be removed
+    private void processPendingSetFlagOld(PendingCommand command, Account account)
+    throws MessagingException
+    {
+        String folder = command.arguments[0];
+        String uid = command.arguments[1];
+
+        if (account.getErrorFolderName().equals(folder))
+        {
+            return;
         }
-            
+        if (Email.DEBUG)
+        {
+            Log.d(Email.LOG_TAG, "processPendingSetFlagOld: folder = " + folder + ", uid = " + uid);
+        }
+
+        boolean newState = Boolean.parseBoolean(command.arguments[2]);
+
+        Flag flag = Flag.valueOf(command.arguments[3]);
+
+        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        Folder remoteFolder = remoteStore.getFolder(folder);
+        if (!remoteFolder.exists())
+        {
+            return;
+        }
+        remoteFolder.open(OpenMode.READ_WRITE);
+        if (remoteFolder.getMode() != OpenMode.READ_WRITE)
+        {
+            return;
+        }
+        Message remoteMessage = null;
+        if (!uid.startsWith(Email.LOCAL_UID_PREFIX))
+        {
+            remoteMessage = remoteFolder.getMessage(uid);
+        }
+        if (remoteMessage == null)
+        {
+            return;
+        }
+        remoteMessage.setFlag(flag, newState);
+    }
+
+    
+    // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
+    // Eventually, it should be removed
+    private void processPendingMoveOrCopyOld(PendingCommand command, Account account)
+    throws MessagingException
+    {
+        String srcFolder = command.arguments[0];
+        String uid = command.arguments[1];
+        String destFolder = command.arguments[2];
+        String isCopyS = command.arguments[3];
+
+        boolean isCopy = false;
+        if (isCopyS != null)
+        {
+            isCopy = Boolean.parseBoolean(isCopyS);
+        }
+
+        if (account.getErrorFolderName().equals(srcFolder))
+        {
+            return;
+        }
+
+        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        Folder remoteSrcFolder = remoteStore.getFolder(srcFolder);
+        Folder remoteDestFolder = remoteStore.getFolder(destFolder);
+
+        if (!remoteSrcFolder.exists())
+        {
+            throw new MessagingException("processPendingMoveOrCopyOld: remoteFolder " + srcFolder + " does not exist", true);
+        }
+        remoteSrcFolder.open(OpenMode.READ_WRITE);
+        if (remoteSrcFolder.getMode() != OpenMode.READ_WRITE)
+        {
+            throw new MessagingException("processPendingMoveOrCopyOld: could not open remoteSrcFolder " + srcFolder + " read/write", true);
+        }
+
+        Message remoteMessage = null;
+        if (!uid.startsWith(Email.LOCAL_UID_PREFIX))
+        {
+            remoteMessage = remoteSrcFolder.getMessage(uid);
+        }
+        if (remoteMessage == null)
+        {
+            throw new MessagingException("processPendingMoveOrCopyOld: remoteMessage " + uid + " does not exist", true);
+        }
+
+        if (Email.DEBUG)
+        {
+            Log.d(Email.LOG_TAG, "processPendingMoveOrCopyOld: source folder = " + srcFolder
+                    + ", uid = " + uid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
+        }
+        if (isCopy == false && destFolder.equals(account.getTrashFolderName()))
+        {
+            if (Email.DEBUG)
+            {
+                Log.d(Email.LOG_TAG, "processPendingMoveOrCopyOld doing special case for deleting message");
+            }
+            remoteMessage.delete(account.getTrashFolderName());
+            remoteSrcFolder.close(true);
+            return;
+        }
+
+        remoteDestFolder.open(OpenMode.READ_WRITE);
+        if (remoteDestFolder.getMode() != OpenMode.READ_WRITE)
+        {
+            throw new MessagingException("processPendingMoveOrCopyOld: could not open remoteDestFolder " + srcFolder + " read/write", true);
+        }
+
+        if (isCopy)
+        {
+            remoteSrcFolder.copyMessages(new Message[] { remoteMessage }, remoteDestFolder);
+        }
+        else
+        {
+            remoteSrcFolder.moveMessages(new Message[] { remoteMessage }, remoteDestFolder);
+        }
+        remoteSrcFolder.close(true);
+        remoteDestFolder.close(true);
     }
 
     private void processPendingMarkAllAsRead(PendingCommand command, Account account) throws MessagingException
