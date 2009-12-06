@@ -350,7 +350,6 @@ public class MessageList
         context.startActivity(intent);
     }
 
-    @Override
     public void onItemClick(AdapterView parent, View v, int position, long id)
     {
         if ((position+1) == (mAdapter.getCount()))
@@ -2114,7 +2113,6 @@ public class MessageList
         public CheckBox selected;
         public int position = -1;
 
-        @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
         {
             if (position!=-1)
@@ -2240,7 +2238,6 @@ public class MessageList
         }
     }
 
-    @Override
     public void onClick(View v)
     {
         boolean newState = false;

@@ -1558,7 +1558,6 @@ public class MessagingController implements Runnable
 
         localFolder.purgeToVisibleLimit(new MessageRemovalListener()
         {
-            @Override
             public void messageRemoved(Message message)
             {
                 for (MessagingListener l : getListeners())

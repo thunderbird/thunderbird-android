@@ -2826,7 +2826,6 @@ public class ImapStore extends Store
             mReceiver = receiver;
         }
         
-        @Override
         public void start(List<String> folderNames)
         {
             stop();
@@ -2845,7 +2844,6 @@ public class ImapStore extends Store
             }
         }
 
-        @Override
         public void refresh()
         {
             synchronized(folderPushers)
@@ -2864,7 +2862,6 @@ public class ImapStore extends Store
             }
         }
         
-        @Override
         public void stop()
         {
             Log.i(Email.LOG_TAG, "Requested stop of IMAP pusher");
