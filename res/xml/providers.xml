@@ -132,10 +132,9 @@
         <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
     </provider>
-    <provider id="fsck" label="Jesse's personal mail" domain="fsck.com"
-            note="@string/provider_note_live">
+    <provider id="fsck" label="Jesse's personal mail" domain="fsck.com" >
         <incoming uri="imap+ssl+://fsck.com"  username="$user" />
-        <outgoing uri="smtp+tls+://fsck.com:2525" />
+        <outgoing uri="smtp+tls+://fsck.com:2525" username="$user"/>
     </provider>
     
 </providers>
