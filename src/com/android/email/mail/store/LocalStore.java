@@ -1169,7 +1169,7 @@ public class LocalStore extends Store implements Serializable
             {
                 message.setFrom(from[0]);
             }
-            message.addSentDate(new Date(cursor.getLong(2)));
+            message.setInternalSentDate(new Date(cursor.getLong(2)));
             message.setUid(cursor.getString(3));
             String flagList = cursor.getString(4);
             if (flagList != null && flagList.length() > 0)
@@ -1193,7 +1193,7 @@ public class LocalStore extends Store implements Serializable
             message.setReplyTo(Address.unpack(cursor.getString(9)));
             message.mAttachmentCount = cursor.getInt(10);
             message.setInternalDate(new Date(cursor.getLong(11)));
-            message.setHeader("Message-ID", cursor.getString(12));
+            message.setMessageId(cursor.getString(12));
         }
 
         @Override
@@ -2083,28 +2083,8 @@ public class LocalStore extends Store implements Serializable
         private int mAttachmentCount;
         private String mSubject;
 
-        @Override
-        public String getSubject() throws MessagingException
-        {
-            if (mSubject != null)
-            {
-                return mSubject;
-            }
-            else
-            {
-                return super.getSubject();
-            }
-        }
 
-        @Override
-        public void setSubject(String subject) throws MessagingException
-        {
-            mSubject = subject;
-            super.setSubject(subject);
-        }
-
-
-
+        private boolean mMessageDirty = false;
 
         public LocalMessage()
         {
@@ -2116,31 +2096,89 @@ public class LocalStore extends Store implements Serializable
             this.mFolder = folder;
         }
 
+        /* Custom version of writeTo that updates the MIME message based on localMessage
+         * changes.
+         */
+
+        public void writeTo(OutputStream out) throws IOException, MessagingException
+        {
+            if (mMessageDirty) buildMimeRepresentation();
+            super.writeTo(out);
+        }
+
+        private void buildMimeRepresentation() throws MessagingException
+        {
+            if (!mMessageDirty)
+            {
+                return;
+            }
+
+            super.setSubject(mSubject);
+            if (this.mFrom != null && this.mFrom.length > 0)
+            {
+                super.setFrom(this.mFrom[0]);
+            }
+
+            super.setReplyTo(mReplyTo);
+            super.setSentDate(this.getSentDate());
+            super.setRecipients(RecipientType.TO, mTo);
+            super.setRecipients(RecipientType.CC, mCc);
+            super.setRecipients(RecipientType.BCC, mBcc);
+
+
+            mMessageDirty = false;
+            return;
+        }
+
+
+        @Override
+        public String getSubject() throws MessagingException
+        {
+            return mSubject;
+        }
+
+
+        @Override
+        public void setSubject(String subject) throws MessagingException
+        {
+            mSubject = subject;
+            mMessageDirty = true;
+        }
+
+
+        public void setMessageId(String messageId) throws MessagingException
+        {
+            mMessageId = messageId;
+            mMessageDirty = true;
+        }
+
+
+
         public int getAttachmentCount()
         {
             return mAttachmentCount;
         }
 
-        public void parse(InputStream in) throws IOException, MessagingException
-        {
-            super.parse(in);
-        }
-
         public void setFrom(Address from) throws MessagingException
         {
-            if (from != null)
+            this.mFrom = new Address[] { from };
+            mMessageDirty = true;
+        }
+
+
+        public void setReplyTo(Address[] replyTo) throws MessagingException
+        {
+            if (replyTo == null || replyTo.length == 0)
             {
-                addHeader("From", from.toEncodedString());
-                this.mFrom = new Address[]
-                {
-                    from
-                };
+                mReplyTo = null;
             }
             else
             {
-                this.mFrom = null;
+                mReplyTo = replyTo;
             }
+            mMessageDirty = true;
         }
+
 
         /*
          * For performance reasons, we add headers instead of setting them (see super implementation)
@@ -2153,12 +2191,10 @@ public class LocalStore extends Store implements Serializable
             {
                 if (addresses == null || addresses.length == 0)
                 {
-                    removeHeader("To");
                     this.mTo = null;
                 }
                 else
                 {
-                    addHeader("To", Address.toEncodedString(addresses));
                     this.mTo = addresses;
                 }
             }
@@ -2166,12 +2202,10 @@ public class LocalStore extends Store implements Serializable
             {
                 if (addresses == null || addresses.length == 0)
                 {
-                    removeHeader("CC");
                     this.mCc = null;
                 }
                 else
                 {
-                    addHeader("CC", Address.toEncodedString(addresses));
                     this.mCc = addresses;
                 }
             }
@@ -2179,12 +2213,10 @@ public class LocalStore extends Store implements Serializable
             {
                 if (addresses == null || addresses.length == 0)
                 {
-                    removeHeader("BCC");
                     this.mBcc = null;
                 }
                 else
                 {
-                    addHeader("BCC", Address.toEncodedString(addresses));
                     this.mBcc = addresses;
                 }
             }
@@ -2192,7 +2224,10 @@ public class LocalStore extends Store implements Serializable
             {
                 throw new MessagingException("Unrecognized recipient type.");
             }
+            mMessageDirty = true;
         }
+
+
 
         public void setFlagInternal(Flag flag, boolean set) throws MessagingException
         {
