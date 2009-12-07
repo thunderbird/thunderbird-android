@@ -1214,12 +1214,12 @@ public class MessagingController implements Runnable
                     {
                         localFolder.setPushState(newPushState);
                     }
-                    if  (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
+                    if (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
                         if (Email.DEBUG)
                         {
-                            Log.v(Email.LOG_TAG, "Message with uid " + message.getUid() 
-                                    + " is not downloaded, even partially; trying again");
+                            Log.v(Email.LOG_TAG, "Message with uid " + message.getUid()
+                                  + " is not downloaded, even partially; trying again");
                         }
                         unsyncedMessages.add(message);
                     }
@@ -1892,7 +1892,7 @@ public class MessagingController implements Runnable
         }
         PendingCommand command = new PendingCommand();
         command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK;
-        
+
         int length = 3 + uids.length;
         command.arguments = new String[length];
         command.arguments[0] = srcFolder;
@@ -1927,7 +1927,7 @@ public class MessagingController implements Runnable
             String isCopyS = command.arguments[2];
             Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
             remoteSrcFolder = remoteStore.getFolder(srcFolder);
-            
+
             List<Message> messages = new ArrayList<Message>();
             for (int i = 3; i < command.arguments.length; i++)
             {
@@ -1937,13 +1937,13 @@ public class MessagingController implements Runnable
                     messages.add(remoteSrcFolder.getMessage(uid));
                 }
             }
-            
+
             boolean isCopy = false;
             if (isCopyS != null)
             {
                 isCopy = Boolean.parseBoolean(isCopyS);
             }
-    
+
             if (!remoteSrcFolder.exists())
             {
                 throw new MessagingException("processingPendingMoveOrCopy: remoteFolder " + srcFolder + " does not exist", true);
@@ -1953,7 +1953,7 @@ public class MessagingController implements Runnable
             {
                 throw new MessagingException("processingPendingMoveOrCopy: could not open remoteSrcFolder " + srcFolder + " read/write", true);
             }
-    
+
             if (Email.DEBUG)
             {
                 Log.d(Email.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder
@@ -1970,13 +1970,13 @@ public class MessagingController implements Runnable
             else
             {
                 remoteDestFolder = remoteStore.getFolder(destFolder);
-                
+
                 remoteDestFolder.open(OpenMode.READ_WRITE);
                 if (remoteDestFolder.getMode() != OpenMode.READ_WRITE)
                 {
                     throw new MessagingException("processingPendingMoveOrCopy: could not open remoteDestFolder " + srcFolder + " read/write", true);
                 }
-        
+
                 if (isCopy)
                 {
                     remoteSrcFolder.copyMessages(messages.toArray(new Message[0]), remoteDestFolder);
@@ -2002,7 +2002,7 @@ public class MessagingController implements Runnable
 
 
     }
-    
+
     private void queueSetFlag(Account account, String folderName, String newState, String flag, String[] uids)
     {
         PendingCommand command = new PendingCommand();
@@ -2061,7 +2061,7 @@ public class MessagingController implements Runnable
                     messages.add(remoteFolder.getMessage(uid));
                 }
             }
-            
+
             if (messages.size() == 0)
             {
                 return;
@@ -2074,9 +2074,9 @@ public class MessagingController implements Runnable
             {
                 remoteFolder.close(false);
             }
-        } 
+        }
     }
-    
+
     // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
     // Eventually, it should be removed
     private void processPendingSetFlagOld(PendingCommand command, Account account)
@@ -2121,7 +2121,7 @@ public class MessagingController implements Runnable
         remoteMessage.setFlag(flag, newState);
     }
 
-    
+
     // TODO: This method is obsolete and is only for transition from K-9 2.0 to K-9 2.1
     // Eventually, it should be removed
     private void processPendingMoveOrCopyOld(PendingCommand command, Account account)
@@ -2170,7 +2170,7 @@ public class MessagingController implements Runnable
         if (Email.DEBUG)
         {
             Log.d(Email.LOG_TAG, "processPendingMoveOrCopyOld: source folder = " + srcFolder
-                    + ", uid = " + uid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
+                  + ", uid = " + uid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
         }
         if (isCopy == false && destFolder.equals(account.getTrashFolderName()))
         {
@@ -2382,13 +2382,13 @@ public class MessagingController implements Runnable
         queuePendingCommand(account, command);
         processPendingCommands(account);
     }
-    
+
     public void setFlag(
-            final Account account,
-            final String folderName,
-            final Message[] messages,
-            final Flag flag,
-            final boolean newState)
+        final Account account,
+        final String folderName,
+        final Message[] messages,
+        final Flag flag,
+        final boolean newState)
     {
         String[] uids = new String[messages.length];
         for (int i = 0; i < messages.length; i++)
@@ -2397,7 +2397,7 @@ public class MessagingController implements Runnable
         }
         setFlag(account, folderName, uids, flag, newState);
     }
-   
+
     public void setFlag(
         final Account account,
         final String folderName,
@@ -2417,7 +2417,7 @@ public class MessagingController implements Runnable
             for (int i = 0; i < uids.length; i++)
             {
                 String uid = uids[i];
-             // Allows for re-allowing sending of messages that could not be sent
+                // Allows for re-allowing sending of messages that could not be sent
                 if (flag == Flag.FLAGGED && newState == false
                         && uid != null
                         && account.getOutboxFolderName().equals(folderName))
@@ -2426,9 +2426,9 @@ public class MessagingController implements Runnable
                 }
                 messages[i] = localFolder.getMessage(uid);
             }
-            
+
             localFolder.setFlags(messages, new Flag[] {flag}, newState);
-           
+
 
             for (MessagingListener l : getListeners())
             {
@@ -3199,7 +3199,7 @@ public class MessagingController implements Runnable
 
         putBackground("getAccountUnread:" + account.getDescription(), l, unreadRunnable);
     }
-    
+
     public int moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
                             final MessagingListener listener)
     {
@@ -3280,9 +3280,9 @@ public class MessagingController implements Runnable
             return false;
         }
     }
-    
+
     public int copyMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
-            final MessagingListener listener)
+                            final MessagingListener listener)
     {
         int messagesCopied = 0;
         for (Message message : messages)
@@ -3358,7 +3358,7 @@ public class MessagingController implements Runnable
                 }
             }
             queueMoveOrCopy(account, srcFolder, destFolder, isCopy, new String[] { origUid });
-            
+
             processPendingCommands(account);
         }
         catch (MessagingException me)
@@ -3370,13 +3370,13 @@ public class MessagingController implements Runnable
     }
 
     public void deleteMessages(final Account account, final String folder, final Message[] messages,
-        final MessagingListener listener)
+                               final MessagingListener listener)
     {
         for (Message message : messages)
         {
             suppressMessage(account, folder, message);
         }
-        
+
         put("deleteMessages", null, new Runnable()
         {
             public void run()
@@ -3387,7 +3387,7 @@ public class MessagingController implements Runnable
     }
 
     private void deleteMessagesSynchronous(final Account account, final String folder, final Message[] messages,
-                                          MessagingListener listener)
+                                           MessagingListener listener)
     {
         Folder localFolder = null;
         Folder localTrashFolder = null;
@@ -3430,7 +3430,7 @@ public class MessagingController implements Runnable
                     listener.messageDeleted(account, folder, message);
                 }
             }
-            
+
             for (MessagingListener l : getListeners())
             {
                 l.folderStatusChanged(account, account.getTrashFolderName());
@@ -3499,7 +3499,7 @@ public class MessagingController implements Runnable
             }
         }
     }
-    
+
     private String[] getUidsFromMessages(Message[] messages)
     {
         String[] uids = new String[messages.length];
@@ -3954,7 +3954,7 @@ public class MessagingController implements Runnable
         boolean isNotifyAccount = thisAccount.isNotifyNewMail();
         if (isNotifyAccount)
         {
-            
+
             NotificationManager notifMgr =
                 (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
             if (newMailCount > 0 && unreadMessageCount > 0)
@@ -4185,11 +4185,11 @@ public class MessagingController implements Runnable
                 Log.i(Email.LOG_TAG, "Starting pusher for " + account.getDescription() + ":" + folder.getName());
                 names.add(folder.getName());
             }
-            
+
             if (names.size() > 0)
             {
                 PushReceiver receiver = new MessagingControllerPushReceiver(mApplication, account, this);
-                
+
                 try
                 {
                     Store store = Store.getInstance(account.getStoreUri(), mApplication);
@@ -4218,7 +4218,7 @@ public class MessagingController implements Runnable
                     Log.e(Email.LOG_TAG, "Could not get remote store", e);
                     return false;
                 }
-                
+
                 return true;
             }
             else

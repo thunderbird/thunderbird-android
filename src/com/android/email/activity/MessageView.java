@@ -81,7 +81,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MessageView extends K9Activity
-            implements UrlInterceptHandler, OnClickListener
+        implements UrlInterceptHandler, OnClickListener
 {
     private static final String EXTRA_ACCOUNT = "com.android.email.MessageView_account";
     private static final String EXTRA_FOLDER = "com.android.email.MessageView_folder";
@@ -971,7 +971,7 @@ public class MessageView extends K9Activity
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
         mLastDirection = PREVIOUS;
         displayMessage(mPreviousMessageUid);
         mTopView.startAnimation(inFromRightAnimation());

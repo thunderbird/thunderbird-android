@@ -32,7 +32,7 @@ import com.android.email.R;
 import com.android.email.Utility;
 
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
-            OnCheckedChangeListener
+        OnCheckedChangeListener
 {
     private static final String EXTRA_ACCOUNT = "account";
 

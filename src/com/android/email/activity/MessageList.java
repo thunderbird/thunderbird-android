@@ -71,8 +71,8 @@ import com.android.email.mail.store.LocalStore.LocalMessage;
  */
 
 public class MessageList
-            extends K9Activity
-            implements OnClickListener, AdapterView.OnItemClickListener
+        extends K9Activity
+        implements OnClickListener, AdapterView.OnItemClickListener
 {
 
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
@@ -2101,7 +2101,7 @@ public class MessageList
     }
 
     class MessageViewHolder
-                implements OnCheckedChangeListener
+            implements OnCheckedChangeListener
     {
         public TextView subject;
         public TextView preview;
@@ -2252,13 +2252,15 @@ public class MessageList
                 }
                 else if (v == mBatchFlagButton)
                 {
-                    if (!holder.flagged) {
+                    if (!holder.flagged)
+                    {
                         newState = true;
                     }
                 }
                 else if (v == mBatchReadButton)
                 {
-                    if (!holder.read) {
+                    if (!holder.read)
+                    {
                         newState = true;
                     }
                 }

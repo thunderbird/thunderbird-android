@@ -28,9 +28,9 @@ public class TrustedSocketFactory implements LayeredSocketFactory
     {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, new TrustManager[]
-        {
-            TrustManagerFactory.get(host, secure)
-        }, new SecureRandom());
+                        {
+                            TrustManagerFactory.get(host, secure)
+                        }, new SecureRandom());
         mSocketFactory = sslContext.getSocketFactory();
         mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();
         mSchemeSocketFactory.setHostnameVerifier(

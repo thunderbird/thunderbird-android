@@ -1366,7 +1366,7 @@ public class FolderList extends K9ListActivity
             this.unreadMessageCount = unreadCount;
 
             folder.close(false);
-            
+
         }
     }
 

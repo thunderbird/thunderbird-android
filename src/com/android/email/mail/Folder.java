@@ -102,7 +102,7 @@ public abstract class Folder
     public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {} ;
 
     public void moveMessages(Message[] msgs, Folder folder) throws MessagingException {} ;
-    
+
     public void delete(Message[] msgs, String trashFolderName) throws MessagingException
     {
         for (Message message : msgs)

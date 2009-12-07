@@ -167,9 +167,9 @@ public class Pop3Store extends Store
     public Folder[] getPersonalNamespaces() throws MessagingException
     {
         return new Folder[]
-        {
-            getFolder("INBOX"),
-        };
+               {
+                   getFolder("INBOX"),
+               };
     }
 
     @Override
@@ -236,9 +236,9 @@ public class Pop3Store extends Store
                     SSLContext sslContext = SSLContext.getInstance("TLS");
                     final boolean secure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
                     sslContext.init(null, new TrustManager[]
-                    {
-                        TrustManagerFactory.get(mHost, secure)
-                    }, new SecureRandom());
+                                    {
+                                        TrustManagerFactory.get(mHost, secure)
+                                    }, new SecureRandom());
                     mSocket = sslContext.getSocketFactory().createSocket();
                     mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                     mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
@@ -273,9 +273,9 @@ public class Pop3Store extends Store
                         SSLContext sslContext = SSLContext.getInstance("TLS");
                         boolean secure = mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED;
                         sslContext.init(null, new TrustManager[]
-                        {
-                            TrustManagerFactory.get(mHost, secure)
-                        }, new SecureRandom());
+                                        {
+                                            TrustManagerFactory.get(mHost, secure)
+                                        }, new SecureRandom());
                         mSocket = sslContext.getSocketFactory().createSocket(mSocket, mHost, mPort,
                                   true);
                         mSocket.setSoTimeout(Store.SOCKET_READ_TIMEOUT);
@@ -845,7 +845,7 @@ public class Pop3Store extends Store
         public void delete(boolean recurse) throws MessagingException
         {
         }
-        
+
         public void delete(Message[] msgs, String trashFolderName) throws MessagingException
         {
             setFlags(msgs, new Flag[] { Flag.DELETED }, true);

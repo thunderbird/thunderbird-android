@@ -62,9 +62,9 @@ public abstract class Message implements Part, Body
     public void setRecipient(RecipientType type, Address address) throws MessagingException
     {
         setRecipients(type, new Address[]
-        {
-            address
-        });
+                      {
+                          address
+                      });
     }
 
     public abstract Address[] getFrom() throws MessagingException;

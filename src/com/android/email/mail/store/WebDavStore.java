@@ -1262,7 +1262,7 @@ public class WebDavStore extends Store
         {
             moveOrCopyMessages(messages, folder.getName(), true);
         }
-        
+
         @Override
         public void delete(Message[] msgs, String trashFolderName) throws MessagingException
         {
@@ -1375,7 +1375,7 @@ public class WebDavStore extends Store
         }
 
         @Override
-        public void close(boolean expunge) 
+        public void close(boolean expunge)
         {
             this.mMessageCount = 0;
             this.mUnreadMessageCount = 0;

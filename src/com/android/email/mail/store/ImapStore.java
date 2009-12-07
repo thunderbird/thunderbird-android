@@ -100,7 +100,7 @@ public class ImapStore extends Store
     private static final int IDLE_REFRESH_INTERVAL = 20 * 60 * 1000; // 20 minutes
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
-    
+
     private static final String CAPABILITY_IDLE = "IDLE";
     private static final String COMMAND_IDLE = "IDLE";
     private static final String CAPABILITY_NAMESPACE = "NAMESPACE";
@@ -264,7 +264,7 @@ public class ImapStore extends Store
         try
         {
             ArrayList<Folder> folders = new ArrayList<Folder>();
-           
+
             List<ImapResponse> responses =
                 connection.executeSimpleCommand(String.format("LIST \"\" \"%s*\"",
                                                 getCombinedPrefix()));
@@ -288,7 +288,7 @@ public class ImapStore extends Store
                     }
                     else
                     {
-                        
+
                         if (getCombinedPrefix().length() > 0)
                         {
                             if (folder.length() >= getCombinedPrefix().length())
@@ -444,7 +444,7 @@ public class ImapStore extends Store
         return true;
     }
 
- 
+
     class ImapFolder extends Folder
     {
         private String mName;
@@ -525,7 +525,7 @@ public class ImapStore extends Store
             // 2 OK [READ-WRITE] Select completed.
             try
             {
-                
+
                 if (mPathDelimeter == null)
                 {
                     List<ImapResponse> nameResponses =
@@ -768,7 +768,7 @@ public class ImapStore extends Store
             copyMessages(messages, folder);
             setFlags(messages, new Flag[] { Flag.DELETED }, true);
         }
-        
+
         public void delete(Message[] messages, String trashFolderName) throws MessagingException
         {
             if (getName().equals(trashFolderName))
@@ -1238,7 +1238,7 @@ public class ImapStore extends Store
             }
             return responses;
         }
-        
+
         protected void handlePossibleUidNext(ImapResponse response)
         {
             if (response.get(0).equals("OK") && response.size() > 1)
@@ -1288,7 +1288,7 @@ public class ImapStore extends Store
                     }
                 }
                 handlePossibleUidNext(response);
-                
+
                 if (response.get(1).equals("EXPUNGE") && mMessageCount > 0)
                 {
                     mMessageCount--;
@@ -1951,8 +1951,8 @@ public class ImapStore extends Store
                 }
                 if (Email.DEBUG)
                 {
-                    Log.d(Email.LOG_TAG, "NAMESPACE = " + hasCapability(CAPABILITY_NAMESPACE) 
-                            + ", mPathPrefix = " + mPathPrefix);
+                    Log.d(Email.LOG_TAG, "NAMESPACE = " + hasCapability(CAPABILITY_NAMESPACE)
+                          + ", mPathPrefix = " + mPathPrefix);
                 }
                 if (mPathPrefix == null)
                 {
@@ -1969,7 +1969,7 @@ public class ImapStore extends Store
                                 {
                                     Log.d(Email.LOG_TAG, "Got NAMESPACE response " + response + " on " + getLogId());
                                 }
-                                
+
                                 Object personalNamespaces = response.get(1);
                                 if (personalNamespaces != null && personalNamespaces instanceof ImapList)
                                 {
@@ -2003,7 +2003,7 @@ public class ImapStore extends Store
                         Log.i(Email.LOG_TAG, "mPathPrefix is unset but server does not have NAMESPACE capability");
                         mPathPrefix = "";
                     }
-                } 
+                }
             }
             catch (SSLException e)
             {
@@ -2055,7 +2055,7 @@ public class ImapStore extends Store
             }
             return capabilities.contains(CAPABILITY_IDLE);
         }
-        
+
         protected boolean hasCapability(String capability)
         {
             return capabilities.contains(capability);
@@ -2385,7 +2385,7 @@ public class ImapStore extends Store
             }
         }
 
-        public void start() 
+        public void start()
         {
             Runnable runner = new Runnable()
             {
@@ -2760,7 +2760,7 @@ public class ImapStore extends Store
                 catch (Exception e)
                 {
                     Log.e(Email.LOG_TAG, "Exception while sending DONE for " + getLogId(), e);
-                } 
+                }
             }
             else
             {
@@ -2817,7 +2817,7 @@ public class ImapStore extends Store
     {
         final ImapStore mStore;
         final PushReceiver mReceiver;
-    
+
         HashMap<String, ImapFolderPusher> folderPushers = new HashMap<String, ImapFolderPusher>();
 
         public ImapPusher(ImapStore store, PushReceiver receiver)
@@ -2825,11 +2825,11 @@ public class ImapStore extends Store
             mStore = store;
             mReceiver = receiver;
         }
-        
+
         public void start(List<String> folderNames)
         {
             stop();
-            synchronized(folderPushers)
+            synchronized (folderPushers)
             {
                 for (String folderName : folderNames)
                 {
@@ -2846,7 +2846,7 @@ public class ImapStore extends Store
 
         public void refresh()
         {
-            synchronized(folderPushers)
+            synchronized (folderPushers)
             {
                 for (ImapFolderPusher folderPusher : folderPushers.values())
                 {
@@ -2861,11 +2861,11 @@ public class ImapStore extends Store
                 }
             }
         }
-        
+
         public void stop()
         {
             Log.i(Email.LOG_TAG, "Requested stop of IMAP pusher");
-            synchronized(folderPushers)
+            synchronized (folderPushers)
             {
                 for (ImapFolderPusher folderPusher : folderPushers.values())
                 {

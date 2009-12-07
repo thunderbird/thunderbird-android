@@ -15,7 +15,7 @@ public class K9ListActivity extends ListActivity
         super.onCreate(icicle);
         setupFormats();
     }
-    
+
     @Override
     public void onResume()
     {
@@ -25,13 +25,13 @@ public class K9ListActivity extends ListActivity
 
     private java.text.DateFormat mDateFormat;
     private java.text.DateFormat mTimeFormat;
-    
+
     private void setupFormats()
     {
         mDateFormat = DateFormatter.getDateFormat(this);
         mTimeFormat = android.text.format.DateFormat.getTimeFormat(this);   // 12/24 date format
     }
-    
+
     public java.text.DateFormat getTimeFormat()
     {
         return mTimeFormat;

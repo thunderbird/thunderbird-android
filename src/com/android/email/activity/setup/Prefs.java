@@ -63,7 +63,7 @@ public class Prefs extends K9PreferenceActivity
                 return false;
             }
         });
-        
+
         mDateFormat = (ListPreference) findPreference(PREFERENCE_DATE_FORMAT);
         String[] formats = DateFormatter.getFormats(this);
         CharSequence[] entries = new CharSequence[formats.length];
@@ -75,8 +75,8 @@ public class Prefs extends K9PreferenceActivity
             values[i] = format;
         }
         mDateFormat.setEntries(entries);
-        mDateFormat.setEntryValues(values); 
-        
+        mDateFormat.setEntryValues(values);
+
         mDateFormat.setValue(DateFormatter.getFormat(this));
         mDateFormat.setSummary(mDateFormat.getEntry());
         mDateFormat.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
