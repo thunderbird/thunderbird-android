@@ -352,6 +352,12 @@ public class MimeMessage extends Message
         return mMessageId;
     }
 
+    public void setMessageId(String messageId) throws MessagingException
+    {
+        setHeader("Message-ID", messageId);
+        mMessageId = messageId;
+    }
+
     public void setInReplyTo(String inReplyTo) throws MessagingException
     {
         setHeader("In-Reply-To", inReplyTo);
