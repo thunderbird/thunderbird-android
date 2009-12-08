@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Stack;
+import java.util.UUID;
 
 import org.apache.james.mime4j.BodyDescriptor;
 import org.apache.james.mime4j.ContentHandler;
@@ -343,17 +344,7 @@ public class MimeMessage extends Message
 
     private String generateMessageId()
     {
-        StringBuffer sb = new StringBuffer();
-        sb.append("<");
-        for (int i = 0; i < 24; i++)
-        {
-            sb.append(Integer.toString((int)(Math.random() * 35), 36));
-        }
-        sb.append(".");
-        sb.append(Long.toString(System.currentTimeMillis()));
-        sb.append("@email.android.com>");
-
-        return sb.toString();
+        return "<"+UUID.randomUUID().toString()+"@email.android.com>";
     }
 
     public void setMessageId(String messageId)
