@@ -9,8 +9,7 @@
     <LinearLayout android:id="@+id/widgets_right" 
         android:layout_width="wrap_content" 
         android:layout_height="fill_parent" 
-        android:layout_alignParentRight="true"
-        />
+        android:layout_alignParentRight="true" />
     <LinearLayout android:id="@+id/widgets_left" 
         android:layout_width="wrap_content" 
         android:layout_height="fill_parent" />
@@ -30,7 +29,8 @@
         android:layout_width="70dip"
         android:paddingRight="3dip"
         android:layout_height="wrap_content"
-        android:gravity="right|bottom"
+        android:gravity="right"
+        android:layout_centerVertical="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_toLeftOf="@+id/widgets_right" />
     <TextView
@@ -39,6 +39,7 @@
         android:singleLine="true"
         android:layout_width="110dip"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorSecondary"
         android:paddingLeft="3dip"
@@ -52,6 +53,7 @@
         android:textColor="?android:attr/textColorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:paddingLeft="10dip"
         android:layout_marginRight="1dip"
         android:layout_alignWithParentIfMissing="true"
