@@ -1745,14 +1745,28 @@ public class MessageList
             MessageInfoHolder message = (MessageInfoHolder) getItem(position);
             View view;
 
-            if ((convertView != null) && (convertView.getId() == R.layout.message_list_item))
+            if ((convertView != null)
+                 && (
+                    (convertView.getId() == R.layout.message_list_item_left)
+                    || (convertView.getId() == R.layout.message_list_item_right)
+                )
+            )
             {
                 view = convertView;
             }
             else
             {
-                view = mInflater.inflate(R.layout.message_list_item, parent, false);
-                view.setId(R.layout.message_list_item);
+                int layoutId;
+                if (Email.getMessageListWidgetSide()==Email.MessageListWidgetSide.LEFT)
+                {
+                    layoutId = R.layout.message_list_item_left;
+                }
+                else
+                {
+                    layoutId = R.layout.message_list_item_right;
+                }
+                view = mInflater.inflate(layoutId, parent, false);
+                view.setId(layoutId);
             }
 
 

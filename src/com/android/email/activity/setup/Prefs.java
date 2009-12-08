@@ -11,6 +11,7 @@ import android.preference.Preference;
 import android.view.KeyEvent;
 
 import com.android.email.Email;
+import com.android.email.Email.MessageListWidgetSide;
 import com.android.email.K9PreferenceActivity;
 import com.android.email.Preferences;
 import com.android.email.R;
@@ -22,12 +23,14 @@ public class Prefs extends K9PreferenceActivity
 
     private static final String PREFERENCE_THEME = "theme";
     private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
+    private static final String PREFERENCE_MESSAGE_LIST_WIDGET_SIDE = "messageListWidgetSide";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
     private ListPreference mTheme;
     private ListPreference mDateFormat;
+    private ListPreference mMessageListWidgetSide;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
@@ -91,6 +94,21 @@ public class Prefs extends K9PreferenceActivity
             }
         });
 
+        mMessageListWidgetSide = (ListPreference) findPreference(PREFERENCE_MESSAGE_LIST_WIDGET_SIDE);
+        mMessageListWidgetSide.setValue(Email.getMessageListWidgetSide().toString());
+        mMessageListWidgetSide.setSummary(mMessageListWidgetSide.getEntry());
+        mMessageListWidgetSide.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mMessageListWidgetSide.findIndexOfValue(summary);
+                mMessageListWidgetSide.setSummary(mMessageListWidgetSide.getEntries()[index]);
+                mMessageListWidgetSide.setValue(summary);
+                return false;
+            }
+        });
+
         mBackgroundOps = (ListPreference) findPreference(PREFERENCE_BACKGROUND_OPS);
         initBackgroundOps = Email.getBackgroundOps().toString();
         mBackgroundOps.setValue(initBackgroundOps);
@@ -125,6 +143,7 @@ public class Prefs extends K9PreferenceActivity
     {
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
         Email.setK9Theme(mTheme.getValue().equals("dark") ? android.R.style.Theme : android.R.style.Theme_Light);
+        Email.setMessageListWidgetSide(MessageListWidgetSide.valueOf(mMessageListWidgetSide.getValue()));
         Email.DEBUG = mDebugLogging.isChecked();
         Email.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         String newBackgroundOps = mBackgroundOps.getValue();

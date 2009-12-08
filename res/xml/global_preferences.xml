@@ -25,12 +25,20 @@
             android:entryValues="@array/settings_theme_values"
             android:dialogTitle="@string/settings_theme_label" />
             
-            <ListPreference
+        <ListPreference
             android:key="dateFormat"
             android:title="@string/date_format_label"
             android:entries="@array/date_formats"
             android:entryValues="@array/date_formats"
             android:dialogTitle="@string/date_format_label" />
+
+        <ListPreference
+            android:key="messageListWidgetSide"
+            android:title="@string/message_list_widget_side_label"
+            android:entries="@array/message_list_widget_side_entries"
+            android:entryValues="@array/message_list_widget_side_values"
+            android:dialogTitle="@string/message_list_widget_side_label" />
+
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">
