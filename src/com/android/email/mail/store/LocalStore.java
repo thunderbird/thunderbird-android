@@ -1457,11 +1457,12 @@ public class LocalStore extends Store implements Serializable
                 String uid = message.getUid();
                 if (uid == null)
                 {
-                    message.setUid(Email.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
+                    uid = Email.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
+                    message.setUid(uid);
                 }
                 else
                 {
-                    Message oldMessage = getMessage(message.getUid());
+                    Message oldMessage = getMessage(uid);
                     if (oldMessage != null && oldMessage.isSet(Flag.SEEN) == false)
                     {
                         setUnreadMessageCount(getUnreadMessageCount() - 1);
@@ -1510,7 +1511,7 @@ public class LocalStore extends Store implements Serializable
                 try
                 {
                     ContentValues cv = new ContentValues();
-                    cv.put("uid", message.getUid());
+                    cv.put("uid", uid);
                     cv.put("subject", message.getSubject());
                     cv.put("sender_list", Address.pack(message.getFrom()));
                     cv.put("date", message.getSentDate() == null
@@ -1527,17 +1528,19 @@ public class LocalStore extends Store implements Serializable
                     cv.put("attachment_count", attachments.size());
                     cv.put("internal_date",  message.getInternalDate() == null
                            ? System.currentTimeMillis() : message.getInternalDate().getTime());
-                    String[] mHeaders = message.getHeader("Message-ID");
-                    if (mHeaders != null && mHeaders.length > 0)
+                    String messageId = message.getMessageId();
+                        Log.e(Email.LOG_TAG, "saving a messag");
+                    if (messageId != null )
                     {
-                        cv.put("message_id", mHeaders[0]);
+                        Log.e(Email.LOG_TAG, "saving a message messasgeid is "+messageId);
+                        cv.put("message_id", messageId);
                     }
-                    long messageId = mDb.insert("messages", "uid", cv);
+                    long messageUid = mDb.insert("messages", "uid", cv);
                     for (Part attachment : attachments)
                     {
-                        saveAttachment(messageId, attachment, copy);
+                        saveAttachment(messageUid, attachment, copy);
                     }
-                    saveHeaders(messageId, (MimeMessage)message);
+                    saveHeaders(messageUid, (MimeMessage)message);
                     if (message.isSet(Flag.SEEN) == false)
                     {
                         setUnreadMessageCount(getUnreadMessageCount() + 1);
@@ -1565,6 +1568,9 @@ public class LocalStore extends Store implements Serializable
             open(OpenMode.READ_WRITE);
             ArrayList<Part> viewables = new ArrayList<Part>();
             ArrayList<Part> attachments = new ArrayList<Part>();
+
+            message.buildMimeRepresentation();
+
             MimeUtility.collectParts(message, viewables, attachments);
 
             StringBuffer sbHtml = new StringBuffer();
@@ -2124,7 +2130,7 @@ public class LocalStore extends Store implements Serializable
             super.setRecipients(RecipientType.TO, mTo);
             super.setRecipients(RecipientType.CC, mCc);
             super.setRecipients(RecipientType.BCC, mBcc);
-
+            if (mMessageId != null) super.setMessageId(mMessageId);
 
             mMessageDirty = false;
             return;
@@ -2146,7 +2152,7 @@ public class LocalStore extends Store implements Serializable
         }
 
 
-        public void setMessageId(String messageId) throws MessagingException
+        public void setMessageId(String messageId)
         {
             mMessageId = messageId;
             mMessageDirty = true;

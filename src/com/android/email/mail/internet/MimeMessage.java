@@ -54,23 +54,8 @@ public class MimeMessage extends Message
 
     public MimeMessage()
     {
-        addHeader("Message-ID", generateMessageId());
     }
 
-    private String generateMessageId()
-    {
-        StringBuffer sb = new StringBuffer();
-        sb.append("<");
-        for (int i = 0; i < 24; i++)
-        {
-            sb.append(Integer.toString((int)(Math.random() * 35), 36));
-        }
-        sb.append(".");
-        sb.append(Long.toString(System.currentTimeMillis()));
-        sb.append("@email.android.com>");
-
-        return sb.toString();
-    }
 
     /**
      * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
@@ -349,10 +334,29 @@ public class MimeMessage extends Message
         {
             mMessageId = getFirstHeader("Message-ID");
         }
+        if (mMessageId == null) //  even after checking the header
+        {
+            setMessageId(generateMessageId());
+        }
         return mMessageId;
     }
 
-    public void setMessageId(String messageId) throws MessagingException
+    private String generateMessageId()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<");
+        for (int i = 0; i < 24; i++)
+        {
+            sb.append(Integer.toString((int)(Math.random() * 35), 36));
+        }
+        sb.append(".");
+        sb.append(Long.toString(System.currentTimeMillis()));
+        sb.append("@email.android.com>");
+
+        return sb.toString();
+    }
+
+    public void setMessageId(String messageId)
     {
         setHeader("Message-ID", messageId);
         mMessageId = messageId;
@@ -437,6 +441,7 @@ public class MimeMessage extends Message
 
     public void writeTo(OutputStream out) throws IOException, MessagingException
     {
+
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         mHeader.writeTo(out);
         writer.write("\r\n");
