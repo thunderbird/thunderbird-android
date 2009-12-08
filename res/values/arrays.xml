@@ -212,15 +212,5 @@
     <item>@string/date_format_common</item>
     <item>@string/date_format_iso8601</item>
     </string-array>
-
-    <string-array name="message_list_widget_side_entries">
-        <item>@string/message_list_widget_left_side</item>
-        <item>@string/message_list_widget_right_side</item>
-    </string-array>
-
-    <string-array name="message_list_widget_side_values">
-        <item>LEFT</item>
-        <item>RIGHT</item>
-    </string-array>
-
+   
 </resources>

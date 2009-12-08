@@ -33,13 +33,6 @@ public class Email extends Application
 
     private static int theme = android.R.style.Theme_Light;
 
-    public enum MessageListWidgetSide
-    {
-        LEFT, RIGHT
-    }
-
-    private static MessageListWidgetSide messageListWidgetSide = MessageListWidgetSide.RIGHT;
-
     private static BACKGROUND_OPS backgroundOps = BACKGROUND_OPS.WHEN_CHECKED;
     /**
      * Some log messages can be sent to a file, so that the logs
@@ -476,7 +469,6 @@ public class Email extends Application
         editor.putBoolean("enableSensitiveLogging", Email.DEBUG_SENSITIVE);
         editor.putString("backgroundOperations", Email.backgroundOps.toString());
         editor.putInt("theme", theme);
-        editor.putString("messageListWidgetSide", messageListWidgetSide.toString());
     }
 
     @Override
@@ -499,7 +491,6 @@ public class Email extends Application
         }
 
         Email.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
-        Email.setMessageListWidgetSide(MessageListWidgetSide.valueOf(sprefs.getString("messageListWidgetSide", MessageListWidgetSide.RIGHT.toString())));
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
 
         /*
@@ -567,16 +558,6 @@ public class Email extends Application
     public static void setBackgroundOps(String nbackgroundOps)
     {
         Email.backgroundOps = BACKGROUND_OPS.valueOf(nbackgroundOps);
-    }
-
-    public static MessageListWidgetSide getMessageListWidgetSide()
-    {
-        return Email.messageListWidgetSide;
-    }
-
-    public static void setMessageListWidgetSide(MessageListWidgetSide messageListWidgetSide)
-    {
-        Email.messageListWidgetSide = messageListWidgetSide;
     }
 }
 

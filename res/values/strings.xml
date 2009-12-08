@@ -571,9 +571,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="date_format_medium">MEDIUM</string>
     <string name="date_format_common">dd-MMM-yyyy</string>
     <string name="date_format_iso8601">yyyy-MM-dd</string>
-
-    <string name="message_list_widget_side_label">Message list's widget side</string>
-    <string name="message_list_widget_left_side">Left</string>
-    <string name="message_list_widget_right_side">Right</string>
+    
     
 </resources>
