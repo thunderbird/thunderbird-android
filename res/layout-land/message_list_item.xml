@@ -6,14 +6,22 @@
     android:paddingRight="1dip"
     android:paddingTop="2dip"
     android:background="@drawable/message_list_item_background">
+    <LinearLayout android:id="@+id/widgets_right" 
+        android:layout_width="wrap_content" 
+        android:layout_height="fill_parent" 
+        android:layout_alignParentRight="true"
+        />
+    <LinearLayout android:id="@+id/widgets_left" 
+        android:layout_width="wrap_content" 
+        android:layout_height="fill_parent" />
     <View
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
         android:layout_width="4dip"
         android:layout_height="20dip"
         android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/widgets_left"
 	    android:layout_alignParentLeft="true" />
-    <include layout="@layout/message_list_widgets" android:id="@+id/widgets" /> 
     <TextView
         android:id="@+id/date"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -24,7 +32,7 @@
         android:layout_height="wrap_content"
         android:gravity="right|bottom"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toLeftOf="@+id/widgets" />
+        android:layout_toLeftOf="@+id/widgets_right" />
     <TextView
         android:id="@+id/from"
         android:ellipsize="end"
@@ -47,6 +55,6 @@
         android:paddingLeft="10dip"
         android:layout_marginRight="1dip"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@+id/chip"
+        android:layout_toRightOf="@+id/widgets_left"
         android:layout_toLeftOf="@+id/from" />
 </RelativeLayout>

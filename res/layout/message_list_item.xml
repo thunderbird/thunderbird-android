@@ -7,13 +7,22 @@
     android:paddingTop="2dip"
     android:background="#999999"
     >
+    <LinearLayout android:id="@+id/widgets_right" 
+        android:layout_width="wrap_content" 
+        android:layout_height="fill_parent" 
+        android:layout_alignParentRight="true"
+        />
+    <LinearLayout android:id="@+id/widgets_left" 
+        android:layout_width="wrap_content" 
+        android:layout_height="fill_parent" />
     <View
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
         android:layout_width="4dip"
         android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/widgets_left"
         android:layout_centerVertical="true" />
-    <include layout="@layout/message_list_widgets" android:id="@+id/widgets" /> 
     <TextView
         android:id="@+id/subject"
         android:ellipsize="end"
@@ -23,8 +32,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
-        android:layout_toLeftOf="@id/widgets"
-        android:layout_toRightOf="@+id/chip"
+        android:layout_toLeftOf="@id/widgets_right"
+        android:layout_toRightOf="@+id/widgets_left"
         android:layout_alignWithParentIfMissing="true"
         android:layout_marginRight="1dip" />
     <TextView
@@ -37,7 +46,7 @@
         android:textColor="?android:attr/textColorSecondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/widgets"
+        android:layout_toLeftOf="@id/widgets_right"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
         android:layout_alignWithParentIfMissing="true"
@@ -53,7 +62,7 @@
          android:paddingLeft="12dip"
          android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/date"
-         android:layout_toRightOf="@id/chip"
+         android:layout_toRightOf="@id/widgets_left"
          />
 
 </RelativeLayout>

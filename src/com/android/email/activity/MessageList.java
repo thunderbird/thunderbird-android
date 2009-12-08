@@ -31,6 +31,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -148,6 +149,7 @@ public class MessageList
 
     private boolean mStartup = false;
 
+    private boolean mLeftHanded = false;
     private int mSelectedCount = 0;
 
     private View mBatchButtonArea;
@@ -436,6 +438,8 @@ public class MessageList
         * cache the id of the chip right here.
          */
         colorChipResId = colorChipResIds[mAccount.getAccountNumber() % colorChipResIds.length];
+
+        mLeftHanded = mAccount.getLeftHanded();
 
         mAdapter = new MessageListAdapter();
 
@@ -1753,6 +1757,17 @@ public class MessageList
             {
                 view = mInflater.inflate(R.layout.message_list_item, parent, false);
                 view.setId(R.layout.message_list_item);
+                View widgetParent;
+                if (mLeftHanded == false )
+                {
+                    widgetParent  = view.findViewById(R.id.widgets_right);
+                } 
+                else {
+                    widgetParent  = view.findViewById(R.id.widgets_left);
+                }
+                View widgets = mInflater.inflate(R.layout.message_list_widgets,parent,false);
+                widgets.setId(R.id.widgets);
+                ((LinearLayout) widgetParent).addView(widgets);
             }
 
 

@@ -57,6 +57,8 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_TARGET_MODE = "folder_target_mode";
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
     private static final String PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder";
+    private static final String PREFERENCE_LEFT_HANDED = "left_handed";
+
 
     private Account mAccount;
 
@@ -76,6 +78,9 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mTargetMode;
     private ListPreference mDeletePolicy;
     private Preference mAutoExpandFolder;
+
+    private CheckBoxPreference mLeftHanded;
+
 
     public static void actionSettings(Context context, Account account)
     {
@@ -233,6 +238,10 @@ public class AccountSettings extends K9PreferenceActivity
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
 
+
+        mLeftHanded = (CheckBoxPreference) findPreference(PREFERENCE_LEFT_HANDED);
+        mLeftHanded.setChecked(mAccount.getLeftHanded()); 
+
         mAccountHideButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
         mAccountHideButtons.setValue("" + mAccount.getHideMessageViewButtons());
         mAccountHideButtons.setSummary(mAccountHideButtons.getEntry());
@@ -351,6 +360,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));
         mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
         mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
+        mAccount.setLeftHanded(mLeftHanded.isChecked());
         mAccount.save(Preferences.getPreferences(this));
         Email.setServicesEnabled(this);
         // TODO: refresh folder list here

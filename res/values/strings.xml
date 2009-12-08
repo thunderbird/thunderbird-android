@@ -383,6 +383,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_notify_summary">Notify in status bar when mail arrives</string>
     <string name="account_settings_notify_sync_summary">Notify in status bar while mail is checked</string>
     <string name="account_settings_show_combined_label">Show combined Inbox</string>
+    <string name="account_settings_left_handed_label">Show list widgets on the left</string>
     
     <string name="account_settings_notify_self_label">Notify for mail I sent</string>
     <string name="account_settings_notify_self_summary">Notify even for mail sent from an account identity</string>

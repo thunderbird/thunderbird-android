@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/widgets"
         android:layout_alignParentRight="true"
         android:layout_width="30dip"
         android:layout_height="30dip"

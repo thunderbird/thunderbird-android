@@ -59,6 +59,8 @@ public class Account implements Serializable
     boolean mNotifySync;
     HideButtons mHideMessageViewButtons;
     boolean mIsSignatureBeforeQuotedText;
+    boolean mLeftHanded;
+
     List<Identity> identities;
 
     public enum FolderMode
@@ -92,6 +94,7 @@ public class Account implements Serializable
         mNotifySync = true;
         mVibrate = false;
         mNotifySelfNewMail = true;
+        mLeftHanded = false;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
         mFolderSyncMode = FolderMode.FIRST_CLASS;
         mFolderPushMode = FolderMode.FIRST_CLASS;
@@ -171,6 +174,7 @@ public class Account implements Serializable
         mTransportUri = Utility.base64Decode(preferences.getPreferences().getString(mUuid
                                              + ".transportUri", null));
         mDescription = preferences.getPreferences().getString(mUuid + ".description", null);
+        mLeftHanded = preferences.getPreferences().getBoolean(mUuid + ".leftHanded", false);
         mAlwaysBcc = preferences.getPreferences().getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = preferences.getPreferences().getInt(mUuid
                                          + ".automaticCheckIntervalMinutes", -1);
@@ -430,6 +434,16 @@ public class Account implements Serializable
         identities.get(0).setEmail(email);
     }
 
+
+    public boolean getLeftHanded() {
+        return mLeftHanded;
+    }
+
+    public void setLeftHanded(boolean leftie) 
+    {
+        mLeftHanded = leftie;
+    }
+
     public String getAlwaysBcc()
     {
         return mAlwaysBcc;
@@ -495,6 +509,7 @@ public class Account implements Serializable
         editor.remove(mUuid + ".name");
         editor.remove(mUuid + ".email");
         editor.remove(mUuid + ".alwaysBcc");
+        editor.remove(mUuid + ".mLeftHanded");
         editor.remove(mUuid + ".automaticCheckIntervalMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
         editor.remove(mUuid + ".notifyNewMail");
@@ -563,6 +578,7 @@ public class Account implements Serializable
         editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
+        editor.putBoolean(mUuid + ".leftHanded", mLeftHanded);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
