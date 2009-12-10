@@ -433,7 +433,8 @@ public class MessageList
         {
             onRestoreListState(savedInstanceState);
         }
-
+        
+        setTitle();
     }
 
     private void onRestoreListState(Bundle savedInstanceState)
@@ -485,13 +486,17 @@ public class MessageList
         notifMgr.cancel(mAccount.getAccountNumber());
         notifMgr.cancel(-1000 - mAccount.getAccountNumber());
 
+        setTitle();
+    }
+    
+    private void setTitle()
+    {
         setTitle(
-            mAccount.getDescription()
-            + " - " +
-            mCurrentFolder.displayName
+                mAccount.getDescription()
+                + " - " +
+                mCurrentFolder.displayName
 
-        );
-
+            );
     }
 
     @Override
@@ -702,13 +707,11 @@ public class MessageList
                 case WIDGET_FLAG:
                 {
                     mSelectedWidget = WIDGET_MULTISELECT;
-                    showBatchButtons();
                     break;
                 }
                 case WIDGET_MULTISELECT:
                 {
                     mSelectedWidget = WIDGET_NONE;
-                    hideBatchButtons();
                     break;
                 }
                 case WIDGET_NONE:
@@ -731,13 +734,11 @@ public class MessageList
                 case WIDGET_NONE:
                 {
                     mSelectedWidget=WIDGET_MULTISELECT;
-                    showBatchButtons();
                     break;
                 }
                 case WIDGET_MULTISELECT:
                 {
                     mSelectedWidget=WIDGET_FLAG;
-                    hideBatchButtons();
                     break;
                 }
 
@@ -745,7 +746,25 @@ public class MessageList
 
         }
 
-
+        configureWidgets();
+        
+    }
+    
+    private void configureWidgets()
+    {
+        switch (mSelectedWidget)
+        {
+            case WIDGET_FLAG:
+                hideBatchButtons();
+                break;
+            case WIDGET_NONE:
+                hideBatchButtons();
+                break;
+            case WIDGET_MULTISELECT:
+                showBatchButtons();
+                break;
+        }
+        
         int count = mListView.getChildCount();
         for (int i=0; i<count; i++)
         {
@@ -811,11 +830,18 @@ public class MessageList
 
     private void changeSort(SORT_TYPE newSortType)
     {
-        sortType = newSortType;
-        MessagingController.getInstance(getApplication()).setSortType(sortType);
-        sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
-        sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
-        reSort();
+        if (sortType == newSortType)
+        {
+            onToggleSortAscending();
+        }
+        else
+        {
+            sortType = newSortType;
+            MessagingController.getInstance(getApplication()).setSortType(sortType);
+            sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
+            sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
+            reSort();
+        }
     }
 
     private void reSort()
@@ -1119,7 +1145,8 @@ public class MessageList
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        switch (item.getItemId())
+        int itemId = item.getItemId();
+        switch (itemId)
         {
             case R.id.check_mail:
                 checkMail(mAccount, mFolderName);
@@ -1168,11 +1195,6 @@ public class MessageList
 
                 return true;
 
-            case R.id.reverse_sort:
-                onToggleSortAscending();
-
-                return true;
-
             case R.id.list_folders:
                 onShowFolderList();
 
@@ -1192,18 +1214,123 @@ public class MessageList
                 onEditAccount();
 
                 return true;
+                
+            case R.id.batch_select_all:
+                setAllSelected(true);
+                return true;
+                
+            case R.id.batch_deselect_all:
+                setAllSelected(false);
+                return true;
+                
+            case R.id.batch_copy_op:
+                moveOrCopySelected(false);
+                return true;
+                
+            case R.id.batch_move_op:
+                moveOrCopySelected(true);
+                return true;
+                
+            case R.id.batch_delete_op:
+                deleteSelected();
+                return true;
+                
+            case R.id.batch_mark_read_op:
+                flagSelected(Flag.SEEN, true);
+                return true;
+                
+            case R.id.batch_mark_unread_op:
+                flagSelected(Flag.SEEN, false);
+                return true;
+                
+            case R.id.batch_flag_op:
+                flagSelected(Flag.FLAGGED, true);
+                return true;
+                
+            case R.id.batch_unflag_op:
+                flagSelected(Flag.FLAGGED, false);
+                return true;
 
+            case R.id.batch_plain_mode:
+                mSelectedWidget = WIDGET_NONE;
+                configureWidgets();
+                return true;
+                
+            case R.id.batch_select_mode:
+                mSelectedWidget = WIDGET_MULTISELECT;
+                configureWidgets();
+                return true;
+                
+            case R.id.batch_flag_mode:
+                mSelectedWidget = WIDGET_FLAG;
+                configureWidgets();
+                return true;
+                
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    
+    private final int[] batch_ops = { R.id.batch_copy_op, R.id.batch_delete_op, R.id.batch_flag_op,
+            R.id.batch_unflag_op, R.id.batch_mark_read_op, R.id.batch_mark_unread_op, R.id.batch_move_op ,
+            R.id.batch_select_all, R.id.batch_deselect_all };
+    
+    private final int[] batch_modes = { R.id.batch_flag_mode, R.id.batch_select_mode, R.id.batch_plain_mode };
+    
+    private void setOpsState(Menu menu, boolean state, boolean enabled)
     {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.message_list_option, menu);
-
+        for (int id : batch_ops)
+        {
+            menu.findItem(id).setVisible(state);
+            menu.findItem(id).setEnabled(enabled);
+        }
+    }
+    
+    private void setOpsMode(Menu menu, int currentModeId)
+    {
+        for (int id : batch_modes)
+        {
+            menu.findItem(id).setVisible(id != currentModeId);
+        }
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        switch (mSelectedWidget)
+        {
+            case WIDGET_FLAG:
+            {
+                setOpsState(menu, false, false);
+                setOpsMode(menu, R.id.batch_flag_mode);
+                break;
+            }
+            case WIDGET_MULTISELECT:
+            {
+                boolean anySelected = anySelected();
+                setOpsState(menu, true, anySelected);
+                setOpsMode(menu, R.id.batch_select_mode);
+                boolean newFlagState = computeBatchDirection(true);
+                boolean newReadState = computeBatchDirection(false);
+                menu.findItem(R.id.batch_flag_op).setVisible(newFlagState);
+                menu.findItem(R.id.batch_unflag_op).setVisible(!newFlagState);
+                menu.findItem(R.id.batch_mark_read_op).setVisible(newReadState);
+                menu.findItem(R.id.batch_mark_unread_op).setVisible(!newReadState);
+                menu.findItem(R.id.batch_deselect_all).setEnabled(anySelected);
+                menu.findItem(R.id.batch_select_all).setEnabled(true);
+                // TODO: batch move and copy not yet implemented
+                menu.findItem(R.id.batch_move_op).setVisible(false);
+                menu.findItem(R.id.batch_copy_op).setVisible(false);
+                break;
+            }
+            case WIDGET_NONE:
+            {
+                setOpsState(menu, false, false);
+                setOpsMode(menu, R.id.batch_plain_mode);
+                break;
+            }
+        }
+        
         if (mCurrentFolder.outbox)
         {
             menu.findItem(R.id.check_mail).setVisible(false);
@@ -1212,6 +1339,16 @@ public class MessageList
         {
             menu.findItem(R.id.send_messages).setVisible(false);
         }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.message_list_option, menu);
+        
+        
 
         return true;
     }
@@ -1341,16 +1478,6 @@ public class MessageList
         {
             menu.findItem(R.id.move).setVisible(false);
         }
-    }
-
-    private String truncateStatus(String mess)
-    {
-        if (mess != null && mess.length() > 27)
-        {
-            mess = mess.substring(0, 27);
-        }
-
-        return mess;
     }
 
     class MessageListAdapter extends BaseAdapter
@@ -2226,44 +2353,67 @@ public class MessageList
             }
         }
     }
-
-    public void onClick(View v)
+    
+    private boolean computeBatchDirection(boolean flagged)
     {
         boolean newState = false;
-        List<Message> messageList = new ArrayList<Message>();
+    
         for (MessageInfoHolder holder : mAdapter.messages)
         {
             if (holder.selected)
             {
-                if (v == mBatchDeleteButton)
-                {
-                    mAdapter.removeMessage(holder);
-                }
-                else if (v == mBatchFlagButton)
+                if (flagged)
                 {
                     if (!holder.flagged)
                     {
                         newState = true;
                     }
                 }
-                else if (v == mBatchReadButton)
+                else
                 {
                     if (!holder.read)
                     {
                         newState = true;
                     }
                 }
-                messageList.add(holder.message);
             }
         }
+        return newState;
+    }
+    
+    private boolean anySelected()
+    {
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public void onClick(View v)
+    {
+        boolean newState = false;
+        List<Message> messageList = new ArrayList<Message>();
+        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
+
+        if (v == mBatchFlagButton)
+        {
+            newState = computeBatchDirection(true);
+        }
+        else
+        {
+            newState = computeBatchDirection(false);
+        }
         for (MessageInfoHolder holder : mAdapter.messages)
         {
             if (holder.selected)
             {
                 if (v == mBatchDeleteButton)
                 {
-                    //nothing
+                    removeHolderList.add(holder);
                 }
                 else if (v == mBatchFlagButton)
                 {
@@ -2273,8 +2423,10 @@ public class MessageList
                 {
                     holder.read = newState;
                 }
+                messageList.add(holder.message);
             }
         }
+        mAdapter.removeMessages(removeHolderList);
 
         if (!messageList.isEmpty())
         {
@@ -2298,5 +2450,62 @@ public class MessageList
         mHandler.sortMessages();
     }
 
-
+    private void setAllSelected(boolean isSelected)
+    {
+        mSelectedCount = 0;
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            holder.selected = isSelected;
+            mSelectedCount += (isSelected ? 1 : 0);
+        }
+        mAdapter.notifyDataSetChanged();
+        showBatchButtons();
+    }
+    
+    private void flagSelected(Flag flag, boolean newState)
+    {
+        List<Message> messageList = new ArrayList<Message>();
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                messageList.add(holder.message);
+                if (flag == Flag.SEEN)
+                {
+                    holder.read = newState;
+                }
+                else if (flag == Flag.FLAGGED)
+                {
+                    holder.flagged = newState;
+                }
+            }
+        }
+        MessagingController.getInstance(getApplication()).setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
+                flag , newState);
+        mHandler.sortMessages();
+    }
+    
+    private void deleteSelected()
+    {
+        List<Message> messageList = new ArrayList<Message>();
+        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                removeHolderList.add(holder);
+                messageList.add(holder.message);
+            }
+        }
+        mAdapter.removeMessages(removeHolderList);
+        
+        MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
+        mSelectedCount = 0;
+        configureBatchButtons();
+    }
+    
+    private void moveOrCopySelected(boolean isMove)
+    {
+    
+    }
 }

@@ -573,5 +573,18 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="date_format_common">dd-MMM-yyyy</string>
     <string name="date_format_iso8601">yyyy-MM-dd</string>
     
+    <string name="batch_ops">Batch Ops</string>
+    <string name="batch_delete_op">Delete selected</string>
+    <string name="batch_mark_read_op">Mark selected read</string>
+    <string name="batch_mark_unread_op">Mark selected unread</string>
+    <string name="batch_flag_op">Flag selected</string>
+    <string name="batch_unflag_op">Unflag selected</string>
+    <string name="batch_move_op">Move selected</string>
+    <string name="batch_copy_op">Copy selected</string>
+    <string name="batch_flag_mode">Star mode</string>
+    <string name="batch_select_mode">Select mode</string>
+    <string name="batch_plain_mode">Plain mode</string>
+    <string name="batch_select_all">Select all</string>
+    <string name="batch_deselect_all">Deselect all</string>
     
 </resources>

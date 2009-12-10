@@ -37,11 +37,61 @@
 			/>
 		</menu>
 	</item>
-    <item
-		android:id="@+id/reverse_sort"
-		android:title="@string/reverse_sort_action"
-		android:icon="@drawable/ic_menu_reverse_sort"
-	/>
+	<item
+		android:id="@+id/batch_ops"
+		android:title="@string/batch_ops"
+		android:icon="@drawable/ic_menu_reverse_sort">
+		<menu>
+			<item
+				android:id="@+id/batch_delete_op"
+				android:title="@string/batch_delete_op"
+			/>
+			<item
+				android:id="@+id/batch_mark_read_op"
+				android:title="@string/batch_mark_read_op"
+			/>
+			<item
+				android:id="@+id/batch_flag_op"
+				android:title="@string/batch_flag_op"
+			/>
+			<item
+				android:id="@+id/batch_mark_unread_op"
+				android:title="@string/batch_mark_unread_op"
+			/>
+			<item
+				android:id="@+id/batch_unflag_op"
+				android:title="@string/batch_unflag_op"
+			/>
+			<item
+				android:id="@+id/batch_move_op"
+				android:title="@string/batch_move_op"
+			/>
+			<item
+				android:id="@+id/batch_copy_op"
+				android:title="@string/batch_copy_op"
+			/>	
+			<item
+				android:id="@+id/batch_flag_mode"
+				android:title="@string/batch_flag_mode"
+			/>
+			<item
+				android:id="@+id/batch_select_mode"
+				android:title="@string/batch_select_mode"
+			/>
+			<item
+				android:id="@+id/batch_plain_mode"
+				android:title="@string/batch_plain_mode"
+			/>
+			<item
+				android:id="@+id/batch_select_all"
+				android:title="@string/batch_select_all"
+			/>
+			<item
+				android:id="@+id/batch_deselect_all"
+				android:title="@string/batch_deselect_all"
+			/>
+		</menu>
+	</item>			
     <item
         android:id="@+id/list_folders"
         android:alphabeticShortcut="f"
