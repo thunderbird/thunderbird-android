@@ -610,8 +610,8 @@ public class WebDavStore extends Store
         String password = this.mPassword;
         String[] urlParts = url.split("/");
         String finalUrl = "";
-        String loginUrl = new String();
-        String destinationUrl = new String();
+        String loginUrl = "";
+        String destinationUrl = "";
 
         if (this.mAuthPath != null &&
                 !this.mAuthPath.equals("") &&
@@ -673,7 +673,7 @@ public class WebDavStore extends Store
                 if (istream != null)
                 {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
-                    String tempText = new String();
+                    String tempText = "";
                     boolean matched = false;
 
                     while ((tempText = reader.readLine()) != null &&
@@ -1161,7 +1161,7 @@ public class WebDavStore extends Store
             }
             else
             {
-                String encodedName = new String();
+                String encodedName = "";
                 try
                 {
                     String[] urlParts = name.split("/");
@@ -1249,7 +1249,7 @@ public class WebDavStore extends Store
             {
                 uids[i] = messages[i].getUid();
             }
-            String messageBody = new String();
+            String messageBody = "";
             HashMap<String, String> headers = new HashMap<String, String>();
             HashMap<String, String> uidToUrl = getMessageUrls(uids);
             String[] urls = new String[uids.length];
@@ -1286,11 +1286,11 @@ public class WebDavStore extends Store
 
             if (read)
             {
-                isRead = new String("True");
+                isRead = "True";
             }
             else
             {
-                isRead = new String("False");
+                isRead = "False";
             }
 
             messageBody = getMessageCountXml(isRead);
@@ -1619,8 +1619,8 @@ public class WebDavStore extends Store
                     {
                         InputStream istream = null;
                         StringBuffer buffer = new StringBuffer();
-                        String tempText = new String();
-                        String resultText = new String();
+                        String tempText = "";
+                        String resultText = "";
                         BufferedReader reader;
                         int currentLines = 0;
 
@@ -1679,7 +1679,7 @@ public class WebDavStore extends Store
             HashMap<String, Boolean> uidToReadStatus = new HashMap<String, Boolean>();
             HashMap<String, String> headers = new HashMap<String, String>();
             DataSet dataset = new DataSet();
-            String messageBody = new String();
+            String messageBody = "";
             Message[] messages = new Message[20];
             String[] uids;
 
@@ -1763,7 +1763,7 @@ public class WebDavStore extends Store
             HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
             HashMap<String, String> headers = new HashMap<String, String>();
             DataSet dataset = new DataSet();
-            String messageBody = new String();
+            String messageBody = "";
             String[] uids;
             Message[] messages = new Message[10];
 
@@ -1866,7 +1866,7 @@ public class WebDavStore extends Store
 
         private void markServerMessagesRead(String[] uids, boolean read) throws MessagingException
         {
-            String messageBody = new String();
+            String messageBody = "";
             HashMap<String, String> headers = new HashMap<String, String>();
             HashMap<String, String> uidToUrl = getMessageUrls(uids);
             DataSet dataset = new DataSet();
@@ -2051,7 +2051,7 @@ public class WebDavStore extends Store
      */
     class WebDavMessage extends MimeMessage
     {
-        private String mUrl = new String();
+        private String mUrl = "";
 
 
         WebDavMessage(String uid, Folder folder) throws MessagingException
@@ -2077,8 +2077,8 @@ public class WebDavStore extends Store
             int length = urlParts.length;
             String end = urlParts[length - 1];
 
-            this.mUrl = new String();
-            url = new String();
+            this.mUrl = "";
+            url = "";
 
             /**
              * We have to decode, then encode the URL because Exchange likes to
@@ -2146,7 +2146,7 @@ public class WebDavStore extends Store
                 String headerValue = messageHeaders.get(headers[i]);
                 if (headers[i].equals("Content-Length"))
                 {
-                    int size = new Integer(messageHeaders.get(headers[i])).intValue();
+                    int size = Integer.parseInt(messageHeaders.get(headers[i]));
                     this.setSize(size);
                 }
 
@@ -2258,7 +2258,7 @@ public class WebDavStore extends Store
         };
 
         private boolean mReadStatus = false;
-        private String mUid = new String();
+        private String mUid = "";
         private HashMap<String, String> mMessageHeaders = new HashMap<String, String>();
         private ArrayList<String> mHeaders = new ArrayList<String>();
 
@@ -2316,7 +2316,7 @@ public class WebDavStore extends Store
     {
         private HashMap<String, HashMap> mData = new HashMap<String, HashMap>();
         private HashMap<String, String> mLostData = new HashMap<String, String>();
-        private String mUid = new String();
+        private String mUid = "";
         private HashMap<String, String> mTempData = new HashMap<String, String>();
 
         public void addValue(String value, String tagName)
@@ -2352,7 +2352,7 @@ public class WebDavStore extends Store
                 String visibleCount = mLostData.get("visiblecount");
             }
 
-            mUid = new String();
+            mUid = "";
             mTempData = new HashMap<String, String>();
         }
 
@@ -2446,7 +2446,7 @@ public class WebDavStore extends Store
                 if (count != null &&
                         !count.equals(""))
                 {
-                    messageCount = new Integer(count).intValue();
+                    messageCount = Integer.parseInt(count);
                 }
 
             }
@@ -2552,7 +2552,7 @@ public class WebDavStore extends Store
             String[] urlParts = uri.split("/");
             int length = urlParts.length;
             String end = urlParts[length - 1];
-            String url = new String();
+            String url = "";
 
             /**
              * We have to decode, then encode the URL because Exchange likes to

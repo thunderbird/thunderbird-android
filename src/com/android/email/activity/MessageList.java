@@ -1859,7 +1859,7 @@ public class MessageList
             {
                 if (mCurrentFolder.lastCheckFailed == false)
                 {
-                    holder.main.setText(String.format(getString(R.string.load_more_messages_fmt).toString(), mAccount.getDisplayCount()));
+                    holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
                 }
                 else
                 {

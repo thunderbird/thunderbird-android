@@ -541,14 +541,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     {
         String appName = getString(R.string.app_name);
         WebView wv = new WebView(this);
-        String html = "<h1>" + String.format(getString(R.string.about_title_fmt).toString(),
+        String html = "<h1>" + String.format(getString(R.string.about_title_fmt),
                                              "<a href=\"" + getString(R.string.app_webpage_url) + "\">" + appName + "</a>") + "</h1>" +
                       "<p>" + appName + " " +
-                      String.format(getString(R.string.debug_version_fmt).toString(),
+                      String.format(getString(R.string.debug_version_fmt),
                                     getVersionNumber()) + "</p>" +
-                      "<p>" + String.format(getString(R.string.app_authors_fmt).toString(),
+                      "<p>" + String.format(getString(R.string.app_authors_fmt),
                                             getString(R.string.app_authors)) + "</p>" +
-                      "<p>" + String.format(getString(R.string.app_revision_fmt).toString(),
+                      "<p>" + String.format(getString(R.string.app_revision_fmt),
                                             "<a href=\"" + getString(R.string.app_revision_url) + "\">" +
                                             getString(R.string.app_revision_url) + "</a></p>");
         wv.loadData(html, "text/html", "utf-8");
