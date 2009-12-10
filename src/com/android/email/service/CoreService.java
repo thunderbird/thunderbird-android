@@ -1,7 +1,5 @@
 package com.android.email.service;
 
-import com.android.email.Email;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +7,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import com.android.email.Email;
 
 public abstract class CoreService extends Service
 {

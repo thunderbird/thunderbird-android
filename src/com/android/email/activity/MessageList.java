@@ -1,11 +1,6 @@
 package com.android.email.activity;
 //import android.os.Debug;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
@@ -18,49 +13,28 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Config;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.View.OnClickListener;
+import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.K9Activity;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.R;
-import com.android.email.Utility;
+import com.android.email.*;
 import com.android.email.MessagingController.SORT_TYPE;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
-import com.android.email.mail.Address;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Store;
+import com.android.email.mail.*;
 import com.android.email.mail.Message.RecipientType;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 import com.android.email.mail.store.LocalStore.LocalMessage;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**

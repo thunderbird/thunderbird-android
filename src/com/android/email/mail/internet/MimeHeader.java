@@ -1,17 +1,16 @@
 
 package com.android.email.mail.internet;
 
+import com.android.email.Utility;
+import com.android.email.mail.MessagingException;
+import org.apache.james.mime4j.codec.EncoderUtil;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.android.email.Email;
-import com.android.email.Utility;
-import com.android.email.mail.MessagingException;
-import org.apache.james.mime4j.codec.EncoderUtil;
 
 public class MimeHeader
 {

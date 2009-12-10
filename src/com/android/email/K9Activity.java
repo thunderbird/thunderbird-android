@@ -1,10 +1,9 @@
 package com.android.email;
 
 
-import com.android.email.activity.DateFormatter;
-
 import android.app.Activity;
 import android.os.Bundle;
+import com.android.email.activity.DateFormatter;
 
 
 public class K9Activity extends Activity

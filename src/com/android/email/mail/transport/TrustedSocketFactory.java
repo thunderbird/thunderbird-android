@@ -1,5 +1,14 @@
 package com.android.email.mail.transport;
 
+import com.android.email.mail.store.TrustManagerFactory;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.scheme.LayeredSocketFactory;
+import org.apache.http.params.HttpParams;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -7,17 +16,6 @@ import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.scheme.LayeredSocketFactory;
-import org.apache.http.params.HttpParams;
-
-import com.android.email.mail.store.TrustManagerFactory;
 
 public class TrustedSocketFactory implements LayeredSocketFactory
 {

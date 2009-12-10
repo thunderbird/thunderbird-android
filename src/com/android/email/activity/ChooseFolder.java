@@ -1,15 +1,9 @@
 
 package com.android.email.activity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
-import com.android.email.K9ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Process;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -17,15 +11,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.Preferences;
-import com.android.email.R;
+import com.android.email.*;
 import com.android.email.mail.Folder;
 import com.android.email.mail.MessagingException;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ChooseFolder extends K9ListActivity
 {

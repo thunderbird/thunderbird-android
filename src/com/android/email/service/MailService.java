@@ -1,16 +1,9 @@
 
 package com.android.email.service;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -21,15 +14,13 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Config;
 import android.util.Log;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.mail.MessagingException;
+import com.android.email.*;
 import com.android.email.mail.Pusher;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  */

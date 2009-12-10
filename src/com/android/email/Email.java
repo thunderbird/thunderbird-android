@@ -1,8 +1,6 @@
 
 package com.android.email;
 
-import java.io.File;
-
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
-
 import com.android.email.activity.MessageCompose;
 import com.android.email.mail.Address;
 import com.android.email.mail.Message;
@@ -19,6 +16,8 @@ import com.android.email.mail.MessagingException;
 import com.android.email.mail.internet.BinaryTempFileBody;
 import com.android.email.service.BootReceiver;
 import com.android.email.service.MailService;
+
+import java.io.File;
 
 public class Email extends Application
 {

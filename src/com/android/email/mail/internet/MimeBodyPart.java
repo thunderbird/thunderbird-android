@@ -1,14 +1,14 @@
 
 package com.android.email.mail.internet;
 
+import com.android.email.mail.Body;
+import com.android.email.mail.BodyPart;
+import com.android.email.mail.MessagingException;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-
-import com.android.email.mail.Body;
-import com.android.email.mail.BodyPart;
-import com.android.email.mail.MessagingException;
 
 /**
  * TODO this is a close approximation of Message, need to update along with

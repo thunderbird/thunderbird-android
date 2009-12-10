@@ -2,7 +2,6 @@
 package com.android.email;
 
 import android.text.util.Rfc822Tokenizer;
-
 import android.widget.AutoCompleteTextView.Validator;
 
 public class EmailAddressValidator implements Validator

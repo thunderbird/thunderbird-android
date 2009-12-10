@@ -1,7 +1,6 @@
 
 package com.android.email.activity.setup;
 
-import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +10,8 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.Preferences;
+import com.android.email.*;
 import com.android.email.mail.Store;
-import com.android.email.R;
 
 public class AccountSetupOptions extends K9Activity implements OnClickListener
 {

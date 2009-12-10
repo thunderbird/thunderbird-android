@@ -1,61 +1,16 @@
 
 package com.android.email.mail.transport;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.security.GeneralSecurityException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.SSLException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.CookieStore;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-
-import android.util.Config;
 import android.util.Log;
-
 import com.android.email.Email;
 import com.android.email.PeekableInputStream;
-import com.android.email.Utility;
-import com.android.email.codec.binary.Base64;
-import com.android.email.mail.Address;
-import com.android.email.mail.AuthenticationFailedException;
-import com.android.email.mail.Folder;
 import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Transport;
-import com.android.email.mail.CertificateValidationException;
-import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.store.TrustManagerFactory;
 import com.android.email.mail.store.WebDavStore;
-import com.android.email.mail.store.WebDavStore.HttpGeneric;
-import com.android.email.mail.store.WebDavStore.DataSet;
-import com.android.email.mail.store.WebDavStore.WebDavHandler;
+
+import java.io.OutputStream;
+import java.net.Socket;
 
 public class WebDavTransport extends Transport
 {

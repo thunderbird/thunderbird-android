@@ -1,11 +1,10 @@
 package com.android.email.service;
 
-import com.android.email.Email;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+import com.android.email.Email;
 
 public class PushService extends CoreService
 {

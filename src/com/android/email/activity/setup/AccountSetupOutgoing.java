@@ -1,10 +1,6 @@
 
 package com.android.email.activity.setup;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,23 +9,14 @@ import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import com.android.email.*;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.Utility;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         OnCheckedChangeListener

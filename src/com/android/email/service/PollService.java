@@ -1,20 +1,14 @@
 package com.android.email.service;
 
-import java.util.HashMap;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.Preferences;
-import com.android.email.mail.MessagingException;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import com.android.email.*;
+
+import java.util.HashMap;
 
 public class PollService extends CoreService
 {

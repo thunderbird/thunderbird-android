@@ -16,7 +16,6 @@
 
 package com.android.email;
 
-import static android.provider.Contacts.ContactMethods.CONTENT_EMAIL_URI;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -26,8 +25,9 @@ import android.provider.Contacts.People;
 import android.view.View;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
-
 import com.android.email.mail.Address;
+
+import static android.provider.Contacts.ContactMethods.CONTENT_EMAIL_URI;
 
 public class EmailAddressAdapter extends ResourceCursorAdapter
 {

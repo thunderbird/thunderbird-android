@@ -1,9 +1,6 @@
 
 package com.android.email.activity;
 
-import java.util.List;
-
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,11 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.android.email.Account;
 import com.android.email.K9ListActivity;
-import com.android.email.Preferences;
 import com.android.email.R;
+
+import java.util.List;
 
 public class ChooseIdentity extends K9ListActivity
 {

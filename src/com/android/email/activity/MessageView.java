@@ -1,22 +1,6 @@
 
 package com.android.email.activity;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
-
-import com.android.email.K9Activity;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -33,52 +17,31 @@ import android.provider.Contacts;
 import android.provider.Contacts.Intents;
 import android.util.Config;
 import android.util.Log;
-import android.view.GestureDetector;
+import android.view.*;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.MotionEvent;
 import android.view.View.OnClickListener;
-import android.webkit.WebSettings;
-import android.webkit.CacheManager;
-import android.webkit.UrlInterceptHandler;
-import android.webkit.WebView;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.webkit.*;
 import android.webkit.CacheManager.CacheResult;
-import android.webkit.PluginData;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.Utility;
-import com.android.email.mail.Address;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Multipart;
-import com.android.email.mail.Part;
+import android.widget.*;
+import com.android.email.*;
+import com.android.email.mail.*;
 import com.android.email.mail.Message.RecipientType;
 import com.android.email.mail.internet.MimeUtility;
 import com.android.email.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.android.email.mail.store.LocalStore.LocalMessage;
 import com.android.email.mail.store.LocalStore.LocalTextBody;
 import com.android.email.provider.AttachmentProvider;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MessageView extends K9Activity
         implements UrlInterceptHandler, OnClickListener

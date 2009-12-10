@@ -9,7 +9,6 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.view.KeyEvent;
-
 import com.android.email.Email;
 import com.android.email.K9PreferenceActivity;
 import com.android.email.Preferences;

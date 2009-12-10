@@ -1,21 +1,20 @@
 package com.android.email;
 
-import java.util.List;
-
 import android.app.Application;
 import android.content.Context;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
-
 import com.android.email.mail.Folder;
+import com.android.email.mail.Folder.OpenMode;
 import com.android.email.mail.Message;
 import com.android.email.mail.PushReceiver;
 import com.android.email.mail.Store;
-import com.android.email.mail.Folder.OpenMode;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 import com.android.email.service.SleepService;
+
+import java.util.List;
 
 public class MessagingControllerPushReceiver implements PushReceiver
 {

@@ -1,13 +1,5 @@
 package com.android.email.provider;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,14 +10,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.provider.OpenableColumns;
-import android.util.Config;
 import android.util.Log;
-
 import com.android.email.Account;
 import com.android.email.Email;
-import com.android.email.Utility;
 import com.android.email.mail.internet.MimeUtility;
+
+import java.io.*;
+import java.util.List;
 
 /*
  * A simple ContentProvider that allows file access to Email's attachments.

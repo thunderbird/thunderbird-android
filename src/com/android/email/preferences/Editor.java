@@ -1,13 +1,12 @@
 package com.android.email.preferences;
 
+import android.util.Log;
+import com.android.email.Email;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.android.email.Email;
-
-import android.util.Log;
 
 public class Editor implements android.content.SharedPreferences.Editor
 {

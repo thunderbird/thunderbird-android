@@ -1,9 +1,6 @@
 
 package com.android.email.activity.setup;
 
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,25 +8,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
-
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.android.email.K9Activity;
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.R;
+import com.android.email.*;
 import com.android.email.mail.AuthenticationFailedException;
-import com.android.email.mail.MessagingException;
+import com.android.email.mail.CertificateValidationException;
 import com.android.email.mail.Store;
 import com.android.email.mail.Transport;
-import com.android.email.mail.CertificateValidationException;
 import com.android.email.mail.store.TrustManagerFactory;
+
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 /**
  * Checks the given settings to make sure that they can be used to send and

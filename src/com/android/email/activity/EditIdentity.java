@@ -1,17 +1,14 @@
 package com.android.email.activity;
 
-import java.util.List;
-
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.widget.EditText;
 import com.android.email.Account;
 import com.android.email.K9Activity;
 import com.android.email.Preferences;
 import com.android.email.R;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.widget.EditText;
+import java.util.List;
 
 public class EditIdentity extends K9Activity
 {

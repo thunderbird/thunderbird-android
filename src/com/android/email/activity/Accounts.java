@@ -1,13 +1,8 @@
 
 package com.android.email.activity;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
-import com.android.email.K9ListActivity;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,43 +10,22 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.activity.setup.Prefs;
+import com.android.email.*;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.AccountSetupBasics;
-import com.android.email.activity.setup.AccountSetupCheckSettings;
-import com.android.email.mail.Folder;
-import com.android.email.mail.MessagingException;
+import com.android.email.activity.setup.Prefs;
 import com.android.email.mail.Store;
 import com.android.email.mail.store.LocalStore;
-import com.android.email.mail.store.LocalStore.LocalFolder;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener
 {

@@ -1,12 +1,6 @@
 
 package com.android.email.activity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.StringTokenizer;
-
-import com.android.email.K9Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,49 +13,26 @@ import android.os.Parcelable;
 import android.provider.OpenableColumns;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
-import android.util.Config;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.Window;
 import android.widget.AutoCompleteTextView.Validator;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.EmailAddressAdapter;
-import com.android.email.EmailAddressValidator;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.Utility;
-import com.android.email.mail.Address;
-import com.android.email.mail.Body;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Multipart;
-import com.android.email.mail.Part;
+import android.widget.*;
+import com.android.email.*;
+import com.android.email.mail.*;
 import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.internet.MimeBodyPart;
-import com.android.email.mail.internet.MimeHeader;
-import com.android.email.mail.internet.MimeMessage;
-import com.android.email.mail.internet.MimeMultipart;
-import com.android.email.mail.internet.MimeUtility;
-import com.android.email.mail.internet.TextBody;
+import com.android.email.mail.internet.*;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalAttachmentBody;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.StringTokenizer;
 
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
 {

@@ -1,22 +1,11 @@
 package com.android.email.mail.internet;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.apache.commons.io.IOUtils;
-
-import android.util.Config;
-import android.util.Log;
-
-import com.android.email.Email;
 import com.android.email.codec.binary.Base64OutputStream;
 import com.android.email.mail.Body;
 import com.android.email.mail.MessagingException;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
 
 /**
  * A Body that is backed by a temp file. The Body exposes a getOutputStream method that allows

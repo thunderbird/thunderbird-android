@@ -1,11 +1,5 @@
 package com.android.email.activity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-
-import com.android.email.K9ListActivity;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.NotificationManager;
@@ -15,31 +9,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Config;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.*;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.BaseAdapter;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.MessagingController;
-import com.android.email.MessagingListener;
-import com.android.email.Preferences;
-import com.android.email.R;
+import com.android.email.*;
 import com.android.email.activity.setup.AccountSettings;
 import com.android.email.activity.setup.FolderSettings;
 import com.android.email.mail.Folder;
@@ -47,8 +26,9 @@ import com.android.email.mail.Message;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Store;
 
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
 /**
  * FolderList is the primary user interface for the program. This

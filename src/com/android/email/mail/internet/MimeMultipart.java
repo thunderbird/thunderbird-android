@@ -1,15 +1,11 @@
 
 package com.android.email.mail.internet;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
 import com.android.email.mail.BodyPart;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Multipart;
+
+import java.io.*;
 
 public class MimeMultipart extends Multipart
 {

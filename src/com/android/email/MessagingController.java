@@ -1,35 +1,5 @@
 
 package com.android.email;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-
-import org.apache.commons.io.output.NullWriter;
 
 import android.app.Application;
 import android.app.Notification;
@@ -39,27 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.PowerManager;
-import android.os.Process;
 import android.os.PowerManager.WakeLock;
+import android.os.Process;
 import android.text.TextUtils;
-import android.util.Config;
 import android.util.Log;
-
 import com.android.email.activity.FolderList;
-import com.android.email.mail.Address;
-import com.android.email.mail.Body;
-import com.android.email.mail.FetchProfile;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessageRemovalListener;
-import com.android.email.mail.MessageRetrievalListener;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Part;
-import com.android.email.mail.PushReceiver;
-import com.android.email.mail.Pusher;
-import com.android.email.mail.Store;
-import com.android.email.mail.Transport;
+import com.android.email.mail.*;
 import com.android.email.mail.Folder.FolderType;
 import com.android.email.mail.Folder.OpenMode;
 import com.android.email.mail.internet.MimeMessage;
@@ -69,7 +24,15 @@ import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 import com.android.email.mail.store.LocalStore.LocalMessage;
 import com.android.email.mail.store.LocalStore.PendingCommand;
-import com.android.email.service.SleepService;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Starts a long running (application) Thread that will run through commands

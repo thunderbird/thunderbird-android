@@ -1,17 +1,12 @@
 package com.android.email.activity;
 
 import android.content.Intent;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-
 import com.android.email.Account;
 import com.android.email.Preferences;
 import com.android.email.R;

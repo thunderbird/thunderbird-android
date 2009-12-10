@@ -1,17 +1,16 @@
 
 package com.android.email;
 
+import android.text.Editable;
+import android.widget.EditText;
+import android.widget.TextView;
+import com.android.email.codec.binary.Base64;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-
-import com.android.email.codec.binary.Base64;
-
-import android.text.Editable;
-import android.widget.EditText;
-import android.widget.TextView;
 
 public class Utility
 {

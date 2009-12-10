@@ -1,15 +1,13 @@
 package com.android.email.activity.setup;
+
 import android.app.Activity;
-import com.android.email.K9Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
-
 import android.widget.RadioButton;
 import com.android.email.Account;
-import com.android.email.Email;
+import com.android.email.K9Activity;
 import com.android.email.Preferences;
 import com.android.email.R;
 

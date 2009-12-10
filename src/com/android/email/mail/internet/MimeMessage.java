@@ -1,18 +1,7 @@
 
 package com.android.email.mail.internet;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Stack;
-import java.util.UUID;
-
+import com.android.email.mail.*;
 import org.apache.james.mime4j.BodyDescriptor;
 import org.apache.james.mime4j.ContentHandler;
 import org.apache.james.mime4j.EOLConvertingInputStream;
@@ -20,15 +9,9 @@ import org.apache.james.mime4j.MimeStreamParser;
 import org.apache.james.mime4j.field.DateTimeField;
 import org.apache.james.mime4j.field.Field;
 
-import android.util.Log;
-
-import com.android.email.Email;
-import com.android.email.mail.Address;
-import com.android.email.mail.Body;
-import com.android.email.mail.BodyPart;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Part;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and

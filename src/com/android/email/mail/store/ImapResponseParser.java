@@ -4,6 +4,12 @@
 
 package com.android.email.mail.store;
 
+import android.util.Log;
+import com.android.email.Email;
+import com.android.email.FixedLengthInputStream;
+import com.android.email.PeekableInputStream;
+import com.android.email.mail.MessagingException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -11,14 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
-import android.util.Config;
-import android.util.Log;
-
-import com.android.email.Email;
-import com.android.email.FixedLengthInputStream;
-import com.android.email.PeekableInputStream;
-import com.android.email.mail.MessagingException;
 
 public class ImapResponseParser
 {

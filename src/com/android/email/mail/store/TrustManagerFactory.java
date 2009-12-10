@@ -1,24 +1,22 @@
 
 package com.android.email.mail.store;
 
-import android.util.Log;
 import android.app.Application;
 import android.content.Context;
 import android.net.http.DomainNameChecker;
+import android.util.Log;
+import com.android.email.Email;
 
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStore;
-import java.security.NoSuchAlgorithmException;
 import java.security.KeyStoreException;
-import java.security.cert.X509Certificate;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-
-import javax.net.ssl.X509TrustManager;
-import javax.net.ssl.TrustManager;
-
-import com.android.email.Email;
+import java.security.cert.X509Certificate;
 
 public final class TrustManagerFactory
 {

@@ -1,42 +1,24 @@
 
 package com.android.email.mail.store;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.URI;
-import java.net.URISyntaxException;
+import android.util.Config;
+import android.util.Log;
+import com.android.email.Email;
+import com.android.email.Utility;
+import com.android.email.mail.*;
+import com.android.email.mail.Folder.OpenMode;
+import com.android.email.mail.internet.MimeMessage;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.TrustManager;
+import java.io.*;
+import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.SSLException;
-
-import android.util.Config;
-import android.util.Log;
-
-import com.android.email.Email;
-import com.android.email.Utility;
-import com.android.email.mail.AuthenticationFailedException;
-import com.android.email.mail.FetchProfile;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessageRetrievalListener;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Store;
-import com.android.email.mail.CertificateValidationException;
-import com.android.email.mail.Folder.OpenMode;
-import com.android.email.mail.internet.MimeMessage;
 
 public class Pop3Store extends Store
 {

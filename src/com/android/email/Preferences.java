@@ -1,14 +1,13 @@
 
 package com.android.email;
 
-import com.android.email.preferences.Editor;
-import com.android.email.preferences.Storage;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Config;
 import android.util.Log;
+import com.android.email.preferences.Editor;
+import com.android.email.preferences.Storage;
 
 public class Preferences
 {

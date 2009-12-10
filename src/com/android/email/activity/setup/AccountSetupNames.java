@@ -1,7 +1,6 @@
 
 package com.android.email.activity.setup;
 
-import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.Utility;
+import com.android.email.*;
 import com.android.email.activity.FolderList;
 
 public class AccountSetupNames extends K9Activity implements OnClickListener

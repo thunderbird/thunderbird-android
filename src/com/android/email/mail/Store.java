@@ -1,15 +1,13 @@
 
 package com.android.email.mail;
 
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Application;
-
 import com.android.email.mail.store.ImapStore;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.Pop3Store;
 import com.android.email.mail.store.WebDavStore;
+
+import java.util.HashMap;
 
 /**
  * Store is the access point for an email message store. It's location can be

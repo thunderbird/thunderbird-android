@@ -1,77 +1,32 @@
 
 package com.android.email.mail.store;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.ConnectException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import android.util.Log;
+import com.android.email.Email;
+import com.android.email.PeekableInputStream;
+import com.android.email.Utility;
+import com.android.email.mail.*;
+import com.android.email.mail.internet.*;
+import com.android.email.mail.store.ImapResponseParser.ImapList;
+import com.android.email.mail.store.ImapResponseParser.ImapResponse;
+import com.android.email.mail.transport.CountingOutputStream;
+import com.android.email.mail.transport.EOLConvertingOutputStream;
+import com.beetstra.jutf7.CharsetProvider;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.TrustManager;
+import java.io.*;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.Security;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.SSLException;
-
-import android.util.Log;
-
-import com.android.email.Email;
-import com.android.email.PeekableInputStream;
-import com.android.email.Utility;
-import com.android.email.mail.AuthenticationFailedException;
-import com.android.email.mail.FetchProfile;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessageRetrievalListener;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Part;
-import com.android.email.mail.PushReceiver;
-import com.android.email.mail.Pusher;
-import com.android.email.mail.Store;
-import com.android.email.mail.CertificateValidationException;
-import com.android.email.mail.Folder.FolderType;
-import com.android.email.mail.internet.MimeBodyPart;
-import com.android.email.mail.internet.MimeHeader;
-import com.android.email.mail.internet.MimeMessage;
-import com.android.email.mail.internet.MimeMultipart;
-import com.android.email.mail.internet.MimeUtility;
-import com.android.email.mail.store.ImapResponseParser.ImapList;
-import com.android.email.mail.store.ImapResponseParser.ImapResponse;
-import com.android.email.mail.store.LocalStore.LocalFolder;
-import com.android.email.mail.store.LocalStore.LocalMessage;
-import com.android.email.mail.transport.CountingOutputStream;
-import com.android.email.mail.transport.EOLConvertingOutputStream;
-import com.beetstra.jutf7.CharsetProvider;
 
 /**
  * <pre>

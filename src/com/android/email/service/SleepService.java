@@ -1,16 +1,15 @@
 package com.android.email.service;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
-
 import com.android.email.Email;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SleepService extends CoreService
 {

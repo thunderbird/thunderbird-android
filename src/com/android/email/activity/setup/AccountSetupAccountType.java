@@ -1,10 +1,6 @@
 
 package com.android.email.activity.setup;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import com.android.email.K9Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +9,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.android.email.Account;
 import com.android.email.Email;
+import com.android.email.K9Activity;
 import com.android.email.R;
-import com.android.email.activity.SizeFormatter;
+
+import java.net.URI;
 
 /**
  * Prompts the user to select an account type. The account type, along with the

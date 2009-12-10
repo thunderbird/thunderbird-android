@@ -1,7 +1,6 @@
 package com.android.email.activity;
 
 import android.content.Context;
-
 import com.android.email.R;
 
 public class SizeFormatter

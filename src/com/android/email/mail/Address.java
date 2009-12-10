@@ -3,21 +3,18 @@ package com.android.email.mail;
 
 import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
-
+import android.util.Log;
+import com.android.email.Email;
+import com.android.email.Utility;
+import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.field.address.AddressList;
 import org.apache.james.mime4j.field.address.Mailbox;
 import org.apache.james.mime4j.field.address.MailboxList;
 import org.apache.james.mime4j.field.address.NamedMailbox;
 import org.apache.james.mime4j.field.address.parser.ParseException;
 
-import android.util.Log;
-
-import com.android.email.Email;
-import com.android.email.Utility;
-
-import java.util.List;
 import java.util.ArrayList;
-import org.apache.james.mime4j.codec.EncoderUtil;
+import java.util.List;
 
 public class Address
 {

@@ -1,30 +1,21 @@
 
 package com.android.email.mail.internet;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-import java.nio.charset.Charset;
-
-
-
+import android.util.Log;
+import com.android.email.Email;
+import com.android.email.mail.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.decoder.Base64InputStream;
 import org.apache.james.mime4j.decoder.DecoderUtil;
 import org.apache.james.mime4j.decoder.QuotedPrintableInputStream;
 
-import android.util.Log;
-
-import com.android.email.Email;
-import com.android.email.mail.Body;
-import com.android.email.mail.BodyPart;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Multipart;
-import com.android.email.mail.Part;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class MimeUtility
 {

@@ -1,12 +1,10 @@
 
 package com.android.email;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import com.android.email.mail.Address;
 import com.android.email.mail.Folder;
 import com.android.email.mail.MessagingException;
@@ -14,11 +12,11 @@ import com.android.email.mail.Store;
 import com.android.email.mail.store.LocalStore;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.util.Log;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save

@@ -1,11 +1,6 @@
 
 package com.android.email.activity.setup;
 
-import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import com.android.email.K9Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -25,13 +20,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import com.android.email.*;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.EmailAddressValidator;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.Utility;
+import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Prompts the user for the email address and password. Also prompts for

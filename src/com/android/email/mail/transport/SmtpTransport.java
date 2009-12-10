@@ -1,40 +1,26 @@
 
 package com.android.email.mail.transport;
 
+import android.util.Log;
+import com.android.email.Email;
+import com.android.email.PeekableInputStream;
+import com.android.email.codec.binary.Base64;
+import com.android.email.mail.*;
+import com.android.email.mail.Message.RecipientType;
+import com.android.email.mail.store.TrustManagerFactory;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.TrustManager;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.SSLException;
-
-import android.util.Config;
-import android.util.Log;
-
-import com.android.email.Email;
-import com.android.email.PeekableInputStream;
-import com.android.email.codec.binary.Base64;
-import com.android.email.mail.Address;
-import com.android.email.mail.AuthenticationFailedException;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Store;
-import com.android.email.mail.Transport;
-import com.android.email.mail.CertificateValidationException;
-import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.store.TrustManagerFactory;
 
 public class SmtpTransport extends Transport
 {

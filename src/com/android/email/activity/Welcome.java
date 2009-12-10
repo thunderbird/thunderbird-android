@@ -1,12 +1,7 @@
 package com.android.email.activity;
 
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.Preferences;
-
-import com.android.email.K9Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import com.android.email.K9Activity;
 
 /**
  * The Welcome activity initializes the application and decides what Activity

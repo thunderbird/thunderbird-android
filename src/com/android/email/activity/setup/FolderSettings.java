@@ -3,25 +3,15 @@ package com.android.email.activity.setup;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.util.Log;
 import android.view.KeyEvent;
-import com.android.email.K9PreferenceActivity;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.RingtonePreference;
-
-import com.android.email.Account;
-import com.android.email.Email;
-import com.android.email.Preferences;
-import com.android.email.R;
-import com.android.email.mail.Folder;
+import com.android.email.*;
+import com.android.email.mail.Folder.FolderClass;
 import com.android.email.mail.MessagingException;
 import com.android.email.mail.Store;
-import com.android.email.mail.Folder.FolderClass;
 import com.android.email.mail.store.LocalStore.LocalFolder;
 
 public class FolderSettings extends K9PreferenceActivity

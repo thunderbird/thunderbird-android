@@ -1,66 +1,29 @@
 
 package com.android.email.mail.store;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import android.content.SharedPreferences;
-
-import org.apache.commons.io.IOUtils;
-
 import android.app.Application;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 import android.text.util.Regex;
-import android.text.util.Linkify;
-import android.text.Spannable;
-import android.text.SpannableString;
-
+import android.util.Log;
 import com.android.email.Email;
 import com.android.email.Preferences;
 import com.android.email.Utility;
 import com.android.email.codec.binary.Base64OutputStream;
-import com.android.email.mail.Address;
-import com.android.email.mail.Body;
-import com.android.email.mail.FetchProfile;
-import com.android.email.mail.Flag;
-import com.android.email.mail.Folder;
-import com.android.email.mail.Message;
-import com.android.email.mail.MessageRemovalListener;
-import com.android.email.mail.MessageRetrievalListener;
-import com.android.email.mail.MessagingException;
-import com.android.email.mail.Part;
-import com.android.email.mail.Store;
-import com.android.email.mail.Folder.FolderClass;
+import com.android.email.mail.*;
 import com.android.email.mail.Message.RecipientType;
-import com.android.email.mail.internet.MimeBodyPart;
-import com.android.email.mail.internet.MimeHeader;
-import com.android.email.mail.internet.MimeMessage;
-import com.android.email.mail.internet.MimeMultipart;
-import com.android.email.mail.internet.MimeUtility;
-import com.android.email.mail.internet.TextBody;
+import com.android.email.mail.internet.*;
 import com.android.email.provider.AttachmentProvider;
-import java.io.StringReader;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.regex.Matcher;
 
 /**
  * <pre>

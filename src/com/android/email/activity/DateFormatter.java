@@ -1,16 +1,15 @@
 package com.android.email.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences.Editor;
+import com.android.email.Preferences;
+import com.android.email.R;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.content.Context;
-import android.content.SharedPreferences.Editor;
-
-import com.android.email.Preferences;
-import com.android.email.R;
 
 public class DateFormatter
 {

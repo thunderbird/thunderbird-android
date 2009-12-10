@@ -1,13 +1,12 @@
 
 package com.android.email;
 
-import java.util.List;
-
 import android.content.Context;
-
 import com.android.email.mail.Folder;
 import com.android.email.mail.Message;
 import com.android.email.mail.Part;
+
+import java.util.List;
 
 /**
  * Defines the interface that MessagingController will use to callback to requesters. This class

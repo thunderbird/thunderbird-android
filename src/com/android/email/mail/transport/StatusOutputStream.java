@@ -1,13 +1,12 @@
 package com.android.email.mail.transport;
 
+import android.util.Config;
+import android.util.Log;
+import com.android.email.Email;
+
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import com.android.email.Email;
-
-import android.util.Config;
-import android.util.Log;
 
 public class StatusOutputStream extends FilterOutputStream
 {
