@@ -1241,9 +1241,6 @@ public class LocalStore extends Store implements Serializable
                     return null;
                 }
                 populateMessageFromGetMessageCursor(message, cursor);
-                ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
-                messages.add(message);
-                populateHeaders(messages);
             }
             finally
             {
@@ -1291,19 +1288,12 @@ public class LocalStore extends Store implements Serializable
                     populateMessageFromGetMessageCursor(message, cursor);
 
                     messages.add(message);
-                    messagesForHeaders.add(message);
-                    if (messagesForHeaders.size() >= 50)
-                    {
-                        populateHeaders(messagesForHeaders);
-                        messagesForHeaders.clear();
-                    }
                     if (listener != null)
                     {
                         listener.messageFinished(message, i, -1);
                     }
                     i++;
                 }
-                populateHeaders(messagesForHeaders);
                 if (listener != null)
                 {
                     listener.messagesFinished(i);
@@ -2052,7 +2042,7 @@ public class LocalStore extends Store implements Serializable
         private int mAttachmentCount;
         private String mSubject;
 
-
+        private boolean mHeadersLoaded = false;
         private boolean mMessageDirty = false;
 
         public LocalMessage()
@@ -2296,6 +2286,49 @@ public class LocalStore extends Store implements Serializable
                             Utility.combine(getFlags(), ',').toUpperCase(), mId
                         });
         }
+
+
+    private void loadHeaders() {
+           ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
+           messages.add(this);
+           mHeadersLoaded = true; // set true before calling populate headers to stop recursion
+           ((LocalFolder) mFolder).populateHeaders(messages);
+
+    }
+
+    public void addHeader(String name, String value)
+    {
+        if (!mHeadersLoaded)
+        {
+            loadHeaders();
+        }
+        super.addHeader(name, value);
+    }
+
+    public void setHeader(String name, String value)
+    {
+        if (!mHeadersLoaded)
+            loadHeaders();
+        super.setHeader(name, value);
+    }
+
+    public String[] getHeader(String name)
+    {
+        if (!mHeadersLoaded)
+            loadHeaders();
+
+        return super.getHeader(name);
+    }
+
+    public void removeHeader(String name)
+    {
+        if (!mHeadersLoaded)
+            loadHeaders();
+        super.removeHeader(name);
+    }
+
+
+
     }
 
     public class LocalAttachmentBodyPart extends MimeBodyPart
