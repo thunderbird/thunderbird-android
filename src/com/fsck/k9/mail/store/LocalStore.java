@@ -1264,8 +1264,14 @@ public class LocalStore extends Store implements Serializable
             open(OpenMode.READ_WRITE);
             ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
             Cursor cursor = null;
+            int totalSeen = 0;
+            int i;
             try
             {
+
+                while (true)
+                {
+
                 // pull out messages most recent first, since that's what the default sort is
                 cursor = mDb.rawQuery(
                              "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
@@ -1273,14 +1279,14 @@ public class LocalStore extends Store implements Serializable
                              + "FROM messages "
                              + "WHERE "
                              + (includeDeleted ? "" : "deleted = 0 AND ")
-                             + " folder_id = ? ORDER BY date DESC"
+                             + " folder_id = ? ORDER BY date DESC LIMIT 25 OFFSET "+ totalSeen
                              , new String[]
                              {
                                  Long.toString(mFolderId)
                              });
 
 
-                int i = 0;
+                i = 0;
                 ArrayList<LocalMessage> messagesForHeaders = new ArrayList<LocalMessage>();
                 while (cursor.moveToNext())
                 {
@@ -1294,10 +1300,20 @@ public class LocalStore extends Store implements Serializable
                     }
                     i++;
                 }
-                if (listener != null)
-                {
-                    listener.messagesFinished(i);
+                totalSeen += i;
+                if ( i == 0 ) {
+                    break;
                 }
+                else
+                {
+                    cursor.close();
+                }
+            }
+
+            if (listener != null)
+            {
+                    listener.messagesFinished(totalSeen);
+            }
             }
             finally
             {
@@ -1598,6 +1614,8 @@ public class LocalStore extends Store implements Serializable
                 throw new MessagingException("Error appending message", e);
             }
         }
+
+
 
         private void saveHeaders(long id, MimeMessage message)
         {
@@ -2041,6 +2059,7 @@ public class LocalStore extends Store implements Serializable
         private long mId;
         private int mAttachmentCount;
         private String mSubject;
+
 
         private boolean mHeadersLoaded = false;
         private boolean mMessageDirty = false;
