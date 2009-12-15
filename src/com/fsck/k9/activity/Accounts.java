@@ -252,7 +252,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
-        boolean startup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, false);
+        boolean startup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, true);
         if (startup && accounts.length == 1)
         {
             onOpenAccount(accounts[0], true);
