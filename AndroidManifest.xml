@@ -19,15 +19,15 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <permission android:name="com.android.email.permission.READ_ATTACHMENT"
+    <permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"
                 android:permissionGroup="android.permission-group.MESSAGES"
                 android:protectionLevel="dangerous"
                 android:label="@string/read_attachment_label"
                 android:description="@string/read_attachment_desc"/>
-    <uses-permission android:name="com.android.email.permission.READ_ATTACHMENT"/>
+    <uses-permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"/>
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="K9"
         >
-        <activity android:name="com.android.email.activity.Welcome">
+        <activity android:name="com.fsck.k9.activity.Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -36,98 +36,98 @@
         </activity>
 
         <activity
-            android:name="com.android.email.activity.setup.Prefs"
+            android:name="com.fsck.k9.activity.setup.Prefs"
             android:label="@string/prefs_title"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.setup.AccountSetupBasics"
+            android:name="com.fsck.k9.activity.setup.AccountSetupBasics"
             android:label="@string/account_setup_basics_title"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.setup.AccountSetupAccountType"
+            android:name="com.fsck.k9.activity.setup.AccountSetupAccountType"
             android:label="@string/account_setup_account_type_title"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.setup.AccountSetupIncoming"
+            android:name="com.fsck.k9.activity.setup.AccountSetupIncoming"
             android:label="@string/account_setup_incoming_title"
             >
         </activity>
         <activity 
-            android:name="com.android.email.activity.setup.AccountSetupComposition" 
+            android:name="com.fsck.k9.activity.setup.AccountSetupComposition" 
             android:label="@string/account_settings_composition_title" 
         > 
         </activity>
         <activity
-            android:name="com.android.email.activity.setup.AccountSetupOutgoing"
+            android:name="com.fsck.k9.activity.setup.AccountSetupOutgoing"
             android:label="@string/account_setup_outgoing_title"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.setup.AccountSetupOptions"
+            android:name="com.fsck.k9.activity.setup.AccountSetupOptions"
             android:label="@string/account_setup_options_title"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.setup.AccountSetupNames"
+            android:name="com.fsck.k9.activity.setup.AccountSetupNames"
             android:label="@string/account_setup_names_title"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.ChooseFolder"
+            android:name="com.fsck.k9.activity.ChooseFolder"
             android:theme="@style/Theme.K9Dialog"
             android:label="@string/choose_folder_title"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.ChooseIdentity"
+            android:name="com.fsck.k9.activity.ChooseIdentity"
             android:theme="@style/Theme.K9Dialog"
             android:label="@string/choose_identity_title"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.ManageIdentities"
+            android:name="com.fsck.k9.activity.ManageIdentities"
             android:label="@string/manage_identities_title"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.EditIdentity"
+            android:name="com.fsck.k9.activity.EditIdentity"
             android:label="@string/edit_identity_title"
             >
         </activity>
         <!-- XXX Note: this activity is hacked to ignore config changes,
              since it doesn't currently handle them correctly in code. -->
         <activity
-            android:name="com.android.email.activity.setup.AccountSetupCheckSettings"
+            android:name="com.fsck.k9.activity.setup.AccountSetupCheckSettings"
             android:label="@string/account_setup_check_settings_title"
             android:configChanges="keyboardHidden|orientation"
             >
         </activity>
         <activity
-            android:name="com.android.email.activity.setup.AccountSettings"
+            android:name="com.fsck.k9.activity.setup.AccountSettings"
             android:label="@string/account_settings_title_fmt"
             >
         </activity>
         
         <activity
-            android:name="com.android.email.activity.setup.FolderSettings"
+            android:name="com.fsck.k9.activity.setup.FolderSettings"
             android:theme="@android:style/Theme.Dialog"
             android:label="@string/folder_settings_title"
             >
         </activity>
 
         <activity
-            android:name="com.android.email.activity.Debug"
+            android:name="com.fsck.k9.activity.Debug"
             android:label="@string/debug_title">
         </activity>
         <activity
-            android:name="com.android.email.activity.Accounts"
+            android:name="com.fsck.k9.activity.Accounts"
             android:label="@string/accounts_title">
         </activity>
         <activity
-            android:name="com.android.email.activity.FolderList">
+            android:name="com.fsck.k9.activity.FolderList">
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -140,7 +140,7 @@
             -->
         </activity>
         <activity
-            android:name="com.android.email.activity.MessageList">
+            android:name="com.fsck.k9.activity.MessageList">
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -153,7 +153,7 @@
             -->
         </activity>
         <activity
-            android:name="com.android.email.activity.MessageView">
+            android:name="com.fsck.k9.activity.MessageView">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
@@ -164,7 +164,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.email.activity.MessageCompose"
+            android:name="com.fsck.k9.activity.MessageCompose"
             android:label="@string/app_name"
             android:enabled="false"
             >
@@ -185,7 +185,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <receiver android:name="com.android.email.service.BootReceiver"
+        <receiver android:name="com.fsck.k9.service.BootReceiver"
               android:enabled="true"
               >
             <intent-filter>
@@ -204,38 +204,38 @@
                 <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.android.email.service.BroadcastReceiver.wakeLockRelease"/>
+                <action android:name="com.fsck.k9.service.BroadcastReceiver.wakeLockRelease"/>
             </intent-filter>
               <intent-filter>
-                <action android:name="com.android.email.service.BroadcastReceiver.scheduleIntent"/>
+                <action android:name="com.fsck.k9.service.BroadcastReceiver.scheduleIntent"/>
             </intent-filter>
         </receiver>
         <service
-            android:name="com.android.email.service.MailService"
+            android:name="com.fsck.k9.service.MailService"
             android:enabled="true"
             >
         </service>
         <service
-             android:name="com.android.email.service.PushService"
+             android:name="com.fsck.k9.service.PushService"
              android:enabled="true"
              >
          </service>
          <service
-             android:name="com.android.email.service.PollService"
+             android:name="com.fsck.k9.service.PollService"
              android:enabled="true"
             >
          </service>
          <service
-             android:name="com.android.email.service.SleepService"
+             android:name="com.fsck.k9.service.SleepService"
              android:enabled="true"
              >
          </service>
         <provider
-            android:name="com.android.email.provider.AttachmentProvider"
+            android:name="com.fsck.k9.provider.AttachmentProvider"
             android:authorities="com.fsck.k9.attachmentprovider"
             android:multiprocess="true"
             android:grantUriPermissions="true"
-            android:readPermission="com.android.email.permission.READ_ATTACHMENT"
+            android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"
             />
     </application>
 </manifest>
