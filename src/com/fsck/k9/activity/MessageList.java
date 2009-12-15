@@ -1,5 +1,5 @@
 package com.fsck.k9.activity;
-import android.os.Debug;
+// import android.os.Debug;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -293,7 +293,7 @@ public class MessageList
 
     public void onItemClick(AdapterView parent, View v, int position, long id)
     {
-        Debug.stopMethodTracing();
+        //Debug.stopMethodTracing();
         if ((position+1) == (mAdapter.getCount()))
         {
             MessagingController.getInstance(getApplication()).loadMoreMessages(
@@ -317,7 +317,7 @@ public class MessageList
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        Debug.startMethodTracing("k9");
+        //Debug.startMethodTracing("k9");
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -342,6 +342,26 @@ public class MessageList
         mListView.setSaveEnabled(false);
 
         mInflater = getLayoutInflater();
+
+
+        /*
+         * Dirty hack - the first time we inflate a message list item
+         * actually takes a lot longer as Android is doing a fair bit of
+         * work.  Instead of letting that happen when the first item
+         * is displayed, do it in a thread as we're doing initial setup
+         * Subjective performance feels a lot better, but who knows.
+         *
+         */
+        new Thread(new Runnable()
+        {
+            public void run()
+            {
+                mInflater.inflate(R.layout.message_list_item, mListView, false);
+            }
+
+        }).start();
+
+
 
         mBatchButtonArea = findViewById(R.id.batch_button_area);
         mBatchReadButton = (Button) findViewById(R.id.batch_read_button);
