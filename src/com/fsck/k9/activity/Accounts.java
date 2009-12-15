@@ -255,7 +255,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         boolean startup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, false);
         if (startup && accounts.length == 1)
         {
-            FolderList.actionHandleAccount(this, accounts[0], accounts[0].getAutoExpandFolderName());
+            onOpenAccount(accounts[0], true);
             finish();
         }
         else
@@ -377,9 +377,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
     }
 
-    private void onOpenAccount(Account account)
+    private void onOpenAccount(Account account, boolean startup)
     {
-        FolderList.actionHandleAccount(this, account, true);
+            if (account.getAutoExpandFolderName() == null)
+            {
+                FolderList.actionHandleAccount(this, account, startup);
+            }
+            else
+            {
+                MessageList.actionHandleFolder(this, account, account.getAutoExpandFolderName(), startup);
+            }
     }
 
     public void onClick(View view)
@@ -471,7 +478,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 onEditAccount(account);
                 break;
             case R.id.open:
-                onOpenAccount(account);
+                onOpenAccount(account, false);
                 break;
             case R.id.check_mail:
                 onCheckMail(account);
@@ -508,7 +515,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     public void onItemClick(AdapterView parent, View view, int position, long id)
     {
         Account account = (Account)parent.getItemAtPosition(position);
-        onOpenAccount(account);
+        onOpenAccount(account, false);
     }
 
     @Override
