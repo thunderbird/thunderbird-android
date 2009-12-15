@@ -698,6 +698,10 @@ public class ImapStore extends Store
             {
                 throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
             }
+
+            if (messages.length == 0) 
+                return;
+
             ImapFolder iFolder = (ImapFolder)folder;
             checkOpen();
             String[] uids = new String[messages.length];
@@ -720,12 +724,17 @@ public class ImapStore extends Store
         @Override
         public void moveMessages(Message[] messages, Folder folder) throws MessagingException
         {
+            if (messages.length == 0) 
+                return;
             copyMessages(messages, folder);
             setFlags(messages, new Flag[] { Flag.DELETED }, true);
         }
 
         public void delete(Message[] messages, String trashFolderName) throws MessagingException
         {
+            if (messages.length == 0) 
+                return;
+
             if (getName().equals(trashFolderName))
             {
                 setFlags(messages, new Flag[] { Flag.DELETED }, true);
