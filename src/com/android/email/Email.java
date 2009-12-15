@@ -386,6 +386,7 @@ public class Email extends Application
         public class EmailReceived
         {
             public static final String ACTION_EMAIL_RECEIVED    = "com.android.email.intent.action.EMAIL_RECEIVED";
+            public static final String ACTION_EMAIL_DELETED     = "com.android.email.intent.action.EMAIL_DELETED";
             public static final String EXTRA_ACCOUNT            = "com.android.email.intent.extra.ACCOUNT";
             public static final String EXTRA_FOLDER             = "com.android.email.intent.extra.FOLDER";
             public static final String EXTRA_SENT_DATE          = "com.android.email.intent.extra.SENT_DATE";
@@ -506,13 +507,12 @@ public class Email extends Application
 
         MessagingController.getInstance(this).addListener(new MessagingListener()
         {
-            @Override
-            public void synchronizeMailboxNewMessage(Account account, String folder, Message message)
+            private void broadcastIntent(String action, Account account, String folder, Message message)
             {
                 try
                 {
                     Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
-                    Intent intent = new Intent(Email.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, uri);
+                    Intent intent = new Intent(action, uri);
                     intent.putExtra(Email.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
                     intent.putExtra(Email.Intents.EmailReceived.EXTRA_FOLDER, folder);
                     intent.putExtra(Email.Intents.EmailReceived.EXTRA_SENT_DATE, message.getSentDate());
@@ -523,13 +523,41 @@ public class Email extends Application
                     intent.putExtra(Email.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
                     intent.putExtra(Email.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
                     Email.this.sendBroadcast(intent);
-                    Log.d(Email.LOG_TAG, "Broadcasted intent: " + message.getSubject());
+                    Log.d(Email.LOG_TAG, "Broadcasted: action=" + action
+                        + " account=" + account.getDescription()
+                        + " folder=" + folder
+                        + " message uid=" + message.getUid()
+                    );
                 }
                 catch (MessagingException e)
                 {
-                    Log.w(Email.LOG_TAG, "Account=" + account.getName() + " folder=" + folder + "message uid=" + message.getUid(), e);
+                    Log.w(Email.LOG_TAG, "Error: action=" + action
+                        + " account=" + account.getDescription()
+                        + " folder=" + folder
+                        + " message uid=" + message.getUid()
+                    );
+
                 }
             }
+
+            @Override
+            public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message)
+            {
+                broadcastIntent(Email.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+            }
+
+            @Override
+            public void messageDeleted(Account account, String folder, Message message)
+            {
+                broadcastIntent(Email.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+            }
+
+            @Override
+            public void synchronizeMailboxNewMessage(Account account, String folder, Message message)
+            {
+                broadcastIntent(Email.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folder, message);
+            }
+            
         });
 
     }

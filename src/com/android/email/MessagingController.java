@@ -3357,6 +3357,20 @@ public class MessagingController implements Runnable
         String[] uids = getUidsFromMessages(messages);
         try
         {
+            //We need to make these callbacks before moving the messages to the trash
+            //as messages get a new UID after being moved
+            for (Message message : messages)
+            {
+                unsuppressMessage(account, folder, message);
+                if (listener != null)
+                {
+                    listener.messageDeleted(account, folder, message);
+                }
+                for (MessagingListener l : getListeners())
+                {
+                    l.messageDeleted(account, folder, message);
+                }
+            }
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             localFolder = localStore.getFolder(folder);
             if (folder.equals(account.getTrashFolderName()))
@@ -3383,14 +3397,6 @@ public class MessagingController implements Runnable
 
                     localFolder.moveMessages(messages, localTrashFolder);
 
-                }
-            }
-            for (Message message : messages)
-            {
-                unsuppressMessage(account, folder, message);
-                if (listener != null)
-                {
-                    listener.messageDeleted(account, folder, message);
                 }
             }
 
