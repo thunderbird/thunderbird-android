@@ -134,40 +134,13 @@ public class MessageList
     class MessageListHandler extends Handler
     {
 
-        private static final int MSG_PROGRESS = 2;
-
-        private static final int MSG_FOLDER_LOADING = 7;
-
-        private static final int MSG_ADD_MESSAGE = 10;
-        private static final int MSG_REMOVE_MESSAGE = 11;
-        private static final int MSG_SORT_MESSAGES = 12;
-
-        private static final int MSG_FOLDER_SYNCING = 18;
-
-        private static final int MSG_SENDING_OUTBOX = 19;
-
-        @Override
-        public void handleMessage(android.os.Message msg)
+        public void removeMessage(final List<MessageInfoHolder> messages)
         {
-            switch (msg.what)
+
+            runOnUiThread(new Runnable()
             {
-                case MSG_PROGRESS:
-                    showProgressIndicator(msg.arg1 != 0);
-                    break;
-
-                case MSG_SORT_MESSAGES:
-
-                    synchronized (mAdapter.messages)
-                    {
-                        Collections.sort(mAdapter.messages);
-                    }
-                    mAdapter.notifyDataSetChanged();
-                    break;
-
-                case MSG_REMOVE_MESSAGE:
+                public void run()
                 {
-                    List<MessageInfoHolder> messages = (List<MessageInfoHolder>)((Object[]) msg.obj)[0];
-
                     for (MessageInfoHolder message : messages)
                     {
                         if (message != null && message.selected && mSelectedCount > 0)
@@ -178,14 +151,20 @@ public class MessageList
                     }
                     mAdapter.notifyDataSetChanged();
                     configureBatchButtons();
-                    break;
                 }
+            });
 
-                case MSG_ADD_MESSAGE:
+        }
+
+        public void addMessages(List<MessageInfoHolder> messages)
+        {
+
+            boolean wasEmpty = mAdapter.messages.isEmpty();
+            for (final MessageInfoHolder message : messages)
+            {
+                runOnUiThread(new Runnable()
                 {
-                    boolean wasEmpty = mAdapter.messages.isEmpty();
-                    List<MessageInfoHolder> messages = (List<MessageInfoHolder>)((Object[]) msg.obj)[0];
-                    for (MessageInfoHolder message : messages)
+                    public void run()
                     {
                         int index = Collections.binarySearch(mAdapter.messages, message);
 
@@ -195,46 +174,90 @@ public class MessageList
                         }
 
                         mAdapter.messages.add(index, message);
+
                     }
+                });
+            }
 
-                    if (wasEmpty)
-                        mListView.setSelection(0);
-                    mAdapter.notifyDataSetChanged();
-                    break;
-                }
-
-                case MSG_FOLDER_SYNCING:
+            if (wasEmpty)
+            {
+                runOnUiThread(new Runnable()
                 {
-                    String folderName = (String)((Object[]) msg.obj)[0];
-                    String dispString;
-                    dispString = mAccount.getDescription();
+                    public void run()
+                    {
 
-                    if (folderName != null)
+                        mListView.setSelection(0);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }
+        private void sortMessages()
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    synchronized (mAdapter.messages)
+                    {
+                        Collections.sort(mAdapter.messages);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
+
+        }
+
+        public void folderLoading(String folder, boolean loading)
+        {
+
+            if (mCurrentFolder.name == folder)
+            {
+                mCurrentFolder.loading = loading;
+            }
+
+
+        }
+
+        public void progress(final boolean progress)
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    showProgressIndicator(progress);
+                }
+            });
+        }
+
+        public void folderSyncing(final String folder)
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    String dispString = mAccount.getDescription();
+
+                    if (folder != null)
                     {
                         dispString += " (" + getString(R.string.status_loading)
-                                      + folderName + ")";
+                                      + folder + ")";
                     }
 
                     setTitle(dispString);
-
-                    break;
                 }
+            });
+        }
 
-                case MSG_FOLDER_LOADING:
-                {
-                    FolderInfoHolder folder = mCurrentFolder;
-                    if (folder != null)
-                    {
-                        folder.loading = msg.arg1 != 0;
-                    }
-                    break;
-                }
+        public void sendingOutbox(final boolean sending)
+        {
 
-                case MSG_SENDING_OUTBOX:
+
+            runOnUiThread(new Runnable()
+            {
+                public void run()
                 {
-                    boolean sending = (msg.arg1 != 0);
-                    String dispString;
-                    dispString = mAccount.getDescription();
+                    String dispString = mAccount.getDescription();
 
                     if (sending)
                     {
@@ -242,67 +265,9 @@ public class MessageList
                     }
 
                     setTitle(dispString);
-
-                    break;
                 }
+            });
 
-                default:
-                    super.handleMessage(msg);
-            }
-        }
-
-        public void removeMessage(List<MessageInfoHolder> messages)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_REMOVE_MESSAGE;
-            msg.obj = new Object[] { messages };
-            sendMessage(msg);
-        }
-
-        public void addMessages(List<MessageInfoHolder> messages)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_ADD_MESSAGE;
-            msg.obj = new Object[] { messages };
-            sendMessage(msg);
-        }
-
-        private void sortMessages()
-        {
-            sendEmptyMessage(MSG_SORT_MESSAGES);
-        }
-
-        public void folderLoading(String folder, boolean loading)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_FOLDER_LOADING;
-            msg.arg1 = loading ? 1 : 0;
-            msg.obj = folder;
-            sendMessage(msg);
-        }
-
-        public void progress(boolean progress)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_PROGRESS;
-            msg.arg1 = progress ? 1 : 0;
-            sendMessage(msg);
-        }
-
-        public void folderSyncing(String folder)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_FOLDER_SYNCING;
-            msg.obj = new String[] { folder };
-            sendMessage(msg);
-        }
-
-        public void sendingOutbox(boolean sending)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_SENDING_OUTBOX;
-            msg.arg1 = sending ? 1 : 0;
-            sendMessage(msg);
         }
     }
 
@@ -488,15 +453,15 @@ public class MessageList
 
         setTitle();
     }
-    
+
     private void setTitle()
     {
         setTitle(
-                mAccount.getDescription()
-                + " - " +
-                mCurrentFolder.displayName
+            mAccount.getDescription()
+            + " - " +
+            mCurrentFolder.displayName
 
-            );
+        );
     }
 
     @Override
