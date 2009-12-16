@@ -349,11 +349,11 @@ public class FolderList extends K9ListActivity
         }
 
         Log.v(K9.LOG_TAG, "mInitialFolder: " + initialFolder);
-        if (initialFolder != null
+        if (mStartup 
+                && initialFolder != null
                 && !K9.FOLDER_NONE.equals(initialFolder))
         {
             onOpenFolder(initialFolder, true);
-            finish();
         }
         else
         {
@@ -370,6 +370,7 @@ public class FolderList extends K9ListActivity
                 {
                     Log.v(K9.LOG_TAG,"We're clicking "+itemPosition+" -- "+id);
                     MessageList.actionHandleFolder(FolderList.this, mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name, false);
+                    finish();
                 }
             });
             registerForContextMenu(mListView);
@@ -585,6 +586,7 @@ public class FolderList extends K9ListActivity
     private void onOpenFolder(String folder, boolean startup)
     {
         MessageList.actionHandleFolder(this, mAccount, folder, startup);
+        finish();
     }
 
     private void onCompact(Account account)

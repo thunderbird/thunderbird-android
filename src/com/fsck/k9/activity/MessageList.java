@@ -776,11 +776,7 @@ public class MessageList
 
     private void onShowFolderList()
     {
-        if (mStartup || isTaskRoot())
-        {
-            FolderList.actionHandleAccount(this, mAccount, false);
-        }
-
+        FolderList.actionHandleAccount(this, mAccount, false);
         finish();
     }
 
