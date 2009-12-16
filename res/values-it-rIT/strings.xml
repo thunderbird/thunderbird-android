@@ -103,7 +103,6 @@
 	<string name="account_settings_hide_buttons_never">Mai</string>
 	<string name="account_settings_hide_buttons_keyboard_avail">Quando è disponibile la tastiera</string>
 	<string name="account_settings_hide_buttons_always">Sempre</string>
-	<string name="account_settings_display_sync">Visualizzazione e sincronizzazione</string>
 	<string name="account_settings_second_class_check_frequency_label">Frequenza controllo 2a classe</string>
 	<string name="account_settings_mail_display_count_label">Numero di messaggi da mostrare</string>
 	<string name="account_settings_folder_display_mode_label">Modalità visualizzazione cartella</string>

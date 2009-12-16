@@ -334,7 +334,6 @@ Willkommen zum K-9 Mail Setup.  K-9 ist eine Open-Source E-Mail-Anwendung für A
     <string name="account_settings_hide_buttons_keyboard_avail">Nur wenn Tastatur aktiv</string>
     <string name="account_settings_hide_buttons_always">Immer</string>
    
-    <string name="account_settings_display_sync">Anzeige und Synchronisation</string>
    
     <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
     <string name="account_settings_second_class_check_frequency_label">Häufigkeit der Abfrage für Nebenordner</string>
