@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:paddingRight="1dip"
     android:paddingTop="2dip"
-    android:background="@drawable/message_list_item_background"
+    android:background="@android:color/transparent"
     >
     <LinearLayout android:id="@+id/widgets_right" 
         android:layout_width="wrap_content" 
