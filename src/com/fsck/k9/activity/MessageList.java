@@ -439,14 +439,16 @@ public class MessageList
     {
         super.onResume();
 
-        sortType = MessagingController.getInstance(getApplication()).getSortType();
-        sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
-        sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
+        MessagingController controller = MessagingController.getInstance(getApplication());
 
-        MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
+        sortType = controller.getSortType();
+        sortAscending = controller.isSortAscending(sortType);
+        sortDateAscending = controller.isSortAscending(SORT_TYPE.SORT_DATE);
+
+        controller.addListener(mAdapter.mListener);
         mAdapter.messages.clear();
         mAdapter.notifyDataSetChanged();
-        MessagingController.getInstance(getApplication()).listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
+        controller.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
 
         NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifMgr.cancel(mAccount.getAccountNumber());
