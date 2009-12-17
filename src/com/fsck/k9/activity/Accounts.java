@@ -379,7 +379,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private void onOpenAccount(Account account, boolean startup)
     {
-            if (account.getAutoExpandFolderName() == null)
+            if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName()))
             {
                 FolderList.actionHandleAccount(this, account, startup);
             }
