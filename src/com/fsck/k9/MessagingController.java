@@ -545,8 +545,7 @@ public class MessagingController implements Runnable
 
 
     /**
-     * List the local message store for the given folder. This work is done
-     * synchronously.
+     * List the messages in the local message store for the given folder asynchronously.
      *
      * @param account
      * @param folder
@@ -559,159 +558,136 @@ public class MessagingController implements Runnable
         {
             public void run()
             {
-                for (MessagingListener l : getListeners())
-                {
-                    l.listLocalMessagesStarted(account, folder);
-                }
-
-                if (listener != null && getListeners().contains(listener) == false)
-                {
-                    listener.listLocalMessagesStarted(account, folder);
-                }
-
-                Folder localFolder = null;
-
-                try
-                {
-                    Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-                    localFolder = localStore.getFolder(folder);
-                    localFolder.open(OpenMode.READ_WRITE);
-
-                    localFolder.getMessages(
-                        new MessageRetrievalListener()
-                    {
-                       List<Message> pendingMessages = new ArrayList<Message>();
-
-
-                        int totalDone = 0;
-
-
-                        public void messageStarted(String message, int number, int ofTotal) {}
-                        public void messageFinished(Message message, int number, int ofTotal) {
-  
-                              if (isMessageSuppressed(account, folder, message) == false) {
-                                  pendingMessages.add(message);
-                                  totalDone++;
-                                  if  (pendingMessages.size() > 10) {
-                                      callbackPending();
-                                  }
-  
-                              } else {
-                                  for (MessagingListener l : getListeners()) {
-                                      l.listLocalMessagesRemoveMessage(account, folder, message);
-                                  }
-                                  if (listener != null && getListeners().contains(listener) == false) {
-                                      listener.listLocalMessagesRemoveMessage(account, folder, message);
-                                  }
-  
-                              }
-                              }
-                        public void messagesFinished(int number) {
-                            callbackPending();
-                        }
-                        private void callbackPending()
-                        {
-                            for (MessagingListener l : getListeners()) {
-                                l.listLocalMessagesAddMessages(account, folder, pendingMessages);
-                            }
-                            if (listener != null && getListeners().contains(listener) == false) {
-                                listener.listLocalMessagesAddMessages(account, folder, pendingMessages);
-                            }
-                            pendingMessages.clear();
-                        }
-                    },
-                    false // Skip deleted messages
-                    );
-                    if (K9.DEBUG)
-                    {
-                        Log.v(K9.LOG_TAG, "Got ack that callbackRunner finished");
-                    }
-                    for (MessagingListener l : getListeners())
-                    {
-                        l.listLocalMessagesFinished(account, folder);
-                    }
-                    if (listener != null && getListeners().contains(listener) == false)
-                    {
-                        listener.listLocalMessagesFinished(account, folder);
-                    }
-                }
-                catch (Exception e)
-                {
-                    for (MessagingListener l : getListeners())
-                    {
-                        l.listLocalMessagesFailed(account, folder, e.getMessage());
-                    }
-                    if (listener != null && getListeners().contains(listener) == false)
-                    {
-                        listener.listLocalMessagesFailed(account, folder, e.getMessage());
-                    }
-                    addErrorMessage(account, e);
-                }
-                finally
-                {
-                    if (localFolder != null)
-                    {
-                        try
-                        {
-                            localFolder.close(false);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.e(K9.LOG_TAG, "Exception while closing folder", e);
-                        }
-                    }
-                }
+                listLocalMessagesSynchronous(account, folder, listener);
             }
         });
     }
 
+
+    /**
+     * List the messages in the local message store for the given folder synchronously.
+     *
+     * @param account
+     * @param folder
+     * @param listener
+     * @throws MessagingException
+     */
     public void listLocalMessagesSynchronous(final Account account, final String folder, final MessagingListener listener)
     {
 
+        for (MessagingListener l : getListeners())
+        {
+            l.listLocalMessagesStarted(account, folder);
+        }
+
+        if (listener != null && getListeners().contains(listener) == false)
+        {
+            listener.listLocalMessagesStarted(account, folder);
+        }
+
+        Folder localFolder = null;
+
+        try
+        {
+            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            localFolder = localStore.getFolder(folder);
+            localFolder.open(OpenMode.READ_WRITE);
+
+            localFolder.getMessages(
+                new MessageRetrievalListener()
+            {
+                List<Message> pendingMessages = new ArrayList<Message>();
+
+
+                int totalDone = 0;
+
+
+                public void messageStarted(String message, int number, int ofTotal) {}
+                public void messageFinished(Message message, int number, int ofTotal)
+                {
+
+                    if (isMessageSuppressed(account, folder, message) == false)
+                    {
+                        pendingMessages.add(message);
+                        totalDone++;
+                        if (pendingMessages.size() > 10)
+                        {
+                            callbackPending();
+                        }
+
+                    }
+                    else
+                    {
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.listLocalMessagesRemoveMessage(account, folder, message);
+                        }
+                        if (listener != null && getListeners().contains(listener) == false)
+                        {
+                            listener.listLocalMessagesRemoveMessage(account, folder, message);
+                        }
+
+                    }
+                }
+                public void messagesFinished(int number)
+                {
+                    callbackPending();
+                }
+                private void callbackPending()
+                {
+                    for (MessagingListener l : getListeners())
+                    {
+                        l.listLocalMessagesAddMessages(account, folder, pendingMessages);
+                    }
+                    if (listener != null && getListeners().contains(listener) == false)
+                    {
+                        listener.listLocalMessagesAddMessages(account, folder, pendingMessages);
+                    }
+                    pendingMessages.clear();
+                }
+            },
+            false // Skip deleted messages
+            );
+            if (K9.DEBUG)
+            {
+                Log.v(K9.LOG_TAG, "Got ack that callbackRunner finished");
+            }
+            for (MessagingListener l : getListeners())
+            {
+                l.listLocalMessagesFinished(account, folder);
+            }
+            if (listener != null && getListeners().contains(listener) == false)
+            {
+                listener.listLocalMessagesFinished(account, folder);
+            }
+        }
+        catch (Exception e)
+        {
+            for (MessagingListener l : getListeners())
+            {
+                l.listLocalMessagesFailed(account, folder, e.getMessage());
+            }
+            if (listener != null && getListeners().contains(listener) == false)
+            {
+                listener.listLocalMessagesFailed(account, folder, e.getMessage());
+            }
+            addErrorMessage(account, e);
+        }
+        finally
+        {
+            if (localFolder != null)
+            {
                 try
                 {
-                    Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-                    Folder localFolder;
-                    localFolder = localStore.getFolder(folder);
-                    localFolder.open(OpenMode.READ_WRITE);
-                    localFolder.getMessages(
-                        new MessageRetrievalListener()
-                    {
-                        int totalDone = 0;
-    public void messageStarted(String uid, int number, int ofTotal){};
-
-
-                        public void messagesFinished(int total) {};
-                        
-                        public void messageFinished(Message message, int number, int ofTotal)
-                        {
-
-                            if (isMessageSuppressed(account, folder, message) == false)
-                            {
-                                List<Message> messages = new ArrayList<Message>();
-                                messages.add(message);
-                               listener.listLocalMessagesAddMessages(account,folder, messages);
-                                totalDone++;
-
-                            }
-                            else
-                            {
-                                    listener.listLocalMessagesRemoveMessage(account, folder, message);
-
-                            }
-                        }
-                    },
-                    false // Skip deleted messages
-                    );
-                            localFolder.close(false);
+                    localFolder.close(false);
                 }
                 catch (Exception e)
                 {
+                    Log.e(K9.LOG_TAG, "Exception while closing folder", e);
                 }
-                        finally
-                        {
-                        }
-}
+            }
+        }
+    }
     public void loadMoreMessages(Account account, String folder, MessagingListener listener)
     {
         try
