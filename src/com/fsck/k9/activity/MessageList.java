@@ -448,7 +448,7 @@ public class MessageList
         controller.addListener(mAdapter.mListener);
         mAdapter.messages.clear();
         mAdapter.notifyDataSetChanged();
-        controller.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
+        controller.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
 
         NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifMgr.cancel(mAccount.getAccountNumber());
