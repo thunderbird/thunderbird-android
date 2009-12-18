@@ -327,14 +327,11 @@ public class FolderList extends K9ListActivity
         String savedFolderName = null;
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
-        Log.v(K9.LOG_TAG, "savedInstanceState: " + (savedInstanceState==null));
 
         if (savedInstanceState == null)
         {
             initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
-            Log.v(K9.LOG_TAG, "EXTRA_INITIAL_FOLDER: " + initialFolder);
             mStartup = (boolean) intent.getBooleanExtra(EXTRA_STARTUP, false);
-            Log.v(K9.LOG_TAG, "startup: " + mStartup);
             if (initialFolder == null
                     && mStartup)
             {
@@ -348,7 +345,6 @@ public class FolderList extends K9ListActivity
             savedFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
         }
 
-        Log.v(K9.LOG_TAG, "mInitialFolder: " + initialFolder);
         if (mStartup 
                 && initialFolder != null
                 && !K9.FOLDER_NONE.equals(initialFolder))
@@ -368,7 +364,6 @@ public class FolderList extends K9ListActivity
             {
                 public void onItemClick(AdapterView parent, View v, int itemPosition, long id)
                 {
-                    Log.v(K9.LOG_TAG,"We're clicking "+itemPosition+" -- "+id);
                     MessageList.actionHandleFolder(FolderList.this, mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name, false);
                     finish();
                 }
@@ -544,8 +539,6 @@ public class FolderList extends K9ListActivity
                 return true;
 
             case R.id.send_messages:
-                Log.i(K9.LOG_TAG, "sending pending messages");
-
                 MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
                 return true;
             case R.id.accounts:
@@ -624,27 +617,21 @@ public class FolderList extends K9ListActivity
                 break;
 
             case R.id.send_messages:
-                Log.i(K9.LOG_TAG, "sending pending messages from " + folder.name);
                 sendMail(mAccount);
 
                 break;
 
             case R.id.check_mail:
-                Log.i(K9.LOG_TAG, "refresh folder " + folder.name);
                 checkMail(folder);
 
                 break;
 
             case R.id.folder_settings:
-                Log.i(K9.LOG_TAG, "edit folder settings for " + folder.name);
-
                 onEditFolder(mAccount, folder.name);
 
                 break;
 
             case R.id.empty_trash:
-                Log.i(K9.LOG_TAG, "empty trash");
-
                 onEmptyTrash(mAccount);
 
                 break;
