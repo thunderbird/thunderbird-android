@@ -468,9 +468,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         Account account = (Account)getListView().getItemAtPosition(menuInfo.position);
         switch (item.getItemId())
         {
-            case R.id.edit_prefs:
-                onEditPrefs();
-                break;
             case R.id.delete_account:
                 onDeleteAccount(account);
                 break;

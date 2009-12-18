@@ -8,8 +8,6 @@
         android:title="@string/empty_trash_action" />
     <item android:id="@+id/edit_account"
         android:title="@string/account_settings_action" />
-    <item android:id="@+id/edit_prefs"
-        android:title="@string/preferences_action" />
     <item android:id="@+id/compact"
         android:title="@string/compact_action" />    
     <item android:id="@+id/clear"
