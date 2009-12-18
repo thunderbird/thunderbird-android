@@ -570,79 +570,6 @@ public class MessagingController implements Runnable
             public void run()
             {
                 Folder localFolder = null;
-                final LinkedBlockingQueue<MessageContainer> queue = new LinkedBlockingQueue<MessageContainer>();
-                final CountDownLatch latch = new CountDownLatch(1);
-
-                Runnable callbackRunner = new Runnable()
-                {
-                    List<Message> pendingMessages = new ArrayList<Message>();
-                    boolean stop = false;
-                    public void run()
-                    {
-                        if (K9.DEBUG)
-                        {
-                            Log.v(K9.LOG_TAG, "listLocalMessages callbackRunner started");
-                        }
-                        while (stop == false)
-                        {
-                            MessageContainer messCont = null;
-                            do
-                            {
-                                if (pendingMessages.isEmpty())
-                                {
-                                    try
-                                    {
-                                        messCont = queue.take();
-                                    }
-                                    catch (InterruptedException ie)
-                                    {
-                                        Log.i(K9.LOG_TAG, "listLocalMessages callbackRunner interrupted");
-                                    }
-                                }
-                                else
-                                {
-                                    messCont = queue.poll();
-                                }
-                                if (messCont != null)
-                                {
-                                    if (messCont.last == true)
-                                    {
-                                        stop = true;
-                                        messCont = null;
-                                    }
-                                    else if (messCont.message != null)
-                                    {
-                                        pendingMessages.add(messCont.message);
-
-                                    }
-                                }
-                            }
-                            while (messCont != null);
-                            callbackPending();
-                        }
-                        latch.countDown();
-                        if (K9.DEBUG)
-                        {
-                            Log.v(K9.LOG_TAG, "listLocalMessages callbackRunner finished");
-                        }
-                    }
-                    private void callbackPending()
-                    {
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.listLocalMessagesAddMessages(account, folder, pendingMessages);
-                        }
-                        if (listener != null && getListeners().contains(listener) == false)
-                        {
-                            listener.listLocalMessagesAddMessages(account, folder, pendingMessages);
-                        }
-                        pendingMessages.clear();
-                    }
-
-                };
-
-                Thread callbackThread = new Thread(callbackRunner);
-                callbackThread.start();
 
                 try
                 {
@@ -653,44 +580,49 @@ public class MessagingController implements Runnable
                     localFolder.getMessages(
                         new MessageRetrievalListener()
                     {
+                       List<Message> pendingMessages = new ArrayList<Message>();
+
+
                         int totalDone = 0;
+
+
                         public void messageStarted(String message, int number, int ofTotal) {}
-                        public void messageFinished(Message message, int number, int ofTotal)
-                        {
-
-                            if (!message.isSet(Flag.DELETED) && isMessageSuppressed(account, folder, message) == false)
-                            {
-                                MessageContainer messCont = new MessageContainer();
-                                messCont.message = message;
-                                queue.add(messCont);
-                                totalDone++;
-
-                            }
-                            else
-                            {
-                                for (MessagingListener l : getListeners())
-                                {
-                                    l.listLocalMessagesRemoveMessage(account, folder, message);
-                                }
-                                if (listener != null && getListeners().contains(listener) == false)
-                                {
-                                    listener.listLocalMessagesRemoveMessage(account, folder, message);
-                                }
-
-                            }
+                        public void messageFinished(Message message, int number, int ofTotal) {
+  
+                              if (!message.isSet(Flag.DELETED) && isMessageSuppressed(account, folder, message) == false) {
+                                  pendingMessages.add(message);
+                                  totalDone++;
+                                  if (totalDone < 5 || pendingMessages.size() > 4)
+                                  {
+                                      callbackPending();
+                                  }
+  
+                              } else {
+                                  for (MessagingListener l : getListeners()) {
+                                      l.listLocalMessagesRemoveMessage(account, folder, message);
+                                  }
+                                  if (listener != null && getListeners().contains(listener) == false) {
+                                      listener.listLocalMessagesRemoveMessage(account, folder, message);
+                                  }
+  
+                              }
+                              }
+                        public void messagesFinished(int number) {
+                            callbackPending();
                         }
-                        public void messagesFinished(int number)
+                        private void callbackPending()
                         {
+                            for (MessagingListener l : getListeners()) {
+                                l.listLocalMessagesAddMessages(account, folder, pendingMessages);
+                            }
+                            if (listener != null && getListeners().contains(listener) == false) {
+                                listener.listLocalMessagesAddMessages(account, folder, pendingMessages);
+                            }
+                            pendingMessages.clear();
                         }
-
                     },
                     false // Skip deleted messages
                     );
-                    MessageContainer messCont = new MessageContainer();
-                    messCont.last = true;
-                    queue.add(messCont);
-
-                    latch.await(1000, TimeUnit.MILLISECONDS);
                     if (K9.DEBUG)
                     {
                         Log.v(K9.LOG_TAG, "Got ack that callbackRunner finished");
@@ -718,12 +650,6 @@ public class MessagingController implements Runnable
                 }
                 finally
                 {
-                    if (latch.getCount() != 0)
-                    {
-                        MessageContainer messCont = new MessageContainer();
-                        messCont.last = true;
-                        queue.add(messCont);
-                    }
                     if (localFolder != null)
                     {
                         try
@@ -4469,9 +4395,4 @@ public class MessagingController implements Runnable
 
 
 
-    class MessageContainer
-    {
-        Message message;
-        boolean last;
-    }
 }
