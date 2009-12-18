@@ -666,6 +666,53 @@ public class MessagingController implements Runnable
         });
     }
 
+    public void listLocalMessagesSynchronous(final Account account, final String folder, final MessagingListener listener)
+    {
+
+                try
+                {
+                    Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+                    Folder localFolder;
+                    localFolder = localStore.getFolder(folder);
+                    localFolder.open(OpenMode.READ_WRITE);
+                    localFolder.getMessages(
+                        new MessageRetrievalListener()
+                    {
+                        int totalDone = 0;
+    public void messageStarted(String uid, int number, int ofTotal){};
+
+
+                        public void messagesFinished(int total) {};
+
+                        public void messageFinished(Message message, int number, int ofTotal)
+                        {
+
+                            if (isMessageSuppressed(account, folder, message) == false)
+                            {
+                                List<Message> messages = new ArrayList<Message>();
+                                messages.add(message);
+                               listener.listLocalMessagesAddMessages(account,folder, messages);
+                                totalDone++;
+
+                            }
+                            else
+                            {
+                                    listener.listLocalMessagesRemoveMessage(account, folder, message);
+
+                            }
+                        }
+                    },
+                    false // Skip deleted messages
+                    );
+                            localFolder.close(false);
+                }
+                catch (Exception e)
+                {
+                }
+                        finally
+                        {
+                        }
+}
     public void loadMoreMessages(Account account, String folder, MessagingListener listener)
     {
         try
