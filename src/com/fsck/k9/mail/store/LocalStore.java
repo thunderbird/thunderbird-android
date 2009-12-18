@@ -1482,10 +1482,8 @@ public class LocalStore extends Store implements Serializable
                     cv.put("internal_date",  message.getInternalDate() == null
                            ? System.currentTimeMillis() : message.getInternalDate().getTime());
                     String messageId = message.getMessageId();
-                        Log.e(K9.LOG_TAG, "saving a messag");
                     if (messageId != null )
                     {
-                        Log.e(K9.LOG_TAG, "saving a message messasgeid is "+messageId);
                         cv.put("message_id", messageId);
                     }
                     long messageUid = mDb.insert("messages", "uid", cv);
