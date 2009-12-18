@@ -430,7 +430,6 @@ public class LocalStore extends Store implements Serializable
                          */
                     }
                 }
-                Log.d(K9.LOG_TAG, "Deleting attachment " + file.getAbsolutePath() + ", which is of size " + file.length());
                 if (!file.delete())
                 {
                     file.deleteOnExit();
@@ -1359,9 +1358,6 @@ public class LocalStore extends Store implements Serializable
 
                 String oldUID = message.getUid();
 
-                Log.d(K9.LOG_TAG, "Updating folder_id to " + lDestFolder.getId() + " for message with UID "
-                      + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
-
                 message.setUid(K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
 
                 mDb.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[]
@@ -1611,7 +1607,6 @@ public class LocalStore extends Store implements Serializable
                         cv.put("message_id", id);
                         cv.put("name", name);
                         cv.put("value", value);
-                        //Log.i(K9.LOG_TAG, "Saving header name = " + name + ", value = " + value);
                         mDb.insert("headers", "name", cv);
                     }
                 }
