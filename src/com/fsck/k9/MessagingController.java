@@ -589,7 +589,7 @@ public class MessagingController implements Runnable
                         public void messageStarted(String message, int number, int ofTotal) {}
                         public void messageFinished(Message message, int number, int ofTotal) {
   
-                              if (!message.isSet(Flag.DELETED) && isMessageSuppressed(account, folder, message) == false) {
+                              if (isMessageSuppressed(account, folder, message) == false) {
                                   pendingMessages.add(message);
                                   totalDone++;
                                   if (totalDone < 5 || pendingMessages.size() > 4)
