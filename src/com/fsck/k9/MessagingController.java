@@ -592,8 +592,7 @@ public class MessagingController implements Runnable
                               if (isMessageSuppressed(account, folder, message) == false) {
                                   pendingMessages.add(message);
                                   totalDone++;
-                                  if (totalDone < 5 || pendingMessages.size() > 4)
-                                  {
+                                  if  (pendingMessages.size() > 10) {
                                       callbackPending();
                                   }
   
@@ -683,7 +682,7 @@ public class MessagingController implements Runnable
 
 
                         public void messagesFinished(int total) {};
-
+                        
                         public void messageFinished(Message message, int number, int ofTotal)
                         {
 
