@@ -531,25 +531,17 @@ public class MessageView extends K9Activity
                 mFolder = intent.getStringExtra(EXTRA_FOLDER);
                 mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
                 mMessageUids = intent.getStringArrayListExtra(EXTRA_MESSAGE_UIDS);
-
-                Log.v(K9.LOG_TAG, "mAccount number: " + mAccount.getAccountNumber());
-                Log.v(K9.LOG_TAG, "mFolder: " + mFolder);
-                Log.v(K9.LOG_TAG, "mMessageUid: " + mMessageUid);
             }
             else
             {
-                Log.v(K9.LOG_TAG, "uri: " + uri.toString());
                 List<String> segmentList = uri.getPathSegments();
-                Log.v(K9.LOG_TAG, "segmentList size: " + segmentList.size());
                 if (segmentList.size()==3)
                 {
                     String accountId = segmentList.get(0);
                     Account[] accounts = Preferences.getPreferences(this).getAccounts();
-                    Log.v(K9.LOG_TAG, "account.length: " + accounts.length);
                     boolean found = false;
                     for (Account account : accounts)
                     {
-                        Log.v(K9.LOG_TAG, "account: name=" + account.getDescription() + " number=" + account.getAccountNumber());
                         if (String.valueOf(account.getAccountNumber()).equals(accountId))
                         {
                             mAccount = account;
@@ -569,10 +561,6 @@ public class MessageView extends K9Activity
                 }
                 else
                 {
-                    for (String segment : segmentList)
-                    {
-                        Log.v(K9.LOG_TAG, "segment: " + segment);
-                    }
                     //TODO: Use ressource to externalize message
                     Toast.makeText(this, "Invalid intent uri: " + uri.toString(), Toast.LENGTH_LONG).show();
                     return;
@@ -1362,7 +1350,6 @@ public class MessageView extends K9Activity
         String timeText = getTimeFormat().format(message.getSentDate());
         String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
         String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
-        Log.d(K9.LOG_TAG, ccText);
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
         mHandler.setHeaders(subjectText,
                             fromText,
