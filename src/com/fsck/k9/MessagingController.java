@@ -555,20 +555,20 @@ public class MessagingController implements Runnable
      */
     public void listLocalMessages(final Account account, final String folder, final MessagingListener listener)
     {
-        for (MessagingListener l : getListeners())
-        {
-            l.listLocalMessagesStarted(account, folder);
-        }
-
-        if (listener != null && getListeners().contains(listener) == false)
-        {
-            listener.listLocalMessagesStarted(account, folder);
-        }
-
         threadPool.execute(new Runnable()
         {
             public void run()
             {
+                for (MessagingListener l : getListeners())
+                {
+                    l.listLocalMessagesStarted(account, folder);
+                }
+
+                if (listener != null && getListeners().contains(listener) == false)
+                {
+                    listener.listLocalMessagesStarted(account, folder);
+                }
+
                 Folder localFolder = null;
 
                 try
