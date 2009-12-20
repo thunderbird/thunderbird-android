@@ -16,12 +16,19 @@ import com.beetstra.jutf7.CharsetProvider;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
+
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
+
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.*;
@@ -51,6 +58,8 @@ public class ImapStore extends Store
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
+    private enum AuthType { PLAIN, CRAM_MD5 };
+    
     private static final int IDLE_READ_TIMEOUT = 29 * 60 * 1000; // 29 minutes
     private static final int IDLE_REFRESH_INTERVAL = 20 * 60 * 1000; // 20 minutes
 
@@ -66,6 +75,7 @@ public class ImapStore extends Store
     private String mUsername;
     private String mPassword;
     private int mConnectionSecurity;
+    private AuthType mAuthType;
     private volatile String mPathPrefix;
     private volatile String mCombinedPrefix = null;
     private volatile String mPathDelimeter;
@@ -87,11 +97,11 @@ public class ImapStore extends Store
     private HashMap<String, ImapFolder> mFolderCache = new HashMap<String, ImapFolder>();
 
     /**
-     * imap://user:password@server:port CONNECTION_SECURITY_NONE
-     * imap+tls://user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
-     * imap+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
-     * imap+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
-     * imap+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     * imap://auth:user:password@server:port CONNECTION_SECURITY_NONE
+     * imap+tls://auth:user:password@server:port CONNECTION_SECURITY_TLS_OPTIONAL
+     * imap+tls+://auth:user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
+     * imap+ssl+://auth:user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
+     * imap+ssl://auth:user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
      *
      * @param _uri
      */
@@ -147,12 +157,10 @@ public class ImapStore extends Store
 
         if (uri.getUserInfo() != null)
         {
-            String[] userInfoParts = uri.getUserInfo().split(":", 2);
-            mUsername = userInfoParts[0];
-            if (userInfoParts.length > 1)
-            {
-                mPassword = userInfoParts[1];
-            }
+            String[] userInfoParts = uri.getUserInfo().split(":");
+            mAuthType = AuthType.valueOf(userInfoParts[0]);
+            mUsername = userInfoParts[1];
+            mPassword = userInfoParts[2];
         }
 
         if ((uri.getPath() != null) && (uri.getPath().length() > 0))
@@ -1899,9 +1907,14 @@ public class ImapStore extends Store
 
                 try
                 {
-                    // TODO eventually we need to add additional authentication
-                    // options such as SASL
-                    executeSimpleCommand("LOGIN \"" + escapeString(mUsername) + "\" \"" + escapeString(mPassword) + "\"", true);
+                    if ( mAuthType == AuthType.CRAM_MD5 )
+                    {
+                      authCramMD5();
+                    }
+                    else if ( mAuthType == AuthType.PLAIN )
+                    {
+                      executeSimpleCommand("LOGIN \"" + escapeString(mUsername) + "\" \"" + escapeString(mPassword) + "\"", true);
+                    }
                     authSuccess = true;
                 }
                 catch (ImapException ie)
@@ -2002,6 +2015,88 @@ public class ImapStore extends Store
             }
         }
 
+        protected void authCramMD5() throws AuthenticationFailedException, MessagingException
+        {
+          try
+          {
+            String tag = sendCommand("AUTHENTICATE CRAM-MD5", false);
+            byte[] buf = new byte[ 1024 ];
+            int b64NonceLen = 0;
+            for ( int i = 0; i < buf.length; i++ )
+            {
+              buf[ i ] = (byte)mIn.read();
+              if ( buf[i] == 0x0a )
+              {
+                b64NonceLen = i;
+                break;
+              }
+            }
+            if ( b64NonceLen == 0 )
+            {
+              throw new AuthenticationFailedException( "Error negotiating CRAM-MD5: nonce too long." );
+            }
+            byte[] b64NonceTrim = new byte[ b64NonceLen - 2 ];
+            System.arraycopy(buf, 1, b64NonceTrim, 0, b64NonceLen - 2);
+            byte[] nonce = Base64.decodeBase64(b64NonceTrim);
+            if ( K9.DEBUG )
+            {
+              Log.d(K9.LOG_TAG, "Got nonce: " + new String( b64NonceTrim, "US-ASCII" ) );
+              Log.d(K9.LOG_TAG, "Plaintext nonce: " + new String( nonce, "US-ASCII" ) );
+            }
+            byte[] ipad = new byte[64];
+            byte[] opad = new byte[64];
+            byte[] secretBytes = mPassword.getBytes("US-ASCII");
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            if ( secretBytes.length > 64 )
+            {
+              secretBytes = md.digest(secretBytes);
+            }
+            System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
+            System.arraycopy(secretBytes, 0, opad, 0, secretBytes.length);
+            for ( int i = 0; i < ipad.length; i++ ) ipad[i] ^= 0x36;
+            for ( int i = 0; i < opad.length; i++ ) opad[i] ^= 0x5c;
+            md.update(ipad);
+            byte[] firstPass = md.digest(nonce);
+            md.update(opad);
+            byte[] result = md.digest(firstPass);
+            String plainCRAM = mUsername + " " + new String(Hex.encodeHex(result));
+            byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes("US-ASCII"));
+            if ( K9.DEBUG )
+            {
+              Log.d(K9.LOG_TAG, "Username == " + mUsername);
+              Log.d( K9.LOG_TAG, "plainCRAM: " + plainCRAM );
+              Log.d( K9.LOG_TAG, "b64CRAM: " + new String(b64CRAM, "US-ASCII"));
+            }
+            mOut.write( b64CRAM );
+            mOut.write( new byte[] { 0x0d, 0x0a } );
+            mOut.flush();
+            int respLen = 0;
+            for ( int i = 0; i < buf.length; i++ )
+            {
+              buf[ i ] = (byte)mIn.read();
+              if ( buf[i] == 0x0a )
+              {
+                respLen = i;
+                break;
+              }
+            }
+            String toMatch = tag + " OK";
+            String respStr = new String( buf, 0, respLen );
+            if ( !respStr.startsWith( toMatch ) )
+            {
+              throw new AuthenticationFailedException( "CRAM-MD5 error: " + respStr );
+            }
+          }
+          catch ( IOException ioe )
+          {
+            throw new AuthenticationFailedException( "CRAM-MD5 Auth Failed." );
+          }
+          catch ( NoSuchAlgorithmException nsae )
+          {
+            throw new AuthenticationFailedException( "MD5 Not Available." );
+          }
+        }
+        
         protected void setReadTimeout(int millis) throws SocketException
         {
             mSocket.setSoTimeout(millis);

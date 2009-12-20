@@ -59,6 +59,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private EditText mServerView;
     private EditText mPortView;
     private Spinner mSecurityTypeView;
+    private Spinner mAuthTypeView;
     private EditText mImapPathPrefixView;
     private Button mImapFolderDrafts;
     private Button mImapFolderSent;
@@ -99,6 +100,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         mServerView = (EditText)findViewById(R.id.account_server);
         mPortView = (EditText)findViewById(R.id.account_port);
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
+        mAuthTypeView = (Spinner)findViewById(R.id.account_auth_type);
         mImapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
         mImapFolderDrafts = (Button)findViewById(R.id.account_imap_folder_drafts);
         mImapFolderSent = (Button)findViewById(R.id.account_imap_folder_sent);
@@ -126,11 +128,22 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
+        SpinnerOption authTypes[] =
+        {
+            new SpinnerOption(0, "PLAIN" ),
+            new SpinnerOption(1, "CRAM_MD5" )
+        };
+        
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, securityTypes);
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
+        ArrayAdapter<SpinnerOption> authTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
+            android.R.layout.simple_spinner_item, authTypes);
+        authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAuthTypeView.setAdapter(authTypesAdapter);
+        
         /*
          * Updates the port when the user changes the security type. This allows
          * us to show a reasonable default which the user can change.
@@ -228,6 +241,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
+                findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
 
 
@@ -261,6 +275,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 /** Hide the unnecessary fields */
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
+                findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 if (uri.getPath() != null && uri.getPath().length() > 0)
                 {
                     String[] pathParts = uri.getPath().split("\\|");
@@ -433,9 +448,19 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 path = path + "|" + mWebdavMailboxPathView.getText();
             }
 
+            final String userInfo;
+            if (mAccountSchemes[securityType].startsWith("imap"))
+            {
+              String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+              userInfo = authType + ":" + mUsernameView.getText() + ":" + mPasswordView.getText();
+            }
+            else
+            {
+              userInfo = mUsernameView.getText() + ":" + mPasswordView.getText();
+            }
             URI uri = new URI(
                 mAccountSchemes[securityType],
-                mUsernameView.getText() + ":" + mPasswordView.getText(),
+                userInfo,
                 mServerView.getText().toString(),
                 Integer.parseInt(mPortView.getText().toString()),
                 path, // path
