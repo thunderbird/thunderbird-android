@@ -274,7 +274,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
                 /** Hide the unnecessary fields */
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-                findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 if (uri.getPath() != null && uri.getPath().length() > 0)
                 {
@@ -534,6 +533,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         }
 
         Intent selectIntent = new Intent(this, ChooseFolder.class);
+        String uri = mAccount.getStoreUri();
+        if (uri.startsWith("imap"))
+        {
+            selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_FOLDER_NONE, "yes");
+        }
         selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
         selectIntent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, curFolder);
         selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");

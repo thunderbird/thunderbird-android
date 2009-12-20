@@ -184,6 +184,18 @@
     	<item>3</item>
     </string-array>
     
+    <string-array name="account_setup_expunge_policy_entries">
+      <item>@string/account_setup_expunge_policy_immediately</item>
+      <item>@string/account_setup_expunge_policy_on_poll</item>
+      <item>@string/account_setup_expunge_policy_manual</item>
+    </string-array>
+    
+     <string-array name="account_setup_expunge_policy_values">
+       <item>EXPUNGE_IMMEDIATELY</item>
+       <item>EXPUNGE_ON_POLL</item>
+       <item>EXPUNGE_MANUALLY</item>
+    </string-array>
+    
     <string-array name="settings_theme_entries">
     	<item>@string/setting_theme_light</item>
         <item>@string/setting_theme_dark</item>

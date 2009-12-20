@@ -75,6 +75,7 @@ public class MessagingController implements Runnable
     private static final String PENDING_COMMAND_SET_FLAG = "com.fsck.k9.MessagingController.setFlag";
     private static final String PENDING_COMMAND_APPEND = "com.fsck.k9.MessagingController.append";
     private static final String PENDING_COMMAND_MARK_ALL_AS_READ = "com.fsck.k9.MessagingController.markAllAsRead";
+    private static final String PENDING_COMMAND_EXPUNGE = "com.fsck.k9.MessagingController.expunge";
 
     private static MessagingController inst = null;
     private BlockingQueue<Command> mCommands = new PriorityBlockingQueue<Command>();
@@ -638,7 +639,7 @@ public class MessagingController implements Runnable
             {
                 try
                 {
-                    localFolder.close(false);
+                    localFolder.close();
                 }
                 catch (Exception e)
                 {
@@ -842,7 +843,13 @@ public class MessagingController implements Runnable
             }
             remoteFolder.open(OpenMode.READ_WRITE);
 
-
+            if (Account.EXPUNGE_ON_POLL.equals(account.getExpungePolicy()))
+            {
+                Log.i(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
+                remoteFolder.expunge();
+            }
+            
+            
             /*
              * Get the remote message count.
              */
@@ -928,8 +935,8 @@ public class MessagingController implements Runnable
             localFolder.setLastChecked(System.currentTimeMillis());
             localFolder.setStatus(null);
 
-            remoteFolder.close(false);
-            localFolder.close(false);
+            remoteFolder.close();
+            localFolder.close();
             if (K9.DEBUG)
             {
                 Log.d(K9.LOG_TAG, "Done synchronizing folder " +
@@ -977,7 +984,7 @@ public class MessagingController implements Runnable
                 {
                     tLocalFolder.setStatus(rootMessage);
                     tLocalFolder.setLastChecked(System.currentTimeMillis());
-                    tLocalFolder.close(false);
+                    tLocalFolder.close();
                 }
                 catch (MessagingException me)
                 {
@@ -1622,6 +1629,10 @@ public class MessagingController implements Runnable
                     {
                         processPendingEmptyTrash(command, account);
                     }
+                    else if (PENDING_COMMAND_EXPUNGE.equals(command.command))
+                    {
+                        processPendingExpunge(command, account);
+                    }
                     localStore.removePendingCommand(command);
                     if (K9.DEBUG)
                     {
@@ -1815,7 +1826,10 @@ public class MessagingController implements Runnable
                     l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
                 }
                 remoteMessage.setFlag(Flag.DELETED, true);
-                remoteFolder.expunge();
+                if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
+                {
+                    remoteFolder.expunge();
+                }
             }
         }
     }
@@ -1900,7 +1914,12 @@ public class MessagingController implements Runnable
                 {
                     Log.d(K9.LOG_TAG, "processingPendingMoveOrCopy doing special case for deleting message");
                 }
-                remoteSrcFolder.delete(messages.toArray(new Message[0]), account.getTrashFolderName());
+                String destFolderName = destFolder;
+                if (K9.FOLDER_NONE.equals(destFolderName))
+                {
+                    destFolderName = null;
+                }
+                remoteSrcFolder.delete(messages.toArray(new Message[0]), destFolderName);
             }
             else
             {
@@ -1921,17 +1940,21 @@ public class MessagingController implements Runnable
                     remoteSrcFolder.moveMessages(messages.toArray(new Message[0]), remoteDestFolder);
                 }
             }
-            remoteSrcFolder.expunge();
+            if (isCopy == false && Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
+            {
+                Log.i(K9.LOG_TAG, "processingPendingMoveOrCopy expunging folder " + account.getDescription() + ":" + srcFolder);
+                remoteSrcFolder.expunge();
+            }
         }
         finally
         {
             if (remoteSrcFolder != null)
             {
-                remoteSrcFolder.close(false);
+                remoteSrcFolder.close();
             }
             if (remoteDestFolder != null)
             {
-                remoteDestFolder.close(false);
+                remoteDestFolder.close();
             }
         }
 
@@ -2013,7 +2036,7 @@ public class MessagingController implements Runnable
         {
             if (remoteFolder != null)
             {
-                remoteFolder.close(false);
+                remoteFolder.close();
             }
         }
     }
@@ -2060,6 +2083,64 @@ public class MessagingController implements Runnable
             return;
         }
         remoteMessage.setFlag(flag, newState);
+    }
+    private void queueExpunge(final Account account, final String folderName)
+    {
+        put("queueExpunge " + account.getDescription() + ":" + folderName, null, new Runnable()
+        {
+            public void run()
+            {
+                PendingCommand command = new PendingCommand();
+                command.command = PENDING_COMMAND_EXPUNGE;
+
+                command.arguments = new String[1];
+                
+                command.arguments[0] = folderName;
+                queuePendingCommand(account, command);
+                processPendingCommands(account);
+            }
+        });
+    }
+    private void processPendingExpunge(PendingCommand command, Account account)
+    throws MessagingException
+    {
+        String folder = command.arguments[0];
+        
+        if (account.getErrorFolderName().equals(folder))
+        {
+            return;
+        }
+        if (K9.DEBUG)
+        {
+            Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folder );
+        }
+
+        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        Folder remoteFolder = remoteStore.getFolder(folder);
+        try
+        {
+            if (!remoteFolder.exists())
+            {
+                return;
+            }
+            remoteFolder.open(OpenMode.READ_WRITE);
+            if (remoteFolder.getMode() != OpenMode.READ_WRITE)
+            {
+                return;
+            }
+            remoteFolder.expunge();
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "processPendingExpunge: complete for folder = " + folder );
+            }
+        }
+        finally
+        {
+            if (remoteFolder != null)
+            {
+                remoteFolder.close();
+            }
+        }
     }
 
 
@@ -2120,7 +2201,7 @@ public class MessagingController implements Runnable
                 Log.d(K9.LOG_TAG, "processPendingMoveOrCopyOld doing special case for deleting message");
             }
             remoteMessage.delete(account.getTrashFolderName());
-            remoteSrcFolder.close(true);
+            remoteSrcFolder.close();
             return;
         }
 
@@ -2138,8 +2219,8 @@ public class MessagingController implements Runnable
         {
             remoteSrcFolder.moveMessages(new Message[] { remoteMessage }, remoteDestFolder);
         }
-        remoteSrcFolder.close(true);
-        remoteDestFolder.close(true);
+        remoteSrcFolder.close();
+        remoteDestFolder.close();
     }
 
     private void processPendingMarkAllAsRead(PendingCommand command, Account account) throws MessagingException
@@ -2187,7 +2268,7 @@ public class MessagingController implements Runnable
             }
 
             remoteFolder.setFlags(new Flag[] {Flag.SEEN}, true);
-            remoteFolder.close(false);
+            remoteFolder.close();
         }
         catch (UnsupportedOperationException uoe)
         {
@@ -2195,7 +2276,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            localFolder.close(false);
+            localFolder.close();
         }
     }
 
@@ -2394,7 +2475,7 @@ public class MessagingController implements Runnable
         {
             if (localFolder != null)
             {
-                localFolder.close(false);
+                localFolder.close();
             }
         }
     }//setMesssageFlag
@@ -2508,12 +2589,12 @@ public class MessagingController implements Runnable
                 {
                     if (remoteFolder!=null)
                     {
-                        remoteFolder.close(false);
+                        remoteFolder.close();
                     }
 
                     if (localFolder!=null)
                     {
-                        localFolder.close(false);
+                        localFolder.close();
                     }
                 }//finally
             }//run
@@ -2561,7 +2642,7 @@ public class MessagingController implements Runnable
                     if (!message.isSet(Flag.X_DOWNLOADED_FULL))
                     {
                         loadMessageForViewRemote(account, folder, uid, listener);
-                        localFolder.close(false);
+                        localFolder.close();
                         return;
                     }
 
@@ -2572,7 +2653,7 @@ public class MessagingController implements Runnable
                                       {
                                           message
                                       }, fp, null);
-                    localFolder.close(false);
+                    localFolder.close();
                     if (!message.isSet(Flag.SEEN))
                     {
                         setFlag(account, localFolder.getName(), new Message[] { message }, Flag.SEEN, true);
@@ -2799,7 +2880,7 @@ public class MessagingController implements Runnable
                     fp.add(part);
                     remoteFolder.fetch(new Message[] { message }, fp, null);
                     localFolder.updateMessage((LocalMessage)message);
-                    localFolder.close(false);
+                    localFolder.close();
                     for (MessagingListener l : getListeners())
                     {
                         l.loadAttachmentFinished(account, message, part, tag);
@@ -2853,7 +2934,7 @@ public class MessagingController implements Runnable
                                        });
             Message localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            localFolder.close(false);
+            localFolder.close();
             sendPendingMessages(account, null);
         }
         catch (Exception e)
@@ -2903,7 +2984,7 @@ public class MessagingController implements Runnable
             localFolder.open(OpenMode.READ_WRITE);
 
             int localMessages = localFolder.getMessageCount();
-            localFolder.close(false);
+            localFolder.close();
             if (localMessages > 0)
             {
                 return true;
@@ -3065,7 +3146,6 @@ public class MessagingController implements Runnable
                      */
                 }
             }
-            localFolder.expunge();
             if (localFolder.getMessageCount() == 0)
             {
                 localFolder.delete(false);
@@ -3115,7 +3195,7 @@ public class MessagingController implements Runnable
             {
                 try
                 {
-                    localFolder.close(false);
+                    localFolder.close();
                 }
                 catch (Exception e)
                 {
@@ -3346,6 +3426,17 @@ public class MessagingController implements Runnable
             throw new RuntimeException("Error moving message", me);
         }
     }
+    
+    public void expunge(final Account account, final String folder, final MessagingListener listener)
+    {   
+        put("expunge", null, new Runnable()
+        {
+            public void run()
+            {
+                queueExpunge(account, folder);
+            }
+        });
+    }
 
     public void deleteMessages(final Account account, final String folder, final Message[] messages,
                                final MessagingListener listener)
@@ -3388,11 +3479,11 @@ public class MessagingController implements Runnable
             }
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             localFolder = localStore.getFolder(folder);
-            if (folder.equals(account.getTrashFolderName()))
+            if (folder.equals(account.getTrashFolderName()) || K9.FOLDER_NONE.equals(account.getTrashFolderName()))
             {
                 if (K9.DEBUG)
                 {
-                    Log.d(K9.LOG_TAG, "Deleting messages in trash folder, not copying");
+                    Log.d(K9.LOG_TAG, "Deleting messages in trash folder or trash set to -None-, not copying");
                 }
                 localFolder.setFlags(messages, new Flag[] { Flag.DELETED }, true);
             }
@@ -3475,11 +3566,11 @@ public class MessagingController implements Runnable
         {
             if (localFolder != null)
             {
-                localFolder.close(false);
+                localFolder.close();
             }
             if (localTrashFolder != null)
             {
-                localTrashFolder.close(false);
+                localTrashFolder.close();
             }
         }
     }
@@ -3499,11 +3590,24 @@ public class MessagingController implements Runnable
         Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
 
         Folder remoteFolder = remoteStore.getFolder(account.getTrashFolderName());
-        if (remoteFolder.exists())
+        try
         {
-            remoteFolder.open(OpenMode.READ_WRITE);
-            remoteFolder.setFlags(new Flag [] { Flag.DELETED }, true);
-            remoteFolder.close(true);
+            if (remoteFolder.exists())
+            {
+                remoteFolder.open(OpenMode.READ_WRITE);
+                remoteFolder.setFlags(new Flag [] { Flag.DELETED }, true);
+                if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
+                {
+                    remoteFolder.expunge();
+                }
+            }
+        }
+        finally
+        {
+            if (remoteFolder != null)
+            {
+                remoteFolder.close();
+            }
         }
     }
 
@@ -3519,7 +3623,7 @@ public class MessagingController implements Runnable
                     Folder localFolder = localStore.getFolder(account.getTrashFolderName());
                     localFolder.open(OpenMode.READ_WRITE);
                     localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
-                    localFolder.close(true);
+                    localFolder.close();
 
                     for (MessagingListener l : getListeners())
                     {
@@ -4287,7 +4391,7 @@ public class MessagingController implements Runnable
                     {
                         try
                         {
-                            localFolder.close(false);
+                            localFolder.close();
                         }
                         catch (Exception e)
                         {

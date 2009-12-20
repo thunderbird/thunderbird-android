@@ -58,6 +58,7 @@ public class Account implements Serializable
     HideButtons mHideMessageViewButtons;
     boolean mIsSignatureBeforeQuotedText;
     boolean mLeftHanded;
+    public String mExpungePolicy = EXPUNGE_IMMEDIATELY;
 
     List<Identity> identities;
 
@@ -71,6 +72,10 @@ public class Account implements Serializable
         NEVER, ALWAYS, KEYBOARD_AVAILABLE;
     }
 
+    public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
+    public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
+    public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
+    
     /**
      * <pre>
      * 0 Never
@@ -194,6 +199,7 @@ public class Account implements Serializable
                            "Trash");
         mOutboxFolderName = preferences.getPreferences().getString(mUuid  + ".outboxFolderName",
                             "Outbox");
+        mExpungePolicy = preferences.getPreferences().getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
 
         // Between r418 and r431 (version 0.103), folder names were set empty if the Incoming settings were
         // opened for non-IMAP accounts.  0.103 was never a market release, so perhaps this code
@@ -529,6 +535,7 @@ public class Account implements Serializable
         editor.remove(mUuid + ".folderTargetMode");
         editor.remove(mUuid + ".hideButtonsEnum");
         editor.remove(mUuid + ".signatureBeforeQuotedText");
+        editor.remove(mUuid + ".expungePolicy");
         deleteIdentities(preferences.getPreferences(), editor);
         editor.commit();
     }
@@ -599,6 +606,7 @@ public class Account implements Serializable
         editor.putString(mUuid + ".folderPushMode", mFolderPushMode.name());
         editor.putString(mUuid + ".folderTargetMode", mFolderTargetMode.name());
         editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
+        editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
 
         saveIdentities(preferences.getPreferences(), editor);
 
@@ -931,6 +939,16 @@ public class Account implements Serializable
     public void setNotifySelfNewMail(boolean notifySelfNewMail)
     {
         mNotifySelfNewMail = notifySelfNewMail;
+    }
+
+    public String getExpungePolicy()
+    {
+        return mExpungePolicy;
+    }
+
+    public void setExpungePolicy(String expungePolicy)
+    {
+        mExpungePolicy = expungePolicy;
     }
 
 }

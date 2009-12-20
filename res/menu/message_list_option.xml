@@ -130,4 +130,8 @@
 		android:title="@string/account_settings_action"
 		android:icon="@android:drawable/ic_menu_preferences"
 	/>	
+	<item
+        android:id="@+id/expunge"
+        android:title="@string/expunge_action"
+    />
 </menu>

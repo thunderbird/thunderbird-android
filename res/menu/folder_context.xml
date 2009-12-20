@@ -24,5 +24,9 @@
         android:id="@+id/folder_settings"
 		android:title="@string/folder_settings_action"
     />
+    <item
+        android:id="@+id/expunge"
+        android:title="@string/expunge_action"
+    />
 	
 </menu>

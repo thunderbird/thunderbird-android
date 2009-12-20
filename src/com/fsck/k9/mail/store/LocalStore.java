@@ -709,19 +709,8 @@ public class LocalStore extends Store implements Serializable
         }
 
         @Override
-        public void close(boolean expunge)
+        public void close()
         {
-            try
-            {
-                if (expunge)
-                {
-                    expunge();
-                }
-            }
-            catch (MessagingException me)
-            {
-                Log.e(K9.LOG_TAG, "Unable to close LocalFolder " + getName(), me);
-            }
             mFolderId = -1;
         }
 
@@ -1782,18 +1771,7 @@ public class LocalStore extends Store implements Serializable
         {
             throw new MessagingException("Cannot call getUidFromMessageId on LocalFolder");
         }
-        @Override
-        public Message[] expunge() throws MessagingException
-        {
-            open(OpenMode.READ_WRITE);
-            ArrayList<Message> expungedMessages = new ArrayList<Message>();
-            /*
-             * epunge() doesn't do anything because deleted messages are saved for their uids
-             * and really, really deleted messages are "Destroyed" and removed immediately.
-             */
-            return expungedMessages.toArray(new Message[] {});
-        }
-
+        
         public void deleteMessagesOlderThan(long cutoff) throws MessagingException
         {
             open(OpenMode.READ_ONLY);

@@ -87,6 +87,13 @@
         	android:entryValues="@array/account_setup_delete_policy_values"
         	android:dialogTitle="@string/account_setup_incoming_delete_policy_label" />
             
+         <ListPreference
+            android:key="expunge_policy"
+            android:title="@string/account_setup_expunge_policy_label"
+            android:entries="@array/account_setup_expunge_policy_entries"
+            android:entryValues="@array/account_setup_expunge_policy_values"
+            android:dialogTitle="@string/account_setup_expunge_policy_label" />
+            
         <PreferenceScreen
             android:key="incoming"
 			android:title="@string/account_settings_incoming_label"

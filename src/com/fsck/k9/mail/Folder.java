@@ -34,10 +34,8 @@ public abstract class Folder
     /**
      * Forces a close of the MailProvider. Any further access will attempt to
      * reopen the MailProvider.
-     *
-     * @param expunge If true all deleted messages will be expunged.
      */
-    public abstract void close(boolean expunge);
+    public abstract void close();
 
     /**
      * @return True if further commands are not expected to have to open the
@@ -119,7 +117,8 @@ public abstract class Folder
 
     public abstract String getUidFromMessageId(Message message) throws MessagingException;
 
-    public abstract Message[] expunge() throws MessagingException;
+    public void expunge() throws MessagingException
+    {}
 
     public abstract void fetch(Message[] messages, FetchProfile fp,
                                MessageRetrievalListener listener) throws MessagingException;

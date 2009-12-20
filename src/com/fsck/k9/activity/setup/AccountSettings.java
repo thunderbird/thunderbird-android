@@ -42,6 +42,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_PUSH_MODE = "folder_push_mode";
     private static final String PREFERENCE_TARGET_MODE = "folder_target_mode";
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
+    private static final String PREFERENCE_EXPUNGE_POLICY = "expunge_policy";
     private static final String PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder";
     private static final String PREFERENCE_LEFT_HANDED = "left_handed";
 
@@ -63,6 +64,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mPushMode;
     private ListPreference mTargetMode;
     private ListPreference mDeletePolicy;
+    private ListPreference mExpungePolicy;
     private Preference mAutoExpandFolder;
 
     private CheckBoxPreference mLeftHanded;
@@ -83,11 +85,13 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
 
         boolean isPushCapable = false;
+        boolean isExpungeCapable = false;
         Store store = null;
         try
         {
             store = Store.getInstance(mAccount.getStoreUri(), getApplication());
             isPushCapable = store.isPushCapable();
+            isExpungeCapable = store.isExpungeCapable();
         }
         catch (Exception e)
         {
@@ -204,7 +208,24 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
+        
 
+        mExpungePolicy = (ListPreference) findPreference(PREFERENCE_EXPUNGE_POLICY);
+        mExpungePolicy.setEnabled(isExpungeCapable);
+        mExpungePolicy.setValue(mAccount.getExpungePolicy());
+        mExpungePolicy.setSummary(mExpungePolicy.getEntry());
+        mExpungePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mExpungePolicy.findIndexOfValue(summary);
+                mExpungePolicy.setSummary(mExpungePolicy.getEntries()[index]);
+                mExpungePolicy.setValue(summary);
+                return false;
+            }
+        });
+        
         mDisplayCount = (ListPreference) findPreference(PREFERENCE_DISPLAY_COUNT);
         mDisplayCount.setValue(String.valueOf(mAccount.getDisplayCount()));
         mDisplayCount.setSummary(mDisplayCount.getEntry());
@@ -342,6 +363,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
+        mAccount.setExpungePolicy(mExpungePolicy.getValue());
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));
         mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));

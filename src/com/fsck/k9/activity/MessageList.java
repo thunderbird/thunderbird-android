@@ -990,6 +990,12 @@ public class MessageList
     {
         showDialog(DIALOG_MARK_ALL_AS_READ);
     }
+    
+    private void onExpunge(final Account account, String folderName)
+    {
+        mController.expunge(account, folderName, null);
+    }
+
 
     @Override
     public Dialog onCreateDialog(int id)
@@ -1212,6 +1218,10 @@ public class MessageList
                 mSelectedWidget = WIDGET_FLAG;
                 configureWidgets();
                 return true;
+                
+            case R.id.expunge:
+                onExpunge(mAccount, mCurrentFolder.name);
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -1286,6 +1296,11 @@ public class MessageList
         else
         {
             menu.findItem(R.id.send_messages).setVisible(false);
+        }
+        
+        if (K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name))
+        {
+            menu.findItem(R.id.expunge).setVisible(false);
         }
         return true;
     }
@@ -1784,7 +1799,7 @@ public class MessageList
             {
                 if (local_folder != null)
                 {
-                    local_folder.close(false);
+                    local_folder.close();
                 }
             }
         }

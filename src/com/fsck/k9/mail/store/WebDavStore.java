@@ -1122,7 +1122,7 @@ public class WebDavStore extends Store
         {
             if (tmpFolder != null)
             {
-                tmpFolder.close(false);
+                tmpFolder.close();
             }
         }
     }
@@ -1348,7 +1348,7 @@ public class WebDavStore extends Store
         }
 
         @Override
-        public void close(boolean expunge)
+        public void close()
         {
             this.mMessageCount = 0;
             this.mUnreadMessageCount = 0;
@@ -2016,13 +2016,6 @@ public class WebDavStore extends Store
 
             }
             return retMessages;
-        }
-
-        @Override
-        public Message[] expunge() throws MessagingException
-        {
-            /** Do nothing, deletes occur as soon as the call is made rather than flags on the message */
-            return null;
         }
 
         @Override

@@ -106,7 +106,12 @@ public abstract class Store
     {
         return false;
     }
-
+    public boolean isExpungeCapable()
+    {
+        return false;
+    }
+    
+    
     public void sendMessages(Message[] messages) throws MessagingException
     {
     }

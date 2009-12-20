@@ -415,6 +415,11 @@ public class ImapStore extends Store
     {
         return true;
     }
+    @Override
+    public boolean isExpungeCapable()
+    {
+        return true;
+    }
 
 
     class ImapFolder extends Folder
@@ -585,28 +590,17 @@ public class ImapStore extends Store
             return mMode;
         }
 
-        public void close(boolean expunge)
+        public void close()
         {
             if (mMessageCount != -1)
             {
-                //  close();
                 mMessageCount = -1;
             }
             if (!isOpen())
             {
                 return;
             }
-            try
-            {
-                if (expunge)
-                {
-                    expunge();
-                }
-            }
-            catch (MessagingException me)
-            {
-                Log.e(K9.LOG_TAG, "Unable to expunge remote folder " + getName(), me);
-            }
+            
             synchronized (this)
             {
                 releaseConnection(mConnection);
@@ -752,10 +746,9 @@ public class ImapStore extends Store
             if (messages.length == 0)
                 return;
 
-            if (getName().equals(trashFolderName))
+            if (trashFolderName == null || getName().equals(trashFolderName))
             {
                 setFlags(messages, new Flag[] { Flag.DELETED }, true);
-                expunge();
             }
             else
             {
@@ -780,7 +773,6 @@ public class ImapStore extends Store
                         Log.d(K9.LOG_TAG, "IMAPMessage.delete: copying remote " + messages.length + " messages to '" + trashFolderName + "' for " + getLogId());
                     }
                     moveMessages(messages, remoteTrashFolder);
-                    expunge();
                 }
                 else
                 {
@@ -1594,7 +1586,7 @@ public class ImapStore extends Store
         }
 
 
-        public Message[] expunge() throws MessagingException
+        public void expunge() throws MessagingException
         {
             checkOpen();
             try
@@ -1604,20 +1596,6 @@ public class ImapStore extends Store
             catch (IOException ioe)
             {
                 throw ioExceptionHandler(mConnection, ioe);
-            }
-            return null;
-        }
-
-        private void close() throws MessagingException
-        {
-            checkOpen();
-            try
-            {
-                executeSimpleCommand("CLOSE");
-            }
-            catch (IOException ioe)
-            {
-
             }
         }
 
@@ -1752,7 +1730,7 @@ public class ImapStore extends Store
         {
             Log.e(K9.LOG_TAG, "IOException for " + getLogId(), ioe);
             connection.close();
-            close(false);
+            close();
             return new MessagingException("IO Error", ioe);
         }
 
@@ -2560,7 +2538,7 @@ public class ImapStore extends Store
                             receiver.setPushActive(getName(), false);
                             try
                             {
-                                close(false);
+                                close();
                             }
                             catch (Exception me)
                             {
@@ -2590,7 +2568,7 @@ public class ImapStore extends Store
                     try
                     {
                         Log.i(K9.LOG_TAG, "Pusher for " + getLogId() + " is exiting");
-                        close(false);
+                        close();
                     }
                     catch (Exception me)
                     {

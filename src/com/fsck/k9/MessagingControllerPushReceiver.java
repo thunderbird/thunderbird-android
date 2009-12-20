@@ -123,7 +123,7 @@ public class MessagingControllerPushReceiver implements PushReceiver
             {
                 try
                 {
-                    localFolder.close(false);
+                    localFolder.close();
                 }
                 catch (Exception e)
                 {

@@ -480,6 +480,11 @@ public class FolderList extends K9ListActivity
 
         MessagingController.getInstance(getApplication()).emptyTrash(account, null);
     }
+    
+    private void onExpunge(final Account account, String folderName)
+    {
+        MessagingController.getInstance(getApplication()).expunge(account, folderName, null);
+    }
 
     private void checkMail(final Account account)
     {
@@ -602,6 +607,10 @@ public class FolderList extends K9ListActivity
                 onEmptyTrash(mAccount);
 
                 break;
+            case R.id.expunge:
+                onExpunge(mAccount, folder.name);
+
+                break;
         }
 
         return super.onContextItemSelected(item);
@@ -706,6 +715,10 @@ public class FolderList extends K9ListActivity
         else
         {
             menu.findItem(R.id.send_messages).setVisible(false);
+        }
+        if (K9.ERROR_FOLDER_NAME.equals(folder.name))
+        {
+            menu.findItem(R.id.expunge).setVisible(false);
         }
 
         menu.setHeaderTitle(folder.displayName);
@@ -1363,7 +1376,7 @@ public class FolderList extends K9ListActivity
 
             this.unreadMessageCount = unreadCount;
 
-            folder.close(false);
+            folder.close();
 
         }
     }

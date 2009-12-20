@@ -173,7 +173,7 @@ public class Pop3Store extends Store
             folder.executeSimpleCommand("UIDL");
 
         }
-        folder.close(false);
+        folder.close();
     }
 
     class Pop3Folder extends Folder
@@ -320,7 +320,7 @@ public class Pop3Store extends Store
         }
 
         @Override
-        public void close(boolean expunge)
+        public void close()
         {
             try
             {
@@ -835,11 +835,6 @@ public class Pop3Store extends Store
 
         @Override
         public String getUidFromMessageId(Message message) throws MessagingException
-        {
-            return null;
-        }
-
-        public Message[] expunge() throws MessagingException
         {
             return null;
         }
