@@ -44,7 +44,7 @@ public class PollService extends CoreService
             Listener listener = (Listener)controller.getCheckMailListener();
             if (listener == null)
             {
-                MessagingController.getInstance(getApplication()).log("***** PollService *****: starting new check");
+                Log.i(K9.LOG_TAG, "***** PollService *****: starting new check");
                 mListener.setStartId(startId);
                 mListener.wakeLockAcquire();
                 controller.setCheckMailListener(mListener);
@@ -52,7 +52,7 @@ public class PollService extends CoreService
             }
             else
             {
-                MessagingController.getInstance(getApplication()).log("***** PollService *****: renewing WakeLock");
+                Log.i(K9.LOG_TAG,"***** PollService *****: renewing WakeLock");
                 listener.setStartId(startId);
                 listener.wakeLockAcquire();
             }

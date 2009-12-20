@@ -143,7 +143,6 @@ public class MailService extends CoreService
                 {
                     Log.v(K9.LOG_TAG, "***** MailService *****: cancel");
                 }
-                MessagingController.getInstance(getApplication()).log("***** MailService *****: cancel");
 
                 cancel();
             }
@@ -155,7 +154,6 @@ public class MailService extends CoreService
                 }
                 rescheduleAll(hasConnectivity, doBackground, startIdObj);
                 startIdObj = null;
-                MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
 
             }
             else if (ACTION_RESCHEDULE_CHECK.equals(intent.getAction()))
@@ -166,7 +164,6 @@ public class MailService extends CoreService
                 }
                 reschedule(startIdObj);
                 startIdObj = null;
-                MessagingController.getInstance(getApplication()).log("***** MailService *****: reschedule");
 
             }
             else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction()))
@@ -293,7 +290,6 @@ public class MailService extends CoreService
                     {
                         String checkString = "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime);
                         Log.i(K9.LOG_TAG, checkString);
-                        MessagingController.getInstance(getApplication()).log(checkString);
                     }
                     catch (Exception e)
                     {

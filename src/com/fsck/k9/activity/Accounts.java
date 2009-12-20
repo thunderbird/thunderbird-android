@@ -35,7 +35,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private ConcurrentHashMap<Account, String> pendingWork = new ConcurrentHashMap<Account, String>();
 
     private Account mSelectedContextAccount;
-
+    private int mUnreadMessageCount = 0;
+    
     private AccountsHandler mHandler = new AccountsHandler();
     private AccountsAdapter mAdapter;
 
@@ -52,13 +53,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private static final int MSG_ACCOUNT_SIZE_CHANGED = 2;
         private static final int MSG_WORKING_ACCOUNT = 3;
         private static final int MSG_PROGRESS = 4;
-        private static final int MSG_FOLDER_SYNCING = 5;
         private static final int MSG_DEFINITE_PROGRESS = 6;
+        private static final int MSG_SET_TITLE = 7;
 
         public void handleMessage(android.os.Message msg)
         {
             switch (msg.what)
             {
+                case MSG_SET_TITLE:
+                {
+                    this.setViewTitle();
+                    break;
+                }
+
                 case DATA_CHANGED:
                     if (mAdapter != null)
                     {
@@ -88,19 +95,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     toast.show();
                     break;
                 }
-                case MSG_FOLDER_SYNCING:
-                {
-                    String folderName = (String)((Object[]) msg.obj)[0];
-                    String dispString;
-                    dispString = getString(R.string.accounts_title);
-                    if (folderName != null)
-                    {
-                        dispString += " (" + getString(R.string.status_loading)
-                                      + folderName + ")";
-                    }
-                    setTitle(dispString);
-                    break;
-                }
                 case MSG_PROGRESS:
                     setProgressBarIndeterminateVisibility(msg.arg1 != 0);
                     //setProgressBarVisibility(msg.arg1 != 0);
@@ -111,6 +105,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 default:
                     super.handleMessage(msg);
             }
+        }
+        private void setViewTitle()
+        {
+            String dispString = mListener.formatHeader(Accounts.this, getString(R.string.accounts_title), mUnreadMessageCount);
+            
+            setTitle(dispString);
+        }
+        public void refreshTitle()
+        {
+            android.os.Message msg = new android.os.Message();
+            msg.what = MSG_SET_TITLE;
+            sendMessage(msg);
         }
 
         public void dataChanged()
@@ -154,22 +160,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             msg.arg1 = progress ;
             sendMessage(msg);
         }
-        public void folderSyncing(String folder)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_FOLDER_SYNCING;
-            msg.obj = new String[] { folder };
-            sendMessage(msg);
-        }
-
     }
 
-    MessagingListener mListener = new MessagingListener()
+    ActivityListener mListener = new ActivityListener()
     {
         @Override
         public void accountStatusChanged(Account account, int unreadMessageCount)
         {
+            Integer oldUnreadMessageCountInteger = unreadMessageCounts.get(account.getUuid());
+            int oldUnreadMessageCount = 0;
+            if (oldUnreadMessageCountInteger != null)
+            {
+                oldUnreadMessageCount = oldUnreadMessageCountInteger;
+            }
+
             unreadMessageCounts.put(account.getUuid(), unreadMessageCount);
+            mUnreadMessageCount += unreadMessageCount - oldUnreadMessageCount;
             mHandler.dataChanged();
             pendingWork.remove(account);
 
@@ -177,6 +183,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             if (pendingWork.isEmpty())
             {
                 mHandler.progress(Window.PROGRESS_END);
+                mHandler.refreshTitle();
             }
             else
             {
@@ -200,28 +207,82 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             int totalMessagesInMailbox,
             int numNewMessages)
         {
+            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
             MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
 
             mHandler.progress(false);
-            mHandler.folderSyncing(null);
+            
+            mHandler.refreshTitle();
         }
 
         @Override
         public void synchronizeMailboxStarted(Account account, String folder)
         {
+            super.synchronizeMailboxStarted(account, folder);
             mHandler.progress(true);
-            mHandler.folderSyncing(account.getDescription()
-                                   + getString(R.string.notification_bg_title_separator) + folder);
+            mHandler.refreshTitle();
+        }
+        
+        public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
+        {
+            super.synchronizeMailboxProgress(account, folder, completed, total);
+            mHandler.refreshTitle();
         }
 
         @Override
         public void synchronizeMailboxFailed(Account account, String folder,
                                              String message)
         {
+            super.synchronizeMailboxFailed(account, folder, message);
             mHandler.progress(false);
-            mHandler.folderSyncing(null);
+            mHandler.refreshTitle();
+
+        }
+        
+        @Override
+        public void sendPendingMessagesStarted(Account account)
+        {
+            super.sendPendingMessagesStarted(account);
+            mHandler.refreshTitle();
+        }
+        
+        @Override
+        public void sendPendingMessagesCompleted(Account account)
+        {
+            super.sendPendingMessagesCompleted(account);
+            mHandler.refreshTitle();
         }
 
+        
+        @Override
+        public void sendPendingMessagesFailed(Account account)
+        {
+            super.sendPendingMessagesFailed(account);
+            mHandler.refreshTitle();
+        }
+
+        public void pendingCommandsProcessing(Account account) 
+        {
+            super.pendingCommandsProcessing(account);
+            mHandler.refreshTitle();
+        }
+        public void pendingCommandsFinished(Account account) 
+        {
+            super.pendingCommandsFinished(account);
+            mHandler.refreshTitle();
+        }
+        public void pendingCommandStarted(Account account, String commandTitle)
+        {
+            super.pendingCommandStarted(account, commandTitle);
+            mHandler.refreshTitle();
+        }
+        public void pendingCommandCompleted(Account account, String commandTitle)
+        {
+            super.pendingCommandCompleted(account, commandTitle);
+            mHandler.refreshTitle();
+        }
+
+        
     };
 
     private static String UNREAD_MESSAGE_COUNTS = "unreadMessageCounts";
@@ -324,6 +385,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             mHandler.progress(Window.PROGRESS_START);
         }
         pendingWork.clear();
+        mUnreadMessageCount = 0;
+        unreadMessageCounts.clear();
+
         for (Account account : accounts)
         {
             pendingWork.put(account, "true");

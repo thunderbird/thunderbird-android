@@ -106,6 +106,8 @@ public class MessageList
     private LayoutInflater mInflater;
 
     private Account mAccount;
+    private int mUnreadMessageCount = 0;
+    
 
     /**
     * Stores the name of the folder that we want to open as soon as possible
@@ -121,7 +123,6 @@ public class MessageList
 
     private boolean sortDateAscending = false;
 
-    private boolean mStartup = false;
 
     private boolean mLeftHanded = false;
     private int mSelectedCount = 0;
@@ -211,14 +212,41 @@ public class MessageList
         public void folderLoading(String folder, boolean loading)
         {
 
-            if (mCurrentFolder.name == folder)
+            if (mCurrentFolder.name.equals(folder))
             {
                 mCurrentFolder.loading = loading;
             }
 
 
         }
-
+        private void refreshTitle()
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    String displayName = mFolderName;
+                    if (K9.INBOX.equalsIgnoreCase(displayName))
+                    {
+                        displayName = getString(R.string.special_mailbox_name_inbox);
+                    }
+                    String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount);
+            
+                    setTitle(dispString);
+                    int level = Window.PROGRESS_END;
+                    if (mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0)
+                    {
+                        level = (Window.PROGRESS_END / mAdapter.mListener.getFolderTotal()) * (mAdapter.mListener.getFolderCompleted()) ;
+                        if (level > Window.PROGRESS_END)
+                        {
+                            level = Window.PROGRESS_END;
+                        }
+                    }
+                    
+                    getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
+                }
+            });
+        }
         public void progress(final boolean progress)
         {
             runOnUiThread(new Runnable()
@@ -230,45 +258,7 @@ public class MessageList
             });
         }
 
-        public void folderSyncing(final String folder)
-        {
-            runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
-                    String dispString = mAccount.getDescription();
-
-                    if (folder != null)
-                    {
-                        dispString += " (" + getString(R.string.status_loading)
-                                      + folder + ")";
-                    }
-
-                    setTitle(dispString);
-                }
-            });
-        }
-
-        public void sendingOutbox(final boolean sending)
-        {
-
-
-            runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
-                    String dispString = mAccount.getDescription();
-
-                    if (sending)
-                    {
-                        dispString += " (" + getString(R.string.status_sending) + ")";
-                    }
-
-                    setTitle(dispString);
-                }
-            });
-
-        }
+      
     }
 
     /**
@@ -321,7 +311,7 @@ public class MessageList
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
+        requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.message_list);
 
         mListView = (ListView) findViewById(R.id.message_list);
@@ -330,8 +320,6 @@ public class MessageList
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(this);
-
-
 
         registerForContextMenu(mListView);
 
@@ -353,7 +341,6 @@ public class MessageList
 
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
-        mStartup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, false);
 
         // Take the initial folder into account only if we are *not* restoring the
         // activity already
@@ -400,7 +387,6 @@ public class MessageList
             onRestoreListState(savedInstanceState);
         }
 
-        setTitle();
     }
 
     private void onRestoreListState(Bundle savedInstanceState)
@@ -454,17 +440,10 @@ public class MessageList
         notifMgr.cancel(mAccount.getAccountNumber());
         notifMgr.cancel(-1000 - mAccount.getAccountNumber());
 
-        setTitle();
-    }
-
-    private void setTitle()
-    {
-        setTitle(
-            mAccount.getDescription()
-            + " - " +
-            mCurrentFolder.displayName
-
-        );
+        controller.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
+        
+        mHandler.refreshTitle();
+        
     }
 
     @Override
@@ -1449,20 +1428,20 @@ public class MessageList
     {
         private List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
-        private MessagingListener mListener = new MessagingListener()
+        private ActivityListener mListener = new ActivityListener()
         {
 
             @Override
             public void synchronizeMailboxStarted(Account account, String folder)
             {
-                if (!account.equals(mAccount) || !folder.equals(mFolderName))
+                super.synchronizeMailboxStarted(account, folder);
+                
+                if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
-                    return;
+                    mHandler.progress(true);
+                    mHandler.folderLoading(folder, true);
                 }
-
-                mHandler.progress(true);
-                mHandler.folderLoading(folder, true);
-                mHandler.folderSyncing(folder);
+                mHandler.refreshTitle();
             }
 
 
@@ -1471,32 +1450,61 @@ public class MessageList
             public void synchronizeMailboxFinished(Account account, String folder,
                                                    int totalMessagesInMailbox, int numNewMessages)
             {
-                if (!account.equals(mAccount) || !folder.equals(mFolderName))
+                super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
+                
+                if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
-                    return;
+                    mHandler.progress(false);
+                    mHandler.folderLoading(folder, false);
+                    mHandler.sortMessages();
                 }
-
-                mHandler.progress(false);
-                mHandler.folderLoading(folder, false);
-                mHandler.folderSyncing(null);
-                mHandler.sortMessages();
+                mHandler.refreshTitle();
             }
 
             @Override
             public void synchronizeMailboxFailed(Account account, String folder, String message)
             {
-                if (!account.equals(mAccount) || !folder.equals(mFolderName))
+                super.synchronizeMailboxFailed(account, folder, message);
+                
+                if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
-                    return;
+                    // Perhaps this can be restored, if done in the mHandler thread
+                    // Toast.makeText(MessageList.this, message, Toast.LENGTH_LONG).show();
+                    mHandler.progress(false);
+                    mHandler.folderLoading(folder, false);
+                    mHandler.sortMessages();
                 }
-
-                // Perhaps this can be restored, if done in the mHandler thread
-                // Toast.makeText(MessageList.this, message, Toast.LENGTH_LONG).show();
-                mHandler.progress(false);
-                mHandler.folderLoading(folder, false);
-                mHandler.folderSyncing(null);
-                mHandler.sortMessages();
+                mHandler.refreshTitle();
             }
+            
+            @Override
+            public void sendPendingMessagesCompleted(Account account)
+            {
+                super.sendPendingMessagesCompleted(account);
+                mHandler.refreshTitle();
+            }
+
+            @Override
+            public void sendPendingMessagesStarted(Account account)
+            {
+                super.sendPendingMessagesStarted(account);
+                mHandler.refreshTitle();
+            }
+
+            @Override
+            public void sendPendingMessagesFailed(Account account)
+            {
+                super.sendPendingMessagesFailed(account);
+                mHandler.refreshTitle();
+            }
+            
+            @Override
+            public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
+            {
+                super.synchronizeMailboxProgress(account, folder, completed, total);
+                mHandler.refreshTitle();
+            }
+
 
             @Override
             public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
@@ -1604,6 +1612,36 @@ public class MessageList
                 }
 
                 addOrUpdateMessage(folder, message);
+            }
+            @Override
+            public void folderStatusChanged(Account account, String folderName, int unreadMessageCount)
+            {
+                if (!account.equals(mAccount) || !folderName.equals(mFolderName))
+                {
+                    return;
+                }
+                mUnreadMessageCount = unreadMessageCount;
+                mHandler.refreshTitle();
+            }
+            public void pendingCommandsProcessing(Account account) 
+            {
+                super.pendingCommandsProcessing(account);
+                mHandler.refreshTitle();
+            }
+            public void pendingCommandsFinished(Account account) 
+            {
+                super.pendingCommandsFinished(account);
+                mHandler.refreshTitle();
+            }
+            public void pendingCommandStarted(Account account, String commandTitle)
+            {
+                super.pendingCommandStarted(account, commandTitle);
+                mHandler.refreshTitle();
+            }
+            public void pendingCommandCompleted(Account account, String commandTitle)
+            {
+                super.pendingCommandCompleted(account, commandTitle);
+                mHandler.refreshTitle();
             }
 
         };
@@ -2274,6 +2312,8 @@ public class MessageList
         public boolean loading;
 
         public boolean lastCheckFailed;
+        
+        public Folder folder;
 
         /**
          * Outbox is handled differently from any other folder.
@@ -2286,6 +2326,7 @@ public class MessageList
         }
         public void populate(Folder folder)
         {
+            this.folder = folder;
             this.name = folder.getName();
 
             if (this.name.equalsIgnoreCase(K9.INBOX))
