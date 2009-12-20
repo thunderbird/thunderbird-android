@@ -107,7 +107,7 @@ public class MessageList
 
     private Account mAccount;
     private int mUnreadMessageCount = 0;
-    
+
 
     /**
     * Stores the name of the folder that we want to open as soon as possible
@@ -231,7 +231,7 @@ public class MessageList
                         displayName = getString(R.string.special_mailbox_name_inbox);
                     }
                     String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount);
-            
+
                     setTitle(dispString);
                     int level = Window.PROGRESS_END;
                     if (mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0)
@@ -242,7 +242,7 @@ public class MessageList
                             level = Window.PROGRESS_END;
                         }
                     }
-                    
+
                     getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
                 }
             });
@@ -258,7 +258,7 @@ public class MessageList
             });
         }
 
-      
+
     }
 
     /**
@@ -441,9 +441,9 @@ public class MessageList
         notifMgr.cancel(-1000 - mAccount.getAccountNumber());
 
         controller.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
-        
+
         mHandler.refreshTitle();
-        
+
     }
 
     @Override
@@ -1435,7 +1435,7 @@ public class MessageList
             public void synchronizeMailboxStarted(Account account, String folder)
             {
                 super.synchronizeMailboxStarted(account, folder);
-                
+
                 if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
                     mHandler.progress(true);
@@ -1451,7 +1451,7 @@ public class MessageList
                                                    int totalMessagesInMailbox, int numNewMessages)
             {
                 super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
-                
+
                 if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
                     mHandler.progress(false);
@@ -1465,7 +1465,7 @@ public class MessageList
             public void synchronizeMailboxFailed(Account account, String folder, String message)
             {
                 super.synchronizeMailboxFailed(account, folder, message);
-                
+
                 if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
                     // Perhaps this can be restored, if done in the mHandler thread
@@ -1476,7 +1476,7 @@ public class MessageList
                 }
                 mHandler.refreshTitle();
             }
-            
+
             @Override
             public void sendPendingMessagesCompleted(Account account)
             {
@@ -1497,7 +1497,7 @@ public class MessageList
                 super.sendPendingMessagesFailed(account);
                 mHandler.refreshTitle();
             }
-            
+
             @Override
             public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
             {
@@ -1623,12 +1623,12 @@ public class MessageList
                 mUnreadMessageCount = unreadMessageCount;
                 mHandler.refreshTitle();
             }
-            public void pendingCommandsProcessing(Account account) 
+            public void pendingCommandsProcessing(Account account)
             {
                 super.pendingCommandsProcessing(account);
                 mHandler.refreshTitle();
             }
-            public void pendingCommandsFinished(Account account) 
+            public void pendingCommandsFinished(Account account)
             {
                 super.pendingCommandsFinished(account);
                 mHandler.refreshTitle();
@@ -2312,7 +2312,7 @@ public class MessageList
         public boolean loading;
 
         public boolean lastCheckFailed;
-        
+
         public Folder folder;
 
         /**

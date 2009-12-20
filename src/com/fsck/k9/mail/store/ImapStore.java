@@ -59,7 +59,7 @@ public class ImapStore extends Store
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
     private enum AuthType { PLAIN, CRAM_MD5 };
-    
+
     private static final int IDLE_READ_TIMEOUT = 29 * 60 * 1000; // 29 minutes
     private static final int IDLE_REFRESH_INTERVAL = 20 * 60 * 1000; // 20 minutes
 
@@ -707,7 +707,7 @@ public class ImapStore extends Store
                 throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
             }
 
-            if (messages.length == 0) 
+            if (messages.length == 0)
                 return;
 
             ImapFolder iFolder = (ImapFolder)folder;
@@ -732,7 +732,7 @@ public class ImapStore extends Store
         @Override
         public void moveMessages(Message[] messages, Folder folder) throws MessagingException
         {
-            if (messages.length == 0) 
+            if (messages.length == 0)
                 return;
             copyMessages(messages, folder);
             setFlags(messages, new Flag[] { Flag.DELETED }, true);
@@ -740,7 +740,7 @@ public class ImapStore extends Store
 
         public void delete(Message[] messages, String trashFolderName) throws MessagingException
         {
-            if (messages.length == 0) 
+            if (messages.length == 0)
                 return;
 
             if (getName().equals(trashFolderName))
@@ -1907,13 +1907,13 @@ public class ImapStore extends Store
 
                 try
                 {
-                    if ( mAuthType == AuthType.CRAM_MD5 )
+                    if (mAuthType == AuthType.CRAM_MD5)
                     {
-                      authCramMD5();
+                        authCramMD5();
                     }
-                    else if ( mAuthType == AuthType.PLAIN )
+                    else if (mAuthType == AuthType.PLAIN)
                     {
-                      executeSimpleCommand("LOGIN \"" + escapeString(mUsername) + "\" \"" + escapeString(mPassword) + "\"", true);
+                        executeSimpleCommand("LOGIN \"" + escapeString(mUsername) + "\" \"" + escapeString(mPassword) + "\"", true);
                     }
                     authSuccess = true;
                 }
@@ -2017,86 +2017,86 @@ public class ImapStore extends Store
 
         protected void authCramMD5() throws AuthenticationFailedException, MessagingException
         {
-          try
-          {
-            String tag = sendCommand("AUTHENTICATE CRAM-MD5", false);
-            byte[] buf = new byte[ 1024 ];
-            int b64NonceLen = 0;
-            for ( int i = 0; i < buf.length; i++ )
+            try
             {
-              buf[ i ] = (byte)mIn.read();
-              if ( buf[i] == 0x0a )
-              {
-                b64NonceLen = i;
-                break;
-              }
+                String tag = sendCommand("AUTHENTICATE CRAM-MD5", false);
+                byte[] buf = new byte[ 1024 ];
+                int b64NonceLen = 0;
+                for (int i = 0; i < buf.length; i++)
+                {
+                    buf[ i ] = (byte)mIn.read();
+                    if (buf[i] == 0x0a)
+                    {
+                        b64NonceLen = i;
+                        break;
+                    }
+                }
+                if (b64NonceLen == 0)
+                {
+                    throw new AuthenticationFailedException("Error negotiating CRAM-MD5: nonce too long.");
+                }
+                byte[] b64NonceTrim = new byte[ b64NonceLen - 2 ];
+                System.arraycopy(buf, 1, b64NonceTrim, 0, b64NonceLen - 2);
+                byte[] nonce = Base64.decodeBase64(b64NonceTrim);
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, "Got nonce: " + new String(b64NonceTrim, "US-ASCII"));
+                    Log.d(K9.LOG_TAG, "Plaintext nonce: " + new String(nonce, "US-ASCII"));
+                }
+                byte[] ipad = new byte[64];
+                byte[] opad = new byte[64];
+                byte[] secretBytes = mPassword.getBytes("US-ASCII");
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                if (secretBytes.length > 64)
+                {
+                    secretBytes = md.digest(secretBytes);
+                }
+                System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
+                System.arraycopy(secretBytes, 0, opad, 0, secretBytes.length);
+                for (int i = 0; i < ipad.length; i++) ipad[i] ^= 0x36;
+                for (int i = 0; i < opad.length; i++) opad[i] ^= 0x5c;
+                md.update(ipad);
+                byte[] firstPass = md.digest(nonce);
+                md.update(opad);
+                byte[] result = md.digest(firstPass);
+                String plainCRAM = mUsername + " " + new String(Hex.encodeHex(result));
+                byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes("US-ASCII"));
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, "Username == " + mUsername);
+                    Log.d(K9.LOG_TAG, "plainCRAM: " + plainCRAM);
+                    Log.d(K9.LOG_TAG, "b64CRAM: " + new String(b64CRAM, "US-ASCII"));
+                }
+                mOut.write(b64CRAM);
+                mOut.write(new byte[] { 0x0d, 0x0a });
+                mOut.flush();
+                int respLen = 0;
+                for (int i = 0; i < buf.length; i++)
+                {
+                    buf[ i ] = (byte)mIn.read();
+                    if (buf[i] == 0x0a)
+                    {
+                        respLen = i;
+                        break;
+                    }
+                }
+                String toMatch = tag + " OK";
+                String respStr = new String(buf, 0, respLen);
+                if (!respStr.startsWith(toMatch))
+                {
+                    throw new AuthenticationFailedException("CRAM-MD5 error: " + respStr);
+                }
             }
-            if ( b64NonceLen == 0 )
+            catch (IOException ioe)
             {
-              throw new AuthenticationFailedException( "Error negotiating CRAM-MD5: nonce too long." );
+                throw new AuthenticationFailedException("CRAM-MD5 Auth Failed.");
             }
-            byte[] b64NonceTrim = new byte[ b64NonceLen - 2 ];
-            System.arraycopy(buf, 1, b64NonceTrim, 0, b64NonceLen - 2);
-            byte[] nonce = Base64.decodeBase64(b64NonceTrim);
-            if ( K9.DEBUG )
+            catch (NoSuchAlgorithmException nsae)
             {
-              Log.d(K9.LOG_TAG, "Got nonce: " + new String( b64NonceTrim, "US-ASCII" ) );
-              Log.d(K9.LOG_TAG, "Plaintext nonce: " + new String( nonce, "US-ASCII" ) );
+                throw new AuthenticationFailedException("MD5 Not Available.");
             }
-            byte[] ipad = new byte[64];
-            byte[] opad = new byte[64];
-            byte[] secretBytes = mPassword.getBytes("US-ASCII");
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            if ( secretBytes.length > 64 )
-            {
-              secretBytes = md.digest(secretBytes);
-            }
-            System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
-            System.arraycopy(secretBytes, 0, opad, 0, secretBytes.length);
-            for ( int i = 0; i < ipad.length; i++ ) ipad[i] ^= 0x36;
-            for ( int i = 0; i < opad.length; i++ ) opad[i] ^= 0x5c;
-            md.update(ipad);
-            byte[] firstPass = md.digest(nonce);
-            md.update(opad);
-            byte[] result = md.digest(firstPass);
-            String plainCRAM = mUsername + " " + new String(Hex.encodeHex(result));
-            byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes("US-ASCII"));
-            if ( K9.DEBUG )
-            {
-              Log.d(K9.LOG_TAG, "Username == " + mUsername);
-              Log.d( K9.LOG_TAG, "plainCRAM: " + plainCRAM );
-              Log.d( K9.LOG_TAG, "b64CRAM: " + new String(b64CRAM, "US-ASCII"));
-            }
-            mOut.write( b64CRAM );
-            mOut.write( new byte[] { 0x0d, 0x0a } );
-            mOut.flush();
-            int respLen = 0;
-            for ( int i = 0; i < buf.length; i++ )
-            {
-              buf[ i ] = (byte)mIn.read();
-              if ( buf[i] == 0x0a )
-              {
-                respLen = i;
-                break;
-              }
-            }
-            String toMatch = tag + " OK";
-            String respStr = new String( buf, 0, respLen );
-            if ( !respStr.startsWith( toMatch ) )
-            {
-              throw new AuthenticationFailedException( "CRAM-MD5 error: " + respStr );
-            }
-          }
-          catch ( IOException ioe )
-          {
-            throw new AuthenticationFailedException( "CRAM-MD5 Auth Failed." );
-          }
-          catch ( NoSuchAlgorithmException nsae )
-          {
-            throw new AuthenticationFailedException( "MD5 Not Available." );
-          }
         }
-        
+
         protected void setReadTimeout(int millis) throws SocketException
         {
             mSocket.setSoTimeout(millis);

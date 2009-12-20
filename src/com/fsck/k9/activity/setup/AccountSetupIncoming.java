@@ -130,20 +130,20 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
         SpinnerOption authTypes[] =
         {
-            new SpinnerOption(0, "PLAIN" ),
-            new SpinnerOption(1, "CRAM_MD5" )
+            new SpinnerOption(0, "PLAIN"),
+            new SpinnerOption(1, "CRAM_MD5")
         };
-        
+
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, securityTypes);
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
         ArrayAdapter<SpinnerOption> authTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
-            android.R.layout.simple_spinner_item, authTypes);
+                android.R.layout.simple_spinner_item, authTypes);
         authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAuthTypeView.setAdapter(authTypesAdapter);
-        
+
         /*
          * Updates the port when the user changes the security type. This allows
          * us to show a reasonable default which the user can change.
@@ -451,12 +451,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             final String userInfo;
             if (mAccountSchemes[securityType].startsWith("imap"))
             {
-              String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
-              userInfo = authType + ":" + mUsernameView.getText() + ":" + mPasswordView.getText();
+                String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
+                userInfo = authType + ":" + mUsernameView.getText() + ":" + mPasswordView.getText();
             }
             else
             {
-              userInfo = mUsernameView.getText() + ":" + mPasswordView.getText();
+                userInfo = mUsernameView.getText() + ":" + mPasswordView.getText();
             }
             URI uri = new URI(
                 mAccountSchemes[securityType],

@@ -496,48 +496,48 @@ public class SmtpTransport extends Transport
             throw me;
         }
     }
-    
+
     private void saslAuthCramMD5(String username, String password) throws MessagingException,
-      AuthenticationFailedException, IOException
+                AuthenticationFailedException, IOException
     {
-      List<String> respList = executeSimpleCommand( "AUTH CRAM-MD5" );
-      if ( respList.size() != 1 ) throw new AuthenticationFailedException( "Unable to negotiate CRAM-MD5" );
-      String b64Nonce = respList.get(0);
-      byte[] nonce = Base64.decodeBase64( b64Nonce.getBytes("US-ASCII") );
-      byte[] ipad = new byte[64];
-      byte[] opad = new byte[64];
-      byte[] secretBytes = password.getBytes("US-ASCII");
-      MessageDigest md;
-      try
-      {
-        md = MessageDigest.getInstance("MD5");
-      }
-      catch ( NoSuchAlgorithmException nsae )
-      {
-        throw new AuthenticationFailedException( "MD5 Not Available." );
-      }
-      if ( secretBytes.length > 64 )
-      {
-        secretBytes = md.digest(secretBytes);
-      }
-      System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
-      System.arraycopy(secretBytes, 0, opad, 0, secretBytes.length);
-      for ( int i = 0; i < ipad.length; i++ ) ipad[i] ^= 0x36;
-      for ( int i = 0; i < opad.length; i++ ) opad[i] ^= 0x5c;
-      md.update(ipad);
-      byte[] firstPass = md.digest(nonce);
-      md.update(opad);
-      byte[] result = md.digest(firstPass);
-      String plainCRAM = username + " " + new String(Hex.encodeHex(result));
-      byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes("US-ASCII"));
-      String b64CRAMString = new String( b64CRAM, "US-ASCII" );
-      try
-      {
-        executeSimpleCommand( b64CRAMString );
-      }
-      catch ( MessagingException me )
-      {
-        throw new AuthenticationFailedException( "Unable to negotiate MD5 CRAM" );
-      }
+        List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
+        if (respList.size() != 1) throw new AuthenticationFailedException("Unable to negotiate CRAM-MD5");
+        String b64Nonce = respList.get(0);
+        byte[] nonce = Base64.decodeBase64(b64Nonce.getBytes("US-ASCII"));
+        byte[] ipad = new byte[64];
+        byte[] opad = new byte[64];
+        byte[] secretBytes = password.getBytes("US-ASCII");
+        MessageDigest md;
+        try
+        {
+            md = MessageDigest.getInstance("MD5");
+        }
+        catch (NoSuchAlgorithmException nsae)
+        {
+            throw new AuthenticationFailedException("MD5 Not Available.");
+        }
+        if (secretBytes.length > 64)
+        {
+            secretBytes = md.digest(secretBytes);
+        }
+        System.arraycopy(secretBytes, 0, ipad, 0, secretBytes.length);
+        System.arraycopy(secretBytes, 0, opad, 0, secretBytes.length);
+        for (int i = 0; i < ipad.length; i++) ipad[i] ^= 0x36;
+        for (int i = 0; i < opad.length; i++) opad[i] ^= 0x5c;
+        md.update(ipad);
+        byte[] firstPass = md.digest(nonce);
+        md.update(opad);
+        byte[] result = md.digest(firstPass);
+        String plainCRAM = username + " " + new String(Hex.encodeHex(result));
+        byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes("US-ASCII"));
+        String b64CRAMString = new String(b64CRAM, "US-ASCII");
+        try
+        {
+            executeSimpleCommand(b64CRAMString);
+        }
+        catch (MessagingException me)
+        {
+            throw new AuthenticationFailedException("Unable to negotiate MD5 CRAM");
+        }
     }
 }

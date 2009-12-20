@@ -433,11 +433,12 @@ public class Account implements Serializable
     }
 
 
-    public boolean getLeftHanded() {
+    public boolean getLeftHanded()
+    {
         return mLeftHanded;
     }
 
-    public void setLeftHanded(boolean leftie) 
+    public void setLeftHanded(boolean leftie)
     {
         mLeftHanded = leftie;
     }

@@ -73,7 +73,7 @@ public class MessagingListener
     public void synchronizeMailboxStarted(Account account, String folder)
     {
     }
-    
+
     public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
     {}
 
@@ -157,7 +157,7 @@ public class MessagingListener
     public void folderStatusChanged(Account account, String folderName, int unreadMessageCount)
     {
     }
-    
+
     public void folderStatusChanged(Account account, String folderName)
     {
     }
@@ -197,12 +197,12 @@ public class MessagingListener
         String reason)
     {
     }
-    
+
     public void pendingCommandsProcessing(Account account) {}
     public void pendingCommandsFinished(Account account) {}
     public void pendingCommandStarted(Account account, String commandTitle)
     {}
-    
+
     public void pendingCommandCompleted(Account account, String commandTitle)
     {}
 

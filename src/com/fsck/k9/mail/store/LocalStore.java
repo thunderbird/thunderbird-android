@@ -103,7 +103,7 @@ public class LocalStore extends Store implements Serializable
     private void doDbUpgrade(SQLiteDatabase mDb, Application application)
     {
         Log.i(K9.LOG_TAG, String.format("Upgrading database from version %d to version %d",
-                                           mDb.getVersion(), DB_VERSION));
+                                        mDb.getVersion(), DB_VERSION));
 
 
         AttachmentProvider.clear(application);
@@ -1478,7 +1478,7 @@ public class LocalStore extends Store implements Serializable
                     cv.put("internal_date",  message.getInternalDate() == null
                            ? System.currentTimeMillis() : message.getInternalDate().getTime());
                     String messageId = message.getMessageId();
-                    if (messageId != null )
+                    if (messageId != null)
                     {
                         cv.put("message_id", messageId);
                     }
@@ -2281,44 +2281,45 @@ public class LocalStore extends Store implements Serializable
         }
 
 
-    private void loadHeaders() {
-           ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
-           messages.add(this);
-           mHeadersLoaded = true; // set true before calling populate headers to stop recursion
-           ((LocalFolder) mFolder).populateHeaders(messages);
-
-    }
-
-    public void addHeader(String name, String value)
-    {
-        if (!mHeadersLoaded)
+        private void loadHeaders()
         {
-            loadHeaders();
+            ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
+            messages.add(this);
+            mHeadersLoaded = true; // set true before calling populate headers to stop recursion
+            ((LocalFolder) mFolder).populateHeaders(messages);
+
         }
-        super.addHeader(name, value);
-    }
 
-    public void setHeader(String name, String value)
-    {
-        if (!mHeadersLoaded)
-            loadHeaders();
-        super.setHeader(name, value);
-    }
+        public void addHeader(String name, String value)
+        {
+            if (!mHeadersLoaded)
+            {
+                loadHeaders();
+            }
+            super.addHeader(name, value);
+        }
 
-    public String[] getHeader(String name)
-    {
-        if (!mHeadersLoaded)
-            loadHeaders();
+        public void setHeader(String name, String value)
+        {
+            if (!mHeadersLoaded)
+                loadHeaders();
+            super.setHeader(name, value);
+        }
 
-        return super.getHeader(name);
-    }
+        public String[] getHeader(String name)
+        {
+            if (!mHeadersLoaded)
+                loadHeaders();
 
-    public void removeHeader(String name)
-    {
-        if (!mHeadersLoaded)
-            loadHeaders();
-        super.removeHeader(name);
-    }
+            return super.getHeader(name);
+        }
+
+        public void removeHeader(String name)
+        {
+            if (!mHeadersLoaded)
+                loadHeaders();
+            super.removeHeader(name);
+        }
 
 
 

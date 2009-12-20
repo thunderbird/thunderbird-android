@@ -226,7 +226,7 @@ public class AccountSettings extends K9PreferenceActivity
 
 
         mLeftHanded = (CheckBoxPreference) findPreference(PREFERENCE_LEFT_HANDED);
-        mLeftHanded.setChecked(mAccount.getLeftHanded()); 
+        mLeftHanded.setChecked(mAccount.getLeftHanded());
 
         mAccountHideButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
         mAccountHideButtons.setValue("" + mAccount.getHideMessageViewButtons());

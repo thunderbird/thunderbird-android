@@ -739,7 +739,7 @@ public class MessagingController implements Runnable
             if (K9.DEBUG)
             {
                 Log.d(K9.LOG_TAG, "SYNC: About to process pending commands for account " +
-                      account.getDescription() );
+                      account.getDescription());
             }
             try
             {
@@ -933,8 +933,8 @@ public class MessagingController implements Runnable
             if (K9.DEBUG)
             {
                 Log.d(K9.LOG_TAG, "Done synchronizing folder " +
-                    account.getDescription() + ":" + folder + " @ " + new Date() +
-                    " with " + newMessages + " new messages");
+                      account.getDescription() + ":" + folder + " @ " + new Date() +
+                      " with " + newMessages + " new messages");
             }
 
             for (MessagingListener l : getListeners())
@@ -1002,7 +1002,7 @@ public class MessagingController implements Runnable
             }
             addErrorMessage(account, e);
             Log.e(K9.LOG_TAG, "Failed synchronizing folder " +
-                account.getDescription() + ":" + folder + " @ " + new Date());
+                  account.getDescription() + ":" + folder + " @ " + new Date());
 
         }
 
@@ -1104,7 +1104,7 @@ public class MessagingController implements Runnable
                 }
             }
         }
-        
+
         final AtomicInteger progress = new AtomicInteger(0);
         final int todo = unsyncedMessages.size() + syncFlagMessages.size();
         for (MessagingListener l : getListeners())
@@ -1550,27 +1550,27 @@ public class MessagingController implements Runnable
             }
         });
     }
-    
+
     private void processPendingCommandsSynchronous(Account account) throws MessagingException
     {
         LocalStore localStore = (LocalStore) Store.getInstance(
                                     account.getLocalStoreUri(),
                                     mApplication);
         ArrayList<PendingCommand> commands = localStore.getPendingCommands();
-        
+
         int progress = 0;
         int todo = commands.size();
         if (todo == 0)
         {
             return;
         }
-        
+
         for (MessagingListener l : getListeners())
         {
             l.pendingCommandsProcessing(account);
             l.synchronizeMailboxProgress(account, null, progress, todo);
         }
- 
+
         PendingCommand processingCommand = null;
         try
         {
@@ -3150,9 +3150,9 @@ public class MessagingController implements Runnable
 
         put("getAccountUnread:" + account.getDescription(), l, unreadRunnable);
     }
-    
+
     public void getFolderUnreadMessageCount(final Account account, final String folderName,
-            final MessagingListener l)
+                                            final MessagingListener l)
     {
         Runnable unreadRunnable = new Runnable()
         {
@@ -4323,7 +4323,7 @@ public class MessagingController implements Runnable
 
         int syncingTotalMessagesInMailbox;
         int syncingNumNewMessages;
-        
+
         int folderCompleted = 0;
         int folderTotal = 0;
         String processingCommandTitle = null;
@@ -4473,7 +4473,7 @@ public class MessagingController implements Runnable
                     if (processingStarted.processingCommandTitle != null)
                     {
                         other.pendingCommandStarted(processingStarted.account, processingStarted.processingCommandTitle);
-                        
+
                     }
                     else
                     {
@@ -4514,8 +4514,8 @@ public class MessagingController implements Runnable
             Memory memory = getMemory(account, null);
             memory.sendingState = MemorizingState.FAILED;
         }
-    
-        
+
+
         public void synchronizeMailboxProgress(Account account, String folderName, int completed, int total)
         {
             Memory memory = getMemory(account, folderName);
@@ -4523,15 +4523,15 @@ public class MessagingController implements Runnable
             memory.folderTotal = total;
         }
 
-      
-        public void pendingCommandsProcessing(Account account) 
+
+        public void pendingCommandsProcessing(Account account)
         {
             Memory memory = getMemory(account, null);
             memory.processingState = MemorizingState.STARTED;
             memory.folderCompleted = 0;
             memory.folderTotal = 0;
         }
-        public void pendingCommandsFinished(Account account) 
+        public void pendingCommandsFinished(Account account)
         {
             Memory memory = getMemory(account, null);
             memory.processingState = MemorizingState.FINISHED;
@@ -4541,7 +4541,7 @@ public class MessagingController implements Runnable
             Memory memory = getMemory(account, null);
             memory.processingCommandTitle = commandTitle;
         }
-        
+
         public void pendingCommandCompleted(Account account, String commandTitle)
         {
             Memory memory = getMemory(account, null);

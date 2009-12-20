@@ -16,15 +16,15 @@ public class ActivityListener extends MessagingListener
     private int mFolderTotal = 0;
     private String mProcessingAccountDescription = null;
     private String mProcessingCommandTitle = null;
-    
+
     public String formatHeader(Context context, String activityPrefix, int unreadMessageCount)
     {
         String operation = null;
         String progress = null;
         if (mLoadingAccountDescription  != null || mSendingAccountDescription != null || mProcessingAccountDescription != null)
         {
-            progress = (mFolderTotal > 0 ? context.getString(R.string.folder_progress, mFolderCompleted, mFolderTotal) : "" );
-        
+            progress = (mFolderTotal > 0 ? context.getString(R.string.folder_progress, mFolderCompleted, mFolderTotal) : "");
+
             if (mLoadingFolderName != null)
             {
                 String displayName = mLoadingFolderName;
@@ -34,7 +34,7 @@ public class ActivityListener extends MessagingListener
                 }
                 operation = context.getString(R.string.status_loading_account_folder, mLoadingAccountDescription, displayName, progress);
             }
-        
+
             else if (mSendingAccountDescription != null)
             {
                 operation = context.getString(R.string.status_sending_account, mSendingAccountDescription, progress);
@@ -42,22 +42,22 @@ public class ActivityListener extends MessagingListener
             else if (mProcessingAccountDescription != null)
             {
                 operation = context.getString(R.string.status_processing_account, mProcessingAccountDescription,
-                        mProcessingCommandTitle != null ? mProcessingCommandTitle : "",
-                        progress);
+                                              mProcessingCommandTitle != null ? mProcessingCommandTitle : "",
+                                              progress);
             }
         }
         else
         {
             operation = "";
         }
-        
+
         return context.getString(R.string.activity_header_format, activityPrefix,
-                (unreadMessageCount > 0 ? context.getString(R.string.activity_unread_count, unreadMessageCount) : ""),
-                operation);
-                
-                
+                                 (unreadMessageCount > 0 ? context.getString(R.string.activity_unread_count, unreadMessageCount) : ""),
+                                 operation);
+
+
     }
-    
+
     @Override
     public void synchronizeMailboxFinished(
         Account account,
@@ -77,7 +77,7 @@ public class ActivityListener extends MessagingListener
         mFolderCompleted = 0;
         mFolderTotal = 0;
     }
-    
+
     public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
     {
         mFolderCompleted = completed;
@@ -92,32 +92,32 @@ public class ActivityListener extends MessagingListener
         mLoadingFolderName = null;
 
     }
-    
+
     @Override
     public void sendPendingMessagesStarted(Account account)
     {
         mSendingAccountDescription = account.getDescription();
     }
-    
+
     @Override
     public void sendPendingMessagesCompleted(Account account)
     {
         mSendingAccountDescription = null;
     }
 
-    
+
     @Override
     public void sendPendingMessagesFailed(Account account)
     {
         mSendingAccountDescription = null;
     }
-    public void pendingCommandsProcessing(Account account) 
+    public void pendingCommandsProcessing(Account account)
     {
         mProcessingAccountDescription = account.getDescription();
         mFolderCompleted = 0;
         mFolderTotal = 0;
     }
-    public void pendingCommandsFinished(Account account) 
+    public void pendingCommandsFinished(Account account)
     {
         mProcessingAccountDescription = null;
     }
@@ -125,7 +125,7 @@ public class ActivityListener extends MessagingListener
     {
         mProcessingCommandTitle = commandTitle;
     }
-    
+
     public void pendingCommandCompleted(Account account, String commandTitle)
     {
         mProcessingCommandTitle = null;

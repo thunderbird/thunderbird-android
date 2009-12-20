@@ -63,9 +63,9 @@ public class FolderList extends K9ListActivity
     private FolderListHandler mHandler = new FolderListHandler();
 
     private boolean mStartup = false;
-    
+
     private int mUnreadMessageCount = 0;
-    
+
 
     class FolderListHandler extends Handler
     {
@@ -141,10 +141,10 @@ public class FolderList extends K9ListActivity
         private void setViewTitle()
         {
             String dispString = mAdapter.mListener.formatHeader(FolderList.this, getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount);
-            
+
             setTitle(dispString);
-            
-            
+
+
             setTitle(dispString);
         }
 
@@ -320,7 +320,7 @@ public class FolderList extends K9ListActivity
             savedFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
         }
 
-        if (mStartup 
+        if (mStartup
                 && initialFolder != null
                 && !K9.FOLDER_NONE.equals(initialFolder))
         {
@@ -397,7 +397,7 @@ public class FolderList extends K9ListActivity
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
         mAccount.refresh(Preferences.getPreferences(this));
         MessagingController.getInstance(getApplication()).getAccountUnreadCount(this, mAccount, mAdapter.mListener);
-        
+
         onRefresh(!REFRESH_REMOTE);
 
         NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -854,8 +854,8 @@ public class FolderList extends K9ListActivity
                     }
                     catch (Exception e)
                     {
-                        Log.e(K9.LOG_TAG, "Unable to get unreadMessageCount for " + mAccount.getDescription() + ":" 
-                                + folder.getName());
+                        Log.e(K9.LOG_TAG, "Unable to get unreadMessageCount for " + mAccount.getDescription() + ":"
+                              + folder.getName());
                     }
 
                     if (holder == null)
@@ -888,9 +888,9 @@ public class FolderList extends K9ListActivity
                 mHandler.progress(true);
                 mHandler.folderLoading(folder, true);
                 mHandler.dataChanged();
-                
+
             }
-            
+
             @Override
             public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
             {
@@ -903,7 +903,7 @@ public class FolderList extends K9ListActivity
                 }
                 mHandler.dataChanged();
             }
-            
+
             @Override
             public void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox, int numNewMessages)
             {
@@ -917,7 +917,7 @@ public class FolderList extends K9ListActivity
                 mHandler.folderLoading(folder, false);
 
                 refreshFolder(account, folder);
-                
+
 
             }
 
@@ -975,7 +975,7 @@ public class FolderList extends K9ListActivity
                 }
 
                 mHandler.dataChanged();
-               
+
             }
 
             @Override
@@ -1035,7 +1035,7 @@ public class FolderList extends K9ListActivity
                 }
 
                 refreshFolder(account, mAccount.getOutboxFolderName());
-                
+
 
             }
 
@@ -1044,7 +1044,7 @@ public class FolderList extends K9ListActivity
             {
                 super.sendPendingMessagesStarted(account);
                 mHandler.refreshTitle();
-                
+
                 if (!account.equals(mAccount))
                 {
                     return;
@@ -1078,12 +1078,12 @@ public class FolderList extends K9ListActivity
                 mHandler.accountSizeChanged(oldSize, newSize);
 
             }
-            public void pendingCommandsProcessing(Account account) 
+            public void pendingCommandsProcessing(Account account)
             {
                 super.pendingCommandsProcessing(account);
                 mHandler.refreshTitle();
             }
-            public void pendingCommandsFinished(Account account) 
+            public void pendingCommandsFinished(Account account)
             {
                 super.pendingCommandsFinished(account);
                 mHandler.refreshTitle();

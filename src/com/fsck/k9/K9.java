@@ -524,19 +524,19 @@ public class K9 extends Application
                     intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
                     K9.this.sendBroadcast(intent);
                     Log.d(K9.LOG_TAG, "Broadcasted: action=" + action
-                        + " account=" + account.getDescription()
-                        + " folder=" + folder
-                        + " message uid=" + message.getUid()
-                    );
+                          + " account=" + account.getDescription()
+                          + " folder=" + folder
+                          + " message uid=" + message.getUid()
+                         );
 
                 }
                 catch (MessagingException e)
                 {
                     Log.w(K9.LOG_TAG, "Error: action=" + action
-                        + " account=" + account.getDescription()
-                        + " folder=" + folder
-                        + " message uid=" + message.getUid()
-                    );
+                          + " account=" + account.getDescription()
+                          + " folder=" + folder
+                          + " message uid=" + message.getUid()
+                         );
                 }
             }
 
@@ -557,7 +557,7 @@ public class K9 extends Application
             {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folder, message);
             }
-            
+
 
         });
 
