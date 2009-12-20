@@ -105,6 +105,9 @@ public class MessageList
 
     private LayoutInflater mInflater;
 
+    private MessagingController mController;
+
+
     private Account mAccount;
     private int mUnreadMessageCount = 0;
 
@@ -286,7 +289,7 @@ public class MessageList
         // Debug.stopMethodTracing();
         if ((position+1) == (mAdapter.getCount()))
         {
-            MessagingController.getInstance(getApplication()).loadMoreMessages(
+            mController.loadMoreMessages(
                 mAccount,
                 mFolderName,
                 mAdapter.mListener);
@@ -380,6 +383,8 @@ public class MessageList
 
         mCurrentFolder = mAdapter.getFolder(mFolderName);
 
+        mController = MessagingController.getInstance(getApplication());
+        
         mListView.setAdapter(mAdapter);
 
         if (savedInstanceState != null)
@@ -412,7 +417,7 @@ public class MessageList
     {
         super.onPause();
         //Debug.stopMethodTracing();
-        MessagingController.getInstance(getApplication()).removeListener(mAdapter.mListener);
+        mController.removeListener(mAdapter.mListener);
     }
 
     /**
@@ -425,22 +430,21 @@ public class MessageList
     {
         super.onResume();
 
-        MessagingController controller = MessagingController.getInstance(getApplication());
 
-        sortType = controller.getSortType();
-        sortAscending = controller.isSortAscending(sortType);
-        sortDateAscending = controller.isSortAscending(SORT_TYPE.SORT_DATE);
+        sortType = mController.getSortType();
+        sortAscending = mController.isSortAscending(sortType);
+        sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
-        controller.addListener(mAdapter.mListener);
+        mController.addListener(mAdapter.mListener);
         mAdapter.messages.clear();
         mAdapter.notifyDataSetChanged();
-        controller.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+        mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
 
         NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifMgr.cancel(mAccount.getAccountNumber());
         notifMgr.cancel(-1000 - mAccount.getAccountNumber());
 
-        controller.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
+        mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
 
         mHandler.refreshTitle();
 
@@ -780,9 +784,9 @@ public class MessageList
         else
         {
             sortType = newSortType;
-            MessagingController.getInstance(getApplication()).setSortType(sortType);
-            sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
-            sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
+            mController.setSortType(sortType);
+            sortAscending = mController.isSortAscending(sortType);
+            sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
             reSort();
         }
     }
@@ -830,10 +834,10 @@ public class MessageList
 
     private void onToggleSortAscending()
     {
-        MessagingController.getInstance(getApplication()).setSortAscending(sortType, !sortAscending);
+        mController.setSortAscending(sortType, !sortAscending);
 
-        sortAscending = MessagingController.getInstance(getApplication()).isSortAscending(sortType);
-        sortDateAscending = MessagingController.getInstance(getApplication()).isSortAscending(SORT_TYPE.SORT_DATE);
+        sortAscending = mController.isSortAscending(sortType);
+        sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         reSort();
     }
@@ -841,7 +845,7 @@ public class MessageList
     private void onDelete(MessageInfoHolder holder, int position)
     {
         mAdapter.removeMessage(holder);
-        MessagingController.getInstance(getApplication()).deleteMessages(mAccount, holder.message.getFolder().getName(), new Message[] { holder.message }, null);
+        mController.deleteMessages(mAccount, holder.message.getFolder().getName(), new Message[] { holder.message }, null);
         mListView.setSelection(position);
 
     }
@@ -849,12 +853,12 @@ public class MessageList
 
     private void onMove(MessageInfoHolder holder)
     {
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if (mController.isMoveCapable(mAccount) == false)
         {
             return;
         }
 
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(holder.message) == false)
+        if (mController.isMoveCapable(holder.message) == false)
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -871,12 +875,12 @@ public class MessageList
 
     private void onCopy(MessageInfoHolder holder)
     {
-        if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+        if (mController.isCopyCapable(mAccount) == false)
         {
             return;
         }
 
-        if (MessagingController.getInstance(getApplication()).isCopyCapable(holder.message) == false)
+        if (mController.isCopyCapable(holder.message) == false)
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -936,7 +940,7 @@ public class MessageList
 
     private void onMoveChosen(MessageInfoHolder holder, String folderName)
     {
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if (mController.isMoveCapable(mAccount) == false)
         {
             return;
         }
@@ -947,14 +951,14 @@ public class MessageList
         }
 
         mAdapter.removeMessage(holder);
-        MessagingController.getInstance(getApplication()).moveMessage(mAccount, holder.message.getFolder().getName(), holder.message, folderName, null);
+        mController.moveMessage(mAccount, holder.message.getFolder().getName(), holder.message, folderName, null);
 
     }
 
 
     private void onCopyChosen(MessageInfoHolder holder, String folderName)
     {
-        if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+        if (mController.isCopyCapable(mAccount) == false)
         {
             return;
         }
@@ -962,7 +966,7 @@ public class MessageList
         {
             return;
         }
-        MessagingController.getInstance(getApplication()).copyMessage(mAccount,
+        mController.copyMessage(mAccount,
                 holder.message.getFolder().getName(), holder.message, folderName, null);
     }
 
@@ -1030,7 +1034,7 @@ public class MessageList
                 try
                 {
 
-                    MessagingController.getInstance(getApplication()).markAllMessagesRead(mAccount, mCurrentFolder.name);
+                    mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
 
                     for (MessageInfoHolder holder : mAdapter.messages)
                     {
@@ -1061,7 +1065,7 @@ public class MessageList
 
     private void onToggleRead(MessageInfoHolder holder)
     {
-        MessagingController.getInstance(getApplication()).setFlag(mAccount, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
+        mController.setFlag(mAccount, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
         holder.read = !holder.read;
         mHandler.sortMessages();
     }
@@ -1069,20 +1073,20 @@ public class MessageList
     private void onToggleFlag(MessageInfoHolder holder)
     {
 
-        MessagingController.getInstance(getApplication()).setFlag(mAccount, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
+        mController.setFlag(mAccount, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
         holder.flagged = !holder.flagged;
         mHandler.sortMessages();
     }
 
     private void checkMail(Account account, String folderName)
     {
-        MessagingController.getInstance(getApplication()).synchronizeMailbox(account, folderName, mAdapter.mListener);
+        mController.synchronizeMailbox(account, folderName, mAdapter.mListener);
         sendMail(account);
     }
 
     private void sendMail(Account account)
     {
-        MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
+        mController.sendPendingMessages(account, mAdapter.mListener);
     }
 
     @Override
@@ -1362,7 +1366,7 @@ public class MessageList
 
     public void onSendAlternate(Account account, MessageInfoHolder holder)
     {
-        MessagingController.getInstance(getApplication()).sendAlternate(this, account, holder.message);
+        mController.sendAlternate(this, account, holder.message);
     }
 
     public void showProgressIndicator(boolean status)
@@ -1413,12 +1417,12 @@ public class MessageList
             menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
         }
 
-        if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+        if (mController.isCopyCapable(mAccount) == false)
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
 
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if (mController.isMoveCapable(mAccount) == false)
         {
             menu.findItem(R.id.move).setVisible(false);
         }
@@ -2439,13 +2443,13 @@ public class MessageList
         {
             if (mBatchDeleteButton == v)
             {
-                MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
+                mController.deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
                 mSelectedCount = 0;
                 configureBatchButtons();
             }
             else
             {
-                MessagingController.getInstance(getApplication()).setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
+                mController.setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
                         (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
             }
         }
@@ -2487,7 +2491,7 @@ public class MessageList
                 }
             }
         }
-        MessagingController.getInstance(getApplication()).setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
+        mController.setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
                 flag , newState);
         mHandler.sortMessages();
     }
@@ -2506,7 +2510,7 @@ public class MessageList
         }
         mAdapter.removeMessages(removeHolderList);
 
-        MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
+        mController.deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
         mSelectedCount = 0;
         configureBatchButtons();
     }
