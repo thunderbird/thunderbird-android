@@ -1915,10 +1915,6 @@ public class MessageList
                 holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
                 holder.subject.setTypeface(null, message.read ? Typeface.NORMAL  : Typeface.BOLD);
 
-                int subjectColor = holder.from.getCurrentTextColor();  // Get from another field that never changes color
-
-
-
                 setVisibleWidgetsForListItem(view, mSelectedWidget);
                 // XXX TODO there has to be some way to walk our view hierarchy and get this
                 holder.flagged.setTag((Integer)position);
@@ -1940,7 +1936,6 @@ public class MessageList
                     view.getBackground().setAlpha(127);
                 }
 
-                holder.subject.setTextColor(0xff000000 | subjectColor);
                 holder.subject.setText(message.subject);
 
                 holder.from.setText(message.sender);
