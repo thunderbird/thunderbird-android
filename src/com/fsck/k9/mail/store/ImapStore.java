@@ -158,9 +158,18 @@ public class ImapStore extends Store
         if (uri.getUserInfo() != null)
         {
             String[] userInfoParts = uri.getUserInfo().split(":");
-            mAuthType = AuthType.valueOf(userInfoParts[0]);
-            mUsername = userInfoParts[1];
-            mPassword = userInfoParts[2];
+            if (userInfoParts.length == 2)
+            {
+                mAuthType = AuthType.PLAIN;
+                mUsername = userInfoParts[0];
+                mPassword = userInfoParts[1];
+            } 
+            else
+            {
+                mAuthType = AuthType.valueOf(userInfoParts[0]);
+                mUsername = userInfoParts[1];
+                mPassword = userInfoParts[2];
+            }
         }
 
         if ((uri.getPath() != null) && (uri.getPath().length() > 0))
