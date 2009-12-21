@@ -16,6 +16,7 @@ public class PushService extends CoreService
         Intent i = new Intent();
         i.setClass(context, PushService.class);
         i.setAction(PushService.START_SERVICE);
+        addWakeLock(context, i);
         context.startService(i);
     }
 
@@ -24,6 +25,7 @@ public class PushService extends CoreService
         Intent i = new Intent();
         i.setClass(context, PushService.class);
         i.setAction(PushService.STOP_SERVICE);
+        addWakeLock(context, i);
         context.startService(i);
     }
 

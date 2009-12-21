@@ -1,5 +1,8 @@
 package com.fsck.k9.service;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +15,10 @@ import com.fsck.k9.K9;
 public abstract class CoreService extends Service
 {
 
+    public static String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
+    private static ConcurrentHashMap<Integer, WakeLock> wakeLocks = new ConcurrentHashMap<Integer, WakeLock>();
+    private static AtomicInteger wakeLockSeq = new AtomicInteger(0);
+
     protected static void addWakeLockId(Intent i, Integer wakeLockId)
     {
         if (wakeLockId != null)
@@ -20,6 +27,19 @@ public abstract class CoreService extends Service
         }
     }
 
+    protected static void addWakeLock(Context context, Intent i)
+    {
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
+        wakeLock.setReferenceCounted(false);
+        wakeLock.acquire(K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
+        
+        Integer tmpWakeLockId = wakeLockSeq.getAndIncrement();
+        wakeLocks.put(tmpWakeLockId, wakeLock);
+        
+        i.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
+    }
+    
     @Override
     public void onStart(Intent intent, int startId)
     {
@@ -35,6 +55,23 @@ public abstract class CoreService extends Service
         if (wakeLockId != -1)
         {
             BootReceiver.releaseWakeLock(this, wakeLockId);
+        }
+        Integer coreWakeLockId = intent.getIntExtra(WAKE_LOCK_ID, -1);
+        if (coreWakeLockId != null && coreWakeLockId != -1)
+        {
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "Got core wake lock id " + coreWakeLockId);
+            }
+            WakeLock coreWakeLock = wakeLocks.remove(coreWakeLockId);
+            if (coreWakeLock != null)
+            {
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, "Found core wake lock with id " + coreWakeLockId + ", releasing");
+                }
+                coreWakeLock.release();
+            }
         }
 
         try

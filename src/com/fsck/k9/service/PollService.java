@@ -22,6 +22,7 @@ public class PollService extends CoreService
         Intent i = new Intent();
         i.setClass(context, PollService.class);
         i.setAction(PollService.START_SERVICE);
+        addWakeLock(context, i);
         context.startService(i);
     }
 
@@ -30,6 +31,7 @@ public class PollService extends CoreService
         Intent i = new Intent();
         i.setClass(context, PollService.class);
         i.setAction(PollService.STOP_SERVICE);
+        addWakeLock(context, i);
         context.startService(i);
     }
 
