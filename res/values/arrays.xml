@@ -51,6 +51,9 @@
         <item>@string/account_setup_options_mail_display_count_25</item>
         <item>@string/account_setup_options_mail_display_count_50</item>
         <item>@string/account_setup_options_mail_display_count_100</item>
+        <item>@string/account_setup_options_mail_display_count_250</item>
+        <item>@string/account_setup_options_mail_display_count_500</item>
+        <item>@string/account_setup_options_mail_display_count_1000</item>
     </string-array>
 
     <string-array name="account_settings_display_count_values">
@@ -58,6 +61,9 @@
         <item>25</item>
         <item>50</item>
         <item>100</item>
+        <item>250</item>
+        <item>500</item>
+        <item>1000</item>
     </string-array>
     
     <string-array name="account_settings_folder_display_mode_entries">
