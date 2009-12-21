@@ -52,6 +52,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
     };
 
+    private static final String authTypes[] =
+    {
+        "PLAIN", "CRAM_MD5"
+    };
+
+
     private int mAccountPorts[];
     private String mAccountSchemes[];
     private EditText mUsernameView;
@@ -128,7 +134,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
-        SpinnerOption authTypes[] =
+        // This needs to be kept in sync with the list at the top of the file.
+        // that makes me somewhat unhappy
+        SpinnerOption authTypeSpinnerOptions[] =
         {
             new SpinnerOption(0, "PLAIN"),
             new SpinnerOption(1, "CRAM_MD5")
@@ -140,7 +148,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         mSecurityTypeView.setAdapter(securityTypesAdapter);
 
         ArrayAdapter<SpinnerOption> authTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
-                android.R.layout.simple_spinner_item, authTypes);
+                android.R.layout.simple_spinner_item, authTypeSpinnerOptions);
         authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAuthTypeView.setAdapter(authTypesAdapter);
 
@@ -206,15 +214,29 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             URI uri = new URI(mAccount.getStoreUri());
             String username = null;
             String password = null;
+            String authType = null;
+
             if (uri.getUserInfo() != null)
             {
-                String[] userInfoParts = uri.getUserInfo().split(":", 2);
-                username = userInfoParts[0];
-                if (userInfoParts.length > 1)
+                String[] userInfoParts = uri.getUserInfo().split(":");
+                if (userInfoParts.length == 3)
                 {
+                    authType = userInfoParts[0];
+                    username = userInfoParts[1];
+                    password = userInfoParts[2];
+                }
+                else if (userInfoParts.length == 2)
+                {
+                    username = userInfoParts[0];
                     password = userInfoParts[1];
                 }
+                else if (userInfoParts.length == 1)
+                {
+                    username = userInfoParts[0];
+                }
             }
+
+
 
             if (username != null)
             {
@@ -225,6 +247,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             {
                 mPasswordView.setText(password);
             }
+
+            if (authType != null)
+            {
+                for (int i = 0; i < authTypes.length; i++)
+                {
+                    if (authTypes[i].equals(authType))
+                    {
+                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
+                    }
+                }
+            }
+
 
             mImapFolderDrafts.setText(mAccount.getDraftsFolderName());
             mImapFolderSent.setText(mAccount.getSentFolderName());
