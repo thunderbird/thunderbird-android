@@ -124,6 +124,26 @@
         <item>NONE</item>
     </string-array>
     
+    <string-array name="account_settings_push_limit_entries">
+    <item>@string/account_setup_push_limit_10</item>
+    <item>@string/account_setup_push_limit_25</item>
+    <item>@string/account_setup_push_limit_50</item>
+    <item>@string/account_setup_push_limit_100</item>
+    <item>@string/account_setup_push_limit_250</item>
+    <item>@string/account_setup_push_limit_500</item>
+    <item>@string/account_setup_push_limit_1000</item>
+    </string-array>
+    
+    <string-array name="account_settings_push_limit_values">
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+        <item>250</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+    
     <string-array name="account_settings_folder_target_mode_entries">
         <item>@string/account_settings_folder_target_mode_all</item>
        <item>@string/account_settings_folder_target_mode_first_class</item>

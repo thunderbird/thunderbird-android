@@ -58,7 +58,8 @@ public class Account implements Serializable
     HideButtons mHideMessageViewButtons;
     boolean mIsSignatureBeforeQuotedText;
     boolean mLeftHanded;
-    public String mExpungePolicy = EXPUNGE_IMMEDIATELY;
+    private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
+    private int mMaxPushFolders;
 
     List<Identity> identities;
 
@@ -105,8 +106,9 @@ public class Account implements Serializable
         mHideMessageViewButtons = HideButtons.NEVER;
         mRingtoneUri = "content://settings/system/notification_sound";
         mIsSignatureBeforeQuotedText = false;
-
+        mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = "INBOX";
+        mMaxPushFolders = 10;
 
         identities = new ArrayList<Identity>();
 
@@ -200,6 +202,8 @@ public class Account implements Serializable
         mOutboxFolderName = preferences.getPreferences().getString(mUuid  + ".outboxFolderName",
                             "Outbox");
         mExpungePolicy = preferences.getPreferences().getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
+
+        mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
 
         // Between r418 and r431 (version 0.103), folder names were set empty if the Incoming settings were
         // opened for non-IMAP accounts.  0.103 was never a market release, so perhaps this code
@@ -536,6 +540,7 @@ public class Account implements Serializable
         editor.remove(mUuid + ".hideButtonsEnum");
         editor.remove(mUuid + ".signatureBeforeQuotedText");
         editor.remove(mUuid + ".expungePolicy");
+        editor.remove(mUuid + ".maxPushFolders");
         deleteIdentities(preferences.getPreferences(), editor);
         editor.commit();
     }
@@ -607,7 +612,7 @@ public class Account implements Serializable
         editor.putString(mUuid + ".folderTargetMode", mFolderTargetMode.name());
         editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
         editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
-
+        editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
         saveIdentities(preferences.getPreferences(), editor);
 
         editor.commit();
@@ -949,6 +954,16 @@ public class Account implements Serializable
     public void setExpungePolicy(String expungePolicy)
     {
         mExpungePolicy = expungePolicy;
+    }
+
+    public int getMaxPushFolders()
+    {
+        return mMaxPushFolders;
+    }
+
+    public void setMaxPushFolders(int maxPushFolders)
+    {
+        mMaxPushFolders = maxPushFolders;
     }
 
 }

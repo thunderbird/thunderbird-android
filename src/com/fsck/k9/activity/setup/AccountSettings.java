@@ -40,6 +40,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_DISPLAY_MODE = "folder_display_mode";
     private static final String PREFERENCE_SYNC_MODE = "folder_sync_mode";
     private static final String PREFERENCE_PUSH_MODE = "folder_push_mode";
+    private static final String PREFERENCE_PUSH_LIMIT = "folder_push_limit";
     private static final String PREFERENCE_TARGET_MODE = "folder_target_mode";
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
     private static final String PREFERENCE_EXPUNGE_POLICY = "expunge_policy";
@@ -62,6 +63,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mDisplayMode;
     private ListPreference mSyncMode;
     private ListPreference mPushMode;
+    private ListPreference mPushLimit;
     private ListPreference mTargetMode;
     private ListPreference mDeletePolicy;
     private ListPreference mExpungePolicy;
@@ -175,6 +177,22 @@ public class AccountSettings extends K9PreferenceActivity
                 int index = mPushMode.findIndexOfValue(summary);
                 mPushMode.setSummary(mPushMode.getEntries()[index]);
                 mPushMode.setValue(summary);
+                return false;
+            }
+        });
+        
+        mPushLimit = (ListPreference) findPreference(PREFERENCE_PUSH_LIMIT);
+        mPushLimit.setEnabled(isPushCapable);
+        mPushLimit.setValue(String.valueOf(mAccount.getMaxPushFolders()));
+        mPushLimit.setSummary(mPushLimit.getEntry());
+        mPushLimit.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mPushLimit.findIndexOfValue(summary);
+                mPushLimit.setSummary(mPushLimit.getEntries()[index]);
+                mPushLimit.setValue(summary);
                 return false;
             }
         });
@@ -361,6 +379,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
         mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
         mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
+        mAccount.setMaxPushFolders(Integer.parseInt(mPushLimit.getValue()));
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());

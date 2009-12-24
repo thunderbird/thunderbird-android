@@ -1535,7 +1535,7 @@ public class MessagingController implements Runnable
 
     private void processPendingCommands(final Account account)
     {
-        put("processPendingCommands", null, new Runnable()
+        putBackground("processPendingCommands", null, new Runnable()
         {
             public void run()
             {
@@ -1963,7 +1963,7 @@ public class MessagingController implements Runnable
 
     private void queueSetFlag(final Account account, final String folderName, final String newState, final String flag, final String[] uids)
     {
-        put("queueSetFlag " + account.getDescription() + ":" + folderName, null, new Runnable()
+        putBackground("queueSetFlag " + account.getDescription() + ":" + folderName, null, new Runnable()
         {
             public void run()
             {
@@ -2086,7 +2086,7 @@ public class MessagingController implements Runnable
     }
     private void queueExpunge(final Account account, final String folderName)
     {
-        put("queueExpunge " + account.getDescription() + ":" + folderName, null, new Runnable()
+        putBackground("queueExpunge " + account.getDescription() + ":" + folderName, null, new Runnable()
         {
             public void run()
             {
@@ -3278,7 +3278,7 @@ public class MessagingController implements Runnable
         if (!message.getUid().startsWith(K9.LOCAL_UID_PREFIX))
         {
             suppressMessage(account, srcFolder, message);
-            put("moveMessage", null, new Runnable()
+            putBackground("moveMessage", null, new Runnable()
             {
                 public void run()
                 {
@@ -3357,7 +3357,7 @@ public class MessagingController implements Runnable
     {
         if (!message.getUid().startsWith(K9.LOCAL_UID_PREFIX))
         {
-            put("copyMessage", null, new Runnable()
+            putBackground("copyMessage", null, new Runnable()
             {
                 public void run()
                 {
@@ -3429,7 +3429,7 @@ public class MessagingController implements Runnable
     
     public void expunge(final Account account, final String folder, final MessagingListener listener)
     {   
-        put("expunge", null, new Runnable()
+        putBackground("expunge", null, new Runnable()
         {
             public void run()
             {
@@ -3446,7 +3446,7 @@ public class MessagingController implements Runnable
             suppressMessage(account, folder, message);
         }
 
-        put("deleteMessages", null, new Runnable()
+        putBackground("deleteMessages", null, new Runnable()
         {
             public void run()
             {
@@ -3613,7 +3613,7 @@ public class MessagingController implements Runnable
 
     public void emptyTrash(final Account account, MessagingListener listener)
     {
-        put("emptyTrash", listener, new Runnable()
+        putBackground("emptyTrash", listener, new Runnable()
         {
             public void run()
             {
@@ -4277,6 +4277,14 @@ public class MessagingController implements Runnable
             if (names.size() > 0)
             {
                 PushReceiver receiver = new MessagingControllerPushReceiver(mApplication, account, this);
+                int maxPushFolders = account.getMaxPushFolders();
+                
+                if (names.size() > maxPushFolders)
+                {
+                    Log.i(K9.LOG_TAG, "Count of folders to push for account " + account.getDescription() + " is " + names.size() 
+                            + ", greater than limit of " + maxPushFolders + ", truncating");
+                    names = names.subList(0, maxPushFolders);
+                }
 
                 try
                 {
