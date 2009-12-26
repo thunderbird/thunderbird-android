@@ -168,13 +168,13 @@ public class MessageView extends K9Activity
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P:
             {
-                onPrevious();
+                onPrevious(false);
                 return true;
             }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K:
             {
-                onNext();
+                onNext(false);
                 return true;
             }
             case KeyEvent.KEYCODE_Z:
@@ -714,19 +714,19 @@ public class MessageView extends K9Activity
 
             if (mLastDirection == NEXT && mNextMessageUid != null)
             {
-                onNext();
+                onNext(false);
             }
             else if (mLastDirection == PREVIOUS && mPreviousMessageUid != null)
             {
-                onPrevious();
+                onPrevious(false);
             }
             else if (mNextMessageUid != null)
             {
-                onNext();
+                onNext(false);
             }
             else if (mPreviousMessageUid != null)
             {
-                onPrevious();
+                onPrevious(false);
             }
 
 
@@ -902,7 +902,7 @@ public class MessageView extends K9Activity
         }
     }
 
-    private void onNext()
+    private void onNext(boolean animate)
     {
         if (mNextMessageUid == null)
         {
@@ -911,11 +911,14 @@ public class MessageView extends K9Activity
         }
         mLastDirection = NEXT;
         displayMessage(mNextMessageUid);
-        mTopView.startAnimation(outToLeftAnimation());
+        if (animate)
+        {
+            mTopView.startAnimation(outToLeftAnimation());
+        }
         next.requestFocus();
     }
 
-    private void onPrevious()
+    private void onPrevious(boolean animate)
     {
         if (mPreviousMessageUid == null)
         {
@@ -925,7 +928,10 @@ public class MessageView extends K9Activity
 
         mLastDirection = PREVIOUS;
         displayMessage(mPreviousMessageUid);
-        mTopView.startAnimation(inFromRightAnimation());
+        if (animate)
+        {
+            mTopView.startAnimation(inFromRightAnimation());
+        }
         previous.requestFocus();
     }
 
@@ -1054,11 +1060,11 @@ public class MessageView extends K9Activity
                 break;
             case R.id.next:
             case R.id.next_scrolling:
-                onNext();
+                onNext(false);
                 break;
             case R.id.previous:
             case R.id.previous_scrolling:
-                onPrevious();
+                onPrevious(false);
                 break;
             case R.id.download:
                 onDownloadAttachment((Attachment) view.getTag());
@@ -1706,11 +1712,11 @@ public class MessageView extends K9Activity
                 // right to left swipe
                 if (e1.getX() - e2.getX() > min_distance && Math.abs(velocityX) > min_velocity)
                 {
-                    onNext();
+                    onNext(true);
                 }
                 else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity)
                 {
-                    onPrevious();
+                    onPrevious(true);
                 }
             }
             catch (Exception e)
