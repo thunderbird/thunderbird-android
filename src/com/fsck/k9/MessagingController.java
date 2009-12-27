@@ -546,6 +546,61 @@ public class MessagingController implements Runnable
         }
 
         Folder localFolder = null;
+        MessageRetrievalListener retrievalListener =
+            new MessageRetrievalListener()
+        {
+            List<Message> pendingMessages = new ArrayList<Message>();
+
+
+            int totalDone = 0;
+
+
+            public void messageStarted(String message, int number, int ofTotal) {}
+            public void messageFinished(Message message, int number, int ofTotal)
+            {
+
+                if (isMessageSuppressed(account, folder, message) == false)
+                {
+                    pendingMessages.add(message);
+                    totalDone++;
+                    if (pendingMessages.size() > 10)
+                    {
+                        addPendingMessages();
+                    }
+
+                }
+                else
+                {
+                    for (MessagingListener l : getListeners())
+                    {
+                        l.listLocalMessagesRemoveMessage(account, folder, message);
+                    }
+                    if (listener != null && getListeners().contains(listener) == false)
+                    {
+                        listener.listLocalMessagesRemoveMessage(account, folder, message);
+                    }
+
+                }
+            }
+            public void messagesFinished(int number)
+            {
+                addPendingMessages();
+            }
+            private void addPendingMessages()
+            {
+                for (MessagingListener l : getListeners())
+                {
+                    l.listLocalMessagesAddMessages(account, folder, pendingMessages);
+                }
+                if (listener != null && getListeners().contains(listener) == false)
+                {
+                    listener.listLocalMessagesAddMessages(account, folder, pendingMessages);
+                }
+                pendingMessages.clear();
+            }
+        };
+
+
 
         try
         {
@@ -554,59 +609,8 @@ public class MessagingController implements Runnable
             localFolder.open(OpenMode.READ_WRITE);
 
             localFolder.getMessages(
-                new MessageRetrievalListener()
-            {
-                List<Message> pendingMessages = new ArrayList<Message>();
-
-
-                int totalDone = 0;
-
-
-                public void messageStarted(String message, int number, int ofTotal) {}
-                public void messageFinished(Message message, int number, int ofTotal)
-                {
-
-                    if (isMessageSuppressed(account, folder, message) == false)
-                    {
-                        pendingMessages.add(message);
-                        totalDone++;
-                        if (pendingMessages.size() > 10)
-                        {
-                            callbackPending();
-                        }
-
-                    }
-                    else
-                    {
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.listLocalMessagesRemoveMessage(account, folder, message);
-                        }
-                        if (listener != null && getListeners().contains(listener) == false)
-                        {
-                            listener.listLocalMessagesRemoveMessage(account, folder, message);
-                        }
-
-                    }
-                }
-                public void messagesFinished(int number)
-                {
-                    callbackPending();
-                }
-                private void callbackPending()
-                {
-                    for (MessagingListener l : getListeners())
-                    {
-                        l.listLocalMessagesAddMessages(account, folder, pendingMessages);
-                    }
-                    if (listener != null && getListeners().contains(listener) == false)
-                    {
-                        listener.listLocalMessagesAddMessages(account, folder, pendingMessages);
-                    }
-                    pendingMessages.clear();
-                }
-            },
-            false // Skip deleted messages
+                retrievalListener,
+                false // Skip deleted messages
             );
             if (K9.DEBUG)
             {
