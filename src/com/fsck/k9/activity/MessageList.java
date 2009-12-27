@@ -1576,7 +1576,12 @@ public class MessageList
             {
                 if (updateForMe(account, folder))
                 {
-                    addOrUpdateMessage(account, folder, message);
+                    FolderInfoHolder f = mCurrentFolder;
+                    // XXX TODO, this is the wrong folder
+                    if (f != null)
+                    {
+                        addOrUpdateMessage(account, f, message);
+                    }
                 }
 
                 return;
@@ -1658,7 +1663,12 @@ public class MessageList
             {
                 if (updateForMe(account, folder))
                 {
-                    addOrUpdateMessage(account, folder, message);
+                    FolderInfoHolder f = mCurrentFolder;
+                    // XXX TODO, this is the wrong folder
+                    if (f != null)
+                    {
+                        addOrUpdateMessage(account, f, message);
+                    }
                 }
 
             }
@@ -1735,18 +1745,6 @@ public class MessageList
             List<MessageInfoHolder> messages = new ArrayList<MessageInfoHolder>();
             messages.add(holder);
             removeMessages(messages);
-        }
-
-        private void addOrUpdateMessage(Account account, String folder, Message message)
-        {
-            // TODO do we want "f" or "mCurrentFolder" below?
-            FolderInfoHolder f = mCurrentFolder;
-
-            if (f != null)
-            {
-                addOrUpdateMessage(account, f, message);
-            }
-
         }
 
         private void addOrUpdateMessage(Account account, FolderInfoHolder folder, Message message)
