@@ -1641,7 +1641,13 @@ public class MessageList
             {
                 if (updateForMe(account, folder))
                 {
-                    addOrUpdateMessages(account,folder, messages);
+                    FolderInfoHolder f = mCurrentFolder;
+
+                    // xxx "f"?
+                    if (f != null)
+                    {
+                        addOrUpdateMessages(account, mCurrentFolder, messages);
+                    }
                 }
 
 
@@ -1748,18 +1754,6 @@ public class MessageList
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
             addOrUpdateMessages(account, folder, messages);
-        }
-
-        private void addOrUpdateMessages(Account account, String folder, List<Message> messages)
-        {
-            FolderInfoHolder f = mCurrentFolder;
-
-            // xxx "f"?
-            if (f != null)
-            {
-                addOrUpdateMessages(account, mCurrentFolder, messages);
-            }
-
         }
 
         private void addOrUpdateMessages(Account account, FolderInfoHolder folder, List<Message> messages)
