@@ -726,8 +726,11 @@ public class MessagingController implements Runnable
         {
             return;
         }
-        String debugLine = "Synchronizing folder " + account.getDescription() + ":" + folder;
-        Log.i(K9.LOG_TAG, debugLine);
+
+        if (K9.DEBUG)
+        {
+            Log.i(K9.LOG_TAG, "Synchronizing folder " + account.getDescription() + ":" + folder);
+        }
 
         for (MessagingListener l : getListeners())
         {
