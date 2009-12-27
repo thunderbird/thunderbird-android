@@ -114,7 +114,7 @@ public class MessageList
 
     /**
     * Stores the name of the folder that we want to open as soon as possible
-    * after load. It is set to null once the folder has been opened once.
+    * after load.
      */
     private String mFolderName;
 
