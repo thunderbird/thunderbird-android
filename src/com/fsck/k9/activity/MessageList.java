@@ -308,10 +308,10 @@ public class MessageList
     {
         // Debug.stopMethodTracing();
         if (
-                mCurrentFolder != null
-                &&
-                ((position+1) == mAdapter.getCount())
-           )
+            mCurrentFolder != null
+            &&
+            ((position+1) == mAdapter.getCount())
+        )
         {
             mController.loadMoreMessages(
                 mAccount,
@@ -466,7 +466,8 @@ public class MessageList
         mAdapter.messages.clear();
         mAdapter.notifyDataSetChanged();
 
-        if (mFolderName != null) {
+        if (mFolderName != null)
+        {
             mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
 
             NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -943,21 +944,21 @@ public class MessageList
                 String uid = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE_UID);
 
 
-                 MessageInfoHolder m = mAdapter.getMessage(uid);
+                MessageInfoHolder m = mAdapter.getMessage(uid);
                 if (destFolderName != null && m != null)
                 {
-                        switch (requestCode)
-                        {
-                            case ACTIVITY_CHOOSE_FOLDER_MOVE:
-                                onMoveChosen(m, destFolderName);
+                    switch (requestCode)
+                    {
+                        case ACTIVITY_CHOOSE_FOLDER_MOVE:
+                            onMoveChosen(m, destFolderName);
 
-                                break;
+                            break;
 
-                            case ACTIVITY_CHOOSE_FOLDER_COPY:
-                                onCopyChosen(m, destFolderName);
+                        case ACTIVITY_CHOOSE_FOLDER_COPY:
+                            onCopyChosen(m, destFolderName);
 
-                                break;
-                        }
+                            break;
+                    }
                 }
         }
     }
@@ -977,8 +978,8 @@ public class MessageList
     {
         if (mController.isCopyCapable(mAccount) == true && folderName != null)
         {
-        mController.copyMessage(mAccount,
-                                holder.message.getFolder().getName(), holder.message, folderName, null);
+            mController.copyMessage(mAccount,
+                                    holder.message.getFolder().getName(), holder.message, folderName, null);
         }
     }
 
@@ -1027,9 +1028,10 @@ public class MessageList
         switch (id)
         {
             case DIALOG_MARK_ALL_AS_READ:
-                if (mCurrentFolder != null ) {
-                ((AlertDialog)dialog).setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
-                                                 mCurrentFolder.displayName));
+                if (mCurrentFolder != null)
+                {
+                    ((AlertDialog)dialog).setMessage(getString(R.string.mark_all_as_read_dlg_instructions_fmt,
+                                                     mCurrentFolder.displayName));
                 }
                 break;
 
@@ -1115,7 +1117,8 @@ public class MessageList
         switch (itemId)
         {
             case R.id.check_mail:
-                if (mFolderName != null) {
+                if (mFolderName != null)
+                {
                     checkMail(mAccount, mFolderName);
                 }
                 return true;
@@ -1169,13 +1172,15 @@ public class MessageList
                 return true;
 
             case R.id.mark_all_as_read:
-                if (mFolderName != null ) {
+                if (mFolderName != null)
+                {
                     onMarkAllAsRead(mAccount, mFolderName);
                 }
                 return true;
 
             case R.id.folder_settings:
-                if (mFolderName != null ) {
+                if (mFolderName != null)
+                {
                     FolderSettings.actionSettings(this, mAccount, mFolderName);
                 }
                 return true;
@@ -1237,7 +1242,8 @@ public class MessageList
                 return true;
 
             case R.id.expunge:
-                if (mCurrentFolder != null ) {
+                if (mCurrentFolder != null)
+                {
                     onExpunge(mAccount, mCurrentFolder.name);
                 }
                 return true;
@@ -1474,7 +1480,7 @@ public class MessageList
             {
                 super.synchronizeMailboxStarted(account, folder);
 
-                if (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))
+                if (updateForMe(account, folder))
                 {
                     mHandler.progress(true);
                     mHandler.folderLoading(folder, true);
@@ -1490,7 +1496,7 @@ public class MessageList
             {
                 super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
 
-                if (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))
+                if (updateForMe(account, folder))
                 {
                     mHandler.progress(false);
                     mHandler.folderLoading(folder, false);
@@ -1504,7 +1510,7 @@ public class MessageList
             {
                 super.synchronizeMailboxFailed(account, folder, message);
 
-                if (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))
+                if (updateForMe(account, folder))
                 {
                     // Perhaps this can be restored, if done in the mHandler thread
                     // Toast.makeText(MessageList.this, message, Toast.LENGTH_LONG).show();
@@ -1547,7 +1553,7 @@ public class MessageList
             @Override
             public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
             {
-                if (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))
+                if (updateForMe(account, folder))
                 {
                     addOrUpdateMessage(folder, message);
                 }
@@ -1598,7 +1604,7 @@ public class MessageList
             @Override
             public void listLocalMessagesRemoveMessage(Account account, String folder,Message message)
             {
-                if (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))
+                if (updateForMe(account, folder))
                 {
                     MessageInfoHolder holder = getMessage(message.getUid());
                     if (holder != null)
@@ -1612,7 +1618,7 @@ public class MessageList
             @Override
             public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
             {
-                if (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))
+                if (updateForMe(account, folder))
                 {
                     addOrUpdateMessages(folder, messages);
                 }
@@ -1623,22 +1629,34 @@ public class MessageList
             @Override
             public void listLocalMessagesUpdateMessage(Account account, String folder, Message message)
             {
-                if (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))
+                if (updateForMe(account, folder))
                 {
                     addOrUpdateMessage(folder, message);
                 }
 
             }
             @Override
-            public void folderStatusChanged(Account account, String folderName, int unreadMessageCount)
+            public void folderStatusChanged(Account account, String folder, int unreadMessageCount)
             {
-                if (account.equals(mAccount) && mFolderName != null && folderName.equals(mFolderName))
+                if (updateForMe(account, folder))
                 {
                     mUnreadMessageCount = unreadMessageCount;
                     mHandler.refreshTitle();
                 }
             }
 
+
+            private boolean updateForMe(Account account, String folder)
+            {
+                if (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
 
 
 
