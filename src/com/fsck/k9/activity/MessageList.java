@@ -1528,12 +1528,12 @@ public class MessageList
             @Override
             public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
             {
-                if (!account.equals(mAccount) || !folder.equals(mFolderName))
+                if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
-                    return;
+                    addOrUpdateMessage(folder, message);
                 }
 
-                addOrUpdateMessage(folder, message);
+                    return;
             }
 
             @Override
@@ -1613,35 +1613,34 @@ public class MessageList
             @Override
             public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
             {
-                if (!account.equals(mAccount) || !folder.equals(mFolderName))
+                if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
-                    return;
+                    addOrUpdateMessages(folder, messages);
                 }
 
-                addOrUpdateMessages(folder, messages);
 
             }
 
             @Override
             public void listLocalMessagesUpdateMessage(Account account, String folder, Message message)
             {
-                if (!account.equals(mAccount) || !folder.equals(mFolderName))
+                if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
-                    return;
+                    addOrUpdateMessage(folder, message);
                 }
 
-                addOrUpdateMessage(folder, message);
             }
             @Override
             public void folderStatusChanged(Account account, String folderName, int unreadMessageCount)
             {
-                if (!account.equals(mAccount) || !folderName.equals(mFolderName))
+                if (account.equals(mAccount) && folderName.equals(mFolderName))
                 {
-                    return;
+                    mUnreadMessageCount = unreadMessageCount;
+                    mHandler.refreshTitle();
                 }
-                mUnreadMessageCount = unreadMessageCount;
-                mHandler.refreshTitle();
             }
+
+
             public void pendingCommandsProcessing(Account account)
             {
                 super.pendingCommandsProcessing(account);
@@ -1677,12 +1676,11 @@ public class MessageList
 
         public void removeMessages(List<MessageInfoHolder> holders)
         {
-            if (holders == null)
+            if (holders != null)
             {
-                return;
+                mHandler.removeMessage(holders);
             }
 
-            mHandler.removeMessage(holders);
 
         }
 
@@ -1695,14 +1693,14 @@ public class MessageList
 
         private void addOrUpdateMessage(String folder, Message message)
         {
+            // TODO do we want "f" or "mCurrentFolder" below?
             FolderInfoHolder f = mCurrentFolder;
 
-            if (f == null)
+            if (f != null)
             {
-                return;
+                addOrUpdateMessage(f, message);
             }
 
-            addOrUpdateMessage(f, message);
         }
 
         private void addOrUpdateMessage(FolderInfoHolder folder, Message message)
@@ -1716,13 +1714,13 @@ public class MessageList
         {
             FolderInfoHolder f = mCurrentFolder;
 
-            if (f == null)
+            if (f != null)
             {
-                return;
+                addOrUpdateMessages(f, messages);
             }
 
-            addOrUpdateMessages(f, messages);
         }
+
         private void addOrUpdateMessages(FolderInfoHolder folder, List<Message> messages)
         {
             boolean needsSort = false;
