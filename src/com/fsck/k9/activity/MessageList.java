@@ -302,9 +302,8 @@ public class MessageList
     }
 
     /**
-    * This class is responsible for reloading the list of local messages for a
-    * given folder, notifying the adapter that the message have been loaded and
-    * queueing up a remote update of the folder.
+    * This class is responsible for loading the list of local messages for a
+    * given folder
      */
 
     public static void actionHandleFolder(Context context, Account account, String folder, boolean startup)
