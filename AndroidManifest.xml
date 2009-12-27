@@ -189,7 +189,7 @@
         <!-- Search Activity - searchable -->
         <activity android:name="com.fsck.k9.activity.Search"
                   android:label="@string/search_action"
-                  android:launchMode="singleTop">
+                  >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.DEFAULT" />
