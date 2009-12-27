@@ -152,11 +152,14 @@ public class MessageList
                 {
                     for (MessageInfoHolder message : messages)
                     {
-                        if (message != null && message.selected && mSelectedCount > 0)
+                        if (mFolderName == null || message.folder.name.equals(mFolderName))
                         {
-                            mSelectedCount--;
+                            if (message != null && message.selected && mSelectedCount > 0)
+                            {
+                                mSelectedCount--;
+                            }
+                            mAdapter.messages.remove(message);
                         }
-                        mAdapter.messages.remove(message);
                     }
                     mAdapter.notifyDataSetChanged();
                     configureBatchButtons();
@@ -171,21 +174,26 @@ public class MessageList
             boolean wasEmpty = mAdapter.messages.isEmpty();
             for (final MessageInfoHolder message : messages)
             {
-                runOnUiThread(new Runnable()
+
+                if (mFolderName == null || message.folder.name.equals(mFolderName))
                 {
-                    public void run()
+
+                    runOnUiThread(new Runnable()
                     {
-                        int index = Collections.binarySearch(mAdapter.messages, message);
-
-                        if (index < 0)
+                        public void run()
                         {
-                            index = (index * -1) - 1;
+                            int index = Collections.binarySearch(mAdapter.messages, message);
+
+                            if (index < 0)
+                            {
+                                index = (index * -1) - 1;
+                            }
+
+                            mAdapter.messages.add(index, message);
+
                         }
-
-                        mAdapter.messages.add(index, message);
-
-                    }
-                });
+                    });
+                }
             }
 
             if (wasEmpty)
