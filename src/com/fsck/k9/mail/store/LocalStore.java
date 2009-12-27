@@ -1261,10 +1261,8 @@ public class LocalStore extends Store implements Serializable
         {
             return getMessages(
                        listener,
-                       "SELECT "
-                       + "FROM messages "
-                       + GET_MESSAGES_COLS
-                       + "WHERE "
+                       "SELECT " + GET_MESSAGES_COLS
+                       + "FROM messages WHERE "
                        + (includeDeleted ? "" : "deleted = 0 AND ")
                        + " folder_id = ? ORDER BY date DESC"
                        , new String[]
