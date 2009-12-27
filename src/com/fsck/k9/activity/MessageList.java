@@ -100,8 +100,6 @@ public class MessageList
     private ListView mListView;
     private int mSelectedWidget = WIDGET_FLAG;
 
-    private int colorChipResId;
-
     private MessageListAdapter mAdapter;
 
     private FolderInfoHolder mCurrentFolder;
@@ -406,12 +404,6 @@ public class MessageList
             mQueryString = savedInstanceState.getString(STATE_QUERY);
             mSelectedCount  = savedInstanceState.getInt(STATE_KEY_SELECTED_COUNT);
         }
-
-        /*
-        * Since the color chip is always the same color for a given account we just
-        * cache the id of the chip right here.
-         */
-        colorChipResId = colorChipResIds[mAccount.getAccountNumber() % colorChipResIds.length];
 
         mLeftHanded = mAccount.getLeftHanded();
 
@@ -1959,7 +1951,9 @@ public class MessageList
                     }
                 });
 
-                holder.chip.setBackgroundResource(colorChipResId);
+
+
+                holder.chip.setBackgroundResource( colorChipResIds[message.account.getAccountNumber() % colorChipResIds.length] );
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 if (holder.selected!=null)
                 {
@@ -1971,7 +1965,6 @@ public class MessageList
 
             if (message != null)
             {
-                holder.chip.getBackground().setAlpha(message.read ? 0 : 255);
                 holder.subject.setTypeface(null, message.read ? Typeface.NORMAL  : Typeface.BOLD);
 
                 setVisibleWidgetsForListItem(view, mSelectedWidget);
@@ -1985,7 +1978,7 @@ public class MessageList
                 holder.position = -1;
                 holder.selected.setChecked(message.selected);
 
-                holder.chip.getBackground().setAlpha(message.read ? 0 : 127);
+                holder.chip.getBackground().setAlpha(message.read ? 255 : 127);
 
                 if (message.downloaded)
                 {
