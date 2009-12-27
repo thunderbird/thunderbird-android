@@ -531,7 +531,11 @@ public class MessageList
 
             case KeyEvent.KEYCODE_DPAD_LEFT:
             {
-                if (mBatchButtonArea.hasFocus())
+                if (mQueryString != null)
+                { // no widget customization in search results yet
+                    return false;
+                }
+                else if (mBatchButtonArea.hasFocus())
                 {
                     return false;
                 }
@@ -544,7 +548,11 @@ public class MessageList
             }
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             {
-                if (mBatchButtonArea.hasFocus())
+                if (mQueryString != null)
+                { // no widget customization in search results yet
+                    return false;
+                }
+                else if (mBatchButtonArea.hasFocus())
                 {
                     return false;
                 }
@@ -821,7 +829,16 @@ public class MessageList
 
     private void onCompose()
     {
-        MessageCompose.actionCompose(this, mAccount);
+
+        if (mQueryString != null)
+        {// if we have a query string, we don't have an account, to let compose start the default action
+            MessageCompose.actionCompose(this, null);
+        }
+        else
+        {
+
+            MessageCompose.actionCompose(this, mAccount);
+        }
     }
 
     private void onEditAccount()
@@ -1109,7 +1126,7 @@ public class MessageList
 
     private void onToggleRead(MessageInfoHolder holder)
     {
-        mController.setFlag(mAccount, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
+        mController.setFlag(holder.account, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
         holder.read = !holder.read;
         mHandler.sortMessages();
     }
@@ -1117,7 +1134,7 @@ public class MessageList
     private void onToggleFlag(MessageInfoHolder holder)
     {
 
-        mController.setFlag(mAccount, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
+        mController.setFlag(holder.account, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
         holder.flagged = !holder.flagged;
         mHandler.sortMessages();
     }
@@ -1193,7 +1210,15 @@ public class MessageList
                 onShowFolderList();
 
                 return true;
+        }
 
+        if (mQueryString != null)
+        {
+            return false; // none of the options after this point are "safe" for search results
+        }
+
+        switch (itemId)
+        {
             case R.id.mark_all_as_read:
                 if (mFolderName != null)
                 {
@@ -1303,6 +1328,16 @@ public class MessageList
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
     {
+
+        if (mQueryString != null)
+        {
+            menu.findItem(R.id.batch_ops).setVisible(false);
+            menu.findItem(R.id.mark_all_as_read).setVisible(false);
+            menu.findItem(R.id.folder_settings).setVisible(false);
+            menu.findItem(R.id.account_settings).setVisible(false);
+            menu.findItem(R.id.list_folders).setVisible(false);
+            menu.findItem(R.id.expunge).setVisible(false);
+        }
         switch (mSelectedWidget)
         {
             case WIDGET_FLAG:
@@ -1575,7 +1610,7 @@ public class MessageList
             public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
             {
                 // eventually, we may want to check a message added during sync against the query filter
-                if( mQueryString == null )
+                if (mQueryString == null)
                 {
                     addOrUpdateMessage(account, folder, message);
                 }
@@ -1591,21 +1626,30 @@ public class MessageList
             @Override
             public void listLocalMessagesStarted(Account account, String folder)
             {
-                if (account != null && account.equals(mAccount))
+                if ((mQueryString != null && folder == null) ||
+                        (account != null && account.equals(mAccount))
+                   )
                 {
                     mHandler.progress(true);
-                    mHandler.folderLoading(folder, true);
+                    if (folder != null)
+                    {
+                        mHandler.folderLoading(folder, true);
+                    }
                 }
             }
 
             @Override
             public void listLocalMessagesFailed(Account account, String folder, String message)
             {
-                if (account != null && account.equals(mAccount))
+                if ((mQueryString != null && folder == null) ||
+                        (account != null && account.equals(mAccount)))
                 {
                     mHandler.sortMessages();
                     mHandler.progress(false);
-                    mHandler.folderLoading(folder, false);
+                    if (folder != null)
+                    {
+                        mHandler.folderLoading(folder, false);
+                    }
                 }
 
             }
@@ -1613,11 +1657,15 @@ public class MessageList
             @Override
             public void listLocalMessagesFinished(Account account, String folder)
             {
-                if (account != null && account.equals(mAccount))
+                if ((mQueryString != null && folder == null) ||
+                        (account != null && account.equals(mAccount)))
                 {
                     mHandler.sortMessages();
                     mHandler.progress(false);
-                    mHandler.folderLoading(folder, false);
+                    if (folder != null)
+                    {
+                        mHandler.folderLoading(folder, false);
+                    }
                 }
 
             }
@@ -1998,6 +2046,10 @@ public class MessageList
             if (footerView == null)
             {
                 footerView = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
+                if (mQueryString != null)
+                {
+                    footerView.setVisibility(View.GONE);
+                }
                 footerView.setId(R.layout.message_list_item_footer);
                 FooterViewHolder holder = new FooterViewHolder();
                 holder.progress = (ProgressBar)footerView.findViewById(R.id.message_list_progress);
