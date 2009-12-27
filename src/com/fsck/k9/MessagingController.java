@@ -794,10 +794,7 @@ public class MessagingController implements Runnable
             return;
         }
 
-        if (K9.DEBUG)
-        {
-            Log.i(K9.LOG_TAG, "Synchronizing folder " + account.getDescription() + ":" + folder);
-        }
+	Log.i(K9.LOG_TAG, "Synchronizing folder " + account.getDescription() + ":" + folder);
 
         for (MessagingListener l : getListeners())
         {
@@ -919,7 +916,10 @@ public class MessagingController implements Runnable
 
             if (Account.EXPUNGE_ON_POLL.equals(account.getExpungePolicy()))
             {
-                Log.i(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
+		if (K9.DEBUG)
+		{
+		    Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
+		}
                 remoteFolder.expunge();
             }
 
@@ -999,8 +999,12 @@ public class MessagingController implements Runnable
              */
             int newMessages = downloadMessages(account, remoteFolder, localFolder, remoteMessages, false);
 
-            setLocalUnreadCountToRemote(localFolder, remoteFolder,  newMessages);
+            int unreadMessageCount = setLocalUnreadCountToRemote(localFolder, remoteFolder,  newMessages);
 
+	    for (MessagingListener l : getListeners())
+	    {
+		l.folderStatusChanged(account, folder, unreadMessageCount);
+	    }
 
             /*
              * Notify listeners that we're finally done.
@@ -1044,6 +1048,7 @@ public class MessagingController implements Runnable
                 }
             }
 
+	    Log.i(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder);
 
         }
         catch (Exception e)
@@ -1193,7 +1198,10 @@ public class MessagingController implements Runnable
             l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
         }
 
-        Log.i(K9.LOG_TAG, "SYNC: Have " + unsyncedMessages.size() + " unsynced messages");
+	if (K9.DEBUG)
+	{
+	    Log.d(K9.LOG_TAG, "SYNC: Have " + unsyncedMessages.size() + " unsynced messages");
+	}
 
         messages.clear();
         final ArrayList<Message> largeMessages = new ArrayList<Message>();
@@ -1311,16 +1319,21 @@ public class MessagingController implements Runnable
                     localFolder.setPushState(newPushState);
                 }
             }
-            Log.i(K9.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
+	    if (K9.DEBUG)
+	    {
+		Log.d(K9.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
+	    }
 
 
         }
 
-
-        Log.i(K9.LOG_TAG, "SYNC: Have "
-              + largeMessages.size() + " large messages and "
-              + smallMessages.size() + " small messages out of "
-              + unsyncedMessages.size() + " unsynced messages");
+	if (K9.DEBUG)
+	{
+	    Log.d(K9.LOG_TAG, "SYNC: Have "
+		  + largeMessages.size() + " large messages and "
+		  + smallMessages.size() + " small messages out of "
+		  + unsyncedMessages.size() + " unsynced messages");
+	}
 
         unsyncedMessages.clear();
 
@@ -1334,7 +1347,10 @@ public class MessagingController implements Runnable
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
 
-        Log.i(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
+	if (K9.DEBUG)
+	{
+	    Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
+	}
 
         remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
                            fp, new MessageRetrievalListener()
@@ -1383,7 +1399,10 @@ public class MessagingController implements Runnable
             public void messagesFinished(int total) {}
         });
 
-        Log.i(K9.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
+	if (K9.DEBUG)
+	{
+	    Log.d(K9.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
+	}
         smallMessages.clear();
 
         /*
@@ -1392,7 +1411,10 @@ public class MessagingController implements Runnable
         fp.clear();
         fp.add(FetchProfile.Item.STRUCTURE);
 
-        Log.i(K9.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
+	if (K9.DEBUG)
+	{
+	    Log.d(K9.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
+	}
 
         remoteFolder.fetch(largeMessages.toArray(new Message[largeMessages.size()]), fp, null);
         for (Message message : largeMessages)
@@ -1487,7 +1509,10 @@ public class MessagingController implements Runnable
                 }
             }
         }//for large messsages
-        Log.i(K9.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
+	if (K9.DEBUG)
+	{
+	    Log.d(K9.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
+	}
 
         largeMessages.clear();
 
@@ -1499,8 +1524,11 @@ public class MessagingController implements Runnable
         {
 
 
-            Log.i(K9.LOG_TAG, "SYNC: About to sync flags for "
-                  + syncFlagMessages.size() + " remote messages for folder " + folder);
+	    if (K9.DEBUG)
+	    {
+		Log.d(K9.LOG_TAG, "SYNC: About to sync flags for "
+		      + syncFlagMessages.size() + " remote messages for folder " + folder);
+	    }
 
 
             fp.clear();
@@ -1534,8 +1562,10 @@ public class MessagingController implements Runnable
                 }
             }
         }
-        Log.i(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
-
+	if (K9.DEBUG)
+	{
+	    Log.d(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
+	}
         localFolder.purgeToVisibleLimit(new MessageRemovalListener()
         {
             public void messageRemoved(Message message)
