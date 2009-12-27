@@ -1541,16 +1541,16 @@ public class MessageList
             }
 
             @Override
-            public void sendPendingMessagesCompleted(Account account)
+            public void sendPendingMessagesStarted(Account account)
             {
-                super.sendPendingMessagesCompleted(account);
+                super.sendPendingMessagesStarted(account);
                 mHandler.refreshTitle();
             }
 
             @Override
-            public void sendPendingMessagesStarted(Account account)
+            public void sendPendingMessagesCompleted(Account account)
             {
-                super.sendPendingMessagesStarted(account);
+                super.sendPendingMessagesCompleted(account);
                 mHandler.refreshTitle();
             }
 
