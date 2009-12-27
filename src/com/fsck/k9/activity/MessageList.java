@@ -1545,39 +1545,35 @@ public class MessageList
             @Override
             public void listLocalMessagesStarted(Account account, String folder)
             {
-                if (!account.equals(mAccount))
+                if (account.equals(mAccount))
                 {
-                    return;
+                    mHandler.progress(true);
+                    mHandler.folderLoading(folder, true);
                 }
-                mHandler.progress(true);
-                mHandler.folderLoading(folder, true);
             }
 
             @Override
             public void listLocalMessagesFailed(Account account, String folder, String message)
             {
-                if (!account.equals(mAccount))
+                if (account.equals(mAccount))
                 {
-                    return;
+                    mHandler.sortMessages();
+                    mHandler.progress(false);
+                    mHandler.folderLoading(folder, false);
                 }
 
-                mHandler.sortMessages();
-                mHandler.progress(false);
-                mHandler.folderLoading(folder, false);
             }
 
             @Override
             public void listLocalMessagesFinished(Account account, String folder)
             {
-                if (!account.equals(mAccount))
+                if (account.equals(mAccount))
                 {
-                    return;
+                    mHandler.sortMessages();
+                    mHandler.progress(false);
+                    mHandler.folderLoading(folder, false);
                 }
 
-                mHandler.sortMessages();
-
-                mHandler.progress(false);
-                mHandler.folderLoading(folder, false);
             }
 
             @Override
@@ -1598,14 +1594,13 @@ public class MessageList
             @Override
             public void listLocalMessagesRemoveMessage(Account account, String folder,Message message)
             {
-                if (!account.equals(mAccount) || !folder.equals(mFolderName))
+                if (account.equals(mAccount) && folder.equals(mFolderName))
                 {
-                    return;
-                }
-                MessageInfoHolder holder = getMessage(message.getUid());
-                if (holder != null)
-                {
-                    removeMessage(getMessage(message.getUid()));
+                    MessageInfoHolder holder = getMessage(message.getUid());
+                    if (holder != null)
+                    {
+                        removeMessage(getMessage(message.getUid()));
+                    }
                 }
             }
 
