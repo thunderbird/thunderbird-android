@@ -31,6 +31,12 @@
             android:entries="@array/date_formats"
             android:entryValues="@array/date_formats"
             android:dialogTitle="@string/date_format_label" />
+            
+     <CheckBoxPreference
+        android:key="animations"
+        android:title="@string/animations_title"
+        android:summary="@string/animations_summary"
+        />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">
@@ -55,7 +61,4 @@
     	android:summary="@string/debug_enable_sensitive_logging_summary"
     	/>
    </PreferenceCategory>
-
-  
-
 </PreferenceScreen>

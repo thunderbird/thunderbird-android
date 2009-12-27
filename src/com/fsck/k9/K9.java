@@ -18,6 +18,7 @@ import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 
 import java.io.File;
+import java.util.UUID;
 
 public class K9 extends Application
 {
@@ -60,6 +61,8 @@ public class K9 extends Application
      */
     public static boolean ENABLE_ERROR_FOLDER = true;
     public static String ERROR_FOLDER_NAME = "K9mail-errors";
+    
+    private static boolean mAnimations = true;
 
     /**
      * The MIME type(s) of attachments we're willing to send. At the moment it is not possible
@@ -468,6 +471,7 @@ public class K9 extends Application
         editor.putBoolean("enableDebugLogging", K9.DEBUG);
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
+        editor.putBoolean("animations", mAnimations);
         editor.putInt("theme", theme);
     }
 
@@ -480,7 +484,7 @@ public class K9 extends Application
         SharedPreferences sprefs = prefs.getPreferences();
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
-
+        mAnimations = sprefs.getBoolean("animations", true);
         try
         {
             setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString("backgroundOperations", "WHEN_CHECKED")));
@@ -586,6 +590,16 @@ public class K9 extends Application
     public static void setBackgroundOps(String nbackgroundOps)
     {
         K9.backgroundOps = BACKGROUND_OPS.valueOf(nbackgroundOps);
+    }
+
+    public static boolean isAnimations()
+    {
+        return mAnimations;
+    }
+
+    public static void setAnimations(boolean animations)
+    {
+        mAnimations = animations;
     }
 }
 

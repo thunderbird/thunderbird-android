@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.view.KeyEvent;
@@ -25,11 +26,14 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
+    private static final String PREFERENCE_ANIMATIONS = "animations";
+
     private ListPreference mTheme;
     private ListPreference mDateFormat;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
+    private CheckBoxPreference mAnimations;
 
     private String initBackgroundOps;
 
@@ -112,6 +116,8 @@ public class Prefs extends K9PreferenceActivity
         mDebugLogging.setChecked(K9.DEBUG);
         mSensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
 
+        mAnimations = (CheckBoxPreference)findPreference(PREFERENCE_ANIMATIONS);
+        mAnimations.setChecked(K9.isAnimations());
     }
 
     @Override
@@ -128,6 +134,7 @@ public class Prefs extends K9PreferenceActivity
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         String newBackgroundOps = mBackgroundOps.getValue();
         K9.setBackgroundOps(newBackgroundOps);
+        K9.setAnimations(mAnimations.isChecked());
         Editor editor = preferences.edit();
         K9.save(editor);
         DateFormatter.setDateFormat(editor, mDateFormat.getValue());

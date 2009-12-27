@@ -627,4 +627,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_push_limit_500">500 folders</string>
     <string name="account_setup_push_limit_1000">1000 folders</string>
     
+    <string name="animations_title">Animations</string>
+    <string name="animations_summary">Activate enhanced animations</string>
+   
 </resources>

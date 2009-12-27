@@ -168,13 +168,13 @@ public class MessageView extends K9Activity
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P:
             {
-                onPrevious(false);
+                onPrevious(K9.isAnimations());
                 return true;
             }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K:
             {
-                onNext(false);
+                onNext(K9.isAnimations());
                 return true;
             }
             case KeyEvent.KEYCODE_Z:
@@ -714,19 +714,19 @@ public class MessageView extends K9Activity
 
             if (mLastDirection == NEXT && mNextMessageUid != null)
             {
-                onNext(false);
+                onNext(K9.isAnimations());
             }
             else if (mLastDirection == PREVIOUS && mPreviousMessageUid != null)
             {
-                onPrevious(false);
+                onPrevious(K9.isAnimations());
             }
             else if (mNextMessageUid != null)
             {
-                onNext(false);
+                onNext(K9.isAnimations());
             }
             else if (mPreviousMessageUid != null)
             {
-                onPrevious(false);
+                onPrevious(K9.isAnimations());
             }
 
 
@@ -1060,11 +1060,11 @@ public class MessageView extends K9Activity
                 break;
             case R.id.next:
             case R.id.next_scrolling:
-                onNext(false);
+                onNext(K9.isAnimations());
                 break;
             case R.id.previous:
             case R.id.previous_scrolling:
-                onPrevious(false);
+                onPrevious(K9.isAnimations());
                 break;
             case R.id.download:
                 onDownloadAttachment((Attachment) view.getTag());
