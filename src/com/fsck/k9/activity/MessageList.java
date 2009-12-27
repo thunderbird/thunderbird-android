@@ -59,9 +59,12 @@ public class MessageList
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_STARTUP = "startup";
     private static final String EXTRA_FOLDER  = "folder";
+    private static final String EXTRA_QUERY = "query";
+
 
     private static final String STATE_KEY_LIST = "com.fsck.k9.activity.messagelist_state";
     private static final String STATE_CURRENT_FOLDER = "com.fsck.k9.activity.messagelist_folder";
+    private static final String STATE_QUERY = "com.fsck.k9.activity.query";
     private static final String STATE_KEY_SELECTION = "com.fsck.k9.activity.messagelist_selection";
     private static final String STATE_KEY_SELECTED_COUNT = "com.fsck.k9.activity.messagelist_selected_count";
 
@@ -117,6 +120,8 @@ public class MessageList
     * after load.
      */
     private String mFolderName;
+
+    private String mQueryString;
 
     private MessageListHandler mHandler = new MessageListHandler();
 
@@ -189,13 +194,13 @@ public class MessageList
                 {
                     public void run()
                     {
-
                         mListView.setSelection(0);
                         mAdapter.notifyDataSetChanged();
                     }
                 });
             }
         }
+
         private void sortMessages()
         {
             runOnUiThread(new Runnable()
@@ -267,6 +272,10 @@ public class MessageList
                 String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount);
 
                 setTitle(dispString);
+            }
+            else if (mQueryString != null)
+            {
+                setTitle(R.string.search_results + ": "+ mQueryString);
             }
         }
 
@@ -375,6 +384,9 @@ public class MessageList
         if (savedInstanceState == null)
         {
             mFolderName = intent.getStringExtra(EXTRA_FOLDER);
+            mQueryString = intent.getStringExtra(EXTRA_QUERY);
+
+
 
             if (mFolderName == null)
             {
@@ -384,6 +396,7 @@ public class MessageList
         else
         {
             mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
+            mQueryString = savedInstanceState.getString(STATE_QUERY);
             mSelectedCount  = savedInstanceState.getInt(STATE_KEY_SELECTED_COUNT);
         }
 
@@ -423,16 +436,18 @@ public class MessageList
 
     private void onRestoreListState(Bundle savedInstanceState)
     {
-        String currentFolder = savedInstanceState.getString(STATE_CURRENT_FOLDER);
+        mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
+        mQueryString = savedInstanceState.getString(STATE_QUERY);
+
         int selectedChild = savedInstanceState.getInt(STATE_KEY_SELECTION, -1);
 
         if (selectedChild != 0)
         {
             mListView.setSelection(selectedChild);
         }
-        if (currentFolder != null)
+        if (mFolderName != null)
         {
-            mCurrentFolder = mAdapter.getFolder(currentFolder);
+            mCurrentFolder = mAdapter.getFolder(mFolderName);
         }
 
 
@@ -476,6 +491,11 @@ public class MessageList
 
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
         }
+        else if (mQueryString != null)
+        {
+            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+
+        }
 
         mHandler.refreshTitle();
 
@@ -487,7 +507,8 @@ public class MessageList
         super.onSaveInstanceState(outState);
         outState.putParcelable(STATE_KEY_LIST, mListView.onSaveInstanceState());
         outState.putInt(STATE_KEY_SELECTION, mListView .getSelectedItemPosition());
-        outState.putString(STATE_CURRENT_FOLDER, mCurrentFolder.name);
+        outState.putString(STATE_CURRENT_FOLDER, mFolderName);
+        outState.putString(STATE_QUERY, mQueryString);
         outState.putInt(STATE_KEY_SELECTED_COUNT, mSelectedCount);
     }
 

@@ -56,6 +56,7 @@
     <string name="add_account_action">Add account</string>
     <string name="compose_action">Compose</string>
     <string name="search_action">Search</string>
+    <string name="search_results">Search results</string>
     <string name="preferences_action">Preferences</string>
     <string name="open_action">Open</string>
     <string name="account_settings_action">Account settings</string>
