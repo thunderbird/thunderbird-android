@@ -716,13 +716,9 @@ public class MessagingController implements Runnable
     public void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener)
     {
         /*
-         * We don't ever sync the Outbox.
+         * We don't ever sync the Outbox or errors folder
          */
-        if (folder.equals(account.getOutboxFolderName()))
-        {
-            return;
-        }
-        if (account.getErrorFolderName().equals(folder))
+        if (folder.equals(account.getOutboxFolderName()) || folder.equals(account.getErrorFolderName()))
         {
             return;
         }
