@@ -427,7 +427,7 @@ public class MessageList
 
         if (mFolderName != null)
         {
-            mCurrentFolder = mAdapter.getFolder(mFolderName);
+            mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
         }
 
         mController = MessagingController.getInstance(getApplication());
@@ -454,7 +454,7 @@ public class MessageList
         }
         if (mFolderName != null)
         {
-            mCurrentFolder = mAdapter.getFolder(mFolderName);
+            mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
         }
 
 
@@ -675,7 +675,7 @@ public class MessageList
 
     private void onOpenMessage(MessageInfoHolder message)
     {
-        if (message.folder.name.equals(mAccount.getDraftsFolderName()))
+        if (mAccount != null && message.folder.name.equals(message.account.getDraftsFolderName()))
         {
             MessageCompose.actionEditDraft(this, mAccount, message.message);
         }
@@ -1779,7 +1779,7 @@ public class MessageList
 
                 if (m == null)
                 {
-                    m = new MessageInfoHolder(message, folder);
+                    m = new MessageInfoHolder(message, folder, account);
                     messagesToAdd.add(m);
                 }
                 else
@@ -1791,7 +1791,7 @@ public class MessageList
                     }
                     else
                     {
-                        m.populate(message, folder);
+                        m.populate(message, folder, account);
                         needsSort = true;
 
                     }
@@ -1825,14 +1825,14 @@ public class MessageList
             return null;
         }
 
-        public FolderInfoHolder getFolder(String folder)
+        public FolderInfoHolder getFolder(String folder, Account account)
         {
             LocalFolder local_folder = null;
             try
             {
-                LocalStore localStore = (LocalStore)Store.getInstance(mAccount.getLocalStoreUri(), getApplication());
+                LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), getApplication());
                 local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder((Folder)local_folder);
+                return new FolderInfoHolder((Folder)local_folder, account);
             }
             catch (Exception e)
             {
@@ -2112,6 +2112,8 @@ public class MessageList
 
         public Message message;
 
+        public Account account;
+
         public FolderInfoHolder folder;
 
         public boolean selected;
@@ -2122,19 +2124,19 @@ public class MessageList
             this.selected = false;
         }
 
-        public MessageInfoHolder(Message m, Folder folder)
+        public MessageInfoHolder(Message m, Folder folder, Account account)
         {
             this();
-            populate(m, new FolderInfoHolder(folder));
+            populate(m, new FolderInfoHolder(folder, account), account);
         }
 
-        public MessageInfoHolder(Message m, FolderInfoHolder folder)
+        public MessageInfoHolder(Message m, FolderInfoHolder folder, Account account)
         {
             this();
-            populate(m, folder);
+            populate(m, folder, account);
         }
 
-        public void populate(Message m, FolderInfoHolder folder)
+        public void populate(Message m, FolderInfoHolder folder, Account account)
         {
 
             try
@@ -2164,7 +2166,7 @@ public class MessageList
 
                 Address[] addrs = message.getFrom();
 
-                if (addrs.length > 0 && mAccount.isAnIdentity(addrs[0]))
+                if (addrs.length > 0 &&  account.isAnIdentity(addrs[0]))
                 {
                     this.compareCounterparty = Address.toFriendly(message .getRecipients(RecipientType.TO));
                     this.sender = String.format(getString(R.string.message_list_to_fmt), this.compareCounterparty);
@@ -2179,6 +2181,7 @@ public class MessageList
 
                 this.uid = message.getUid();
                 this.message = m;
+                this.account = account;
 
             }
             catch (MessagingException me)
@@ -2385,11 +2388,11 @@ public class MessageList
          */
         public boolean outbox;
 
-        public FolderInfoHolder(Folder folder)
+        public FolderInfoHolder(Folder folder, Account account)
         {
-            populate(folder);
+            populate(folder, account);
         }
-        public void populate(Folder folder)
+        public void populate(Folder folder, Account account)
         {
             this.folder = folder;
             this.name = folder.getName();
