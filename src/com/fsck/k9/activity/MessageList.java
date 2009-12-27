@@ -405,8 +405,11 @@ public class MessageList
             mSelectedCount  = savedInstanceState.getInt(STATE_KEY_SELECTED_COUNT);
         }
 
-        mLeftHanded = mAccount.getLeftHanded();
+        if (mAccount != null)
+        {
 
+            mLeftHanded = mAccount.getLeftHanded();
+        }
         mAdapter = new MessageListAdapter();
 
         final Object previousData = getLastNonConfigurationInstance();
