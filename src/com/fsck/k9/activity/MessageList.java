@@ -672,7 +672,7 @@ public class MessageList
     {
         if (mAccount != null && message.folder.name.equals(message.account.getDraftsFolderName()))
         {
-            MessageCompose.actionEditDraft(this, mAccount, message.message);
+            MessageCompose.actionEditDraft(this, message.account, message.message);
         }
         else
         {
@@ -684,7 +684,7 @@ public class MessageList
                 messageUids.add(holder.uid);
             }
 
-            MessageView.actionView(this, mAccount, message.folder.name, message.uid, messageUids);
+            MessageView.actionView(this, message.account, message.folder.name, message.uid, messageUids);
         }
         /*
         * We set read=true here for UI performance reasons. The actual value will
