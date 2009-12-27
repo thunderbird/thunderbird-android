@@ -393,7 +393,7 @@ public class MessageList
 
 
 
-            if (mFolderName == null)
+            if (mFolderName == null && mQueryString == null)
             {
                 mFolderName = mAccount.getAutoExpandFolderName();
             }
