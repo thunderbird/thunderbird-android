@@ -500,7 +500,7 @@ public class MessageList
         }
         else if (mQueryString != null)
         {
-            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+            //mController.searchLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
 
         }
 
