@@ -281,7 +281,7 @@ public class MessageList
             }
             else if (mQueryString != null)
             {
-                setTitle(R.string.search_results + ": "+ mQueryString);
+                setTitle(getString(R.string.search_results) + ": "+ mQueryString);
             }
         }
 
