@@ -1574,7 +1574,11 @@ public class MessageList
             @Override
             public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
             {
-                addOrUpdateMessage(account, folder, message);
+                // eventually, we may want to check a message added during sync against the query filter
+                if( mQueryString == null )
+                {
+                    addOrUpdateMessage(account, folder, message);
+                }
             }
 
 
