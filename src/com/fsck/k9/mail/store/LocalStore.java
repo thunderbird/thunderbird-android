@@ -49,6 +49,14 @@ public class LocalStore extends Store implements Serializable
         HEADERS_TO_SAVE.add("References");
         HEADERS_TO_SAVE.add("X-User-Agent");
     }
+    /*
+     * a String containing the columns getMessages expects to work with
+     * in the correct order.
+     */
+    static private String GET_MESSAGES_COLS =
+        "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
+        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id ";
+
 
     /**
      * @param uri local://localhost/path/to/database/uuid.db
@@ -560,15 +568,6 @@ public class LocalStore extends Store implements Serializable
         private FolderClass pushClass = FolderClass.SECOND_CLASS;
         private String prefId = null;
         private String mPushState = null;
-
-        /*
-         * a String containing the columns getMessages expects to work with
-         * in the correct order.
-         */
-        private String GET_MESSAGES_COLS =
-
-            "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
-            + "bcc_list, reply_to_list, attachment_count, internal_date, message_id ";
 
 
         public LocalFolder(String name)
