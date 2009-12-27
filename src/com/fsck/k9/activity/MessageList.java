@@ -1533,8 +1533,6 @@ public class MessageList
 
                 if (updateForMe(account, folder))
                 {
-                    // Perhaps this can be restored, if done in the mHandler thread
-                    // Toast.makeText(MessageList.this, message, Toast.LENGTH_LONG).show();
                     mHandler.progress(false);
                     mHandler.folderLoading(folder, false);
                     mHandler.sortMessages();
