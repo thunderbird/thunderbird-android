@@ -2121,6 +2121,12 @@ public class MessageList
             this.selected = false;
         }
 
+        public MessageInfoHolder(Message m, Folder folder)
+        {
+            this();
+            populate(m, new FolderInfoHolder(folder));
+        }
+
         public MessageInfoHolder(Message m, FolderInfoHolder folder)
         {
             this();
