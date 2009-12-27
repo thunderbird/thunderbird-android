@@ -679,10 +679,10 @@ public class MessagingController implements Runnable
                 Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
                 Account[] accounts = prefs.getAccounts();
 
+                listener.listLocalMessagesStarted(account, null);
                 for (final Account account : accounts)
                 {
 
-                    listener.listLocalMessagesStarted(account, null);
 
                     MessageRetrievalListener retrievalListener = new MessageRetrievalListener()
                     {
@@ -708,12 +708,15 @@ public class MessagingController implements Runnable
                         LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), mApplication);
 
                         localStore.searchForMessages(retrievalListener, query);
-                        listener.listLocalMessagesFinished(account, null);
                     }
                     catch (Exception e)
                     {
                         listener.listLocalMessagesFailed(account, null, e.getMessage());
                         addErrorMessage(account, e);
+                    }
+                    finally
+                    {
+                        listener.listLocalMessagesFinished(account, null);
                     }
                 }
             }
@@ -919,8 +922,8 @@ public class MessagingController implements Runnable
                 Log.i(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
                 remoteFolder.expunge();
             }
-            
-            
+
+
             /*
              * Get the remote message count.
              */
@@ -2165,7 +2168,7 @@ public class MessagingController implements Runnable
                 command.command = PENDING_COMMAND_EXPUNGE;
 
                 command.arguments = new String[1];
-                
+
                 command.arguments[0] = folderName;
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
@@ -2176,14 +2179,14 @@ public class MessagingController implements Runnable
     throws MessagingException
     {
         String folder = command.arguments[0];
-        
+
         if (account.getErrorFolderName().equals(folder))
         {
             return;
         }
         if (K9.DEBUG)
         {
-            Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folder );
+            Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folder);
         }
 
         Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
@@ -2202,7 +2205,7 @@ public class MessagingController implements Runnable
             remoteFolder.expunge();
             if (K9.DEBUG)
             {
-                Log.d(K9.LOG_TAG, "processPendingExpunge: complete for folder = " + folder );
+                Log.d(K9.LOG_TAG, "processPendingExpunge: complete for folder = " + folder);
             }
         }
         finally
@@ -3404,7 +3407,7 @@ public class MessagingController implements Runnable
             throw new RuntimeException("Error moving message", me);
         }
     }
-    
+
     public void expunge(final Account account, final String folder, final MessagingListener listener)
     {   
         putBackground("expunge", null, new Runnable()
