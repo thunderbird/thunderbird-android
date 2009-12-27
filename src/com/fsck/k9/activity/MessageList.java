@@ -1669,7 +1669,7 @@ public class MessageList
 
             private boolean updateForMe(Account account, String folder)
             {
-                if (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName))
+                if (mQueryString != null || (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName)))
                 {
                     return true;
                 }
