@@ -1238,8 +1238,7 @@ public class LocalStore extends Store implements Serializable
                 }
 
                 cursor = mDb.rawQuery(
-                             "SELECT message_id, name, value "
-                             + "FROM headers " + "WHERE message_id in ( " + questions + ") ",
+                             "SELECT message_id, name, value FROM headers " + "WHERE message_id in ( " + questions + ") ",
                              ids.toArray(new String[] {}));
 
 
