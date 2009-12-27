@@ -1591,7 +1591,7 @@ public class MessageList
             @Override
             public void listLocalMessagesStarted(Account account, String folder)
             {
-                if (account.equals(mAccount))
+                if (account != null && account.equals(mAccount))
                 {
                     mHandler.progress(true);
                     mHandler.folderLoading(folder, true);
@@ -1601,7 +1601,7 @@ public class MessageList
             @Override
             public void listLocalMessagesFailed(Account account, String folder, String message)
             {
-                if (account.equals(mAccount))
+                if (account != null && account.equals(mAccount))
                 {
                     mHandler.sortMessages();
                     mHandler.progress(false);
@@ -1613,7 +1613,7 @@ public class MessageList
             @Override
             public void listLocalMessagesFinished(Account account, String folder)
             {
-                if (account.equals(mAccount))
+                if (account != null && account.equals(mAccount))
                 {
                     mHandler.sortMessages();
                     mHandler.progress(false);
