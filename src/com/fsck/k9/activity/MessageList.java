@@ -171,7 +171,7 @@ public class MessageList
         public void addMessages(List<MessageInfoHolder> messages)
         {
 
-            boolean wasEmpty = mAdapter.messages.isEmpty();
+            final boolean wasEmpty = mAdapter.messages.isEmpty();
             for (final MessageInfoHolder message : messages)
             {
 
@@ -196,17 +196,17 @@ public class MessageList
                 }
             }
 
-            if (wasEmpty)
+            runOnUiThread(new Runnable()
             {
-                runOnUiThread(new Runnable()
+                public void run()
                 {
-                    public void run()
+                    if (wasEmpty)
                     {
                         mListView.setSelection(0);
-                        mAdapter.notifyDataSetChanged();
                     }
-                });
-            }
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
         }
 
         private void sortMessages()
