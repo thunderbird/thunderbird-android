@@ -550,11 +550,80 @@ public class LocalStore extends Store implements Serializable
     {
         return true;
     }
+
     public boolean isCopyCapable()
     {
         return true;
     }
 
+    public Message[] searchForMessages(MessageRetrievalListener listener, String queryString) throws MessagingException
+    {
+
+        queryString = "%"+queryString+"%";
+        return getMessages(
+                   listener,
+                   null,
+                   "SELECT "
+                   + GET_MESSAGES_COLS
+                   + "FROM messages WHERE html_content LIKE ? OR subject LIKE ? OR sender_list LIKE ? ORDER BY date DESC"
+                   , new String[]
+                   {
+                       queryString,
+                       queryString,
+                       queryString
+                   }
+               );
+
+
+    }
+    /*
+     * Given a query string, actually do the query for the messages and
+     * call the MessageRetrievalListener for each one
+     */
+    private Message[] getMessages(
+        MessageRetrievalListener listener,
+        LocalFolder folder,
+        String queryString, String[] placeHolders
+    ) throws MessagingException
+    {
+        ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
+        Cursor cursor = null;
+        try
+        {
+            // pull out messages most recent first, since that's what the default sort is
+            cursor = mDb.rawQuery(queryString, placeHolders);
+
+
+            int i = 0;
+            ArrayList<LocalMessage> messagesForHeaders = new ArrayList<LocalMessage>();
+            while (cursor.moveToNext())
+            {
+                LocalMessage message = new LocalMessage(null, folder);
+                message.populateFromGetMessageCursor(cursor);
+
+                messages.add(message);
+                if (listener != null)
+                {
+                    listener.messageFinished(message, i, -1);
+                }
+                i++;
+            }
+            if (listener != null)
+            {
+                listener.messagesFinished(i);
+            }
+        }
+        finally
+        {
+            if (cursor != null)
+            {
+                cursor.close();
+            }
+        }
+
+        return messages.toArray(new Message[] {});
+
+    }
 
 
     public class LocalFolder extends Folder implements Serializable
@@ -1234,8 +1303,10 @@ public class LocalStore extends Store implements Serializable
         @Override
         public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException
         {
-            return getMessages(
+            open(OpenMode.READ_WRITE);
+            return LocalStore.this.getMessages(
                        listener,
+                       this,
                        "SELECT " + GET_MESSAGES_COLS
                        + "FROM messages WHERE "
                        + (includeDeleted ? "" : "deleted = 0 AND ")
@@ -1245,72 +1316,6 @@ public class LocalStore extends Store implements Serializable
                            Long.toString(mFolderId)
                        }
                    );
-
-        }
-
-        public Message[] searchForMessages(MessageRetrievalListener listener, String queryString) throws MessagingException {
-            return getMessages(
-                       listener,
-                       "SELECT "
-                       + GET_MESSAGES_COLS
-                       + "FROM messages WHERE html_content LIKE ? OR subject LIKE ? OR sender_list LIKE ? ORDER BY date DESC"
-                       , new String[]
-                       {
-                           queryString,
-                           queryString,
-                           queryString
-                       }
-                   );
-
-
-        }
-
-        /*
-         * Given a query string, actually do the query for the messages and
-         * call the MessageRetrievalListener for each one
-         */
-        public Message[] getMessages(
-            MessageRetrievalListener listener,
-            String queryString, String[] placeHolders
-        ) throws MessagingException
-        {
-            open(OpenMode.READ_WRITE);
-            ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
-            Cursor cursor = null;
-            try
-            {
-                // pull out messages most recent first, since that's what the default sort is
-                cursor = mDb.rawQuery(queryString, placeHolders);
-
-
-                int i = 0;
-                ArrayList<LocalMessage> messagesForHeaders = new ArrayList<LocalMessage>();
-                while (cursor.moveToNext())
-                {
-                    LocalMessage message = new LocalMessage(null, this);
-                    message.populateFromGetMessageCursor(cursor);
-
-                    messages.add(message);
-                    if (listener != null)
-                    {
-                        listener.messageFinished(message, i, -1);
-                    }
-                    i++;
-                }
-                if (listener != null)
-                {
-                    listener.messagesFinished(i);
-                }
-            }
-            finally
-            {
-                if (cursor != null)
-                {
-                    cursor.close();
-                }
-            }
-
-            return messages.toArray(new Message[] {});
 
         }
 
