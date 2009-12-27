@@ -1581,7 +1581,7 @@ public class MessageList
             {
                 if (updateForMe(account, folder))
                 {
-                    addOrUpdateMessage(folder, message);
+                    addOrUpdateMessage(account, folder, message);
                 }
 
                 return;
@@ -1646,7 +1646,7 @@ public class MessageList
             {
                 if (updateForMe(account, folder))
                 {
-                    addOrUpdateMessages(folder, messages);
+                    addOrUpdateMessages(account,folder, messages);
                 }
 
 
@@ -1657,7 +1657,7 @@ public class MessageList
             {
                 if (updateForMe(account, folder))
                 {
-                    addOrUpdateMessage(folder, message);
+                    addOrUpdateMessage(account, folder, message);
                 }
 
             }
@@ -1736,37 +1736,38 @@ public class MessageList
             removeMessages(messages);
         }
 
-        private void addOrUpdateMessage(String folder, Message message)
+        private void addOrUpdateMessage(Account account, String folder, Message message)
         {
             // TODO do we want "f" or "mCurrentFolder" below?
             FolderInfoHolder f = mCurrentFolder;
 
             if (f != null)
             {
-                addOrUpdateMessage(f, message);
+                addOrUpdateMessage(account, f, message);
             }
 
         }
 
-        private void addOrUpdateMessage(FolderInfoHolder folder, Message message)
+        private void addOrUpdateMessage(Account account, FolderInfoHolder folder, Message message)
         {
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
-            addOrUpdateMessages(folder, messages);
+            addOrUpdateMessages(account, folder, messages);
         }
 
-        private void addOrUpdateMessages(String folder, List<Message> messages)
+        private void addOrUpdateMessages(Account account, String folder, List<Message> messages)
         {
             FolderInfoHolder f = mCurrentFolder;
 
+            // xxx "f"?
             if (f != null)
             {
-                addOrUpdateMessages(f, messages);
+                addOrUpdateMessages(account, mCurrentFolder, messages);
             }
 
         }
 
-        private void addOrUpdateMessages(FolderInfoHolder folder, List<Message> messages)
+        private void addOrUpdateMessages(Account account, FolderInfoHolder folder, List<Message> messages)
         {
             boolean needsSort = false;
             List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
