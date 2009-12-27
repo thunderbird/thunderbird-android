@@ -1577,21 +1577,6 @@ public class MessageList
             }
 
             @Override
-            public void listLocalMessages(Account account, String folder, Message[] messages)
-            {
-                if (!account.equals(mAccount))
-                {
-                    return;
-                }
-
-                if (folder != mFolderName)
-                {
-                    return;
-                }
-
-                //synchronizeMessages(folder, messages);
-            }
-            @Override
             public void listLocalMessagesRemoveMessage(Account account, String folder,Message message)
             {
                 if (account.equals(mAccount) && folder.equals(mFolderName))
