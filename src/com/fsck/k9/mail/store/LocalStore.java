@@ -1259,23 +1259,38 @@ public class LocalStore extends Store implements Serializable
         @Override
         public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException
         {
+            return getMessages(
+                       listener,
+                       "SELECT "
+                       + "FROM messages "
+                       + GET_MESSAGES_COLS
+                       + "WHERE "
+                       + (includeDeleted ? "" : "deleted = 0 AND ")
+                       + " folder_id = ? ORDER BY date DESC"
+                       , new String[]
+                       {
+                           Long.toString(mFolderId)
+                       }
+                   );
+
+        }
+
+        /*
+         * Given a query string, actually do the query for the messages and
+         * call the MessageRetrievalListener for each one
+         */
+        public Message[] getMessages(
+            MessageRetrievalListener listener,
+            String queryString, String[] placeHolders
+        ) throws MessagingException
+        {
             open(OpenMode.READ_WRITE);
             ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
             Cursor cursor = null;
             try
             {
                 // pull out messages most recent first, since that's what the default sort is
-                cursor = mDb.rawQuery(
-                             "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
-                             + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
-                             + "FROM messages "
-                             + "WHERE "
-                             + (includeDeleted ? "" : "deleted = 0 AND ")
-                             + " folder_id = ? ORDER BY date DESC"
-                             , new String[]
-                             {
-                                 Long.toString(mFolderId)
-                             });
+                cursor = mDb.rawQuery(queryString, placeHolders);
 
 
                 int i = 0;
@@ -1306,7 +1321,9 @@ public class LocalStore extends Store implements Serializable
             }
 
             return messages.toArray(new Message[] {});
+
         }
+
 
         @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
@@ -1781,7 +1798,7 @@ public class LocalStore extends Store implements Serializable
         {
             throw new MessagingException("Cannot call getUidFromMessageId on LocalFolder");
         }
-        
+
         public void deleteMessagesOlderThan(long cutoff) throws MessagingException
         {
             open(OpenMode.READ_ONLY);
