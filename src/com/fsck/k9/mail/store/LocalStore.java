@@ -293,11 +293,11 @@ public class LocalStore extends Store implements Serializable
 
         try
         {
-            cursor = mDb.rawQuery("SELECT name, id, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders", null);
+            cursor = mDb.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders", null);
             while (cursor.moveToNext())
             {
-                LocalFolder folder = new LocalFolder(cursor.getString(0));
-                folder.open(cursor.getInt(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7));
+                LocalFolder folder = new LocalFolder(cursor.getString(1));
+                folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7));
 
                 folders.add(folder);
             }
@@ -584,6 +584,11 @@ public class LocalStore extends Store implements Serializable
 
         }
 
+        public LocalFolder(long id)
+        {
+            this.mFolderId = id;
+        }
+
         public long getId()
         {
             return mFolderId;
@@ -599,19 +604,25 @@ public class LocalStore extends Store implements Serializable
             Cursor cursor = null;
             try
             {
-                cursor = mDb.rawQuery("SELECT id, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders "
-                                      + "where folders.name = ?",
-                                      new String[]
-                                      {
-                                          mName
-                                      });
+                String baseQuery =
+                    "SELECT id, name,unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders ";
+                if (mName != null)
+                {
+                    cursor = mDb.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });
+                }
+                else
+                {
+                    cursor = mDb.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(mFolderId) });
+
+
+                }
 
                 if (cursor.moveToFirst())
                 {
                     int folderId = cursor.getInt(0);
                     if (folderId > 0)
                     {
-                        open(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getLong(3), cursor.getString(4), cursor.getString(5), cursor.getLong(6));
+                        open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7));
                     }
                 }
                 else
@@ -629,9 +640,10 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
-        private void open(int id, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed) throws MessagingException
+        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed) throws MessagingException
         {
             mFolderId = id;
+            mName = name;
             mUnreadMessageCount = unreadCount;
             mVisibleLimit = visibleLimit;
             mPushState = pushState;
