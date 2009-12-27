@@ -1574,18 +1574,9 @@ public class MessageList
             @Override
             public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
             {
-                if (updateForMe(account, folder))
-                {
-                    FolderInfoHolder f = mCurrentFolder;
-                    // XXX TODO, this is the wrong folder
-                    if (f != null)
-                    {
-                        addOrUpdateMessage(account, f, message);
-                    }
-                }
-
-                return;
+                addOrUpdateMessage(account, folder, message);
             }
+
 
             @Override
             public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message)
@@ -1644,33 +1635,13 @@ public class MessageList
             @Override
             public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
             {
-                if (updateForMe(account, folder))
-                {
-                    FolderInfoHolder f = mCurrentFolder;
-
-                    // xxx "f"?
-                    if (f != null)
-                    {
-                        addOrUpdateMessages(account, mCurrentFolder, messages);
-                    }
-                }
-
-
+                addOrUpdateMessages(account, folder, messages);
             }
 
             @Override
             public void listLocalMessagesUpdateMessage(Account account, String folder, Message message)
             {
-                if (updateForMe(account, folder))
-                {
-                    FolderInfoHolder f = mCurrentFolder;
-                    // XXX TODO, this is the wrong folder
-                    if (f != null)
-                    {
-                        addOrUpdateMessage(account, f, message);
-                    }
-                }
-
+                addOrUpdateMessage(account, folder, message);
             }
             @Override
             public void folderStatusChanged(Account account, String folder, int unreadMessageCount)
@@ -1679,19 +1650,6 @@ public class MessageList
                 {
                     mUnreadMessageCount = unreadMessageCount;
                     mHandler.refreshTitle();
-                }
-            }
-
-
-            private boolean updateForMe(Account account, String folder)
-            {
-                if (mQueryString != null || (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName)))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
                 }
             }
 
@@ -1720,6 +1678,19 @@ public class MessageList
 
         };
 
+
+
+        private boolean updateForMe(Account account, String folder)
+        {
+            if (mQueryString != null || (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
         private View footerView = null;
@@ -1747,40 +1718,45 @@ public class MessageList
             removeMessages(messages);
         }
 
-        private void addOrUpdateMessage(Account account, FolderInfoHolder folder, Message message)
+        private void addOrUpdateMessage(Account account, String folder, Message message)
         {
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
             addOrUpdateMessages(account, folder, messages);
+
         }
 
-        private void addOrUpdateMessages(Account account, FolderInfoHolder folder, List<Message> messages)
+        private void addOrUpdateMessages(Account account, String folder, List<Message> messages)
         {
             boolean needsSort = false;
             List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
             List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
+            FolderInfoHolder f = mCurrentFolder; // This is wrong, but what the old code did.
 
             for (Message message : messages)
             {
-                MessageInfoHolder m = getMessage(message.getUid());
+                if (updateForMe(account, folder))
+                {
+                    MessageInfoHolder m = getMessage(message.getUid());
 
-                if (m == null)
-                {
-                    m = new MessageInfoHolder(message, folder, account);
-                    messagesToAdd.add(m);
-                }
-                else
-                {
-                    if (message.isSet(Flag.DELETED))
+                    if (m == null)
                     {
-                        messagesToRemove.add(m);
-
+                        m = new MessageInfoHolder(message, f, account);
+                        messagesToAdd.add(m);
                     }
                     else
                     {
-                        m.populate(message, folder, account);
-                        needsSort = true;
+                        if (message.isSet(Flag.DELETED))
+                        {
+                            messagesToRemove.add(m);
 
+                        }
+                        else
+                        {
+                            m.populate(message, f, account);
+                            needsSort = true;
+
+                        }
                     }
                 }
             }
