@@ -252,6 +252,26 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         setContentView(R.layout.message_compose);
 
+        Intent intent = getIntent();
+        mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+
+        if (mAccount == null)
+        {
+            mAccount = Preferences.getPreferences(this).getDefaultAccount();
+        }
+        if (mAccount == null)
+        {
+            /*
+             * There are no accounts set up. This should not have happened. Prompt the
+             * user to set up an account as an acceptable bailout.
+             */
+            startActivity(new Intent(this, Accounts.class));
+            mDraftNeedsSaving = false;
+            finish();
+            return;
+        }
+
+
         mAddressAdapter = new EmailAddressAdapter(this);
         mAddressValidator = new EmailAddressValidator();
 
@@ -341,7 +361,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mSourceMessageProcessed = savedInstanceState.getBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, false);
         }
 
-        Intent intent = getIntent();
 
         String action = intent.getAction();
 
@@ -350,18 +369,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             /*
              * Someone has clicked a mailto: link. The address is in the URI.
              */
-            mAccount = Preferences.getPreferences(this).getDefaultAccount();
-            if (mAccount == null)
-            {
-                /*
-                 * There are no accounts set up. This should not have happened. Prompt the
-                 * user to set up an account as an acceptable bailout.
-                 */
-                startActivity(new Intent(this, Accounts.class));
-                mDraftNeedsSaving = false;
-                finish();
-                return;
-            }
             if (intent.getData() != null)
             {
                 Uri uri = intent.getData();
@@ -388,19 +395,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
              * Someone is trying to compose an email with an attachment, probably Pictures.
              * The Intent should contain an EXTRA_STREAM with the data to attach.
              */
-
-            mAccount = Preferences.getPreferences(this).getDefaultAccount();
-            if (mAccount == null)
-            {
-                /*
-                 * There are no accounts set up. This should not have happened. Prompt the
-                 * user to set up an account as an acceptable bailout.
-                 */
-                startActivity(new Intent(this, Accounts.class));
-                mDraftNeedsSaving = false;
-                finish();
-                return;
-            }
 
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             if (text != null)
@@ -478,7 +472,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         else
         {
-            mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
             mFolder = (String) intent.getStringExtra(EXTRA_FOLDER);
             mSourceMessageUid = (String) intent.getStringExtra(EXTRA_MESSAGE);
         }
