@@ -89,14 +89,13 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener
 
         SpinnerOption displayCounts[] =
         {
-            new SpinnerOption(10,
-            getString(R.string.account_setup_options_mail_display_count_10)),
-            new SpinnerOption(25,
-            getString(R.string.account_setup_options_mail_display_count_25)),
-            new SpinnerOption(50,
-            getString(R.string.account_setup_options_mail_display_count_50)),
-            new SpinnerOption(100,
-            getString(R.string.account_setup_options_mail_display_count_100)),
+            new SpinnerOption(10, getString(R.string.account_setup_options_mail_display_count_10)),
+            new SpinnerOption(25, getString(R.string.account_setup_options_mail_display_count_25)),
+            new SpinnerOption(50, getString(R.string.account_setup_options_mail_display_count_50)),
+            new SpinnerOption(100, getString(R.string.account_setup_options_mail_display_count_100)),
+            new SpinnerOption(250, getString(R.string.account_setup_options_mail_display_count_250)),
+            new SpinnerOption(500, getString(R.string.account_setup_options_mail_display_count_500)),
+            new SpinnerOption(1000, getString(R.string.account_setup_options_mail_display_count_1000)),
         };
 
         ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<SpinnerOption>(this,
