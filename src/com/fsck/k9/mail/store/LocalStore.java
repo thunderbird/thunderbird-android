@@ -1273,6 +1273,23 @@ public class LocalStore extends Store implements Serializable
 
         }
 
+        public Message[] searchForMessages(MessageRetrievalListener listener, String queryString) throws MessagingException {
+            return getMessages(
+                       listener,
+                       "SELECT "
+                       + GET_MESSAGES_COLS
+                       + "FROM messages WHERE html_content LIKE ? OR subject LIKE ? OR sender_list LIKE ? ORDER BY date DESC"
+                       , new String[]
+                       {
+                           queryString,
+                           queryString,
+                           queryString
+                       }
+                   );
+
+
+        }
+
         /*
          * Given a query string, actually do the query for the messages and
          * call the MessageRetrievalListener for each one
