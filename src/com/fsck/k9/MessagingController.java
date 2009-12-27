@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Process;
@@ -652,6 +653,73 @@ public class MessagingController implements Runnable
             }
         }
     }
+
+
+    /**
+     * Find all messages in any local account which match the query 'query'
+     *
+     * @param account
+     * @param query
+     * @param listener
+     * @throws MessagingException
+     */
+    public void searchLocalMessages(final Account account, final String query, final MessagingListener listener)
+    {
+
+        if (listener == null)
+        {
+            return;
+        }
+        threadPool.execute(new Runnable()
+        {
+            public void run()
+            {
+
+
+                Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
+                Account[] accounts = prefs.getAccounts();
+
+                for (final Account account : accounts)
+                {
+
+                    listener.listLocalMessagesStarted(account, null);
+
+                    MessageRetrievalListener retrievalListener = new MessageRetrievalListener()
+                    {
+
+
+                        int totalDone = 0;
+
+                        public void messageStarted(String message, int number, int ofTotal) {}
+                        public void messageFinished(Message message, int number, int ofTotal)
+                        {
+                            List<Message> messages = new ArrayList<Message>();
+                            messages.add(message);
+                            listener.listLocalMessagesAddMessages(account, null, messages);
+                        }
+                        public void messagesFinished(int number) {}
+                        private void addPendingMessages() {}
+                    };
+
+
+
+                    try
+                    {
+                        LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), mApplication);
+
+                        localStore.searchForMessages(retrievalListener, query);
+                        listener.listLocalMessagesFinished(account, null);
+                    }
+                    catch (Exception e)
+                    {
+                        listener.listLocalMessagesFailed(account, null, e.getMessage());
+                        addErrorMessage(account, e);
+                    }
+                }
+            }
+        });
+    }
+
     public void loadMoreMessages(Account account, String folder, MessagingListener listener)
     {
         try
