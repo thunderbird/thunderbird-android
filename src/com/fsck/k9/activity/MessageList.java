@@ -228,28 +228,49 @@ public class MessageList
             {
                 public void run()
                 {
-                    String displayName = mFolderName;
-                    if (K9.INBOX.equalsIgnoreCase(displayName))
-                    {
-                        displayName = getString(R.string.special_mailbox_name_inbox);
-                    }
-                    String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount);
-
-                    setTitle(dispString);
-                    int level = Window.PROGRESS_END;
-                    if (mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0)
-                    {
-                        level = (Window.PROGRESS_END / mAdapter.mListener.getFolderTotal()) * (mAdapter.mListener.getFolderCompleted()) ;
-                        if (level > Window.PROGRESS_END)
-                        {
-                            level = Window.PROGRESS_END;
-                        }
-                    }
-
-                    getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
+                    setWindowTitle();
+                    setWindowProgress();
                 }
             });
         }
+
+        private void setWindowProgress()
+        {
+
+
+            int level = Window.PROGRESS_END;
+            if (mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0)
+            {
+                level = (Window.PROGRESS_END / mAdapter.mListener.getFolderTotal()) * (mAdapter.mListener.getFolderCompleted()) ;
+                if (level > Window.PROGRESS_END)
+                {
+                    level = Window.PROGRESS_END;
+                }
+            }
+
+            getWindow().setFeatureInt(Window.FEATURE_PROGRESS, level);
+        }
+        private void setWindowTitle()
+        {
+
+            String displayName;
+
+            if (mFolderName != null)
+            {
+
+                displayName  = mFolderName;
+
+                if (K9.INBOX.equalsIgnoreCase(displayName))
+                {
+                    displayName = getString(R.string.special_mailbox_name_inbox);
+                }
+
+                String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount);
+
+                setTitle(dispString);
+            }
+        }
+
         public void progress(final boolean progress)
         {
             runOnUiThread(new Runnable()
@@ -384,7 +405,7 @@ public class MessageList
         mCurrentFolder = mAdapter.getFolder(mFolderName);
 
         mController = MessagingController.getInstance(getApplication());
-        
+
         mListView.setAdapter(mAdapter);
 
         if (savedInstanceState != null)
@@ -967,7 +988,7 @@ public class MessageList
             return;
         }
         mController.copyMessage(mAccount,
-                holder.message.getFolder().getName(), holder.message, folderName, null);
+                                holder.message.getFolder().getName(), holder.message, folderName, null);
     }
 
 
@@ -990,7 +1011,7 @@ public class MessageList
     {
         showDialog(DIALOG_MARK_ALL_AS_READ);
     }
-    
+
     private void onExpunge(final Account account, String folderName)
     {
         mController.expunge(account, folderName, null);
@@ -1218,7 +1239,7 @@ public class MessageList
                 mSelectedWidget = WIDGET_FLAG;
                 configureWidgets();
                 return true;
-                
+
             case R.id.expunge:
                 onExpunge(mAccount, mCurrentFolder.name);
                 return true;
@@ -1297,7 +1318,7 @@ public class MessageList
         {
             menu.findItem(R.id.send_messages).setVisible(false);
         }
-        
+
         if (K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name))
         {
             menu.findItem(R.id.expunge).setVisible(false);
@@ -1533,7 +1554,7 @@ public class MessageList
                     addOrUpdateMessage(folder, message);
                 }
 
-                    return;
+                return;
             }
 
             @Override
@@ -2439,7 +2460,7 @@ public class MessageList
             else
             {
                 mController.setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
-                        (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
+                                    (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
             }
         }
         else
@@ -2481,7 +2502,7 @@ public class MessageList
             }
         }
         mController.setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
-                flag , newState);
+                            flag , newState);
         mHandler.sortMessages();
     }
 
