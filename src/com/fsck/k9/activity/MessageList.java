@@ -670,7 +670,7 @@ public class MessageList
 
     private void onOpenMessage(MessageInfoHolder message)
     {
-        if (mAccount != null && message.folder.name.equals(message.account.getDraftsFolderName()))
+        if ( message.folder.name.equals(message.account.getDraftsFolderName()))
         {
             MessageCompose.actionEditDraft(this, message.account, message.message);
         }
@@ -1741,7 +1741,7 @@ public class MessageList
 
                     if (m == null)
                     {
-                        m = new MessageInfoHolder(message, f, account);
+                        m = new MessageInfoHolder(message, account);
                         messagesToAdd.add(m);
                     }
                     else
@@ -1753,7 +1753,7 @@ public class MessageList
                         }
                         else
                         {
-                            m.populate(message, f, account);
+                            m.populate(message, new FolderInfoHolder(message.getFolder(), account), account);
                             needsSort = true;
 
                         }
@@ -1924,7 +1924,7 @@ public class MessageList
 
 
 
-                holder.chip.setBackgroundResource( colorChipResIds[message.account.getAccountNumber() % colorChipResIds.length] );
+                holder.chip.setBackgroundResource(colorChipResIds[message.account.getAccountNumber() % colorChipResIds.length]);
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 if (holder.selected!=null)
                 {
@@ -2088,10 +2088,10 @@ public class MessageList
             this.selected = false;
         }
 
-        public MessageInfoHolder(Message m, Folder folder, Account account)
+        public MessageInfoHolder(Message m, Account account)
         {
             this();
-            populate(m, new FolderInfoHolder(folder, account), account);
+            populate(m, new FolderInfoHolder(m.getFolder(), account), account);
         }
 
         public MessageInfoHolder(Message m, FolderInfoHolder folder, Account account)
@@ -2367,26 +2367,26 @@ public class MessageList
             }
             else
             {
-                this.displayName = folder.getName();
+                this.displayName = this.name;
             }
 
-            if (this.name.equals(mAccount.getOutboxFolderName()))
+            if (this.name.equals(account.getOutboxFolderName()))
             {
                 this.displayName = String.format(getString(R.string.special_mailbox_name_outbox_fmt), this.name);
                 this.outbox = true;
             }
 
-            if (this.name.equals(mAccount.getDraftsFolderName()))
+            if (this.name.equals(account.getDraftsFolderName()))
             {
                 this.displayName = String.format(getString(R.string.special_mailbox_name_drafts_fmt), this.name);
             }
 
-            if (this.name.equals(mAccount.getTrashFolderName()))
+            if (this.name.equals(account.getTrashFolderName()))
             {
                 this.displayName = String.format(getString(R.string.special_mailbox_name_trash_fmt), this.name);
             }
 
-            if (this.name.equals(mAccount.getSentFolderName()))
+            if (this.name.equals(account.getSentFolderName()))
             {
                 this.displayName = String.format(getString(R.string.special_mailbox_name_sent_fmt), this.name);
             }

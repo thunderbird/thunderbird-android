@@ -573,8 +573,6 @@ public class LocalStore extends Store implements Serializable
                        queryString
                    }
                );
-
-
     }
     /*
      * Given a query string, actually do the query for the messages and
@@ -628,7 +626,7 @@ public class LocalStore extends Store implements Serializable
 
     public class LocalFolder extends Folder implements Serializable
     {
-        private String mName;
+        private String mName = null;
         private long mFolderId = -1;
         private int mUnreadMessageCount = -1;
         private int mVisibleLimit = -1;
@@ -725,7 +723,7 @@ public class LocalStore extends Store implements Serializable
         @Override
         public boolean isOpen()
         {
-            return mFolderId != -1;
+            return (mFolderId != -1 && mName != null);
         }
 
         @Override
@@ -2081,7 +2079,7 @@ public class LocalStore extends Store implements Serializable
             this.mAttachmentCount = cursor.getInt(10);
             this.setInternalDate(new Date(cursor.getLong(11)));
             this.setMessageId(cursor.getString(12));
-            if (this.getFolder() == null)
+            if (this.mFolder == null)
             {
                 LocalFolder f = new LocalFolder(cursor.getInt(13));
                 f.open(LocalFolder.OpenMode.READ_WRITE);
