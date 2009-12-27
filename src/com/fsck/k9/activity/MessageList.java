@@ -215,7 +215,7 @@ public class MessageList
         public void folderLoading(String folder, boolean loading)
         {
 
-            if (mCurrentFolder.name.equals(folder))
+            if (mCurrentFolder != null && mCurrentFolder.name.equals(folder))
             {
                 mCurrentFolder.loading = loading;
             }
@@ -422,7 +422,7 @@ public class MessageList
 
     /**
     * On resume we refresh
-    * messages for any folder that is currently open. This guarantees that things
+    * messages for the folder that is currently open. This guarantees that things
     * like unread message count and read status are updated.
      */
     @Override
