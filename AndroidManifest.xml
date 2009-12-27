@@ -28,7 +28,7 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="K9"
         >
         <meta-data android:name="android.app.default_searchable"
-                   android:value=".Search" />
+                   android:value=".activity.Search" />
 
         <activity
             android:name="com.fsck.k9.activity.Accounts"
@@ -187,7 +187,7 @@
             </intent-filter>
         </activity>
         <!-- Search Activity - searchable -->
-        <activity android:name="Search"
+        <activity android:name="com.fsck.k9.activity.Search"
                   android:label="@string/search_action"
                   android:launchMode="singleTop">
             <intent-filter>
