@@ -1121,42 +1121,6 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
-        private void populateMessageFromGetMessageCursor(LocalMessage message, Cursor cursor)
-        throws MessagingException
-        {
-            message.setSubject(cursor.getString(0) == null ? "" : cursor.getString(0));
-            Address[] from = Address.unpack(cursor.getString(1));
-            if (from.length > 0)
-            {
-                message.setFrom(from[0]);
-            }
-            message.setInternalSentDate(new Date(cursor.getLong(2)));
-            message.setUid(cursor.getString(3));
-            String flagList = cursor.getString(4);
-            if (flagList != null && flagList.length() > 0)
-            {
-                String[] flags = flagList.split(",");
-                try
-                {
-                    for (String flag : flags)
-                    {
-                        message.setFlagInternal(Flag.valueOf(flag), true);
-                    }
-                }
-                catch (Exception e)
-                {
-                }
-            }
-            message.mId = cursor.getLong(5);
-            message.setRecipients(RecipientType.TO, Address.unpack(cursor.getString(6)));
-            message.setRecipients(RecipientType.CC, Address.unpack(cursor.getString(7)));
-            message.setRecipients(RecipientType.BCC, Address.unpack(cursor.getString(8)));
-            message.setReplyTo(Address.unpack(cursor.getString(9)));
-            message.mAttachmentCount = cursor.getInt(10);
-            message.setInternalDate(new Date(cursor.getLong(11)));
-            message.setMessageId(cursor.getString(12));
-        }
-
         @Override
         public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
         throws MessagingException
@@ -1238,7 +1202,7 @@ public class LocalStore extends Store implements Serializable
                 {
                     return null;
                 }
-                populateMessageFromGetMessageCursor(message, cursor);
+                message.populateFromGetMessageCursor(cursor);
             }
             finally
             {
@@ -1313,7 +1277,7 @@ public class LocalStore extends Store implements Serializable
                 while (cursor.moveToNext())
                 {
                     LocalMessage message = new LocalMessage(null, this);
-                    populateMessageFromGetMessageCursor(message, cursor);
+                    message.populateFromGetMessageCursor(cursor);
 
                     messages.add(message);
                     if (listener != null)
@@ -2067,6 +2031,43 @@ public class LocalStore extends Store implements Serializable
             this.mUid = uid;
             this.mFolder = folder;
         }
+
+        private void populateFromGetMessageCursor(Cursor cursor)
+        throws MessagingException
+        {
+            this.setSubject(cursor.getString(0) == null ? "" : cursor.getString(0));
+            Address[] from = Address.unpack(cursor.getString(1));
+            if (from.length > 0)
+            {
+                this.setFrom(from[0]);
+            }
+            this.setInternalSentDate(new Date(cursor.getLong(2)));
+            this.setUid(cursor.getString(3));
+            String flagList = cursor.getString(4);
+            if (flagList != null && flagList.length() > 0)
+            {
+                String[] flags = flagList.split(",");
+                try
+                {
+                    for (String flag : flags)
+                    {
+                        this.setFlagInternal(Flag.valueOf(flag), true);
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+            }
+            this.mId = cursor.getLong(5);
+            this.setRecipients(RecipientType.TO, Address.unpack(cursor.getString(6)));
+            this.setRecipients(RecipientType.CC, Address.unpack(cursor.getString(7)));
+            this.setRecipients(RecipientType.BCC, Address.unpack(cursor.getString(8)));
+            this.setReplyTo(Address.unpack(cursor.getString(9)));
+            this.mAttachmentCount = cursor.getInt(10);
+            this.setInternalDate(new Date(cursor.getLong(11)));
+            this.setMessageId(cursor.getString(12));
+        }
+
 
         /* Custom version of writeTo that updates the MIME message based on localMessage
          * changes.
