@@ -561,6 +561,16 @@ public class LocalStore extends Store implements Serializable
         private String prefId = null;
         private String mPushState = null;
 
+        /*
+         * a String containing the columns getMessages expects to work with
+         * in the correct order.
+         */
+        private String GET_MESSAGES_COLS =
+
+            "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
+            + "bcc_list, reply_to_list, attachment_count, internal_date, message_id ";
+
+
         public LocalFolder(String name)
         {
             this.mName = name;
@@ -1217,9 +1227,9 @@ public class LocalStore extends Store implements Serializable
             try
             {
                 cursor = mDb.rawQuery(
-                             "SELECT subject, sender_list, date, uid, flags, id, to_list, cc_list, "
-                             + "bcc_list, reply_to_list, attachment_count, internal_date, message_id "
-                             + "FROM messages " + "WHERE uid = ? " + "AND folder_id = ?",
+                             "SELECT "
+                             + GET_MESSAGES_COLS
+                             + "FROM messages WHERE uid = ? AND folder_id = ?",
                              new String[]
                              {
                                  message.getUid(), Long.toString(mFolderId)
