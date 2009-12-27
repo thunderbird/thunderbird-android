@@ -495,7 +495,7 @@ public class MessageList
         }
         else if (mQueryString != null)
         {
-            //mController.searchLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+            mController.searchLocalMessages(mAccount, mQueryString,  mAdapter.mListener);
 
         }
 
