@@ -2081,6 +2081,12 @@ public class LocalStore extends Store implements Serializable
             this.mAttachmentCount = cursor.getInt(10);
             this.setInternalDate(new Date(cursor.getLong(11)));
             this.setMessageId(cursor.getString(12));
+            if (this.getFolder() == null)
+            {
+                LocalFolder f = new LocalFolder(cursor.getInt(13));
+                f.open(LocalFolder.OpenMode.READ_WRITE);
+                this.mFolder = f;
+            }
         }
 
 
