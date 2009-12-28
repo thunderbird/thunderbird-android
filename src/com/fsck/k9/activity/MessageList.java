@@ -2001,7 +2001,7 @@ public class MessageList
                 holder.position = -1;
                 holder.selected.setChecked(message.selected);
 
-                holder.chip.getBackground().setAlpha(message.read ? 255 : 127);
+                holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
 
                 if (message.downloaded)
                 {
