@@ -150,7 +150,7 @@ public class MessageList
                 {
                     for (MessageInfoHolder message : messages)
                     {
-                        if (mFolderName == null || message.folder.name.equals(mFolderName))
+                        if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
                         {
                             if (message != null && message.selected && mSelectedCount > 0)
                             {
@@ -173,7 +173,7 @@ public class MessageList
             for (final MessageInfoHolder message : messages)
             {
 
-                if (mFolderName == null || message.folder.name.equals(mFolderName))
+                if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
                 {
 
                     runOnUiThread(new Runnable()
