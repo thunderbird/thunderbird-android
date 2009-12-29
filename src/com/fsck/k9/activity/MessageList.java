@@ -1496,6 +1496,12 @@ public class MessageList
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
         MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
 
+        // in multi-select mode, the context menu pops up unintentionally 
+        // causes misclicks
+        if (mSelectedWidget == WIDGET_MULTISELECT) {
+            return;
+        }
+
         if (message == null)
         {
             return;
