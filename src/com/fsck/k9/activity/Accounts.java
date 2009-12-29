@@ -40,72 +40,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private AccountsHandler mHandler = new AccountsHandler();
     private AccountsAdapter mAdapter;
 
-    private class AccountSizeChangedHolder
-    {
-        Account account;
-        long oldSize;
-        long newSize;
-    }
-
     class AccountsHandler extends Handler
     {
-        private static final int DATA_CHANGED = 1;
-        private static final int MSG_ACCOUNT_SIZE_CHANGED = 2;
-        private static final int MSG_WORKING_ACCOUNT = 3;
-        private static final int MSG_PROGRESS = 4;
-        private static final int MSG_DEFINITE_PROGRESS = 6;
-        private static final int MSG_SET_TITLE = 7;
-
-        public void handleMessage(android.os.Message msg)
-        {
-            switch (msg.what)
-            {
-                case MSG_SET_TITLE:
-                {
-                    this.setViewTitle();
-                    break;
-                }
-
-                case DATA_CHANGED:
-                    if (mAdapter != null)
-                    {
-                        mAdapter.notifyDataSetChanged();
-                    }
-                    break;
-                case MSG_WORKING_ACCOUNT:
-                {
-                    Account account = (Account)msg.obj;
-                    int res = msg.arg1;
-                    String toastText = getString(res, account.getDescription());
-
-                    Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
-                    toast.show();
-                    break;
-                }
-                case MSG_ACCOUNT_SIZE_CHANGED:
-                {
-                    AccountSizeChangedHolder holder = (AccountSizeChangedHolder)msg.obj;
-                    Account account = holder.account;
-                    Long oldSize = holder.oldSize;
-                    Long newSize = holder.newSize;
-                    String toastText = getString(R.string.account_size_changed, account.getDescription(),
-                                                 SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));;
-
-                    Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
-                    toast.show();
-                    break;
-                }
-                case MSG_PROGRESS:
-                    setProgressBarIndeterminateVisibility(msg.arg1 != 0);
-                    //setProgressBarVisibility(msg.arg1 != 0);
-                    break;
-                case MSG_DEFINITE_PROGRESS:
-                    getWindow().setFeatureInt(Window.FEATURE_PROGRESS, msg.arg1);
-                    break;
-                default:
-                    super.handleMessage(msg);
-            }
-        }
         private void setViewTitle()
         {
             String dispString = mListener.formatHeader(Accounts.this, getString(R.string.accounts_title), mUnreadMessageCount);
@@ -114,51 +50,77 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
         public void refreshTitle()
         {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_SET_TITLE;
-            sendMessage(msg);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    setViewTitle();
+                }
+            });
         }
 
         public void dataChanged()
         {
-            sendEmptyMessage(DATA_CHANGED);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    if (mAdapter != null)
+                    {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
         }
 
-        public void workingAccount(Account account, int res)
+        public void workingAccount(final Account account, final int res)
         {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_WORKING_ACCOUNT;
-            msg.obj = account;
-            msg.arg1 = res;
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    String toastText = getString(res, account.getDescription());
 
-            sendMessage(msg);
+                    Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
         }
 
-        public void accountSizeChanged(Account account, long oldSize, long newSize)
+        public void accountSizeChanged(final Account account, final long oldSize, final long newSize)
         {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_ACCOUNT_SIZE_CHANGED;
-            AccountSizeChangedHolder holder = new AccountSizeChangedHolder();
-            holder.account = account;
-            holder.oldSize = oldSize;
-            holder.newSize = newSize;
-            msg.obj = holder;
-            sendMessage(msg);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    String toastText = getString(R.string.account_size_changed, account.getDescription(),
+                                                 SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));;
+
+                    Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            });
         }
 
-        public void progress(boolean progress)
+        public void progress(final boolean progress)
         {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_PROGRESS;
-            msg.arg1 = progress ? 1 : 0;
-            sendMessage(msg);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    setProgressBarIndeterminateVisibility(progress);
+                }
+            });
         }
-        public void progress(int progress)
+        public void progress(final int progress)
         {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_DEFINITE_PROGRESS;
-            msg.arg1 = progress ;
-            sendMessage(msg);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    getWindow().setFeatureInt(Window.FEATURE_PROGRESS, progress);
+                }
+            });
         }
     }
 
