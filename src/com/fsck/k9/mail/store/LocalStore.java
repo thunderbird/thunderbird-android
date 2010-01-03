@@ -2267,7 +2267,7 @@ public class LocalStore extends Store implements Serializable
                 /*
                  * Delete all of the messages' attachments to save space.
                  */
-                mDb.execSQL("DELETE FROM attachments WHERE id = ?",
+                mDb.execSQL("DELETE FROM attachments WHERE message_id = ?",
                             new Object[]
                             {
                                 mId
