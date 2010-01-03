@@ -454,6 +454,7 @@ public class MailService extends CoreService
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "MailService completed Runnable " + runner.hashCode() + " with startId " + startId);
                     wakeLock.release();
+
                     if (startId != null)
                     {
                         stopSelf(startId);
