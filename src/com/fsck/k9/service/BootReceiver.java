@@ -54,7 +54,8 @@ public class BootReceiver extends BroadcastReceiver
             }
             else
             {
-                Log.w(K9.LOG_TAG, "BootReceiver WakeLock " + wakeLockId + " doesn't exist");
+                if (K9.DEBUG)
+                    Log.w(K9.LOG_TAG, "BootReceiver WakeLock " + wakeLockId + " doesn't exist");
             }
         }
     }
@@ -64,7 +65,8 @@ public class BootReceiver extends BroadcastReceiver
         Integer tmpWakeLockId = getWakeLock(context);
         try
         {
-            Log.i(K9.LOG_TAG, "BootReceiver.onReceive" + intent);
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "BootReceiver.onReceive" + intent);
 
             if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()))
             {
@@ -97,7 +99,8 @@ public class BootReceiver extends BroadcastReceiver
                 Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
                 String alarmedAction = alarmedIntent.getAction();
 
-                Log.i(K9.LOG_TAG, "BootReceiver Got alarm to fire alarmedIntent " + alarmedAction);
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "BootReceiver Got alarm to fire alarmedIntent " + alarmedAction);
                 alarmedIntent.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
                 tmpWakeLockId = null;
                 if (alarmedIntent != null)
@@ -109,7 +112,8 @@ public class BootReceiver extends BroadcastReceiver
             {
                 long atTime = intent.getLongExtra(AT_TIME, -1);
                 Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
-                Log.i(K9.LOG_TAG,"BootReceiver Scheduling intent " + alarmedIntent + " for " + new Date(atTime));
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG,"BootReceiver Scheduling intent " + alarmedIntent + " for " + new Date(atTime));
 
                 PendingIntent pi = buildPendingIntent(context, intent);
                 AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -119,7 +123,8 @@ public class BootReceiver extends BroadcastReceiver
             else if (CANCEL_INTENT.equals(intent.getAction()))
             {
                 Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
-                Log.i(K9.LOG_TAG, "BootReceiver Canceling alarmedIntent " + alarmedIntent);
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "BootReceiver Canceling alarmedIntent " + alarmedIntent);
 
                 PendingIntent pi = buildPendingIntent(context, intent);
 
@@ -131,7 +136,8 @@ public class BootReceiver extends BroadcastReceiver
                 Integer wakeLockId = intent.getIntExtra(WAKE_LOCK_ID, -1);
                 if (wakeLockId != -1)
                 {
-                    Log.i(K9.LOG_TAG, "BootReceiver Release wakeLock " + wakeLockId);
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "BootReceiver Release wakeLock " + wakeLockId);
                     releaseWakeLock(wakeLockId);
                 }
             }
@@ -158,7 +164,8 @@ public class BootReceiver extends BroadcastReceiver
 
     public static void scheduleIntent(Context context, long atTime, Intent alarmedIntent)
     {
-        Log.i(K9.LOG_TAG, "BootReceiver Got request to schedule alarmedIntent " + alarmedIntent.getAction());
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "BootReceiver Got request to schedule alarmedIntent " + alarmedIntent.getAction());
         Intent i = new Intent();
         i.setClass(context, BootReceiver.class);
         i.setAction(SCHEDULE_INTENT);
@@ -169,7 +176,8 @@ public class BootReceiver extends BroadcastReceiver
 
     public static void cancelIntent(Context context, Intent alarmedIntent)
     {
-        Log.i(K9.LOG_TAG, "BootReceiver Got request to cancel alarmedIntent " + alarmedIntent.getAction());
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "BootReceiver Got request to cancel alarmedIntent " + alarmedIntent.getAction());
         Intent i = new Intent();
         i.setClass(context, BootReceiver.class);
         i.setAction(CANCEL_INTENT);
@@ -179,7 +187,8 @@ public class BootReceiver extends BroadcastReceiver
 
     public static void releaseWakeLock(Context context, int wakeLockId)
     {
-        Log.i(K9.LOG_TAG, "BootReceiver Got request to release wakeLock " + wakeLockId);
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "BootReceiver Got request to release wakeLock " + wakeLockId);
         Intent i = new Intent();
         i.setClass(context, BootReceiver.class);
         i.setAction(WAKE_LOCK_RELEASE);

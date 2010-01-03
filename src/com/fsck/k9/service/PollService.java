@@ -40,13 +40,15 @@ public class PollService extends CoreService
     {
         if (START_SERVICE.equals(intent.getAction()))
         {
-            Log.i(K9.LOG_TAG, "PollService started with startId = " + startId);
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "PollService started with startId = " + startId);
 
             MessagingController controller = MessagingController.getInstance(getApplication());
             Listener listener = (Listener)controller.getCheckMailListener();
             if (listener == null)
             {
-                Log.i(K9.LOG_TAG, "***** PollService *****: starting new check");
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "***** PollService *****: starting new check");
                 mListener.setStartId(startId);
                 mListener.wakeLockAcquire();
                 controller.setCheckMailListener(mListener);
@@ -54,14 +56,16 @@ public class PollService extends CoreService
             }
             else
             {
-                Log.i(K9.LOG_TAG,"***** PollService *****: renewing WakeLock");
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG,"***** PollService *****: renewing WakeLock");
                 listener.setStartId(startId);
                 listener.wakeLockAcquire();
             }
         }
         else if (STOP_SERVICE.equals(intent.getAction()))
         {
-            Log.i(K9.LOG_TAG, "PollService stopping");
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "PollService stopping");
             stopSelf();
         }
 
@@ -158,7 +162,8 @@ public class PollService extends CoreService
             controller.setCheckMailListener(null);
             MailService.rescheduleCheck(PollService.this, null);
             wakeLockRelease();
-            Log.i(K9.LOG_TAG, "PollService stopping with startId = " + startId);
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "PollService stopping with startId = " + startId);
 
             stopSelf(startId);
         }
@@ -167,7 +172,8 @@ public class PollService extends CoreService
         public void checkMailFinished(Context context, Account account)
         {
 
-            Log.v(K9.LOG_TAG, "***** PollService *****: checkMailFinished");
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "***** PollService *****: checkMailFinished");
             try
             {
                 checkMailDone(context, account);

@@ -916,10 +916,10 @@ public class MessagingController implements Runnable
 
             if (Account.EXPUNGE_ON_POLL.equals(account.getExpungePolicy()))
             {
-		if (K9.DEBUG)
-		{
-		    Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
-		}
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
+                }
                 remoteFolder.expunge();
             }
 

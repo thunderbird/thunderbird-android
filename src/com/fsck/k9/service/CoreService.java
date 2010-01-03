@@ -49,7 +49,8 @@ public abstract class CoreService extends Service
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
 
-        Log.i(K9.LOG_TAG, "CoreService: " + this.getClass().getName() + ".onStart(" + intent + ", " + startId);
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "CoreService: " + this.getClass().getName() + ".onStart(" + intent + ", " + startId);
 
         int wakeLockId = intent.getIntExtra(BootReceiver.WAKE_LOCK_ID, -1);
         if (wakeLockId != -1)
@@ -60,16 +61,12 @@ public abstract class CoreService extends Service
         if (coreWakeLockId != null && coreWakeLockId != -1)
         {
             if (K9.DEBUG)
-            {
                 Log.d(K9.LOG_TAG, "Got core wake lock id " + coreWakeLockId);
-            }
             WakeLock coreWakeLock = wakeLocks.remove(coreWakeLockId);
             if (coreWakeLock != null)
             {
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "Found core wake lock with id " + coreWakeLockId + ", releasing");
-                }
                 coreWakeLock.release();
             }
         }
@@ -102,7 +99,8 @@ public abstract class CoreService extends Service
     @Override
     public void onDestroy()
     {
-        Log.i(K9.LOG_TAG, "CoreService: " + this.getClass().getName() + ".onDestroy()");
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "CoreService: " + this.getClass().getName() + ".onDestroy()");
         super.onDestroy();
         //     MessagingController.getInstance(getApplication()).removeListener(mListener);
     }

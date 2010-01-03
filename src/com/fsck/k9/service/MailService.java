@@ -90,7 +90,8 @@ public class MailService extends CoreService
     public void onCreate()
     {
         super.onCreate();
-        Log.v(K9.LOG_TAG, "***** MailService *****: onCreate");
+        if (K9.DEBUG)
+            Log.v(K9.LOG_TAG, "***** MailService *****: onCreate");
     }
 
     @Override
@@ -121,13 +122,15 @@ public class MailService extends CoreService
             }
 
             setForeground(true);  // if it gets killed once, it'll never restart
-            Log.i(K9.LOG_TAG, "MailService.onStart(" + intent + ", " + startId
-                  + "), hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "MailService.onStart(" + intent + ", " + startId
+                      + "), hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
 
             // MessagingController.getInstance(getApplication()).addListener(mListener);
             if (ACTION_CHECK_MAIL.equals(intent.getAction()))
             {
-                Log.i(K9.LOG_TAG, "***** MailService *****: checking mail");
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "***** MailService *****: checking mail");
 
                 if (hasConnectivity && doBackground)
                 {
@@ -181,7 +184,8 @@ public class MailService extends CoreService
                 notifyConnectionStatus(hasConnectivity);
                 rescheduleAll(hasConnectivity, doBackground, startIdObj);
                 startIdObj = null;
-                Log.i(K9.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "Got connectivity action with hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
             }
             else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
             {
@@ -195,8 +199,8 @@ public class MailService extends CoreService
                 stopSelf(startId);
             }
         }
-        long endTime = System.currentTimeMillis();
-        Log.i(K9.LOG_TAG, "MailService.onStart took " + (endTime - startTime) + "ms");
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "MailService.onStart took " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     private void rescheduleAll(final boolean hasConnectivity, final boolean doBackground, final Integer startId)
@@ -246,7 +250,8 @@ public class MailService extends CoreService
     @Override
     public void onDestroy()
     {
-        Log.v(K9.LOG_TAG, "***** MailService *****: onDestroy()");
+        if (K9.DEBUG)
+            Log.v(K9.LOG_TAG, "***** MailService *****: onDestroy()");
         super.onDestroy();
         //     MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
@@ -278,7 +283,8 @@ public class MailService extends CoreService
 
                 if (shortestInterval == -1)
                 {
-                    Log.v(K9.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
+                    if (K9.DEBUG)
+                        Log.v(K9.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
                     cancel();
                 }
                 else
@@ -286,15 +292,18 @@ public class MailService extends CoreService
                     long delay = (shortestInterval * (60 * 1000));
 
                     long nextTime = System.currentTimeMillis() + delay;
-                    try
+                    if (K9.DEBUG)
                     {
-                        String checkString = "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime);
-                        Log.i(K9.LOG_TAG, checkString);
-                    }
-                    catch (Exception e)
-                    {
-                        // I once got a NullPointerException deep in new Date();
-                        Log.e(K9.LOG_TAG, "Exception while logging", e);
+                        try
+                        {
+                            Log.i(K9.LOG_TAG,
+                                  "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime));
+                        }
+                        catch (Exception e)
+                        {
+                            // I once got a NullPointerException deep in new Date();
+                            Log.e(K9.LOG_TAG, "Exception while logging", e);
+                        }
                     }
 
                     Intent i = new Intent();
@@ -407,10 +416,9 @@ public class MailService extends CoreService
                 if (minInterval != -1)
                 {
                     long nextTime = System.currentTimeMillis() + minInterval;
-                    String checkString = "Next pusher refresh scheduled for " + new Date(nextTime);
                     if (K9.DEBUG)
                     {
-                        Log.d(K9.LOG_TAG, checkString);
+                        Log.d(K9.LOG_TAG, "Next pusher refresh scheduled for " + new Date(nextTime));
                     }
                     Intent i = new Intent();
                     i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
@@ -428,20 +436,23 @@ public class MailService extends CoreService
         final WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(wakeLockTime);
-        Log.i(K9.LOG_TAG, "MailService queueing Runnable " + runner.hashCode() + " with startId " + startId);
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "MailService queueing Runnable " + runner.hashCode() + " with startId " + startId);
+
         Runnable myRunner = new Runnable()
         {
             public void run()
             {
                 try
                 {
-
-                    Log.i(K9.LOG_TAG, "MailService running Runnable " + runner.hashCode() + " with startId " + startId);
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "MailService running Runnable " + runner.hashCode() + " with startId " + startId);
                     runner.run();
                 }
                 finally
                 {
-                    Log.i(K9.LOG_TAG, "MailService completed Runnable " + runner.hashCode() + " with startId " + startId);
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "MailService completed Runnable " + runner.hashCode() + " with startId " + startId);
                     wakeLock.release();
                     if (startId != null)
                     {

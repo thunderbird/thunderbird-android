@@ -26,9 +26,7 @@ public class SleepService extends CoreService
     {
         Integer id = latchId.getAndIncrement();
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "SleepService Preparing CountDownLatch with id = " + id + ", thread " + Thread.currentThread().getName());
-        }
         SleepDatum sleepDatum = new SleepDatum();
         CountDownLatch latch = new CountDownLatch(1);
         sleepDatum.latch = latch;
@@ -53,9 +51,7 @@ public class SleepService extends CoreService
             if (timedOut == false)
             {
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "SleepService latch timed out for id = " + id + ", thread " + Thread.currentThread().getName());
-                }
                 // don't call endSleep here or remove the sleepDatum here, instead of the following block.
                 // We might not get the wakeLock before
                 // falling asleep again, so we have to get the wakeLock *first*  The alarmed version will
@@ -77,9 +73,7 @@ public class SleepService extends CoreService
         long endTime = System.currentTimeMillis();
         long actualSleep = endTime - startTime;
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "SleepService requested sleep time was " + sleepTime + ", actual was " + actualSleep);
-        }
         if (actualSleep < sleepTime)
         {
             Log.w(K9.LOG_TAG, "SleepService sleep time too short: requested was " + sleepTime + ", actual was " + actualSleep);
@@ -101,9 +95,7 @@ public class SleepService extends CoreService
                 else
                 {
                     if (K9.DEBUG)
-                    {
                         Log.d(K9.LOG_TAG, "SleepService Counting down CountDownLatch with id = " + id);
-                    }
                     latch.countDown();
                 }
                 reacquireWakeLock(sleepDatum);
@@ -111,9 +103,7 @@ public class SleepService extends CoreService
             else
             {
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "SleepService Sleep for id " + id + " already finished");
-                }
             }
         }
     }
@@ -127,9 +117,7 @@ public class SleepService extends CoreService
             {
                 long timeout = sleepDatum.timeout;
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "SleepService Acquring wakeLock for id for " + timeout + "ms");
-                }
                 wakeLock.acquire(timeout);
             }
         }
