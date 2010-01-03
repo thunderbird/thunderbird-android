@@ -180,7 +180,7 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
-        
+
         mPushLimit = (ListPreference) findPreference(PREFERENCE_PUSH_LIMIT);
         mPushLimit.setEnabled(isPushCapable);
         mPushLimit.setValue(String.valueOf(mAccount.getMaxPushFolders()));
@@ -226,7 +226,7 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
-        
+
 
         mExpungePolicy = (ListPreference) findPreference(PREFERENCE_EXPUNGE_POLICY);
         mExpungePolicy.setEnabled(isExpungeCapable);
@@ -243,7 +243,7 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
-        
+
         mDisplayCount = (ListPreference) findPreference(PREFERENCE_DISPLAY_COUNT);
         mDisplayCount.setValue(String.valueOf(mAccount.getDisplayCount()));
         mDisplayCount.setSummary(mDisplayCount.getEntry());

@@ -993,10 +993,10 @@ public class MessagingController implements Runnable
 
             int unreadMessageCount = setLocalUnreadCountToRemote(localFolder, remoteFolder,  newMessages);
 
-	    for (MessagingListener l : getListeners())
-	    {
-		l.folderStatusChanged(account, folder, unreadMessageCount);
-	    }
+            for (MessagingListener l : getListeners())
+            {
+                l.folderStatusChanged(account, folder, unreadMessageCount);
+            }
 
             /*
              * Notify listeners that we're finally done.
@@ -3407,7 +3407,7 @@ public class MessagingController implements Runnable
     }
 
     public void expunge(final Account account, final String folder, final MessagingListener listener)
-    {   
+    {
         putBackground("expunge", null, new Runnable()
         {
             public void run()

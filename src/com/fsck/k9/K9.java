@@ -61,7 +61,7 @@ public class K9 extends Application
      */
     public static boolean ENABLE_ERROR_FOLDER = true;
     public static String ERROR_FOLDER_NAME = "K9mail-errors";
-    
+
     private static boolean mAnimations = true;
 
     /**

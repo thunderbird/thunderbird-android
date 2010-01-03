@@ -163,7 +163,7 @@ public class ImapStore extends Store
                 mAuthType = AuthType.PLAIN;
                 mUsername = userInfoParts[0];
                 mPassword = userInfoParts[1];
-            } 
+            }
             else
             {
                 mAuthType = AuthType.valueOf(userInfoParts[0]);
@@ -600,7 +600,7 @@ public class ImapStore extends Store
             {
                 return;
             }
-            
+
             synchronized (this)
             {
                 releaseConnection(mConnection);

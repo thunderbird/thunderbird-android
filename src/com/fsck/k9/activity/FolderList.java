@@ -480,7 +480,7 @@ public class FolderList extends K9ListActivity
 
         MessagingController.getInstance(getApplication()).emptyTrash(account, null);
     }
-    
+
     private void onExpunge(final Account account, String folderName)
     {
         MessagingController.getInstance(getApplication()).expunge(account, folderName, null);

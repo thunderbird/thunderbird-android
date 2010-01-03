@@ -33,13 +33,13 @@ public abstract class CoreService extends Service
         WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
-        
+
         Integer tmpWakeLockId = wakeLockSeq.getAndIncrement();
         wakeLocks.put(tmpWakeLockId, wakeLock);
-        
+
         i.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
     }
-    
+
     @Override
     public void onStart(Intent intent, int startId)
     {

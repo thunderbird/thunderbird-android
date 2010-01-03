@@ -118,7 +118,7 @@ public abstract class Folder
     public abstract String getUidFromMessageId(Message message) throws MessagingException;
 
     public void expunge() throws MessagingException
-    {}
+        {}
 
     public abstract void fetch(Message[] messages, FetchProfile fp,
                                MessageRetrievalListener listener) throws MessagingException;

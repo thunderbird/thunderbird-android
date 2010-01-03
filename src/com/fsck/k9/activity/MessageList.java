@@ -678,7 +678,7 @@ public class MessageList
 
     private void onOpenMessage(MessageInfoHolder message)
     {
-        if ( message.folder.name.equals(message.account.getDraftsFolderName()))
+        if (message.folder.name.equals(message.account.getDraftsFolderName()))
         {
             MessageCompose.actionEditDraft(this, message.account, message.message);
         }
@@ -1496,9 +1496,10 @@ public class MessageList
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
         MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
 
-        // in multi-select mode, the context menu pops up unintentionally 
+        // in multi-select mode, the context menu pops up unintentionally
         // causes misclicks
-        if (mSelectedWidget == WIDGET_MULTISELECT) {
+        if (mSelectedWidget == WIDGET_MULTISELECT)
+        {
             return;
         }
 

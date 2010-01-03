@@ -110,8 +110,8 @@ public abstract class Store
     {
         return false;
     }
-    
-    
+
+
     public void sendMessages(Message[] messages) throws MessagingException
     {
     }
