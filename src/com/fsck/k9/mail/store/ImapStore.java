@@ -2240,8 +2240,7 @@ public class ImapStore extends Store
 
                 if (response.mTag != null && response.mTag.equals(tag) == false)
                 {
-                    if (K9.DEBUG)
-                        Log.w(K9.LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + getLogId());
+                    Log.w(K9.LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + getLogId());
                     Iterator<ImapResponse> iter = responses.iterator();
                     while (iter.hasNext())
                     {
