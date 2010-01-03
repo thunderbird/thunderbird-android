@@ -337,7 +337,8 @@ public class MailService extends CoreService
             public void run()
             {
 
-                Log.i(K9.LOG_TAG, "Rescheduling pushers");
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "Rescheduling pushers");
                 stopPushers(null);
                 setupPushers(null);
                 schedulePushers(startId);
@@ -356,7 +357,8 @@ public class MailService extends CoreService
                 boolean pushing = false;
                 for (Account account : Preferences.getPreferences(MailService.this).getAccounts())
                 {
-                    Log.i(K9.LOG_TAG, "Setting up pushers for account " + account.getDescription());
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Setting up pushers for account " + account.getDescription());
                     pushing |= MessagingController.getInstance(getApplication()).setupPushing(account);
                 }
                 if (pushing)
@@ -376,7 +378,8 @@ public class MailService extends CoreService
             {
                 try
                 {
-                    Log.i(K9.LOG_TAG, "Refreshing pushers");
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Refreshing pushers");
                     Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
                     for (Pusher pusher : pushers)
                     {
@@ -410,16 +413,15 @@ public class MailService extends CoreService
                     }
                 }
                 if (K9.DEBUG)
-                {
                     Log.v(K9.LOG_TAG, "Pusher refresh interval = " + minInterval);
-                }
+
                 if (minInterval != -1)
                 {
                     long nextTime = System.currentTimeMillis() + minInterval;
+
                     if (K9.DEBUG)
-                    {
                         Log.d(K9.LOG_TAG, "Next pusher refresh scheduled for " + new Date(nextTime));
-                    }
+
                     Intent i = new Intent();
                     i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
                     i.setAction(ACTION_REFRESH_PUSHERS);
