@@ -40,26 +40,23 @@ public class MessagingControllerPushReceiver implements PushReceiver
             threadWakeLock.set(wakeLock);
         }
         wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
+
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "Acquired WakeLock for Pushing for thread " + Thread.currentThread().getName());
-        }
     }
 
     public void releaseWakeLock()
     {
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "Considering releasing WakeLock for Pushing");
-        }
+
         WakeLock wakeLock = threadWakeLock.get();
         if (wakeLock != null)
         {
 
             if (K9.DEBUG)
-            {
                 Log.d(K9.LOG_TAG, "Releasing WakeLock for Pushing for thread " + Thread.currentThread().getName());
-            }
+
             wakeLock.release();
         }
         else

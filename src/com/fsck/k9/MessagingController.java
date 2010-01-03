@@ -167,7 +167,6 @@ public class MessagingController implements Runnable
             return;
         }
         String messKey = createMessageKey(account, folder, message);
-        // Log.d(K9.LOG_TAG, "Suppressing message with key " + messKey);
         deletedUids.put(messKey, "true");
     }
 
@@ -187,7 +186,6 @@ public class MessagingController implements Runnable
             return;
         }
         String messKey = createMessageKey(account, folder, uid);
-        //Log.d(K9.LOG_TAG, "Unsuppressing message with key " + messKey);
         deletedUids.remove(messKey);
     }
 
@@ -199,10 +197,9 @@ public class MessagingController implements Runnable
             return false;
         }
         String messKey = createMessageKey(account, folder, message);
-        //Log.d(K9.LOG_TAG, "Checking suppression of message with key " + messKey);
+
         if (deletedUids.containsKey(messKey))
         {
-            //Log.d(K9.LOG_TAG, "Message with key " + messKey + " is suppressed");
             return true;
         }
         Long expungedUidL = expungedUid.get(createFolderKey(account, folder));
@@ -273,11 +270,17 @@ public class MessagingController implements Runnable
                 if (command != null)
                 {
                     commandDescription = command.description;
-                    String ground = (command.isForeground ? "Foreground" : "Background");
-                    Log.i(K9.LOG_TAG, "Running " + ground + " command '" + command.description + "', seq = " + command.sequence);
+
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Running " + (command.isForeground ? "Foreground" : "Background") + " command '" + command.description + "', seq = " + command.sequence);
+
                     mBusy = true;
                     command.runnable.run();
-                    Log.i(K9.LOG_TAG, ground + " Command '" + command.description + "' completed");
+
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, (command.isForeground ? "Foreground" : "Background") +
+                              " Command '" + command.description + "' completed");
+
                     for (MessagingListener l : getListeners())
                     {
                         l.controllerCommandCompleted(mCommands.size() > 0);
@@ -614,9 +617,8 @@ public class MessagingController implements Runnable
                 false // Skip deleted messages
             );
             if (K9.DEBUG)
-            {
                 Log.v(K9.LOG_TAG, "Got ack that callbackRunner finished");
-            }
+
             for (MessagingListener l : getListeners())
             {
                 l.listLocalMessagesFinished(account, folder);
@@ -794,7 +796,8 @@ public class MessagingController implements Runnable
             return;
         }
 
-	Log.i(K9.LOG_TAG, "Synchronizing folder " + account.getDescription() + ":" + folder);
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "Synchronizing folder " + account.getDescription() + ":" + folder);
 
         for (MessagingListener l : getListeners())
         {
@@ -809,10 +812,9 @@ public class MessagingController implements Runnable
         try
         {
             if (K9.DEBUG)
-            {
                 Log.d(K9.LOG_TAG, "SYNC: About to process pending commands for account " +
                       account.getDescription());
-            }
+
             try
             {
                 processPendingCommandsSynchronous(account);
@@ -830,9 +832,8 @@ public class MessagingController implements Runnable
              * the uids within the list.
              */
             if (K9.DEBUG)
-            {
                 Log.v(K9.LOG_TAG, "SYNC: About to get local folder " + folder);
-            }
+
             final LocalStore localStore = (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
             tLocalFolder = (LocalFolder) localStore.getFolder(folder);
             final LocalFolder localFolder = tLocalFolder;
@@ -845,15 +846,12 @@ public class MessagingController implements Runnable
             }
 
             if (K9.DEBUG)
-            {
                 Log.v(K9.LOG_TAG, "SYNC: About to get remote store for " + folder);
-            }
 
             Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+
             if (K9.DEBUG)
-            {
                 Log.v(K9.LOG_TAG, "SYNC: About to get remote folder " + folder);
-            }
 
             Folder remoteFolder = remoteStore.getFolder(folder);
 
@@ -880,7 +878,9 @@ public class MessagingController implements Runnable
                         {
                             listener.synchronizeMailboxFinished(account, folder, 0, 0);
                         }
-                        Log.i(K9.LOG_TAG, "Done synchronizing folder " + folder);
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Done synchronizing folder " + folder);
+
                         return;
                     }
                 }
@@ -909,17 +909,15 @@ public class MessagingController implements Runnable
              * Open the remote folder. This pre-loads certain metadata like message count.
              */
             if (K9.DEBUG)
-            {
                 Log.v(K9.LOG_TAG, "SYNC: About to open remote folder " + folder);
-            }
+
             remoteFolder.open(OpenMode.READ_WRITE);
 
             if (Account.EXPUNGE_ON_POLL.equals(account.getExpungePolicy()))
             {
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
-                }
+
                 remoteFolder.expunge();
             }
 
@@ -937,10 +935,7 @@ public class MessagingController implements Runnable
             HashMap<String, Message> remoteUidMap = new HashMap<String, Message>();
 
             if (K9.DEBUG)
-            {
-                Log.v(K9.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " +
-                      remoteMessageCount);
-            }
+                Log.v(K9.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " + remoteMessageCount);
 
             if (remoteMessageCount > 0)
             {
@@ -951,9 +946,7 @@ public class MessagingController implements Runnable
                 int remoteEnd = remoteMessageCount;
 
                 if (K9.DEBUG)
-                {
                     Log.v(K9.LOG_TAG, "SYNC: About to get messages " + remoteStart + " through " + remoteEnd + " for folder " + folder);
-                }
 
                 remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteEnd, null);
                 for (Message thisMess : remoteMessageArray)
@@ -962,9 +955,8 @@ public class MessagingController implements Runnable
                     remoteUidMap.put(thisMess.getUid(), thisMess);
                 }
                 if (K9.DEBUG)
-                {
                     Log.v(K9.LOG_TAG, "SYNC: Got " + remoteUidMap.size() + " messages for folder " + folder);
-                }
+
                 remoteMessageArray = null;
 
             }
@@ -981,7 +973,7 @@ public class MessagingController implements Runnable
                 if (remoteUidMap.get(localMessage.getUid()) == null && !localMessage.isSet(Flag.DELETED))
                 {
                     localMessage.setFlag(Flag.X_DESTROYED, true);
-                    //      Log.d(K9.LOG_TAG, "Destroying message " + localMessage.getUid() + " which isn't in the most recent group on server");
+
                     for (MessagingListener l : getListeners())
                     {
                         l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
@@ -1016,11 +1008,9 @@ public class MessagingController implements Runnable
             remoteFolder.close();
             localFolder.close();
             if (K9.DEBUG)
-            {
                 Log.d(K9.LOG_TAG, "Done synchronizing folder " +
                       account.getDescription() + ":" + folder + " @ " + new Date() +
                       " with " + newMessages + " new messages");
-            }
 
             for (MessagingListener l : getListeners())
             {
@@ -1048,7 +1038,8 @@ public class MessagingController implements Runnable
                 }
             }
 
-	    Log.i(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder);
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "Done synchronizing folder " + account.getDescription() + ":" + folder);
 
         }
         catch (Exception e)
@@ -1132,18 +1123,15 @@ public class MessagingController implements Runnable
                         if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
                         {
                             if (K9.DEBUG)
-                            {
                                 Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is not downloaded at all");
-                            }
 
                             unsyncedMessages.add(message);
                         }
                         else
                         {
                             if (K9.DEBUG)
-                            {
                                 Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is partially or fully downloaded");
-                            }
+
                             // Store the updated message locally
                             localFolder.appendMessages(new Message[] { message });
 
@@ -1166,9 +1154,8 @@ public class MessagingController implements Runnable
                 else if (localMessage.isSet(Flag.DELETED) == false)
                 {
                     if (K9.DEBUG)
-                    {
                         Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is already locally present");
-                    }
+
                     String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
                     if (newPushState != null)
                     {
@@ -1177,10 +1164,9 @@ public class MessagingController implements Runnable
                     if (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
                         if (K9.DEBUG)
-                        {
                             Log.v(K9.LOG_TAG, "Message with uid " + message.getUid()
                                   + " is not downloaded, even partially; trying again");
-                        }
+
                         unsyncedMessages.add(message);
                     }
                     else
@@ -1198,10 +1184,8 @@ public class MessagingController implements Runnable
             l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
         }
 
-	if (K9.DEBUG)
-	{
-	    Log.d(K9.LOG_TAG, "SYNC: Have " + unsyncedMessages.size() + " unsynced messages");
-	}
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "SYNC: Have " + unsyncedMessages.size() + " unsynced messages");
 
         messages.clear();
         final ArrayList<Message> largeMessages = new ArrayList<Message>();
@@ -1230,9 +1214,7 @@ public class MessagingController implements Runnable
             fp.add(FetchProfile.Item.ENVELOPE);
 
             if (K9.DEBUG)
-            {
                 Log.d(K9.LOG_TAG, "SYNC: About to sync " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
-            }
 
             remoteFolder.fetch(unsyncedMessages.toArray(new Message[0]), fp,
                                new MessageRetrievalListener()
@@ -1283,10 +1265,8 @@ public class MessagingController implements Runnable
                                 Message localMessage = localFolder.getMessage(message.getUid());
                                 syncFlags(localMessage, message);
                                 if (K9.DEBUG)
-                                {
                                     Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
                                           + account + ":" + folder + ":" + message.getUid());
-                                }
                                 for (MessagingListener l : getListeners())
                                 {
                                     l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
@@ -1319,21 +1299,19 @@ public class MessagingController implements Runnable
                     localFolder.setPushState(newPushState);
                 }
             }
-	    if (K9.DEBUG)
-	    {
-		Log.d(K9.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
-	    }
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "SYNC: Synced unsynced messages for folder " + folder);
+            }
 
 
         }
 
-	if (K9.DEBUG)
-	{
-	    Log.d(K9.LOG_TAG, "SYNC: Have "
-		  + largeMessages.size() + " large messages and "
-		  + smallMessages.size() + " small messages out of "
-		  + unsyncedMessages.size() + " unsynced messages");
-	}
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "SYNC: Have "
+                  + largeMessages.size() + " large messages and "
+                  + smallMessages.size() + " small messages out of "
+                  + unsyncedMessages.size() + " unsynced messages");
 
         unsyncedMessages.clear();
 
@@ -1347,10 +1325,8 @@ public class MessagingController implements Runnable
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
 
-	if (K9.DEBUG)
-	{
-	    Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
-	}
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
 
         remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
                            fp, new MessageRetrievalListener()
@@ -1367,11 +1343,11 @@ public class MessagingController implements Runnable
                     // Set a flag indicating this message has now be fully downloaded
                     localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
                     if (K9.DEBUG)
-                    {
                         Log.v(K9.LOG_TAG, "About to notify listeners that we got a new small message "
                               + account + ":" + folder + ":" + message.getUid());
-                    }
+
                     progress.incrementAndGet();
+
                     // Update the listener with what we've found
                     for (MessagingListener l : getListeners())
                     {
@@ -1399,10 +1375,9 @@ public class MessagingController implements Runnable
             public void messagesFinished(int total) {}
         });
 
-	if (K9.DEBUG)
-	{
-	    Log.d(K9.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
-	}
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
+
         smallMessages.clear();
 
         /*
@@ -1411,10 +1386,8 @@ public class MessagingController implements Runnable
         fp.clear();
         fp.add(FetchProfile.Item.STRUCTURE);
 
-	if (K9.DEBUG)
-	{
-	    Log.d(K9.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
-	}
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
 
         remoteFolder.fetch(largeMessages.toArray(new Message[largeMessages.size()]), fp, null);
         for (Message message : largeMessages)
@@ -1492,10 +1465,9 @@ public class MessagingController implements Runnable
                 localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true);
             }
             if (K9.DEBUG)
-            {
                 Log.v(K9.LOG_TAG, "About to notify listeners that we got a new large message "
                       + account + ":" + folder + ":" + message.getUid());
-            }
+
             // Update the listener with what we've found
             progress.incrementAndGet();
             for (MessagingListener l : getListeners())
@@ -1509,10 +1481,8 @@ public class MessagingController implements Runnable
                 }
             }
         }//for large messsages
-	if (K9.DEBUG)
-	{
-	    Log.d(K9.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
-	}
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
 
         largeMessages.clear();
 
@@ -1524,11 +1494,9 @@ public class MessagingController implements Runnable
         {
 
 
-	    if (K9.DEBUG)
-	    {
-		Log.d(K9.LOG_TAG, "SYNC: About to sync flags for "
-		      + syncFlagMessages.size() + " remote messages for folder " + folder);
-	    }
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "SYNC: About to sync flags for "
+                      + syncFlagMessages.size() + " remote messages for folder " + folder);
 
 
             fp.clear();
@@ -1562,10 +1530,9 @@ public class MessagingController implements Runnable
                 }
             }
         }
-	if (K9.DEBUG)
-	{
-	    Log.d(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
-	}
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
+
         localFolder.purgeToVisibleLimit(new MessageRemovalListener()
         {
             public void messageRemoved(Message message)
@@ -1689,9 +1656,8 @@ public class MessagingController implements Runnable
             {
                 processingCommand = command;
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "Processing pending command '" + command + "'");
-                }
+
                 String[] components = command.command.split("\\.");
                 String commandTitle = components[components.length - 1];
                 for (MessagingListener l : getListeners())
@@ -1739,9 +1705,7 @@ public class MessagingController implements Runnable
                     }
                     localStore.removePendingCommand(command);
                     if (K9.DEBUG)
-                    {
                         Log.d(K9.LOG_TAG, "Done processing pending command '" + command + "'");
-                    }
                 }
                 catch (MessagingException me)
                 {
@@ -2008,16 +1972,14 @@ public class MessagingController implements Runnable
             }
 
             if (K9.DEBUG)
-            {
                 Log.d(K9.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder
                       + ", " + messages.size() + " messages, destination folder = " + destFolder + ", isCopy = " + isCopy);
-            }
+
             if (isCopy == false && destFolder.equals(account.getTrashFolderName()))
             {
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "processingPendingMoveOrCopy doing special case for deleting message");
-                }
+
                 String destFolderName = destFolder;
                 if (K9.FOLDER_NONE.equals(destFolderName))
                 {
@@ -2046,7 +2008,9 @@ public class MessagingController implements Runnable
             }
             if (isCopy == false && Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
             {
-                Log.i(K9.LOG_TAG, "processingPendingMoveOrCopy expunging folder " + account.getDescription() + ":" + srcFolder);
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "processingPendingMoveOrCopy expunging folder " + account.getDescription() + ":" + srcFolder);
+
                 remoteSrcFolder.expunge();
             }
         }
@@ -2158,9 +2122,7 @@ public class MessagingController implements Runnable
             return;
         }
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "processPendingSetFlagOld: folder = " + folder + ", uid = " + uid);
-        }
 
         boolean newState = Boolean.parseBoolean(command.arguments[2]);
 
@@ -2215,9 +2177,7 @@ public class MessagingController implements Runnable
             return;
         }
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folder);
-        }
 
         Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
         Folder remoteFolder = remoteStore.getFolder(folder);
@@ -2234,9 +2194,7 @@ public class MessagingController implements Runnable
             }
             remoteFolder.expunge();
             if (K9.DEBUG)
-            {
                 Log.d(K9.LOG_TAG, "processPendingExpunge: complete for folder = " + folder);
-            }
         }
         finally
         {
@@ -2294,16 +2252,14 @@ public class MessagingController implements Runnable
         }
 
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "processPendingMoveOrCopyOld: source folder = " + srcFolder
                   + ", uid = " + uid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
-        }
+
         if (isCopy == false && destFolder.equals(account.getTrashFolderName()))
         {
             if (K9.DEBUG)
-            {
                 Log.d(K9.LOG_TAG, "processPendingMoveOrCopyOld doing special case for deleting message");
-            }
+
             remoteMessage.delete(account.getTrashFolderName());
             remoteSrcFolder.close();
             return;
@@ -2499,7 +2455,8 @@ public class MessagingController implements Runnable
     public void markAllMessagesRead(final Account account, final String folder)
     {
 
-        Log.i(K9.LOG_TAG, "Marking all messages in " + account.getDescription() + ":" + folder + " as read");
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "Marking all messages in " + account.getDescription() + ":" + folder + " as read");
         List<String> args = new ArrayList<String>();
         args.add(folder);
         PendingCommand command = new PendingCommand();
@@ -2904,9 +2861,8 @@ public class MessagingController implements Runnable
                 catch (MessagingException me)
                 {
                     if (K9.DEBUG)
-                    {
                         Log.v(K9.LOG_TAG, "", me);
-                    }
+
                     for (MessagingListener l : getListeners())
                     {
                         l.loadAttachmentFailed(account, message, part, tag, me.getMessage());
@@ -3052,7 +3008,9 @@ public class MessagingController implements Runnable
             LocalFolder localSentFolder =
                 (LocalFolder) localStore.getFolder(
                     account.getSentFolderName());
-            Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + ((LocalFolder)localFolder).getId() + ") for messages to send");
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + ((LocalFolder)localFolder).getId() + ") for messages to send");
+
             Transport transport = Transport.getInstance(account.getTransportUri());
             for (Message message : localMessages)
             {
@@ -3063,7 +3021,8 @@ public class MessagingController implements Runnable
                 }
                 if (message.isSet(Flag.FLAGGED))
                 {
-                    Log.i(K9.LOG_TAG, "Skipping sending FLAGGED message " + message.getUid());
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Skipping sending FLAGGED message " + message.getUid());
                     continue;
                 }
                 try
@@ -3074,7 +3033,9 @@ public class MessagingController implements Runnable
                     {
                         count = oldCount;
                     }
-                    Log.i(K9.LOG_TAG, "Send count for message " + message.getUid() + " is " + count.get());
+
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Send count for message " + message.getUid() + " is " + count.get());
                     if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS)
                     {
                         Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() + " has exceeded maximum attempt threshold, flagging");
@@ -3087,7 +3048,8 @@ public class MessagingController implements Runnable
                     try
                     {
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
-                        Log.i(K9.LOG_TAG, "Sending message with UID " + message.getUid());
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Sending message with UID " + message.getUid());
                         transport.sendMessage(message);
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
                         message.setFlag(Flag.SEEN, true);
@@ -3096,11 +3058,15 @@ public class MessagingController implements Runnable
                         {
                             l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
                         }
-                        Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+
                         localFolder.moveMessages(
                             new Message[] { message },
                             localSentFolder);
-                        Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
 
                         PendingCommand command = new PendingCommand();
                         command.command = PENDING_COMMAND_APPEND;
@@ -3122,8 +3088,9 @@ public class MessagingController implements Runnable
                             {
                                 // Decrement the counter if the message could not possibly have been sent
                                 int newVal = count.decrementAndGet();
-                                Log.i(K9.LOG_TAG, "Decremented send count for message " + message.getUid() + " to " + newVal
-                                      + "; no possible send");
+                                if (K9.DEBUG)
+                                    Log.i(K9.LOG_TAG, "Decremented send count for message " + message.getUid() + " to " + newVal
+                                          + "; no possible send");
                             }
                         }
                         message.setFlag(Flag.X_SEND_FAILED, true);
@@ -3405,8 +3372,9 @@ public class MessagingController implements Runnable
             String origUid = message.getUid();
             if (lMessage != null)
             {
-                Log.i(K9.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder
-                      + ", uid = " + origUid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder
+                          + ", uid = " + origUid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
 
                 if (isCopy)
                 {
@@ -3493,9 +3461,8 @@ public class MessagingController implements Runnable
             if (folder.equals(account.getTrashFolderName()) || K9.FOLDER_NONE.equals(account.getTrashFolderName()))
             {
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "Deleting messages in trash folder or trash set to -None-, not copying");
-                }
+
                 localFolder.setFlags(messages, new Flag[] { Flag.DELETED }, true);
             }
             else
@@ -3508,9 +3475,7 @@ public class MessagingController implements Runnable
                 if (localTrashFolder.exists() == true)
                 {
                     if (K9.DEBUG)
-                    {
                         Log.d(K9.LOG_TAG, "Deleting messages in normal folder, moving");
-                    }
 
                     localFolder.moveMessages(messages, localTrashFolder);
 
@@ -3523,9 +3488,8 @@ public class MessagingController implements Runnable
             }
 
             if (K9.DEBUG)
-            {
                 Log.d(K9.LOG_TAG, "Delete policy for account " + account.getDescription() + " is " + account.getDeletePolicy());
-            }
+
             if (folder.equals(account.getOutboxFolderName()))
             {
                 for (Message message : messages)
@@ -3562,9 +3526,7 @@ public class MessagingController implements Runnable
             else
             {
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "Delete policy " + account.getDeletePolicy() + " prevents delete from server");
-                }
             }
         }
         catch (MessagingException me)
@@ -3660,10 +3622,9 @@ public class MessagingController implements Runnable
     public void sendAlternate(final Context context, Account account, Message message)
     {
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "About to load message " + account.getDescription() + ":" + message.getFolder().getName()
                   + ":" + message.getUid() + " for sendAlternate");
-        }
+
         loadMessageForView(account, message.getFolder().getName(),
                            message.getUid(), new MessagingListener()
         {
@@ -3672,10 +3633,8 @@ public class MessagingController implements Runnable
                     Message message)
             {
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "Got message " + account.getDescription() + ":" + folder
                           + ":" + message.getUid() + " for sendAlternate");
-                }
 
                 try
                 {
@@ -3745,7 +3704,8 @@ public class MessagingController implements Runnable
                                                      .getSystemService(Context.NOTIFICATION_SERVICE);
                 try
                 {
-                    Log.i(K9.LOG_TAG, "Starting mail check");
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Starting mail check");
                     Preferences prefs = Preferences.getPreferences(context);
 
                     Account[] accounts;
@@ -3766,13 +3726,15 @@ public class MessagingController implements Runnable
                         final long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
                         if (ignoreLastCheckedTime == false && accountInterval <= 0)
                         {
-                            Log.i(K9.LOG_TAG, "Skipping synchronizing account " + account.getDescription());
+                            if (K9.DEBUG)
+                                Log.i(K9.LOG_TAG, "Skipping synchronizing account " + account.getDescription());
 
 
                             continue;
                         }
 
-                        Log.i(K9.LOG_TAG, "Synchronizing account " + account.getDescription());
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Synchronizing account " + account.getDescription());
 
                         putBackground("sendPending " + account.getDescription(), null, new Runnable()
                         {
@@ -3835,10 +3797,8 @@ public class MessagingController implements Runnable
                                 {
                                     // Never sync a folder that isn't displayed
                                     if (K9.DEBUG)
-                                    {
                                         Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
                                               " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
-                                    }
 
                                     continue;
                                 }
@@ -3847,10 +3807,8 @@ public class MessagingController implements Runnable
                                 {
                                     // Do not sync folders in the wrong class
                                     if (K9.DEBUG)
-                                    {
                                         Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
                                               " which is in sync mode " + fSyncClass + " while account is in sync mode " + aSyncMode);
-                                    }
 
                                     continue;
                                 }
@@ -3858,20 +3816,16 @@ public class MessagingController implements Runnable
 
 
                                 if (K9.DEBUG)
-                                {
                                     Log.v(K9.LOG_TAG, "Folder " + folder.getName() + " was last synced @ " +
                                           new Date(folder.getLastChecked()));
-                                }
 
                                 if (ignoreLastCheckedTime == false && folder.getLastChecked() >
                                         (System.currentTimeMillis() - accountInterval))
                                 {
                                     if (K9.DEBUG)
-                                    {
                                         Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName()
                                               + ", previously synced @ " + new Date(folder.getLastChecked())
                                               + " which would be too recent for the account period");
-                                    }
 
                                     continue;
                                 }
@@ -3892,11 +3846,9 @@ public class MessagingController implements Runnable
                                                     (System.currentTimeMillis() - accountInterval))
                                             {
                                                 if (K9.DEBUG)
-                                                {
                                                     Log.v(K9.LOG_TAG, "Not running Command for folder " + folder.getName()
                                                           + ", previously synced @ " + new Date(folder.getLastChecked())
                                                           + " which would be too recent for the account period");
-                                                }
                                                 return;
                                             }
                                             if (account.isShowOngoing())
@@ -3962,7 +3914,9 @@ public class MessagingController implements Runnable
                     public void run()
                     {
 
-                        Log.i(K9.LOG_TAG, "Finished mail sync");
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Finished mail sync");
+
                         if (wakeLock != null)
                         {
                             wakeLock.release();
@@ -4049,7 +4003,9 @@ public class MessagingController implements Runnable
         {
             Log.e(K9.LOG_TAG, "Unable to get unread message count", e);
         }
-        Log.i(K9.LOG_TAG, "notifyAccount Account " + thisAccount.getDescription() + ", newMailCount = " + newMailCount);
+
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "notifyAccount Account " + thisAccount.getDescription() + ", newMailCount = " + newMailCount);
         boolean isNotifyAccount = thisAccount.isNotifyNewMail();
         if (isNotifyAccount)
         {
@@ -4262,10 +4218,8 @@ public class MessagingController implements Runnable
                 {
                     // Never push a folder that isn't displayed
                     if (K9.DEBUG)
-                    {
                         Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
                               " which is in display class " + fDisplayClass + " while account is in display mode " + aDisplayMode);
-                    }
 
                     continue;
                 }
@@ -4274,14 +4228,14 @@ public class MessagingController implements Runnable
                 {
                     // Do not push folders in the wrong class
                     if (K9.DEBUG)
-                    {
                         Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
                               " which is in push mode " + fPushClass + " while account is in push mode " + aPushMode);
-                    }
 
                     continue;
                 }
-                Log.i(K9.LOG_TAG, "Starting pusher for " + account.getDescription() + ":" + folder.getName());
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "Starting pusher for " + account.getDescription() + ":" + folder.getName());
+
                 names.add(folder.getName());
             }
 
@@ -4289,11 +4243,13 @@ public class MessagingController implements Runnable
             {
                 PushReceiver receiver = new MessagingControllerPushReceiver(mApplication, account, this);
                 int maxPushFolders = account.getMaxPushFolders();
-                
+
                 if (names.size() > maxPushFolders)
                 {
-                    Log.i(K9.LOG_TAG, "Count of folders to push for account " + account.getDescription() + " is " + names.size() 
-                            + ", greater than limit of " + maxPushFolders + ", truncating");
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Count of folders to push for account " + account.getDescription() + " is " + names.size()
+                              + ", greater than limit of " + maxPushFolders + ", truncating");
+
                     names = names.subList(0, maxPushFolders);
                 }
 
@@ -4302,7 +4258,9 @@ public class MessagingController implements Runnable
                     Store store = Store.getInstance(account.getStoreUri(), mApplication);
                     if (store.isPushCapable() == false)
                     {
-                        Log.i(K9.LOG_TAG, "Account " + account.getDescription() + " is not push capable, skipping");
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Account " + account.getDescription() + " is not push capable, skipping");
+
                         return false;
                     }
                     Pusher pusher = store.getPusher(receiver);
@@ -4330,7 +4288,8 @@ public class MessagingController implements Runnable
             }
             else
             {
-                Log.i(K9.LOG_TAG, "No folders are configured for pushing in account " + account.getDescription());
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "No folders are configured for pushing in account " + account.getDescription());
                 return false;
             }
 
@@ -4344,7 +4303,9 @@ public class MessagingController implements Runnable
 
     public void stopAllPushing()
     {
-        Log.i(K9.LOG_TAG, "Stopping all pushers");
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "Stopping all pushers");
+
         Iterator<Pusher> iter = pushers.values().iterator();
         while (iter.hasNext())
         {
@@ -4356,8 +4317,10 @@ public class MessagingController implements Runnable
 
     public void messagesArrived(final Account account, final Folder remoteFolder, final List<Message> messages, final boolean flagSyncOnly)
     {
-        Log.i(K9.LOG_TAG, "Got new pushed email messages for account " + account.getDescription()
-              + ", folder " + remoteFolder.getName());
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "Got new pushed email messages for account " + account.getDescription()
+                  + ", folder " + remoteFolder.getName());
+
         final CountDownLatch latch = new CountDownLatch(1);
         putBackground("Push messageArrived of account " + account.getDescription()
                       + ", folder " + remoteFolder.getName(), null, new Runnable()
@@ -4377,7 +4340,9 @@ public class MessagingController implements Runnable
                     localFolder.setLastPush(System.currentTimeMillis());
                     localFolder.setStatus(null);
 
-                    Log.i(K9.LOG_TAG, "messagesArrived newCount = " + newCount);
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "messagesArrived newCount = " + newCount);
+
                     notifyAccount(mApplication, account, newCount);
 
                     for (MessagingListener l : getListeners())
@@ -4430,7 +4395,8 @@ public class MessagingController implements Runnable
         {
             Log.e(K9.LOG_TAG, "Interrupted while awaiting latch release", e);
         }
-        Log.i(K9.LOG_TAG, "MessagingController.messagesArrivedLatch released");
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "MessagingController.messagesArrivedLatch released");
     }
     enum MemorizingState { STARTED, FINISHED, FAILED };
 

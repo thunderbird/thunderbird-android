@@ -94,7 +94,8 @@ public class AttachmentProvider extends ContentProvider
         {
             try
             {
-                Log.d(K9.LOG_TAG, "Deleting file " + file.getCanonicalPath());
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "Deleting file " + file.getCanonicalPath());
             }
             catch (IOException ioe) {}   // No need to log failure to log
             file.delete();

@@ -45,12 +45,15 @@ public class WebDavTransport extends Transport
     public WebDavTransport(String _uri) throws MessagingException
     {
         store = new WebDavStore(_uri);
-        Log.d(K9.LOG_TAG, ">>> New WebDavTransport creation complete");
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, ">>> New WebDavTransport creation complete");
     }
 
     public void open() throws MessagingException
     {
-        Log.d(K9.LOG_TAG, ">>> open called on WebDavTransport ");
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, ">>> open called on WebDavTransport ");
+
         store.getHttpClient();
     }
 

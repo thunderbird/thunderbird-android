@@ -174,9 +174,7 @@ public class SmtpTransport extends Transport
             catch (Exception e)
             {
                 if (K9.DEBUG)
-                {
                     Log.d(K9.LOG_TAG, "Unable to look up localhost");
-                }
             }
 
             List<String> results = executeSimpleCommand("EHLO " + localHost);
@@ -376,9 +374,7 @@ public class SmtpTransport extends Transport
         }
         String ret = sb.toString();
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "SMTP <<< " + ret);
-        }
 
         return ret;
     }
@@ -386,9 +382,8 @@ public class SmtpTransport extends Transport
     private void writeLine(String s) throws IOException
     {
         if (K9.DEBUG)
-        {
             Log.d(K9.LOG_TAG, "SMTP >>> " + s);
-        }
+
         mOut.write(s.getBytes());
         mOut.write('\r');
         mOut.write('\n');

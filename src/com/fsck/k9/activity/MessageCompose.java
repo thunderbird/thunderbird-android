@@ -520,10 +520,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
 
-            Log.d(K9.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "action = " + action + ", mAccount = " + mAccount + ", mFolder = " + mFolder + ", mSourceMessageUid = " + mSourceMessageUid);
             if ((ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)) && mAccount != null && mFolder != null && mSourceMessageUid != null)
             {
-                Log.d(K9.LOG_TAG, "Setting message ANSWERED flag to true");
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "Setting message ANSWERED flag to true");
                 // TODO: Really, we should wait until we send the message, but that would require saving the original
                 // message info along with a Draft copy, in case it is left in Drafts for a while before being sent
                 MessagingController.getInstance(getApplication()).setFlag(mAccount, mFolder, new String[] { mSourceMessageUid }, Flag.ANSWERED, true);
@@ -797,7 +799,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
 
-            Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
             message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
 
             MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
@@ -1210,7 +1213,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
                 else
                 {
-                    Log.d(K9.LOG_TAG, "could not get Message-ID.");
+                    if (K9.DEBUG)
+                        Log.d(K9.LOG_TAG, "could not get Message-ID.");
                 }
 
                 Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage,
@@ -1380,7 +1384,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
                     if (k9identity != null)
                     {
-                        Log.d(K9.LOG_TAG, "Got a saved identity: " + k9identity);
+                        if (K9.DEBUG)
+                            Log.d(K9.LOG_TAG, "Got a saved identity: " + k9identity);
                         StringTokenizer tokens = new StringTokenizer(k9identity, ":", false);
 
                         String bodyLengthS = null;
