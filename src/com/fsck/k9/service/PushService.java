@@ -34,11 +34,13 @@ public class PushService extends CoreService
     {
         if (START_SERVICE.equals(intent.getAction()))
         {
-            Log.i(K9.LOG_TAG, "PushService started with startId = " + startId);
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "PushService started with startId = " + startId);
         }
         else if (STOP_SERVICE.equals(intent.getAction()))
         {
-            Log.i(K9.LOG_TAG, "PushService stopping with startId = " + startId);
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "PushService stopping with startId = " + startId);
             stopSelf(startId);
         }
 
