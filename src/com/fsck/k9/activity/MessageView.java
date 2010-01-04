@@ -623,13 +623,19 @@ public class MessageView extends K9Activity
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
-        next.setEnabled(mNextMessageUid != null);
-        previous.setEnabled(mPreviousMessageUid != null);
 
-        if (next_scrolling != null)
-            next_scrolling.setEnabled(mNextMessageUid != null);
-        if (previous_scrolling != null)
-            previous_scrolling.setEnabled(mPreviousMessageUid != null);
+        boolean enableNext = (mNextMessageUid != null);
+        boolean enablePrev = (mPreviousMessageUid != null);
+
+        if (next.isEnabled() != enableNext)
+            next.setEnabled(enableNext);
+        if (previous.isEnabled() != enablePrev)
+            previous.setEnabled(enablePrev);
+
+        if (next_scrolling != null && (next_scrolling.isEnabled() != enableNext))
+            next_scrolling.setEnabled(enableNext);
+        if (previous_scrolling != null && (previous_scrolling.isEnabled() != enablePrev))
+            previous_scrolling.setEnabled(enablePrev);
 
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
