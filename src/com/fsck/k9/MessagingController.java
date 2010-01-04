@@ -3206,7 +3206,7 @@ public class MessagingController implements Runnable
         };
 
 
-        put("getAccountUnread:" + account.getDescription(), l, unreadRunnable);
+        put("getAccountUnreadCount:" + account.getDescription(), l, unreadRunnable);
     }
 
     public void getFolderUnreadMessageCount(final Account account, final String folderName,
@@ -3484,7 +3484,11 @@ public class MessagingController implements Runnable
 
             for (MessagingListener l : getListeners())
             {
-                l.folderStatusChanged(account, account.getTrashFolderName(), localFolder.getUnreadMessageCount());
+                l.folderStatusChanged(account, folder, localFolder.getUnreadMessageCount());
+                if (localTrashFolder != null)
+                {
+                    l.folderStatusChanged(account, account.getTrashFolderName(), localTrashFolder.getUnreadMessageCount());
+                }
             }
 
             if (K9.DEBUG)
@@ -4028,8 +4032,8 @@ public class MessagingController implements Runnable
                 notif.setLatestEventInfo(context, context.getString(R.string.notification_new_title), notice, pi);
 
                 String ringtone = thisAccount.getRingtone();
-                notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
-
+                notif.sound = TextUtils.isEmpty(ringtone) || thisAccount.isRing() == false ? null : Uri.parse(ringtone);
+                
                 if (thisAccount.isVibrate())
                 {
                     notif.defaults |= Notification.DEFAULT_VIBRATE;
