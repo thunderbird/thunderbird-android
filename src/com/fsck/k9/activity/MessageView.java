@@ -213,59 +213,80 @@ public class MessageView extends K9Activity
 
     class MessageViewHandler extends Handler
     {
-        private static final int MSG_PROGRESS = 2;
-        private static final int MSG_ADD_ATTACHMENT = 3;
-        private static final int MSG_SET_ATTACHMENTS_ENABLED = 4;
-        private static final int MSG_SET_HEADERS = 5;
-        private static final int MSG_NETWORK_ERROR = 6;
-        private static final int MSG_ATTACHMENT_SAVED = 7;
-        private static final int MSG_ATTACHMENT_NOT_SAVED = 8;
-        private static final int MSG_SHOW_SHOW_PICTURES = 9;
-        private static final int MSG_FETCHING_ATTACHMENT = 10;
-        private static final int MSG_INVALID_ID_ERROR = 11;
-
-        private static final int FLAG_FLAGGED = 1;
-        private static final int FLAG_ANSWERED = 2;
-
-        @Override
-        public void handleMessage(android.os.Message msg)
+        public void progress(final boolean progress)
         {
-            switch (msg.what)
+            runOnUiThread(new Runnable()
             {
-                case MSG_PROGRESS:
-                    setProgressBarIndeterminateVisibility(msg.arg1 != 0);
-                    break;
-                case MSG_ADD_ATTACHMENT:
-                    mAttachments.addView((View) msg.obj);
+                public void run()
+                {
+                    setProgressBarIndeterminateVisibility(progress);
+
+                }
+            });
+        }
+
+        public void addAttachment(final View attachmentView)
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    mAttachments.addView(attachmentView);
                     mAttachments.setVisibility(View.VISIBLE);
-                    break;
-                case MSG_SET_ATTACHMENTS_ENABLED:
+
+                }
+            });
+        }
+
+        public void setAttachmentsEnabled(final boolean enabled)
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
                     for (int i = 0, count = mAttachments.getChildCount(); i < count; i++)
                     {
                         Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
-                        attachment.viewButton.setEnabled(msg.arg1 == 1);
-                        attachment.downloadButton.setEnabled(msg.arg1 == 1);
+                        attachment.viewButton.setEnabled(enabled);
+                        attachment.downloadButton.setEnabled(enabled);
                     }
-                    break;
-                case MSG_SET_HEADERS:
-                    String[] values = (String[]) msg.obj;
-                    setTitle(values[0]);
-                    mSubjectView.setText(values[0]);
-                    mFromView.setText(values[1]);
-                    if (values[2]!=null)
+
+                }
+            });
+        }
+
+        public void setHeaders(
+            final   String subject,
+            final   String from,
+            final   String date,
+            final   String time,
+            final   String to,
+            final   String cc,
+            final   boolean hasAttachments,
+            final   boolean flagged,
+            final   boolean answered)
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    setTitle(subject);
+                    mSubjectView.setText(subject);
+                    mFromView.setText(from);
+                    if (date != null)
                     {
-                        mDateView.setText(values[2]);
+                        mDateView.setText(date);
                         mDateView.setVisibility(View.VISIBLE);
                     }
                     else
                     {
                         mDateView.setVisibility(View.GONE);
                     }
-                    mTimeView.setText(values[3]);
-                    mToView.setText(values[4]);
-                    mCcView.setText(values[5]);
-                    mAttachmentIcon.setVisibility(msg.arg1 == 1 ? View.VISIBLE : View.GONE);
-                    if ((msg.arg2 & FLAG_FLAGGED) != 0)
+                    mTimeView.setText(time);
+                    mToView.setText(to);
+                    mCcView.setText(cc);
+                    mAttachmentIcon.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
+                    if (flagged)
                     {
                         mFlagged.setChecked(true);
                     }
@@ -276,7 +297,7 @@ public class MessageView extends K9Activity
                     mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
 
-                    if ((msg.arg2 & FLAG_ANSWERED) != 0)
+                    if (answered)
                     {
                         Drawable answeredIcon = getResources().getDrawable(
                                                     R.drawable.ic_mms_answered_small);
@@ -295,119 +316,91 @@ public class MessageView extends K9Activity
                             null); // bottom
                     }
 
-                    break;
-                case MSG_NETWORK_ERROR:
-                    Toast.makeText(MessageView.this,
-                                   R.string.status_network_error, Toast.LENGTH_LONG).show();
-                    break;
-                case MSG_INVALID_ID_ERROR:
-                    Toast.makeText(MessageView.this,
-                                   R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
-                    break;
-                case MSG_ATTACHMENT_SAVED:
-                    Toast.makeText(MessageView.this, String.format(
-                                       getString(R.string.message_view_status_attachment_saved), msg.obj),
-                                   Toast.LENGTH_LONG).show();
-                    break;
-                case MSG_ATTACHMENT_NOT_SAVED:
-                    Toast.makeText(MessageView.this,
-                                   getString(R.string.message_view_status_attachment_not_saved),
-                                   Toast.LENGTH_LONG).show();
-                    break;
-                case MSG_SHOW_SHOW_PICTURES:
-                    mShowPicturesSection.setVisibility(msg.arg1 == 1 ? View.VISIBLE : View.GONE);
-                    break;
-                case MSG_FETCHING_ATTACHMENT:
-                    Toast.makeText(MessageView.this,
-                                   getString(R.string.message_view_fetching_attachment_toast),
-                                   Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    super.handleMessage(msg);
-            }
-        }
 
-        public void progress(boolean progress)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_PROGRESS;
-            msg.arg1 = progress ? 1 : 0;
-            sendMessage(msg);
-        }
-
-        public void addAttachment(View attachmentView)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_ADD_ATTACHMENT;
-            msg.obj = attachmentView;
-            sendMessage(msg);
-        }
-
-        public void setAttachmentsEnabled(boolean enabled)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_SET_ATTACHMENTS_ENABLED;
-            msg.arg1 = enabled ? 1 : 0;
-            sendMessage(msg);
-        }
-
-        public void setHeaders(
-            String subject,
-            String from,
-            String date,
-            String time,
-            String to,
-            String cc,
-            boolean hasAttachments,
-            boolean flagged,
-            boolean seen)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_SET_HEADERS;
-            msg.arg1 = hasAttachments ? 1 : 0;
-            msg.arg2 += (flagged ? FLAG_FLAGGED : 0);
-            msg.arg2 += (seen ? FLAG_ANSWERED : 0);
-
-            msg.obj = new String[] { subject, from, date, time, to, cc };
-            sendMessage(msg);
+                }
+            });
         }
 
         public void networkError()
         {
-            sendEmptyMessage(MSG_NETWORK_ERROR);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    Toast.makeText(MessageView.this,
+                                   R.string.status_network_error, Toast.LENGTH_LONG).show();
+
+                }
+            });
         }
 
         public void invalidIdError()
         {
-            sendEmptyMessage(MSG_INVALID_ID_ERROR);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    Toast.makeText(MessageView.this,
+                                   R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
+
+                }
+            });
         }
 
-        public void attachmentSaved(String filename)
+        public void attachmentSaved(final String filename)
         {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_ATTACHMENT_SAVED;
-            msg.obj = filename;
-            sendMessage(msg);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    Toast.makeText(MessageView.this, String.format(
+                                       getString(R.string.message_view_status_attachment_saved), filename),
+                                   Toast.LENGTH_LONG).show();
+
+
+                }
+            });
         }
 
         public void attachmentNotSaved()
         {
-            sendEmptyMessage(MSG_ATTACHMENT_NOT_SAVED);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+
+                    Toast.makeText(MessageView.this,
+                                   getString(R.string.message_view_status_attachment_not_saved),
+                                   Toast.LENGTH_LONG).show();
+
+                }
+            });
         }
 
         public void fetchingAttachment()
         {
-            sendEmptyMessage(MSG_FETCHING_ATTACHMENT);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    Toast.makeText(MessageView.this,
+                                   getString(R.string.message_view_fetching_attachment_toast),
+                                   Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
-        public void showShowPictures(boolean show)
+        public void showShowPictures(final boolean show)
         {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_SHOW_SHOW_PICTURES;
-            msg.arg1 = show ? 1 : 0;
-            sendMessage(msg);
-        }
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    mShowPicturesSection.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
 
+        }
 
 
     }
