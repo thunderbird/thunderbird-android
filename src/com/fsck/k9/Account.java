@@ -53,6 +53,7 @@ public class Account implements Serializable
     FolderMode mFolderTargetMode;
     int mAccountNumber;
     boolean mVibrate;
+    boolean mRing;
     String mRingtoneUri;
     boolean mNotifySync;
     HideButtons mHideMessageViewButtons;
@@ -97,6 +98,7 @@ public class Account implements Serializable
         mNotifyNewMail = true;
         mNotifySync = true;
         mVibrate = false;
+        mRing = true;
         mNotifySelfNewMail = true;
         mLeftHanded = false;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
@@ -231,6 +233,7 @@ public class Account implements Serializable
 
         mAccountNumber = preferences.getPreferences().getInt(mUuid + ".accountNumber", 0);
         mVibrate = preferences.getPreferences().getBoolean(mUuid + ".vibrate", false);
+        mRing = preferences.getPreferences().getBoolean(mUuid + ".ring", true);
 
         try
         {
@@ -531,6 +534,7 @@ public class Account implements Serializable
         editor.remove(mUuid + ".autoExpandFolderName");
         editor.remove(mUuid + ".accountNumber");
         editor.remove(mUuid + ".vibrate");
+        editor.remove(mUuid + ".ring");
         editor.remove(mUuid + ".ringtone");
         editor.remove(mUuid + ".lastFullSync");
         editor.remove(mUuid + ".folderDisplayMode");
@@ -604,6 +608,7 @@ public class Account implements Serializable
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
         editor.putBoolean(mUuid + ".vibrate", mVibrate);
+        editor.putBoolean(mUuid + ".ring", mRing);
         editor.putString(mUuid + ".hideButtonsEnum", mHideMessageViewButtons.name());
         editor.putString(mUuid + ".ringtone", mRingtoneUri);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
@@ -964,6 +969,16 @@ public class Account implements Serializable
     public void setMaxPushFolders(int maxPushFolders)
     {
         mMaxPushFolders = maxPushFolders;
+    }
+
+    public boolean isRing()
+    {
+        return mRing;
+    }
+
+    public void setRing(boolean ring)
+    {
+        mRing = ring;
     }
 
 }

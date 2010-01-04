@@ -34,6 +34,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
+    private static final String PREFERENCE_RING = "account_ring";
     private static final String PREFERENCE_RINGTONE = "account_ringtone";
     private static final String PREFERENCE_INCOMING = "incoming";
     private static final String PREFERENCE_OUTGOING = "outgoing";
@@ -59,6 +60,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mAccountHideButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
+    private CheckBoxPreference mAccountRing;
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
     private ListPreference mSyncMode;
@@ -300,6 +302,10 @@ public class AccountSettings extends K9PreferenceActivity
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.isVibrate());
+        
+
+        mAccountRing = (CheckBoxPreference) findPreference(PREFERENCE_RING);
+        mAccountRing.setChecked(mAccount.isRing());
 
         mAutoExpandFolder = (Preference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
 
@@ -376,6 +382,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
+        mAccount.setRing(mAccountRing.isChecked());
         mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
         mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
         mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));

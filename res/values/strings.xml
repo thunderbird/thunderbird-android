@@ -10,7 +10,7 @@
 
     <string name="read_attachment_label">read Email attachments</string>
     <string name="read_attachment_desc">Allows this application to read your Email attachments.</string>
-
+ 
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
    <string name="accounts_title">Accounts</string>
    <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
@@ -488,6 +488,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_description_label">Account name</string>
     <string name="account_settings_name_label">Your name</string>
     <string name="account_settings_notifications">Notifications</string>
+    <string name="account_settings_ring_enable">Ring</string>
+    <string name="account_settings_ring_summary">Ring when mail arrives</string>
     <string name="account_settings_vibrate_enable">Vibrate</string>
     <string name="account_settings_vibrate_summary">Vibrate when mail arrives</string>
     <string name="account_settings_ringtone">New mail ringtone</string>
