@@ -1705,6 +1705,7 @@ public class MessageList
             @Override
             public void folderStatusChanged(Account account, String folder, int unreadMessageCount)
             {
+                super.folderStatusChanged(account, folder, unreadMessageCount);
                 if (updateForMe(account, folder))
                 {
                     mUnreadMessageCount = unreadMessageCount;
