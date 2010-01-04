@@ -46,6 +46,10 @@ public class MailService extends CoreService
         i.setClass(context, MailService.class);
         i.setAction(MailService.ACTION_RESCHEDULE);
         addWakeLockId(i, wakeLockId);
+        if (wakeLockId == null)
+        {
+            addWakeLock(context, i);
+        }
         context.startService(i);
     }
 
@@ -142,29 +146,25 @@ public class MailService extends CoreService
             }
             else if (ACTION_CANCEL.equals(intent.getAction()))
             {
-                if (Config.LOGV)
-                {
+                if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: cancel");
-                }
 
                 cancel();
             }
             else if (ACTION_RESCHEDULE.equals(intent.getAction()))
             {
-                if (Config.LOGV)
-                {
+                if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: reschedule");
-                }
+
                 rescheduleAll(hasConnectivity, doBackground, startIdObj);
                 startIdObj = null;
 
             }
             else if (ACTION_RESCHEDULE_CHECK.equals(intent.getAction()))
             {
-                if (Config.LOGV)
-                {
+                if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: reschedule check");
-                }
+
                 reschedule(startIdObj);
                 startIdObj = null;
 
@@ -292,18 +292,15 @@ public class MailService extends CoreService
                     long delay = (shortestInterval * (60 * 1000));
 
                     long nextTime = System.currentTimeMillis() + delay;
-                    if (K9.DEBUG)
+                    try
                     {
-                        try
-                        {
-                            Log.i(K9.LOG_TAG,
-                                  "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime));
-                        }
-                        catch (Exception e)
-                        {
-                            // I once got a NullPointerException deep in new Date();
-                            Log.e(K9.LOG_TAG, "Exception while logging", e);
-                        }
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime));
+                    }
+                    catch (Exception e)
+                    {
+                        // I once got a NullPointerException deep in new Date();
+                        Log.e(K9.LOG_TAG, "Exception while logging", e);
                     }
 
                     Intent i = new Intent();
@@ -413,15 +410,14 @@ public class MailService extends CoreService
                     }
                 }
                 if (K9.DEBUG)
+                {
                     Log.v(K9.LOG_TAG, "Pusher refresh interval = " + minInterval);
-
+                }
                 if (minInterval != -1)
                 {
                     long nextTime = System.currentTimeMillis() + minInterval;
-
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Next pusher refresh scheduled for " + new Date(nextTime));
-
                     Intent i = new Intent();
                     i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
                     i.setAction(ACTION_REFRESH_PUSHERS);
@@ -440,13 +436,13 @@ public class MailService extends CoreService
         wakeLock.acquire(wakeLockTime);
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "MailService queueing Runnable " + runner.hashCode() + " with startId " + startId);
-
         Runnable myRunner = new Runnable()
         {
             public void run()
             {
                 try
                 {
+
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "MailService running Runnable " + runner.hashCode() + " with startId " + startId);
                     runner.run();
@@ -456,7 +452,6 @@ public class MailService extends CoreService
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "MailService completed Runnable " + runner.hashCode() + " with startId " + startId);
                     wakeLock.release();
-
                     if (startId != null)
                     {
                         stopSelf(startId);

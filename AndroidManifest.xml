@@ -215,11 +215,15 @@
             <intent-filter>
                 <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="com.fsck.k9.service.BroadcastReceiver.wakeLockRelease"/>
-            </intent-filter>
               <intent-filter>
                 <action android:name="com.fsck.k9.service.BroadcastReceiver.scheduleIntent"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.fsck.k9.service.CoreReceiver"
+              android:enabled="true"
+              >
+              <intent-filter>
+                <action android:name="com.fsck.k9.service.CoreReceiver.wakeLockRelease"/>
             </intent-filter>
         </receiver>
         <service
