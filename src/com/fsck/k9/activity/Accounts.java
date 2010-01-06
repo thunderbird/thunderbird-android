@@ -695,7 +695,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[account.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
 
-            holder.chip.getBackground().setAlpha((unreadMessageCount == null || unreadMessageCount == 0) ? 127 : 255);
+            if (unreadMessageCount == null)
+            {
+                holder.chip.getBackground().setAlpha(0);
+            }
+            else if (unreadMessageCount == 0)
+            {
+                holder.chip.getBackground().setAlpha(127);
+            }
+            else 
+            {
+                holder.chip.getBackground().setAlpha(255);
+            }
+            
 
             return view;
         }
