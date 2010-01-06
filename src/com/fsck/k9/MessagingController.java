@@ -4643,6 +4643,23 @@ public class MessagingController implements Runnable
         }
 
     }
+    
+    private Map<String, List<Message>> binMessages(Message[] messages)
+    {
+        Map<String, List<Message>> bins = new HashMap<String, List<Message>>();
+        for (Message message : messages)
+        {
+            String folderName = message.getFolder().getName();
+            List<Message> bin = bins.get(folderName);
+            if (bin == null)
+            {
+                bin = new LinkedList<Message>();
+                bins.put(folderName, bin);
+            }
+            bin.add(message);
+        }
+        return bins;
+    }
 
 
 
