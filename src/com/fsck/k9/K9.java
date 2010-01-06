@@ -383,6 +383,32 @@ public class K9 extends Application
         { "zip",    "application/zip"}
     };
 
+    public static final int[] COLOR_CHIP_RES_IDS = new int[]
+                                                         {
+                                                             R.drawable.appointment_indicator_leftside_1,
+                                                             R.drawable.appointment_indicator_leftside_2,
+                                                             R.drawable.appointment_indicator_leftside_3,
+                                                             R.drawable.appointment_indicator_leftside_4,
+                                                             R.drawable.appointment_indicator_leftside_5,
+                                                             R.drawable.appointment_indicator_leftside_6,
+                                                             R.drawable.appointment_indicator_leftside_7,
+                                                             R.drawable.appointment_indicator_leftside_8,
+                                                             R.drawable.appointment_indicator_leftside_9,
+                                                             R.drawable.appointment_indicator_leftside_10,
+                                                             R.drawable.appointment_indicator_leftside_11,
+                                                             R.drawable.appointment_indicator_leftside_12,
+                                                             R.drawable.appointment_indicator_leftside_13,
+                                                             R.drawable.appointment_indicator_leftside_14,
+                                                             R.drawable.appointment_indicator_leftside_15,
+                                                             R.drawable.appointment_indicator_leftside_16,
+                                                             R.drawable.appointment_indicator_leftside_17,
+                                                             R.drawable.appointment_indicator_leftside_18,
+                                                             R.drawable.appointment_indicator_leftside_19,
+                                                             R.drawable.appointment_indicator_leftside_20,
+                                                             R.drawable.appointment_indicator_leftside_21,
+                                                         };
+
+    
     public class Intents
     {
 

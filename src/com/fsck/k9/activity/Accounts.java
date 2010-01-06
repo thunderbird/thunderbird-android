@@ -670,6 +670,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 holder.description = (TextView) view.findViewById(R.id.description);
                 holder.email = (TextView) view.findViewById(R.id.email);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
+                
+                holder.chip = view.findViewById(R.id.chip);
+                
                 view.setTag(holder);
             }
             holder.description.setText(account.getDescription());
@@ -690,6 +693,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 //holder.newMessageCount.setText("-");
                 holder.newMessageCount.setVisibility(View.GONE);
             }
+            holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[account.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
+
+            holder.chip.getBackground().setAlpha((unreadMessageCount == null || unreadMessageCount == 0) ? 127 : 255);
 
             return view;
         }
@@ -699,6 +705,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public TextView description;
             public TextView email;
             public TextView newMessageCount;
+            public View chip;
         }
     }
 }

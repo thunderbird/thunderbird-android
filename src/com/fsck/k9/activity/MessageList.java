@@ -72,31 +72,7 @@ public class MessageList
     private static final int WIDGET_FLAG = 2;
     private static final int WIDGET_MULTISELECT = 3;
 
-    private static final int[] colorChipResIds = new int[]
-    {
-        R.drawable.appointment_indicator_leftside_1,
-        R.drawable.appointment_indicator_leftside_2,
-        R.drawable.appointment_indicator_leftside_3,
-        R.drawable.appointment_indicator_leftside_4,
-        R.drawable.appointment_indicator_leftside_5,
-        R.drawable.appointment_indicator_leftside_6,
-        R.drawable.appointment_indicator_leftside_7,
-        R.drawable.appointment_indicator_leftside_8,
-        R.drawable.appointment_indicator_leftside_9,
-        R.drawable.appointment_indicator_leftside_10,
-        R.drawable.appointment_indicator_leftside_11,
-        R.drawable.appointment_indicator_leftside_12,
-        R.drawable.appointment_indicator_leftside_13,
-        R.drawable.appointment_indicator_leftside_14,
-        R.drawable.appointment_indicator_leftside_15,
-        R.drawable.appointment_indicator_leftside_16,
-        R.drawable.appointment_indicator_leftside_17,
-        R.drawable.appointment_indicator_leftside_18,
-        R.drawable.appointment_indicator_leftside_19,
-        R.drawable.appointment_indicator_leftside_20,
-        R.drawable.appointment_indicator_leftside_21,
-    };
-
+    
     private ListView mListView;
     private int mSelectedWidget = WIDGET_FLAG;
 
@@ -1990,7 +1966,6 @@ public class MessageList
 
 
 
-                holder.chip.setBackgroundResource(colorChipResIds[message.account.getAccountNumber() % colorChipResIds.length]);
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 if (holder.selected!=null)
                 {
@@ -2002,6 +1977,7 @@ public class MessageList
 
             if (message != null)
             {
+
                 holder.subject.setTypeface(null, message.read ? Typeface.NORMAL  : Typeface.BOLD);
 
                 setVisibleWidgetsForListItem(view, mSelectedWidget);
@@ -2015,6 +1991,7 @@ public class MessageList
                 holder.position = -1;
                 holder.selected.setChecked(message.selected);
 
+                holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[message.account.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
                 holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
 
                 if (message.downloaded)

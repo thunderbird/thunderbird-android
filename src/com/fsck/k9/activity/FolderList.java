@@ -1172,6 +1172,7 @@ public class FolderList extends K9ListActivity
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.folder_unread_message_count);
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
+                holder.chip = view.findViewById(R.id.chip);
                 holder.rawFolderName = folder.name;
 
                 view.setTag(holder);
@@ -1228,6 +1229,10 @@ public class FolderList extends K9ListActivity
             {
                 holder.newMessageCount.setVisibility(View.GONE);
             }
+            
+            holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[mAccount.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
+
+            holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
 
             return view;
         }
@@ -1388,6 +1393,7 @@ public class FolderList extends K9ListActivity
         public TextView newMessageCount;
 
         public String rawFolderName;
+        public View chip;
     }
 
 }
