@@ -1365,7 +1365,11 @@ public class LocalStore extends Store implements Serializable
                 }
 
                 String oldUID = message.getUid();
-
+                
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "Updating folder_id to " + lDestFolder.getId() + " for message with UID "
+                            + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
+                        
                 message.setUid(K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
 
                 mDb.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[]
