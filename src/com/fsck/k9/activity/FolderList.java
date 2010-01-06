@@ -340,7 +340,6 @@ public class FolderList extends K9ListActivity
                 public void onItemClick(AdapterView parent, View v, int itemPosition, long id)
                 {
                     MessageList.actionHandleFolder(FolderList.this, mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name, false);
-                 //   finish();
                 }
             });
             registerForContextMenu(mListView);
@@ -551,7 +550,6 @@ public class FolderList extends K9ListActivity
     private void onOpenFolder(String folder, boolean startup)
     {
         MessageList.actionHandleFolder(this, mAccount, folder, startup);
-    //    finish();
     }
 
     private void onCompact(Account account)
