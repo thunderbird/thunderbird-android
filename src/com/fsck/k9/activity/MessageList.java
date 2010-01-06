@@ -143,20 +143,22 @@ public class MessageList
 
         public void removeMessage(final List<MessageInfoHolder> messages)
         {
-
             runOnUiThread(new Runnable()
             {
                 public void run()
                 {
                     for (MessageInfoHolder message : messages)
                     {
-                        if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
+                        if (message != null)
                         {
-                            if (message != null && message.selected && mSelectedCount > 0)
+                            if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
                             {
-                                mSelectedCount--;
+                                if (message.selected && mSelectedCount > 0)
+                                {
+                                    mSelectedCount--;
+                                }
+                                mAdapter.messages.remove(message);
                             }
-                            mAdapter.messages.remove(message);
                         }
                     }
                     mAdapter.notifyDataSetChanged();
@@ -1627,7 +1629,15 @@ public class MessageList
             @Override
             public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message)
             {
-                removeMessage(getMessage(message.getUid()));
+                MessageInfoHolder holder = getMessage(message.getUid());
+                if (holder == null)
+                {
+                    Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
+                }
+                else
+                {
+                    removeMessage(holder);
+                }
             }
 
             @Override
@@ -1791,32 +1801,28 @@ public class MessageList
             boolean needsSort = false;
             List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
             List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
-            FolderInfoHolder f = mCurrentFolder; // This is wrong, but what the old code did.
 
             for (Message message : messages)
             {
                 if (updateForMe(account, folder))
                 {
                     MessageInfoHolder m = getMessage(message.getUid());
-
-                    if (m == null)
+                    if (message.isSet(Flag.DELETED))
+                    {
+                        if (m != null)
+                        {
+                            messagesToRemove.add(m);
+                        }
+                    }
+                    else if (m == null)
                     {
                         m = new MessageInfoHolder(message, account);
                         messagesToAdd.add(m);
                     }
                     else
                     {
-                        if (message.isSet(Flag.DELETED))
-                        {
-                            messagesToRemove.add(m);
-
-                        }
-                        else
-                        {
-                            m.populate(message, new FolderInfoHolder(message.getFolder(), account), account);
-                            needsSort = true;
-
-                        }
+                        m.populate(message, new FolderInfoHolder(message.getFolder(), account), account);
+                        needsSort = true;
                     }
                 }
             }

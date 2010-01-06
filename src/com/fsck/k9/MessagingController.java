@@ -1508,20 +1508,21 @@ public class MessagingController implements Runnable
                 boolean messageChanged = syncFlags(localMessage, remoteMessage);
                 if (messageChanged)
                 {
-                    if (isMessageSuppressed(account, folder, localMessage) == false)
-                    {
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                        }
-                    }
-                    if (localMessage.isSet(Flag.DELETED))
+                    if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(account, folder, localMessage))
                     {
                         for (MessagingListener l : getListeners())
                         {
                             l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
                         }
                     }
+                    else
+                    {
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                        }
+                    }
+                    
                 }
                 progress.incrementAndGet();
                 for (MessagingListener l : getListeners())
