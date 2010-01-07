@@ -909,11 +909,11 @@ public class MessageView extends K9Activity
             return;
         }
         mLastDirection = NEXT;
-        displayMessage(mNextMessageUid);
         if (animate)
         {
             mTopView.startAnimation(outToLeftAnimation());
         }
+        displayMessage(mNextMessageUid);
         next.requestFocus();
     }
 
@@ -926,11 +926,11 @@ public class MessageView extends K9Activity
         }
 
         mLastDirection = PREVIOUS;
-        displayMessage(mPreviousMessageUid);
         if (animate)
         {
             mTopView.startAnimation(inFromRightAnimation());
         }
+        displayMessage(mPreviousMessageUid);
         previous.requestFocus();
     }
 
