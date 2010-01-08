@@ -1866,7 +1866,7 @@ public class ImapStore extends Store
                     }
                 }
 
-                mOut = new BufferedOutputStream(mOut);
+                mOut = new BufferedOutputStream(mOut, 1024);
 
                 try
                 {
