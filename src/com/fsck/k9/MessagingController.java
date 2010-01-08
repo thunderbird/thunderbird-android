@@ -4610,7 +4610,7 @@ public class MessagingController implements Runnable
         }
 
 
-        public void synchronizeMailboxProgress(Account account, String folderName, int completed, int total)
+        public synchronized void synchronizeMailboxProgress(Account account, String folderName, int completed, int total)
         {
             Memory memory = getMemory(account, folderName);
             memory.folderCompleted = completed;
@@ -4618,25 +4618,25 @@ public class MessagingController implements Runnable
         }
 
 
-        public void pendingCommandsProcessing(Account account)
+        public synchronized void pendingCommandsProcessing(Account account)
         {
             Memory memory = getMemory(account, null);
             memory.processingState = MemorizingState.STARTED;
             memory.folderCompleted = 0;
             memory.folderTotal = 0;
         }
-        public void pendingCommandsFinished(Account account)
+        public synchronized void pendingCommandsFinished(Account account)
         {
             Memory memory = getMemory(account, null);
             memory.processingState = MemorizingState.FINISHED;
         }
-        public void pendingCommandStarted(Account account, String commandTitle)
+        public synchronized void pendingCommandStarted(Account account, String commandTitle)
         {
             Memory memory = getMemory(account, null);
             memory.processingCommandTitle = commandTitle;
         }
 
-        public void pendingCommandCompleted(Account account, String commandTitle)
+        public synchronized void pendingCommandCompleted(Account account, String commandTitle)
         {
             Memory memory = getMemory(account, null);
             memory.processingCommandTitle = null;
