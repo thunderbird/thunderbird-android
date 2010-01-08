@@ -318,6 +318,10 @@ public class FolderList extends K9ListActivity
             initialFolder = null;
             mStartup = false;
             savedFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
+            if (savedFolderName != null)
+            {
+                mSelectedContextFolder = mAdapter.getFolder(savedFolderName);
+            }
         }
 
         if (mStartup
@@ -328,50 +332,58 @@ public class FolderList extends K9ListActivity
         }
         else
         {
-            requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-            mListView = getListView();
-            mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
-            mListView.setLongClickable(true);
-            mListView.setFastScrollEnabled(true);
-            mListView.setScrollingCacheEnabled(true);
-            mListView.setOnItemClickListener(new OnItemClickListener()
-            {
-                public void onItemClick(AdapterView parent, View v, int itemPosition, long id)
-                {
-                    MessageList.actionHandleFolder(FolderList.this, mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name, false);
-                }
-            });
-            registerForContextMenu(mListView);
-
-            /*
-            * We manually save and restore the list's state because our adapter is
-            * slow.
-             */
-            mListView.setSaveEnabled(false);
-
-            mInflater = getLayoutInflater();
-
-            mAdapter = new FolderListAdapter();
-
-            final Object previousData = getLastNonConfigurationInstance();
-
-            if (previousData != null)
-            {
-                //noinspection unchecked
-                mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
-            }
-
-            setListAdapter(mAdapter);
-
-            setTitle(mAccount.getDescription());
-
-            if (savedFolderName != null)
-            {
-                mSelectedContextFolder = mAdapter.getFolder(savedFolderName);
-            }
+            initializeActivityView();
         }
     }
+
+    /* There are two times when we might need to initialize the activity view
+     * onCreate
+     *  OR
+     * onResume if the initial onCreate opened a folder directly
+     */
+    private void initializeActivityView()
+    {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
+        mListView = getListView();
+        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
+        mListView.setLongClickable(true);
+        mListView.setFastScrollEnabled(true);
+        mListView.setScrollingCacheEnabled(true);
+        mListView.setOnItemClickListener(new OnItemClickListener()
+        {
+            public void onItemClick(AdapterView parent, View v, int itemPosition, long id)
+            {
+                MessageList.actionHandleFolder(FolderList.this, mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name, false);
+            }
+        });
+        registerForContextMenu(mListView);
+
+        /*
+        * We manually save and restore the list's state because our adapter is
+        * slow.
+         */
+        mListView.setSaveEnabled(true);
+
+        mInflater = getLayoutInflater();
+
+        mAdapter = new FolderListAdapter();
+
+        final Object previousData = getLastNonConfigurationInstance();
+
+        if (previousData != null)
+        {
+            //noinspection unchecked
+            mAdapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
+        }
+
+        setListAdapter(mAdapter);
+
+        setTitle(mAccount.getDescription());
+
+    }
+
 
     @Override public Object onRetainNonConfigurationInstance()
     {
@@ -392,6 +404,9 @@ public class FolderList extends K9ListActivity
     @Override public void onResume()
     {
         super.onResume();
+
+        if (mAdapter == null)
+            initializeActivityView();
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
         mAccount.refresh(Preferences.getPreferences(this));
