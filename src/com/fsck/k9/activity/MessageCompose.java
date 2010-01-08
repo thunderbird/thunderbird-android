@@ -1226,6 +1226,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                                             Address.toString(mSourceMessage.getFrom()));
 
                     quotedText += MimeUtility.getTextFromPart(part).replaceAll("(?m)^", ">");
+                    quotedText = quotedText.replaceAll("\\\r", "");
                     mQuotedText.setText(quotedText);
 
                     mQuotedTextBar.setVisibility(View.VISIBLE);
@@ -1332,7 +1333,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                                               mSourceMessage.getRecipients(RecipientType.TO)),
                                           Address.toString(
                                               mSourceMessage.getRecipients(RecipientType.CC)));
-
+                        quotedText = quotedText.replaceAll("\\\r", "");
                         text += quotedText;
                         mQuotedText.setText(text);
                         mQuotedTextBar.setVisibility(View.VISIBLE);
