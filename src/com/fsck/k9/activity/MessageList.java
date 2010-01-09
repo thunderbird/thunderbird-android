@@ -795,6 +795,12 @@ public class MessageList
         }
     }
 
+    private void onAccounts()
+    {
+        Accounts.listAccounts(this);
+        finish();
+    }
+
     private void onShowFolderList()
     {
         FolderList.actionHandleAccount(this, mAccount, false);
@@ -847,11 +853,6 @@ public class MessageList
 
     }
 
-    private void onAccounts()
-    {
-        Accounts.listAccounts(this);
-        finish();
-    }
 
     private void onCycleSort()
     {
