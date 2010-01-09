@@ -103,9 +103,7 @@ public class MessageList
     private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
 
     private boolean sortAscending = true;
-
     private boolean sortDateAscending = false;
-
 
     private boolean mLeftHanded = false;
     private int mSelectedCount = 0;
@@ -223,7 +221,6 @@ public class MessageList
                 }
             });
         }
-
         private void setWindowProgress()
         {
             int level = Window.PROGRESS_END;
@@ -246,7 +243,6 @@ public class MessageList
 
             if (mFolderName != null)
             {
-
                 displayName  = mFolderName;
 
                 if (K9.INBOX.equalsIgnoreCase(displayName))
@@ -275,7 +271,6 @@ public class MessageList
             });
         }
 
-
     }
 
     /**
@@ -299,17 +294,9 @@ public class MessageList
 
     public void onItemClick(AdapterView parent, View v, int position, long id)
     {
-        // Debug.stopMethodTracing();
-        if (
-            mCurrentFolder != null
-            &&
-            ((position+1) == mAdapter.getCount())
-        )
+        if (mCurrentFolder != null && ((position+1) == mAdapter.getCount()))
         {
-            mController.loadMoreMessages(
-                mAccount,
-                mFolderName,
-                mAdapter.mListener);
+            mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
             return;
         }
         else if (mSelectedWidget == WIDGET_MULTISELECT)
@@ -648,10 +635,6 @@ public class MessageList
             return super.onKeyDown(keyCode, event);
         }
     }//onKeyDown
-
-
-
-
 
     private void onOpenMessage(MessageInfoHolder message)
     {
