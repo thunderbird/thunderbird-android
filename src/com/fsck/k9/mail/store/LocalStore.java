@@ -1349,7 +1349,7 @@ public class LocalStore extends Store implements Serializable
         {
             if (!(destFolder instanceof LocalFolder))
             {
-                throw new MessagingException("copyMessages called with non-LocalFolder");
+                throw new MessagingException("moveMessages called with non-LocalFolder");
             }
 
             LocalFolder lDestFolder = (LocalFolder)destFolder;
