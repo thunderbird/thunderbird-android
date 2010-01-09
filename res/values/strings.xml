@@ -195,9 +195,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 </string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
-    <string name="debug_enable_debug_logging_title">Enable debug logging?</string>
-    <string name="debug_enable_debug_logging_summary">Log extra information for diagnostics</string>
-    <string name="debug_enable_sensitive_logging_title">Log sensitive information(May show passwords in logs.)</string>
+    <string name="debug_enable_debug_logging_title">Enable debug logging</string>
+    <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
+    <string name="debug_enable_sensitive_logging_title">Log sensitive information</string>
     <string name="debug_enable_sensitive_logging_summary">May show passwords in logs.</string>
 
     <string name="message_header_mua">K-9 Mail for Android</string>
@@ -415,7 +415,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_notify_summary">Notify in status bar when mail arrives</string>
     <string name="account_settings_notify_sync_summary">Notify in status bar while mail is checked</string>
     <string name="account_settings_show_combined_label">Show combined Inbox</string>
-    <string name="account_settings_left_handed_label">Show list widgets on the left</string>
+    <string name="account_settings_left_handed_label">Widgets on the left</string>
     
     <string name="account_settings_notify_self_label">Notify for mail I sent</string>
     <string name="account_settings_notify_self_summary">Notify even for mail sent from an account identity</string>
@@ -589,15 +589,16 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_signature__location_after_quoted_text">After quoted messages</string>
     <string name="setting_theme_dark">Dark</string>
     <string name="setting_theme_light">Light</string>
-    <string name="display_preferences">Display Preferences</string>
-    <string name="debug_preferences">Diagnostic Preferences</string>
-    <string name="operational_preferences">Operational Preferences</string>
+    <string name="display_preferences">Global Preferences</string>
+    <string name="debug_preferences">Debugging</string>
+    <string name="operational_preferences">Sync</string>
+    <string name="messagelist_preferences">Message Lists</string>
     <string name="settings_theme_label">Theme</string>
     
-    <string name="background_ops_label">Background synchronization</string>
+    <string name="background_ops_label">Background sync</string>
     <string name="background_ops_never">Never</string>
     <string name="background_ops_always">Always</string>
-    <string name="background_ops_enabled">When \'Background data\' is checked</string>
+    <string name="background_ops_enabled">Use device-wide setting</string>
 
     <string name="no_message_seletected_toast">No message selected</string>
     
@@ -630,7 +631,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_push_limit_500">500 folders</string>
     <string name="account_setup_push_limit_1000">1000 folders</string>
     
-    <string name="animations_title">Animations</string>
-    <string name="animations_summary">Activate enhanced animations</string>
+    <string name="animations_title">Animation</string>
+    <string name="animations_summary">Use gaudy visual effects</string>
    
 </resources>
