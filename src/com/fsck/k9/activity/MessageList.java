@@ -314,6 +314,8 @@ public class MessageList
         }
         else if (mSelectedWidget == WIDGET_MULTISELECT)
         {
+            // In multiselect mode make sure that clicking on the item results in
+            // toggling the 'selected' checkbox
             CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
             selected.setChecked(!selected.isChecked());
         }
