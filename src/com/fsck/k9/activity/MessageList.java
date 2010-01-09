@@ -95,6 +95,7 @@ public class MessageList
      */
     private String mFolderName;
 
+    /* if we're doing a search, this contains the query string */
     private String mQueryString;
 
     private MessageListHandler mHandler = new MessageListHandler();
