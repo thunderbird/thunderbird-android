@@ -761,7 +761,7 @@ public class MessageList
     }
 
 
-    private void setVisibleWidgetsForListItem(View v, int nextWidget)
+    private void setVisibleWidgetsForListItem(View v, int showWidget)
     {
 
         Button flagged = (Button) v.findViewById(R.id.flagged);
@@ -772,7 +772,7 @@ public class MessageList
             return;
         }
 
-        if (nextWidget == WIDGET_NONE)
+        if (showWidget == WIDGET_NONE)
         {
             v.findViewById(R.id.widgets).setVisibility(View.GONE);
             return;
@@ -784,7 +784,7 @@ public class MessageList
 
 
 
-        if (nextWidget == WIDGET_MULTISELECT)
+        if (showWidget == WIDGET_MULTISELECT)
         {
             flagged.setVisibility(View.GONE);
             selected.setVisibility(View.VISIBLE);
