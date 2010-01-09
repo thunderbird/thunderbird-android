@@ -66,140 +66,103 @@ public class FolderList extends K9ListActivity
 
     private int mUnreadMessageCount = 0;
 
-
     class FolderListHandler extends Handler
     {
 
-        private static final int MSG_PROGRESS = 2;
-        private static final int MSG_DATA_CHANGED = 3;
-        private static final int MSG_FOLDER_LOADING = 7;
-        private static final int MSG_ACCOUNT_SIZE_CHANGED = 20;
-        private static final int MSG_WORKING_ACCOUNT = 21;
-        private static final int MSG_NEW_FOLDERS = 22;
-
-        private static final int MSG_SET_TITLE = 23;
-
-        @Override
-        public void handleMessage(android.os.Message msg)
+        public void refreshTitle()
         {
-            switch (msg.what)
+            runOnUiThread(new Runnable()
             {
-                case MSG_SET_TITLE:
+                public void run()
                 {
-                    this.setViewTitle();
-                    break;
+                    String dispString = mAdapter.mListener.formatHeader(FolderList.this, getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount);
+
+
+                    setTitle(dispString);
                 }
-                case MSG_NEW_FOLDERS:
-                    ArrayList<FolderInfoHolder> newFolders = (ArrayList<FolderInfoHolder>)msg.obj;
+            });
+        }
+
+
+        public void newFolders(final ArrayList<FolderInfoHolder> newFolders)
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
                     mAdapter.mFolders.clear();
-
                     mAdapter.mFolders.addAll(newFolders);
-
                     mHandler.dataChanged();
-                    break;
-                case MSG_PROGRESS:
-                    setProgressBarIndeterminateVisibility(msg.arg1 != 0);
-                    break;
-                case MSG_DATA_CHANGED:
-                    mAdapter.notifyDataSetChanged();
-                    break;
-                case MSG_FOLDER_LOADING:
-                {
-                    FolderInfoHolder folder = mAdapter.getFolder((String) msg.obj);
-
-                    if (folder != null)
-                    {
-                        folder.loading = msg.arg1 != 0;
-                    }
-
-                    break;
                 }
+            });
+        }
 
-                case MSG_ACCOUNT_SIZE_CHANGED:
+        public void workingAccount(final int res)
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
                 {
-                    Long[] sizes = (Long[])msg.obj;
-                    String toastText = getString(R.string.account_size_changed, mAccount.getDescription(), SizeFormatter.formatSize(getApplication(), sizes[0]), SizeFormatter.formatSize(getApplication(), sizes[1]));
+                    String toastText = getString(res, mAccount.getDescription());
+                    Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        }
+
+        public void accountSizeChanged(final long oldSize, final long newSize)
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    String toastText = getString(R.string.account_size_changed, mAccount.getDescription(), SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));
 
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
-                    break;
                 }
+            });
+        }
 
-                case MSG_WORKING_ACCOUNT:
+        public void folderLoading(final String folder, final boolean loading)
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
                 {
-                    int res = msg.arg1;
-                    String toastText = getString(res, mAccount.getDescription());
+                    FolderInfoHolder folderHolder = mAdapter.getFolder(folder);
 
-                    Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_SHORT);
-                    toast.show();
-                    break;
+
+                    if (folderHolder != null)
+                    {
+                        folderHolder.loading = loading;
+                    }
+
                 }
-                default:
-                    super.handleMessage(msg);
-            }
-        }
-        private void setViewTitle()
-        {
-            String dispString = mAdapter.mListener.formatHeader(FolderList.this, getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount);
-
-            setTitle(dispString);
-
-
-            setTitle(dispString);
+            });
         }
 
-        public void refreshTitle()
+        public void progress(final boolean progress)
         {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_SET_TITLE;
-            sendMessage(msg);
-        }
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    setProgressBarIndeterminateVisibility(progress);
+                }
+            });
 
-
-        public void newFolders(ArrayList<FolderInfoHolder> newFolders)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.obj = newFolders;
-            msg.what = MSG_NEW_FOLDERS;
-            sendMessage(msg);
-        }
-
-        public void workingAccount(int res)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_WORKING_ACCOUNT;
-            msg.arg1 = res;
-            sendMessage(msg);
-        }
-
-        public void accountSizeChanged(long oldSize, long newSize)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_ACCOUNT_SIZE_CHANGED;
-            msg.obj = new Long[] { oldSize, newSize };
-            sendMessage(msg);
-        }
-
-        public void folderLoading(String folder, boolean loading)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_FOLDER_LOADING;
-            msg.arg1 = loading ? 1 : 0;
-            msg.obj = folder;
-            sendMessage(msg);
-        }
-
-        public void progress(boolean progress)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_PROGRESS;
-            msg.arg1 = progress ? 1 : 0;
-            sendMessage(msg);
         }
 
         public void dataChanged()
         {
-            sendEmptyMessage(MSG_DATA_CHANGED);
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
         }
     }
 
@@ -1244,7 +1207,7 @@ public class FolderList extends K9ListActivity
             {
                 holder.newMessageCount.setVisibility(View.GONE);
             }
-            
+
             holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[mAccount.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
 
             holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
