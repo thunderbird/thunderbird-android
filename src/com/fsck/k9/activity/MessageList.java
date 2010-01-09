@@ -383,11 +383,6 @@ public class MessageList
             mSelectedCount  = savedInstanceState.getInt(STATE_KEY_SELECTED_COUNT);
         }
 
-        if (mAccount != null)
-        {
-
-            mLeftHanded = mAccount.getLeftHanded();
-        }
         mAdapter = new MessageListAdapter();
 
         final Object previousData = getLastNonConfigurationInstance();
@@ -452,6 +447,7 @@ public class MessageList
     {
         super.onResume();
 
+        mLeftHanded = K9.messageListLefthandedWidgets();
 
         sortType = mController.getSortType();
         sortAscending = mController.isSortAscending(sortType);

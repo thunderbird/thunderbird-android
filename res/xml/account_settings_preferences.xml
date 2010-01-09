@@ -42,11 +42,6 @@
             android:dialogTitle="@string/account_settings_mail_display_count_label" />
 	   	</PreferenceCategory>
 
-        <CheckBoxPreference
-            android:key="left_handed"
-            android:title="@string/account_settings_left_handed_label" />
-
-
 		<PreferenceCategory android:title="@string/account_settings_message_view">
 
        <ListPreference

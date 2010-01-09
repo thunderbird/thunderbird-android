@@ -27,6 +27,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
     private static final String PREFERENCE_ANIMATIONS = "animations";
+    private static final String PREFERENCE_MESSAGELIST_LEFTHANDED_WIDGETS = "messagelist_lefthanded_widgets";
 
     private ListPreference mTheme;
     private ListPreference mDateFormat;
@@ -34,6 +35,8 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference mAnimations;
+    private CheckBoxPreference mLefthandedWidgets;
+
 
     private String initBackgroundOps;
 
@@ -118,6 +121,9 @@ public class Prefs extends K9PreferenceActivity
 
         mAnimations = (CheckBoxPreference)findPreference(PREFERENCE_ANIMATIONS);
         mAnimations.setChecked(K9.isAnimations());
+
+        mLefthandedWidgets = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_LEFTHANDED_WIDGETS);
+        mLefthandedWidgets.setChecked(K9.messageListLefthandedWidgets());
     }
 
     @Override
@@ -134,7 +140,10 @@ public class Prefs extends K9PreferenceActivity
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         String newBackgroundOps = mBackgroundOps.getValue();
         K9.setBackgroundOps(newBackgroundOps);
+
         K9.setAnimations(mAnimations.isChecked());
+        K9.setMessageListLefthandedWidgets(mLefthandedWidgets.isChecked());
+
         Editor editor = preferences.edit();
         K9.save(editor);
         DateFormatter.setDateFormat(editor, mDateFormat.getValue());

@@ -38,7 +38,13 @@
         android:summary="@string/animations_summary"
         />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/messagelist_preferences" android:key="messagelist_preferences">
+
+         <CheckBoxPreference
+            android:key="messagelist_lefthanded_widgets"
+            android:title="@string/account_settings_left_handed_label"/>
     
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">
         <ListPreference
             android:key="background_ops"

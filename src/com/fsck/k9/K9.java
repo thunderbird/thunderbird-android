@@ -62,7 +62,12 @@ public class K9 extends Application
     public static boolean ENABLE_ERROR_FOLDER = true;
     public static String ERROR_FOLDER_NAME = "K9mail-errors";
 
+
     private static boolean mAnimations = true;
+
+
+    private static boolean mMessageListLefthandedWidgets = false;
+
 
     /**
      * The MIME type(s) of attachments we're willing to send. At the moment it is not possible
@@ -498,6 +503,7 @@ public class K9 extends Application
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
         editor.putBoolean("animations", mAnimations);
+        editor.putBoolean("messageListLefthandedWidgets",mMessageListLefthandedWidgets);
         editor.putInt("theme", theme);
     }
 
@@ -511,6 +517,9 @@ public class K9 extends Application
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
+        mMessageListLefthandedWidgets = sprefs.getBoolean("messageListLefthandedWidgets",false);
+
+
         try
         {
             setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString("backgroundOperations", "WHEN_CHECKED")));
@@ -627,6 +636,16 @@ public class K9 extends Application
     public static void setAnimations(boolean animations)
     {
         mAnimations = animations;
+    }
+
+    public static boolean messageListLefthandedWidgets()
+    {
+        return mMessageListLefthandedWidgets;
+    }
+
+    public static void setMessageListLefthandedWidgets(boolean lefty)
+    {
+        mMessageListLefthandedWidgets = lefty;
     }
 }
 
