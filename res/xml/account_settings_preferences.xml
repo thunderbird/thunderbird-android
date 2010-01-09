@@ -172,6 +172,14 @@
             android:title="@string/account_settings_notify_self_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_notify_self_summary" />
+        
+        <CheckBoxPreference
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:dependency="account_notify"
+            android:key="account_ring"
+            android:defaultValue="true"
+            android:title="@string/account_settings_ring_enable"
+            android:summary="@string/account_settings_ring_summary" />
 
         <RingtonePreference
             android:layout="?android:attr/preferenceLayoutChild"
@@ -180,13 +188,6 @@
             android:title="@string/account_settings_ringtone"
             android:ringtoneType="notification"
             android:defaultValue="content://settings/system/notification_sound" />
-        <CheckBoxPreference
-            android:layout="?android:attr/preferenceLayoutChild"
-            android:dependency="account_notify"
-            android:key="account_ring"
-            android:defaultValue="true"
-            android:title="@string/account_settings_ring_enable"
-            android:summary="@string/account_settings_ring_summary" />
 
         <CheckBoxPreference
             android:layout="?android:attr/preferenceLayoutChild"
