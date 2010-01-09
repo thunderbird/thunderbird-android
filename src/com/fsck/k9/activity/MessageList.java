@@ -2513,7 +2513,7 @@ public class MessageList
 
         if (!messageList.isEmpty())
         {
-            if (mBatchDeleteButton == v)
+            if (v == mBatchDeleteButton)
             {
                 mController.deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
                 mSelectedCount = 0;
