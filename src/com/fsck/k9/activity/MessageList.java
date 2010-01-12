@@ -2310,8 +2310,10 @@ public class MessageList
                     {
                         mSelectedCount--;
                     }
-                    showBatchButtons();
+                    //We must set the flag before showing the buttons
+                    //as the buttons text depends on what is selected
                     message.selected = isChecked;
+                    showBatchButtons();
                 }
             }
         }
@@ -2349,14 +2351,41 @@ public class MessageList
         {
             mSelectedCount = 0;
         }
+
+        int readButtonStringId;
+        int flagButtonStringId;
+
         if (mSelectedCount==0)
         {
+            readButtonStringId = R.string.message_list_mark_read_action;
+            flagButtonStringId = R.string.message_list_flag_action;
             disableBatchButtons();
         }
         else
         {
+            boolean newReadState = computeBatchDirection(false);
+            if (newReadState) 
+            {
+                readButtonStringId = R.string.message_list_mark_read_action;
+            }
+            else
+            {
+                readButtonStringId = R.string.message_list_mark_unread_action;
+            }
+            boolean newFlagState = computeBatchDirection(true);
+            if (newFlagState)
+            {
+                flagButtonStringId = R.string.message_list_flag_action;
+            }
+            else
+            {
+                flagButtonStringId = R.string.message_list_unflag_action;
+            }
             enableBatchButtons();
         }
+
+        mBatchReadButton.setText(readButtonStringId);
+        mBatchFlagButton.setText(flagButtonStringId);
     }
 
     class FooterViewHolder

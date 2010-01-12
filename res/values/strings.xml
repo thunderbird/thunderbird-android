@@ -211,10 +211,13 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
                        <xliff:g id="polling">%s</xliff:g>
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
-
-    
-
-<string name="message_list_load_more_messages_action">Load more messages</string>
+    <string name="message_list_load_more_messages_action">Load more messages</string>
+    <string name="message_list_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_delete_action">Delete</string>
+    <string name="message_list_mark_read_action">Mark read</string>
+    <string name="message_list_mark_unread_action">Mark unread</string>
+    <string name="message_list_flag_action">Flag</string>
+    <string name="message_list_unflag_action">Unflag</string>
 
     <string name="message_compose_to_hint">To</string>
     <string name="message_compose_cc_hint">Cc</string>
@@ -228,7 +231,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_compose_downloading_attachments_toast">Some attachments were not downloaded. They will be downloaded automatically before this message is sent.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not downloaded.</string>
 
-    <string name="message_list_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
+    
  
     <string name="message_view_from_format">From: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_view_to_label">To:</string>
