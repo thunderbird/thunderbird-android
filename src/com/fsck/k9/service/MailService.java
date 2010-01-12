@@ -124,7 +124,6 @@ public class MailService extends CoreService
 
             }
 
-            setForeground(true);  // if it gets killed once, it'll never restart
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "MailService.onStart(" + intent + ", " + startId
                       + "), hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
