@@ -1,6 +1,8 @@
 package com.fsck.k9.service;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Service;
@@ -18,6 +20,7 @@ public abstract class CoreService extends Service
     public static String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
     private static ConcurrentHashMap<Integer, WakeLock> wakeLocks = new ConcurrentHashMap<Integer, WakeLock>();
     private static AtomicInteger wakeLockSeq = new AtomicInteger(0);
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(1);  // Must be single threaded
 
     protected static void addWakeLockId(Intent i, Integer wakeLockId)
     {
@@ -86,6 +89,41 @@ public abstract class CoreService extends Service
 
     }
 
+    public void execute(Context context, final Runnable runner, int wakeLockTime, final Integer startId)
+    {
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        final WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
+        wakeLock.setReferenceCounted(false);
+        wakeLock.acquire(wakeLockTime);
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "CoreService queueing Runnable " + runner.hashCode() + " with startId " + startId);
+        Runnable myRunner = new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
+
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "CoreService running Runnable " + runner.hashCode() + " with startId " + startId);
+                    runner.run();
+                }
+                finally
+                {
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "CoreService completed Runnable " + runner.hashCode() + " with startId " + startId);
+                    wakeLock.release();
+                    if (startId != null)
+                    {
+                        stopSelf(startId);
+                    }
+                }
+            }
+
+        };
+
+        threadPool.execute(myRunner);
+    }
 
     public abstract void startService(Intent intent, int startId);
 

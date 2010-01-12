@@ -37,8 +37,7 @@ public class MailService extends CoreService
 
     private static final String HAS_CONNECTIVITY = "com.fsck.k9.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
 
-    private final ExecutorService threadPool = Executors.newFixedThreadPool(1);  // Must be single threaded
-
+    
 
     public static void actionReschedule(Context context, Integer wakeLockId)
     {
@@ -428,42 +427,7 @@ public class MailService extends CoreService
         , K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT, startId);
     }
 
-    public void execute(Context context, final Runnable runner, int wakeLockTime, final Integer startId)
-    {
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        final WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
-        wakeLock.setReferenceCounted(false);
-        wakeLock.acquire(wakeLockTime);
-        if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "MailService queueing Runnable " + runner.hashCode() + " with startId " + startId);
-        Runnable myRunner = new Runnable()
-        {
-            public void run()
-            {
-                try
-                {
-
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "MailService running Runnable " + runner.hashCode() + " with startId " + startId);
-                    runner.run();
-                }
-                finally
-                {
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "MailService completed Runnable " + runner.hashCode() + " with startId " + startId);
-                    wakeLock.release();
-                    if (startId != null)
-                    {
-                        stopSelf(startId);
-                    }
-                }
-            }
-
-        };
-
-        threadPool.execute(myRunner);
-    }
-
+  
     public IBinder onBind(Intent intent)
     {
         return null;
