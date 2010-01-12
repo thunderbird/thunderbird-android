@@ -565,7 +565,7 @@ public class LocalStore extends Store implements Serializable
                    null,
                    "SELECT "
                    + GET_MESSAGES_COLS
-                   + "FROM messages WHERE html_content LIKE ? OR subject LIKE ? OR sender_list LIKE ? ORDER BY date DESC"
+                   + "FROM messages WHERE deleted = 0 AND (html_content LIKE ? OR subject LIKE ? OR sender_list LIKE ?) ORDER BY date DESC"
                    , new String[]
                    {
                        queryString,
