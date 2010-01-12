@@ -954,28 +954,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         if (contentType == null)
         {
-            boolean found = false;
-            if (attachment.name!=null)
-            {
-                int index = attachment.name.lastIndexOf('.');
-                if (index!=-1)
-                {
-                    String extension = attachment.name.substring(index+1).toLowerCase();
-                    for (int i=0; i<K9.CONTENT_TYPE_BY_EXTENSION_MAP.length; i++)
-                    {
-                        if (K9.CONTENT_TYPE_BY_EXTENSION_MAP[i][0].equals(extension))
-                        {
-                            contentType = K9.CONTENT_TYPE_BY_EXTENSION_MAP[i][1];
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (!found)
-            {
-                contentType = "application/octet-stream";
-            }
+            contentType = MimeUtility.getMimeTypeByExtension(attachment.name);
         }
 
         attachment.contentType = contentType;

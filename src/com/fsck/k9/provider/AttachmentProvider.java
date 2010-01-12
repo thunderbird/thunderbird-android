@@ -123,7 +123,7 @@ public class AttachmentProvider extends ContentProvider
                 db = SQLiteDatabase.openDatabase(path, null, 0);
                 cursor = db.query(
                              "attachments",
-                             new String[] { "mime_type" },
+                             new String[] { "mime_type", "name" },
                              "id = ?",
                              new String[] { id },
                              null,
@@ -131,10 +131,15 @@ public class AttachmentProvider extends ContentProvider
                              null);
                 cursor.moveToFirst();
                 String type = cursor.getString(0);
+                String name = cursor.getString(1);
                 cursor.close();
                 db.close();
-                return type;
 
+                if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(type))
+                {
+                    type = MimeUtility.getMimeTypeByExtension(name);
+                }
+                return type;
             }
             finally
             {

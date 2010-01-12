@@ -1278,7 +1278,12 @@ public class MessageView extends K9Activity
 
             Attachment attachment = new Attachment();
             attachment.size = size;
-            attachment.contentType = part.getMimeType();
+            String mimeType = part.getMimeType();
+            if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(mimeType))
+            {
+                mimeType = MimeUtility.getMimeTypeByExtension(name);
+            }
+            attachment.contentType = mimeType;
             attachment.name = name;
             attachment.part = (LocalAttachmentBodyPart) part;
 
