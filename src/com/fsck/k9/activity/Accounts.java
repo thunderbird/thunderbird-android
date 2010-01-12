@@ -561,6 +561,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             case R.id.about:
                 onAbout();
                 break;
+            case R.id.search:
+                onSearchRequested();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -635,13 +638,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         menu.setHeaderTitle(R.string.accounts_context_menu_title);
         getMenuInflater().inflate(R.menu.accounts_context, menu);
     }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        return super.onKeyDown(keyCode, event);
-    }
-
 
     class AccountsAdapter extends ArrayAdapter<Account>
     {

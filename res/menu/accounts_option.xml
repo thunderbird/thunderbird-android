@@ -7,6 +7,11 @@
 		android:icon="@drawable/ic_menu_compose"
 	/>
 	<item
+		android:id="@+id/search"
+		android:title="@string/search_action"
+		android:icon="@android:drawable/ic_search_category_default"
+	/>
+	<item
 		android:id="@+id/add_new_account"
 		android:title="@string/add_account_action"
 		android:icon="@drawable/ic_menu_add"
