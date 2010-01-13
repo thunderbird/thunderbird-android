@@ -11,6 +11,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Config;
 import android.util.Log;
 import android.view.*;
@@ -74,6 +79,9 @@ public class MessageList
 
     
     private ListView mListView;
+
+    private boolean mTouchView = true;
+
     private int mSelectedWidget = WIDGET_FLAG;
 
     private MessageListAdapter mAdapter;
@@ -673,6 +681,8 @@ public class MessageList
 
     public void cycleVisibleWidgets(boolean ascending)
     {
+        if (mTouchView == true ) { return;}
+
         if (ascending)
         {
 
@@ -753,7 +763,7 @@ public class MessageList
         Button flagged = (Button) v.findViewById(R.id.flagged);
         CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
 
-        if (flagged == null || selected == null)
+        if (mTouchView == true || flagged == null || selected == null)
         {
             return;
         }
@@ -1202,10 +1212,12 @@ public class MessageList
 
             case R.id.batch_select_all:
                 setAllSelected(true);
+                toggleBatchButtons();
                 return true;
 
             case R.id.batch_deselect_all:
                 setAllSelected(false);
+                toggleBatchButtons();
                 return true;
 
             case R.id.batch_copy_op:
@@ -1911,12 +1923,19 @@ public class MessageList
             }
             else
             {
+                if (mTouchView)
+                {
+                view = mInflater.inflate(R.layout.message_list_item_touchable, parent, false);
+                view.setId(R.layout.message_list_item);
+                }
+
+                else {
                 view = mInflater.inflate(R.layout.message_list_item, parent, false);
                 view.setId(R.layout.message_list_item);
                 View widgetParent;
                 if (mLeftHanded == false)
                 {
-                    widgetParent  = view.findViewById(R.id.widgets_right);
+                    widgetParent = view.findViewById(R.id.widgets_right);
                 }
                 else
                 {
@@ -1925,6 +1944,7 @@ public class MessageList
                 View widgets = mInflater.inflate(R.layout.message_list_widgets,parent,false);
                 widgets.setId(R.id.widgets);
                 ((LinearLayout) widgetParent).addView(widgets);
+                }
             }
 
 
@@ -1937,6 +1957,7 @@ public class MessageList
                 holder.from = (TextView) view.findViewById(R.id.from);
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
+                holder.preview = (TextView) view.findViewById(R.id.preview);
                 holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
                 holder.flagged.setOnClickListener(new OnClickListener()
                 {
@@ -1989,8 +2010,27 @@ public class MessageList
 
                 holder.subject.setText(message.subject);
 
-                holder.from.setText(message.sender);
-                holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
+                if (holder.preview != null) {
+                    // in the touchable UI, we have previews
+                    // otherwise, we have just a "from" line
+                    // because text views can't wrap around each other(?)
+                    // we compose a custom view containing the preview and the
+                    // from
+
+
+                    holder.preview.setText(message.sender+  " " + message.preview, TextView.BufferType.SPANNABLE);
+Spannable str = (Spannable)holder.preview.getText();
+
+// Create our span sections, and assign a format to each.
+str.setSpan(new TextAppearanceSpan(null ,Typeface.BOLD ,-1, holder.subject.getTextColors(), holder.subject.getLinkTextColors()), 0, message.sender.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+                } else {
+                    holder.from.setText(message.sender);
+                    holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
+
+                }
+
                 holder.date.setText(message.date);
                 holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                     message.answered ? mAnsweredIcon : null, // left
@@ -2004,10 +2044,19 @@ public class MessageList
                 holder.chip.getBackground().setAlpha(0);
                 holder.subject.setText("No subject");
                 holder.subject.setTypeface(null, Typeface.NORMAL);
+                if (holder.preview != null) {
+                holder.preview.setText("No sender");
+                holder.preview.setTypeface(null, Typeface.NORMAL);
+                holder.preview.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                } else {
                 holder.from.setText("No sender");
                 holder.from.setTypeface(null, Typeface.NORMAL);
-                holder.date.setText("No date");
                 holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+
+                }
+
+
+                holder.date.setText("No date");
                 //WARNING: Order of the next 2 lines matter
                 holder.position = -1;
                 holder.selected.setChecked(false);
@@ -2088,6 +2137,8 @@ public class MessageList
         public String sender;
 
         public String compareCounterparty;
+
+        public String preview;
 
         public String[] recipients;
 
@@ -2177,6 +2228,7 @@ public class MessageList
                 this.uid = message.getUid();
                 this.message = m;
                 this.account = account;
+                this.preview = message.getPreview();
 
             }
             catch (MessagingException me)
