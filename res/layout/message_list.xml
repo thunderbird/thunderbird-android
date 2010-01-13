@@ -37,6 +37,13 @@
             android:layout_weight="1"
             android:text="@string/message_list_flag_action"
         />
+        <Button
+            android:id="@+id/batch_done_button"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/done_action"
+        />
     </LinearLayout>
     <ListView
         android:id="@+id/message_list"

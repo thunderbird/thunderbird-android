@@ -120,6 +120,7 @@ public class MessageList
     private Button mBatchReadButton;
     private Button mBatchDeleteButton;
     private Button mBatchFlagButton;
+    private Button mBatchDoneButton;
 
     class MessageListHandler extends Handler
     {
@@ -358,6 +359,16 @@ public class MessageList
         mBatchDeleteButton.setOnClickListener(this);
         mBatchFlagButton = (Button) findViewById(R.id.batch_flag_button);
         mBatchFlagButton.setOnClickListener(this);
+        mBatchDoneButton = (Button) findViewById(R.id.batch_done_button);
+
+        if (mTouchView == true)
+        {
+            mBatchDoneButton.setOnClickListener(this);
+        }
+        else
+        {
+            mBatchDoneButton.setVisibility(View.GONE);
+        }
 
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
@@ -2537,6 +2548,12 @@ str.setSpan(new TextAppearanceSpan(null ,Typeface.BOLD ,-1, holder.subject.getTe
         List<Message> messageList = new ArrayList<Message>();
         List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
 
+        if (v == mBatchDoneButton)
+        {
+            setAllSelected(false);
+            return;
+        }
+
         if (v == mBatchFlagButton)
         {
             newState = computeBatchDirection(true);
@@ -2547,6 +2564,7 @@ str.setSpan(new TextAppearanceSpan(null ,Typeface.BOLD ,-1, holder.subject.getTe
         }
         for (MessageInfoHolder holder : mAdapter.messages)
         {
+
             if (holder.selected)
             {
                 if (v == mBatchDeleteButton)
@@ -2597,7 +2615,7 @@ str.setSpan(new TextAppearanceSpan(null ,Typeface.BOLD ,-1, holder.subject.getTe
             mSelectedCount += (isSelected ? 1 : 0);
         }
         mAdapter.notifyDataSetChanged();
-        showBatchButtons();
+        toggleBatchButtons();
     }
 
     private void flagSelected(Flag flag, boolean newState)
