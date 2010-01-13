@@ -39,6 +39,9 @@
         />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/messagelist_preferences" android:key="messagelist_preferences">
+         <CheckBoxPreference
+            android:key="messagelist_touchable"
+            android:title="@string/account_settings_touchable_label"/>
 
          <CheckBoxPreference
             android:key="messagelist_lefthanded_widgets"

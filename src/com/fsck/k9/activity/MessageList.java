@@ -460,6 +460,7 @@ public class MessageList
         super.onResume();
 
         mLeftHanded = K9.messageListLefthandedWidgets();
+        mTouchView = K9.messageListTouchable();
 
         sortType = mController.getSortType();
         sortAscending = mController.isSortAscending(sortType);

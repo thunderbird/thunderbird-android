@@ -28,6 +28,7 @@ public class Prefs extends K9PreferenceActivity
 
     private static final String PREFERENCE_ANIMATIONS = "animations";
     private static final String PREFERENCE_MESSAGELIST_LEFTHANDED_WIDGETS = "messagelist_lefthanded_widgets";
+    private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
 
     private ListPreference mTheme;
     private ListPreference mDateFormat;
@@ -36,6 +37,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference mAnimations;
     private CheckBoxPreference mLefthandedWidgets;
+    private CheckBoxPreference mTouchable;
 
 
     private String initBackgroundOps;
@@ -124,6 +126,9 @@ public class Prefs extends K9PreferenceActivity
 
         mLefthandedWidgets = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_LEFTHANDED_WIDGETS);
         mLefthandedWidgets.setChecked(K9.messageListLefthandedWidgets());
+        
+        mTouchable = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_TOUCHABLE);
+        mTouchable.setChecked(K9.messageListTouchable());
     }
 
     @Override
@@ -143,6 +148,8 @@ public class Prefs extends K9PreferenceActivity
 
         K9.setAnimations(mAnimations.isChecked());
         K9.setMessageListLefthandedWidgets(mLefthandedWidgets.isChecked());
+
+        K9.setMessageListTouchable(mTouchable.isChecked());
 
         Editor editor = preferences.edit();
         K9.save(editor);
