@@ -8,6 +8,9 @@
         android:title="@string/empty_trash_action" />
     <item android:id="@+id/edit_account"
         android:title="@string/account_settings_action" />
+    <item android:id="@+id/advanced"
+        android:title="@string/advanced">
+        <menu>
     <item android:id="@+id/compact"
         android:title="@string/compact_action" />    
     <item android:id="@+id/clear"
@@ -16,5 +19,6 @@
         android:title="@string/remove_account_action" />
     <item android:id="@+id/clear_pending"
         android:title="@string/clear_pending_action" />
-        
+    </menu>
+    </item>
 </menu>
