@@ -32,7 +32,7 @@ import java.util.regex.Matcher;
  */
 public class LocalStore extends Store implements Serializable
 {
-    private static final int DB_VERSION = 32;
+    private static final int DB_VERSION = 33;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
     private String mPath;
@@ -55,7 +55,7 @@ public class LocalStore extends Store implements Serializable
      */
     static private String GET_MESSAGES_COLS =
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
-        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id ";
+        + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
 
     /**
@@ -129,7 +129,7 @@ public class LocalStore extends Store implements Serializable
             mDb.execSQL("DROP TABLE IF EXISTS messages");
             mDb.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
                         + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
-                        + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT)");
+                        + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
 
             mDb.execSQL("DROP TABLE IF EXISTS headers");
             mDb.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
@@ -170,7 +170,11 @@ public class LocalStore extends Store implements Serializable
             if (mDb.getVersion() < 32)
             {
                 mDb.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
-
+            }
+            if (mDb.getVersion() < 33)
+            {
+                mDb.execSQL("ALTER TABLE messages ADD preview TEXT");
+                mDb.execSQL("UPDATE messages SET preview = SUBSTR(text_content,1,200) WHERE deleted = 0");
 
             }
 
@@ -1468,6 +1472,7 @@ public class LocalStore extends Store implements Serializable
 
                 String text = sbText.toString();
                 String html = markupContent(text, sbHtml.toString());
+                String preview = calculateContentPreview(text);
 
                 try
                 {
@@ -1485,6 +1490,7 @@ public class LocalStore extends Store implements Serializable
                     cv.put("bcc_list", Address.pack(message.getRecipients(RecipientType.BCC)));
                     cv.put("html_content", html.length() > 0 ? html : null);
                     cv.put("text_content", text.length() > 0 ? text : null);
+                    cv.put("preview", preview.length() > 0 ? preview : null);
                     cv.put("reply_to_list", Address.pack(message.getReplyTo()));
                     cv.put("attachment_count", attachments.size());
                     cv.put("internal_date",  message.getInternalDate() == null
@@ -1561,13 +1567,14 @@ public class LocalStore extends Store implements Serializable
 
             String text = sbText.toString();
             String html = markupContent(text, sbHtml.toString());
+            String preview = calculateContentPreview(text);
 
             try
             {
                 mDb.execSQL("UPDATE messages SET "
                             + "uid = ?, subject = ?, sender_list = ?, date = ?, flags = ?, "
                             + "folder_id = ?, to_list = ?, cc_list = ?, bcc_list = ?, "
-                            + "html_content = ?, text_content = ?, reply_to_list = ?, "
+                            + "html_content = ?, text_content = ?, preview = ?, reply_to_list = ?, "
                             + "attachment_count = ? WHERE id = ?",
                             new Object[]
                             {
@@ -1587,6 +1594,7 @@ public class LocalStore extends Store implements Serializable
                                              .getRecipients(RecipientType.BCC)),
                                 html.length() > 0 ? html : null,
                                 text.length() > 0 ? text : null,
+                                preview.length() > 0 ? preview : null,
                                 Address.pack(message.getReplyTo()),
                                 attachments.size(),
                                 message.mId
@@ -1921,6 +1929,38 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
+        /*
+         * calcualteContentPreview
+         * Takes a plain text message body as a string.
+         * Returns a message summary as a string suitable for showing in a message list
+         *
+         * A message summary should be about the first 160 characters
+         * of unique text written by the message sender
+         * Quoted text, "On $date" and so on will be stripped out.
+         * All newlines and whitespace will be compressed.
+         *
+         */
+        public String calculateContentPreview(String text)
+        {
+            if (text == null) {
+                return null;
+            }
+
+            text = text.replaceAll("^.*:","");
+            text = text.replaceAll("(?m)^>.*$","");
+            text = text.replaceAll("^On .*wrote.?$","");
+            text = text.replaceAll("(\\r|\\n)+"," ");
+            text = text.replaceAll("\\s+"," ");
+            if (text.length() <= 160) {
+                return text;
+            }
+            else
+            {
+                text = text.substring(0,160);
+                return text;
+            }
+
+        }
 
         public String markupContent(String text, String html)
         {
@@ -2036,6 +2076,8 @@ public class LocalStore extends Store implements Serializable
         private int mAttachmentCount;
         private String mSubject;
 
+        private String mPreview = "";
+
         private boolean mHeadersLoaded = false;
         private boolean mMessageDirty = false;
 
@@ -2083,6 +2125,7 @@ public class LocalStore extends Store implements Serializable
             this.mAttachmentCount = cursor.getInt(10);
             this.setInternalDate(new Date(cursor.getLong(11)));
             this.setMessageId(cursor.getString(12));
+            mPreview = (cursor.getString(14) == null ? "" : cursor.getString(14));
             if (this.mFolder == null)
             {
                 LocalFolder f = new LocalFolder(cursor.getInt(13));
@@ -2126,6 +2169,9 @@ public class LocalStore extends Store implements Serializable
             return;
         }
 
+        public String getPreview() {
+                return mPreview;
+        }
 
         @Override
         public String getSubject() throws MessagingException
@@ -2259,6 +2305,7 @@ public class LocalStore extends Store implements Serializable
                     "to_list = NULL, " +
                     "cc_list = NULL, " +
                     "bcc_list = NULL, " +
+                    "preview = NULL, " +
                     "html_content = NULL, " +
                     "text_content = NULL, " +
                     "reply_to_list = NULL " +
