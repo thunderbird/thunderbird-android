@@ -137,7 +137,7 @@ public class MessageList
                         }
                     }
                     mAdapter.notifyDataSetChanged();
-                    configureBatchButtons();
+                    toggleBatchButtons();
                 }
             });
 
@@ -305,6 +305,7 @@ public class MessageList
             // toggling the 'selected' checkbox
             CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
             selected.setChecked(!selected.isChecked());
+            toggleBatchButtons();
         }
         else
         {
@@ -2313,26 +2314,12 @@ public class MessageList
                     //We must set the flag before showing the buttons
                     //as the buttons text depends on what is selected
                     message.selected = isChecked;
-                    showBatchButtons();
+                    toggleBatchButtons();
                 }
             }
         }
     }
 
-    private void enableBatchButtons()
-    {
-        mBatchDeleteButton.setEnabled(true);
-        mBatchReadButton.setEnabled(true);
-        mBatchFlagButton.setEnabled(true);
-    }
-
-    private void disableBatchButtons()
-    {
-        mBatchDeleteButton.setEnabled(false);
-        mBatchReadButton.setEnabled(false);
-        mBatchFlagButton.setEnabled(false);
-
-    }
     private void hideBatchButtons()
     {
         //TODO: Fade out animation
@@ -2340,12 +2327,11 @@ public class MessageList
     }
     private void showBatchButtons()
     {
-        configureBatchButtons();
         //TODO: Fade in animation
         mBatchButtonArea.setVisibility(View.VISIBLE);
     }
 
-    private void configureBatchButtons()
+    private void toggleBatchButtons()
     {
         if (mSelectedCount < 0)
         {
@@ -2359,7 +2345,7 @@ public class MessageList
         {
             readButtonStringId = R.string.message_list_mark_read_action;
             flagButtonStringId = R.string.message_list_flag_action;
-            disableBatchButtons();
+            hideBatchButtons();
         }
         else
         {
@@ -2381,7 +2367,7 @@ public class MessageList
             {
                 flagButtonStringId = R.string.message_list_unflag_action;
             }
-            enableBatchButtons();
+            showBatchButtons();
         }
 
         mBatchReadButton.setText(readButtonStringId);
@@ -2532,7 +2518,7 @@ public class MessageList
             {
                 mController.deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
                 mSelectedCount = 0;
-                configureBatchButtons();
+                toggleBatchButtons();
             }
             else
             {
@@ -2599,7 +2585,7 @@ public class MessageList
 
         mController.deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
         mSelectedCount = 0;
-        configureBatchButtons();
+        toggleBatchButtons();
     }
 
     private void moveOrCopySelected(boolean isMove)
