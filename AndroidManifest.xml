@@ -25,6 +25,12 @@
                 android:label="@string/read_attachment_label"
                 android:description="@string/read_attachment_desc"/>
     <uses-permission android:name="com.fsck.k9.permission.READ_ATTACHMENT"/>
+    <permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"
+                 android:permissionGroup="android.permission-group.MESSAGES"
+                 android:protectionLevel="dangerous"
+                 android:label="@string/remote_control_label"
+                 android:description="@string/remote_control_desc"/>
+    <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="K9"
         >
         <meta-data android:name="android.app.default_searchable"
@@ -219,6 +225,19 @@
                 <action android:name="com.fsck.k9.service.BroadcastReceiver.scheduleIntent"/>
             </intent-filter>
         </receiver>
+        <receiver android:name="com.fsck.k9.service.RemoteControlReceiver"
+               android:enabled="true"
+               android:permission="com.fsck.k9.permission.REMOTE_CONTROL"
+               >
+               <intent-filter>
+                 <action android:name="com.fsck.k9.K9RemoteControl.set"/>
+
+             </intent-filter>
+             <intent-filter>
+                <action android:name="com.fsck.k9.K9RemoteControl.requestAccounts"/>
+
+             </intent-filter>
+         </receiver>        
         <receiver android:name="com.fsck.k9.service.CoreReceiver"
               android:enabled="true"
               >
@@ -241,6 +260,12 @@
              android:enabled="true"
             >
          </service>
+         <service
+              android:name="com.fsck.k9.service.RemoteControlService"
+              android:enabled="true"
+              android:permission="com.fsck.k9.permission.REMOTE_CONTROL"
+             >
+          </service>
          <service
              android:name="com.fsck.k9.service.SleepService"
              android:enabled="true"
