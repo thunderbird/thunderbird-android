@@ -58,7 +58,7 @@
     <string name="compose_action">Compose</string>
     <string name="search_action">Search</string>
     <string name="search_results">Search results</string>
-    <string name="preferences_action">Preferences</string>
+    <string name="preferences_action">Settings</string>
     <string name="open_action">Open</string>
     <string name="account_settings_action">Account settings</string>
     <string name="folder_settings_action">Folder settings</string>
