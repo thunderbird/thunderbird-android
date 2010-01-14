@@ -1326,38 +1326,38 @@ public class MessageList
             menu.findItem(R.id.list_folders).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
         }
-        switch (mSelectedWidget)
+        if (mTouchView == true || mSelectedWidget == WIDGET_MULTISELECT)
         {
-            case WIDGET_FLAG:
+            boolean anySelected = anySelected();
+            setOpsState(menu, true, anySelected);
+
+            if (mTouchView == false)
             {
-                setOpsState(menu, false, false);
-                setOpsMode(menu, R.id.batch_flag_mode);
-                break;
-            }
-            case WIDGET_MULTISELECT:
-            {
-                boolean anySelected = anySelected();
-                setOpsState(menu, true, anySelected);
                 setOpsMode(menu, R.id.batch_select_mode);
-                boolean newFlagState = computeBatchDirection(true);
-                boolean newReadState = computeBatchDirection(false);
-                menu.findItem(R.id.batch_flag_op).setVisible(newFlagState);
-                menu.findItem(R.id.batch_unflag_op).setVisible(!newFlagState);
-                menu.findItem(R.id.batch_mark_read_op).setVisible(newReadState);
-                menu.findItem(R.id.batch_mark_unread_op).setVisible(!newReadState);
-                menu.findItem(R.id.batch_deselect_all).setEnabled(anySelected);
-                menu.findItem(R.id.batch_select_all).setEnabled(true);
-                // TODO: batch move and copy not yet implemented
-                menu.findItem(R.id.batch_move_op).setVisible(false);
-                menu.findItem(R.id.batch_copy_op).setVisible(false);
-                break;
             }
-            case WIDGET_NONE:
-            {
-                setOpsState(menu, false, false);
-                setOpsMode(menu, R.id.batch_plain_mode);
-                break;
-            }
+
+
+            boolean newFlagState = computeBatchDirection(true);
+            boolean newReadState = computeBatchDirection(false);
+            menu.findItem(R.id.batch_flag_op).setVisible(newFlagState);
+            menu.findItem(R.id.batch_unflag_op).setVisible(!newFlagState);
+            menu.findItem(R.id.batch_mark_read_op).setVisible(newReadState);
+            menu.findItem(R.id.batch_mark_unread_op).setVisible(!newReadState);
+            menu.findItem(R.id.batch_deselect_all).setEnabled(anySelected);
+            menu.findItem(R.id.batch_select_all).setEnabled(true);
+            // TODO: batch move and copy not yet implemented
+            menu.findItem(R.id.batch_move_op).setVisible(false);
+            menu.findItem(R.id.batch_copy_op).setVisible(false);
+        }
+        else if (mSelectedWidget ==  WIDGET_FLAG)
+        {
+            setOpsState(menu, false, false);
+            setOpsMode(menu, R.id.batch_flag_mode);
+        }
+        else if (mSelectedWidget == WIDGET_NONE)
+        {
+            setOpsState(menu, false, false);
+            setOpsMode(menu, R.id.batch_plain_mode);
         }
 
         if (mCurrentFolder != null && mCurrentFolder.outbox)

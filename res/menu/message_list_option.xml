@@ -45,14 +45,17 @@
 			<item
 				android:id="@+id/batch_flag_mode"
 				android:title="@string/batch_flag_mode"
+				android:visible="false"
 			/>
 			<item
 				android:id="@+id/batch_select_mode"
 				android:title="@string/batch_select_mode"
+				android:visible="false"
 			/>
 			<item
 				android:id="@+id/batch_plain_mode"
 				android:title="@string/batch_plain_mode"
+				android:visible="false"
 			/>
 			<item
 				android:id="@+id/batch_delete_op"
