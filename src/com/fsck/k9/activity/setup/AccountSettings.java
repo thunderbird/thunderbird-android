@@ -296,7 +296,7 @@ public class AccountSettings extends K9PreferenceActivity
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.isVibrate());
-        
+
 
         mAccountRing = (CheckBoxPreference) findPreference(PREFERENCE_RING);
         mAccountRing.setChecked(mAccount.isRing());

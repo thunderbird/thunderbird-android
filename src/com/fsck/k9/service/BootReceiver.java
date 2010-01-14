@@ -90,8 +90,8 @@ public class BootReceiver extends CoreReceiver
             AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             alarmMgr.cancel(pi);
         }
-       
-        
+
+
         return tmpWakeLockId;
     }
 
@@ -131,5 +131,5 @@ public class BootReceiver extends CoreReceiver
         i.putExtra(ALARMED_INTENT, alarmedIntent);
         context.sendBroadcast(i);
     }
- 
+
 }

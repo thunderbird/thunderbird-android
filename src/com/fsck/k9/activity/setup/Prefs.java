@@ -126,7 +126,7 @@ public class Prefs extends K9PreferenceActivity
 
         mLefthandedWidgets = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_LEFTHANDED_WIDGETS);
         mLefthandedWidgets.setChecked(K9.messageListLefthandedWidgets());
-        
+
         mTouchable = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_TOUCHABLE);
         mTouchable.setChecked(K9.messageListTouchable());
     }

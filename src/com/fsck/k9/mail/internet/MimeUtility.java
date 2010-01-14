@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class MimeUtility
 {
     public static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";
-    
+
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
      * + png
@@ -557,10 +557,10 @@ public class MimeUtility
         }
     }
 
-    public static String getMimeTypeByExtension(String filename) 
+    public static String getMimeTypeByExtension(String filename)
     {
         if (filename!=null
-            && filename.lastIndexOf('.')!=-1)
+                && filename.lastIndexOf('.')!=-1)
         {
             String extension = filename.substring(filename.lastIndexOf('.')+1).toLowerCase();
             for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP)

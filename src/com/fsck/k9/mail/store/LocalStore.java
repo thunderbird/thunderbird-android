@@ -1369,11 +1369,11 @@ public class LocalStore extends Store implements Serializable
                 }
 
                 String oldUID = message.getUid();
-                
+
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Updating folder_id to " + lDestFolder.getId() + " for message with UID "
-                            + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
-                        
+                          + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
+
                 message.setUid(K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
 
                 mDb.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[]
@@ -1942,7 +1942,8 @@ public class LocalStore extends Store implements Serializable
          */
         public String calculateContentPreview(String text)
         {
-            if (text == null) {
+            if (text == null)
+            {
                 return null;
             }
 
@@ -1951,7 +1952,8 @@ public class LocalStore extends Store implements Serializable
             text = text.replaceAll("^On .*wrote.?$","");
             text = text.replaceAll("(\\r|\\n)+"," ");
             text = text.replaceAll("\\s+"," ");
-            if (text.length() <= 160) {
+            if (text.length() <= 160)
+            {
                 return text;
             }
             else
@@ -2169,8 +2171,9 @@ public class LocalStore extends Store implements Serializable
             return;
         }
 
-        public String getPreview() {
-                return mPreview;
+        public String getPreview()
+        {
+            return mPreview;
         }
 
         @Override

@@ -493,7 +493,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
         // submenus don't actually set the menuInfo, so the "advanced"
         // submenu wouldn't work.
-        if (menuInfo != null) {
+        if (menuInfo != null)
+        {
             mSelectedContextAccount = (Account)getListView().getItemAtPosition(menuInfo.position);
         }
         switch (item.getItemId())
@@ -672,9 +673,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 holder.description = (TextView) view.findViewById(R.id.description);
                 holder.email = (TextView) view.findViewById(R.id.email);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
-                
+
                 holder.chip = view.findViewById(R.id.chip);
-                
+
                 view.setTag(holder);
             }
             holder.description.setText(account.getDescription());
@@ -705,11 +706,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             {
                 holder.chip.getBackground().setAlpha(127);
             }
-            else 
+            else
             {
                 holder.chip.getBackground().setAlpha(255);
             }
-            
+
 
             return view;
         }

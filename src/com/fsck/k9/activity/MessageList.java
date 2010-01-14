@@ -77,7 +77,7 @@ public class MessageList
     private static final int WIDGET_FLAG = 2;
     private static final int WIDGET_MULTISELECT = 3;
 
-    
+
     private ListView mListView;
 
     private boolean mTouchView = true;
@@ -308,7 +308,7 @@ public class MessageList
             mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
             return;
         }
-        else if ( mSelectedWidget == WIDGET_MULTISELECT || (mTouchView != false &&  mSelectedCount > 0) )
+        else if (mSelectedWidget == WIDGET_MULTISELECT || (mTouchView != false &&  mSelectedCount > 0))
         {
             // In multiselect mode make sure that clicking on the item results in
             // toggling the 'selected' checkbox
@@ -695,7 +695,10 @@ public class MessageList
 
     public void cycleVisibleWidgets(boolean ascending)
     {
-        if (mTouchView == true ) { return;}
+        if (mTouchView == true)
+        {
+            return;
+        }
 
         if (ascending)
         {
@@ -1939,25 +1942,26 @@ public class MessageList
             {
                 if (mTouchView)
                 {
-                view = mInflater.inflate(R.layout.message_list_item_touchable, parent, false);
-                view.setId(R.layout.message_list_item);
+                    view = mInflater.inflate(R.layout.message_list_item_touchable, parent, false);
+                    view.setId(R.layout.message_list_item);
                 }
 
-                else {
-                view = mInflater.inflate(R.layout.message_list_item, parent, false);
-                view.setId(R.layout.message_list_item);
-                View widgetParent;
-                if (mLeftHanded == false)
-                {
-                    widgetParent = view.findViewById(R.id.widgets_right);
-                }
                 else
                 {
-                    widgetParent  = view.findViewById(R.id.widgets_left);
-                }
-                View widgets = mInflater.inflate(R.layout.message_list_widgets,parent,false);
-                widgets.setId(R.id.widgets);
-                ((LinearLayout) widgetParent).addView(widgets);
+                    view = mInflater.inflate(R.layout.message_list_item, parent, false);
+                    view.setId(R.layout.message_list_item);
+                    View widgetParent;
+                    if (mLeftHanded == false)
+                    {
+                        widgetParent = view.findViewById(R.id.widgets_right);
+                    }
+                    else
+                    {
+                        widgetParent  = view.findViewById(R.id.widgets_left);
+                    }
+                    View widgets = mInflater.inflate(R.layout.message_list_widgets,parent,false);
+                    widgets.setId(R.id.widgets);
+                    ((LinearLayout) widgetParent).addView(widgets);
                 }
             }
 
@@ -2024,7 +2028,8 @@ public class MessageList
 
                 holder.subject.setText(message.subject);
 
-                if (holder.preview != null) {
+                if (holder.preview != null)
+                {
                     // in the touchable UI, we have previews
                     // otherwise, we have just a "from" line
                     // because text views can't wrap around each other(?)
@@ -2033,13 +2038,15 @@ public class MessageList
 
 
                     holder.preview.setText(message.sender+  " " + message.preview, TextView.BufferType.SPANNABLE);
-Spannable str = (Spannable)holder.preview.getText();
+                    Spannable str = (Spannable)holder.preview.getText();
 
 // Create our span sections, and assign a format to each.
-str.setSpan(new TextAppearanceSpan(null ,Typeface.BOLD ,-1, holder.subject.getTextColors(), holder.subject.getLinkTextColors()), 0, message.sender.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    str.setSpan(new TextAppearanceSpan(null ,Typeface.BOLD ,-1, holder.subject.getTextColors(), holder.subject.getLinkTextColors()), 0, message.sender.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 
-                } else {
+                }
+                else
+                {
                     holder.from.setText(message.sender);
                     holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
@@ -2058,14 +2065,17 @@ str.setSpan(new TextAppearanceSpan(null ,Typeface.BOLD ,-1, holder.subject.getTe
                 holder.chip.getBackground().setAlpha(0);
                 holder.subject.setText("No subject");
                 holder.subject.setTypeface(null, Typeface.NORMAL);
-                if (holder.preview != null) {
-                holder.preview.setText("No sender");
-                holder.preview.setTypeface(null, Typeface.NORMAL);
-                holder.preview.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                } else {
-                holder.from.setText("No sender");
-                holder.from.setTypeface(null, Typeface.NORMAL);
-                holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                if (holder.preview != null)
+                {
+                    holder.preview.setText("No sender");
+                    holder.preview.setTypeface(null, Typeface.NORMAL);
+                    holder.preview.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                }
+                else
+                {
+                    holder.from.setText("No sender");
+                    holder.from.setTypeface(null, Typeface.NORMAL);
+                    holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
                 }
 
@@ -2416,7 +2426,7 @@ str.setSpan(new TextAppearanceSpan(null ,Typeface.BOLD ,-1, holder.subject.getTe
         else
         {
             boolean newReadState = computeBatchDirection(false);
-            if (newReadState) 
+            if (newReadState)
             {
                 readButtonStringId = R.string.message_list_mark_read_action;
             }

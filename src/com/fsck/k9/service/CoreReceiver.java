@@ -17,9 +17,9 @@ public class CoreReceiver extends BroadcastReceiver
 {
 
     public static String WAKE_LOCK_RELEASE = "com.fsck.k9.service.CoreReceiver.wakeLockRelease";
-   
+
     public static String WAKE_LOCK_ID = "com.fsck.k9.service.CoreReceiver.wakeLockId";
-    
+
     private static ConcurrentHashMap<Integer, WakeLock> wakeLocks = new ConcurrentHashMap<Integer, WakeLock>();
     private static AtomicInteger wakeLockSeq = new AtomicInteger(0);
 
@@ -58,9 +58,9 @@ public class CoreReceiver extends BroadcastReceiver
     {
         Integer tmpWakeLockId = CoreReceiver.getWakeLock(context);
         try
-        { 
+        {
             if (K9.DEBUG)
-                 Log.i(K9.LOG_TAG, "CoreReceiver.onReceive" + intent);
+                Log.i(K9.LOG_TAG, "CoreReceiver.onReceive" + intent);
             if (CoreReceiver.WAKE_LOCK_RELEASE.equals(intent.getAction()))
             {
                 Integer wakeLockId = intent.getIntExtra(WAKE_LOCK_ID, -1);
@@ -81,7 +81,7 @@ public class CoreReceiver extends BroadcastReceiver
             CoreReceiver.releaseWakeLock(tmpWakeLockId);
         }
     }
-    
+
     public Integer receive(Context context, Intent intent, Integer wakeLockId)
     {
         return wakeLockId;

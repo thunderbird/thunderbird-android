@@ -1522,7 +1522,7 @@ public class MessagingController implements Runnable
                             l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                         }
                     }
-                    
+
                 }
                 progress.incrementAndGet();
                 for (MessagingListener l : getListeners())
@@ -4034,7 +4034,7 @@ public class MessagingController implements Runnable
 
                 String ringtone = thisAccount.getRingtone();
                 notif.sound = TextUtils.isEmpty(ringtone) || thisAccount.isRing() == false ? null : Uri.parse(ringtone);
-                
+
                 if (thisAccount.isVibrate())
                 {
                     notif.defaults |= Notification.DEFAULT_VIBRATE;
@@ -4643,7 +4643,7 @@ public class MessagingController implements Runnable
         }
 
     }
-    
+
     private Map<String, List<Message>> binMessages(Message[] messages)
     {
         Map<String, List<Message>> bins = new HashMap<String, List<Message>>();

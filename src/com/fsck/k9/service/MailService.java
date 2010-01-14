@@ -37,7 +37,7 @@ public class MailService extends CoreService
 
     private static final String HAS_CONNECTIVITY = "com.fsck.k9.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
 
-    
+
 
     public static void actionReschedule(Context context, Integer wakeLockId)
     {
@@ -426,7 +426,7 @@ public class MailService extends CoreService
         , K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT, startId);
     }
 
-  
+
     public IBinder onBind(Intent intent)
     {
         return null;
