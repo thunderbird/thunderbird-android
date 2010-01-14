@@ -1750,7 +1750,7 @@ public class MessageView extends K9Activity
             Animation.RELATIVE_TO_PARENT,  right, Animation.RELATIVE_TO_PARENT,  left,
             Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f
         );
-        slide.setDuration(500);
+        slide.setDuration(125);
         slide.setFillBefore(true);
         slide.setInterpolator(new AccelerateInterpolator());
         return slide;
