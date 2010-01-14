@@ -491,36 +491,42 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
-        Account account = (Account)getListView().getItemAtPosition(menuInfo.position);
+        // submenus don't actually set the menuInfo, so the "advanced"
+        // submenu wouldn't work.
+        if (menuInfo != null) {
+            mSelectedContextAccount = (Account)getListView().getItemAtPosition(menuInfo.position);
+        }
         switch (item.getItemId())
         {
             case R.id.delete_account:
-                onDeleteAccount(account);
+                onDeleteAccount(mSelectedContextAccount);
                 break;
             case R.id.edit_account:
-                onEditAccount(account);
+                onEditAccount(mSelectedContextAccount);
                 break;
             case R.id.open:
-                onOpenAccount(account, false);
+                onOpenAccount(mSelectedContextAccount, false);
                 break;
             case R.id.check_mail:
-                onCheckMail(account);
+                onCheckMail(mSelectedContextAccount);
                 break;
             case R.id.clear_pending:
-                onClearCommands(account);
+                onClearCommands(mSelectedContextAccount);
                 break;
             case R.id.empty_trash:
-                onEmptyTrash(account);
+                onEmptyTrash(mSelectedContextAccount);
                 break;
             case R.id.compact:
-                onCompact(account);
+                onCompact(mSelectedContextAccount);
                 break;
             case R.id.clear:
-                onClear(account);
+                onClear(mSelectedContextAccount);
                 break;
         }
         return true;
     }
+
+
 
     private void onCompact(Account account)
     {
