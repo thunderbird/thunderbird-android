@@ -25,6 +25,7 @@
         <EditText
             android:id="@+id/account_username"
             android:singleLine="true"
+            android:inputType="textEmailAddress"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
         <TextView
@@ -36,6 +37,7 @@
         <EditText
             android:id="@+id/account_password"
             android:password="true"
+            android:inputType="textPassword"
             android:singleLine="true"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
@@ -50,6 +52,7 @@
         <EditText
             android:id="@+id/account_server"
             android:singleLine="true"
+            android:inputType="textUri"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
         <TextView
@@ -81,6 +84,7 @@
         <EditText
             android:id="@+id/account_port"
             android:singleLine="true"
+            android:inputType="number"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
         <LinearLayout
