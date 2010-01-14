@@ -759,7 +759,7 @@ public class MessageList
                 hideBatchButtons();
                 break;
             case WIDGET_MULTISELECT:
-                showBatchButtons();
+                toggleBatchButtons();
                 break;
         }
 
