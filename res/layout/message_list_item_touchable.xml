@@ -19,7 +19,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/chip"
+                android:button="@drawable/checkbox"
+                android:layout_centerVertical="true"
                 android:focusable="false"
+                android:paddingLeft="3dip"
                 />
        <CheckBox
                  android:id="@+id/flagged"
@@ -39,7 +42,7 @@
         android:textColor="?android:attr/textColorPrimary"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dip"
+        android:layout_marginLeft="1dip"
         android:layout_toLeftOf="@id/date"
         android:layout_toRightOf="@+id/selected_checkbox"
         android:layout_marginRight="1dip"
@@ -65,9 +68,9 @@
            android:singleLine="false"
            android:layout_width="fill_parent"
            android:layout_height="fill_parent"
-        android:paddingLeft="10dip"
+        android:layout_marginLeft="1dip"
         android:layout_toLeftOf="@id/flagged"
-        android:layout_marginRight="1dip"
+        android:layout_marginRight="0dip"
         android:bufferType="spannable"
            />
 
