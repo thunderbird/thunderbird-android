@@ -8,10 +8,10 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9RemoteControl;
+import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
 
-import static com.fsck.k9.K9RemoteControl.*;
+import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 
 public class RemoteControlReceiver extends CoreReceiver
 {

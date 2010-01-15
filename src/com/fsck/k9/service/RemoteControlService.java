@@ -2,12 +2,12 @@ package com.fsck.k9.service;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9RemoteControl;
+import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
 
-import static com.fsck.k9.K9RemoteControl.*;
+import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 
 import android.content.Context;
 import android.content.Intent;
