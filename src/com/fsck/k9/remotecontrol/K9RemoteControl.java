@@ -1,8 +1,17 @@
-package com.fsck.k9;
+package com.fsck.k9.remotecontrol;
+
+
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+
 /**
  * Utillity definitions for Android applications to control the behavior of K-9 Mail.  All such applications must declare the following permission:
  * <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
- * in their AndroidManifest.xml
+ * in their AndroidManifest.xml  In addition, all applications sending remote control messages to K-9 Mail must 
  * 
  * An application that wishes to act on a particular Account in K-9 needs to fetch the list of configured Accounts by broadcasting an
  * {@link Intent} using K9_REQUEST_ACCOUNTS as the Action.  The broadcast must be made using the {@link ContextWrapper}
@@ -15,6 +24,11 @@ package com.fsck.k9;
  */
 public class K9RemoteControl
 {
+    /**
+     * Permission that every application sending a broadcast to K-9 for Remote Control purposes should send on every broadcast.
+     * Prevent other applications from intercepting the broadcasts.
+     */
+    public final static String K9_REMOTE_CONTROL_PERMISSION = "com.fsck.k9.permission.REMOTE_CONTROL";
     /**
      * {@link Intent} Action to be sent to K-9 using {@link ContextWrapper.sendOrderedBroadcast} in order to fetch the list of configured Accounts.
      * The responseData will contain two String[] with keys K9_ACCOUNT_UUIDS and K9_ACCOUNT_DESCRIPTIONS 
@@ -105,4 +119,22 @@ public class K9RemoteControl
     public final static String K9_THEME_LIGHT = "LIGHT";
     public final static String K9_THEME_DARK = "DARK";
     
+    protected static String LOG_TAG = "K9RemoteControl";
+    
+    public static void set(Context context, Intent broadcastIntent)
+    {
+        broadcastIntent.setAction(K9RemoteControl.K9_SET);
+        context.sendBroadcast(broadcastIntent, K9RemoteControl.K9_REMOTE_CONTROL_PERMISSION);
+    }
+    
+    public static void fetchAccounts(Context context, K9AccountReceptor receptor)
+    {
+        Intent accountFetchIntent = new Intent();
+        accountFetchIntent.setAction(K9RemoteControl.K9_REQUEST_ACCOUNTS);
+        AccountReceiver receiver = new AccountReceiver(receptor);
+        context.sendOrderedBroadcast(accountFetchIntent, K9RemoteControl.K9_REMOTE_CONTROL_PERMISSION, receiver, null, Activity.RESULT_OK, null, null);
+    }
+    
 }
+
+

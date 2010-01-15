@@ -110,6 +110,9 @@
     <property name="main-out-folder" value="../${out-folder}" />
     <property name="main-out-classes" value="${main-out-folder}/classes"/>
 
+    <property name="rclib" value="${out-folder}/K9RemoteControl.jar" />
+    <property name="rcdir" value="com/fsck/k9/remotecontrol/**" />
+
     <!-- Intermediate files -->
     <property name="dex-file" value="classes.dex" />
     <property name="intermediate-dex" value="${out-folder}/${dex-file}" />
@@ -201,6 +204,15 @@
          </javac>
     </target>
 
+    <target name="rclib" depends="compile">
+        <echo>Creating library ${rclib} for remote control
+        applications</echo>
+
+	<jar destfile="${rclib}"
+	basedir="${out-classes}"
+	includes="${rcdir}" />
+    </target>
+
     <!-- Convert this project's .class files into .dex files. -->
     <target name="dex" depends="compile">
         <echo>Converting compiled files and external libraries into ${out-folder}/${dex-file}...</echo>
@@ -247,7 +259,7 @@
 
     <!-- Package the application without signing it.
          This allows for the application to be signed later with an official publishing key. -->
-    <target name="release" depends="dex, package-resources">
+    <target name="release" depends="rclib, dex, package-resources">
         <apkbuilder
                 outfolder="${out-folder}"
                 basename="${ant.project.name}"
