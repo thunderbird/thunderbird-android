@@ -958,7 +958,7 @@ public class MessageList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (resultCode == RESULT_OK)
+        if (resultCode != RESULT_OK)
             return;
 
         switch (requestCode)
