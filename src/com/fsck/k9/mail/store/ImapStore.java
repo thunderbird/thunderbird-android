@@ -610,6 +610,26 @@ public class ImapStore extends Store
         {
             return mName;
         }
+        
+        private boolean exists(String folderName) throws MessagingException
+        {
+            try
+            {
+                // Since we don't care about RECENT, we'll use that for the check, because we're checking
+                // a folder other than ourself, and don't want any untagged responses to cause a change
+                // in our own fields
+                mConnection.executeSimpleCommand(String.format("STATUS \"%s\" (RECENT)", folderName));
+                return true;
+            }
+            catch (IOException ioe)
+            {
+                throw ioExceptionHandler(mConnection, ioe);
+            }
+            catch (MessagingException me)
+            {
+                return false;
+            }
+        }
 
         public boolean exists() throws MessagingException
         {
@@ -720,9 +740,30 @@ public class ImapStore extends Store
             }
             try
             {
-                executeSimpleCommand(String.format("UID COPY %s \"%s\"",
-                                                   Utility.combine(uids, ','),
-                                                   encodeFolderName(iFolder.getPrefixedName())));
+                String remoteDestName = encodeFolderName(iFolder.getPrefixedName());
+                
+                if (!exists(remoteDestName))
+                {
+                    /*
+                     * If the remote trash folder doesn't exist we try to create it.
+                     */
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "IMAPMessage.copyMessages: attempting to create remote '" + remoteDestName + "' folder for " + getLogId());
+                    iFolder.create(FolderType.HOLDS_MESSAGES);
+                }
+
+                if (exists(remoteDestName))
+                {
+                    executeSimpleCommand(String.format("UID COPY %s \"%s\"",
+                                                       Utility.combine(uids, ','),
+                                                       encodeFolderName(iFolder.getPrefixedName())));
+                }
+                else
+                {
+                    throw new MessagingException("IMAPMessage.copyMessages: remote destination folder " + folder.getName() 
+                            + " does not exist and could not be created for " + getLogId()
+                                                 , true);
+                }
             }
             catch (IOException ioe)
             {
@@ -751,11 +792,9 @@ public class ImapStore extends Store
             else
             {
                 ImapFolder remoteTrashFolder = (ImapFolder)getStore().getFolder(trashFolderName);
-                /*
-                 * Attempt to copy the remote message to the remote trash folder.
-                 */
-                remoteTrashFolder.mExists = false;  // Force redetection of Trash folder; some desktops delete it
-                if (!remoteTrashFolder.exists())
+                String remoteTrashName = encodeFolderName(remoteTrashFolder.getPrefixedName());
+                
+                if (!exists(remoteTrashName))
                 {
                     /*
                      * If the remote trash folder doesn't exist we try to create it.
@@ -765,7 +804,7 @@ public class ImapStore extends Store
                     remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
                 }
 
-                if (remoteTrashFolder.exists())
+                if (exists(remoteTrashName))
                 {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "IMAPMessage.delete: copying remote " + messages.length + " messages to '" + trashFolderName + "' for " + getLogId());
@@ -1014,7 +1053,7 @@ public class ImapStore extends Store
             }
             for (Object o : fp)
             {
-                if (o instanceof Part)
+                if (o != null && o instanceof Part)
                 {
                     Part part = (Part) o;
                     String partId = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA)[0];

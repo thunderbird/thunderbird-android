@@ -118,14 +118,7 @@ public class MessagingControllerPushReceiver implements PushReceiver
         {
             if (localFolder != null)
             {
-                try
-                {
-                    localFolder.close();
-                }
-                catch (Exception e)
-                {
-                    Log.e(K9.LOG_TAG, "Unable to close folder '" + folderName + "' in account " + account.getDescription(), e);
-                }
+                localFolder.close();
             }
         }
     }

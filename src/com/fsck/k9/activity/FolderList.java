@@ -913,11 +913,12 @@ public class FolderList extends K9ListActivity
             private void refreshFolder(Account account, String folderName)
             {
                 // There has to be a cheaper way to get at the localFolder object than this
+                Folder localFolder = null;
                 try
                 {
                     if (account != null && folderName != null)
                     {
-                        Folder localFolder = (Folder) Store.getInstance(account.getLocalStoreUri(), getApplication()).getFolder(folderName);
+                        localFolder = (Folder) Store.getInstance(account.getLocalStoreUri(), getApplication()).getFolder(folderName);
                         int unreadMessageCount = localFolder.getUnreadMessageCount();
                         if (localFolder != null)
                         {
@@ -933,6 +934,13 @@ public class FolderList extends K9ListActivity
                 catch (Exception e)
                 {
                     Log.e(K9.LOG_TAG, "Exception while populating folder", e);
+                }
+                finally
+                {
+                    if (localFolder != null)
+                    {
+                        localFolder.close();
+                    }
                 }
 
             }
