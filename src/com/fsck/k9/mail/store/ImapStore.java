@@ -2378,6 +2378,7 @@ public class ImapStore extends Store
         {
             if (doneSent.compareAndSet(false, true) == true)
             {
+                mConnection.setReadTimeout(Store.SOCKET_READ_TIMEOUT);
                 sendContinuation("DONE");
             }
         }
@@ -2432,8 +2433,7 @@ public class ImapStore extends Store
                                 receiver.pushError("IMAP server is not IDLE capable: " + mConnection.toString(), null);
                                 throw new MessagingException("IMAP server is not IDLE capable:" + mConnection.toString());
                             }
-                            mConnection.setReadTimeout(IDLE_READ_TIMEOUT);
-
+                            
                             if (responses != null)
                             {
                                 handleUntaggedResponses(responses);
@@ -2483,6 +2483,7 @@ public class ImapStore extends Store
                                         receiver.setPushActive(getName(), true);
                                         idling.set(true);
                                         doneSent.set(false);
+                                        mConnection.setReadTimeout(IDLE_READ_TIMEOUT);
                                         untaggedResponses = executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
                                         idling.set(false);
 
