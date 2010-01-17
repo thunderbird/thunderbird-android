@@ -21,6 +21,8 @@ import android.util.Log;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.view.GestureDetector.SimpleOnGestureListener;
+
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -54,7 +56,6 @@ public class MessageList
         extends K9Activity
         implements OnClickListener, AdapterView.OnItemClickListener
 {
-
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -92,11 +93,11 @@ public class MessageList
 
     private MessagingController mController;
 
-
     private Account mAccount;
     private int mUnreadMessageCount = 0;
 
-
+    private GestureDetector gestureDetector;
+    private View.OnTouchListener gestureListener;
     /**
     * Stores the name of the folder that we want to open as soon as possible
     * after load.
@@ -342,6 +343,7 @@ public class MessageList
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(this);
 
+
         registerForContextMenu(mListView);
 
         /*
@@ -418,6 +420,22 @@ public class MessageList
         {
             onRestoreListState(savedInstanceState);
         }
+        // Gesture detection
+        gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureListener = new View.OnTouchListener()
+        {
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (gestureDetector.onTouchEvent(event))
+                {
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        mListView.setOnTouchListener(gestureListener);
+
 
     }
 
@@ -506,6 +524,8 @@ public class MessageList
     {
         return mAdapter.messages;
     }
+
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
@@ -1479,6 +1499,35 @@ public class MessageList
         }
     }
 
+    class MyGestureDetector extends SimpleOnGestureListener
+    {
+
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+        {
+
+            float deltaX = e2.getX() - e1.getX(),
+                           deltaY = e2.getY() - e1.getY();
+
+            boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
+            boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
+
+            if (movedAcross && steadyHand)
+            {
+                boolean selected = (deltaX > 0);
+                int position = mListView.pointToPosition((int)e1.getX(), (int)e1.getY());
+
+                ((MessageInfoHolder)  mAdapter.getItem(position)).selected = selected;
+                mSelectedCount += (selected ? 1 : -1);
+                mAdapter.notifyDataSetChanged();
+                toggleBatchButtons();
+            }
+
+            return false;
+        }
+    }
+
     @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -1990,6 +2039,8 @@ public class MessageList
 
 
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
+
+
                 if (holder.selected!=null)
                 {
                     holder.selected.setOnCheckedChangeListener(holder);
@@ -2014,6 +2065,14 @@ public class MessageList
                 holder.position = -1;
                 holder.selected.setChecked(message.selected);
 
+                if (message.selected == true)
+                {
+                    holder.selected.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    holder.selected.setVisibility(View.GONE);
+                }
                 holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[message.account.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
                 holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
 
@@ -2084,6 +2143,7 @@ public class MessageList
                 //WARNING: Order of the next 2 lines matter
                 holder.position = -1;
                 holder.selected.setChecked(false);
+                holder.selected.setVisibility(View.GONE);
                 holder.flagged.setChecked(false);
             }
             return view;
@@ -2390,6 +2450,18 @@ public class MessageList
                     //We must set the flag before showing the buttons
                     //as the buttons text depends on what is selected
                     message.selected = isChecked;
+                    if (mTouchView == true)
+                    {
+                        if (isChecked == true)
+                        {
+                            selected.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            selected.setVisibility(View.GONE);
+                        }
+                    }
+
                     toggleBatchButtons();
                 }
             }
