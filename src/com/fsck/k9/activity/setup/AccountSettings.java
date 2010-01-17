@@ -34,7 +34,6 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
-    private static final String PREFERENCE_RING = "account_ring";
     private static final String PREFERENCE_RINGTONE = "account_ringtone";
     private static final String PREFERENCE_INCOMING = "incoming";
     private static final String PREFERENCE_OUTGOING = "outgoing";
@@ -59,7 +58,6 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mAccountHideButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
-    private CheckBoxPreference mAccountRing;
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
     private ListPreference mSyncMode;
@@ -292,14 +290,11 @@ public class AccountSettings extends K9PreferenceActivity
         // XXX: The following two lines act as a workaround for the RingtonePreference
         //      which does not let us set/get the value programmatically
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
-        prefs.edit().putString(PREFERENCE_RINGTONE, mAccount.getRingtone()).commit();
-
+        String currentRingtone = (!mAccount.isRing() ? null : mAccount.getRingtone());
+        prefs.edit().putString(PREFERENCE_RINGTONE, currentRingtone).commit();
+        
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.isVibrate());
-
-
-        mAccountRing = (CheckBoxPreference) findPreference(PREFERENCE_RING);
-        mAccountRing.setChecked(mAccount.isRing());
 
         mAutoExpandFolder = (Preference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
 
@@ -376,7 +371,6 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
-        mAccount.setRing(mAccountRing.isChecked());
         mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
         mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
         mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
@@ -384,8 +378,22 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
-        mAccount.setRingtone(prefs.getString(PREFERENCE_RINGTONE, null));
+        String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
+        if (newRingtone != null)
+        {
+            mAccount.setRing(true);
+            mAccount.setRingtone(newRingtone);
+        }
+        else
+        {
+            if (mAccount.isRing())
+            {
+                mAccount.setRingtone(null);
+            }
+        }
+        
         mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
         mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
         mAccount.save(Preferences.getPreferences(this));
