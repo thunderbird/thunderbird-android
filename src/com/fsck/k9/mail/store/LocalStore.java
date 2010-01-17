@@ -174,7 +174,7 @@ public class LocalStore extends Store implements Serializable
             if (mDb.getVersion() < 33)
             {
                 mDb.execSQL("ALTER TABLE messages ADD preview TEXT");
-                mDb.execSQL("UPDATE messages SET preview = SUBSTR(text_content,1,200) WHERE deleted = 0");
+                // mDb.execSQL("UPDATE messages SET preview = SUBSTR(text_content,1,200) WHERE deleted = 0");
 
             }
 
