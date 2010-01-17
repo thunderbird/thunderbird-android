@@ -308,18 +308,18 @@ public class MessageList
             mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
             return;
         }
-        else if (mSelectedCount > 0)
+        
+        
+        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
+        if (mSelectedCount > 0)
         {
             // In multiselect mode make sure that clicking on the item results in
             // toggling the 'selected' checkbox
-            CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
-            selected.setChecked(!selected.isChecked());
-            toggleBatchButtons();
+            setSelected(message, !message.selected);
             return;
         }
         else
         {
-            MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
             onOpenMessage(message);
             return;
         }
