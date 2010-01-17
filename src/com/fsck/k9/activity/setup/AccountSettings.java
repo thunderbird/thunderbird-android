@@ -292,7 +292,7 @@ public class AccountSettings extends K9PreferenceActivity
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String currentRingtone = (!mAccount.isRing() ? null : mAccount.getRingtone());
         prefs.edit().putString(PREFERENCE_RINGTONE, currentRingtone).commit();
-        
+
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.isVibrate());
 
@@ -378,7 +378,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
-        
+
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
         if (newRingtone != null)
@@ -393,7 +393,7 @@ public class AccountSettings extends K9PreferenceActivity
                 mAccount.setRingtone(null);
             }
         }
-        
+
         mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
         mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
         mAccount.save(Preferences.getPreferences(this));

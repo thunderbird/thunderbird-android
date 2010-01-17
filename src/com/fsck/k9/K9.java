@@ -66,7 +66,7 @@ public class K9 extends Application
     private static boolean mAnimations = true;
 
 
-    private static boolean mMessageListLefthandedWidgets = false;
+    private static boolean mMessageListStars = true;
     private static boolean mMessageListTouchable = false;
 
 
@@ -307,7 +307,7 @@ public class K9 extends Application
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
         editor.putBoolean("animations", mAnimations);
-        editor.putBoolean("messageListLefthandedWidgets",mMessageListLefthandedWidgets);
+        editor.putBoolean("messageListStars",mMessageListStars);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
         editor.putInt("theme", theme);
     }
@@ -322,7 +322,7 @@ public class K9 extends Application
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
-        mMessageListLefthandedWidgets = sprefs.getBoolean("messageListLefthandedWidgets",false);
+        mMessageListStars = sprefs.getBoolean("messageListStars",true);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
 
 
@@ -454,14 +454,14 @@ public class K9 extends Application
         mMessageListTouchable = touchy;
     }
 
-    public static boolean messageListLefthandedWidgets()
+    public static boolean messageListStars()
     {
-        return mMessageListLefthandedWidgets;
+        return mMessageListStars;
     }
 
-    public static void setMessageListLefthandedWidgets(boolean lefty)
+    public static void setMessageListStars(boolean stars)
     {
-        mMessageListLefthandedWidgets = lefty;
+        mMessageListStars = stars;
     }
 }
 

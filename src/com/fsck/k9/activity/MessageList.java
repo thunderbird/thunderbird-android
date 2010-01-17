@@ -74,15 +74,10 @@ public class MessageList
     private static final String STATE_KEY_SELECTION = "com.fsck.k9.activity.messagelist_selection";
     private static final String STATE_KEY_SELECTED_COUNT = "com.fsck.k9.activity.messagelist_selected_count";
 
-    private static final int WIDGET_NONE = 1;
-    private static final int WIDGET_FLAG = 2;
-
 
     private ListView mListView;
 
     private boolean mTouchView = true;
-
-    private int mSelectedWidget = WIDGET_FLAG;
 
     private MessageListAdapter mAdapter;
 
@@ -113,7 +108,7 @@ public class MessageList
     private boolean sortAscending = true;
     private boolean sortDateAscending = false;
 
-    private boolean mLeftHanded = false;
+    private boolean mStars = true;
     private int mSelectedCount = 0;
 
     private View mBatchButtonArea;
@@ -308,8 +303,8 @@ public class MessageList
             mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
             return;
         }
-        
-        
+
+
         MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
         if (mSelectedCount > 0)
         {
@@ -362,14 +357,7 @@ public class MessageList
         mBatchFlagButton.setOnClickListener(this);
         mBatchDoneButton = (Button) findViewById(R.id.batch_done_button);
 
-        if (mTouchView == true)
-        {
-            mBatchDoneButton.setOnClickListener(this);
-        }
-        else
-        {
-            mBatchDoneButton.setVisibility(View.GONE);
-        }
+        mBatchDoneButton.setOnClickListener(this);
 
         Intent intent = getIntent();
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
@@ -476,7 +464,7 @@ public class MessageList
     {
         super.onResume();
 
-        mLeftHanded = K9.messageListLefthandedWidgets();
+        mStars = K9.messageListStars();
         mTouchView = K9.messageListTouchable();
 
         sortType = mController.getSortType();
@@ -537,34 +525,23 @@ public class MessageList
 
             case KeyEvent.KEYCODE_DPAD_LEFT:
             {
-                if (mQueryString != null)
-                { // no widget customization in search results yet
-                    return false;
-                }
-                else if (mBatchButtonArea.hasFocus())
+                if (mBatchButtonArea.hasFocus())
                 {
                     return false;
                 }
                 else
                 {
-
-                    cycleVisibleWidgets(true);
                     return true;
                 }
             }
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             {
-                if (mQueryString != null)
-                { // no widget customization in search results yet
-                    return false;
-                }
-                else if (mBatchButtonArea.hasFocus())
+                if (mBatchButtonArea.hasFocus())
                 {
                     return false;
                 }
                 else
                 {
-                    cycleVisibleWidgets(false);
                     return true;
                 }
             }
@@ -708,97 +685,6 @@ public class MessageList
         {
             message.read = true;
             mHandler.sortMessages();
-        }
-
-    }
-
-    public void cycleVisibleWidgets(boolean ascending)
-    {
-        if (mTouchView == true)
-        {
-            return;
-        }
-
-        if (ascending)
-        {
-
-            switch (mSelectedWidget)
-            {
-                case WIDGET_FLAG:
-                {
-                    mSelectedWidget = WIDGET_NONE;
-                    break;
-                }
-                case WIDGET_NONE:
-                {
-                    mSelectedWidget = WIDGET_FLAG;
-                    break;
-                }
-
-            }
-        }
-        else
-        {
-            switch (mSelectedWidget)
-            {
-                case WIDGET_FLAG:
-                {
-                    mSelectedWidget=WIDGET_NONE;
-                    break;
-                }
-                case WIDGET_NONE:
-                {
-                    mSelectedWidget=WIDGET_FLAG;
-                    break;
-                }
-
-            }
-
-        }
-
-        configureWidgets();
-
-    }
-
-    private void configureWidgets()
-    {
-        switch (mSelectedWidget)
-        {
-            case WIDGET_FLAG:
-                hideBatchButtons();
-                break;
-            case WIDGET_NONE:
-                hideBatchButtons();
-                break;
-        }
-
-        int count = mListView.getChildCount();
-        for (int i=0; i<count; i++)
-        {
-            setVisibleWidgetsForListItem(mListView.getChildAt(i), mSelectedWidget);
-        }
-    }
-
-
-    private void setVisibleWidgetsForListItem(View v, int showWidget)
-    {
-
-        Button flagged = (Button) v.findViewById(R.id.flagged);
-        CheckBox selected = (CheckBox) v.findViewById(R.id.selected_checkbox);
-
-        if (mTouchView == true || flagged == null || selected == null)
-        {
-            return;
-        }
-
-        if (showWidget == WIDGET_NONE)
-        {
-            flagged.setVisibility(View.GONE);
-            return;
-        }
-        else
-        {
-            flagged.setVisibility(View.VISIBLE);
         }
 
     }
@@ -1259,16 +1145,6 @@ public class MessageList
                 flagSelected(Flag.FLAGGED, false);
                 return true;
 
-            case R.id.batch_plain_mode:
-                mSelectedWidget = WIDGET_NONE;
-                configureWidgets();
-                return true;
-
-            case R.id.batch_flag_mode:
-                mSelectedWidget = WIDGET_FLAG;
-                configureWidgets();
-                return true;
-
             case R.id.expunge:
                 if (mCurrentFolder != null)
                 {
@@ -1286,7 +1162,6 @@ public class MessageList
                                       R.id.batch_select_all, R.id.batch_deselect_all
                                     };
 
-    private final int[] batch_modes = { R.id.batch_flag_mode, R.id.batch_plain_mode };
 
     private void setOpsState(Menu menu, boolean state, boolean enabled)
     {
@@ -1297,13 +1172,6 @@ public class MessageList
         }
     }
 
-    private void setOpsMode(Menu menu, int currentModeId)
-    {
-        for (int id : batch_modes)
-        {
-            menu.findItem(id).setVisible(id != currentModeId);
-        }
-    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
@@ -1318,33 +1186,22 @@ public class MessageList
             menu.findItem(R.id.list_folders).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
         }
-        if (mSelectedWidget ==  WIDGET_FLAG)
-        {
-            setOpsState(menu, false, false);
-            setOpsMode(menu, R.id.batch_flag_mode);
-        }
-        else if (mSelectedWidget == WIDGET_NONE)
-        {
-            setOpsState(menu, false, false);
-            setOpsMode(menu, R.id.batch_plain_mode);
-        }
-        else
-        {
-            boolean anySelected = anySelected();
-            setOpsState(menu, true, anySelected);
 
-            boolean newFlagState = computeBatchDirection(true);
-            boolean newReadState = computeBatchDirection(false);
-            menu.findItem(R.id.batch_flag_op).setVisible(newFlagState);
-            menu.findItem(R.id.batch_unflag_op).setVisible(!newFlagState);
-            menu.findItem(R.id.batch_mark_read_op).setVisible(newReadState);
-            menu.findItem(R.id.batch_mark_unread_op).setVisible(!newReadState);
-            menu.findItem(R.id.batch_deselect_all).setEnabled(anySelected);
-            menu.findItem(R.id.batch_select_all).setEnabled(true);
-            // TODO: batch move and copy not yet implemented
-            menu.findItem(R.id.batch_move_op).setVisible(false);
-            menu.findItem(R.id.batch_copy_op).setVisible(false);
-        }
+        boolean anySelected = anySelected();
+        setOpsState(menu, true, anySelected);
+
+        boolean newFlagState = computeBatchDirection(true);
+        boolean newReadState = computeBatchDirection(false);
+        menu.findItem(R.id.batch_flag_op).setVisible(newFlagState);
+        menu.findItem(R.id.batch_unflag_op).setVisible(!newFlagState);
+        menu.findItem(R.id.batch_mark_read_op).setVisible(newReadState);
+        menu.findItem(R.id.batch_mark_unread_op).setVisible(!newReadState);
+        menu.findItem(R.id.batch_deselect_all).setEnabled(anySelected);
+        menu.findItem(R.id.batch_select_all).setEnabled(true);
+        // TODO: batch move and copy not yet implemented
+        menu.findItem(R.id.batch_move_op).setVisible(false);
+        menu.findItem(R.id.batch_copy_op).setVisible(false);
+
 
         if (mCurrentFolder != null && mCurrentFolder.outbox)
         {
@@ -1996,7 +1853,10 @@ public class MessageList
                     }
                 });
 
-
+                if (mStars == false)
+                {
+                    holder.flagged.setVisibility(View.GONE);
+                }
 
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
 
@@ -2014,7 +1874,6 @@ public class MessageList
 
                 holder.subject.setTypeface(null, message.read ? Typeface.NORMAL  : Typeface.BOLD);
 
-                setVisibleWidgetsForListItem(view, mSelectedWidget);
                 // XXX TODO there has to be some way to walk our view hierarchy and get this
                 holder.flagged.setTag((Integer)position);
 
@@ -2410,18 +2269,14 @@ public class MessageList
                     //We must set the flag before showing the buttons
                     //as the buttons text depends on what is selected
                     message.selected = isChecked;
-                    if (mTouchView == true)
+                    if (isChecked == true)
                     {
-                        if (isChecked == true)
-                        {
-                            selected.setVisibility(View.VISIBLE);
-                        }
-                        else
-                        {
-                            selected.setVisibility(View.GONE);
-                        }
+                        selected.setVisibility(View.VISIBLE);
                     }
-
+                    else
+                    {
+                        selected.setVisibility(View.GONE);
+                    }
                     toggleBatchButtons();
                 }
             }

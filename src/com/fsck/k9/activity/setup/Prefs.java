@@ -27,7 +27,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
     private static final String PREFERENCE_ANIMATIONS = "animations";
-    private static final String PREFERENCE_MESSAGELIST_LEFTHANDED_WIDGETS = "messagelist_lefthanded_widgets";
+    private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
     private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
 
     private ListPreference mTheme;
@@ -36,7 +36,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference mAnimations;
-    private CheckBoxPreference mLefthandedWidgets;
+    private CheckBoxPreference mStars;
     private CheckBoxPreference mTouchable;
 
 
@@ -124,8 +124,8 @@ public class Prefs extends K9PreferenceActivity
         mAnimations = (CheckBoxPreference)findPreference(PREFERENCE_ANIMATIONS);
         mAnimations.setChecked(K9.isAnimations());
 
-        mLefthandedWidgets = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_LEFTHANDED_WIDGETS);
-        mLefthandedWidgets.setChecked(K9.messageListLefthandedWidgets());
+        mStars = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_STARS);
+        mStars.setChecked(K9.messageListStars());
 
         mTouchable = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_TOUCHABLE);
         mTouchable.setChecked(K9.messageListTouchable());
@@ -147,7 +147,7 @@ public class Prefs extends K9PreferenceActivity
         K9.setBackgroundOps(newBackgroundOps);
 
         K9.setAnimations(mAnimations.isChecked());
-        K9.setMessageListLefthandedWidgets(mLefthandedWidgets.isChecked());
+        K9.setMessageListStars(mStars.isChecked());
 
         K9.setMessageListTouchable(mTouchable.isChecked());
 
