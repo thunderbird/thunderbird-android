@@ -7,24 +7,38 @@
     android:paddingTop="2dip"
     android:background="#cccccc"
     >
-    <LinearLayout android:id="@+id/widgets_right" 
-        android:layout_width="wrap_content" 
-        android:layout_height="fill_parent" 
-        android:layout_alignParentRight="true"
-        />
-    <View
+    <RelativeLayout
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
-        android:layout_width="4dip"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="2dip"
         android:layout_height="fill_parent"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-    />
-    <LinearLayout android:id="@+id/widgets_left" 
-        android:layout_width="wrap_content" 
-        android:layout_height="fill_parent" 
-        android:layout_toRightOf="@id/chip"
-        />
+    >
+          <CheckBox
+                android:id="@+id/selected_checkbox"
+                android:layout_width="24dip"
+                android:layout_height="wrap_content"
+                android:button="@drawable/checkbox"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:focusable="false"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+         <CheckBox
+                 android:id="@+id/flagged"
+                 android:focusable="false"
+                 android:button="@drawable/star"
+                 android:layout_alignParentRight="true"
+
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                 android:layout_gravity="center_vertical"
+                 android:layout_height="20dip"
+                 android:layout_width="20dip"
+                />
     <TextView
         android:id="@+id/subject"
         android:ellipsize="end"
@@ -34,8 +48,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
-        android:layout_toLeftOf="@id/widgets_right"
-        android:layout_toRightOf="@+id/widgets_left"
+        android:layout_toLeftOf="@id/flagged"
+        android:layout_toRightOf="@+id/chip"
         android:layout_alignWithParentIfMissing="true"
         android:layout_marginRight="1dip" />
     <TextView
@@ -48,7 +62,7 @@
         android:textColor="?android:attr/textColorSecondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/widgets_right"
+        android:layout_toLeftOf="@id/flagged"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
         android:layout_alignWithParentIfMissing="true"
@@ -64,7 +78,7 @@
          android:paddingLeft="12dip"
          android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/date"
-         android:layout_toRightOf="@id/widgets_left"
+        android:layout_toRightOf="@id/chip"
          />
 
 </RelativeLayout>

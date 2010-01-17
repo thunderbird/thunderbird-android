@@ -76,7 +76,6 @@ public class MessageList
 
     private static final int WIDGET_NONE = 1;
     private static final int WIDGET_FLAG = 2;
-    private static final int WIDGET_MULTISELECT = 3;
 
 
     private ListView mListView;
@@ -309,7 +308,7 @@ public class MessageList
             mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
             return;
         }
-        else if (mSelectedWidget == WIDGET_MULTISELECT || (mTouchView != false &&  mSelectedCount > 0))
+        else if (mSelectedCount > 0)
         {
             // In multiselect mode make sure that clicking on the item results in
             // toggling the 'selected' checkbox
@@ -727,11 +726,6 @@ public class MessageList
             {
                 case WIDGET_FLAG:
                 {
-                    mSelectedWidget = WIDGET_MULTISELECT;
-                    break;
-                }
-                case WIDGET_MULTISELECT:
-                {
                     mSelectedWidget = WIDGET_NONE;
                     break;
                 }
@@ -754,11 +748,6 @@ public class MessageList
                 }
                 case WIDGET_NONE:
                 {
-                    mSelectedWidget=WIDGET_MULTISELECT;
-                    break;
-                }
-                case WIDGET_MULTISELECT:
-                {
                     mSelectedWidget=WIDGET_FLAG;
                     break;
                 }
@@ -780,9 +769,6 @@ public class MessageList
                 break;
             case WIDGET_NONE:
                 hideBatchButtons();
-                break;
-            case WIDGET_MULTISELECT:
-                toggleBatchButtons();
                 break;
         }
 
@@ -807,26 +793,14 @@ public class MessageList
 
         if (showWidget == WIDGET_NONE)
         {
-            v.findViewById(R.id.widgets).setVisibility(View.GONE);
+            flagged.setVisibility(View.GONE);
             return;
         }
         else
         {
-            v.findViewById(R.id.widgets).setVisibility(View.VISIBLE);
-        }
-
-
-
-        if (showWidget == WIDGET_MULTISELECT)
-        {
-            flagged.setVisibility(View.GONE);
-            selected.setVisibility(View.VISIBLE);
-        }
-        else
-        {
             flagged.setVisibility(View.VISIBLE);
-            selected.setVisibility(View.GONE);
         }
+
     }
 
     private void onAccounts()
@@ -1290,11 +1264,6 @@ public class MessageList
                 configureWidgets();
                 return true;
 
-            case R.id.batch_select_mode:
-                mSelectedWidget = WIDGET_MULTISELECT;
-                configureWidgets();
-                return true;
-
             case R.id.batch_flag_mode:
                 mSelectedWidget = WIDGET_FLAG;
                 configureWidgets();
@@ -1317,7 +1286,7 @@ public class MessageList
                                       R.id.batch_select_all, R.id.batch_deselect_all
                                     };
 
-    private final int[] batch_modes = { R.id.batch_flag_mode, R.id.batch_select_mode, R.id.batch_plain_mode };
+    private final int[] batch_modes = { R.id.batch_flag_mode, R.id.batch_plain_mode };
 
     private void setOpsState(Menu menu, boolean state, boolean enabled)
     {
@@ -1349,16 +1318,20 @@ public class MessageList
             menu.findItem(R.id.list_folders).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
         }
-        if (mTouchView == true || mSelectedWidget == WIDGET_MULTISELECT)
+        if (mSelectedWidget ==  WIDGET_FLAG)
+        {
+            setOpsState(menu, false, false);
+            setOpsMode(menu, R.id.batch_flag_mode);
+        }
+        else if (mSelectedWidget == WIDGET_NONE)
+        {
+            setOpsState(menu, false, false);
+            setOpsMode(menu, R.id.batch_plain_mode);
+        }
+        else
         {
             boolean anySelected = anySelected();
             setOpsState(menu, true, anySelected);
-
-            if (mTouchView == false)
-            {
-                setOpsMode(menu, R.id.batch_select_mode);
-            }
-
 
             boolean newFlagState = computeBatchDirection(true);
             boolean newReadState = computeBatchDirection(false);
@@ -1371,16 +1344,6 @@ public class MessageList
             // TODO: batch move and copy not yet implemented
             menu.findItem(R.id.batch_move_op).setVisible(false);
             menu.findItem(R.id.batch_copy_op).setVisible(false);
-        }
-        else if (mSelectedWidget ==  WIDGET_FLAG)
-        {
-            setOpsState(menu, false, false);
-            setOpsMode(menu, R.id.batch_flag_mode);
-        }
-        else if (mSelectedWidget == WIDGET_NONE)
-        {
-            setOpsState(menu, false, false);
-            setOpsMode(menu, R.id.batch_plain_mode);
         }
 
         if (mCurrentFolder != null && mCurrentFolder.outbox)
@@ -1420,17 +1383,22 @@ public class MessageList
         {
             case R.id.open:
                 onOpenMessage(holder);
+                break;
 
+            case R.id.select:
+                setSelected(holder, true);
+                break;
+
+            case R.id.unselect:
+                setSelected(holder, false);
                 break;
 
             case R.id.delete:
                 onDelete(holder, info.position);
-
                 break;
 
             case R.id.reply:
                 onReply(holder);
-
                 break;
 
             case R.id.reply_all:
@@ -1536,13 +1504,6 @@ public class MessageList
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
         MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
 
-        // in multi-select mode, the context menu pops up unintentionally
-        // causes misclicks
-        if (mSelectedWidget == WIDGET_MULTISELECT)
-        {
-            return;
-        }
-
         if (message == null)
         {
             return;
@@ -1571,6 +1532,17 @@ public class MessageList
         {
             menu.findItem(R.id.move).setVisible(false);
         }
+        if (message.selected)
+        {
+            menu.findItem(R.id.select).setVisible(false);
+            menu.findItem(R.id.unselect).setVisible(true);
+        }
+        else
+        {
+            menu.findItem(R.id.select).setVisible(true);
+            menu.findItem(R.id.unselect).setVisible(false);
+        }
+
     }
 
     class MessageListAdapter extends BaseAdapter
@@ -1999,18 +1971,6 @@ public class MessageList
                 {
                     view = mInflater.inflate(R.layout.message_list_item, parent, false);
                     view.setId(R.layout.message_list_item);
-                    View widgetParent;
-                    if (mLeftHanded == false)
-                    {
-                        widgetParent = view.findViewById(R.id.widgets_right);
-                    }
-                    else
-                    {
-                        widgetParent  = view.findViewById(R.id.widgets_left);
-                    }
-                    View widgets = mInflater.inflate(R.layout.message_list_widgets,parent,false);
-                    widgets.setId(R.id.widgets);
-                    ((LinearLayout) widgetParent).addView(widgets);
                 }
             }
 
@@ -2700,6 +2660,20 @@ public class MessageList
         mAdapter.notifyDataSetChanged();
         toggleBatchButtons();
     }
+
+    private void setSelected(MessageInfoHolder holder, boolean newState)
+    {
+
+        if (holder.selected != newState)
+        {
+            holder.selected = newState;
+            mSelectedCount += (newState ? 1 : -1);
+        }
+        mAdapter.notifyDataSetChanged();
+        toggleBatchButtons();
+
+    }
+
 
     private void flagSelected(Flag flag, boolean newState)
     {

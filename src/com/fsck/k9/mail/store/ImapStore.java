@@ -610,7 +610,7 @@ public class ImapStore extends Store
         {
             return mName;
         }
-        
+
         private boolean exists(String folderName) throws MessagingException
         {
             try
@@ -741,7 +741,7 @@ public class ImapStore extends Store
             try
             {
                 String remoteDestName = encodeFolderName(iFolder.getPrefixedName());
-                
+
                 if (!exists(remoteDestName))
                 {
                     /*

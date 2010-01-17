@@ -4,6 +4,15 @@
         android:id="@+id/open"
         android:title="@string/open_action"
     />
+    <item
+        android:id="@+id/select"
+        android:title="@string/select_action"
+    />
+    <item
+        android:id="@+id/unselect"
+		android:visible="false"
+        android:title="@string/unselect_action"
+    />
 	<item
 		android:id="@+id/delete"
 		android:title="@string/delete_action"

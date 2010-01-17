@@ -464,7 +464,7 @@ public class MessagingController implements Runnable
                         }
                     }
                 }
-                
+
                 for (MessagingListener l : getListeners())
                 {
                     l.listFoldersFinished(account);

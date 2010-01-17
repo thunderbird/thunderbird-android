@@ -16,12 +16,4 @@
                 />
             <!-- http://stackoverflow.com/questions/1121192/android-custom-listview-unable-to-click-on-items 
                     we want something a bit bigger than it is right now -->
-          <CheckBox
-                android:id="@+id/selected_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:focusable="false"
-                android:button="@drawable/checkbox"
-                />
     </LinearLayout>

@@ -4,28 +4,38 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:paddingRight="1dip"
-    android:paddingTop="2dip"
     android:background="#cccccc"
     >
-    <LinearLayout android:id="@+id/widgets_right" 
-        android:layout_width="wrap_content" 
-        android:layout_height="fill_parent" 
-        android:layout_alignParentRight="true" 
-        />
-    <View
+         <CheckBox
+                 android:id="@+id/flagged"
+                 android:focusable="false"
+                 android:button="@drawable/star"
+
+                 android:layout_gravity="center_vertical"
+                 android:layout_height="20dip"
+                 android:layout_width="20dip"
+                android:layout_alignParentRight="true"
+                />
+    <RelativeLayout
         android:id="@+id/chip"
         android:background="@drawable/appointment_indicator_leftside_1"
-        android:layout_width="4dip"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="2dip"
+        android:layout_height="20dip"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:padding="0dip"
-       />
-
-    <LinearLayout android:id="@+id/widgets_left" 
-        android:layout_width="wrap_content" 
-        android:layout_height="fill_parent" 
-        android:layout_toRightOf="@id/chip"
-        />
+    >
+          <CheckBox
+                android:id="@+id/selected_checkbox"
+                android:layout_width="12dip"
+                android:layout_height="wrap_content"
+                android:button="@drawable/checkbox_small"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:focusable="false"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
     <TextView
         android:id="@+id/date"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -36,7 +46,7 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toLeftOf="@+id/widgets_right" />
+        android:layout_toLeftOf="@+id/flagged"/>
     <TextView
         android:id="@+id/from"
         android:ellipsize="end"
@@ -59,6 +69,6 @@
         android:paddingLeft="10dip"
         android:layout_marginRight="1dip"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@+id/widgets_left"
+        android:layout_toRightOf="@+id/chip"
         android:layout_toLeftOf="@+id/from" />
 </RelativeLayout>
