@@ -14,7 +14,7 @@ class AccountReceiver extends BroadcastReceiver
     {
         receptor = nReceptor;
     }
-    
+
     @Override
     public void onReceive(Context context, Intent intent)
     {
@@ -29,5 +29,5 @@ class AccountReceiver extends BroadcastReceiver
             receptor.accounts(bundle.getStringArray(K9RemoteControl.K9_ACCOUNT_UUIDS), bundle.getStringArray(K9RemoteControl.K9_ACCOUNT_DESCRIPTIONS));
         }
     }
-    
+
 }

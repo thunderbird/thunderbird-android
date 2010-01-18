@@ -124,7 +124,8 @@ public class SmtpTransport extends Transport
             {
                 mPassword = userInfoParts[1];
             }
-            if (userInfoParts.length > 2) {
+            if (userInfoParts.length > 2)
+            {
                 mAuthType = userInfoParts[2];
             }
         }

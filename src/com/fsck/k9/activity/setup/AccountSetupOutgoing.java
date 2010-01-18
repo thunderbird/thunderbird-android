@@ -207,15 +207,16 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             String authType = null;
             if (uri.getUserInfo() != null)
             {
-             String[] userInfoParts = uri.getUserInfo().split(":");
+                String[] userInfoParts = uri.getUserInfo().split(":");
                 username = userInfoParts[0];
-            if (userInfoParts.length > 1)
-            {
-                password = userInfoParts[1];
-            }
-            if (userInfoParts.length > 2) {
-                authType = userInfoParts[2];
-            }
+                if (userInfoParts.length > 1)
+                {
+                    password = userInfoParts[1];
+                }
+                if (userInfoParts.length > 2)
+                {
+                    authType = userInfoParts[2];
+                }
             }
 
             if (username != null)

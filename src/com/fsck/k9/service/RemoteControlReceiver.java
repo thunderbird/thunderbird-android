@@ -36,7 +36,7 @@ public class RemoteControlReceiver extends CoreReceiver
                 for (int i = 0; i < accounts.length; i++)
                 {
                     Account account = accounts[i];
-                
+
                     uuids[i] = account.getUuid();
                     descriptions[i] = account.getDescription();
                 }
@@ -48,9 +48,9 @@ public class RemoteControlReceiver extends CoreReceiver
             {
                 Log.e(K9.LOG_TAG, "Could not handle K9_RESPONSE_INTENT", e);
             }
-            
+
         }
-        
+
         return tmpWakeLockId;
     }
 

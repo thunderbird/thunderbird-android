@@ -760,8 +760,8 @@ public class ImapStore extends Store
                 }
                 else
                 {
-                    throw new MessagingException("IMAPMessage.copyMessages: remote destination folder " + folder.getName() 
-                            + " does not exist and could not be created for " + getLogId()
+                    throw new MessagingException("IMAPMessage.copyMessages: remote destination folder " + folder.getName()
+                                                 + " does not exist and could not be created for " + getLogId()
                                                  , true);
                 }
             }
@@ -793,7 +793,7 @@ public class ImapStore extends Store
             {
                 ImapFolder remoteTrashFolder = (ImapFolder)getStore().getFolder(trashFolderName);
                 String remoteTrashName = encodeFolderName(remoteTrashFolder.getPrefixedName());
-                
+
                 if (!exists(remoteTrashName))
                 {
                     /*
@@ -2472,7 +2472,7 @@ public class ImapStore extends Store
                                 receiver.pushError("IMAP server is not IDLE capable: " + mConnection.toString(), null);
                                 throw new MessagingException("IMAP server is not IDLE capable:" + mConnection.toString());
                             }
-                            
+
                             if (responses != null)
                             {
                                 handleUntaggedResponses(responses);

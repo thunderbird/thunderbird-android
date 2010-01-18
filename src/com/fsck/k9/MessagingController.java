@@ -857,7 +857,7 @@ public class MessagingController implements Runnable
         {
             listener.synchronizeMailboxStarted(account, folder);
         }
-        
+
         Exception commandException = null;
         try
         {
@@ -1827,23 +1827,23 @@ public class MessagingController implements Runnable
 
             String folder = command.arguments[0];
             String uid = command.arguments[1];
-    
+
             if (account.getErrorFolderName().equals(folder))
             {
                 return;
             }
-    
+
             LocalStore localStore = (LocalStore) Store.getInstance(
                                         account.getLocalStoreUri(),
                                         mApplication);
             localFolder = (LocalFolder) localStore.getFolder(folder);
             LocalMessage localMessage = (LocalMessage) localFolder.getMessage(uid);
-    
+
             if (localMessage == null)
             {
                 return;
             }
-    
+
             Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
             remoteFolder = remoteStore.getFolder(folder);
             if (!remoteFolder.exists())
@@ -1858,13 +1858,13 @@ public class MessagingController implements Runnable
             {
                 return;
             }
-    
+
             Message remoteMessage = null;
             if (!localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX))
             {
                 remoteMessage = remoteFolder.getMessage(localMessage.getUid());
             }
-    
+
             if (remoteMessage == null)
             {
                 if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED))
@@ -1877,7 +1877,7 @@ public class MessagingController implements Runnable
                     {
                         Log.w(K9.LOG_TAG, "Local message has flag " + Flag.X_REMOTE_COPY_STARTED + " already set, and there is a remote message with " +
                               " uid " + rUid + ", assuming message was already copied and aborting this copy");
-    
+
                         String oldUid = localMessage.getUid();
                         localMessage.setUid(rUid);
                         localFolder.changeUid(localMessage);
@@ -1892,7 +1892,7 @@ public class MessagingController implements Runnable
                         Log.w(K9.LOG_TAG, "No remote message with message-id found, proceeding with append");
                     }
                 }
-    
+
                 /*
                  * If the message does not exist remotely we just upload it and then
                  * update our local copy with the new uid.
@@ -1907,7 +1907,7 @@ public class MessagingController implements Runnable
                 String oldUid = localMessage.getUid();
                 localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
                 remoteFolder.appendMessages(new Message[] { localMessage });
-    
+
                 localFolder.changeUid(localMessage);
                 for (MessagingListener l : getListeners())
                 {
@@ -1946,9 +1946,9 @@ public class MessagingController implements Runnable
                     fp.add(FetchProfile.Item.BODY);
                     localFolder.fetch(new Message[] { localMessage }, fp, null);
                     String oldUid = localMessage.getUid();
-    
+
                     localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
-    
+
                     remoteFolder.appendMessages(new Message[] { localMessage });
                     localFolder.changeUid(localMessage);
                     for (MessagingListener l : getListeners())
@@ -2184,7 +2184,7 @@ public class MessagingController implements Runnable
     {
         String folder = command.arguments[0];
         String uid = command.arguments[1];
-        
+
         if (account.getErrorFolderName().equals(folder))
         {
             return;
@@ -2388,8 +2388,8 @@ public class MessagingController implements Runnable
             {
                 l.folderStatusChanged(account, folder, 0);
             }
-            
-        
+
+
             if (account.getErrorFolderName().equals(folder))
             {
                 return;
@@ -4027,7 +4027,7 @@ public class MessagingController implements Runnable
                             Log.e(K9.LOG_TAG, "Unable to synchronize account " + account.getName(), e);
                             addErrorMessage(account, e);
                         }
-                        
+
                     }
                 }
                 catch (Exception e)
