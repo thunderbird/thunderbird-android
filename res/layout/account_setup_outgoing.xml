@@ -61,6 +61,16 @@
             android:layout_height="fill_parent"
             android:orientation="vertical"
             android:visibility="gone">
+        <TextView
+            android:text="@string/account_setup_outgoing_authentication_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <Spinner
+            android:id="@+id/account_auth_type"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
             <TextView
                 android:text="@string/account_setup_outgoing_username_label"
                 android:layout_height="wrap_content"

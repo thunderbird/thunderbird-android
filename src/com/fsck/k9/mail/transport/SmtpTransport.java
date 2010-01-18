@@ -45,6 +45,8 @@ public class SmtpTransport extends Transport
 
     String mPassword;
 
+    String mAuthType;
+
     int mConnectionSecurity;
 
     boolean mSecure;
@@ -116,11 +118,14 @@ public class SmtpTransport extends Transport
 
         if (uri.getUserInfo() != null)
         {
-            String[] userInfoParts = uri.getUserInfo().split(":", 2);
+            String[] userInfoParts = uri.getUserInfo().split(":");
             mUsername = userInfoParts[0];
             if (userInfoParts.length > 1)
             {
                 mPassword = userInfoParts[1];
+            }
+            if (userInfoParts.length > 2) {
+                mAuthType = userInfoParts[2];
             }
         }
     }
@@ -234,7 +239,7 @@ public class SmtpTransport extends Transport
                 {
                     authPlainSupported = true;
                 }
-                if (result.matches(".*AUTH.*CRAM-MD5.*$") == true)
+                if (result.matches(".*AUTH.*CRAM-MD5.*$") == true && mAuthType != null && mAuthType.equals("CRAM_MD5"))
                 {
                     authCramMD5Supported = true;
                 }

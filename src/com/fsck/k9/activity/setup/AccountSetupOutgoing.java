@@ -43,6 +43,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
     };
 
+    private static final String authTypes[] =
+    {
+        "PLAIN", "CRAM_MD5"
+    };
     private EditText mUsernameView;
     private EditText mPasswordView;
     private EditText mServerView;
@@ -50,6 +54,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private CheckBox mRequireLoginView;
     private ViewGroup mRequireLoginSettingsView;
     private Spinner mSecurityTypeView;
+    private Spinner mAuthTypeView;
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
@@ -100,6 +105,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mRequireLoginView = (CheckBox)findViewById(R.id.account_require_login);
         mRequireLoginSettingsView = (ViewGroup)findViewById(R.id.account_require_login_settings);
         mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
+        mAuthTypeView = (Spinner)findViewById(R.id.account_auth_type);
         mNextButton = (Button)findViewById(R.id.next);
 
         mNextButton.setOnClickListener(this);
@@ -116,10 +122,25 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             new SpinnerOption(4, getString(R.string.account_setup_incoming_security_tls_label)),
         };
 
+        // This needs to be kept in sync with the list at the top of the file.
+        // that makes me somewhat unhappy
+        SpinnerOption authTypeSpinnerOptions[] =
+        {
+            new SpinnerOption(0, "PLAIN"),
+            new SpinnerOption(1, "CRAM_MD5")
+        };
+
+
+
         ArrayAdapter<SpinnerOption> securityTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, securityTypes);
         securityTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSecurityTypeView.setAdapter(securityTypesAdapter);
+
+        ArrayAdapter<SpinnerOption> authTypesAdapter = new ArrayAdapter<SpinnerOption>(this,
+                android.R.layout.simple_spinner_item, authTypeSpinnerOptions);
+        authTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAuthTypeView.setAdapter(authTypesAdapter);
 
         /*
          * Updates the port when the user changes the security type. This allows
@@ -183,14 +204,18 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             URI uri = new URI(mAccount.getTransportUri());
             String username = null;
             String password = null;
+            String authType = null;
             if (uri.getUserInfo() != null)
             {
-                String[] userInfoParts = uri.getUserInfo().split(":", 2);
+             String[] userInfoParts = uri.getUserInfo().split(":");
                 username = userInfoParts[0];
-                if (userInfoParts.length > 1)
-                {
-                    password = userInfoParts[1];
-                }
+            if (userInfoParts.length > 1)
+            {
+                password = userInfoParts[1];
+            }
+            if (userInfoParts.length > 2) {
+                authType = userInfoParts[2];
+            }
             }
 
             if (username != null)
@@ -203,6 +228,18 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             {
                 mPasswordView.setText(password);
             }
+
+            if (authType != null)
+            {
+                for (int i = 0; i < authTypes.length; i++)
+                {
+                    if (authTypes[i].equals(authType))
+                    {
+                        SpinnerOption.setSpinnerOptionValue(mAuthTypeView, i);
+                    }
+                }
+            }
+
 
             for (int i = 0; i < smtpSchemes.length; i++)
             {
@@ -288,10 +325,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         try
         {
             String userInfo = null;
+            String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
             if (mRequireLoginView.isChecked())
             {
                 userInfo = mUsernameView.getText().toString() + ":"
-                           + mPasswordView.getText().toString();
+                           + mPasswordView.getText().toString() + ":" + authType;
             }
             uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
                           Integer.parseInt(mPortView.getText().toString()), null, null, null);

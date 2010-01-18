@@ -353,8 +353,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_outgoing_require_login_label">Require sign-in.</string>
     <string name="account_setup_outgoing_username_label">Username</string>
     <string name="account_setup_outgoing_password_label">Password</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
     <string name="account_setup_outgoing_authentication_label">Authentication type</string>
+    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
     <string name="account_setup_outgoing_authentication_basic_label">Username &amp; password</string>
     <string name="account_setup_outgoing_authentication_basic_username_label">Username</string>
     <string name="account_setup_outgoing_authentication_basic_password_label">Password</string>
