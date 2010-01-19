@@ -85,8 +85,8 @@
 				android:title="@string/batch_select_all"
 			/>
 			<item
-				android:id="@+id/batch_deselect_all"
-				android:title="@string/batch_deselect_all"
+				android:id="@+id/batch_unselect_all"
+				android:title="@string/batch_unselect_all"
 			/>
 		</menu>
 	</item>			
