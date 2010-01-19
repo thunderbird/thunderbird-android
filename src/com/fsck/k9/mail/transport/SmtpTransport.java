@@ -332,6 +332,14 @@ public class SmtpTransport extends Transport
     {
         try
         {
+            executeSimpleCommand("QUIT");
+        }
+        catch (Exception e)
+        {
+
+        }
+        try
+        {
             mIn.close();
         }
         catch (Exception e)
