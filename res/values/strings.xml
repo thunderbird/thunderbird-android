@@ -36,7 +36,7 @@
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
     <string name="select_action">Select</string>
-    <string name="unselect_action">Unselect</string>
+    <string name="deselect_action">Unselect</string>
     <string name="reply_action">Reply</string>
     <string name="reply_all_action">Reply all</string>
     <string name="delete_action">Delete</string>
@@ -629,7 +629,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="batch_select_mode">Select mode</string>
     <string name="batch_plain_mode">Plain mode</string>
     <string name="batch_select_all">Select all</string>
-    <string name="batch_unselect_all">Done</string>
+    <string name="batch_deselect_all">Done</string>
     
     <string name="account_setup_push_limit_label">Max folders to check with push</string>
     <string name="account_setup_push_limit_10">10 folders</string>

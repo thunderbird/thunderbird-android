@@ -1114,7 +1114,7 @@ public class MessageList
                 toggleBatchButtons();
                 return true;
 
-            case R.id.batch_unselect_all:
+            case R.id.batch_deselect_all:
                 setAllSelected(false);
                 toggleBatchButtons();
                 return true;
@@ -1161,7 +1161,7 @@ public class MessageList
 
     private final int[] batch_ops = { R.id.batch_copy_op, R.id.batch_delete_op, R.id.batch_flag_op,
                                       R.id.batch_unflag_op, R.id.batch_mark_read_op, R.id.batch_mark_unread_op, R.id.batch_move_op ,
-                                      R.id.batch_select_all, R.id.batch_unselect_all
+                                      R.id.batch_select_all, R.id.batch_deselect_all
                                     };
 
 
@@ -1198,7 +1198,7 @@ public class MessageList
         menu.findItem(R.id.batch_unflag_op).setVisible(!newFlagState);
         menu.findItem(R.id.batch_mark_read_op).setVisible(newReadState);
         menu.findItem(R.id.batch_mark_unread_op).setVisible(!newReadState);
-        menu.findItem(R.id.batch_unselect_all).setVisible(anySelected);
+        menu.findItem(R.id.batch_deselect_all).setVisible(anySelected);
         menu.findItem(R.id.batch_select_all).setEnabled(true);
         // TODO: batch move and copy not yet implemented
         menu.findItem(R.id.batch_move_op).setVisible(false);
@@ -1248,7 +1248,7 @@ public class MessageList
                 setSelected(holder, true);
                 break;
 
-            case R.id.unselect:
+            case R.id.deselect:
                 setSelected(holder, false);
                 break;
 
@@ -1397,12 +1397,12 @@ public class MessageList
         if (message.selected)
         {
             menu.findItem(R.id.select).setVisible(false);
-            menu.findItem(R.id.unselect).setVisible(true);
+            menu.findItem(R.id.deselect).setVisible(true);
         }
         else
         {
             menu.findItem(R.id.select).setVisible(true);
-            menu.findItem(R.id.unselect).setVisible(false);
+            menu.findItem(R.id.deselect).setVisible(false);
         }
 
     }

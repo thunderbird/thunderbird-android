@@ -9,9 +9,9 @@
         android:title="@string/select_action"
     />
     <item
-        android:id="@+id/unselect"
+        android:id="@+id/deselect"
 		android:visible="false"
-        android:title="@string/unselect_action"
+        android:title="@string/deselect_action"
     />
 	<item
 		android:id="@+id/delete"
