@@ -1332,6 +1332,9 @@ public class MessageList
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
 
+            if (e2 == null || e1 == null) 
+                return true;
+
             float deltaX = e2.getX() - e1.getX(),
                            deltaY = e2.getY() - e1.getY();
 
