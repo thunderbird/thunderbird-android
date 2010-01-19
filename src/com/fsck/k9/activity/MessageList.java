@@ -109,6 +109,7 @@ public class MessageList
     private boolean sortDateAscending = false;
 
     private boolean mStars = true;
+    private boolean mCheckboxes = true;
     private int mSelectedCount = 0;
 
     private View mBatchButtonArea;
@@ -465,6 +466,7 @@ public class MessageList
         super.onResume();
 
         mStars = K9.messageListStars();
+        mCheckboxes = K9.messageListCheckboxes();
         mTouchView = K9.messageListTouchable();
 
         sortType = mController.getSortType();
@@ -1332,7 +1334,7 @@ public class MessageList
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
 
-            if (e2 == null || e1 == null) 
+            if (e2 == null || e1 == null)
                 return true;
 
             float deltaX = e2.getX() - e1.getX(),
@@ -1845,6 +1847,7 @@ public class MessageList
                 holder.date = (TextView) view.findViewById(R.id.date);
                 holder.chip = view.findViewById(R.id.chip);
                 holder.preview = (TextView) view.findViewById(R.id.preview);
+                holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
                 holder.flagged.setOnClickListener(new OnClickListener()
                 {
@@ -1857,11 +1860,11 @@ public class MessageList
                 });
 
                 if (mStars == false)
-                {
                     holder.flagged.setVisibility(View.GONE);
-                }
 
-                holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
+                if (mCheckboxes == true)
+                    holder.selected.setVisibility(View.VISIBLE);
+
 
 
                 if (holder.selected!=null)
@@ -1887,13 +1890,16 @@ public class MessageList
                 holder.position = -1;
                 holder.selected.setChecked(message.selected);
 
-                if (message.selected == true)
+                if (!mCheckboxes)
                 {
-                    holder.selected.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    holder.selected.setVisibility(View.GONE);
+                    if (message.selected == true)
+                    {
+                        holder.selected.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        holder.selected.setVisibility(View.GONE);
+                    }
                 }
                 holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[message.account.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
                 holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
@@ -1965,7 +1971,8 @@ public class MessageList
                 //WARNING: Order of the next 2 lines matter
                 holder.position = -1;
                 holder.selected.setChecked(false);
-                holder.selected.setVisibility(View.GONE);
+                if (!mCheckboxes)
+                    holder.selected.setVisibility(View.GONE);
                 holder.flagged.setChecked(false);
             }
             return view;
@@ -2272,13 +2279,16 @@ public class MessageList
                     //We must set the flag before showing the buttons
                     //as the buttons text depends on what is selected
                     message.selected = isChecked;
-                    if (isChecked == true)
+                    if (!mCheckboxes)
                     {
-                        selected.setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
-                        selected.setVisibility(View.GONE);
+                        if (isChecked == true)
+                        {
+                            selected.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            selected.setVisibility(View.GONE);
+                        }
                     }
                     toggleBatchButtons();
                 }

@@ -67,6 +67,7 @@ public class K9 extends Application
 
 
     private static boolean mMessageListStars = true;
+    private static boolean mMessageListCheckboxes = false;
     private static boolean mMessageListTouchable = false;
 
 
@@ -308,6 +309,7 @@ public class K9 extends Application
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("messageListStars",mMessageListStars);
+        editor.putBoolean("messageListCheckboxes",mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
         editor.putInt("theme", theme);
     }
@@ -323,6 +325,7 @@ public class K9 extends Application
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
+        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
 
 
@@ -462,6 +465,15 @@ public class K9 extends Application
     public static void setMessageListStars(boolean stars)
     {
         mMessageListStars = stars;
+    }
+    public static boolean messageListCheckboxes()
+    {
+        return mMessageListCheckboxes;
+    }
+
+    public static void setMessageListCheckboxes(boolean checkboxes)
+    {
+        mMessageListCheckboxes = checkboxes;
     }
 }
 

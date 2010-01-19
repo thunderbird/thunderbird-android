@@ -41,11 +41,17 @@
     <PreferenceCategory android:title="@string/messagelist_preferences" android:key="messagelist_preferences">
          <CheckBoxPreference
             android:key="messagelist_touchable"
-            android:title="@string/account_settings_touchable_label"/>
+            android:title="@string/global_settings_touchable_label"/>
 
          <CheckBoxPreference
             android:key="messagelist_stars"
-            android:title="@string/account_settings_star_label"/>
+            android:title="@string/global_settings_star_label"/>
+    
+         <CheckBoxPreference
+            android:key="messagelist_checkboxes"
+            android:title="@string/global_settings_checkbox_label"
+            android:summary="@string/global_settings_checkbox_summary"
+            />
     
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">
