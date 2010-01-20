@@ -292,6 +292,7 @@ public class FolderList extends K9ListActivity
                 && !K9.FOLDER_NONE.equals(initialFolder))
         {
             onOpenFolder(initialFolder, true);
+            finish();
         }
         else
         {
