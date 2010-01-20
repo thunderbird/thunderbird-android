@@ -1348,10 +1348,18 @@ public class MessageList
                 boolean selected = (deltaX > 0);
                 int position = mListView.pointToPosition((int)e1.getX(), (int)e1.getY());
 
-                ((MessageInfoHolder)  mAdapter.getItem(position)).selected = selected;
-                mSelectedCount += (selected ? 1 : -1);
-                mAdapter.notifyDataSetChanged();
-                toggleBatchButtons();
+                if (position != AdapterView.INVALID_POSITION)
+                {
+                    MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
+
+                    if (msgInfoHolder != null)
+                    {
+                        msgInfoHolder.selected = selected;
+                        mSelectedCount += (selected ? 1 : -1);
+                        mAdapter.notifyDataSetChanged();
+                        toggleBatchButtons();
+                    }
+                }
             }
 
             return false;
