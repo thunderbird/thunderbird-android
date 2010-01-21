@@ -45,7 +45,9 @@
 
          <CheckBoxPreference
             android:key="messagelist_stars"
-            android:title="@string/global_settings_star_label"/>
+            android:title="@string/global_settings_flag_label"
+            android:summary="@string/global_settings_flag_summary"
+            />
     
          <CheckBoxPreference
             android:key="messagelist_checkboxes"

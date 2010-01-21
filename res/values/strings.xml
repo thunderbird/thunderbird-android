@@ -79,8 +79,8 @@
     <string name="mark_all_as_read_dlg_instructions_fmt">Mark all messages in \'<xliff:g id="folder">%s</xliff:g>\' as read?  (including
     messages in the folder that are not displayed in K-9)</string>
   
-    <string name="flag_action">Flag</string>
-    <string name="unflag_action">Unflag</string>
+    <string name="flag_action">Add star</string>
+    <string name="unflag_action">Remove star</string>
     <string name="copy_action">Copy</string>
  
     <string name="mark_as_unread_action">Mark as unread</string>
@@ -162,8 +162,8 @@
     <string name="send_failure_body_fmt">K-9 encountered a problem sending some of your messages. 
      However, due to the nature of the problem, K-9 cannot be certain if the messages
     were sent or not.  The recipients may have already received copies of the message.  
-    \u000a\u000aThe messages for which this type of problem occurred are now flagged in your Outbox.  
-    Unflag those messages to allow for more sending attempts. 
+    \u000a\u000aThe messages for which this type of problem occurred are now starred in your Outbox.  
+    If you remove the stars, K-9 will try to send the messages again.
     Long-press the Outbox to find the "Send messages" action in order to initiate another sending attempt.\u000A\u000a
     The <xliff:g id="errorFolder">%s</xliff:g> folder may contain error messages regarding the failures.</string>
     
@@ -219,8 +219,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_list_delete_action">Delete</string>
     <string name="message_list_mark_read_action">Mark read</string>
     <string name="message_list_mark_unread_action">Mark unread</string>
-    <string name="message_list_flag_action">Flag</string>
-    <string name="message_list_unflag_action">Unflag</string>
+    <string name="message_list_flag_action">Add star</string>
+    <string name="message_list_unflag_action">Remove star</string>
 
     <string name="message_compose_to_hint">To</string>
     <string name="message_compose_cc_hint">Cc</string>
@@ -269,7 +269,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 	<string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
 
 
-    <string name="global_settings_star_label">Star flagged messages</string>
+    <string name="global_settings_flag_label">Message stars</string>
+    <string name="global_settings_flag_summary">Stars indicate flagged messages</string>
     <string name="global_settings_checkbox_label">Multi-select checkboxes</string>
     <string name="global_settings_checkbox_summary">Always show multi-select checkboxes</string>
     <string name="global_settings_touchable_label">Touch-friendly view</string>
@@ -555,8 +556,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="sort_sender_re_alpha">Sender reverse alphabetical</string>
     <string name="sort_subject_alpha">Subject alphabetical</string>
     <string name="sort_subject_re_alpha">Subject reverse alphabetical</string>
-    <string name="sort_flagged_first">Flagged messages first</string>
-    <string name="sort_flagged_last">Unflagged messages first</string>
+    <string name="sort_flagged_first">Starred messages first</string>
+    <string name="sort_flagged_last">Unstarred messages first</string>
     <string name="sort_unread_first">Unread messages first</string>
     <string name="sort_unread_last">Read messages first</string>
     <string name="sort_attach_first">Messages with attachments first</string>
@@ -566,7 +567,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="sort_by_date">Date</string>
     <string name="sort_by_sender">Sender</string>
     <string name="sort_by_subject">Subject</string>
-    <string name="sort_by_flag">Flag</string>
+    <string name="sort_by_flag">Star</string>
     <string name="sort_by_unread">Read/unread</string>
     <string name="sort_by_attach">Attachments</string>
     <string name="message_web_view_error">%s</string>
@@ -588,9 +589,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_help_key">Del (or D) - Delete\u000AR -
     Reply\u000AA - Reply All\u000AF - Forward\u000AJ or P - Previous
     Message\u000AK, N - Next Message\u000AM - Move\u000AY - Copy\u000AZ - Zoom Out\u000AShift-Z -
-    Zoom In\u000aG - Flag</string>
+    Zoom In\u000aG - Star</string>
     <string name="message_list_help_key">Del (or D) - Delete\u000AR -
-    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aM - Move\u000AY - Copy\u000AG - Flag\u000AO - Sort type\u000AI - Sort order\u000AQ
+    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aM - Move\u000AY - Copy\u000AG - Star\u000AO - Sort type\u000AI - Sort order\u000AQ
     - Return to Accounts</string>
 
     <string name="account_settings_signature__location_label">Signature position</string>
@@ -621,8 +622,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="batch_delete_op">Delete selected</string>
     <string name="batch_mark_read_op">Mark selected read</string>
     <string name="batch_mark_unread_op">Mark selected unread</string>
-    <string name="batch_flag_op">Flag selected</string>
-    <string name="batch_unflag_op">Unflag selected</string>
+    <string name="batch_flag_op">Add star to selected</string>
+    <string name="batch_unflag_op">Remove star from selected</string>
     <string name="batch_move_op">Move selected</string>
     <string name="batch_copy_op">Copy selected</string>
     <string name="batch_flag_mode">Star mode</string>
