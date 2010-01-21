@@ -1330,6 +1330,13 @@ public class MessagingController implements Runnable
                                     l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                                 }
                             }
+
+                            // Send a notification of this message
+                            if (!message.isSet(Flag.SEEN))
+                            {
+                                notifyAccount(mApplication, account, message);
+                            }
+
                         }
 
                     }
@@ -4118,66 +4125,114 @@ public class MessagingController implements Runnable
         });
     }
 
-    public void notifyAccount(Context context, Account thisAccount, int newMailCount)
+    /** Creates a notification of new email messages
+     * ringtone, lights, and vibration to be played
+    */
+    private void notifyAccount(Context context, Account account, Message message)
     {
+        if (!account.isNotifyNewMail())
+            return;
+
+        // If we have a message, set the notification to "<From>: <Subject>"
+        StringBuffer messageNotice = new StringBuffer();
+        try
+        {
+            if (message != null && message.getFrom() != null)
+            {
+                Address[] addrs = message.getFrom();
+                String from = addrs.length > 0 ? addrs[0].toFriendly() : null;
+                String subject = message.getSubject();
+                if (subject == null)
+                {
+                    subject = context.getString(R.string.general_no_subject);
+                }
+
+                if (from != null)
+                {
+                    // Show From: address, except show To: if sent from me
+                    if (account.isAnIdentity(message.getFrom()) == false)
+                    {
+                        messageNotice.append(from + ": " + subject);
+                    }
+                    else
+                    {
+                        Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
+                        String to = rcpts.length > 0 ? rcpts[0].toFriendly() : null;
+                        if (to != null)
+                        {
+                            messageNotice.append(to + ": "+subject);
+                        }
+                        else
+                        {
+                            messageNotice.append(context.getString(R.string.general_no_sender) + ": "+subject);
+
+                        }
+
+                    }
+                }
+            }
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to get message information for notification.", e);
+        }
+        // If we could not set a per-message notification, revert to a default message
+        if (messageNotice.length() == 0)
+        {
+            messageNotice.append(context.getString(R.string.notification_new_title));
+        }
+
         int unreadMessageCount = 0;
         try
         {
-            unreadMessageCount = thisAccount.getUnreadMessageCount(context, mApplication);
+            unreadMessageCount = account.getUnreadMessageCount(context, mApplication);
         }
-        catch (Exception e)
+        catch (MessagingException e)
         {
-            Log.e(K9.LOG_TAG, "Unable to get unread message count", e);
+            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
         }
 
-        if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "notifyAccount Account " + thisAccount.getDescription() + ", newMailCount = " + newMailCount);
-        boolean isNotifyAccount = thisAccount.isNotifyNewMail();
-        if (isNotifyAccount)
+        NotificationManager notifMgr =
+            (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
+        notif.number = unreadMessageCount;
+
+        Intent i = FolderList.actionHandleAccountIntent(context, account);
+        PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
+
+        // 279 Unread (someone@gmail.com)
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount, account.getDescription());
+        notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
+
+        // If we've already annoyed the user with buzzing, flashing and beeping for this account, don't do it again
+        notif.defaults |= Notification.FLAG_ONLY_ALERT_ONCE;
+
+        if (account.isRing())
         {
-
-            NotificationManager notifMgr =
-                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-            if (newMailCount > 0 && unreadMessageCount > 0)
-            {
-                String notice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount,
-                                                  thisAccount.getDescription());
-                Notification notif = new Notification(R.drawable.stat_notify_email_generic,
-                                                      context.getString(R.string.notification_new_title), System.currentTimeMillis());
-
-                notif.number = unreadMessageCount;
-
-                Intent i = FolderList.actionHandleAccountIntent(context, thisAccount);
-
-                PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
-
-                notif.setLatestEventInfo(context, context.getString(R.string.notification_new_title), notice, pi);
-
-                String ringtone = thisAccount.getRingtone();
-                notif.sound = TextUtils.isEmpty(ringtone) || thisAccount.isRing() == false ? null : Uri.parse(ringtone);
-
-                if (thisAccount.isVibrate())
-                {
-                    notif.defaults |= Notification.DEFAULT_VIBRATE;
-                }
-
-                notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                notif.ledARGB = K9.NOTIFICATION_LED_COLOR;
-                notif.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
-                notif.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
-
-
-                notifMgr.notify(thisAccount.getAccountNumber(), notif);
-            }
-            else if (unreadMessageCount == 0)
-            {
-                notifMgr.cancel(thisAccount.getAccountNumber());
-            }
+            String ringtone = account.getRingtone();
+            notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
         }
-        for (MessagingListener l : getListeners())
+
+        if (account.isVibrate())
         {
-            l.accountStatusChanged(thisAccount, unreadMessageCount);
+            notif.defaults |= Notification.DEFAULT_VIBRATE;
         }
+
+        notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+        notif.ledARGB = K9.NOTIFICATION_LED_COLOR;
+        notif.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
+        notif.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
+
+        notif.number = unreadMessageCount;
+        notifMgr.notify(account.getAccountNumber(), notif);
+    }
+
+    /** Cancel a notification of new email messages */
+    private void notifyAccountCancel(Context context, Account account)
+    {
+        NotificationManager notifMgr =
+            (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notifMgr.cancel(account.getAccountNumber());
     }
 
 
@@ -4467,9 +4522,12 @@ public class MessagingController implements Runnable
                     localFolder.setStatus(null);
 
                     if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "messagesArrived newCount = " + newCount);
+                        Log.i(K9.LOG_TAG, "messagesArrived newCount = " + newCount + ", unread count = " + unreadMessageCount);
 
-                    notifyAccount(mApplication, account, newCount);
+                    if (unreadMessageCount == 0)
+                    {
+                        notifyAccountCancel(mApplication, account);
+                    }
 
                     for (MessagingListener l : getListeners())
                     {

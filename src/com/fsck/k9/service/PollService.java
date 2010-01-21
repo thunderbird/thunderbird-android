@@ -138,24 +138,6 @@ public class PollService extends CoreService
             }
         }
 
-        private void checkMailDone(Context context, Account doNotUseaccount)
-        {
-            if (accountsChecked.isEmpty())
-            {
-                return;
-            }
-
-            for (Account thisAccount : Preferences.getPreferences(context).getAccounts())
-            {
-                Integer newMailCount = accountsChecked.get(thisAccount.getUuid());
-                if (newMailCount != null)
-                {
-                    MessagingController.getInstance(getApplication()).notifyAccount(context, thisAccount, newMailCount);
-                }
-            }//for accounts
-        }//checkMailDone
-
-
         private void release()
         {
             MessagingController controller = MessagingController.getInstance(getApplication());
@@ -174,14 +156,7 @@ public class PollService extends CoreService
 
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "***** PollService *****: checkMailFinished");
-            try
-            {
-                checkMailDone(context, account);
-            }
-            finally
-            {
-                release();
-            }
+            release();
         }
         public int getStartId()
         {
