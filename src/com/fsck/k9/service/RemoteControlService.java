@@ -6,6 +6,7 @@ import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.K9.BACKGROUND_OPS;
 
 import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 
@@ -60,6 +61,7 @@ public class RemoteControlService extends CoreService
                 {
                     try
                     {
+                        boolean needsReschedule = false;
                         String uuid = intent.getStringExtra(K9_ACCOUNT_UUID);
                         boolean allAccounts = intent.getBooleanExtra(K9_ALL_ACCOUNTS, false);
                         if (K9.DEBUG)
@@ -103,7 +105,13 @@ public class RemoteControlService extends CoreService
                                 }
                                 if (pushClasses != null)
                                 {
-                                    account.setFolderPushMode(FolderMode.valueOf(pushClasses));
+                                    FolderMode newClasses = FolderMode.valueOf(pushClasses);
+                                    if (newClasses.equals(account.getFolderPushMode()) == false)
+                                    {
+                                        account.setFolderPushMode(newClasses);
+                                        needsReschedule = true;
+                                    }
+                                   
                                 }
                                 if (pollClasses != null)
                                 {
@@ -116,7 +124,12 @@ public class RemoteControlService extends CoreService
                                     {
                                         if (allowedFrequency.equals(pollFrequency))
                                         {
-                                            account.setAutomaticCheckIntervalMinutes(Integer.parseInt(allowedFrequency));
+                                            Integer newInterval = Integer.parseInt(allowedFrequency);
+                                            if (newInterval.equals(account.getAutomaticCheckIntervalMinutes()) == false)
+                                            {
+                                                account.setAutomaticCheckIntervalMinutes(newInterval);
+                                                needsReschedule = true;
+                                            }
                                         }
                                     }
                                 }
@@ -131,7 +144,12 @@ public class RemoteControlService extends CoreService
                                 || K9RemoteControl.K9_BACKGROUND_OPERATIONS_NEVER.equals(backgroundOps)
                                 || K9RemoteControl.K9_BACKGROUND_OPERATIONS_WHEN_CHECKED.equals(backgroundOps))
                         {
-                            K9.setBackgroundOps(backgroundOps);
+                            BACKGROUND_OPS newBackgroundOps = BACKGROUND_OPS.valueOf(backgroundOps);
+                            if (K9.getBackgroundOps().equals(newBackgroundOps) == false)
+                            {
+                                K9.setBackgroundOps(newBackgroundOps);
+                                needsReschedule = true;
+                            }
                         }
 
                         String theme = intent.getStringExtra(K9_THEME);
@@ -145,12 +163,15 @@ public class RemoteControlService extends CoreService
                         Editor editor = sPrefs.edit();
                         K9.save(editor);
                         editor.commit();
-
-                        Intent i = new Intent();
-                        i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.RemoteControlService");
-                        i.setAction(RESCHEDULE_ACTION);
-                        long nextTime = System.currentTimeMillis() + 10000;
-                        BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
+                        
+                        if (needsReschedule)
+                        {
+                            Intent i = new Intent();
+                            i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.RemoteControlService");
+                            i.setAction(RESCHEDULE_ACTION);
+                            long nextTime = System.currentTimeMillis() + 10000;
+                            BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
+                        }
                     }
                     catch (Exception e)
                     {
