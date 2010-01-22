@@ -32,7 +32,7 @@ public class CoreReceiver extends BroadcastReceiver
         Integer tmpWakeLockId = wakeLockSeq.getAndIncrement();
         wakeLocks.put(tmpWakeLockId, wakeLock);
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "CoreReceiver Created wakeLock " + tmpWakeLockId);
+            Log.v(K9.LOG_TAG, "CoreReceiver Created wakeLock " + tmpWakeLockId);
         return tmpWakeLockId;
     }
 
@@ -44,7 +44,7 @@ public class CoreReceiver extends BroadcastReceiver
             if (wl != null)
             {
                 if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "CoreReceiver Releasing wakeLock " + wakeLockId);
+                    Log.v(K9.LOG_TAG, "CoreReceiver Releasing wakeLock " + wakeLockId);
                 wl.release();
             }
             else
@@ -67,7 +67,7 @@ public class CoreReceiver extends BroadcastReceiver
                 if (wakeLockId != -1)
                 {
                     if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "CoreReceiver Release wakeLock " + wakeLockId);
+                        Log.v(K9.LOG_TAG, "CoreReceiver Release wakeLock " + wakeLockId);
                     CoreReceiver.releaseWakeLock(wakeLockId);
                 }
             }
@@ -90,7 +90,7 @@ public class CoreReceiver extends BroadcastReceiver
     public static void releaseWakeLock(Context context, int wakeLockId)
     {
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "CoreReceiver Got request to release wakeLock " + wakeLockId);
+            Log.v(K9.LOG_TAG, "CoreReceiver Got request to release wakeLock " + wakeLockId);
         Intent i = new Intent();
         i.setClass(context, CoreReceiver.class);
         i.setAction(WAKE_LOCK_RELEASE);
