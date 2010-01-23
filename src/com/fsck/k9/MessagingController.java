@@ -1281,14 +1281,14 @@ public class MessagingController implements Runnable
                 {
                     try
                     {
-                        if (!message.isSet(Flag.SEEN))
+                        if (message.isSet(Flag.DELETED))
                         {
-                            if (account.isNotifySelfNewMail() || account.isAnIdentity(message.getFrom()) == false)
-                            {
-                                newMessages.incrementAndGet();
-                            }
+                            if (K9.DEBUG)
+                                Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid() 
+                                        + " was already deleted on server, skipping");
+                            return;
                         }
-
+                        
                         // Store the new message locally
                         localFolder.appendMessages(new Message[]
                                                    {
@@ -1323,18 +1323,21 @@ public class MessagingController implements Runnable
                                 Message localMessage = localFolder.getMessage(message.getUid());
                                 syncFlags(localMessage, message);
                                 if (K9.DEBUG)
-                                    Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
-                                          + account + ":" + folder + ":" + message.getUid());
+                                        Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
+                                              + account + ":" + folder + ":" + message.getUid());
                                 for (MessagingListener l : getListeners())
                                 {
                                     l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                                 }
-                            }
-
-                            // Send a notification of this message
-                            if (!message.isSet(Flag.SEEN))
-                            {
-                                notifyAccount(mApplication, account, message);
+    
+                                // Send a notification of this message
+                                if (!message.isSet(Flag.SEEN) &&
+                                        (account.isNotifySelfNewMail() || account.isAnIdentity(message.getFrom()) == false))
+                                {
+                                    notifyAccount(mApplication, account, message);
+                                    newMessages.incrementAndGet();
+                                }
+                                
                             }
 
                         }
