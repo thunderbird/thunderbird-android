@@ -1281,6 +1281,11 @@ public class MessagingController implements Runnable
                 {
                     try
                     {
+                        String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
+                        if (newPushState != null)
+                        {
+                            localFolder.setPushState(newPushState);
+                        }
                         if (message.isSet(Flag.DELETED))
                         {
                             if (K9.DEBUG)
@@ -1303,11 +1308,7 @@ public class MessagingController implements Runnable
                         {
                             smallMessages.add(message);
                         }
-                        String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
-                        if (newPushState != null)
-                        {
-                            localFolder.setPushState(newPushState);
-                        }
+                       
                         // And include it in the view
                         if (message.getSubject() != null &&
                                 message.getFrom() != null)
