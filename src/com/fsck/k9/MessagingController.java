@@ -4208,9 +4208,6 @@ public class MessagingController implements Runnable
         String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount, account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
-        // If we've already annoyed the user with buzzing, flashing and beeping for this account, don't do it again
-        notif.defaults |= Notification.FLAG_ONLY_ALERT_ONCE;
-
         if (account.isRing())
         {
             String ringtone = account.getRingtone();
@@ -4222,7 +4219,7 @@ public class MessagingController implements Runnable
             notif.defaults |= Notification.DEFAULT_VIBRATE;
         }
 
-        notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+        notif.flags |= Notification.FLAG_SHOW_LIGHTS | Notification.FLAG_ONLY_ALERT_ONCE;
         notif.ledARGB = K9.NOTIFICATION_LED_COLOR;
         notif.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
         notif.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
