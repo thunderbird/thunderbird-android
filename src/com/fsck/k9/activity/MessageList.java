@@ -787,7 +787,7 @@ public class MessageList
     private void onDelete(MessageInfoHolder holder, int position)
     {
         mAdapter.removeMessage(holder);
-        mController.deleteMessages(mAccount, holder.message.getFolder().getName(), new Message[] { holder.message }, null);
+        mController.deleteMessages(holder.account, holder.message.getFolder().getName(), new Message[] { holder.message }, null);
         mListView.setSelection(position);
 
     }
@@ -795,7 +795,7 @@ public class MessageList
 
     private void onMove(MessageInfoHolder holder)
     {
-        if (mController.isMoveCapable(mAccount) == false)
+        if (mController.isMoveCapable(holder.account) == false)
         {
             return;
         }
@@ -809,7 +809,7 @@ public class MessageList
 
         Intent intent = new Intent(this, ChooseFolder.class);
 
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.account);
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, holder.message.getUid());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
@@ -817,7 +817,7 @@ public class MessageList
 
     private void onCopy(MessageInfoHolder holder)
     {
-        if (mController.isCopyCapable(mAccount) == false)
+        if (mController.isCopyCapable(holder.account) == false)
         {
             return;
         }
@@ -831,7 +831,7 @@ public class MessageList
 
         Intent intent = new Intent(this, ChooseFolder.class);
 
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.account);
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, holder.message.getUid());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
@@ -877,19 +877,19 @@ public class MessageList
 
     private void onMoveChosen(MessageInfoHolder holder, String folderName)
     {
-        if (mController.isMoveCapable(mAccount) == true && folderName != null)
+        if (mController.isMoveCapable(holder.account) == true && folderName != null)
         {
             mAdapter.removeMessage(holder);
-            mController.moveMessage(mAccount, holder.message.getFolder().getName(), holder.message, folderName, null);
+            mController.moveMessage(holder.account, holder.message.getFolder().getName(), holder.message, folderName, null);
         }
     }
 
 
     private void onCopyChosen(MessageInfoHolder holder, String folderName)
     {
-        if (mController.isCopyCapable(mAccount) == true && folderName != null)
+        if (mController.isCopyCapable(holder.account) == true && folderName != null)
         {
-            mController.copyMessage(mAccount,
+            mController.copyMessage(holder.account,
                                     holder.message.getFolder().getName(), holder.message, folderName, null);
         }
     }
@@ -897,17 +897,17 @@ public class MessageList
 
     private void onReply(MessageInfoHolder holder)
     {
-        MessageCompose.actionReply(this, mAccount, holder.message, false);
+        MessageCompose.actionReply(this, holder.account, holder.message, false);
     }
 
     private void onReplyAll(MessageInfoHolder holder)
     {
-        MessageCompose.actionReply(this, mAccount, holder.message, true);
+        MessageCompose.actionReply(this, holder.account, holder.message, true);
     }
 
     private void onForward(MessageInfoHolder holder)
     {
-        MessageCompose.actionForward(this, mAccount, holder.message);
+        MessageCompose.actionForward(this, holder.account, holder.message);
     }
 
     private void onMarkAllAsRead(final Account account, final String folder)
@@ -1393,12 +1393,12 @@ public class MessageList
             menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
         }
 
-        if (mController.isCopyCapable(mAccount) == false)
+        if (mController.isCopyCapable(message.account) == false)
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
 
-        if (mController.isMoveCapable(mAccount) == false)
+        if (mController.isMoveCapable(message.account) == false)
         {
             menu.findItem(R.id.move).setVisible(false);
         }
