@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.text.util.Regex;
 import android.util.Log;
@@ -116,73 +117,105 @@ public class LocalStore extends Store implements Serializable
 
         AttachmentProvider.clear(application);
 
-        // schema version 29 was when we moved to incremental updates
-        // in the case of a new db or a < v29 db, we blow away and start from scratch
-        if (mDb.getVersion() < 29)
+        try
         {
-
-            mDb.execSQL("DROP TABLE IF EXISTS folders");
-            mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                        + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER)");
-
-            mDb.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
-            mDb.execSQL("DROP TABLE IF EXISTS messages");
-            mDb.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
-                        + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
-                        + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
-
-            mDb.execSQL("DROP TABLE IF EXISTS headers");
-            mDb.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
-            mDb.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
-
-            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
-            mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id");
-            mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
-            mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
-            mDb.execSQL("DROP TABLE IF EXISTS attachments");
-            mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
-                        + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
-                        + "mime_type TEXT)");
-
-            mDb.execSQL("DROP TABLE IF EXISTS pending_commands");
-            mDb.execSQL("CREATE TABLE pending_commands " +
-                        "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
-
-            mDb.execSQL("DROP TRIGGER IF EXISTS delete_folder");
-            mDb.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
-
-            mDb.execSQL("DROP TRIGGER IF EXISTS delete_message");
-            mDb.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
-                        + "DELETE FROM headers where old.id = message_id; END;");
-        }
-        else
-        { // in the case that we're starting out at 29 or newer, run all the needed updates
-
-            if (mDb.getVersion() < 30)
+            // schema version 29 was when we moved to incremental updates
+            // in the case of a new db or a < v29 db, we blow away and start from scratch
+            if (mDb.getVersion() < 29)
             {
-                mDb.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
-            }
-            if (mDb.getVersion() < 31)
-            {
+
+                mDb.execSQL("DROP TABLE IF EXISTS folders");
+                mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
+                            + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER)");
+
+                mDb.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
+                mDb.execSQL("DROP TABLE IF EXISTS messages");
+                mDb.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
+                            + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
+                            + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
+
+                mDb.execSQL("DROP TABLE IF EXISTS headers");
+                mDb.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
+                mDb.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
+
+                mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
+                mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id");
                 mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
                 mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+                mDb.execSQL("DROP TABLE IF EXISTS attachments");
+                mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
+                            + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
+                            + "mime_type TEXT)");
+
+                mDb.execSQL("DROP TABLE IF EXISTS pending_commands");
+                mDb.execSQL("CREATE TABLE pending_commands " +
+                            "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
+
+                mDb.execSQL("DROP TRIGGER IF EXISTS delete_folder");
+                mDb.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
+
+                mDb.execSQL("DROP TRIGGER IF EXISTS delete_message");
+                mDb.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
+                            + "DELETE FROM headers where old.id = message_id; END;");
             }
-            if (mDb.getVersion() < 32)
-            {
-                mDb.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
-            }
-            if (mDb.getVersion() < 33)
-            {
-                mDb.execSQL("ALTER TABLE messages ADD preview TEXT");
-                // mDb.execSQL("UPDATE messages SET preview = SUBSTR(text_content,1,200) WHERE deleted = 0");
+            else
+            { // in the case that we're starting out at 29 or newer, run all the needed updates
+
+                if (mDb.getVersion() < 30)
+                {
+                    try
+                    {
+                        mDb.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
+                    }
+                    catch (SQLiteException e)
+                    {
+                        if (! e.toString().startsWith("duplicate column name: deleted"))
+                        {
+                            throw e;
+                        }
+                    }
+                }
+                if (mDb.getVersion() < 31)
+                {
+                    mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+                    mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+                }
+                if (mDb.getVersion() < 32)
+                {
+                    mDb.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
+                }
+                if (mDb.getVersion() < 33)
+                {
+
+                    try
+                    {
+                        mDb.execSQL("ALTER TABLE messages ADD preview TEXT");
+                    }
+                    catch (SQLiteException e)
+                    {
+                        if (! e.toString().startsWith("duplicate column name: preview"))
+                        {
+                            throw e;
+                        }
+                    }
+
+                }
+
 
             }
-
 
         }
+        catch (SQLiteException e)
+        {
+            Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
+            mDb.setVersion(0);
+            throw new Error("Database upgrade failed! Resetting your DB version to 0 to force a full schema recreation.");
+        }
+
 
 
         mDb.setVersion(DB_VERSION);
+
         if (mDb.getVersion() != DB_VERSION)
         {
             throw new Error("Database upgrade failed!");
