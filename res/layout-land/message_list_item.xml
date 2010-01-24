@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:button="@drawable/checkbox_small"
                 android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
                 android:focusable="false"
                 android:visibility="gone"
                 />
