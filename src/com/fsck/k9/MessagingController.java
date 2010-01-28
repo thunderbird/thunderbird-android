@@ -1289,11 +1289,11 @@ public class MessagingController implements Runnable
                         if (message.isSet(Flag.DELETED))
                         {
                             if (K9.DEBUG)
-                                Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid() 
-                                        + " was already deleted on server, skipping");
+                                Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid()
+                                      + " was already deleted on server, skipping");
                             return;
                         }
-                        
+
                         // Store the new message locally
                         localFolder.appendMessages(new Message[]
                                                    {
@@ -1324,13 +1324,13 @@ public class MessagingController implements Runnable
                                 Message localMessage = localFolder.getMessage(message.getUid());
                                 syncFlags(localMessage, message);
                                 if (K9.DEBUG)
-                                        Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
-                                              + account + ":" + folder + ":" + message.getUid());
+                                    Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
+                                          + account + ":" + folder + ":" + message.getUid());
                                 for (MessagingListener l : getListeners())
                                 {
                                     l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                                 }
-    
+
                                 // Send a notification of this message
                                 if (!message.isSet(Flag.SEEN) &&
                                         (account.isNotifySelfNewMail() || account.isAnIdentity(message.getFrom()) == false))
@@ -4164,7 +4164,7 @@ public class MessagingController implements Runnable
                         String to = rcpts.length > 0 ? rcpts[0].toFriendly() : null;
                         if (to != null)
                         {
-                            messageNotice.append( String.format(context.getString(R.string.message_list_to_fmt), to) +": "+subject);
+                            messageNotice.append(String.format(context.getString(R.string.message_list_to_fmt), to) +": "+subject);
                         }
                         else
                         {
