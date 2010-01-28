@@ -38,6 +38,7 @@
 
         <activity
             android:name="com.fsck.k9.activity.Accounts"
+            android:launchMode="singleTop"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

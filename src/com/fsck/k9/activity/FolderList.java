@@ -48,8 +48,6 @@ public class FolderList extends K9ListActivity
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
 
-    private static final String EXTRA_STARTUP = "startup";
-
     private static final boolean REFRESH_REMOTE = true;
 
     private ListView mListView;
@@ -61,8 +59,6 @@ public class FolderList extends K9ListActivity
     private Account mAccount;
 
     private FolderListHandler mHandler = new FolderListHandler();
-
-    private boolean mStartup = false;
 
     private int mUnreadMessageCount = 0;
 
@@ -204,11 +200,10 @@ public class FolderList extends K9ListActivity
         sendMail(mAccount);
     }
 
-    private static void actionHandleAccount(Context context, Account account, String initialFolder, boolean startup)
+    private static void actionHandleAccount(Context context, Account account, String initialFolder)
     {
         Intent intent = new Intent(context, FolderList.class);
         intent.putExtra(EXTRA_ACCOUNT, account);
-        intent.putExtra(EXTRA_STARTUP, startup);
 
         if (initialFolder != null)
         {
@@ -218,14 +213,9 @@ public class FolderList extends K9ListActivity
         context.startActivity(intent);
     }
 
-    public static void actionHandleAccount(Context context, Account account, String initialFolder)
+    public static void actionHandleAccount(Context context, Account account)
     {
-        actionHandleAccount(context, account, initialFolder, false);
-    }
-
-    public static void actionHandleAccount(Context context, Account account, boolean startup)
-    {
-        actionHandleAccount(context, account, null, startup);
+        actionHandleAccount(context, account, null);
     }
 
     public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder)
@@ -242,10 +232,6 @@ public class FolderList extends K9ListActivity
         if (initialFolder != null)
         {
             intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
-        }
-        else
-        {
-            intent.putExtra(EXTRA_STARTUP, true);
         }
         return intent;
     }
@@ -269,17 +255,10 @@ public class FolderList extends K9ListActivity
         if (savedInstanceState == null)
         {
             initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
-            mStartup = (boolean) intent.getBooleanExtra(EXTRA_STARTUP, false);
-            if (initialFolder == null
-                    && mStartup)
-            {
-                initialFolder = mAccount.getAutoExpandFolderName();
-            }
         }
         else
         {
             initialFolder = null;
-            mStartup = false;
             savedFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
             if (savedFolderName != null)
             {
@@ -287,11 +266,11 @@ public class FolderList extends K9ListActivity
             }
         }
 
-        if (mStartup
-                && initialFolder != null
-                && !K9.FOLDER_NONE.equals(initialFolder))
+        if (
+            initialFolder != null
+            && !K9.FOLDER_NONE.equals(initialFolder))
         {
-            onOpenFolder(initialFolder, true);
+            onOpenFolder(initialFolder);
             finish();
         }
         else
@@ -319,7 +298,7 @@ public class FolderList extends K9ListActivity
         {
             public void onItemClick(AdapterView parent, View v, int itemPosition, long id)
             {
-                MessageList.actionHandleFolder(FolderList.this, mAccount, ((FolderInfoHolder)mAdapter.getItem(id)).name, false);
+                onOpenFolder(((FolderInfoHolder)mAdapter.getItem(id)).name);
             }
         });
         registerForContextMenu(mListView);
@@ -394,9 +373,32 @@ public class FolderList extends K9ListActivity
         }
     }
 
+
+    public void onBackPressed()
+    {
+        // This will be called either automatically for you on 2.0
+        // or later, or by the code above on earlier versions of the
+        // platform.
+        onAccounts();
+    }
+
     @Override public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         //Shortcuts that work no matter what is selected
+
+        if (
+            // TODO - when we move to android 2.0, uncomment this.
+            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
+
+            keyCode == KeyEvent.KEYCODE_BACK
+            && event.getRepeatCount() == 0)
+        {
+            // Take care of calling this method on earlier versions of
+            // the platform where it doesn't exist.
+            onBackPressed();
+            return true;
+        }
+
 
         switch (keyCode)
         {
@@ -444,11 +446,7 @@ public class FolderList extends K9ListActivity
 
     private void onAccounts()
     {
-        if (mStartup || isTaskRoot())
-        {
-            Accounts.listAccounts(this);
-        }
-
+        Accounts.listAccounts(this);
         finish();
     }
 
@@ -526,9 +524,10 @@ public class FolderList extends K9ListActivity
         }
     }
 
-    private void onOpenFolder(String folder, boolean startup)
+    private void onOpenFolder(String folder)
     {
-        MessageList.actionHandleFolder(this, mAccount, folder, startup);
+        MessageList.actionHandleFolder(this, mAccount, folder);
+        finish();
     }
 
     private void onCompact(Account account)
@@ -558,7 +557,7 @@ public class FolderList extends K9ListActivity
         switch (item.getItemId())
         {
             case R.id.open_folder:
-                onOpenFolder(folder.name, false);
+                onOpenFolder(folder.name);
                 break;
 
             case R.id.mark_all_as_read:

@@ -37,7 +37,7 @@ import android.os.PowerManager.WakeLock;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.fsck.k9.activity.FolderList;
+import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
@@ -3260,8 +3260,7 @@ public class MessagingController implements Runnable
                 Notification notif = new Notification(R.drawable.stat_notify_email_generic,
                                                       mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
 
-                // JRV XXX TODO - do we want to notify MessageList too?
-                Intent i = FolderList.actionHandleAccountIntent(mApplication, account, account.getErrorFolderName());
+                Intent i = MessageList.actionHandleFolderIntent(mApplication, account, account.getErrorFolderName());
 
                 PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
 
@@ -3874,8 +3873,7 @@ public class MessagingController implements Runnable
                                     {
                                         Notification notif = new Notification(R.drawable.ic_menu_refresh,
                                                                               context.getString(R.string.notification_bg_send_ticker, account.getDescription()), System.currentTimeMillis());
-                                        // JRV XXX TODO - do we want to notify MessageList too?
-                                        Intent intent = FolderList.actionHandleAccountIntent(context, account, K9.INBOX);
+                                        Intent intent = MessageList.actionHandleFolderIntent(context, account, K9.INBOX);
                                         PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
                                         notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_send_title),
                                                                  account.getDescription() , pi);
@@ -3985,8 +3983,7 @@ public class MessagingController implements Runnable
                                                 Notification notif = new Notification(R.drawable.ic_menu_refresh,
                                                                                       context.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()),
                                                                                       System.currentTimeMillis());
-                                                // JRV XXX TODO - do we want to notify MessageList too?
-                                                Intent intent = FolderList.actionHandleAccountIntent(context, account, K9.INBOX);
+                                                Intent intent = MessageList.actionHandleFolderIntent(context, account, K9.INBOX);
                                                 PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
                                                 notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_sync_title), account.getDescription()
                                                                          + context.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
@@ -4201,7 +4198,7 @@ public class MessagingController implements Runnable
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
         notif.number = unreadMessageCount;
 
-        Intent i = FolderList.actionHandleAccountIntent(context, account);
+        Intent i =             MessageList.actionHandleFolderIntent(context, account, account.getAutoExpandFolderName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
         // 279 Unread (someone@gmail.com)

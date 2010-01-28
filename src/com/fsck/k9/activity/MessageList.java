@@ -63,7 +63,6 @@ public class MessageList
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
 
     private static final String EXTRA_ACCOUNT = "account";
-    private static final String EXTRA_STARTUP = "startup";
     private static final String EXTRA_FOLDER  = "folder";
     private static final String EXTRA_QUERY = "query";
 
@@ -283,18 +282,22 @@ public class MessageList
     * given folder
      */
 
-    public static void actionHandleFolder(Context context, Account account, String folder, boolean startup)
+    public static void actionHandleFolder(Context context, Account account, String folder)
+    {
+        Intent intent = actionHandleFolderIntent(context,account,folder);
+        context.startActivity(intent);
+
+    }
+    public static Intent actionHandleFolderIntent(Context context, Account account, String folder)
     {
         Intent intent = new Intent(context, MessageList.class);
         intent.putExtra(EXTRA_ACCOUNT, account);
-        intent.putExtra(EXTRA_STARTUP, startup);
 
         if (folder != null)
         {
             intent.putExtra(EXTRA_FOLDER, folder);
         }
-
-        context.startActivity(intent);
+        return intent;
     }
 
     public void onItemClick(AdapterView parent, View v, int position, long id)
@@ -515,10 +518,29 @@ public class MessageList
     }
 
 
+    public void onBackPressed()
+    {
+        // This will be called either automatically for you on 2.0
+        // or later, or by the code above on earlier versions of the
+        // platform.
+        onShowFolderList();
+    }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
+        if (
+            // XXX TODO - when we go to android 2.0, uncomment this
+            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
+            keyCode == KeyEvent.KEYCODE_BACK
+            && event.getRepeatCount() == 0)
+        {
+            // Take care of calling this method on earlier versions of
+            // the platform where it doesn't exist.
+            onBackPressed();
+            return true;
+        }
         //Shortcuts that work no matter what is selected
 
         switch (keyCode)
@@ -699,7 +721,7 @@ public class MessageList
 
     private void onShowFolderList()
     {
-        FolderList.actionHandleAccount(this, mAccount, false);
+        FolderList.actionHandleAccount(this, mAccount);
         finish();
     }
 

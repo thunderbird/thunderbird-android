@@ -40,6 +40,33 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private AccountsHandler mHandler = new AccountsHandler();
     private AccountsAdapter mAdapter;
 
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (
+            // TODO - once we upgrade to 2.0, uncomment this
+            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
+            keyCode == KeyEvent.KEYCODE_BACK
+            && event.getRepeatCount() == 0)
+        {
+            // Take care of calling this method on earlier versions of
+            // the platform where it doesn't exist.
+            onBackPressed();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void onBackPressed()
+    {
+        // This will be called either automatically for you on 2.0
+        // or later, or by the code above on earlier versions of the
+        // platform.
+        finish();
+    }
+
     class AccountsHandler extends Handler
     {
         private void setViewTitle()
@@ -278,8 +305,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         boolean startup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, true);
         if (startup && accounts.length == 1)
         {
-            onOpenAccount(accounts[0], true);
-            finish();
+            onOpenAccount(accounts[0]);
         }
         else
         {
@@ -403,16 +429,17 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
     }
 
-    private void onOpenAccount(Account account, boolean startup)
+    private void onOpenAccount(Account account)
     {
         if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName()))
         {
-            FolderList.actionHandleAccount(this, account, startup);
+            FolderList.actionHandleAccount(this, account);
         }
         else
         {
-            MessageList.actionHandleFolder(this, account, account.getAutoExpandFolderName(), startup);
+            MessageList.actionHandleFolder(this, account, account.getAutoExpandFolderName());
         }
+        finish();
     }
 
     public void onClick(View view)
@@ -506,7 +533,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 onEditAccount(mSelectedContextAccount);
                 break;
             case R.id.open:
-                onOpenAccount(mSelectedContextAccount, false);
+                onOpenAccount(mSelectedContextAccount);
                 break;
             case R.id.check_mail:
                 onCheckMail(mSelectedContextAccount);
@@ -545,7 +572,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     public void onItemClick(AdapterView parent, View view, int position, long id)
     {
         Account account = (Account)parent.getItemAtPosition(position);
-        onOpenAccount(account, false);
+        onOpenAccount(account);
     }
 
     @Override
