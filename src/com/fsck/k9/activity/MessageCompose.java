@@ -29,9 +29,13 @@ import com.fsck.k9.mail.internet.*;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 
+import java.io.File;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
@@ -372,20 +376,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (intent.getData() != null)
             {
                 Uri uri = intent.getData();
-                try
+                if ("mailto".equals(uri.getScheme()))
                 {
-                    if (uri.getScheme().equalsIgnoreCase("mailto"))
+                    initializeFromMailTo(uri.toString());
+                } 
+                else
+                {
+                    String toText = uri.getSchemeSpecificPart();
+                    if (toText != null)
                     {
-                        Address[] addresses = Address.parse(uri.getSchemeSpecificPart());
-                        addAddresses(mToView, addresses);
+                        mToView.setText(toText);
                     }
-                }
-                catch (Exception e)
-                {
-                    /*
-                     * If we can't extract any information from the URI it's okay. They can
-                     * still compose a message.
-                     */
                 }
             }
         }
@@ -719,7 +720,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 MimeBodyPart bp = new MimeBodyPart(new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"", attachment.contentType, attachment.name));
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
-                bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format("attachment;\n filename=\"%s\"", attachment.name));
+                bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format("attachment;\n filename=\"%s\";\n size=%d", attachment.name, attachment.size));
                 mp.addBodyPart(bp);
             }
 
@@ -935,6 +936,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         if (attachment.size == -1)
                         {
                             attachment.size = metadataCursor.getInt(1);
+                            Log.v(K9.LOG_TAG, "size: " + attachment.size);
                         }
                     }
                 }
@@ -958,6 +960,24 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         attachment.contentType = contentType;
+
+        if (attachment.size<=0)
+        {
+            String uriString = uri.toString();
+            if (uriString.startsWith("file://"))
+            {
+                Log.v(K9.LOG_TAG, uriString.substring("file://".length()));
+                File f = new File(uriString.substring("file://".length()));
+                attachment.size = f.length();
+            }
+            else {
+                Log.v(K9.LOG_TAG, "Not a file: " + uriString);
+            }
+        }
+        else {
+            Log.v(K9.LOG_TAG, "old attachment.size: " + attachment.size);
+        }
+        Log.v(K9.LOG_TAG, "new attachment.size: " + attachment.size);
 
         View view = getLayoutInflater().inflate(R.layout.message_compose_attachment, mAttachments, false);
         TextView nameView = (TextView)view.findViewById(R.id.attachment_name);
@@ -1542,4 +1562,76 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
         }
     }
+
+    private String decode(String s)
+        throws UnsupportedEncodingException
+    {
+        return URLDecoder.decode(s, "UTF-8");
+    }
+
+    /**
+     * When we are launched with an intent that includes a mailto: URI, we can actually
+     * gather quite a few of our message fields from it.
+     * 
+     * @mailToString the href (which must start with "mailto:").
+     */
+    private void initializeFromMailTo(String mailToString) {
+        
+        // Chop up everything between mailto: and ? to find recipients
+        int index = mailToString.indexOf("?");
+        int length = "mailto".length() + 1; 
+        String to;
+        try
+        {
+            // Extract the recipient after mailto:
+            if (index == -1)
+            {
+                to = decode(mailToString.substring(length));
+            } 
+            else
+            {
+                to = decode(mailToString.substring(length, index));
+            }
+            mToView.setText(to);
+        } 
+        catch (UnsupportedEncodingException e)
+        {
+            Log.e(K9.LOG_TAG, e.getMessage() + " while decoding '" + mailToString + "'");
+        }
+
+        // Extract the other parameters
+
+        // We need to disguise this string as a URI in order to parse it
+        Uri uri = Uri.parse("foo://" + mailToString);
+
+        String addressList;
+
+        addressList = "";
+        List<String> cc = uri.getQueryParameters("cc");
+        for (String address : cc)
+        {
+            addressList += address + ",";
+        }
+        mCcView.setText(addressList);
+
+        addressList = "";
+        List<String> bcc = uri.getQueryParameters("bcc");
+        for (String address : bcc)
+        {
+            addressList += address + ",";
+        }
+        mBccView.setText(addressList);
+
+        List<String> subject = uri.getQueryParameters("subject");
+        if (subject.size() > 0)
+        {
+            mSubjectView.setText(subject.get(0));
+        }
+
+        List<String> body = uri.getQueryParameters("body");
+        if (body.size() > 0)
+        {
+            mMessageContentView.setText(body.get(0));
+        }
+    }    
 }
