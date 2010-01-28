@@ -95,7 +95,6 @@ public class AccountSetupNames extends K9Activity implements OnClickListener
         }
         mAccount.setName(mName.getText().toString());
         mAccount.save(Preferences.getPreferences(this));
-        FolderList.actionHandleAccount(this, mAccount, K9.INBOX);
         finish();
     }
 
