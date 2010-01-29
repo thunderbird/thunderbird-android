@@ -245,27 +245,17 @@ public class FolderList extends K9ListActivity
     public void onCreate(Bundle savedInstanceState)
     {
 
-        String initialFolder;
 
         super.onCreate(savedInstanceState);
+        onNewIntent(getIntent());
+    }
+
+    public void onNewIntent (Intent intent) {
         String savedFolderName = null;
-        Intent intent = getIntent();
+        String initialFolder;
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
 
-        if (savedInstanceState == null)
-        {
             initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
-        }
-        else
-        {
-            initialFolder = null;
-            savedFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
-            if (savedFolderName != null)
-            {
-                mSelectedContextFolder = mAdapter.getFolder(savedFolderName);
-            }
-        }
-
         if (
             initialFolder != null
             && !K9.FOLDER_NONE.equals(initialFolder))
@@ -374,32 +364,9 @@ public class FolderList extends K9ListActivity
     }
 
 
-    public void onBackPressed()
-    {
-        // This will be called either automatically for you on 2.0
-        // or later, or by the code above on earlier versions of the
-        // platform.
-        onAccounts();
-    }
-
     @Override public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         //Shortcuts that work no matter what is selected
-
-        if (
-            // TODO - when we move to android 2.0, uncomment this.
-            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
-
-            keyCode == KeyEvent.KEYCODE_BACK
-            && event.getRepeatCount() == 0)
-        {
-            // Take care of calling this method on earlier versions of
-            // the platform where it doesn't exist.
-            onBackPressed();
-            return true;
-        }
-
-
         switch (keyCode)
         {
             case KeyEvent.KEYCODE_Q:
@@ -527,7 +494,6 @@ public class FolderList extends K9ListActivity
     private void onOpenFolder(String folder)
     {
         MessageList.actionHandleFolder(this, mAccount, folder);
-        finish();
     }
 
     private void onCompact(Account account)

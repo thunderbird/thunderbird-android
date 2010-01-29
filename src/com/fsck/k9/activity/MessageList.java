@@ -363,14 +363,38 @@ public class MessageList
 
         mBatchDoneButton.setOnClickListener(this);
 
-        Intent intent = getIntent();
+        // Gesture detection
+        gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureListener = new View.OnTouchListener()
+        {
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (gestureDetector.onTouchEvent(event))
+                {
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        mListView.setOnTouchListener(gestureListener);
+        
+        if (savedInstanceState != null)
+        {
+            mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
+            mQueryString = savedInstanceState.getString(STATE_QUERY);
+            mSelectedCount  = savedInstanceState.getInt(STATE_KEY_SELECTED_COUNT);
+            onRestoreListState(savedInstanceState);
+        }
+        onNewIntent(getIntent());
+    }
+
+    public void onNewIntent(Intent intent) {
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
 
         // Take the initial folder into account only if we are *not* restoring the
         // activity already
 
-        if (savedInstanceState == null)
-        {
             mFolderName = intent.getStringExtra(EXTRA_FOLDER);
             mQueryString = intent.getStringExtra(EXTRA_QUERY);
 
@@ -380,13 +404,6 @@ public class MessageList
             {
                 mFolderName = mAccount.getAutoExpandFolderName();
             }
-        }
-        else
-        {
-            mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
-            mQueryString = savedInstanceState.getString(STATE_QUERY);
-            mSelectedCount  = savedInstanceState.getInt(STATE_KEY_SELECTED_COUNT);
-        }
 
         mAdapter = new MessageListAdapter();
 
@@ -406,26 +423,6 @@ public class MessageList
         mController = MessagingController.getInstance(getApplication());
 
         mListView.setAdapter(mAdapter);
-
-        if (savedInstanceState != null)
-        {
-            onRestoreListState(savedInstanceState);
-        }
-        // Gesture detection
-        gestureDetector = new GestureDetector(new MyGestureDetector());
-        gestureListener = new View.OnTouchListener()
-        {
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (gestureDetector.onTouchEvent(event))
-                {
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        mListView.setOnTouchListener(gestureListener);
 
 
     }
@@ -518,29 +515,9 @@ public class MessageList
     }
 
 
-    public void onBackPressed()
-    {
-        // This will be called either automatically for you on 2.0
-        // or later, or by the code above on earlier versions of the
-        // platform.
-        onShowFolderList();
-    }
-
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-        if (
-            // XXX TODO - when we go to android 2.0, uncomment this
-            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
-            keyCode == KeyEvent.KEYCODE_BACK
-            && event.getRepeatCount() == 0)
-        {
-            // Take care of calling this method on earlier versions of
-            // the platform where it doesn't exist.
-            onBackPressed();
-            return true;
-        }
         //Shortcuts that work no matter what is selected
 
         switch (keyCode)

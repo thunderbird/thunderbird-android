@@ -37,6 +37,7 @@ import android.os.PowerManager.WakeLock;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.FetchProfile;
@@ -4198,7 +4199,7 @@ public class MessagingController implements Runnable
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
         notif.number = unreadMessageCount;
 
-        Intent i =             MessageList.actionHandleFolderIntent(context, account, account.getAutoExpandFolderName());
+        Intent i = FolderList.actionHandleAccountIntent(context, account, account.getAutoExpandFolderName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
         // 279 Unread (someone@gmail.com)
