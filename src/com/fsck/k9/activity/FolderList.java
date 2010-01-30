@@ -60,7 +60,7 @@ public class FolderList extends K9ListActivity
 
     private FolderListHandler mHandler = new FolderListHandler();
 
-    private int mUnreadMessageCount = 0;
+    private int mUnreadMessageCount;
 
     class FolderListHandler extends Handler
     {
@@ -244,18 +244,19 @@ public class FolderList extends K9ListActivity
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-
-
         super.onCreate(savedInstanceState);
         onNewIntent(getIntent());
     }
 
-    public void onNewIntent (Intent intent) {
+    public void onNewIntent(Intent intent)
+    {
         String savedFolderName = null;
         String initialFolder;
+
+        mUnreadMessageCount = 0;
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
 
-            initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
+        initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
         if (
             initialFolder != null
             && !K9.FOLDER_NONE.equals(initialFolder))
@@ -270,11 +271,6 @@ public class FolderList extends K9ListActivity
         }
     }
 
-    /* There are two times when we might need to initialize the activity view
-     * onCreate
-     *  OR
-     * onResume if the initial onCreate opened a folder directly
-     */
     private void initializeActivityView()
     {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -292,11 +288,7 @@ public class FolderList extends K9ListActivity
             }
         });
         registerForContextMenu(mListView);
-
-        /*
-        * We manually save and restore the list's state because our adapter is
-        * slow.
-         */
+        
         mListView.setSaveEnabled(true);
 
         mInflater = getLayoutInflater();
@@ -351,16 +343,6 @@ public class FolderList extends K9ListActivity
         notifMgr.cancel(mAccount.getAccountNumber());
         notifMgr.cancel(-1000 - mAccount.getAccountNumber());
 
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        if (mSelectedContextFolder != null)
-        {
-            outState.putString(STATE_CURRENT_FOLDER, mSelectedContextFolder.name);
-        }
     }
 
 

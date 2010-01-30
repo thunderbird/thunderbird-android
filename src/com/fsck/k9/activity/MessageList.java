@@ -70,7 +70,7 @@ public class MessageList
     private static final String STATE_KEY_LIST = "com.fsck.k9.activity.messagelist_state";
     private static final String STATE_CURRENT_FOLDER = "com.fsck.k9.activity.messagelist_folder";
     private static final String STATE_QUERY = "com.fsck.k9.activity.query";
-    private static final String STATE_KEY_SELECTION = "com.fsck.k9.activity.messagelist_selection";
+    private static final String STATE_CURRENT_ITEM = "com.fsck.k9.activity.messagelist_selection";
     private static final String STATE_KEY_SELECTED_COUNT = "com.fsck.k9.activity.messagelist_selected_count";
 
 
@@ -330,83 +330,26 @@ public class MessageList
         // Debug.startMethodTracing("k9");
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        requestWindowFeature(Window.FEATURE_PROGRESS);
-        setContentView(R.layout.message_list);
-
-        mListView = (ListView) findViewById(R.id.message_list);
-        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
-        mListView.setLongClickable(true);
-        mListView.setFastScrollEnabled(true);
-        mListView.setScrollingCacheEnabled(true);
-        mListView.setOnItemClickListener(this);
-
-
-        registerForContextMenu(mListView);
-
-        /*
-        * We manually save and restore the list's state because our adapter is
-        * slow.
-         */
-        mListView.setSaveEnabled(false);
-
         mInflater = getLayoutInflater();
-
-        mBatchButtonArea = findViewById(R.id.batch_button_area);
-        mBatchReadButton = (Button) findViewById(R.id.batch_read_button);
-        mBatchReadButton.setOnClickListener(this);
-        mBatchDeleteButton = (Button) findViewById(R.id.batch_delete_button);
-        mBatchDeleteButton.setOnClickListener(this);
-        mBatchFlagButton = (Button) findViewById(R.id.batch_flag_button);
-        mBatchFlagButton.setOnClickListener(this);
-        mBatchDoneButton = (Button) findViewById(R.id.batch_done_button);
-
-        mBatchDoneButton.setOnClickListener(this);
-
-        // Gesture detection
-        gestureDetector = new GestureDetector(new MyGestureDetector());
-        gestureListener = new View.OnTouchListener()
-        {
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (gestureDetector.onTouchEvent(event))
-                {
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        mListView.setOnTouchListener(gestureListener);
-        
-        if (savedInstanceState != null)
-        {
-            mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
-            mQueryString = savedInstanceState.getString(STATE_QUERY);
-            mSelectedCount  = savedInstanceState.getInt(STATE_KEY_SELECTED_COUNT);
-            onRestoreListState(savedInstanceState);
-        }
+        initializeLayout();
         onNewIntent(getIntent());
     }
 
-    public void onNewIntent(Intent intent) {
+    public void onNewIntent(Intent intent)
+    {
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
+        mFolderName = intent.getStringExtra(EXTRA_FOLDER);
+        mQueryString = intent.getStringExtra(EXTRA_QUERY);
 
         // Take the initial folder into account only if we are *not* restoring the
         // activity already
 
-            mFolderName = intent.getStringExtra(EXTRA_FOLDER);
-            mQueryString = intent.getStringExtra(EXTRA_QUERY);
-
-
-
-            if (mFolderName == null && mQueryString == null)
-            {
-                mFolderName = mAccount.getAutoExpandFolderName();
-            }
+        if (mFolderName == null && mQueryString == null)
+        {
+            mFolderName = mAccount.getAutoExpandFolderName();
+        }
 
         mAdapter = new MessageListAdapter();
-
         final Object previousData = getLastNonConfigurationInstance();
 
         if (previousData != null)
@@ -421,30 +364,9 @@ public class MessageList
         }
 
         mController = MessagingController.getInstance(getApplication());
-
         mListView.setAdapter(mAdapter);
 
 
-    }
-
-    private void onRestoreListState(Bundle savedInstanceState)
-    {
-        mFolderName = savedInstanceState.getString(STATE_CURRENT_FOLDER);
-        mQueryString = savedInstanceState.getString(STATE_QUERY);
-
-        int selectedChild = savedInstanceState.getInt(STATE_KEY_SELECTION, -1);
-
-        if (selectedChild != 0)
-        {
-            mListView.setSelection(selectedChild);
-        }
-        if (mFolderName != null)
-        {
-            mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
-        }
-
-
-        mListView.onRestoreInstanceState(savedInstanceState.getParcelable(STATE_KEY_LIST));
     }
 
     @Override
@@ -454,6 +376,7 @@ public class MessageList
         //Debug.stopMethodTracing();
         mController.removeListener(mAdapter.mListener);
     }
+
 
     /**
     * On resume we refresh
@@ -497,17 +420,50 @@ public class MessageList
 
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState)
+    private void initializeLayout ()
     {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(STATE_KEY_LIST, mListView.onSaveInstanceState());
-        outState.putInt(STATE_KEY_SELECTION, mListView .getSelectedItemPosition());
-        outState.putString(STATE_CURRENT_FOLDER, mFolderName);
-        outState.putString(STATE_QUERY, mQueryString);
-        outState.putInt(STATE_KEY_SELECTED_COUNT, mSelectedCount);
-    }
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
+        setContentView(R.layout.message_list);
 
+        mListView = (ListView) findViewById(R.id.message_list);
+        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
+        mListView.setLongClickable(true);
+        mListView.setFastScrollEnabled(true);
+        mListView.setScrollingCacheEnabled(true);
+        mListView.setOnItemClickListener(this);
+
+
+        registerForContextMenu(mListView);
+
+
+        mBatchButtonArea = findViewById(R.id.batch_button_area);
+        mBatchReadButton = (Button) findViewById(R.id.batch_read_button);
+        mBatchReadButton.setOnClickListener(this);
+        mBatchDeleteButton = (Button) findViewById(R.id.batch_delete_button);
+        mBatchDeleteButton.setOnClickListener(this);
+        mBatchFlagButton = (Button) findViewById(R.id.batch_flag_button);
+        mBatchFlagButton.setOnClickListener(this);
+        mBatchDoneButton = (Button) findViewById(R.id.batch_done_button);
+
+        mBatchDoneButton.setOnClickListener(this);
+
+        // Gesture detection
+        gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureListener = new View.OnTouchListener()
+        {
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (gestureDetector.onTouchEvent(event))
+                {
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        mListView.setOnTouchListener(gestureListener);
+    }
 
     @Override public Object onRetainNonConfigurationInstance()
     {
