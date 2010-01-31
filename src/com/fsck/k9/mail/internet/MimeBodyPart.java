@@ -91,7 +91,7 @@ public class MimeBodyPart extends BodyPart
             //using org.apache.commons.codec.net.QuotedPrintableCodec
             //when it will implement all rules (missing #3, $4 & #5) of the RFC
             //http://www.ietf.org/rfc/rfc1521.txt
-           // setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
+            setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
         }
     }
 
