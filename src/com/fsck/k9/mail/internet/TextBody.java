@@ -21,7 +21,10 @@ public class TextBody implements Body
         if (mBody!=null)
         {
             byte[] bytes = mBody.getBytes("UTF-8");
-            out.write(Base64.encodeBase64Chunked(bytes));
+            out.write(bytes);
+
+            // TODO: Should this be quoted-printable?
+            //out.write(Base64.encodeBase64Chunked(bytes));
         }
     }
 

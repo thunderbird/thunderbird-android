@@ -379,7 +379,8 @@ public class MimeMessage extends Message
         {
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n charset=utf-8",
                       getMimeType()));
-            setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
+            // TODO: Should this be quoted-printable?
+           // setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
         }
     }
 
