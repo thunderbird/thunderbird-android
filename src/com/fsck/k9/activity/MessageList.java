@@ -554,6 +554,12 @@ public class MessageList
                             onDelete(message, position);
                             return true;
                         }
+                        
+                        case KeyEvent.KEYCODE_S:
+                        {
+                            setSelected(message, !message.selected);
+                            return true;
+                        }
 
                         case KeyEvent.KEYCODE_D:
                         {
