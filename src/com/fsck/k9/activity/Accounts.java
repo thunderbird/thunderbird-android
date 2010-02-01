@@ -280,6 +280,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         if (startup && accounts.length == 1)
         {
             onOpenAccount(accounts[0]);
+            finish();
         }
         else
         {
