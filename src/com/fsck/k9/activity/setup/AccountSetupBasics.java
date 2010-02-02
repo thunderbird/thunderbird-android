@@ -23,8 +23,12 @@ import android.widget.EditText;
 import com.fsck.k9.*;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+
+import org.apache.http.client.utils.URLEncodedUtils;
 
 /**
  * Prompts the user for the email address and password. Also prompts for
@@ -232,25 +236,33 @@ public class AccountSetupBasics extends K9Activity
         URI outgoingUri = null;
         try
         {
+            String userEnc = URLEncoder.encode(user, "UTF-8");        
+            String passwordEnc = URLEncoder.encode(password, "UTF-8");
+
             String incomingUsername = mProvider.incomingUsernameTemplate;
             incomingUsername = incomingUsername.replaceAll("\\$email", email);
-            incomingUsername = incomingUsername.replaceAll("\\$user", user);
+            incomingUsername = incomingUsername.replaceAll("\\$user", userEnc);
             incomingUsername = incomingUsername.replaceAll("\\$domain", domain);
 
             URI incomingUriTemplate = mProvider.incomingUriTemplate;
             incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUsername + ":"
-                                  + password, incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null,
+                                  + passwordEnc, incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null,
                                   null, null);
 
             String outgoingUsername = mProvider.outgoingUsernameTemplate;
             outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
-            outgoingUsername = outgoingUsername.replaceAll("\\$user", user);
+            outgoingUsername = outgoingUsername.replaceAll("\\$user", userEnc);
             outgoingUsername = outgoingUsername.replaceAll("\\$domain", domain);
 
             URI outgoingUriTemplate = mProvider.outgoingUriTemplate;
             outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUsername + ":"
-                                  + password, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
+                                  + passwordEnc, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
                                   null, null);
+        }
+        catch (UnsupportedEncodingException enc)
+        {
+            // This really shouldn't happen since the encoding is hardcoded to UTF-8
+            Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
         }
         catch (URISyntaxException use)
         {
@@ -277,9 +289,7 @@ public class AccountSetupBasics extends K9Activity
     private void onNext()
     {
         String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
         String[] emailParts = splitEmail(email);
-        String user = emailParts[0];
         String domain = emailParts[1];
         mProvider = findProviderForDomain(domain);
         if (mProvider == null)
@@ -332,10 +342,18 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setEmail(email);
         try
         {
-            URI uri = new URI("placeholder", user + ":" + password, "mail." + domain, -1, null,
+            String userEnc = URLEncoder.encode(user, "UTF-8");        
+            String passwordEnc = URLEncoder.encode(password, "UTF-8");
+
+            URI uri = new URI("placeholder", userEnc + ":" + passwordEnc, "mail." + domain, -1, null,
                               null, null);
             mAccount.setStoreUri(uri.toString());
             mAccount.setTransportUri(uri.toString());
+        }
+        catch (UnsupportedEncodingException enc)
+        {
+            // This really shouldn't happen since the encoding is hardcoded to UTF-8
+            Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
         }
         catch (URISyntaxException use)
         {

@@ -15,8 +15,11 @@ import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         OnCheckedChangeListener
@@ -208,10 +211,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             if (uri.getUserInfo() != null)
             {
                 String[] userInfoParts = uri.getUserInfo().split(":");
-                username = userInfoParts[0];
+
+                username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                 if (userInfoParts.length > 1)
                 {
-                    password = userInfoParts[1];
+                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 }
                 if (userInfoParts.length > 2)
                 {
@@ -325,17 +329,24 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         URI uri;
         try
         {
+            String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8");
+            String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8");
+
             String userInfo = null;
             String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
             if (mRequireLoginView.isChecked())
             {
-                userInfo = mUsernameView.getText().toString() + ":"
-                           + mPasswordView.getText().toString() + ":" + authType;
+                userInfo = usernameEnc + ":" + passwordEnc + ":" + authType;
             }
             uri = new URI(smtpSchemes[securityType], userInfo, mServerView.getText().toString(),
                           Integer.parseInt(mPortView.getText().toString()), null, null, null);
             mAccount.setTransportUri(uri.toString());
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, false, true);
+        }
+        catch (UnsupportedEncodingException enc)
+        {
+            // This really shouldn't happen since the encoding is hardcoded to UTF-8
+            Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
         }
         catch (Exception e)
         {

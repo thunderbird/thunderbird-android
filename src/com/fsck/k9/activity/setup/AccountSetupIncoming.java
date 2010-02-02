@@ -14,8 +14,11 @@ import android.widget.*;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.ChooseFolder;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener
 {
@@ -222,17 +225,17 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 if (userInfoParts.length == 3)
                 {
                     authType = userInfoParts[0];
-                    username = userInfoParts[1];
-                    password = userInfoParts[2];
+                    username = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    password = URLDecoder.decode(userInfoParts[2], "UTF-8");
                 }
                 else if (userInfoParts.length == 2)
                 {
-                    username = userInfoParts[0];
-                    password = userInfoParts[1];
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                    password = URLDecoder.decode(userInfoParts[1], "UTF-8");
                 }
                 else if (userInfoParts.length == 1)
                 {
-                    username = userInfoParts[0];
+                    username = URLDecoder.decode(userInfoParts[0], "UTF-8");
                 }
             }
 
@@ -438,16 +441,23 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                  */
                 try
                 {
+                    String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8"); 
+                    String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8"); 
                     URI oldUri = new URI(mAccount.getTransportUri());
                     URI uri = new URI(
                         oldUri.getScheme(),
-                        mUsernameView.getText() + ":" + mPasswordView.getText(),
+                        usernameEnc + ":" + passwordEnc,
                         oldUri.getHost(),
                         oldUri.getPort(),
                         null,
                         null,
                         null);
                     mAccount.setTransportUri(uri.toString());
+                }
+                catch (UnsupportedEncodingException enc)
+                {
+                    // This really shouldn't happen since the encoding is hardcoded to UTF-8
+                    Log.e(K9.LOG_TAG, "Couldn't urlencode username or password.", enc);
                 }
                 catch (URISyntaxException use)
                 {
@@ -482,14 +492,19 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             }
 
             final String userInfo;
+            String user = mUsernameView.getText().toString();
+            String password = mPasswordView.getText().toString();
+            String userEnc = URLEncoder.encode(user, "UTF-8");        
+            String passwordEnc = URLEncoder.encode(password, "UTF-8");
+
             if (mAccountSchemes[securityType].startsWith("imap"))
             {
                 String authType = ((SpinnerOption)mAuthTypeView.getSelectedItem()).label;
-                userInfo = authType + ":" + mUsernameView.getText() + ":" + mPasswordView.getText();
+                userInfo = authType + ":" + userEnc + ":" + passwordEnc;
             }
             else
             {
-                userInfo = mUsernameView.getText() + ":" + mPasswordView.getText();
+                userInfo = userEnc + ":" + passwordEnc;
             }
             URI uri = new URI(
                 mAccountSchemes[securityType],

@@ -16,6 +16,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
@@ -118,15 +119,23 @@ public class SmtpTransport extends Transport
 
         if (uri.getUserInfo() != null)
         {
-            String[] userInfoParts = uri.getUserInfo().split(":");
-            mUsername = userInfoParts[0];
-            if (userInfoParts.length > 1)
+            try
             {
-                mPassword = userInfoParts[1];
+                String[] userInfoParts = uri.getUserInfo().split(":");
+                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                if (userInfoParts.length > 1)
+                {
+                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                }
+                if (userInfoParts.length > 2)
+                {
+                    mAuthType = userInfoParts[2];
+                }
             }
-            if (userInfoParts.length > 2)
+            catch (UnsupportedEncodingException enc)
             {
-                mAuthType = userInfoParts[2];
+                // This shouldn't happen since the encoding is hardcoded to UTF-8
+                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
             }
         }
     }

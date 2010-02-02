@@ -124,11 +124,19 @@ public class Pop3Store extends Store
 
         if (uri.getUserInfo() != null)
         {
-            String[] userInfoParts = uri.getUserInfo().split(":", 2);
-            mUsername = userInfoParts[0];
-            if (userInfoParts.length > 1)
+            try
             {
-                mPassword = userInfoParts[1];
+                String[] userInfoParts = uri.getUserInfo().split(":");
+                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                if (userInfoParts.length > 1)
+                {
+                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                }
+            }
+            catch (UnsupportedEncodingException enc)
+            {
+                // This shouldn't happen since the encoding is hardcoded to UTF-8
+                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
             }
         }
     }

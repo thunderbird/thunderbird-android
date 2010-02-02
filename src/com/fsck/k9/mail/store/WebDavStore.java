@@ -38,6 +38,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -202,21 +203,29 @@ public class WebDavStore extends Store
 
         if (mUri.getUserInfo() != null)
         {
-            String[] userInfoParts = mUri.getUserInfo().split(":", 2);
-            mUsername = userInfoParts[0];
-            String userParts[] = mUsername.split("/", 2);
+            try
+            {
+                String[] userInfoParts = mUri.getUserInfo().split(":");
+                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                String userParts[] = mUsername.split("/", 2);
 
-            if (userParts.length > 1)
-            {
-                alias = userParts[1];
+                if (userParts.length > 1)
+                {
+                    alias = userParts[1];
+                }
+                else
+                {
+                    alias = mUsername;
+                }
+                if (userInfoParts.length > 1)
+                {
+                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                }
             }
-            else
+            catch (UnsupportedEncodingException enc)
             {
-                alias = mUsername;
-            }
-            if (userInfoParts.length > 1)
-            {
-                mPassword = userInfoParts[1];
+                // This shouldn't happen since the encoding is hardcoded to UTF-8
+                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
             }
         }
         mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;

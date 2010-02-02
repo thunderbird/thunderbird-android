@@ -157,18 +157,26 @@ public class ImapStore extends Store
 
         if (uri.getUserInfo() != null)
         {
-            String[] userInfoParts = uri.getUserInfo().split(":");
-            if (userInfoParts.length == 2)
+            try
             {
-                mAuthType = AuthType.PLAIN;
-                mUsername = userInfoParts[0];
-                mPassword = userInfoParts[1];
+                String[] userInfoParts = uri.getUserInfo().split(":");
+                if (userInfoParts.length == 2)
+                {
+                    mAuthType = AuthType.PLAIN;
+                    mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                }
+                else
+                {
+                    mAuthType = AuthType.valueOf(userInfoParts[0]);
+                    mUsername = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                    mPassword = URLDecoder.decode(userInfoParts[2], "UTF-8");
+                }
             }
-            else
+            catch (UnsupportedEncodingException enc)
             {
-                mAuthType = AuthType.valueOf(userInfoParts[0]);
-                mUsername = userInfoParts[1];
-                mPassword = userInfoParts[2];
+                // This shouldn't happen since the encoding is hardcoded to UTF-8
+                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
             }
         }
 

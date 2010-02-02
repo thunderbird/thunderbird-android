@@ -6,8 +6,12 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import com.fsck.k9.K9;
 
+import com.fsck.k9.K9;
+import com.fsck.k9.Utility;
+
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +27,7 @@ public class Storage implements SharedPreferences
     private CopyOnWriteArrayList<OnSharedPreferenceChangeListener> listeners =
         new CopyOnWriteArrayList<OnSharedPreferenceChangeListener>();
 
-    private int DB_VERSION = 1;  // CHANGING THIS WILL DESTROY ALL USER PREFERENCES!
+    private int DB_VERSION = 2;
     private String DB_NAME = "preferences_storage";
 
     private ThreadLocal<ConcurrentHashMap<String, String>> workingStorage
@@ -38,6 +42,116 @@ public class Storage implements SharedPreferences
     private SQLiteDatabase openDB()
     {
         SQLiteDatabase mDb = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
+
+        if (mDb.getVersion() == 1)
+        {
+            Log.i(K9.LOG_TAG, "Updating preferences to urlencoded username/password");
+
+            String accountUuids = readValue(mDb, "accountUuids");
+            if (accountUuids != null && accountUuids.length() != 0)
+            {
+                String[] uuids = accountUuids.split(",");
+                for (int i = 0, length = uuids.length; i < length; i++)
+                {
+                    String uuid = uuids[i];
+                    try
+                    {
+                        String storeUriStr = Utility.base64Decode(readValue(mDb, uuid + ".storeUri"));
+                        String transportUriStr = Utility.base64Decode(readValue(mDb, uuid + ".transportUri"));
+
+                        URI uri = new URI(transportUriStr);
+                        String newUserInfo = null;
+                        if (transportUriStr != null)
+                        {
+                            String[] userInfoParts = uri.getUserInfo().split(":");
+
+                            String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
+                            String passwordEnc = "";
+                            String authType = "";
+                            if (userInfoParts.length > 1)
+                            {
+                                passwordEnc = ":" + URLEncoder.encode(userInfoParts[1], "UTF-8");
+                            }
+                            if (userInfoParts.length > 2)
+                            {
+                                authType = ":" + userInfoParts[2];
+                            }
+
+                            newUserInfo = usernameEnc + passwordEnc + authType;
+                        }
+
+                        if (newUserInfo != null)
+                        {
+                            URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
+                            String newTransportUriStr = Utility.base64Encode(newUri.toString());
+                            writeValue(mDb, uuid + ".transportUri", newTransportUriStr);
+                        }
+
+                        uri = new URI(storeUriStr);
+                        newUserInfo = null;
+                        if (storeUriStr.startsWith("imap"))
+                        {
+                            String[] userInfoParts = uri.getUserInfo().split(":");
+                            if (userInfoParts.length == 2)
+                            {
+                                String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
+                                String passwordEnc = URLEncoder.encode(userInfoParts[1], "UTF-8");
+
+                                newUserInfo = usernameEnc + ":" + passwordEnc;
+                            }
+                            else
+                            {
+                                String authType = userInfoParts[0];
+                                String usernameEnc = URLEncoder.encode(userInfoParts[1], "UTF-8");
+                                String passwordEnc = URLEncoder.encode(userInfoParts[2], "UTF-8");
+
+                                newUserInfo = authType + ":" + usernameEnc + ":" + passwordEnc;
+                            }
+                        }
+                        else if (storeUriStr.startsWith("pop3"))
+                        {
+                            String[] userInfoParts = uri.getUserInfo().split(":", 2);
+                            String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
+
+                            String passwordEnc = "";
+                            if (userInfoParts.length > 1)
+                            {
+                                passwordEnc = ":" + URLEncoder.encode(userInfoParts[1], "UTF-8");
+                            }
+
+                            newUserInfo = usernameEnc + passwordEnc;
+                        }
+                        else if (storeUriStr.startsWith("webdav"))
+                        {
+                            String[] userInfoParts = uri.getUserInfo().split(":", 2);
+                            String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
+
+                            String passwordEnc = "";
+                            if (userInfoParts.length > 1)
+                            {
+                                passwordEnc = ":" + URLEncoder.encode(userInfoParts[1], "UTF-8");
+                            }
+
+                            newUserInfo = usernameEnc + passwordEnc;
+                        }
+
+                        if (newUserInfo != null)
+                        {
+                            URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
+                            String newStoreUriStr = Utility.base64Encode(newUri.toString());
+                            writeValue(mDb, uuid + ".storeUri", newStoreUriStr);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(K9.LOG_TAG, "ooops", e);
+                    }
+                }
+            }
+
+            mDb.setVersion(DB_VERSION);
+        }
+
         if (mDb.getVersion() != DB_VERSION)
         {
             Log.i(K9.LOG_TAG, "Creating Storage database");
@@ -300,4 +414,52 @@ public class Storage implements SharedPreferences
         listeners.remove(listener);
     }
 
+    private String readValue(SQLiteDatabase mDb, String key)
+    {
+        Cursor cursor = null;
+        String value = null;
+        try
+        {
+            cursor = mDb.query(
+                    "preferences_storage",
+                    new String[] {"value"},
+                    "primkey = ?",
+                    new String[] {key},
+                    null,
+                    null,
+                    null);
+
+            if (cursor.moveToNext())
+            {
+                value = cursor.getString(0);
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, "Loading key '" + key + "', value = '" + value + "'");
+                }
+            }
+        }
+        finally
+        {
+            if (cursor != null)
+            {
+                cursor.close();
+            }
+        }
+
+        return value;
+    }
+
+    private void writeValue(SQLiteDatabase mDb, String key, String value)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put("primkey", key);
+        cv.put("value", value);
+
+        long result = mDb.insert("preferences_storage", "primkey", cv);
+
+        if (result == -1)
+        {
+            Log.e(K9.LOG_TAG, "Error writing key '" + key + "', value = '" + value + "'");
+        }
+    }
 }
