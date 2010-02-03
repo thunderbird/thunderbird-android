@@ -1594,7 +1594,7 @@ public class ImapStore extends Store
 
                 List<ImapResponse> responses =
                     executeSimpleCommand(
-                        String.format("UID SEARCH (HEADER MESSAGE-ID %s)", messageId));
+                        String.format("UID SEARCH HEADER MESSAGE-ID %s", messageId));
                 for (ImapResponse response1 : responses)
                 {
                     if (response1.mTag == null && response1.get(0).equals("SEARCH")
