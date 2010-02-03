@@ -1139,10 +1139,8 @@ public class LocalStore extends Store implements Serializable
                 {
                     LocalMessage localMessage = (LocalMessage)message;
                     Cursor cursor = null;
-                    localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "multipart/mixed");
                     MimeMultipart mp = new MimeMultipart();
                     mp.setSubType("mixed");
-                    localMessage.setBody(mp);
                     try
                     {
                         cursor = mDb.rawQuery("SELECT html_content, text_content FROM messages "
@@ -1231,6 +1229,18 @@ public class LocalStore extends Store implements Serializable
                         {
                             cursor.close();
                         }
+                    }
+
+                    if (mp.getCount() == 1)
+                    {
+                        BodyPart part = mp.getBodyPart(0);
+                        localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, part.getContentType());
+                        localMessage.setBody(part.getBody());
+                    }
+                    else
+                    {
+                        localMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "multipart/mixed");
+                        localMessage.setBody(mp);
                     }
                 }
             }

@@ -304,10 +304,11 @@ public class SmtpTransport extends Transport
             }
             message.setRecipients(RecipientType.BCC, null);
             executeSimpleCommand("DATA");
-            // TODO byte stuffing
-            message.writeTo(
-                new EOLConvertingOutputStream(
-                    new BufferedOutputStream(mOut, 1024)));
+            EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
+                    new BufferedOutputStream(mOut, 1024)); 
+            message.writeTo(msgOut);
+            // We use BufferedOutputStream. So make sure to call flush() !
+            msgOut.flush();
 
             possibleSend = true; // After the "\r\n." is attempted, we may have sent the message
             executeSimpleCommand("\r\n.");
