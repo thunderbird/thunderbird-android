@@ -2596,7 +2596,7 @@ public class MessagingController implements Runnable
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             localFolder = localStore.getFolder(folderName);
             localFolder.open(OpenMode.READ_WRITE);
-            Message[] messages = new Message[uids.length];
+            ArrayList<Message> messages = new ArrayList<Message>();
             for (int i = 0; i < uids.length; i++)
             {
                 String uid = uids[i];
@@ -2607,10 +2607,14 @@ public class MessagingController implements Runnable
                 {
                     sendCount.remove(uid);
                 }
-                messages[i] = localFolder.getMessage(uid);
+                Message msg = localFolder.getMessage(uid);
+                if (msg != null)
+                {
+                	messages.add(msg);
+                }
             }
 
-            localFolder.setFlags(messages, new Flag[] {flag}, newState);
+            localFolder.setFlags(messages.toArray(new Message[0]), new Flag[] {flag}, newState);
 
 
             for (MessagingListener l : getListeners())
