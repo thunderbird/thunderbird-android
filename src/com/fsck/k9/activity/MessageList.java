@@ -337,6 +337,7 @@ public class MessageList
 
     public void onNewIntent(Intent intent)
     {
+        setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
         mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);

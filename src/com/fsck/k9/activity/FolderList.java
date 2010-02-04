@@ -270,6 +270,8 @@ public class FolderList extends K9ListActivity
 
     public void onNewIntent(Intent intent)
     {
+        setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
+
         String savedFolderName = null;
         String initialFolder;
 
