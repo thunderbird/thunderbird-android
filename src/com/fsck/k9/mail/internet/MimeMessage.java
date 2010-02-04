@@ -369,9 +369,9 @@ public class MimeMessage extends Message
     {
         this.mBody = body;
         setHeader("MIME-Version", "1.0");
-        if (body instanceof com.fsck.k9.mail.Multipart)
+        if (body instanceof Multipart)
         {
-            com.fsck.k9.mail.Multipart multipart = ((com.fsck.k9.mail.Multipart)body);
+            Multipart multipart = ((Multipart)body);
             multipart.setParent(this);
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, multipart.getContentType());
         }
@@ -429,6 +429,19 @@ public class MimeMessage extends Message
     public InputStream getInputStream() throws MessagingException
     {
         return null;
+    }
+
+    public void setEncoding(String encoding)
+    {
+    	if (mBody instanceof Multipart)
+    	{
+    		((Multipart)mBody).setEncoding(encoding);
+    	}
+    	else if (mBody instanceof TextBody)
+        {
+            setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
+            ((TextBody)mBody).setEncoding(encoding);
+        }
     }
 
     class MimeMessageBuilder implements ContentHandler

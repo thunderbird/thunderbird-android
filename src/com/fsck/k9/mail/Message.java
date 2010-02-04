@@ -143,4 +143,6 @@ public abstract class Message implements Part, Body
     }
 
     public abstract void saveChanges() throws MessagingException;
+
+    public abstract void setEncoding(String encoding);
 }

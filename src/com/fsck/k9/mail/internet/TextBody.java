@@ -9,7 +9,8 @@ import java.io.*;
 
 public class TextBody implements Body
 {
-    String mBody;
+    private String mBody;
+    private String mEncoding;
 
     public TextBody(String body)
     {
@@ -18,10 +19,17 @@ public class TextBody implements Body
 
     public void writeTo(OutputStream out) throws IOException, MessagingException
     {
-        if (mBody!=null)
+        if (mBody != null)
         {
             byte[] bytes = mBody.getBytes("UTF-8");
-            out.write(Base64.encodeBase64Chunked(bytes));
+            if ("8bit".equals(mEncoding))
+            {
+                out.write(bytes);
+            }
+            else
+            {
+                out.write(Base64.encodeBase64Chunked(bytes));
+            }
         }
     }
 
@@ -56,5 +64,10 @@ public class TextBody implements Body
         {
             return null;
         }
+    }
+
+    public void setEncoding(String encoding)
+    {
+    	mEncoding = encoding;
     }
 }

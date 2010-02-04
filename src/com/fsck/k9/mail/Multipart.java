@@ -3,6 +3,9 @@ package com.fsck.k9.mail;
 
 import java.util.ArrayList;
 
+import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.TextBody;
+
 public abstract class Multipart implements Body
 {
     protected Part mParent;
@@ -55,4 +58,25 @@ public abstract class Multipart implements Body
     {
         this.mParent = parent;
     }
+
+	public void setEncoding(String encoding)
+	{
+		for (BodyPart part : mParts)
+		{
+			try
+			{
+				Body body = part.getBody();
+				if (body instanceof TextBody)
+				{
+					part.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
+					((TextBody)body).setEncoding(encoding);
+				}
+			}
+			catch (MessagingException e)
+			{
+				// Ignore
+			}
+		}
+		
+	}
 }

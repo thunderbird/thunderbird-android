@@ -57,6 +57,7 @@ public class SmtpTransport extends Transport
     PeekableInputStream mIn;
 
     OutputStream mOut;
+    private boolean m8bitEncodingAllowed;
 
     /**
      * smtp://user:password@server:port CONNECTION_SECURITY_NONE
@@ -184,6 +185,8 @@ public class SmtpTransport extends Transport
 
             List<String> results = executeSimpleCommand("EHLO " + localHost);
 
+            m8bitEncodingAllowed = results.contains("8BITMIME");
+
             /*
              * TODO may need to add code to fall back to HELO I switched it from
              * using HELO on non STARTTLS connections because of AOL's mail
@@ -285,10 +288,19 @@ public class SmtpTransport extends Transport
     {
         close();
         open();
+
+        if (m8bitEncodingAllowed)
+        {
+            //TODO: Make sure that we don't have lines that are longer than
+            // 998 bytes (don't count characters!)
+            message.setEncoding("8bit");
+        }
+
         Address[] from = message.getFrom();
         boolean possibleSend = false;
         try
         {
+        	//TODO: Add BODY=8BITMIME parameter if appropriate?
             executeSimpleCommand("MAIL FROM: " + "<" + from[0].getAddress() + ">");
             for (Address address : message.getRecipients(RecipientType.TO))
             {
@@ -304,9 +316,13 @@ public class SmtpTransport extends Transport
             }
             message.setRecipients(RecipientType.BCC, null);
             executeSimpleCommand("DATA");
+            
+            //TODO: Data stuffing (RFC 821 4.5.2.)
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                     new BufferedOutputStream(mOut, 1024)); 
+
             message.writeTo(msgOut);
+
             // We use BufferedOutputStream. So make sure to call flush() !
             msgOut.flush();
 
