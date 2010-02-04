@@ -368,12 +368,12 @@ public class MimeMessage extends Message
     public void setBody(Body body) throws MessagingException
     {
         this.mBody = body;
+        setHeader("MIME-Version", "1.0");
         if (body instanceof com.fsck.k9.mail.Multipart)
         {
             com.fsck.k9.mail.Multipart multipart = ((com.fsck.k9.mail.Multipart)body);
             multipart.setParent(this);
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, multipart.getContentType());
-            setHeader("MIME-Version", "1.0");
         }
         else if (body instanceof TextBody)
         {
