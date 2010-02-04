@@ -245,6 +245,26 @@ public class FolderList extends K9ListActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
+        mListView = getListView();
+        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
+        mListView.setLongClickable(true);
+        mListView.setFastScrollEnabled(true);
+        mListView.setScrollingCacheEnabled(true);
+        mListView.setOnItemClickListener(new OnItemClickListener()
+        {
+            public void onItemClick(AdapterView parent, View v, int itemPosition, long id)
+            {
+                onOpenFolder(((FolderInfoHolder)mAdapter.getItem(id)).name);
+            }
+        });
+        registerForContextMenu(mListView);
+        
+        mListView.setSaveEnabled(true);
+
+        mInflater = getLayoutInflater();
+
         onNewIntent(getIntent());
     }
 
@@ -273,26 +293,6 @@ public class FolderList extends K9ListActivity
 
     private void initializeActivityView()
     {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
-        mListView = getListView();
-        mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
-        mListView.setLongClickable(true);
-        mListView.setFastScrollEnabled(true);
-        mListView.setScrollingCacheEnabled(true);
-        mListView.setOnItemClickListener(new OnItemClickListener()
-        {
-            public void onItemClick(AdapterView parent, View v, int itemPosition, long id)
-            {
-                onOpenFolder(((FolderInfoHolder)mAdapter.getItem(id)).name);
-            }
-        });
-        registerForContextMenu(mListView);
-        
-        mListView.setSaveEnabled(true);
-
-        mInflater = getLayoutInflater();
-
         mAdapter = new FolderListAdapter();
 
         final Object previousData = getLastNonConfigurationInstance();
