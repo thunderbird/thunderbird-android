@@ -6,7 +6,8 @@ import java.io.OutputStream;
 
 public class EOLConvertingOutputStream extends FilterOutputStream
 {
-    int lastChar;
+    private int lastChar;
+    private boolean ignoreNextIfLF = false;
 
     public EOLConvertingOutputStream(OutputStream out)
     {
@@ -16,15 +17,16 @@ public class EOLConvertingOutputStream extends FilterOutputStream
     @Override
     public void write(int oneByte) throws IOException
     {
-        if (oneByte == '\n')
+        if (!ignoreNextIfLF)
         {
-            if (lastChar != '\r')
+            if ((oneByte == '\n') && (lastChar != '\r'))
             {
                 super.write('\r');
             }
+            super.write(oneByte);
+            lastChar = oneByte;
         }
-        super.write(oneByte);
-        lastChar = oneByte;
+        ignoreNextIfLF = false;
     }
 
     @Override
@@ -34,6 +36,11 @@ public class EOLConvertingOutputStream extends FilterOutputStream
         {
             super.write('\n');
             lastChar = '\n';
+            
+            // We have to ignore the next character if it is <LF>. Otherwise it
+            // will be expanded to an additional <CR><LF> sequence although it
+            // belongs to the one just completed.
+            ignoreNextIfLF = true;
         }
         super.flush();
     }
