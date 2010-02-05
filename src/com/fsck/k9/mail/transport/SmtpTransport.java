@@ -317,9 +317,9 @@ public class SmtpTransport extends Transport
             message.setRecipients(RecipientType.BCC, null);
             executeSimpleCommand("DATA");
             
-            //TODO: Data stuffing (RFC 821 4.5.2.)
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new BufferedOutputStream(mOut, 1024)); 
+                    new SmtpDataStuffing(
+                            new BufferedOutputStream(mOut, 1024)));
 
             message.writeTo(msgOut);
 
