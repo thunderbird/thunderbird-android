@@ -23,6 +23,8 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+// Taken from Apache Mime4j 0.6
+
 /**
  * Performs Quoted-Printable encoding on an underlying stream.
  */

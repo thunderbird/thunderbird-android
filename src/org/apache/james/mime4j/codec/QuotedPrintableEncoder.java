@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+// Taken from Apache Mime4j 0.6
+
 final class QuotedPrintableEncoder
 {
     private static final byte TAB = 0x09;
