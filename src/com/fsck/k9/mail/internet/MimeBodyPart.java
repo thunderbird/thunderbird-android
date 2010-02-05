@@ -87,11 +87,7 @@ public class MimeBodyPart extends BodyPart
                 contentType += String.format(";\n name=\"%s\"", name);
             }
             setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
-            //TODO: Use quoted-printable
-            //using org.apache.commons.codec.net.QuotedPrintableCodec
-            //when it will implement all rules (missing #3, $4 & #5) of the RFC
-            //http://www.ietf.org/rfc/rfc1521.txt
-            setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
+            setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "quoted-printable");
         }
     }
 
