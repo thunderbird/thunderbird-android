@@ -2966,7 +2966,7 @@ public class MessagingController implements Runnable
                 catch (MessagingException me)
                 {
                     if (K9.DEBUG)
-                        Log.v(K9.LOG_TAG, "", me);
+                        Log.v(K9.LOG_TAG, "Exception loading attachment", me);
 
                     for (MessagingListener l : getListeners())
                     {
@@ -4392,6 +4392,15 @@ public class MessagingController implements Runnable
             Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
             for (final Folder folder : localStore.getPersonalNamespaces())
             {
+                if (folder.getName().equals(account.getErrorFolderName())
+                        || folder.getName().equals(account.getOutboxFolderName()))
+                {
+                    if (K9.DEBUG)
+                        Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
+                              " which should never be pushed");
+
+                    continue;
+                }
                 folder.open(Folder.OpenMode.READ_WRITE);
                 folder.refresh(prefs);
 
