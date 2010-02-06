@@ -70,6 +70,7 @@ public class MessageView extends K9Activity
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
     private View mAttachmentIcon;
+    private View mDownloadingIcon;
     private View mShowPicturesSection;
     View next;
     View next_scrolling;
@@ -263,6 +264,7 @@ public class MessageView extends K9Activity
             final   String to,
             final   String cc,
             final   boolean hasAttachments,
+            final   boolean isDownloading,
             final   boolean flagged,
             final   boolean answered)
         {
@@ -286,6 +288,7 @@ public class MessageView extends K9Activity
                     mToView.setText(to);
                     mCcView.setText(cc);
                     mAttachmentIcon.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
+                    mDownloadingIcon.setVisibility(isDownloading ? View.VISIBLE : View.GONE);
                     if (flagged)
                     {
                         mFlagged.setChecked(true);
@@ -460,6 +463,7 @@ public class MessageView extends K9Activity
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
+        mDownloadingIcon = findViewById(R.id.downloading);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
 
 
@@ -1361,6 +1365,7 @@ public class MessageView extends K9Activity
         String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
         String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
+        boolean isDownloading = message.isSet(Flag.X_DOWNLOADED_PARTIAL);
         mHandler.setHeaders(subjectText,
                             fromText,
                             dateText,
@@ -1368,6 +1373,7 @@ public class MessageView extends K9Activity
                             toText,
                             ccText,
                             hasAttachments,
+                            isDownloading,
                             message.isSet(Flag.FLAGGED),
                             message.isSet(Flag.ANSWERED));
     }
@@ -1385,7 +1391,8 @@ public class MessageView extends K9Activity
             }
 
             MessageView.this.mMessage = message;
-            if (!message.isSet(Flag.X_DOWNLOADED_FULL))
+            if (!message.isSet(Flag.X_DOWNLOADED_FULL)
+                && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
             {
                 mHandler.post(new Runnable()
                 {
@@ -1417,9 +1424,18 @@ public class MessageView extends K9Activity
                 return;
             }
 
-            MessageView.this.mMessage = message;
             try
             {
+                if (MessageView.this.mMessage!=null
+                    && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
+                    && message.isSet(Flag.X_DOWNLOADED_FULL))
+                {
+
+                    setHeaders(account, folder, uid, message);
+                }
+
+                MessageView.this.mMessage = message;
+
                 String text;
                 Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
                 if (part == null)
@@ -1508,7 +1524,10 @@ public class MessageView extends K9Activity
                     {
                         mHandler.networkError();
                     }
-                    mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                    if (!MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
+                    {
+                        mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                    }
                 }
             });
         }

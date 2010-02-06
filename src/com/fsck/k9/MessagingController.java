@@ -2807,8 +2807,11 @@ public class MessagingController implements Runnable
                     if (!message.isSet(Flag.X_DOWNLOADED_FULL))
                     {
                         loadMessageForViewRemote(account, folder, uid, listener);
-                        localFolder.close();
-                        return;
+                        if (!message.isSet(Flag.X_DOWNLOADED_PARTIAL))
+                        {
+                            localFolder.close();
+                            return;
+                        }
                     }
 
                     FetchProfile fp = new FetchProfile();

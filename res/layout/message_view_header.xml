@@ -33,6 +33,14 @@
             android:layout_height="22dip"
             android:layout_toRightOf="@id/from"
             android:layout_alignTop="@id/from" />
+        <View
+            android:id="@+id/downloading"
+            android:background="@drawable/ic_menu_reverse_sort"
+            android:layout_width="22dip"
+            android:layout_height="22dip"
+            android:layout_toRightOf="@id/attachment"
+            android:layout_alignTop="@id/attachment"
+            android:visibility="gone" />
         <LinearLayout
             android:id="@+id/to_container"
             android:layout_width="fill_parent"
