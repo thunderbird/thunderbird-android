@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -172,6 +173,13 @@ public class FolderList extends K9ListActivity
 
     private void checkMail(FolderInfoHolder folder)
     {
+        if (mAccount.isStoreAttachmentOnSdCard()
+            && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+        {
+            Toast.makeText(this, R.string.sd_card_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         final WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email - UpdateWorker");
         wakeLock.setReferenceCounted(false);
@@ -447,6 +455,13 @@ public class FolderList extends K9ListActivity
 
     private void checkMail(final Account account)
     {
+        if (mAccount.isStoreAttachmentOnSdCard()
+            && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+        {
+            Toast.makeText(this, R.string.sd_card_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
     }
 

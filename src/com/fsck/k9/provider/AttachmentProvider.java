@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import com.fsck.k9.Account;
@@ -156,6 +157,29 @@ public class AttachmentProvider extends ContentProvider
         }
     }
 
+    private File getFile(String dbName, String id)
+        throws FileNotFoundException
+    {
+        try
+        {
+            File attachmentsDir = getContext().getDatabasePath(dbName + "_att");
+            File file = new File(attachmentsDir, id);
+            if (!file.exists())
+            {
+                file = new File("/sdcard"  + attachmentsDir.getCanonicalPath().substring("/data".length()), id);
+                if (!file.exists()) {
+                    throw new FileNotFoundException();
+                }
+            }
+            return file;
+        }
+        catch (IOException e)
+        {
+            Log.w(K9.LOG_TAG, null, e);
+            throw new FileNotFoundException(e.getMessage());
+        }
+    }
+
     @Override
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException
     {
@@ -176,10 +200,9 @@ public class AttachmentProvider extends ContentProvider
                 String type = getType(attachmentUri);
                 try
                 {
-                    FileInputStream in = new FileInputStream(
-                        new File(getContext().getDatabasePath(dbName + "_att"), id));
+                    FileInputStream in = new FileInputStream(getFile(dbName, id));
                     Bitmap thumbnail = createThumbnail(type, in);
-                    thumbnail = thumbnail.createScaledBitmap(thumbnail, width, height, true);
+                    thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
                     FileOutputStream out = new FileOutputStream(file);
                     thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
                     out.close();
@@ -195,7 +218,7 @@ public class AttachmentProvider extends ContentProvider
         else
         {
             return ParcelFileDescriptor.open(
-                       new File(getContext().getDatabasePath(dbName + "_att"), id),
+                       getFile(dbName, id),
                        ParcelFileDescriptor.MODE_READ_ONLY);
         }
     }

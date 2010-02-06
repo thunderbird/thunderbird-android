@@ -655,4 +655,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="remote_control_label">K-9 Mail remote control</string>
     <string name="remote_control_desc">Allows this application to control K-9 Mail activities and settings.</string>
+
+    <string name="account_setup_store_attachment_on_sd_card_label">Attachments On SD Cards</string>
+    <string name="account_setup_store_attachment_on_sd_card_summary">Whether or not attachments are store on the SD card</string>
+    <string name="account_setup_store_attachment_on_sd_card_error">No SD card found</string>
+
+    <string name="sd_card_error">No SD card found</string>
 </resources>

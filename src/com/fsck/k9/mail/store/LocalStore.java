@@ -8,8 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.util.Regex;
 import android.util.Log;
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.Utility;
@@ -36,9 +38,11 @@ public class LocalStore extends Store implements Serializable
     private static final int DB_VERSION = 33;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
+    private Account mAccount;
     private String mPath;
     private SQLiteDatabase mDb;
-    private File mAttachmentsDir;
+    private File mInternalAttachmentsDir = null;
+    private File mExternalAttachmentsDir = null;
     private Application mApplication;
     private String uUid = null;
 
@@ -65,6 +69,24 @@ public class LocalStore extends Store implements Serializable
     public LocalStore(String _uri, Application application) throws MessagingException
     {
         mApplication = application;
+
+        //Store should be passed their store
+        //but let's not break the interface now
+        for (Account account : Preferences.getPreferences(mApplication).getAccounts())
+        {
+            if (_uri.equals(account.getLocalStoreUri()))
+            {
+                mAccount = account;
+                break;
+            }
+        }
+        if (mAccount == null)
+        {
+            //Should not happend
+            throw new IllegalArgumentException("No account found: uri=" + _uri);
+        }
+
+
         URI uri = null;
         try
         {
@@ -94,10 +116,20 @@ public class LocalStore extends Store implements Serializable
             parentDir.mkdirs();
         }
 
-        mAttachmentsDir = new File(mPath + "_att");
-        if (!mAttachmentsDir.exists())
+        mInternalAttachmentsDir = new File(mPath + "_att");
+        if (!mInternalAttachmentsDir.exists())
         {
-            mAttachmentsDir.mkdirs();
+            mInternalAttachmentsDir.mkdirs();
+        }
+
+        if (useExternalAttachmentDir())
+        {
+            String externalAttachmentsPath = "/sdcard" + mPath.substring("//data".length());
+            mExternalAttachmentsDir = new File(externalAttachmentsPath + "_att");
+            if (!mExternalAttachmentsDir.exists())
+            {
+                mExternalAttachmentsDir.mkdirs();
+            }
         }
 
         mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
@@ -235,7 +267,21 @@ public class LocalStore extends Store implements Serializable
     {
         long attachmentLength = 0;
 
-        File[] files = mAttachmentsDir.listFiles();
+        attachmentLength =+ getSize(mInternalAttachmentsDir);
+        if (useExternalAttachmentDir())
+        {
+            attachmentLength =+ getSize(mExternalAttachmentsDir);
+        }
+
+        File dbFile = new File(mPath);
+        return dbFile.length() + attachmentLength;
+    }
+
+    private long getSize(File attachmentsDir)
+    {
+        long attachmentLength = 0;
+
+        File[] files = attachmentsDir.listFiles();
         for (File file : files)
         {
             if (file.exists())
@@ -244,9 +290,7 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
-
-        File dbFile = new File(mPath);
-        return dbFile.length() + attachmentLength;
+        return attachmentLength;
     }
 
     public void compact() throws MessagingException
@@ -375,24 +419,13 @@ public class LocalStore extends Store implements Serializable
         {
 
         }
-        try
+
+        delete(mInternalAttachmentsDir);
+        if (useExternalAttachmentDir())
         {
-            File[] attachments = mAttachmentsDir.listFiles();
-            for (File attachment : attachments)
-            {
-                if (attachment.exists())
-                {
-                    attachment.delete();
-                }
-            }
-            if (mAttachmentsDir.exists())
-            {
-                mAttachmentsDir.delete();
-            }
+            delete(mExternalAttachmentsDir);
         }
-        catch (Exception e)
-        {
-        }
+
         try
         {
             new File(mPath).delete();
@@ -403,24 +436,53 @@ public class LocalStore extends Store implements Serializable
         }
     }
 
+    private void delete(File attachmentsDir) {
+        try {
+            File[] attachments = attachmentsDir.listFiles();
+            for (File attachment : attachments)
+            {
+                if (attachment.exists())
+                {
+                    attachment.delete();
+                }
+            }
+            if (attachmentsDir.exists())
+            {
+                attachmentsDir.delete();
+            }
+        }
+        catch (Exception e)
+        {
+            Log.w(K9.LOG_TAG, null, e);
+        }
+    }
+
     public void pruneCachedAttachments() throws MessagingException
     {
         pruneCachedAttachments(false);
     }
 
-    /**
-     * Deletes all cached attachments for the entire store.
-     */
     public void pruneCachedAttachments(boolean force) throws MessagingException
     {
-
         if (force)
         {
             ContentValues cv = new ContentValues();
             cv.putNull("content_uri");
             mDb.update("attachments", cv, null, null);
         }
-        File[] files = mAttachmentsDir.listFiles();
+        pruneCachedAttachments(force, mInternalAttachmentsDir);
+        if (useExternalAttachmentDir())
+        {
+            pruneCachedAttachments(force, mExternalAttachmentsDir);
+        }
+    }
+
+    /**
+     * Deletes all cached attachments for the entire store.
+     */
+    private void pruneCachedAttachments(boolean force, File attachmentsDir) throws MessagingException
+    {
+      File[] files = attachmentsDir.listFiles();
         for (File file : files)
         {
             if (file.exists())
@@ -1719,7 +1781,7 @@ public class LocalStore extends Store implements Serializable
                      * so we copy the data into a cached attachment file.
                      */
                     InputStream in = attachment.getBody().getInputStream();
-                    tempAttachmentFile = File.createTempFile("att", null, mAttachmentsDir);
+                    tempAttachmentFile = File.createTempFile("att", null, getAttachmentsDir());
                     FileOutputStream out = new FileOutputStream(tempAttachmentFile);
                     size = IOUtils.copy(in, out);
                     in.close();
@@ -1784,7 +1846,7 @@ public class LocalStore extends Store implements Serializable
 
             if (tempAttachmentFile != null)
             {
-                File attachmentFile = new File(mAttachmentsDir, Long.toString(attachmentId));
+                File attachmentFile = new File(getAttachmentsDir(), Long.toString(attachmentId));
                 tempAttachmentFile.renameTo(attachmentFile);
                 contentUri = AttachmentProvider.getAttachmentUri(
                                  new File(mPath).getName(),
@@ -1942,11 +2004,20 @@ public class LocalStore extends Store implements Serializable
                             long attachmentId = attachmentsCursor.getLong(0);
                             try
                             {
-                                File file = new File(mAttachmentsDir, Long.toString(attachmentId));
+                                File file;
+
+                                file = new File(mInternalAttachmentsDir, Long.toString(attachmentId));
                                 if (file.exists())
                                 {
                                     file.delete();
                                 }
+
+                                file = new File(mExternalAttachmentsDir, Long.toString(attachmentId));
+                                if (file.exists())
+                                {
+                                    file.delete();
+                                }
+
                             }
                             catch (Exception e)
                             {
@@ -2509,14 +2580,6 @@ public class LocalStore extends Store implements Serializable
             {
                 return mApplication.getContentResolver().openInputStream(mUri);
             }
-            catch (FileNotFoundException fnfe)
-            {
-                /*
-                 * Since it's completely normal for us to try to serve up attachments that
-                 * have been blown away, we just return an empty stream.
-                 */
-                return new ByteArrayInputStream(new byte[0]);
-            }
             catch (IOException ioe)
             {
                 throw new MessagingException("Invalid attachment.", ioe);
@@ -2534,6 +2597,36 @@ public class LocalStore extends Store implements Serializable
         public Uri getContentUri()
         {
             return mUri;
+        }
+    }
+
+    private File getAttachmentsDir()
+    {
+        if (useExternalAttachmentDir())
+        {
+            return mExternalAttachmentsDir;
+        }
+        else {
+            return mInternalAttachmentsDir;
+        }
+    }
+
+    private boolean useExternalAttachmentDir()
+    {
+        if (mAccount.isStoreAttachmentOnSdCard()) {
+            if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+            {
+                throw new IllegalStateException("SDCard not mounted");
+
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
 }

@@ -30,9 +30,16 @@
             android:key="account_default"
             android:title="@string/account_settings_default_label"
             android:summary="@string/account_settings_default_summary" />
-	   	</PreferenceCategory>
+
+        <CheckBoxPreference
+            android:key="account_setup_store_attachment_on_sd_card"
+            android:title="@string/account_setup_store_attachment_on_sd_card_label"
+            android:summary="@string/account_setup_store_attachment_on_sd_card_summary" />
+
+    </PreferenceCategory>
+
 	
-		<PreferenceCategory android:title="@string/account_settings_message_lists">
+	<PreferenceCategory android:title="@string/account_settings_message_lists">
 
         <ListPreference
             android:key="account_display_count"
@@ -40,9 +47,9 @@
             android:entries="@array/account_settings_display_count_entries"
             android:entryValues="@array/account_settings_display_count_values"
             android:dialogTitle="@string/account_settings_mail_display_count_label" />
-	   	</PreferenceCategory>
+    </PreferenceCategory>
 
-		<PreferenceCategory android:title="@string/account_settings_message_view">
+    <PreferenceCategory android:title="@string/account_settings_message_view">
 
        <ListPreference
             android:key="hide_buttons_enum"
@@ -51,9 +58,9 @@
             android:entryValues="@array/account_settings_hide_buttons_values"
             android:dialogTitle="@string/account_settings_hide_buttons_label" />
 
-	   	</PreferenceCategory>
-	
-		<PreferenceCategory android:title="@string/account_settings_sync">
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_settings_sync">
         <ListPreference
             android:key="account_check_frequency"
             android:title="@string/account_settings_mail_check_frequency_label"
@@ -102,7 +109,7 @@
 			android:summary="@string/account_settings_incoming_summary"
 			/>
 
-	   	</PreferenceCategory>
+    </PreferenceCategory>
 	
 	<PreferenceCategory android:title="@string/account_settings_folders">
 

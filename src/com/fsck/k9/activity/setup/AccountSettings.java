@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.*;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
@@ -45,6 +48,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
     private static final String PREFERENCE_EXPUNGE_POLICY = "expunge_policy";
     private static final String PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder";
+    private static final String PREFERENCE_STORE_ATTACHMENTS_ON_SD_CARD = "account_setup_store_attachment_on_sd_card";
 
 
     private Account mAccount;
@@ -67,6 +71,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mDeletePolicy;
     private ListPreference mExpungePolicy;
     private Preference mAutoExpandFolder;
+    private CheckBoxPreference mStoreAttachmentsOnSdCard;
 
 
     public static void actionSettings(Context context, Account account)
@@ -349,6 +354,28 @@ public class AccountSettings extends K9PreferenceActivity
                 return true;
             }
         });
+
+        mStoreAttachmentsOnSdCard = (CheckBoxPreference) findPreference(PREFERENCE_STORE_ATTACHMENTS_ON_SD_CARD);
+        mStoreAttachmentsOnSdCard.setChecked(mAccount.isStoreAttachmentOnSdCard());
+        mStoreAttachmentsOnSdCard.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue instanceof Boolean) 
+                {
+                    Boolean b = (Boolean)newValue;
+                    if (b.booleanValue()
+                        && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+                    {
+                        Toast.makeText(
+                            AccountSettings.this,
+                            R.string.account_setup_store_attachment_on_sd_card_error,
+                            Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+        });
     }
 
     @Override
@@ -378,6 +405,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        mAccount.setStoreAttachmentOnSdCard(mStoreAttachmentsOnSdCard.isChecked());
 
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
