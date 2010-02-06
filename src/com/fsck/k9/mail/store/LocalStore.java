@@ -122,7 +122,8 @@ public class LocalStore extends Store implements Serializable
             mInternalAttachmentsDir.mkdirs();
         }
 
-        if (useExternalAttachmentDir())
+        if (mAccount.isStoreAttachmentOnSdCard()
+            && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
         {
             String externalAttachmentsPath = "/sdcard" + mPath.substring("//data".length());
             mExternalAttachmentsDir = new File(externalAttachmentsPath + "_att");
