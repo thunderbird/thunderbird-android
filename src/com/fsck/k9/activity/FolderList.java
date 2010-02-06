@@ -19,12 +19,14 @@ import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import com.fsck.k9.*;
+import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.service.MailService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -368,8 +370,29 @@ public class FolderList extends K9ListActivity
 
             case KeyEvent.KEYCODE_H:
             {
-                Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(this, R.string.folder_list_help_key, Toast.LENGTH_LONG);
                 toast.show();
+                return true;
+            }
+            
+            case KeyEvent.KEYCODE_1:
+            {
+                setDisplayMode(FolderMode.FIRST_CLASS);
+                return true;
+            }
+            case KeyEvent.KEYCODE_2:
+            {
+                setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS);
+                return true;
+            }
+            case KeyEvent.KEYCODE_3:
+            {
+                setDisplayMode(FolderMode.NOT_SECOND_CLASS);
+                return true;
+            }
+            case KeyEvent.KEYCODE_4:
+            {
+                setDisplayMode(FolderMode.ALL);
                 return true;
             }
         }//switch
@@ -378,6 +401,15 @@ public class FolderList extends K9ListActivity
         return super.onKeyDown(keyCode, event);
     }//onKeyDown
 
+    private void setDisplayMode(FolderMode newMode)
+    {
+        mAccount.setFolderDisplayMode(newMode);
+        mAccount.save(Preferences.getPreferences(this));
+        MailService.actionReschedule(this, null);  // TODO: really should just refresh pushers
+        onRefresh(false);
+    }
+    
+    
     private void onRefresh(final boolean forceRemote)
     {
 
