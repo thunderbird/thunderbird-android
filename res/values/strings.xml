@@ -67,6 +67,8 @@
     <string name="remove_account_action">Remove account</string>
     <string name="clear_pending_action">Clear pending actions (danger!)</string>
     
+    
+    
     <string name="accounts_action">Accounts</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -596,12 +598,21 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     Move\u000AY - Copy\u000AG - Star\u000AO - Sort type\u000AI - Sort order\u000AQ
     - Return to Folders\u000AS - Select/deselect</string>
     
-      <string name="folder_list_help_key">1 - Display only 1st Class folders\u000A
+      <string name="folder_list_help_key">
+      1 - Display only 1st Class folders\u000A
       2 - Display 1st and 2nd Class folders\u000A
       3 - Display all except 2nd Class folders\u000A
       4 - Display all folders\u000A
       Q - Return to Accounts\u000A
       S - Edit Account Settings</string>
+      
+    <string name="folder_list_display_mode_label">Folders</string>
+    <string name="folder_list_display_mode_all">Display all folders</string>
+    <string name="folder_list_display_mode_first_class">Display only 1st Class folders</string>
+    <string name="folder_list_display_mode_first_and_second_class">Display 1st and 2nd Class folders</string>
+    <string name="folder_list_display_mode_not_second_class">Display all except 2nd Class folders</string>
+    
+      
 
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_signature__location_before_quoted_text">Before quoted messages</string>

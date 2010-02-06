@@ -7,10 +7,39 @@
 		android:icon="@drawable/ic_menu_compose"
 	/>
 	<item
-		android:id="@+id/list_folders"
-		android:title="@string/refresh_folders_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
+        android:id="@+id/display_1st_class"
+        android:title="@string/folder_list_display_mode_label"
+        android:icon="@drawable/ic_menu_refresh"
+    >
+        <menu>
+            <item
+            android:id="@+id/display_all"
+            android:title="@string/folder_list_display_mode_all"
+            android:icon="@drawable/ic_menu_clear"
+           />
+           <item
+            android:id="@+id/display_1st_class"
+            android:title="@string/folder_list_display_mode_first_class"
+            android:icon="@drawable/ic_menu_clear"
+           />
+           <item
+            android:id="@+id/display_1st_and_2nd_class"
+            android:title="@string/folder_list_display_mode_first_and_second_class"
+            android:icon="@drawable/ic_menu_clear"
+           />
+           <item
+            android:id="@+id/display_not_second_class"
+            android:title="@string/folder_list_display_mode_not_second_class"
+            android:icon="@drawable/ic_menu_clear"
+           />
+           <item
+            android:id="@+id/list_folders"
+            android:title="@string/refresh_folders_action"
+            android:icon="@drawable/ic_menu_refresh"
+         />
+        
+        </menu>
+    </item>
     <item
 		android:id="@+id/empty_trash"
         android:alphabeticShortcut="e"
@@ -38,14 +67,21 @@
 		android:title="@string/send_messages_action"
 		android:icon="@drawable/ic_menu_refresh"
 	/>
-	<item
-		android:id="@+id/compact"
-		android:title="@string/compact_action"
-		android:icon="@drawable/ic_menu_compact"
-	/>
-	<item
-		android:id="@+id/clear"
-		android:title="@string/clear_action"
-		android:icon="@drawable/ic_menu_clear"
-	/>
+	<item android:id="@+id/advanced"
+        android:title="@string/advanced">
+        <menu>
+		<item
+			android:id="@+id/compact"
+			android:title="@string/compact_action"
+			android:icon="@drawable/ic_menu_compact"
+		/>
+		<item
+			android:id="@+id/clear"
+			android:title="@string/clear_action"
+			android:icon="@drawable/ic_menu_clear"
+		/>
+		</menu>
+    </item>
+	
+	
 </menu>

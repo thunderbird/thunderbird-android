@@ -516,7 +516,26 @@ public class FolderList extends K9ListActivity
                 onClear(mAccount);
 
                 return true;
-
+            case R.id.display_1st_class:
+            {
+                setDisplayMode(FolderMode.FIRST_CLASS);
+                return true;
+            }
+            case R.id.display_1st_and_2nd_class:
+            {
+                setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS);
+                return true;
+            }
+            case R.id.display_not_second_class:
+            {
+                setDisplayMode(FolderMode.NOT_SECOND_CLASS);
+                return true;
+            }
+            case R.id.display_all:
+            {
+                setDisplayMode(FolderMode.ALL);
+                return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
