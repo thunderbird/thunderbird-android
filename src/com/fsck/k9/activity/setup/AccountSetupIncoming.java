@@ -73,7 +73,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private Button mImapFolderDrafts;
     private Button mImapFolderSent;
     private Button mImapFolderTrash;
-    private Button mImapFolderOutbox;
+    private EditText mImapFolderOutbox;
     private EditText mWebdavPathPrefixView;
     private EditText mWebdavAuthPathView;
     private EditText mWebdavMailboxPathView;
@@ -114,7 +114,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         mImapFolderDrafts = (Button)findViewById(R.id.account_imap_folder_drafts);
         mImapFolderSent = (Button)findViewById(R.id.account_imap_folder_sent);
         mImapFolderTrash = (Button)findViewById(R.id.account_imap_folder_trash);
-        mImapFolderOutbox = (Button)findViewById(R.id.account_imap_folder_outbox);
+        mImapFolderOutbox = (EditText)findViewById(R.id.account_imap_folder_outbox);
         mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
         mWebdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
@@ -123,7 +123,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         mImapFolderDrafts.setOnClickListener(this);
         mImapFolderSent.setOnClickListener(this);
         mImapFolderTrash.setOnClickListener(this);
-        mImapFolderOutbox.setOnClickListener(this);
         mNextButton.setOnClickListener(this);
 
         SpinnerOption securityTypes[] =
@@ -424,9 +423,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 case SELECT_TRASH_FOLDER:
                     mImapFolderTrash.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
                     return;
-                case SELECT_OUTBOX_FOLDER:
-                    mImapFolderOutbox.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
-                    return;
             }
             if (Intent.ACTION_EDIT.equals(getIntent().getAction()))
             {
@@ -548,9 +544,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 case R.id.account_imap_folder_trash:
                     selectImapFolder(SELECT_TRASH_FOLDER);
                     break;
-                case R.id.account_imap_folder_outbox:
-                    selectImapFolder(SELECT_OUTBOX_FOLDER);
-                    break;
             }
         }
         catch (Exception e)
@@ -572,9 +565,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 break;
             case SELECT_TRASH_FOLDER:
                 curFolder = mImapFolderTrash.getText().toString();
-                break;
-            case SELECT_OUTBOX_FOLDER:
-                curFolder = mImapFolderOutbox.getText().toString();
                 break;
             default:
                 throw new IllegalArgumentException(

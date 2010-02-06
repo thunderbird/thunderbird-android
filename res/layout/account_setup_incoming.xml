@@ -126,8 +126,13 @@
             <TextView android:layout_height="wrap_content"
                 android:text="@string/account_setup_incoming_imap_folder_outbox"
                 android:layout_width="fill_parent"></TextView>
-            <Button android:layout_height="wrap_content"
-                android:id="@+id/account_imap_folder_outbox" android:layout_width="fill_parent"></Button>
+            <EditText
+                android:id="@+id/account_imap_folder_outbox"
+                android:singleLine="true"
+                android:inputType="number"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent" />
+                
         </LinearLayout>
         <LinearLayout
             android:id="@+id/webdav_path_prefix_section"
