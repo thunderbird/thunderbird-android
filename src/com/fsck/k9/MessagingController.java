@@ -1489,21 +1489,26 @@ public class MessagingController implements Runnable
 
                 Message localMessage = localFolder.getMessage(message.getUid());
 
-                /*
-                 * Mark the message as fully downloaded if the message size is smaller than
-                 * the FETCH_BODY_SANE_SUGGESTED_SIZE, otherwise mark as only a partial
-                 * download.  This will prevent the system from downloading the same message
-                 * twice.
-                 */
-                if (message.getSize() < Store.FETCH_BODY_SANE_SUGGESTED_SIZE)
+
+                // Certain (POP3) servers give you the whole message even when you ask for only the first x Kb
+                if (!message.isSet(Flag.X_DOWNLOADED_FULL))
                 {
-                    localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                }
-                else
-                {
-                    // Set a flag indicating that the message has been partially downloaded and
-                    // is ready for view.
-                    localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true);
+                    /*
+                     * Mark the message as fully downloaded if the message size is smaller than
+                     * the FETCH_BODY_SANE_SUGGESTED_SIZE, otherwise mark as only a partial
+                     * download.  This will prevent the system from downloading the same message
+                     * twice.
+                     */
+                    if (message.getSize() < Store.FETCH_BODY_SANE_SUGGESTED_SIZE)
+                    {
+                        localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                    }
+                    else
+                    {
+                        // Set a flag indicating that the message has been partially downloaded and
+                        // is ready for view.
+                        localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true);
+                    }
                 }
             }
             else
