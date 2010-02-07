@@ -1365,7 +1365,7 @@ public class MessageView extends K9Activity
         String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
         String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
-        boolean isDownloading = message.isSet(Flag.X_DOWNLOADED_PARTIAL);
+        boolean isDownloading = !message.isSet(Flag.X_DOWNLOADED_FULL);
         mHandler.setHeaders(subjectText,
                             fromText,
                             dateText,
