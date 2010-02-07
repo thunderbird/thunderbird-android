@@ -246,7 +246,6 @@ public class K9 extends Application
      */
     public static void setServicesEnabled(Context context)
     {
-
         int acctLength = Preferences.getPreferences(context).getAccounts().length;
 
         setServicesEnabled(context, acctLength > 0, null);
@@ -270,7 +269,7 @@ public class K9 extends Application
              * If no accounts now exist but the service is still enabled we're about to disable it
              * so we'll reschedule to kill off any existing alarms.
              */
-            MailService.actionReschedule(context, wakeLockId);
+            MailService.actionReset(context, wakeLockId);
         }
         Class[] classes = { MessageCompose.class, BootReceiver.class, MailService.class };
 
@@ -297,7 +296,7 @@ public class K9 extends Application
              * And now if accounts do exist then we've just enabled the service and we want to
              * schedule alarms for the new accounts.
              */
-            MailService.actionReschedule(context, wakeLockId);
+            MailService.actionReset(context, wakeLockId);
         }
 
     }
@@ -427,14 +426,16 @@ public class K9 extends Application
         return backgroundOps;
     }
 
-    public static void setBackgroundOps(BACKGROUND_OPS backgroundOps)
+    public static boolean setBackgroundOps(BACKGROUND_OPS backgroundOps)
     {
+        BACKGROUND_OPS oldBackgroundOps = K9.backgroundOps;
         K9.backgroundOps = backgroundOps;
+        return backgroundOps != oldBackgroundOps;
     }
 
-    public static void setBackgroundOps(String nbackgroundOps)
+    public static boolean setBackgroundOps(String nbackgroundOps)
     {
-        K9.backgroundOps = BACKGROUND_OPS.valueOf(nbackgroundOps);
+        return setBackgroundOps(BACKGROUND_OPS.valueOf(nbackgroundOps));
     }
 
     public static boolean isAnimations()

@@ -13,6 +13,7 @@ import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.service.MailService;
 
 public class FolderSettings extends K9PreferenceActivity
 {
@@ -140,14 +141,24 @@ public class FolderSettings extends K9PreferenceActivity
 
     private void saveSettings()
     {
+        // We call getPushClass() because display class changes can affect push class when push class is set to inherit
+        FolderClass oldPushClass = mFolder.getPushClass();
+        FolderClass oldDisplayClass = mFolder.getDisplayClass();
         mFolder.setDisplayClass(FolderClass.valueOf(mDisplayClass.getValue()));
         mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
         mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
-
+        
+        FolderClass newPushClass = mFolder.getPushClass();
+        FolderClass newDisplayClass = mFolder.getDisplayClass();
+        
         try
         {
             mFolder.save(Preferences.getPreferences(this));
-            K9.setServicesEnabled(this);
+            if (oldPushClass != newPushClass 
+                    || (newPushClass != FolderClass.NO_CLASS && oldDisplayClass != newDisplayClass))
+            {
+                MailService.actionRestartPushers(getApplication(), null);
+            }
         }
         catch (MessagingException me)
         {

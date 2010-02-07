@@ -413,7 +413,10 @@ public class FolderList extends K9ListActivity
     {
         mAccount.setFolderDisplayMode(newMode);
         mAccount.save(Preferences.getPreferences(this));
-        MailService.actionReschedule(this, null);  // TODO: really should just refresh pushers
+        if (mAccount.getFolderPushMode() != FolderMode.NONE)
+        {
+            MailService.actionRestartPushers(this, null);
+        }
         onRefresh(false);
     }
     

@@ -40,7 +40,7 @@ public class BootReceiver extends CoreReceiver
         }
         else if (Intent.ACTION_DEVICE_STORAGE_OK.equals(intent.getAction()))
         {
-            MailService.actionReschedule(context, tmpWakeLockId);
+            MailService.actionReset(context, tmpWakeLockId);
             tmpWakeLockId = null;
         }
         else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()))
@@ -51,7 +51,7 @@ public class BootReceiver extends CoreReceiver
         }
         else if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(intent.getAction()))
         {
-            MailService.backgroundDataChanged(context, tmpWakeLockId);
+            MailService.actionRestartPushers(context, tmpWakeLockId);
             tmpWakeLockId = null;
         }
         else if (FIRE_INTENT.equals(intent.getAction()))

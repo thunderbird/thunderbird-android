@@ -20,6 +20,7 @@ import android.widget.Toast;
 public class RemoteControlService extends CoreService
 {
     private final static String RESCHEDULE_ACTION = "com.fsck.k9.service.RemoteControlService.RESCHEDULE_ACTION";
+    private final static String PUSH_RESTART_ACTION = "com.fsck.k9.service.RemoteControlService.PUSH_RESTART_ACTION";
 
     private final static String SET_ACTION = "com.fsck.k9.service.RemoteControlService.SET_ACTION";
 
@@ -48,8 +49,14 @@ public class RemoteControlService extends CoreService
         if (RESCHEDULE_ACTION.equals(intent.getAction()))
         {
             if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "RemoteControlService requesting MailService reschedule");
-            MailService.actionReschedule(this, null);
+                Log.i(K9.LOG_TAG, "RemoteControlService requesting MailService poll reschedule");
+            MailService.actionReschedulePoll(this, null);
+        }
+        if (PUSH_RESTART_ACTION.equals(intent.getAction()))
+        {
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "RemoteControlService requesting MailService push restart");
+            MailService.actionRestartPushers(this, null);
         }
         else if (RemoteControlService.SET_ACTION.equals(intent.getAction()))
         {
@@ -62,6 +69,7 @@ public class RemoteControlService extends CoreService
                     try
                     {
                         boolean needsReschedule = false;
+                        boolean needsPushRestart = false;
                         String uuid = intent.getStringExtra(K9_ACCOUNT_UUID);
                         boolean allAccounts = intent.getBooleanExtra(K9_ALL_ACCOUNTS, false);
                         if (K9.DEBUG)
@@ -105,17 +113,11 @@ public class RemoteControlService extends CoreService
                                 }
                                 if (pushClasses != null)
                                 {
-                                    FolderMode newClasses = FolderMode.valueOf(pushClasses);
-                                    if (newClasses.equals(account.getFolderPushMode()) == false)
-                                    {
-                                        account.setFolderPushMode(newClasses);
-                                        needsReschedule = true;
-                                    }
-                                   
+                                    needsPushRestart |= account.setFolderPushMode(FolderMode.valueOf(pushClasses));
                                 }
                                 if (pollClasses != null)
                                 {
-                                    account.setFolderSyncMode(FolderMode.valueOf(pollClasses));
+                                    needsReschedule |= account.setFolderSyncMode(FolderMode.valueOf(pollClasses));
                                 }
                                 if (pollFrequency != null)
                                 {
@@ -125,11 +127,7 @@ public class RemoteControlService extends CoreService
                                         if (allowedFrequency.equals(pollFrequency))
                                         {
                                             Integer newInterval = Integer.parseInt(allowedFrequency);
-                                            if (newInterval.equals(account.getAutomaticCheckIntervalMinutes()) == false)
-                                            {
-                                                account.setAutomaticCheckIntervalMinutes(newInterval);
-                                                needsReschedule = true;
-                                            }
+                                            needsReschedule |= account.setAutomaticCheckIntervalMinutes(newInterval);
                                         }
                                     }
                                 }
@@ -145,11 +143,7 @@ public class RemoteControlService extends CoreService
                                 || K9RemoteControl.K9_BACKGROUND_OPERATIONS_WHEN_CHECKED.equals(backgroundOps))
                         {
                             BACKGROUND_OPS newBackgroundOps = BACKGROUND_OPS.valueOf(backgroundOps);
-                            if (K9.getBackgroundOps().equals(newBackgroundOps) == false)
-                            {
-                                K9.setBackgroundOps(newBackgroundOps);
-                                needsReschedule = true;
-                            }
+                            needsPushRestart |= K9.setBackgroundOps(newBackgroundOps);
                         }
 
                         String theme = intent.getStringExtra(K9_THEME);
@@ -169,6 +163,14 @@ public class RemoteControlService extends CoreService
                             Intent i = new Intent();
                             i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.RemoteControlService");
                             i.setAction(RESCHEDULE_ACTION);
+                            long nextTime = System.currentTimeMillis() + 10000;
+                            BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
+                        }
+                        if (needsPushRestart)
+                        {
+                            Intent i = new Intent();
+                            i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.RemoteControlService");
+                            i.setAction(PUSH_RESTART_ACTION);
                             long nextTime = System.currentTimeMillis() + 10000;
                             BootReceiver.scheduleIntent(RemoteControlService.this, nextTime, i);
                         }

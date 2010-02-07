@@ -142,7 +142,7 @@ public class PollService extends CoreService
         {
             MessagingController controller = MessagingController.getInstance(getApplication());
             controller.setCheckMailListener(null);
-            MailService.rescheduleCheck(PollService.this, null);
+            MailService.actionReschedulePoll(PollService.this, null);
             wakeLockRelease();
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "PollService stopping with startId = " + startId);

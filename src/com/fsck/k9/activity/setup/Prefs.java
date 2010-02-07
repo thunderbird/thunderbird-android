@@ -148,8 +148,7 @@ public class Prefs extends K9PreferenceActivity
         K9.setK9Theme(mTheme.getValue().equals("dark") ? android.R.style.Theme : android.R.style.Theme_Light);
         K9.DEBUG = mDebugLogging.isChecked();
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
-        String newBackgroundOps = mBackgroundOps.getValue();
-        K9.setBackgroundOps(newBackgroundOps);
+        boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
 
         K9.setAnimations(mAnimations.isChecked());
         K9.setMessageListStars(mStars.isChecked());
@@ -161,9 +160,9 @@ public class Prefs extends K9PreferenceActivity
         K9.save(editor);
         DateFormatter.setDateFormat(editor, mDateFormat.getValue());
         editor.commit();
-        if (newBackgroundOps.equals(initBackgroundOps) == false)
+        if (needsRefresh)
         {
-            MailService.backgroundDataChanged(this, null);
+            MailService.actionRestartPushers(this, null);
         }
     }
 

@@ -732,9 +732,21 @@ public class Account implements Serializable
     /**
      * @param automaticCheckIntervalMinutes or -1 for never.
      */
-    public void setAutomaticCheckIntervalMinutes(int automaticCheckIntervalMinutes)
+    public boolean setAutomaticCheckIntervalMinutes(int automaticCheckIntervalMinutes)
     {
+        int oldInterval = this.mAutomaticCheckIntervalMinutes;
+        int newInterval = automaticCheckIntervalMinutes;
         this.mAutomaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
+        
+        if (oldInterval == -1 && newInterval != -1)
+        {
+            return true;
+        }
+        if (newInterval < oldInterval)
+        {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -863,9 +875,11 @@ public class Account implements Serializable
         return mFolderDisplayMode;
     }
 
-    public void setFolderDisplayMode(FolderMode displayMode)
+    public boolean setFolderDisplayMode(FolderMode displayMode)
     {
+        FolderMode oldDisplayMode = mFolderDisplayMode;
         mFolderDisplayMode = displayMode;
+        return oldDisplayMode != displayMode;
     }
 
     public FolderMode getFolderSyncMode()
@@ -873,9 +887,20 @@ public class Account implements Serializable
         return mFolderSyncMode;
     }
 
-    public void setFolderSyncMode(FolderMode syncMode)
+    public boolean setFolderSyncMode(FolderMode syncMode)
     {
+        FolderMode oldSyncMode = mFolderSyncMode;
         mFolderSyncMode = syncMode;
+        
+        if (syncMode == FolderMode.NONE && oldSyncMode != FolderMode.NONE)
+        {
+            return true;
+        }
+        if (syncMode != FolderMode.NONE && oldSyncMode == FolderMode.NONE)
+        {
+            return true;
+        }
+        return false;
     }
 
     public FolderMode getFolderPushMode()
@@ -883,9 +908,12 @@ public class Account implements Serializable
         return mFolderPushMode;
     }
 
-    public void setFolderPushMode(FolderMode syncMode)
+    public boolean setFolderPushMode(FolderMode pushMode)
     {
-        mFolderPushMode = syncMode;
+        FolderMode oldPushMode = mFolderPushMode;
+        
+        mFolderPushMode = pushMode;
+        return pushMode != oldPushMode;
     }
 
     public boolean isShowOngoing()
@@ -953,9 +981,11 @@ public class Account implements Serializable
         return mMaxPushFolders;
     }
 
-    public void setMaxPushFolders(int maxPushFolders)
+    public boolean setMaxPushFolders(int maxPushFolders)
     {
+        int oldMaxPushFolders = mMaxPushFolders;
         mMaxPushFolders = maxPushFolders;
+        return oldMaxPushFolders != maxPushFolders;
     }
 
     public boolean isRing()

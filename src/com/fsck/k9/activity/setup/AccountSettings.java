@@ -12,10 +12,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 import com.fsck.k9.*;
+import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.service.MailService;
 
 public class AccountSettings extends K9PreferenceActivity
 {
@@ -72,6 +74,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mExpungePolicy;
     private Preference mAutoExpandFolder;
     private CheckBoxPreference mStoreAttachmentsOnSdCard;
+    private boolean mIncomingChanged = false;
 
 
     public static void actionSettings(Context context, Account account)
@@ -87,7 +90,7 @@ public class AccountSettings extends K9PreferenceActivity
         super.onCreate(savedInstanceState);
 
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
-	mAccount.refresh(Preferences.getPreferences(this));
+        mAccount.refresh(Preferences.getPreferences(this));
 
         boolean isPushCapable = false;
         boolean isExpungeCapable = false;
@@ -341,6 +344,7 @@ public class AccountSettings extends K9PreferenceActivity
         {
             public boolean onPreferenceClick(Preference preference)
             {
+                mIncomingChanged = true;
                 onIncomingSettings();
                 return true;
             }
@@ -392,22 +396,29 @@ public class AccountSettings extends K9PreferenceActivity
         {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);
         }
+
         mAccount.setDescription(mAccountDescription.getText());
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
-        mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
-        mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
-        mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
-        mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
-        mAccount.setMaxPushFolders(Integer.parseInt(mPushLimit.getValue()));
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
         mAccount.setStoreAttachmentOnSdCard(mStoreAttachmentsOnSdCard.isChecked());
-
+        
+        boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
+        needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
+        
+        boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
+        if (mAccount.getFolderPushMode() != FolderMode.NONE)
+        {
+            needsPushRestart |= mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
+            needsPushRestart |= mAccount.setMaxPushFolders(Integer.parseInt(mPushLimit.getValue()));
+            needsPushRestart |= mIncomingChanged;  
+        }
+        
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
         if (newRingtone != null)
@@ -426,7 +437,18 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
         mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
         mAccount.save(Preferences.getPreferences(this));
-        K9.setServicesEnabled(this);
+        if (needsRefresh && needsPushRestart)
+        {
+            MailService.actionReset(this, null);
+        }
+        else if (needsRefresh)
+        {
+            MailService.actionReschedulePoll(this, null);
+        }
+        else if (needsPushRestart)
+        {
+            MailService.actionRestartPushers(this, null);
+        }
         // TODO: refresh folder list here
     }
 

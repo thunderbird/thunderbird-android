@@ -1,6 +1,9 @@
 
 package com.fsck.k9.service;
 
+import java.util.Collection;
+import java.util.Date;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,40 +13,36 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.os.IBinder;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
-import android.util.Config;
 import android.util.Log;
-import com.fsck.k9.*;
-import com.fsck.k9.mail.Pusher;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.MessagingController;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.mail.Pusher;
 
 /**
  */
 public class MailService extends CoreService
 {
     private static final String ACTION_CHECK_MAIL = "com.fsck.k9.intent.action.MAIL_SERVICE_WAKEUP";
-    private static final String ACTION_RESCHEDULE = "com.fsck.k9.intent.action.MAIL_SERVICE_RESCHEDULE";
-    private static final String ACTION_RESCHEDULE_CHECK = "com.fsck.k9.intent.action.MAIL_SERVICE_RESCHEDULE_CHECK";
+    private static final String ACTION_RESET = "com.fsck.k9.intent.action.MAIL_SERVICE_RESET";
+    private static final String ACTION_RESCHEDULE_POLL = "com.fsck.k9.intent.action.MAIL_SERVICE_RESCHEDULE_POLL";
     private static final String ACTION_CANCEL = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL";
     private static final String ACTION_REFRESH_PUSHERS = "com.fsck.k9.intent.action.MAIL_SERVICE_REFRESH_PUSHERS";
+    private static final String ACTION_RESTART_PUSHERS = "com.fsck.k9.intent.action.MAIL_SERVICE_RESTART_PUSHERS";
     private static final String CONNECTIVITY_CHANGE = "com.fsck.k9.intent.action.MAIL_SERVICE_CONNECTIVITY_CHANGE";
-    private static final String BACKGROUND_DATA_CHANGED = "com.fsck.k9.intent.action.MAIL_SERVICE_BACKGROUND_DATA_CHANGED";
     private static final String CANCEL_CONNECTIVITY_NOTICE = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
 
     private static final String HAS_CONNECTIVITY = "com.fsck.k9.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
 
-
-
-    public static void actionReschedule(Context context, Integer wakeLockId)
+    public static void actionReset(Context context, Integer wakeLockId)
     {
         Intent i = new Intent();
         i.setClass(context, MailService.class);
-        i.setAction(MailService.ACTION_RESCHEDULE);
+        i.setAction(MailService.ACTION_RESET);
         addWakeLockId(i, wakeLockId);
         if (wakeLockId == null)
         {
@@ -51,13 +50,30 @@ public class MailService extends CoreService
         }
         context.startService(i);
     }
-
-    public static void rescheduleCheck(Context context, Integer wakeLockId)
+    
+    public static void actionRestartPushers(Context context, Integer wakeLockId)
     {
         Intent i = new Intent();
         i.setClass(context, MailService.class);
-        i.setAction(MailService.ACTION_RESCHEDULE_CHECK);
+        i.setAction(MailService.ACTION_RESTART_PUSHERS);
         addWakeLockId(i, wakeLockId);
+        if (wakeLockId == null)
+        {
+            addWakeLock(context, i);
+        }
+        context.startService(i);
+    }
+    
+    public static void actionReschedulePoll(Context context, Integer wakeLockId)
+    {
+        Intent i = new Intent();
+        i.setClass(context, MailService.class);
+        i.setAction(MailService.ACTION_RESCHEDULE_POLL);
+        addWakeLockId(i, wakeLockId);
+        if (wakeLockId == null)
+        {
+            addWakeLock(context, i);
+        }
         context.startService(i);
     }
 
@@ -76,15 +92,6 @@ public class MailService extends CoreService
         i.setClass(context, MailService.class);
         i.setAction(MailService.CONNECTIVITY_CHANGE);
         i.putExtra(HAS_CONNECTIVITY, hasConnectivity);
-        addWakeLockId(i, wakeLockId);
-        context.startService(i);
-    }
-
-    public static void backgroundDataChanged(Context context, Integer wakeLockId)
-    {
-        Intent i = new Intent();
-        i.setClass(context, MailService.class);
-        i.setAction(MailService.BACKGROUND_DATA_CHANGED);
         addWakeLockId(i, wakeLockId);
         context.startService(i);
     }
@@ -149,7 +156,7 @@ public class MailService extends CoreService
 
                 cancel();
             }
-            else if (ACTION_RESCHEDULE.equals(intent.getAction()))
+            else if (ACTION_RESET.equals(intent.getAction()))
             {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: reschedule");
@@ -158,11 +165,18 @@ public class MailService extends CoreService
                 startIdObj = null;
 
             }
-            else if (ACTION_RESCHEDULE_CHECK.equals(intent.getAction()))
+            else if (ACTION_RESTART_PUSHERS.equals(intent.getAction()))
             {
                 if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "***** MailService *****: reschedule check");
+                    Log.v(K9.LOG_TAG, "***** MailService *****: restarting pushers");
+                reschedulePushers(hasConnectivity, doBackground, startIdObj);
+                startIdObj = null;
 
+            }
+            else if (ACTION_RESCHEDULE_POLL.equals(intent.getAction()))
+            {
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "***** MailService *****: rescheduling poll");
                 reschedule(startIdObj);
                 startIdObj = null;
 
@@ -176,8 +190,7 @@ public class MailService extends CoreService
                     startIdObj = null;
                 }
             }
-            else if (CONNECTIVITY_CHANGE.equals(intent.getAction()) ||
-                     BACKGROUND_DATA_CHANGED.equals(intent.getAction()))
+            else if (CONNECTIVITY_CHANGE.equals(intent.getAction()) )
             {
                 notifyConnectionStatus(hasConnectivity);
                 rescheduleAll(hasConnectivity, doBackground, startIdObj);
@@ -206,12 +219,9 @@ public class MailService extends CoreService
         if (hasConnectivity && doBackground)
         {
             reschedule(null);
-            reschedulePushers(startId);
         }
-        else
-        {
-            stopPushers(startId);
-        }
+        reschedulePushers(hasConnectivity, doBackground, startId);
+        
     }
 
     private void notifyConnectionStatus(boolean hasConnectivity)
@@ -273,6 +283,7 @@ public class MailService extends CoreService
                 for (Account account : Preferences.getPreferences(MailService.this).getAccounts())
                 {
                     if (account.getAutomaticCheckIntervalMinutes() != -1
+                            && account.getFolderSyncMode() != FolderMode.NONE
                             && (account.getAutomaticCheckIntervalMinutes() < shortestInterval || shortestInterval == -1))
                     {
                         shortestInterval = account.getAutomaticCheckIntervalMinutes();
@@ -282,7 +293,7 @@ public class MailService extends CoreService
                 if (shortestInterval == -1)
                 {
                     if (K9.DEBUG)
-                        Log.v(K9.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
+                        Log.i(K9.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
                     cancel();
                 }
                 else
@@ -325,7 +336,7 @@ public class MailService extends CoreService
         , K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT, startId);
     }
 
-    private void reschedulePushers(final Integer startId)
+    private void reschedulePushers(final boolean hasConnectivity, final boolean doBackground, final Integer startId)
     {
         execute(getApplication(), new Runnable()
         {
@@ -335,8 +346,11 @@ public class MailService extends CoreService
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "Rescheduling pushers");
                 stopPushers(null);
-                setupPushers(null);
-                schedulePushers(startId);
+                if (hasConnectivity && doBackground)
+                {
+                    setupPushers(null);
+                    schedulePushers(startId);
+                }
 
             }
         }
