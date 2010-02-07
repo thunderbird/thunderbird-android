@@ -87,6 +87,7 @@ public class AccountSettings extends K9PreferenceActivity
         super.onCreate(savedInstanceState);
 
         mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+	mAccount.refresh(Preferences.getPreferences(this));
 
         boolean isPushCapable = false;
         boolean isExpungeCapable = false;
