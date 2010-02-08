@@ -329,7 +329,6 @@ public class Account implements Serializable
         }
         while (gotOne);
 
-        //FIXME: This can never be true?
         if (newIdentities.size() == 0)
         {
             String name = prefs.getString(mUuid + ".name", null);
