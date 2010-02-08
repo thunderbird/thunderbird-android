@@ -623,6 +623,7 @@ public class MessageView extends K9Activity
     {
         mMessageUid = uid;
         mMessageContentView.getSettings().setBlockNetworkImage(true);
+        K9.setBlockNetworkLoads(mMessageContentView.getSettings(), true);
 
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
@@ -1028,6 +1029,7 @@ public class MessageView extends K9Activity
 
     private void onShowPictures()
     {
+        K9.setBlockNetworkLoads(mMessageContentView.getSettings(), false);
         mMessageContentView.getSettings().setBlockNetworkImage(false);
         mShowPicturesSection.setVisibility(View.GONE);
     }

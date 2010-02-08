@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
+import android.webkit.WebSettings;
+
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -18,7 +20,7 @@ import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 
 import java.io.File;
-import java.util.UUID;
+import java.lang.reflect.Method;
 
 public class K9 extends Application
 {
@@ -69,6 +71,14 @@ public class K9 extends Application
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
     private static boolean mMessageListTouchable = false;
+
+    /**
+     * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
+     * bodies from loading external resources over the network. Unfortunately this method
+     * isn't exposed via the official Android API. That's why we use reflection to be able
+     * to call the method. 
+     */
+    private static final Method mGetBlockNetworkLoads = getMethod(WebSettings.class, "setBlockNetworkLoads");
 
 
     /**
@@ -476,12 +486,40 @@ public class K9 extends Application
     {
         mMessageListCheckboxes = checkboxes;
     }
+
+
+    private static Method getMethod(Class classObject, String methodName)
+    {
+        try
+        {
+            Method method = classObject.getMethod(methodName, boolean.class);
+            return method;
+        }
+        catch (NoSuchMethodException e)
+        {
+            Log.i(K9.LOG_TAG, "Can't get method " +
+                    classObject.toString() + "." + methodName);
+        }
+        catch (Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Error while using reflection to get method " +
+                    classObject.toString() + "." + methodName, e);
+        }
+        return null;
+    }
+
+    public static void setBlockNetworkLoads(WebSettings webSettings, boolean state)
+    {
+        if (mGetBlockNetworkLoads != null)
+        {
+            try
+            {
+                mGetBlockNetworkLoads.invoke(webSettings, state);
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Error on invoking WebSettings.setBlockNetworkLoads()", e);
+            }
+        }
+    }
 }
-
-
-
-
-
-
-
-
