@@ -540,6 +540,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="edit_identity_signature_label">Signature</string>
     <string name="edit_identity_signature_hint">(Optional)</string>
     
+    <string name="account_settings_signature_use_label">Use Signature</string>
     <string name="account_settings_signature_label">Signature</string>
     <string name="account_settings_signature_summary">Append a signature to every message you send</string>
     

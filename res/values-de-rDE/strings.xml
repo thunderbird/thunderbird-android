@@ -506,6 +506,7 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f√
     <string name="edit_identity_signature_label">Signatur</string>
     <string name="edit_identity_signature_hint">(Optional)</string>
 
+    <string name="account_settings_signature_use_label">Signatur verwenden</string>
     <string name="account_settings_signature_label">Signatur</string>
     <string name="account_settings_signature_summary">Signatur an jede Nachricht anf√ºgen</string>
     

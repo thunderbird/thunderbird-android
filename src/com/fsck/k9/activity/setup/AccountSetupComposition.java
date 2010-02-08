@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9Activity;
@@ -22,9 +27,10 @@ public class AccountSetupComposition extends K9Activity
     private EditText mAccountEmail;
     private EditText mAccountAlwaysBcc;
     private EditText mAccountName;
+    private CheckBox mAccountSignatureUse;
     private RadioButton mAccountSignatureBeforeLocation;
     private RadioButton mAccountSignatureAfterLocation;
-
+    private LinearLayout mAccountSignatureLayout;
 
     public static void actionEditCompositionSettings(Activity context, Account account)
     {
@@ -62,14 +68,46 @@ public class AccountSetupComposition extends K9Activity
         mAccountAlwaysBcc = (EditText)findViewById(R.id.account_always_bcc);
         mAccountAlwaysBcc.setText(mAccount.getAlwaysBcc());
 
+    	mAccountSignatureLayout = (LinearLayout)findViewById(R.id.account_signature_layout);
+
+    	mAccountSignatureUse = (CheckBox)findViewById(R.id.account_signature_use);
+        boolean useSignature = mAccount.getSignatureUse();
+        mAccountSignatureUse.setChecked(useSignature);
+        mAccountSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if (isChecked)
+                {
+    				mAccountSignatureLayout.setVisibility(View.VISIBLE);
+    	            mAccountSignature.setText(mAccount.getSignature());
+    	            boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
+    	            mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
+    	            mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
+                }
+                else
+                {
+    				mAccountSignatureLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
         mAccountSignature = (EditText)findViewById(R.id.account_signature);
-        mAccountSignature.setText(mAccount.getSignature());
 
         mAccountSignatureBeforeLocation = (RadioButton)findViewById(R.id.account_signature_location_before_quoted_text);
         mAccountSignatureAfterLocation = (RadioButton)findViewById(R.id.account_signature_location_after_quoted_text);
-        boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
-        mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
-        mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
+
+        if (useSignature)
+        {
+            mAccountSignature.setText(mAccount.getSignature());
+
+            boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
+            mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
+            mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
+        }
+        else
+        {
+        	mAccountSignatureLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -84,9 +122,13 @@ public class AccountSetupComposition extends K9Activity
         mAccount.setEmail(mAccountEmail.getText().toString());
         mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
         mAccount.setName(mAccountName.getText().toString());
-        mAccount.setSignature(mAccountSignature.getText().toString());
-        boolean isSignatureBeforeQuotedText = mAccountSignatureBeforeLocation.isChecked();
-        mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
+        mAccount.setSignatureUse(mAccountSignatureUse.isChecked());
+        if (mAccountSignatureUse.isChecked())
+        {
+        	mAccount.setSignature(mAccountSignature.getText().toString());
+        	boolean isSignatureBeforeQuotedText = mAccountSignatureBeforeLocation.isChecked();
+        	mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
+        }
 
         mAccount.save(Preferences.getPreferences(this));
     }

@@ -48,38 +48,50 @@
             android:inputType="textEmailAddress"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
-        <TextView
-            android:text="@string/account_settings_signature_label"
-            android:layout_height="wrap_content"
+        <CheckBox
+            android:id="@+id/account_signature_use"
             android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" />
-        <EditText
-            android:id="@+id/account_signature"
-            android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
-        <TextView
-            android:text="@string/account_settings_signature__location_label"
-            android:layout_height="wrap_content"
+            android:text="@string/account_settings_signature_use_label" />
+
+        <LinearLayout
+            android:id="@+id/account_signature_layout"
             android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" />
-        <RadioGroup
-            android:id="@+id/account_signature_location"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:orientation="vertical" >
-            <RadioButton
-                android:id="@+id/account_signature_location_before_quoted_text"
-                android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <TextView
+                android:text="@string/account_settings_signature_label"
                 android:layout_height="wrap_content"
-                android:text="@string/account_settings_signature__location_before_quoted_text" />
-            <RadioButton
-                android:id="@+id/account_signature_location_after_quoted_text"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary" />
+            <EditText
+                android:id="@+id/account_signature"
+                android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:layout_height="wrap_content"
-                android:text="@string/account_settings_signature__location_after_quoted_text" />
-        </RadioGroup>
+                android:layout_width="fill_parent" />
+            <TextView
+                android:text="@string/account_settings_signature__location_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary" />
+            <RadioGroup
+                android:id="@+id/account_signature_location"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical" >
+                <RadioButton
+                    android:id="@+id/account_signature_location_before_quoted_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_signature__location_before_quoted_text" />
+                <RadioButton
+                    android:id="@+id/account_signature_location_after_quoted_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_signature__location_after_quoted_text" />
+            </RadioGroup>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

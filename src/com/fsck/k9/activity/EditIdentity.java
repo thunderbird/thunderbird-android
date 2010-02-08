@@ -2,7 +2,12 @@ package com.fsck.k9.activity;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.K9Activity;
 import com.fsck.k9.Preferences;
@@ -21,7 +26,9 @@ public class EditIdentity extends K9Activity
     private Account.Identity mIdentity;
     private int mIdentityIndex;
     private EditText mDescriptionView;
+    private CheckBox mSignatureUse;
     private EditText mSignatureView;
+    private LinearLayout mSignatureLayout;
     private EditText mEmailView;
 //  private EditText mAlwaysBccView;
     private EditText mNameView;
@@ -63,8 +70,33 @@ public class EditIdentity extends K9Activity
 //      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
 //      mAccountAlwaysBcc.setText(mIdentity.getAlwaysBcc());
 
+        mSignatureLayout = (LinearLayout)findViewById(R.id.signature_layout);
+        mSignatureUse = (CheckBox)findViewById(R.id.signature_use);
         mSignatureView = (EditText)findViewById(R.id.signature);
-        mSignatureView.setText(mIdentity.getSignature());
+        mSignatureUse.setChecked(mIdentity.getSignatureUse());
+        mSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if (isChecked)
+                {
+                    mSignatureLayout.setVisibility(View.VISIBLE);
+                    mSignatureView.setText(mIdentity.getSignature());
+                }
+                else
+                {
+                    mSignatureLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        if (mSignatureUse.isChecked())
+        {
+            mSignatureView.setText(mIdentity.getSignature());
+        }
+        else
+        {
+            mSignatureLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -80,6 +112,7 @@ public class EditIdentity extends K9Activity
         mIdentity.setEmail(mEmailView.getText().toString());
         //      mIdentity.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
         mIdentity.setName(mNameView.getText().toString());
+        mIdentity.setSignatureUse(mSignatureUse.isChecked());
         mIdentity.setSignature(mSignatureView.getText().toString());
 
         List<Account.Identity> identities = mAccount.getIdentities();

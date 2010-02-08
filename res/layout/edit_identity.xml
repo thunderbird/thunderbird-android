@@ -62,18 +62,28 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
             -->
-        <TextView
-            android:text="@string/edit_identity_signature_label"
-            android:layout_height="wrap_content"
+        <CheckBox
+            android:id="@+id/signature_use"
             android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" />
-        <EditText
-            android:id="@+id/signature"
-            android:singleLine="false"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" 
-            android:hint="@string/edit_identity_signature_hint"
-            />
+            android:text="@string/account_settings_signature_use_label" />
+        <LinearLayout
+            android:id="@+id/signature_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+	        <TextView
+	            android:text="@string/edit_identity_signature_label"
+	            android:layout_height="wrap_content"
+	            android:layout_width="fill_parent"
+	            android:textAppearance="?android:attr/textAppearanceSmall"
+	            android:textColor="?android:attr/textColorPrimary" />
+	        <EditText
+	            android:id="@+id/signature"
+	            android:singleLine="false"
+	            android:layout_height="wrap_content"
+	            android:layout_width="fill_parent" 
+	            android:hint="@string/edit_identity_signature_hint"/>
+    	</LinearLayout>
     </LinearLayout>
 </ScrollView>

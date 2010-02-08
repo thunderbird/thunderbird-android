@@ -494,6 +494,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         mSignatureView.addTextChangedListener(sigwatcher);
 
+        if (!mIdentity.getSignatureUse())
+        {
+            mSignatureView.setVisibility(View.GONE);
+        }
+
         if (!mSourceMessageProcessed)
         {
             updateFrom();
@@ -740,11 +745,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private String appendSignature(String text)
     {
-        String signature= mSignatureView.getText().toString();
-
-        if (signature != null && ! signature.contentEquals(""))
+        if (mIdentity.getSignatureUse())
         {
-            text += "\n" + signature;
+            String signature = mSignatureView.getText().toString();
+
+            if (signature != null && !signature.contentEquals(""))
+            {
+                text += "\n" + signature;
+            }
         }
 
         return text;
@@ -1037,7 +1045,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void updateSignature()
     {
-        mSignatureView.setText(mIdentity.getSignature());
+        if (mIdentity.getSignatureUse())
+        {
+            mSignatureView.setText(mIdentity.getSignature());
+            mSignatureView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mSignatureView.setVisibility(View.GONE);
+        }
     }
 
     public void onClick(View view)

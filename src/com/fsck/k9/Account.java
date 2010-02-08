@@ -114,6 +114,7 @@ public class Account implements Serializable
         identities = new ArrayList<Identity>();
 
         Identity identity = new Identity();
+        identity.setSignatureUse(true);
         identity.setSignature(context.getString(R.string.default_signature));
         identity.setDescription(context.getString(R.string.default_identity_description));
         identities.add(identity);
@@ -125,6 +126,8 @@ public class Account implements Serializable
         String mName;
         String mEmail;
         String mSignature;
+        boolean mSignatureUse;
+
         public String getName()
         {
             return mName;
@@ -140,6 +143,14 @@ public class Account implements Serializable
         public void setEmail(String email)
         {
             mEmail = email;
+        }
+        public boolean getSignatureUse()
+        {
+            return mSignatureUse;
+        }
+        public void setSignatureUse(boolean signatureUse)
+        {
+            mSignatureUse = signatureUse;
         }
         public String getSignature()
         {
@@ -300,6 +311,7 @@ public class Account implements Serializable
             gotOne = false;
             String name = prefs.getString(mUuid + ".name." + ident, null);
             String email = prefs.getString(mUuid + ".email." + ident, null);
+            boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse." + ident, true);
             String signature = prefs.getString(mUuid + ".signature." + ident, null);
             String description = prefs.getString(mUuid + ".description." + ident, null);
             if (email != null)
@@ -307,6 +319,7 @@ public class Account implements Serializable
                 Identity identity = new Identity();
                 identity.setName(name);
                 identity.setEmail(email);
+                identity.setSignatureUse(signatureUse);
                 identity.setSignature(signature);
                 identity.setDescription(description);
                 newIdentities.add(identity);
@@ -316,14 +329,17 @@ public class Account implements Serializable
         }
         while (gotOne);
 
+        //FIXME: This can never be true?
         if (newIdentities.size() == 0)
         {
             String name = prefs.getString(mUuid + ".name", null);
             String email = prefs.getString(mUuid + ".email", null);
+            boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse", true);
             String signature = prefs.getString(mUuid + ".signature", null);
             Identity identity = new Identity();
             identity.setName(name);
             identity.setEmail(email);
+            identity.setSignatureUse(signatureUse);
             identity.setSignature(signature);
             identity.setDescription(email);
             newIdentities.add(identity);
@@ -344,6 +360,7 @@ public class Account implements Serializable
             {
                 editor.remove(mUuid + ".name." + ident);
                 editor.remove(mUuid + ".email." + ident);
+                editor.remove(mUuid + ".signatureUse." + ident);
                 editor.remove(mUuid + ".signature." + ident);
                 editor.remove(mUuid + ".description." + ident);
                 gotOne = true;
@@ -362,6 +379,7 @@ public class Account implements Serializable
         {
             editor.putString(mUuid + ".name." + ident, identity.getName());
             editor.putString(mUuid + ".email." + ident, identity.getEmail());
+            editor.putBoolean(mUuid + ".signatureUse." + ident, identity.getSignatureUse());
             editor.putString(mUuid + ".signature." + ident, identity.getSignature());
             editor.putString(mUuid + ".description." + ident, identity.getDescription());
             ident++;
@@ -421,6 +439,16 @@ public class Account implements Serializable
     public void setName(String name)
     {
         identities.get(0).setName(name);
+    }
+
+    public boolean getSignatureUse()
+    {
+        return identities.get(0).getSignatureUse();
+    }
+
+    public void setSignatureUse(boolean signatureUse)
+    {
+        identities.get(0).setSignatureUse(signatureUse);
     }
 
     public String getSignature()

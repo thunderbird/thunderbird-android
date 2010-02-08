@@ -134,6 +134,9 @@ public class AccountSetupBasics extends K9Activity
         boolean valid = Utility.requiredFieldValid(mEmailView)
                         && Utility.requiredFieldValid(mPasswordView)
                         && mEmailValidator.isValid(email);
+        
+        //FIXME: "foo@bar .com" will validate
+        
         /*&& email.contains("@"); */ // Not sure if this is a good idea or not
         mNextButton.setEnabled(valid);
         mManualSetupButton.setEnabled(valid);
