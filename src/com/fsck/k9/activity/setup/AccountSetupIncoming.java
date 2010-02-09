@@ -555,6 +555,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private void selectImapFolder(int activityCode)
     {
         String curFolder = null;
+        boolean showFolderNone = false;
         switch (activityCode)
         {
             case SELECT_DRAFT_FOLDER:
@@ -562,9 +563,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 break;
             case SELECT_SENT_FOLDER:
                 curFolder = mImapFolderSent.getText().toString();
+                showFolderNone = true;
                 break;
             case SELECT_TRASH_FOLDER:
                 curFolder = mImapFolderTrash.getText().toString();
+                showFolderNone = true;
                 break;
             default:
                 throw new IllegalArgumentException(
@@ -573,7 +576,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
         Intent selectIntent = new Intent(this, ChooseFolder.class);
         String uri = mAccount.getStoreUri();
-        if (uri.startsWith("imap"))
+        if (showFolderNone && uri.startsWith("imap"))
         {
             selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_FOLDER_NONE, "yes");
         }

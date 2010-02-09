@@ -3140,9 +3140,6 @@ public class MessagingController implements Runnable
             fp.add(FetchProfile.Item.ENVELOPE);
             fp.add(FetchProfile.Item.BODY);
 
-            LocalFolder localSentFolder =
-                (LocalFolder) localStore.getFolder(
-                    account.getSentFolderName());
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + ((LocalFolder)localFolder).getId() + ") for messages to send");
 
@@ -3193,26 +3190,39 @@ public class MessagingController implements Runnable
                         {
                             l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
                         }
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
-
-                        localFolder.moveMessages(
-                            new Message[] { message },
-                            localSentFolder);
-
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
-
-                        PendingCommand command = new PendingCommand();
-                        command.command = PENDING_COMMAND_APPEND;
-                        command.arguments =
-                            new String[]
+                        if (K9.FOLDER_NONE.equals(account.getSentFolderName()))
                         {
-                            localSentFolder.getName(),
-                            message.getUid()
-                        };
-                        queuePendingCommand(account, command);
-                        processPendingCommands(account);
+                            if (K9.DEBUG)
+                                Log.i(K9.LOG_TAG, "Sent folder set to " + K9.FOLDER_NONE + ", deleting sent message");
+                            message.setFlag(Flag.DELETED, true);
+                        }
+                        else
+                        {
+                            LocalFolder localSentFolder =
+                                (LocalFolder) localStore.getFolder(
+                                    account.getSentFolderName());
+                            if (K9.DEBUG)
+                                Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+    
+                            localFolder.moveMessages(
+                                new Message[] { message },
+                                localSentFolder);
+    
+                            if (K9.DEBUG)
+                                Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
+    
+                            PendingCommand command = new PendingCommand();
+                            command.command = PENDING_COMMAND_APPEND;
+                            command.arguments =
+                                new String[]
+                            {
+                                localSentFolder.getName(),
+                                message.getUid()
+                            };
+                            queuePendingCommand(account, command);
+                            processPendingCommands(account);
+                        }
+                        
                     }
                     catch (Exception e)
                     {
@@ -4421,7 +4431,7 @@ public class MessagingController implements Runnable
                 if (folder.getName().equals(account.getErrorFolderName())
                         || folder.getName().equals(account.getOutboxFolderName()))
                 {
-                    if (K9.DEBUG)
+                    if (K9.DEBUG && false)
                         Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
                               " which should never be pushed");
 
@@ -4436,7 +4446,7 @@ public class MessagingController implements Runnable
                 if (modeMismatch(aDisplayMode, fDisplayClass))
                 {
                     // Never push a folder that isn't displayed
-                    if (K9.DEBUG)
+                    if (K9.DEBUG && false)
                         Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
                               " which is in display class " + fDisplayClass + " while account is in display mode " + aDisplayMode);
 
@@ -4446,7 +4456,7 @@ public class MessagingController implements Runnable
                 if (modeMismatch(aPushMode, fPushClass))
                 {
                     // Do not push folders in the wrong class
-                    if (K9.DEBUG)
+                    if (K9.DEBUG && false)
                         Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
                               " which is in push mode " + fPushClass + " while account is in push mode " + aPushMode);
 
