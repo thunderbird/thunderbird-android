@@ -748,8 +748,6 @@ public class MessageList
     {
         mAdapter.removeMessage(holder);
         mController.deleteMessages(holder.account, holder.message.getFolder().getName(), new Message[] { holder.message }, null);
-        mListView.setSelection(position);
-
     }
 
 
