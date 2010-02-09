@@ -252,7 +252,7 @@ public class MessageList
                     displayName = getString(R.string.special_mailbox_name_inbox);
                 }
 
-                String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount);
+                String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
 
                 setTitle(dispString);
             }

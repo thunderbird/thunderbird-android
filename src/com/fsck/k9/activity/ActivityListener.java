@@ -1,11 +1,14 @@
 package com.fsck.k9.activity;
 
+import java.text.DateFormat;
+
 import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.MessagingListener;
 import com.fsck.k9.R;
+import com.fsck.k9.service.MailService;
 
 public class ActivityListener extends MessagingListener
 {
@@ -17,7 +20,7 @@ public class ActivityListener extends MessagingListener
     private String mProcessingAccountDescription = null;
     private String mProcessingCommandTitle = null;
 
-    public String formatHeader(Context context, String activityPrefix, int unreadMessageCount)
+    public String formatHeader(Context context, String activityPrefix, int unreadMessageCount, DateFormat timeFormat)
     {
         String operation = null;
         String progress = null;
@@ -48,7 +51,15 @@ public class ActivityListener extends MessagingListener
         }
         else
         {
-            operation = "";
+            long nextPollTime = MailService.getNextPollTime();
+            if (nextPollTime != -1)
+            {
+                operation = context.getString(R.string.status_next_poll, timeFormat.format(nextPollTime));
+            }
+            else
+            {
+                operation = context.getString(R.string.status_polling_off);
+            }
         }
 
         return context.getString(R.string.activity_header_format, activityPrefix,

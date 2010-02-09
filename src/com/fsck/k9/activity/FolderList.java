@@ -74,7 +74,7 @@ public class FolderList extends K9ListActivity
             {
                 public void run()
                 {
-                    String dispString = mAdapter.mListener.formatHeader(FolderList.this, getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount);
+                    String dispString = mAdapter.mListener.formatHeader(FolderList.this, getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount, getTimeFormat());
 
 
                     setTitle(dispString);

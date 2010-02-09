@@ -30,6 +30,9 @@
     <string name="status_processing_account">\u0020(Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
 
+    <string name="status_next_poll">\u0020(Next poll @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <string name="status_polling_off">\u0020(Polling off)</string>
+
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Next</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
