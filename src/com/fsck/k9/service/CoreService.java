@@ -96,7 +96,7 @@ public abstract class CoreService extends Service
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(wakeLockTime);
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "CoreService queueing Runnable " + runner.hashCode() + " with startId " + startId);
+            Log.d(K9.LOG_TAG, "CoreService (" + getClass().getName() + ") queueing Runnable " + runner.hashCode() + " with startId " + startId);
         Runnable myRunner = new Runnable()
         {
             public void run()
@@ -105,13 +105,13 @@ public abstract class CoreService extends Service
                 {
 
                     if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "CoreService running Runnable " + runner.hashCode() + " with startId " + startId);
+                        Log.d(K9.LOG_TAG, "CoreService (" + getClass().getName() + ") running Runnable " + runner.hashCode() + " with startId " + startId);
                     runner.run();
                 }
                 finally
                 {
                     if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "CoreService completed Runnable " + runner.hashCode() + " with startId " + startId);
+                        Log.d(K9.LOG_TAG, "CoreService (" + getClass().getName() + ") completed Runnable " + runner.hashCode() + " with startId " + startId);
                     wakeLock.release();
                     if (startId != null)
                     {
