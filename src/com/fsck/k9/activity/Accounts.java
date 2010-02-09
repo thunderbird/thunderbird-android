@@ -397,7 +397,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             Account[] accounts = Preferences.getPreferences(this).getAccounts();
             for (Account acc : accounts)
             {
-                if (acc.isStoreAttachmentOnSdCard())
+                if (acc.isStoreAttachmentOnSdCard()
+                        && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
                 {
                     Toast.makeText(this, R.string.sd_card_skip, Toast.LENGTH_LONG).show();
                     break;
