@@ -74,7 +74,7 @@ public class K9RemoteControl
      * Key for the {@link Intent} Extra for controlling whether K-9 will activate the vibrator for new unread mail.
      * Acceptable values are K9_ENABLED and K9_DISABLED
      */
-    public final static String K9_VIBRATE_ENABLED = "com.fsck.k9.K9RemoteControl.notificationEnabled";
+    public final static String K9_VIBRATE_ENABLED = "com.fsck.k9.K9RemoteControl.vibrateEnabled";
 
     public final static String K9_FOLDERS_NONE = "NONE";
     public final static String K9_FOLDERS_ALL = "ALL";

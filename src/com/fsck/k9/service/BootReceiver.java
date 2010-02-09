@@ -51,7 +51,7 @@ public class BootReceiver extends CoreReceiver
         }
         else if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(intent.getAction()))
         {
-            MailService.actionRestartPushers(context, tmpWakeLockId);
+            MailService.actionReset(context, tmpWakeLockId);
             tmpWakeLockId = null;
         }
         else if (FIRE_INTENT.equals(intent.getAction()))

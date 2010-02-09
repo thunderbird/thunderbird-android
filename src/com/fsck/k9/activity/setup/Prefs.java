@@ -162,7 +162,7 @@ public class Prefs extends K9PreferenceActivity
         editor.commit();
         if (needsRefresh)
         {
-            MailService.actionRestartPushers(this, null);
+            MailService.actionReset(this, null);
         }
     }
 

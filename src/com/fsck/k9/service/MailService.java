@@ -37,6 +37,8 @@ public class MailService extends CoreService
     private static final String CANCEL_CONNECTIVITY_NOTICE = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
 
     private static final String HAS_CONNECTIVITY = "com.fsck.k9.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
+    
+    private static long nextCheck = -1;
 
     public static void actionReset(Context context, Integer wakeLockId)
     {
@@ -146,7 +148,7 @@ public class MailService extends CoreService
                     PollService.startService(this);
                 }
 
-                reschedule(startIdObj);
+                reschedule(hasConnectivity, doBackground, startIdObj);
                 startIdObj = null;
             }
             else if (ACTION_CANCEL.equals(intent.getAction()))
@@ -177,7 +179,7 @@ public class MailService extends CoreService
             {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: rescheduling poll");
-                reschedule(startIdObj);
+                reschedule(hasConnectivity, doBackground, startIdObj);
                 startIdObj = null;
 
             }
@@ -216,10 +218,7 @@ public class MailService extends CoreService
 
     private void rescheduleAll(final boolean hasConnectivity, final boolean doBackground, final Integer startId)
     {
-        if (hasConnectivity && doBackground)
-        {
-            reschedule(null);
-        }
+        reschedule(hasConnectivity, doBackground, null);
         reschedulePushers(hasConnectivity, doBackground, startId);
         
     }
@@ -272,55 +271,67 @@ public class MailService extends CoreService
         BootReceiver.cancelIntent(this, i);
     }
 
-    private void reschedule(Integer startId)
+    private void reschedule(final boolean hasConnectivity, final boolean doBackground, Integer startId)
     {
-        execute(getApplication(), new Runnable()
+        if (hasConnectivity && doBackground)
         {
-            public void run()
+            execute(getApplication(), new Runnable()
             {
-                int shortestInterval = -1;
-
-                for (Account account : Preferences.getPreferences(MailService.this).getAccounts())
+                public void run()
                 {
-                    if (account.getAutomaticCheckIntervalMinutes() != -1
-                            && account.getFolderSyncMode() != FolderMode.NONE
-                            && (account.getAutomaticCheckIntervalMinutes() < shortestInterval || shortestInterval == -1))
+                    int shortestInterval = -1;
+    
+                    for (Account account : Preferences.getPreferences(MailService.this).getAccounts())
                     {
-                        shortestInterval = account.getAutomaticCheckIntervalMinutes();
+                        if (account.getAutomaticCheckIntervalMinutes() != -1
+                                && account.getFolderSyncMode() != FolderMode.NONE
+                                && (account.getAutomaticCheckIntervalMinutes() < shortestInterval || shortestInterval == -1))
+                        {
+                            shortestInterval = account.getAutomaticCheckIntervalMinutes();
+                        }
                     }
-                }
-
-                if (shortestInterval == -1)
-                {
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
-                    cancel();
-                }
-                else
-                {
-                    long delay = (shortestInterval * (60 * 1000));
-
-                    long nextTime = System.currentTimeMillis() + delay;
-                    try
+    
+                    if (shortestInterval == -1)
                     {
+                        nextCheck = -1;
                         if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime));
+                            Log.i(K9.LOG_TAG, "No next check scheduled for package " + getApplication().getPackageName());
+                        cancel();
                     }
-                    catch (Exception e)
+                    else
                     {
-                        // I once got a NullPointerException deep in new Date();
-                        Log.e(K9.LOG_TAG, "Exception while logging", e);
+                        long delay = (shortestInterval * (60 * 1000));
+    
+                        long nextTime = System.currentTimeMillis() + delay;
+                        nextCheck = nextTime;
+                        try
+                        {
+                            if (K9.DEBUG)
+                                Log.i(K9.LOG_TAG, "Next check for package " + getApplication().getPackageName() + " scheduled for " + new Date(nextTime));
+                        }
+                        catch (Exception e)
+                        {
+                            // I once got a NullPointerException deep in new Date();
+                            Log.e(K9.LOG_TAG, "Exception while logging", e);
+                        }
+    
+                        Intent i = new Intent();
+                        i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
+                        i.setAction(ACTION_CHECK_MAIL);
+                        BootReceiver.scheduleIntent(MailService.this, nextTime, i);
+    
                     }
-
-                    Intent i = new Intent();
-                    i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
-                    i.setAction(ACTION_CHECK_MAIL);
-                    BootReceiver.scheduleIntent(MailService.this, nextTime, i);
-
                 }
             }
+            , K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT, startId);
         }
-        , K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT, startId);
+        else
+        {
+            nextCheck = -1;
+            if (K9.DEBUG)
+                Log.i(K9.LOG_TAG, "No connectivity, canceling check for " + getApplication().getPackageName());
+            cancel();
+        }
     }
 
     private void stopPushers(final Integer startId)
@@ -444,6 +455,11 @@ public class MailService extends CoreService
     public IBinder onBind(Intent intent)
     {
         return null;
+    }
+
+    public static long getNextPollTime()
+    {
+        return nextCheck;
     }
 
 

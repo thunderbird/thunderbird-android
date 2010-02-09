@@ -143,7 +143,9 @@ public class RemoteControlService extends CoreService
                                 || K9RemoteControl.K9_BACKGROUND_OPERATIONS_WHEN_CHECKED.equals(backgroundOps))
                         {
                             BACKGROUND_OPS newBackgroundOps = BACKGROUND_OPS.valueOf(backgroundOps);
-                            needsPushRestart |= K9.setBackgroundOps(newBackgroundOps);
+                            boolean needsReset = K9.setBackgroundOps(newBackgroundOps);
+                            needsPushRestart |= needsReset;
+                            needsReschedule |= needsReset;
                         }
 
                         String theme = intent.getStringExtra(K9_THEME);
