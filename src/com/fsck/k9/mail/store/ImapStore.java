@@ -41,13 +41,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * TODO Need a default response handler for things like folder updates
  * TODO In fetch(), if we need a ImapMessage and were given
  * something else we can try to do a pre-fetch first.
- *
- * ftp://ftp.isi.edu/in-notes/rfc2683.txt When a client asks for
- * certain information in a FETCH command, the server may return the requested
- * information in any order, not necessarily in the order that it was requested.
- * Further, the server may return the information in separate FETCH responses
- * and may also return information that was not explicitly requested (to reflect
- * to the client changes in the state of the subject message).
  * </pre>
  */
 public class ImapStore extends Store
@@ -1109,10 +1102,11 @@ public class ImapStore extends Store
                             listener.messageStarted(uid, messageNumber++, messageMap.size());
                         }
 
-                        if (fp.contains(FetchProfile.Item.FLAGS))
+                        ImapMessage imapMessage = (ImapMessage) message;
+
+                        if (fetchList.containsKey("FLAGS"))
                         {
                             ImapList flags = fetchList.getKeyedList("FLAGS");
-                            ImapMessage imapMessage = (ImapMessage) message;
                             if (flags != null)
                             {
                                 for (int i = 0, count = flags.size(); i < count; i++)
@@ -1137,19 +1131,18 @@ public class ImapStore extends Store
                                 }
                             }
                         }
-                        if (fp.contains(FetchProfile.Item.ENVELOPE))
+
+                        if (fetchList.containsKey("INTERNALDATE"))
                         {
                             Date internalDate = fetchList.getKeyedDate("INTERNALDATE");
-                            int size = fetchList.getKeyedNumber("RFC822.SIZE");
-                            InputStream headerStream = fetchList.getLiteral(fetchList.size() - 1);
-
-                            ImapMessage imapMessage = (ImapMessage) message;
-
                             message.setInternalDate(internalDate);
-                            imapMessage.setSize(size);
-                            imapMessage.parse(headerStream);
                         }
-                        if (fp.contains(FetchProfile.Item.STRUCTURE))
+                        if (fetchList.containsKey("RFC822.SIZE"))
+                        {
+                            int size = fetchList.getKeyedNumber("RFC822.SIZE");
+                            imapMessage.setSize(size);
+                        }
+                        if (fetchList.containsKey("BODYSTRUCTURE"))
                         {
                             ImapList bs = fetchList.getKeyedList("BODYSTRUCTURE");
                             if (bs != null)
@@ -1166,48 +1159,49 @@ public class ImapStore extends Store
                                 }
                             }
                         }
-                        if (fp.contains(FetchProfile.Item.BODY))
+
+                        if (fetchList.containsKey("BODY"))
                         {
-                            InputStream bodyStream = fetchList.getLiteral(fetchList.size() - 1);
-                            ImapMessage imapMessage = (ImapMessage) message;
-                            imapMessage.parse(bodyStream);
-                        }
-                        if (fp.contains(FetchProfile.Item.BODY_SANE))
-                        {
-                            InputStream bodyStream = fetchList.getLiteral(fetchList.size() - 1);
-                            ImapMessage imapMessage = (ImapMessage) message;
-                            imapMessage.parse(bodyStream);
-                        }
-                        for (Object o : fp)
-                        {
-                            if (o instanceof Part)
+                            int index = fetchList.getKeyIndex("BODY") + 2;
+                            
+                            boolean partFound = false;
+                            for (Object o : fp)
                             {
-                                Part part = (Part) o;
-                                Object literal = fetchList.getObject(fetchList.size() - 1);
-                                if (literal instanceof InputStream)
+                                if (o instanceof Part)
                                 {
-                                    InputStream bodyStream = (InputStream)literal;
-                                    String contentType = part.getContentType();
-                                    String contentTransferEncoding = part.getHeader(
-                                                                         MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                                    part.setBody(MimeUtility.decodeBody(
-                                                     bodyStream,
-                                                     contentTransferEncoding));
-                                }
-                                else if (literal instanceof String)
-                                {
-                                    String bodyString = (String)literal;
+                                    partFound = true;
+                                    Part part = (Part) o;
+                                    Object literal = fetchList.getLiteral(index);
+                                    if (literal instanceof InputStream)
+                                    {
+                                        InputStream bodyStream = (InputStream)literal;
+                                        String contentTransferEncoding = part.getHeader(
+                                                                             MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                        part.setBody(MimeUtility.decodeBody(
+                                                         bodyStream,
+                                                         contentTransferEncoding));
+                                    }
+                                    else if (literal instanceof String)
+                                    {
+                                        String bodyString = (String)literal;
 
-                                    if (K9.DEBUG)
-                                        Log.v(K9.LOG_TAG, "Part is a String: '" + bodyString + "' for " + getLogId());
+                                        if (K9.DEBUG)
+                                            Log.v(K9.LOG_TAG, "Part is a String: '" + bodyString + "' for " + getLogId());
 
-                                    InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
-                                    String contentTransferEncoding = part.getHeader(
-                                                                         MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                                    part.setBody(MimeUtility.decodeBody(
-                                                     bodyStream,
-                                                     contentTransferEncoding));
+                                        InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
+                                        String contentTransferEncoding = part.getHeader(
+                                                                             MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                        part.setBody(MimeUtility.decodeBody(
+                                                         bodyStream,
+                                                         contentTransferEncoding));
+                                    }
                                 }
+                            }
+
+                            if (!partFound)
+                            {
+                                InputStream bodyStream = fetchList.getLiteral(index);
+                                imapMessage.parse(bodyStream);
                             }
                         }
 
@@ -2531,7 +2525,7 @@ public class ImapStore extends Store
                                         idling.set(true);
                                         doneSent.set(false);
                                         mConnection.setReadTimeout(IDLE_READ_TIMEOUT);
-                                        untaggedResponses = executeSimpleCommand("IDLE", false, ImapFolderPusher.this);
+                                        untaggedResponses = executeSimpleCommand(COMMAND_IDLE, false, ImapFolderPusher.this);
                                         idling.set(false);
 
                                     }

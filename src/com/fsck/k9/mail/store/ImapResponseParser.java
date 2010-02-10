@@ -442,6 +442,36 @@ public class ImapResponseParser
                 throw new MessagingException("Unable to parse IMAP datetime", pe);
             }
         }
+        
+        public boolean containsKey(Object key)
+        {
+            if (key == null)
+            {
+                return false;
+            }
+            
+            for (int i = 0, count = size(); i < count; i++)
+            {
+                if (key.equals(get(i)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        public int getKeyIndex(Object key)
+        {
+            for (int i = 0, count = size(); i < count; i++)
+            {
+                if (key.equals(get(i)))
+                {
+                    return i;
+                }
+            }
+            
+            throw new IllegalArgumentException("getKeyIndex() only works for keys that are in the collection.");
+        }
 
         private Date parseDate(String value) throws ParseException
         {
