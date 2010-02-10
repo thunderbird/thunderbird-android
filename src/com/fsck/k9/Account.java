@@ -765,15 +765,7 @@ public class Account implements Serializable
         int newInterval = automaticCheckIntervalMinutes;
         this.mAutomaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
         
-        if (oldInterval == -1 && newInterval != -1)
-        {
-            return true;
-        }
-        if (newInterval < oldInterval)
-        {
-            return true;
-        }
-        return false;
+        return (oldInterval != newInterval);
     }
 
     /**

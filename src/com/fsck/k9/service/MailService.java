@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
@@ -147,8 +148,7 @@ public class MailService extends CoreService
                 {
                     PollService.startService(this);
                 }
-
-                reschedule(hasConnectivity, doBackground, startIdObj);
+                reschedulePoll(hasConnectivity, doBackground, startIdObj, false);
                 startIdObj = null;
             }
             else if (ACTION_CANCEL.equals(intent.getAction()))
@@ -179,7 +179,7 @@ public class MailService extends CoreService
             {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "***** MailService *****: rescheduling poll");
-                reschedule(hasConnectivity, doBackground, startIdObj);
+                reschedulePoll(hasConnectivity, doBackground, startIdObj, true);
                 startIdObj = null;
 
             }
@@ -218,7 +218,7 @@ public class MailService extends CoreService
 
     private void rescheduleAll(final boolean hasConnectivity, final boolean doBackground, final Integer startId)
     {
-        reschedule(hasConnectivity, doBackground, null);
+        reschedulePoll(hasConnectivity, doBackground, null, true);
         reschedulePushers(hasConnectivity, doBackground, startId);
         
     }
@@ -271,7 +271,23 @@ public class MailService extends CoreService
         BootReceiver.cancelIntent(this, i);
     }
 
-    private void reschedule(final boolean hasConnectivity, final boolean doBackground, Integer startId)
+    private final static String PREVIOUS_INTERVAL = "MailService.previousInterval";
+    private final static String LAST_CHECK_END = "MailService.lastCheckEnd";
+    
+    public static void saveLastCheckEnd(Context context)
+    {
+        
+        long lastCheckEnd = System.currentTimeMillis();
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "Saving lastCheckEnd = " + new Date(lastCheckEnd));
+        Preferences prefs = Preferences.getPreferences(context);
+        SharedPreferences sPrefs = prefs.getPreferences();
+        SharedPreferences.Editor editor = sPrefs.edit();
+        editor.putLong(LAST_CHECK_END, lastCheckEnd);
+        editor.commit();
+    }
+   
+    private void reschedulePoll(final boolean hasConnectivity, final boolean doBackground, Integer startId, final boolean considerLastCheckEnd)
     {
         if (hasConnectivity && doBackground)
         {
@@ -280,8 +296,12 @@ public class MailService extends CoreService
                 public void run()
                 {
                     int shortestInterval = -1;
-    
-                    for (Account account : Preferences.getPreferences(MailService.this).getAccounts())
+                    
+                    Preferences prefs = Preferences.getPreferences(MailService.this);
+                    SharedPreferences sPrefs = prefs.getPreferences();
+                    int previousInterval = sPrefs.getInt(PREVIOUS_INTERVAL, -1);
+                    long lastCheckEnd = sPrefs.getLong(LAST_CHECK_END, -1);
+                    for (Account account : prefs.getAccounts())
                     {
                         if (account.getAutomaticCheckIntervalMinutes() != -1
                                 && account.getFolderSyncMode() != FolderMode.NONE
@@ -290,7 +310,10 @@ public class MailService extends CoreService
                             shortestInterval = account.getAutomaticCheckIntervalMinutes();
                         }
                     }
-    
+                    SharedPreferences.Editor editor = sPrefs.edit();
+                    editor.putInt(PREVIOUS_INTERVAL, shortestInterval);
+                    editor.commit();
+                    
                     if (shortestInterval == -1)
                     {
                         nextCheck = -1;
@@ -301,8 +324,14 @@ public class MailService extends CoreService
                     else
                     {
                         long delay = (shortestInterval * (60 * 1000));
-    
-                        long nextTime = System.currentTimeMillis() + delay;
+                        long base = (previousInterval == -1 || lastCheckEnd == -1 || considerLastCheckEnd == false ? System.currentTimeMillis() : lastCheckEnd);
+                        long nextTime = base + delay;
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, 
+                                    "previousInterval = " + previousInterval 
+                                    + ", shortestInterval = " + shortestInterval
+                                    + ", lastCheckEnd = " + new Date(lastCheckEnd)
+                                    + ", considerLastCheckEnd = " + considerLastCheckEnd);
                         nextCheck = nextTime;
                         try
                         {
