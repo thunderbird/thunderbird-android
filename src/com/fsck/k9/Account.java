@@ -297,7 +297,7 @@ public class Account implements Serializable
         }
 
         mIsSignatureBeforeQuotedText = preferences.getPreferences().getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
-        mStoreAttachmentsOnSdCard = preferences.getPreferences().getBoolean(mUuid  + ".storeAttachmentOnSdCard", true);
+        mStoreAttachmentsOnSdCard = preferences.getPreferences().getBoolean(mUuid  + ".storeAttachmentOnSdCard", false);
         identities = loadIdentities(preferences.getPreferences());
     }
 
