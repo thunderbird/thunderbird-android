@@ -390,7 +390,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
         }
-        else if (Intent.ACTION_SEND.equals(action))
+        else if (Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action))
         {
             /*
              * Someone is trying to compose an email with an attachment, probably Pictures.
@@ -409,12 +409,33 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             String type = intent.getType();
-            Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-            if (stream != null && type != null)
+            if (Intent.ACTION_SEND_MULTIPLE.equals(action))
             {
-                if (MimeUtility.mimeTypeMatches(type, K9.ACCEPTABLE_ATTACHMENT_SEND_TYPES))
+                ArrayList<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+                if (list != null)
                 {
-                    addAttachment(stream);
+                    for (Parcelable parcelable : list)
+                    {
+                        Uri stream = (Uri) parcelable;
+                        if (stream != null && type != null)
+                        {
+                            if (MimeUtility.mimeTypeMatches(type, K9.ACCEPTABLE_ATTACHMENT_SEND_TYPES))
+                            {
+                                addAttachment(stream);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                if (stream != null && type != null)
+                {
+                    if (MimeUtility.mimeTypeMatches(type, K9.ACCEPTABLE_ATTACHMENT_SEND_TYPES))
+                    {
+                        addAttachment(stream);
+                    }
                 }
             }
 
