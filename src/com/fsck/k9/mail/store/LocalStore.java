@@ -38,7 +38,7 @@ public class LocalStore extends Store implements Serializable
     private static final int DB_VERSION = 33;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
-    private Account mAccount;
+    private boolean mStoreAttachmentsOnSdCard;
     private String mPath;
     private SQLiteDatabase mDb;
     private File mInternalAttachmentsDir = null;
@@ -69,23 +69,6 @@ public class LocalStore extends Store implements Serializable
     public LocalStore(String _uri, Application application) throws MessagingException
     {
         mApplication = application;
-
-        //Store should be passed their store
-        //but let's not break the interface now
-        for (Account account : Preferences.getPreferences(mApplication).getAccounts())
-        {
-            if (_uri.equals(account.getLocalStoreUri()))
-            {
-                mAccount = account;
-                break;
-            }
-        }
-        if (mAccount == null)
-        {
-            //Should not happend
-            throw new IllegalArgumentException("No account found: uri=" + _uri);
-        }
-
 
         URI uri = null;
         try
@@ -124,13 +107,23 @@ public class LocalStore extends Store implements Serializable
 
         String externalAttachmentsPath = "/sdcard" + mPath.substring("//data".length());
         mExternalAttachmentsDir = new File(externalAttachmentsPath + "_att");
-        if (mAccount.isStoreAttachmentOnSdCard()
-            && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+        Account account = null;
+        for (Account aAccount : Preferences.getPreferences(mApplication).getAccounts())
         {
-            if (!mExternalAttachmentsDir.exists())
+            if (_uri.equals(aAccount.getLocalStoreUri()))
             {
-                mExternalAttachmentsDir.mkdirs();
+                account = aAccount;
+                break;
             }
+        }
+        if (account == null)
+        {
+            //Should not happend
+            throw new IllegalArgumentException("No account found: uri=" + _uri);
+        }
+        else
+        {
+            this.setStoreAttachmentsOnSdCard(account.isStoreAttachmentOnSdCard());
         }
 
         mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
@@ -269,7 +262,7 @@ public class LocalStore extends Store implements Serializable
         long attachmentLength = 0;
 
         attachmentLength =+ getSize(mInternalAttachmentsDir);
-        if (usesExternalAttachmentDir())
+        if (isExternalAttachmentsDirReady())
         {
             attachmentLength =+ getSize(mExternalAttachmentsDir);
         }
@@ -429,7 +422,7 @@ public class LocalStore extends Store implements Serializable
         }
 
         delete(mInternalAttachmentsDir);
-        if (usesExternalAttachmentDir())
+        if (isExternalAttachmentsDirReady())
         {
             delete(mExternalAttachmentsDir);
         }
@@ -486,7 +479,7 @@ public class LocalStore extends Store implements Serializable
             mDb.update("attachments", cv, null, null);
         }
         pruneCachedAttachments(force, mInternalAttachmentsDir);
-        if (usesExternalAttachmentDir())
+        if (isExternalAttachmentsDirReady())
         {
             pruneCachedAttachments(force, mExternalAttachmentsDir);
         }
@@ -2624,35 +2617,70 @@ public class LocalStore extends Store implements Serializable
 
     private File getAttachmentsDir()
     {
-        if (usesExternalAttachmentDir())
+        if (mStoreAttachmentsOnSdCard)
         {
-            if (!mExternalAttachmentsDir.exists())
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
             {
-                mExternalAttachmentsDir.mkdirs();
+                if (!mExternalAttachmentsDir.exists())
+                {
+                    mExternalAttachmentsDir.mkdirs();
+                }
+                return mExternalAttachmentsDir;
             }
-            return mExternalAttachmentsDir;
+            else
+            {
+                throw new IllegalStateException("SD card not mounted");
+            }
         }
         else {
             return mInternalAttachmentsDir;
         }
     }
 
-    private boolean usesExternalAttachmentDir()
+    public boolean isStoreAttachmentsOnSdCard()
     {
-        if (mAccount.isStoreAttachmentOnSdCard()) {
-            if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-            {
-                throw new IllegalStateException("SDCard not mounted");
+        return mStoreAttachmentsOnSdCard;
+    }
 
-            }
-            else
-            {
-                return true;
-            }
+    public void setStoreAttachmentsOnSdCard(boolean storeAttachmentsOnSdCard)
+    {
+        this.mStoreAttachmentsOnSdCard = storeAttachmentsOnSdCard;
+        if (K9.DEBUG)
+        {
+            Log.v(K9.LOG_TAG, "mStoreAttachmentsOnSdCard: " + mStoreAttachmentsOnSdCard);
         }
-        else
+        if (storeAttachmentsOnSdCard
+            && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
+            && !mExternalAttachmentsDir.exists())
+        {
+            mExternalAttachmentsDir.mkdirs();
+        }
+    }
+
+    /**
+     * Checks if the dir is eardy to use and if we need it.
+     *
+     * @exception IllegalStateException If the dir is not ready (SD card not mounted)
+     * and we expect it to be (mStoreAttachmentsOnSdCard is true)
+     */
+    private boolean isExternalAttachmentsDirReady()
+    {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+        {
+            if (!mExternalAttachmentsDir.exists())
+            {
+                mExternalAttachmentsDir.mkdirs();
+            }
+            return true;
+        }
+        else if (!mStoreAttachmentsOnSdCard)
         {
             return false;
         }
+        else
+        {
+            throw new IllegalStateException("SD card not mounted");
+        }
     }
+
 }

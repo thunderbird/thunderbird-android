@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
@@ -635,6 +636,17 @@ public class Account implements Serializable
         saveIdentities(preferences.getPreferences(), editor);
 
         editor.commit();
+
+        try
+        {
+            LocalStore localStore = (LocalStore)Store.getInstance(mLocalStoreUri, K9.app);
+            localStore.setStoreAttachmentsOnSdCard(mStoreAttachmentsOnSdCard);
+        }
+        catch (MessagingException e)
+        {
+            //Should not happen
+            Log.w(K9.LOG_TAG, null, e);
+        }
     }
 
     public String toString()
