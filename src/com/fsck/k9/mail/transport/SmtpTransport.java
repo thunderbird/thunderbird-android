@@ -291,8 +291,6 @@ public class SmtpTransport extends Transport
 
         if (m8bitEncodingAllowed)
         {
-            //TODO: Make sure that we don't have lines that are longer than
-            // 998 bytes (don't count characters!)
             message.setEncoding("8bit");
         }
 
@@ -319,7 +317,9 @@ public class SmtpTransport extends Transport
             
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                     new SmtpDataStuffing(
-                            new BufferedOutputStream(mOut, 1024)));
+                            new LineWrapOutputStream(
+                                    new BufferedOutputStream(mOut, 1024),
+                                    1000)));
 
             message.writeTo(msgOut);
 
