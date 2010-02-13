@@ -333,7 +333,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_incoming_delete_policy_markread_label">Mark as read on server</string>
     
     <string name="account_setup_expunge_policy_label">Expunge messages</string>
-    <string name="account_setup_expunge_policy_immediately">Immediately after move or copy</string>
+    <string name="account_setup_expunge_policy_immediately">Immediately after delete or move</string>
     <string name="account_setup_expunge_policy_on_poll">During each poll</string>
     <string name="account_setup_expunge_policy_manual">Only manually</string>
 
