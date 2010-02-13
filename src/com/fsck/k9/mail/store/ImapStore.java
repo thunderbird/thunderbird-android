@@ -350,7 +350,7 @@ public class ImapStore extends Store
 
     private void releaseConnection(ImapConnection connection)
     {
-        if (connection.isOpen())
+        if (connection != null && connection.isOpen())
         {
             synchronized (mConnections)
             {
@@ -488,6 +488,7 @@ public class ImapStore extends Store
                     ioExceptionHandler(mConnection, ioe);
                 }
             }
+            releaseConnection(mConnection);
             synchronized (this)
             {
                 mConnection = getConnection();
@@ -521,7 +522,7 @@ public class ImapStore extends Store
 
                 //                executeSimpleCommand("CLOSE");
 
-                String command = String.format("SELECT \"%s\"",
+                String command = String.format((mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE") + " \"%s\"",
                                                encodeFolderName(getPrefixedName()));
 
                 List<ImapResponse> responses = executeSimpleCommand(command);
@@ -530,7 +531,7 @@ public class ImapStore extends Store
                  * If the command succeeds we expect the folder has been opened read-write
                  * unless we are notified otherwise in the responses.
                  */
-                mMode = OpenMode.READ_WRITE;
+                mMode = mode;
 
                 for (ImapResponse response : responses)
                 {
@@ -833,19 +834,21 @@ public class ImapStore extends Store
             checkOpen();
             try
             {
-                int unreadMessageCount = 0;
-                List<ImapResponse> responses = executeSimpleCommand(
-                                                   String.format("STATUS \"%s\" (UNSEEN)",
-                                                                 encodeFolderName(getPrefixedName())));
+                int count = 0;
+                int start = mMessageCount - 299;
+                if (start < 1)
+                {
+                    start = 1;
+                }
+                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* UNSEEN NOT DELETED", start));
                 for (ImapResponse response : responses)
                 {
-                    if (response.mTag == null && response.get(0).equals("STATUS"))
+                    if (response.get(0).equals("SEARCH"))
                     {
-                        ImapList status = response.getList(2);
-                        unreadMessageCount = status.getKeyedNumber("UNSEEN");
+                        count += response.size() - 1;
                     }
                 }
-                return unreadMessageCount;
+                return count;
             }
             catch (IOException ioe)
             {
@@ -872,8 +875,6 @@ public class ImapStore extends Store
         {
             return getMessages(start, end, false, listener);
         }
-
-
 
         protected Message[] getMessages(final int start, final int end, final boolean includeDeleted, final MessageRetrievalListener listener)
         throws MessagingException
@@ -906,7 +907,7 @@ public class ImapStore extends Store
             };
             return search(searcher, listener);
         }
-
+        
         private Message[] search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException
         {
 
@@ -1197,7 +1198,6 @@ public class ImapStore extends Store
                                     }
                                 }
                             }
-
                             if (!partFound)
                             {
                                 InputStream bodyStream = fetchList.getLiteral(index);
@@ -2461,7 +2461,7 @@ public class ImapStore extends Store
                                 Log.e(K9.LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
                             }
 
-                            List<ImapResponse> responses = internalOpen(OpenMode.READ_WRITE);
+                            List<ImapResponse> responses = internalOpen(OpenMode.READ_ONLY);
                             if (mConnection == null)
                             {
                                 receiver.pushError("Could not establish connection for IDLE", null);
