@@ -37,12 +37,12 @@
         android:text="@string/account_setup_names_user_name_label"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:inputType="textPersonName"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorPrimary" />
     <EditText
         android:id="@+id/account_name"
         android:singleLine="true"
+        android:inputType="textPersonName"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
     <View
