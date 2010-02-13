@@ -4262,7 +4262,6 @@ public class MessagingController implements Runnable
         notif.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
         notif.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
 
-        notif.number = unreadMessageCount;
         notifMgr.notify(account.getAccountNumber(), notif);
     }
 
@@ -4561,7 +4560,7 @@ public class MessagingController implements Runnable
                 {
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "SD card not mounted: skipping reception of pushed messages: account=" + account.getDescription() + ", folder=" + remoteFolder.getName() + ", message count=" + messages.size());
-                    return;
+                    throw new RuntimeException("SD card unavailable/required");
                 }
 
                 LocalFolder localFolder = null;
