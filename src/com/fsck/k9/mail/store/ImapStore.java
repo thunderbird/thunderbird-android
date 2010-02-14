@@ -1163,44 +1163,57 @@ public class ImapStore extends Store
 
                         if (fetchList.containsKey("BODY"))
                         {
-                            int index = fetchList.getKeyIndex("BODY") + 2;
-                            
-                            boolean partFound = false;
+                            Part part = null;
                             for (Object o : fp)
                             {
                                 if (o instanceof Part)
                                 {
-                                    partFound = true;
-                                    Part part = (Part) o;
-                                    Object literal = fetchList.getLiteral(index);
-                                    if (literal instanceof InputStream)
-                                    {
-                                        InputStream bodyStream = (InputStream)literal;
-                                        String contentTransferEncoding = part.getHeader(
-                                                                             MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                                        part.setBody(MimeUtility.decodeBody(
-                                                         bodyStream,
-                                                         contentTransferEncoding));
-                                    }
-                                    else if (literal instanceof String)
-                                    {
-                                        String bodyString = (String)literal;
-
-                                        if (K9.DEBUG)
-                                            Log.v(K9.LOG_TAG, "Part is a String: '" + bodyString + "' for " + getLogId());
-
-                                        InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
-                                        String contentTransferEncoding = part.getHeader(
-                                                                             MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                                        part.setBody(MimeUtility.decodeBody(
-                                                         bodyStream,
-                                                         contentTransferEncoding));
-                                    }
+                                    part = (Part) o;
+                                    break;
                                 }
                             }
-                            if (!partFound)
+
+                            int index = fetchList.getKeyIndex("BODY") + 2;
+                            Object literal = fetchList.getObject(index);
+
+                            // Check if there's an origin octet
+                            if (literal instanceof String)
                             {
-                                InputStream bodyStream = fetchList.getLiteral(index);
+                                String originOctet = (String)literal;
+                                if (originOctet.startsWith("<"))
+                                {
+                                    literal = fetchList.getObject(index + 1);
+                                }
+                            }
+
+                            InputStream bodyStream;
+                            if (literal instanceof InputStream)
+                            {
+                                bodyStream = (InputStream)literal;
+                            }
+                            else if (literal instanceof String)
+                            {
+                                String bodyString = (String)literal;
+
+                                if (K9.DEBUG)
+                                    Log.v(K9.LOG_TAG, "Part is a String: '" + bodyString + "' for " + getLogId());
+
+                                bodyStream = new ByteArrayInputStream(bodyString.getBytes());
+                            }
+                            else
+                            {
+                                // This shouldn't happen
+                                throw new MessagingException("Got FETCH response with bogus parameters");
+                            }
+
+                            if (part != null)
+                            {
+                                String contentTransferEncoding = part.getHeader(
+                                        MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                part.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
+                            }
+                            else
+                            {
                                 imapMessage.parse(bodyStream);
                             }
                         }
