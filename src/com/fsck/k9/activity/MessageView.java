@@ -92,9 +92,9 @@ public class MessageView extends K9Activity
     private String mNextMessageUid = null;
     private String mPreviousMessageUid = null;
 
-    private static final float SWIPE_MIN_DISTANCE_DIP = 100.0f;
+    private static final float SWIPE_MIN_DISTANCE_DIP = 130.0f;
     private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
-    private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 200f;
+    private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 325f;
 
     private GestureDetector gestureDetector;
 
