@@ -820,7 +820,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (mIdentityChanged || mSignatureChanged)
             {
                 String signature  = mSignatureView.getText().toString();
-                k9identity += ":" + Utility.base64Encode(signature) ;
+                k9identity += ":" + Utility.base64Encode(signature);
                 if (mIdentityChanged)
                 {
 
@@ -1431,6 +1431,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         String name = null;
                         String email = null;
                         String signature = null;
+                        boolean signatureUse = message.getFolder().getAccount().getSignatureUse();
                         if (tokens.hasMoreTokens())
                         {
                             bodyLengthS = Utility.base64Decode(tokens.nextToken());
@@ -1445,6 +1446,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         }
                         if (tokens.hasMoreTokens())
                         {
+                            signatureUse = true;
                             signature = Utility.base64Decode(tokens.nextToken());
                         }
                         if (tokens.hasMoreTokens())
@@ -1457,6 +1459,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         }
 
                         Account.Identity newIdentity= mAccount.new Identity();
+                        newIdentity.setSignatureUse(signatureUse);
                         if (signature != null)
                         {
                             newIdentity.setSignature(signature);

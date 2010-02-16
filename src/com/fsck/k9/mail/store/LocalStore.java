@@ -62,18 +62,18 @@ public class LocalStore extends Store implements Serializable
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
-
     /**
-     * @param uri local://localhost/path/to/database/uuid.db
+     * local://localhost/path/to/database/uuid.db
      */
-    public LocalStore(String _uri, Application application) throws MessagingException
+    public LocalStore(Account account, Application application) throws MessagingException
     {
+        super(account);
         mApplication = application;
 
         URI uri = null;
         try
         {
-            uri = new URI(_uri);
+            uri = new URI(mAccount.getLocalStoreUri());
         }
         catch (Exception e)
         {
@@ -89,6 +89,7 @@ public class LocalStore extends Store implements Serializable
         // We need to associate the localstore with the account.  Since we don't have the account
         // handy here, we'll take the filename from the DB and use the basename of the filename
         // Folders probably should have references to their containing accounts
+        //TODO: We do have an account object now
         File dbFile = new File(mPath);
         String[] tokens = dbFile.getName().split("\\.");
         uUid = tokens[0];
@@ -107,24 +108,7 @@ public class LocalStore extends Store implements Serializable
 
         String externalAttachmentsPath = "/sdcard" + mPath.substring("//data".length());
         mExternalAttachmentsDir = new File(externalAttachmentsPath + "_att");
-        Account account = null;
-        for (Account aAccount : Preferences.getPreferences(mApplication).getAccounts())
-        {
-            if (_uri.equals(aAccount.getLocalStoreUri()))
-            {
-                account = aAccount;
-                break;
-            }
-        }
-        if (account == null)
-        {
-            //Should not happend
-            throw new IllegalArgumentException("No account found: uri=" + _uri);
-        }
-        else
-        {
-            this.setStoreAttachmentsOnSdCard(account.isStoreAttachmentOnSdCard());
-        }
+        this.setStoreAttachmentsOnSdCard(mAccount.isStoreAttachmentOnSdCard());
 
         mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
         if (mDb.getVersion() != DB_VERSION)
@@ -133,7 +117,6 @@ public class LocalStore extends Store implements Serializable
         }
 
     }
-
 
     private void doDbUpgrade(SQLiteDatabase mDb, Application application)
     {
@@ -753,6 +736,7 @@ public class LocalStore extends Store implements Serializable
 
         public LocalFolder(String name)
         {
+            super(LocalStore.this.mAccount);
             this.mName = name;
 
             if (K9.INBOX.equals(getName()))
@@ -766,6 +750,7 @@ public class LocalStore extends Store implements Serializable
 
         public LocalFolder(long id)
         {
+            super(LocalStore.this.mAccount);
             this.mFolderId = id;
         }
 

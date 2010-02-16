@@ -97,7 +97,7 @@ public class AccountSettings extends K9PreferenceActivity
         Store store = null;
         try
         {
-            store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+            store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
             isExpungeCapable = store.isExpungeCapable();
         }

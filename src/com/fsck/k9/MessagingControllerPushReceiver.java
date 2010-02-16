@@ -103,8 +103,8 @@ public class MessagingControllerPushReceiver implements PushReceiver
         LocalFolder localFolder = null;
         try
         {
-            LocalStore localStore = (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
-            localFolder= (LocalFolder) localStore.getFolder(folderName);
+            LocalStore localStore = account.getLocalStore();
+            localFolder = localStore.getFolder(folderName);
             localFolder.open(OpenMode.READ_WRITE);
             return localFolder.getPushState();
         }

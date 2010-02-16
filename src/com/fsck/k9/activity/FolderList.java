@@ -937,7 +937,7 @@ public class FolderList extends K9ListActivity
                 {
                     if (account != null && folderName != null)
                     {
-                        localFolder = (Folder) Store.getInstance(account.getLocalStoreUri(), getApplication()).getFolder(folderName);
+                        localFolder = account.getLocalStore().getFolder(folderName);
                         int unreadMessageCount = localFolder.getUnreadMessageCount();
                         if (localFolder != null)
                         {

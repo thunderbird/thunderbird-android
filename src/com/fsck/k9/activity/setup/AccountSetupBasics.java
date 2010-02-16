@@ -133,7 +133,7 @@ public class AccountSetupBasics extends K9Activity
         String email = mEmailView.getText().toString();
         boolean valid = Utility.requiredFieldValid(mEmailView)
                         && Utility.requiredFieldValid(mPasswordView)
-                        && mEmailValidator.isValid(email);
+                        && mEmailValidator.isValidAddressOnly(email);
 
         mNextButton.setEnabled(valid);
         mManualSetupButton.setEnabled(valid);

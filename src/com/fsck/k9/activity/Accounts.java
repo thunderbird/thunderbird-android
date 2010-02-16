@@ -497,7 +497,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 dismissDialog(DIALOG_REMOVE_ACCOUNT);
                 try
                 {
-                    ((LocalStore)Store.getInstance(mSelectedContextAccount.getLocalStoreUri(), getApplication())).delete();
+                    mSelectedContextAccount.getLocalStore().delete();
                 }
                 catch (Exception e)
                 {

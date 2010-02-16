@@ -62,10 +62,7 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.PendingCommand;
-import com.fsck.k9.mail.transport.EOLConvertingOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
 
 /**
  * Starts a long running (application) Thread that will run through commands
@@ -427,7 +424,7 @@ public class MessagingController implements Runnable
                 Folder[] localFolders = null;
                 try
                 {
-                    Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+                    Store localStore = account.getLocalStore();
                     localFolders = localStore.getPersonalNamespaces();
 
                     if (refreshRemote || localFolders == null || localFolders.length == 0)
@@ -492,11 +489,11 @@ public class MessagingController implements Runnable
                 Folder[] localFolders = null;
                 try
                 {
-                    Store store = Store.getInstance(account.getStoreUri(), mApplication);
+                    Store store = account.getRemoteStore();
 
                     Folder[] remoteFolders = store.getPersonalNamespaces();
 
-                    LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), mApplication);
+                    LocalStore localStore = account.getLocalStore();
                     HashSet<String> remoteFolderNames = new HashSet<String>();
                     for (int i = 0, count = remoteFolders.length; i < count; i++)
                     {
@@ -669,7 +666,7 @@ public class MessagingController implements Runnable
 
         try
         {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
             localFolder.open(OpenMode.READ_WRITE);
 
@@ -761,8 +758,7 @@ public class MessagingController implements Runnable
 
                     try
                     {
-                        LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), mApplication);
-
+                        LocalStore localStore = account.getLocalStore();
                         localStore.searchForMessages(retrievalListener, query);
                     }
                     catch (Exception e)
@@ -783,8 +779,8 @@ public class MessagingController implements Runnable
     {
         try
         {
-            LocalStore localStore = (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
-            LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
+            LocalStore localStore = account.getLocalStore();
+            LocalFolder localFolder = localStore.getFolder(folder);
             localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
             synchronizeMailbox(account, folder, listener);
         }
@@ -802,8 +798,7 @@ public class MessagingController implements Runnable
         {
             try
             {
-                LocalStore localStore =
-                    (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
+                LocalStore localStore = account.getLocalStore();
                 localStore.resetVisibleLimits(account.getDisplayCount());
             }
             catch (MessagingException e)
@@ -890,8 +885,8 @@ public class MessagingController implements Runnable
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "SYNC: About to get local folder " + folder);
 
-            final LocalStore localStore = (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
-            tLocalFolder = (LocalFolder) localStore.getFolder(folder);
+            final LocalStore localStore = account.getLocalStore();
+            tLocalFolder = localStore.getFolder(folder);
             final LocalFolder localFolder = tLocalFolder;
             localFolder.open(OpenMode.READ_WRITE);
             Message[] localMessages = localFolder.getMessages(null);
@@ -904,7 +899,7 @@ public class MessagingController implements Runnable
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "SYNC: About to get remote store for " + folder);
 
-            Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+            Store remoteStore = account.getRemoteStore();
 
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "SYNC: About to get remote folder " + folder);
@@ -1672,9 +1667,7 @@ public class MessagingController implements Runnable
     {
         try
         {
-            LocalStore localStore = (LocalStore) Store.getInstance(
-                                        account.getLocalStoreUri(),
-                                        mApplication);
+            LocalStore localStore = account.getLocalStore();
             localStore.addPendingCommand(command);
         }
         catch (Exception e)
@@ -1712,9 +1705,7 @@ public class MessagingController implements Runnable
 
     private void processPendingCommandsSynchronous(Account account) throws MessagingException
     {
-        LocalStore localStore = (LocalStore) Store.getInstance(
-                                    account.getLocalStoreUri(),
-                                    mApplication);
+        LocalStore localStore = account.getLocalStore();
         ArrayList<PendingCommand> commands = localStore.getPendingCommands();
 
         int progress = 0;
@@ -1855,10 +1846,8 @@ public class MessagingController implements Runnable
                 return;
             }
 
-            LocalStore localStore = (LocalStore) Store.getInstance(
-                                        account.getLocalStoreUri(),
-                                        mApplication);
-            localFolder = (LocalFolder) localStore.getFolder(folder);
+            LocalStore localStore = account.getLocalStore();
+            localFolder = localStore.getFolder(folder);
             LocalMessage localMessage = (LocalMessage) localFolder.getMessage(uid);
 
             if (localMessage == null)
@@ -1866,7 +1855,7 @@ public class MessagingController implements Runnable
                 return;
             }
 
-            Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+            Store remoteStore = account.getRemoteStore();
             remoteFolder = remoteStore.getFolder(folder);
             if (!remoteFolder.exists())
             {
@@ -2038,7 +2027,7 @@ public class MessagingController implements Runnable
             }
             String destFolder = command.arguments[1];
             String isCopyS = command.arguments[2];
-            Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+            Store remoteStore = account.getRemoteStore();
             remoteSrcFolder = remoteStore.getFolder(srcFolder);
 
             List<Message> messages = new ArrayList<Message>();
@@ -2161,7 +2150,7 @@ public class MessagingController implements Runnable
 
         Flag flag = Flag.valueOf(command.arguments[2]);
 
-        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        Store remoteStore = account.getRemoteStore();
         Folder remoteFolder = remoteStore.getFolder(folder);
         try
         {
@@ -2220,7 +2209,7 @@ public class MessagingController implements Runnable
         Folder remoteFolder = null;
         try
         {
-            Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+            Store remoteStore = account.getRemoteStore();
             remoteFolder = remoteStore.getFolder(folder);
             if (!remoteFolder.exists())
             {
@@ -2279,7 +2268,7 @@ public class MessagingController implements Runnable
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "processPendingExpunge: folder = " + folder);
 
-        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        Store remoteStore = account.getRemoteStore();
         Folder remoteFolder = remoteStore.getFolder(folder);
         try
         {
@@ -2327,7 +2316,7 @@ public class MessagingController implements Runnable
             return;
         }
 
-        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        Store remoteStore = account.getRemoteStore();
         Folder remoteSrcFolder = remoteStore.getFolder(srcFolder);
         Folder remoteDestFolder = remoteStore.getFolder(destFolder);
 
@@ -2390,7 +2379,7 @@ public class MessagingController implements Runnable
         LocalFolder localFolder = null;
         try
         {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
             localFolder = (LocalFolder) localStore.getFolder(folder);
             localFolder.open(OpenMode.READ_WRITE);
             Message[] messages = localFolder.getMessages(null, false);
@@ -2417,7 +2406,7 @@ public class MessagingController implements Runnable
                 return;
             }
 
-            Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+            Store remoteStore = account.getRemoteStore();
             remoteFolder = remoteStore.getFolder(folder);
 
             if (!remoteFolder.exists())
@@ -2472,7 +2461,7 @@ public class MessagingController implements Runnable
             String rootCauseMessage = getRootCauseMessage(t);
             Log.e(K9.LOG_TAG, "Error " + "'" + rootCauseMessage + "'", t);
 
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
             LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
             Message[] messages = new Message[1];
             MimeMessage message = new MimeMessage();
@@ -2528,7 +2517,7 @@ public class MessagingController implements Runnable
                 return;
             }
 
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
             LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
             Message[] messages = new Message[1];
             MimeMessage message = new MimeMessage();
@@ -2603,7 +2592,7 @@ public class MessagingController implements Runnable
         Folder localFolder = null;
         try
         {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folderName);
             localFolder.open(OpenMode.READ_WRITE);
             ArrayList<Message> messages = new ArrayList<Message>();
@@ -2660,7 +2649,7 @@ public class MessagingController implements Runnable
         try
         {
             Log.w(K9.LOG_TAG, "Clearing pending commands!");
-            LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), mApplication);
+            LocalStore localStore = account.getLocalStore();
             localStore.removePendingCommands();
         }
         catch (MessagingException me)
@@ -2681,8 +2670,8 @@ public class MessagingController implements Runnable
                 LocalFolder localFolder = null;
                 try
                 {
-                    Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-                    localFolder = (LocalFolder) localStore.getFolder(folder);
+                    LocalStore localStore = account.getLocalStore();
+                    localFolder = localStore.getFolder(folder);
                     localFolder.open(OpenMode.READ_WRITE);
 
                     Message message = localFolder.getMessage(uid);
@@ -2705,7 +2694,7 @@ public class MessagingController implements Runnable
                          * fully if possible.
                          */
 
-                        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+                        Store remoteStore = account.getRemoteStore();
                         remoteFolder = remoteStore.getFolder(folder);
                         remoteFolder.open(OpenMode.READ_WRITE);
 
@@ -2794,8 +2783,8 @@ public class MessagingController implements Runnable
 
                 try
                 {
-                    Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-                    LocalFolder localFolder = (LocalFolder) localStore.getFolder(folder);
+                    LocalStore localStore = account.getLocalStore();
+                    LocalFolder localFolder = localStore.getFolder(folder);
                     localFolder.open(OpenMode.READ_WRITE);
 
                     LocalMessage message = (LocalMessage)localFolder.getMessage(uid);
@@ -2941,8 +2930,8 @@ public class MessagingController implements Runnable
                 LocalFolder localFolder = null;
                 try
                 {
-                    LocalStore localStore =
-                        (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
+                    LocalStore localStore = account.getLocalStore();
+
                     /*
                      * We clear out any attachments already cached in the entire store and then
                      * we update the passed in message to reflect that there are no cached
@@ -2957,9 +2946,8 @@ public class MessagingController implements Runnable
                     {
                         attachment.setBody(null);
                     }
-                    Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
-                    localFolder =
-                        (LocalFolder) localStore.getFolder(message.getFolder().getName());
+                    Store remoteStore = account.getRemoteStore();
+                    localFolder = localStore.getFolder(message.getFolder().getName());
                     remoteFolder = remoteStore.getFolder(message.getFolder().getName());
                     remoteFolder.open(OpenMode.READ_WRITE);
 
@@ -3020,9 +3008,8 @@ public class MessagingController implements Runnable
     {
         try
         {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-            LocalFolder localFolder =
-                (LocalFolder) localStore.getFolder(account.getOutboxFolderName());
+            LocalStore localStore = account.getLocalStore();
+            LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderName());
             localFolder.open(OpenMode.READ_WRITE);
             localFolder.appendMessages(new Message[]
                                        {
@@ -3067,9 +3054,7 @@ public class MessagingController implements Runnable
         Folder localFolder = null;
         try
         {
-            Store localStore = Store.getInstance(
-                                   account.getLocalStoreUri(),
-                                   mApplication);
+            Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(
                               account.getOutboxFolderName());
             if (!localFolder.exists())
@@ -3109,9 +3094,7 @@ public class MessagingController implements Runnable
         Folder localFolder = null;
         try
         {
-            Store localStore = Store.getInstance(
-                                   account.getLocalStoreUri(),
-                                   mApplication);
+            Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(
                               account.getOutboxFolderName());
             if (!localFolder.exists())
@@ -3143,7 +3126,7 @@ public class MessagingController implements Runnable
             if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "Scanning folder '" + account.getOutboxFolderName() + "' (" + ((LocalFolder)localFolder).getId() + ") for messages to send");
 
-            Transport transport = Transport.getInstance(account.getTransportUri());
+            Transport transport = Transport.getInstance(account);
             for (Message message : localMessages)
             {
                 if (message.isSet(Flag.DELETED))
@@ -3338,7 +3321,7 @@ public class MessagingController implements Runnable
                 int unreadMessageCount = 0;
                 try
                 {
-                    unreadMessageCount = account.getUnreadMessageCount(context, mApplication);
+                    unreadMessageCount = account.getUnreadMessageCount(context);
                 }
                 catch (MessagingException me)
                 {
@@ -3364,7 +3347,7 @@ public class MessagingController implements Runnable
                 int unreadMessageCount = 0;
                 try
                 {
-                    Folder localFolder = (Folder) Store.getInstance(account.getLocalStoreUri(), mApplication).getFolder(folderName);
+                    Folder localFolder = account.getLocalStore().getFolder(folderName);
                     unreadMessageCount = localFolder.getUnreadMessageCount();
                 }
                 catch (MessagingException me)
@@ -3435,8 +3418,8 @@ public class MessagingController implements Runnable
     {
         try
         {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-            Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
+            Store remoteStore = account.getRemoteStore();
             return localStore.isMoveCapable() && remoteStore.isMoveCapable();
         }
         catch (MessagingException me)
@@ -3450,8 +3433,8 @@ public class MessagingController implements Runnable
     {
         try
         {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-            Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
+            Store remoteStore = account.getRemoteStore();
             return localStore.isCopyCapable() && remoteStore.isCopyCapable();
         }
         catch (MessagingException me)
@@ -3499,8 +3482,8 @@ public class MessagingController implements Runnable
     {
         try
         {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-            Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
+            Store remoteStore = account.getRemoteStore();
             if (isCopy == false && (remoteStore.isMoveCapable() == false || localStore.isMoveCapable() == false))
             {
                 return;
@@ -3600,7 +3583,7 @@ public class MessagingController implements Runnable
                     l.messageDeleted(account, folder, message);
                 }
             }
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
             if (folder.equals(account.getTrashFolderName()) || K9.FOLDER_NONE.equals(account.getTrashFolderName()))
             {
@@ -3708,7 +3691,7 @@ public class MessagingController implements Runnable
 
     private void processPendingEmptyTrash(PendingCommand command, Account account) throws MessagingException
     {
-        Store remoteStore = Store.getInstance(account.getStoreUri(), mApplication);
+        Store remoteStore = account.getRemoteStore();
 
         Folder remoteFolder = remoteStore.getFolder(account.getTrashFolderName());
         try
@@ -3741,7 +3724,7 @@ public class MessagingController implements Runnable
                 Folder localFolder = null;
                 try
                 {
-                    Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+                    Store localStore = account.getLocalStore();
                     localFolder = localStore.getFolder(account.getTrashFolderName());
                     localFolder.open(OpenMode.READ_WRITE);
                     localFolder.setFlags(new Flag[] { Flag.DELETED }, true);
@@ -3943,7 +3926,7 @@ public class MessagingController implements Runnable
                             Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
                             Account.FolderMode aSyncMode = account.getFolderSyncMode();
 
-                            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+                            Store localStore = account.getLocalStore();
                             for (final Folder folder : localStore.getPersonalNamespaces())
                             {
 
@@ -4006,9 +3989,8 @@ public class MessagingController implements Runnable
                                         {
                                             // In case multiple Commands get enqueued, don't run more than
                                             // once
-                                            final LocalStore localStore =
-                                                (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
-                                            tLocalFolder = (LocalFolder) localStore.getFolder(folder.getName());
+                                            final LocalStore localStore = account.getLocalStore();
+                                            tLocalFolder = localStore.getFolder(folder.getName());
                                             tLocalFolder.open(Folder.OpenMode.READ_WRITE);
 
                                             if (ignoreLastCheckedTime == false && tLocalFolder.getLastChecked() >
@@ -4116,7 +4098,7 @@ public class MessagingController implements Runnable
             {
                 try
                 {
-                    LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), mApplication);
+                    LocalStore localStore = account.getLocalStore();
                     long oldSize = localStore.getSize();
                     localStore.compact();
                     long newSize = localStore.getSize();
@@ -4145,7 +4127,7 @@ public class MessagingController implements Runnable
             {
                 try
                 {
-                    LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), mApplication);
+                    LocalStore localStore = account.getLocalStore();
                     long oldSize = localStore.getSize();
                     localStore.clear();
                     localStore.resetVisibleLimits(account.getDisplayCount());
@@ -4227,7 +4209,7 @@ public class MessagingController implements Runnable
         int unreadMessageCount = 0;
         try
         {
-            unreadMessageCount = account.getUnreadMessageCount(context, mApplication);
+            unreadMessageCount = account.getUnreadMessageCount(context);
         }
         catch (MessagingException e)
         {
@@ -4278,9 +4260,8 @@ public class MessagingController implements Runnable
     {
         try
         {
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
-            LocalFolder localFolder =
-                (LocalFolder) localStore.getFolder(account.getDraftsFolderName());
+            LocalStore localStore = account.getLocalStore();
+            LocalFolder localFolder = localStore.getFolder(account.getDraftsFolderName());
             localFolder.open(OpenMode.READ_WRITE);
             localFolder.appendMessages(new Message[]
                                        {
@@ -4424,7 +4405,7 @@ public class MessagingController implements Runnable
 
             List<String> names = new ArrayList<String>();
 
-            Store localStore = Store.getInstance(account.getLocalStoreUri(), mApplication);
+            Store localStore = account.getLocalStore();
             for (final Folder folder : localStore.getPersonalNamespaces())
             {
                 if (folder.getName().equals(account.getErrorFolderName())
@@ -4483,7 +4464,7 @@ public class MessagingController implements Runnable
 
                 try
                 {
-                    Store store = Store.getInstance(account.getStoreUri(), mApplication);
+                    Store store = account.getRemoteStore();
                     if (store.isPushCapable() == false)
                     {
                         if (K9.DEBUG)
@@ -4566,8 +4547,8 @@ public class MessagingController implements Runnable
                 LocalFolder localFolder = null;
                 try
                 {
-                    LocalStore localStore = (LocalStore) Store.getInstance(account.getLocalStoreUri(), mApplication);
-                    localFolder= (LocalFolder) localStore.getFolder(remoteFolder.getName());
+                    LocalStore localStore = account.getLocalStore();
+                    localFolder= localStore.getFolder(remoteFolder.getName());
                     localFolder.open(OpenMode.READ_WRITE);
 
                     int newCount = downloadMessages(account, remoteFolder, localFolder, messages, flagSyncOnly);

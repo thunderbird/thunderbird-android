@@ -3,6 +3,7 @@ package com.fsck.k9;
 
 import java.util.regex.Pattern;
 
+import android.text.util.Rfc822Tokenizer;
 import android.widget.AutoCompleteTextView.Validator;
 
 public class EmailAddressValidator implements Validator
@@ -20,6 +21,11 @@ public class EmailAddressValidator implements Validator
     }
 
     public boolean isValid(CharSequence text)
+    {
+        return Rfc822Tokenizer.tokenize(text).length > 0;
+    }
+
+    public boolean isValidAddressOnly(CharSequence text)
     {
         return p.matcher(text).matches();
     }

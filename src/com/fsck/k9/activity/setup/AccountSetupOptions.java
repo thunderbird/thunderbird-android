@@ -116,7 +116,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener
         boolean isPushCapable = false;
         try
         {
-            Store store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+            Store store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
         }
         catch (Exception e)

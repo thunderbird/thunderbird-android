@@ -1,10 +1,13 @@
 package com.fsck.k9.mail;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 
 
 public abstract class Folder
 {
+    protected final Account mAccount;
+
     private String status = null;
     private long lastChecked = 0;
     private long lastPush = 0;
@@ -21,6 +24,11 @@ public abstract class Folder
     public enum FolderType
     {
         HOLDS_FOLDERS, HOLDS_MESSAGES,
+    }
+
+    protected Folder(Account account)
+    {
+        mAccount = account;
     }
 
     /**
@@ -205,5 +213,8 @@ public abstract class Folder
         this.status = status;
     }
 
-
+    public Account getAccount()
+    {
+        return mAccount;
+    }
 }

@@ -1704,7 +1704,7 @@ public class MessageList
             LocalFolder local_folder = null;
             try
             {
-                LocalStore localStore = (LocalStore)Store.getInstance(account.getLocalStoreUri(), getApplication());
+                LocalStore localStore = account.getLocalStore();
                 local_folder = localStore.getFolder(folder);
                 return new FolderInfoHolder((Folder)local_folder, account);
             }

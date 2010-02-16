@@ -639,8 +639,7 @@ public class Account implements Serializable
 
         try
         {
-            LocalStore localStore = (LocalStore)Store.getInstance(mLocalStoreUri, K9.app);
-            localStore.setStoreAttachmentsOnSdCard(mStoreAttachmentsOnSdCard);
+            getLocalStore().setStoreAttachmentsOnSdCard(mStoreAttachmentsOnSdCard);
         }
         catch (MessagingException e)
         {
@@ -677,12 +676,10 @@ public class Account implements Serializable
         return mAutomaticCheckIntervalMinutes;
     }
 
-    public int getUnreadMessageCount(Context context, Application application) throws MessagingException
+    public int getUnreadMessageCount(Context context) throws MessagingException
     {
         int unreadMessageCount = 0;
-        LocalStore localStore = (LocalStore) Store.getInstance(
-                                    getLocalStoreUri(),
-                                    application);
+        LocalStore localStore = getLocalStore();
         Account.FolderMode aMode = getFolderDisplayMode();
         Preferences prefs = Preferences.getPreferences(context);
         for (LocalFolder folder : localStore.getPersonalNamespaces())
@@ -1037,5 +1034,15 @@ public class Account implements Serializable
     public void setStoreAttachmentOnSdCard(boolean mStoreAttachmentOnSdCard)
     {
         this.mStoreAttachmentsOnSdCard = mStoreAttachmentOnSdCard;
+    }
+    
+    public LocalStore getLocalStore() throws MessagingException
+    {
+        return Store.getLocalInstance(this, K9.app);        
+    }
+    
+    public Store getRemoteStore() throws MessagingException
+    {
+        return Store.getRemoteInstance(this);        
     }
 }

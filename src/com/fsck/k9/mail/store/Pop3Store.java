@@ -3,6 +3,8 @@ package com.fsck.k9.mail.store;
 
 import android.util.Config;
 import android.util.Log;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Utility;
 import com.fsck.k9.mail.*;
@@ -69,15 +71,15 @@ public class Pop3Store extends Store
      * pop3+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
      * pop3+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
      * pop3+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
-     *
-     * @param _uri
      */
-    public Pop3Store(String _uri) throws MessagingException
+    public Pop3Store(Account account) throws MessagingException
     {
+        super(account);
+
         URI uri;
         try
         {
-            uri = new URI(_uri);
+            uri = new URI(mAccount.getStoreUri());
         }
         catch (URISyntaxException use)
         {
@@ -197,6 +199,7 @@ public class Pop3Store extends Store
 
         public Pop3Folder(String name)
         {
+            super(Pop3Store.this.mAccount);
             this.mName = name;
             if (mName.equalsIgnoreCase("INBOX"))
             {

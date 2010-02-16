@@ -104,7 +104,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     if (mCheckIncoming)
                     {
                         setMessage(R.string.account_setup_check_settings_check_incoming_msg);
-                        store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+                        store = mAccount.getRemoteStore();
                         store.checkSettings();
 
                         MessagingController.getInstance(getApplication()).listFolders(mAccount, true, null);
@@ -123,7 +123,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     if (mCheckOutgoing)
                     {
                         setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
-                        Transport transport = Transport.getInstance(mAccount.getTransportUri());
+                        Transport transport = Transport.getInstance(mAccount);
                         transport.close();
                         transport.open();
                         transport.close();
