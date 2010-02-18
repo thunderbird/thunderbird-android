@@ -34,8 +34,7 @@ public class ManageIdentities extends ChooseIdentity
     private void editItem(int i)
     {
         Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
-
-        intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(EditIdentity.EXTRA_IDENTITY, mAccount.getIdentity(i));
         intent.putExtra(EditIdentity.EXTRA_IDENTITY_INDEX, i);
         startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
@@ -56,8 +55,7 @@ public class ManageIdentities extends ChooseIdentity
         {
             case R.id.new_identity:
                 Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
-
-                intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount);
+                intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
                 startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
                 break;
             default:
@@ -129,7 +127,7 @@ public class ManageIdentities extends ChooseIdentity
     public void onResume()
     {
         super.onResume();
-        mAccount.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
+        //mAccount.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
         refreshView();
     }
 

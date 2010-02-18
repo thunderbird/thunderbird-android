@@ -7,12 +7,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.K9Activity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-
 import java.util.List;
 
 public class EditIdentity extends K9Activity
@@ -40,7 +38,8 @@ public class EditIdentity extends K9Activity
 
         mIdentity = (Account.Identity)getIntent().getSerializableExtra(EXTRA_IDENTITY);
         mIdentityIndex = getIntent().getIntExtra(EXTRA_IDENTITY_INDEX, -1);
-        mAccount = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         if (mIdentityIndex == -1)
         {

@@ -23,7 +23,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -37,7 +36,6 @@ import android.os.Process;
 import android.os.PowerManager.WakeLock;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.mail.Address;
@@ -4905,7 +4903,7 @@ public class MessagingController implements Runnable
         {
             Account account = entry.getKey();
 
-            account.refresh(Preferences.getPreferences(K9.app));
+            //account.refresh(Preferences.getPreferences(K9.app));
             Map<Folder, List<Message>> folderMap = entry.getValue();
             for (Map.Entry<Folder, List<Message>> folderEntry : folderMap.entrySet())
             {

@@ -12,8 +12,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9ListActivity;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-
 import java.util.List;
 
 public class ChooseIdentity extends K9ListActivity
@@ -39,7 +39,8 @@ public class ChooseIdentity extends K9ListActivity
         getListView().setItemsCanFocus(false);
         getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
         Intent intent = getIntent();
-        mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 

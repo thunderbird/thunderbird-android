@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9Activity;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-
 import java.net.URI;
 
 /**
@@ -34,7 +34,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     public static void actionSelectAccountType(Context context, Account account, boolean makeDefault)
     {
         Intent i = new Intent(context, AccountSetupAccountType.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
         context.startActivity(i);
     }
@@ -48,7 +48,8 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         ((Button)findViewById(R.id.imap)).setOnClickListener(this);
         ((Button)findViewById(R.id.webdav)).setOnClickListener(this);
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mMakeDefault = (boolean)getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
     }
 

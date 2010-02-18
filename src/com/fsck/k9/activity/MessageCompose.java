@@ -28,7 +28,6 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.*;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
-
 import java.io.File;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -178,7 +177,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public static void actionCompose(Context context, Account account)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
@@ -197,7 +196,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         boolean replyAll)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
         i.putExtra(EXTRA_MESSAGE, message.getUid());
         if (replyAll)
@@ -220,7 +219,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public static void actionForward(Context context, Account account, Message message)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
         i.putExtra(EXTRA_MESSAGE, message.getUid());
         i.setAction(ACTION_FORWARD);
@@ -240,7 +239,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public static void actionEditDraft(Context context, Account account, Message message)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
         i.putExtra(EXTRA_MESSAGE, message.getUid());
         i.setAction(ACTION_EDIT_DRAFT);
@@ -257,7 +256,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         setContentView(R.layout.message_compose);
 
         Intent intent = getIntent();
-        mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         if (mAccount == null)
         {
@@ -1133,7 +1133,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (mAccount.getIdentities().size() > 1)
         {
             Intent intent = new Intent(this, ChooseIdentity.class);
-            intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
+            intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
             startActivityForResult(intent, ACTIVITY_CHOOSE_IDENTITY);
         }
         else

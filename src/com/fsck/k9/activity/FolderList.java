@@ -26,9 +26,7 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -47,7 +45,7 @@ public class FolderList extends K9ListActivity
 
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
 
-    private static final String STATE_CURRENT_FOLDER = "com.fsck.k9.activity.folderlist_folder";
+    //private static final String STATE_CURRENT_FOLDER = "com.fsck.k9.activity.folderlist_folder";
 
     private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
 
@@ -213,7 +211,7 @@ public class FolderList extends K9ListActivity
     private static void actionHandleAccount(Context context, Account account, String initialFolder)
     {
         Intent intent = new Intent(context, FolderList.class);
-        intent.putExtra(EXTRA_ACCOUNT, account);
+        intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
 
         if (initialFolder != null)
         {
@@ -236,7 +234,7 @@ public class FolderList extends K9ListActivity
             context,
             FolderList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(EXTRA_ACCOUNT, account);
+        intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
         intent.putExtra(EXTRA_CLEAR_NOTIFICATION, true);
 
         if (initialFolder != null)
@@ -286,7 +284,8 @@ public class FolderList extends K9ListActivity
         String initialFolder;
 
         mUnreadMessageCount = 0;
-        mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
         if (
@@ -346,7 +345,7 @@ public class FolderList extends K9ListActivity
             initializeActivityView();
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
-        mAccount.refresh(Preferences.getPreferences(this));
+        //mAccount.refresh(Preferences.getPreferences(this));
         MessagingController.getInstance(getApplication()).getAccountUnreadCount(this, mAccount, mAdapter.mListener);
 
         onRefresh(!REFRESH_REMOTE);

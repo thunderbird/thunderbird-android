@@ -37,7 +37,7 @@ public class FolderSettings extends K9PreferenceActivity
     {
         Intent i = new Intent(context, FolderSettings.class);
         i.putExtra(EXTRA_FOLDER_NAME, folderName);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
@@ -47,7 +47,8 @@ public class FolderSettings extends K9PreferenceActivity
         super.onCreate(savedInstanceState);
 
         String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
-        Account mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try
         {

@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import com.fsck.k9.*;
-import com.fsck.k9.activity.FolderList;
 
 public class AccountSetupNames extends K9Activity implements OnClickListener
 {
@@ -30,7 +29,7 @@ public class AccountSetupNames extends K9Activity implements OnClickListener
     public static void actionSetNames(Context context, Account account)
     {
         Intent i = new Intent(context, AccountSetupNames.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
@@ -63,7 +62,8 @@ public class AccountSetupNames extends K9Activity implements OnClickListener
 
         mName.setKeyListener(TextKeyListener.getInstance(false, Capitalize.WORDS));
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         /*
          * Since this field is considered optional, we don't set this here. If

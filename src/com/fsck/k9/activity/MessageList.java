@@ -20,7 +20,6 @@ import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.GestureDetector.SimpleOnGestureListener;
-
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -33,7 +32,6 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -284,7 +282,7 @@ public class MessageList
     public static Intent actionHandleFolderIntent(Context context, Account account, String folder)
     {
         Intent intent = new Intent(context, MessageList.class);
-        intent.putExtra(EXTRA_ACCOUNT, account);
+        intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
 
         if (folder != null)
         {
@@ -331,7 +329,8 @@ public class MessageList
     public void onNewIntent(Intent intent)
     {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
-        mAccount = (Account)intent.getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);
 
@@ -761,8 +760,7 @@ public class MessageList
         }
 
         Intent intent = new Intent(this, ChooseFolder.class);
-
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.account);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.account.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, holder.message.getUid());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
@@ -783,8 +781,7 @@ public class MessageList
         }
 
         Intent intent = new Intent(this, ChooseFolder.class);
-
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.account);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.account.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, holder.message.getUid());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
@@ -2587,8 +2584,7 @@ public class MessageList
             }
         }
         Intent intent = new Intent(this, ChooseFolder.class);
-
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH);
     }
@@ -2642,8 +2638,7 @@ public class MessageList
             }
         }
         Intent intent = new Intent(this, ChooseFolder.class);
-
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY_BATCH);
     }

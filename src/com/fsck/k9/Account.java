@@ -1,7 +1,6 @@
 
 package com.fsck.k9;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,14 +21,26 @@ import java.util.UUID;
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
-public class Account implements Serializable
+public class Account
 {
+    public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
+    public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
+    public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
+
     public static final int DELETE_POLICY_NEVER = 0;
     public static final int DELETE_POLICY_7DAYS = 1;
     public static final int DELETE_POLICY_ON_DELETE = 2;
     public static final int DELETE_POLICY_MARK_AS_READ = 3;
 
-    private static final long serialVersionUID = 2975156672298625121L;
+    /**
+     * <pre>
+     * 0 - Never (DELETE_POLICY_NEVER)
+     * 1 - After 7 days (DELETE_POLICY_7DAYS)
+     * 2 - When I delete from inbox (DELETE_POLICY_ON_DELETE)
+     * 3 - Mark as read (DELETE_POLICY_MARK_AS_READ)
+     * </pre>
+     */
+    int mDeletePolicy;
 
     String mUuid;
     String mStoreUri;
@@ -65,7 +75,7 @@ public class Account implements Serializable
 
     List<Identity> identities;
 
-     public enum FolderMode
+    public enum FolderMode
     {
         NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
     }
@@ -75,20 +85,8 @@ public class Account implements Serializable
         NEVER, ALWAYS, KEYBOARD_AVAILABLE;
     }
 
-    public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
-    public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
-    public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
 
-    /**
-     * <pre>
-     * 0 Never
-     * 1 After 7 days
-     * 2 When I delete from inbox
-     * </pre>
-     */
-    int mDeletePolicy;
-
-    public Account(Context context)
+    Account(Context context)
     {
         // TODO Change local store path to something readable / recognizable
         mUuid = UUID.randomUUID().toString();
@@ -184,7 +182,7 @@ public class Account implements Serializable
     /**
      * Refresh the account from the stored settings.
      */
-    public void refresh(Preferences preferences)
+    private void refresh(Preferences preferences)
     {
         mStoreUri = Utility.base64Decode(preferences.getPreferences().getString(mUuid
                                          + ".storeUri", null));
@@ -510,7 +508,7 @@ public class Account implements Serializable
         mRingtoneUri = ringtoneUri;
     }
 
-    public void delete(Preferences preferences)
+    void delete(Preferences preferences)
     {
         String[] uuids = preferences.getPreferences().getString("accountUuids", "").split(",");
         StringBuffer sb = new StringBuffer();

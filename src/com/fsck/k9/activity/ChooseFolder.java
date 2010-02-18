@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.fsck.k9.*;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,7 +49,8 @@ public class ChooseFolder extends K9ListActivity
         getListView().setItemsCanFocus(false);
         getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
         Intent intent = getIntent();
-        mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mUID = intent.getStringExtra(EXTRA_MESSAGE_UID);
         mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
         if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null)
