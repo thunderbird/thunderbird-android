@@ -31,7 +31,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.PowerManager.WakeLock;
@@ -47,6 +46,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRemovalListener;
 import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
@@ -54,7 +54,6 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Folder.OpenMode;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
@@ -62,10 +61,6 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.PendingCommand;
-import com.fsck.k9.mail.transport.EOLConvertingOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * Starts a long running (application) Thread that will run through commands
@@ -3878,19 +3873,13 @@ public class MessagingController implements Runnable
 
                     for (final Account account : accounts)
                     {
-                        if (account.isStoreAttachmentOnSdCard()
-                            && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-                        {
-                            if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "SD card not mounted: skipping synchronizing account " + account.getDescription());
-                            continue;
-                        }
-
                         final long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
                         if (ignoreLastCheckedTime == false && accountInterval <= 0)
                         {
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Skipping synchronizing account " + account.getDescription());
+
+
                             continue;
                         }
 
@@ -3991,16 +3980,6 @@ public class MessagingController implements Runnable
                                 {
                                     public void run()
                                     {
-                                        //Let's be conservative and check the sd card
-                                        //in case it was unmounted while we are sync'ing this account
-                                        if (account.isStoreAttachmentOnSdCard()
-                                            && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-                                        {
-                                            if (K9.DEBUG)
-                                                Log.i(K9.LOG_TAG, "SD card not mounted: skipping synchronizing: account " + account.getDescription() + " folder=" + folder.getName());
-                                            return;
-                                        }
-
                                         LocalFolder tLocalFolder = null;
                                         try
                                         {
@@ -4555,14 +4534,6 @@ public class MessagingController implements Runnable
         {
             public void run()
             {
-                if (account.isStoreAttachmentOnSdCard()
-                    && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-                {
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "SD card not mounted: skipping reception of pushed messages: account=" + account.getDescription() + ", folder=" + remoteFolder.getName() + ", message count=" + messages.size());
-                    throw new RuntimeException("SD card unavailable/required");
-                }
-
                 LocalFolder localFolder = null;
                 try
                 {

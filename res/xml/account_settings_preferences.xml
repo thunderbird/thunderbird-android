@@ -30,16 +30,9 @@
             android:key="account_default"
             android:title="@string/account_settings_default_label"
             android:summary="@string/account_settings_default_summary" />
-
-        <CheckBoxPreference
-            android:key="account_setup_store_attachment_on_sd_card"
-            android:title="@string/account_setup_store_attachment_on_sd_card_label"
-            android:summary="@string/account_setup_store_attachment_on_sd_card_summary" />
-
-    </PreferenceCategory>
-
+		</PreferenceCategory>
 	
-	<PreferenceCategory android:title="@string/account_settings_message_lists">
+		<PreferenceCategory android:title="@string/account_settings_message_lists">
 
         <ListPreference
             android:key="account_display_count"

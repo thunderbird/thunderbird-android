@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
+import android.text.SpannableString;
 import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.text.style.TextAppearanceSpan;
 import android.util.Config;
 import android.util.Log;
@@ -970,13 +972,6 @@ public class MessageList
 
     private void checkMail(Account account, String folderName)
     {
-        if (mAccount.isStoreAttachmentOnSdCard()
-            && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-        {
-            Toast.makeText(this, R.string.sd_card_error, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         mController.synchronizeMailbox(account, folderName, mAdapter.mListener);
         sendMail(account);
     }

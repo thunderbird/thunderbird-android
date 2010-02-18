@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -383,29 +382,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
      */
     private void onCheckMail(Account account)
     {
-        if (account != null)
-        {
-            if (account.isStoreAttachmentOnSdCard()
-                    && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-            {
-                Toast.makeText(this, R.string.sd_card_error, Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-        else
-        {
-            Account[] accounts = Preferences.getPreferences(this).getAccounts();
-            for (Account acc : accounts)
-            {
-                if (acc.isStoreAttachmentOnSdCard()
-                        && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-                {
-                    Toast.makeText(this, R.string.sd_card_skip, Toast.LENGTH_LONG).show();
-                    break;
-                }
-            }
-        }
-
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, null);
     }
 
