@@ -1514,7 +1514,7 @@ public class LocalStore extends Store implements Serializable
          * old message. It is implemented as a delete/insert. This functionality is used in saving
          * of drafts and re-synchronization of updated server messages.
          */
-        public void appendMessages(Message[] messages, boolean copy) throws MessagingException
+        private void appendMessages(Message[] messages, boolean copy) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
             for (Message message : messages)
@@ -1525,10 +1525,13 @@ public class LocalStore extends Store implements Serializable
                 }
 
                 String uid = message.getUid();
-                if (uid == null)
+                if (uid == null || copy)
                 {
                     uid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
-                    message.setUid(uid);
+                    if (!copy)
+                    {
+                        message.setUid(uid);
+                    }
                 }
                 else
                 {
@@ -1963,6 +1966,12 @@ public class LocalStore extends Store implements Serializable
                 return ((LocalFolder)o).mName.equals(mName);
             }
             return super.equals(o);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return mName.hashCode();
         }
 
         @Override

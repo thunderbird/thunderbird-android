@@ -59,6 +59,9 @@ public class MessageList
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
+    
+    private static final int ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH = 3;
+    private static final int ACTIVITY_CHOOSE_FOLDER_COPY_BATCH = 4;
 
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_FOLDER  = "folder";
@@ -797,13 +800,13 @@ public class MessageList
         {
             case ACTIVITY_CHOOSE_FOLDER_MOVE:
             case ACTIVITY_CHOOSE_FOLDER_COPY:
+            {
                 if (data == null)
                     return;
 
                 String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
 
                 String uid = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE_UID);
-
 
                 MessageInfoHolder m = mAdapter.getMessage(uid);
                 if (destFolderName != null && m != null)
@@ -812,15 +815,27 @@ public class MessageList
                     {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
                             onMoveChosen(m, destFolderName);
-
                             break;
 
                         case ACTIVITY_CHOOSE_FOLDER_COPY:
                             onCopyChosen(m, destFolderName);
-
                             break;
                     }
                 }
+                break;
+            }
+            case ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH:
+            {
+                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                onMoveChosenBatch(destFolderName);
+                break;
+            }
+            case ACTIVITY_CHOOSE_FOLDER_COPY_BATCH:
+            {
+                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                onCopyChosenBatch(destFolderName);
+                break;
+            }
         }
     }
 
@@ -984,16 +999,7 @@ public class MessageList
         int itemId = item.getItemId();
         switch (itemId)
         {
-            case R.id.check_mail:
-                if (mFolderName != null)
-                {
-                    checkMail(mAccount, mFolderName);
-                }
-                return true;
-            case R.id.send_messages:
-                sendMail(mAccount);
-                return true;
-
+            
             case R.id.compose:
                 onCompose();
 
@@ -1034,38 +1040,6 @@ public class MessageList
 
                 return true;
 
-            case R.id.list_folders:
-                onShowFolderList();
-
-                return true;
-        }
-
-        if (mQueryString != null)
-        {
-            return false; // none of the options after this point are "safe" for search results
-        }
-
-        switch (itemId)
-        {
-            case R.id.mark_all_as_read:
-                if (mFolderName != null)
-                {
-                    onMarkAllAsRead(mAccount, mFolderName);
-                }
-                return true;
-
-            case R.id.folder_settings:
-                if (mFolderName != null)
-                {
-                    FolderSettings.actionSettings(this, mAccount, mFolderName);
-                }
-                return true;
-
-            case R.id.account_settings:
-                onEditAccount();
-
-                return true;
-
             case R.id.batch_select_all:
                 setAllSelected(true);
                 toggleBatchButtons();
@@ -1075,15 +1049,7 @@ public class MessageList
                 setAllSelected(false);
                 toggleBatchButtons();
                 return true;
-
-            case R.id.batch_copy_op:
-                moveOrCopySelected(false);
-                return true;
-
-            case R.id.batch_move_op:
-                moveOrCopySelected(true);
-                return true;
-
+                
             case R.id.batch_delete_op:
                 deleteSelected();
                 return true;
@@ -1104,6 +1070,58 @@ public class MessageList
                 flagSelected(Flag.FLAGGED, false);
                 return true;
 
+        }
+
+        if (mQueryString != null)
+        {
+            return false; // none of the options after this point are "safe" for search results
+        }
+
+        switch (itemId)
+        {
+            case R.id.check_mail:
+                if (mFolderName != null)
+                {
+                    checkMail(mAccount, mFolderName);
+                }
+                return true;
+            case R.id.send_messages:
+                sendMail(mAccount);
+                return true;
+
+            case R.id.list_folders:
+                onShowFolderList();
+
+                return true;
+
+            case R.id.mark_all_as_read:
+                if (mFolderName != null)
+                {
+                    onMarkAllAsRead(mAccount, mFolderName);
+                }
+                return true;
+
+            case R.id.folder_settings:
+                if (mFolderName != null)
+                {
+                    FolderSettings.actionSettings(this, mAccount, mFolderName);
+                }
+                return true;
+
+            case R.id.account_settings:
+                onEditAccount();
+
+                return true;
+
+            case R.id.batch_copy_op:
+                onCopyBatch();
+                return true;
+
+            case R.id.batch_move_op:
+                onMoveBatch();
+                return true;
+
+           
             case R.id.expunge:
                 if (mCurrentFolder != null)
                 {
@@ -1135,19 +1153,37 @@ public class MessageList
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
     {
-
+        boolean anySelected = anySelected();
+        setOpsState(menu, true, anySelected);
+        
         if (mQueryString != null)
         {
-            menu.findItem(R.id.batch_ops).setVisible(false);
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
             menu.findItem(R.id.folder_settings).setVisible(false);
             menu.findItem(R.id.account_settings).setVisible(false);
             menu.findItem(R.id.list_folders).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
+            menu.findItem(R.id.batch_move_op).setVisible(false);
+            menu.findItem(R.id.batch_copy_op).setVisible(false);
+            menu.findItem(R.id.check_mail).setVisible(false);
+            menu.findItem(R.id.send_messages).setVisible(false);
         }
+        else
+        {
+            if (mCurrentFolder != null && mCurrentFolder.outbox)
+            {
+                menu.findItem(R.id.check_mail).setVisible(false);
+            }
+            else
+            {
+                menu.findItem(R.id.send_messages).setVisible(false);
+            }
 
-        boolean anySelected = anySelected();
-        setOpsState(menu, true, anySelected);
+            if (mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name))
+            {
+                menu.findItem(R.id.expunge).setVisible(false);
+            }
+        }
 
         boolean newFlagState = computeBatchDirection(true);
         boolean newReadState = computeBatchDirection(false);
@@ -1157,24 +1193,7 @@ public class MessageList
         menu.findItem(R.id.batch_mark_unread_op).setVisible(!newReadState);
         menu.findItem(R.id.batch_deselect_all).setVisible(anySelected);
         menu.findItem(R.id.batch_select_all).setEnabled(true);
-        // TODO: batch move and copy not yet implemented
-        menu.findItem(R.id.batch_move_op).setVisible(false);
-        menu.findItem(R.id.batch_copy_op).setVisible(false);
 
-
-        if (mCurrentFolder != null && mCurrentFolder.outbox)
-        {
-            menu.findItem(R.id.check_mail).setVisible(false);
-        }
-        else
-        {
-            menu.findItem(R.id.send_messages).setVisible(false);
-        }
-
-        if (mCurrentFolder != null && K9.ERROR_FOLDER_NAME.equals(mCurrentFolder.name))
-        {
-            menu.findItem(R.id.expunge).setVisible(false);
-        }
         return true;
     }
 
@@ -2547,24 +2566,110 @@ public class MessageList
         mSelectedCount = 0;
         toggleBatchButtons();
     }
-
-    private void moveOrCopySelected(boolean isMove)
+    
+    private void onMoveBatch()
     {
-//        List<Message> messageList = new ArrayList<Message>();
-//        List<MessageInfoHolder> moveHolderList = new ArrayList<MessageInfoHolder>();
-//        for (MessageInfoHolder holder : mAdapter.messages)
-//        {
-//            if (holder.selected)
-//            {
-//                moveHolderList.add(holder);
-//                messageList.add(holder.message);
-//            }
-//        }
-//        mAdapter.removeMessages(removeHolderList);
-//
-//        mController.deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
-//        mSelectedCount = 0;
-//        toggleBatchButtons();
-    }
+        if (mController.isMoveCapable(mAccount) == false)
+        {
+            return;
+        }
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                Message message = holder.message;
+                if (mController.isMoveCapable(message) == false)
+                {
+                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+            }
+        }
+        Intent intent = new Intent(this, ChooseFolder.class);
 
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
+        startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH);
+    }
+    private void onMoveChosenBatch(String folderName)
+    {
+        if (mController.isMoveCapable(mAccount) == false)
+        {
+            return;
+        }
+        List<Message> messageList = new ArrayList<Message>();
+
+        List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                Message message = holder.message;
+                if (mController.isMoveCapable(message) == false)
+                {
+                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+                messageList.add(holder.message);
+                removeHolderList.add(holder);
+            }
+        }
+        mAdapter.removeMessages(removeHolderList);
+        
+        mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), folderName, null);
+        mSelectedCount = 0;
+        toggleBatchButtons();
+    }
+    private void onCopyBatch()
+    {
+        if (mController.isCopyCapable(mAccount) == false)
+        {
+            return;
+        }
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                Message message = holder.message;
+                if (mController.isCopyCapable(message) == false)
+                {
+                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+            }
+        }
+        Intent intent = new Intent(this, ChooseFolder.class);
+
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
+        startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY_BATCH);
+    }
+    private void onCopyChosenBatch(String folderName)
+    {
+        if (mController.isCopyCapable(mAccount) == false)
+        {
+            return;
+        }
+        List<Message> messageList = new ArrayList<Message>();
+
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                Message message = holder.message;
+                if (mController.isCopyCapable(message) == false)
+                {
+                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+                messageList.add(holder.message);
+            }
+        }
+        
+        mController.copyMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), folderName, null);
+    }
 }

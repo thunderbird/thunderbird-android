@@ -4920,8 +4920,4 @@ public class MessagingController implements Runnable
     {
         public void act(final Account account, final Folder folder, final List<Message> messages);
     }
-    
-
-
-
 }
