@@ -711,8 +711,6 @@ public class MessageView extends K9Activity
             mMessageUids.remove(messageToDelete.getUid());
 
             MessagingController.getInstance(getApplication()).deleteMessages(
-                accountForDelete,
-                folderForDelete,
                 new Message[] { messageToDelete },
                 null);
 

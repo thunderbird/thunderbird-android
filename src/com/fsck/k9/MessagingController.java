@@ -3544,21 +3544,31 @@ public class MessagingController implements Runnable
         });
     }
 
-    public void deleteMessages(final Account account, final String folder, final Message[] messages,
-                               final MessagingListener listener)
+    public void deleteMessages(final Message[] messages, final MessagingListener listener)
     {
-        for (Message message : messages)
+        actOnMessages(messages, new MessageActor()
         {
-            suppressMessage(account, folder, message);
-        }
 
-        putBackground("deleteMessages", null, new Runnable()
-        {
-            public void run()
+            @Override
+            public void act(final Account account, final Folder folder,
+                    final List<Message> messages)
             {
-                deleteMessagesSynchronous(account, folder, messages, listener);
+                for (Message message : messages)
+                {
+                    suppressMessage(account, folder.getName(), message);
+                }
+
+                putBackground("deleteMessages", null, new Runnable()
+                {
+                    public void run()
+                    {
+                        deleteMessagesSynchronous(account, folder.getName(), messages.toArray(new Message[0]), listener);
+                    }
+                });
             }
+            
         });
+        
     }
 
     private void deleteMessagesSynchronous(final Account account, final String folder, final Message[] messages,
@@ -4859,22 +4869,50 @@ public class MessagingController implements Runnable
 
     }
 
-    private Map<String, List<Message>> binMessages(Message[] messages)
+    private void actOnMessages(Message[] messages, MessageActor actor)
     {
-        Map<String, List<Message>> bins = new HashMap<String, List<Message>>();
+        Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
+        
         for (Message message : messages)
         {
-            String folderName = message.getFolder().getName();
-            List<Message> bin = bins.get(folderName);
-            if (bin == null)
+            Folder folder = message.getFolder();
+            Account account = folder.getAccount();
+            
+            Map<Folder, List<Message>> folderMap = accountMap.get(account);
+            if (folderMap == null)
             {
-                bin = new LinkedList<Message>();
-                bins.put(folderName, bin);
+                folderMap = new HashMap<Folder, List<Message>>();
+                accountMap.put(account, folderMap);
             }
-            bin.add(message);
+            List<Message> messageList = folderMap.get(folder);
+            if (messageList == null)
+            {
+                messageList = new LinkedList<Message>();
+                folderMap.put(folder, messageList);
+            }
+            
+            messageList.add(message);
         }
-        return bins;
+        for (Map.Entry<Account, Map<Folder, List<Message>>> entry : accountMap.entrySet())
+        {
+            Account account = entry.getKey();
+
+            account.refresh(Preferences.getPreferences(K9.app));
+            Map<Folder, List<Message>> folderMap = entry.getValue();
+            for (Map.Entry<Folder, List<Message>> folderEntry : folderMap.entrySet())
+            {
+                Folder folder = folderEntry.getKey();
+                List<Message> messageList = folderEntry.getValue();
+                actor.act(account, folder, messageList);
+            }
+        }
     }
+    
+    interface MessageActor 
+    {
+        public void act(Account account, Folder folder, List<Message> messages);
+    }
+    
 
 
 

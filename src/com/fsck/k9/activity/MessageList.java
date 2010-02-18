@@ -64,14 +64,6 @@ public class MessageList
     private static final String EXTRA_FOLDER  = "folder";
     private static final String EXTRA_QUERY = "query";
 
-
-    private static final String STATE_KEY_LIST = "com.fsck.k9.activity.messagelist_state";
-    private static final String STATE_CURRENT_FOLDER = "com.fsck.k9.activity.messagelist_folder";
-    private static final String STATE_QUERY = "com.fsck.k9.activity.query";
-    private static final String STATE_CURRENT_ITEM = "com.fsck.k9.activity.messagelist_selection";
-    private static final String STATE_KEY_SELECTED_COUNT = "com.fsck.k9.activity.messagelist_selected_count";
-
-
     private ListView mListView;
 
     private boolean mTouchView = true;
@@ -747,7 +739,7 @@ public class MessageList
     private void onDelete(MessageInfoHolder holder, int position)
     {
         mAdapter.removeMessage(holder);
-        mController.deleteMessages(holder.account, holder.message.getFolder().getName(), new Message[] { holder.message }, null);
+        mController.deleteMessages(new Message[] { holder.message }, null);
     }
 
 
@@ -2472,7 +2464,7 @@ public class MessageList
         {
             if (v == mBatchDeleteButton)
             {
-                mController.deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
+                mController.deleteMessages(messageList.toArray(new Message[0]), null);
                 mSelectedCount = 0;
                 toggleBatchButtons();
             }
@@ -2553,14 +2545,28 @@ public class MessageList
         }
         mAdapter.removeMessages(removeHolderList);
 
-        mController.deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
+        mController.deleteMessages(messageList.toArray(new Message[0]), null);
         mSelectedCount = 0;
         toggleBatchButtons();
     }
 
     private void moveOrCopySelected(boolean isMove)
     {
-
+//        List<Message> messageList = new ArrayList<Message>();
+//        List<MessageInfoHolder> moveHolderList = new ArrayList<MessageInfoHolder>();
+//        for (MessageInfoHolder holder : mAdapter.messages)
+//        {
+//            if (holder.selected)
+//            {
+//                moveHolderList.add(holder);
+//                messageList.add(holder.message);
+//            }
+//        }
+//        mAdapter.removeMessages(removeHolderList);
+//
+//        mController.deleteMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), null);
+//        mSelectedCount = 0;
+//        toggleBatchButtons();
     }
 
 }
