@@ -2470,8 +2470,7 @@ public class MessageList
             }
             else
             {
-                mController.setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
-                                    (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
+                mController.setFlag(messageList.toArray(new Message[0]), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
             }
         }
         else
@@ -2526,8 +2525,7 @@ public class MessageList
                 }
             }
         }
-        mController.setFlag(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]),
-                            flag , newState);
+        mController.setFlag(messageList.toArray(new Message[0]), flag, newState);
         mHandler.sortMessages();
     }
 

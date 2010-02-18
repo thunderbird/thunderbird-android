@@ -2566,18 +2566,26 @@ public class MessagingController implements Runnable
     }
 
     public void setFlag(
-        final Account account,
-        final String folderName,
         final Message[] messages,
         final Flag flag,
         final boolean newState)
     {
-        String[] uids = new String[messages.length];
-        for (int i = 0; i < messages.length; i++)
+        actOnMessages(messages, new MessageActor()
         {
-            uids[i] = messages[i].getUid();
-        }
-        setFlag(account, folderName, uids, flag, newState);
+            @Override
+            public void act(final Account account, final Folder folder,
+                    final List<Message> messages)
+            {
+                String[] uids = new String[messages.size()];
+                for (int i = 0; i < messages.size(); i++)
+                {
+                    uids[i] = messages.get(i).getUid();
+                }
+                setFlag(account, folder.getName(), uids, flag, newState);
+            }
+            
+        });
+        
     }
 
     public void setFlag(
@@ -2716,7 +2724,7 @@ public class MessagingController implements Runnable
                     // This is a view message request, so mark it read
                     if (!message.isSet(Flag.SEEN))
                     {
-                        setFlag(account, localFolder.getName(), new Message[] { message }, Flag.SEEN, true);
+                        setFlag(new Message[] { message }, Flag.SEEN, true);
                     }
 
                     if (listener != null && !getListeners().contains(listener))
@@ -2823,7 +2831,7 @@ public class MessagingController implements Runnable
                     localFolder.close();
                     if (!message.isSet(Flag.SEEN))
                     {
-                        setFlag(account, localFolder.getName(), new Message[] { message }, Flag.SEEN, true);
+                        setFlag(new Message[] { message }, Flag.SEEN, true);
                     }
 
                     for (MessagingListener l : getListeners())
@@ -4910,7 +4918,7 @@ public class MessagingController implements Runnable
     
     interface MessageActor 
     {
-        public void act(Account account, Folder folder, List<Message> messages);
+        public void act(final Account account, final Folder folder, final List<Message> messages);
     }
     
 
