@@ -1438,7 +1438,11 @@ public class LocalStore extends Store implements Serializable
             ArrayList<Message> messages = new ArrayList<Message>();
             for (String uid : uids)
             {
-                messages.add(getMessage(uid));
+                Message message = getMessage(uid);
+                if (message != null)
+                {
+                    messages.add(message);
+                }
             }
             return messages.toArray(new Message[] {});
         }

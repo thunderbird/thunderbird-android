@@ -3369,41 +3369,7 @@ public class MessagingController implements Runnable
     }
 
 
-    public int moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
-                            final MessagingListener listener)
-    {
-        int messagesMoved = 0;
-        for (Message message : messages)
-        {
-            if (moveMessage(account, srcFolder, message, destFolder, listener))
-            {
-                messagesMoved++;
-            }
-        }
-        return messagesMoved;
-    }
-
-    public boolean moveMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
-                               final MessagingListener listener)
-    {
-        if (!message.getUid().startsWith(K9.LOCAL_UID_PREFIX))
-        {
-            suppressMessage(account, srcFolder, message);
-            putBackground("moveMessage", null, new Runnable()
-            {
-                public void run()
-                {
-                    moveOrCopyMessageSynchronous(account, srcFolder, message, destFolder, false, listener);
-                }
-            });
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
+  
     public boolean isMoveCapable(Message message)
     {
         if (!message.getUid().startsWith(K9.LOCAL_UID_PREFIX))
@@ -3449,41 +3415,46 @@ public class MessagingController implements Runnable
             return false;
         }
     }
-
-    public int copyMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
-                            final MessagingListener listener)
+    public void moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
+            final MessagingListener listener)
     {
-        int messagesCopied = 0;
         for (Message message : messages)
         {
-            if (copyMessage(account, srcFolder, message, destFolder, listener))
+            suppressMessage(account, srcFolder, message);
+        }
+        putBackground("moveMessages", null, new Runnable()
+        {
+            public void run()
             {
-                messagesCopied++;
+                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false, listener);
             }
-        }
-        return messagesCopied;
-    }
-    public boolean copyMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
-                               final MessagingListener listener)
-    {
-        if (!message.getUid().startsWith(K9.LOCAL_UID_PREFIX))
-        {
-            putBackground("copyMessage", null, new Runnable()
-            {
-                public void run()
-                {
-                    moveOrCopyMessageSynchronous(account, srcFolder, message, destFolder, true, listener);
-                }
-            });
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        });
     }
 
-    private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder, final Message message,
+    public void moveMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
+            final MessagingListener listener)
+    {
+        moveMessages(account, srcFolder, new Message[] { message }, destFolder, listener);
+    }
+
+    public void copyMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
+                            final MessagingListener listener)
+    {
+        putBackground("copyMessages", null, new Runnable()
+        {
+            public void run()
+            {
+                moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, true, listener);
+            }
+        });
+    }
+    public void copyMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
+                               final MessagingListener listener)
+    {
+        copyMessages(account, srcFolder, new Message[] { message }, destFolder, listener);
+    }
+
+    private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder, final Message[] inMessages,
             final String destFolder, final boolean isCopy, MessagingListener listener)
     {
         try
@@ -3501,33 +3472,54 @@ public class MessagingController implements Runnable
 
             Folder localSrcFolder = localStore.getFolder(srcFolder);
             Folder localDestFolder = localStore.getFolder(destFolder);
-            Message lMessage = localSrcFolder.getMessage(message.getUid());
-            String origUid = message.getUid();
-            if (lMessage != null)
+            
+            List<String> uids = new LinkedList<String>();
+            for (Message message : inMessages)
             {
+                String uid = message.getUid();
+                if (!uid.startsWith(K9.LOCAL_UID_PREFIX))
+                {
+                    uids.add(uid);
+                }
+            }
+            
+            Message[] messages = localSrcFolder.getMessages(uids.toArray(new String[0]), null);
+            if (messages.length > 0)
+            {
+                Map<String, Message> origUidMap = new HashMap<String, Message>();
+                
+                for (Message message : messages)
+                {
+                    origUidMap.put(message.getUid(), message);
+                }
+           
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder
-                          + ", uid = " + origUid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
+                          + ", " + messages.length + " messages, " + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
 
                 if (isCopy)
                 {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.ENVELOPE);
                     fp.add(FetchProfile.Item.BODY);
-                    localSrcFolder.fetch(new Message[] { message }, fp, null);
-                    localSrcFolder.copyMessages(new Message[] { message }, localDestFolder);
+                    localSrcFolder.fetch(messages, fp, null);
+                    localSrcFolder.copyMessages(messages, localDestFolder);
                 }
                 else
                 {
-                    localSrcFolder.moveMessages(new Message[] { message }, localDestFolder);
-                    for (MessagingListener l : getListeners())
+                    localSrcFolder.moveMessages(messages, localDestFolder);
+                    for (String origUid : origUidMap.keySet())
                     {
-                        l.messageUidChanged(account, srcFolder, origUid, message.getUid());
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.messageUidChanged(account, srcFolder, origUid, origUidMap.get(origUid).getUid());
+                        }
+                        unsuppressMessage(account, srcFolder, origUid);
                     }
-                    unsuppressMessage(account, srcFolder, origUid);
                 }
+            
+                queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidMap.keySet().toArray(new String[0]));
             }
-            queueMoveOrCopy(account, srcFolder, destFolder, isCopy, new String[] { origUid });
 
             processPendingCommands(account);
         }
