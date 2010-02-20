@@ -504,24 +504,6 @@ public class ImapStore extends Store
             // 2 OK [READ-WRITE] Select completed.
             try
             {
-
-                if (mPathDelimeter == null)
-                {
-                    List<ImapResponse> nameResponses =
-                        executeSimpleCommand(String.format("LIST \"\" \"*%s\"", encodeFolderName(mName)));
-                    for (ImapResponse response : nameResponses)
-                    {
-                        if (response.get(0).equals("LIST"))
-                        {
-                            mPathDelimeter = response.getString(2);
-                            if (K9.DEBUG)
-                                Log.d(K9.LOG_TAG, "Got path delimeter '" + mPathDelimeter + "' for " + getLogId());
-                        }
-                    }
-                }
-
-                //                executeSimpleCommand("CLOSE");
-
                 String command = String.format((mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE") + " \"%s\"",
                                                encodeFolderName(getPrefixedName()));
 
