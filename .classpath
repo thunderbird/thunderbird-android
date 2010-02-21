@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="gen"/>
+	<classpathentry excluding="**/.svn/**|.svn/**" kind="src" path="src"/>
+	<classpathentry excluding="**/.svn/**|.svn/**" kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="compile-only-libs/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="compile-only-libs/bcprov-jdk15-143.jar"/>
