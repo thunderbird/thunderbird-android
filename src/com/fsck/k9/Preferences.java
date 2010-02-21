@@ -1,8 +1,8 @@
 
 package com.fsck.k9;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Config;
@@ -31,7 +31,7 @@ public class Preferences
 
 
     private Storage mStorage;
-    private Map<String, Account> accounts;
+    private List<Account> accounts;
 
     private Preferences(Context context)
     {
@@ -45,18 +45,21 @@ public class Preferences
         }
     }
 
-    private void loadAccounts()
+    private synchronized void loadAccounts()
     {
-        accounts = new HashMap<String, Account>();
-
         String accountUuids = getPreferences().getString("accountUuids", null);
-        if (accountUuids != null && accountUuids.length() != 0)
+        if ((accountUuids != null) && (accountUuids.length() != 0))
         {
             String[] uuids = accountUuids.split(",");
+            accounts = new ArrayList<Account>(uuids.length);
             for (int i = 0, length = uuids.length; i < length; i++)
             {
-                accounts.put(uuids[i], new Account(this, uuids[i]));
+                accounts.add(new Account(this, uuids[i]));
             }
+        }
+        else
+        {
+            accounts = new ArrayList<Account>();
         }
     }
 
@@ -64,39 +67,48 @@ public class Preferences
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
      */
-    public Account[] getAccounts()
-    {
-        if (accounts == null)
-        {
-            loadAccounts();
-        }
-        
-        return accounts.values().toArray(new Account[0]);
-    }
-
-    public Account getAccount(String uuid)
+    public synchronized Account[] getAccounts()
     {
         if (accounts == null)
         {
             loadAccounts();
         }
 
-        return accounts.get(uuid);
+        return accounts.toArray(new Account[0]);
     }
 
-    public Account newAccount()
+    public synchronized Account getAccount(String uuid)
+    {
+        if (accounts == null)
+        {
+            loadAccounts();
+        }
+
+        for (Account account : accounts)
+        {
+            if (account.getUuid().equals(uuid))
+            {
+                return account;
+            }
+        }
+
+        return null;
+    }
+
+    public synchronized Account newAccount()
     {
         Account account = new Account(K9.app);
-        accounts.put(account.getUuid(), account);
+        accounts.add(account);
 
         return account;
     }
 
-    public void deleteAccount(Account account)
+    public synchronized void deleteAccount(Account account)
     {
-        accounts.remove(account.getUuid());
+        accounts.remove(account);
         account.delete(this);
     }
+
     /**
      * Returns the Account marked as default. If no account is marked as default
      * the first account in the list is marked as default and then returned. If
@@ -109,9 +121,10 @@ public class Preferences
 
         if (defaultAccount == null)
         {
-            if (accounts.size() > 0)
+            Account[] accounts = getAccounts();
+            if (accounts.length > 0)
             {
-                defaultAccount = getAccounts()[0];
+                defaultAccount = accounts[0];
                 setDefaultAccount(defaultAccount);
             }
         }
