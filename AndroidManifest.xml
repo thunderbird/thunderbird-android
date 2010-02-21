@@ -135,10 +135,6 @@
         </activity>
 
         <activity
-            android:name="com.fsck.k9.activity.Debug"
-            android:label="@string/debug_title">
-        </activity>
-        <activity
             android:name="com.fsck.k9.activity.FolderList"
             android:launchMode="singleTask"
             >
