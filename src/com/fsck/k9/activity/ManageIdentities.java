@@ -7,22 +7,23 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
 public class ManageIdentities extends ChooseIdentity
 {
+    private boolean mIdentitiesChanged = false;
     public static final String EXTRA_IDENTITIES = "com.fsck.k9.EditIdentity_identities";
-    private static final int ACTIVITY_EDIT_IDENTITY = 1;
 
-    @Override
+    private static final int ACTIVITY_EDIT_IDENTITY = 1;
     protected void setupClickListeners()
     {
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            public void onItemClick(AdapterView adapterview, View view, int i, long l)
             {
-                editItem(position);
+                editItem(i);
             }
         });
 
@@ -30,15 +31,13 @@ public class ManageIdentities extends ChooseIdentity
         registerForContextMenu(listView);
     }
 
-    private void editItem(int position)
+    private void editItem(int i)
     {
-        if (position < identities.length)
-        {
-            Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
-            intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
-            intent.putExtra(EditIdentity.EXTRA_IDENTITY, identities[position].getUuid());
-            startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
-        }
+        Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
+        intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
+        intent.putExtra(EditIdentity.EXTRA_IDENTITY, mAccount.getIdentity(i));
+        intent.putExtra(EditIdentity.EXTRA_IDENTITY_INDEX, i);
+        startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
     }
 
     @Override
@@ -73,46 +72,44 @@ public class ManageIdentities extends ChooseIdentity
         getMenuInflater().inflate(R.menu.manage_identities_context, menu);
     }
 
-    @Override
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
-        int position = menuInfo.position;
-
-        Preferences preferences = Preferences.getPreferences(getApplication().getApplicationContext());
-
         switch (item.getItemId())
         {
             case R.id.edit:
-                editItem(position);
+                editItem(menuInfo.position);
                 break;
-
             case R.id.up:
-                if (position > 0)
+                if (menuInfo.position > 0)
                 {
-                    mAccount.identityMoveUp(identities[position], preferences);
+                    Identity identity = identities.remove(menuInfo.position);
+                    identities.add(menuInfo.position - 1, identity);
+                    mIdentitiesChanged = true;
                     refreshView();
                 }
 
                 break;
-
             case R.id.down:
-                if (position < identities.length - 1)
+                if (menuInfo.position < identities.size() - 1)
                 {
-                    mAccount.identityMoveDown(identities[position], preferences);
+                    Identity identity = identities.remove(menuInfo.position);
+                    identities.add(menuInfo.position + 1, identity);
+                    mIdentitiesChanged = true;
                     refreshView();
                 }
                 break;
-
             case R.id.top:
-                mAccount.identityMoveToTop(identities[position], preferences);
+                Identity identity = identities.remove(menuInfo.position);
+                identities.add(0, identity);
+                mIdentitiesChanged = true;
                 refreshView();
                 break;
-
             case R.id.remove:
-                if (identities.length > 1)
+                if (identities.size() > 1)
                 {
-                    mAccount.deleteIdentity(identities[position], preferences);
+                    identities.remove(menuInfo.position);
+                    mIdentitiesChanged = true;
                     refreshView();
                 }
                 else
@@ -125,10 +122,33 @@ public class ManageIdentities extends ChooseIdentity
         return true;
     }
 
+
     @Override
     public void onResume()
     {
         super.onResume();
+        //mAccount.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
         refreshView();
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            saveIdentities();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void saveIdentities()
+    {
+        if (mIdentitiesChanged)
+        {
+            mAccount.setIdentities(identities);
+            mAccount.save(Preferences.getPreferences(getApplication().getApplicationContext()));
+        }
+        finish();
     }
 }

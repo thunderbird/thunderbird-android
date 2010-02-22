@@ -50,8 +50,6 @@ public class LocalStore extends Store implements Serializable
     static
     {
         HEADERS_TO_SAVE.add(K9.K9MAIL_IDENTITY);
-        HEADERS_TO_SAVE.add(K9.K9MAIL_BODY_LENGTH);
-        HEADERS_TO_SAVE.add(K9.K9MAIL_SIGNATURE);
         HEADERS_TO_SAVE.add("In-Reply-To");
         HEADERS_TO_SAVE.add("References");
         HEADERS_TO_SAVE.add("X-User-Agent");
