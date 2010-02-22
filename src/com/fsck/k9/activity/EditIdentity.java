@@ -8,27 +8,24 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import com.fsck.k9.Account;
+import com.fsck.k9.Identity;
 import com.fsck.k9.K9Activity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import java.util.List;
 
 public class EditIdentity extends K9Activity
 {
-
     public static final String EXTRA_IDENTITY = "com.fsck.k9.EditIdentity_identity";
     public static final String EXTRA_IDENTITY_INDEX = "com.fsck.k9.EditIdentity_identity_index";
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.EditIdentity_account";
 
     private Account mAccount;
-    private Account.Identity mIdentity;
-    private int mIdentityIndex;
+    private Identity mIdentity;
     private EditText mDescriptionView;
     private CheckBox mSignatureUse;
     private EditText mSignatureView;
     private LinearLayout mSignatureLayout;
     private EditText mEmailView;
-//  private EditText mAlwaysBccView;
     private EditText mNameView;
 
     @Override
@@ -36,14 +33,17 @@ public class EditIdentity extends K9Activity
     {
         super.onCreate(savedInstanceState);
 
-        mIdentity = (Account.Identity)getIntent().getSerializableExtra(EXTRA_IDENTITY);
-        mIdentityIndex = getIntent().getIntExtra(EXTRA_IDENTITY_INDEX, -1);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-
-        if (mIdentityIndex == -1)
+        mAccount = Preferences.getPreferences(getApplication().getApplicationContext()).getAccount(accountUuid);
+        String identityUuid = getIntent().getStringExtra(EXTRA_IDENTITY);
+        
+        if (identityUuid == null)
         {
-            mIdentity = mAccount.new Identity();
+            mIdentity = mAccount.newIdentity();
+        }
+        else
+        {
+            mIdentity = mAccount.getIdentity(identityUuid);
         }
 
         setContentView(R.layout.edit_identity);
@@ -54,7 +54,8 @@ public class EditIdentity extends K9Activity
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_IDENTITY))
         {
-            mIdentity = (Account.Identity)savedInstanceState.getSerializable(EXTRA_IDENTITY);
+            identityUuid = savedInstanceState.getString(EXTRA_IDENTITY);
+            mIdentity = mAccount.getIdentity(identityUuid);
         }
 
         mDescriptionView = (EditText)findViewById(R.id.description);
@@ -66,12 +67,9 @@ public class EditIdentity extends K9Activity
         mEmailView = (EditText)findViewById(R.id.email);
         mEmailView.setText(mIdentity.getEmail());
 
-//      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
-//      mAccountAlwaysBcc.setText(mIdentity.getAlwaysBcc());
-
         mSignatureLayout = (LinearLayout)findViewById(R.id.signature_layout);
-        mSignatureUse = (CheckBox)findViewById(R.id.signature_use);
         mSignatureView = (EditText)findViewById(R.id.signature);
+        mSignatureUse = (CheckBox)findViewById(R.id.signature_use);
         mSignatureUse.setChecked(mIdentity.getSignatureUse());
         mSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
@@ -106,26 +104,12 @@ public class EditIdentity extends K9Activity
 
     private void saveIdentity()
     {
-
         mIdentity.setDescription(mDescriptionView.getText().toString());
         mIdentity.setEmail(mEmailView.getText().toString());
-        //      mIdentity.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
         mIdentity.setName(mNameView.getText().toString());
         mIdentity.setSignatureUse(mSignatureUse.isChecked());
         mIdentity.setSignature(mSignatureView.getText().toString());
-
-        List<Account.Identity> identities = mAccount.getIdentities();
-        if (mIdentityIndex == -1)
-        {
-            identities.add(mIdentity);
-        }
-        else
-        {
-            identities.remove(mIdentityIndex);
-            identities.add(mIdentityIndex, mIdentity);
-        }
-
-        mAccount.save(Preferences.getPreferences(getApplication().getApplicationContext()));
+        mIdentity.save(Preferences.getPreferences(getApplication().getApplicationContext()));
 
         finish();
     }
@@ -145,6 +129,6 @@ public class EditIdentity extends K9Activity
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(EXTRA_IDENTITY, mIdentity);
+        outState.putString(EXTRA_IDENTITY, mIdentity.getUuid());
     }
 }

@@ -35,7 +35,6 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
 {
@@ -65,6 +64,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
         "com.fsck.k9.activity.MessageCompose.identity";
+    private static final String STATE_ACCOUNT =
+        "com.fsck.k9.activity.MessageCompose.account";
+
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -77,7 +79,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
 
     private Account mAccount;
-    private Account.Identity mIdentity;
+    private Identity mIdentity;
     private boolean mIdentityChanged = false;
     private boolean mSignatureChanged = false;
     private String mFolder;
@@ -255,13 +257,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         setContentView(R.layout.message_compose);
 
+        Preferences preferences = Preferences.getPreferences(getApplication().getApplicationContext());
+
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        mAccount = preferences.getAccount(accountUuid);
 
         if (mAccount == null)
         {
-            mAccount = Preferences.getPreferences(this).getDefaultAccount();
+            mAccount = preferences.getDefaultAccount();
         }
         if (mAccount == null)
         {
@@ -572,12 +576,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftNeedsSaving = false;
     }
 
+    @Override
     public void onResume()
     {
         super.onResume();
         MessagingController.getInstance(getApplication()).addListener(mListener);
     }
 
+    @Override
     public void onPause()
     {
         super.onPause();
@@ -611,7 +617,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putBoolean(STATE_KEY_QUOTED_TEXT_SHOWN, mQuotedTextBar.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, mSourceMessageProcessed);
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
-        outState.putSerializable(STATE_IDENTITY, mIdentity);
+        outState.putString(STATE_ACCOUNT, mAccount.getUuid());
+        outState.putString(STATE_IDENTITY, mIdentity.getUuid());
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
     }
 
@@ -632,7 +639,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mQuotedTextBar.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?  View.VISIBLE : View.GONE);
         mQuotedText.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?  View.VISIBLE : View.GONE);
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
-        mIdentity = (Account.Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
+        String accountUuid = savedInstanceState.getString(STATE_ACCOUNT);
+        mAccount = Preferences.getPreferences(getApplication().getApplicationContext()).getAccount(accountUuid);
+        String identityUuid = savedInstanceState.getString(STATE_IDENTITY);
+        mIdentity = mAccount.getIdentity(identityUuid);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         updateFrom();
         updateSignature();
@@ -815,25 +825,31 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 message.setUid(mSourceMessageUid);
             }
 
-            String k9identity = Utility.base64Encode("" + mMessageContentView.getText().toString().length());
-
-            if (mIdentityChanged || mSignatureChanged)
+            int bodyLength = mMessageContentView.getText().toString().length();
+            message.addHeader(K9.K9MAIL_BODY_LENGTH, "" + bodyLength);
+            if (K9.DEBUG)
             {
-                String signature  = mSignatureView.getText().toString();
-                k9identity += ":" + Utility.base64Encode(signature);
-                if (mIdentityChanged)
+                Log.d(K9.LOG_TAG, "Saving body length: " + bodyLength);
+            }
+
+            if (mIdentityChanged)
+            {
+                message.addHeader(K9.K9MAIL_IDENTITY, mIdentity.getUuid());
+                if (K9.DEBUG)
                 {
-
-                    String name = mIdentity.getName();
-                    String email = mIdentity.getEmail();
-
-                    k9identity +=  ":" + Utility.base64Encode(name) + ":" + Utility.base64Encode(email);
+                    Log.d(K9.LOG_TAG, "Saving identity: " + mIdentity.getUuid());
                 }
             }
 
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
-            message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
+            if (mSignatureChanged)
+            {
+                String signature  = mSignatureView.getText().toString();
+                message.addHeader(K9.K9MAIL_SIGNATURE, Utility.base64Encode(signature));
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, "Saving signature: " + signature);
+                }
+            }
 
             MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
             mDraftUid = message.getUid();
@@ -1044,11 +1060,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void onIdentityChosen(Intent intent)
     {
-        Bundle bundle = intent.getExtras();;
-        switchToIdentity((Account.Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY));
+        String identityUuid = intent.getStringExtra(ChooseIdentity.EXTRA_IDENTITY);
+        switchToIdentity(mAccount.getIdentity(identityUuid));
     }
 
-    private void switchToIdentity(Account.Identity identity)
+    private void switchToIdentity(Identity identity)
     {
         mIdentity = identity;
         mIdentityChanged = true;
@@ -1100,6 +1116,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
@@ -1130,7 +1147,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void onChooseIdentity()
     {
-        if (mAccount.getIdentities().size() > 1)
+        if (mAccount.getIdentities().length > 1)
         {
             Intent intent = new Intent(this, ChooseIdentity.class);
             intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
@@ -1143,6 +1160,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         super.onCreateOptionsMenu(menu);
@@ -1273,10 +1291,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
                 if (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action))
                 {
-                    Account.Identity useIdentity = null;
+                    Identity useIdentity = null;
                     for (Address address : message.getRecipients(RecipientType.TO))
                     {
-                        Account.Identity identity = mAccount.findIdentity(address);
+                        Identity identity = mAccount.findIdentity(address);
                         if (identity != null)
                         {
                             useIdentity = identity;
@@ -1289,7 +1307,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         {
                             for (Address address : message.getRecipients(RecipientType.CC))
                             {
-                                Account.Identity identity = mAccount.findIdentity(address);
+                                Identity identity = mAccount.findIdentity(address);
                                 if (identity != null)
                                 {
                                     useIdentity = identity;
@@ -1300,7 +1318,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                     if (useIdentity != null)
                     {
-                        Account.Identity defaultIdentity = mAccount.getIdentity(0);
+                        Identity defaultIdentity = mAccount.getIdentity(0);
                         if (useIdentity != defaultIdentity)
                         {
                             switchToIdentity(useIdentity);
@@ -1312,7 +1330,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     for (Address address : message.getRecipients(RecipientType.TO))
                     {
-                        Account.Identity identity = mAccount.findIdentity(address);
                         if (!mAccount.isAnIdentity(address))
                         {
                             addAddress(mToView, address);
@@ -1415,88 +1432,60 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     loadAttachments(message, 0);
                 }
-                Integer bodyLength = null;
+
                 String[] k9identities = message.getHeader(K9.K9MAIL_IDENTITY);
                 if (k9identities != null && k9identities.length > 0)
                 {
-                    String k9identity = k9identities[0];
-
-                    if (k9identity != null)
+                    Identity identity = mAccount.getIdentity(k9identities[0]);
+                    if (identity != null)
                     {
-                        if (K9.DEBUG)
-                            Log.d(K9.LOG_TAG, "Got a saved identity: " + k9identity);
-                        StringTokenizer tokens = new StringTokenizer(k9identity, ":", false);
-
-                        String bodyLengthS = null;
-                        String name = null;
-                        String email = null;
-                        String signature = null;
-                        boolean signatureUse = message.getFolder().getAccount().getSignatureUse();
-                        if (tokens.hasMoreTokens())
-                        {
-                            bodyLengthS = Utility.base64Decode(tokens.nextToken());
-                            try
-                            {
-                                bodyLength = Integer.parseInt(bodyLengthS);
-                            }
-                            catch (Exception e)
-                            {
-                                Log.e(K9.LOG_TAG, "Unable to parse bodyLength '" + bodyLengthS + "'");
-                            }
-                        }
-                        if (tokens.hasMoreTokens())
-                        {
-                            signatureUse = true;
-                            signature = Utility.base64Decode(tokens.nextToken());
-                        }
-                        if (tokens.hasMoreTokens())
-                        {
-                            name = Utility.base64Decode(tokens.nextToken());
-                        }
-                        if (tokens.hasMoreTokens())
-                        {
-                            email = Utility.base64Decode(tokens.nextToken());
-                        }
-
-                        Account.Identity newIdentity= mAccount.new Identity();
-                        newIdentity.setSignatureUse(signatureUse);
-                        if (signature != null)
-                        {
-                            newIdentity.setSignature(signature);
-                            mSignatureChanged = true;
-                        }
-                        else
-                        {
-                            newIdentity.setSignature(mIdentity.getSignature());
-                        }
-
-                        if (name != null)
-                        {
-                            newIdentity.setName(name);
-                            mIdentityChanged = true;
-                        }
-                        else
-                        {
-                            newIdentity.setName(mIdentity.getName());
-                        }
-
-                        if (email != null)
-                        {
-                            newIdentity.setEmail(email);
-                            mIdentityChanged = true;
-                        }
-                        else
-                        {
-                            newIdentity.setEmail(mIdentity.getEmail());
-                        }
-
-                        mIdentity = newIdentity;
-
-                        updateSignature();
+                        // No identity found. So maybe it's a header in the old messy format.
+                        // Or the identity was deleted since the creation of the draft message.
+                        mIdentity = identity;
+                        mIdentityChanged = true;
                         updateFrom();
+                    }
 
+                    if (K9.DEBUG)
+                    {
+                        Log.d(K9.LOG_TAG, "Got a saved identity: " + mIdentity);
                     }
                 }
+
+                Integer bodyLength = null;
+                String[] k9bodyLength = message.getHeader(K9.K9MAIL_BODY_LENGTH);
+                if (k9bodyLength != null && k9bodyLength.length > 0)
+                {
+                    try
+                    {
+                        bodyLength = Integer.parseInt(k9bodyLength[0]);
+
+                        if (K9.DEBUG)
+                        {
+                            Log.d(K9.LOG_TAG, "Got a saved body length: " + bodyLength);
+                        }
+                    }
+                    catch (NumberFormatException e) {}
+                }
+                
+                String[] k9signatures = message.getHeader(K9.K9MAIL_SIGNATURE);
+                if (k9signatures != null && k9signatures.length > 0)
+                {
+                    String k9signature = k9signatures[0];
+
+                    if (k9signature != null)
+                    {
+                        String signature = Utility.base64Decode(k9signature);
+                        mSignatureView.setText(signature);
+                        mSignatureView.setVisibility(View.VISIBLE);
+
+                        if (K9.DEBUG)
+                        {
+                            Log.d(K9.LOG_TAG, "Got a saved signature: " + signature);
+                        }
+                    }
+                }
+
                 Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
                 if (part != null)
                 {

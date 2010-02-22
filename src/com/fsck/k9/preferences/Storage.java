@@ -6,12 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
 import com.fsck.k9.K9;
-import com.fsck.k9.Utility;
-
-import java.net.URI;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,140 +14,52 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Storage implements SharedPreferences
 {
+    private static final String DB_NAME = "preferences_storage";
+    
+    // Please see lengthy comment in openDB() before changing this
+    private static final int DB_VERSION = 2;
+    
     private static ConcurrentHashMap<Context, Storage> storages =
         new ConcurrentHashMap<Context, Storage>();
 
-    private volatile ConcurrentHashMap<String, String> storage = new ConcurrentHashMap<String, String>();
+    private volatile ConcurrentHashMap<String, String> storage =
+        new ConcurrentHashMap<String, String>();
 
     private CopyOnWriteArrayList<OnSharedPreferenceChangeListener> listeners =
         new CopyOnWriteArrayList<OnSharedPreferenceChangeListener>();
 
-    private int DB_VERSION = 2;
-    private String DB_NAME = "preferences_storage";
+    private ThreadLocal<ConcurrentHashMap<String, String>> workingStorage =
+        new ThreadLocal<ConcurrentHashMap<String, String>>();
 
-    private ThreadLocal<ConcurrentHashMap<String, String>> workingStorage
-    = new ThreadLocal<ConcurrentHashMap<String, String>>();
     private ThreadLocal<SQLiteDatabase> workingDB =
         new ThreadLocal<SQLiteDatabase>();
-    private ThreadLocal<ArrayList<String>> workingChangedKeys = new ThreadLocal<ArrayList<String>>();
 
+    private ThreadLocal<ArrayList<String>> workingChangedKeys =
+        new ThreadLocal<ArrayList<String>>();
 
     private Context context = null;
+    private int version;
+
 
     private SQLiteDatabase openDB()
     {
         SQLiteDatabase mDb = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
 
-        if (mDb.getVersion() == 1)
-        {
-            Log.i(K9.LOG_TAG, "Updating preferences to urlencoded username/password");
-
-            String accountUuids = readValue(mDb, "accountUuids");
-            if (accountUuids != null && accountUuids.length() != 0)
-            {
-                String[] uuids = accountUuids.split(",");
-                for (int i = 0, length = uuids.length; i < length; i++)
-                {
-                    String uuid = uuids[i];
-                    try
-                    {
-                        String storeUriStr = Utility.base64Decode(readValue(mDb, uuid + ".storeUri"));
-                        String transportUriStr = Utility.base64Decode(readValue(mDb, uuid + ".transportUri"));
-
-                        URI uri = new URI(transportUriStr);
-                        String newUserInfo = null;
-                        if (transportUriStr != null)
-                        {
-                            String[] userInfoParts = uri.getUserInfo().split(":");
-
-                            String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
-                            String passwordEnc = "";
-                            String authType = "";
-                            if (userInfoParts.length > 1)
-                            {
-                                passwordEnc = ":" + URLEncoder.encode(userInfoParts[1], "UTF-8");
-                            }
-                            if (userInfoParts.length > 2)
-                            {
-                                authType = ":" + userInfoParts[2];
-                            }
-
-                            newUserInfo = usernameEnc + passwordEnc + authType;
-                        }
-
-                        if (newUserInfo != null)
-                        {
-                            URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
-                            String newTransportUriStr = Utility.base64Encode(newUri.toString());
-                            writeValue(mDb, uuid + ".transportUri", newTransportUriStr);
-                        }
-
-                        uri = new URI(storeUriStr);
-                        newUserInfo = null;
-                        if (storeUriStr.startsWith("imap"))
-                        {
-                            String[] userInfoParts = uri.getUserInfo().split(":");
-                            if (userInfoParts.length == 2)
-                            {
-                                String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
-                                String passwordEnc = URLEncoder.encode(userInfoParts[1], "UTF-8");
-
-                                newUserInfo = usernameEnc + ":" + passwordEnc;
-                            }
-                            else
-                            {
-                                String authType = userInfoParts[0];
-                                String usernameEnc = URLEncoder.encode(userInfoParts[1], "UTF-8");
-                                String passwordEnc = URLEncoder.encode(userInfoParts[2], "UTF-8");
-
-                                newUserInfo = authType + ":" + usernameEnc + ":" + passwordEnc;
-                            }
-                        }
-                        else if (storeUriStr.startsWith("pop3"))
-                        {
-                            String[] userInfoParts = uri.getUserInfo().split(":", 2);
-                            String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
-
-                            String passwordEnc = "";
-                            if (userInfoParts.length > 1)
-                            {
-                                passwordEnc = ":" + URLEncoder.encode(userInfoParts[1], "UTF-8");
-                            }
-
-                            newUserInfo = usernameEnc + passwordEnc;
-                        }
-                        else if (storeUriStr.startsWith("webdav"))
-                        {
-                            String[] userInfoParts = uri.getUserInfo().split(":", 2);
-                            String usernameEnc = URLEncoder.encode(userInfoParts[0], "UTF-8");
-
-                            String passwordEnc = "";
-                            if (userInfoParts.length > 1)
-                            {
-                                passwordEnc = ":" + URLEncoder.encode(userInfoParts[1], "UTF-8");
-                            }
-
-                            newUserInfo = usernameEnc + passwordEnc;
-                        }
-
-                        if (newUserInfo != null)
-                        {
-                            URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
-                            String newStoreUriStr = Utility.base64Encode(newUri.toString());
-                            writeValue(mDb, uuid + ".storeUri", newStoreUriStr);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Log.e(K9.LOG_TAG, "ooops", e);
-                    }
-                }
-            }
-
-            mDb.setVersion(DB_VERSION);
-        }
-
-        if (mDb.getVersion() != DB_VERSION)
+        /*
+         * Due to historic reasons the storage database version number is used
+         * in an account specific upgrade. That's why the storage database
+         * may not be dropped if the database version doesn't match the current
+         * version. Instead we only re-create the database if the version
+         * number has the special value 0.
+         * 
+         * Users that skipped r1390 to r14?? will have a database version of 1.
+         * Users that installed the r1390 change or (re-)installed using a
+         * later version will have a database version of 2. Keep this in mind
+         * when updating DB_VERSION.
+         * 
+         * See Account.performStorageUpgrade()
+         */
+        if (mDb.getVersion() == 0)
         {
             Log.i(K9.LOG_TAG, "Creating Storage database");
             mDb.execSQL("DROP TABLE IF EXISTS preferences_storage");
@@ -160,9 +67,11 @@ public class Storage implements SharedPreferences
                         "(primkey TEXT PRIMARY KEY ON CONFLICT REPLACE, value TEXT)");
             mDb.setVersion(DB_VERSION);
         }
+
+        version = mDb.getVersion();
+
         return mDb;
     }
-
 
     public static Storage getStorage(Context context)
     {
@@ -327,25 +236,21 @@ public class Storage implements SharedPreferences
         return storage.size();
     }
 
-    //@Override
     public boolean contains(String key)
     {
         return storage.contains(key);
     }
 
-    //@Override
     public com.fsck.k9.preferences.Editor edit()
     {
         return new com.fsck.k9.preferences.Editor(this);
     }
 
-    //@Override
     public Map<String, String> getAll()
     {
         return storage;
     }
 
-    //@Override
     public boolean getBoolean(String key, boolean defValue)
     {
         String val = storage.get(key);
@@ -356,7 +261,6 @@ public class Storage implements SharedPreferences
         return Boolean.parseBoolean(val);
     }
 
-    //@Override
     public float getFloat(String key, float defValue)
     {
         String val = storage.get(key);
@@ -367,7 +271,6 @@ public class Storage implements SharedPreferences
         return Float.parseFloat(val);
     }
 
-    //@Override
     public int getInt(String key, int defValue)
     {
         String val = storage.get(key);
@@ -378,7 +281,6 @@ public class Storage implements SharedPreferences
         return Integer.parseInt(val);
     }
 
-    //@Override
     public long getLong(String key, long defValue)
     {
         String val = storage.get(key);
@@ -389,7 +291,6 @@ public class Storage implements SharedPreferences
         return Long.parseLong(val);
     }
 
-    //@Override
     public String getString(String key, String defValue)
     {
         String val = storage.get(key);
@@ -400,66 +301,20 @@ public class Storage implements SharedPreferences
         return val;
     }
 
-    //@Override
     public void registerOnSharedPreferenceChangeListener(
         OnSharedPreferenceChangeListener listener)
     {
         listeners.addIfAbsent(listener);
     }
 
-    //@Override
     public void unregisterOnSharedPreferenceChangeListener(
         OnSharedPreferenceChangeListener listener)
     {
         listeners.remove(listener);
     }
 
-    private String readValue(SQLiteDatabase mDb, String key)
+    public int getVersion()
     {
-        Cursor cursor = null;
-        String value = null;
-        try
-        {
-            cursor = mDb.query(
-                    "preferences_storage",
-                    new String[] {"value"},
-                    "primkey = ?",
-                    new String[] {key},
-                    null,
-                    null,
-                    null);
-
-            if (cursor.moveToNext())
-            {
-                value = cursor.getString(0);
-                if (K9.DEBUG)
-                {
-                    Log.d(K9.LOG_TAG, "Loading key '" + key + "', value = '" + value + "'");
-                }
-            }
-        }
-        finally
-        {
-            if (cursor != null)
-            {
-                cursor.close();
-            }
-        }
-
-        return value;
-    }
-
-    private void writeValue(SQLiteDatabase mDb, String key, String value)
-    {
-        ContentValues cv = new ContentValues();
-        cv.put("primkey", key);
-        cv.put("value", value);
-
-        long result = mDb.insert("preferences_storage", "primkey", cv);
-
-        if (result == -1)
-        {
-            Log.e(K9.LOG_TAG, "Error writing key '" + key + "', value = '" + value + "'");
-        }
+        return version;
     }
 }
