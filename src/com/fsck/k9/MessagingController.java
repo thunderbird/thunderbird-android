@@ -4264,8 +4264,9 @@ public class MessagingController implements Runnable
     }
 
 
-    public void saveDraft(final Account account, final Message message)
+    public Message saveDraft(final Account account, final Message message)
     {
+        Message localMessage = null;
         try
         {
             LocalStore localStore = account.getLocalStore();
@@ -4275,7 +4276,7 @@ public class MessagingController implements Runnable
                                        {
                                            message
                                        });
-            Message localMessage = localFolder.getMessage(message.getUid());
+            localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
 
             PendingCommand command = new PendingCommand();
@@ -4287,12 +4288,14 @@ public class MessagingController implements Runnable
             };
             queuePendingCommand(account, command);
             processPendingCommands(account);
+            
         }
         catch (MessagingException e)
         {
             Log.e(K9.LOG_TAG, "Unable to save message as draft.", e);
             addErrorMessage(account, e);
         }
+        return localMessage;
     }
 
     public boolean modeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode)

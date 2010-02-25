@@ -703,8 +703,6 @@ public class MessageView extends K9Activity
         if (mMessage != null)
         {
             Message messageToDelete = mMessage;
-            String folderForDelete = mFolder;
-            Account accountForDelete = mAccount;
 
             findSurroundingMessagesUid();
 

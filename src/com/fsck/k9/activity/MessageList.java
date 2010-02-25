@@ -1598,6 +1598,15 @@ public class MessageList
                 super.pendingCommandCompleted(account, commandTitle);
                 mHandler.refreshTitle();
             }
+            public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
+            {
+                if (updateForMe(account, folder))
+                {
+                    MessageInfoHolder holder = getMessage(oldUid);
+                    holder.uid = newUid;
+                    holder.message.setUid(newUid);
+                }
+            }
 
         };
 
