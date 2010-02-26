@@ -83,7 +83,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private String mFolder;
     private String mSourceMessageUid;
     private Message mSourceMessage;
-    private Message mDraftMessage;
     /**
      * Indicates that the source message has been processed at least once and should not
      * be processed on any subsequent loads. This protects us from adding attachments that
@@ -108,6 +107,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private String mInReplyTo;
 
     private boolean mDraftNeedsSaving = false;
+
+    /**
+     * The draft uid of this message. This is used when saving drafts so that the same draft is
+     * overwritten instead of being created anew. This property is null until the first save.
+     */
+    private String mDraftUid;
 
     private Handler mHandler = new Handler()
     {
@@ -605,6 +610,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putBoolean(STATE_KEY_BCC_SHOWN, mBccView.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_QUOTED_TEXT_SHOWN, mQuotedTextBar.getVisibility() == View.VISIBLE);
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, mSourceMessageProcessed);
+        outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
     }
@@ -625,6 +631,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mBccView.setVisibility(savedInstanceState.getBoolean(STATE_KEY_BCC_SHOWN) ?  View.VISIBLE : View.GONE);
         mQuotedTextBar.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?  View.VISIBLE : View.GONE);
         mQuotedText.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?  View.VISIBLE : View.GONE);
+        mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         updateFrom();
@@ -795,9 +802,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             /*
              * Save a draft
              */
-            if (mDraftMessage != null)
+            if (mDraftUid != null)
             {
-                message.setUid(mDraftMessage.getUid());
+                message.setUid(mDraftUid);
             }
             else if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()))
             {
@@ -828,7 +835,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
             message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
 
-            mDraftMessage = MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
+            Message draftMessage = MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
+            mDraftUid = draftMessage.getUid();
 
             // Don't display the toast if the user is just changing the orientation
             if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0)
@@ -838,11 +846,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         else
         {
-            if (mDraftMessage != null)
-            {
-                MessagingController.getInstance(getApplication()).deleteMessages(new Message[] { mDraftMessage }, null);
-            }
             MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
+            if (mDraftUid != null)
+            {
+                MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
+                mDraftUid = null;
+            }
         }
     }
 
@@ -871,9 +880,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void onDiscard()
     {
-        if (mDraftMessage != null)
+        if (mDraftUid != null)
         {
-            MessagingController.getInstance(getApplication()).deleteMessages(new Message[] { mDraftMessage }, null);
+            MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
+            mDraftUid = null;
         }
         mHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         mDraftNeedsSaving = false;
@@ -1363,9 +1373,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         else if (ACTION_EDIT_DRAFT.equals(action))
         {
-            mDraftMessage = message;
             try
             {
+                mDraftUid = message.getUid();
                 mSubjectView.setText(message.getSubject());
                 addAddresses(mToView, message.getRecipients(RecipientType.TO));
                 if (message.getRecipients(RecipientType.CC).length > 0)
@@ -1555,12 +1565,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         @Override
         public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
         {
-            if (account.equals(mAccount) && (folder.equals(mFolder) || (mFolder == null && folder.equals(mAccount.getDraftsFolderName()))))
+            if (account.equals(mAccount) && folder.equals(mAccount.getDraftsFolderName()))
             {
-                if (mDraftMessage != null && oldUid.equals(mDraftMessage.getUid()))
+                if (oldUid.equals(mDraftUid))
                 {
-                    mDraftMessage.setUid(newUid);
+                    mDraftUid = newUid;
                 }
+            }
+            
+            if (account.equals(mAccount) && (folder.equals(mFolder)))
+            {
                 if (oldUid.equals(mSourceMessageUid))
                 {
                     mSourceMessageUid = newUid;

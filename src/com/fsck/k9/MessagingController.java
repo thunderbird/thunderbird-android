@@ -3541,6 +3541,30 @@ public class MessagingController implements Runnable
             }
         });
     }
+    
+    public void deleteDraft(final Account account, String uid) 
+    {
+        LocalFolder localFolder = null;
+        try
+        {
+            LocalStore localStore = account.getLocalStore();
+            localFolder = localStore.getFolder(account.getDraftsFolderName());
+            localFolder.open(OpenMode.READ_WRITE);
+            Message message = localFolder.getMessage(uid);
+            deleteMessages(new Message[] { message }, null);
+        }
+        catch (MessagingException me)
+        {
+            addErrorMessage(account, me);
+        }
+        finally
+        {
+            if (localFolder != null)
+            {
+                localFolder.close();
+            }
+        }
+    }
 
     public void deleteMessages(final Message[] messages, final MessagingListener listener)
     {
@@ -3581,7 +3605,6 @@ public class MessagingController implements Runnable
             //as messages get a new UID after being moved
             for (Message message : messages)
             {
-                unsuppressMessage(account, folder, message);
                 if (listener != null)
                 {
                     listener.messageDeleted(account, folder, message);
@@ -3667,6 +3690,10 @@ public class MessagingController implements Runnable
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Delete policy " + account.getDeletePolicy() + " prevents delete from server");
             }
+            for (String uid : uids)
+            {
+                unsuppressMessage(account, folder, uid);
+            }
         }
         catch (MessagingException me)
         {
@@ -3676,6 +3703,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
+            
             if (localFolder != null)
             {
                 localFolder.close();
