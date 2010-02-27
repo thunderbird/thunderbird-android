@@ -1951,6 +1951,16 @@ public class ImapStore extends Store
                     if (mAuthType == AuthType.CRAM_MD5)
                     {
                         authCramMD5();
+                        // The authCramMD5 method on the previous line does not allow for handling updated capabilities
+                        // sent by the server.  So, to make sure we update to the post-authentication capability list
+                        // we fetch the capabilities here.
+                        Log.i(K9.LOG_TAG, "Updating capabilities after CRAM-MD5 authentication for " + getLogId());
+                        List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
+                        if (responses.size() != 2)
+                        {
+                            throw new MessagingException("Invalid CAPABILITY response received");
+                        }
+                        
                     }
                     else if (mAuthType == AuthType.PLAIN)
                     {
