@@ -63,6 +63,9 @@ public class ImapStore extends Store
     private static final String CAPABILITY_NAMESPACE = "NAMESPACE";
     private static final String COMMAND_NAMESPACE = "NAMESPACE";
 
+    private static final String CAPABILITY_CAPABILITY = "CAPABILITY";
+    private static final String COMMAND_CAPABILITY = "CAPABILITY";
+
     private String mHost;
     private int mPort;
     private String mUsername;
@@ -1788,6 +1791,58 @@ public class ImapStore extends Store
         {
             return "conn" + hashCode();
         }
+        
+        private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses)
+        {
+            for (ImapResponse response : responses)
+            {
+                ImapList capabilityList = null;
+                if (response.size() > 0 && response.get(0).equals("OK"))
+                {
+                    for (Object thisPart : response)
+                    {
+                        if (thisPart instanceof ImapList)
+                        {
+                            ImapList thisList = (ImapList)thisPart;
+                            if (thisList.get(0).equals(CAPABILITY_CAPABILITY))
+                            {
+                                capabilityList = thisList;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (response.mTag == null)
+                {
+                    capabilityList = response;
+                }
+                
+                if (capabilityList != null)
+                {
+                    if (capabilityList.size() > 0 && capabilityList.get(0).equals(CAPABILITY_CAPABILITY))
+                    {
+                        if (K9.DEBUG)
+                        {
+                            Log.d(K9.LOG_TAG, "Saving " + capabilityList.size() + " capabilities for " + getLogId());
+                        }
+                        for (Object capability : capabilityList)
+                        {
+                            if (capability instanceof String)
+                            {
+//                                if (K9.DEBUG)
+//                                {
+//                                    Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
+//                                }
+                                capabilities.add((String)capability);
+                            }
+                        }
+    
+                    }
+                }
+            }
+            return responses;
+        }
+
 
         public void open() throws IOException, MessagingException
         {
@@ -1841,43 +1896,30 @@ public class ImapStore extends Store
                 mParser = new ImapResponseParser(mIn);
                 mOut = mSocket.getOutputStream();
 
+                capabilities.clear();
                 ImapResponse nullResponse = mParser.readResponse();
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, getLogId() + "<<<" + nullResponse);
 
-                List<ImapResponse> responses = executeSimpleCommand("CAPABILITY");
-                if (responses.size() != 2)
+                List<ImapResponse> nullResponses = new LinkedList<ImapResponse>();
+                nullResponses.add(nullResponse);
+                receiveCapabilities(nullResponses);
+                
+                if (hasCapability(CAPABILITY_CAPABILITY) == false)
                 {
-                    throw new MessagingException("Invalid CAPABILITY response received");
-                }
-                capabilities.clear();
-                for (ImapResponse response : responses)
-                {
-                    if (response.mTag == null)
+                    Log.i(K9.LOG_TAG, "Did not get capabilities in banner, requesting CAPABILITY for " + getLogId());
+                    List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
+                    if (responses.size() != 2)
                     {
-                        if (response.size() > 0)
-                        {
-                            for (Object capability : response)
-                            {
-                                if (capability instanceof String)
-                                {
-//                                    if (K9.DEBUG)
-//                                    {
-//                                        Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
-//                                    }
-                                    capabilities.add((String)capability);
-                                }
-                            }
-
-                        }
+                        throw new MessagingException("Invalid CAPABILITY response received");
                     }
                 }
-
+                
                 if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
                         || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED)
                 {
 
-                    if (responses.get(0).contains("STARTTLS"))
+                    if (hasCapability("STARTTLS"))
                     {
                         // STARTTLS
                         executeSimpleCommand("STARTTLS");
@@ -1912,7 +1954,7 @@ public class ImapStore extends Store
                     }
                     else if (mAuthType == AuthType.PLAIN)
                     {
-                        executeSimpleCommand("LOGIN \"" + escapeString(mUsername) + "\" \"" + escapeString(mPassword) + "\"", true);
+                        receiveCapabilities(executeSimpleCommand("LOGIN \"" + escapeString(mUsername) + "\" \"" + escapeString(mPassword) + "\"", true));
                     }
                     authSuccess = true;
                 }
