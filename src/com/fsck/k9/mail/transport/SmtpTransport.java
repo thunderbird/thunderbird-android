@@ -414,9 +414,24 @@ public class SmtpTransport extends Transport
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SMTP >>> " + s);
 
-        mOut.write(s.getBytes());
-        mOut.write('\r');
-        mOut.write('\n');
+        /*
+         * Note: We can use the string length to compute the buffer size since
+         * only ASCII characters are allowed in SMTP commands i.e. this string
+         * will never contain multi-byte characters.
+         */
+        int len = s.length();
+        byte[] data = new byte[len + 2];
+        s.getBytes(0, len, data, 0);
+        data[len+0] = '\r';
+        data[len+1] = '\n';
+
+        /*
+         * Important: Send command + CRLF using just one write() call. Using
+         * multiple calls will likely result in multiple TCP packets and some
+         * SMTP servers misbehave if CR and LF arrive in separate pakets.
+         * See issue 799.
+         */
+        mOut.write(data);
         mOut.flush();
     }
 
