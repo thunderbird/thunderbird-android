@@ -4,7 +4,6 @@ package com.fsck.k9;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.util.Log;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
@@ -70,7 +69,6 @@ public class Account
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
-    private boolean mStoreAttachmentsOnSdCard;
 
     private List<Identity> identities;
 
@@ -241,7 +239,6 @@ public class Account
         }
 
         mIsSignatureBeforeQuotedText = preferences.getPreferences().getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
-        mStoreAttachmentsOnSdCard = preferences.getPreferences().getBoolean(mUuid  + ".storeAttachmentOnSdCard", false);
         identities = loadIdentities(preferences.getPreferences());
     }
 
@@ -295,7 +292,6 @@ public class Account
         editor.remove(mUuid + ".signatureBeforeQuotedText");
         editor.remove(mUuid + ".expungePolicy");
         editor.remove(mUuid + ".maxPushFolders");
-        editor.remove(mUuid + ".storeAttachmentOnSdCard");
         deleteIdentities(preferences.getPreferences(), editor);
         editor.commit();
     }
@@ -368,20 +364,10 @@ public class Account
         editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
         editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
-        editor.putBoolean(mUuid + ".storeAttachmentOnSdCard", mStoreAttachmentsOnSdCard);
         saveIdentities(preferences.getPreferences(), editor);
 
         editor.commit();
 
-        try
-        {
-            getLocalStore().setStoreAttachmentsOnSdCard(mStoreAttachmentsOnSdCard);
-        }
-        catch (MessagingException e)
-        {
-            //Should not happen
-            Log.w(K9.LOG_TAG, null, e);
-        }
     }
 
     //TODO: Shouldn't this live in MessagingController?
@@ -807,17 +793,6 @@ public class Account
     {
         mRing = ring;
     }
-
-    public synchronized boolean isStoreAttachmentOnSdCard()
-    {
-        return mStoreAttachmentsOnSdCard;
-    }
-
-    public synchronized void setStoreAttachmentOnSdCard(boolean mStoreAttachmentOnSdCard)
-    {
-        this.mStoreAttachmentsOnSdCard = mStoreAttachmentOnSdCard;
-    }
-
 
     public LocalStore getLocalStore() throws MessagingException
     {

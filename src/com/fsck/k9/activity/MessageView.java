@@ -1337,6 +1337,10 @@ public class MessageView extends K9Activity
             {
                 attachmentIcon.setImageBitmap(previewIcon);
             }
+            else
+            {
+                attachmentIcon.setImageResource(R.drawable.attached_image_placeholder);
+            }
 
             mHandler.addAttachment(view);
         }

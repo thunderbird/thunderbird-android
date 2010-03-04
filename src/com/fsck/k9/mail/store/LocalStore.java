@@ -8,9 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
-import android.os.Environment;
 import android.text.util.Regex;
 import android.util.Log;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -38,11 +38,9 @@ public class LocalStore extends Store implements Serializable
     private static final int DB_VERSION = 33;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
 
-    private boolean mStoreAttachmentsOnSdCard;
     private String mPath;
     private SQLiteDatabase mDb;
-    private File mInternalAttachmentsDir = null;
-    private File mExternalAttachmentsDir = null;
+    private File mAttachmentsDir;
     private Application mApplication;
     private String uUid = null;
 
@@ -69,7 +67,6 @@ public class LocalStore extends Store implements Serializable
     {
         super(account);
         mApplication = application;
-
         URI uri = null;
         try
         {
@@ -100,15 +97,11 @@ public class LocalStore extends Store implements Serializable
             parentDir.mkdirs();
         }
 
-        mInternalAttachmentsDir = new File(mPath + "_att");
-        if (!mInternalAttachmentsDir.exists())
+        mAttachmentsDir = new File(mPath + "_att");
+        if (!mAttachmentsDir.exists())
         {
-            mInternalAttachmentsDir.mkdirs();
+            mAttachmentsDir.mkdirs();
         }
-
-        String externalAttachmentsPath = "/sdcard" + mPath.substring("//data".length());
-        mExternalAttachmentsDir = new File(externalAttachmentsPath + "_att");
-        this.setStoreAttachmentsOnSdCard(mAccount.isStoreAttachmentOnSdCard());
 
         mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
         if (mDb.getVersion() != DB_VERSION)
@@ -244,37 +237,18 @@ public class LocalStore extends Store implements Serializable
     {
         long attachmentLength = 0;
 
-        attachmentLength =+ getSize(mInternalAttachmentsDir);
-        if (isExternalAttachmentsDirReady())
+        File[] files = mAttachmentsDir.listFiles();
+        for (File file : files)
         {
-            attachmentLength =+ getSize(mExternalAttachmentsDir);
-        }
-
-        File dbFile = new File(mPath);
-        return dbFile.length() + attachmentLength;
-    }
-
-    private long getSize(File attachmentsDir)
-    {
-        long attachmentLength = 0;
-
-        File[] files = attachmentsDir.listFiles();
-        if (files==null)
-        {
-            Log.w(K9.LOG_TAG, "Unable to list files: " + attachmentsDir.getAbsolutePath());
-        }
-        else
-        {
-            for (File file : files)
+            if (file.exists())
             {
-                if (file.exists())
-                {
-                    attachmentLength += file.length();
-                }
+                attachmentLength += file.length();
             }
         }
 
-        return attachmentLength;
+
+        File dbFile = new File(mPath);
+        return dbFile.length() + attachmentLength;
     }
 
     public void compact() throws MessagingException
@@ -403,13 +377,24 @@ public class LocalStore extends Store implements Serializable
         {
 
         }
-
-        delete(mInternalAttachmentsDir);
-        if (isExternalAttachmentsDirReady())
+        try
         {
-            delete(mExternalAttachmentsDir);
+            File[] attachments = mAttachmentsDir.listFiles();
+            for (File attachment : attachments)
+            {
+                if (attachment.exists())
+                {
+                    attachment.delete();
+                }
+            }
+            if (mAttachmentsDir.exists())
+            {
+                mAttachmentsDir.delete();
+            }
         }
-
+        catch (Exception e)
+        {
+        }
         try
         {
             new File(mPath).delete();
@@ -420,124 +405,81 @@ public class LocalStore extends Store implements Serializable
         }
     }
 
-    private void delete(File attachmentsDir) {
-        try {
-            File[] attachments = attachmentsDir.listFiles();
-            if (attachments==null)
-            {
-                Log.w(K9.LOG_TAG, "Unable to list files: " + attachmentsDir.getAbsolutePath());
-            }
-            else
-            {
-                for (File attachment : attachments)
-                {
-                    if (attachment.exists())
-                    {
-                        attachment.delete();
-                    }
-                }
-                if (attachmentsDir.exists())
-                {
-                    attachmentsDir.delete();
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Log.w(K9.LOG_TAG, null, e);
-        }
-    }
-
     public void pruneCachedAttachments() throws MessagingException
     {
         pruneCachedAttachments(false);
     }
 
+    /**
+     * Deletes all cached attachments for the entire store.
+     */
     public void pruneCachedAttachments(boolean force) throws MessagingException
     {
+
         if (force)
         {
             ContentValues cv = new ContentValues();
             cv.putNull("content_uri");
             mDb.update("attachments", cv, null, null);
         }
-        pruneCachedAttachments(force, mInternalAttachmentsDir);
-        if (isExternalAttachmentsDirReady())
+        File[] files = mAttachmentsDir.listFiles();
+        for (File file : files)
         {
-            pruneCachedAttachments(force, mExternalAttachmentsDir);
-        }
-    }
-
-    /**
-     * Deletes all cached attachments for the entire store.
-     */
-    private void pruneCachedAttachments(boolean force, File attachmentsDir) throws MessagingException
-    {
-        File[] files = attachmentsDir.listFiles();
-        if (files==null)
-        {
-            Log.w(K9.LOG_TAG, "Unable to list files: " + attachmentsDir.getAbsolutePath());
-        }
-        else
-        {
-            for (File file : files)
+            if (file.exists())
             {
-                if (file.exists())
+                if (!force)
                 {
-                    if (!force)
+                    Cursor cursor = null;
+                    try
                     {
-                        Cursor cursor = null;
-                        try
+                        cursor = mDb.query(
+                                     "attachments",
+                                     new String[] { "store_data" },
+                                     "id = ?",
+                                     new String[] { file.getName() },
+                                     null,
+                                     null,
+                                     null);
+                        if (cursor.moveToNext())
                         {
-                            cursor = mDb.query(
-                                         "attachments",
-                                         new String[] { "store_data" },
-                                         "id = ?",
-                                         new String[] { file.getName() },
-                                         null,
-                                         null,
-                                         null);
-                            if (cursor.moveToNext())
+                            if (cursor.getString(0) == null)
                             {
-                                if (cursor.getString(0) == null)
-                                {
-                                    Log.d(K9.LOG_TAG, "Attachment " + file.getAbsolutePath() + " has no store data, not deleting");
-                                    /*
-                                     * If the attachment has no store data it is not recoverable, so
-                                     * we won't delete it.
-                                     */
-                                    continue;
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            if (cursor != null)
-                            {
-                                cursor.close();
+                                Log.d(K9.LOG_TAG, "Attachment " + file.getAbsolutePath() + " has no store data, not deleting");
+                                /*
+                                 * If the attachment has no store data it is not recoverable, so
+                                 * we won't delete it.
+                                 */
+                                continue;
                             }
                         }
                     }
-                    if (!force)
+                    finally
                     {
-                        try
+                        if (cursor != null)
                         {
-                            ContentValues cv = new ContentValues();
-                            cv.putNull("content_uri");
-                            mDb.update("attachments", cv, "id = ?", new String[] { file.getName() });
-                        }
-                        catch (Exception e)
-                        {
-                            /*
-                             * If the row has gone away before we got to mark it not-downloaded that's
-                             * okay.
-                             */
+                            cursor.close();
                         }
                     }
-                    if (!file.delete())
+                }
+                if (!force)
+                {
+                    try
                     {
-                        file.deleteOnExit();
+                        ContentValues cv = new ContentValues();
+                        cv.putNull("content_uri");
+                        mDb.update("attachments", cv, "id = ?", new String[] { file.getName() });
                     }
+                    catch (Exception e)
+                    {
+                        /*
+                         * If the row has gone away before we got to mark it not-downloaded that's
+                         * okay.
+                         */
+                    }
+                }
+                if (!file.delete())
+                {
+                    file.deleteOnExit();
                 }
             }
         }
@@ -1788,7 +1730,7 @@ public class LocalStore extends Store implements Serializable
                      * so we copy the data into a cached attachment file.
                      */
                     InputStream in = attachment.getBody().getInputStream();
-                    tempAttachmentFile = File.createTempFile("att", null, getAttachmentsDir());
+                    tempAttachmentFile = File.createTempFile("att", null, mAttachmentsDir);
                     FileOutputStream out = new FileOutputStream(tempAttachmentFile);
                     size = IOUtils.copy(in, out);
                     in.close();
@@ -1853,7 +1795,7 @@ public class LocalStore extends Store implements Serializable
 
             if (tempAttachmentFile != null)
             {
-                File attachmentFile = new File(getAttachmentsDir(), Long.toString(attachmentId));
+                File attachmentFile = new File(mAttachmentsDir, Long.toString(attachmentId));
                 tempAttachmentFile.renameTo(attachmentFile);
                 contentUri = AttachmentProvider.getAttachmentUri(
                                  new File(mPath).getName(),
@@ -2017,20 +1959,11 @@ public class LocalStore extends Store implements Serializable
                             long attachmentId = attachmentsCursor.getLong(0);
                             try
                             {
-                                File file;
-
-                                file = new File(mInternalAttachmentsDir, Long.toString(attachmentId));
+                                File file = new File(mAttachmentsDir, Long.toString(attachmentId));
                                 if (file.exists())
                                 {
                                     file.delete();
                                 }
-
-                                file = new File(mExternalAttachmentsDir, Long.toString(attachmentId));
-                                if (file.exists())
-                                {
-                                    file.delete();
-                                }
-
                             }
                             catch (Exception e)
                             {
@@ -2593,6 +2526,14 @@ public class LocalStore extends Store implements Serializable
             {
                 return mApplication.getContentResolver().openInputStream(mUri);
             }
+            catch (FileNotFoundException fnfe)
+            {
+                /*
+                 * Since it's completely normal for us to try to serve up attachments that
+                 * have been blown away, we just return an empty stream.
+                 */
+                return new ByteArrayInputStream(new byte[0]);
+            }
             catch (IOException ioe)
             {
                 throw new MessagingException("Invalid attachment.", ioe);
@@ -2612,73 +2553,4 @@ public class LocalStore extends Store implements Serializable
             return mUri;
         }
     }
-
-    private File getAttachmentsDir()
-    {
-        if (mStoreAttachmentsOnSdCard)
-        {
-            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-            {
-                if (!mExternalAttachmentsDir.exists())
-                {
-                    mExternalAttachmentsDir.mkdirs();
-                }
-                return mExternalAttachmentsDir;
-            }
-            else
-            {
-                throw new IllegalStateException("SD card not mounted");
-            }
-        }
-        else {
-            return mInternalAttachmentsDir;
-        }
-    }
-
-    public boolean isStoreAttachmentsOnSdCard()
-    {
-        return mStoreAttachmentsOnSdCard;
-    }
-
-    public void setStoreAttachmentsOnSdCard(boolean storeAttachmentsOnSdCard)
-    {
-        this.mStoreAttachmentsOnSdCard = storeAttachmentsOnSdCard;
-        if (K9.DEBUG)
-        {
-            Log.v(K9.LOG_TAG, "mStoreAttachmentsOnSdCard: " + mStoreAttachmentsOnSdCard);
-        }
-        if (storeAttachmentsOnSdCard
-            && !Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
-            && !mExternalAttachmentsDir.exists())
-        {
-            mExternalAttachmentsDir.mkdirs();
-        }
-    }
-
-    /**
-     * Checks if the dir is eardy to use and if we need it.
-     *
-     * @exception IllegalStateException If the dir is not ready (SD card not mounted)
-     * and we expect it to be (mStoreAttachmentsOnSdCard is true)
-     */
-    private boolean isExternalAttachmentsDirReady()
-    {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-        {
-            if (!mExternalAttachmentsDir.exists())
-            {
-                mExternalAttachmentsDir.mkdirs();
-            }
-            return true;
-        }
-        else if (!mStoreAttachmentsOnSdCard)
-        {
-            return false;
-        }
-        else
-        {
-            throw new IllegalStateException("SD card not mounted");
-        }
-    }
-
 }

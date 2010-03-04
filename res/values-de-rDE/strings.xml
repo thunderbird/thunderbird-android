@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">K-9</string>
+    <string name="app_name">K-9 Mail</string>
+    <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, das K-9-Team und viele Weitere.</string>
     <string name="app_authors_fmt">Autoren: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
     <string name="app_revision_fmt">Versionsinformationen: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
 
-    <string name="read_attachment_label">E-Mail-Anlagen lesen</string>
-    <string name="read_attachment_desc">Dieser Anwendung erlauben Ihre E-Mail-Anlagen zu lesen.</string>
+    <string name="read_attachment_label">Anlagen der Nachricht lesen</string>
+    <string name="read_attachment_desc">Dieser Anwendung erlauben die Anlagen Ihrer Nachrichten zu lesen.</string>
 
     <string name="about_title_fmt">Über <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Ihre Konten</string>
     <string name="advanced">Erweitert</string>
     <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
+
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
+
     <string name="compose_title">Verfassen</string>
     <string name="debug_title">Debug</string>
-    <string name="choose_folder_title">Wähle Ordner</string>
+    <string name="choose_folder_title">Ordner wählen</string>
  
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
     
@@ -26,6 +29,9 @@
     <string name="status_sending_account">\u0020(Sende <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_processing_account">\u0020(Verarbeite <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+
+    <string name="status_next_poll">\u0020(Nächstes Laden @ <xliff:g id="nexttime">%s</xliff:g>)</string>
+    <string name="status_polling_off">\u0020(Laden aus)</string>
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Weiter</string> <!-- Used as part of a multi-step process -->
@@ -37,7 +43,10 @@
     <string name="reply_action">Antworten</string>
     <string name="reply_all_action">Allen antworten</string>
     <string name="delete_action">Löschen</string>
+    <string name="archive_action">Sichern</string>
+    <string name="delete_all_action">Ordner leeren</string>
     <string name="forward_action">Weiterleiten</string>
+    <string name="move_action">Verschieben</string>
     <string name="continue_action">Fortfahren</string>
     <string name="done_action">Fertig</string> <!--  Used to complete a multi-step process -->
     <string name="remove_action">Entfernen</string>
@@ -45,8 +54,8 @@
     <string name="save_draft_action">Als Entwurf speichern</string>
     <string name="retry_action">Erneut versuchen</string>
     <string name="refresh_action">Aktualisieren</string>
-    <string name="check_mail_action">E-Mail abrufen</string>
-    <string name="send_messages_action">Nachrichten senden</string>
+    <string name="check_mail_action">Nachricht abrufen</string>
+    <string name="send_messages_action">Nachricht senden</string>
     <string name="list_folders_action">Ordnerliste</string>
 	<string name="refresh_folders_action">Ordnerliste aktualisieren</string>
     <string name="mark_all_as_read_action">Alle als gelesen markieren</string>
@@ -62,17 +71,18 @@
     <string name="clear_pending_action">Ausstehende Aktionen abbrechen (Warnung!)</string>
    
     <string name="accounts_action">Konten</string>
+    <string name="back_to_accounts_action">◀</string>
+    <string name="back_to_folder_list_action">◀</string>
     <string name="read_action">Lesen</string>
     <string name="mark_as_read_action">Als gelesen markieren</string>
     <string name="send_alternate_action">Weiterleiten (Alternativ)</string>
     <string name="send_alternate_chooser_title">Absender auswählen</string>
    
     <string name="mark_all_as_read_dlg_title">Alle Nachrichten als gelesen markieren</string>
-    <string name="mark_all_as_read_dlg_instructions_fmt">Alle Nachrichten in \'<xliff:g id="folder">%s</xliff:g>\' als gelesen markieren?  (inklusive Nachrichten in diesem Ordner, die nicht von K-9 dargestellt werden)</string>
+    <string name="mark_all_as_read_dlg_instructions_fmt">Alle Nachrichten in \'<xliff:g id="folder">%s</xliff:g>\' als gelesen markieren? (inklusive Nachrichten in diesem Ordner, die nicht von K-9 dargestellt werden)</string>
    
     <string name="flag_action">Als wichtig markieren</string>
     <string name="unflag_action">Wichtig-Markierung entfernen</string>
-    <string name="move_action">Verschieben</string>
     <string name="copy_action">Kopieren</string>
  
     <string name="mark_as_unread_action">Als ungelesen markieren</string>
@@ -82,7 +92,7 @@
     <string name="add_cc_bcc_action">CC/BCC hinzufügen</string>
     <string name="edit_subject_action">Betreff bearbeiten</string>
     <string name="add_attachment_action">Anlage hinzufügen</string>
-    <string name="dump_settings_action">Dump settings</string>
+    <string name="dump_settings_action">Einstellungen ausgeben (Dump)</string>
     <string name="empty_trash_action">Papierkorb leeren</string>
     <string name="expunge_action">Bereinigen (Expunge)</string>
     <string name="set_sort_action">Sortierung wählen</string>
@@ -100,8 +110,10 @@
     <string name="status_loading_folder">(Lade <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Lade Nachrichten\u2026</string>
     <string name="status_network_error">Verbindungsfehler</string>
+    <string name="status_invalid_id_error">Nachricht nicht gefunden</string>
     <string name="status_error">Fehler</string> <!-- Used in Outbox when a message has failed to send -->
-    <string name="status_sending">Sende\u2026</string> <!-- Used in Outbox when a message is currently sending -->
+    <string name="status_sending">Sende</string> <!-- Used in Outbox when a message is currently sending -->
+
     <string name="status_loading_more_failed">Ladevorgang erneut starten</string>
 
     <string name="load_more_messages_fmt">Bis zu
@@ -123,17 +135,17 @@
     <string name="compacting_account">Komprimiere Konto \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Bereinige Konto \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <string name="notification_new_title">Neue E-Mail</string>
-    <string name="notification_new_scrolling">Neue E-Mail von <xliff:g id="sender">%s</xliff:g></string>
+    <string name="notification_new_title">Neue Nachricht</string>
+    <string name="notification_new_scrolling">Neue Nachricht von <xliff:g id="sender">%s</xliff:g></string>
     <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ungelesen (<xliff:g id="account">%s</xliff:g>)</string> <!-- 279 Unread (someone@google.com) -->
-    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> neue E-Mail(s) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
+    <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> neue Nachricht(en) (<xliff:g id="account">%s</xliff:g>)</string> <!-- 2 New Email(s) (someone@google.com) -->
     <string name="notification_new_multi_account_fmt">in <xliff:g id="number_accounts">%d</xliff:g> Konten</string>
     <string name="notification_unsent_title">Nachricht nicht gesendet</string>
 
-    <string name="notification_bg_sync_ticker">Suche nach E-Mails: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
-    <string name="notification_bg_sync_title">Suche nach neuen E-Mails</string>
-    <string name="notification_bg_send_ticker">Sende E-Mail: <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_bg_send_title">Sende E-Mail</string>
+    <string name="notification_bg_sync_ticker">Auf neue Nachrichten prüfen: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+    <string name="notification_bg_sync_title">Auf neue Nachrichten prüfen</string>
+    <string name="notification_bg_send_ticker">Sende Nachricht: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Sende Nachricht</string>
     <string name="notification_bg_title_separator">:</string>
 
     <string name="special_mailbox_name_inbox">Posteingang</string>
@@ -152,43 +164,49 @@
     <string name="send_failure_subject">Fehler beim Senden von Nachrichten</string>
     <string name="send_failure_body_abbrev">Sehen Sie bitte im Ordner <xliff:g id="errorFolder">%s</xliff:g> für Details nach.</string>
     <string name="send_failure_body_fmt">K-9 hat beim Senden einiger Ihrer Nachrichten ein Problem festgestellt.
-    Aber, aufgrund der Natur des Problems, kann sich K-9 nicht sicher sein, ob die Nachricht gesendet wurde oder nicht. Die Empfänger haben möglicherweise schon Kopien der Nachricht erhalten.
+    Hierbei kann K-9 aber nicht feststellen, ob die Nachricht gesendet wurde oder nicht. Die Empfänger haben möglicherweise schon Kopien der Nachricht erhalten.
     \u000a\u000aDie Nachrichten, bei denen dieses Problem auftrat, sind in ihrem Postausgang markiert. Wenn Sie die Markierung entfernen, wird K-9 versuchen die Nachricht erneut zu versenden.
-	Langes Drücken auf den Postausgang bringt ein Menü zum Vorschein, bei dem "Nachrichten Senden" gedrückt werden muss, um einen erneuten Sendeversuch zu starten.\u000A\u000a
+	Durch langes Drücken auf den Postausgang erscheint ein Menü, bei dem mit "Nachricht senden" ein erneuter Sendeversuch gestartet werden kann.\u000A\u000a
 	Der Ordner <xliff:g id="errorFolder">%s</xliff:g> enthält möglicherweise Fehlermeldungen mit Details zu diesem Problem.</string>
     
     <string name="alert_header">K-9-Alarm</string>
-    <string name="no_connection_alert">Synchronisierung und Senden von Nachrichten aufgrund von fehlender Netzwerkkonnektivität eingestellt.</string>
+    <string name="no_connection_alert">Synchronisierung und Senden von Nachrichten aufgrund von fehlender Netzwerkverbindung eingestellt.</string>
    
     <string name="end_of_folder">Keine weiteren Nachrichten</string>
 
     <string name="accounts_welcome">
-Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
+Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
 \n
-\nVerbesserte Funktionen in K-9:
- * Höhere Performance
- * E-Mail-Signaturen
- * Automatische Blindkopie an sich selbst
- * Ordner-Abonnements
- * Synchronisation aller Ordner
- * Konfiguration einer Antwort-Adresse
- * Tastatur-Shortcuts
- * Verbesserte IMAP-Unterstützung
- * Speichern von Anlagen auf SD-Karte
- * Papierkorb leeren
- * Nachrichtensortierung
- * ...und viele mehr
+\n\nVerbesserte Funktionen in K-9:
+\n * Laden von Nachrichten durch IMAP IDLE
+\n * Höhere Performance
+\n * E-Mail-Signaturen
+\n * Automatische Blindkopie an sich selbst
+\n * Ordner-Abonnements
+\n * Synchronisation aller Ordner
+\n * Konfiguration einer Antwort-Adresse
+\n * Tastatur-Shortcuts
+\n * Verbesserte IMAP-Unterstützung
+\n * Speichern von Anlagen auf SD-Karte
+\n * Papierkorb leeren
+\n * Sortieren der Nachrichten
+\n * ...und viele mehr
+\n
 \nBitte beachten Sie, dass K-9, wie viele andere E-Mail-Anwendungen auch, die meisten kostenlosen Hotmail-Accounts nicht unterstützt. Zudem gibt es einige Probleme mit Microsoft Exchange-Servern.
-\nUm Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuchen Sie die Homepage unter http://code.google.com/p/k9mail
+\n
+\nUm Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuchen Sie die Homepage unter
+\n<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
 </string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
-    <string name="debug_enable_debug_logging_title">Debug-Aufzeichnungen</string>
+    <string name="debug_enable_debug_logging_title">Debug-Aufzeichnungen einschalten</string>
     <string name="debug_enable_debug_logging_summary">Zeichnet zusätzliche Diagnose-Informationen auf</string>
     <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen aufzeichnen</string>
     <string name="debug_enable_sensitive_logging_summary">Passwörter in die Debug-Aufzeichnungen aufnehmen</string>
 
-    <string name="combined_inbox_title">Alle E-Mails</string>
+    <string name="message_header_mua">K-9 Mail for Android</string>
+
+    <string name="combined_inbox_title">Alle Nachrichten</string>
     <string name="combined_inbox_label">Neue Nachrichten aller Konten</string>
     <string name="combined_inbox_list_title">Globaler Posteingang</string> <!-- Inbox here should be the same as mailbox_name_inbox -->
 
@@ -200,8 +218,8 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="message_list_load_more_messages_action">Weitere Nachrichten abrufen</string>
     <string name="message_list_to_fmt">An: <xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_list_delete_action">Löschen</string>
-    <string name="message_list_mark_read_action">Gelesen</string>
-    <string name="message_list_mark_unread_action">Ungelesen</string>
+    <string name="message_list_mark_read_action">Als gelesen markieren</string>
+    <string name="message_list_mark_unread_action">Als ungelesen markieren</string>
     <string name="message_list_flag_action">Wichtig</string>
     <string name="message_list_unflag_action">Nicht wichtig</string>
 
@@ -209,6 +227,7 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="message_compose_cc_hint">CC</string>
     <string name="message_compose_bcc_hint">BCC</string>
     <string name="message_compose_subject_hint">Betreff</string>
+    <string name="message_compose_content_hint">Nachrichtentext</string>
     <string name="message_compose_fwd_header_fmt">\n\n-------- Original-Nachricht --------\nBetreff: <xliff:g id="subject">%s</xliff:g>\nVon: <xliff:g id="sender">%s</xliff:g>\nAn: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
     <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> schrieb:\n\n</string>
     <string name="message_compose_quoted_text_label">Zitierter Text</string>
@@ -216,22 +235,27 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="message_compose_downloading_attachments_toast">Einige Anlagen wurden nicht heruntergeladen. Sie werden automatisch heruntergeladen, bevor diese Nachricht gesendet wird.</string>
     <string name="message_compose_attachments_skipped_toast">Einige Anlagen können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
  
+    <string name="message_view_from_format">Von: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_view_to_label">An:</string>
+    <string name="message_view_cc_label">CC:</string>
     <string name="message_view_attachment_view_action">Öffnen</string>
     <string name="message_view_attachment_download_action">Speichern</string>
     <string name="message_view_prev_action">\u25BC</string>
     <string name="message_view_next_action">\u25B2</string>
-    <string name="message_view_datetime_fmt">dd MMM yyyy HH:mm</string>
+    <string name="message_view_datetime_fmt">dd. MMM yyyy HH:mm</string>
     <string name="message_view_status_attachment_saved">Anlage auf SD-Karte gespeichert als <xliff:g id="filename">%s</xliff:g>.</string>
-    <string name="message_view_status_attachment_not_saved">Nicht möglich Anlage auf SD-Karte zu speichern.</string>
+    <string name="message_view_status_attachment_not_saved">Anlage konnte nicht auf SD-Karte gespeichert werden.</string>
     <string name="message_view_show_pictures_instructions">Wählen Sie \"Bilder anzeigen\", um eingebettete Bilder abzurufen.</string>
     <string name="message_view_show_pictures_action">Bilder anzeigen</string>
     <string name="message_view_fetching_attachment_toast">Lade Anlage.</string>
+    <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
 
     <string name="mailbox_select_dlg_title">Ordner</string>
     <string name="mailbox_select_dlg_new_mailbox_action">Neuer Ordner</string>
 
     <string name="new_mailbox_dlg_title">Neuer Ordnername</string>
+    
+    <string name="folder_push_active_symbol">(Laden)</string>
 
     <string name="message_copied_toast">Nachricht kopiert.</string>
     <string name="message_moved_toast">Nachricht verschoben.</string>
@@ -244,10 +268,10 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
 
     <string name="global_settings_flag_label">Wichtige Nachrichten</string>
-    <string name="global_settings_flag_summary">Sterne weisen auf wichtige Nachrichten hin</string>
+    <string name="global_settings_flag_summary">Sterne weisen auf wichtige Nachrichten hin.</string>
     <string name="global_settings_checkbox_label">Mehrfachauswahl</string>
     <string name="global_settings_checkbox_summary">Immer Mehrfachauswahl-Checkboxen anzeigen</string>
-    <string name="global_settings_touchable_label">Touch-freundliche Ansicht</string>
+    <string name="global_settings_touchable_label">Berührungsfreundliche Ansicht</string>
 
     <string name="account_setup_basics_title">E-Mail-Konto einrichten</string>
     <string name="account_setup_basics_instructions">E-Mail-Adresse Ihres Kontos:</string>
@@ -256,18 +280,18 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> ist keine gültige E-Mail-Adresse.</string>
     <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> existiert bereits.</string>
     <string name="account_setup_basics_password_hint">Passwort</string>
-    <string name="account_setup_basics_default_label">Standardmäßig E-Mails von diesem Konto aus senden.</string>
+    <string name="account_setup_basics_default_label">Standardmäßig Nachrichten von diesem Konto aus senden.</string>
     <string name="account_setup_basics_manual_setup_action">Manuelle Einrichtung</string>
 
     <string name="account_setup_check_settings_title"></string>
     <string name="account_setup_check_settings_retr_info_msg">Abrufen von Konto-Informationen\u2026</string>
-    <string name="account_setup_check_settings_check_incoming_msg">Prüfe Empfangsserver-Einstellungen\u2026</string>
-    <string name="account_setup_check_settings_check_outgoing_msg">Prüfe Ausgangsserver-Einstellungen\u2026</string>
+    <string name="account_setup_check_settings_check_incoming_msg">Prüfe Einstellungen des Empfangsservers\u2026</string>
+    <string name="account_setup_check_settings_check_outgoing_msg">Prüfe Einstellungen des Ausgangsservers\u2026</string>
     <string name="account_setup_check_settings_finishing_msg">Vorgang wird abgeschlossen\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Breche ab\u2026</string>
 
     <string name="account_setup_names_title">Fast fertig!</string>
-        <string name="account_setup_names_instructions">Ihr Konto ist eingerichtet, eine Testnachricht wurde versandt!</string>
+    <string name="account_setup_names_instructions">Ihr Konto ist eingerichtet, eine Test-E-Mail wurde versandt!</string>
     <string name="account_setup_names_account_name_label">Kontoname (optional):</string>
     <string name="account_setup_names_user_name_label">Ihr Name (Anzeige bei ausgehenden Nachrichten):</string>
 
@@ -294,7 +318,7 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="account_setup_incoming_security_tls_optional_label">TLS (falls verfügbar)</string>
     <string name="account_setup_incoming_security_tls_label">TLS (immer)</string>
    
-    <string name="account_setup_incoming_delete_policy_label">Aktion bei Löschen von E-Mails:</string>
+    <string name="account_setup_incoming_delete_policy_label">Aktion bei Löschen von Nachrichten:</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie von Server löschen</string>
     <string name="account_setup_incoming_delete_policy_7days_label">Nach 7 Tagen löschen</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
@@ -326,7 +350,7 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="account_setup_outgoing_title">Einstellungen für Postausgangsserver</string>
     <string name="account_setup_outgoing_smtp_server_label">SMTP-Server</string>
     <string name="account_setup_outgoing_port_label">Port</string>
-    <string name="account_setup_outgoing_security_label">Sicherheitsart</string>
+    <string name="account_setup_outgoing_security_label">Sicherheitstyp</string>
     <string name="account_setup_outgoing_security_none_label">Keine Verschlüsselung</string>
     <string name="account_setup_outgoing_security_ssl_label">SSL</string>
     <string name="account_setup_outgoing_security_tls_optional_label">TLS (falls verfügbar)</string>
@@ -342,6 +366,8 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP vor SMTP</string>
     <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP vor SMTP</string>
     <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV(Exchange) vor SMTP</string>
+
+	<string name="account_setup_bad_uri">Ungültige Einstellung: <xliff:g id="err_mess">%s</xliff:g></string>
 
     <string name="account_setup_options_title">Kontoeinstellungen</string>
    
@@ -366,12 +392,12 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="account_setup_options_enable_push_label">Push-Mail für dieses Konto aktivieren</string>
     <string name="account_setup_options_enable_push_summary">Neue Nachrichten werden nach dem Eintreffen umgehend abgerufen, falls Ihr Server dies unterstützt. Diese Einstellung kann zur Reduzierung der Laufzeit führen oder diese verbessern.</string>
 
-    <string name="account_setup_options_default_label">Standardmäßig E-Mails von diesem Konto aus senden.</string>
-    <string name="account_setup_options_notify_label">Benachrichtigen, wenn E-Mails eingehen.</string>
-    <string name="account_setup_options_notify_sync_label">Benachrichtigen, wenn E-Mails synchronisiert werden.</string>
+    <string name="account_setup_options_default_label">Standardmäßig Nachrichten von diesem Konto aus senden.</string>
+    <string name="account_setup_options_notify_label">Benachrichtigen, wenn Nachrichten eingehen.</string>
+    <string name="account_setup_options_notify_sync_label">Benachrichtigen, wenn Nachrichten synchronisiert werden.</string>
 
     <!-- Number of displayed messages, also used in account_settings_* -->
-    <string name="account_setup_options_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
+    <string name="account_setup_options_mail_display_count_label">Anzahl sichtbarer Nachrichten</string>
     <string name="account_setup_options_mail_display_count_10">10 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_25">25 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_50">50 Nachrichten</string>
@@ -387,30 +413,31 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="account_setup_failed_dlg_certificate_message_fmt">Aufbau einer gesicherten Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
     <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
+    <string name="account_setup_failed_dlg_continue_action">Weiter</string>
 
     <string name="account_settings_title_fmt">Kontoeinstellungen</string>
     <string name="account_settings_default">Standardkonto</string>
     <string name="account_settings_default_label">Standardkonto</string>
-    <string name="account_settings_default_summary">Standardmäßig E-Mails von diesem Konto aus senden.</string>
-    <string name="account_settings_notify_label">Benachrichtigung bei neuer E-Mail</string>
+    <string name="account_settings_default_summary">Standardmäßig Nachrichten von diesem Konto aus senden.</string>
+    <string name="account_settings_notify_label">Benachrichtigung bei neuer Nachricht</string>
     <string name="account_settings_notify_sync_label">Benachrichtigung bei Synchronisation</string>
     <string name="account_settings_email_label">Ihre E-Mail-Adresse</string>
-    <string name="account_settings_notify_summary">Zeigt eine Benachrichtigung in der Statuszeile, wenn eine neue E-Mail empfangen wird.</string>
-    <string name="account_settings_notify_sync_summary">Zeigt eine Benachrichtigung in der Statuszeile, wenn E-Mails empfangen werden.</string>
+    <string name="account_settings_notify_summary">Zeigt eine Benachrichtigung in der Statuszeile, wenn eine neue Nachricht empfangen wird.</string>
+    <string name="account_settings_notify_sync_summary">Zeigt eine Benachrichtigung in der Statuszeile, während Nachrichten empfangen werden.</string>
     <string name="account_settings_show_combined_label">Globalen Posteingang anzeigen</string>
-    <string name="account_settings_notify_self_label">Benachrichtigung für eigene E-Mails</string>
-    <string name="account_settings_notify_self_summary">Benachrichtigungen für E-Mails, die eine ihrer eigenen E-Mail-Adressen als Absender tragen.</string>
+    <string name="account_settings_notify_self_label">Benachrichtigung für eigene Nachrichten</string>
+    <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine ihrer eigenen E-Mail-Adressen als Absender tragen.</string>
    
     <string name="account_settings_hide_buttons_label">Navigations-Scrollbuttons</string>
     <string name="account_settings_hide_buttons_never">Nie</string>
     <string name="account_settings_hide_buttons_keyboard_avail">Nur wenn Tastatur aktiv</string>
     <string name="account_settings_hide_buttons_always">Immer</string>
    
-    <string name="account_settings_composition">Nachrichten verfassen</string>
+    <string name="account_settings_composition">Nachricht verfassen</string>
 	<string name="account_settings_sync">Ordner synchronisieren</string>
     <string name="account_settings_folders">Ordner</string>
-	<string name="account_settings_message_lists">Nachrichtenliste</string>
-	<string name="account_settings_message_view">Nachrichtenanzeige</string>
+	<string name="account_settings_message_lists">Liste der Nachrichten</string>
+	<string name="account_settings_message_view">Anzeige der Nachricht</string>
 
     <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
     <string name="account_settings_second_class_check_frequency_label">Häufigkeit der Abfrage für Nebenordner</string>
@@ -469,9 +496,9 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="account_settings_description_label">Kontoname</string>
     <string name="account_settings_name_label">Ihr Name</string>
     <string name="account_settings_notifications">Benachrichtigungseinstellungen</string>
-    <string name="account_settings_ring_summary">Klingeln bei eingehender E-Mail</string>
+    <string name="account_settings_ring_summary">Klingeln bei eingehender Nachricht</string>
     <string name="account_settings_vibrate_enable">Vibration</string>
-    <string name="account_settings_vibrate_summary">Vibration bei eingehender E-Mail</string>
+    <string name="account_settings_vibrate_summary">Vibration bei eingehender Nachricht</string>
     <string name="account_settings_ringtone">Klingelton</string>
     <string name="account_settings_servers">Servereinstellungen</string>
 
@@ -483,6 +510,7 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="account_settings_identities_summary">Alternative Absenderadressen und Signaturen konfigurieren</string>
 
     <string name="manage_identities_title">Identitäten verwalten</string>
+
     <string name="manage_identities_context_menu_title">Identität berarbeiten</string>
 
     <string name="edit_identity_title">Identität bearbeiten</string>
@@ -514,14 +542,14 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="default_identity_description">Standard-Identität</string>
     <string name="choose_identity">Identität auswählen</string>
     <string name="choose_identity_title">Identität auswählen</string>
+
     <string name="no_identities">Gehen Sie zu \"Kontoeinstellungen\" -&gt; \"Identitäten verwalten\" um Identitäten zu erstellen</string>
     <string name="no_removable_identity">Sie können Ihre einzige Identität nicht löschen</string>
     <string name="identity_has_no_email">Sie können keine Identität ohne E-Mail-Adresse verwenden</string>
     <string name="identity_will_not_be_saved">Die Wahl Ihrer Identität und Änderungen an der Signatur werden bei einem Entwurf nicht gespeichert</string>
-
    
-    <string name="sort_earliest_first">Neueste Nachrichten zuerst</string>
-    <string name="sort_latest_first">Älteste Nachrichten zuerst</string>
+    <string name="sort_earliest_first">Älteste Nachrichten zuerst</string>
+    <string name="sort_latest_first">Neueste Nachrichten zuerst</string>
     <string name="sort_sender_alpha">Alphabetisch nach Absender</string>
     <string name="sort_sender_re_alpha">Umgekehrt-Alphabetisch nach Absender</string>
     <string name="sort_subject_alpha">Alphabetisch nach Betreff</string>
@@ -540,7 +568,7 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="sort_by_flag">Wichtigkeit</string>
     <string name="sort_by_unread">Gelesen/Ungelesen</string>
     <string name="sort_by_attach">Anlage</string>
-
+    <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Entfernen</string>
     <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird gelöscht.</string>
@@ -587,7 +615,7 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="display_preferences">Globale Einstellungen</string>
     <string name="debug_preferences">Debugging</string>
     <string name="operational_preferences">Synchronisierung</string>
-    <string name="messagelist_preferences">Nachrichtenliste</string>
+    <string name="messagelist_preferences">Liste der Nachrichten</string>
     <string name="settings_theme_label">Theme</string>
     
     <string name="background_ops_label">Hintergrund-Synchronisierung</string>
@@ -598,6 +626,10 @@ Willkommen zum \"K-9 Mail\"-Setup.  K-9 ist eine quelloffene E-Mail-Anwendung f�
     <string name="no_message_seletected_toast">Keine Nachricht ausgewählt</string>
     
     <string name="date_format_label">Datumsformat</string>
+    <string name="date_format_short">SHORT</string>
+    <string name="date_format_medium">MEDIUM</string>
+    <string name="date_format_common">dd.MMM yyyy</string>
+    <string name="date_format_iso8601">yyyy-MM-dd</string>
     
     <string name="batch_ops">Mehrfachauswahl</string>
     <string name="batch_delete_op">Ausgewählte löschen</string>
