@@ -21,9 +21,6 @@ import com.fsck.k9.*;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.store.LocalStore;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -297,7 +294,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT))
             {
-                mSelectedContextAccount = (Account) icicle.getSerializable("selectedContextAccount");
+                String accountUuid = icicle.getString("selectedContextAccount");
+                mSelectedContextAccount = Preferences.getPreferences(this).getAccount(accountUuid);
             }
 
             if (icicle != null)
@@ -317,7 +315,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         super.onSaveInstanceState(outState);
         if (mSelectedContextAccount != null)
         {
-            outState.putSerializable(SELECTED_CONTEXT_ACCOUNT, mSelectedContextAccount);
+            outState.putString(SELECTED_CONTEXT_ACCOUNT, mSelectedContextAccount.getUuid());
         }
         outState.putSerializable(UNREAD_MESSAGE_COUNTS, unreadMessageCounts);
     }
@@ -473,13 +471,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 dismissDialog(DIALOG_REMOVE_ACCOUNT);
                 try
                 {
-                    ((LocalStore)Store.getInstance(mSelectedContextAccount.getLocalStoreUri(), getApplication())).delete();
+                    mSelectedContextAccount.getLocalStore().delete();
                 }
                 catch (Exception e)
                 {
                     // Ignore
                 }
-                mSelectedContextAccount.delete(Preferences.getPreferences(Accounts.this));
+                Preferences.getPreferences(Accounts.this).deleteAccount(mSelectedContextAccount);
                 K9.setServicesEnabled(Accounts.this);
                 refresh();
             }
@@ -730,5 +728,3 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
     }
 }
-
-

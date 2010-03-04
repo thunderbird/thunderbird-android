@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,6 +36,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     {
         "smtp", "smtp+ssl", "smtp+ssl+", "smtp+tls", "smtp+tls+"
     };
+    /*
     private static final int webdavPorts[] =
     {
         80, 443, 443, 443, 443
@@ -45,6 +45,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     {
         "webdav", "webdav+ssl", "webdav+ssl+", "webdav+tls", "webdav+tls+"
     };
+    */
 
     private static final String authTypes[] =
     {
@@ -65,7 +66,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     public static void actionOutgoingSettings(Context context, Account account, boolean makeDefault)
     {
         Intent i = new Intent(context, AccountSetupOutgoing.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
         context.startActivity(i);
     }
@@ -74,7 +75,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     {
         Intent i = new Intent(context, AccountSetupOutgoing.class);
         i.setAction(Intent.ACTION_EDIT);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
@@ -84,7 +85,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_outgoing);
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try
         {
@@ -190,7 +192,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
          */
         mPortView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        //FIXME: get Account object again?
+        accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mMakeDefault = (boolean)getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
         /*
@@ -199,7 +203,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT))
         {
-            mAccount = (Account)savedInstanceState.getSerializable(EXTRA_ACCOUNT);
+            accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
+            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
         try
@@ -284,7 +289,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(EXTRA_ACCOUNT, mAccount);
+        outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
     }
 
     private void validateFields()

@@ -1,9 +1,10 @@
 
 package com.fsck.k9;
 
+import java.util.ArrayList;
+import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.util.Config;
 import android.util.Log;
 import com.fsck.k9.preferences.Editor;
@@ -13,7 +14,24 @@ public class Preferences
 {
     private static Preferences preferences;
 
+    /**
+     * TODO need to think about what happens if this gets GCed along with the
+     * Activity that initialized it. Do we lose ability to read Preferences in
+     * further Activities? Maybe this should be stored in the Application
+     * context.
+     */
+    public static synchronized Preferences getPreferences(Context context)
+    {
+        if (preferences == null)
+        {
+            preferences = new Preferences(context);
+        }
+        return preferences;
+    }
+
+
     private Storage mStorage;
+    private List<Account> accounts;
 
     private Preferences(Context context)
     {
@@ -27,77 +45,83 @@ public class Preferences
         }
     }
 
-
-    /**
-     * TODO need to think about what happens if this gets GCed along with the
-     * Activity that initialized it. Do we lose ability to read Preferences in
-     * further Activities? Maybe this should be stored in the Application
-     * context.
-     *
-     * @return
-     */
-    public static synchronized Preferences getPreferences(Context context)
+    private synchronized void loadAccounts()
     {
-        if (preferences == null)
+        String accountUuids = getPreferences().getString("accountUuids", null);
+        if ((accountUuids != null) && (accountUuids.length() != 0))
         {
-            preferences = new Preferences(context);
+            String[] uuids = accountUuids.split(",");
+            accounts = new ArrayList<Account>(uuids.length);
+            for (int i = 0, length = uuids.length; i < length; i++)
+            {
+                accounts.add(new Account(this, uuids[i]));
+            }
         }
-        return preferences;
+        else
+        {
+            accounts = new ArrayList<Account>();
+        }
     }
 
     /**
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
-     *
-     * @return
      */
-    public Account[] getAccounts()
+    public synchronized Account[] getAccounts()
     {
-        String accountUuids = getPreferences().getString("accountUuids", null);
-        if (accountUuids == null || accountUuids.length() == 0)
+        if (accounts == null)
         {
-            return new Account[] {};
+            loadAccounts();
         }
-        String[] uuids = accountUuids.split(",");
-        Account[] accounts = new Account[uuids.length];
-        for (int i = 0, length = uuids.length; i < length; i++)
-        {
-            accounts[i] = new Account(this, uuids[i]);
-        }
-        return accounts;
+
+        return accounts.toArray(new Account[0]);
     }
 
-    public Account getAccountByContentUri(Uri uri)
+    public synchronized Account getAccount(String uuid)
     {
-        return new Account(this, uri.getPath().substring(1));
+        if (accounts == null)
+        {
+            loadAccounts();
+        }
+
+        for (Account account : accounts)
+        {
+            if (account.getUuid().equals(uuid))
+            {
+                return account;
+            }
+        }
+
+        return null;
+    }
+
+    public synchronized Account newAccount()
+    {
+        Account account = new Account(K9.app);
+        accounts.add(account);
+
+        return account;
+    }
+
+    public synchronized void deleteAccount(Account account)
+    {
+        accounts.remove(account);
+        account.delete(this);
     }
 
     /**
      * Returns the Account marked as default. If no account is marked as default
      * the first account in the list is marked as default and then returned. If
      * there are no accounts on the system the method returns null.
-     *
-     * @return
      */
     public Account getDefaultAccount()
     {
         String defaultAccountUuid = getPreferences().getString("defaultAccountUuid", null);
-        Account defaultAccount = null;
-        Account[] accounts = getAccounts();
-        if (defaultAccountUuid != null)
-        {
-            for (Account account : accounts)
-            {
-                if (account.getUuid().equals(defaultAccountUuid))
-                {
-                    defaultAccount = account;
-                    break;
-                }
-            }
-        }
+        Account defaultAccount = getAccount(defaultAccountUuid);
 
         if (defaultAccount == null)
         {
+            Account[] accounts = getAccounts();
             if (accounts.length > 0)
             {
                 defaultAccount = accounts[0];

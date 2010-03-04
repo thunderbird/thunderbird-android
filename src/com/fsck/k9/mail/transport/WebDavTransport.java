@@ -2,6 +2,8 @@
 package com.fsck.k9.mail.transport;
 
 import android.util.Log;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.mail.Message;
@@ -42,9 +44,9 @@ public class WebDavTransport extends Transport
      *
      * @param _uri
      */
-    public WebDavTransport(String _uri) throws MessagingException
+    public WebDavTransport(Account account) throws MessagingException
     {
-        store = new WebDavStore(_uri);
+        store = new WebDavStore(account);
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, ">>> New WebDavTransport creation complete");
     }

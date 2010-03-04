@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.mail.transport.SmtpTransport;
 import com.fsck.k9.mail.transport.WebDavTransport;
 
@@ -11,15 +12,16 @@ public abstract class Transport
     // RFC 1047
     protected static final int SOCKET_READ_TIMEOUT = 300000;
 
-    public synchronized static Transport getInstance(String uri) throws MessagingException
+    public synchronized static Transport getInstance(Account account) throws MessagingException
     {
+        String uri = account.getTransportUri();
         if (uri.startsWith("smtp"))
         {
             return new SmtpTransport(uri);
         }
         else if (uri.startsWith("webdav"))
         {
-            return new WebDavTransport(uri);
+            return new WebDavTransport(account);
         }
         else
         {

@@ -11,9 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.fsck.k9.Account;
+import com.fsck.k9.Identity;
 import com.fsck.k9.K9ListActivity;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-
 import java.util.List;
 
 public class ChooseIdentity extends K9ListActivity
@@ -26,7 +27,7 @@ public class ChooseIdentity extends K9ListActivity
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseIdentity_account";
     public static final String EXTRA_IDENTITY = "com.fsck.k9.ChooseIdentity_identity";
 
-    protected List<Account.Identity> identities = null;
+    protected List<Identity> identities = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -39,7 +40,8 @@ public class ChooseIdentity extends K9ListActivity
         getListView().setItemsCanFocus(false);
         getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
         Intent intent = getIntent();
-        mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
@@ -61,7 +63,7 @@ public class ChooseIdentity extends K9ListActivity
         adapter.clear();
 
         identities = mAccount.getIdentities();
-        for (Account.Identity identity : identities)
+        for (Identity identity : identities)
         {
             String email = identity.getEmail();
             String description = identity.getDescription();
@@ -80,7 +82,7 @@ public class ChooseIdentity extends K9ListActivity
         {
             public void onItemClick(AdapterView adapterview, View view, int i, long l)
             {
-                Account.Identity identity = mAccount.getIdentity(i);
+                Identity identity = mAccount.getIdentity(i);
                 String email = identity.getEmail();
                 if (email != null && email.trim().equals("") == false)
                 {

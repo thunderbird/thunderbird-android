@@ -7,12 +7,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
 import com.fsck.k9.Account;
+import com.fsck.k9.Identity;
 import com.fsck.k9.K9Activity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-
 import java.util.List;
 
 public class EditIdentity extends K9Activity
@@ -23,7 +22,7 @@ public class EditIdentity extends K9Activity
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.EditIdentity_account";
 
     private Account mAccount;
-    private Account.Identity mIdentity;
+    private Identity mIdentity;
     private int mIdentityIndex;
     private EditText mDescriptionView;
     private CheckBox mSignatureUse;
@@ -38,13 +37,14 @@ public class EditIdentity extends K9Activity
     {
         super.onCreate(savedInstanceState);
 
-        mIdentity = (Account.Identity)getIntent().getSerializableExtra(EXTRA_IDENTITY);
+        mIdentity = (Identity)getIntent().getSerializableExtra(EXTRA_IDENTITY);
         mIdentityIndex = getIntent().getIntExtra(EXTRA_IDENTITY_INDEX, -1);
-        mAccount = (Account) getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         if (mIdentityIndex == -1)
         {
-            mIdentity = mAccount.new Identity();
+            mIdentity = new Identity();
         }
 
         setContentView(R.layout.edit_identity);
@@ -55,7 +55,7 @@ public class EditIdentity extends K9Activity
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_IDENTITY))
         {
-            mIdentity = (Account.Identity)savedInstanceState.getSerializable(EXTRA_IDENTITY);
+            mIdentity = (Identity)savedInstanceState.getSerializable(EXTRA_IDENTITY);
         }
 
         mDescriptionView = (EditText)findViewById(R.id.description);
@@ -115,7 +115,7 @@ public class EditIdentity extends K9Activity
         mIdentity.setSignatureUse(mSignatureUse.isChecked());
         mIdentity.setSignature(mSignatureView.getText().toString());
 
-        List<Account.Identity> identities = mAccount.getIdentities();
+        List<Identity> identities = mAccount.getIdentities();
         if (mIdentityIndex == -1)
         {
             identities.add(mIdentity);

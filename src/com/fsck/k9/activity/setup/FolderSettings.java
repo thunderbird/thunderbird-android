@@ -12,6 +12,7 @@ import com.fsck.k9.*;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.service.MailService;
 
@@ -36,7 +37,7 @@ public class FolderSettings extends K9PreferenceActivity
     {
         Intent i = new Intent(context, FolderSettings.class);
         i.putExtra(EXTRA_FOLDER_NAME, folderName);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
@@ -46,13 +47,13 @@ public class FolderSettings extends K9PreferenceActivity
         super.onCreate(savedInstanceState);
 
         String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
-        Account mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try
         {
-            Store localStore = Store.getInstance(mAccount.getLocalStoreUri(),
-                                                 getApplication());
-            mFolder = (LocalFolder) localStore.getFolder(folderName);
+            LocalStore localStore = mAccount.getLocalStore();
+            mFolder = localStore.getFolder(folderName);
             mFolder.refresh(Preferences.getPreferences(this));
         }
         catch (MessagingException me)
@@ -65,7 +66,7 @@ public class FolderSettings extends K9PreferenceActivity
         Store store = null;
         try
         {
-            store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+            store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
         }
         catch (Exception e)

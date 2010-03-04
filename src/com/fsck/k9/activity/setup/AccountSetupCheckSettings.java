@@ -20,7 +20,6 @@ import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.TrustManagerFactory;
-
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -62,7 +61,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                            boolean checkIncoming, boolean checkOutgoing)
     {
         Intent i = new Intent(context, AccountSetupCheckSettings.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_CHECK_INCOMING, checkIncoming);
         i.putExtra(EXTRA_CHECK_OUTGOING, checkOutgoing);
         context.startActivityForResult(i, ACTIVITY_REQUEST_CODE);
@@ -80,7 +79,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         setMessage(R.string.account_setup_check_settings_retr_info_msg);
         mProgressBar.setIndeterminate(true);
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mCheckIncoming = (boolean)getIntent().getBooleanExtra(EXTRA_CHECK_INCOMING, false);
         mCheckOutgoing = (boolean)getIntent().getBooleanExtra(EXTRA_CHECK_OUTGOING, false);
 
@@ -104,7 +104,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     if (mCheckIncoming)
                     {
                         setMessage(R.string.account_setup_check_settings_check_incoming_msg);
-                        store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+                        store = mAccount.getRemoteStore();
                         store.checkSettings();
 
                         MessagingController.getInstance(getApplication()).listFolders(mAccount, true, null);
@@ -123,7 +123,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     if (mCheckOutgoing)
                     {
                         setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
-                        Transport transport = Transport.getInstance(mAccount.getTransportUri());
+                        Transport transport = Transport.getInstance(mAccount);
                         transport.close();
                         transport.open();
                         transport.close();

@@ -1,6 +1,6 @@
+
 package com.fsck.k9;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -10,8 +10,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,49 +19,60 @@ import java.util.UUID;
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
-public class Account implements Serializable
+public class Account
 {
+    public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
+    public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
+    public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
+
     public static final int DELETE_POLICY_NEVER = 0;
     public static final int DELETE_POLICY_7DAYS = 1;
     public static final int DELETE_POLICY_ON_DELETE = 2;
     public static final int DELETE_POLICY_MARK_AS_READ = 3;
 
-    private static final long serialVersionUID = 2975156672298625121L;
+    /**
+     * <pre>
+     * 0 - Never (DELETE_POLICY_NEVER)
+     * 1 - After 7 days (DELETE_POLICY_7DAYS)
+     * 2 - When I delete from inbox (DELETE_POLICY_ON_DELETE)
+     * 3 - Mark as read (DELETE_POLICY_MARK_AS_READ)
+     * </pre>
+     */
+    private int mDeletePolicy;
 
-    String mUuid;
-    String mStoreUri;
-    String mLocalStoreUri;
-    String mTransportUri;
-    String mDescription;
-    String mAlwaysBcc;
-    int mAutomaticCheckIntervalMinutes;
-    int mDisplayCount;
-    long mLastAutomaticCheckTime;
-    boolean mNotifyNewMail;
-    boolean mNotifySelfNewMail;
-    String mDraftsFolderName;
-    String mSentFolderName;
-    String mTrashFolderName;
-    String mOutboxFolderName;
-    String mAutoExpandFolderName;
-    FolderMode mFolderDisplayMode;
-    FolderMode mFolderSyncMode;
-    FolderMode mFolderPushMode;
-    FolderMode mFolderTargetMode;
-    int mAccountNumber;
-    boolean mVibrate;
-    boolean mRing;
-    String mRingtoneUri;
-    boolean mNotifySync;
-    HideButtons mHideMessageViewButtons;
-    boolean mIsSignatureBeforeQuotedText;
+    private String mUuid;
+    private String mStoreUri;
+    private String mLocalStoreUri;
+    private String mTransportUri;
+    private String mDescription;
+    private String mAlwaysBcc;
+    private int mAutomaticCheckIntervalMinutes;
+    private int mDisplayCount;
+    private long mLastAutomaticCheckTime;
+    private boolean mNotifyNewMail;
+    private boolean mNotifySelfNewMail;
+    private String mDraftsFolderName;
+    private String mSentFolderName;
+    private String mTrashFolderName;
+    private String mOutboxFolderName;
+    private String mAutoExpandFolderName;
+    private FolderMode mFolderDisplayMode;
+    private FolderMode mFolderSyncMode;
+    private FolderMode mFolderPushMode;
+    private FolderMode mFolderTargetMode;
+    private int mAccountNumber;
+    private boolean mVibrate;
+    private boolean mRing;
+    private String mRingtoneUri;
+    private boolean mNotifySync;
+    private HideButtons mHideMessageViewButtons;
+    private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
-    private boolean mStoreAttachmentsOnSdCard;
 
-    List<Identity> identities;
+    private List<Identity> identities;
 
-     public enum FolderMode
+    public enum FolderMode
     {
         NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
     }
@@ -73,20 +82,8 @@ public class Account implements Serializable
         NEVER, ALWAYS, KEYBOARD_AVAILABLE;
     }
 
-    public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
-    public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
-    public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
 
-    /**
-     * <pre>
-     * 0 Never
-     * 1 After 7 days
-     * 2 When I delete from inbox
-     * </pre>
-     */
-    int mDeletePolicy;
-
-    public Account(Context context)
+    protected Account(Context context)
     {
         // TODO Change local store path to something readable / recognizable
         mUuid = UUID.randomUUID().toString();
@@ -119,70 +116,16 @@ public class Account implements Serializable
         identities.add(identity);
     }
 
-    public class Identity implements Serializable
-    {
-        String mDescription;
-        String mName;
-        String mEmail;
-        String mSignature;
-        boolean mSignatureUse;
-
-        public String getName()
-        {
-            return mName;
-        }
-        public void setName(String name)
-        {
-            mName = name;
-        }
-        public String getEmail()
-        {
-            return mEmail;
-        }
-        public void setEmail(String email)
-        {
-            mEmail = email;
-        }
-        public boolean getSignatureUse()
-        {
-            return mSignatureUse;
-        }
-        public void setSignatureUse(boolean signatureUse)
-        {
-            mSignatureUse = signatureUse;
-        }
-        public String getSignature()
-        {
-            return mSignature;
-        }
-        public void setSignature(String signature)
-        {
-            mSignature = signature;
-        }
-        public String getDescription()
-        {
-            return mDescription;
-        }
-        public void setDescription(String description)
-        {
-            mDescription = description;
-        }
-        public String toString()
-        {
-            return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", signature=" + mSignature;
-        }
-    }
-
-    Account(Preferences preferences, String uuid)
+    protected Account(Preferences preferences, String uuid)
     {
         this.mUuid = uuid;
-        refresh(preferences);
+        loadAccount(preferences);
     }
 
     /**
-     * Refresh the account from the stored settings.
+     * Load stored settings for this account.
      */
-    public void refresh(Preferences preferences)
+    private synchronized void loadAccount(Preferences preferences)
     {
         mStoreUri = Utility.base64Decode(preferences.getPreferences().getString(mUuid
                                          + ".storeUri", null));
@@ -299,215 +242,8 @@ public class Account implements Serializable
         identities = loadIdentities(preferences.getPreferences());
     }
 
-    private List<Identity> loadIdentities(SharedPreferences prefs)
-    {
-        List<Identity> newIdentities = new ArrayList<Identity>();
-        int ident = 0;
-        boolean gotOne = false;
-        do
-        {
-            gotOne = false;
-            String name = prefs.getString(mUuid + ".name." + ident, null);
-            String email = prefs.getString(mUuid + ".email." + ident, null);
-            boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse." + ident, true);
-            String signature = prefs.getString(mUuid + ".signature." + ident, null);
-            String description = prefs.getString(mUuid + ".description." + ident, null);
-            if (email != null)
-            {
-                Identity identity = new Identity();
-                identity.setName(name);
-                identity.setEmail(email);
-                identity.setSignatureUse(signatureUse);
-                identity.setSignature(signature);
-                identity.setDescription(description);
-                newIdentities.add(identity);
-                gotOne = true;
-            }
-            ident++;
-        }
-        while (gotOne);
 
-        if (newIdentities.size() == 0)
-        {
-            String name = prefs.getString(mUuid + ".name", null);
-            String email = prefs.getString(mUuid + ".email", null);
-            boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse", true);
-            String signature = prefs.getString(mUuid + ".signature", null);
-            Identity identity = new Identity();
-            identity.setName(name);
-            identity.setEmail(email);
-            identity.setSignatureUse(signatureUse);
-            identity.setSignature(signature);
-            identity.setDescription(email);
-            newIdentities.add(identity);
-        }
-
-        return newIdentities;
-    }
-
-    private void deleteIdentities(SharedPreferences prefs, SharedPreferences.Editor editor)
-    {
-        int ident = 0;
-        boolean gotOne = false;
-        do
-        {
-            gotOne = false;
-            String email = prefs.getString(mUuid + ".email." + ident, null);
-            if (email != null)
-            {
-                editor.remove(mUuid + ".name." + ident);
-                editor.remove(mUuid + ".email." + ident);
-                editor.remove(mUuid + ".signatureUse." + ident);
-                editor.remove(mUuid + ".signature." + ident);
-                editor.remove(mUuid + ".description." + ident);
-                gotOne = true;
-            }
-            ident++;
-        }
-        while (gotOne);
-    }
-
-    private void saveIdentities(SharedPreferences prefs, SharedPreferences.Editor editor)
-    {
-        deleteIdentities(prefs, editor);
-        int ident = 0;
-
-        for (Identity identity : identities)
-        {
-            editor.putString(mUuid + ".name." + ident, identity.getName());
-            editor.putString(mUuid + ".email." + ident, identity.getEmail());
-            editor.putBoolean(mUuid + ".signatureUse." + ident, identity.getSignatureUse());
-            editor.putString(mUuid + ".signature." + ident, identity.getSignature());
-            editor.putString(mUuid + ".description." + ident, identity.getDescription());
-            ident++;
-        }
-    }
-
-    public List<Identity> getIdentities()
-    {
-        return identities;
-    }
-
-    public void setIdentities(List<Identity> newIdentities)
-    {
-        identities = newIdentities;
-    }
-
-    public String getUuid()
-    {
-        return mUuid;
-    }
-
-    public String getStoreUri()
-    {
-        return mStoreUri;
-    }
-
-    public void setStoreUri(String storeUri)
-    {
-        this.mStoreUri = storeUri;
-    }
-
-    public String getTransportUri()
-    {
-        return mTransportUri;
-    }
-
-    public void setTransportUri(String transportUri)
-    {
-        this.mTransportUri = transportUri;
-    }
-
-    public String getDescription()
-    {
-        return mDescription;
-    }
-
-    public void setDescription(String description)
-    {
-        this.mDescription = description;
-    }
-
-    public String getName()
-    {
-        return identities.get(0).getName();
-    }
-
-    public void setName(String name)
-    {
-        identities.get(0).setName(name);
-    }
-
-    public boolean getSignatureUse()
-    {
-        return identities.get(0).getSignatureUse();
-    }
-
-    public void setSignatureUse(boolean signatureUse)
-    {
-        identities.get(0).setSignatureUse(signatureUse);
-    }
-
-    public String getSignature()
-    {
-        return identities.get(0).getSignature();
-    }
-
-    public void setSignature(String signature)
-    {
-        identities.get(0).setSignature(signature);
-    }
-
-    public String getEmail()
-    {
-        return identities.get(0).getEmail();
-    }
-
-    public void setEmail(String email)
-    {
-        identities.get(0).setEmail(email);
-    }
-
-    public String getAlwaysBcc()
-    {
-        return mAlwaysBcc;
-    }
-
-    public void setAlwaysBcc(String alwaysBcc)
-    {
-        this.mAlwaysBcc = alwaysBcc;
-    }
-
-    public Identity getIdentity(int i)
-    {
-        if (i < identities.size())
-        {
-            return identities.get(i);
-        }
-        return null;
-    }
-
-    public boolean isVibrate()
-    {
-        return mVibrate;
-    }
-
-    public void setVibrate(boolean vibrate)
-    {
-        mVibrate = vibrate;
-    }
-
-    public String getRingtone()
-    {
-        return mRingtoneUri;
-    }
-
-    public void setRingtone(String ringtoneUri)
-    {
-        mRingtoneUri = ringtoneUri;
-    }
-
-    public void delete(Preferences preferences)
+    protected synchronized void delete(Preferences preferences)
     {
         String[] uuids = preferences.getPreferences().getString("accountUuids", "").split(",");
         StringBuffer sb = new StringBuffer();
@@ -560,7 +296,7 @@ public class Account implements Serializable
         editor.commit();
     }
 
-    public void save(Preferences preferences)
+    public synchronized void save(Preferences preferences)
     {
         SharedPreferences.Editor editor = preferences.getPreferences().edit();
 
@@ -631,42 +367,14 @@ public class Account implements Serializable
         saveIdentities(preferences.getPreferences(), editor);
 
         editor.commit();
+
     }
 
-    public String toString()
-    {
-        return mDescription;
-    }
-
-    public Uri getContentUri()
-    {
-        return Uri.parse("content://accounts/" + getUuid());
-    }
-
-    public String getLocalStoreUri()
-    {
-        return mLocalStoreUri;
-    }
-
-    public void setLocalStoreUri(String localStoreUri)
-    {
-        this.mLocalStoreUri = localStoreUri;
-    }
-
-    /**
-     * Returns -1 for never.
-     */
-    public int getAutomaticCheckIntervalMinutes()
-    {
-        return mAutomaticCheckIntervalMinutes;
-    }
-
-    public int getUnreadMessageCount(Context context, Application application) throws MessagingException
+    //TODO: Shouldn't this live in MessagingController?
+    public int getUnreadMessageCount(Context context) throws MessagingException
     {
         int unreadMessageCount = 0;
-        LocalStore localStore = (LocalStore) Store.getInstance(
-                                    getLocalStoreUri(),
-                                    application);
+        LocalStore localStore = getLocalStore();
         Account.FolderMode aMode = getFolderDisplayMode();
         Preferences prefs = Preferences.getPreferences(context);
         for (LocalFolder folder : localStore.getPersonalNamespaces())
@@ -705,7 +413,521 @@ public class Account implements Serializable
         }
 
         return unreadMessageCount;
+    }
 
+    public String getUuid()
+    {
+        return mUuid;
+    }
+
+    public Uri getContentUri()
+    {
+        return Uri.parse("content://accounts/" + getUuid());
+    }
+
+    public synchronized String getStoreUri()
+    {
+        return mStoreUri;
+    }
+
+    public synchronized void setStoreUri(String storeUri)
+    {
+        this.mStoreUri = storeUri;
+    }
+
+    public synchronized String getTransportUri()
+    {
+        return mTransportUri;
+    }
+
+    public synchronized void setTransportUri(String transportUri)
+    {
+        this.mTransportUri = transportUri;
+    }
+
+    public synchronized String getDescription()
+    {
+        return mDescription;
+    }
+
+    public synchronized void setDescription(String description)
+    {
+        this.mDescription = description;
+    }
+
+    public synchronized String getName()
+    {
+        return identities.get(0).getName();
+    }
+
+    public synchronized void setName(String name)
+    {
+        identities.get(0).setName(name);
+    }
+
+    public synchronized boolean getSignatureUse()
+    {
+        return identities.get(0).getSignatureUse();
+    }
+
+    public synchronized void setSignatureUse(boolean signatureUse)
+    {
+        identities.get(0).setSignatureUse(signatureUse);
+    }
+
+    public synchronized String getSignature()
+    {
+        return identities.get(0).getSignature();
+    }
+
+    public synchronized void setSignature(String signature)
+    {
+        identities.get(0).setSignature(signature);
+    }
+
+    public synchronized String getEmail()
+    {
+        return identities.get(0).getEmail();
+    }
+
+    public synchronized void setEmail(String email)
+    {
+        identities.get(0).setEmail(email);
+    }
+
+    public synchronized String getAlwaysBcc()
+    {
+        return mAlwaysBcc;
+    }
+
+    public synchronized void setAlwaysBcc(String alwaysBcc)
+    {
+        this.mAlwaysBcc = alwaysBcc;
+    }
+
+    public synchronized boolean isVibrate()
+    {
+        return mVibrate;
+    }
+
+    public synchronized void setVibrate(boolean vibrate)
+    {
+        mVibrate = vibrate;
+    }
+
+    public synchronized String getRingtone()
+    {
+        return mRingtoneUri;
+    }
+
+    public synchronized void setRingtone(String ringtoneUri)
+    {
+        mRingtoneUri = ringtoneUri;
+    }
+
+    public synchronized String getLocalStoreUri()
+    {
+        return mLocalStoreUri;
+    }
+
+    public synchronized void setLocalStoreUri(String localStoreUri)
+    {
+        this.mLocalStoreUri = localStoreUri;
+    }
+
+    /**
+     * Returns -1 for never.
+     */
+    public synchronized int getAutomaticCheckIntervalMinutes()
+    {
+        return mAutomaticCheckIntervalMinutes;
+    }
+
+    /**
+     * @param automaticCheckIntervalMinutes or -1 for never.
+     */
+    public synchronized boolean setAutomaticCheckIntervalMinutes(int automaticCheckIntervalMinutes)
+    {
+        int oldInterval = this.mAutomaticCheckIntervalMinutes;
+        int newInterval = automaticCheckIntervalMinutes;
+        this.mAutomaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
+        
+        return (oldInterval != newInterval);
+    }
+
+    public synchronized int getDisplayCount()
+    {
+        if (mDisplayCount == -1)
+        {
+            this.mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
+        }
+        return mDisplayCount;
+    }
+
+    public synchronized void setDisplayCount(int displayCount)
+    {
+        if (displayCount != -1)
+        {
+            this.mDisplayCount = displayCount;
+        }
+        else
+        {
+            this.mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
+        }
+    }
+
+    public synchronized long getLastAutomaticCheckTime()
+    {
+        return mLastAutomaticCheckTime;
+    }
+
+    public synchronized void setLastAutomaticCheckTime(long lastAutomaticCheckTime)
+    {
+        this.mLastAutomaticCheckTime = lastAutomaticCheckTime;
+    }
+
+    public synchronized boolean isNotifyNewMail()
+    {
+        return mNotifyNewMail;
+    }
+
+    public synchronized void setNotifyNewMail(boolean notifyNewMail)
+    {
+        this.mNotifyNewMail = notifyNewMail;
+    }
+
+    public synchronized int getDeletePolicy()
+    {
+        return mDeletePolicy;
+    }
+
+    public synchronized void setDeletePolicy(int deletePolicy)
+    {
+        this.mDeletePolicy = deletePolicy;
+    }
+
+    public synchronized String getDraftsFolderName()
+    {
+        return mDraftsFolderName;
+    }
+
+    public synchronized void setDraftsFolderName(String draftsFolderName)
+    {
+        mDraftsFolderName = draftsFolderName;
+    }
+
+    public synchronized String getSentFolderName()
+    {
+        return mSentFolderName;
+    }
+
+    public synchronized String getErrorFolderName()
+    {
+        return K9.ERROR_FOLDER_NAME;
+    }
+
+    public synchronized void setSentFolderName(String sentFolderName)
+    {
+        mSentFolderName = sentFolderName;
+    }
+
+    public synchronized String getTrashFolderName()
+    {
+        return mTrashFolderName;
+    }
+
+    public synchronized void setTrashFolderName(String trashFolderName)
+    {
+        mTrashFolderName = trashFolderName;
+    }
+
+    public synchronized String getOutboxFolderName()
+    {
+        return mOutboxFolderName;
+    }
+
+    public synchronized void setOutboxFolderName(String outboxFolderName)
+    {
+        mOutboxFolderName = outboxFolderName;
+    }
+
+    public synchronized String getAutoExpandFolderName()
+    {
+        return mAutoExpandFolderName;
+    }
+
+    public synchronized void setAutoExpandFolderName(String autoExpandFolderName)
+    {
+        mAutoExpandFolderName = autoExpandFolderName;
+    }
+
+    public synchronized int getAccountNumber()
+    {
+        return mAccountNumber;
+    }
+
+    public synchronized FolderMode getFolderDisplayMode()
+    {
+        return mFolderDisplayMode;
+    }
+
+    public synchronized boolean setFolderDisplayMode(FolderMode displayMode)
+    {
+        FolderMode oldDisplayMode = mFolderDisplayMode;
+        mFolderDisplayMode = displayMode;
+        return oldDisplayMode != displayMode;
+    }
+
+    public synchronized FolderMode getFolderSyncMode()
+    {
+        return mFolderSyncMode;
+    }
+
+    public synchronized boolean setFolderSyncMode(FolderMode syncMode)
+    {
+        FolderMode oldSyncMode = mFolderSyncMode;
+        mFolderSyncMode = syncMode;
+        
+        if (syncMode == FolderMode.NONE && oldSyncMode != FolderMode.NONE)
+        {
+            return true;
+        }
+        if (syncMode != FolderMode.NONE && oldSyncMode == FolderMode.NONE)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public synchronized FolderMode getFolderPushMode()
+    {
+        return mFolderPushMode;
+    }
+
+    public synchronized boolean setFolderPushMode(FolderMode pushMode)
+    {
+        FolderMode oldPushMode = mFolderPushMode;
+        
+        mFolderPushMode = pushMode;
+        return pushMode != oldPushMode;
+    }
+
+    public synchronized boolean isShowOngoing()
+    {
+        return mNotifySync;
+    }
+
+    public synchronized void setShowOngoing(boolean showOngoing)
+    {
+        this.mNotifySync = showOngoing;
+    }
+
+    public synchronized HideButtons getHideMessageViewButtons()
+    {
+        return mHideMessageViewButtons;
+    }
+
+    public synchronized void setHideMessageViewButtons(HideButtons hideMessageViewButtons)
+    {
+        mHideMessageViewButtons = hideMessageViewButtons;
+    }
+
+    public synchronized FolderMode getFolderTargetMode()
+    {
+        return mFolderTargetMode;
+    }
+
+    public synchronized void setFolderTargetMode(FolderMode folderTargetMode)
+    {
+        mFolderTargetMode = folderTargetMode;
+    }
+
+    public synchronized boolean isSignatureBeforeQuotedText()
+    {
+        return mIsSignatureBeforeQuotedText;
+    }
+
+    public synchronized void setSignatureBeforeQuotedText(boolean mIsSignatureBeforeQuotedText)
+    {
+        this.mIsSignatureBeforeQuotedText = mIsSignatureBeforeQuotedText;
+    }
+
+    public synchronized boolean isNotifySelfNewMail()
+    {
+        return mNotifySelfNewMail;
+    }
+
+    public synchronized void setNotifySelfNewMail(boolean notifySelfNewMail)
+    {
+        mNotifySelfNewMail = notifySelfNewMail;
+    }
+
+    public synchronized String getExpungePolicy()
+    {
+        return mExpungePolicy;
+    }
+
+    public synchronized void setExpungePolicy(String expungePolicy)
+    {
+        mExpungePolicy = expungePolicy;
+    }
+
+    public synchronized int getMaxPushFolders()
+    {
+        return mMaxPushFolders;
+    }
+
+    public synchronized boolean setMaxPushFolders(int maxPushFolders)
+    {
+        int oldMaxPushFolders = mMaxPushFolders;
+        mMaxPushFolders = maxPushFolders;
+        return oldMaxPushFolders != maxPushFolders;
+    }
+
+    public synchronized boolean isRing()
+    {
+        return mRing;
+    }
+
+    public synchronized void setRing(boolean ring)
+    {
+        mRing = ring;
+    }
+
+    public LocalStore getLocalStore() throws MessagingException
+    {
+        return Store.getLocalInstance(this, K9.app);        
+    }
+    
+    public Store getRemoteStore() throws MessagingException
+    {
+        return Store.getRemoteInstance(this);        
+    }
+
+    @Override
+    public synchronized String toString()
+    {
+        return mDescription;
+    }
+    
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof Account)
+        {
+            return ((Account)o).mUuid.equals(mUuid);
+        }
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return mUuid.hashCode();
+    }
+
+
+    private synchronized List<Identity> loadIdentities(SharedPreferences prefs)
+    {
+        List<Identity> newIdentities = new ArrayList<Identity>();
+        int ident = 0;
+        boolean gotOne = false;
+        do
+        {
+            gotOne = false;
+            String name = prefs.getString(mUuid + ".name." + ident, null);
+            String email = prefs.getString(mUuid + ".email." + ident, null);
+            boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse." + ident, true);
+            String signature = prefs.getString(mUuid + ".signature." + ident, null);
+            String description = prefs.getString(mUuid + ".description." + ident, null);
+            if (email != null)
+            {
+                Identity identity = new Identity();
+                identity.setName(name);
+                identity.setEmail(email);
+                identity.setSignatureUse(signatureUse);
+                identity.setSignature(signature);
+                identity.setDescription(description);
+                newIdentities.add(identity);
+                gotOne = true;
+            }
+            ident++;
+        }
+        while (gotOne);
+
+        if (newIdentities.size() == 0)
+        {
+            String name = prefs.getString(mUuid + ".name", null);
+            String email = prefs.getString(mUuid + ".email", null);
+            boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse", true);
+            String signature = prefs.getString(mUuid + ".signature", null);
+            Identity identity = new Identity();
+            identity.setName(name);
+            identity.setEmail(email);
+            identity.setSignatureUse(signatureUse);
+            identity.setSignature(signature);
+            identity.setDescription(email);
+            newIdentities.add(identity);
+        }
+
+        return newIdentities;
+    }
+
+    private synchronized void deleteIdentities(SharedPreferences prefs, SharedPreferences.Editor editor)
+    {
+        int ident = 0;
+        boolean gotOne = false;
+        do
+        {
+            gotOne = false;
+            String email = prefs.getString(mUuid + ".email." + ident, null);
+            if (email != null)
+            {
+                editor.remove(mUuid + ".name." + ident);
+                editor.remove(mUuid + ".email." + ident);
+                editor.remove(mUuid + ".signatureUse." + ident);
+                editor.remove(mUuid + ".signature." + ident);
+                editor.remove(mUuid + ".description." + ident);
+                gotOne = true;
+            }
+            ident++;
+        }
+        while (gotOne);
+    }
+
+    private synchronized void saveIdentities(SharedPreferences prefs, SharedPreferences.Editor editor)
+    {
+        deleteIdentities(prefs, editor);
+        int ident = 0;
+
+        for (Identity identity : identities)
+        {
+            editor.putString(mUuid + ".name." + ident, identity.getName());
+            editor.putString(mUuid + ".email." + ident, identity.getEmail());
+            editor.putBoolean(mUuid + ".signatureUse." + ident, identity.getSignatureUse());
+            editor.putString(mUuid + ".signature." + ident, identity.getSignature());
+            editor.putString(mUuid + ".description." + ident, identity.getDescription());
+            ident++;
+        }
+    }
+
+    public synchronized List<Identity> getIdentities()
+    {
+        return identities;
+    }
+
+    public synchronized void setIdentities(List<Identity> newIdentities)
+    {
+        identities = new ArrayList<Identity>(newIdentities);
+    }
+
+    public synchronized Identity getIdentity(int i)
+    {
+        if (i < identities.size())
+        {
+            return identities.get(i);
+        }
+        return null;
     }
 
     public boolean isAnIdentity(Address[] addrs)
@@ -730,7 +952,7 @@ public class Account implements Serializable
         return findIdentity(addr) != null;
     }
 
-    public Identity findIdentity(Address addr)
+    public synchronized Identity findIdentity(Address addr)
     {
         for (Identity identity : identities)
         {
@@ -742,275 +964,4 @@ public class Account implements Serializable
         }
         return null;
     }
-
-    public int getDisplayCount()
-    {
-        if (mDisplayCount == -1)
-        {
-            this.mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
-        }
-        return mDisplayCount;
-    }
-
-    /**
-     * @param automaticCheckIntervalMinutes or -1 for never.
-     */
-    public boolean setAutomaticCheckIntervalMinutes(int automaticCheckIntervalMinutes)
-    {
-        int oldInterval = this.mAutomaticCheckIntervalMinutes;
-        int newInterval = automaticCheckIntervalMinutes;
-        this.mAutomaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
-        
-        return (oldInterval != newInterval);
-    }
-
-    /**
-     * @param displayCount
-     */
-    public void setDisplayCount(int displayCount)
-    {
-        if (displayCount != -1)
-        {
-            this.mDisplayCount = displayCount;
-        }
-        else
-        {
-            this.mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
-        }
-    }
-
-    public long getLastAutomaticCheckTime()
-    {
-        return mLastAutomaticCheckTime;
-    }
-
-    public void setLastAutomaticCheckTime(long lastAutomaticCheckTime)
-    {
-        this.mLastAutomaticCheckTime = lastAutomaticCheckTime;
-    }
-
-    public boolean isNotifyNewMail()
-    {
-        return mNotifyNewMail;
-    }
-
-    public void setNotifyNewMail(boolean notifyNewMail)
-    {
-        this.mNotifyNewMail = notifyNewMail;
-    }
-
-    public int getDeletePolicy()
-    {
-        return mDeletePolicy;
-    }
-
-    public void setDeletePolicy(int deletePolicy)
-    {
-        this.mDeletePolicy = deletePolicy;
-    }
-
-    public String getDraftsFolderName()
-    {
-        return mDraftsFolderName;
-    }
-
-    public void setDraftsFolderName(String draftsFolderName)
-    {
-        mDraftsFolderName = draftsFolderName;
-    }
-
-    public String getSentFolderName()
-    {
-        return mSentFolderName;
-    }
-
-    public String getErrorFolderName()
-    {
-        return K9.ERROR_FOLDER_NAME;
-    }
-
-    public void setSentFolderName(String sentFolderName)
-    {
-        mSentFolderName = sentFolderName;
-    }
-
-    public String getTrashFolderName()
-    {
-        return mTrashFolderName;
-    }
-
-    public void setTrashFolderName(String trashFolderName)
-    {
-        mTrashFolderName = trashFolderName;
-    }
-
-    public String getOutboxFolderName()
-    {
-        return mOutboxFolderName;
-    }
-
-    public void setOutboxFolderName(String outboxFolderName)
-    {
-        mOutboxFolderName = outboxFolderName;
-    }
-
-    public String getAutoExpandFolderName()
-    {
-        return mAutoExpandFolderName;
-    }
-
-    public void setAutoExpandFolderName(String autoExpandFolderName)
-    {
-        mAutoExpandFolderName = autoExpandFolderName;
-    }
-
-    public int getAccountNumber()
-    {
-        return mAccountNumber;
-    }
-
-    @Override
-    public boolean equals(Object o)
-    {
-        if (o instanceof Account)
-        {
-            return ((Account)o).mUuid.equals(mUuid);
-        }
-        return super.equals(o);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return mUuid.hashCode();
-    }
-
-    public FolderMode getFolderDisplayMode()
-    {
-        return mFolderDisplayMode;
-    }
-
-    public boolean setFolderDisplayMode(FolderMode displayMode)
-    {
-        FolderMode oldDisplayMode = mFolderDisplayMode;
-        mFolderDisplayMode = displayMode;
-        return oldDisplayMode != displayMode;
-    }
-
-    public FolderMode getFolderSyncMode()
-    {
-        return mFolderSyncMode;
-    }
-
-    public boolean setFolderSyncMode(FolderMode syncMode)
-    {
-        FolderMode oldSyncMode = mFolderSyncMode;
-        mFolderSyncMode = syncMode;
-        
-        if (syncMode == FolderMode.NONE && oldSyncMode != FolderMode.NONE)
-        {
-            return true;
-        }
-        if (syncMode != FolderMode.NONE && oldSyncMode == FolderMode.NONE)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public FolderMode getFolderPushMode()
-    {
-        return mFolderPushMode;
-    }
-
-    public boolean setFolderPushMode(FolderMode pushMode)
-    {
-        FolderMode oldPushMode = mFolderPushMode;
-        
-        mFolderPushMode = pushMode;
-        return pushMode != oldPushMode;
-    }
-
-    public boolean isShowOngoing()
-    {
-        return mNotifySync;
-    }
-
-    public void setShowOngoing(boolean showOngoing)
-    {
-        this.mNotifySync = showOngoing;
-    }
-
-    public HideButtons getHideMessageViewButtons()
-    {
-        return mHideMessageViewButtons;
-    }
-
-    public void setHideMessageViewButtons(HideButtons hideMessageViewButtons)
-    {
-        mHideMessageViewButtons = hideMessageViewButtons;
-    }
-
-    public FolderMode getFolderTargetMode()
-    {
-        return mFolderTargetMode;
-    }
-
-    public void setFolderTargetMode(FolderMode folderTargetMode)
-    {
-        mFolderTargetMode = folderTargetMode;
-    }
-
-    public boolean isSignatureBeforeQuotedText()
-    {
-        return mIsSignatureBeforeQuotedText;
-    }
-
-    public void setSignatureBeforeQuotedText(boolean mIsSignatureBeforeQuotedText)
-    {
-        this.mIsSignatureBeforeQuotedText = mIsSignatureBeforeQuotedText;
-    }
-
-    public boolean isNotifySelfNewMail()
-    {
-        return mNotifySelfNewMail;
-    }
-
-    public void setNotifySelfNewMail(boolean notifySelfNewMail)
-    {
-        mNotifySelfNewMail = notifySelfNewMail;
-    }
-
-    public String getExpungePolicy()
-    {
-        return mExpungePolicy;
-    }
-
-    public void setExpungePolicy(String expungePolicy)
-    {
-        mExpungePolicy = expungePolicy;
-    }
-
-    public int getMaxPushFolders()
-    {
-        return mMaxPushFolders;
-    }
-
-    public boolean setMaxPushFolders(int maxPushFolders)
-    {
-        int oldMaxPushFolders = mMaxPushFolders;
-        mMaxPushFolders = maxPushFolders;
-        return oldMaxPushFolders != maxPushFolders;
-    }
-
-    public boolean isRing()
-    {
-        return mRing;
-    }
-
-    public void setRing(boolean ring)
-    {
-        mRing = ring;
-    }
-
 }

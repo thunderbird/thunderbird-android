@@ -2,6 +2,8 @@
 package com.fsck.k9.mail.store;
 
 import android.util.Log;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.Utility;
@@ -98,15 +100,15 @@ public class ImapStore extends Store
      * imap+tls+://auth:user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
      * imap+ssl+://auth:user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
      * imap+ssl://auth:user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
-     *
-     * @param _uri
      */
-    public ImapStore(String _uri) throws MessagingException
+    public ImapStore(Account account) throws MessagingException
     {
+        super(account);
+
         URI uri;
         try
         {
-            uri = new URI(_uri);
+            uri = new URI(mAccount.getStoreUri());
         }
         catch (URISyntaxException use)
         {
@@ -438,6 +440,7 @@ public class ImapStore extends Store
 
         public ImapFolder(ImapStore nStore, String name)
         {
+            super(nStore.getAccount());
             store = nStore;
             this.mName = name;
         }

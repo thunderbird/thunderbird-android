@@ -2,6 +2,8 @@
 package com.fsck.k9.mail;
 
 import android.app.Application;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.Pop3Store;
@@ -31,44 +33,40 @@ public abstract class Store
 
     private static HashMap<String, Store> mStores = new HashMap<String, Store>();
 
-    /**
-     * Get an instance of a mail store. The URI is parsed as a standard URI and
-     * the scheme is used to determine which protocol will be used. The
-     * following schemes are currently recognized: imap - IMAP with no
-     * connection security. Ex: imap://username:password@host/ imap+tls - IMAP
-     * with TLS connection security, if the server supports it. Ex:
-     * imap+tls://username:password@host imap+tls+ - IMAP with required TLS
-     * connection security. Connection fails if TLS is not available. Ex:
-     * imap+tls+://username:password@host imap+ssl+ - IMAP with required SSL
-     * connection security. Connection fails if SSL is not available. Ex:
-     * imap+ssl+://username:password@host
-     *
-     * @param uri The URI of the store.
-     * @return
-     * @throws MessagingException
-     */
-    public synchronized static Store getInstance(String uri, Application application) throws MessagingException
+    protected final Account mAccount;
+
+    protected Store(Account account)
     {
+        mAccount = account;
+    }
+
+    /**
+     * Get an instance of a remote mail store.
+     */
+    public synchronized static Store getRemoteInstance(Account account) throws MessagingException
+    {
+        String uri = account.getStoreUri();
+
+        if (uri.startsWith("local"))
+        {
+            throw new RuntimeException("Asked to get non-local Store object but given LocalStore URI");
+        }
+
         Store store = mStores.get(uri);
         if (store == null)
         {
             if (uri.startsWith("imap"))
             {
-                store = new ImapStore(uri);
+                store = new ImapStore(account);
             }
             else if (uri.startsWith("pop3"))
             {
-                store = new Pop3Store(uri);
-            }
-            else if (uri.startsWith("local"))
-            {
-                store = new LocalStore(uri, application);
+                store = new Pop3Store(account);
             }
             else if (uri.startsWith("webdav"))
             {
-                store = new WebDavStore(uri);
+                store = new WebDavStore(account);
             }
-
 
             if (store != null)
             {
@@ -82,6 +80,37 @@ public abstract class Store
         }
 
         return store;
+    }
+
+    /**
+     * Get an instance of a local mail store.
+     */
+    public synchronized static LocalStore getLocalInstance(Account account, Application application) throws MessagingException
+    {
+        String uri = account.getLocalStoreUri();
+
+        if (!uri.startsWith("local"))
+        {
+            throw new RuntimeException("LocalStore URI doesn't start with 'local'");
+        }
+
+        Store store = mStores.get(uri);
+        if (store == null)
+        {
+            store = new LocalStore(account, application);
+
+            if (store != null)
+            {
+                mStores.put(uri, store);
+            }
+        }
+
+        if (store == null)
+        {
+            throw new MessagingException("Unable to locate an applicable Store for " + uri);
+        }
+
+        return (LocalStore)store;
     }
 
     public abstract Folder getFolder(String name) throws MessagingException;
@@ -121,4 +150,8 @@ public abstract class Store
         return null;
     }
 
+    public Account getAccount()
+    {
+        return mAccount;
+    }
 }

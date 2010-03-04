@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -36,7 +35,7 @@ public class AccountSetupComposition extends K9Activity
     {
         Intent i = new Intent(context, AccountSetupComposition.class);
         i.setAction(Intent.ACTION_EDIT);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
@@ -46,7 +45,8 @@ public class AccountSetupComposition extends K9Activity
     {
         super.onCreate(savedInstanceState);
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         setContentView(R.layout.account_setup_composition);
 
@@ -56,7 +56,8 @@ public class AccountSetupComposition extends K9Activity
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT))
         {
-            mAccount = (Account)savedInstanceState.getSerializable(EXTRA_ACCOUNT);
+            accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
+            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
         mAccountName = (EditText)findViewById(R.id.account_name);
@@ -114,7 +115,7 @@ public class AccountSetupComposition extends K9Activity
     public void onResume()
     {
         super.onResume();
-        mAccount.refresh(Preferences.getPreferences(this));
+        //mAccount.refresh(Preferences.getPreferences(this));
     }
 
     private void saveSettings()
@@ -147,7 +148,7 @@ public class AccountSetupComposition extends K9Activity
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(EXTRA_ACCOUNT, mAccount);
+        outState.putSerializable(EXTRA_ACCOUNT, mAccount.getUuid());
     }
 
     @Override

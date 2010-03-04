@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.fsck.k9.Account;
+import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
@@ -34,8 +34,7 @@ public class ManageIdentities extends ChooseIdentity
     private void editItem(int i)
     {
         Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
-
-        intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(EditIdentity.EXTRA_IDENTITY, mAccount.getIdentity(i));
         intent.putExtra(EditIdentity.EXTRA_IDENTITY_INDEX, i);
         startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
@@ -56,8 +55,7 @@ public class ManageIdentities extends ChooseIdentity
         {
             case R.id.new_identity:
                 Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
-
-                intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount);
+                intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
                 startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
                 break;
             default:
@@ -85,7 +83,7 @@ public class ManageIdentities extends ChooseIdentity
             case R.id.up:
                 if (menuInfo.position > 0)
                 {
-                    Account.Identity identity = identities.remove(menuInfo.position);
+                    Identity identity = identities.remove(menuInfo.position);
                     identities.add(menuInfo.position - 1, identity);
                     mIdentitiesChanged = true;
                     refreshView();
@@ -95,14 +93,14 @@ public class ManageIdentities extends ChooseIdentity
             case R.id.down:
                 if (menuInfo.position < identities.size() - 1)
                 {
-                    Account.Identity identity = identities.remove(menuInfo.position);
+                    Identity identity = identities.remove(menuInfo.position);
                     identities.add(menuInfo.position + 1, identity);
                     mIdentitiesChanged = true;
                     refreshView();
                 }
                 break;
             case R.id.top:
-                Account.Identity identity = identities.remove(menuInfo.position);
+                Identity identity = identities.remove(menuInfo.position);
                 identities.add(0, identity);
                 mIdentitiesChanged = true;
                 refreshView();
@@ -129,7 +127,7 @@ public class ManageIdentities extends ChooseIdentity
     public void onResume()
     {
         super.onResume();
-        mAccount.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
+        //mAccount.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
         refreshView();
     }
 

@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.text.util.Regex;
 import android.util.Log;
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.Utility;
@@ -58,17 +59,17 @@ public class LocalStore extends Store implements Serializable
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
-
     /**
-     * @param uri local://localhost/path/to/database/uuid.db
+     * local://localhost/path/to/database/uuid.db
      */
-    public LocalStore(String _uri, Application application) throws MessagingException
+    public LocalStore(Account account, Application application) throws MessagingException
     {
+        super(account);
         mApplication = application;
         URI uri = null;
         try
         {
-            uri = new URI(_uri);
+            uri = new URI(mAccount.getLocalStoreUri());
         }
         catch (Exception e)
         {
@@ -84,6 +85,7 @@ public class LocalStore extends Store implements Serializable
         // We need to associate the localstore with the account.  Since we don't have the account
         // handy here, we'll take the filename from the DB and use the basename of the filename
         // Folders probably should have references to their containing accounts
+        //TODO: We do have an account object now
         File dbFile = new File(mPath);
         String[] tokens = dbFile.getName().split("\\.");
         uUid = tokens[0];
@@ -107,7 +109,6 @@ public class LocalStore extends Store implements Serializable
         }
 
     }
-
 
     private void doDbUpgrade(SQLiteDatabase mDb, Application application)
     {
@@ -676,6 +677,7 @@ public class LocalStore extends Store implements Serializable
 
         public LocalFolder(String name)
         {
+            super(LocalStore.this.mAccount);
             this.mName = name;
 
             if (K9.INBOX.equals(getName()))
@@ -689,6 +691,7 @@ public class LocalStore extends Store implements Serializable
 
         public LocalFolder(long id)
         {
+            super(LocalStore.this.mAccount);
             this.mFolderId = id;
         }
 
@@ -1376,7 +1379,11 @@ public class LocalStore extends Store implements Serializable
             ArrayList<Message> messages = new ArrayList<Message>();
             for (String uid : uids)
             {
-                messages.add(getMessage(uid));
+                Message message = getMessage(uid);
+                if (message != null)
+                {
+                    messages.add(message);
+                }
             }
             return messages.toArray(new Message[] {});
         }
@@ -1452,7 +1459,7 @@ public class LocalStore extends Store implements Serializable
          * old message. It is implemented as a delete/insert. This functionality is used in saving
          * of drafts and re-synchronization of updated server messages.
          */
-        public void appendMessages(Message[] messages, boolean copy) throws MessagingException
+        private void appendMessages(Message[] messages, boolean copy) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
             for (Message message : messages)
@@ -1463,10 +1470,13 @@ public class LocalStore extends Store implements Serializable
                 }
 
                 String uid = message.getUid();
-                if (uid == null)
+                if (uid == null || copy)
                 {
                     uid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
-                    message.setUid(uid);
+                    if (!copy)
+                    {
+                        message.setUid(uid);
+                    }
                 }
                 else
                 {
@@ -1901,6 +1911,12 @@ public class LocalStore extends Store implements Serializable
                 return ((LocalFolder)o).mName.equals(mName);
             }
             return super.equals(o);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return mName.hashCode();
         }
 
         @Override

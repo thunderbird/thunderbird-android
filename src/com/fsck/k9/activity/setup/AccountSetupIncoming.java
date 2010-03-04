@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.ChooseFolder;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -28,7 +27,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private static final int SELECT_DRAFT_FOLDER = 100;
     private static final int SELECT_SENT_FOLDER = 101;
     private static final int SELECT_TRASH_FOLDER = 102;
-    private static final int SELECT_OUTBOX_FOLDER = 103;
+    //private static final int SELECT_OUTBOX_FOLDER = 103;
 
     private static final int popPorts[] =
     {
@@ -84,7 +83,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault)
     {
         Intent i = new Intent(context, AccountSetupIncoming.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
         context.startActivity(i);
     }
@@ -93,7 +92,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     {
         Intent i = new Intent(context, AccountSetupIncoming.class);
         i.setAction(Intent.ACTION_EDIT);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
@@ -199,7 +198,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
          */
         mPortView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mMakeDefault = (boolean)getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
         /*
@@ -208,7 +208,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT))
         {
-            mAccount = (Account)savedInstanceState.getSerializable(EXTRA_ACCOUNT);
+            accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
+            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
         try
@@ -385,7 +386,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(EXTRA_ACCOUNT, mAccount);
+        outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
     }
 
     private void validateFields()
@@ -580,7 +581,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         {
             selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_FOLDER_NONE, "yes");
         }
-        selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         selectIntent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, curFolder);
         selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
         startActivityForResult(selectIntent, activityCode);

@@ -1,6 +1,8 @@
 package com.fsck.k9.mail.store;
 
 import android.util.Log;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Utility;
 import com.fsck.k9.mail.*;
@@ -99,14 +101,14 @@ public class WebDavStore extends Store
      * webdav+tls+://user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
      * webdav+ssl+://user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
      * webdav+ssl://user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
-     *
-     * @param _uri
      */
-    public WebDavStore(String _uri) throws MessagingException
+    public WebDavStore(Account account) throws MessagingException
     {
+        super(account);
+
         try
         {
-            mUri = new URI(_uri);
+            mUri = new URI(mAccount.getStoreUri());
         }
         catch (URISyntaxException use)
         {
@@ -1160,6 +1162,7 @@ public class WebDavStore extends Store
 
         public WebDavFolder(WebDavStore nStore, String name)
         {
+            super(nStore.getAccount());
             store = nStore;
             this.mName = name;
 

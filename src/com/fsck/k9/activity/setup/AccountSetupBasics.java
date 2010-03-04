@@ -21,14 +21,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import com.fsck.k9.*;
-
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-
-import org.apache.http.client.utils.URLEncodedUtils;
 
 /**
  * Prompts the user for the email address and password. Also prompts for
@@ -88,7 +85,8 @@ public class AccountSetupBasics extends K9Activity
 
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT))
         {
-            mAccount = (Account)savedInstanceState.getSerializable(EXTRA_ACCOUNT);
+            String accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
+            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_PROVIDER))
@@ -108,7 +106,7 @@ public class AccountSetupBasics extends K9Activity
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(EXTRA_ACCOUNT, mAccount);
+        outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
         if (mProvider != null)
         {
             outState.putSerializable(STATE_KEY_PROVIDER, mProvider);
@@ -274,7 +272,7 @@ public class AccountSetupBasics extends K9Activity
             return;
         }
 
-        mAccount = new Account(this);
+        mAccount = Preferences.getPreferences(this).newAccount();
         mAccount.setName(getOwnerName());
         mAccount.setEmail(email);
         mAccount.setStoreUri(incomingUri.toString());
@@ -337,7 +335,7 @@ public class AccountSetupBasics extends K9Activity
         String user = emailParts[0];
         String domain = emailParts[1];
 
-        mAccount = new Account(this);
+        mAccount = Preferences.getPreferences(this).newAccount();
         mAccount.setName(getOwnerName());
         mAccount.setEmail(email);
         try

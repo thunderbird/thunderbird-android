@@ -35,7 +35,6 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
 import org.apache.commons.io.IOUtils;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -427,7 +426,7 @@ public class MessageView extends K9Activity
     public static void actionView(Context context, Account account, String folder, String messageUid, ArrayList<String> folderUids, Bundle extras)
     {
         Intent i = new Intent(context, MessageView.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_FOLDER, folder);
         i.putExtra(EXTRA_MESSAGE, messageUid);
         i.putExtra(EXTRA_MESSAGE_UIDS, folderUids);
@@ -515,7 +514,8 @@ public class MessageView extends K9Activity
 
         if (icicle!=null)
         {
-            mAccount = (Account) icicle.getSerializable(EXTRA_ACCOUNT);
+            String accountUuid = icicle.getString(EXTRA_ACCOUNT);
+            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
             mFolder = icicle.getString(EXTRA_FOLDER);
             mMessageUid = icicle.getString(EXTRA_MESSAGE);
             mMessageUids = icicle.getStringArrayList(EXTRA_MESSAGE_UIDS);
@@ -524,7 +524,8 @@ public class MessageView extends K9Activity
         {
             if (uri==null)
             {
-                mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+                String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+                mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
                 mFolder = intent.getStringExtra(EXTRA_FOLDER);
                 mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
                 mMessageUids = intent.getStringArrayListExtra(EXTRA_MESSAGE_UIDS);
@@ -613,7 +614,7 @@ public class MessageView extends K9Activity
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
-        outState.putSerializable(EXTRA_ACCOUNT, mAccount);
+        outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
         outState.putString(EXTRA_FOLDER, mFolder);
         outState.putString(EXTRA_MESSAGE, mMessageUid);
         outState.putStringArrayList(EXTRA_MESSAGE_UIDS, mMessageUids);
@@ -702,8 +703,6 @@ public class MessageView extends K9Activity
         if (mMessage != null)
         {
             Message messageToDelete = mMessage;
-            String folderForDelete = mFolder;
-            Account accountForDelete = mAccount;
 
             findSurroundingMessagesUid();
 
@@ -711,8 +710,6 @@ public class MessageView extends K9Activity
             mMessageUids.remove(messageToDelete.getUid());
 
             MessagingController.getInstance(getApplication()).deleteMessages(
-                accountForDelete,
-                folderForDelete,
                 new Message[] { messageToDelete },
                 null);
 
@@ -836,7 +833,7 @@ public class MessageView extends K9Activity
             return;
         }
         Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mFolder);
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageUid);
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
@@ -855,8 +852,7 @@ public class MessageView extends K9Activity
             return;
         }
         Intent intent = new Intent(this, ChooseFolder.class);
-
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mFolder);
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageUid);
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);

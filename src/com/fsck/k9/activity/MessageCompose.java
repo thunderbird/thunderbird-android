@@ -28,7 +28,6 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.*;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
-
 import java.io.File;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -78,7 +77,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
 
     private Account mAccount;
-    private Account.Identity mIdentity;
+    private Identity mIdentity;
     private boolean mIdentityChanged = false;
     private boolean mSignatureChanged = false;
     private String mFolder;
@@ -178,7 +177,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public static void actionCompose(Context context, Account account)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
@@ -197,7 +196,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         boolean replyAll)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
         i.putExtra(EXTRA_MESSAGE, message.getUid());
         if (replyAll)
@@ -220,7 +219,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public static void actionForward(Context context, Account account, Message message)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
         i.putExtra(EXTRA_MESSAGE, message.getUid());
         i.setAction(ACTION_FORWARD);
@@ -240,7 +239,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public static void actionEditDraft(Context context, Account account, Message message)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
         i.putExtra(EXTRA_MESSAGE, message.getUid());
         i.setAction(ACTION_EDIT_DRAFT);
@@ -257,7 +256,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         setContentView(R.layout.message_compose);
 
         Intent intent = getIntent();
-        mAccount = (Account) intent.getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         if (mAccount == null)
         {
@@ -632,7 +632,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mQuotedTextBar.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?  View.VISIBLE : View.GONE);
         mQuotedText.setVisibility(savedInstanceState.getBoolean(STATE_KEY_QUOTED_TEXT_SHOWN) ?  View.VISIBLE : View.GONE);
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
-        mIdentity = (Account.Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
+        mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         updateFrom();
         updateSignature();
@@ -820,7 +820,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (mIdentityChanged || mSignatureChanged)
             {
                 String signature  = mSignatureView.getText().toString();
-                k9identity += ":" + Utility.base64Encode(signature) ;
+                k9identity += ":" + Utility.base64Encode(signature);
                 if (mIdentityChanged)
                 {
 
@@ -835,8 +835,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
             message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
 
-            MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
-            mDraftUid = message.getUid();
+            Message draftMessage = MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
+            mDraftUid = draftMessage.getUid();
 
             // Don't display the toast if the user is just changing the orientation
             if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0)
@@ -846,28 +846,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         else
         {
-            /*
-             * Send the message
-             * TODO Is it possible for us to be editing a draft with a null source message? Don't
-             * think so. Could probably remove below check.
-             */
-            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null)
-            {
-                /*
-                 * We're sending a previously saved draft, so delete the old draft first.
-                 */
-                MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mFolder, new Message[] { mSourceMessage }, null);
-            }
+            MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
             if (mDraftUid != null)
             {
-                /*
-                 * Message was auto-saved (screen rotation) so delete that draft before sending
-                 */
-                Message draftMessage = new MimeMessage();
-                draftMessage.setUid(mDraftUid);
-                MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mAccount.getDraftsFolderName(), new Message[] { draftMessage }, null);
+                MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
+                mDraftUid = null;
             }
-            MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
         }
     }
 
@@ -896,17 +880,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void onDiscard()
     {
-        if (mSourceMessageUid != null)
-        {
-            if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()) && mSourceMessageUid != null)
-            {
-                MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mFolder, new Message[] { mSourceMessage }, null);
-            }
-        }
         if (mDraftUid != null)
         {
-            Message draftMessage = new MimeMessage();
-            MessagingController.getInstance(getApplication()).deleteMessages(mAccount, mAccount.getDraftsFolderName(), new Message[] { draftMessage }, null);
+            MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
+            mDraftUid = null;
         }
         mHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         mDraftNeedsSaving = false;
@@ -1045,10 +1022,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void onIdentityChosen(Intent intent)
     {
         Bundle bundle = intent.getExtras();;
-        switchToIdentity((Account.Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY));
+        switchToIdentity((Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY));
     }
 
-    private void switchToIdentity(Account.Identity identity)
+    private void switchToIdentity(Identity identity)
     {
         mIdentity = identity;
         mIdentityChanged = true;
@@ -1133,7 +1110,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (mAccount.getIdentities().size() > 1)
         {
             Intent intent = new Intent(this, ChooseIdentity.class);
-            intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
+            intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
             startActivityForResult(intent, ACTIVITY_CHOOSE_IDENTITY);
         }
         else
@@ -1273,10 +1250,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
                 if (ACTION_REPLY_ALL.equals(action) || ACTION_REPLY.equals(action))
                 {
-                    Account.Identity useIdentity = null;
+                    Identity useIdentity = null;
                     for (Address address : message.getRecipients(RecipientType.TO))
                     {
-                        Account.Identity identity = mAccount.findIdentity(address);
+                        Identity identity = mAccount.findIdentity(address);
                         if (identity != null)
                         {
                             useIdentity = identity;
@@ -1289,7 +1266,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         {
                             for (Address address : message.getRecipients(RecipientType.CC))
                             {
-                                Account.Identity identity = mAccount.findIdentity(address);
+                                Identity identity = mAccount.findIdentity(address);
                                 if (identity != null)
                                 {
                                     useIdentity = identity;
@@ -1300,7 +1277,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                     if (useIdentity != null)
                     {
-                        Account.Identity defaultIdentity = mAccount.getIdentity(0);
+                        Identity defaultIdentity = mAccount.getIdentity(0);
                         if (useIdentity != defaultIdentity)
                         {
                             switchToIdentity(useIdentity);
@@ -1312,7 +1289,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     for (Address address : message.getRecipients(RecipientType.TO))
                     {
-                        Account.Identity identity = mAccount.findIdentity(address);
+                        Identity identity = mAccount.findIdentity(address);
                         if (!mAccount.isAnIdentity(address))
                         {
                             addAddress(mToView, address);
@@ -1398,6 +1375,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             try
             {
+                mDraftUid = message.getUid();
                 mSubjectView.setText(message.getSubject());
                 addAddresses(mToView, message.getRecipients(RecipientType.TO));
                 if (message.getRecipients(RecipientType.CC).length > 0)
@@ -1431,6 +1409,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         String name = null;
                         String email = null;
                         String signature = null;
+                        boolean signatureUse = message.getFolder().getAccount().getSignatureUse();
                         if (tokens.hasMoreTokens())
                         {
                             bodyLengthS = Utility.base64Decode(tokens.nextToken());
@@ -1445,6 +1424,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         }
                         if (tokens.hasMoreTokens())
                         {
+                            signatureUse = true;
                             signature = Utility.base64Decode(tokens.nextToken());
                         }
                         if (tokens.hasMoreTokens())
@@ -1456,7 +1436,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                             email = Utility.base64Decode(tokens.nextToken());
                         }
 
-                        Account.Identity newIdentity= mAccount.new Identity();
+                        Identity newIdentity = new Identity();
+                        newIdentity.setSignatureUse(signatureUse);
                         if (signature != null)
                         {
                             newIdentity.setSignature(signature);
@@ -1584,12 +1565,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         @Override
         public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
         {
-            if (account.equals(mAccount) && (folder.equals(mFolder) || (mFolder == null && folder.equals(mAccount.getDraftsFolderName()))))
+            if (account.equals(mAccount) && folder.equals(mAccount.getDraftsFolderName()))
             {
                 if (oldUid.equals(mDraftUid))
                 {
                     mDraftUid = newUid;
                 }
+            }
+            
+            if (account.equals(mAccount) && (folder.equals(mFolder)))
+            {
                 if (oldUid.equals(mSourceMessageUid))
                 {
                     mSourceMessageUid = newUid;

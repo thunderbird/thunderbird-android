@@ -75,7 +75,7 @@ public class AccountSettings extends K9PreferenceActivity
     public static void actionSettings(Context context, Account account)
     {
         Intent i = new Intent(context, AccountSettings.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
@@ -84,15 +84,15 @@ public class AccountSettings extends K9PreferenceActivity
     {
         super.onCreate(savedInstanceState);
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
-        mAccount.refresh(Preferences.getPreferences(this));
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         boolean isPushCapable = false;
         boolean isExpungeCapable = false;
         Store store = null;
         try
         {
-            store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+            store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
             isExpungeCapable = store.isExpungeCapable();
         }
@@ -360,7 +360,7 @@ public class AccountSettings extends K9PreferenceActivity
     public void onResume()
     {
         super.onResume();
-        mAccount.refresh(Preferences.getPreferences(this));
+        //mAccount.refresh(Preferences.getPreferences(this));
     }
 
     private void saveSettings()
@@ -457,7 +457,7 @@ public class AccountSettings extends K9PreferenceActivity
     private void onManageIdentities()
     {
         Intent intent = new Intent(this, ManageIdentities.class);
-        intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount);
+        intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
         startActivityForResult(intent, ACTIVITY_MANAGE_IDENTITIES);
     }
 
@@ -474,7 +474,7 @@ public class AccountSettings extends K9PreferenceActivity
     public void onChooseAutoExpandFolder()
     {
         Intent selectIntent = new Intent(this, ChooseFolder.class);
-        selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount);
+        selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
 
         selectIntent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mAutoExpandFolder.getSummary());
         selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");

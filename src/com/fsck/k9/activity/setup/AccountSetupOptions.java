@@ -33,7 +33,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener
     public static void actionOptions(Context context, Account account, boolean makeDefault)
     {
         Intent i = new Intent(context, AccountSetupOptions.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
         context.startActivity(i);
     }
@@ -103,7 +103,8 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener
         displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mDisplayCountView.setAdapter(displayCountsAdapter);
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         mNotifyView.setChecked(mAccount.isNotifyNewMail());
         mNotifySyncView.setChecked(mAccount.isShowOngoing());
@@ -116,7 +117,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener
         boolean isPushCapable = false;
         try
         {
-            Store store = Store.getInstance(mAccount.getStoreUri(), getApplication());
+            Store store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
         }
         catch (Exception e)
