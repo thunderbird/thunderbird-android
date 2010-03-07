@@ -71,6 +71,7 @@ public class K9 extends Application
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
     private static boolean mMessageListTouchable = false;
+    private static boolean mGesturesEnabled = true;
 
     /**
      * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
@@ -317,6 +318,7 @@ public class K9 extends Application
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
         editor.putBoolean("animations", mAnimations);
+        editor.putBoolean("gesturesEnabled", mGesturesEnabled);
         editor.putBoolean("messageListStars",mMessageListStars);
         editor.putBoolean("messageListCheckboxes",mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
@@ -333,6 +335,7 @@ public class K9 extends Application
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
+        mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
@@ -448,6 +451,16 @@ public class K9 extends Application
         return setBackgroundOps(BACKGROUND_OPS.valueOf(nbackgroundOps));
     }
 
+    public static boolean gesturesEnabled()
+    {
+        return mGesturesEnabled;
+    }
+    
+    public static void setGesturesEnabled(boolean gestures)
+    {
+        mGesturesEnabled = gestures;
+    }
+    
     public static boolean isAnimations()
     {
         return mAnimations;

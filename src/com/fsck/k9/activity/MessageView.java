@@ -18,7 +18,6 @@ import android.provider.Contacts.Intents;
 import android.util.Config;
 import android.util.Log;
 import android.view.*;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -65,7 +64,6 @@ public class MessageView extends K9Activity
     private TextView mSubjectView;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
-    private ScrollView mTopView;
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
     private View mAttachmentIcon;
@@ -92,11 +90,7 @@ public class MessageView extends K9Activity
     private String mNextMessageUid = null;
     private String mPreviousMessageUid = null;
 
-    private static final float SWIPE_MIN_DISTANCE_DIP = 130.0f;
-    private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
-    private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 325f;
 
-    private GestureDetector gestureDetector;
 
     private Menu optionsMenu = null;
 
@@ -576,9 +570,6 @@ public class MessageView extends K9Activity
         previous_scrolling = findViewById(R.id.previous_scrolling);
 
 
-        // Gesture detection
-        gestureDetector = new GestureDetector(new MyGestureDetector());
-
         boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
         if (goNext)
         {
@@ -902,7 +893,8 @@ public class MessageView extends K9Activity
         }
     }
 
-    private void onNext(boolean animate)
+    @Override
+    protected void onNext(boolean animate)
     {
         if (mNextMessageUid == null)
         {
@@ -918,7 +910,7 @@ public class MessageView extends K9Activity
         next.requestFocus();
     }
 
-    private void onPrevious(boolean animate)
+    protected void onPrevious(boolean animate)
     {
         if (mPreviousMessageUid == null)
         {
@@ -1030,13 +1022,7 @@ public class MessageView extends K9Activity
         mShowPicturesSection.setVisibility(View.GONE);
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev)
-    {
-        super.dispatchTouchEvent(ev);
-        return gestureDetector.onTouchEvent(ev);
-    }
-
+  
     public void onClick(View view)
     {
         switch (view.getId())
@@ -1697,62 +1683,6 @@ public class MessageView extends K9Activity
         }
     }
 
-
-
-    class MyGestureDetector extends SimpleOnGestureListener
-    {
-        @Override
-        public boolean onDoubleTap(MotionEvent ev)
-        {
-            super.onDoubleTap(ev);
-            int height = getResources().getDisplayMetrics().heightPixels;
-            if (ev.getRawY() < (height/4))
-            {
-                mTopView.fullScroll(mTopView.FOCUS_UP);
-
-            }
-            else if (ev.getRawY() > (height - height/4))
-            {
-                mTopView.fullScroll(mTopView.FOCUS_DOWN);
-
-            }
-            return false;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-        {
-
-            // Convert the dips to pixels
-            final float mGestureScale = getResources().getDisplayMetrics().density;
-            int min_distance = (int)(SWIPE_MIN_DISTANCE_DIP * mGestureScale + 0.5f);
-            int min_velocity = (int)(SWIPE_THRESHOLD_VELOCITY_DIP * mGestureScale + 0.5f);
-            int max_off_path = (int)(SWIPE_MAX_OFF_PATH_DIP * mGestureScale + 0.5f);
-
-
-            try
-            {
-                if (Math.abs(e1.getY() - e2.getY()) > max_off_path)
-                    return false;
-                // right to left swipe
-                if (e1.getX() - e2.getX() > min_distance && Math.abs(velocityX) > min_velocity)
-                {
-                    onNext(true);
-                }
-                else if (e2.getX() - e1.getX() > min_distance && Math.abs(velocityX) > min_velocity)
-                {
-                    onPrevious(true);
-                }
-            }
-            catch (Exception e)
-            {
-                // nothing
-            }
-            return false;
-        }
-
-
-    }
 
     private Animation inFromRightAnimation()
     {

@@ -27,6 +27,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
     private static final String PREFERENCE_ANIMATIONS = "animations";
+    private static final String PREFERENCE_GESTURES = "gestures";
     private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
     private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
     private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
@@ -36,6 +37,7 @@ public class Prefs extends K9PreferenceActivity
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
+    private CheckBoxPreference mGestures;
     private CheckBoxPreference mAnimations;
     private CheckBoxPreference mStars;
     private CheckBoxPreference mCheckboxes;
@@ -125,6 +127,8 @@ public class Prefs extends K9PreferenceActivity
 
         mAnimations = (CheckBoxPreference)findPreference(PREFERENCE_ANIMATIONS);
         mAnimations.setChecked(K9.isAnimations());
+        mGestures = (CheckBoxPreference)findPreference(PREFERENCE_GESTURES);
+        mGestures.setChecked(K9.gesturesEnabled());
 
         mStars = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_STARS);
         mStars.setChecked(K9.messageListStars());
@@ -151,6 +155,7 @@ public class Prefs extends K9PreferenceActivity
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
 
         K9.setAnimations(mAnimations.isChecked());
+        K9.setGesturesEnabled(mGestures.isChecked());
         K9.setMessageListStars(mStars.isChecked());
         K9.setMessageListCheckboxes(mCheckboxes.isChecked());
 

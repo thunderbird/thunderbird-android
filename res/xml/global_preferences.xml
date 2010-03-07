@@ -37,6 +37,11 @@
         android:title="@string/animations_title"
         android:summary="@string/animations_summary"
         />
+     <CheckBoxPreference
+        android:key="gestures"
+        android:title="@string/gestures_title"
+        android:summary="@string/gestures_summary"
+        />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/messagelist_preferences" android:key="messagelist_preferences">
          <CheckBoxPreference
