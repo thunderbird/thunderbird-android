@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
+
 import com.fsck.k9.*;
 import com.fsck.k9.activity.ChooseFolder;
 import java.io.UnsupportedEncodingException;
@@ -79,6 +80,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
+    private CheckBox compressionMobile;
+    private CheckBox compressionWifi;
+    private CheckBox compressionOther;
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault)
     {
@@ -118,6 +122,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
         mWebdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
         mNextButton = (Button)findViewById(R.id.next);
+        compressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
+        compressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
+        compressionOther = (CheckBox)findViewById(R.id.compression_other);
 
         mImapFolderDrafts.setOnClickListener(this);
         mImapFolderSent.setOnClickListener(this);
@@ -279,6 +286,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
+                findViewById(R.id.compression_section).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
 
 
@@ -312,6 +320,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 /** Hide the unnecessary fields */
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
+                findViewById(R.id.compression_section).setVisibility(View.GONE);
                 if (uri.getPath() != null && uri.getPath().length() > 0)
                 {
                     String[] pathParts = uri.getPath().split("\\|");
@@ -358,7 +367,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                     SpinnerOption.setSpinnerOptionValue(mSecurityTypeView, i);
                 }
             }
-
+            compressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
+            compressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
+            compressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
             if (uri.getHost() != null)
             {
                 mServerView.setText(uri.getHost());
@@ -518,6 +529,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mAccount.setSentFolderName(mImapFolderSent.getText().toString());
             mAccount.setTrashFolderName(mImapFolderTrash.getText().toString());
             mAccount.setOutboxFolderName(mImapFolderOutbox.getText().toString());
+            mAccount.setCompression(Account.TYPE_MOBILE, compressionMobile.isChecked());
+            mAccount.setCompression(Account.TYPE_WIFI, compressionWifi.isChecked());
+            mAccount.setCompression(Account.TYPE_OTHER, compressionOther.isChecked());
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
         }
         catch (Exception e)

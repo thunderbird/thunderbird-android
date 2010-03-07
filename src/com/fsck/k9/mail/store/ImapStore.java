@@ -1,8 +1,10 @@
 
 package com.fsck.k9.mail.store;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.PeekableInputStream;
@@ -13,6 +15,9 @@ import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapResponse;
 import com.fsck.k9.mail.transport.CountingOutputStream;
 import com.fsck.k9.mail.transport.EOLConvertingOutputStream;
+import com.jcraft.jzlib.JZlib;
+import com.jcraft.jzlib.ZInputStream;
+import com.jcraft.jzlib.ZOutputStream;
 import com.beetstra.jutf7.CharsetProvider;
 
 import javax.net.ssl.SSLContext;
@@ -67,6 +72,9 @@ public class ImapStore extends Store
 
     private static final String CAPABILITY_CAPABILITY = "CAPABILITY";
     private static final String COMMAND_CAPABILITY = "CAPABILITY";
+    
+    private static final String CAPABILITY_COMPRESS_DEFLATE = "COMPRESS=DEFLATE";
+    private static final String COMMAND_COMPRESS_DEFLATE = "COMPRESS DEFLATE";
 
     private String mHost;
     private int mPort;
@@ -100,11 +108,12 @@ public class ImapStore extends Store
      * imap+tls+://auth:user:password@server:port CONNECTION_SECURITY_TLS_REQUIRED
      * imap+ssl+://auth:user:password@server:port CONNECTION_SECURITY_SSL_REQUIRED
      * imap+ssl://auth:user:password@server:port CONNECTION_SECURITY_SSL_OPTIONAL
+     *
+     * @param _uri
      */
     public ImapStore(Account account) throws MessagingException
     {
         super(account);
-
         URI uri;
         try
         {
@@ -1910,7 +1919,8 @@ public class ImapStore extends Store
                 
                 if (hasCapability(CAPABILITY_CAPABILITY) == false)
                 {
-                    Log.i(K9.LOG_TAG, "Did not get capabilities in banner, requesting CAPABILITY for " + getLogId());
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Did not get capabilities in banner, requesting CAPABILITY for " + getLogId());
                     List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
                     if (responses.size() != 2)
                     {
@@ -1954,10 +1964,11 @@ public class ImapStore extends Store
                     if (mAuthType == AuthType.CRAM_MD5)
                     {
                         authCramMD5();
-                        // The authCramMD5 method on the previous line does not allow for handling updated capabilities
+                        // The authCramMD5 method called on the previous line does not allow for handling updated capabilities
                         // sent by the server.  So, to make sure we update to the post-authentication capability list
                         // we fetch the capabilities here.
-                        Log.i(K9.LOG_TAG, "Updating capabilities after CRAM-MD5 authentication for " + getLogId());
+                        if (K9.DEBUG)
+                            Log.i(K9.LOG_TAG, "Updating capabilities after CRAM-MD5 authentication for " + getLogId());
                         List<ImapResponse> responses = receiveCapabilities(executeSimpleCommand(COMMAND_CAPABILITY));
                         if (responses.size() != 2)
                         {
@@ -1980,6 +1991,51 @@ public class ImapStore extends Store
                 {
                     throw new AuthenticationFailedException(null, me);
                 }
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, CAPABILITY_COMPRESS_DEFLATE + " = " + hasCapability(CAPABILITY_COMPRESS_DEFLATE));
+                }
+                if (hasCapability(CAPABILITY_COMPRESS_DEFLATE))
+                {
+                    ConnectivityManager connectivityManager = (ConnectivityManager)K9.app.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    boolean useCompression = true;
+                    
+                    NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+                    if (netInfo != null)
+                    {
+                        int type = netInfo.getType();
+                        if (K9.DEBUG)
+                            Log.d(K9.LOG_TAG, "On network type " + type);
+                        useCompression = mAccount.useCompression(type);
+                        
+                    }
+                    if (K9.DEBUG)
+                        Log.d(K9.LOG_TAG, "useCompression " + useCompression);
+                    if (useCompression)
+                    {
+                        try
+                        {
+                            executeSimpleCommand(COMMAND_COMPRESS_DEFLATE);
+                            ZInputStream zInputStream = new ZInputStream(mSocket.getInputStream(), true);
+                            zInputStream.setFlushMode(JZlib.Z_PARTIAL_FLUSH);
+                            mIn = new PeekableInputStream(new BufferedInputStream(zInputStream, 1024));
+                            mParser = new ImapResponseParser(mIn);
+                            ZOutputStream zOutputStream = new ZOutputStream(mSocket.getOutputStream(), JZlib.Z_BEST_SPEED, true);
+                            mOut = new BufferedOutputStream(zOutputStream, 1024);
+                            zOutputStream.setFlushMode(JZlib.Z_PARTIAL_FLUSH);
+                            if (K9.DEBUG)
+                            {
+                                Log.i(K9.LOG_TAG, "Compression enabled for " + getLogId());
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e(K9.LOG_TAG, "Unable to negotiate compression", e);
+                        }
+                    }
+                }
+                
+                
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "NAMESPACE = " + hasCapability(CAPABILITY_NAMESPACE)
                           + ", mPathPrefix = " + mPathPrefix);

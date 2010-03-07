@@ -3,6 +3,7 @@ package com.fsck.k9;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
@@ -12,8 +13,11 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save
@@ -29,6 +33,11 @@ public class Account
     public static final int DELETE_POLICY_7DAYS = 1;
     public static final int DELETE_POLICY_ON_DELETE = 2;
     public static final int DELETE_POLICY_MARK_AS_READ = 3;
+    
+    public static final String TYPE_WIFI = "WIFI";
+    public static final String TYPE_MOBILE = "MOBILE";
+    public static final String TYPE_OTHER = "OTHER";
+    private static String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
     /**
      * <pre>
@@ -69,6 +78,7 @@ public class Account
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
+    private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>(); 
 
     private List<Identity> identities;
 
@@ -106,7 +116,7 @@ public class Account
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = "INBOX";
         mMaxPushFolders = 10;
-
+        
         identities = new ArrayList<Identity>();
 
         Identity identity = new Identity();
@@ -157,6 +167,13 @@ public class Account
         mExpungePolicy = preferences.getPreferences().getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
 
         mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
+        
+        for (String type : networkTypes)
+        {
+            Boolean useCompression = preferences.getPreferences().getBoolean(mUuid + ".useCompression." + type,
+                    true);
+            compressionMap.put(type, useCompression);
+        }
 
         // Between r418 and r431 (version 0.103), folder names were set empty if the Incoming settings were
         // opened for non-IMAP accounts.  0.103 was never a market release, so perhaps this code
@@ -292,6 +309,10 @@ public class Account
         editor.remove(mUuid + ".signatureBeforeQuotedText");
         editor.remove(mUuid + ".expungePolicy");
         editor.remove(mUuid + ".maxPushFolders");
+        for (String type : networkTypes)
+        {
+            editor.remove(mUuid + ".useCompression." + type);
+        }
         deleteIdentities(preferences.getPreferences(), editor);
         editor.commit();
     }
@@ -364,6 +385,14 @@ public class Account
         editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
         editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
+        for (String type : networkTypes)
+        {
+            Boolean useCompression = compressionMap.get(type);
+            if (useCompression != null)
+            {
+                editor.putBoolean(mUuid + ".useCompression." + type, useCompression);
+            }
+        }
         saveIdentities(preferences.getPreferences(), editor);
 
         editor.commit();
@@ -808,6 +837,39 @@ public class Account
     public synchronized String toString()
     {
         return mDescription;
+    }
+    
+    public void setCompression(String networkType, boolean useCompression)
+    {
+        compressionMap.put(networkType, useCompression);
+    }
+    
+    public boolean useCompression(String networkType)
+    {
+        Boolean useCompression = compressionMap.get(networkType);
+        if (useCompression == null)
+        {
+            return true;
+        }
+        else
+        {
+            return useCompression;
+        }
+    }
+    
+    public boolean useCompression(int type)
+    {
+        String networkType = TYPE_OTHER;
+        switch (type)
+        {
+            case ConnectivityManager.TYPE_MOBILE:
+                networkType = TYPE_MOBILE;
+                break;
+            case ConnectivityManager.TYPE_WIFI:
+                networkType = TYPE_WIFI;
+                break;
+        }
+        return useCompression(networkType);
     }
     
     @Override
