@@ -660,11 +660,12 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="remote_control_label">K-9 Mail Fernsteuerung</string>
     <string name="remote_control_desc">Erlaubt dieser Anwendung den Ablauf und die Einstellungen von K-9 Mail zu kontrollieren.</string>
 
+<!-- 
     <string name="account_setup_store_attachment_on_sd_card_label">Anhänge auf SD-Karte speichern</string>
     <string name="account_setup_store_attachment_on_sd_card_summary">Erlaubt das Speichern von Anhängen auf der SD-Speicherkarte</string>
     <string name="account_setup_store_attachment_on_sd_card_error">Es wurde keine SD-Karte gefunden</string>
 
     <string name="sd_card_error">Es wurde keine SD-Karte gefunden</string>
-
+-->
 </resources>
 
