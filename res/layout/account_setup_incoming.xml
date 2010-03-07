@@ -182,6 +182,36 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent" />
         </LinearLayout>
+        <TextView
+            android:text="@string/account_setup_incoming_compression_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <LinearLayout
+            android:id="@+id/compression_section"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <CheckBox
+		        android:id="@+id/compression_mobile"
+		        android:layout_height="wrap_content"
+		        android:layout_width="wrap_content"
+		        android:text="@string/account_setup_incoming_mobile_label"
+	        />
+	        <CheckBox
+                android:id="@+id/compression_wifi"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/account_setup_incoming_wifi_label"
+            />
+             <CheckBox
+                android:id="@+id/compression_other"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/account_setup_incoming_other_label"
+            />
+        </LinearLayout>
         <View
             android:layout_width="fill_parent"
             android:layout_height="0dip"
