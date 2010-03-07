@@ -19,6 +19,11 @@
     <PreferenceCategory
         android:key="folder_settings">
             
+        <CheckBoxPreference
+            android:key="folder_settings_in_top_group"
+            android:title="@string/folder_settings_in_top_group_label"
+            android:summary="@string/folder_settings_in_top_group_summary" />    
+            
         <ListPreference
             android:key="folder_settings_folder_display_mode"
             android:title="@string/folder_settings_folder_display_mode_label"

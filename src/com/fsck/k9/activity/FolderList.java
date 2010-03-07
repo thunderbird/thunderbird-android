@@ -29,6 +29,8 @@ import com.fsck.k9.service.MailService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * FolderList is the primary user interface for the program. This
@@ -80,7 +82,7 @@ public class FolderList extends K9ListActivity
         }
 
 
-        public void newFolders(final ArrayList<FolderInfoHolder> newFolders)
+        public void newFolders(final List<FolderInfoHolder> newFolders)
         {
             runOnUiThread(new Runnable()
             {
@@ -806,7 +808,8 @@ public class FolderList extends K9ListActivity
                     return;
                 }
 
-                ArrayList<FolderInfoHolder> newFolders = new ArrayList<FolderInfoHolder>();
+                List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
+                List<FolderInfoHolder> topFolders = new LinkedList<FolderInfoHolder>();
 
                 Account.FolderMode aMode = account.getFolderDisplayMode();
 
@@ -859,11 +862,19 @@ public class FolderList extends K9ListActivity
                         holder.populate(folder, unreadMessageCount);
 
                     }
-
-                    newFolders.add(holder);
+                    if (folder.isInTopGroup())
+                    {
+                        topFolders.add(holder);
+                    }
+                    else
+                    {
+                        newFolders.add(holder);
+                    }
                 }
                 Collections.sort(newFolders);
-                mHandler.newFolders(newFolders);
+                Collections.sort(topFolders);
+                topFolders.addAll(newFolders);
+                mHandler.newFolders(topFolders);
                 mHandler.refreshTitle();
 
             }
@@ -1279,29 +1290,14 @@ public class FolderList extends K9ListActivity
             String s1 = this.name;
             String s2 = o.name;
 
-            if (K9.INBOX.equalsIgnoreCase(s1) && K9.INBOX.equalsIgnoreCase(s2))
+            int ret = s1.compareToIgnoreCase(s2);
+            if (ret != 0)
             {
-                return 0;
-            }
-            else if (K9.INBOX.equalsIgnoreCase(s1))
-            {
-                return -1;
-            }
-            else if (K9.INBOX.equalsIgnoreCase(s2))
-            {
-                return 1;
+                return ret;
             }
             else
             {
-                int ret = s1.compareToIgnoreCase(s2);
-                if (ret != 0)
-                {
-                    return ret;
-                }
-                else
-                {
-                    return s1.compareTo(s2);
-                }
+                return s1.compareTo(s2);
             }
 
         }

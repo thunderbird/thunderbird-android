@@ -671,6 +671,7 @@ public class LocalStore extends Store implements Serializable
         private FolderClass displayClass = FolderClass.NO_CLASS;
         private FolderClass syncClass = FolderClass.INHERITED;
         private FolderClass pushClass = FolderClass.SECOND_CLASS;
+        private boolean inTopGroup = false;
         private String prefId = null;
         private String mPushState = null;
 
@@ -684,6 +685,7 @@ public class LocalStore extends Store implements Serializable
             {
                 syncClass =  FolderClass.FIRST_CLASS;
                 pushClass =  FolderClass.FIRST_CLASS;
+                inTopGroup = true;
             }
 
 
@@ -1024,6 +1026,8 @@ public class LocalStore extends Store implements Serializable
 
             editor.remove(id + ".displayMode");
             editor.remove(id + ".syncMode");
+            editor.remove(id + ".pushMode");
+            editor.remove(id + ".inTopGroup");
 
             editor.commit();
         }
@@ -1060,6 +1064,7 @@ public class LocalStore extends Store implements Serializable
             {
                 editor.putString(id + ".pushMode", pushClass.name());
             }
+            editor.putBoolean(id + ".inTopGroup", inTopGroup);
 
             editor.commit();
         }
@@ -1108,9 +1113,11 @@ public class LocalStore extends Store implements Serializable
             }
 
             FolderClass defPushClass = FolderClass.SECOND_CLASS;
+            boolean defInTopGroup = false;
             if (K9.INBOX.equals(getName()))
             {
                 defPushClass =  FolderClass.FIRST_CLASS;
+                defInTopGroup = true;
             }
 
             try
@@ -1128,6 +1135,7 @@ public class LocalStore extends Store implements Serializable
             {
                 pushClass = FolderClass.INHERITED;
             }
+            inTopGroup = preferences.getPreferences().getBoolean(id + ".inTopGroup", defInTopGroup);
 
         }
 
@@ -2101,6 +2109,17 @@ public class LocalStore extends Store implements Serializable
             text = sb.toString();
 
             return text;
+        }
+
+        @Override
+        public boolean isInTopGroup()
+        {
+            return inTopGroup;
+        }
+        
+        public void setInTopGroup(boolean inTopGroup)
+        {
+            this.inTopGroup = inTopGroup;
         }
     }
 

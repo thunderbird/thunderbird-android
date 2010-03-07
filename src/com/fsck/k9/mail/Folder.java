@@ -202,6 +202,11 @@ public abstract class Folder
     {
 
     }
+    
+    public boolean isInTopGroup()
+    {
+        return false;
+    }
 
     public String getStatus()
     {

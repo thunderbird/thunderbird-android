@@ -4,6 +4,7 @@ package com.fsck.k9.activity.setup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.util.Log;
@@ -26,9 +27,11 @@ public class FolderSettings extends K9PreferenceActivity
     private static final String PREFERENCE_DISPLAY_CLASS = "folder_settings_folder_display_mode";
     private static final String PREFERENCE_SYNC_CLASS = "folder_settings_folder_sync_mode";
     private static final String PREFERENCE_PUSH_CLASS = "folder_settings_folder_push_mode";
+    private static final String PREFERENCE_IN_TOP_GROUP = "folder_settings_in_top_group";
 
     private LocalFolder mFolder;
 
+    private CheckBoxPreference mInTopGroup;
     private ListPreference mDisplayClass;
     private ListPreference mSyncClass;
     private ListPreference mPushClass;
@@ -79,6 +82,10 @@ public class FolderSettings extends K9PreferenceActivity
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
         category.setTitle(folderName);
 
+        
+        mInTopGroup = (CheckBoxPreference)findPreference(PREFERENCE_IN_TOP_GROUP);
+        mInTopGroup.setChecked(mFolder.isInTopGroup());
+        
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);
         mDisplayClass.setValue(mFolder.getDisplayClass().name());
         mDisplayClass.setSummary(mDisplayClass.getEntry());
@@ -142,6 +149,7 @@ public class FolderSettings extends K9PreferenceActivity
 
     private void saveSettings()
     {
+        mFolder.setInTopGroup(mInTopGroup.isChecked());
         // We call getPushClass() because display class changes can affect push class when push class is set to inherit
         FolderClass oldPushClass = mFolder.getPushClass();
         FolderClass oldDisplayClass = mFolder.getDisplayClass();
