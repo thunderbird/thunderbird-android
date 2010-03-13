@@ -1598,8 +1598,11 @@ public class MessageList
                 if (updateForMe(account, folder))
                 {
                     MessageInfoHolder holder = getMessage(oldUid);
-                    holder.uid = newUid;
-                    holder.message.setUid(newUid);
+                    if (holder != null)
+                    {
+                        holder.uid = newUid;
+                        holder.message.setUid(newUid);
+                    }
                 }
             }
 
