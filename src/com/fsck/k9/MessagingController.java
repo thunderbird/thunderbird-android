@@ -4267,7 +4267,7 @@ public class MessagingController implements Runnable
     }
 
     /** Cancel a notification of new email messages */
-    private void notifyAccountCancel(Context context, Account account)
+    public void notifyAccountCancel(Context context, Account account)
     {
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);

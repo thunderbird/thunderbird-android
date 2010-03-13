@@ -477,6 +477,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 {
                     // Ignore
                 }
+                MessagingController.getInstance(getApplication()).notifyAccountCancel(Accounts.this, mSelectedContextAccount);
                 Preferences.getPreferences(Accounts.this).deleteAccount(mSelectedContextAccount);
                 K9.setServicesEnabled(Accounts.this);
                 refresh();
