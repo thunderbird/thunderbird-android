@@ -16,6 +16,11 @@
 		android:title="@string/add_account_action"
 		android:icon="@drawable/ic_menu_add"
 	/>
+    <item
+        android:id="@+id/about"
+        android:title="@string/about_action"
+        android:icon="@android:drawable/ic_menu_info_details"
+    />
 	<item
 		android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
@@ -30,9 +35,4 @@
         android:title="@string/preferences_action" 
         android:icon="@android:drawable/ic_menu_preferences"
     />
-	<item
-		android:id="@+id/about"
-        android:title="@string/about_action"
-		android:icon="@android:drawable/ic_menu_info_details"
-	/>
 </menu>
