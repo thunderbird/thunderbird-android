@@ -1977,9 +1977,10 @@ public class WebDavStore extends Store
                         out = new ByteArrayOutputStream();
                     }
                     open(OpenMode.READ_WRITE);
-                    message.writeTo(
-                        new EOLConvertingOutputStream(
-                            new BufferedOutputStream(out, 1024)));
+                    EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
+                            new BufferedOutputStream(out, 1024));
+                    message.writeTo(msgOut);
+                    msgOut.flush();
 
                     bodyEntity = new StringEntity(out.toString(), "UTF-8");
                     bodyEntity.setContentType("message/rfc822");
