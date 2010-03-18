@@ -513,15 +513,18 @@ public class Pop3Store extends Store
                         break;
                     }
                     String[] uidParts = response.split(" ");
-                    Integer msgNum = Integer.valueOf(uidParts[0]);
-                    String msgUid = uidParts[1];
-                    if (msgNum >= start && msgNum <= end)
+                    if (uidParts.length >= 2)
                     {
-                        Pop3Message message = mMsgNumToMsgMap.get(msgNum);
-                        if (message == null)
+                        Integer msgNum = Integer.valueOf(uidParts[0]);
+                        String msgUid = uidParts[1];
+                        if (msgNum >= start && msgNum <= end)
                         {
-                            message = new Pop3Message(msgUid, this);
-                            indexMessage(msgNum, message);
+                            Pop3Message message = mMsgNumToMsgMap.get(msgNum);
+                            if (message == null)
+                            {
+                                message = new Pop3Message(msgUid, this);
+                                indexMessage(msgNum, message);
+                            }
                         }
                     }
                 }
