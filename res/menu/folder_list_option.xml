@@ -9,7 +9,7 @@
 	<item
         android:id="@+id/display_1st_class"
         android:title="@string/folder_list_display_mode_label"
-        android:icon="@drawable/ic_menu_refresh"
+        android:icon="@drawable/ic_show_folders"
     >
         <menu>
             <item
