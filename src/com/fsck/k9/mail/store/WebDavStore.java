@@ -978,9 +978,8 @@ public class WebDavStore extends Store
             else if (statusCode < 200 ||
                      statusCode >= 300)
             {
-                throw new IOException("Error during request processing: "+
-                                      response.getStatusLine().toString()+ "\n\n"+
-                                      getHttpRequestResponse(messageEntity, entity));
+                throw new IOException("Error with code " + statusCode + " during request processing: "+
+                                      response.getStatusLine().toString());
             }
             else
             {
@@ -1622,9 +1621,8 @@ public class WebDavStore extends Store
                     if (statusCode < 200 ||
                             statusCode > 300)
                     {
-                        throw new IOException("Error during fetch: "+
-                                              response.getStatusLine().toString()+ "\n\n"+
-                                              getHttpRequestResponse(null, entity));
+                        throw new IOException("Error during with code " + statusCode + " during fetch: "
+                                + response.getStatusLine().toString());
                     }
 
                     if (entity != null)
@@ -1991,9 +1989,9 @@ public class WebDavStore extends Store
                     {
                         messageURL += "/";
                     }
-                    messageURL += URLEncoder.encode(subject + ".eml");
+                    messageURL += URLEncoder.encode(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
 
-                    Log.i(K9.LOG_TAG, "Uploading message to " + mFolderUrl);
+                    Log.i(K9.LOG_TAG, "Uploading message as " + messageURL);
 
                     httpmethod = new HttpGeneric(messageURL);
                     httpmethod.setMethod("PUT");
@@ -2012,9 +2010,9 @@ public class WebDavStore extends Store
                     if (statusCode < 200 ||
                             statusCode > 300)
                     {
-                        throw new IOException("Sending Message: Error while trying to append message to " + messageURL + " " +
-                                              response.getStatusLine().toString()+ "\n\n"+
-                                              WebDavStore.getHttpRequestResponse(bodyEntity, response.getEntity()));
+                        throw new IOException("Error with status code " + statusCode 
+                                + " while sending/appending message.  Response = "
+                                + response.getStatusLine().toString() + " for message " + messageURL);
                     }
                     WebDavMessage retMessage = new WebDavMessage(message.getUid(), this);
 
