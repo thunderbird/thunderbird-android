@@ -65,7 +65,7 @@
             com.android.ant.AndroidInitTask
 
         The following properties are put in place by the importing task:
-            android-jar, android-aidl, aapt, aidl, and dx
+            android.jar, android-aidl, aapt, aidl, and dx
 
         Additionnaly, the task sets up the following classpath reference:
             android.target.classpath
@@ -171,7 +171,7 @@
             <arg value="-S" />
             <arg path="${resource-folder}" />
             <arg value="-I" />
-            <arg path="${android-jar}" />
+            <arg path="${android.jar}" />
         </exec>
     </target>
 
@@ -198,7 +198,7 @@
             <classpath>
                 <fileset dir="${external-libs-folder}" includes="*.jar"/>
                 <fileset dir="${compile-only-libs-folder}" includes="*.jar"/>
-                <fileset dir="${sdk-location}/platforms/android-1.6/" includes="**/*.jar"/>
+                <fileset dir="${sdk-location}/platforms/android-2.0.1/" includes="**/*.jar"/>
                 <pathelement path="${main-out-classes}"/>
             </classpath>
          </javac>
@@ -237,7 +237,7 @@
                 manifest="AndroidManifest.xml"
                 resources="${resource-folder}"
                 assets="${asset-folder}"
-                androidjar="${android-jar}"
+                androidjar="${android.jar}"
                 outfolder="${out-folder}"
                 basename="${ant.project.name}" />
     </target>

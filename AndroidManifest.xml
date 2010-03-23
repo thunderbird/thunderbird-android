@@ -4,7 +4,7 @@
     android:versionName="2.513" package="com.fsck.k9">
 	<uses-sdk
 	   android:minSdkVersion="3"
-	   android:targetSdkVersion="5"
+	   android:targetSdkVersion="6"
 	   />
    <supports-screens
 		largeScreens="true"
