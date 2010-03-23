@@ -18,78 +18,65 @@ package com.fsck.k9;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.provider.Contacts.ContactMethods;
-import android.provider.Contacts.People;
-import android.view.View;
+import android.os.Build;
 import android.widget.ResourceCursorAdapter;
-import android.widget.TextView;
-import com.fsck.k9.mail.Address;
 
-import static android.provider.Contacts.ContactMethods.CONTENT_EMAIL_URI;
-
-public class EmailAddressAdapter extends ResourceCursorAdapter
+public abstract class EmailAddressAdapter extends ResourceCursorAdapter
 {
-    public static final int NAME_INDEX = 1;
+    private static EmailAddressAdapter sInstance;
+    private static Context sContext;
 
-    public static final int DATA_INDEX = 2;
-
-    private static final String SORT_ORDER = People.TIMES_CONTACTED + " DESC, " + People.NAME;
-
-    private ContentResolver mContentResolver;
-
-    private static final String[] PROJECTION =
+    public static EmailAddressAdapter getInstance(Context context)
     {
-        ContactMethods._ID, // 0
-        ContactMethods.NAME, // 1
-        ContactMethods.DATA
-        // 2
-    };
-
-    public EmailAddressAdapter(Context context)
-    {
-        super(context, R.layout.recipient_dropdown_item, null);
-        mContentResolver = context.getContentResolver();
-    }
-
-    @Override
-    public final String convertToString(Cursor cursor)
-    {
-        String name = cursor.getString(NAME_INDEX);
-        String address = cursor.getString(DATA_INDEX);
-
-        return new Address(address, name).toString();
-    }
-
-    @Override
-    public final void bindView(View view, Context context, Cursor cursor)
-    {
-        TextView text1 = (TextView)view.findViewById(R.id.text1);
-        TextView text2 = (TextView)view.findViewById(R.id.text2);
-        text1.setText(cursor.getString(NAME_INDEX));
-        text2.setText(cursor.getString(DATA_INDEX));
-    }
-
-    @Override
-    public Cursor runQueryOnBackgroundThread(CharSequence constraint)
-    {
-        String where = null;
-
-        if (constraint != null)
+        if (sInstance == null)
         {
-            String filter = DatabaseUtils.sqlEscapeString(constraint.toString() + '%');
+            String className;
 
-            StringBuilder s = new StringBuilder();
-            s.append("("+People.NAME+" LIKE ");
-            s.append(filter);
-            s.append(") OR ("+ContactMethods.DATA+" LIKE ");
-            s.append(filter);
-            s.append(")");
+            sContext = context;
 
-            where = s.toString();
+            /*
+             * Check the version of the SDK we are running on. Choose an
+             * implementation class designed for that version of the SDK.
+             */
+            @SuppressWarnings("deprecation")
+            int sdkVersion = Integer.parseInt(Build.VERSION.SDK);       // Cupcake style
+            if (sdkVersion < Build.VERSION_CODES.ECLAIR)
+            {
+                className = "com.fsck.k9.EmailAddressAdapterSdk3_4";
+            }
+            else
+            {
+                className = "com.fsck.k9.EmailAddressAdapterSdk5";
+            }
+
+            /*
+             * Find the required class by name and instantiate it.
+             */
+            try
+            {
+                Class<? extends EmailAddressAdapter> clazz =
+                        Class.forName(className).asSubclass(EmailAddressAdapter.class);
+                sInstance = clazz.newInstance();
+            }
+            catch (Exception e)
+            {
+                throw new IllegalStateException(e);
+            }
         }
 
-        return mContentResolver.query(CONTENT_EMAIL_URI, PROJECTION, where, null, SORT_ORDER);
+        return sInstance;
+    }
+
+    public static Context getContext()
+    {
+        return sContext;
+    }
+
+    protected ContentResolver mContentResolver;
+
+    public EmailAddressAdapter()
+    {
+        super(getContext(), R.layout.recipient_dropdown_item, null);
+        mContentResolver = getContext().getContentResolver();
     }
 }
