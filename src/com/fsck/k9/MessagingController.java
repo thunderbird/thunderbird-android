@@ -1330,10 +1330,8 @@ public class MessagingController implements Runnable
                                 }
 
                                 // Send a notification of this message
-                                if (!message.isSet(Flag.SEEN) &&
-                                        (account.isNotifySelfNewMail() || account.isAnIdentity(message.getFrom()) == false))
+                                if (notifyAccount(mApplication, account, message) == true)
                                 {
-                                    notifyAccount(mApplication, account, message);
                                     newMessages.incrementAndGet();
                                 }
                                 
@@ -1425,6 +1423,7 @@ public class MessagingController implements Runnable
                             l.synchronizeMailboxNewMessage(account, folder, localMessage);
                         }
                     }
+                    notifyAccount(mApplication, account, message);
 
                 }
                 catch (MessagingException me)
@@ -1552,6 +1551,7 @@ public class MessagingController implements Runnable
                     l.synchronizeMailboxNewMessage(account, folder, localMessage);
                 }
             }
+            notifyAccount(mApplication, account, message);
         }//for large messsages
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
@@ -3901,8 +3901,6 @@ public class MessagingController implements Runnable
                         {
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Skipping synchronizing account " + account.getDescription());
-
-
                             continue;
                         }
 
@@ -4169,12 +4167,16 @@ public class MessagingController implements Runnable
     }
 
     /** Creates a notification of new email messages
-     * ringtone, lights, and vibration to be played
+      * ringtone, lights, and vibration to be played
     */
-    private void notifyAccount(Context context, Account account, Message message)
+    private boolean notifyAccount(Context context, Account account, Message message)
     {
-        if (!account.isNotifyNewMail())
-            return;
+        // Do not notify if the user does not have notifications
+        // enabled or if the message has been read
+        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN))
+        {
+            return false;
+        }
 
         // If we have a message, set the notification to "<From>: <Subject>"
         StringBuffer messageNotice = new StringBuffer();
@@ -4182,8 +4184,8 @@ public class MessagingController implements Runnable
         {
             if (message != null && message.getFrom() != null)
             {
-                Address[] addrs = message.getFrom();
-                String from = addrs.length > 0 ? addrs[0].toFriendly() : null;
+                Address[] fromAddrs = message.getFrom();
+                String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly() : null;
                 String subject = message.getSubject();
                 if (subject == null)
                 {
@@ -4192,13 +4194,20 @@ public class MessagingController implements Runnable
 
                 if (from != null)
                 {
-                    // Show From: address, except show To: if sent from me
-                    if (account.isAnIdentity(message.getFrom()) == false)
+                    // Show From: address by default
+                    if (account.isAnIdentity(fromAddrs) == false)
                     {
                         messageNotice.append(from + ": " + subject);
                     }
+                    // show To: if the message was sent from me
                     else
                     {
+                        // Do not notify of mail from self if !isNotifySelfNewMail
+                        if (!account.isNotifySelfNewMail())
+                        {
+                            return false;
+                        }
+
                         Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
                         String to = rcpts.length > 0 ? rcpts[0].toFriendly() : null;
                         if (to != null)
@@ -4247,23 +4256,29 @@ public class MessagingController implements Runnable
         String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount, account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
-        if (account.isRing())
+        // Only ring or vibrate if we have not done so already on this
+        // account and fetch
+        if (!account.isRingNotified())
         {
-            String ringtone = account.getRingtone();
-            notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
+            account.setRingNotified(true);
+            if (account.isRing())
+            {
+                String ringtone = account.getRingtone();
+                notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
+            }
+            if (account.isVibrate())
+            {
+                notif.defaults |= Notification.DEFAULT_VIBRATE;
+            }
         }
 
-        if (account.isVibrate())
-        {
-            notif.defaults |= Notification.DEFAULT_VIBRATE;
-        }
-
-        notif.flags |= Notification.FLAG_SHOW_LIGHTS | Notification.FLAG_ONLY_ALERT_ONCE;
+        notif.flags |= Notification.FLAG_SHOW_LIGHTS;
         notif.ledARGB = K9.NOTIFICATION_LED_COLOR;
         notif.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
         notif.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
 
         notifMgr.notify(account.getAccountNumber(), notif);
+        return true;
     }
 
     /** Cancel a notification of new email messages */
@@ -4565,6 +4580,7 @@ public class MessagingController implements Runnable
                     localFolder= localStore.getFolder(remoteFolder.getName());
                     localFolder.open(OpenMode.READ_WRITE);
 
+                    account.setRingNotified(false);
                     int newCount = downloadMessages(account, remoteFolder, localFolder, messages, flagSyncOnly);
                     int unreadMessageCount = setLocalUnreadCountToRemote(localFolder, remoteFolder,  messages.size());
 
