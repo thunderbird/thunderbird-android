@@ -14,9 +14,9 @@
          application-package
              the name of your application package as defined in the manifest. Used by the
              'uninstall' rule.
-         source-folder
+         source.dir
              the name of the source folder. Default is 'src'.
-         out-folder
+         out.dir
              the name of the output folder. Default is 'bin'.
 
          Properties related to the SDK location or the project target should be updated
@@ -37,11 +37,11 @@
     <!-- Custom Android task to deal with the project target, and import the proper rules.
          This requires ant 1.6.0 or above. -->
     <path id="android.antlibs">
-        <pathelement path="${sdk-location}/tools/lib/anttasks.jar" />
-        <pathelement path="${sdk-location}/tools/lib/sdklib.jar" />
-        <pathelement path="${sdk-location}/tools/lib/androidprefs.jar" />
-        <pathelement path="${sdk-location}/tools/lib/apkbuilder.jar" />
-        <pathelement path="${sdk-location}/tools/lib/jarutils.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/sdklib.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/androidprefs.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/apkbuilder.jar" />
+        <pathelement path="${sdk.dir}/tools/lib/jarutils.jar" />
 	</path>
 
 	<property environment="env"/>
@@ -50,7 +50,7 @@
         classname="com.android.ant.SetupTask"
         classpathref="android.antlibs"/>
 
-     <setup import="false" />
+     <setup />
     <!-- Execute the Android Setup task that will setup some properties specific to the target,
          and import the rules files.
          To customize the rules, copy/paste them below the task, and disable import by setting
@@ -60,70 +60,12 @@
          targets are used.
     -->
 
-    <!--
-        This rules file is meant to be imported by the custom Ant task:
-            com.android.ant.AndroidInitTask
-
-        The following properties are put in place by the importing task:
-            android.jar, android-aidl, aapt, aidl, and dx
-
-        Additionnaly, the task sets up the following classpath reference:
-            android.target.classpath
-        This is used by the compiler task as the boot classpath.
-    -->
-
-    <!-- Custom tasks -->
-    <taskdef name="aaptexec"
-        classname="com.android.ant.AaptExecLoopTask"
-        classpathref="android.antlibs"/>
-
-    <taskdef name="apkbuilder"
-        classname="com.android.ant.ApkBuilderTask"
-        classpathref="android.antlibs"/>
-
-    <!-- Properties -->
-
-    <property name="android-tools" value="${sdk-location}/tools" />
-
-    <!-- Input directories -->
-    <property name="source-folder" value="src" />
-    <property name="gen-folder" value="gen" />
-    <property name="resource-folder" value="res" />
-    <property name="asset-folder" value="assets" />
-    <property name="source-location" value="${basedir}/${source-folder}" />
-
-    <!-- folder for the 3rd party java libraries -->
-    <property name="external-libs-folder" value="libs" />
-
-    <!-- folder for the native libraries -->
-    <property name="native-libs-folder" value="libs" />
-
     <!-- folder for the java libraries already in AOP but not in the official SDK -->
     <property name="compile-only-libs-folder" value="compile-only-libs" />
 
-    <!-- Output directories -->
-    <property name="gen-folder" value="gen" />
-    <property name="out-folder" value="bin" />
-    <property name="out-classes" value="${out-folder}/classes" />
-    <property name="out-classes-location" value="${basedir}/${out-classes}"/>
     <!-- out folders for a parent project if this project is an instrumentation project -->
-    <property name="main-out-folder" value="../${out-folder}" />
-    <property name="main-out-classes" value="${main-out-folder}/classes"/>
-
-    <property name="rclib" value="${out-folder}/K9RemoteControl.jar" />
+    <property name="rclib" value="${out.dir}/K9RemoteControl.jar" />
     <property name="rcdir" value="com/fsck/k9/remotecontrol/**" />
-
-    <!-- Intermediate files -->
-    <property name="dex-file" value="classes.dex" />
-    <property name="intermediate-dex" value="${out-folder}/${dex-file}" />
-    <!-- dx does not properly support incorrect / or \ based on the platform
-         and Ant cannot convert them because the parameter is not a valid path.
-         Because of this we have to compute different paths depending on the platform. -->
-    <condition property="intermediate-dex-location"
-            value="${basedir}\${intermediate-dex}"
-            else="${basedir}/${intermediate-dex}" >
-        <os family="windows"/>
-    </condition>
 
     <!-- A bloody hack, but a useful and quick one -->
     <target name="get-version">
@@ -134,162 +76,23 @@
     <echo>Building version number ${version-code}</echo>
     </target>
 
-    <!-- The final package file to generate -->
-    <target name="filenames" depends="get-version">
-    <property name="out-debug-package" value="${out-folder}/${ant.project.name}-debug.apk"/>
-    <property name="out-unsigned-package" value="${out-folder}/${ant.project.name}-unsigned.apk"/>
-    <property name="out-signed-package" value="${out-folder}/${ant.project.name}-signed.apk"/>
-    <property name="out-zipaligned-package" value="${out-folder}/${ant.project.name}-signed-zipaligned-${version-code}.apk"/>
-    </target>
-
-    <!-- Tools -->
-    <condition property="exe" value=".exe" else=""><os family="windows"/></condition>
-    <property name="adb" value="${android-tools}/adb${exe}"/>
 
     <!-- rules -->
 
     <!-- Create the output directories if they don't exist yet. -->
-    <target name="dirs" depends="filenames">
-        <echo>Creating output directories if needed...</echo>
-        <mkdir dir="${resource-folder}" />
-        <mkdir dir="${external-libs-folder}" />
-        <mkdir dir="${gen-folder}" />
-        <mkdir dir="${out-folder}" />
-        <mkdir dir="${out-classes}" />
-    </target>
-
-    <!-- Generate the R.java file for this project's resources. -->
-    <target name="resource-src" depends="dirs">
-        <echo>Generating R.java / Manifest.java from the resources...</echo>
-        <exec executable="${aapt}" failonerror="true">
-            <arg value="package" />
-            <arg value="-m" />
-            <arg value="-J" />
-            <arg path="${gen-folder}" />
-            <arg value="-M" />
-            <arg path="AndroidManifest.xml" />
-            <arg value="-S" />
-            <arg path="${resource-folder}" />
-            <arg value="-I" />
-            <arg path="${android.jar}" />
-        </exec>
-    </target>
-
-    <!-- Generate java classes from .aidl files. -->
-    <target name="aidl" depends="dirs">
-        <echo>Compiling aidl files into Java classes...</echo>
-        <apply executable="${aidl}" failonerror="true">
-            <arg value="-p${android-aidl}" />
-            <arg value="-I${source-folder}" />
-            <arg value="-o${gen-folder}" />
-            <fileset dir="${source-folder}">
-                <include name="**/*.aidl"/>
-            </fileset>
-        </apply>
-    </target>
-
-    <!-- Compile this project's .java files into .class files. -->
-    <target name="compile" depends="resource-src, aidl">
-        <javac encoding="ascii" target="1.5" debug="true" extdirs=""
-                destdir="${out-classes}"
-                bootclasspathref="android.target.classpath">
-            <src path="${source-folder}" />
-            <src path="${gen-folder}" />
-            <classpath>
-                <fileset dir="${external-libs-folder}" includes="*.jar"/>
-                <fileset dir="${compile-only-libs-folder}" includes="*.jar"/>
-                <fileset dir="${sdk-location}/platforms/android-2.0.1/" includes="**/*.jar"/>
-                <pathelement path="${main-out-classes}"/>
-            </classpath>
-         </javac>
-    </target>
-
     <target name="rclib" depends="compile">
         <echo>Creating library ${rclib} for remote control
         applications</echo>
 
-	<jar destfile="${rclib}"
-	basedir="${out-classes}"
-	includes="${rcdir}" />
+	<jar destfile="${rclib}" basedir="${out.classes.dir}" includes="${rcdir}" />
     </target>
 
-    <!-- Convert this project's .class files into .dex files. -->
-    <target name="dex" depends="compile">
-        <echo>Converting compiled files and external libraries into ${out-folder}/${dex-file}...</echo>
-        <apply executable="${dx}" failonerror="true" parallel="true">
-            <arg value="-JXmx1024m" />
-            <arg value="--dex" />
-            <arg value="--output=${intermediate-dex-location}" />
-            <arg path="${out-classes-location}" />
-            <fileset dir="${external-libs-folder}" includes="*.jar"/>
-        </apply>
-    </target>
-
-    <!-- Put the project's resources into the output package file
-         This actually can create multiple resource package in case
-         Some custom apk with specific configuration have been
-         declared in default.properties.
-         -->
-    <target name="package-resources">
-        <echo>Packaging resources</echo>
-        <aaptexec executable="${aapt}"
-                command="package"
-                manifest="AndroidManifest.xml"
-                resources="${resource-folder}"
-                assets="${asset-folder}"
-                androidjar="${android.jar}"
-                outfolder="${out-folder}"
-                basename="${ant.project.name}" />
-    </target>
-
-    <!-- Package the application and sign it with a debug key.
-         This is the default target when building. It is used for debug. -->
-    <target name="debug" depends="dex, package-resources">
-        <apkbuilder
-                outfolder="${out-folder}"
-                basename="${ant.project.name}"
-                signed="true"
-                verbose="false">
-            <file path="${intermediate-dex}" />
-            <sourcefolder path="${source-folder}" />
-            <jarfolder path="${external-libs-folder}" />
-            <nativefolder path="${native-libs-folder}" />
-        </apkbuilder>
-    </target>
-
-    <!-- Package the application without signing it.
-         This allows for the application to be signed later with an official publishing key. -->
-    <target name="release" depends="rclib, dex, package-resources">
-        <apkbuilder
-                outfolder="${out-folder}"
-                basename="${ant.project.name}"
-                signed="false"
-                verbose="false">
-            <file path="${intermediate-dex}" />
-            <sourcefolder path="${source-folder}" />
-            <jarfolder path="${external-libs-folder}" />
-            <nativefolder path="${native-libs-folder}" />
-        </apkbuilder>
-        <echo>Signing ${out-unsigned-package}</echo>
-        <exec executable="jarsigner" failonerror="true">
-            <arg value="-verbose" />
-            <arg value="-storepass" />
-			<arg value="${env.jarpass}" />
-            <arg value="-signedjar" />
-            <arg value="${out-signed-package}" />
-            <arg value="${out-unsigned-package}" />
-
-            <arg value="fsckcom" />
-        </exec>
-        <exec executable="zipalign" failonerror="true">
-            <arg value="4"/>
-            <arg value="${out-signed-package}" />
-            <arg value="${out-zipaligned-package}" />
-        </exec>
-    </target>
-
-    <target name="upload" depends="release">
+    <target name="upload" depends="release,get-version">
         <echo>Uploading to Google Code using Google::Code::Upload</echo>
+        <exec executable="mv" failonerror="true">
+            <arg value="${out.release.package}" />
+            <arg value="k9-${version-code}-release.apk" />
+        </exec>
         <exec executable="googlecode_upload.pl" failonerror="true">
             <arg value="--summary" />
             <arg value="${ant.project.name} ${version-code}"/>
@@ -301,7 +104,7 @@
             <arg value="${gcode-pass}" />
             <arg value="--labels"/>
             <arg value="Type-Installer"/>
-            <arg value="${out-zipaligned-package}"/>
+            <arg value="${out.release.package}"/>
         </exec>
     </target>
 
@@ -314,27 +117,26 @@
         </exec>
     </target>
 
-    <target name="reinstall" depends="debug">
-        <echo>Installing ${out-debug-package} onto default emulator...</echo>
-        <exec executable="${adb}" failonerror="true">
-            <arg value="install" />
-            <arg value="-r" />
-            <arg path="${out-debug-package}" />
-        </exec>
-    </target>
-
-    <!-- Uinstall the package from the default emulator -->
-    <target name="uninstall">
-        <echo>Uninstalling ${application-package} from the default emulator...</echo>
-        <exec executable="${adb}" failonerror="true">
-            <arg value="uninstall" />
-            <arg path="${application-package}" />
-        </exec>
-    </target>
-
-    <target name="clean">
-        <delete dir="${out-folder}" />
-        <delete dir="${gen-folder}" />
+    <!-- Compiles this project's .java files into .class files. -->
+    <target name="compile" depends="-resource-src, -aidl"
+                description="Compiles project's .java files into .class files">
+        <!-- If android rules are used for a test project, its classpath should include
+             tested project's location -->
+        <condition property="extensible.classpath"
+                           value="${tested.project.absolute.dir}/bin/classes" else=".">
+            <isset property="tested.project.absolute.dir" />
+        </condition>
+        <javac encoding="ascii" target="1.5" debug="true" extdirs=""
+                destdir="${out.classes.absolute.dir}"
+                bootclasspathref="android.target.classpath"
+                verbose="${verbose}" classpath="${extensible.classpath}">
+            <src path="${source.absolute.dir}" />
+            <src path="${gen.absolute.dir}" />
+            <classpath>
+                <fileset dir="${external.libs.absolute.dir}" includes="*.jar" />
+                <fileset dir="compile-only-libs" includes="*.jar" />
+            </classpath>
+        </javac>
     </target>
 
     <target name="help">
