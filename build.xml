@@ -91,7 +91,7 @@
         <echo>Uploading to Google Code using Google::Code::Upload</echo>
         <exec executable="mv" failonerror="true">
             <arg value="${out.release.package}" />
-            <arg value="k9-${version-code}-release.apk" />
+            <arg value="bin/k9-${version-code}-release.apk" />
         </exec>
         <exec executable="googlecode_upload.pl" failonerror="true">
             <arg value="--summary" />
@@ -104,7 +104,7 @@
             <arg value="${gcode-pass}" />
             <arg value="--labels"/>
             <arg value="Type-Installer"/>
-            <arg value="${out.release.package}"/>
+            <arg value="bin/k9-${version-code}-release.apk" />
         </exec>
     </target>
 
