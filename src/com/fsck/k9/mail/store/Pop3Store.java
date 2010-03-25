@@ -513,6 +513,18 @@ public class Pop3Store extends Store
                         break;
                     }
                     String[] uidParts = response.split(" ");
+                    if ((uidParts.length >= 3) && "+OK".equals(uidParts[0]))
+                    {
+                        /*
+                         * At least one server software places a "+OK" in
+                         * front of every line in the unique-id listing.
+                         * 
+                         * Fix up the array if we detected this behavior.
+                         * See Issue 1237
+                         */ 
+                        uidParts[0] = uidParts[1];
+                        uidParts[1] = uidParts[2];
+                    }
                     if (uidParts.length >= 2)
                     {
                         Integer msgNum = Integer.valueOf(uidParts[0]);
