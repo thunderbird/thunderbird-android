@@ -100,7 +100,7 @@ public class MimeBodyPart extends BodyPart
         }
         else
         {
-            return contentType.toLowerCase();
+            return contentType;
         }
     }
 
