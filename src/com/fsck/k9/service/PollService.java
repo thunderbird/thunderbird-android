@@ -159,8 +159,6 @@ public class PollService extends CoreService
 
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "***** PollService *****: checkMailFinished");
-            // Reset RingNotified so the next new mail will notify
-            account.setRingNotified(false);
             release();
         }
         public int getStartId()
