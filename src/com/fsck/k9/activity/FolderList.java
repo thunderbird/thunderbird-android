@@ -812,12 +812,12 @@ public class FolderList extends K9ListActivity
                 List<FolderInfoHolder> topFolders = new LinkedList<FolderInfoHolder>();
 
                 Account.FolderMode aMode = account.getFolderDisplayMode();
-
+                Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
                 for (Folder folder : folders)
                 {
                     try
                     {
-                        folder.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
+                        folder.refresh(prefs);
 
                         Folder.FolderClass fMode = folder.getDisplayClass();
 

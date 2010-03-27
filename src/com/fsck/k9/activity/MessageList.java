@@ -66,6 +66,11 @@ public class MessageList
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_FOLDER  = "folder";
     private static final String EXTRA_QUERY = "query";
+    private static final String EXTRA_QUERY_FLAGS = "queryFlags";
+    private static final String EXTRA_FORBIDDEN_FLAGS = "forbiddenFlags";
+    private static final String EXTRA_INTEGRATE = "integrate";
+    private static final String EXTRA_TITLE = "title";
+
 
     private ListView mListView;
 
@@ -92,6 +97,10 @@ public class MessageList
 
     /* if we're doing a search, this contains the query string */
     private String mQueryString;
+    private Flag[] mQueryFlags = null;
+    private Flag[] mForbiddenFlags = null;
+    private boolean mIntegrate = false;
+    private String mTitle;
 
     private MessageListHandler mHandler = new MessageListHandler();
 
@@ -253,7 +262,14 @@ public class MessageList
             }
             else if (mQueryString != null)
             {
-                setTitle(getString(R.string.search_results) + ": "+ mQueryString);
+                if (mTitle != null)
+                {
+                    setTitle(mTitle);
+                }
+                else
+                {
+                    setTitle(getString(R.string.search_results) + ": "+ mQueryString);
+                }
             }
         }
 
@@ -291,6 +307,24 @@ public class MessageList
             intent.putExtra(EXTRA_FOLDER, folder);
         }
         return intent;
+    }
+    
+    public static void actionHandle(Context context, String title, String queryString, boolean integrate, Flag[] flags, Flag[] forbiddenFlags)
+    {
+        Intent intent = new Intent(context, MessageList.class);
+        intent.putExtra(EXTRA_QUERY, queryString);
+        if (flags != null)
+        {
+            intent.putExtra(EXTRA_QUERY_FLAGS, Utility.combine(flags, ','));
+        }
+        if (forbiddenFlags != null)
+        {
+            intent.putExtra(EXTRA_FORBIDDEN_FLAGS, Utility.combine(forbiddenFlags, ','));
+        }
+        intent.putExtra(EXTRA_INTEGRATE, integrate);
+        intent.putExtra(EXTRA_TITLE, title);
+        context.startActivity(intent);
+
     }
 
     public void onItemClick(AdapterView parent, View v, int position, long id)
@@ -335,7 +369,30 @@ public class MessageList
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);
-
+        
+        String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
+        if (queryFlags != null)
+        {
+            String[] flagStrings = queryFlags.split(",");
+            mQueryFlags = new Flag[flagStrings.length];
+            for (int i = 0; i < flagStrings.length; i++)
+            {
+                mQueryFlags[i] = Flag.valueOf(flagStrings[i]);
+            }
+        }
+        String forbiddenFlags = intent.getStringExtra(EXTRA_FORBIDDEN_FLAGS);
+        if (forbiddenFlags != null)
+        {
+            String[] flagStrings = forbiddenFlags.split(",");
+            mForbiddenFlags = new Flag[flagStrings.length];
+            for (int i = 0; i < flagStrings.length; i++)
+            {
+                mForbiddenFlags[i] = Flag.valueOf(flagStrings[i]);
+            }
+        }
+        mIntegrate = intent.getBooleanExtra(EXTRA_INTEGRATE, false);
+        mTitle = intent.getStringExtra(EXTRA_TITLE);
+        
         // Take the initial folder into account only if we are *not* restoring the
         // activity already
 
@@ -407,8 +464,7 @@ public class MessageList
         }
         else if (mQueryString != null)
         {
-            mController.searchLocalMessages(mAccount, mQueryString,  mAdapter.mListener);
-
+            mController.searchLocalMessages(mQueryString, null, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
         }
 
         mHandler.refreshTitle();

@@ -91,6 +91,18 @@
         <item>KEYBOARD_AVAILABLE</item>
         <item>ALWAYS</item>
     </string-array>
+    
+    <string-array name="account_settings_searchable_entries">
+        <item>@string/account_settings_searchable_all</item>
+       <item>@string/account_settings_searchable_displayable</item>
+       <item>@string/account_settings_searchable_none</item>
+    </string-array>
+
+    <string-array name="account_settings_searchable_values">
+        <item>ALL</item>
+        <item>DISPLAYABLE</item>
+        <item>NONE</item>
+    </string-array>
   
      <string-array name="account_settings_folder_sync_mode_entries">
         <item>@string/account_settings_folder_sync_mode_all</item>

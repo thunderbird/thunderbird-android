@@ -21,6 +21,8 @@ import com.fsck.k9.*;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
+import com.fsck.k9.mail.Flag;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,6 +38,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private AccountsHandler mHandler = new AccountsHandler();
     private AccountsAdapter mAdapter;
+    private SearchAccount unreadAccount = null;
+    private SearchAccount flaggedAccount = null;
+    private SearchAccount integratedInboxAccount = null;
+    private SearchAccount integratedInboxStarredAccount = null;
 
 
     class AccountsHandler extends Handler
@@ -269,6 +275,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     @Override
     public void onCreate(Bundle icicle)
     {
+        unreadAccount = new SearchAccount(this, false, null, new Flag[] { Flag.SEEN } );
+        unreadAccount.setDescription(getString(R.string.search_unread_messages_title));
+        unreadAccount.setEmail(getString(R.string.search_unread_messages_detail));
+        
+        flaggedAccount = new SearchAccount(this, false, new Flag[] { Flag.FLAGGED }, null);
+        flaggedAccount.setDescription(getString(R.string.search_starred_messages_title));
+        flaggedAccount.setEmail(getString(R.string.search_starred_messages_detail));
+        
+        integratedInboxAccount = new SearchAccount(this, true, null,  new Flag[] { Flag.SEEN });
+        integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
+        integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
+        
+        integratedInboxStarredAccount = new SearchAccount(this, true, new Flag[] { Flag.FLAGGED },  null);
+        integratedInboxStarredAccount.setDescription(getString(R.string.integrated_inbox_starred_title));
+        integratedInboxStarredAccount.setEmail(getString(R.string.integrated_inbox_starred_detail));
+        
         super.onCreate(icicle);
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
@@ -339,7 +361,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private void refresh()
     {
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
-        mAdapter = new AccountsAdapter(accounts);
+        
+        Account[] newAccounts = new Account[accounts.length + 4];
+        newAccounts[0] = integratedInboxAccount;
+        newAccounts[1] = integratedInboxStarredAccount;
+        newAccounts[2] = unreadAccount;
+        newAccounts[3] = flaggedAccount;
+        System.arraycopy(accounts, 0, newAccounts, 4, accounts.length);
+       
+        mAdapter = new AccountsAdapter(newAccounts);
         getListView().setAdapter(mAdapter);
         if (accounts.length > 0)
         {
@@ -355,6 +385,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
 
         }
+        
     }
 
     private void onAddNewAccount()
@@ -409,7 +440,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private void onOpenAccount(Account account)
     {
-        if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName()))
+        if (account instanceof SearchAccount)
+        {
+            SearchAccount searchAccount = (SearchAccount)account;
+            MessageList.actionHandle(this, searchAccount.getDescription(), "", searchAccount.isIntegrate(), searchAccount.getRequiredFlags(), searchAccount.getForbiddenFlags());
+        }
+        else if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName()))
         {
             FolderList.actionHandleAccount(this, account);
         }
@@ -649,6 +685,20 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.setHeaderTitle(R.string.accounts_context_menu_title);
         getMenuInflater().inflate(R.menu.accounts_context, menu);
+        
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        Account account = (Account) mAdapter.getItem(info.position);
+        if (account instanceof SearchAccount)
+        {
+            for (int i = 0; i < menu.size(); i++)
+            {
+                MenuItem item = menu.getItem(i);
+                if (item.getItemId() != R.id.open)
+                {
+                    item.setVisible(false);
+                }
+            }
+        }
     }
 
     class AccountsAdapter extends ArrayAdapter<Account>
@@ -701,7 +751,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 //holder.newMessageCount.setText("-");
                 holder.newMessageCount.setVisibility(View.GONE);
             }
-            holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[account.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
+            if (!(account instanceof SearchAccount))
+            {
+                holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[account.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
+            }
 
             if (unreadMessageCount == null)
             {
@@ -726,6 +779,45 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public TextView email;
             public TextView newMessageCount;
             public View chip;
+        }
+    }
+    private class SearchAccount extends Account
+    {
+        private Flag[] mRequiredFlags = null;
+        private Flag[] mForbiddenFlags = null;
+        private String email = null;
+        private boolean mIntegrate = false;
+        
+         private SearchAccount(Context context, boolean integrate, Flag[] requiredFlags, Flag[] forbiddenFlags)
+         {
+             super(context);
+             mRequiredFlags = requiredFlags;
+             mForbiddenFlags = forbiddenFlags;
+             mIntegrate = integrate;
+         }
+        public String getEmail()
+        {
+            return email;
+        }
+        public void setEmail(String email)
+        {
+            this.email = email;
+        }
+        public Flag[] getRequiredFlags()
+        {
+            return mRequiredFlags;
+        }
+        public Flag[] getForbiddenFlags()
+        {
+            return mForbiddenFlags;
+        }
+        public boolean isIntegrate()
+        {
+            return mIntegrate;
+        }
+        public void setIntegrate(boolean integrate)
+        {
+            this.mIntegrate = integrate;
         }
     }
 }

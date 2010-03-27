@@ -28,10 +28,12 @@ public class FolderSettings extends K9PreferenceActivity
     private static final String PREFERENCE_SYNC_CLASS = "folder_settings_folder_sync_mode";
     private static final String PREFERENCE_PUSH_CLASS = "folder_settings_folder_push_mode";
     private static final String PREFERENCE_IN_TOP_GROUP = "folder_settings_in_top_group";
+    private static final String PREFERENCE_INTEGRATE = "folder_settings_include_in_integrated_inbox";
 
     private LocalFolder mFolder;
 
     private CheckBoxPreference mInTopGroup;
+    private CheckBoxPreference mIntegrate;
     private ListPreference mDisplayClass;
     private ListPreference mSyncClass;
     private ListPreference mPushClass;
@@ -85,6 +87,8 @@ public class FolderSettings extends K9PreferenceActivity
         
         mInTopGroup = (CheckBoxPreference)findPreference(PREFERENCE_IN_TOP_GROUP);
         mInTopGroup.setChecked(mFolder.isInTopGroup());
+        mIntegrate = (CheckBoxPreference)findPreference(PREFERENCE_INTEGRATE);
+        mIntegrate.setChecked(mFolder.isIntegrate());
         
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);
         mDisplayClass.setValue(mFolder.getDisplayClass().name());
@@ -150,6 +154,7 @@ public class FolderSettings extends K9PreferenceActivity
     private void saveSettings()
     {
         mFolder.setInTopGroup(mInTopGroup.isChecked());
+        mFolder.setIntegrate(mIntegrate.isChecked());
         // We call getPushClass() because display class changes can affect push class when push class is set to inherit
         FolderClass oldPushClass = mFolder.getPushClass();
         FolderClass oldDisplayClass = mFolder.getDisplayClass();

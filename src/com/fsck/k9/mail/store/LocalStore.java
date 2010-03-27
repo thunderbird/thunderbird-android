@@ -35,7 +35,7 @@ import java.util.regex.Matcher;
 public class LocalStore extends Store implements Serializable
 {
     private static final int DB_VERSION = 33;
-    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN };
+    private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
     private String mPath;
     private SQLiteDatabase mDb;
@@ -594,22 +594,97 @@ public class LocalStore extends Store implements Serializable
         return true;
     }
 
-    public Message[] searchForMessages(MessageRetrievalListener listener, String queryString) throws MessagingException
+    public Message[] searchForMessages(MessageRetrievalListener listener, String queryString, 
+            List<LocalFolder> folders, Message[] messages, final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException
     {
-
-        queryString = "%"+queryString+"%";
+        List<String> args = new LinkedList<String>();
+        
+        StringBuilder whereClause = new StringBuilder();
+        if (queryString != null && queryString.length() > 0)
+        {
+            String likeString = "%"+queryString+"%";
+            whereClause.append(" AND (html_content LIKE ? OR subject LIKE ? OR sender_list LIKE ?)");
+            args.add(likeString);
+            args.add(likeString);
+            args.add(likeString);
+        }
+        if (folders != null && folders.size() > 0)
+        {
+            whereClause.append(" AND folder_id in (");
+            boolean anyAdded = false;
+            for (LocalFolder folder : folders)
+            {
+                if (anyAdded == true)
+                {
+                    whereClause.append(",");
+                }
+                anyAdded = true;
+                whereClause.append("?");
+                args.add(Long.toString(folder.getId()));
+            }
+            whereClause.append(" )");
+        }
+        if (messages != null && messages.length > 0)
+        {
+            whereClause.append(" AND ( ");
+            boolean anyAdded = false;
+            for (Message message : messages)
+            {
+                if (anyAdded == true)
+                {
+                    whereClause.append(" OR ");
+                }
+                anyAdded = true;
+                whereClause.append(" ( uid = ? AND folder_id = ? ) ");
+                args.add(message.getUid());
+                args.add(Long.toString(((LocalFolder)message.getFolder()).getId()));
+            }
+            whereClause.append(" )");
+        }
+        if (forbiddenFlags != null && forbiddenFlags.length > 0)
+        {
+            whereClause.append(" AND (");
+            boolean anyAdded = false;
+            for (Flag flag : forbiddenFlags)
+            {
+                if (anyAdded == true)
+                {
+                    whereClause.append(" AND ");
+                }
+                anyAdded = true;
+                whereClause.append(" flags NOT LIKE ?");
+                
+                args.add("%" + flag.toString() + "%");
+            }
+            whereClause.append(" )");
+        }
+        if (requiredFlags != null && requiredFlags.length > 0)
+        {
+            whereClause.append(" AND (");
+            boolean anyAdded = false;
+            for (Flag flag : requiredFlags)
+            {
+                if (anyAdded == true)
+                {
+                    whereClause.append(" OR ");
+                }
+                anyAdded = true;
+                whereClause.append(" flags LIKE ?");
+                
+                args.add("%" + flag.toString() + "%");
+            }
+            whereClause.append(" )");
+        }
+        
+        Log.i(K9.LOG_TAG, "whereClause = " + whereClause.toString());
+        Log.i(K9.LOG_TAG, "args = " + args);
         return getMessages(
                    listener,
                    null,
                    "SELECT "
                    + GET_MESSAGES_COLS
-                   + "FROM messages WHERE deleted = 0 AND (html_content LIKE ? OR subject LIKE ? OR sender_list LIKE ?) ORDER BY date DESC"
-                   , new String[]
-                   {
-                       queryString,
-                       queryString,
-                       queryString
-                   }
+                   + "FROM messages WHERE deleted = 0 " + whereClause.toString() + " ORDER BY date DESC"
+                   , args.toArray(new String[0])
                );
     }
     /*
@@ -631,7 +706,6 @@ public class LocalStore extends Store implements Serializable
 
 
             int i = 0;
-            ArrayList<LocalMessage> messagesForHeaders = new ArrayList<LocalMessage>();
             while (cursor.moveToNext())
             {
                 LocalMessage message = new LocalMessage(null, folder);
@@ -674,6 +748,7 @@ public class LocalStore extends Store implements Serializable
         private boolean inTopGroup = false;
         private String prefId = null;
         private String mPushState = null;
+        private boolean mIntegrate = false;
 
 
         public LocalFolder(String name)
@@ -735,6 +810,7 @@ public class LocalStore extends Store implements Serializable
                 }
                 else
                 {
+                    Log.w(K9.LOG_TAG, "Creating folder " + getName() + " with existing id " + getId());
                     create(FolderType.HOLDS_MESSAGES);
                     open(mode);
                 }
@@ -1005,7 +1081,16 @@ public class LocalStore extends Store implements Serializable
         {
             this.pushClass = pushClass;
         }
-
+        
+        public boolean isIntegrate()
+        {
+            return mIntegrate;
+        }
+        public void setIntegrate(boolean integrate)
+        {
+            mIntegrate = integrate;
+        }
+        
         private String getPrefId() throws MessagingException
         {
             open(OpenMode.READ_WRITE);
@@ -1028,6 +1113,7 @@ public class LocalStore extends Store implements Serializable
             editor.remove(id + ".syncMode");
             editor.remove(id + ".pushMode");
             editor.remove(id + ".inTopGroup");
+            editor.remove(id + ".integrate");
 
             editor.commit();
         }
@@ -1065,6 +1151,8 @@ public class LocalStore extends Store implements Serializable
                 editor.putString(id + ".pushMode", pushClass.name());
             }
             editor.putBoolean(id + ".inTopGroup", inTopGroup);
+
+            editor.putBoolean(id + ".integrate", mIntegrate);
 
             editor.commit();
         }
@@ -1114,10 +1202,12 @@ public class LocalStore extends Store implements Serializable
 
             FolderClass defPushClass = FolderClass.SECOND_CLASS;
             boolean defInTopGroup = false;
+            boolean defIntegrate = false;
             if (K9.INBOX.equals(getName()))
             {
                 defPushClass =  FolderClass.FIRST_CLASS;
                 defInTopGroup = true;
+                defIntegrate = true;
             }
 
             try
@@ -1136,6 +1226,7 @@ public class LocalStore extends Store implements Serializable
                 pushClass = FolderClass.INHERITED;
             }
             inTopGroup = preferences.getPreferences().getBoolean(id + ".inTopGroup", defInTopGroup);
+            mIntegrate = preferences.getPreferences().getBoolean(id + ".integrate", defIntegrate);
 
         }
 
@@ -2202,6 +2293,7 @@ public class LocalStore extends Store implements Serializable
             this.setRecipients(RecipientType.CC, Address.unpack(cursor.getString(7)));
             this.setRecipients(RecipientType.BCC, Address.unpack(cursor.getString(8)));
             this.setReplyTo(Address.unpack(cursor.getString(9)));
+
             this.mAttachmentCount = cursor.getInt(10);
             this.setInternalDate(new Date(cursor.getLong(11)));
             this.setMessageId(cursor.getString(12));
