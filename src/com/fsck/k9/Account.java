@@ -83,6 +83,9 @@ public class Account
     private int mMaxPushFolders;
     private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>(); 
     private Searchable searchableFolders;
+    // Tracks if we have sent a notification for this account for
+    // current set of fetched messages
+    private boolean mRingNotified;
 
     private List<Identity> identities;
 
@@ -566,7 +569,20 @@ public class Account
         mVibrate = vibrate;
     }
 
-    public synchronized String getRingtone()
+
+
+   /* Have we sent a new mail notification on this account */
+   public boolean isRingNotified()
+   {
+       return mRingNotified;
+   }
+
+   public void setRingNotified(boolean ringNotified)
+   {
+       mRingNotified = ringNotified;
+   }
+
+   public synchronized String getRingtone()
     {
         return mRingtoneUri;
     }

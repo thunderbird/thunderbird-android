@@ -912,24 +912,22 @@ public class ImapStore extends Store
             ArrayList<Message> messages = new ArrayList<Message>();
             try
             {
-                boolean gotSearchValues = false;
                 ArrayList<Integer> uids = new ArrayList<Integer>();
                 List<ImapResponse> responses = searcher.search(); //
                 for (ImapResponse response : responses)
                 {
-                    if (response.get(0).equals("SEARCH"))
+                    if (response.mTag == null)
                     {
-                        gotSearchValues = true;
-                        for (int i = 1, count = response.size(); i < count; i++)
+                        if (response.get(0).equals("SEARCH"))
                         {
-                            uids.add(Integer.parseInt(response.getString(i)));
+                            for (int i = 1, count = response.size(); i < count; i++)
+                            {
+                                uids.add(Integer.parseInt(response.getString(i)));
+                            }
                         }
                     }
                 }
-                if (gotSearchValues == false)
-                {
-                    throw new MessagingException("Did not get proper search response");
-                }
+
                 // Sort the uids in numerically ascending order
                 Collections.sort(uids);
                 for (int i = 0, count = uids.size(); i < count; i++)

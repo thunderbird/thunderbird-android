@@ -23,6 +23,7 @@ public class ImapResponseParser
     SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z", Locale.US);
 
     SimpleDateFormat badDateTimeFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US);
+    SimpleDateFormat badDateTimeFormat2 = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.US);
 
     PeekableInputStream mIn;
     InputStream mActiveLiteral;
@@ -475,6 +476,7 @@ public class ImapResponseParser
 
         private Date parseDate(String value) throws ParseException
         {
+            //TODO: clean this up a bit
             try
             {
                 synchronized (mDateTimeFormat)
@@ -484,9 +486,19 @@ public class ImapResponseParser
             }
             catch (Exception e)
             {
-                synchronized (badDateTimeFormat)
+                try
                 {
-                    return badDateTimeFormat.parse(value);
+                    synchronized (badDateTimeFormat)
+                    {
+                        return badDateTimeFormat.parse(value);
+                    }
+                }
+                catch (Exception e2)
+                {
+                    synchronized (badDateTimeFormat2)
+                    {
+                        return badDateTimeFormat2.parse(value);
+                    }
                 }
             }
 
