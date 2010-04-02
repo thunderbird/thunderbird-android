@@ -390,7 +390,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
         }
-        else if (Intent.ACTION_SEND.equals(action) /*|| Intent.ACTION_SEND_MULTIPLE.equals(action)*/)
+        //TODO: Use constant Intent.ACTION_SEND_MULTIPLE once we drop Android 1.5 support
+        else if (Intent.ACTION_SEND.equals(action) || "android.intent.action.SEND_MULTIPLE".equals(action))
         {
             /*
              * Someone is trying to compose an email with an attachment, probably Pictures.
@@ -409,8 +410,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
 
             String type = intent.getType();
-            /* Use once we drop Android 1.5 support
-            if (Intent.ACTION_SEND_MULTIPLE.equals(action))
+            //TODO: Use constant Intent.ACTION_SEND_MULTIPLE once we drop Android 1.5 support
+            if ("android.intent.action.SEND_MULTIPLE".equals(action))
             {
                 ArrayList<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
                 if (list != null)
@@ -429,7 +430,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
             else
-            */
             {
                 Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
                 if (stream != null && type != null)
