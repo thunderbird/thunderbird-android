@@ -14,12 +14,6 @@ public class Preferences
 {
     private static Preferences preferences;
 
-    /**
-     * TODO need to think about what happens if this gets GCed along with the
-     * Activity that initialized it. Do we lose ability to read Preferences in
-     * further Activities? Maybe this should be stored in the Application
-     * context.
-     */
     public static synchronized Preferences getPreferences(Context context)
     {
         if (preferences == null)
