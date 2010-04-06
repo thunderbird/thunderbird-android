@@ -47,6 +47,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
     private static final String PREFERENCE_EXPUNGE_POLICY = "expunge_policy";
     private static final String PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder";
+    private static final String PREFERENCE_SEARCHABLE_FOLDERS = "searchable_folders";
 
 
     private Account mAccount;
@@ -68,6 +69,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mTargetMode;
     private ListPreference mDeletePolicy;
     private ListPreference mExpungePolicy;
+    private ListPreference mSearchableFolders;
     private Preference mAutoExpandFolder;
     private boolean mIncomingChanged = false;
 
@@ -244,6 +246,21 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
+        
+        mSearchableFolders = (ListPreference) findPreference(PREFERENCE_SEARCHABLE_FOLDERS);
+        mSearchableFolders.setValue(mAccount.getSearchableFolders().name());
+        mSearchableFolders.setSummary(mSearchableFolders.getEntry());
+        mSearchableFolders.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mSearchableFolders.findIndexOfValue(summary);
+                mSearchableFolders.setSummary(mSearchableFolders.getEntries()[index]);
+                mSearchableFolders.setValue(summary);
+                return false;
+            }
+        });
 
         mDisplayCount = (ListPreference) findPreference(PREFERENCE_DISPLAY_COUNT);
         mDisplayCount.setValue(String.valueOf(mAccount.getDisplayCount()));
@@ -379,6 +396,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));

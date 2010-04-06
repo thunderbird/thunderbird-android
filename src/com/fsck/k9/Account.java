@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.util.Log;
+
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
@@ -38,7 +40,8 @@ public class Account
     public static final String TYPE_MOBILE = "MOBILE";
     public static final String TYPE_OTHER = "OTHER";
     private static String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
-
+    
+   
     /**
      * <pre>
      * 0 - Never (DELETE_POLICY_NEVER)
@@ -79,6 +82,7 @@ public class Account
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
     private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>(); 
+    private Searchable searchableFolders;
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
     private boolean mRingNotified;
@@ -93,8 +97,12 @@ public class Account
     public enum HideButtons
     {
         NEVER, ALWAYS, KEYBOARD_AVAILABLE;
+    } 
+    
+    public enum Searchable 
+    {
+        ALL, DISPLAYABLE, NONE
     }
-
 
     protected Account(Context context)
     {
@@ -119,6 +127,7 @@ public class Account
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = "INBOX";
         mMaxPushFolders = 10;
+        searchableFolders = Searchable.ALL;
         
         identities = new ArrayList<Identity>();
 
@@ -257,6 +266,16 @@ public class Account
         {
             mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         }
+        
+        try
+        {
+            searchableFolders = Searchable.valueOf(preferences.getPreferences().getString(mUuid  + ".searchableFolders",
+                                                   Searchable.ALL.name()));
+        }
+        catch (Exception e)
+        {
+            searchableFolders = Searchable.ALL;
+        }
 
         mIsSignatureBeforeQuotedText = preferences.getPreferences().getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(preferences.getPreferences());
@@ -312,6 +331,7 @@ public class Account
         editor.remove(mUuid + ".signatureBeforeQuotedText");
         editor.remove(mUuid + ".expungePolicy");
         editor.remove(mUuid + ".maxPushFolders");
+        editor.remove(mUuid  + ".searchableFolders");
         for (String type : networkTypes)
         {
             editor.remove(mUuid + ".useCompression." + type);
@@ -388,6 +408,7 @@ public class Account
         editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
         editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
+        editor.putString(mUuid  + ".searchableFolders", searchableFolders.name());
         for (String type : networkTypes)
         {
             Boolean useCompression = compressionMap.get(type);
@@ -403,6 +424,7 @@ public class Account
     }
 
     //TODO: Shouldn't this live in MessagingController?
+    // Why should everything be in MessagingController? This is an Account-specific operation. --danapple0
     public int getUnreadMessageCount(Context context) throws MessagingException
     {
         int unreadMessageCount = 0;
@@ -1041,5 +1063,15 @@ public class Account
             }
         }
         return null;
+    }
+
+    public Searchable getSearchableFolders()
+    {
+        return searchableFolders;
+    }
+
+    public void setSearchableFolders(Searchable searchableFolders)
+    {
+        this.searchableFolders = searchableFolders;
     }
 }

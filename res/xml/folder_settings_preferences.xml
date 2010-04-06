@@ -45,7 +45,10 @@
             android:entryValues="@array/folder_settings_folder_push_mode_values"
             android:dialogTitle="@string/folder_settings_folder_push_mode_label" />
             
-
+        <CheckBoxPreference
+            android:key="folder_settings_include_in_integrated_inbox"
+            android:title="@string/folder_settings_include_in_integrated_inbox_label"
+            android:summary="@string/folder_settings_include_in_integrated_inbox_summary" />   
     </PreferenceCategory>
     
 </PreferenceScreen>

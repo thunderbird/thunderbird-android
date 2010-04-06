@@ -714,9 +714,9 @@ public class MessagingController implements Runnable
      * @param listener
      * @throws MessagingException
      */
-    public void searchLocalMessages(final Account account, final String query, final MessagingListener listener)
+    public void searchLocalMessages(final String query, final Message[] messages, final boolean integrate, final Flag[] requiredFlags, final Flag[] forbiddenFlags, 
+            final MessagingListener listener)
     {
-
         if (listener == null)
         {
             return;
@@ -726,38 +726,85 @@ public class MessagingController implements Runnable
             public void run()
             {
 
-
-                Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
+                final Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
                 Account[] accounts = prefs.getAccounts();
-
-                listener.listLocalMessagesStarted(account, null);
+                List<LocalFolder> foldersToSearch = null;
+                boolean displayableOnly = false;
                 for (final Account account : accounts)
                 {
-
-
+                    Account.Searchable searchableFolders = account.getSearchableFolders();
+                    switch (searchableFolders)
+                    {
+                        case NONE:
+                            continue;
+                        case DISPLAYABLE:
+                            displayableOnly = true;
+                            break;
+                            
+                    }
+                    
+                    listener.listLocalMessagesStarted(account, null);
+                    
+                    if (integrate || displayableOnly)
+                    {
+                        List<LocalFolder> tmpFoldersToSearch = new LinkedList<LocalFolder>();
+                        try
+                        {
+                            LocalStore store = account.getLocalStore();
+                            LocalFolder[] folders = store.getPersonalNamespaces();
+                            for (LocalFolder folder : folders)
+                            {
+                                boolean include = true;
+                                folder.refresh(prefs);
+                                if (displayableOnly && modeMismatch(account.getFolderDisplayMode(), folder.getDisplayClass()))
+                                {
+                                    include = false;
+                                }
+                                if (integrate && folder.isIntegrate() == false)
+                                {
+                                    include = false;
+                                    
+                                }
+                                if (include)
+                                {
+                                    tmpFoldersToSearch.add(folder);
+                                }
+                            }
+                            foldersToSearch = tmpFoldersToSearch;
+                        }
+                        catch (MessagingException me)
+                        {
+                            Log.e(K9.LOG_TAG, "Unable to restrict search folders in Account " + account.getDescription() + ", searching all", me);
+                            addErrorMessage(account, me);
+                        }
+                        
+                    }
+                    
                     MessageRetrievalListener retrievalListener = new MessageRetrievalListener()
                     {
-
-
-                        int totalDone = 0;
-
                         public void messageStarted(String message, int number, int ofTotal) {}
                         public void messageFinished(Message message, int number, int ofTotal)
                         {
                             List<Message> messages = new ArrayList<Message>();
+                            LocalFolder localFolder = (LocalStore.LocalFolder)message.getFolder();
+                            if (localFolder.getName().equals(localFolder.getAccount().getErrorFolderName()))
+                            {
+                                return;
+                            }
+                            
                             messages.add(message);
                             listener.listLocalMessagesAddMessages(account, null, messages);
+                            
                         }
                         public void messagesFinished(int number) {}
                         private void addPendingMessages() {}
                     };
 
-
-
                     try
                     {
                         LocalStore localStore = account.getLocalStore();
-                        localStore.searchForMessages(retrievalListener, query);
+                        localStore.searchForMessages(retrievalListener, query, foldersToSearch, messages, requiredFlags, forbiddenFlags);
+                        
                     }
                     catch (Exception e)
                     {
@@ -1213,11 +1260,6 @@ public class MessagingController implements Runnable
                     if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is already locally present");
 
-                    String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
-                    if (newPushState != null)
-                    {
-                        localFolder.setPushState(newPushState);
-                    }
                     if (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
                         if (K9.DEBUG)
@@ -1228,6 +1270,11 @@ public class MessagingController implements Runnable
                     }
                     else
                     {
+                        String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
+                        if (newPushState != null)
+                        {
+                            localFolder.setPushState(newPushState);
+                        }
                         syncFlagMessages.add(message);
                     }
                 }
