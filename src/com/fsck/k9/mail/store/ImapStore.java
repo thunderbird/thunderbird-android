@@ -2416,7 +2416,7 @@ public class ImapStore extends Store
 
     class ImapMessage extends MimeMessage
     {
-        ImapMessage(String uid, Folder folder) throws MessagingException
+        ImapMessage(String uid, Folder folder) 
         {
             this.mUid = uid;
             this.mFolder = folder;
@@ -2716,7 +2716,7 @@ public class ImapStore extends Store
             }
         }
 
-        protected void processUntaggedResponses(List<ImapResponse> responses)
+        protected void processUntaggedResponses(List<ImapResponse> responses) throws MessagingException
         {
             boolean skipSync = false;
             int oldMessageCount = mMessageCount;
@@ -2738,7 +2738,7 @@ public class ImapStore extends Store
                 }
                 if (mMessageCount > oldMessageCount)
                 {
-                    syncMessages(oldMessageCount + 1, mMessageCount, true);
+                    syncMessages(mMessageCount, true);
                 }
             }
             if (K9.DEBUG)
@@ -2750,25 +2750,53 @@ public class ImapStore extends Store
             }
         }
 
-        private void syncMessages(int start, int end, boolean newArrivals)
+        private void syncMessages(int end, boolean newArrivals) throws MessagingException
         {
+            int oldUidNext = -1;
             try
             {
-                Message[] messageArray = null;
-
-                messageArray = getMessages(start, end, true, null);
-
-                List<Message> messages = new ArrayList<Message>();
-                for (Message message : messageArray)
-                {
-                    messages.add(message);
-                }
-                pushMessages(messages, newArrivals);
-
+                String pushStateS = receiver.getPushState(getName());
+                ImapPushState pushState = ImapPushState.parse(pushStateS);
+                oldUidNext = pushState.uidNext;
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "Got oldUidNext " + oldUidNext + " for " + getLogId());
             }
             catch (Exception e)
             {
-                receiver.pushError("Exception while processing Push untagged responses", e);
+                Log.e(K9.LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
+            }
+
+            Message[] messageArray = getMessages(end, end, true, null);
+            if (messageArray != null && messageArray.length > 0)
+            {
+                int newUid = Integer.parseInt(messageArray[0].getUid());
+                if (K9.DEBUG)
+                    Log.i(K9.LOG_TAG, "Got newUid " + newUid + " for message " + end + " on " + getLogId());
+                int startUid = oldUidNext;
+                if (startUid < newUid - 10)
+                {
+                    startUid = newUid - 10;
+                }
+                if (startUid < 1)
+                {
+                    startUid = 1;
+                }
+                if (newUid >= startUid)
+                {
+
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Needs sync from uid " + startUid  + " to " + newUid + " for " + getLogId());
+                    List<Message> messages = new ArrayList<Message>();
+                    for (int uid = startUid; uid <= newUid; uid++)
+                    {
+                        ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
+                        messages.add(message);
+                    }
+                    if (messages.size() > 0)
+                    {
+                        pushMessages(messages, true);
+                    }
+                }
             }
         }
 
