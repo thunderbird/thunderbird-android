@@ -106,7 +106,10 @@ public class AccountSetupBasics extends K9Activity
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
+        if (mAccount != null)
+        {
+            outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
+        }
         if (mProvider != null)
         {
             outState.putSerializable(STATE_KEY_PROVIDER, mProvider);
