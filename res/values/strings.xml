@@ -646,6 +646,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="no_message_seletected_toast">No message selected</string>
     
     <string name="date_format_label">Date format</string>
+    <!--
+      The values of the date_format_* strings MUST be valid date format strings.
+      See Android SDK documentation for the class SimpleDateFormat.
+    -->
     <string name="date_format_short">SHORT</string>
     <string name="date_format_medium">MEDIUM</string>
     <string name="date_format_common">dd-MMM-yyyy</string>
