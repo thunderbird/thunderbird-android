@@ -7,7 +7,7 @@
 <!--  ## Wersja robocza. Przeslij wszelkie sugestie oraz uwagi na w/w adres.            ## -->
 <!--  ## This is draft. Send all your notes or suggestions to address given above.      ## -->
 <!--  ##                                                                                ## -->
-<!--  ## Revision date: (YYYY-MM-DD): 2010.04.13                                        ## -->
+<!--  ## Latest update: (YYYY-MM-DD): 2010.04.14                                        ## -->
 <!--  ##                                                                                ## -->
 <!--  #################################################################################### -->
 
@@ -29,7 +29,7 @@
    	<string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
    	<string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
-    <string name="compose_title">Nie</string> <!--  FIXME -->
+    <string name="compose_title">Nie</string>
     <string name="debug_title">Debug</string>
     <string name="choose_folder_title">Wybierz folder</string>
 
@@ -140,7 +140,7 @@
     <string name="account_size_changed">
     Objętość konta \"<xliff:g id="account">%s</xliff:g>\" zmniejszyła się z <xliff:g id="oldSize">%s</xliff:g> do <xliff:g id="newSize">%s</xliff:g></string>
 
-    <string name="compacting_account">Kompaktuję konto \"<xliff:g id="account">%s</xliff:g>\"</string> <!-- FIXME -->
+    <string name="compacting_account">Kompaktuję konto \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Czyszczę konto \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">Nowa wiadomość</string>
@@ -171,13 +171,14 @@
 
     <string name="send_failure_subject">Niektóre wiadomości nie zostały wysłane</string>
     <string name="send_failure_body_abbrev">Dalsze informacje znajdziesz w folderze <xliff:g id="errorFolder">%s</xliff:g>.</string>
-    <string name="send_failure_body_fmt">K-9 encountered a problem sending some of your messages.
-     However, due to the nature of the problem, K-9 cannot be certain if the messages
-    were sent or not.  The recipients may have already received copies of the message.
-    \u000a\u000aThe messages for which this type of problem occurred are now starred in your Outbox.
-    If you remove the stars, K-9 will try to send the messages again.
-    Long-press the Outbox to find the "Send messages" action in order to initiate another sending attempt.\u000A\u000a
-    The <xliff:g id="errorFolder">%s</xliff:g> folder may contain error messages regarding the failures.</string> <!-- FIXME -->
+    <string name="send_failure_body_fmt">K-9 napotkał na problemy podczas wysyłki niektórych wiadomości.
+    Niestety, z powodu natury problemu, K-9 nie jest w stanie ocenić czy wiadomość została wysłana
+    czy też nie (odbiorcy mogli ortrzymać kopie wysyłanych wiadomości).
+    \u000a\u000aWiadomości przy których ten problem wystąpił zostały oznaczone gwiazdką w folderze 
+    poczty wychodzącej (Outbox). Jeśli usuniesz z nich gwiazdkę, K-9 spróbuje wysłac te wiadomości
+    raz jeszcze. Wciśnij i przytrzymaj folder Outbox a następnie wybierz "Wyślij wiadomości" aby 
+    zainicjować kolejną próbę wysyłki.\u000A\u000a
+    Folder <xliff:g id="errorFolder">%s</xliff:g> moze zawierać komunikaty błędów dot. tego problemu.</string>
 
     <string name="alert_header">Alarm K-9</string>
     <string name="no_connection_alert">Synchronizacja oraz wysyłka zostały zawieszone z powodu braku dostępu do sieci.</string>
@@ -282,9 +283,9 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
 
     <string name="global_settings_flag_label">Oznaczaj gwiazdkami</string>
     <string name="global_settings_flag_summary">Gwiazka wskazuje oznakowane wiadomości</string>
-    <string name="global_settings_checkbox_label">Zaznaczanie wielu wiadomości</string> <!-- FIXME -->
+    <string name="global_settings_checkbox_label">Zaznaczanie wielu wiadomości</string>
     <string name="global_settings_checkbox_summary">Checkbox wiadomości zawsze w trybie wielokrotnego wyboru</string>
-    <string name="global_settings_touchable_label">Widok Touch-friendly</string> <!-- FIXME -->
+    <string name="global_settings_touchable_label">Widok Touch-friendly</string>
 
 	<string name="account_setup_basics_title">Dodaj konto</string>
     <string name="account_setup_basics_instructions">Wpisz dane konta</string>
@@ -597,12 +598,12 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_delete_dlg_title">Usuwanie</string>
     <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9.</string>
 
-    <string name="provider_note_yahoo">Free Yahoo! Mail accounts only work over T-Mobile wireless networks. Yahoo! Mail Plus users should configure POP settings manually.</string> <!-- FIXME -->
-    <string name="provider_note_live">Only some \"Plus\" accounts include POP access
-        allowing this program to connect. If you are not able to sign in with
-        your correct email address and password, you may not have a paid
-        \"Plus\" account. Please launch the Web browser to gain access to
-        these mail accounts.</string> <!-- FIXME -->
+    <string name="provider_note_yahoo">Darmowe konto Yahoo! Mail działa tylko z użyciem sieci T-Mobile. Użytkownicy Yahoo! Mail Plus powinni skonfigurować dostęp do poczty via PO ręcznie.</string>
+    <string name="provider_note_live">Tylko niektóre konta Yahoo! \"Plus\" obsługują protokół POP3,
+    	umożliwiający K-9 odbiór poczty. Jeśli nie możesz zalogować się
+    	do swojego konta z użyciem poprawnego hasła i adresu email, najprawdopodobniej
+    	nie masz płatnego konta typu \"Plus\". W takim przypadku musisz z poczty
+    	korzystać w dotychczasowy sposób, za pośrednictwem przeglądarki.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
