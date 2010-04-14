@@ -1936,14 +1936,14 @@ public class MessagingController implements Runnable
                 remoteFolder.fetch(new Message[] { remoteMessage }, fp, null);
                 Date localDate = localMessage.getInternalDate();
                 Date remoteDate = remoteMessage.getInternalDate();
-                if (remoteDate.compareTo(localDate) > 0)
+                if (remoteDate != null && remoteDate.compareTo(localDate) > 0)
                 {
                     /*
                      * If the remote message is newer than ours we'll just
                      * delete ours and move on. A sync will get the server message
                      * if we need to be able to see it.
                      */
-                    localMessage.setFlag(Flag.DELETED, true);
+                    localMessage.setFlag(Flag.X_DESTROYED, true);
                 }
                 else
                 {
@@ -1964,11 +1964,14 @@ public class MessagingController implements Runnable
                     {
                         l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
                     }
-                    remoteMessage.setFlag(Flag.DELETED, true);
-                    if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
-                    {
-                        remoteFolder.expunge();
-                    }
+		    if (remoteDate != null)
+		    {
+			remoteMessage.setFlag(Flag.DELETED, true);
+			if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
+			{
+			    remoteFolder.expunge();
+			}
+		    }
                 }
             }
         }
