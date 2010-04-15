@@ -117,7 +117,7 @@ public class SleepService extends CoreService
             {
                 long timeout = sleepDatum.timeout;
                 if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "SleepService Acquring wakeLock for id for " + timeout + "ms");
+                    Log.d(K9.LOG_TAG, "SleepService Acquiring wakeLock for " + timeout + "ms");
                 wakeLock.acquire(timeout);
             }
         }

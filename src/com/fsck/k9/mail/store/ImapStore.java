@@ -62,6 +62,9 @@ public class ImapStore extends Store
 
     private static final int IDLE_READ_TIMEOUT = 29 * 60 * 1000; // 29 minutes
     private static final int IDLE_REFRESH_INTERVAL = 20 * 60 * 1000; // 20 minutes
+    private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
+    private static int MAX_DELAY_TIME = 5 * 60 * 1000; // 5 minutes
+    private static int NORMAL_DELAY_TIME = 5000;    
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
 
@@ -1776,7 +1779,7 @@ public class ImapStore extends Store
 
         protected String getLogId()
         {
-            String id = getName() + "/" + Thread.currentThread().getName();
+            String id = getAccount().getDescription() + ":" + getName() + "/" + Thread.currentThread().getName();
             if (mConnection != null)
             {
                 id += "/" + mConnection.getLogId();
@@ -2490,10 +2493,7 @@ public class ImapStore extends Store
         {
             mAlertText = alertText;
         }
-    }
-
-    public static int MAX_DELAY_TIME = 50000;
-    public static int NORMAL_DELAY_TIME = 2500;
+    }  
 
     public class ImapFolderPusher extends ImapFolder implements UntaggedHandler
     {
@@ -2503,6 +2503,7 @@ public class ImapStore extends Store
         final AtomicBoolean idling = new AtomicBoolean(false);
         final AtomicBoolean doneSent = new AtomicBoolean(false);
         final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
+        final AtomicInteger idleFailureCount = new AtomicInteger(0);
         List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
 
         public ImapFolderPusher(ImapStore store, String name, PushReceiver nReceiver)
@@ -2639,6 +2640,7 @@ public class ImapStore extends Store
                                         processUntaggedResponses(untaggedResponses);
                                     }
                                     delayTime.set(NORMAL_DELAY_TIME);
+                                    idleFailureCount.set(0);
                                 }
                             }
                         }
@@ -2662,7 +2664,7 @@ public class ImapStore extends Store
                             }
                             else
                             {
-                                receiver.pushError("Push error: " + e.getMessage(), null);
+                                receiver.pushError("Push error for " + getName(), e);
                                 Log.e(K9.LOG_TAG, "Got exception while idling for " + getLogId(), e);
                                 int delayTimeInt = delayTime.get();
                                 receiver.sleep(delayTimeInt);
@@ -2672,6 +2674,12 @@ public class ImapStore extends Store
                                     delayTimeInt = MAX_DELAY_TIME;
                                 }
                                 delayTime.set(delayTimeInt);
+                                if (idleFailureCount.incrementAndGet() > IDLE_FAILURE_COUNT_LIMIT)
+                                {
+                                    Log.e(K9.LOG_TAG, "Disabling pusher for " + getLogId() + " after " + idleFailureCount.get() + " consecutive errors");
+                                    receiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount.get() + " consecutive errors", e);
+                                    stop.set(true);
+                                }
 
                             }
                         }
@@ -2971,15 +2979,12 @@ public class ImapStore extends Store
                             }
                         }
                     }
-                    else if (response.size() > 0)
+                    else if (response.mCommandContinuationRequested)
                     {
-                        if ("idling".equals(response.get(0)))
-                        {
-                            if (K9.DEBUG)
-                                Log.d(K9.LOG_TAG, "Idling " + getLogId());
+                        if (K9.DEBUG)
+                            Log.d(K9.LOG_TAG, "Idling " + getLogId());
 
-                            receiver.releaseWakeLock();
-                        }
+                        receiver.releaseWakeLock();
                     }
                 }
             }

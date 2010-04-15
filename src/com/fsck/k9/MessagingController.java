@@ -449,7 +449,7 @@ public class MessagingController implements Runnable
                     {
                         listener.listFoldersFailed(account, e.getMessage());
                     }
-                    addErrorMessage(account, e);
+                    addErrorMessage(account, null, e);
                     return;
                 }
                 finally
@@ -543,7 +543,7 @@ public class MessagingController implements Runnable
                     {
                         l.listFoldersFailed(account, "");
                     }
-                    addErrorMessage(account, e);
+                    addErrorMessage(account, null, e);
                 }
                 finally
                 {
@@ -694,7 +694,7 @@ public class MessagingController implements Runnable
             {
                 listener.listLocalMessagesFailed(account, folder, e.getMessage());
             }
-            addErrorMessage(account, e);
+            addErrorMessage(account, null, e);
         }
         finally
         {
@@ -775,7 +775,7 @@ public class MessagingController implements Runnable
                         catch (MessagingException me)
                         {
                             Log.e(K9.LOG_TAG, "Unable to restrict search folders in Account " + account.getDescription() + ", searching all", me);
-                            addErrorMessage(account, me);
+                            addErrorMessage(account, null, me);
                         }
                         
                     }
@@ -809,7 +809,7 @@ public class MessagingController implements Runnable
                     catch (Exception e)
                     {
                         listener.listLocalMessagesFailed(account, null, e.getMessage());
-                        addErrorMessage(account, e);
+                        addErrorMessage(account, null, e);
                     }
                     finally
                     {
@@ -831,7 +831,7 @@ public class MessagingController implements Runnable
         }
         catch (MessagingException me)
         {
-            addErrorMessage(account, me);
+            addErrorMessage(account, null, me);
 
             throw new RuntimeException("Unable to set visible limit on folder", me);
         }
@@ -848,7 +848,7 @@ public class MessagingController implements Runnable
             }
             catch (MessagingException e)
             {
-                addErrorMessage(account, e);
+                addErrorMessage(account, null, e);
 
                 Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
             }
@@ -917,7 +917,7 @@ public class MessagingController implements Runnable
             }
             catch (Exception e)
             {
-                addErrorMessage(account, e);
+                addErrorMessage(account, null, e);
 
                 Log.e(K9.LOG_TAG, "Failure processing command, but allow message sync attempt", e);
                 commandException = e;
@@ -1170,7 +1170,7 @@ public class MessagingController implements Runnable
                     folder,
                     rootMessage);
             }
-            addErrorMessage(account, e);
+            addErrorMessage(account, null, e);
             Log.e(K9.LOG_TAG, "Failed synchronizing folder " +
                   account.getDescription() + ":" + folder + " @ " + new Date());
 
@@ -1391,7 +1391,7 @@ public class MessagingController implements Runnable
                     catch (Exception e)
                     {
                         Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
-                        addErrorMessage(account, e);
+                        addErrorMessage(account, null, e);
 
                     }
                 }
@@ -1476,7 +1476,7 @@ public class MessagingController implements Runnable
                 }
                 catch (MessagingException me)
                 {
-                    addErrorMessage(account, me);
+                    addErrorMessage(account, null, me);
 
                     Log.e(K9.LOG_TAG, "SYNC: fetch small messages", me);
                 }
@@ -1717,7 +1717,7 @@ public class MessagingController implements Runnable
         }
         catch (Exception e)
         {
-            addErrorMessage(account, e);
+            addErrorMessage(account, null, e);
 
             throw new RuntimeException("Unable to enqueue pending command", e);
         }
@@ -1737,7 +1737,7 @@ public class MessagingController implements Runnable
                 {
                     Log.e(K9.LOG_TAG, "processPendingCommands", me);
 
-                    addErrorMessage(account, me);
+                    addErrorMessage(account, null, me);
 
                     /*
                      * Ignore any exceptions from the commands. Commands will be processed
@@ -1828,7 +1828,7 @@ public class MessagingController implements Runnable
                 {
                     if (me.isPermanentFailure())
                     {
-                        addErrorMessage(account, me);
+                        addErrorMessage(account, null, me);
                         Log.e(K9.LOG_TAG, "Failure of command '" + command + "' was permanent, removing command from queue");
                         localStore.removePendingCommand(processingCommand);
                     }
@@ -1850,7 +1850,7 @@ public class MessagingController implements Runnable
         }
         catch (MessagingException me)
         {
-            addErrorMessage(account, me);
+            addErrorMessage(account, null, me);
             Log.e(K9.LOG_TAG, "Could not process command '" + processingCommand + "'", me);
             throw me;
         }
@@ -2011,14 +2011,14 @@ public class MessagingController implements Runnable
                     {
                         l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
                     }
-		    if (remoteDate != null)
-		    {
-			remoteMessage.setFlag(Flag.DELETED, true);
-			if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
-			{
-			    remoteFolder.expunge();
-			}
-		    }
+                    if (remoteDate != null)
+                    {
+                        remoteMessage.setFlag(Flag.DELETED, true);
+                        if (Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
+                        {
+                            remoteFolder.expunge();
+                        }
+                    }
                 }
             }
         }
@@ -2489,7 +2489,7 @@ public class MessagingController implements Runnable
 
     static long uidfill = 0;
     static AtomicBoolean loopCatch = new AtomicBoolean();
-    public void addErrorMessage(Account account, Throwable t)
+    public void addErrorMessage(Account account, String subject, Throwable t)
     {
         if (K9.ENABLE_ERROR_FOLDER == false)
         {
@@ -2519,7 +2519,14 @@ public class MessagingController implements Runnable
             ps.close();
             message.setBody(new TextBody(baos.toString()));
             message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            message.setSubject(rootCauseMessage);
+            if (subject != null)
+            {
+                message.setSubject(subject);
+            }
+            else
+            {
+                message.setSubject(rootCauseMessage);
+            }
 
             long nowTime = System.currentTimeMillis();
             Date nowDate = new Date(nowTime);
@@ -2687,7 +2694,7 @@ public class MessagingController implements Runnable
         }
         catch (MessagingException me)
         {
-            addErrorMessage(account, me);
+            addErrorMessage(account, null, me);
 
             throw new RuntimeException(me);
         }
@@ -2711,7 +2718,7 @@ public class MessagingController implements Runnable
         catch (MessagingException me)
         {
             Log.e(K9.LOG_TAG, "Unable to clear pending command", me);
-            addErrorMessage(account, me);
+            addErrorMessage(account, null, me);
         }
     }
 
@@ -2802,7 +2809,7 @@ public class MessagingController implements Runnable
                     {
                         listener.loadMessageForViewFailed(account, folder, uid, e);
                     }
-                    addErrorMessage(account, e);
+                    addErrorMessage(account, null, e);
 
                 }
                 finally
@@ -2911,7 +2918,7 @@ public class MessagingController implements Runnable
                     {
                         listener.loadMessageForViewFailed(account, folder, uid, e);
                     }
-                    addErrorMessage(account, e);
+                    addErrorMessage(account, null, e);
 
                 }
             }
@@ -3033,7 +3040,7 @@ public class MessagingController implements Runnable
                     {
                         listener.loadAttachmentFailed(account, message, part, tag, me.getMessage());
                     }
-                    addErrorMessage(account, me);
+                    addErrorMessage(account, null, me);
 
                 }
                 finally
@@ -3082,7 +3089,7 @@ public class MessagingController implements Runnable
             {
                 // TODO general failed
             }
-            addErrorMessage(account, e);
+            addErrorMessage(account, null, e);
 
         }
     }
@@ -3286,7 +3293,7 @@ public class MessagingController implements Runnable
                                 localFolder.getName(),
                                 getRootCauseMessage(e));
                         }
-                        addErrorMessage(account, e);
+                        addErrorMessage(account, null, e);
 
                     }
                 }
@@ -3300,7 +3307,7 @@ public class MessagingController implements Runnable
                             localFolder.getName(),
                             getRootCauseMessage(e));
                     }
-                    addErrorMessage(account, e);
+                    addErrorMessage(account, null, e);
 
                     /*
                      * We ignore this exception because a future refresh will retry this
@@ -3347,7 +3354,7 @@ public class MessagingController implements Runnable
             {
                 l.sendPendingMessagesFailed(account);
             }
-            addErrorMessage(account, e);
+            addErrorMessage(account, null, e);
 
         }
         finally
@@ -3575,7 +3582,7 @@ public class MessagingController implements Runnable
         }
         catch (MessagingException me)
         {
-            addErrorMessage(account, me);
+            addErrorMessage(account, null, me);
 
             throw new RuntimeException("Error moving message", me);
         }
@@ -3608,7 +3615,7 @@ public class MessagingController implements Runnable
         }
         catch (MessagingException me)
         {
-            addErrorMessage(account, me);
+            addErrorMessage(account, null, me);
         }
         finally
         {
@@ -3750,7 +3757,7 @@ public class MessagingController implements Runnable
         }
         catch (MessagingException me)
         {
-            addErrorMessage(account, me);
+            addErrorMessage(account, null, me);
 
             throw new RuntimeException("Error deleting message from local store.", me);
         }
@@ -3833,7 +3840,7 @@ public class MessagingController implements Runnable
                 {
                     Log.e(K9.LOG_TAG, "emptyTrash failed", e);
 
-                    addErrorMessage(account, e);
+                    addErrorMessage(account, null, e);
                 }
                 finally
                 {
@@ -4022,7 +4029,7 @@ public class MessagingController implements Runnable
                                 if (modeMismatch(aDisplayMode, fDisplayClass))
                                 {
                                     // Never sync a folder that isn't displayed
-                                    if (K9.DEBUG)
+                                    if (K9.DEBUG && false)
                                         Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
                                               " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
 
@@ -4032,7 +4039,7 @@ public class MessagingController implements Runnable
                                 if (modeMismatch(aSyncMode, fSyncClass))
                                 {
                                     // Do not sync folders in the wrong class
-                                    if (K9.DEBUG)
+                                    if (K9.DEBUG && false)
                                         Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
                                               " which is in sync mode " + fSyncClass + " while account is in sync mode " + aSyncMode);
 
@@ -4112,7 +4119,7 @@ public class MessagingController implements Runnable
 
                                             Log.e(K9.LOG_TAG, "Exception while processing folder " +
                                                   account.getDescription() + ":" + folder.getName(), e);
-                                            addErrorMessage(account, e);
+                                            addErrorMessage(account, null, e);
                                         }
                                         finally
                                         {
@@ -4129,7 +4136,7 @@ public class MessagingController implements Runnable
                         catch (MessagingException e)
                         {
                             Log.e(K9.LOG_TAG, "Unable to synchronize account " + account.getName(), e);
-                            addErrorMessage(account, e);
+                            addErrorMessage(account, null, e);
                         }
                         finally
                         {
@@ -4151,7 +4158,7 @@ public class MessagingController implements Runnable
                 catch (Exception e)
                 {
                     Log.e(K9.LOG_TAG, "Unable to synchronize mail", e);
-                    addErrorMessage(account, e);
+                    addErrorMessage(account, null, e);
                 }
                 putBackground("finalize sync", null, new Runnable()
                 {
@@ -4389,7 +4396,7 @@ public class MessagingController implements Runnable
         catch (MessagingException e)
         {
             Log.e(K9.LOG_TAG, "Unable to save message as draft.", e);
-            addErrorMessage(account, e);
+            addErrorMessage(account, null, e);
         }
         return localMessage;
     }
@@ -4687,7 +4694,7 @@ public class MessagingController implements Runnable
                     {
                         l.synchronizeMailboxFailed(account, remoteFolder.getName(), errorMessage);
                     }
-                    addErrorMessage(account, e);
+                    addErrorMessage(account, null, e);
                 }
                 finally
                 {

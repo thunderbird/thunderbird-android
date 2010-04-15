@@ -552,7 +552,7 @@ public class ImapResponseParser
 
         public String toString()
         {
-            return "#" + mTag + "# " + super.toString();
+            return "#" + (mCommandContinuationRequested ? "+" : mTag) + "# " + super.toString();
         }
     }
 }

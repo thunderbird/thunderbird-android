@@ -84,18 +84,12 @@ public class MessagingControllerPushReceiver implements PushReceiver
     public void pushError(String errorMessage, Exception e)
     {
         String errMess = errorMessage;
-        String body = null;
 
         if (errMess == null && e != null)
         {
             errMess = e.getMessage();
         }
-        body = errMess;
-        if (e != null)
-        {
-            body = e.toString();
-        }
-        controller.addErrorMessage(account, errMess, body);
+        controller.addErrorMessage(account, errMess, e);
     }
 
     public String getPushState(String folderName)
