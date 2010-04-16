@@ -17,13 +17,15 @@ public class ManageIdentities extends ChooseIdentity
     public static final String EXTRA_IDENTITIES = "com.fsck.k9.EditIdentity_identities";
 
     private static final int ACTIVITY_EDIT_IDENTITY = 1;
+
+    @Override
     protected void setupClickListeners()
     {
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-            public void onItemClick(AdapterView adapterview, View view, int i, long l)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                editItem(i);
+                editItem(position);
             }
         });
 
@@ -72,6 +74,7 @@ public class ManageIdentities extends ChooseIdentity
         getMenuInflater().inflate(R.menu.manage_identities_context, menu);
     }
 
+    @Override
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();

@@ -24,10 +24,6 @@ public class WebDavTransport extends Transport
 
     String host;
     int mPort;
-    private int mConnectionSecurity;
-    private String mUsername; /* Stores the username for authentications */
-    private String mPassword; /* Stores the password for authentications */
-    private String mUrl;      /* Stores the base URL for the server */
 
     boolean mSecure;
     Socket mSocket;
@@ -51,6 +47,7 @@ public class WebDavTransport extends Transport
             Log.d(K9.LOG_TAG, ">>> New WebDavTransport creation complete");
     }
 
+    @Override
     public void open() throws MessagingException
     {
         if (K9.DEBUG)
@@ -59,10 +56,12 @@ public class WebDavTransport extends Transport
         store.getHttpClient();
     }
 
+    @Override
     public void close()
     {
     }
 
+    @Override
     public void sendMessage(Message message) throws MessagingException
     {
 

@@ -75,11 +75,13 @@ public class MimeMessage extends Message
         parser.parse(new EOLConvertingInputStream(in));
     }
 
+    @Override
     public Date getReceivedDate() throws MessagingException
     {
         return null;
     }
 
+    @Override
     public Date getSentDate() throws MessagingException
     {
         if (mSentDate == null)
@@ -116,6 +118,7 @@ public class MimeMessage extends Message
         setInternalSentDate(sentDate);
     }
 
+    @Override
     public void setSentDate(Date sentDate) throws MessagingException
     {
         removeHeader("Date");
@@ -127,6 +130,7 @@ public class MimeMessage extends Message
         this.mSentDate = sentDate;
     }
 
+    @Override
     public String getContentType() throws MessagingException
     {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
@@ -167,6 +171,7 @@ public class MimeMessage extends Message
      * Returns a list of the given recipient type from this message. If no addresses are
      * found the method returns an empty array.
      */
+    @Override
     public Address[] getRecipients(RecipientType type) throws MessagingException
     {
         if (type == RecipientType.TO)
@@ -199,6 +204,7 @@ public class MimeMessage extends Message
         }
     }
 
+    @Override
     public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException
     {
         if (type == RecipientType.TO)
@@ -249,16 +255,19 @@ public class MimeMessage extends Message
     /**
      * Returns the unfolded, decoded value of the Subject header.
      */
+    @Override
     public String getSubject() throws MessagingException
     {
         return MimeUtility.unfoldAndDecode(getFirstHeader("Subject"));
     }
 
+    @Override
     public void setSubject(String subject) throws MessagingException
     {
         setHeader("Subject", subject);
     }
 
+    @Override
     public Address[] getFrom() throws MessagingException
     {
         if (mFrom == null)
@@ -273,6 +282,7 @@ public class MimeMessage extends Message
         return mFrom;
     }
 
+    @Override
     public void setFrom(Address from) throws MessagingException
     {
         if (from != null)
@@ -289,6 +299,7 @@ public class MimeMessage extends Message
         }
     }
 
+    @Override
     public Address[] getReplyTo() throws MessagingException
     {
         if (mReplyTo == null)
@@ -298,6 +309,7 @@ public class MimeMessage extends Message
         return mReplyTo;
     }
 
+    @Override
     public void setReplyTo(Address[] replyTo) throws MessagingException
     {
         if (replyTo == null || replyTo.length == 0)
@@ -312,6 +324,7 @@ public class MimeMessage extends Message
         }
     }
 
+    @Override
     public String getMessageId() throws MessagingException
     {
         if (mMessageId == null)
@@ -336,11 +349,13 @@ public class MimeMessage extends Message
         mMessageId = messageId;
     }
 
+    @Override
     public void setInReplyTo(String inReplyTo) throws MessagingException
     {
         setHeader("In-Reply-To", inReplyTo);
     }
 
+    @Override
     public String[] getReferences() throws MessagingException
     {
         if (mReferences == null)
@@ -350,21 +365,25 @@ public class MimeMessage extends Message
         return mReferences;
     }
 
+    @Override
     public void setReferences(String references) throws MessagingException
     {
         setHeader("References", references);
     }
 
+    @Override
     public void saveChanges() throws MessagingException
     {
         throw new MessagingException("saveChanges not yet implemented");
     }
 
+    @Override
     public Body getBody() throws MessagingException
     {
         return mBody;
     }
 
+    @Override
     public void setBody(Body body) throws MessagingException
     {
         this.mBody = body;
@@ -388,21 +407,25 @@ public class MimeMessage extends Message
         return mHeader.getFirstHeader(name);
     }
 
+    @Override
     public void addHeader(String name, String value)
     {
         mHeader.addHeader(name, value);
     }
 
+    @Override
     public void setHeader(String name, String value)
     {
         mHeader.setHeader(name, value);
     }
 
+    @Override
     public String[] getHeader(String name)
     {
         return mHeader.getHeader(name);
     }
 
+    @Override
     public void removeHeader(String name)
     {
         mHeader.removeHeader(name);
@@ -431,6 +454,7 @@ public class MimeMessage extends Message
         return null;
     }
 
+    @Override
     public void setEncoding(String encoding)
     {
     	if (mBody instanceof Multipart)
@@ -446,13 +470,13 @@ public class MimeMessage extends Message
 
     class MimeMessageBuilder implements ContentHandler
     {
-        private Stack stack = new Stack();
+        private Stack<Object> stack = new Stack<Object>();
 
         public MimeMessageBuilder()
         {
         }
 
-        private void expect(Class c)
+        private void expect(Class<?> c)
         {
             if (!c.isInstance(stack.peek()))
             {

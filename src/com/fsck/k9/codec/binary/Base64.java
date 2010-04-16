@@ -698,41 +698,6 @@ public class Base64 implements BinaryEncoder, BinaryDecoder
     }
 
     /**
-     * Discards any whitespace from a base-64 encoded block.
-     *
-     * @param data
-     *            The base-64 encoded data to discard the whitespace from.
-     * @return The data, less whitespace (see RFC 2045).
-     * @deprecated This method is no longer needed
-     */
-    static byte[] discardWhitespace(byte[] data)
-    {
-        byte groomedData[] = new byte[data.length];
-        int bytesCopied = 0;
-
-        for (int i = 0; i < data.length; i++)
-        {
-            switch (data[i])
-            {
-                case ' ' :
-                case '\n' :
-                case '\r' :
-                case '\t' :
-                    break;
-                default :
-                    groomedData[bytesCopied++] = data[i];
-            }
-        }
-
-        byte packedData[] = new byte[bytesCopied];
-
-        System.arraycopy(groomedData, 0, packedData, 0, bytesCopied);
-
-        return packedData;
-    }
-
-
-    /**
      * Check if a byte value is whitespace or not.
      *
      * @param byteToCheck the byte to check

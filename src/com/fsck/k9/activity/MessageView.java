@@ -431,6 +431,7 @@ public class MessageView extends K9Activity
         context.startActivity(i);
     }
 
+    @Override
     public void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
@@ -684,6 +685,7 @@ public class MessageView extends K9Activity
             mPreviousMessageUid = mMessageUids.get(i + 1);
     }
 
+    @Override
     public void onResume()
     {
         super.onResume();
@@ -910,6 +912,7 @@ public class MessageView extends K9Activity
         next.requestFocus();
     }
 
+    @Override
     protected void onPrevious(boolean animate)
     {
         if (mPreviousMessageUid == null)
@@ -1065,6 +1068,7 @@ public class MessageView extends K9Activity
         }
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())

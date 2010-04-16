@@ -69,6 +69,7 @@ public class FixedLengthInputStream extends InputStream
         return read(b, 0, b.length);
     }
 
+    @Override
     public String toString()
     {
         return String.format("FixedLengthInputStream(in=%s, length=%d)", mIn.toString(), mLength);

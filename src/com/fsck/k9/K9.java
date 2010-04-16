@@ -282,9 +282,9 @@ public class K9 extends Application
              */
             MailService.actionReset(context, wakeLockId);
         }
-        Class[] classes = { MessageCompose.class, BootReceiver.class, MailService.class };
+        Class<?>[] classes = { MessageCompose.class, BootReceiver.class, MailService.class };
 
-        for (Class clazz : classes)
+        for (Class<?> clazz : classes)
         {
 
             boolean alreadyEnabled = pm.getComponentEnabledSetting(new ComponentName(context, clazz)) ==
@@ -501,7 +501,7 @@ public class K9 extends Application
     }
 
 
-    private static Method getMethod(Class classObject, String methodName)
+    private static Method getMethod(Class<?> classObject, String methodName)
     {
         try
         {

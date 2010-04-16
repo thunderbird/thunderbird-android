@@ -572,12 +572,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftNeedsSaving = false;
     }
 
+    @Override
     public void onResume()
     {
         super.onResume();
         MessagingController.getInstance(getApplication()).addListener(mListener);
     }
 
+    @Override
     public void onPause()
     {
         super.onPause();
@@ -1077,6 +1079,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
@@ -1120,6 +1123,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         super.onCreateOptionsMenu(menu);
@@ -1289,7 +1293,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     for (Address address : message.getRecipients(RecipientType.TO))
                     {
-                        Identity identity = mAccount.findIdentity(address);
                         if (!mAccount.isAnIdentity(address))
                         {
                             addAddress(mToView, address);

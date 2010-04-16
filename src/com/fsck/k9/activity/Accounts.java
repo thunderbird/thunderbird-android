@@ -189,6 +189,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             mHandler.refreshTitle();
         }
 
+        @Override
         public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
         {
             super.synchronizeMailboxProgress(account, folder, completed, total);
@@ -227,21 +228,28 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             mHandler.refreshTitle();
         }
 
+        @Override
         public void pendingCommandsProcessing(Account account)
         {
             super.pendingCommandsProcessing(account);
             mHandler.refreshTitle();
         }
+
+        @Override
         public void pendingCommandsFinished(Account account)
         {
             super.pendingCommandsFinished(account);
             mHandler.refreshTitle();
         }
+
+        @Override
         public void pendingCommandStarted(Account account, String commandTitle)
         {
             super.pendingCommandStarted(account, commandTitle);
             mHandler.refreshTitle();
         }
+
+        @Override
         public void pendingCommandCompleted(Account account, String commandTitle)
         {
             super.pendingCommandCompleted(account, commandTitle);
@@ -480,6 +488,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         return super.onCreateDialog(id);
     }
 
+    @Override
     public void onPrepareDialog(int id, Dialog d)
     {
         switch (id)
@@ -529,6 +538,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                .create();
     }
 
+    @Override
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
@@ -583,7 +593,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     }
 
 
-    public void onItemClick(AdapterView parent, View view, int position, long id)
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
         Account account = (Account)parent.getItemAtPosition(position);
         onOpenAccount(account);
@@ -781,6 +791,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public View chip;
         }
     }
+
     private class SearchAccount extends Account
     {
         private Flag[] mRequiredFlags = null;
@@ -788,36 +799,39 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         private String email = null;
         private boolean mIntegrate = false;
         
-         private SearchAccount(Context context, boolean integrate, Flag[] requiredFlags, Flag[] forbiddenFlags)
-         {
-             super(context);
-             mRequiredFlags = requiredFlags;
-             mForbiddenFlags = forbiddenFlags;
-             mIntegrate = integrate;
-         }
-        public String getEmail()
+        private SearchAccount(Context context, boolean integrate, Flag[] requiredFlags, Flag[] forbiddenFlags)
+        {
+            super(context);
+            mRequiredFlags = requiredFlags;
+            mForbiddenFlags = forbiddenFlags;
+            mIntegrate = integrate;
+        }
+
+        @Override
+        public synchronized String getEmail()
         {
             return email;
         }
-        public void setEmail(String email)
+
+        @Override
+        public synchronized void setEmail(String email)
         {
             this.email = email;
         }
+
         public Flag[] getRequiredFlags()
         {
             return mRequiredFlags;
         }
+
         public Flag[] getForbiddenFlags()
         {
             return mForbiddenFlags;
         }
+
         public boolean isIntegrate()
         {
             return mIntegrate;
-        }
-        public void setIntegrate(boolean integrate)
-        {
-            this.mIntegrate = integrate;
         }
     }
 }

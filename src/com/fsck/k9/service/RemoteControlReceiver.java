@@ -15,6 +15,7 @@ import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
 
 public class RemoteControlReceiver extends CoreReceiver
 {
+    @Override
     public Integer receive(Context context, Intent intent, Integer tmpWakeLockId)
     {
         if (K9.DEBUG)

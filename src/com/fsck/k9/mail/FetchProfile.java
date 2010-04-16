@@ -15,7 +15,7 @@ import java.util.ArrayList;
  *                              any information it needs to download the content.
  * </pre>
  */
-public class FetchProfile extends ArrayList
+public class FetchProfile extends ArrayList<Object>
 {
     /**
      * Default items available for pre-fetching. It should be expected that any

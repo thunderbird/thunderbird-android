@@ -479,6 +479,7 @@ public class ImapStore extends Store
             return handleUntaggedResponses(mConnection.executeSimpleCommand(command, sensitve, untaggedHandler));
         }
 
+        @Override
         public void open(OpenMode mode) throws MessagingException
         {
             internalOpen(mode);
@@ -579,6 +580,7 @@ public class ImapStore extends Store
 
         }
 
+        @Override
         public boolean isOpen()
         {
             return mConnection != null;
@@ -590,6 +592,7 @@ public class ImapStore extends Store
             return mMode;
         }
 
+        @Override
         public void close()
         {
             if (mMessageCount != -1)
@@ -608,6 +611,7 @@ public class ImapStore extends Store
             }
         }
 
+        @Override
         public String getName()
         {
             return mName;
@@ -633,6 +637,7 @@ public class ImapStore extends Store
             }
         }
 
+        @Override
         public boolean exists() throws MessagingException
         {
             if (mExists)
@@ -680,6 +685,7 @@ public class ImapStore extends Store
             }
         }
 
+        @Override
         public boolean create(FolderType type) throws MessagingException
         {
             /*
@@ -782,6 +788,7 @@ public class ImapStore extends Store
             setFlags(messages, new Flag[] { Flag.DELETED }, true);
         }
 
+        @Override
         public void delete(Message[] messages, String trashFolderName) throws MessagingException
         {
             if (messages.length == 0)
@@ -955,11 +962,13 @@ public class ImapStore extends Store
         }
 
 
+        @Override
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException
         {
             return getMessages(null, listener);
         }
 
+        @Override
         public Message[] getMessages(String[] uids, MessageRetrievalListener listener)
         throws MessagingException
         {
@@ -1004,6 +1013,7 @@ public class ImapStore extends Store
             return messages.toArray(new Message[] {});
         }
 
+        @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException
         {
@@ -1525,6 +1535,7 @@ public class ImapStore extends Store
          * the new UID of the given message on the IMAP server and sets the Message's UID to the
          * new server UID.
          */
+        @Override
         public void appendMessages(Message[] messages) throws MessagingException
         {
             checkOpen();
@@ -1577,6 +1588,7 @@ public class ImapStore extends Store
             }
         }
 
+        @Override
         public String getUidFromMessageId(Message message) throws MessagingException
         {
             try
@@ -1617,6 +1629,7 @@ public class ImapStore extends Store
         }
 
 
+        @Override
         public void expunge() throws MessagingException
         {
             checkOpen();
@@ -1676,6 +1689,7 @@ public class ImapStore extends Store
             }
         }
 
+        @Override
         public String getNewPushState(String oldPushStateS, Message message)
         {
             try
@@ -1702,6 +1716,7 @@ public class ImapStore extends Store
         }
 
 
+        @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
         throws MessagingException
         {
@@ -1770,6 +1785,12 @@ public class ImapStore extends Store
                 return ((ImapFolder)o).getPrefixedName().equals(getPrefixedName());
             }
             return super.equals(o);
+        }
+        
+        @Override
+        public int hashCode()
+        {
+            return getPrefixedName().hashCode();
         }
 
         protected ImapStore getStore()
@@ -2430,6 +2451,7 @@ public class ImapStore extends Store
             this.mSize = size;
         }
 
+        @Override
         public void parse(InputStream in) throws IOException, MessagingException
         {
             super.parse(in);
@@ -3118,6 +3140,7 @@ public class ImapStore extends Store
             }
             return new ImapPushState(newUidNext);
         }
+        @Override
         public String toString()
         {
             return "uidNext=" + uidNext;

@@ -318,6 +318,7 @@ public class Pop3Store extends Store
             mUidToMsgNumMap.clear();
         }
 
+        @Override
         public boolean isOpen()
         {
             return (mIn != null && mOut != null && mSocket != null
@@ -625,6 +626,7 @@ public class Pop3Store extends Store
          * @param fp
          * @throws MessagingException
          */
+        @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException
         {
@@ -745,7 +747,7 @@ public class Pop3Store extends Store
                     String response = executeSimpleCommand(String.format("LIST %d",
                                                            mUidToMsgNumMap.get(pop3Message.getUid())));
                     String[] listParts = response.split(" ");
-                    int msgNum = Integer.parseInt(listParts[1]);
+                    //int msgNum = Integer.parseInt(listParts[1]);
                     int msgSize = Integer.parseInt(listParts[2]);
                     pop3Message.setSize(msgSize);
                     if (listener != null)
@@ -846,14 +848,17 @@ public class Pop3Store extends Store
             return PERMANENT_FLAGS;
         }
 
+        @Override
         public void appendMessages(Message[] messages) throws MessagingException
         {
         }
 
+        @Override
         public void delete(boolean recurse) throws MessagingException
         {
         }
 
+        @Override
         public void delete(Message[] msgs, String trashFolderName) throws MessagingException
         {
             setFlags(msgs, new Flag[] { Flag.DELETED }, true);
@@ -873,6 +878,7 @@ public class Pop3Store extends Store
             setFlags(messages, flags, value);
         }
 
+        @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
         throws MessagingException
         {
@@ -1066,6 +1072,12 @@ public class Pop3Store extends Store
             }
             return super.equals(o);
         }
+        
+        @Override
+        public int hashCode()
+        {
+            return mName.hashCode();
+        }
 
     }//Pop3Folder
 
@@ -1084,6 +1096,7 @@ public class Pop3Store extends Store
             mSize = size;
         }
 
+        @Override
         protected void parse(InputStream in) throws IOException, MessagingException
         {
             super.parse(in);
@@ -1119,6 +1132,7 @@ public class Pop3Store extends Store
         public boolean uidl;
         public boolean pipelining;
 
+        @Override
         public String toString()
         {
             return String.format("STLS %b, TOP %b, USER %b, UIDL %b, PIPELINING %b",

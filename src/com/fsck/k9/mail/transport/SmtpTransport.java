@@ -141,6 +141,7 @@ public class SmtpTransport extends Transport
         }
     }
 
+    @Override
     public void open() throws MessagingException
     {
         try
@@ -284,6 +285,7 @@ public class SmtpTransport extends Transport
         }
     }
 
+    @Override
     public void sendMessage(Message message) throws MessagingException
     {
         close();
@@ -344,6 +346,7 @@ public class SmtpTransport extends Transport
 
     }
 
+    @Override
     public void close()
     {
         try

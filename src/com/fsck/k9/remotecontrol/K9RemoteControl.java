@@ -2,11 +2,8 @@ package com.fsck.k9.remotecontrol;
 
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Utillity definitions for Android applications to control the behavior of K-9 Mail.  All such applications must declare the following permission:

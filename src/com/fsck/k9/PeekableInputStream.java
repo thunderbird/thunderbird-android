@@ -73,6 +73,7 @@ public class PeekableInputStream extends InputStream
         return read(b, 0, b.length);
     }
 
+    @Override
     public String toString()
     {
         return String.format("PeekableInputStream(in=%s, peeked=%b, peekedByte=%d)",

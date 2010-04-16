@@ -54,6 +54,7 @@ public class CoreReceiver extends BroadcastReceiver
         }
     }
 
+    @Override
     public void onReceive(Context context, Intent intent)
     {
         Integer tmpWakeLockId = CoreReceiver.getWakeLock(context);

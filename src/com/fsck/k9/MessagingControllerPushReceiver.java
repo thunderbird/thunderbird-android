@@ -9,7 +9,6 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.PushReceiver;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.service.SleepService;

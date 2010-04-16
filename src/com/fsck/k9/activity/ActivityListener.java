@@ -89,6 +89,7 @@ public class ActivityListener extends MessagingListener
         mFolderTotal = 0;
     }
 
+    @Override
     public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
     {
         mFolderCompleted = completed;
@@ -116,27 +117,33 @@ public class ActivityListener extends MessagingListener
         mSendingAccountDescription = null;
     }
 
-
     @Override
     public void sendPendingMessagesFailed(Account account)
     {
         mSendingAccountDescription = null;
     }
+
+    @Override
     public void pendingCommandsProcessing(Account account)
     {
         mProcessingAccountDescription = account.getDescription();
         mFolderCompleted = 0;
         mFolderTotal = 0;
     }
+
+    @Override
     public void pendingCommandsFinished(Account account)
     {
         mProcessingAccountDescription = null;
     }
+
+    @Override
     public void pendingCommandStarted(Account account, String commandTitle)
     {
         mProcessingCommandTitle = commandTitle;
     }
 
+    @Override
     public void pendingCommandCompleted(Account account, String commandTitle)
     {
         mProcessingCommandTitle = null;
@@ -151,6 +158,5 @@ public class ActivityListener extends MessagingListener
     {
         return mFolderTotal;
     }
-
 
 }

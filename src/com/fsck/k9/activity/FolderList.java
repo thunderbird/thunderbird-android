@@ -178,6 +178,7 @@ public class FolderList extends K9ListActivity
         wakeLock.acquire(K9.WAKE_LOCK_TIMEOUT);
         MessagingListener listener = new MessagingListener()
         {
+            @Override
             public void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox, int numNewMessages)
             {
                 if (!account.equals(mAccount))
@@ -256,7 +257,7 @@ public class FolderList extends K9ListActivity
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(new OnItemClickListener()
         {
-            public void onItemClick(AdapterView parent, View v, int itemPosition, long id)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 onOpenFolder(((FolderInfoHolder)mAdapter.getItem(id)).name);
             }
@@ -270,11 +271,11 @@ public class FolderList extends K9ListActivity
         onNewIntent(getIntent());
     }
 
+    @Override
     public void onNewIntent(Intent intent)
     {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
 
-        String savedFolderName = null;
         String initialFolder;
 
         mUnreadMessageCount = 0;
@@ -619,6 +620,7 @@ public class FolderList extends K9ListActivity
         return super.onCreateDialog(id);
     }
 
+    @Override
     public void onPrepareDialog(int id, Dialog dialog)
     {
         switch (id)
@@ -740,11 +742,13 @@ public class FolderList extends K9ListActivity
             return mFolders.size();
         }
 
+        @Override
         public boolean isEnabled(int item)
         {
             return true;
         }
 
+        @Override
         public boolean areAllItemsEnabled()
         {
             return true;
@@ -879,6 +883,7 @@ public class FolderList extends K9ListActivity
 
             }
 
+            @Override
             public void synchronizeMailboxStarted(Account account, String folder)
             {
                 super.synchronizeMailboxStarted(account, folder);
@@ -1079,6 +1084,7 @@ public class FolderList extends K9ListActivity
 
             }
 
+            @Override
             public void accountSizeChanged(Account account, long oldSize, long newSize)
             {
                 if (!account.equals(mAccount))
@@ -1089,21 +1095,29 @@ public class FolderList extends K9ListActivity
                 mHandler.accountSizeChanged(oldSize, newSize);
 
             }
+
+            @Override
             public void pendingCommandsProcessing(Account account)
             {
                 super.pendingCommandsProcessing(account);
                 mHandler.refreshTitle();
             }
+
+            @Override
             public void pendingCommandsFinished(Account account)
             {
                 super.pendingCommandsFinished(account);
                 mHandler.refreshTitle();
             }
+  
+            @Override
             public void pendingCommandStarted(Account account, String commandTitle)
             {
                 super.pendingCommandStarted(account, commandTitle);
                 mHandler.refreshTitle();
             }
+ 
+            @Override
             public void pendingCommandCompleted(Account account, String commandTitle)
             {
                 super.pendingCommandCompleted(account, commandTitle);
@@ -1237,6 +1251,7 @@ public class FolderList extends K9ListActivity
             return view;
         }
 
+        @Override
         public boolean hasStableIds()
         {
             return false;
@@ -1273,16 +1288,16 @@ public class FolderList extends K9ListActivity
         public boolean outbox;
 
 
+        @Override
         public boolean equals(Object o)
         {
-            if (this.name.equals(((FolderInfoHolder)o).name))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return this.name.equals(((FolderInfoHolder)o).name);
+        }
+        
+        @Override
+        public int hashCode()
+        {
+            return name.hashCode();
         }
 
         public int compareTo(FolderInfoHolder o)

@@ -79,7 +79,7 @@ public class ChooseFolder extends K9ListActivity
 
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-            public void onItemClick(AdapterView adapterview, View view, int i, long l)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 Intent intent = new Intent();
                 intent.putExtra(EXTRA_CUR_FOLDER, mFolder);
@@ -105,6 +105,7 @@ public class ChooseFolder extends K9ListActivity
         private static final int MSG_DATA_CHANGED = 3;
         private static final int MSG_SET_SELECTED_FOLDER = 4;
 
+        @Override
         public void handleMessage(android.os.Message msg)
         {
             switch (msg.what)
@@ -147,6 +148,7 @@ public class ChooseFolder extends K9ListActivity
 
     private MessagingListener mListener = new MessagingListener()
     {
+        @Override
         public void listFoldersStarted(Account account)
         {
             if (!account.equals(mAccount))

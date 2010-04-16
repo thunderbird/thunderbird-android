@@ -197,15 +197,6 @@ public class MessagingController implements Runnable
         deletedUids.put(messKey, "true");
     }
 
-    private void unsuppressMessage(Account account, String folder, Message message)
-    {
-        if (account == null || folder == null || message == null)
-        {
-            return;
-        }
-        unsuppressMessage(account, folder, message.getUid());
-    }
-
     private void unsuppressMessage(Account account, String folder, String uid)
     {
         if (account == null || folder == null || uid == null)
@@ -797,7 +788,6 @@ public class MessagingController implements Runnable
                             
                         }
                         public void messagesFinished(int number) {}
-                        private void addPendingMessages() {}
                     };
 
                     try
@@ -3085,10 +3075,12 @@ public class MessagingController implements Runnable
         }
         catch (Exception e)
         {
+            /*
             for (MessagingListener l : getListeners())
             {
                 // TODO general failed
             }
+            */
             addErrorMessage(account, null, e);
 
         }
@@ -4421,7 +4413,7 @@ public class MessagingController implements Runnable
     }
 
     static AtomicInteger sequencing = new AtomicInteger(0);
-    class Command implements Comparable
+    class Command implements Comparable<Command>
     {
         public Runnable runnable;
 
@@ -4433,25 +4425,21 @@ public class MessagingController implements Runnable
 
         int sequence = sequencing.getAndIncrement();
 
-        public int compareTo(Object arg0)
+        @Override
+        public int compareTo(Command other)
         {
-            if (arg0 instanceof Command)
+            if (other.isForeground == true && isForeground == false)
             {
-                Command other = (Command)arg0;
-                if (other.isForeground == true && isForeground == false)
-                {
-                    return 1;
-                }
-                else if (other.isForeground == false && isForeground == true)
-                {
-                    return -1;
-                }
-                else
-                {
-                    return (sequence - other.sequence);
-                }
+                return 1;
             }
-            return 0;
+            else if (other.isForeground == false && isForeground == true)
+            {
+                return -1;
+            }
+            else
+            {
+                return (sequence - other.sequence);
+            }
         }
     }
 
@@ -4776,6 +4764,7 @@ public class MessagingController implements Runnable
             return memory;
         }
 
+        @Override
         public synchronized void synchronizeMailboxStarted(Account account, String folder)
         {
             Memory memory = getMemory(account, folder);
@@ -4784,6 +4773,7 @@ public class MessagingController implements Runnable
             memory.folderTotal = 0;
         }
 
+        @Override
         public synchronized void synchronizeMailboxFinished(Account account, String folder,
                 int totalMessagesInMailbox, int numNewMessages)
         {
@@ -4793,6 +4783,7 @@ public class MessagingController implements Runnable
             memory.syncingNumNewMessages = numNewMessages;
         }
 
+        @Override
         public synchronized void synchronizeMailboxFailed(Account account, String folder,
                 String message)
         {
@@ -4911,6 +4902,7 @@ public class MessagingController implements Runnable
             memory.pushingState = (active ? MemorizingState.STARTED : MemorizingState.FINISHED);
         }
 
+        @Override
         public synchronized void sendPendingMessagesStarted(Account account)
         {
             Memory memory = getMemory(account, null);
@@ -4919,12 +4911,14 @@ public class MessagingController implements Runnable
             memory.folderTotal = 0;
         }
 
+        @Override
         public synchronized void sendPendingMessagesCompleted(Account account)
         {
             Memory memory = getMemory(account, null);
             memory.sendingState = MemorizingState.FINISHED;
         }
 
+        @Override
         public synchronized void sendPendingMessagesFailed(Account account)
         {
             Memory memory = getMemory(account, null);
@@ -4932,6 +4926,7 @@ public class MessagingController implements Runnable
         }
 
 
+        @Override
         public synchronized void synchronizeMailboxProgress(Account account, String folderName, int completed, int total)
         {
             Memory memory = getMemory(account, folderName);
@@ -4940,6 +4935,7 @@ public class MessagingController implements Runnable
         }
 
 
+        @Override
         public synchronized void pendingCommandsProcessing(Account account)
         {
             Memory memory = getMemory(account, null);
@@ -4947,17 +4943,20 @@ public class MessagingController implements Runnable
             memory.folderCompleted = 0;
             memory.folderTotal = 0;
         }
+        @Override
         public synchronized void pendingCommandsFinished(Account account)
         {
             Memory memory = getMemory(account, null);
             memory.processingState = MemorizingState.FINISHED;
         }
+        @Override
         public synchronized void pendingCommandStarted(Account account, String commandTitle)
         {
             Memory memory = getMemory(account, null);
             memory.processingCommandTitle = commandTitle;
         }
 
+        @Override
         public synchronized void pendingCommandCompleted(Account account, String commandTitle)
         {
             Memory memory = getMemory(account, null);

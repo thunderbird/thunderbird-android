@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.widget.ScrollView;
 
@@ -85,12 +86,12 @@ public class K9Activity extends Activity
                 int height = getResources().getDisplayMetrics().heightPixels;
                 if (ev.getRawY() < (height/4))
                 {
-                    mTopView.fullScroll(mTopView.FOCUS_UP);
+                    mTopView.fullScroll(View.FOCUS_UP);
     
                 }
                 else if (ev.getRawY() > (height - height/4))
                 {
-                    mTopView.fullScroll(mTopView.FOCUS_DOWN);
+                    mTopView.fullScroll(View.FOCUS_DOWN);
     
                 }
             }

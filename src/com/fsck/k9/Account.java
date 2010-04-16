@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.util.Log;
-
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
@@ -15,7 +13,6 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;

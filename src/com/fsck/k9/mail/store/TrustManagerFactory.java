@@ -69,11 +69,6 @@ public final class TrustManagerFactory
             return me;
         }
 
-        public void setHost(String host)
-        {
-            mHost = host;
-        }
-
         public void checkClientTrusted(X509Certificate[] chain, String authType)
         throws CertificateException
         {

@@ -584,11 +584,13 @@ public class LocalStore extends Store implements Serializable
         }
     }
 
+    @Override
     public boolean isMoveCapable()
     {
         return true;
     }
 
+    @Override
     public boolean isCopyCapable()
     {
         return true;
@@ -900,6 +902,7 @@ public class LocalStore extends Store implements Serializable
             return true;
         }
 
+        @Override
         public boolean create(FolderType type, int visibleLimit) throws MessagingException
         {
             if (exists())
@@ -961,6 +964,7 @@ public class LocalStore extends Store implements Serializable
                         new Object[] { mUnreadMessageCount, mFolderId });
         }
 
+        @Override
         public void setLastChecked(long lastChecked) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
@@ -969,6 +973,7 @@ public class LocalStore extends Store implements Serializable
                         new Object[] { lastChecked, mFolderId });
         }
 
+        @Override
         public void setLastPush(long lastChecked) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
@@ -1007,6 +1012,7 @@ public class LocalStore extends Store implements Serializable
                         new Object[] { mVisibleLimit, mFolderId });
         }
 
+        @Override
         public void setStatus(String status) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
@@ -1050,6 +1056,7 @@ public class LocalStore extends Store implements Serializable
 
         }
 
+        @Override
         public FolderClass getPushClass()
         {
             if (FolderClass.INHERITED == pushClass)
@@ -1156,6 +1163,7 @@ public class LocalStore extends Store implements Serializable
 
             editor.commit();
         }
+        @Override
         public void refresh(Preferences preferences) throws MessagingException
         {
 
@@ -2311,6 +2319,7 @@ public class LocalStore extends Store implements Serializable
          * changes.
          */
 
+        @Override
         public void writeTo(OutputStream out) throws IOException, MessagingException
         {
             if (mMessageDirty) buildMimeRepresentation();
@@ -2361,6 +2370,7 @@ public class LocalStore extends Store implements Serializable
         }
 
 
+        @Override
         public void setMessageId(String messageId)
         {
             mMessageId = messageId;
@@ -2374,6 +2384,7 @@ public class LocalStore extends Store implements Serializable
             return mAttachmentCount;
         }
 
+        @Override
         public void setFrom(Address from) throws MessagingException
         {
             this.mFrom = new Address[] { from };
@@ -2381,6 +2392,7 @@ public class LocalStore extends Store implements Serializable
         }
 
 
+        @Override
         public void setReplyTo(Address[] replyTo) throws MessagingException
         {
             if (replyTo == null || replyTo.length == 0)
@@ -2454,6 +2466,7 @@ public class LocalStore extends Store implements Serializable
             return mId;
         }
 
+        @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException
         {
             if (flag == Flag.DELETED && set)
@@ -2554,6 +2567,7 @@ public class LocalStore extends Store implements Serializable
 
         }
 
+        @Override
         public void addHeader(String name, String value)
         {
             if (!mHeadersLoaded)
@@ -2563,6 +2577,7 @@ public class LocalStore extends Store implements Serializable
             super.addHeader(name, value);
         }
 
+        @Override
         public void setHeader(String name, String value)
         {
             if (!mHeadersLoaded)
@@ -2570,6 +2585,7 @@ public class LocalStore extends Store implements Serializable
             super.setHeader(name, value);
         }
 
+        @Override
         public String[] getHeader(String name)
         {
             if (!mHeadersLoaded)
@@ -2578,6 +2594,7 @@ public class LocalStore extends Store implements Serializable
             return super.getHeader(name);
         }
 
+        @Override
         public void removeHeader(String name)
         {
             if (!mHeadersLoaded)
@@ -2613,6 +2630,7 @@ public class LocalStore extends Store implements Serializable
             mAttachmentId = attachmentId;
         }
 
+        @Override
         public String toString()
         {
             return "" + mAttachmentId;
@@ -2643,10 +2661,6 @@ public class LocalStore extends Store implements Serializable
                  * have been blown away, we just return an empty stream.
                  */
                 return new ByteArrayInputStream(new byte[0]);
-            }
-            catch (IOException ioe)
-            {
-                throw new MessagingException("Invalid attachment.", ioe);
             }
         }
 

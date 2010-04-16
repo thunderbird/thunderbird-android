@@ -11,10 +11,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.SpannableString;
 import android.text.Spannable;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.text.style.TextAppearanceSpan;
 import android.util.Config;
 import android.util.Log;
@@ -327,7 +324,7 @@ public class MessageList
 
     }
 
-    public void onItemClick(AdapterView parent, View v, int position, long id)
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
         if (mCurrentFolder != null && ((position+1) == mAdapter.getCount()))
         {
@@ -362,6 +359,7 @@ public class MessageList
         onNewIntent(getIntent());
     }
 
+    @Override
     public void onNewIntent(Intent intent)
     {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
@@ -588,6 +586,7 @@ public class MessageList
             }
         }//switch
 
+        boolean result;
         int position = mListView.getSelectedItemPosition();
         try
         {
@@ -665,8 +664,10 @@ public class MessageList
         }
         finally
         {
-            return super.onKeyDown(keyCode, event);
+            result = super.onKeyDown(keyCode, event);
         }
+        
+        return result;
     }//onKeyDown
 
     private void onOpenMessage(MessageInfoHolder message)
@@ -954,6 +955,7 @@ public class MessageList
         return super.onCreateDialog(id);
     }
 
+    @Override
     public void onPrepareDialog(int id, Dialog dialog)
     {
         switch (id)
@@ -1341,11 +1343,11 @@ public class MessageList
         bar.setIndeterminate(true);
         if (status)
         {
-            bar.setVisibility(bar.VISIBLE);
+            bar.setVisibility(ProgressBar.VISIBLE);
         }
         else
         {
-            bar.setVisibility(bar.INVISIBLE);
+            bar.setVisibility(ProgressBar.INVISIBLE);
 
         }
     }
@@ -1627,28 +1629,35 @@ public class MessageList
                 }
             }
 
-
-
+            @Override
             public void pendingCommandsProcessing(Account account)
             {
                 super.pendingCommandsProcessing(account);
                 mHandler.refreshTitle();
             }
+
+            @Override
             public void pendingCommandsFinished(Account account)
             {
                 super.pendingCommandsFinished(account);
                 mHandler.refreshTitle();
             }
+
+            @Override
             public void pendingCommandStarted(Account account, String commandTitle)
             {
                 super.pendingCommandStarted(account, commandTitle);
                 mHandler.refreshTitle();
             }
+
+            @Override
             public void pendingCommandCompleted(Account account, String commandTitle)
             {
                 super.pendingCommandCompleted(account, commandTitle);
                 mHandler.refreshTitle();
             }
+
+            @Override
             public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
             {
                 if (updateForMe(account, folder))
@@ -2062,6 +2071,7 @@ public class MessageList
             return footerView;
         }
 
+        @Override
         public boolean hasStableIds()
         {
             return true;
@@ -2197,16 +2207,16 @@ public class MessageList
             }
         }
 
+        @Override
         public boolean equals(Object o)
         {
-            if (this.uid.equals(((MessageInfoHolder)o).uid))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (this.uid.equals(((MessageInfoHolder)o).uid));
+        }
+        
+        @Override
+        public int hashCode()
+        {
+            return uid.hashCode();
         }
 
 

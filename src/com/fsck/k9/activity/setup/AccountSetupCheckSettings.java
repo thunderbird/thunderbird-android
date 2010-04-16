@@ -86,6 +86,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
         new Thread()
         {
+            @Override
             public void run()
             {
                 Store store = null;
@@ -325,6 +326,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         });
     }
 
+    @Override
     public void onActivityResult(int reqCode, int resCode, Intent data)
     {
         setResult(resCode);
