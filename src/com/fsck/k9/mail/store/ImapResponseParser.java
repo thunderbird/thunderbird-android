@@ -79,10 +79,7 @@ public class ImapResponseParser
         Object token;
         while ((token = readToken()) != null)
         {
-            if (response != null)
-            {
-                response.add(token);
-            }
+            response.add(token);
             if (mActiveLiteral != null)
             {
                 break;
