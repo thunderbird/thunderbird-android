@@ -1204,8 +1204,7 @@ public class FolderList extends K9ListActivity
 
             if (folder.loading)
             {
-                String progress = false && mAdapter.mListener.getFolderTotal() > 0 ? getString(R.string.folder_progress, mAdapter.mListener.getFolderCompleted(), mAdapter.mListener.getFolderTotal()) : "";
-                statusText = getString(R.string.status_loading, progress);
+                statusText = getString(R.string.status_loading);
             }
             else if (folder.status != null)
             {

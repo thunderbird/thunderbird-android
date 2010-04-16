@@ -109,7 +109,7 @@
     <string name="general_no_subject">(No subject)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
 
     <string name="general_no_sender">No sender</string>
-    <string name="status_loading">Poll<xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading">Polling</string>
     <string name="status_loading_folder">(Poll <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Loading messages\u2026</string>
     <string name="status_network_error">Connection error</string>
