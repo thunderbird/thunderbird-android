@@ -906,12 +906,6 @@ public class FolderList extends K9ListActivity
             {
                 super.synchronizeMailboxProgress(account, folder, completed, total);
                 mHandler.refreshTitle();
-                if (true) return;
-                if (!account.equals(mAccount))
-                {
-                    return;
-                }
-                mHandler.dataChanged();
             }
 
             @Override
