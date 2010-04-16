@@ -34,7 +34,7 @@ import java.util.regex.Matcher;
  */
 public class LocalStore extends Store implements Serializable
 {
-    private static final int DB_VERSION = 33;
+    private static final int DB_VERSION = 34;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
     private String mPath;
@@ -201,6 +201,20 @@ public class LocalStore extends Store implements Serializable
                     }
 
                 }
+                if (mDb.getVersion() < 34)
+                {
+                    try
+                    {
+                        mDb.execSQL("ALTER TABLE folders ADD flagged_count INTEGER default 0");
+                    }
+                    catch (SQLiteException e)
+                    {
+                        if (! e.toString().startsWith("duplicate column name: flagged_count"))
+                        {
+                            throw e;
+                        }
+                    }
+                }
 
 
             }
@@ -339,11 +353,11 @@ public class LocalStore extends Store implements Serializable
 
         try
         {
-            cursor = mDb.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders", null);
+            cursor = mDb.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders", null);
             while (cursor.moveToNext())
             {
                 LocalFolder folder = new LocalFolder(cursor.getString(1));
-                folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7));
+                folder.open(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8));
 
                 folders.add(folder);
             }
@@ -743,6 +757,7 @@ public class LocalStore extends Store implements Serializable
         private String mName = null;
         private long mFolderId = -1;
         private int mUnreadMessageCount = -1;
+        private int mFlaggedMessageCount = -1;
         private int mVisibleLimit = -1;
         private FolderClass displayClass = FolderClass.NO_CLASS;
         private FolderClass syncClass = FolderClass.INHERITED;
@@ -790,7 +805,7 @@ public class LocalStore extends Store implements Serializable
             try
             {
                 String baseQuery =
-                    "SELECT id, name,unread_count, visible_limit, last_updated, status, push_state, last_pushed FROM folders ";
+                    "SELECT id, name,unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders ";
                 if (mName != null)
                 {
                     cursor = mDb.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });
@@ -807,7 +822,7 @@ public class LocalStore extends Store implements Serializable
                     int folderId = cursor.getInt(0);
                     if (folderId > 0)
                     {
-                        open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7));
+                        open(folderId, cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getLong(4), cursor.getString(5), cursor.getString(6), cursor.getLong(7), cursor.getInt(8));
                     }
                 }
                 else
@@ -826,13 +841,14 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
-        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed) throws MessagingException
+        private void open(int id, String name, int unreadCount, int visibleLimit, long lastChecked, String status, String pushState, long lastPushed, int flaggedCount) throws MessagingException
         {
             mFolderId = id;
             mName = name;
             mUnreadMessageCount = unreadCount;
             mVisibleLimit = visibleLimit;
             mPushState = pushState;
+            mFlaggedMessageCount = flaggedCount;
             super.setStatus(status);
             // Only want to set the local variable stored in the super class.  This class
             // does a DB update on setLastChecked
@@ -954,7 +970,13 @@ public class LocalStore extends Store implements Serializable
             open(OpenMode.READ_WRITE);
             return mUnreadMessageCount;
         }
-
+        
+        @Override
+        public int getFlaggedMessageCount() throws MessagingException
+        {
+            open(OpenMode.READ_WRITE);
+            return mFlaggedMessageCount;
+        }
 
         public void setUnreadMessageCount(int unreadMessageCount) throws MessagingException
         {
@@ -962,6 +984,14 @@ public class LocalStore extends Store implements Serializable
             mUnreadMessageCount = Math.max(0, unreadMessageCount);
             mDb.execSQL("UPDATE folders SET unread_count = ? WHERE id = ?",
                         new Object[] { mUnreadMessageCount, mFolderId });
+        }
+        
+        public void setFlaggedMessageCount(int flaggedMessageCount) throws MessagingException
+        {
+            open(OpenMode.READ_WRITE);
+            mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
+            mDb.execSQL("UPDATE folders SET flagged_count = ? WHERE id = ?",
+                        new Object[] { mFlaggedMessageCount, mFolderId });
         }
 
         @Override
@@ -1524,6 +1554,12 @@ public class LocalStore extends Store implements Serializable
                     setUnreadMessageCount(getUnreadMessageCount() - 1);
                     lDestFolder.setUnreadMessageCount(lDestFolder.getUnreadMessageCount() + 1);
                 }
+                
+                if (message.isSet(Flag.FLAGGED))
+                {
+                    setFlaggedMessageCount(getFlaggedMessageCount() - 1);
+                    lDestFolder.setFlaggedMessageCount(lDestFolder.getFlaggedMessageCount() + 1);
+                }
 
                 String oldUID = message.getUid();
 
@@ -1591,6 +1627,10 @@ public class LocalStore extends Store implements Serializable
                     if (oldMessage != null && oldMessage.isSet(Flag.SEEN) == false)
                     {
                         setUnreadMessageCount(getUnreadMessageCount() - 1);
+                    }
+                    if (oldMessage != null && oldMessage.isSet(Flag.FLAGGED) == true)
+                    {
+                        setFlaggedMessageCount(getFlaggedMessageCount() - 1);
                     }
                     /*
                      * The message may already exist in this Folder, so delete it first.
@@ -1669,6 +1709,10 @@ public class LocalStore extends Store implements Serializable
                     if (message.isSet(Flag.SEEN) == false)
                     {
                         setUnreadMessageCount(getUnreadMessageCount() + 1);
+                    }
+                    if (message.isSet(Flag.FLAGGED) == true)
+                    {
+                        setFlaggedMessageCount(getFlaggedMessageCount() + 1);
                     }
                 }
                 catch (Exception e)
@@ -1970,14 +2014,15 @@ public class LocalStore extends Store implements Serializable
                         {
                             Long.toString(mFolderId), new Long(cutoff)
                         });
-            resetUnreadCount();
+            resetUnreadAndFlaggedCounts();
         }
 
-        private void resetUnreadCount()
+        private void resetUnreadAndFlaggedCounts()
         {
             try
             {
                 int newUnread = 0;
+                int newFlagged = 0;
                 Message[] messages = getMessages(null);
                 for (Message message : messages)
                 {
@@ -1985,14 +2030,20 @@ public class LocalStore extends Store implements Serializable
                     {
                         newUnread++;
                     }
+                    if (message.isSet(Flag.FLAGGED) == true)
+                    {
+                        newFlagged++;
+                    }
                 }
                 setUnreadMessageCount(newUnread);
+                setFlaggedMessageCount(newFlagged);
             }
             catch (Exception e)
             {
                 Log.e(K9.LOG_TAG, "Unable to fetch all messages from LocalStore", e);
             }
         }
+        
 
         @Override
         public void delete(boolean recurse) throws MessagingException
@@ -2537,6 +2588,30 @@ public class LocalStore extends Store implements Serializable
                     else if (!set && isSet(Flag.SEEN))
                     {
                         folder.setUnreadMessageCount(folder.getUnreadMessageCount() + 1);
+                    }
+                }
+                if ((flag == Flag.DELETED || flag == Flag.X_DESTROYED) && isSet(Flag.FLAGGED))
+                {
+                    LocalFolder folder = (LocalFolder)mFolder;
+                    if (set)
+                    {
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() - 1);
+                    }
+                    else 
+                    {
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + 1);
+                    }
+                }
+                if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
+                {
+                    LocalFolder folder = (LocalFolder)mFolder;
+                    if (set)
+                    {
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + 1);
+                    }
+                    else 
+                    {
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() - 1);
                     }
                 }
             }

@@ -862,6 +862,34 @@ public class ImapStore extends Store
                 throw ioExceptionHandler(mConnection, ioe);
             }
         }
+        
+        @Override
+        public int getFlaggedMessageCount() throws MessagingException
+        {
+            checkOpen();
+            try
+            {
+                int count = 0;
+                int start = mMessageCount - 299;
+                if (start < 1)
+                {
+                    start = 1;
+                }
+                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* FLAGGED NOT DELETED", start));
+                for (ImapResponse response : responses)
+                {
+                    if (response.get(0).equals("SEARCH"))
+                    {
+                        count += response.size() - 1;
+                    }
+                }
+                return count;
+            }
+            catch (IOException ioe)
+            {
+                throw ioExceptionHandler(mConnection, ioe);
+            }
+        }
 
         @Override
         public void delete(boolean recurse) throws MessagingException

@@ -10,6 +10,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
@@ -29,7 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener
 {
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
-    private ConcurrentHashMap<String, Integer> unreadMessageCounts = new ConcurrentHashMap<String, Integer>();
+    //private ConcurrentHashMap<String, Integer> unreadMessageCounts = new ConcurrentHashMap<String, Integer>();
+    private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
 
     private ConcurrentHashMap<Account, String> pendingWork = new ConcurrentHashMap<Account, String>();
 
@@ -97,11 +99,20 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             {
                 public void run()
                 {
+                    AccountStats stats = accountStats.get(account.getUuid());
+                    if (stats != null)
+                    {
+                        stats.size = newSize;
+                    }
                     String toastText = getString(R.string.account_size_changed, account.getDescription(),
                                                  SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));;
 
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
+                    if (mAdapter != null)
+                    {
+                        mAdapter.notifyDataSetChanged();
+                    }
                 }
             });
         }
@@ -131,20 +142,32 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     ActivityListener mListener = new ActivityListener()
     {
         @Override
-        public void accountStatusChanged(Account account, int unreadMessageCount)
+        public void folderStatusChanged(Account account, String folderName, int unreadMessageCount)
         {
-            Integer oldUnreadMessageCountInteger = unreadMessageCounts.get(account.getUuid());
-            int oldUnreadMessageCount = 0;
-            if (oldUnreadMessageCountInteger != null)
+            try
             {
-                oldUnreadMessageCount = oldUnreadMessageCountInteger;
+                AccountStats stats = account.getStats(Accounts.this);
+                accountStatusChanged(account, stats);
             }
-
-            unreadMessageCounts.put(account.getUuid(), unreadMessageCount);
-            mUnreadMessageCount += unreadMessageCount - oldUnreadMessageCount;
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to get account stats", e);
+            }
+        }
+        @Override
+        public void accountStatusChanged(Account account, AccountStats stats)
+        {
+            AccountStats oldStats = accountStats.get(account.getUuid());
+            int oldUnreadMessageCount = 0;
+            if (oldStats != null)
+            {
+                oldUnreadMessageCount = oldStats.unreadMessageCount;
+            }
+            accountStats.put(account.getUuid(), stats);
+          //  unreadMessageCounts.put(account.getUuid(), stats.unreadMessageCount);
+            mUnreadMessageCount += stats.unreadMessageCount - oldUnreadMessageCount;
             mHandler.dataChanged();
             pendingWork.remove(account);
-
 
             if (pendingWork.isEmpty())
             {
@@ -161,9 +184,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         @Override
         public void accountSizeChanged(Account account, long oldSize, long newSize)
         {
-
             mHandler.accountSizeChanged(account, oldSize, newSize);
-
         }
 
         @Override
@@ -259,7 +280,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     };
 
-    private static String UNREAD_MESSAGE_COUNTS = "unreadMessageCounts";
+    //private static String UNREAD_MESSAGE_COUNTS = "unreadMessageCounts";
+    private static String ACCOUNT_STATS = "accountStats";
     private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
 
     public static final String EXTRA_STARTUP = "startup";
@@ -330,10 +352,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
             if (icicle != null)
             {
-                Map<String, Integer> oldUnreadMessageCounts = (Map<String, Integer>)icicle.get(UNREAD_MESSAGE_COUNTS);
-                if (oldUnreadMessageCounts != null)
+                Map<String, AccountStats> oldStats = (Map<String, AccountStats>)icicle.get(ACCOUNT_STATS);
+                if (oldStats != null)
                 {
-                    unreadMessageCounts.putAll(oldUnreadMessageCounts);
+                    accountStats.putAll(oldStats);
                 }
             }
         }
@@ -347,7 +369,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         {
             outState.putString(SELECTED_CONTEXT_ACCOUNT, mSelectedContextAccount.getUuid());
         }
-        outState.putSerializable(UNREAD_MESSAGE_COUNTS, unreadMessageCounts);
+        outState.putSerializable(ACCOUNT_STATS, accountStats);
     }
 
     @Override
@@ -385,7 +407,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
         pendingWork.clear();
         mUnreadMessageCount = 0;
-        unreadMessageCounts.clear();
+        accountStats.clear();
 
         for (Account account : accounts)
         {
@@ -743,16 +765,35 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
                 view.setTag(holder);
             }
-            holder.description.setText(account.getDescription());
-            holder.email.setText(account.getEmail());
+            AccountStats stats = accountStats.get(account.getUuid());
+            
+            if (stats != null)
+            {
+                holder.email.setText(SizeFormatter.formatSize(Accounts.this, stats.size) 
+                        + (stats.flaggedMessageCount > 0 ? " / " + stats.flaggedMessageCount + "*" : ""));
+            }
+            else
+            {
+                holder.email.setText(account.getEmail());
+            }
+            
+            String description = account.getDescription();
+            if (description == null || description.length() == 0)
+            {
+                description = account.getEmail();
+            }
+
+            holder.description.setText(description);
+            
             if (account.getEmail().equals(account.getDescription()))
             {
                 holder.email.setVisibility(View.GONE);
             }
-
-            Integer unreadMessageCount = unreadMessageCounts.get(account.getUuid());
-            if (unreadMessageCount != null)
+            
+            Integer unreadMessageCount = null;
+            if (stats != null)
             {
+                unreadMessageCount = stats.unreadMessageCount;
                 holder.newMessageCount.setText(Integer.toString(unreadMessageCount));
                 holder.newMessageCount.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
             }

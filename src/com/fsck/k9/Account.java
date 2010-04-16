@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.util.Log;
+
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
@@ -422,10 +424,13 @@ public class Account
 
     //TODO: Shouldn't this live in MessagingController?
     // Why should everything be in MessagingController? This is an Account-specific operation. --danapple0
-    public int getUnreadMessageCount(Context context) throws MessagingException
+    public AccountStats getStats(Context context) throws MessagingException
     {
+        AccountStats stats = new AccountStats();
         int unreadMessageCount = 0;
+        int flaggedMessageCount = 0;
         LocalStore localStore = getLocalStore();
+        stats.size = localStore.getSize();
         Account.FolderMode aMode = getFolderDisplayMode();
         Preferences prefs = Preferences.getPreferences(context);
         for (LocalFolder folder : localStore.getPersonalNamespaces())
@@ -460,10 +465,14 @@ public class Account
                     continue;
                 }
                 unreadMessageCount += folder.getUnreadMessageCount();
+                flaggedMessageCount += folder.getFlaggedMessageCount();
+                
             }
         }
-
-        return unreadMessageCount;
+        stats.unreadMessageCount = unreadMessageCount;
+        stats.flaggedMessageCount = flaggedMessageCount;
+        Log.i(K9.LOG_TAG, "flaggedMessageCount for " + getDescription() + " = " + flaggedMessageCount);
+        return stats;
     }
 
     public String getUuid()

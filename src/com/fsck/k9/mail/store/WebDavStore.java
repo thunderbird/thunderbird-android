@@ -1332,6 +1332,11 @@ public class WebDavStore extends Store
 
             return this.mUnreadMessageCount;
         }
+        @Override
+        public int getFlaggedMessageCount() throws MessagingException
+        {
+            return -1;
+        }
 
         @Override
         public boolean isOpen()

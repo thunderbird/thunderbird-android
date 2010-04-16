@@ -18,7 +18,7 @@ import java.util.List;
 public class MessagingListener
 {
 
-    public void accountStatusChanged(Account account, int unreadMessageCount)
+    public void accountStatusChanged(Account account, AccountStats stats)
     {
     }
 

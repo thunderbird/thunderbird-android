@@ -63,6 +63,7 @@ public class FolderList extends K9ListActivity
     private FolderListHandler mHandler = new FolderListHandler();
 
     private int mUnreadMessageCount;
+    private int mFlaggedMessageCount;
 
     class FolderListHandler extends Handler
     {
@@ -73,7 +74,8 @@ public class FolderList extends K9ListActivity
             {
                 public void run()
                 {
-                    String dispString = mAdapter.mListener.formatHeader(FolderList.this, getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount, getTimeFormat());
+                    String dispString = mAdapter.mListener.formatHeader(FolderList.this, 
+                            getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount, getTimeFormat());
 
 
                     setTitle(dispString);
@@ -757,9 +759,9 @@ public class FolderList extends K9ListActivity
         private ActivityListener mListener = new ActivityListener()
         {
             @Override
-            public void accountStatusChanged(Account account, int unreadMessageCount)
+            public void accountStatusChanged(Account account, AccountStats stats)
             {
-                mUnreadMessageCount = unreadMessageCount;
+                mUnreadMessageCount = stats.unreadMessageCount;
                 mHandler.refreshTitle();
             }
 
@@ -1222,8 +1224,18 @@ public class FolderList extends K9ListActivity
                 statusText = getString(R.string.folder_push_active_symbol) + " "+ statusText;
             }
 
+            if (folder.flaggedMessageCount > 0)
+            {
+                if (statusText == null)
+                {
+                    statusText = "";
+                }
+                statusText += " / " + folder.flaggedMessageCount + "*";
+            }
             if (statusText != null)
             {
+                
+                
                 holder.folderStatus.setText(statusText);
                 holder.folderStatus.setVisibility(View.VISIBLE);
             }
@@ -1273,6 +1285,8 @@ public class FolderList extends K9ListActivity
         public long lastChecked;
 
         public int unreadMessageCount;
+        
+        public int flaggedMessageCount;
 
         public boolean loading;
 
@@ -1332,7 +1346,7 @@ public class FolderList extends K9ListActivity
             try
             {
                 folder.open(Folder.OpenMode.READ_WRITE);
-                unreadCount = folder.getUnreadMessageCount();
+              //  unreadCount = folder.getUnreadMessageCount();
             }
             catch (MessagingException me)
             {
@@ -1378,6 +1392,15 @@ public class FolderList extends K9ListActivity
             this.status = mess;
 
             this.unreadMessageCount = unreadCount;
+            
+            try
+            {
+                this.flaggedMessageCount = folder.getFlaggedMessageCount();
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to get flaggedMessageCount", e);
+            }
 
             folder.close();
 

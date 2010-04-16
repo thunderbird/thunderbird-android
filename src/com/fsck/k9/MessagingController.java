@@ -1078,6 +1078,8 @@ public class MessagingController implements Runnable
             int newMessages = downloadMessages(account, remoteFolder, localFolder, remoteMessages, false);
 
             int unreadMessageCount = setLocalUnreadCountToRemote(localFolder, remoteFolder,  newMessages);
+            setLocalFlaggedCountToRemote(localFolder, remoteFolder);
+            
 
             for (MessagingListener l : getListeners())
             {
@@ -1190,6 +1192,15 @@ public class MessagingController implements Runnable
         else
         {
             return localFolder.getMessageCount();
+        }
+    }
+    
+    private void setLocalFlaggedCountToRemote(LocalFolder localFolder, Folder remoteFolder) throws MessagingException
+    {
+        int remoteFlaggedMessageCount = remoteFolder.getFlaggedMessageCount();
+        if (remoteFlaggedMessageCount != -1)
+        {
+            localFolder.setFlaggedMessageCount(remoteFlaggedMessageCount);
         }
     }
 
@@ -3372,18 +3383,17 @@ public class MessagingController implements Runnable
         {
             public void run()
             {
-
-                int unreadMessageCount = 0;
                 try
                 {
-                    unreadMessageCount = account.getUnreadMessageCount(context);
+                    AccountStats stats = account.getStats(context);
+                    l.accountStatusChanged(account, stats);
                 }
                 catch (MessagingException me)
                 {
                     Log.e(K9.LOG_TAG, "Count not get unread count for account " + account.getDescription(),
                           me);
                 }
-                l.accountStatusChanged(account, unreadMessageCount);
+                
             }
         };
 
@@ -4306,7 +4316,8 @@ public class MessagingController implements Runnable
         int unreadMessageCount = 0;
         try
         {
-            unreadMessageCount = account.getUnreadMessageCount(context);
+            AccountStats stats = account.getStats(context);
+            unreadMessageCount = stats.unreadMessageCount;
         }
         catch (MessagingException e)
         {
@@ -4648,6 +4659,8 @@ public class MessagingController implements Runnable
                     account.setRingNotified(false);
                     int newCount = downloadMessages(account, remoteFolder, localFolder, messages, flagSyncOnly);
                     int unreadMessageCount = setLocalUnreadCountToRemote(localFolder, remoteFolder,  messages.size());
+
+                    setLocalFlaggedCountToRemote(localFolder, remoteFolder);
 
                     localFolder.setLastPush(System.currentTimeMillis());
                     localFolder.setStatus(null);
