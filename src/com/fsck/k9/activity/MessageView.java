@@ -23,7 +23,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.*;
-import android.webkit.CacheManager.CacheResult;
 import android.widget.*;
 import com.fsck.k9.*;
 import com.fsck.k9.mail.*;
@@ -35,22 +34,16 @@ import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
 import org.apache.commons.io.IOUtils;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class MessageView extends K9Activity
-        implements UrlInterceptHandler, OnClickListener
+public class MessageView extends K9Activity implements OnClickListener
 {
     private static final String EXTRA_ACCOUNT = "com.fsck.k9.MessageView_account";
     private static final String EXTRA_FOLDER = "com.fsck.k9.MessageView_folder";
     private static final String EXTRA_MESSAGE = "com.fsck.k9.MessageView_message";
     private static final String EXTRA_MESSAGE_UIDS = "com.fsck.k9.MessageView_messageUids";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
-
-    private static final String CID_PREFIX  = "http://cid/";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
 
@@ -114,6 +107,7 @@ public class MessageView extends K9Activity
         return ret;
     }
 
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         switch (keyCode)
@@ -1142,67 +1136,6 @@ public class MessageView extends K9Activity
                 flagItem.setTitle((mMessage.isSet(Flag.FLAGGED) ? R.string.unflag_action : R.string.flag_action));
             }
         }
-    }
-
-    public CacheResult service(String url, Map<String, String> headers)
-    {
-        if (url.startsWith(CID_PREFIX) && mMessage != null)
-        {
-            try
-            {
-                String contentId = url.substring(CID_PREFIX.length());
-                final Part part = MimeUtility.findPartByContentId(mMessage, "<" + contentId + ">");
-                if (part != null)
-                {
-                    CacheResult cr = new CacheManager.CacheResult();
-                    // TODO looks fixed in Mainline, cr.setInputStream
-                    // part.getBody().writeTo(cr.getStream());
-                    return cr;
-                }
-            }
-            catch (Exception e)
-            {
-                // TODO
-            }
-        }
-        return null;
-    }
-
-    public PluginData getPluginData(String url, Map<String, String> headers)
-    {
-        if (url.startsWith(CID_PREFIX) && mMessage != null)
-        {
-            try
-            {
-                String contentId = url.substring(CID_PREFIX.length());
-                final Part part = MimeUtility.findPartByContentId(mMessage, "<" + contentId + ">");
-                if (part != null)
-                {
-                    Map<String, String[]> splittedHeaders = new HashMap<String, String[]>();
-                    for (String headerName : headers.keySet())
-                    {
-                        String heaverValue = headers.get(headerName);
-                        //There must be a better way to do this split and trim...
-                        String[] headerValues = heaverValue.split(",");
-                        for (int i=0; i<headerValues.length; i++)
-                        {
-                            headerValues[i] = headerValues[i].trim();
-                        }
-                        splittedHeaders.put(headerName, headerValues);
-                    }
-                    return new PluginData(
-                               part.getBody().getInputStream(),
-                               part.getSize(),
-                               splittedHeaders,
-                               HttpURLConnection.HTTP_OK);
-                }
-            }
-            catch (Exception e)
-            {
-                // TODO
-            }
-        }
-        return null;
     }
 
     private Bitmap getPreviewIcon(Attachment attachment) throws MessagingException
