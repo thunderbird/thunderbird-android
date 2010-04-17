@@ -127,7 +127,7 @@ public class LocalStore extends Store implements Serializable
 
                 mDb.execSQL("DROP TABLE IF EXISTS folders");
                 mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                            + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER)");
+                            + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0)");
 
                 mDb.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
                 mDb.execSQL("DROP TABLE IF EXISTS messages");
