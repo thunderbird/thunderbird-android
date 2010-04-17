@@ -343,7 +343,7 @@ public class FolderList extends K9ListActivity
 
         MessagingController.getInstance(getApplication()).addListener(mAdapter.mListener);
         //mAccount.refresh(Preferences.getPreferences(this));
-        MessagingController.getInstance(getApplication()).getAccountUnreadCount(this, mAccount, mAdapter.mListener);
+        MessagingController.getInstance(getApplication()).getAccountStats(this, mAccount, mAdapter.mListener);
 
         onRefresh(!REFRESH_REMOTE);
 
@@ -759,8 +759,12 @@ public class FolderList extends K9ListActivity
         private ActivityListener mListener = new ActivityListener()
         {
             @Override
-            public void accountStatusChanged(Account account, AccountStats stats)
+            public void accountStatusChanged(BaseAccount account, AccountStats stats)
             {
+                if (!account.equals(mAccount))
+                {
+                    return;
+                }
                 mUnreadMessageCount = stats.unreadMessageCount;
                 mHandler.refreshTitle();
             }
@@ -1181,6 +1185,7 @@ public class FolderList extends K9ListActivity
                 holder = new FolderViewHolder();
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.folder_unread_message_count);
+                holder.flaggedMessageCount = (TextView) view.findViewById(R.id.folder_flagged_message_count);
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
                 holder.chip = view.findViewById(R.id.chip);
                 holder.rawFolderName = folder.name;
@@ -1217,18 +1222,8 @@ public class FolderList extends K9ListActivity
                 statusText = getString(R.string.folder_push_active_symbol) + " "+ statusText;
             }
 
-            if (folder.flaggedMessageCount > 0)
-            {
-                if (statusText == null)
-                {
-                    statusText = "";
-                }
-                statusText += " / " + folder.flaggedMessageCount + "*";
-            }
             if (statusText != null)
             {
-                
-                
                 holder.folderStatus.setText(statusText);
                 holder.folderStatus.setVisibility(View.VISIBLE);
             }
@@ -1247,6 +1242,17 @@ public class FolderList extends K9ListActivity
             else
             {
                 holder.newMessageCount.setVisibility(View.GONE);
+            }
+            
+            if (folder.flaggedMessageCount > 0)
+            {
+                holder.flaggedMessageCount.setText(Integer
+                        .toString(folder.flaggedMessageCount));
+                holder.flaggedMessageCount.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                holder.flaggedMessageCount.setVisibility(View.GONE);
             }
 
             holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[mAccount.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
@@ -1407,6 +1413,7 @@ public class FolderList extends K9ListActivity
         public TextView folderStatus;
 
         public TextView newMessageCount;
+        public TextView flaggedMessageCount;
 
         public String rawFolderName;
         public View chip;

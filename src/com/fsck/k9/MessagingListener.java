@@ -18,10 +18,10 @@ import java.util.List;
 public class MessagingListener
 {
 
-    public void accountStatusChanged(Account account, AccountStats stats)
+    public void accountStatusChanged(BaseAccount account, AccountStats stats)
     {
     }
-
+    
     public void accountSizeChanged(Account account, long oldSize, long newSize)
     {
     }

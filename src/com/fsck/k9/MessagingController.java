@@ -696,22 +696,27 @@ public class MessagingController implements Runnable
         }
     }
 
+    public void searchLocalMessages(SearchAccount searchAccount, final Message[] messages, final MessagingListener listener)
+    {
+        searchLocalMessages(searchAccount, searchAccount.getQuery(), messages, searchAccount.isIntegrate(), 
+                searchAccount.getRequiredFlags(), searchAccount.getForbiddenFlags(), listener);
+    }
+    
 
     /**
      * Find all messages in any local account which match the query 'query'
-     *
-     * @param account
+     * @param account TODO
      * @param query
      * @param listener
+     * @param account
+     *
      * @throws MessagingException
      */
-    public void searchLocalMessages(final String query, final Message[] messages, final boolean integrate, final Flag[] requiredFlags, final Flag[] forbiddenFlags, 
-            final MessagingListener listener)
+    public void searchLocalMessages(final BaseAccount baseAccount, final String query, final Message[] messages, final boolean integrate, final Flag[] requiredFlags, 
+            final Flag[] forbiddenFlags, final MessagingListener listener)
     {
-        if (listener == null)
-        {
-            return;
-        }
+        final AccountStats stats = new AccountStats();
+        
         threadPool.execute(new Runnable()
         {
             public void run()
@@ -733,8 +738,10 @@ public class MessagingController implements Runnable
                             break;
                             
                     }
-                    
-                    listener.listLocalMessagesStarted(account, null);
+                    if (listener != null)
+                    {
+                        listener.listLocalMessagesStarted(account, null);
+                    }
                     
                     if (integrate || displayableOnly)
                     {
@@ -784,10 +791,21 @@ public class MessagingController implements Runnable
                             }
                             
                             messages.add(message);
-                            listener.listLocalMessagesAddMessages(account, null, messages);
+                            stats.unreadMessageCount += (message.isSet(Flag.SEEN) == false) ? 1 : 0;
+                            stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
+                            if (listener != null)
+                            {
+                                listener.listLocalMessagesAddMessages(account, null, messages);
+                            }
                             
                         }
-                        public void messagesFinished(int number) {}
+                        public void messagesFinished(int number) 
+                        {
+                            if (baseAccount != null)
+                            {
+                                listener.accountStatusChanged(baseAccount, stats);
+                            }
+                        }
                     };
 
                     try
@@ -798,12 +816,18 @@ public class MessagingController implements Runnable
                     }
                     catch (Exception e)
                     {
-                        listener.listLocalMessagesFailed(account, null, e.getMessage());
+                        if (listener != null)
+                        {
+                            listener.listLocalMessagesFailed(account, null, e.getMessage());
+                        }
                         addErrorMessage(account, null, e);
                     }
                     finally
                     {
-                        listener.listLocalMessagesFinished(account, null);
+                        if (listener != null)
+                        {
+                            listener.listLocalMessagesFinished(account, null);
+                        }
                     }
                 }
             }
@@ -3376,7 +3400,7 @@ public class MessagingController implements Runnable
         }
     }
 
-    public void getAccountUnreadCount(final Context context, final Account account,
+    public void getAccountStats(final Context context, final Account account,
                                       final MessagingListener l)
     {
         Runnable unreadRunnable = new Runnable()
@@ -3397,10 +3421,9 @@ public class MessagingController implements Runnable
             }
         };
 
-
-        put("getAccountUnreadCount:" + account.getDescription(), l, unreadRunnable);
+        put("getAccountStats:" + account.getDescription(), l, unreadRunnable);
     }
-
+    
     public void getFolderUnreadMessageCount(final Account account, final String folderName,
                                             final MessagingListener l)
     {

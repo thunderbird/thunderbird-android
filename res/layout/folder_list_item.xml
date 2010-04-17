@@ -6,8 +6,6 @@
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:background="@android:color/transparent"
-    
-    
     android:paddingRight="4dip">
     <View
         android:id="@+id/chip"
@@ -41,17 +39,46 @@
             android:ellipsize="end"
             android:layout_height="wrap_content" />
     </LinearLayout>
-    <TextView
-        android:id="@+id/folder_unread_message_count"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="?android:attr/textColorPrimary"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/text_box"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:minWidth="64dip"
-        android:gravity="right" />
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="6dip"
+        android:paddingTop="6dip"
+        android:paddingBottom="0dip"
+        android:paddingRight="6dip"
+        android:gravity="right"
+        >
+	    <TextView
+	        android:id="@+id/folder_unread_message_count"
+	        android:ellipsize="end"
+	        android:singleLine="true"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="?android:attr/textColorPrimary"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/text_box"
+	        android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:gravity="right"
+            android:layout_gravity="top" 
+            android:layout_alignParentTop="true"/>
+        <TextView
+           android:id="@+id/folder_flagged_message_count"
+           android:ellipsize="end"
+           android:singleLine="true"
+           android:textAppearance="?android:attr/textAppearanceSmall"
+           android:textColor="#000000"
+           android:background="@drawable/btn_star_big_buttonless_on"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:paddingRight="10dip"
+            android:paddingTop="6dip"
+            android:paddingLeft="10dip"
+            android:paddingBottom="4dip"
+            android:gravity="right"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true" 
+              />
+    </RelativeLayout>
 </LinearLayout>

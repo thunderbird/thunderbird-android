@@ -30,10 +30,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener
 {
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
-    //private ConcurrentHashMap<String, Integer> unreadMessageCounts = new ConcurrentHashMap<String, Integer>();
     private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
 
-    private ConcurrentHashMap<Account, String> pendingWork = new ConcurrentHashMap<Account, String>();
+    private ConcurrentHashMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
 
     private Account mSelectedContextAccount;
     private int mUnreadMessageCount = 0;
@@ -155,7 +154,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
         }
         @Override
-        public void accountStatusChanged(Account account, AccountStats stats)
+        public void accountStatusChanged(BaseAccount account, AccountStats stats)
         {
             AccountStats oldStats = accountStats.get(account.getUuid());
             int oldUnreadMessageCount = 0;
@@ -164,8 +163,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 oldUnreadMessageCount = oldStats.unreadMessageCount;
             }
             accountStats.put(account.getUuid(), stats);
-          //  unreadMessageCounts.put(account.getUuid(), stats.unreadMessageCount);
-            mUnreadMessageCount += stats.unreadMessageCount - oldUnreadMessageCount;
+            if (account instanceof Account)
+            {
+                mUnreadMessageCount += stats.unreadMessageCount - oldUnreadMessageCount;
+            }
             mHandler.dataChanged();
             pendingWork.remove(account);
 
@@ -195,7 +196,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             int numNewMessages)
         {
             super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
-            MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
+            MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, account, mListener);
 
             mHandler.progress(false);
 
@@ -280,7 +281,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     };
 
-    //private static String UNREAD_MESSAGE_COUNTS = "unreadMessageCounts";
     private static String ACCOUNT_STATS = "accountStats";
     private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
 
@@ -390,9 +390,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private void refresh()
     {
-        Account[] accounts = Preferences.getPreferences(this).getAccounts();
+        BaseAccount[] accounts = Preferences.getPreferences(this).getAccounts();
         
-        Account[] newAccounts = new Account[accounts.length + 4];
+        BaseAccount[] newAccounts = new BaseAccount[accounts.length + 4];
         newAccounts[0] = integratedInboxAccount;
         newAccounts[1] = integratedInboxStarredAccount;
         newAccounts[2] = unreadAccount;
@@ -401,19 +401,26 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
        
         mAdapter = new AccountsAdapter(newAccounts);
         getListView().setAdapter(mAdapter);
-        if (accounts.length > 0)
+        if (newAccounts.length > 0)
         {
             mHandler.progress(Window.PROGRESS_START);
         }
         pendingWork.clear();
-        mUnreadMessageCount = 0;
-        accountStats.clear();
 
-        for (Account account : accounts)
+        for (BaseAccount account : newAccounts)
         {
             pendingWork.put(account, "true");
-            MessagingController.getInstance(getApplication()).getAccountUnreadCount(Accounts.this, account, mListener);
-
+            if (account instanceof Account)
+            {
+                Account realAccount = (Account)account;
+                MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, realAccount, mListener);
+            }
+            else if (account instanceof SearchAccount)
+            {
+                SearchAccount searchAccount = (SearchAccount)account;
+            
+                MessagingController.getInstance(getApplication()).searchLocalMessages(searchAccount, null, mListener);
+            }
         }
         
     }
@@ -468,20 +475,24 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
     }
 
-    private void onOpenAccount(Account account)
+    private void onOpenAccount(BaseAccount account)
     {
         if (account instanceof SearchAccount)
         {
             SearchAccount searchAccount = (SearchAccount)account;
             MessageList.actionHandle(this, searchAccount.getDescription(), "", searchAccount.isIntegrate(), searchAccount.getRequiredFlags(), searchAccount.getForbiddenFlags());
         }
-        else if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName()))
-        {
-            FolderList.actionHandleAccount(this, account);
-        }
         else
         {
-            MessageList.actionHandleFolder(this, account, account.getAutoExpandFolderName());
+            Account realAccount = (Account)account;
+            if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName()))
+            {
+                FolderList.actionHandleAccount(this, realAccount);
+            }
+            else
+            {
+                MessageList.actionHandleFolder(this, realAccount, realAccount.getAutoExpandFolderName());
+            }
         }
     }
 
@@ -617,7 +628,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
-        Account account = (Account)parent.getItemAtPosition(position);
+        BaseAccount account = (BaseAccount)parent.getItemAtPosition(position);
         onOpenAccount(account);
     }
 
@@ -719,7 +730,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         getMenuInflater().inflate(R.menu.accounts_context, menu);
         
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        Account account = (Account) mAdapter.getItem(info.position);
+        BaseAccount account =  mAdapter.getItem(info.position);
         if (account instanceof SearchAccount)
         {
             for (int i = 0; i < menu.size(); i++)
@@ -733,9 +744,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
     }
 
-    class AccountsAdapter extends ArrayAdapter<Account>
+    class AccountsAdapter extends ArrayAdapter<BaseAccount>
     {
-        public AccountsAdapter(Account[] accounts)
+        public AccountsAdapter(BaseAccount[] accounts)
         {
             super(Accounts.this, 0, accounts);
         }
@@ -743,7 +754,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            Account account = getItem(position);
+            BaseAccount account = getItem(position);
             View view;
             if (convertView != null)
             {
@@ -760,6 +771,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 holder.description = (TextView) view.findViewById(R.id.description);
                 holder.email = (TextView) view.findViewById(R.id.email);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
+                holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
 
                 holder.chip = view.findViewById(R.id.chip);
 
@@ -767,10 +779,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             AccountStats stats = accountStats.get(account.getUuid());
             
-            if (stats != null)
+            if (stats != null && account instanceof Account)
             {
-                holder.email.setText(SizeFormatter.formatSize(Accounts.this, stats.size) 
-                        + (stats.flaggedMessageCount > 0 ? " / " + stats.flaggedMessageCount + "*" : ""));
+                holder.email.setText(SizeFormatter.formatSize(Accounts.this, stats.size));
             }
             else
             {
@@ -796,30 +807,37 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 unreadMessageCount = stats.unreadMessageCount;
                 holder.newMessageCount.setText(Integer.toString(unreadMessageCount));
                 holder.newMessageCount.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
+                
+                holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
+                holder.flaggedMessageCount.setVisibility(stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
             }
             else
             {
-                //holder.newMessageCount.setText("-");
                 holder.newMessageCount.setVisibility(View.GONE);
+                holder.flaggedMessageCount.setVisibility(View.GONE);
             }
-            if (!(account instanceof SearchAccount))
+            if (account instanceof Account)
             {
-                holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[account.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
-            }
+                Account realAccount = (Account)account;
+                holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[realAccount.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
+                if (unreadMessageCount == null)
+                {
+                    holder.chip.getBackground().setAlpha(0);
+                }
+                else if (unreadMessageCount == 0)
+                {
+                    holder.chip.getBackground().setAlpha(127);
+                }
+                else
+                {
+                    holder.chip.getBackground().setAlpha(255);
+                }
 
-            if (unreadMessageCount == null)
+            }
+            else
             {
                 holder.chip.getBackground().setAlpha(0);
             }
-            else if (unreadMessageCount == 0)
-            {
-                holder.chip.getBackground().setAlpha(127);
-            }
-            else
-            {
-                holder.chip.getBackground().setAlpha(255);
-            }
-
 
             return view;
         }
@@ -829,50 +847,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public TextView description;
             public TextView email;
             public TextView newMessageCount;
+            public TextView flaggedMessageCount;
             public View chip;
-        }
-    }
-
-    private class SearchAccount extends Account
-    {
-        private Flag[] mRequiredFlags = null;
-        private Flag[] mForbiddenFlags = null;
-        private String email = null;
-        private boolean mIntegrate = false;
-        
-        private SearchAccount(Context context, boolean integrate, Flag[] requiredFlags, Flag[] forbiddenFlags)
-        {
-            super(context);
-            mRequiredFlags = requiredFlags;
-            mForbiddenFlags = forbiddenFlags;
-            mIntegrate = integrate;
-        }
-
-        @Override
-        public synchronized String getEmail()
-        {
-            return email;
-        }
-
-        @Override
-        public synchronized void setEmail(String email)
-        {
-            this.email = email;
-        }
-
-        public Flag[] getRequiredFlags()
-        {
-            return mRequiredFlags;
-        }
-
-        public Flag[] getForbiddenFlags()
-        {
-            return mForbiddenFlags;
-        }
-
-        public boolean isIntegrate()
-        {
-            return mIntegrate;
         }
     }
 }

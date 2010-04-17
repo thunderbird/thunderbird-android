@@ -462,7 +462,7 @@ public class MessageList
         }
         else if (mQueryString != null)
         {
-            mController.searchLocalMessages(mQueryString, null, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+            mController.searchLocalMessages(null, mQueryString, null, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
         }
 
         mHandler.refreshTitle();
