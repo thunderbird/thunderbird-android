@@ -24,6 +24,8 @@ import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.mail.Flag;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -392,16 +394,25 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     {
         BaseAccount[] accounts = Preferences.getPreferences(this).getAccounts();
         
-        BaseAccount[] newAccounts = new BaseAccount[accounts.length + 4];
-        newAccounts[0] = integratedInboxAccount;
-        newAccounts[1] = integratedInboxStarredAccount;
-        newAccounts[2] = unreadAccount;
-        newAccounts[3] = flaggedAccount;
-        System.arraycopy(accounts, 0, newAccounts, 4, accounts.length);
+        List<BaseAccount> newAccounts = new ArrayList<BaseAccount>(accounts.length + 4);
+        newAccounts.add(integratedInboxAccount);
+        if (K9.messageListStars())
+        {
+            newAccounts.add(integratedInboxStarredAccount);
+        }
+        newAccounts.add(unreadAccount);
+        if (K9.messageListStars())
+        {
+            newAccounts.add(flaggedAccount);
+        }
+        for (BaseAccount account : accounts)
+        {
+            newAccounts.add(account);
+        }
        
-        mAdapter = new AccountsAdapter(newAccounts);
+        mAdapter = new AccountsAdapter(newAccounts.toArray(new BaseAccount[0]));
         getListView().setAdapter(mAdapter);
-        if (newAccounts.length > 0)
+        if (newAccounts.size() > 0)
         {
             mHandler.progress(Window.PROGRESS_START);
         }
