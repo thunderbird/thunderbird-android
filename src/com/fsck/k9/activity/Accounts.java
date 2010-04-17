@@ -809,7 +809,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 holder.newMessageCount.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
                 
                 holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
-                holder.flaggedMessageCount.setVisibility(stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
+                holder.flaggedMessageCount.setVisibility(K9.messageListStars() && stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
             }
             else
             {
