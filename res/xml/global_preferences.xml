@@ -43,6 +43,16 @@
         android:summary="@string/gestures_summary"
         />
     </PreferenceCategory>
+     <PreferenceCategory android:title="@string/accountlist_preferences" android:key="accountlist_preferences">
+         <CheckBoxPreference
+            android:key="measure_accounts"
+            android:title="@string/measure_accounts_title"
+            android:summary="@string/measure_accounts_summary"/>
+        <CheckBoxPreference
+            android:key="count_search"
+            android:title="@string/count_search_title"
+            android:summary="@string/count_search_summary"/>
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/messagelist_preferences" android:key="messagelist_preferences">
          <CheckBoxPreference
             android:key="messagelist_touchable"

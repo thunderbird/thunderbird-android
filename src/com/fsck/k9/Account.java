@@ -430,7 +430,10 @@ public class Account implements BaseAccount
         int unreadMessageCount = 0;
         int flaggedMessageCount = 0;
         LocalStore localStore = getLocalStore();
-        stats.size = localStore.getSize();
+        if (K9.measureAccounts())
+        {
+            stats.size = localStore.getSize();
+        }
         Account.FolderMode aMode = getFolderDisplayMode();
         Preferences prefs = Preferences.getPreferences(context);
         for (LocalFolder folder : localStore.getPersonalNamespaces())

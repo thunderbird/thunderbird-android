@@ -101,7 +101,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 public void run()
                 {
                     AccountStats stats = accountStats.get(account.getUuid());
-                    if (stats != null)
+                    if (newSize != -1 && stats != null && K9.measureAccounts())
                     {
                         stats.size = newSize;
                     }
@@ -420,14 +420,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         for (BaseAccount account : newAccounts)
         {
-            pendingWork.put(account, "true");
+            
             if (account instanceof Account)
             {
+                pendingWork.put(account, "true");
                 Account realAccount = (Account)account;
                 MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, realAccount, mListener);
             }
-            else if (account instanceof SearchAccount)
+            else if (K9.countSearchMessages() && account instanceof SearchAccount)
             {
+                pendingWork.put(account, "true");
                 SearchAccount searchAccount = (SearchAccount)account;
             
                 MessagingController.getInstance(getApplication()).searchLocalMessages(searchAccount, null, mListener);
@@ -791,7 +793,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             AccountStats stats = accountStats.get(account.getUuid());
             
-            if (stats != null && account instanceof Account)
+            if (stats != null && account instanceof Account && stats.size >= 0)
             {
                 holder.email.setText(SizeFormatter.formatSize(Accounts.this, stats.size));
             }

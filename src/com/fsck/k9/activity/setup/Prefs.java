@@ -31,6 +31,8 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
     private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
 
+    private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
+    private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private ListPreference mTheme;
     private ListPreference mDateFormat;
     private ListPreference mBackgroundOps;
@@ -41,6 +43,8 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mStars;
     private CheckBoxPreference mCheckboxes;
     private CheckBoxPreference mTouchable;
+    private CheckBoxPreference mMeasureAccounts;
+    private CheckBoxPreference mCountSearch;
 
 
     private String initBackgroundOps;
@@ -137,6 +141,12 @@ public class Prefs extends K9PreferenceActivity
 
         mTouchable = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_TOUCHABLE);
         mTouchable.setChecked(K9.messageListTouchable());
+        
+        mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
+        mMeasureAccounts.setChecked(K9.measureAccounts());
+        
+        mCountSearch = (CheckBoxPreference)findPreference(PREFERENCE_COUNT_SEARCH);
+        mCountSearch.setChecked(K9.countSearchMessages());
     }
 
     @Override
@@ -159,6 +169,9 @@ public class Prefs extends K9PreferenceActivity
         K9.setMessageListCheckboxes(mCheckboxes.isChecked());
 
         K9.setMessageListTouchable(mTouchable.isChecked());
+
+        K9.setMeasureAccounts(mMeasureAccounts.isChecked());
+        K9.setCountSearchMessages(mCountSearch.isChecked());
 
         Editor editor = preferences.edit();
         K9.save(editor);
