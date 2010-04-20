@@ -20,6 +20,7 @@ public class Prefs extends K9PreferenceActivity
 {
 
     private static final String PREFERENCE_THEME = "theme";
+    private static final String PREFERENCE_FONT_SIZE = "font_size";
     private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
@@ -78,6 +79,16 @@ public class Prefs extends K9PreferenceActivity
                 return false;
             }
         });
+
+        findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
+            new Preference.OnPreferenceClickListener()
+            {
+                public boolean onPreferenceClick(Preference preference)
+                {
+                    onFontSizeSettings();
+                    return true;
+                }
+            });
 
         mDateFormat = (ListPreference) findPreference(PREFERENCE_DATE_FORMAT);
         String[] formats = DateFormatter.getFormats(this);
@@ -191,6 +202,11 @@ public class Prefs extends K9PreferenceActivity
             saveSettings();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void onFontSizeSettings()
+    {
+        FontSizeSettings.actionEditSettings(this);
     }
 
 }

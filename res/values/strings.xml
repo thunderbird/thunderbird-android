@@ -709,7 +709,47 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_searchable_all">All</string>
     <string name="account_settings_searchable_displayable">Displayable</string>
     <string name="account_settings_searchable_none">None</string>
-    
+
     <string name="remote_control_label">K-9 Mail remote control</string>
     <string name="remote_control_desc">Allows this application to control K-9 Mail activities and settings.</string>
+
+    <string name="font_size_settings_title">Font size</string>
+    <string name="font_size_settings_description">Configure font size</string>
+
+    <string name="font_size_account_list">Account list</string>
+    <string name="font_size_account_name">Account name</string>
+    <string name="font_size_account_description">Account description</string>
+
+    <string name="font_size_folder_list">Folder list</string>
+    <string name="font_size_folder_name">Folder name</string>
+    <string name="font_size_folder_status">Folder status</string>
+
+    <string name="font_size_message_list">Message list</string>
+    <string name="font_size_message_list_subject">Message subject</string>
+    <string name="font_size_message_list_sender">Message sender</string>
+    <string name="font_size_message_list_date">Message date</string>
+
+    <string name="font_size_message_view">Message view</string>
+    <string name="font_size_message_view_sender">Message sender</string>
+    <string name="font_size_message_view_to">Message receiver (To)</string>
+    <string name="font_size_message_view_cc">Message receiver (CC)</string>
+    <string name="font_size_message_view_subject">Message subject</string>
+    <string name="font_size_message_view_time">Message time</string>
+    <string name="font_size_message_view_date">Message date</string>
+    <string name="font_size_message_view_content">Message content</string>
+
+    <string name="font_size_tiniest">Tiniest</string>
+    <string name="font_size_tiny">Tiny</string>
+    <string name="font_size_smaller">Smaller</string>
+    <string name="font_size_small">Small</string>
+    <string name="font_size_medium">Medium</string>
+    <string name="font_size_large">Large</string>
+    <string name="font_size_larger">Larger</string>
+
+    <string name="font_size_webview_smaller">Smallest</string>
+    <string name="font_size_webview_small">Smaller</string>
+    <string name="font_size_webview_normal">Normal</string>
+    <string name="font_size_webview_large">Larger</string>
+    <string name="font_size_webview_larger">Largest</string>
+
 </resources>

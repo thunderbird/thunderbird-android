@@ -13,6 +13,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Config;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.*;
@@ -64,6 +65,8 @@ public class FolderList extends K9ListActivity
 
     private int mUnreadMessageCount;
     private int mFlaggedMessageCount;
+
+    private FontSizes mFontSizes = K9.getFontSizes();
 
     class FolderListHandler extends Handler
     {
@@ -1258,6 +1261,10 @@ public class FolderList extends K9ListActivity
             holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[mAccount.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
 
             holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
+
+            holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());
+            holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountDescription());
+
 
             return view;
         }

@@ -16,7 +16,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <PreferenceCategory android:title="@string/display_preferences" android:key="global_preferences">
+    <PreferenceCategory android:title="@string/display_preferences" android:key="global_preferences">
 
         <ListPreference
             android:key="theme"
@@ -24,73 +24,87 @@
             android:entries="@array/settings_theme_entries"
             android:entryValues="@array/settings_theme_values"
             android:dialogTitle="@string/settings_theme_label" />
-            
-            <ListPreference
+
+        <Preference
+            android:key="font_size"
+            android:singleLine="true"
+            android:title="@string/font_size_settings_title"
+            android:summary="@string/font_size_settings_description" />
+
+        <ListPreference
             android:key="dateFormat"
             android:title="@string/date_format_label"
             android:entries="@array/date_formats"
             android:entryValues="@array/date_formats"
             android:dialogTitle="@string/date_format_label" />
-            
-     <CheckBoxPreference
-        android:key="animations"
-        android:title="@string/animations_title"
-        android:summary="@string/animations_summary"
-        />
-     <CheckBoxPreference
-        android:key="gestures"
-        android:title="@string/gestures_title"
-        android:summary="@string/gestures_summary"
-        />
+
+        <CheckBoxPreference
+            android:key="animations"
+            android:title="@string/animations_title"
+            android:summary="@string/animations_summary" />
+
+        <CheckBoxPreference
+            android:key="gestures"
+            android:title="@string/gestures_title"
+            android:summary="@string/gestures_summary" />
+
     </PreferenceCategory>
-     <PreferenceCategory android:title="@string/accountlist_preferences" android:key="accountlist_preferences">
-         <CheckBoxPreference
+
+    <PreferenceCategory android:title="@string/accountlist_preferences" android:key="accountlist_preferences">
+
+        <CheckBoxPreference
             android:key="measure_accounts"
             android:title="@string/measure_accounts_title"
-            android:summary="@string/measure_accounts_summary"/>
+            android:summary="@string/measure_accounts_summary" />
+
         <CheckBoxPreference
             android:key="count_search"
             android:title="@string/count_search_title"
-            android:summary="@string/count_search_summary"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/messagelist_preferences" android:key="messagelist_preferences">
-         <CheckBoxPreference
-            android:key="messagelist_touchable"
-            android:title="@string/global_settings_touchable_label"/>
+            android:summary="@string/count_search_summary" />
 
-         <CheckBoxPreference
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/messagelist_preferences" android:key="messagelist_preferences">
+
+        <CheckBoxPreference
+            android:key="messagelist_touchable"
+            android:title="@string/global_settings_touchable_label" />
+
+        <CheckBoxPreference
             android:key="messagelist_stars"
             android:title="@string/global_settings_flag_label"
-            android:summary="@string/global_settings_flag_summary"
-            />
-    
-         <CheckBoxPreference
+            android:summary="@string/global_settings_flag_summary" />
+
+        <CheckBoxPreference
             android:key="messagelist_checkboxes"
             android:title="@string/global_settings_checkbox_label"
-            android:summary="@string/global_settings_checkbox_summary"
-            />
-    
+            android:summary="@string/global_settings_checkbox_summary" />
+
     </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">
+
         <ListPreference
             android:key="background_ops"
             android:title="@string/background_ops_label"
             android:entries="@array/background_ops_entries"
             android:entryValues="@array/background_ops_values"
             android:dialogTitle="@string/background_ops_label" />
-     </PreferenceCategory>
-   
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/debug_preferences" android:key="debug_preferences">
-    
-   <CheckBoxPreference
-    	android:key="debug_logging"
-    	android:title="@string/debug_enable_debug_logging_title"
-    	android:summary="@string/debug_enable_debug_logging_summary"
-    	/>
-    <CheckBoxPreference
-    	android:key="sensitive_logging"
-    	android:title="@string/debug_enable_sensitive_logging_title"
-    	android:summary="@string/debug_enable_sensitive_logging_summary"
-    	/>
-   </PreferenceCategory>
+
+        <CheckBoxPreference
+            android:key="debug_logging"
+            android:title="@string/debug_enable_debug_logging_title"
+            android:summary="@string/debug_enable_debug_logging_summary" />
+
+        <CheckBoxPreference
+            android:key="sensitive_logging"
+            android:title="@string/debug_enable_sensitive_logging_title"
+            android:summary="@string/debug_enable_sensitive_logging_summary" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

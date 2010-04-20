@@ -17,12 +17,14 @@ import android.provider.Contacts;
 import android.provider.Contacts.Intents;
 import android.util.Config;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.*;
+import android.webkit.WebSettings.TextSize;
 import android.widget.*;
 import com.fsck.k9.*;
 import com.fsck.k9.mail.*;
@@ -89,6 +91,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
+
+    private FontSizes mFontSizes = K9.getFontSizes();
 
 
     @Override
@@ -443,7 +447,6 @@ public class MessageView extends K9Activity implements OnClickListener
         mSubjectView = (TextView)findViewById(R.id.subject);
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
 
-
         mDateView = (TextView)findViewById(R.id.date);
         mTimeView = (TextView)findViewById(R.id.time);
         mTopView = (ScrollView)findViewById(R.id.top_view);
@@ -474,6 +477,17 @@ public class MessageView extends K9Activity implements OnClickListener
         webSettings.setLoadsImagesAutomatically(true);
         //webSettings.setBuiltInZoomControls(true);
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+
+        webSettings.setTextSize(mFontSizes.getMessageViewContent());
+
+        mFromView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSender());
+        mToView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
+        ((TextView)findViewById(R.id.to_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTo());
+        mCcView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
+        ((TextView)findViewById(R.id.cc_label)).setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewCC());
+        mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSubject());
+        mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTime());
+        mDateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewDate());
 
         mAttachments.setVisibility(View.GONE);
         mAttachmentIcon.setVisibility(View.GONE);

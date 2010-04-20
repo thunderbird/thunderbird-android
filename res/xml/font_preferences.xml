@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/font_size_account_list" android:key="account_list_fonts">
+
+        <ListPreference
+            android:key="account_name_font"
+            android:title="@string/font_size_account_name"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_account_name" />
+
+        <ListPreference
+            android:key="account_description_font"
+            android:title="@string/font_size_account_description"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_account_description" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/font_size_folder_list" android:key="folder_list_fonts">
+
+        <ListPreference
+            android:key="folder_name_font"
+            android:title="@string/font_size_folder_name"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_folder_name" />
+
+        <ListPreference
+            android:key="folder_status_font"
+            android:title="@string/font_size_folder_status"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_folder_status" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/font_size_message_list" android:key="message_list_fonts">
+
+        <ListPreference
+            android:key="message_list_subject_font"
+            android:title="@string/font_size_message_list_subject"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_list_subject" />
+
+        <ListPreference
+            android:key="message_list_sender_font"
+            android:title="@string/font_size_message_list_sender"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_list_sender" />
+
+        <ListPreference
+            android:key="message_list_date_font"
+            android:title="@string/font_size_message_list_date"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_list_date" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/font_size_message_view" android:key="message_view_fonts">
+
+        <ListPreference
+            android:key="message_view_sender_font"
+            android:title="@string/font_size_message_view_sender"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_view_sender" />
+
+        <ListPreference
+            android:key="message_view_to_font"
+            android:title="@string/font_size_message_view_to"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_view_to" />
+
+        <ListPreference
+            android:key="message_view_cc_font"
+            android:title="@string/font_size_message_view_cc"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_view_cc" />
+
+        <ListPreference
+            android:key="message_view_subject_font"
+            android:title="@string/font_size_message_view_subject"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_view_subject" />
+
+        <ListPreference
+            android:key="message_view_time_font"
+            android:title="@string/font_size_message_view_time"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_view_time" />
+
+        <ListPreference
+            android:key="message_view_date_font"
+            android:title="@string/font_size_message_view_date"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_view_date" />
+
+        <ListPreference
+            android:key="message_view_content_font"
+            android:title="@string/font_size_message_view_content"
+            android:entries="@array/font_entries_webview"
+            android:entryValues="@array/font_values_webview"
+            android:dialogTitle="@string/font_size_message_view_content" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

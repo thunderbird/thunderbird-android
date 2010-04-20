@@ -35,6 +35,8 @@ public class K9 extends Application
 
     private static int theme = android.R.style.Theme_Light;
 
+    private static final FontSizes fontSizes = new FontSizes();
+
     private static BACKGROUND_OPS backgroundOps = BACKGROUND_OPS.WHEN_CHECKED;
     /**
      * Some log messages can be sent to a file, so that the logs
@@ -327,6 +329,8 @@ public class K9 extends Application
         editor.putBoolean("messageListCheckboxes",mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
         editor.putInt("theme", theme);
+
+        fontSizes.save(editor);
     }
 
     @Override
@@ -346,6 +350,7 @@ public class K9 extends Application
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
 
+        fontSizes.load(sprefs);
 
         try
         {
@@ -540,6 +545,11 @@ public class K9 extends Application
                 Log.e(K9.LOG_TAG, "Error on invoking WebSettings.setBlockNetworkLoads()", e);
             }
         }
+    }
+
+    public static FontSizes getFontSizes()
+    {
+        return fontSizes;
     }
 
     public static boolean measureAccounts()

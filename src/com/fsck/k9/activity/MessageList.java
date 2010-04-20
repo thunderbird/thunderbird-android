@@ -15,6 +15,7 @@ import android.text.Spannable;
 import android.text.style.TextAppearanceSpan;
 import android.util.Config;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
@@ -115,6 +116,8 @@ public class MessageList
     private Button mBatchDeleteButton;
     private Button mBatchFlagButton;
     private Button mBatchDoneButton;
+
+    private FontSizes mFontSizes = K9.getFontSizes();
 
     class MessageListHandler extends Handler
     {
@@ -2028,6 +2031,11 @@ public class MessageList
                     holder.selected.setVisibility(View.GONE);
                 holder.flagged.setChecked(false);
             }
+
+            holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
+            holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+            holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
+
             return view;
         }
 

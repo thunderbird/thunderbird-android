@@ -57,6 +57,11 @@
             >
         </activity>
         <activity
+            android:name="com.fsck.k9.activity.setup.FontSizeSettings"
+            android:label="@string/font_size_settings_title"
+            >
+        </activity>
+        <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupBasics"
             android:label="@string/account_setup_basics_title"
             >

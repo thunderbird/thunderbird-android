@@ -262,5 +262,46 @@
     <item>@string/date_format_common</item>
     <item>@string/date_format_iso8601</item>
     </string-array>
+
+
+    <string-array name="font_entries">
+    	<item>@string/font_size_tiniest</item>
+    	<item>@string/font_size_tiny</item>
+    	<item>@string/font_size_smaller</item>
+    	<item>@string/font_size_small</item>
+    	<item>@string/font_size_medium</item>
+    	<item>@string/font_size_large</item>
+    	<item>@string/font_size_larger</item>
+    </string-array>
+
+    <string-array name="font_values">
+    	<item>10</item>
+    	<item>12</item>
+    	<item>14</item>
+    	<item>16</item>
+    	<item>18</item>
+    	<item>20</item>
+    	<item>22</item>
+    </string-array>
+
+    <string-array name="font_entries_webview">
+    	<item>@string/font_size_webview_smaller</item>
+    	<item>@string/font_size_webview_small</item>
+    	<item>@string/font_size_webview_normal</item>
+    	<item>@string/font_size_webview_large</item>
+    	<item>@string/font_size_webview_larger</item>
+    </string-array>
+
+	<!--
+    	Be sure to also change FontSizes.getMessageViewContentAsInt() and
+	    FontSizes.setMessageViewContent() if you change this.
+	-->
+    <string-array name="font_values_webview">
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    	<item>4</item>
+    	<item>5</item>
+    </string-array>
    
 </resources>

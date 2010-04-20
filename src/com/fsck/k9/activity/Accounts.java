@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
@@ -45,7 +46,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private SearchAccount flaggedAccount = null;
     private SearchAccount integratedInboxAccount = null;
     private SearchAccount integratedInboxStarredAccount = null;
-
+    private FontSizes mFontSizes = K9.getFontSizes();
 
     class AccountsHandler extends Handler
     {
@@ -852,6 +853,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             {
                 holder.chip.getBackground().setAlpha(0);
             }
+
+            holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());
+            holder.email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountDescription());
 
             return view;
         }
