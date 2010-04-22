@@ -67,8 +67,8 @@ public class MessageList
     private static final String EXTRA_QUERY_FLAGS = "queryFlags";
     private static final String EXTRA_FORBIDDEN_FLAGS = "forbiddenFlags";
     private static final String EXTRA_INTEGRATE = "integrate";
+    private static final String EXTRA_ACCOUNT_UUIDS = "accountUuids";
     private static final String EXTRA_TITLE = "title";
-    private static final String EXTRA_SEARCH_SPECIFICATION = "searchSpecification";
 
     private ListView mListView;
 
@@ -98,6 +98,7 @@ public class MessageList
     private Flag[] mQueryFlags = null;
     private Flag[] mForbiddenFlags = null;
     private boolean mIntegrate = false;
+    private String[] mAccountUuids = null;
     private String mTitle;
 
     private MessageListHandler mHandler = new MessageListHandler();
@@ -327,6 +328,25 @@ public class MessageList
         context.startActivity(intent);
 
     }
+    
+    public static void actionHandle(Context context, String title, SearchSpecification searchSpecification)
+    {
+        Intent intent = new Intent(context, MessageList.class);
+        intent.putExtra(EXTRA_QUERY, searchSpecification.getQuery());
+        if (searchSpecification.getRequiredFlags() != null)
+        {
+            intent.putExtra(EXTRA_QUERY_FLAGS, Utility.combine(searchSpecification.getRequiredFlags(), ','));
+        }
+        if (searchSpecification.getForbiddenFlags() != null)
+        {
+            intent.putExtra(EXTRA_FORBIDDEN_FLAGS, Utility.combine(searchSpecification.getForbiddenFlags(), ','));
+        }
+        intent.putExtra(EXTRA_INTEGRATE, searchSpecification.isIntegrate());
+        intent.putExtra(EXTRA_ACCOUNT_UUIDS, searchSpecification.getAccountUuids());
+        intent.putExtra(EXTRA_TITLE, title);
+        context.startActivity(intent);
+       
+    }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
@@ -393,6 +413,8 @@ public class MessageList
             }
         }
         mIntegrate = intent.getBooleanExtra(EXTRA_INTEGRATE, false);
+        mAccountUuids = intent.getStringArrayExtra(EXTRA_ACCOUNT_UUIDS);
+        
         mTitle = intent.getStringExtra(EXTRA_TITLE);
         
         // Take the initial folder into account only if we are *not* restoring the
@@ -466,7 +488,7 @@ public class MessageList
         }
         else if (mQueryString != null)
         {
-            mController.searchLocalMessages(null, mQueryString, null, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+            mController.searchLocalMessages(mAccountUuids, mQueryString, null, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
         }
 
         mHandler.refreshTitle();

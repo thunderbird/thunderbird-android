@@ -26,8 +26,10 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.mail.Flag;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener
@@ -484,7 +486,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         if (account instanceof SearchAccount)
         {
             SearchAccount searchAccount = (SearchAccount)account;
-            MessageList.actionHandle(this, searchAccount.getDescription(), "", searchAccount.isIntegrate(), searchAccount.getRequiredFlags(), searchAccount.getForbiddenFlags());
+            MessageList.actionHandle(this, searchAccount.getDescription(), searchAccount);
         }
         else
         {
@@ -827,116 +829,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
                 holder.flaggedMessageCount.setVisibility(K9.messageListStars() && stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
                 
-                holder.flaggedMessageCount.setOnClickListener(new OnClickListener()
-                {
-                    public void onClick(View v)
-                    {
-                        Log.i(K9.LOG_TAG, "Star on " + account.getDescription());
-                     // TODO: Better String formatting using resources
-                        String description = account.getDescription() + " (Stars)";
-                        if (account instanceof SearchAccount)
-                        {
-                            SearchAccount searchAccount = (SearchAccount)account;
-                            MessageList.actionHandle(Accounts.this, 
-                                    description, "", searchAccount.isIntegrate(), new Flag[] { Flag.FLAGGED }, null);
-                        }
-                        else
-                        {
-                            SearchSpecification searchSpec = new SearchSpecification()
-                            {
-                                @Override
-                                public String[] getAccountUuids()
-                                {
-                                    return new String[] { account.getUuid() };
-                                }
-
-                                @Override
-                                public Flag[] getForbiddenFlags()
-                                {
-                                    return null;
-                                }
-
-                                @Override
-                                public String getQuery()
-                                {
-                                    return null;
-                                }
-
-                                @Override
-                                public Flag[] getRequiredFlags()
-                                {
-                                    return new Flag[] { Flag.FLAGGED };
-                                }
-
-                                @Override
-                                public boolean isIntegrate()
-                                {
-                                    return false;
-                                }
-                                
-                            };
-                            // TODO: Need a way to pass a SearchSpecification to the MessageList
-                         // MessageList.actionHandle(Accounts.this, 
-                            //         description, searchSpec);
-                        }
-                    }
-                });
+                holder.flaggedMessageCount.setOnClickListener(new AccountClickListener(account, SearchModifier.FLAGGED));
+                holder.newMessageCount.setOnClickListener(new AccountClickListener(account, SearchModifier.UNREAD));
                 
-                holder.newMessageCount.setOnClickListener(new OnClickListener()
-                {
-                    public void onClick(View v)
-                    {
-                        // TODO: Better String formatting using resources
-                        String description = account.getDescription() + " (Unread)";
-                        Log.i(K9.LOG_TAG, "Envelope on " + account.getDescription());
-                        if (account instanceof SearchAccount)
-                        {
-                            SearchAccount searchAccount = (SearchAccount)account;
-                            MessageList.actionHandle(Accounts.this, 
-                                    description, "", searchAccount.isIntegrate(), null, new Flag[] { Flag.SEEN });
-                        }
-                        else
-                        {
-                            SearchSpecification searchSpec = new SearchSpecification()
-                            {
-                                @Override
-                                public String[] getAccountUuids()
-                                {
-                                    return new String[] { account.getUuid() };
-                                }
-
-                                @Override
-                                public Flag[] getForbiddenFlags()
-                                {
-                                    return new Flag[] { Flag.SEEN };
-                                }
-
-                                @Override
-                                public String getQuery()
-                                {
-                                    return null;
-                                }
-
-                                @Override
-                                public Flag[] getRequiredFlags()
-                                {
-                                    return null;
-                                }
-
-                                @Override
-                                public boolean isIntegrate()
-                                {
-                                    return false;
-                                }
-                                
-                            };
-
-                            // TODO: Need a way to pass a SearchSpecification to the MessageList
-                           // MessageList.actionHandle(Accounts.this, 
-                           //         description, searchSpec);
-                        }
-                    }
-                });
                 holder.activeIcons.setOnClickListener(new OnClickListener()
                 {
                     public void onClick(View v)
@@ -992,4 +887,108 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public View chip;
         }
     }
+    private Flag[] combine(Flag[] set1, Flag[] set2)
+    {
+        if (set1 == null)
+        {
+            return set2;
+        }
+        if (set2 == null)
+        {
+            return set1;
+        }
+        Set<Flag> flags = new HashSet<Flag>();
+        for (Flag flag : set1)
+        {
+            flags.add(flag);
+        }
+        for (Flag flag : set2)
+        {
+            flags.add(flag);
+        }
+        return flags.toArray(new Flag[0]);
+    }
+        
+    private class AccountClickListener implements OnClickListener
+    {
+        
+        final BaseAccount account;
+        final SearchModifier searchModifier;
+        AccountClickListener(BaseAccount nAccount, SearchModifier nSearchModifier )
+        {
+            account = nAccount;
+            searchModifier = nSearchModifier;
+        }
+        @Override
+        public void onClick(View v)
+        {
+            String description = getString(R.string.search_title, account.getDescription(), getString(searchModifier.resId));
+            if (account instanceof SearchAccount)
+            {
+                SearchAccount searchAccount = (SearchAccount)account;
+                
+                MessageList.actionHandle(Accounts.this, 
+                        description, "", searchAccount.isIntegrate(), 
+                        combine(searchAccount.getRequiredFlags(), searchModifier.requiredFlags), 
+                        combine(searchAccount.getForbiddenFlags(), searchModifier.forbiddenFlags));
+            }
+            else
+            {
+                SearchSpecification searchSpec = new SearchSpecification()
+                {
+                    @Override
+                    public String[] getAccountUuids()
+                    {
+                        return new String[] { account.getUuid() };
+                    }
+
+                    @Override
+                    public Flag[] getForbiddenFlags()
+                    {
+                        return searchModifier.forbiddenFlags;
+                    }
+
+                    @Override
+                    public String getQuery()
+                    {
+                        return "";
+                    }
+
+                    @Override
+                    public Flag[] getRequiredFlags()
+                    {
+                        return searchModifier.requiredFlags;
+                    }
+
+                    @Override
+                    public boolean isIntegrate()
+                    {
+                        return false;
+                    }
+                    
+                };
+                MessageList.actionHandle(Accounts.this, description, searchSpec);
+            }
+        }
+        
+    }
+
+    
+    private enum SearchModifier
+    {
+        FLAGGED(R.string.flagged_modifier, new Flag[] { Flag.FLAGGED}, null), UNREAD(R.string.unread_modifier, null, new Flag[] { Flag.SEEN} );
+        
+        final int resId;
+        final Flag[] requiredFlags;
+        final Flag[] forbiddenFlags;
+        
+        SearchModifier(int nResId, Flag[] nRequiredFlags, Flag[] nForbiddenFlags)
+        {
+            resId = nResId;
+            requiredFlags = nRequiredFlags;
+            forbiddenFlags = nForbiddenFlags;
+        }
+        
+    }
+    
 }

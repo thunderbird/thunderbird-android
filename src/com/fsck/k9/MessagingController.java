@@ -736,21 +736,31 @@ public class MessagingController implements Runnable
                 Account[] accounts = prefs.getAccounts();
                 List<LocalFolder> foldersToSearch = null;
                 boolean displayableOnly = false;
+                boolean noSpecialFolders = true;
                 for (final Account account : accounts)
                 {
                     if (accountUuids != null && accountUuidsSet.contains(account.getUuid()) == false)
                     {
                         continue;
                     }
-                    Account.Searchable searchableFolders = account.getSearchableFolders();
-                    switch (searchableFolders)
+                    
+                    if (accountUuids != null && accountUuidsSet.contains(account.getUuid()) == true)
                     {
-                        case NONE:
-                            continue;
-                        case DISPLAYABLE:
-                            displayableOnly = true;
-                            break;
-                            
+                        displayableOnly = true;
+                        noSpecialFolders = true;
+                    }
+                    else
+                    {
+                        Account.Searchable searchableFolders = account.getSearchableFolders();
+                        switch (searchableFolders)
+                        {
+                            case NONE:
+                                continue;
+                            case DISPLAYABLE:
+                                displayableOnly = true;
+                                break;
+                                
+                        }
                     }
                     if (listener != null)
                     {
@@ -769,11 +779,21 @@ public class MessagingController implements Runnable
                                 LocalFolder localFolder = (LocalFolder)folder;
                                 boolean include = true;
                                 folder.refresh(prefs);
-                                if (displayableOnly && modeMismatch(account.getFolderDisplayMode(), folder.getDisplayClass()))
+                                String localFolderName = localFolder.getName();
+                                if (noSpecialFolders && (
+                                        localFolderName.equals(account.getTrashFolderName()) ||
+                                        localFolderName.equals(account.getOutboxFolderName()) ||
+                                        localFolderName.equals(account.getDraftsFolderName()) ||
+                                        localFolderName.equals(account.getSentFolderName()) ||
+                                        localFolderName.equals(account.getErrorFolderName())))
                                 {
                                     include = false;
                                 }
-                                if (integrate && localFolder.isIntegrate() == false)
+                                else if (displayableOnly && modeMismatch(account.getFolderDisplayMode(), folder.getDisplayClass()))
+                                {
+                                    include = false;
+                                }
+                                else if (integrate && localFolder.isIntegrate() == false)
                                 {
                                     include = false;
                                     
@@ -816,7 +836,7 @@ public class MessagingController implements Runnable
                         }
                         public void messagesFinished(int number) 
                         {
-                            listener.searchStats(stats);
+                           
                         }
                     };
 
@@ -841,6 +861,10 @@ public class MessagingController implements Runnable
                             listener.listLocalMessagesFinished(account, null);
                         }
                     }
+                }
+                if (listener != null)
+                {
+                    listener.searchStats(stats);
                 }
             }
         });

@@ -690,6 +690,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="count_search_title">Count search results</string>
     <string name="count_search_summary">Turn off for faster display</string>
     
+    <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
+    <string name="flagged_modifier"> - Starred</string>
+    <string name="unread_modifier"> - Unread</string>
+    
     <string name="search_all_messages_title">All messages</string>
     <string name="search_all_messages_detail">All messages in searchable folders</string>
         
