@@ -248,12 +248,12 @@ public class ImapStore extends Store
     }
 
     @Override
-    public Folder[] getPersonalNamespaces() throws MessagingException
+    public List<? extends Folder> getPersonalNamespaces() throws MessagingException
     {
         ImapConnection connection = getConnection();
         try
         {
-            ArrayList<Folder> folders = new ArrayList<Folder>();
+            LinkedList<Folder> folders = new LinkedList<Folder>();
 
             List<ImapResponse> responses =
                 connection.executeSimpleCommand(String.format("LIST \"\" \"%s*\"",
@@ -308,7 +308,7 @@ public class ImapStore extends Store
                 }
             }
             folders.add(getFolder("INBOX"));
-            return folders.toArray(new Folder[] {});
+            return folders;
         }
         catch (IOException ioe)
         {

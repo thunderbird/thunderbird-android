@@ -37,6 +37,7 @@
         android:layout_width="0dip"
         android:layout_weight="1" />
     <RelativeLayout
+        android:id="@+id/active_icons"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:orientation="vertical"
@@ -45,6 +46,7 @@
         android:paddingLeft="6dip"
         android:paddingRight="6dip"
         android:gravity="right"
+        android:clickable="true"
         >
 	    <TextView
 	        android:id="@+id/new_message_count"
@@ -63,6 +65,7 @@
 	        android:gravity="right"
 	        android:layout_gravity="top" 
 	        android:layout_alignParentTop="true"
+	        android:clickable="true"
             />
 	    <TextView
 	        android:id="@+id/flagged_message_count"
@@ -80,6 +83,7 @@
             android:gravity="right"
 	        android:layout_gravity="bottom"
 	        android:layout_alignParentBottom="true" 
+            android:clickable="true"
 	        />
     </RelativeLayout>
 </LinearLayout>

@@ -10,6 +10,7 @@ import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.WebDavStore;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Store is the access point for an email message store. It's location can be
@@ -115,7 +116,7 @@ public abstract class Store
 
     public abstract Folder getFolder(String name) throws MessagingException;
 
-    public abstract Folder[] getPersonalNamespaces() throws MessagingException;
+    public abstract List<? extends Folder> getPersonalNamespaces() throws MessagingException;
 
     public abstract void checkSettings() throws MessagingException;
 

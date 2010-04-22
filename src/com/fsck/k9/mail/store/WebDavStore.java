@@ -49,6 +49,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 import java.util.zip.GZIPInputStream;
 
@@ -260,9 +262,9 @@ public class WebDavStore extends Store
     }
 
     @Override
-    public Folder[] getPersonalNamespaces() throws MessagingException
+    public List<? extends Folder> getPersonalNamespaces() throws MessagingException
     {
-        ArrayList<Folder> folderList = new ArrayList<Folder>();
+        LinkedList<Folder> folderList = new LinkedList<Folder>();
         HashMap<String, String> headers = new HashMap<String, String>();
         DataSet dataset = new DataSet();
         String messageBody;
@@ -323,7 +325,7 @@ public class WebDavStore extends Store
             this.mFolderList.put(folderName, wdFolder);
         }
 
-        return folderList.toArray(new WebDavFolder[] {});
+        return folderList;
     }
 
     @Override

@@ -19,8 +19,10 @@ import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class Pop3Store extends Store
 {
@@ -156,12 +158,11 @@ public class Pop3Store extends Store
     }
 
     @Override
-    public Folder[] getPersonalNamespaces() throws MessagingException
+    public List<? extends Folder> getPersonalNamespaces() throws MessagingException
     {
-        return new Folder[]
-               {
-                   getFolder("INBOX"),
-               };
+        List<Folder> folders = new LinkedList<Folder>();
+        folders.add(getFolder("INBOX"));
+        return folders;
     }
 
     @Override

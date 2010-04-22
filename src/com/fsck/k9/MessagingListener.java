@@ -17,7 +17,8 @@ import java.util.List;
  */
 public class MessagingListener
 {
-
+    public void searchStats(AccountStats stats) {}
+    
     public void accountStatusChanged(BaseAccount account, AccountStats stats)
     {
     }

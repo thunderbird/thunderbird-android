@@ -410,24 +410,26 @@ public class MessagingController implements Runnable
                 {
                     listener.listFoldersStarted(account);
                 }
-                Folder[] localFolders = null;
+                List<? extends Folder> localFolders = null;
                 try
                 {
                     Store localStore = account.getLocalStore();
                     localFolders = localStore.getPersonalNamespaces();
 
-                    if (refreshRemote || localFolders == null || localFolders.length == 0)
+                    Folder[] folderArray = localFolders.toArray(new Folder[0]);
+
+                    if (refreshRemote || localFolders == null || localFolders.size() == 0)
                     {
                         doRefreshRemote(account, listener);
                         return;
                     }
                     for (MessagingListener l : getListeners())
                     {
-                        l.listFolders(account, localFolders);
+                        l.listFolders(account, folderArray);
                     }
                     if (listener != null)
                     {
-                        listener.listFolders(account, localFolders);
+                        listener.listFolders(account, folderArray);
                     }
                 }
                 catch (Exception e)
@@ -475,23 +477,23 @@ public class MessagingController implements Runnable
         {
             public void run()
             {
-                Folder[] localFolders = null;
+                List<? extends Folder> localFolders = null;
                 try
                 {
                     Store store = account.getRemoteStore();
 
-                    Folder[] remoteFolders = store.getPersonalNamespaces();
+                    List<? extends Folder> remoteFolders = store.getPersonalNamespaces();
 
                     LocalStore localStore = account.getLocalStore();
                     HashSet<String> remoteFolderNames = new HashSet<String>();
-                    for (int i = 0, count = remoteFolders.length; i < count; i++)
+                    for (int i = 0, count = remoteFolders.size(); i < count; i++)
                     {
-                        LocalFolder localFolder = localStore.getFolder(remoteFolders[i].getName());
+                        LocalFolder localFolder = localStore.getFolder(remoteFolders.get(i).getName());
                         if (!localFolder.exists())
                         {
                             localFolder.create(FolderType.HOLDS_MESSAGES, account.getDisplayCount());
                         }
-                        remoteFolderNames.add(remoteFolders[i].getName());
+                        remoteFolderNames.add(remoteFolders.get(i).getName());
                     }
 
                     localFolders = localStore.getPersonalNamespaces();
@@ -518,10 +520,11 @@ public class MessagingController implements Runnable
                     }
 
                     localFolders = localStore.getPersonalNamespaces();
+                    Folder[] folderArray = localFolders.toArray(new Folder[0]);
 
                     for (MessagingListener l : getListeners())
                     {
-                        l.listFolders(account, localFolders);
+                        l.listFolders(account, folderArray);
                     }
                     for (MessagingListener l : getListeners())
                     {
@@ -696,27 +699,34 @@ public class MessagingController implements Runnable
         }
     }
 
-    public void searchLocalMessages(SearchAccount searchAccount, final Message[] messages, final MessagingListener listener)
+    public void searchLocalMessages(SearchSpecification searchSpecification, final Message[] messages, final MessagingListener listener)
     {
-        searchLocalMessages(searchAccount, searchAccount.getQuery(), messages, searchAccount.isIntegrate(), 
-                searchAccount.getRequiredFlags(), searchAccount.getForbiddenFlags(), listener);
+        searchLocalMessages(searchSpecification.getAccountUuids(), searchSpecification.getQuery(), messages, 
+                searchSpecification.isIntegrate(), searchSpecification.getRequiredFlags(), searchSpecification.getForbiddenFlags(), listener);
     }
     
 
     /**
      * Find all messages in any local account which match the query 'query'
-     * @param account TODO
+     * @param searchAccounts TODO
      * @param query
      * @param listener
+     * @param account TODO
      * @param account
-     *
      * @throws MessagingException
      */
-    public void searchLocalMessages(final BaseAccount baseAccount, final String query, final Message[] messages, final boolean integrate, final Flag[] requiredFlags, 
+    public void searchLocalMessages(final String[] accountUuids, final String query, final Message[] messages, final boolean integrate, final Flag[] requiredFlags, 
             final Flag[] forbiddenFlags, final MessagingListener listener)
     {
         final AccountStats stats = new AccountStats();
-        
+        final Set<String> accountUuidsSet = new HashSet<String>();
+        if (accountUuids != null)
+        {
+            for (String accountUuid : accountUuids)
+            {
+               accountUuidsSet.add(accountUuid); 
+            }
+        }
         threadPool.execute(new Runnable()
         {
             public void run()
@@ -728,6 +738,10 @@ public class MessagingController implements Runnable
                 boolean displayableOnly = false;
                 for (final Account account : accounts)
                 {
+                    if (accountUuids != null && accountUuidsSet.contains(account.getUuid()) == false)
+                    {
+                        continue;
+                    }
                     Account.Searchable searchableFolders = account.getSearchableFolders();
                     switch (searchableFolders)
                     {
@@ -749,23 +763,24 @@ public class MessagingController implements Runnable
                         try
                         {
                             LocalStore store = account.getLocalStore();
-                            LocalFolder[] folders = store.getPersonalNamespaces();
-                            for (LocalFolder folder : folders)
+                            List<? extends Folder> folders = store.getPersonalNamespaces();
+                            for (Folder folder : folders)
                             {
+                                LocalFolder localFolder = (LocalFolder)folder;
                                 boolean include = true;
                                 folder.refresh(prefs);
                                 if (displayableOnly && modeMismatch(account.getFolderDisplayMode(), folder.getDisplayClass()))
                                 {
                                     include = false;
                                 }
-                                if (integrate && folder.isIntegrate() == false)
+                                if (integrate && localFolder.isIntegrate() == false)
                                 {
                                     include = false;
                                     
                                 }
                                 if (include)
                                 {
-                                    tmpFoldersToSearch.add(folder);
+                                    tmpFoldersToSearch.add(localFolder);
                                 }
                             }
                             foldersToSearch = tmpFoldersToSearch;
@@ -801,10 +816,7 @@ public class MessagingController implements Runnable
                         }
                         public void messagesFinished(int number) 
                         {
-                            if (baseAccount != null)
-                            {
-                                listener.accountStatusChanged(baseAccount, stats);
-                            }
+                            listener.searchStats(stats);
                         }
                     };
 
@@ -4337,15 +4349,15 @@ public class MessagingController implements Runnable
         }
 
         int unreadMessageCount = 0;
-        try
-        {
-            AccountStats stats = account.getStats(context);
-            unreadMessageCount = stats.unreadMessageCount;
-        }
-        catch (MessagingException e)
-        {
-            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
-        }
+//        try
+//        {
+//            AccountStats stats = account.getStats(context);
+//            unreadMessageCount = stats.unreadMessageCount;
+//        }
+//        catch (MessagingException e)
+//        {
+//            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+//        }
 
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -4355,7 +4367,6 @@ public class MessagingController implements Runnable
         Intent i = FolderList.actionHandleAccountIntent(context, account, account.getAutoExpandFolderName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        // 279 Unread (someone@gmail.com)
         String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount, account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 

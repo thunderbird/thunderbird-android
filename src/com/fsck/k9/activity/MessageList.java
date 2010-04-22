@@ -68,7 +68,7 @@ public class MessageList
     private static final String EXTRA_FORBIDDEN_FLAGS = "forbiddenFlags";
     private static final String EXTRA_INTEGRATE = "integrate";
     private static final String EXTRA_TITLE = "title";
-
+    private static final String EXTRA_SEARCH_SPECIFICATION = "searchSpecification";
 
     private ListView mListView;
 
@@ -264,7 +264,8 @@ public class MessageList
             {
                 if (mTitle != null)
                 {
-                    setTitle(mTitle);
+                    String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
+                    setTitle(dispString);
                 }
                 else
                 {
@@ -1621,6 +1622,14 @@ public class MessageList
             {
                 addOrUpdateMessage(account, folder, message);
             }
+            
+            @Override
+            public void searchStats(AccountStats stats)
+            {
+                mUnreadMessageCount = stats.unreadMessageCount;
+                mHandler.refreshTitle();
+            }
+            
             @Override
             public void folderStatusChanged(Account account, String folder, int unreadMessageCount)
             {

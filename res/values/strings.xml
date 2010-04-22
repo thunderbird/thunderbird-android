@@ -690,17 +690,13 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="count_search_title">Count search results</string>
     <string name="count_search_summary">Turn off for faster display</string>
     
-    <string name="search_unread_messages_title">All unread messages</string>
-    <string name="search_unread_messages_detail">Unread messages in searchable accounts</string>
+    <string name="search_all_messages_title">All messages</string>
+    <string name="search_all_messages_detail">All messages in searchable folders</string>
         
-    <string name="search_starred_messages_title">All starred messages</string>
-    <string name="search_starred_messages_detail">Starred messages in searchable accounts</string>
-        
-    <string name="integrated_inbox_title">Integrated Inbox (unread)</string>
-    <string name="integrated_inbox_detail">All unread messages in integrated folders</string>
+    <string name="integrated_inbox_title">Integrated Inbox</string>
+    <string name="integrated_inbox_detail">All messages in integrated folders</string>
     
-    <string name="integrated_inbox_starred_title">Integrated Inbox (starred)</string>
-    <string name="integrated_inbox_starred_detail">All starred messages in integrated folders</string>
+    <string name="tap_hint">Tap envelope or star for unread or starred messages</string>
     
     <string name="folder_settings_include_in_integrated_inbox_label">Integrate</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Unread messages are shown in Integrated Inbox</string>

@@ -266,37 +266,46 @@ public class LocalStore extends Store implements Serializable
 
     public void compact() throws MessagingException
     {
-        Log.i(K9.LOG_TAG, "Before prune size = " + getSize());
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "Before prune size = " + getSize());
 
         pruneCachedAttachments();
-        Log.i(K9.LOG_TAG, "After prune / before compaction size = " + getSize());
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "After prune / before compaction size = " + getSize());
 
         mDb.execSQL("VACUUM");
-        Log.i(K9.LOG_TAG, "After compaction size = " + getSize());
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "After compaction size = " + getSize());
     }
 
 
     public void clear() throws MessagingException
     {
-        Log.i(K9.LOG_TAG, "Before prune size = " + getSize());
+        if (K9.DEBUG)
+            Log.i(K9.LOG_TAG, "Before prune size = " + getSize());
 
         pruneCachedAttachments(true);
+        if (K9.DEBUG)
+        {
+            Log.i(K9.LOG_TAG, "After prune / before compaction size = " + getSize());
 
-        Log.i(K9.LOG_TAG, "After prune / before compaction size = " + getSize());
+            Log.i(K9.LOG_TAG, "Before clear folder count = " + getFolderCount());
+            Log.i(K9.LOG_TAG, "Before clear message count = " + getMessageCount());
 
-        Log.i(K9.LOG_TAG, "Before clear folder count = " + getFolderCount());
-        Log.i(K9.LOG_TAG, "Before clear message count = " + getMessageCount());
-
-        Log.i(K9.LOG_TAG, "After prune / before clear size = " + getSize());
+            Log.i(K9.LOG_TAG, "After prune / before clear size = " + getSize());
+        }
         // don't delete messages that are Local, since there is no copy on the server.
         // Don't delete deleted messages.  They are essentially placeholders for UIDs of messages that have
         // been deleted locally.  They take up insignificant space
         mDb.execSQL("DELETE FROM messages WHERE deleted = 0 and uid not like 'Local%'");
 
         compact();
-        Log.i(K9.LOG_TAG, "After clear message count = " + getMessageCount());
+        if (K9.DEBUG)
+        {
+            Log.i(K9.LOG_TAG, "After clear message count = " + getMessageCount());
 
-        Log.i(K9.LOG_TAG, "After clear size = " + getSize());
+            Log.i(K9.LOG_TAG, "After clear size = " + getSize());
+        }
     }
 
     public int getMessageCount() throws MessagingException
@@ -345,11 +354,10 @@ public class LocalStore extends Store implements Serializable
 
     // TODO this takes about 260-300ms, seems slow.
     @Override
-    public LocalFolder[] getPersonalNamespaces() throws MessagingException
+    public List<? extends Folder> getPersonalNamespaces() throws MessagingException
     {
-        ArrayList<LocalFolder> folders = new ArrayList<LocalFolder>();
+        LinkedList<LocalFolder> folders = new LinkedList<LocalFolder>();
         Cursor cursor = null;
-
 
         try
         {
@@ -369,7 +377,7 @@ public class LocalStore extends Store implements Serializable
                 cursor.close();
             }
         }
-        return folders.toArray(new LocalFolder[] {});
+        return folders;
     }
 
     @Override
@@ -457,7 +465,8 @@ public class LocalStore extends Store implements Serializable
                         {
                             if (cursor.getString(0) == null)
                             {
-                                Log.d(K9.LOG_TAG, "Attachment " + file.getAbsolutePath() + " has no store data, not deleting");
+                                if (K9.DEBUG)
+                                    Log.d(K9.LOG_TAG, "Attachment " + file.getAbsolutePath() + " has no store data, not deleting");
                                 /*
                                  * If the attachment has no store data it is not recoverable, so
                                  * we won't delete it.
@@ -692,8 +701,11 @@ public class LocalStore extends Store implements Serializable
             whereClause.append(" )");
         }
         
-        Log.i(K9.LOG_TAG, "whereClause = " + whereClause.toString());
-        Log.i(K9.LOG_TAG, "args = " + args);
+        if (K9.DEBUG)
+        {
+            Log.v(K9.LOG_TAG, "whereClause = " + whereClause.toString());
+            Log.v(K9.LOG_TAG, "args = " + args);
+        }
         return getMessages(
                    listener,
                    null,
@@ -1193,6 +1205,15 @@ public class LocalStore extends Store implements Serializable
 
             editor.commit();
         }
+        
+        
+        public FolderClass getDisplayClass(Preferences preferences) throws MessagingException
+        {
+            String id = getPrefId();
+            return FolderClass.valueOf(preferences.getPreferences().getString(id + ".displayMode",
+                    FolderClass.NO_CLASS.name()));  
+        }
+        
         @Override
         public void refresh(Preferences preferences) throws MessagingException
         {

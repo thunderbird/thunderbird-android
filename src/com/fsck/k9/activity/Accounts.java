@@ -37,15 +37,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     private ConcurrentHashMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
 
-    private Account mSelectedContextAccount;
+    private BaseAccount mSelectedContextAccount;
     private int mUnreadMessageCount = 0;
 
     private AccountsHandler mHandler = new AccountsHandler();
     private AccountsAdapter mAdapter;
     private SearchAccount unreadAccount = null;
-    private SearchAccount flaggedAccount = null;
     private SearchAccount integratedInboxAccount = null;
-    private SearchAccount integratedInboxStarredAccount = null;
     private FontSizes mFontSizes = K9.getFontSizes();
 
     class AccountsHandler extends Handler
@@ -308,21 +306,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     @Override
     public void onCreate(Bundle icicle)
     {
-        unreadAccount = new SearchAccount(this, false, null, new Flag[] { Flag.SEEN } );
-        unreadAccount.setDescription(getString(R.string.search_unread_messages_title));
-        unreadAccount.setEmail(getString(R.string.search_unread_messages_detail));
+        unreadAccount = new SearchAccount(this, false, null, null );
+        unreadAccount.setDescription(getString(R.string.search_all_messages_title));
+        unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
         
-        flaggedAccount = new SearchAccount(this, false, new Flag[] { Flag.FLAGGED }, null);
-        flaggedAccount.setDescription(getString(R.string.search_starred_messages_title));
-        flaggedAccount.setEmail(getString(R.string.search_starred_messages_detail));
-        
-        integratedInboxAccount = new SearchAccount(this, true, null,  new Flag[] { Flag.SEEN });
+        integratedInboxAccount = new SearchAccount(this, true, null,  null);
         integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
         integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
-        
-        integratedInboxStarredAccount = new SearchAccount(this, true, new Flag[] { Flag.FLAGGED },  null);
-        integratedInboxStarredAccount.setDescription(getString(R.string.integrated_inbox_starred_title));
-        integratedInboxStarredAccount.setEmail(getString(R.string.integrated_inbox_starred_detail));
         
         super.onCreate(icicle);
 
@@ -397,15 +387,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         
         List<BaseAccount> newAccounts = new ArrayList<BaseAccount>(accounts.length + 4);
         newAccounts.add(integratedInboxAccount);
-        if (K9.messageListStars())
-        {
-            newAccounts.add(integratedInboxStarredAccount);
-        }
         newAccounts.add(unreadAccount);
-        if (K9.messageListStars())
-        {
-            newAccounts.add(flaggedAccount);
-        }
+        
         for (BaseAccount account : accounts)
         {
             newAccounts.add(account);
@@ -431,9 +414,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             else if (K9.countSearchMessages() && account instanceof SearchAccount)
             {
                 pendingWork.put(account, "true");
-                SearchAccount searchAccount = (SearchAccount)account;
+                final SearchAccount searchAccount = (SearchAccount)account;
             
-                MessagingController.getInstance(getApplication()).searchLocalMessages(searchAccount, null, mListener);
+                MessagingController.getInstance(getApplication()).searchLocalMessages(searchAccount, null, new MessagingListener()
+                {
+                    @Override
+                    public void searchStats(AccountStats stats)
+                    {
+                        mListener.accountStatusChanged(searchAccount, stats);
+                    }
+                });
             }
         }
         
@@ -561,18 +551,23 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_REMOVE_ACCOUNT);
-                try
+                
+                if (mSelectedContextAccount instanceof Account)
                 {
-                    mSelectedContextAccount.getLocalStore().delete();
+                    Account realAccount = (Account)mSelectedContextAccount;
+                    try
+                    {
+                        realAccount.getLocalStore().delete();
+                    }
+                    catch (Exception e)
+                    {
+                        // Ignore
+                    }
+                    MessagingController.getInstance(getApplication()).notifyAccountCancel(Accounts.this, realAccount);
+                    Preferences.getPreferences(Accounts.this).deleteAccount(realAccount);
+                    K9.setServicesEnabled(Accounts.this);
+                    refresh();
                 }
-                catch (Exception e)
-                {
-                    // Ignore
-                }
-                MessagingController.getInstance(getApplication()).notifyAccountCancel(Accounts.this, mSelectedContextAccount);
-                Preferences.getPreferences(Accounts.this).deleteAccount(mSelectedContextAccount);
-                K9.setServicesEnabled(Accounts.this);
-                refresh();
             }
         })
                .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener()
@@ -593,33 +588,38 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         // submenu wouldn't work.
         if (menuInfo != null)
         {
-            mSelectedContextAccount = (Account)getListView().getItemAtPosition(menuInfo.position);
+            mSelectedContextAccount = (BaseAccount)getListView().getItemAtPosition(menuInfo.position);
+        }
+        Account realAccount = null;
+        if (mSelectedContextAccount instanceof Account)
+        {
+            realAccount = (Account)mSelectedContextAccount;
         }
         switch (item.getItemId())
         {
             case R.id.delete_account:
-                onDeleteAccount(mSelectedContextAccount);
+                onDeleteAccount(realAccount);
                 break;
             case R.id.edit_account:
-                onEditAccount(mSelectedContextAccount);
+                onEditAccount(realAccount);
                 break;
             case R.id.open:
                 onOpenAccount(mSelectedContextAccount);
                 break;
             case R.id.check_mail:
-                onCheckMail(mSelectedContextAccount);
+                onCheckMail(realAccount);
                 break;
             case R.id.clear_pending:
-                onClearCommands(mSelectedContextAccount);
+                onClearCommands(realAccount);
                 break;
             case R.id.empty_trash:
-                onEmptyTrash(mSelectedContextAccount);
+                onEmptyTrash(realAccount);
                 break;
             case R.id.compact:
-                onCompact(mSelectedContextAccount);
+                onCompact(realAccount);
                 break;
             case R.id.clear:
-                onClear(mSelectedContextAccount);
+                onClear(realAccount);
                 break;
         }
         return true;
@@ -769,7 +769,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            BaseAccount account = getItem(position);
+            final BaseAccount account = getItem(position);
             View view;
             if (convertView != null)
             {
@@ -787,6 +787,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 holder.email = (TextView) view.findViewById(R.id.email);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
+                holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
 
                 holder.chip = view.findViewById(R.id.chip);
 
@@ -825,6 +826,127 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 
                 holder.flaggedMessageCount.setText(Integer.toString(stats.flaggedMessageCount));
                 holder.flaggedMessageCount.setVisibility(K9.messageListStars() && stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
+                
+                holder.flaggedMessageCount.setOnClickListener(new OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        Log.i(K9.LOG_TAG, "Star on " + account.getDescription());
+                     // TODO: Better String formatting using resources
+                        String description = account.getDescription() + " (Stars)";
+                        if (account instanceof SearchAccount)
+                        {
+                            SearchAccount searchAccount = (SearchAccount)account;
+                            MessageList.actionHandle(Accounts.this, 
+                                    description, "", searchAccount.isIntegrate(), new Flag[] { Flag.FLAGGED }, null);
+                        }
+                        else
+                        {
+                            SearchSpecification searchSpec = new SearchSpecification()
+                            {
+                                @Override
+                                public String[] getAccountUuids()
+                                {
+                                    return new String[] { account.getUuid() };
+                                }
+
+                                @Override
+                                public Flag[] getForbiddenFlags()
+                                {
+                                    return null;
+                                }
+
+                                @Override
+                                public String getQuery()
+                                {
+                                    return null;
+                                }
+
+                                @Override
+                                public Flag[] getRequiredFlags()
+                                {
+                                    return new Flag[] { Flag.FLAGGED };
+                                }
+
+                                @Override
+                                public boolean isIntegrate()
+                                {
+                                    return false;
+                                }
+                                
+                            };
+                            // TODO: Need a way to pass a SearchSpecification to the MessageList
+                         // MessageList.actionHandle(Accounts.this, 
+                            //         description, searchSpec);
+                        }
+                    }
+                });
+                
+                holder.newMessageCount.setOnClickListener(new OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        // TODO: Better String formatting using resources
+                        String description = account.getDescription() + " (Unread)";
+                        Log.i(K9.LOG_TAG, "Envelope on " + account.getDescription());
+                        if (account instanceof SearchAccount)
+                        {
+                            SearchAccount searchAccount = (SearchAccount)account;
+                            MessageList.actionHandle(Accounts.this, 
+                                    description, "", searchAccount.isIntegrate(), null, new Flag[] { Flag.SEEN });
+                        }
+                        else
+                        {
+                            SearchSpecification searchSpec = new SearchSpecification()
+                            {
+                                @Override
+                                public String[] getAccountUuids()
+                                {
+                                    return new String[] { account.getUuid() };
+                                }
+
+                                @Override
+                                public Flag[] getForbiddenFlags()
+                                {
+                                    return new Flag[] { Flag.SEEN };
+                                }
+
+                                @Override
+                                public String getQuery()
+                                {
+                                    return null;
+                                }
+
+                                @Override
+                                public Flag[] getRequiredFlags()
+                                {
+                                    return null;
+                                }
+
+                                @Override
+                                public boolean isIntegrate()
+                                {
+                                    return false;
+                                }
+                                
+                            };
+
+                            // TODO: Need a way to pass a SearchSpecification to the MessageList
+                           // MessageList.actionHandle(Accounts.this, 
+                           //         description, searchSpec);
+                        }
+                    }
+                });
+                holder.activeIcons.setOnClickListener(new OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        Toast toast = Toast.makeText(getApplication(), getString(R.string.tap_hint), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+                );
+
             }
             else
             {
@@ -866,6 +988,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public TextView email;
             public TextView newMessageCount;
             public TextView flaggedMessageCount;
+            public RelativeLayout activeIcons;
             public View chip;
         }
     }

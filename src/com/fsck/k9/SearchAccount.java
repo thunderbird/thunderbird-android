@@ -3,6 +3,7 @@
  */
 package com.fsck.k9;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import android.content.Context;
@@ -10,7 +11,7 @@ import android.content.Context;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 
-public class SearchAccount implements BaseAccount
+public class SearchAccount implements BaseAccount, SearchSpecification, Serializable
 {
     private Flag[] mRequiredFlags = null;
     private Flag[] mForbiddenFlags = null;
@@ -19,6 +20,23 @@ public class SearchAccount implements BaseAccount
     private String query = "";
     private boolean integrate = false;
     private String mUuid = UUID.randomUUID().toString();
+    private boolean builtin = false;
+    private String[] accountUuids = null;
+    
+    public SearchAccount(Preferences preferences)
+    {
+        
+    }
+    protected synchronized void delete(Preferences preferences)
+    {
+    
+    }
+    
+    public synchronized void save(Preferences preferences)
+    {
+        
+    }
+    
     
     public SearchAccount(Context context, boolean nintegrate, Flag[] requiredFlags, Flag[] forbiddenFlags)
     {
@@ -85,5 +103,23 @@ public class SearchAccount implements BaseAccount
     public void setIntegrate(boolean integrate)
     {
         this.integrate = integrate;
+    }
+
+    public boolean isBuiltin()
+    {
+        return builtin;
+    }
+
+    public void setBuiltin(boolean builtin)
+    {
+        this.builtin = builtin;
+    }
+    public String[] getAccountUuids()
+    {
+        return accountUuids;
+    }
+    public void setAccountUuids(String[] accountUuids)
+    {
+        this.accountUuids = accountUuids;
     }
 }

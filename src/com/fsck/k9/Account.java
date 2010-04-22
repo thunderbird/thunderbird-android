@@ -426,6 +426,7 @@ public class Account implements BaseAccount
     // Why should everything be in MessagingController? This is an Account-specific operation. --danapple0
     public AccountStats getStats(Context context) throws MessagingException
     {
+        long startTime = System.currentTimeMillis();
         AccountStats stats = new AccountStats();
         int unreadMessageCount = 0;
         int flaggedMessageCount = 0;
@@ -436,10 +437,15 @@ public class Account implements BaseAccount
         }
         Account.FolderMode aMode = getFolderDisplayMode();
         Preferences prefs = Preferences.getPreferences(context);
-        for (LocalFolder folder : localStore.getPersonalNamespaces())
+        long folderLoadStart = System.currentTimeMillis();
+        List<? extends Folder> folders = localStore.getPersonalNamespaces();
+        long folderLoadEnd = System.currentTimeMillis();
+        long folderEvalStart = folderLoadEnd;
+        for (Folder folder : folders)
         {
-            folder.refresh(prefs);
-            Folder.FolderClass fMode = folder.getDisplayClass();
+            LocalFolder localFolder = (LocalFolder)folder;
+            //folder.refresh(prefs);
+            Folder.FolderClass fMode = localFolder.getDisplayClass(prefs);
 
             if (folder.getName().equals(getTrashFolderName()) == false &&
                     folder.getName().equals(getDraftsFolderName()) == false &&
@@ -472,9 +478,14 @@ public class Account implements BaseAccount
                 
             }
         }
+        long folderEvalEnd = System.currentTimeMillis();
         stats.unreadMessageCount = unreadMessageCount;
         stats.flaggedMessageCount = flaggedMessageCount;
-        Log.i(K9.LOG_TAG, "flaggedMessageCount for " + getDescription() + " = " + flaggedMessageCount);
+        long endTime = System.currentTimeMillis();
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;"
+                    + " loading " + folders.size() + " took " + (folderLoadEnd - folderLoadStart) + " ms;"
+                    + " evaluating took " + (folderEvalEnd - folderEvalStart) + " ms");
         return stats;
     }
 
