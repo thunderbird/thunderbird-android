@@ -706,8 +706,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
             findSurroundingMessagesUid();
 
-            // Remove this message's Uid locally
-            mMessageReferences.remove(messageToDelete.getUid());
+            mMessageReferences.remove(mMessageReference);
 
             MessagingController.getInstance(getApplication()).deleteMessages(
                 new Message[] { messageToDelete },
