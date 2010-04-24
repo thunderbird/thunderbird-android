@@ -1275,8 +1275,8 @@ public class FolderList extends K9ListActivity
 
             holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
 
-            holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());
-            holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountDescription());
+            holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getFolderName());
+            holder.folderStatus.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getFolderStatus());
 
 
             return view;
