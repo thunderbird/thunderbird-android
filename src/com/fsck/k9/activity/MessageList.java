@@ -488,7 +488,7 @@ public class MessageList
         }
         else if (mQueryString != null)
         {
-            mController.searchLocalMessages(mAccountUuids, mQueryString, null, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+            mController.searchLocalMessages(mAccountUuids, null, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
         }
 
         mHandler.refreshTitle();
@@ -2096,21 +2096,28 @@ public class MessageList
 
             FooterViewHolder holder = (FooterViewHolder)footerView.getTag();
 
-            if (mCurrentFolder != null && mCurrentFolder.loading)
+            if (mCurrentFolder != null && mAccount != null)
             {
-                holder.main.setText(getString(R.string.status_loading_more));
-                holder.progress.setVisibility(ProgressBar.VISIBLE);
-            }
-            else
-            {
-                if (mCurrentFolder != null && mCurrentFolder.lastCheckFailed == false)
+                if (mCurrentFolder.loading)
                 {
-                    holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                    holder.main.setText(getString(R.string.status_loading_more));
+                    holder.progress.setVisibility(ProgressBar.VISIBLE);
                 }
                 else
                 {
-                    holder.main.setText(getString(R.string.status_loading_more_failed));
+                    if (mCurrentFolder.lastCheckFailed == false)
+                    {
+                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                    }
+                    else
+                    {
+                        holder.main.setText(getString(R.string.status_loading_more_failed));
+                    }
+                    holder.progress.setVisibility(ProgressBar.INVISIBLE);
                 }
+            }
+            else
+            {
                 holder.progress.setVisibility(ProgressBar.INVISIBLE);
             }
 

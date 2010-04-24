@@ -388,8 +388,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         BaseAccount[] accounts = Preferences.getPreferences(this).getAccounts();
         
         List<BaseAccount> newAccounts = new ArrayList<BaseAccount>(accounts.length + 4);
-        newAccounts.add(integratedInboxAccount);
-        newAccounts.add(unreadAccount);
+        if (accounts.length > 0)
+        {
+            newAccounts.add(integratedInboxAccount);
+            newAccounts.add(unreadAccount);
+        }
         
         for (BaseAccount account : accounts)
         {
