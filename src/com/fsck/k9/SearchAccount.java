@@ -9,7 +9,6 @@ import java.util.UUID;
 import android.content.Context;
 
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message;
 
 public class SearchAccount implements BaseAccount, SearchSpecification, Serializable
 {
@@ -22,6 +21,7 @@ public class SearchAccount implements BaseAccount, SearchSpecification, Serializ
     private String mUuid = UUID.randomUUID().toString();
     private boolean builtin = false;
     private String[] accountUuids = null;
+    private String[] folderNames = null;
     
     public SearchAccount(Preferences preferences)
     {
@@ -121,5 +121,14 @@ public class SearchAccount implements BaseAccount, SearchSpecification, Serializ
     public void setAccountUuids(String[] accountUuids)
     {
         this.accountUuids = accountUuids;
+    }
+    @Override
+    public String[] getFolderNames()
+    {
+        return folderNames;
+    }
+    public void setFolderNames(String[] folderNames)
+    {
+        this.folderNames = folderNames;
     }
 }

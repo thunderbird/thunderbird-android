@@ -67,7 +67,8 @@ public class MessageList
     private static final String EXTRA_QUERY_FLAGS = "queryFlags";
     private static final String EXTRA_FORBIDDEN_FLAGS = "forbiddenFlags";
     private static final String EXTRA_INTEGRATE = "integrate";
-    private static final String EXTRA_ACCOUNT_UUIDS = "accountUuids";
+   private static final String EXTRA_ACCOUNT_UUIDS = "accountUuids";
+    private static final String EXTRA_FOLDER_NAMES = "folderNames";
     private static final String EXTRA_TITLE = "title";
 
     private ListView mListView;
@@ -99,6 +100,7 @@ public class MessageList
     private Flag[] mForbiddenFlags = null;
     private boolean mIntegrate = false;
     private String[] mAccountUuids = null;
+    private String[] mFolderNames = null;
     private String mTitle;
 
     private MessageListHandler mHandler = new MessageListHandler();
@@ -343,6 +345,7 @@ public class MessageList
         }
         intent.putExtra(EXTRA_INTEGRATE, searchSpecification.isIntegrate());
         intent.putExtra(EXTRA_ACCOUNT_UUIDS, searchSpecification.getAccountUuids());
+        intent.putExtra(EXTRA_FOLDER_NAMES, searchSpecification.getFolderNames());
         intent.putExtra(EXTRA_TITLE, title);
         context.startActivity(intent);
        
@@ -414,7 +417,7 @@ public class MessageList
         }
         mIntegrate = intent.getBooleanExtra(EXTRA_INTEGRATE, false);
         mAccountUuids = intent.getStringArrayExtra(EXTRA_ACCOUNT_UUIDS);
-        
+        mFolderNames = intent.getStringArrayExtra(EXTRA_FOLDER_NAMES);        
         mTitle = intent.getStringExtra(EXTRA_TITLE);
         
         // Take the initial folder into account only if we are *not* restoring the
@@ -488,7 +491,7 @@ public class MessageList
         }
         else if (mQueryString != null)
         {
-            mController.searchLocalMessages(mAccountUuids, null, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+            mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
         }
 
         mHandler.refreshTitle();

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -23,6 +24,7 @@ import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -64,7 +66,6 @@ public class FolderList extends K9ListActivity
     private FolderListHandler mHandler = new FolderListHandler();
 
     private int mUnreadMessageCount;
-    private int mFlaggedMessageCount;
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
@@ -1190,6 +1191,7 @@ public class FolderList extends K9ListActivity
                 holder.newMessageCount = (TextView) view.findViewById(R.id.folder_unread_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.folder_flagged_message_count);
                 holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
+                holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
                 holder.chip = view.findViewById(R.id.chip);
                 holder.rawFolderName = folder.name;
 
@@ -1240,6 +1242,7 @@ public class FolderList extends K9ListActivity
             {
                 holder.newMessageCount.setText(Integer
                                                .toString(folder.unreadMessageCount));
+                holder.newMessageCount.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.UNREAD));
                 holder.newMessageCount.setVisibility(View.VISIBLE);
             }
             else
@@ -1251,13 +1254,23 @@ public class FolderList extends K9ListActivity
             {
                 holder.flaggedMessageCount.setText(Integer
                         .toString(folder.flaggedMessageCount));
+                holder.flaggedMessageCount.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.FLAGGED));
                 holder.flaggedMessageCount.setVisibility(View.VISIBLE);
             }
             else
             {
                 holder.flaggedMessageCount.setVisibility(View.GONE);
             }
-
+            holder.activeIcons.setOnClickListener(new OnClickListener()
+            {
+                public void onClick(View v)
+                {
+                    Toast toast = Toast.makeText(getApplication(), getString(R.string.tap_hint), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+            );
+            
             holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[mAccount.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
 
             holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
@@ -1422,8 +1435,77 @@ public class FolderList extends K9ListActivity
         public TextView newMessageCount;
         public TextView flaggedMessageCount;
 
+        public RelativeLayout activeIcons;
         public String rawFolderName;
         public View chip;
     }
+    
+    private class FolderClickListener implements OnClickListener
+    {
+        
+        final BaseAccount account;
+        final String folderName;
+        final String displayName;
+        final SearchModifier searchModifier;
+        FolderClickListener(BaseAccount nAccount, String folderName, String displayName, SearchModifier nSearchModifier )
+        {
+            account = nAccount;
+            this.folderName = folderName;
+            searchModifier = nSearchModifier;
+            this.displayName = displayName;
+        }
+        @Override
+        public void onClick(View v)
+        {
+            String description = getString(R.string.search_title, 
+                    getString(R.string.message_list_title, account.getDescription(), displayName), 
+                    getString(searchModifier.resId));
+            
+            SearchSpecification searchSpec = new SearchSpecification()
+            {
+                @Override
+                public String[] getAccountUuids()
+                {
+                    return new String[] { account.getUuid() };
+                }
+
+                @Override
+                public Flag[] getForbiddenFlags()
+                {
+                    return searchModifier.forbiddenFlags;
+                }
+
+                @Override
+                public String getQuery()
+                {
+                    return "";
+                }
+
+                @Override
+                public Flag[] getRequiredFlags()
+                {
+                    return searchModifier.requiredFlags;
+                }
+
+                @Override
+                public boolean isIntegrate()
+                {
+                    return false;
+                }
+
+                @Override
+                public String[] getFolderNames()
+                {
+                    return new String[] { folderName };
+                }
+                
+            };
+            MessageList.actionHandle(FolderList.this, description, searchSpec);
+        
+        }
+        
+    }
+
+    
 
 }

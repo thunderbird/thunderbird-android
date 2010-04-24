@@ -968,28 +968,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     {
                         return false;
                     }
+
+                    @Override
+                    public String[] getFolderNames()
+                    {
+                        return null;
+                    }
                     
                 };
                 MessageList.actionHandle(Accounts.this, description, searchSpec);
             }
-        }
-        
-    }
-
-    
-    private enum SearchModifier
-    {
-        FLAGGED(R.string.flagged_modifier, new Flag[] { Flag.FLAGGED}, null), UNREAD(R.string.unread_modifier, null, new Flag[] { Flag.SEEN} );
-        
-        final int resId;
-        final Flag[] requiredFlags;
-        final Flag[] forbiddenFlags;
-        
-        SearchModifier(int nResId, Flag[] nRequiredFlags, Flag[] nForbiddenFlags)
-        {
-            resId = nResId;
-            requiredFlags = nRequiredFlags;
-            forbiddenFlags = nForbiddenFlags;
         }
         
     }

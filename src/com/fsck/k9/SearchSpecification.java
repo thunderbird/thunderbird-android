@@ -15,4 +15,6 @@ public interface SearchSpecification
     public String getQuery();
     
     public String[] getAccountUuids();
+    
+    public String[] getFolderNames();
 }
