@@ -705,14 +705,23 @@ public class MessageList
         else
         {
             // Need to get the list before the sort starts
-            ArrayList<String> messageUids = new ArrayList<String>();
+            ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
 
             for (MessageInfoHolder holder : mAdapter.messages)
             {
-                messageUids.add(holder.uid);
+                MessageReference ref = new MessageReference();
+                ref.accountUuid = holder.message.getFolder().getAccount().getUuid();
+                ref.folderName = holder.message.getFolder().getName();
+                ref.uid = holder.uid;
+                messageRefs.add(ref);
             }
+            MessageReference ref = new MessageReference();
+            ref.accountUuid = message.message.getFolder().getAccount().getUuid();
+            ref.folderName = message.message.getFolder().getName();
+            ref.uid = message.uid;
+            Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
 
-            MessageView.actionView(this, message.account, message.folder.name, message.uid, messageUids);
+            MessageView.actionView(this, ref, messageRefs);
         }
         /*
         * We set read=true here for UI performance reasons. The actual value will

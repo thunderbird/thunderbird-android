@@ -41,10 +41,8 @@ import java.util.List;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
-    private static final String EXTRA_ACCOUNT = "com.fsck.k9.MessageView_account";
-    private static final String EXTRA_FOLDER = "com.fsck.k9.MessageView_folder";
-    private static final String EXTRA_MESSAGE = "com.fsck.k9.MessageView_message";
-    private static final String EXTRA_MESSAGE_UIDS = "com.fsck.k9.MessageView_messageUids";
+    private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
+    private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -70,9 +68,8 @@ public class MessageView extends K9Activity implements OnClickListener
     View previous_scrolling;
 
     private Account mAccount;
-    private String mFolder;
-    private String mMessageUid;
-    private ArrayList<String> mMessageUids;
+    private MessageReference mMessageReference;
+    private ArrayList<MessageReference> mMessageReferences;
 
     private Message mMessage;
 
@@ -82,8 +79,8 @@ public class MessageView extends K9Activity implements OnClickListener
     private int mLastDirection = PREVIOUS;
 
 
-    private String mNextMessageUid = null;
-    private String mPreviousMessageUid = null;
+    private MessageReference mNextMessage = null;
+    private MessageReference mPreviousMessage = null;
 
 
 
@@ -410,18 +407,16 @@ public class MessageView extends K9Activity implements OnClickListener
         public ImageView iconView;
     }
 
-    public static void actionView(Context context, Account account, String folder, String messageUid, ArrayList<String> folderUids)
+    public static void actionView(Context context, MessageReference messRef, List<MessageReference> messReferences)
     {
-        actionView(context, account, folder, messageUid, folderUids, null);
+        actionView(context, messRef, messReferences, null);
     }
 
-    public static void actionView(Context context, Account account, String folder, String messageUid, ArrayList<String> folderUids, Bundle extras)
+    public static void actionView(Context context, MessageReference messRef, List<MessageReference> messReferences, Bundle extras)
     {
         Intent i = new Intent(context, MessageView.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_FOLDER, folder);
-        i.putExtra(EXTRA_MESSAGE, messageUid);
-        i.putExtra(EXTRA_MESSAGE_UIDS, folderUids);
+        i.putExtra(EXTRA_MESSAGE_REFERENCE, messRef);
+        i.putExtra(EXTRA_MESSAGE_REFERENCES, (Serializable)messReferences);
         if (extras != null)
         {
             i.putExtras(extras);
@@ -517,21 +512,15 @@ public class MessageView extends K9Activity implements OnClickListener
 
         if (icicle!=null)
         {
-            String accountUuid = icicle.getString(EXTRA_ACCOUNT);
-            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-            mFolder = icicle.getString(EXTRA_FOLDER);
-            mMessageUid = icicle.getString(EXTRA_MESSAGE);
-            mMessageUids = icicle.getStringArrayList(EXTRA_MESSAGE_UIDS);
+            mMessageReference = (MessageReference)icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
+            mMessageReferences = (ArrayList<MessageReference>)icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
         }
         else
         {
             if (uri==null)
             {
-                String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-                mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-                mFolder = intent.getStringExtra(EXTRA_FOLDER);
-                mMessageUid = intent.getStringExtra(EXTRA_MESSAGE);
-                mMessageUids = intent.getStringArrayListExtra(EXTRA_MESSAGE_UIDS);
+                mMessageReference = (MessageReference)intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
+                mMessageReferences = (ArrayList<MessageReference>)intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCES);
             }
             else
             {
@@ -556,9 +545,13 @@ public class MessageView extends K9Activity implements OnClickListener
                         Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
                         return;
                     }
-                    mFolder = segmentList.get(1);
-                    mMessageUid = segmentList.get(2);
-                    mMessageUids = new ArrayList<String>();
+                    
+                    mMessageReference = new MessageReference();
+                    mMessageReference.accountUuid = mAccount.getUuid();
+                    mMessageReference.folderName = segmentList.get(1);
+                    mMessageReference.uid = segmentList.get(2);
+                    
+                    mMessageReferences = new ArrayList<MessageReference>();
                 }
                 else
                 {
@@ -568,6 +561,8 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
             }
         }
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "MessageView got message " + mMessageReference);
 
         next = findViewById(R.id.next);
         previous = findViewById(R.id.previous);
@@ -584,7 +579,8 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             next.requestFocus();
         }
-
+        // Perhaps the hideButtons should be global, instead of account-specific
+        mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
         Account.HideButtons hideButtons = mAccount.getHideMessageViewButtons();
 
         //MessagingController.getInstance(getApplication()).addListener(mListener);
@@ -608,21 +604,24 @@ public class MessageView extends K9Activity implements OnClickListener
                 showButtons();
             }
         }
-        displayMessage(mMessageUid);
+        displayMessage(mMessageReference);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
-        outState.putString(EXTRA_ACCOUNT, mAccount.getUuid());
-        outState.putString(EXTRA_FOLDER, mFolder);
-        outState.putString(EXTRA_MESSAGE, mMessageUid);
-        outState.putStringArrayList(EXTRA_MESSAGE_UIDS, mMessageUids);
+        outState.putSerializable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
+        outState.putSerializable(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
     }
 
-    private void displayMessage(String uid)
+    private void displayMessage(MessageReference ref)
     {
-        mMessageUid = uid;
+        mMessageReference = ref;
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
+        
+        mAccount = Preferences.getPreferences(this).getAccount(ref.accountUuid);
+        
         mMessageContentView.getSettings().setBlockNetworkImage(true);
         K9.setBlockNetworkLoads(mMessageContentView.getSettings(), true);
 
@@ -630,8 +629,8 @@ public class MessageView extends K9Activity implements OnClickListener
         findSurroundingMessagesUid();
 
 
-        boolean enableNext = (mNextMessageUid != null);
-        boolean enablePrev = (mPreviousMessageUid != null);
+        boolean enableNext = (mNextMessage != null);
+        boolean enablePrev = (mPreviousMessage != null);
 
         if (next.isEnabled() != enableNext)
             next.setEnabled(enableNext);
@@ -645,8 +644,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
-            mFolder,
-            mMessageUid,
+            mMessageReference.folderName,
+            mMessageReference.uid,
             mListener);
 
         mTopView.scrollTo(0, 0);
@@ -683,14 +682,14 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void findSurroundingMessagesUid()
     {
-        mNextMessageUid = mPreviousMessageUid = null;
-        int i = mMessageUids.indexOf(mMessageUid);
+        mNextMessage = mPreviousMessage = null;
+        int i = mMessageReferences.indexOf(mMessageReference);
         if (i < 0)
             return;
         if (i != 0)
-            mNextMessageUid = mMessageUids.get(i - 1);
-        if (i != (mMessageUids.size() - 1))
-            mPreviousMessageUid = mMessageUids.get(i + 1);
+            mNextMessage = mMessageReferences.get(i - 1);
+        if (i != (mMessageReferences.size() - 1))
+            mPreviousMessage = mMessageReferences.get(i + 1);
     }
 
     @Override
@@ -708,25 +707,25 @@ public class MessageView extends K9Activity implements OnClickListener
             findSurroundingMessagesUid();
 
             // Remove this message's Uid locally
-            mMessageUids.remove(messageToDelete.getUid());
+            mMessageReferences.remove(messageToDelete.getUid());
 
             MessagingController.getInstance(getApplication()).deleteMessages(
                 new Message[] { messageToDelete },
                 null);
 
-            if (mLastDirection == NEXT && mNextMessageUid != null)
+            if (mLastDirection == NEXT && mNextMessage != null)
             {
                 onNext(K9.isAnimations());
             }
-            else if (mLastDirection == PREVIOUS && mPreviousMessageUid != null)
+            else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
             {
                 onPrevious(K9.isAnimations());
             }
-            else if (mNextMessageUid != null)
+            else if (mNextMessage != null)
             {
                 onNext(K9.isAnimations());
             }
-            else if (mPreviousMessageUid != null)
+            else if (mPreviousMessage != null)
             {
                 onPrevious(K9.isAnimations());
             }
@@ -835,8 +834,8 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mFolder);
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageUid);
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
+        intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageReference);
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
     }
 
@@ -854,8 +853,8 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mFolder);
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageUid);
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
+        intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageReference);
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
     }
 
@@ -875,7 +874,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 String srcFolderName = data.getStringExtra(ChooseFolder.EXTRA_CUR_FOLDER);
                 String uid = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE_UID);
 
-                if (uid.equals(mMessageUid) && srcFolderName.equals(mFolder))
+                if (uid.equals(mMessageReference) && srcFolderName.equals(mMessageReference.folderName))
                 {
 
                     switch (requestCode)
@@ -906,7 +905,7 @@ public class MessageView extends K9Activity implements OnClickListener
     @Override
     protected void onNext(boolean animate)
     {
-        if (mNextMessageUid == null)
+        if (mNextMessage == null)
         {
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
@@ -916,14 +915,14 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             mTopView.startAnimation(outToLeftAnimation());
         }
-        displayMessage(mNextMessageUid);
+        displayMessage(mNextMessage);
         next.requestFocus();
     }
 
     @Override
     protected void onPrevious(boolean animate)
     {
-        if (mPreviousMessageUid == null)
+        if (mPreviousMessage == null)
         {
             Toast.makeText(this, getString(R.string.end_of_folder), Toast.LENGTH_SHORT).show();
             return;
@@ -934,7 +933,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             mTopView.startAnimation(inFromRightAnimation());
         }
-        displayMessage(mPreviousMessageUid);
+        displayMessage(mPreviousMessage);
         previous.requestFocus();
     }
 
@@ -944,7 +943,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             MessagingController.getInstance(getApplication()).setFlag(
                 mAccount,
-                mFolder,
+                mMessageReference.folderName,
                 new String[] { mMessage.getUid() },
                 Flag.SEEN,
                 false);
@@ -1324,7 +1323,8 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadMessageForViewHeadersAvailable(Account account, String folder, String uid,
                 final Message message)
         {
-            if (!mMessageUid.equals(uid))
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+                    || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
             }
@@ -1358,7 +1358,8 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
                 Message message)
         {
-            if (!mMessageUid.equals(uid))
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+                    || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
             }
@@ -1445,7 +1446,8 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadMessageForViewFailed(Account account, String folder, String uid,
                                              final Throwable t)
         {
-            if (!mMessageUid.equals(uid))
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+                    || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
             }
@@ -1475,7 +1477,8 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadMessageForViewFinished(Account account, String folder, String uid,
                                                Message message)
         {
-            if (!mMessageUid.equals(uid))
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+                    || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
             }
@@ -1492,7 +1495,8 @@ public class MessageView extends K9Activity implements OnClickListener
         @Override
         public void loadMessageForViewStarted(Account account, String folder, String uid)
         {
-            if (!mMessageUid.equals(uid))
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+                    || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
             }
