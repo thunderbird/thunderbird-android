@@ -722,8 +722,8 @@ public class MessagingController implements Runnable
         if (K9.DEBUG)
         {
             Log.i(K9.LOG_TAG, "searchLocalMessages (" 
-                    + "accounts=" + Utility.combine(accountUuids, ',') 
-                    + ", folders = " + Utility.combine(folderNames, ',') 
+                    + "accountUuids=" + Utility.combine(accountUuids, ',') 
+                    + ", folderNames = " + Utility.combine(folderNames, ',') 
                     + ", messages.size() = " + (messages != null ? messages.length : null)
                     + ", query = " + query
                     + ", integrate = " + integrate
@@ -836,6 +836,10 @@ public class MessagingController implements Runnable
                                 {
                                     tmpFoldersToSearch.add(localFolder);
                                 }
+                            }
+                            if (tmpFoldersToSearch.size() < 1)
+                            {
+                                continue;
                             }
                             foldersToSearch = tmpFoldersToSearch;
                         }
