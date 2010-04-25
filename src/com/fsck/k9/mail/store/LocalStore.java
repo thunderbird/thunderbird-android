@@ -34,7 +34,7 @@ import java.util.regex.Matcher;
  */
 public class LocalStore extends Store implements Serializable
 {
-    private static final int DB_VERSION = 34;
+    private static final int DB_VERSION = 35;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
     private String mPath;
@@ -213,6 +213,17 @@ public class LocalStore extends Store implements Serializable
                         {
                             throw e;
                         }
+                    }
+                }
+                if (mDb.getVersion() < 35)
+                {
+                    try
+                    {
+                        mDb.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
+                    }
+                    catch (SQLiteException e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
                     }
                 }
 
@@ -2357,15 +2368,21 @@ public class LocalStore extends Store implements Serializable
             if (flagList != null && flagList.length() > 0)
             {
                 String[] flags = flagList.split(",");
-                try
+                
+                for (String flag : flags)
                 {
-                    for (String flag : flags)
+                    try
                     {
                         this.setFlagInternal(Flag.valueOf(flag), true);
                     }
-                }
-                catch (Exception e)
-                {
+            
+                    catch (Exception e)
+                    {
+                        if ("X_BAD_FLAG".equals(flag) == false)
+                        {
+                            Log.w(K9.LOG_TAG, "Unable to parse flag " + flag);
+                        }
+                    }
                 }
             }
             this.mId = cursor.getLong(5);

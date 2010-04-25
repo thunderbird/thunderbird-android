@@ -19,10 +19,6 @@ public enum Flag
      * these flags and Strings to represent user defined flags. At that point the below
      * flags should become user defined flags.
      */
-    /*
-     * For POP3 to indicate that the message does not have SEEN info
-     */
-    X_NO_SEEN_INFO,
     /**
      * Delete and remove from the LocalStore immediately.
      */

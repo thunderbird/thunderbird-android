@@ -1094,7 +1094,6 @@ public class Pop3Store extends Store
             mUid = uid;
             mFolder = folder;
             mSize = -1;
-            mFlags.add(Flag.X_NO_SEEN_INFO);
         }
 
         public void setSize(int size)
