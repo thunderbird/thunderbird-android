@@ -9,7 +9,7 @@
     >
     <RelativeLayout
         android:id="@+id/chip"
-        android:background="@drawable/appointment_indicator_leftside_1"
+        android:background="@android:color/transparent"
         android:layout_width="wrap_content"
         android:layout_marginRight="2dip"
         android:layout_height="fill_parent"
