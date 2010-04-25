@@ -55,6 +55,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private TextView mToView;
     private TextView mCcView;
     private TextView mSubjectView;
+    public View chip;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
     private WebView mMessageContentView;
@@ -251,6 +252,8 @@ public class MessageView extends K9Activity implements OnClickListener
             final   String time,
             final   String to,
             final   String cc,
+            final   int accountColor,
+            final   boolean unread,
             final   boolean hasAttachments,
             final   boolean isDownloading,
             final   boolean flagged,
@@ -287,6 +290,8 @@ public class MessageView extends K9Activity implements OnClickListener
                     }
                     mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
+                    chip.setBackgroundColor(accountColor);
+                    chip.getBackground().setAlpha(unread ? 255 : 127);
 
                     if (answered)
                     {
@@ -441,6 +446,8 @@ public class MessageView extends K9Activity implements OnClickListener
         mCcView = (TextView)findViewById(R.id.cc);
         mSubjectView = (TextView)findViewById(R.id.subject);
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
+        
+        chip = findViewById(R.id.chip);
 
         mDateView = (TextView)findViewById(R.id.date);
         mTimeView = (TextView)findViewById(R.id.time);
@@ -946,6 +953,15 @@ public class MessageView extends K9Activity implements OnClickListener
                 new String[] { mMessage.getUid() },
                 Flag.SEEN,
                 false);
+            try
+            {
+                mMessage.setFlag(Flag.SEEN, false);
+                setHeaders(mAccount, mMessage.getFolder().getName(), mMessage.getUid(), mMessage);
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to unset SEEN flag on message", e);
+            }
         }
     }
 
@@ -1301,14 +1317,18 @@ public class MessageView extends K9Activity implements OnClickListener
         String timeText = getTimeFormat().format(message.getSentDate());
         String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
         String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
+        int color = mAccount.getChipColor();
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
         boolean isDownloading = !message.isSet(Flag.X_DOWNLOADED_FULL);
+        boolean unread = !message.isSet(Flag.SEEN);
         mHandler.setHeaders(subjectText,
                             fromText,
                             dateText,
                             timeText,
                             toText,
                             ccText,
+                            color,
+                            unread,
                             hasAttachments,
                             isDownloading,
                             message.isSet(Flag.FLAGGED),
@@ -1346,10 +1366,7 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             catch (MessagingException me)
             {
-                if (Config.LOGV)
-                {
-                    Log.v(K9.LOG_TAG, "loadMessageForViewHeadersAvailable", me);
-                }
+                Log.e(K9.LOG_TAG, "loadMessageForViewHeadersAvailable", me);
             }
         }
 

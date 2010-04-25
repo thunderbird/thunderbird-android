@@ -2,10 +2,27 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- header area -->
+    <LinearLayout
+            android:id="@+id/header_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true">
+    <View
+        android:id="@+id/chip"
+        android:layout_width="6dip"
+        android:layout_height="fill_parent"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+    />
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="2dip"
+        android:paddingLeft="6dip"
+        android:paddingRight="2dip"
+        android:paddingTop="2dip"
+        android:paddingBottom="2dip"
         android:background="@android:color/transparent">
     <CheckBox
         android:id="@+id/flagged"
@@ -131,6 +148,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </RelativeLayout>
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/show_pictures_section"
         android:layout_width="fill_parent"

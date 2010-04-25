@@ -2866,12 +2866,6 @@ public class MessagingController implements Runnable
                         message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                     }
 
-                    // This is a view message request, so mark it read
-                    if (!message.isSet(Flag.SEEN))
-                    {
-                        setFlag(new Message[] { message }, Flag.SEEN, true);
-                    }
-
                     if (listener != null && !getListeners().contains(listener))
                     {
                         listener.loadMessageForViewBodyAvailable(account, folder, uid, message);
@@ -2946,6 +2940,12 @@ public class MessagingController implements Runnable
                     {
                         throw new IllegalArgumentException("Message not found: folder=" + folder + ", uid=" + uid);
                     }
+                    if (!message.isSet(Flag.SEEN))
+                    {
+                        message.setFlag(Flag.SEEN, true);
+                        setFlag(new Message[] { message }, Flag.SEEN, true);
+                    }
+
                     for (MessagingListener l : getListeners())
                     {
                         l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
@@ -2973,11 +2973,7 @@ public class MessagingController implements Runnable
                                           message
                                       }, fp, null);
                     localFolder.close();
-                    if (!message.isSet(Flag.SEEN))
-                    {
-                        setFlag(new Message[] { message }, Flag.SEEN, true);
-                    }
-
+                    
                     for (MessagingListener l : getListeners())
                     {
                         l.loadMessageForViewBodyAvailable(account, folder, uid, message);
