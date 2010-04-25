@@ -763,7 +763,7 @@ public class MessagingController implements Runnable
                         displayableOnly = true;
                         noSpecialFolders = true;
                     }
-                    else
+                    else if (integrate == false && folderNames == null)
                     {
                         Account.Searchable searchableFolders = account.getSearchableFolders();
                         switch (searchableFolders)
