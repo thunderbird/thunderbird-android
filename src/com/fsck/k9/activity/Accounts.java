@@ -854,7 +854,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             if (account instanceof Account)
             {
                 Account realAccount = (Account)account;
-                holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[realAccount.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
+
+                holder.chip.setBackgroundColor(realAccount.getChipColor());
                 if (unreadMessageCount == null)
                 {
                     holder.chip.getBackground().setAlpha(0);
@@ -871,7 +872,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             else
             {
-                holder.chip.getBackground().setAlpha(0);
+                holder.chip.setBackgroundColor(0x00000000);
             }
 
             holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());

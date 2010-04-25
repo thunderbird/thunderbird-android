@@ -15,6 +15,7 @@ import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.ColorPickerDialog;
 
 public class AccountSettings extends K9PreferenceActivity
 {
@@ -48,6 +49,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_EXPUNGE_POLICY = "expunge_policy";
     private static final String PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder";
     private static final String PREFERENCE_SEARCHABLE_FOLDERS = "searchable_folders";
+    private static final String PREFERENCE_CHIP_COLOR = "chip_color";
 
 
     private Account mAccount;
@@ -71,6 +73,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mExpungePolicy;
     private ListPreference mSearchableFolders;
     private Preference mAutoExpandFolder;
+    private Preference mChipColor;
     private boolean mIncomingChanged = false;
 
 
@@ -322,14 +325,29 @@ public class AccountSettings extends K9PreferenceActivity
         mAutoExpandFolder.setSummary(translateFolder(mAccount.getAutoExpandFolderName()));
 
         mAutoExpandFolder.setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener()
-        {
+            new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference)
             {
                 onChooseAutoExpandFolder();
                 return false;
             }
-        });
+        }
+        );
+
+
+        mChipColor = (Preference)findPreference(PREFERENCE_CHIP_COLOR);
+
+        mChipColor.setOnPreferenceClickListener(
+            new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference)
+            {
+                onChooseChipColor();
+                return false;
+            }
+            }
+        );
+
+
 
         findPreference(PREFERENCE_COMPOSITION).setOnPreferenceClickListener(
             new Preference.OnPreferenceClickListener()
@@ -487,6 +505,13 @@ public class AccountSettings extends K9PreferenceActivity
     private void onOutgoingSettings()
     {
         AccountSetupOutgoing.actionEditOutgoingSettings(this, mAccount);
+    }
+
+    public void onChooseChipColor()
+    {
+        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener () {
+            public void colorChanged (int color) { mAccount.setChipColor(color); } },
+                    mAccount.getChipColor()).show();
     }
 
     public void onChooseAutoExpandFolder()

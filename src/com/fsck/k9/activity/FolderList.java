@@ -1271,8 +1271,7 @@ public class FolderList extends K9ListActivity
             }
             );
             
-            holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[mAccount.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
-
+            holder.chip.setBackgroundColor(mAccount.getChipColor());
             holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
 
             holder.folderName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getFolderName());

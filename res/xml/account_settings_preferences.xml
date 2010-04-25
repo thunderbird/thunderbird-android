@@ -40,6 +40,12 @@
             android:entries="@array/account_settings_display_count_entries"
             android:entryValues="@array/account_settings_display_count_values"
             android:dialogTitle="@string/account_settings_mail_display_count_label" />
+        <Preference
+            android:key="chip_color"
+            android:singleLine="true"
+            android:title="Account color"
+            android:summary=""
+            />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/account_settings_message_view">

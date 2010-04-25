@@ -35,6 +35,10 @@
                 android:focusable="false"
                 android:visibility="gone"
                 />
+                <View
+                    android:layout_width="4dip"
+                    android:layout_height="fill_parent"
+                />
         </RelativeLayout>
     <TextView
         android:id="@+id/date"

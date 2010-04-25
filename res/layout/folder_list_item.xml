@@ -9,7 +9,7 @@
     android:paddingRight="4dip">
     <View
         android:id="@+id/chip"
-        android:background="@drawable/appointment_indicator_leftside_1"
+        android:background="@android:color/transparent"
         android:layout_width="4dip"
         android:layout_height="fill_parent"
         android:layout_centerVertical="true"

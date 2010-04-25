@@ -16,7 +16,11 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
     >
-          <CheckBox
+        <View
+                android:layout_width="4dip"
+                android:layout_height="fill_parent"
+        />
+        <CheckBox
                 android:id="@+id/selected_checkbox"
                 android:layout_width="24dip"
                 android:layout_height="wrap_content"

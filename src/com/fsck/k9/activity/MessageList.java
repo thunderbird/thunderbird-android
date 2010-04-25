@@ -2000,7 +2000,7 @@ public class MessageList
                         holder.selected.setVisibility(View.GONE);
                     }
                 }
-                holder.chip.setBackgroundResource(K9.COLOR_CHIP_RES_IDS[message.account.getAccountNumber() % K9.COLOR_CHIP_RES_IDS.length]);
+                holder.chip.setBackgroundColor(message.account.getChipColor());
                 holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
 
                 if (message.downloaded)

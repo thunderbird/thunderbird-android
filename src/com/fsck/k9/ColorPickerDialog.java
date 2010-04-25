@@ -18,10 +18,12 @@ package com.fsck.k9;
 
 import android.os.Bundle;
 import android.app.Dialog;
+
 import android.content.Context;
 import android.graphics.*;
 import android.view.MotionEvent;
 import android.view.View;
+
 
 public class ColorPickerDialog extends Dialog {
 
@@ -202,6 +204,8 @@ public class ColorPickerDialog extends Dialog {
                         mTrackingCenter = false;    // so we draw w/o halo
                         invalidate();
                     }
+                    // Hack to _Always change the center color for now
+                    mListener.colorChanged(mCenterPaint.getColor());
                     break;
             }
             return true;
@@ -228,6 +232,6 @@ public class ColorPickerDialog extends Dialog {
         };
 
         setContentView(new ColorPickerView(getContext(), l, mInitialColor));
-        setTitle("Pick a Color");
+        setTitle(getContext().getString(R.string.choose_color_title));
     }
 }

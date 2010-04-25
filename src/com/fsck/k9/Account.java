@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -59,6 +60,7 @@ public class Account implements BaseAccount
     private String mAlwaysBcc;
     private int mAutomaticCheckIntervalMinutes;
     private int mDisplayCount;
+    private int mChipColor;
     private long mLastAutomaticCheckTime;
     private boolean mNotifyNewMail;
     private boolean mNotifySelfNewMail;
@@ -126,6 +128,8 @@ public class Account implements BaseAccount
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = "INBOX";
         mMaxPushFolders = 10;
+        mChipColor = (new Random()).nextInt();
+
         searchableFolders = Searchable.ALL;
         
         identities = new ArrayList<Identity>();
@@ -178,7 +182,9 @@ public class Account implements BaseAccount
         mExpungePolicy = preferences.getPreferences().getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
 
         mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
-        
+
+        mChipColor = preferences.getPreferences().getInt(mUuid+".chipColor", 0xff000000);
+
         for (String type : networkTypes)
         {
             Boolean useCompression = preferences.getPreferences().getBoolean(mUuid + ".useCompression." + type,
@@ -408,6 +414,8 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
         editor.putString(mUuid  + ".searchableFolders", searchableFolders.name());
+        editor.putInt(mUuid + ".chipColor", mChipColor);
+
         for (String type : networkTypes)
         {
             Boolean useCompression = compressionMap.get(type);
@@ -487,6 +495,15 @@ public class Account implements BaseAccount
                     + " loading " + folders.size() + " took " + (folderLoadEnd - folderLoadStart) + " ms;"
                     + " evaluating took " + (folderEvalEnd - folderEvalStart) + " ms");
         return stats;
+    }
+
+
+    public void setChipColor(int color) {
+        mChipColor = color;
+    }
+
+    public int getChipColor() {
+        return mChipColor;
     }
 
     public String getUuid()

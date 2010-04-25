@@ -21,6 +21,7 @@
     <string name="compose_title">Compose</string>
     <string name="debug_title">Debug</string>
     <string name="choose_folder_title">Choose Folder</string>
+    <string name="choose_color_title">Choose a Color</string>
  
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
     
