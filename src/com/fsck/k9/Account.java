@@ -183,7 +183,7 @@ public class Account implements BaseAccount
 
         mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
 
-        mChipColor = preferences.getPreferences().getInt(mUuid+".chipColor", 0xff000000);
+        mChipColor = preferences.getPreferences().getInt(mUuid+".chipColor", (new Random()).nextInt());
 
         for (String type : networkTypes)
         {
