@@ -4401,15 +4401,15 @@ public class MessagingController implements Runnable
         }
 
         int unreadMessageCount = 0;
-//        try
-//        {
-//            AccountStats stats = account.getStats(context);
-//            unreadMessageCount = stats.unreadMessageCount;
-//        }
-//        catch (MessagingException e)
-//        {
-//            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
-//        }
+        try
+        {
+            AccountStats stats = account.getStats(context);
+            unreadMessageCount = stats.unreadMessageCount;
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+        }
 
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
