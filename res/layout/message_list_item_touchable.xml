@@ -3,83 +3,80 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:background="#cccccc"
     android:paddingTop="2dip"
-    >
+    android:background="#ccc" >
+
     <RelativeLayout
         android:id="@+id/chip"
-        android:background="@android:color/transparent"
         android:layout_width="wrap_content"
-        android:layout_marginRight="2dip"
         android:layout_height="fill_parent"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-    >
-          <View
-                android:layout_width="4dip"
-                android:layout_height="fill_parent"
-          />
-          <CheckBox
-                android:id="@+id/selected_checkbox"
-                android:layout_width="24dip"
-                android:layout_height="wrap_content"
-                android:button="@drawable/checkbox"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:focusable="false"
-                android:visibility="gone"
-                />
-        </RelativeLayout>
-       <CheckBox
-                 android:id="@+id/flagged"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:focusable="false"
-                 style="?android:attr/starStyle"
-                 android:layout_alignParentRight="true"
-                 android:layout_alignParentBottom="true"
-                 android:layout_gravity="bottom"
-                />
-    <TextView
-        android:id="@+id/subject"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="?android:attr/textColorPrimary"
-        android:layout_width="fill_parent"
+        android:layout_marginRight="2dip"
+        android:background="@android:color/transparent" >
+
+        <View
+            android:layout_width="4dip"
+            android:layout_height="fill_parent" />
+
+        <CheckBox
+            android:id="@+id/selected_checkbox"
+            android:layout_width="24dip"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:button="@drawable/checkbox"
+            android:focusable="false"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/flagged"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="1dip"
-        android:layout_toLeftOf="@id/date"
-        android:layout_toRightOf="@+id/chip"
-        android:layout_marginRight="1dip"
-       />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        style="?android:attr/starStyle"
+        android:focusable="false" />
+
     <TextView
         android:id="@+id/date"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:singleLine="true"
-        android:paddingLeft="5dip"
-        android:textColor="?android:attr/textColorSecondary"
         android:layout_width="wrap_content"
-                 android:layout_alignParentRight="true"
-                 android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
-       android:background="@android:color/transparent"
-        />
-       <TextView
-           android:id="@+id/preview"
-           android:layout_below="@id/subject"
-           android:layout_toRightOf="@id/chip"
-           android:textAppearance="?android:attr/textAppearanceSmall"
-           android:textColor="?android:attr/textColorTertiary"
-           android:singleLine="false"
-           android:layout_width="fill_parent"
-           android:layout_height="fill_parent"
-        android:layout_marginLeft="1dip"
-        android:layout_toLeftOf="@id/flagged"
-        android:layout_marginRight="0dip"
-        android:bufferType="spannable"
-           />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="5dip"
+        android:singleLine="true"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textAppearance="?android:attr/textAppearanceSmall"  />
 
+    <TextView
+        android:id="@+id/subject"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/date"
+        android:layout_toRightOf="@+id/chip"
+        android:layout_marginLeft="1dip"
+        android:layout_marginRight="1dip"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/preview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/subject"
+        android:layout_toLeftOf="@id/flagged"
+        android:layout_toRightOf="@id/chip"
+        android:layout_marginLeft="1dip"
+        android:layout_marginRight="0dip"
+        android:singleLine="false"
+        android:bufferType="spannable"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
  </RelativeLayout>
-
