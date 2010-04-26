@@ -80,6 +80,7 @@
             android:layout_alignParentBottom="true" 
             android:layout_alignRight="@+id/new_message_count" 
             android:layout_gravity="bottom"
+            android:layout_marginBottom="1dip"
             android:paddingTop="6dip"
             android:paddingBottom="4dip"
             android:paddingLeft="10dip"

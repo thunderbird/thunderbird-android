@@ -3,42 +3,44 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
+    android:paddingRight="4dip"
     android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:background="@android:color/transparent"
-    android:paddingRight="4dip">
+    android:gravity="center_vertical" >
+
     <View
         android:id="@+id/chip"
-        android:background="@android:color/transparent"
         android:layout_width="4dip"
         android:layout_height="fill_parent"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-    />
+        android:layout_alignParentLeft="true" />
+
     <LinearLayout
-        android:layout_width="0dip"
-        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:paddingLeft="6dip">
+        android:paddingLeft="6dip" >
+
         <TextView
             android:id="@+id/folder_name"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="?android:attr/textColorPrimary"
             android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:singleLine="true"
             android:ellipsize="end"
-            android:layout_height="wrap_content" />
+            android:textColor="?android:attr/textColorPrimary"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
         <TextView
             android:id="@+id/folder_status"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorTertiary"
             android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:singleLine="true"
             android:ellipsize="end"
-            android:layout_height="wrap_content" />
+            android:textColor="?android:attr/textColorTertiary"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/active_icons"
         android:layout_width="wrap_content"
@@ -49,45 +51,47 @@
         android:paddingLeft="6dip"
         android:paddingRight="6dip"
         android:gravity="right"
-        android:clickable="true"
-        >
-	    <TextView
-	        android:id="@+id/folder_unread_message_count"
-	        android:ellipsize="end"
-	        android:singleLine="true"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:textColor="#ffffff"
-            android:textStyle="bold"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:background="@drawable/envelope"
+        android:clickable="true" >
+
+        <TextView
+            android:id="@+id/folder_unread_message_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top" 
+            android:layout_alignParentTop="true"
             android:paddingTop="4dip"
             android:paddingBottom="4dip"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:gravity="right"
-            android:layout_gravity="top" 
-            android:layout_alignParentTop="true"
-            android:clickable="true"
-            />
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:background="@drawable/envelope"
+            android:clickable="true" />
+
         <TextView
-           android:id="@+id/folder_flagged_message_count"
-           android:ellipsize="end"
-           android:singleLine="true"
-           android:textAppearance="?android:attr/textAppearanceSmall"
-           android:textColor="#000000"
-           android:background="@drawable/btn_star_big_buttonless_on"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:paddingTop="6dip"
+            android:id="@+id/folder_flagged_message_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/folder_unread_message_count"
+            android:layout_marginBottom="1dip"
+            android:paddingTop="6dip"
             android:paddingBottom="4dip"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:gravity="right"
-            android:layout_gravity="bottom"
-            android:layout_alignParentBottom="true" 
-            android:layout_alignRight="@id/folder_unread_message_count" 
-            android:clickable="true"
-              />
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000000"
+            android:background="@drawable/btn_star_big_buttonless_on"
+            android:clickable="true" />
+
     </RelativeLayout>
+
 </LinearLayout>
