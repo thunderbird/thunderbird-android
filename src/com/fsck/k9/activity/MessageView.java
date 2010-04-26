@@ -60,6 +60,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private int defaultSubjectColor;
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
+    private LinearLayout mCcContainerView;
     private View mAttachmentIcon;
     private View mDownloadingIcon;
     private View mShowPicturesSection;
@@ -277,6 +278,9 @@ public class MessageView extends K9Activity implements OnClickListener
                     }
                     mTimeView.setText(time);
                     mToView.setText(to);
+
+                    mCcContainerView.setVisibility((cc != null && cc.length() > 0 )? View.VISIBLE : View.GONE);
+
                     mCcView.setText(cc);
                     mAttachmentIcon.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
                     mDownloadingIcon.setVisibility(isDownloading ? View.VISIBLE : View.GONE);
@@ -444,6 +448,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mFromView = (TextView)findViewById(R.id.from);
         mToView = (TextView)findViewById(R.id.to);
         mCcView = (TextView)findViewById(R.id.cc);
+        mCcContainerView = (LinearLayout)findViewById(R.id.cc_container);
         mSubjectView = (TextView)findViewById(R.id.subject);
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         
