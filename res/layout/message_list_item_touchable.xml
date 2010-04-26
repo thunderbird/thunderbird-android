@@ -56,7 +56,7 @@
         android:id="@+id/subject"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/date"
+        android:layout_toLeftOf="@+id/date"
         android:layout_toRightOf="@+id/chip"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="1dip"
@@ -69,9 +69,9 @@
         android:id="@+id/preview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/subject"
-        android:layout_toLeftOf="@id/flagged"
-        android:layout_toRightOf="@id/chip"
+        android:layout_below="@+id/subject"
+        android:layout_toLeftOf="@+id/flagged"
+        android:layout_toRightOf="@+id/chip"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="0dip"
         android:singleLine="false"
@@ -79,4 +79,4 @@
         android:textColor="?android:attr/textColorTertiary"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
- </RelativeLayout>
+</RelativeLayout>
