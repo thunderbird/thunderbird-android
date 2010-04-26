@@ -128,7 +128,7 @@ public class Account implements BaseAccount
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = "INBOX";
         mMaxPushFolders = 10;
-        mChipColor = (new Random()).nextInt();
+        mChipColor = 0;
 
         searchableFolders = Searchable.ALL;
         
@@ -183,8 +183,6 @@ public class Account implements BaseAccount
 
         mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
 
-        mChipColor = preferences.getPreferences().getInt(mUuid+".chipColor", (new Random()).nextInt());
-
         for (String type : networkTypes)
         {
             Boolean useCompression = preferences.getPreferences().getBoolean(mUuid + ".useCompression." + type,
@@ -217,6 +215,15 @@ public class Account implements BaseAccount
                                 "INBOX");
 
         mAccountNumber = preferences.getPreferences().getInt(mUuid + ".accountNumber", 0);
+        
+        Random random = new Random((long)mAccountNumber+4); 
+
+        mChipColor = preferences.getPreferences().getInt(mUuid+".chipColor", 
+                    (random.nextInt(0x70)  ) +
+                    (random.nextInt(0x70) * 0xff ) +
+                    (random.nextInt(0x70) * 0xffff ) +
+                    0xff000000);
+
         mVibrate = preferences.getPreferences().getBoolean(mUuid + ".vibrate", false);
         mRing = preferences.getPreferences().getBoolean(mUuid + ".ring", true);
 
