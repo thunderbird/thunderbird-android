@@ -2,87 +2,93 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="38dip"
+    android:layout_height="wrap_content"
     android:paddingRight="1dip"
     android:paddingTop="2dip"
-    android:background="#cccccc"
-    >
+    android:background="#ccc" >
+
+	<!--
+	  TODO: find a way to make the chip use the full height of the
+	  parent view with the height of the parent set to "wrap_content" 
+    -->
     <RelativeLayout
         android:id="@+id/chip"
-        android:background="@android:color/transparent"
         android:layout_width="wrap_content"
-        android:layout_marginRight="2dip"
         android:layout_height="fill_parent"
+        android:minHeight="38dip"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-    >
-        <View
-                android:layout_width="4dip"
-                android:layout_height="fill_parent"
-        />
-        <CheckBox
-                android:id="@+id/selected_checkbox"
-                android:layout_width="24dip"
-                android:layout_height="wrap_content"
-                android:button="@drawable/checkbox"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:focusable="false"
-                android:visibility="gone"
-                />
-        </RelativeLayout>
-         <CheckBox
-                 android:id="@+id/flagged"
-                 android:focusable="false"
-                 android:button="@drawable/star"
-                 android:layout_alignParentRight="true"
+        android:layout_marginRight="2dip"
+        android:background="@android:color/transparent" >
 
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                 android:layout_gravity="center_vertical"
-                 android:layout_height="20dip"
-                 android:layout_width="20dip"
-                />
+        <View
+            android:layout_width="4dip"
+            android:layout_height="fill_parent" />
+
+        <CheckBox
+            android:id="@+id/selected_checkbox"
+            android:layout_width="24dip"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:button="@drawable/checkbox"
+            android:focusable="false"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+    
+    <CheckBox
+        android:id="@+id/flagged"
+        android:layout_height="20dip"
+        android:layout_width="20dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical"
+        android:button="@drawable/star"
+        android:focusable="false" />
+
     <TextView
         android:id="@+id/subject"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="?android:attr/textColorPrimary"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dip"
         android:layout_toLeftOf="@id/flagged"
         android:layout_toRightOf="@+id/chip"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_marginRight="1dip" />
+        android:layout_marginRight="1dip"
+        android:paddingLeft="10dip"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <TextView
         android:id="@+id/date"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subject"
+        android:layout_toLeftOf="@id/flagged"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="right|bottom"
         android:paddingRight="5dip"
         android:paddingLeft="5dip"
         android:singleLine="true"
-        android:gravity="right|bottom"
         android:textColor="?android:attr/textColorSecondary"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/flagged"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
-        android:layout_alignWithParentIfMissing="true"
-        />
-      <TextView
-         android:id="@+id/from"
-         android:ellipsize="end"
-         android:singleLine="true"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:textAppearance="?android:attr/textAppearanceSmall"
-         android:textColor="?android:attr/textColorSecondary"
-         android:paddingLeft="12dip"
-         android:layout_alignParentBottom="true"
+        android:layout_below="@id/subject"
         android:layout_toLeftOf="@id/date"
         android:layout_toRightOf="@id/chip"
-         />
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="12dip"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
