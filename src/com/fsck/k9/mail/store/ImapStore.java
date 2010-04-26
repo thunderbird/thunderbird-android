@@ -2635,9 +2635,9 @@ public class ImapStore extends Store
                                 handleUntaggedResponses(responses);
                             }
                             int startUid = oldUidNext;
-                            if (startUid < uidNext - 10)
+                            if (startUid < uidNext - mAccount.getDisplayCount())
                             {
-                                startUid = uidNext - 10;
+                                startUid = uidNext - mAccount.getDisplayCount();
                             }
                             if (startUid < 1)
                             {
