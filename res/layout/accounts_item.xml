@@ -82,6 +82,7 @@
             android:gravity="right"
 	        android:layout_gravity="bottom"
 	        android:layout_alignParentBottom="true" 
+            android:layout_alignRight="@id/new_message_count" 
             android:clickable="true"
 	        />
     </RelativeLayout>
