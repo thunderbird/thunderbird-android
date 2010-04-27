@@ -78,7 +78,8 @@ public class MessagingControllerPushReceiver implements PushReceiver
     
     public void syncFolder(Folder folder)
     {
-        Log.i(K9.LOG_TAG, "syncFolder(" + folder.getName() + ")");
+        if (K9.DEBUG)
+            Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ")");
         final CountDownLatch latch = new CountDownLatch(1);
         controller.synchronizeMailbox(account, folder.getName(), new MessagingListener()
         {
@@ -95,11 +96,13 @@ public class MessagingControllerPushReceiver implements PushReceiver
             }
         });
 
-        Log.i(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") about to await latch release");
+        if (K9.DEBUG)
+            Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") about to await latch release");
         try
         {
             latch.await();
-            Log.i(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") got latch release");
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") got latch release");
         }
         catch (Exception e)
         {
