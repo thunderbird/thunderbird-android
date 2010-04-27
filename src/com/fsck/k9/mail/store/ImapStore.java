@@ -890,6 +890,31 @@ public class ImapStore extends Store
                 throw ioExceptionHandler(mConnection, ioe);
             }
         }
+        
+        protected int getHighestUid()
+        {
+            try
+            {
+                ImapSearcher searcher = new ImapSearcher()
+                {
+                    public List<ImapResponse> search() throws IOException, MessagingException
+                    {
+                        return executeSimpleCommand(String.format("UID SEARCH *:* "));
+                    }
+                };
+                Message[] messages = search(searcher, null);
+                if (messages.length > 0)
+                {
+                    return Integer.parseInt(messages[0].getUid());
+                }
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to find highest UID in folder " + getName(), e);
+            }
+            return -1;
+
+        }
 
         @Override
         public void delete(boolean recurse) throws MessagingException
@@ -2643,21 +2668,42 @@ public class ImapStore extends Store
                                 receiver.syncFolder(ImapFolderPusher.this);
                             }
                             int startUid = oldUidNext;
-                            if (startUid < uidNext - mAccount.getDisplayCount())
+                            
+                            int newUidNext = uidNext;
+                            
+                            if (newUidNext == -1)
                             {
-                                startUid = uidNext - mAccount.getDisplayCount();
+                                if (K9.DEBUG)
+                                {
+                                    Log.d(K9.LOG_TAG, "uidNext is -1, using search to find highest UID");
+                                }
+                                int highestUid = getHighestUid();
+                                if (highestUid != -1)
+                                {
+                                    if (K9.DEBUG)
+                                        Log.i(K9.LOG_TAG, "highest UID = " + highestUid);
+                                    newUidNext = highestUid + 1;
+                                    if (K9.DEBUG)
+                                        Log.i(K9.LOG_TAG, "highest UID = " + highestUid 
+                                                + ", set newUidNext to " + newUidNext);
+                                }
+                            }
+                            
+                            if (startUid < newUidNext - mAccount.getDisplayCount())
+                            {
+                                startUid = newUidNext - mAccount.getDisplayCount();
                             }
                             if (startUid < 1)
                             {
                                 startUid = 1;
                             }
-                            if (uidNext > startUid)
+                            if (newUidNext > startUid)
                             {
 
                                 if (K9.DEBUG)
-                                    Log.i(K9.LOG_TAG, "Needs sync from uid " + startUid  + " to " + uidNext + " for " + getLogId());
+                                    Log.i(K9.LOG_TAG, "Needs sync from uid " + startUid  + " to " + newUidNext + " for " + getLogId());
                                 List<Message> messages = new ArrayList<Message>();
-                                for (int uid = startUid; uid < uidNext; uid++)
+                                for (int uid = startUid; uid < newUidNext; uid++)
                                 {
                                     ImapMessage message = new ImapMessage("" + uid, ImapFolderPusher.this);
                                     messages.add(message);
