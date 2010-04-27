@@ -1416,7 +1416,7 @@ public class MessageList
                 {
                     MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
 
-                    if (msgInfoHolder != null)
+                    if (msgInfoHolder != null && msgInfoHolder.selected != selected)
                     {
                         msgInfoHolder.selected = selected;
                         mSelectedCount += (selected ? 1 : -1);
