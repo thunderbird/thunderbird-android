@@ -78,7 +78,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/folder_unread_message_count"
             android:layout_marginBottom="1dip"
             android:paddingTop="6dip"
             android:paddingBottom="4dip"
