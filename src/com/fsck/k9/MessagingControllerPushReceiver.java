@@ -14,6 +14,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.service.SleepService;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class MessagingControllerPushReceiver implements PushReceiver
 {
@@ -73,6 +74,37 @@ public class MessagingControllerPushReceiver implements PushReceiver
     public void messagesArrived(Folder folder, List<Message> messages)
     {
         controller.messagesArrived(account, folder, messages, false);
+    }
+    
+    public void syncFolder(Folder folder)
+    {
+        Log.i(K9.LOG_TAG, "syncFolder(" + folder.getName() + ")");
+        final CountDownLatch latch = new CountDownLatch(1);
+        controller.synchronizeMailbox(account, folder.getName(), new MessagingListener()
+        {
+            public void synchronizeMailboxFinished(Account account, String folder,
+                    int totalMessagesInMailbox, int numNewMessages)
+            {
+                latch.countDown();
+            }
+            
+            public void synchronizeMailboxFailed(Account account, String folder,
+                              String message)
+            {
+                latch.countDown();
+            }
+        });
+
+        Log.i(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") about to await latch release");
+        try
+        {
+            latch.await();
+            Log.i(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") got latch release");
+        }
+        catch (Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Interrupted while awaiting latch release", e);
+        }
     }
 
     public void sleep(long millis)

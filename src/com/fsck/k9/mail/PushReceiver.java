@@ -6,6 +6,7 @@ public interface PushReceiver
 {
     public void acquireWakeLock();
     public void releaseWakeLock();
+    public void syncFolder(Folder folder);
     public void messagesArrived(Folder folder, List<Message> mess);
     public void messagesFlagsChanged(Folder folder, List<Message> mess);
     public String getPushState(String folderName);

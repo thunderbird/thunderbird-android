@@ -1094,14 +1094,18 @@ public class ImapStore extends Store
                 if (o != null && o instanceof Part)
                 {
                     Part part = (Part) o;
-                    String partId = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA)[0];
-                    if ("TEXT".equals(partId))
+                    String[] parts = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA);
+                    if (parts != null)
                     {
-                        fetchFields.add(String.format("BODY.PEEK[TEXT]<0.%d>", FETCH_BODY_SANE_SUGGESTED_SIZE));
-                    }
-                    else
-                    {
-                        fetchFields.add("BODY.PEEK[" + partId + "]");
+                        String partId = parts[0];
+                        if ("TEXT".equals(partId))
+                        {
+                            fetchFields.add(String.format("BODY.PEEK[TEXT]<0.%d>", FETCH_BODY_SANE_SUGGESTED_SIZE));
+                        }
+                        else
+                        {
+                            fetchFields.add("BODY.PEEK[" + partId + "]");
+                        }
                     }
                 }
             }
@@ -2615,7 +2619,7 @@ public class ImapStore extends Store
                             {
                                 Log.e(K9.LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
                             }
-
+                            ImapConnection oldConnection = mConnection;
                             List<ImapResponse> responses = internalOpen(OpenMode.READ_ONLY);
                             if (mConnection == null)
                             {
@@ -2633,6 +2637,10 @@ public class ImapStore extends Store
                             if (responses != null)
                             {
                                 handleUntaggedResponses(responses);
+                            }
+                            if (false && mConnection != oldConnection)
+                            {
+                                receiver.syncFolder(ImapFolderPusher.this);
                             }
                             int startUid = oldUidNext;
                             if (startUid < uidNext - mAccount.getDisplayCount())
