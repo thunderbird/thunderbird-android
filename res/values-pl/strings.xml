@@ -7,7 +7,7 @@
 <!--  ## Wersja robocza. Przeslij wszelkie sugestie oraz uwagi na w/w adres.            ## -->
 <!--  ## This is draft. Send all your notes or suggestions to address given above.      ## -->
 <!--  ##                                                                                ## -->
-<!--  ## Latest update: (YYYY-MM-DD): 2010.04.14                                        ## -->
+<!--  ## Latest update: (YYYY-MM-DD): 2010.04.29                                        ## -->
 <!--  ##                                                                                ## -->
 <!--  #################################################################################### -->
 
@@ -32,6 +32,8 @@
     <string name="compose_title">Nie</string>
     <string name="debug_title">Debug</string>
     <string name="choose_folder_title">Wybierz folder</string>
+    <string name="choose_color_title">Wybierz kolor</string>
+    
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
@@ -642,6 +644,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="display_preferences">Ustawienia globalne</string>
     <string name="debug_preferences">Debugging</string>
     <string name="operational_preferences">Synchronizacja</string>
+    <string name="accountlist_preferences">Lista kont</string>
     <string name="messagelist_preferences">Listy widomości</string>
     <string name="settings_theme_label">Kolorystyka</string>
 
@@ -653,7 +656,13 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="no_message_seletected_toast">Nie wybrano wiadomości</string>
 
     <string name="date_format_label">Format daty</string>
-    <!-- Using default values for date_format_* strings -->
+
+    <!-- These are default values. DO NOT CHANGE. Entries copied there to keep my internal string validator quiet -->
+    <string name="date_format_short">SHORT</string>
+    <string name="date_format_medium">MEDIUM</string>
+    <string name="date_format_common">dd-MMM-yyyy</string>
+    <string name="date_format_iso8601">yyyy-MM-dd</string>
+
 
     <string name="batch_ops">Operacje grupowe</string>
     <string name="batch_delete_op">Usuń zaznaczone</string>
@@ -683,17 +692,23 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="gestures_title">Gesty</string>
     <string name="gestures_summary">Pozwól na sterowanie gestami</string>
 
-	<string name="search_unread_messages_title">Wszystkie nieprzeczytane</string>
-    <string name="search_unread_messages_detail">Nieprzeczytane wiadomości z przeszukiwalnych kont</string> <!-- FIXME -->
+    <string name="measure_accounts_title">Wyświetlaj rozmiary kont</string>
+    <string name="measure_accounts_summary">Wyłącz by przyspieszyć wyświetlanie</string>
 
-    <string name="search_starred_messages_title">Wszystkie z gwiazdką</string>
-    <string name="search_starred_messages_detail">Z gwiazdką z przeszukiwalnych kont</string>
+    <string name="count_search_title">Podliczaj wyniki wyszukiwania</string>
+    <string name="count_search_summary">Wyłącz by przyspieszyć wyświetlanie</string>
 
-    <string name="integrated_inbox_title">Zintegrowany Inbox (nieprzeczytane)</string> <!-- FIXME -->
-    <string name="integrated_inbox_detail">Nieprzeczytane wiadomości ze wszystkich kont</string> <!-- FIXEM -->
+    <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
+    <string name="flagged_modifier"> - Z gwiazdka</string>
+    <string name="unread_modifier"> - Nieprzeczytane</string>
 
-    <string name="integrated_inbox_starred_title">Zintegrowany Inbox (z gwiazdką)</string>
-    <string name="integrated_inbox_starred_detail">Wszystkie wiadomości z gwiazdką ze wszystkich kont</string>
+    <string name="search_all_messages_title">Wszystkie wiadomości</string>
+    <string name="search_all_messages_detail">Wiadomości w przeszukiwalnych folderach</string>
+
+    <string name="tap_hint">Dotknij koperty lub gwiazdki by wyświetlić wiadomości nieprzeczytane lub oznaczone gwiazdką.</string>
+
+    <string name="integrated_inbox_title">Zintegrowany Inbox</string> 
+    <string name="integrated_inbox_detail">Nieprzeczytane wiadomości ze wszystkich kont</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">Zintegruj</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Pokazuj nieprzeczytane wiadomości w zintegrowanym widoku</string>
@@ -705,4 +720,44 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
 
     <string name="remote_control_label">K-9 Mail zdalne sterowanie</string>
     <string name="remote_control_desc">Zezwalaj tej aplikacji na sterowanie K-9 i jego ustawieniami.</string>
+    
+    
+    <string name="font_size_settings_title">Rozmiar czcionki</string>
+    <string name="font_size_settings_description">Ustawienia rozmiarów czcionek</string>
+
+    <string name="font_size_account_list">Lista kont</string>
+    <string name="font_size_account_name">Nazwa konta</string>
+    <string name="font_size_account_description">Opis konta</string>
+
+    <string name="font_size_folder_list">Lista folderów</string>
+    <string name="font_size_folder_name">Nazwa folderu</string>
+    <string name="font_size_folder_status">Status folderu</string>
+
+    <string name="font_size_message_list">Lista wiadomości</string>
+    <string name="font_size_message_list_subject">Temat</string>
+    <string name="font_size_message_list_sender">Nadawca</string>
+    <string name="font_size_message_list_date">Data wiadomości</string>
+
+    <string name="font_size_message_view">Wyświetlanie wiadomość</string>
+    <string name="font_size_message_view_sender">Nadawca</string>
+    <string name="font_size_message_view_to">Adresat (Do:)</string>
+    <string name="font_size_message_view_cc">Odbiorca kopii (DW:)</string>
+    <string name="font_size_message_view_subject">Temat</string>
+    <string name="font_size_message_view_time">Godzina</string>
+    <string name="font_size_message_view_date">Data</string>
+    <string name="font_size_message_view_content">Treść wiadomości</string>
+
+    <string name="font_size_tiniest">Najdrobniejsza</string>
+    <string name="font_size_tiny">Drobna</string>
+    <string name="font_size_smaller">Mniejsza</string>
+    <string name="font_size_small">Mała</string>
+    <string name="font_size_medium">Średnia</string>
+    <string name="font_size_large">Duża</string>
+    <string name="font_size_larger">Wielka</string>
+
+    <string name="font_size_webview_smaller">Najmniejsza</string>
+    <string name="font_size_webview_small">Mniejsza</string>
+    <string name="font_size_webview_normal">Normalna</string>
+    <string name="font_size_webview_large">Większa</string>
+    <string name="font_size_webview_larger">Największa</string>
 </resources>
