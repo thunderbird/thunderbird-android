@@ -701,10 +701,10 @@ public class MessagingController implements Runnable
 
     public void searchLocalMessages(SearchSpecification searchSpecification, final Message[] messages, final MessagingListener listener)
     {
-        searchLocalMessages(searchSpecification.getAccountUuids(), searchSpecification.getFolderNames(), messages, 
-                searchSpecification.getQuery(), searchSpecification.isIntegrate(), searchSpecification.getRequiredFlags(), searchSpecification.getForbiddenFlags(), listener);
+        searchLocalMessages(searchSpecification.getAccountUuids(), searchSpecification.getFolderNames(), messages,
+                            searchSpecification.getQuery(), searchSpecification.isIntegrate(), searchSpecification.getRequiredFlags(), searchSpecification.getForbiddenFlags(), listener);
     }
-    
+
 
     /**
      * Find all messages in any local account which match the query 'query'
@@ -716,22 +716,22 @@ public class MessagingController implements Runnable
      * @param account
      * @throws MessagingException
      */
-    public void searchLocalMessages(final String[] accountUuids, final String[] folderNames, final Message[] messages, final String query, final boolean integrate, 
-            final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener)
+    public void searchLocalMessages(final String[] accountUuids, final String[] folderNames, final Message[] messages, final String query, final boolean integrate,
+                                    final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener)
     {
         if (K9.DEBUG)
         {
-            Log.i(K9.LOG_TAG, "searchLocalMessages (" 
-                    + "accountUuids=" + Utility.combine(accountUuids, ',') 
-                    + ", folderNames = " + Utility.combine(folderNames, ',') 
-                    + ", messages.size() = " + (messages != null ? messages.length : null)
-                    + ", query = " + query
-                    + ", integrate = " + integrate
-                    + ", requiredFlags = " + Utility.combine(requiredFlags, ',') 
-                    + ", forbiddenFlags = " + Utility.combine(forbiddenFlags, ',') 
-                    + ")");
+            Log.i(K9.LOG_TAG, "searchLocalMessages ("
+                  + "accountUuids=" + Utility.combine(accountUuids, ',')
+                  + ", folderNames = " + Utility.combine(folderNames, ',')
+                  + ", messages.size() = " + (messages != null ? messages.length : null)
+                  + ", query = " + query
+                  + ", integrate = " + integrate
+                  + ", requiredFlags = " + Utility.combine(requiredFlags, ',')
+                  + ", forbiddenFlags = " + Utility.combine(forbiddenFlags, ',')
+                  + ")");
         }
-        
+
         threadPool.execute(new Runnable()
         {
             public void run()
@@ -743,7 +743,7 @@ public class MessagingController implements Runnable
                 {
                     for (String accountUuid : accountUuids)
                     {
-                       accountUuidsSet.add(accountUuid); 
+                        accountUuidsSet.add(accountUuid);
                     }
                 }
                 final Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
@@ -757,7 +757,7 @@ public class MessagingController implements Runnable
                     {
                         continue;
                     }
-                    
+
                     if (accountUuids != null && accountUuidsSet.contains(account.getUuid()) == true)
                     {
                         displayableOnly = true;
@@ -773,14 +773,14 @@ public class MessagingController implements Runnable
                             case DISPLAYABLE:
                                 displayableOnly = true;
                                 break;
-                                
+
                         }
                     }
                     if (listener != null)
                     {
                         listener.listLocalMessagesStarted(account, null);
                     }
-                    
+
                     if (integrate || displayableOnly || folderNames != null || noSpecialFolders)
                     {
                         List<LocalFolder> tmpFoldersToSearch = new LinkedList<LocalFolder>();
@@ -812,17 +812,17 @@ public class MessagingController implements Runnable
                                     if (folderNameSet != null)
                                     {
                                         if (folderNameSet.contains(localFolderName) == false)
-                                    
+
                                         {
                                             include = false;
                                         }
                                     }
                                     else if (noSpecialFolders && (
-                                            localFolderName.equals(account.getTrashFolderName()) ||
-                                            localFolderName.equals(account.getOutboxFolderName()) ||
-                                            localFolderName.equals(account.getDraftsFolderName()) ||
-                                            localFolderName.equals(account.getSentFolderName()) ||
-                                            localFolderName.equals(account.getErrorFolderName())))
+                                                 localFolderName.equals(account.getTrashFolderName()) ||
+                                                 localFolderName.equals(account.getOutboxFolderName()) ||
+                                                 localFolderName.equals(account.getDraftsFolderName()) ||
+                                                 localFolderName.equals(account.getSentFolderName()) ||
+                                                 localFolderName.equals(account.getErrorFolderName())))
                                     {
                                         include = false;
                                     }
@@ -831,7 +831,7 @@ public class MessagingController implements Runnable
                                         include = false;
                                     }
                                 }
-                                
+
                                 if (include)
                                 {
                                     tmpFoldersToSearch.add(localFolder);
@@ -848,9 +848,9 @@ public class MessagingController implements Runnable
                             Log.e(K9.LOG_TAG, "Unable to restrict search folders in Account " + account.getDescription() + ", searching all", me);
                             addErrorMessage(account, null, me);
                         }
-                        
+
                     }
-                    
+
                     MessageRetrievalListener retrievalListener = new MessageRetrievalListener()
                     {
                         public void messageStarted(String message, int number, int ofTotal) {}
@@ -865,11 +865,11 @@ public class MessagingController implements Runnable
                             {
                                 listener.listLocalMessagesAddMessages(account, null, messages);
                             }
-                            
+
                         }
-                        public void messagesFinished(int number) 
+                        public void messagesFinished(int number)
                         {
-                           
+
                         }
                     };
 
@@ -877,7 +877,7 @@ public class MessagingController implements Runnable
                     {
                         LocalStore localStore = account.getLocalStore();
                         localStore.searchForMessages(retrievalListener, query, foldersToSearch, messages, requiredFlags, forbiddenFlags);
-                        
+
                     }
                     catch (Exception e)
                     {
@@ -1172,7 +1172,7 @@ public class MessagingController implements Runnable
 
             int unreadMessageCount = setLocalUnreadCountToRemote(localFolder, remoteFolder,  newMessages);
             setLocalFlaggedCountToRemote(localFolder, remoteFolder);
-            
+
 
             for (MessagingListener l : getListeners())
             {
@@ -1287,7 +1287,7 @@ public class MessagingController implements Runnable
             return localFolder.getMessageCount();
         }
     }
-    
+
     private void setLocalFlaggedCountToRemote(LocalFolder localFolder, Folder remoteFolder) throws MessagingException
     {
         int remoteFlaggedMessageCount = remoteFolder.getFlaggedMessageCount();
@@ -1448,7 +1448,7 @@ public class MessagingController implements Runnable
                         {
                             smallMessages.add(message);
                         }
-                       
+
                         // And include it in the view
                         if (message.getSubject() != null &&
                                 message.getFrom() != null)
@@ -1476,7 +1476,7 @@ public class MessagingController implements Runnable
                                 {
                                     newMessages.incrementAndGet();
                                 }
-                                
+
                             }
 
                         }
@@ -2723,7 +2723,7 @@ public class MessagingController implements Runnable
         {
             @Override
             public void act(final Account account, final Folder folder,
-                    final List<Message> messages)
+                            final List<Message> messages)
             {
                 String[] uids = new String[messages.size()];
                 for (int i = 0; i < messages.size(); i++)
@@ -2732,9 +2732,9 @@ public class MessagingController implements Runnable
                 }
                 setFlag(account, folder.getName(), uids, flag, newState);
             }
-            
+
         });
-        
+
     }
 
     public void setFlag(
@@ -2766,7 +2766,7 @@ public class MessagingController implements Runnable
                 Message msg = localFolder.getMessage(uid);
                 if (msg != null)
                 {
-                	messages.add(msg);
+                    messages.add(msg);
                 }
             }
 
@@ -2977,7 +2977,7 @@ public class MessagingController implements Runnable
                                           message
                                       }, fp, null);
                     localFolder.close();
-                    
+
                     for (MessagingListener l : getListeners())
                     {
                         l.loadMessageForViewBodyAvailable(account, folder, uid, message);
@@ -3340,14 +3340,14 @@ public class MessagingController implements Runnable
                                     account.getSentFolderName());
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
-    
+
                             localFolder.moveMessages(
                                 new Message[] { message },
                                 localSentFolder);
-    
+
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
-    
+
                             PendingCommand command = new PendingCommand();
                             command.command = PENDING_COMMAND_APPEND;
                             command.arguments =
@@ -3359,7 +3359,7 @@ public class MessagingController implements Runnable
                             queuePendingCommand(account, command);
                             processPendingCommands(account);
                         }
-                        
+
                     }
                     catch (Exception e)
                     {
@@ -3465,7 +3465,7 @@ public class MessagingController implements Runnable
     }
 
     public void getAccountStats(final Context context, final Account account,
-                                      final MessagingListener l)
+                                final MessagingListener l)
     {
         Runnable unreadRunnable = new Runnable()
         {
@@ -3481,13 +3481,13 @@ public class MessagingController implements Runnable
                     Log.e(K9.LOG_TAG, "Count not get unread count for account " + account.getDescription(),
                           me);
                 }
-                
+
             }
         };
 
         put("getAccountStats:" + account.getDescription(), l, unreadRunnable);
     }
-    
+
     public void getFolderUnreadMessageCount(final Account account, final String folderName,
                                             final MessagingListener l)
     {
@@ -3515,7 +3515,7 @@ public class MessagingController implements Runnable
     }
 
 
-  
+
     public boolean isMoveCapable(Message message)
     {
         if (!message.getUid().startsWith(K9.LOCAL_UID_PREFIX))
@@ -3562,7 +3562,7 @@ public class MessagingController implements Runnable
         }
     }
     public void moveMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
-            final MessagingListener listener)
+                             final MessagingListener listener)
     {
         for (Message message : messages)
         {
@@ -3578,13 +3578,13 @@ public class MessagingController implements Runnable
     }
 
     public void moveMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
-            final MessagingListener listener)
+                            final MessagingListener listener)
     {
         moveMessages(account, srcFolder, new Message[] { message }, destFolder, listener);
     }
 
     public void copyMessages(final Account account, final String srcFolder, final Message[] messages, final String destFolder,
-                            final MessagingListener listener)
+                             final MessagingListener listener)
     {
         putBackground("copyMessages", null, new Runnable()
         {
@@ -3595,7 +3595,7 @@ public class MessagingController implements Runnable
         });
     }
     public void copyMessage(final Account account, final String srcFolder, final Message message, final String destFolder,
-                               final MessagingListener listener)
+                            final MessagingListener listener)
     {
         copyMessages(account, srcFolder, new Message[] { message }, destFolder, listener);
     }
@@ -3618,7 +3618,7 @@ public class MessagingController implements Runnable
 
             Folder localSrcFolder = localStore.getFolder(srcFolder);
             Folder localDestFolder = localStore.getFolder(destFolder);
-            
+
             List<String> uids = new LinkedList<String>();
             for (Message message : inMessages)
             {
@@ -3628,17 +3628,17 @@ public class MessagingController implements Runnable
                     uids.add(uid);
                 }
             }
-            
+
             Message[] messages = localSrcFolder.getMessages(uids.toArray(new String[0]), null);
             if (messages.length > 0)
             {
                 Map<String, Message> origUidMap = new HashMap<String, Message>();
-                
+
                 for (Message message : messages)
                 {
                     origUidMap.put(message.getUid(), message);
                 }
-           
+
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "moveOrCopyMessageSynchronous: source folder = " + srcFolder
                           + ", " + messages.length + " messages, " + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
@@ -3663,7 +3663,7 @@ public class MessagingController implements Runnable
                         unsuppressMessage(account, srcFolder, origUid);
                     }
                 }
-            
+
                 queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidMap.keySet().toArray(new String[0]));
             }
 
@@ -3687,8 +3687,8 @@ public class MessagingController implements Runnable
             }
         });
     }
-    
-    public void deleteDraft(final Account account, String uid) 
+
+    public void deleteDraft(final Account account, String uid)
     {
         LocalFolder localFolder = null;
         try
@@ -3722,7 +3722,7 @@ public class MessagingController implements Runnable
 
             @Override
             public void act(final Account account, final Folder folder,
-                    final List<Message> messages)
+                            final List<Message> messages)
             {
                 for (Message message : messages)
                 {
@@ -3737,9 +3737,9 @@ public class MessagingController implements Runnable
                     }
                 });
             }
-            
+
         });
-        
+
     }
 
     private void deleteMessagesSynchronous(final Account account, final String folder, final Message[] messages,
@@ -3852,7 +3852,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            
+
             if (localFolder != null)
             {
                 localFolder.close();
@@ -4056,9 +4056,9 @@ public class MessagingController implements Runnable
 
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "Synchronizing account " + account.getDescription());
-                        
+
                         account.setRingNotified(false);
-                        
+
                         putBackground("sendPending " + account.getDescription(), null, new Runnable()
                         {
                             public void run()
@@ -4234,11 +4234,11 @@ public class MessagingController implements Runnable
                                 public void run()
                                 {
                                     if (K9.DEBUG)
-                                      Log.v(K9.LOG_TAG, "Clearing notification flag for " + account.getDescription());
+                                        Log.v(K9.LOG_TAG, "Clearing notification flag for " + account.getDescription());
                                     account.setRingNotified(false);
                                 }
                             }
-                                );
+                                         );
                         }
 
 
@@ -4480,7 +4480,7 @@ public class MessagingController implements Runnable
             };
             queuePendingCommand(account, command);
             processPendingCommands(account);
-            
+
         }
         catch (MessagingException e)
         {
@@ -5067,12 +5067,12 @@ public class MessagingController implements Runnable
     private void actOnMessages(Message[] messages, MessageActor actor)
     {
         Map<Account, Map<Folder, List<Message>>> accountMap = new HashMap<Account, Map<Folder, List<Message>>>();
-        
+
         for (Message message : messages)
         {
             Folder folder = message.getFolder();
             Account account = folder.getAccount();
-            
+
             Map<Folder, List<Message>> folderMap = accountMap.get(account);
             if (folderMap == null)
             {
@@ -5085,7 +5085,7 @@ public class MessagingController implements Runnable
                 messageList = new LinkedList<Message>();
                 folderMap.put(folder, messageList);
             }
-            
+
             messageList.add(message);
         }
         for (Map.Entry<Account, Map<Folder, List<Message>>> entry : accountMap.entrySet())
@@ -5102,8 +5102,8 @@ public class MessagingController implements Runnable
             }
         }
     }
-    
-    interface MessageActor 
+
+    interface MessageActor
     {
         public void act(final Account account, final Folder folder, final List<Message> messages);
     }

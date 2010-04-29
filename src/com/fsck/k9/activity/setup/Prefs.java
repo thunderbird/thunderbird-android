@@ -82,13 +82,13 @@ public class Prefs extends K9PreferenceActivity
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
             new Preference.OnPreferenceClickListener()
+        {
+            public boolean onPreferenceClick(Preference preference)
             {
-                public boolean onPreferenceClick(Preference preference)
-                {
-                    onFontSizeSettings();
-                    return true;
-                }
-            });
+                onFontSizeSettings();
+                return true;
+            }
+        });
 
         mDateFormat = (ListPreference) findPreference(PREFERENCE_DATE_FORMAT);
         String[] formats = DateFormatter.getFormats(this);
@@ -152,10 +152,10 @@ public class Prefs extends K9PreferenceActivity
 
         mTouchable = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_TOUCHABLE);
         mTouchable.setChecked(K9.messageListTouchable());
-        
+
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());
-        
+
         mCountSearch = (CheckBoxPreference)findPreference(PREFERENCE_COUNT_SEARCH);
         mCountSearch.setChecked(K9.countSearchMessages());
     }

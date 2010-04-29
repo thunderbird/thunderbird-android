@@ -457,11 +457,11 @@ public class MimeMessage extends Message
     @Override
     public void setEncoding(String encoding)
     {
-    	if (mBody instanceof Multipart)
-    	{
-    		((Multipart)mBody).setEncoding(encoding);
-    	}
-    	else if (mBody instanceof TextBody)
+        if (mBody instanceof Multipart)
+        {
+            ((Multipart)mBody).setEncoding(encoding);
+        }
+        else if (mBody instanceof TextBody)
         {
             setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
             ((TextBody)mBody).setEncoding(encoding);

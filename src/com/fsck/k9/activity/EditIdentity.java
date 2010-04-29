@@ -74,7 +74,8 @@ public class EditIdentity extends K9Activity
         mSignatureUse = (CheckBox)findViewById(R.id.signature_use);
         mSignatureView = (EditText)findViewById(R.id.signature);
         mSignatureUse.setChecked(mIdentity.getSignatureUse());
-        mSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
                 if (isChecked)

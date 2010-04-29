@@ -421,13 +421,13 @@ public class Storage implements SharedPreferences
         try
         {
             cursor = mDb.query(
-                    "preferences_storage",
-                    new String[] {"value"},
-                    "primkey = ?",
-                    new String[] {key},
-                    null,
-                    null,
-                    null);
+                         "preferences_storage",
+                         new String[] {"value"},
+                         "primkey = ?",
+                         new String[] {key},
+                         null,
+                         null,
+                         null);
 
             if (cursor.moveToNext())
             {

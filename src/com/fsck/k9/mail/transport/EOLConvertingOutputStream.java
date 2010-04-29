@@ -36,7 +36,7 @@ public class EOLConvertingOutputStream extends FilterOutputStream
         {
             super.write('\n');
             lastChar = '\n';
-            
+
             // We have to ignore the next character if it is <LF>. Otherwise it
             // will be expanded to an additional <CR><LF> sequence although it
             // belongs to the one just completed.

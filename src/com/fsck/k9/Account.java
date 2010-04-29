@@ -35,13 +35,13 @@ public class Account implements BaseAccount
     public static final int DELETE_POLICY_7DAYS = 1;
     public static final int DELETE_POLICY_ON_DELETE = 2;
     public static final int DELETE_POLICY_MARK_AS_READ = 3;
-    
+
     public static final String TYPE_WIFI = "WIFI";
     public static final String TYPE_MOBILE = "MOBILE";
     public static final String TYPE_OTHER = "OTHER";
     private static String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
-    
-   
+
+
     /**
      * <pre>
      * 0 - Never (DELETE_POLICY_NEVER)
@@ -82,7 +82,7 @@ public class Account implements BaseAccount
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
-    private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>(); 
+    private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
     private Searchable searchableFolders;
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
@@ -98,9 +98,9 @@ public class Account implements BaseAccount
     public enum HideButtons
     {
         NEVER, ALWAYS, KEYBOARD_AVAILABLE;
-    } 
-    
-    public enum Searchable 
+    }
+
+    public enum Searchable
     {
         ALL, DISPLAYABLE, NONE
     }
@@ -131,7 +131,7 @@ public class Account implements BaseAccount
         mChipColor = 0;
 
         searchableFolders = Searchable.ALL;
-        
+
         identities = new ArrayList<Identity>();
 
         Identity identity = new Identity();
@@ -186,7 +186,7 @@ public class Account implements BaseAccount
         for (String type : networkTypes)
         {
             Boolean useCompression = preferences.getPreferences().getBoolean(mUuid + ".useCompression." + type,
-                    true);
+                                     true);
             compressionMap.put(type, useCompression);
         }
 
@@ -215,14 +215,14 @@ public class Account implements BaseAccount
                                 "INBOX");
 
         mAccountNumber = preferences.getPreferences().getInt(mUuid + ".accountNumber", 0);
-        
-        Random random = new Random((long)mAccountNumber+4); 
 
-        mChipColor = preferences.getPreferences().getInt(mUuid+".chipColor", 
-                    (random.nextInt(0x70)  ) +
-                    (random.nextInt(0x70) * 0xff ) +
-                    (random.nextInt(0x70) * 0xffff ) +
-                    0xff000000);
+        Random random = new Random((long)mAccountNumber+4);
+
+        mChipColor = preferences.getPreferences().getInt(mUuid+".chipColor",
+                     (random.nextInt(0x70)) +
+                     (random.nextInt(0x70) * 0xff) +
+                     (random.nextInt(0x70) * 0xffff) +
+                     0xff000000);
 
         mVibrate = preferences.getPreferences().getBoolean(mUuid + ".vibrate", false);
         mRing = preferences.getPreferences().getBoolean(mUuid + ".ring", true);
@@ -278,7 +278,7 @@ public class Account implements BaseAccount
         {
             mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         }
-        
+
         try
         {
             searchableFolders = Searchable.valueOf(preferences.getPreferences().getString(mUuid  + ".searchableFolders",
@@ -490,7 +490,7 @@ public class Account implements BaseAccount
                 }
                 unreadMessageCount += folder.getUnreadMessageCount();
                 flaggedMessageCount += folder.getFlaggedMessageCount();
-                
+
             }
         }
         long folderEvalEnd = System.currentTimeMillis();
@@ -499,17 +499,19 @@ public class Account implements BaseAccount
         long endTime = System.currentTimeMillis();
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;"
-                    + " loading " + folders.size() + " took " + (folderLoadEnd - folderLoadStart) + " ms;"
-                    + " evaluating took " + (folderEvalEnd - folderEvalStart) + " ms");
+                  + " loading " + folders.size() + " took " + (folderLoadEnd - folderLoadStart) + " ms;"
+                  + " evaluating took " + (folderEvalEnd - folderEvalStart) + " ms");
         return stats;
     }
 
 
-    public void setChipColor(int color) {
+    public void setChipColor(int color)
+    {
         mChipColor = color;
     }
 
-    public int getChipColor() {
+    public int getChipColor()
+    {
         return mChipColor;
     }
 
@@ -615,18 +617,18 @@ public class Account implements BaseAccount
 
 
 
-   /* Have we sent a new mail notification on this account */
-   public boolean isRingNotified()
-   {
-       return mRingNotified;
-   }
+    /* Have we sent a new mail notification on this account */
+    public boolean isRingNotified()
+    {
+        return mRingNotified;
+    }
 
-   public void setRingNotified(boolean ringNotified)
-   {
-       mRingNotified = ringNotified;
-   }
+    public void setRingNotified(boolean ringNotified)
+    {
+        mRingNotified = ringNotified;
+    }
 
-   public synchronized String getRingtone()
+    public synchronized String getRingtone()
     {
         return mRingtoneUri;
     }
@@ -662,7 +664,7 @@ public class Account implements BaseAccount
         int oldInterval = this.mAutomaticCheckIntervalMinutes;
         int newInterval = automaticCheckIntervalMinutes;
         this.mAutomaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
-        
+
         return (oldInterval != newInterval);
     }
 
@@ -798,7 +800,7 @@ public class Account implements BaseAccount
     {
         FolderMode oldSyncMode = mFolderSyncMode;
         mFolderSyncMode = syncMode;
-        
+
         if (syncMode == FolderMode.NONE && oldSyncMode != FolderMode.NONE)
         {
             return true;
@@ -818,7 +820,7 @@ public class Account implements BaseAccount
     public synchronized boolean setFolderPushMode(FolderMode pushMode)
     {
         FolderMode oldPushMode = mFolderPushMode;
-        
+
         mFolderPushMode = pushMode;
         return pushMode != oldPushMode;
     }
@@ -907,12 +909,12 @@ public class Account implements BaseAccount
 
     public LocalStore getLocalStore() throws MessagingException
     {
-        return Store.getLocalInstance(this, K9.app);        
+        return Store.getLocalInstance(this, K9.app);
     }
-    
+
     public Store getRemoteStore() throws MessagingException
     {
-        return Store.getRemoteInstance(this);        
+        return Store.getRemoteInstance(this);
     }
 
     @Override
@@ -920,12 +922,12 @@ public class Account implements BaseAccount
     {
         return mDescription;
     }
-    
+
     public void setCompression(String networkType, boolean useCompression)
     {
         compressionMap.put(networkType, useCompression);
     }
-    
+
     public boolean useCompression(String networkType)
     {
         Boolean useCompression = compressionMap.get(networkType);
@@ -938,7 +940,7 @@ public class Account implements BaseAccount
             return useCompression;
         }
     }
-    
+
     public boolean useCompression(int type)
     {
         String networkType = TYPE_OTHER;
@@ -953,7 +955,7 @@ public class Account implements BaseAccount
         }
         return useCompression(networkType);
     }
-    
+
     @Override
     public boolean equals(Object o)
     {

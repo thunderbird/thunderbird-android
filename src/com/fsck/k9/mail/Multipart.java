@@ -59,24 +59,24 @@ public abstract class Multipart implements Body
         this.mParent = parent;
     }
 
-	public void setEncoding(String encoding)
-	{
-		for (BodyPart part : mParts)
-		{
-			try
-			{
-				Body body = part.getBody();
-				if (body instanceof TextBody)
-				{
-					part.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
-					((TextBody)body).setEncoding(encoding);
-				}
-			}
-			catch (MessagingException e)
-			{
-				// Ignore
-			}
-		}
-		
-	}
+    public void setEncoding(String encoding)
+    {
+        for (BodyPart part : mParts)
+        {
+            try
+            {
+                Body body = part.getBody();
+                if (body instanceof TextBody)
+                {
+                    part.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
+                    ((TextBody)body).setEncoding(encoding);
+                }
+            }
+            catch (MessagingException e)
+            {
+                // Ignore
+            }
+        }
+
+    }
 }

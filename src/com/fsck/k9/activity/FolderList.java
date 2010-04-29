@@ -78,8 +78,8 @@ public class FolderList extends K9ListActivity
             {
                 public void run()
                 {
-                    String dispString = mAdapter.mListener.formatHeader(FolderList.this, 
-                            getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount, getTimeFormat());
+                    String dispString = mAdapter.mListener.formatHeader(FolderList.this,
+                                        getString(R.string.folder_list_title, mAccount.getDescription()), mUnreadMessageCount, getTimeFormat());
 
 
                     setTitle(dispString);
@@ -269,7 +269,7 @@ public class FolderList extends K9ListActivity
             }
         });
         registerForContextMenu(mListView);
-        
+
         mListView.setSaveEnabled(true);
 
         mInflater = getLayoutInflater();
@@ -382,7 +382,7 @@ public class FolderList extends K9ListActivity
                 toast.show();
                 return true;
             }
-            
+
             case KeyEvent.KEYCODE_1:
             {
                 setDisplayMode(FolderMode.FIRST_CLASS);
@@ -419,8 +419,8 @@ public class FolderList extends K9ListActivity
         }
         onRefresh(false);
     }
-    
-    
+
+
     private void onRefresh(final boolean forceRemote)
     {
 
@@ -1113,14 +1113,14 @@ public class FolderList extends K9ListActivity
                 super.pendingCommandsFinished(account);
                 mHandler.refreshTitle();
             }
-  
+
             @Override
             public void pendingCommandStarted(Account account, String commandTitle)
             {
                 super.pendingCommandStarted(account, commandTitle);
                 mHandler.refreshTitle();
             }
- 
+
             @Override
             public void pendingCommandCompleted(Account account, String commandTitle)
             {
@@ -1249,11 +1249,11 @@ public class FolderList extends K9ListActivity
             {
                 holder.newMessageCount.setVisibility(View.GONE);
             }
-            
+
             if (K9.messageListStars() && folder.flaggedMessageCount > 0)
             {
                 holder.flaggedMessageCount.setText(Integer
-                        .toString(folder.flaggedMessageCount));
+                                                   .toString(folder.flaggedMessageCount));
                 holder.flaggedMessageCount.setOnClickListener(new FolderClickListener(mAccount, folder.name, folder.displayName, SearchModifier.FLAGGED));
                 holder.flaggedMessageCount.setVisibility(View.VISIBLE);
             }
@@ -1269,8 +1269,8 @@ public class FolderList extends K9ListActivity
                     toast.show();
                 }
             }
-            );
-            
+                                                 );
+
             holder.chip.setBackgroundColor(mAccount.getChipColor());
             holder.chip.getBackground().setAlpha(folder.unreadMessageCount == 0 ? 127 : 255);
 
@@ -1303,7 +1303,7 @@ public class FolderList extends K9ListActivity
         public long lastChecked;
 
         public int unreadMessageCount;
-        
+
         public int flaggedMessageCount;
 
         public boolean loading;
@@ -1325,7 +1325,7 @@ public class FolderList extends K9ListActivity
         {
             return this.name.equals(((FolderInfoHolder)o).name);
         }
-        
+
         @Override
         public int hashCode()
         {
@@ -1364,7 +1364,7 @@ public class FolderList extends K9ListActivity
             try
             {
                 folder.open(Folder.OpenMode.READ_WRITE);
-              //  unreadCount = folder.getUnreadMessageCount();
+                //  unreadCount = folder.getUnreadMessageCount();
             }
             catch (MessagingException me)
             {
@@ -1410,7 +1410,7 @@ public class FolderList extends K9ListActivity
             this.status = mess;
 
             this.unreadMessageCount = unreadCount;
-            
+
             try
             {
                 this.flaggedMessageCount = folder.getFlaggedMessageCount();
@@ -1438,15 +1438,15 @@ public class FolderList extends K9ListActivity
         public String rawFolderName;
         public View chip;
     }
-    
+
     private class FolderClickListener implements OnClickListener
     {
-        
+
         final BaseAccount account;
         final String folderName;
         final String displayName;
         final SearchModifier searchModifier;
-        FolderClickListener(BaseAccount nAccount, String folderName, String displayName, SearchModifier nSearchModifier )
+        FolderClickListener(BaseAccount nAccount, String folderName, String displayName, SearchModifier nSearchModifier)
         {
             account = nAccount;
             this.folderName = folderName;
@@ -1456,10 +1456,10 @@ public class FolderList extends K9ListActivity
         @Override
         public void onClick(View v)
         {
-            String description = getString(R.string.search_title, 
-                    getString(R.string.message_list_title, account.getDescription(), displayName), 
-                    getString(searchModifier.resId));
-            
+            String description = getString(R.string.search_title,
+                                           getString(R.string.message_list_title, account.getDescription(), displayName),
+                                           getString(searchModifier.resId));
+
             SearchSpecification searchSpec = new SearchSpecification()
             {
                 @Override
@@ -1497,14 +1497,14 @@ public class FolderList extends K9ListActivity
                 {
                     return new String[] { folderName };
                 }
-                
+
             };
             MessageList.actionHandle(FolderList.this, description, searchSpec);
-        
+
         }
-        
+
     }
 
-    
+
 
 }

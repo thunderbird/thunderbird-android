@@ -279,7 +279,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     mTimeView.setText(time);
                     mToView.setText(to);
 
-                    mCcContainerView.setVisibility((cc != null && cc.length() > 0 )? View.VISIBLE : View.GONE);
+                    mCcContainerView.setVisibility((cc != null && cc.length() > 0)? View.VISIBLE : View.GONE);
 
                     mCcView.setText(cc);
                     mAttachmentIcon.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
@@ -451,7 +451,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mCcContainerView = (LinearLayout)findViewById(R.id.cc_container);
         mSubjectView = (TextView)findViewById(R.id.subject);
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
-        
+
         chip = findViewById(R.id.chip);
 
         mDateView = (TextView)findViewById(R.id.date);
@@ -557,12 +557,12 @@ public class MessageView extends K9Activity implements OnClickListener
                         Toast.makeText(this, "Invalid account id: " + accountId, Toast.LENGTH_LONG).show();
                         return;
                     }
-                    
+
                     mMessageReference = new MessageReference();
                     mMessageReference.accountUuid = mAccount.getUuid();
                     mMessageReference.folderName = segmentList.get(1);
                     mMessageReference.uid = segmentList.get(2);
-                    
+
                     mMessageReferences = new ArrayList<MessageReference>();
                 }
                 else
@@ -631,9 +631,9 @@ public class MessageView extends K9Activity implements OnClickListener
         mMessageReference = ref;
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
-        
+
         mAccount = Preferences.getPreferences(this).getAccount(ref.accountUuid);
-        
+
         mMessageContentView.getSettings().setBlockNetworkImage(true);
         K9.setBlockNetworkLoads(mMessageContentView.getSettings(), true);
 
@@ -1052,7 +1052,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mShowPicturesSection.setVisibility(View.GONE);
     }
 
-  
+
     public void onClick(View view)
     {
         switch (view.getId())
@@ -1347,7 +1347,7 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadMessageForViewHeadersAvailable(Account account, String folder, String uid,
                 final Message message)
         {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
                     || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
@@ -1355,7 +1355,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
             MessageView.this.mMessage = message;
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)
-                && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
+                    && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
             {
                 mHandler.post(new Runnable()
                 {
@@ -1379,7 +1379,7 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadMessageForViewBodyAvailable(Account account, String folder, String uid,
                 Message message)
         {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
                     || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
@@ -1388,8 +1388,8 @@ public class MessageView extends K9Activity implements OnClickListener
             try
             {
                 if (MessageView.this.mMessage!=null
-                    && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
-                    && message.isSet(Flag.X_DOWNLOADED_FULL))
+                        && MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)
+                        && message.isSet(Flag.X_DOWNLOADED_FULL))
                 {
 
                     setHeaders(account, folder, uid, message);
@@ -1467,7 +1467,7 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadMessageForViewFailed(Account account, String folder, String uid,
                                              final Throwable t)
         {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
                     || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
@@ -1498,7 +1498,7 @@ public class MessageView extends K9Activity implements OnClickListener
         public void loadMessageForViewFinished(Account account, String folder, String uid,
                                                Message message)
         {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
                     || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;
@@ -1516,7 +1516,7 @@ public class MessageView extends K9Activity implements OnClickListener
         @Override
         public void loadMessageForViewStarted(Account account, String folder, String uid)
         {
-            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder) 
+            if (!mMessageReference.uid.equals(uid) || !mMessageReference.folderName.equals(folder)
                     || !mMessageReference.accountUuid.equals(account.getUuid()))
             {
                 return;

@@ -106,7 +106,7 @@ public class FontSizes
 
     /**
      * Font size of the message content in the message view activity.
-     * 
+     *
      * Note: The unit is WebSettings.TextSize
      */
     private TextSize messageViewContent = TextSize.NORMAL;
@@ -125,7 +125,7 @@ public class FontSizes
         messageListSubject = SMALL;
         messageListSender = SMALL;
         messageListDate = SMALL;
-        
+
         messageViewSender = SMALL;
         messageViewTo = FONT_12DIP;
         messageViewCC = FONT_12DIP;
@@ -136,7 +136,7 @@ public class FontSizes
 
     /**
      * Permanently save the font size settings.
-     * 
+     *
      * @param editor Used to save the font size settings.
      */
     public void save(SharedPreferences.Editor editor)
@@ -162,7 +162,7 @@ public class FontSizes
 
     /**
      * Load the font size settings from permanent storage.
-     * 
+     *
      * @param prefs Used to load the font size settings.
      */
     public void load(SharedPreferences prefs)
@@ -172,7 +172,7 @@ public class FontSizes
 
         folderName = prefs.getInt(FOLDER_NAME, folderName);
         folderStatus = prefs.getInt(FOLDER_STATUS, folderStatus);
-        
+
         messageListSubject = prefs.getInt(MESSAGE_LIST_SUBJECT, messageListSubject);
         messageListSender = prefs.getInt(MESSAGE_LIST_SENDER, messageListSender);
         messageListDate = prefs.getInt(MESSAGE_LIST_DATE, messageListDate);
@@ -325,12 +325,17 @@ public class FontSizes
     {
         switch (messageViewContent)
         {
-            case SMALLEST: return 1;
-            case SMALLER: return 2;
+            case SMALLEST:
+                return 1;
+            case SMALLER:
+                return 2;
             default:
-            case NORMAL: return 3;
-            case LARGER: return 4;
-            case LARGEST: return 5;
+            case NORMAL:
+                return 3;
+            case LARGER:
+                return 4;
+            case LARGEST:
+                return 5;
         }
     }
 
@@ -338,11 +343,21 @@ public class FontSizes
     {
         switch (size)
         {
-            case 1: messageViewContent = TextSize.SMALLEST; break;
-            case 2: messageViewContent = TextSize.SMALLER; break;
-            case 3: messageViewContent = TextSize.NORMAL; break;
-            case 4: messageViewContent = TextSize.LARGER; break;
-            case 5: messageViewContent = TextSize.LARGEST; break;
+            case 1:
+                messageViewContent = TextSize.SMALLEST;
+                break;
+            case 2:
+                messageViewContent = TextSize.SMALLER;
+                break;
+            case 3:
+                messageViewContent = TextSize.NORMAL;
+                break;
+            case 4:
+                messageViewContent = TextSize.LARGER;
+                break;
+            case 5:
+                messageViewContent = TextSize.LARGEST;
+                break;
         }
     }
 }

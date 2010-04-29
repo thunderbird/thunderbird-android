@@ -300,7 +300,7 @@ public class SmtpTransport extends Transport
         boolean possibleSend = false;
         try
         {
-        	//TODO: Add BODY=8BITMIME parameter if appropriate?
+            //TODO: Add BODY=8BITMIME parameter if appropriate?
             executeSimpleCommand("MAIL FROM: " + "<" + from[0].getAddress() + ">");
             for (Address address : message.getRecipients(RecipientType.TO))
             {
@@ -316,12 +316,12 @@ public class SmtpTransport extends Transport
             }
             message.setRecipients(RecipientType.BCC, null);
             executeSimpleCommand("DATA");
-            
+
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new SmtpDataStuffing(
-                            new LineWrapOutputStream(
-                                    new BufferedOutputStream(mOut, 1024),
-                                    1000)));
+                new SmtpDataStuffing(
+                    new LineWrapOutputStream(
+                        new BufferedOutputStream(mOut, 1024),
+                        1000)));
 
             message.writeTo(msgOut);
 

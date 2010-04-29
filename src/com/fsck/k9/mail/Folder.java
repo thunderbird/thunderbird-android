@@ -203,7 +203,7 @@ public abstract class Folder
     {
 
     }
-    
+
     public boolean isInTopGroup()
     {
         return false;

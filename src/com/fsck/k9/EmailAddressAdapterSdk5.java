@@ -34,7 +34,8 @@ public class EmailAddressAdapterSdk5 extends EmailAddressAdapter
     private static final String SORT_ORDER = Contacts.TIMES_CONTACTED
             + " DESC, " + Contacts.DISPLAY_NAME;
 
-    private static final String[] PROJECTION = {
+    private static final String[] PROJECTION =
+    {
         Data._ID, // 0
         Contacts.DISPLAY_NAME, // 1
         Email.DATA // 2

@@ -379,7 +379,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 if ("mailto".equals(uri.getScheme()))
                 {
                     initializeFromMailTo(uri.toString());
-                } 
+                }
                 else
                 {
                     String toText = uri.getSchemeSpecificPart();
@@ -980,11 +980,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 File f = new File(uriString.substring("file://".length()));
                 attachment.size = f.length();
             }
-            else {
+            else
+            {
                 Log.v(K9.LOG_TAG, "Not a file: " + uriString);
             }
         }
-        else {
+        else
+        {
             Log.v(K9.LOG_TAG, "old attachment.size: " + attachment.size);
         }
         Log.v(K9.LOG_TAG, "new attachment.size: " + attachment.size);
@@ -1575,7 +1577,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mDraftUid = newUid;
                 }
             }
-            
+
             if (account.equals(mAccount) && (folder.equals(mFolder)))
             {
                 if (oldUid.equals(mSourceMessageUid))
@@ -1591,7 +1593,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
     private String decode(String s)
-        throws UnsupportedEncodingException
+    throws UnsupportedEncodingException
     {
         return URLDecoder.decode(s, "UTF-8");
     }
@@ -1599,14 +1601,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * When we are launched with an intent that includes a mailto: URI, we can actually
      * gather quite a few of our message fields from it.
-     * 
+     *
      * @mailToString the href (which must start with "mailto:").
      */
-    private void initializeFromMailTo(String mailToString) {
-        
+    private void initializeFromMailTo(String mailToString)
+    {
+
         // Chop up everything between mailto: and ? to find recipients
         int index = mailToString.indexOf("?");
-        int length = "mailto".length() + 1; 
+        int length = "mailto".length() + 1;
         String to;
         try
         {
@@ -1614,13 +1617,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (index == -1)
             {
                 to = decode(mailToString.substring(length));
-            } 
+            }
             else
             {
                 to = decode(mailToString.substring(length, index));
             }
             mToView.setText(to);
-        } 
+        }
         catch (UnsupportedEncodingException e)
         {
             Log.e(K9.LOG_TAG, e.getMessage() + " while decoding '" + mailToString + "'");
@@ -1660,5 +1663,5 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             mMessageContentView.setText(body.get(0));
         }
-    }    
+    }
 }

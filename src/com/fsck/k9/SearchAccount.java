@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.fsck.k9;
 
@@ -22,22 +22,22 @@ public class SearchAccount implements BaseAccount, SearchSpecification, Serializ
     private boolean builtin = false;
     private String[] accountUuids = null;
     private String[] folderNames = null;
-    
+
     public SearchAccount(Preferences preferences)
     {
-        
+
     }
     protected synchronized void delete(Preferences preferences)
     {
-    
+
     }
-    
+
     public synchronized void save(Preferences preferences)
     {
-        
+
     }
-    
-    
+
+
     public SearchAccount(Context context, boolean nintegrate, Flag[] requiredFlags, Flag[] forbiddenFlags)
     {
         mRequiredFlags = requiredFlags;

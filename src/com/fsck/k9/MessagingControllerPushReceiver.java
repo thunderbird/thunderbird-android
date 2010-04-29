@@ -75,7 +75,7 @@ public class MessagingControllerPushReceiver implements PushReceiver
     {
         controller.messagesArrived(account, folder, messages, false);
     }
-    
+
     public void syncFolder(Folder folder)
     {
         if (K9.DEBUG)
@@ -84,13 +84,13 @@ public class MessagingControllerPushReceiver implements PushReceiver
         controller.synchronizeMailbox(account, folder.getName(), new MessagingListener()
         {
             public void synchronizeMailboxFinished(Account account, String folder,
-                    int totalMessagesInMailbox, int numNewMessages)
+                                                   int totalMessagesInMailbox, int numNewMessages)
             {
                 latch.countDown();
             }
-            
+
             public void synchronizeMailboxFailed(Account account, String folder,
-                              String message)
+                                                 String message)
             {
                 latch.countDown();
             }

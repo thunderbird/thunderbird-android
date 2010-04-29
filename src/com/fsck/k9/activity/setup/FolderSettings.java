@@ -84,12 +84,12 @@ public class FolderSettings extends K9PreferenceActivity
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
         category.setTitle(folderName);
 
-        
+
         mInTopGroup = (CheckBoxPreference)findPreference(PREFERENCE_IN_TOP_GROUP);
         mInTopGroup.setChecked(mFolder.isInTopGroup());
         mIntegrate = (CheckBoxPreference)findPreference(PREFERENCE_INTEGRATE);
         mIntegrate.setChecked(mFolder.isIntegrate());
-        
+
         mDisplayClass = (ListPreference) findPreference(PREFERENCE_DISPLAY_CLASS);
         mDisplayClass.setValue(mFolder.getDisplayClass().name());
         mDisplayClass.setSummary(mDisplayClass.getEntry());
@@ -161,14 +161,14 @@ public class FolderSettings extends K9PreferenceActivity
         mFolder.setDisplayClass(FolderClass.valueOf(mDisplayClass.getValue()));
         mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
         mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
-        
+
         FolderClass newPushClass = mFolder.getPushClass();
         FolderClass newDisplayClass = mFolder.getDisplayClass();
-        
+
         try
         {
             mFolder.save(Preferences.getPreferences(this));
-            if (oldPushClass != newPushClass 
+            if (oldPushClass != newPushClass
                     || (newPushClass != FolderClass.NO_CLASS && oldDisplayClass != newDisplayClass))
             {
                 MailService.actionRestartPushers(getApplication(), null);

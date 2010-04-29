@@ -525,10 +525,10 @@ public class Pop3Store extends Store
                         /*
                          * At least one server software places a "+OK" in
                          * front of every line in the unique-id listing.
-                         * 
+                         *
                          * Fix up the array if we detected this behavior.
                          * See Issue 1237
-                         */ 
+                         */
                         uidParts[0] = uidParts[1];
                         uidParts[1] = uidParts[2];
                     }
@@ -1078,7 +1078,7 @@ public class Pop3Store extends Store
             }
             return super.equals(o);
         }
-        
+
         @Override
         public int hashCode()
         {

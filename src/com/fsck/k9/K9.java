@@ -81,7 +81,7 @@ public class K9 extends Application
      * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
      * bodies from loading external resources over the network. Unfortunately this method
      * isn't exposed via the official Android API. That's why we use reflection to be able
-     * to call the method. 
+     * to call the method.
      */
     private static final Method mGetBlockNetworkLoads = getMethod(WebSettings.class, "setBlockNetworkLoads");
 
@@ -441,12 +441,12 @@ public class K9 extends Application
     {
         return mGesturesEnabled;
     }
-    
+
     public static void setGesturesEnabled(boolean gestures)
     {
         mGesturesEnabled = gestures;
     }
-    
+
     public static boolean isAnimations()
     {
         return mAnimations;
@@ -497,12 +497,12 @@ public class K9 extends Application
         catch (NoSuchMethodException e)
         {
             Log.i(K9.LOG_TAG, "Can't get method " +
-                    classObject.toString() + "." + methodName);
+                  classObject.toString() + "." + methodName);
         }
         catch (Exception e)
         {
             Log.e(K9.LOG_TAG, "Error while using reflection to get method " +
-                    classObject.toString() + "." + methodName, e);
+                  classObject.toString() + "." + methodName, e);
         }
         return null;
     }

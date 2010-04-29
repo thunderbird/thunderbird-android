@@ -57,7 +57,7 @@ public class MessageList
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-    
+
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH = 3;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY_BATCH = 4;
 
@@ -67,7 +67,7 @@ public class MessageList
     private static final String EXTRA_QUERY_FLAGS = "queryFlags";
     private static final String EXTRA_FORBIDDEN_FLAGS = "forbiddenFlags";
     private static final String EXTRA_INTEGRATE = "integrate";
-   private static final String EXTRA_ACCOUNT_UUIDS = "accountUuids";
+    private static final String EXTRA_ACCOUNT_UUIDS = "accountUuids";
     private static final String EXTRA_FOLDER_NAMES = "folderNames";
     private static final String EXTRA_TITLE = "title";
 
@@ -312,7 +312,7 @@ public class MessageList
         }
         return intent;
     }
-    
+
     public static void actionHandle(Context context, String title, String queryString, boolean integrate, Flag[] flags, Flag[] forbiddenFlags)
     {
         Intent intent = new Intent(context, MessageList.class);
@@ -330,7 +330,7 @@ public class MessageList
         context.startActivity(intent);
 
     }
-    
+
     public static void actionHandle(Context context, String title, SearchSpecification searchSpecification)
     {
         Intent intent = new Intent(context, MessageList.class);
@@ -348,7 +348,7 @@ public class MessageList
         intent.putExtra(EXTRA_FOLDER_NAMES, searchSpecification.getFolderNames());
         intent.putExtra(EXTRA_TITLE, title);
         context.startActivity(intent);
-       
+
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -394,7 +394,7 @@ public class MessageList
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);
-        
+
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
         if (queryFlags != null)
         {
@@ -417,9 +417,9 @@ public class MessageList
         }
         mIntegrate = intent.getBooleanExtra(EXTRA_INTEGRATE, false);
         mAccountUuids = intent.getStringArrayExtra(EXTRA_ACCOUNT_UUIDS);
-        mFolderNames = intent.getStringArrayExtra(EXTRA_FOLDER_NAMES);        
+        mFolderNames = intent.getStringArrayExtra(EXTRA_FOLDER_NAMES);
         mTitle = intent.getStringExtra(EXTRA_TITLE);
-        
+
         // Take the initial folder into account only if we are *not* restoring the
         // activity already
 
@@ -498,7 +498,7 @@ public class MessageList
 
     }
 
-    private void initializeLayout ()
+    private void initializeLayout()
     {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_PROGRESS);
@@ -633,7 +633,7 @@ public class MessageList
                             onDelete(message, position);
                             return true;
                         }
-                        
+
                         case KeyEvent.KEYCODE_S:
                         {
                             setSelected(message, !message.selected);
@@ -695,7 +695,7 @@ public class MessageList
         {
             result = super.onKeyDown(keyCode, event);
         }
-        
+
         return result;
     }//onKeyDown
 
@@ -1087,7 +1087,7 @@ public class MessageList
         int itemId = item.getItemId();
         switch (itemId)
         {
-            
+
             case R.id.compose:
                 onCompose();
 
@@ -1137,7 +1137,7 @@ public class MessageList
                 setAllSelected(false);
                 toggleBatchButtons();
                 return true;
-                
+
             case R.id.batch_delete_op:
                 deleteSelected();
                 return true;
@@ -1209,7 +1209,7 @@ public class MessageList
                 onMoveBatch();
                 return true;
 
-           
+
             case R.id.expunge:
                 if (mCurrentFolder != null)
                 {
@@ -1243,7 +1243,7 @@ public class MessageList
     {
         boolean anySelected = anySelected();
         setOpsState(menu, true, anySelected);
-        
+
         if (mQueryString != null)
         {
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
@@ -1656,14 +1656,14 @@ public class MessageList
             {
                 addOrUpdateMessage(account, folder, message);
             }
-            
+
             @Override
             public void searchStats(AccountStats stats)
             {
                 mUnreadMessageCount = stats.unreadMessageCount;
                 mHandler.refreshTitle();
             }
-            
+
             @Override
             public void folderStatusChanged(Account account, String folder, int unreadMessageCount)
             {
@@ -2277,7 +2277,7 @@ public class MessageList
         {
             return (this.uid.equals(((MessageInfoHolder)o).uid));
         }
-        
+
         @Override
         public int hashCode()
         {
@@ -2701,7 +2701,7 @@ public class MessageList
         mSelectedCount = 0;
         toggleBatchButtons();
     }
-    
+
     private void onMoveBatch()
     {
         if (mController.isMoveCapable(mAccount) == false)
@@ -2751,7 +2751,7 @@ public class MessageList
             }
         }
         mAdapter.removeMessages(removeHolderList);
-        
+
         mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), folderName, null);
         mSelectedCount = 0;
         toggleBatchButtons();
@@ -2802,7 +2802,7 @@ public class MessageList
                 messageList.add(holder.message);
             }
         }
-        
+
         mController.copyMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), folderName, null);
     }
 }

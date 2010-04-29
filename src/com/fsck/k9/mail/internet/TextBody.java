@@ -71,6 +71,6 @@ public class TextBody implements Body
 
     public void setEncoding(String encoding)
     {
-    	mEncoding = encoding;
+        mEncoding = encoding;
     }
 }

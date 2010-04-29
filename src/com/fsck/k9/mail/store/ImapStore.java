@@ -64,7 +64,7 @@ public class ImapStore extends Store
     private static final int IDLE_REFRESH_INTERVAL = 20 * 60 * 1000; // 20 minutes
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
     private static int MAX_DELAY_TIME = 5 * 60 * 1000; // 5 minutes
-    private static int NORMAL_DELAY_TIME = 5000;    
+    private static int NORMAL_DELAY_TIME = 5000;
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
 
@@ -75,7 +75,7 @@ public class ImapStore extends Store
 
     private static final String CAPABILITY_CAPABILITY = "CAPABILITY";
     private static final String COMMAND_CAPABILITY = "CAPABILITY";
-    
+
     private static final String CAPABILITY_COMPRESS_DEFLATE = "COMPRESS=DEFLATE";
     private static final String COMMAND_COMPRESS_DEFLATE = "COMPRESS DEFLATE";
 
@@ -862,7 +862,7 @@ public class ImapStore extends Store
                 throw ioExceptionHandler(mConnection, ioe);
             }
         }
-        
+
         @Override
         public int getFlaggedMessageCount() throws MessagingException
         {
@@ -890,7 +890,7 @@ public class ImapStore extends Store
                 throw ioExceptionHandler(mConnection, ioe);
             }
         }
-        
+
         protected int getHighestUid()
         {
             try
@@ -967,7 +967,7 @@ public class ImapStore extends Store
             };
             return search(searcher, listener);
         }
-        
+
         private Message[] search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException
         {
 
@@ -1274,7 +1274,7 @@ public class ImapStore extends Store
                             if (part != null)
                             {
                                 String contentTransferEncoding = part.getHeader(
-                                        MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
                                 part.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
                             }
                             else
@@ -1843,7 +1843,7 @@ public class ImapStore extends Store
             }
             return super.equals(o);
         }
-        
+
         @Override
         public int hashCode()
         {
@@ -1882,7 +1882,7 @@ public class ImapStore extends Store
         {
             return "conn" + hashCode();
         }
-        
+
         private List<ImapResponse> receiveCapabilities(List<ImapResponse> responses)
         {
             for (ImapResponse response : responses)
@@ -1907,7 +1907,7 @@ public class ImapStore extends Store
                 {
                     capabilityList = response;
                 }
-                
+
                 if (capabilityList != null)
                 {
                     if (capabilityList.size() > 0 && capabilityList.get(0).equals(CAPABILITY_CAPABILITY))
@@ -1927,7 +1927,7 @@ public class ImapStore extends Store
                                 capabilities.add((String)capability);
                             }
                         }
-    
+
                     }
                 }
             }
@@ -1995,7 +1995,7 @@ public class ImapStore extends Store
                 List<ImapResponse> nullResponses = new LinkedList<ImapResponse>();
                 nullResponses.add(nullResponse);
                 receiveCapabilities(nullResponses);
-                
+
                 if (hasCapability(CAPABILITY_CAPABILITY) == false)
                 {
                     if (K9.DEBUG)
@@ -2006,7 +2006,7 @@ public class ImapStore extends Store
                         throw new MessagingException("Invalid CAPABILITY response received");
                     }
                 }
-                
+
                 if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
                         || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED)
                 {
@@ -2053,7 +2053,7 @@ public class ImapStore extends Store
                         {
                             throw new MessagingException("Invalid CAPABILITY response received");
                         }
-                        
+
                     }
                     else if (mAuthType == AuthType.PLAIN)
                     {
@@ -2078,7 +2078,7 @@ public class ImapStore extends Store
                 {
                     ConnectivityManager connectivityManager = (ConnectivityManager)K9.app.getSystemService(Context.CONNECTIVITY_SERVICE);
                     boolean useCompression = true;
-                    
+
                     NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
                     if (netInfo != null)
                     {
@@ -2086,7 +2086,7 @@ public class ImapStore extends Store
                         if (K9.DEBUG)
                             Log.d(K9.LOG_TAG, "On network type " + type);
                         useCompression = mAccount.useCompression(type);
-                        
+
                     }
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "useCompression " + useCompression);
@@ -2113,8 +2113,8 @@ public class ImapStore extends Store
                         }
                     }
                 }
-                
-                
+
+
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "NAMESPACE = " + hasCapability(CAPABILITY_NAMESPACE)
                           + ", mPathPrefix = " + mPathPrefix);
@@ -2497,7 +2497,7 @@ public class ImapStore extends Store
 
     class ImapMessage extends MimeMessage
     {
-        ImapMessage(String uid, Folder folder) 
+        ImapMessage(String uid, Folder folder)
         {
             this.mUid = uid;
             this.mFolder = folder;
@@ -2572,7 +2572,7 @@ public class ImapStore extends Store
         {
             mAlertText = alertText;
         }
-    }  
+    }
 
     public class ImapFolderPusher extends ImapFolder implements UntaggedHandler
     {
@@ -2668,9 +2668,9 @@ public class ImapStore extends Store
                                 receiver.syncFolder(ImapFolderPusher.this);
                             }
                             int startUid = oldUidNext;
-                            
+
                             int newUidNext = uidNext;
-                            
+
                             if (newUidNext == -1)
                             {
                                 if (K9.DEBUG)
@@ -2684,11 +2684,11 @@ public class ImapStore extends Store
                                         Log.i(K9.LOG_TAG, "highest UID = " + highestUid);
                                     newUidNext = highestUid + 1;
                                     if (K9.DEBUG)
-                                        Log.i(K9.LOG_TAG, "highest UID = " + highestUid 
-                                                + ", set newUidNext to " + newUidNext);
+                                        Log.i(K9.LOG_TAG, "highest UID = " + highestUid
+                                              + ", set newUidNext to " + newUidNext);
                                 }
                             }
-                            
+
                             if (startUid < newUidNext - mAccount.getDisplayCount())
                             {
                                 startUid = newUidNext - mAccount.getDisplayCount();

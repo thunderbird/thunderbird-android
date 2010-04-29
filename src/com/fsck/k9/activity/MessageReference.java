@@ -7,7 +7,7 @@ public class MessageReference implements Serializable
     String accountUuid;
     String folderName;
     String uid;
-    
+
     public boolean equals(Object o)
     {
         if (o instanceof MessageReference == false)
@@ -26,9 +26,9 @@ public class MessageReference implements Serializable
     public String toString()
     {
         return "MessageReference{accountUuid = '" +
-        		accountUuid
-        		+ "', folderName = '" + folderName
-        		+ "', uid = '" + uid
-        		+ "'}";
+               accountUuid
+               + "', folderName = '" + folderName
+               + "', uid = '" + uid
+               + "'}";
     }
 }

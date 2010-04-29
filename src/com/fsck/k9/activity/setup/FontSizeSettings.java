@@ -13,13 +13,13 @@ import com.fsck.k9.*;
 /**
  * Activity to configure the font size of the information displayed in the
  * account list, folder list, message list and in the message view.
- * 
+ *
  * @see FontSizes
  */
 public class FontSizeSettings extends K9PreferenceActivity
 {
     /*
-     * Keys of the preferences defined in res/xml/font_preferences.xml 
+     * Keys of the preferences defined in res/xml/font_preferences.xml
      */
     private static final String PREFERENCE_ACCOUNT_NAME_FONT = "account_name_font";
     private static final String PREFERENCE_ACCOUNT_DESCRIPTION_FONT = "account_description_font";
@@ -54,7 +54,7 @@ public class FontSizeSettings extends K9PreferenceActivity
 
     /**
      * Start the FontSizeSettings activity.
-     * 
+     *
      * @param context The application context.
      */
     public static void actionEditSettings(Context context)
@@ -134,10 +134,10 @@ public class FontSizeSettings extends K9PreferenceActivity
 
     /**
      * Set up the ListPreference instance identified by <code>key</code>.
-     * 
+     *
      * @param key The key of the ListPreference object.
      * @param value Initial value for the ListPreference object.
-     * @return The ListPreference instance identified by <code>key</code>. 
+     * @return The ListPreference instance identified by <code>key</code>.
      */
     private ListPreference initializeListPreference(String key, int value)
     {
@@ -149,7 +149,7 @@ public class FontSizeSettings extends K9PreferenceActivity
     }
 
     /**
-     * This class handles value changes of the ListPreference objects.  
+     * This class handles value changes of the ListPreference objects.
      */
     private class PreferenceChangeListener implements Preference.OnPreferenceChangeListener
     {
@@ -161,7 +161,7 @@ public class FontSizeSettings extends K9PreferenceActivity
         }
 
         /**
-         * Show the preference value in the preference summary field. 
+         * Show the preference value in the preference summary field.
          */
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue)

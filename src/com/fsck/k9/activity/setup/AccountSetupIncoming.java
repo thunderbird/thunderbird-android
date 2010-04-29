@@ -449,8 +449,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                  */
                 try
                 {
-                    String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8"); 
-                    String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8"); 
+                    String usernameEnc = URLEncoder.encode(mUsernameView.getText().toString(), "UTF-8");
+                    String passwordEnc = URLEncoder.encode(mPasswordView.getText().toString(), "UTF-8");
                     URI oldUri = new URI(mAccount.getTransportUri());
                     URI uri = new URI(
                         oldUri.getScheme(),
@@ -502,7 +502,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             final String userInfo;
             String user = mUsernameView.getText().toString();
             String password = mPasswordView.getText().toString();
-            String userEnc = URLEncoder.encode(user, "UTF-8");        
+            String userEnc = URLEncoder.encode(user, "UTF-8");
             String passwordEnc = URLEncoder.encode(password, "UTF-8");
 
             if (mAccountSchemes[securityType].startsWith("imap"))

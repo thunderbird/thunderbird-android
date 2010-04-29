@@ -440,14 +440,14 @@ public class ImapResponseParser
                 throw new MessagingException("Unable to parse IMAP datetime", pe);
             }
         }
-        
+
         public boolean containsKey(Object key)
         {
             if (key == null)
             {
                 return false;
             }
-            
+
             for (int i = 0, count = size(); i < count; i++)
             {
                 if (key.equals(get(i)))
@@ -457,7 +457,7 @@ public class ImapResponseParser
             }
             return false;
         }
-        
+
         public int getKeyIndex(Object key)
         {
             for (int i = 0, count = size(); i < count; i++)
@@ -467,7 +467,7 @@ public class ImapResponseParser
                     return i;
                 }
             }
-            
+
             throw new IllegalArgumentException("getKeyIndex() only works for keys that are in the collection.");
         }
 

@@ -17,7 +17,7 @@ public class K9Activity extends Activity
     private GestureDetector gestureDetector;
 
     protected ScrollView mTopView;
-    
+
     @Override
     public void onCreate(Bundle icicle)
     {
@@ -64,7 +64,7 @@ public class K9Activity extends Activity
     }
     protected void onNext(boolean animate)
     {
-        
+
     }
     protected void onPrevious(boolean animate)
     {
@@ -76,7 +76,7 @@ public class K9Activity extends Activity
         private static final float SWIPE_MIN_DISTANCE_DIP = 130.0f;
         private static final float SWIPE_MAX_OFF_PATH_DIP = 250f;
         private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 325f;
-        
+
         @Override
         public boolean onDoubleTap(MotionEvent ev)
         {
@@ -87,12 +87,12 @@ public class K9Activity extends Activity
                 if (ev.getRawY() < (height/4))
                 {
                     mTopView.fullScroll(View.FOCUS_UP);
-    
+
                 }
                 else if (ev.getRawY() > (height - height/4))
                 {
                     mTopView.fullScroll(View.FOCUS_DOWN);
-    
+
                 }
             }
             return false;
@@ -108,8 +108,8 @@ public class K9Activity extends Activity
                 int min_distance = (int)(SWIPE_MIN_DISTANCE_DIP * mGestureScale + 0.5f);
                 int min_velocity = (int)(SWIPE_THRESHOLD_VELOCITY_DIP * mGestureScale + 0.5f);
                 int max_off_path = (int)(SWIPE_MAX_OFF_PATH_DIP * mGestureScale + 0.5f);
-    
-    
+
+
                 try
                 {
                     if (Math.abs(e1.getY() - e2.getY()) > max_off_path)

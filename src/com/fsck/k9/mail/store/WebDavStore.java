@@ -1628,7 +1628,7 @@ public class WebDavStore extends Store
                             statusCode > 300)
                     {
                         throw new IOException("Error during with code " + statusCode + " during fetch: "
-                                + response.getStatusLine().toString());
+                                              + response.getStatusLine().toString());
                     }
 
                     if (entity != null)
@@ -1972,7 +1972,7 @@ public class WebDavStore extends Store
                         subject = "";
                     }
                     */
-                    
+
                     ByteArrayOutputStream out;
                     try
                     {
@@ -1985,7 +1985,7 @@ public class WebDavStore extends Store
                     }
                     open(OpenMode.READ_WRITE);
                     EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                            new BufferedOutputStream(out, 1024));
+                        new BufferedOutputStream(out, 1024));
                     message.writeTo(msgOut);
                     msgOut.flush();
 
@@ -2018,9 +2018,9 @@ public class WebDavStore extends Store
                     if (statusCode < 200 ||
                             statusCode > 300)
                     {
-                        throw new IOException("Error with status code " + statusCode 
-                                + " while sending/appending message.  Response = "
-                                + response.getStatusLine().toString() + " for message " + messageURL);
+                        throw new IOException("Error with status code " + statusCode
+                                              + " while sending/appending message.  Response = "
+                                              + response.getStatusLine().toString() + " for message " + messageURL);
                     }
                     WebDavMessage retMessage = new WebDavMessage(message.getUid(), this);
 
@@ -2041,7 +2041,7 @@ public class WebDavStore extends Store
         {
             return false;
         }
-        
+
         @Override
         public int hashCode()
         {

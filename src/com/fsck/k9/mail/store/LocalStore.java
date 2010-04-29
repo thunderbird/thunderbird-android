@@ -630,11 +630,11 @@ public class LocalStore extends Store implements Serializable
         return true;
     }
 
-    public Message[] searchForMessages(MessageRetrievalListener listener, String queryString, 
-            List<LocalFolder> folders, Message[] messages, final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException
+    public Message[] searchForMessages(MessageRetrievalListener listener, String queryString,
+                                       List<LocalFolder> folders, Message[] messages, final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException
     {
         List<String> args = new LinkedList<String>();
-        
+
         StringBuilder whereClause = new StringBuilder();
         if (queryString != null && queryString.length() > 0)
         {
@@ -689,7 +689,7 @@ public class LocalStore extends Store implements Serializable
                 }
                 anyAdded = true;
                 whereClause.append(" flags NOT LIKE ?");
-                
+
                 args.add("%" + flag.toString() + "%");
             }
             whereClause.append(" )");
@@ -706,12 +706,12 @@ public class LocalStore extends Store implements Serializable
                 }
                 anyAdded = true;
                 whereClause.append(" flags LIKE ?");
-                
+
                 args.add("%" + flag.toString() + "%");
             }
             whereClause.append(" )");
         }
-        
+
         if (K9.DEBUG)
         {
             Log.v(K9.LOG_TAG, "whereClause = " + whereClause.toString());
@@ -993,7 +993,7 @@ public class LocalStore extends Store implements Serializable
             open(OpenMode.READ_WRITE);
             return mUnreadMessageCount;
         }
-        
+
         @Override
         public int getFlaggedMessageCount() throws MessagingException
         {
@@ -1008,7 +1008,7 @@ public class LocalStore extends Store implements Serializable
             mDb.execSQL("UPDATE folders SET unread_count = ? WHERE id = ?",
                         new Object[] { mUnreadMessageCount, mFolderId });
         }
-        
+
         public void setFlaggedMessageCount(int flaggedMessageCount) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
@@ -1141,7 +1141,7 @@ public class LocalStore extends Store implements Serializable
         {
             this.pushClass = pushClass;
         }
-        
+
         public boolean isIntegrate()
         {
             return mIntegrate;
@@ -1150,7 +1150,7 @@ public class LocalStore extends Store implements Serializable
         {
             mIntegrate = integrate;
         }
-        
+
         private String getPrefId() throws MessagingException
         {
             open(OpenMode.READ_WRITE);
@@ -1216,15 +1216,15 @@ public class LocalStore extends Store implements Serializable
 
             editor.commit();
         }
-        
-        
+
+
         public FolderClass getDisplayClass(Preferences preferences) throws MessagingException
         {
             String id = getPrefId();
             return FolderClass.valueOf(preferences.getPreferences().getString(id + ".displayMode",
-                    FolderClass.NO_CLASS.name()));  
+                                       FolderClass.NO_CLASS.name()));
         }
-        
+
         @Override
         public void refresh(Preferences preferences) throws MessagingException
         {
@@ -1586,7 +1586,7 @@ public class LocalStore extends Store implements Serializable
                     setUnreadMessageCount(getUnreadMessageCount() - 1);
                     lDestFolder.setUnreadMessageCount(lDestFolder.getUnreadMessageCount() + 1);
                 }
-                
+
                 if (message.isSet(Flag.FLAGGED))
                 {
                     setFlaggedMessageCount(getFlaggedMessageCount() - 1);
@@ -2075,7 +2075,7 @@ public class LocalStore extends Store implements Serializable
                 Log.e(K9.LOG_TAG, "Unable to fetch all messages from LocalStore", e);
             }
         }
-        
+
 
         @Override
         public void delete(boolean recurse) throws MessagingException
@@ -2298,7 +2298,7 @@ public class LocalStore extends Store implements Serializable
         {
             return inTopGroup;
         }
-        
+
         public void setInTopGroup(boolean inTopGroup)
         {
             this.inTopGroup = inTopGroup;
@@ -2368,14 +2368,14 @@ public class LocalStore extends Store implements Serializable
             if (flagList != null && flagList.length() > 0)
             {
                 String[] flags = flagList.split(",");
-                
+
                 for (String flag : flags)
                 {
                     try
                     {
                         this.setFlagInternal(Flag.valueOf(flag), true);
                     }
-            
+
                     catch (Exception e)
                     {
                         if ("X_BAD_FLAG".equals(flag) == false)
@@ -2635,7 +2635,7 @@ public class LocalStore extends Store implements Serializable
                     {
                         folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() - 1);
                     }
-                    else 
+                    else
                     {
                         folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + 1);
                     }
@@ -2647,7 +2647,7 @@ public class LocalStore extends Store implements Serializable
                     {
                         folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + 1);
                     }
-                    else 
+                    else
                     {
                         folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() - 1);
                     }

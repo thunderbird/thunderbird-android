@@ -157,7 +157,7 @@ public class AttachmentProvider extends ContentProvider
     }
 
     private File getFile(String dbName, String id)
-        throws FileNotFoundException
+    throws FileNotFoundException
     {
         try
         {
@@ -166,7 +166,8 @@ public class AttachmentProvider extends ContentProvider
             if (!file.exists())
             {
                 file = new File("/sdcard"  + attachmentsDir.getCanonicalPath().substring("/data".length()), id);
-                if (!file.exists()) {
+                if (!file.exists())
+                {
                     throw new FileNotFoundException();
                 }
             }

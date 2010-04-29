@@ -69,25 +69,26 @@ public class AccountSetupComposition extends K9Activity
         mAccountAlwaysBcc = (EditText)findViewById(R.id.account_always_bcc);
         mAccountAlwaysBcc.setText(mAccount.getAlwaysBcc());
 
-    	mAccountSignatureLayout = (LinearLayout)findViewById(R.id.account_signature_layout);
+        mAccountSignatureLayout = (LinearLayout)findViewById(R.id.account_signature_layout);
 
-    	mAccountSignatureUse = (CheckBox)findViewById(R.id.account_signature_use);
+        mAccountSignatureUse = (CheckBox)findViewById(R.id.account_signature_use);
         boolean useSignature = mAccount.getSignatureUse();
         mAccountSignatureUse.setChecked(useSignature);
-        mAccountSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mAccountSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
                 if (isChecked)
                 {
-    				mAccountSignatureLayout.setVisibility(View.VISIBLE);
-    	            mAccountSignature.setText(mAccount.getSignature());
-    	            boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
-    	            mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
-    	            mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
+                    mAccountSignatureLayout.setVisibility(View.VISIBLE);
+                    mAccountSignature.setText(mAccount.getSignature());
+                    boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
+                    mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
+                    mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
                 }
                 else
                 {
-    				mAccountSignatureLayout.setVisibility(View.GONE);
+                    mAccountSignatureLayout.setVisibility(View.GONE);
                 }
             }
         });
@@ -107,7 +108,7 @@ public class AccountSetupComposition extends K9Activity
         }
         else
         {
-        	mAccountSignatureLayout.setVisibility(View.GONE);
+            mAccountSignatureLayout.setVisibility(View.GONE);
         }
     }
 
@@ -126,9 +127,9 @@ public class AccountSetupComposition extends K9Activity
         mAccount.setSignatureUse(mAccountSignatureUse.isChecked());
         if (mAccountSignatureUse.isChecked())
         {
-        	mAccount.setSignature(mAccountSignature.getText().toString());
-        	boolean isSignatureBeforeQuotedText = mAccountSignatureBeforeLocation.isChecked();
-        	mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
+            mAccount.setSignature(mAccountSignature.getText().toString());
+            boolean isSignatureBeforeQuotedText = mAccountSignatureBeforeLocation.isChecked();
+            mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
         }
 
         mAccount.save(Preferences.getPreferences(this));

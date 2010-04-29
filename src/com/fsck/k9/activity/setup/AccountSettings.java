@@ -249,7 +249,7 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
-        
+
         mSearchableFolders = (ListPreference) findPreference(PREFERENCE_SEARCHABLE_FOLDERS);
         mSearchableFolders.setValue(mAccount.getSearchableFolders().name());
         mSearchableFolders.setSummary(mSearchableFolders.getEntry());
@@ -325,7 +325,8 @@ public class AccountSettings extends K9PreferenceActivity
         mAutoExpandFolder.setSummary(translateFolder(mAccount.getAutoExpandFolderName()));
 
         mAutoExpandFolder.setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener() {
+            new Preference.OnPreferenceClickListener()
+        {
             public boolean onPreferenceClick(Preference preference)
             {
                 onChooseAutoExpandFolder();
@@ -338,13 +339,14 @@ public class AccountSettings extends K9PreferenceActivity
         mChipColor = (Preference)findPreference(PREFERENCE_CHIP_COLOR);
 
         mChipColor.setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener() {
+            new Preference.OnPreferenceClickListener()
+        {
             public boolean onPreferenceClick(Preference preference)
             {
                 onChooseChipColor();
                 return false;
             }
-            }
+        }
         );
 
 
@@ -415,18 +417,18 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
-        
+
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
-        
+
         boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
         if (mAccount.getFolderPushMode() != FolderMode.NONE)
         {
             needsPushRestart |= mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
             needsPushRestart |= mAccount.setMaxPushFolders(Integer.parseInt(mPushLimit.getValue()));
-            needsPushRestart |= mIncomingChanged;  
+            needsPushRestart |= mIncomingChanged;
         }
-        
+
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
         if (newRingtone != null)
@@ -509,9 +511,14 @@ public class AccountSettings extends K9PreferenceActivity
 
     public void onChooseChipColor()
     {
-        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener () {
-            public void colorChanged (int color) { mAccount.setChipColor(color); } },
-                    mAccount.getChipColor()).show();
+        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener()
+        {
+            public void colorChanged(int color)
+            {
+                mAccount.setChipColor(color);
+            }
+        },
+        mAccount.getChipColor()).show();
     }
 
     public void onChooseAutoExpandFolder()

@@ -55,7 +55,7 @@ public abstract class EmailAddressAdapter extends ResourceCursorAdapter
             try
             {
                 Class<? extends EmailAddressAdapter> clazz =
-                        Class.forName(className).asSubclass(EmailAddressAdapter.class);
+                    Class.forName(className).asSubclass(EmailAddressAdapter.class);
                 sInstance = clazz.newInstance();
             }
             catch (Exception e)

@@ -140,11 +140,11 @@ public class PollService extends CoreService
 
         private void release()
         {
-            
+
             MessagingController controller = MessagingController.getInstance(getApplication());
             controller.setCheckMailListener(null);
             MailService.saveLastCheckEnd(getApplication());
-            
+
             MailService.actionReschedulePoll(PollService.this, null);
             wakeLockRelease();
             if (K9.DEBUG)

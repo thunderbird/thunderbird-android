@@ -22,7 +22,7 @@ public abstract class CoreService extends Service
     private static AtomicInteger wakeLockSeq = new AtomicInteger(0);
     private ExecutorService threadPool = null;
     private final String className = getClass().getName();
-    
+
     @Override
     public void onCreate()
     {
@@ -30,9 +30,9 @@ public abstract class CoreService extends Service
             Log.i(K9.LOG_TAG, "CoreService: " + className + ".onCreate()");
         threadPool = Executors.newFixedThreadPool(1);  // Must be single threaded
         super.onCreate();
-        
+
     }
-    
+
     protected static void addWakeLockId(Intent i, Integer wakeLockId)
     {
         if (wakeLockId != null)
@@ -53,8 +53,8 @@ public abstract class CoreService extends Service
 
         i.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
     }
-    
-    
+
+
 
     @Override
     public void onStart(Intent intent, int startId)
@@ -104,12 +104,12 @@ public abstract class CoreService extends Service
 
     public void execute(Context context, final Runnable runner, int wakeLockTime, final Integer startId)
     {
-        
+
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         final WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(wakeLockTime);
-        
+
         Runnable myRunner = new Runnable()
         {
             public void run()
@@ -137,7 +137,7 @@ public abstract class CoreService extends Service
         if (threadPool == null)
         {
             Log.e(K9.LOG_TAG, "CoreService.execute (" + className + ") called with no threadPool available; running Runnable " + runner.hashCode() + " in calling thread", new Throwable());
-            synchronized(this)
+            synchronized (this)
             {
                 myRunner.run();
             }

@@ -26,10 +26,10 @@ public class LineWrapOutputStream extends FilterOutputStream
         // Buffer full?
         if (lineLength == buffer.length)
         {
-            // Usable word-boundary found earlier? 
+            // Usable word-boundary found earlier?
             if (endOfLastWord > 0)
             {
-                // Yes, so output everything up to that word-boundary 
+                // Yes, so output everything up to that word-boundary
                 out.write(buffer, bufferStart, endOfLastWord - bufferStart);
                 out.write(CRLF);
 

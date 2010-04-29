@@ -159,7 +159,7 @@ public class RemoteControlService extends CoreService
                         Editor editor = sPrefs.edit();
                         K9.save(editor);
                         editor.commit();
-                        
+
                         if (needsReschedule)
                         {
                             Intent i = new Intent();

@@ -38,7 +38,7 @@ public class MailService extends CoreService
     private static final String CANCEL_CONNECTIVITY_NOTICE = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
 
     private static final String HAS_CONNECTIVITY = "com.fsck.k9.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
-    
+
     private static long nextCheck = -1;
 
     public static void actionReset(Context context, Integer wakeLockId)
@@ -53,7 +53,7 @@ public class MailService extends CoreService
         }
         context.startService(i);
     }
-    
+
     public static void actionRestartPushers(Context context, Integer wakeLockId)
     {
         Intent i = new Intent();
@@ -66,7 +66,7 @@ public class MailService extends CoreService
         }
         context.startService(i);
     }
-    
+
     public static void actionReschedulePoll(Context context, Integer wakeLockId)
     {
         Intent i = new Intent();
@@ -192,7 +192,7 @@ public class MailService extends CoreService
                     startIdObj = null;
                 }
             }
-            else if (CONNECTIVITY_CHANGE.equals(intent.getAction()) )
+            else if (CONNECTIVITY_CHANGE.equals(intent.getAction()))
             {
                 notifyConnectionStatus(hasConnectivity);
                 rescheduleAll(hasConnectivity, doBackground, startIdObj);
@@ -220,7 +220,7 @@ public class MailService extends CoreService
     {
         reschedulePoll(hasConnectivity, doBackground, null, true);
         reschedulePushers(hasConnectivity, doBackground, startId);
-        
+
     }
 
     private void notifyConnectionStatus(boolean hasConnectivity)
@@ -273,10 +273,10 @@ public class MailService extends CoreService
 
     private final static String PREVIOUS_INTERVAL = "MailService.previousInterval";
     private final static String LAST_CHECK_END = "MailService.lastCheckEnd";
-    
+
     public static void saveLastCheckEnd(Context context)
     {
-        
+
         long lastCheckEnd = System.currentTimeMillis();
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "Saving lastCheckEnd = " + new Date(lastCheckEnd));
@@ -286,7 +286,7 @@ public class MailService extends CoreService
         editor.putLong(LAST_CHECK_END, lastCheckEnd);
         editor.commit();
     }
-   
+
     private void reschedulePoll(final boolean hasConnectivity, final boolean doBackground, Integer startId, final boolean considerLastCheckEnd)
     {
         if (hasConnectivity && doBackground)
@@ -296,7 +296,7 @@ public class MailService extends CoreService
                 public void run()
                 {
                     int shortestInterval = -1;
-                    
+
                     Preferences prefs = Preferences.getPreferences(MailService.this);
                     SharedPreferences sPrefs = prefs.getPreferences();
                     int previousInterval = sPrefs.getInt(PREVIOUS_INTERVAL, -1);
@@ -313,7 +313,7 @@ public class MailService extends CoreService
                     SharedPreferences.Editor editor = sPrefs.edit();
                     editor.putInt(PREVIOUS_INTERVAL, shortestInterval);
                     editor.commit();
-                    
+
                     if (shortestInterval == -1)
                     {
                         nextCheck = -1;
@@ -327,11 +327,11 @@ public class MailService extends CoreService
                         long base = (previousInterval == -1 || lastCheckEnd == -1 || considerLastCheckEnd == false ? System.currentTimeMillis() : lastCheckEnd);
                         long nextTime = base + delay;
                         if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, 
-                                    "previousInterval = " + previousInterval 
-                                    + ", shortestInterval = " + shortestInterval
-                                    + ", lastCheckEnd = " + new Date(lastCheckEnd)
-                                    + ", considerLastCheckEnd = " + considerLastCheckEnd);
+                            Log.i(K9.LOG_TAG,
+                                  "previousInterval = " + previousInterval
+                                  + ", shortestInterval = " + shortestInterval
+                                  + ", lastCheckEnd = " + new Date(lastCheckEnd)
+                                  + ", considerLastCheckEnd = " + considerLastCheckEnd);
                         nextCheck = nextTime;
                         try
                         {
@@ -343,12 +343,12 @@ public class MailService extends CoreService
                             // I once got a NullPointerException deep in new Date();
                             Log.e(K9.LOG_TAG, "Exception while logging", e);
                         }
-    
+
                         Intent i = new Intent();
                         i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
                         i.setAction(ACTION_CHECK_MAIL);
                         BootReceiver.scheduleIntent(MailService.this, nextTime, i);
-    
+
                     }
                 }
             }
