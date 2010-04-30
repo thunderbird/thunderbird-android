@@ -317,7 +317,28 @@ public class ImapResponseParser
     private String parseQuoted() throws IOException
     {
         expect('"');
-        return readStringUntil('"');
+
+        StringBuffer sb = new StringBuffer();
+        int ch;
+        boolean escape = false;
+        while ((ch = mIn.read()) != -1)
+        {
+            if (!escape && (ch == '\\'))
+            {
+                // Found the escape character
+                escape = true;
+            }
+            else if (!escape && (ch == '"'))
+            {
+                return sb.toString();
+            }
+            else
+            {
+                sb.append((char)ch);
+                escape = false;
+            }
+        }
+        throw new IOException("parseQuoted(): end of stream reached");
     }
 
     private String readStringUntil(char end) throws IOException
@@ -335,7 +356,7 @@ public class ImapResponseParser
                 sb.append((char)ch);
             }
         }
-        throw new IOException("readQuotedString(): end of stream reached");
+        throw new IOException("readStringUntil(): end of stream reached");
     }
 
     private int expect(char ch) throws IOException
