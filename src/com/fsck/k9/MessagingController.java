@@ -1298,12 +1298,21 @@ public class MessagingController implements Runnable
         if (remoteUnreadMessageCount != -1)
         {
             localFolder.setUnreadMessageCount(remoteUnreadMessageCount);
-            return remoteUnreadMessageCount;
         }
         else
         {
-            return localFolder.getMessageCount();
+            int unreadCount = 0;
+            Message[] messages = localFolder.getMessages(null, false);
+            for (Message message : messages)
+            {
+                if (message.isSet(Flag.SEEN) == false && message.isSet(Flag.DELETED) == false)
+                {
+                    unreadCount++;
+                }
+            }
+            localFolder.setUnreadMessageCount(unreadCount);
         }
+        return localFolder.getUnreadMessageCount();
     }
 
     private void setLocalFlaggedCountToRemote(LocalFolder localFolder, Folder remoteFolder) throws MessagingException
@@ -1312,6 +1321,19 @@ public class MessagingController implements Runnable
         if (remoteFlaggedMessageCount != -1)
         {
             localFolder.setFlaggedMessageCount(remoteFlaggedMessageCount);
+        }
+        else
+        {
+            int flaggedCount = 0;
+            Message[] messages = localFolder.getMessages(null, false);
+            for (Message message : messages)
+            {
+                if (message.isSet(Flag.FLAGGED) == true && message.isSet(Flag.DELETED) == false)
+                {
+                    flaggedCount++;
+                }
+            }
+            localFolder.setFlaggedMessageCount(flaggedCount);
         }
     }
 
