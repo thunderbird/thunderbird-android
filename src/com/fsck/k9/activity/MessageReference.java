@@ -14,7 +14,6 @@ public class MessageReference implements Serializable
 
     public boolean equals(Object o)
     {
-        Log.i(K9.LOG_TAG, "Comparing this " + this + " to " + o);
         if (o instanceof MessageReference == false)
         {
             return false;
