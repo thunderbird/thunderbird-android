@@ -2,10 +2,6 @@ package com.fsck.k9.activity;
 
 import java.io.Serializable;
 
-import com.fsck.k9.K9;
-
-import android.util.Log;
-
 public class MessageReference implements Serializable
 {
     public String accountUuid;
