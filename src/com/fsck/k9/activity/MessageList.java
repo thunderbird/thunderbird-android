@@ -2059,7 +2059,14 @@ public class MessageList
                     view.getBackground().setAlpha(127);
                 }
 
-                holder.subject.setText(message.subject);
+                if (message.subject == null || message.subject.equals(""))
+                {
+                    holder.subject.setText(getText(R.string.general_no_subject));
+                }
+                else
+                {
+                    holder.subject.setText(message.subject);
+                }
 
                 if (holder.preview != null)
                 {
