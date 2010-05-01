@@ -1,143 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="fill_parent" android:layout_width="fill_parent"
-    android:orientation="vertical"  android:background="#ffffff">
-    <ScrollView android:layout_width="fill_parent"
-        android:layout_height="0dip" android:layout_weight="1"
+	android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+	android:orientation="vertical"
+    android:background="#ffffff" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
         android:scrollbarStyle="outsideInset"
-        android:fillViewport="true">
-        <LinearLayout android:orientation="vertical"
-            android:layout_width="fill_parent" android:layout_height="wrap_content">
-            <LinearLayout android:orientation="vertical"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:background="#ededed">
-                
-                <TextView android:id="@+id/from"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#ededed" >
+
+                <TextView
+                    android:id="@+id/from"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/primary_text_light"
                     android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"/>
-                
-                <MultiAutoCompleteTextView
-                    android:id="@+id/to" android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginRight="6dip"
                     android:textColor="@android:color/primary_text_light"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <MultiAutoCompleteTextView
+                    android:id="@+id/to"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
                     android:inputType="textEmailAddress|textMultiLine"
                     android:imeOptions="actionNext"
-                    android:hint="@string/message_compose_to_hint" />
-                <MultiAutoCompleteTextView
-                    android:id="@+id/cc" android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:hint="@string/message_compose_to_hint"
                     android:textColor="@android:color/primary_text_light"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <MultiAutoCompleteTextView
+                    android:id="@+id/cc"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
                     android:inputType="textEmailAddress|textMultiLine"
                     android:imeOptions="actionNext"
                     android:hint="@string/message_compose_cc_hint"
-                    android:visibility="gone" />
-                <MultiAutoCompleteTextView
-                    android:id="@+id/bcc" android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/primary_text_light"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:visibility="gone" />
+
+                <MultiAutoCompleteTextView
+                    android:id="@+id/bcc"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
                     android:inputType="textEmailAddress|textMultiLine"
                     android:imeOptions="actionNext"
                     android:hint="@string/message_compose_bcc_hint"
-                    android:visibility="gone" />
-                <EditText android:id="@+id/subject"
-                    android:layout_width="fill_parent"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_height="wrap_content"
                     android:textColor="@android:color/primary_text_light"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/subject"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
                     android:hint="@string/message_compose_subject_hint"
                     android:inputType="textEmailSubject|textAutoCorrect|textCapSentences|textImeMultiLine" 
                     android:imeOptions="actionNext"
-                    />
+                    android:singleLine="true"
+                    android:textColor="@android:color/primary_text_light"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
                 <!--
                     Empty container for storing attachments. We'll stick
                     instances of message_compose_attachment.xml in here.
                 -->
-                <LinearLayout android:id="@+id/attachments"
+                <LinearLayout
+                    android:id="@+id/attachments"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
-                <View android:layout_width="fill_parent"
+
+                <View
+                    android:layout_width="fill_parent"
                     android:layout_height="1dip"
                     android:background="@drawable/divider_horizontal_email" />
+
             </LinearLayout>
-            <EditText android:id="@+id/message_content"
-                android:textColor="@android:color/primary_text_light"
+
+            <EditText
+                android:id="@+id/message_content"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="left|top"
-                android:minLines="3" 
                 android:hint="@string/message_compose_content_hint" 
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:imeOptions="actionDone|flagNoEnterAction"
-                />
-        <!--  quoted text bar -->
-            <EditText android:id="@+id/upper_signature"
+                android:minLines="3"                
                 android:textColor="@android:color/primary_text_light"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/upper_signature"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="left|top"
                 android:editable="false"
-                android:minLines="0" android:autoText="true"
-                android:capitalize="sentences" />
-        
-            <RelativeLayout android:id="@+id/quoted_text_bar"
+                android:minLines="0"
+                android:autoText="true"
+                android:capitalize="sentences"
+                android:textColor="@android:color/primary_text_light"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <!-- Quoted text bar -->
+            <RelativeLayout
+                android:id="@+id/quoted_text_bar"
                 android:layout_width="fill_parent"
-                android:layout_height="45dip" android:background="@drawable/email_quoted_bar">
-                <TextView android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/primary_text_light"
-                    android:text="@string/message_compose_quoted_text_label"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true" />
-                <ImageButton android:id="@+id/quoted_text_delete"
+                android:layout_height="45dip"
+                android:background="@drawable/email_quoted_bar" >
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_dialog"
+                    android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true" />
+                    android:text="@string/message_compose_quoted_text_label"
+                    android:textColor="@android:color/primary_text_light"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <ImageButton
+                    android:id="@+id/quoted_text_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/btn_dialog" />
+
             </RelativeLayout>
-            <EditText android:id="@+id/quoted_text"
-            
-            	android:textColor="@android:color/primary_text_light"
+
+            <EditText
+                android:id="@+id/quoted_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="left|top"
-                android:minLines="3" android:autoText="true"
-                android:capitalize="sentences" />
-            <EditText android:id="@+id/lower_signature"
+                android:minLines="3"
+                android:autoText="true"
+                android:capitalize="sentences"
                 android:textColor="@android:color/primary_text_light"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/lower_signature"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="left|top"
                 android:editable="false"
-                android:minLines="0" android:autoText="true"
-                android:capitalize="sentences" />
+                android:minLines="0"
+                android:autoText="true"
+                android:capitalize="sentences"
+                android:textColor="@android:color/primary_text_light"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>
