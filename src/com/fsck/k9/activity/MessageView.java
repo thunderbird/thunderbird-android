@@ -24,7 +24,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.webkit.*;
-import android.webkit.WebSettings.TextSize;
 import android.widget.*;
 import com.fsck.k9.*;
 import com.fsck.k9.mail.*;
@@ -265,7 +264,14 @@ public class MessageView extends K9Activity implements OnClickListener
                 public void run()
                 {
                     setTitle(subject);
-                    mSubjectView.setText(subject);
+                    if (subject == null || subject.equals(""))
+                    {
+                        mSubjectView.setText(getText(R.string.general_no_subject));
+                    }
+                    else
+                    {
+                        mSubjectView.setText(subject);
+                    }
                     mFromView.setText(from);
                     if (date != null)
                     {
