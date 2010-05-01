@@ -846,7 +846,7 @@ public class MessageView extends K9Activity implements OnClickListener
         Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageReference);
+        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
     }
 
@@ -865,7 +865,7 @@ public class MessageView extends K9Activity implements OnClickListener
         Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, mMessageReference);
+        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
     }
 
@@ -883,9 +883,9 @@ public class MessageView extends K9Activity implements OnClickListener
                     return;
                 String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
                 String srcFolderName = data.getStringExtra(ChooseFolder.EXTRA_CUR_FOLDER);
-                String uid = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE_UID);
+                MessageReference ref = (MessageReference)data.getSerializableExtra(ChooseFolder.EXTRA_MESSAGE);
 
-                if (uid.equals(mMessageReference) && srcFolderName.equals(mMessageReference.folderName))
+                if (mMessageReference.equals(ref))
                 {
 
                     switch (requestCode)

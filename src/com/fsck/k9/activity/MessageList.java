@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -124,7 +126,6 @@ public class MessageList
 
     class MessageListHandler extends Handler
     {
-
         public void removeMessage(final List<MessageInfoHolder> messages)
         {
             runOnUiThread(new Runnable()
@@ -145,6 +146,8 @@ public class MessageList
                             }
                         }
                     }
+                    resetUnreadCountOnThread();
+                    
                     mAdapter.notifyDataSetChanged();
                     toggleBatchButtons();
                 }
@@ -152,20 +155,20 @@ public class MessageList
 
         }
 
-        public void addMessages(List<MessageInfoHolder> messages)
+        public void addMessages(final List<MessageInfoHolder> messages)
         {
 
             final boolean wasEmpty = mAdapter.messages.isEmpty();
-            for (final MessageInfoHolder message : messages)
+            runOnUiThread(new Runnable()
             {
-
-                if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
+                public void run()
                 {
-
-                    runOnUiThread(new Runnable()
+                    for (final MessageInfoHolder message : messages)
                     {
-                        public void run()
+        
+                        if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
                         {
+        
                             int index = Collections.binarySearch(mAdapter.messages, message);
 
                             if (index < 0)
@@ -176,23 +179,42 @@ public class MessageList
                             mAdapter.messages.add(index, message);
 
                         }
-                    });
-                }
-            }
-
-            runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
+                    }
+                
                     if (wasEmpty)
                     {
                         mListView.setSelection(0);
                     }
+                    resetUnreadCountOnThread();
+                    
                     mAdapter.notifyDataSetChanged();
                 }
             });
         }
 
+        private void resetUnreadCount()
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    resetUnreadCountOnThread();
+                }
+            });
+        }
+        private void resetUnreadCountOnThread()
+        {
+            if (mQueryString != null)
+            {
+                int unreadCount = 0;
+                for (MessageInfoHolder holder : mAdapter.messages)
+                {
+                    unreadCount += holder.read ? 0 : 1;
+                }
+                mUnreadMessageCount = unreadCount;
+                refreshTitleOnThread();
+            }
+        }
         private void sortMessages()
         {
             runOnUiThread(new Runnable()
@@ -225,10 +247,14 @@ public class MessageList
             {
                 public void run()
                 {
-                    setWindowTitle();
-                    setWindowProgress();
+                    refreshTitleOnThread();
                 }
             });
+        }
+        private void refreshTitleOnThread()
+        {
+            setWindowTitle();
+            setWindowProgress();
         }
         private void setWindowProgress()
         {
@@ -701,9 +727,9 @@ public class MessageList
 
     private void onOpenMessage(MessageInfoHolder message)
     {
-        if (message.folder.name.equals(message.account.getDraftsFolderName()))
+        if (message.folder.name.equals(message.message.getFolder().getAccount().getDraftsFolderName()))
         {
-            MessageCompose.actionEditDraft(this, message.account, message.message);
+            MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
         }
         else
         {
@@ -712,16 +738,10 @@ public class MessageList
 
             for (MessageInfoHolder holder : mAdapter.messages)
             {
-                MessageReference ref = new MessageReference();
-                ref.accountUuid = holder.message.getFolder().getAccount().getUuid();
-                ref.folderName = holder.message.getFolder().getName();
-                ref.uid = holder.uid;
+                MessageReference ref = holder.message.makeMessageReference();
                 messageRefs.add(ref);
             }
-            MessageReference ref = new MessageReference();
-            ref.accountUuid = message.message.getFolder().getAccount().getUuid();
-            ref.folderName = message.message.getFolder().getName();
-            ref.uid = message.uid;
+            MessageReference ref = message.message.makeMessageReference();
             Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
 
             MessageView.actionView(this, ref, messageRefs);
@@ -844,7 +864,7 @@ public class MessageList
 
     private void onMove(MessageInfoHolder holder)
     {
-        if (mController.isMoveCapable(holder.account) == false)
+        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == false)
         {
             return;
         }
@@ -857,15 +877,15 @@ public class MessageList
         }
 
         Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.account.getUuid());
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.message.getFolder().getAccount().getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, holder.message.getUid());
+        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, holder.message.makeMessageReference());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
     }
 
     private void onCopy(MessageInfoHolder holder)
     {
-        if (mController.isCopyCapable(holder.account) == false)
+        if (mController.isCopyCapable(holder.message.getFolder().getAccount()) == false)
         {
             return;
         }
@@ -878,9 +898,9 @@ public class MessageList
         }
 
         Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.account.getUuid());
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.message.getFolder().getAccount().getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE_UID, holder.message.getUid());
+        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, holder.message.makeMessageReference());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
     }
 
@@ -900,9 +920,9 @@ public class MessageList
 
                 String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
 
-                String uid = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE_UID);
+                MessageReference ref = (MessageReference)data.getSerializableExtra(ChooseFolder.EXTRA_MESSAGE);
 
-                MessageInfoHolder m = mAdapter.getMessage(uid);
+                MessageInfoHolder m = mAdapter.getMessage(ref);
                 if (destFolderName != null && m != null)
                 {
                     switch (requestCode)
@@ -936,19 +956,19 @@ public class MessageList
 
     private void onMoveChosen(MessageInfoHolder holder, String folderName)
     {
-        if (mController.isMoveCapable(holder.account) == true && folderName != null)
+        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == true && folderName != null)
         {
             mAdapter.removeMessage(holder);
-            mController.moveMessage(holder.account, holder.message.getFolder().getName(), holder.message, folderName, null);
+            mController.moveMessage(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), holder.message, folderName, null);
         }
     }
 
 
     private void onCopyChosen(MessageInfoHolder holder, String folderName)
     {
-        if (mController.isCopyCapable(holder.account) == true && folderName != null)
+        if (mController.isCopyCapable(holder.message.getFolder().getAccount()) == true && folderName != null)
         {
-            mController.copyMessage(holder.account,
+            mController.copyMessage(holder.message.getFolder().getAccount(),
                                     holder.message.getFolder().getName(), holder.message, folderName, null);
         }
     }
@@ -956,17 +976,17 @@ public class MessageList
 
     private void onReply(MessageInfoHolder holder)
     {
-        MessageCompose.actionReply(this, holder.account, holder.message, false);
+        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, false);
     }
 
     private void onReplyAll(MessageInfoHolder holder)
     {
-        MessageCompose.actionReply(this, holder.account, holder.message, true);
+        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, true);
     }
 
     private void onForward(MessageInfoHolder holder)
     {
-        MessageCompose.actionForward(this, holder.account, holder.message);
+        MessageCompose.actionForward(this, holder.message.getFolder().getAccount(), holder.message);
     }
 
     private void onMarkAllAsRead(final Account account, final String folder)
@@ -1057,7 +1077,7 @@ public class MessageList
 
     private void onToggleRead(MessageInfoHolder holder)
     {
-        mController.setFlag(holder.account, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
+        mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
         holder.read = !holder.read;
         mHandler.sortMessages();
     }
@@ -1065,7 +1085,7 @@ public class MessageList
     private void onToggleFlag(MessageInfoHolder holder)
     {
 
-        mController.setFlag(holder.account, holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
+        mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
         holder.flagged = !holder.flagged;
         mHandler.sortMessages();
     }
@@ -1457,12 +1477,12 @@ public class MessageList
             menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
         }
 
-        if (mController.isCopyCapable(message.account) == false)
+        if (mController.isCopyCapable(message.message.getFolder().getAccount()) == false)
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
 
-        if (mController.isMoveCapable(message.account) == false)
+        if (mController.isMoveCapable(message.message.getFolder().getAccount()) == false)
         {
             menu.findItem(R.id.move).setVisible(false);
         }
@@ -1562,18 +1582,14 @@ public class MessageList
             @Override
             public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
             {
-                // eventually, we may want to check a message added during sync against the query filter
-                if (mQueryString == null)
-                {
-                    addOrUpdateMessage(account, folder, message);
-                }
+                addOrUpdateMessage(account, folder, message, true);
             }
 
 
             @Override
             public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message)
             {
-                MessageInfoHolder holder = getMessage(message.getUid());
+                MessageInfoHolder holder = getMessage(message);
                 if (holder == null)
                 {
                     Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
@@ -1634,13 +1650,10 @@ public class MessageList
             @Override
             public void listLocalMessagesRemoveMessage(Account account, String folder,Message message)
             {
-                if (updateForMe(account, folder))
+                MessageInfoHolder holder = getMessage(message);
+                if (holder != null)
                 {
-                    MessageInfoHolder holder = getMessage(message.getUid());
-                    if (holder != null)
-                    {
-                        removeMessage(getMessage(message.getUid()));
-                    }
+                    removeMessage(holder);
                 }
             }
 
@@ -1648,13 +1661,13 @@ public class MessageList
             @Override
             public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
             {
-                addOrUpdateMessages(account, folder, messages);
+                addOrUpdateMessages(account, folder, messages, false);
             }
 
             @Override
             public void listLocalMessagesUpdateMessage(Account account, String folder, Message message)
             {
-                addOrUpdateMessage(account, folder, message);
+                addOrUpdateMessage(account, folder, message, false);
             }
 
             @Override
@@ -1706,24 +1719,23 @@ public class MessageList
             @Override
             public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
             {
-                if (updateForMe(account, folder))
+                MessageReference ref = new MessageReference();
+                ref.accountUuid = account.getUuid();
+                ref.folderName = folder;
+                ref.uid = oldUid;
+                
+                MessageInfoHolder holder = getMessage(ref);
+                if (holder != null)
                 {
-                    MessageInfoHolder holder = getMessage(oldUid);
-                    if (holder != null)
-                    {
-                        holder.uid = newUid;
-                        holder.message.setUid(newUid);
-                    }
+                    holder.uid = newUid;
+                    holder.message.setUid(newUid);
                 }
             }
-
         };
-
-
 
         private boolean updateForMe(Account account, String folder)
         {
-            if (mQueryString != null || (account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName)))
+            if ((account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName)))
             {
                 return true;
             }
@@ -1759,45 +1771,74 @@ public class MessageList
             removeMessages(messages);
         }
 
-        private void addOrUpdateMessage(Account account, String folder, Message message)
+        private void addOrUpdateMessage(Account account, String folder, Message message, boolean verifyAgainstSearch)
         {
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
-            addOrUpdateMessages(account, folder, messages);
+            addOrUpdateMessages(account, folder, messages, verifyAgainstSearch);
 
         }
 
-        private void addOrUpdateMessages(Account account, String folder, List<Message> messages)
+        private void addOrUpdateMessages(Account account, String folder, List<Message> messages, boolean verifyAgainstSearch)
         {
             boolean needsSort = false;
-            List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
+            final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
             List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
+            List<Message> messagesToSearch = new ArrayList<Message>();
 
             for (Message message : messages)
             {
-                if (updateForMe(account, folder))
+                MessageInfoHolder m = getMessage(message);
+                if (message.isSet(Flag.DELETED))
                 {
-                    MessageInfoHolder m = getMessage(message.getUid());
-                    if (message.isSet(Flag.DELETED))
+                    if (m != null)
                     {
-                        if (m != null)
-                        {
-                            messagesToRemove.add(m);
-                        }
+                        messagesToRemove.add(m);
                     }
-                    else if (m == null)
+                }
+                else if (m == null)
+                {
+                    if (updateForMe(account, folder))
                     {
-                        m = new MessageInfoHolder(message, account);
+                        m = new MessageInfoHolder(message);
                         messagesToAdd.add(m);
                     }
                     else
                     {
-                        m.populate(message, new FolderInfoHolder(message.getFolder(), account), account);
-                        needsSort = true;
+                        if (mQueryString != null)
+                        {
+                            if (verifyAgainstSearch)
+                            {
+                                messagesToSearch.add(message);
+                            }
+                            else
+                            {
+                                m = new MessageInfoHolder(message);
+                                messagesToAdd.add(m);
+                            }
+                        }
                     }
                 }
+                else
+                {
+                    m.populate(message, new FolderInfoHolder(message.getFolder(), account), account);
+                    needsSort = true;
+                }
+                
             }
-
+            if (messagesToSearch.size() > 0)
+            {
+                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(new Message[0]), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, 
+                        new MessagingListener()
+                {
+                    @Override
+                    public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
+                    {
+                        addOrUpdateMessages(account, folder, messages, false);
+                    }
+                    
+                });
+            }
             if (messagesToRemove.size() > 0)
             {
                 removeMessages(messagesToRemove);
@@ -1809,18 +1850,24 @@ public class MessageList
             if (needsSort)
             {
                 mHandler.sortMessages();
+                mHandler.resetUnreadCount();
             }
         }
 
-        // XXX TODO - make this not use a for loop
-        public MessageInfoHolder getMessage(String messageUid)
+        public MessageInfoHolder getMessage(Message message)
         {
-            MessageInfoHolder searchHolder = new MessageInfoHolder();
-            searchHolder.uid = messageUid;
-            int index = mAdapter.messages.indexOf((Object) searchHolder);
-            if (index >= 0)
+            return getMessage(message.makeMessageReference());
+        }
+        
+     // XXX TODO - make this not use a for loop
+        public MessageInfoHolder getMessage(MessageReference messageReference)
+        {
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                return (MessageInfoHolder)mAdapter.messages.get(index);
+                if (holder.message.equalsReference(messageReference))
+                {
+                    return holder;
+                }
             }
             return null;
         }
@@ -2000,7 +2047,7 @@ public class MessageList
                         holder.selected.setVisibility(View.GONE);
                     }
                 }
-                holder.chip.setBackgroundColor(message.account.getChipColor());
+                holder.chip.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
                 holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
 
                 if (message.downloaded)
@@ -2190,8 +2237,6 @@ public class MessageList
 
         public Message message;
 
-        public Account account;
-
         public FolderInfoHolder folder;
 
         public boolean selected;
@@ -2202,10 +2247,11 @@ public class MessageList
             this.selected = false;
         }
 
-        public MessageInfoHolder(Message m, Account account)
+        public MessageInfoHolder(Message m)
         {
             this();
-            populate(m, new FolderInfoHolder(m.getFolder(), account), account);
+            Account account = m.getFolder().getAccount();
+            populate(m, new FolderInfoHolder(m.getFolder(), m.getFolder().getAccount()), account);
         }
 
         public MessageInfoHolder(Message m, FolderInfoHolder folder, Account account)
@@ -2259,7 +2305,6 @@ public class MessageList
 
                 this.uid = message.getUid();
                 this.message = m;
-                this.account = account;
                 this.preview = message.getPreview();
 
             }
@@ -2275,7 +2320,13 @@ public class MessageList
         @Override
         public boolean equals(Object o)
         {
-            return (this.uid.equals(((MessageInfoHolder)o).uid));
+            
+            if (o instanceof MessageInfoHolder == false)
+            {
+                return false;
+            }
+            MessageInfoHolder other = (MessageInfoHolder)o;
+            return message.equals(other.message);
         }
 
         @Override

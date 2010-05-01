@@ -2,14 +2,19 @@ package com.fsck.k9.activity;
 
 import java.io.Serializable;
 
+import com.fsck.k9.K9;
+
+import android.util.Log;
+
 public class MessageReference implements Serializable
 {
-    String accountUuid;
-    String folderName;
-    String uid;
+    public String accountUuid;
+    public String folderName;
+    public String uid;
 
     public boolean equals(Object o)
     {
+        Log.i(K9.LOG_TAG, "Comparing this " + this + " to " + o);
         if (o instanceof MessageReference == false)
         {
             return false;

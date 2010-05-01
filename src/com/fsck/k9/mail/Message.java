@@ -4,8 +4,12 @@ package com.fsck.k9.mail;
 import java.util.Date;
 import java.util.HashSet;
 
+import com.fsck.k9.activity.MessageReference;
+
 public abstract class Message implements Part, Body
 {
+    private MessageReference mReference = null;
+    
     public enum RecipientType
     {
         TO, CC, BCC,
@@ -19,6 +23,19 @@ public abstract class Message implements Part, Body
 
     protected Folder mFolder;
 
+    public boolean equals(Object o)
+    {
+        if (o == null || o instanceof Message == false)
+        {
+            return false;
+        }
+        Message other = (Message)o;
+        return (mFolder.getName().equals(other.getFolder().getName())
+                && mFolder.getAccount().getUuid().equals(other.getFolder().getAccount().getUuid())
+                && mUid.equals(other.getUid()));        
+    }
+    
+    
     public String getUid()
     {
         return mUid;
@@ -26,6 +43,7 @@ public abstract class Message implements Part, Body
 
     public void setUid(String uid)
     {
+        mReference = null;
         this.mUid = uid;
     }
 
@@ -145,4 +163,22 @@ public abstract class Message implements Part, Body
     public abstract void saveChanges() throws MessagingException;
 
     public abstract void setEncoding(String encoding);
+    
+    public MessageReference makeMessageReference()
+    {
+        if (mReference == null)
+        {
+            mReference = new MessageReference();
+            mReference.accountUuid = getFolder().getAccount().getUuid();
+            mReference.folderName = getFolder().getName();
+            mReference.uid = mUid;
+        }
+        return mReference;
+    }
+    
+    public boolean equalsReference(MessageReference ref)
+    {
+        MessageReference tmpReference = makeMessageReference();
+        return tmpReference.equals(ref);
+    }
 }

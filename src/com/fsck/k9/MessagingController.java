@@ -776,6 +776,22 @@ public class MessagingController implements Runnable
 
                         }
                     }
+                    List<Message> messagesToSearch = null;
+                    if (messages != null)
+                    {
+                        messagesToSearch = new LinkedList<Message>();
+                        for (Message message : messages)
+                        {
+                            if (message.getFolder().getAccount().getUuid().equals(account.getUuid()))
+                            {
+                                messagesToSearch.add(message);
+                            }
+                        }
+                        if (messagesToSearch.isEmpty())
+                        {
+                            continue;
+                        }
+                    }
                     if (listener != null)
                     {
                         listener.listLocalMessagesStarted(account, null);
@@ -876,7 +892,9 @@ public class MessagingController implements Runnable
                     try
                     {
                         LocalStore localStore = account.getLocalStore();
-                        localStore.searchForMessages(retrievalListener, query, foldersToSearch, messages, requiredFlags, forbiddenFlags);
+                        localStore.searchForMessages(retrievalListener, query, foldersToSearch, 
+                                messagesToSearch == null ? null : messagesToSearch.toArray(new Message[0]), 
+                                        requiredFlags, forbiddenFlags);
 
                     }
                     catch (Exception e)
