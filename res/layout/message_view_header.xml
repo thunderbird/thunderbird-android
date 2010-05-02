@@ -1,154 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- header area -->
+    <!-- Header area -->
     <LinearLayout
-            android:id="@+id/header_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true">
-    <View
-        android:id="@+id/chip"
-        android:layout_width="6dip"
-        android:layout_height="fill_parent"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-    />
-    <RelativeLayout
+        android:id="@+id/header_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="6dip"
-        android:paddingRight="2dip"
-        android:paddingTop="2dip"
-        android:paddingBottom="2dip"
-        android:background="@android:color/transparent">
-    <CheckBox
-        android:id="@+id/flagged"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusable="false"
-        style="?android:attr/starStyle"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        />
-        <TextView
-            android:id="@+id/from"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:paddingRight="6dip" />
+        android:background="#22cccccc" >
+
         <View
-            android:id="@+id/attachment"
-            android:background="@drawable/ic_email_attachment_small"
-            android:layout_width="22dip"
-            android:layout_height="22dip"
-            android:layout_toRightOf="@id/from"
-            android:layout_alignTop="@id/from" />
-        <View
-            android:id="@+id/downloading"
-            android:background="@drawable/ic_menu_reverse_sort"
-            android:layout_width="22dip"
-            android:layout_height="22dip"
-            android:layout_toRightOf="@id/attachment"
-            android:layout_alignTop="@id/attachment"
-            android:visibility="gone" />
-        <LinearLayout
-            android:id="@+id/to_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/from">
-            <TextView
-                android:id="@+id/to_label"
-                android:textSize="10sp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/message_view_to_label" />
-            <TextView
-                android:id="@+id/to"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="10sp"
-                android:layout_width="0dip"
-                android:layout_weight="1.0"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dip"
-                android:singleLine="false"
-                android:ellipsize="none" />
-        </LinearLayout>
-           <TextView
-                android:id="@+id/time"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="10sp"
-                android:layout_width="wrap_content"
-                android:layout_below="@id/flagged"
-                android:layout_alignParentRight="true"
-                android:layout_height="wrap_content" />
-           <TextView
-                android:id="@+id/date"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="10sp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_width="wrap_content"
-                android:gravity="bottom|right"
-                android:layout_below="@id/time"
-                android:layout_alignParentRight="true"
-                android:layout_height="wrap_content" />
-        <LinearLayout
-            android:id="@+id/cc_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/to_container">
-            <TextView
-                android:id="@+id/cc_label"
-                android:textSize="10sp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/message_view_cc_label" />
-            <TextView
-                android:id="@+id/cc"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="10sp"
-                android:layout_width="0dip"
-                android:layout_weight="1.0"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dip"
-                android:singleLine="false"
-                android:ellipsize="none" />
-        </LinearLayout>
+            android:id="@+id/chip"
+            android:layout_width="6dip"
+            android:layout_height="fill_parent" />
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/cc_container">
-            <TextView
-                android:id="@+id/subject"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                android:layout_width="0dip"
-                android:layout_weight="1.0"
-                android:layout_height="wrap_content" />
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="2dip"
+            android:paddingBottom="2dip"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/from_container"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="true" >
+
+                <TextView
+                    android:id="@+id/from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingRight="6dip"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <View
+                    android:id="@+id/attachment"
+                    android:layout_width="22dip"
+                    android:layout_height="22dip"
+                    android:background="@drawable/ic_email_attachment_small" />
+
+                <View
+                    android:id="@+id/downloading"
+                    android:layout_width="22dip"
+                    android:layout_height="22dip"
+                    android:background="@drawable/ic_menu_reverse_sort"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="4dip"
+                    android:gravity="bottom|right"
+                    android:textSize="10sp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/to_container"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="true" >
+
+                <TextView
+                    android:id="@+id/to_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="4dip"
+                    android:text="@string/message_view_to_label"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <TextView
+                    android:id="@+id/to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="false"
+                    android:ellipsize="none"
+                    android:textSize="10sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="4dip"
+                    android:textSize="10sp"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cc_container"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/cc_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="4dip"
+                    android:text="@string/message_view_cc_label"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <TextView
+                    android:id="@+id/cc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="false"
+                    android:ellipsize="none"
+                    android:textSize="10sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical" >
+
+                <TextView
+                    android:id="@+id/subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="false"
+                    android:ellipsize="none"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <CheckBox
+                    android:id="@+id/flagged"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:focusable="false"
+                    style="?android:attr/starStyle" />
+
+            </LinearLayout>
+
         </LinearLayout>
-    </RelativeLayout>
+
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/show_pictures_section"
         android:layout_width="fill_parent"
@@ -160,6 +174,7 @@
         android:paddingBottom="4dip"
         android:baselineAligned="false"
         android:visibility="gone">
+
         <TextView
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"
@@ -168,27 +183,27 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1.0" />
+
         <Button
             android:id="@+id/show_pictures"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/message_view_show_pictures_action" />
+
     </LinearLayout>
-    <!-- content area -->
+
+    <!-- Content area -->
     <WebView
         android:id="@+id/message_content"
         android:layout_height="wrap_content"
-        android:textColor="?android:attr/textColorPrimary"
-        android:background="@android:color/transparent"
-        android:layout_width="fill_parent"
-         />
-    <!-- attachments area -->
+        android:layout_width="fill_parent" />
+
+    <!-- Attachments area -->
     <LinearLayout
         android:id="@+id/attachments"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="4dip"
-        >
-    </LinearLayout>
+        android:padding="4dip" />
+
 </merge>
