@@ -34,6 +34,7 @@ public class Prefs extends K9PreferenceActivity
 
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
+    private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
     private ListPreference mTheme;
     private ListPreference mDateFormat;
     private ListPreference mBackgroundOps;
@@ -46,6 +47,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mTouchable;
     private CheckBoxPreference mMeasureAccounts;
     private CheckBoxPreference mCountSearch;
+    private CheckBoxPreference mUseGalleryBugWorkaround;
 
 
     private String initBackgroundOps;
@@ -158,6 +160,9 @@ public class Prefs extends K9PreferenceActivity
 
         mCountSearch = (CheckBoxPreference)findPreference(PREFERENCE_COUNT_SEARCH);
         mCountSearch.setChecked(K9.countSearchMessages());
+
+        mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
+        mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
     }
 
     @Override
@@ -183,6 +188,8 @@ public class Prefs extends K9PreferenceActivity
 
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());
+
+        K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());
 
         Editor editor = preferences.edit();
         K9.save(editor);

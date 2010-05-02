@@ -36,4 +36,16 @@
 		android:title="@string/choose_identity"
 		android:icon="@drawable/ic_menu_cc"
 	/>
+	<item
+		android:id="@+id/add_attachment_image"
+		android:title="@string/add_attachment_action_image"
+        android:icon="@drawable/ic_menu_attachment"
+        android:visible="false" 
+    />
+	<item
+		android:id="@+id/add_attachment_video"
+		android:title="@string/add_attachment_action_video"
+        android:icon="@drawable/ic_menu_attachment"
+        android:visible="false"
+    />
 </menu>

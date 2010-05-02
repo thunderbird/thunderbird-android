@@ -910,9 +910,33 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     private void onAddAttachment()
     {
+        if (K9.isGalleryBuggy())
+        {
+            if (K9.useGalleryBugWorkaround())
+            {
+                Toast.makeText(MessageCompose.this,
+                        getString(R.string.message_compose_use_workaround),
+                        Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Toast.makeText(MessageCompose.this,
+                        getString(R.string.message_compose_buggy_gallery),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+
+        onAddAttachment2(K9.ACCEPTABLE_ATTACHMENT_SEND_TYPES[0]);
+    }
+
+    /**
+     * Kick off a picker for the specified MIME type and let Android take over.
+     */
+    private void onAddAttachment2(final String mime_type)
+    {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType(K9.ACCEPTABLE_ATTACHMENT_SEND_TYPES[0]);
+        i.setType(mime_type);
         startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_ATTACHMENT);
     }
 
@@ -1101,6 +1125,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             case R.id.add_attachment:
                 onAddAttachment();
                 break;
+            case R.id.add_attachment_image:
+                onAddAttachment2("image/*");
+                break;
+            case R.id.add_attachment_video:
+                onAddAttachment2("video/*");
+                break;
             case R.id.choose_identity:
                 onChooseIdentity();
                 break;
@@ -1130,6 +1160,26 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_compose_option, menu);
+
+        /*
+         * Show the menu items "Add attachment (Image)" and "Add attachment (Video)"
+         * if the work-around for the Gallery bug is enabled (see Issue 1186). 
+         */
+        int found = 0;
+        for (int i = menu.size() - 1; i >= 0; i--)
+        {
+            MenuItem item = menu.getItem(i);
+            int id = item.getItemId();
+            if ((id == R.id.add_attachment_image) ||
+                (id == R.id.add_attachment_video))
+            {
+                item.setVisible(K9.useGalleryBugWorkaround());
+                found++;
+            }
+
+            // We found all the menu items we were looking for. So stop here.
+            if (found == 2) break;
+        }
 
         return true;
     }

@@ -96,6 +96,8 @@
     <string name="add_cc_bcc_action">Add Cc/Bcc</string>
     <string name="edit_subject_action">Edit subject</string>
     <string name="add_attachment_action">Add attachment</string>
+    <string name="add_attachment_action_image">Add attachment (Image)</string>
+    <string name="add_attachment_action_video">Add attachment (Video)</string>
     <string name="dump_settings_action">Dump settings</string>
     <string name="empty_trash_action">Empty Trash</string>
     <string name="expunge_action">Expunge</string>
@@ -752,5 +754,15 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="font_size_webview_normal">Normal</string>
     <string name="font_size_webview_large">Larger</string>
     <string name="font_size_webview_larger">Largest</string>
+
+    <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
+    <string name="message_compose_buggy_gallery">Check \"Settings\" -&gt; \"Use Gallery bug work-around\" to be able to attach images or videos using Gallery 3D.</string>
+
+    <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
+    <string name="message_compose_use_workaround">Use \"Add attachment (Image)\" or \"Add attachment (Video)\" to attach images or videos with Gallery 3D.</string>
+
+    <string name="miscellaneous_preferences">Miscellaneous</string>
+    <string name="misc_preferences_attachment_title">Use Gallery bug work-around</string>
+    <string name="misc_preferences_attachment_description">Show buttons to add image/video attachments (to work around a Gallery 3D bug)</string>
 
 </resources>

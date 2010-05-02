@@ -93,6 +93,15 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/miscellaneous_preferences" android:key="misc_preferences">
+
+        <CheckBoxPreference
+            android:key="use_gallery_bug_workaround"
+            android:title="@string/misc_preferences_attachment_title"
+            android:summary="@string/misc_preferences_attachment_description" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/debug_preferences" android:key="debug_preferences">
 
         <CheckBoxPreference

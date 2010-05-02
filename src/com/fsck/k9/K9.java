@@ -6,7 +6,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.util.Log;
 import android.webkit.WebSettings;
@@ -76,6 +78,9 @@ public class K9 extends Application
     private static boolean mGesturesEnabled = true;
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
+
+    private static boolean useGalleryBugWorkaround = false;
+    private static boolean galleryBuggy;
 
     /**
      * We use WebSettings.getBlockNetworkLoads() to prevent the WebView that displays email
@@ -304,6 +309,7 @@ public class K9 extends Application
         editor.putBoolean("messageListCheckboxes",mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
         editor.putInt("theme", theme);
+        editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
         fontSizes.save(editor);
     }
@@ -313,6 +319,9 @@ public class K9 extends Application
     {
         super.onCreate();
         app = this;
+
+        galleryBuggy = checkForBuggyGallery();
+
         Preferences prefs = Preferences.getPreferences(this);
         SharedPreferences sprefs = prefs.getPreferences();
         DEBUG = sprefs.getBoolean("enableDebugLogging", false);
@@ -324,6 +333,7 @@ public class K9 extends Application
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
+        useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
         fontSizes.load(sprefs);
 
@@ -545,5 +555,43 @@ public class K9 extends Application
     public static void setCountSearchMessages(boolean countSearchMessages)
     {
         mCountSearchMessages = countSearchMessages;
+    }
+
+    public static boolean useGalleryBugWorkaround()
+    {
+        return useGalleryBugWorkaround;
+    }
+
+    public static void setUseGalleryBugWorkaround(boolean useGalleryBugWorkaround)
+    {
+        K9.useGalleryBugWorkaround = useGalleryBugWorkaround;
+    }
+
+    public static boolean isGalleryBuggy()
+    {
+        return galleryBuggy;
+    }
+
+    /**
+     * Check if this system contains a buggy Gallery 3D package.
+     * 
+     * We have to work around the fact that those Gallery versions won't show
+     * any images or videos when the pick intent is used with a MIME type other
+     * than image/* or video/*. See issue 1186.
+     * 
+     * @return true, if a buggy Gallery 3D package was found. False, otherwise.
+     */
+    private boolean checkForBuggyGallery()
+    {
+        try
+        {
+            PackageInfo pi = getPackageManager().getPackageInfo("com.cooliris.media", 0);
+            
+            return (pi.versionCode == 30682);
+        }
+        catch (NameNotFoundException e)
+        {
+            return false;
+        }
     }
 }
