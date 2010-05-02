@@ -2,9 +2,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingRight="6dip"
+    android:paddingBottom="2dip"
     android:gravity="center_vertical" >
 
     <View
@@ -80,6 +81,7 @@
             android:layout_alignParentBottom="true" 
             android:layout_gravity="bottom"
             android:layout_marginBottom="1dip"
+            android:layout_below="@id/new_message_count"
             android:paddingTop="6dip"
             android:paddingBottom="4dip"
             android:paddingLeft="10dip"
