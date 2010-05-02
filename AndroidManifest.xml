@@ -171,7 +171,8 @@
             -->
         </activity>
         <activity
-            android:name="com.fsck.k9.activity.MessageView">
+            android:name="com.fsck.k9.activity.MessageView"
+            android:theme="@android:style/Theme.Light">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data

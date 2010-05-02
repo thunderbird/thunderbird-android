@@ -442,7 +442,7 @@ public class MessageView extends K9Activity implements OnClickListener
     @Override
     public void onCreate(Bundle icicle)
     {
-        super.onCreate(icicle);
+        super.onCreate(icicle, false);
 
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -1322,9 +1322,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         String subjectText = message.getSubject();
         String fromText = Address.toFriendly(message.getFrom());
-        String dateText = Utility.isDateToday(message.getSentDate()) ?
-                          null :
-                          getDateFormat().format(message.getSentDate());
+        String dateText = getDateFormat().format(message.getSentDate());
         String timeText = getTimeFormat().format(message.getSentDate());
         String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
         String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));

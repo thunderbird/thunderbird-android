@@ -21,7 +21,15 @@ public class K9Activity extends Activity
     @Override
     public void onCreate(Bundle icicle)
     {
-        setTheme(K9.getK9Theme());
+        onCreate(icicle, true);
+    }
+
+    public void onCreate(Bundle icicle, boolean useTheme)
+    {
+        if (useTheme)
+        {
+            setTheme(K9.getK9Theme());
+        }
         super.onCreate(icicle);
         setupFormats();
 
@@ -29,6 +37,7 @@ public class K9Activity extends Activity
         gestureDetector = new GestureDetector(new MyGestureDetector());
 
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev)
     {
