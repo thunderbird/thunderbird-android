@@ -4355,13 +4355,19 @@ public class MessagingController implements Runnable
                     localStore.clear();
                     localStore.resetVisibleLimits(account.getDisplayCount());
                     long newSize = localStore.getSize();
+                    AccountStats stats = new AccountStats();
+                    stats.size = newSize;
+                    stats.unreadMessageCount = 0;
+                    stats.flaggedMessageCount = 0;
                     if (ml != null)
                     {
                         ml.accountSizeChanged(account, oldSize, newSize);
+                        ml.accountStatusChanged(account, stats);
                     }
                     for (MessagingListener l : getListeners())
                     {
                         l.accountSizeChanged(account, oldSize, newSize);
+                        l.accountStatusChanged(account, stats);
                     }
                 }
                 catch (Exception e)

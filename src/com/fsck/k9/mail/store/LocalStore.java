@@ -309,6 +309,7 @@ public class LocalStore extends Store implements Serializable
         // Don't delete deleted messages.  They are essentially placeholders for UIDs of messages that have
         // been deleted locally.  They take up insignificant space
         mDb.execSQL("DELETE FROM messages WHERE deleted = 0 and uid not like 'Local%'");
+        mDb.execSQL("update folders set flagged_count = 0, unread_count = 0");
 
         compact();
         if (K9.DEBUG)
