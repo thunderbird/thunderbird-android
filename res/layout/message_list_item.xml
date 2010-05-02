@@ -20,7 +20,7 @@
         android:background="@android:color/transparent" >
 
         <View
-            android:layout_width="4dip"
+            android:layout_width="6dip"
             android:layout_height="fill_parent" />
 
         <CheckBox
