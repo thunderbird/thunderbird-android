@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:scrollbarStyle="outsideInset"
+        android:scrollbarStyle="outsideOverlay"
         android:fillViewport="true"
         android:background="@android:color/transparent"
         android:fadingEdge="none">
@@ -29,7 +29,7 @@
 		    	android:id="@+id/extra_buttons"
 		        android:orientation="horizontal"
 		        android:layout_width="fill_parent"
-		        android:layout_height="57dip"
+		        android:layout_height="wrap_content"
 		        android:gravity="center_vertical">
 		        <Button
 		            android:id="@+id/reply"
@@ -54,8 +54,7 @@
 		    	android:id="@+id/scrolling_buttons"
 		        android:orientation="horizontal"
 		        android:layout_width="fill_parent"
-		        android:layout_height="57dip"
-		        android:background="@drawable/ic_email_thread_open_bottom_default"
+		        android:layout_height="wrap_content"
 		        android:gravity="center_vertical">
 		        <Button
 		            android:id="@+id/previous_scrolling"
@@ -87,7 +86,8 @@
     	android:id="@+id/bottom_buttons"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="57dip"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dip"
         android:background="@android:color/transparent"
         android:gravity="center_vertical">
         <Button
@@ -95,14 +95,14 @@
             android:text="@string/message_view_prev_action"
             android:textSize="35dip"
             android:padding="0dip"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />
             
         <Button
             android:id="@+id/delete"
             android:text="@string/delete_action"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />
        <Button
@@ -110,7 +110,7 @@
             android:text="@string/message_view_next_action"
             android:textSize="35dip"
             android:padding="0dip"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" /> 
     </LinearLayout>
