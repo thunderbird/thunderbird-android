@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
-        android:scrollbarStyle="outsideOverlay"
+        android:scrollbarStyle="outsideInset"
         android:fillViewport="true"
         android:background="@android:color/transparent"
         android:fadingEdge="none">
@@ -87,7 +87,7 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="2dip"
+        android:paddingRight="6dip"
         android:background="@android:color/transparent"
         android:gravity="center_vertical">
         <Button
