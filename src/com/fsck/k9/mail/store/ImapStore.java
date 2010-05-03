@@ -2663,7 +2663,7 @@ public class ImapStore extends Store
                             {
                                 handleUntaggedResponses(responses);
                             }
-                            if (false && mConnection != oldConnection)
+                            if (mConnection != oldConnection)
                             {
                                 receiver.syncFolder(ImapFolderPusher.this);
                             }
