@@ -8,6 +8,7 @@ public class MessageReference implements Serializable
     public String folderName;
     public String uid;
 
+    @Override
     public boolean equals(Object o)
     {
         if (o instanceof MessageReference == false)
@@ -23,6 +24,20 @@ public class MessageReference implements Serializable
         }
         return false;
     }
+
+    @Override
+    public int hashCode()
+    {
+        final int MULTIPLIER = 31;
+
+        int result = 1;
+        result = MULTIPLIER * result + ((accountUuid == null) ? 0 : accountUuid.hashCode());
+        result = MULTIPLIER * result + ((folderName == null) ? 0 : folderName.hashCode());
+        result = MULTIPLIER * result + ((uid == null) ? 0 : uid.hashCode());
+        return result;
+    }
+
+    @Override
     public String toString()
     {
         return "MessageReference{accountUuid = '" +

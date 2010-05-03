@@ -83,12 +83,14 @@ public class MessagingControllerPushReceiver implements PushReceiver
         final CountDownLatch latch = new CountDownLatch(1);
         controller.synchronizeMailbox(account, folder.getName(), new MessagingListener()
         {
+            @Override
             public void synchronizeMailboxFinished(Account account, String folder,
                                                    int totalMessagesInMailbox, int numNewMessages)
             {
                 latch.countDown();
             }
 
+            @Override
             public void synchronizeMailboxFailed(Account account, String folder,
                                                  String message)
             {

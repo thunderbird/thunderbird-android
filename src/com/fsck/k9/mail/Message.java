@@ -23,6 +23,7 @@ public abstract class Message implements Part, Body
 
     protected Folder mFolder;
 
+    @Override
     public boolean equals(Object o)
     {
         if (o == null || o instanceof Message == false)
@@ -35,6 +36,17 @@ public abstract class Message implements Part, Body
                 && mUid.equals(other.getUid()));        
     }
     
+    @Override
+    public int hashCode()
+    {
+        final int MULTIPLIER = 31;
+
+        int result = 1;
+        result = MULTIPLIER * result + mFolder.getName().hashCode();
+        result = MULTIPLIER * result + mFolder.getAccount().getUuid().hashCode();
+        result = MULTIPLIER * result + mUid.hashCode();
+        return result;
+    }
     
     public String getUid()
     {
