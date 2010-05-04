@@ -53,5 +53,6 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:cacheColorHint="?android:attr/colorBackground"
     />
 </RelativeLayout>
