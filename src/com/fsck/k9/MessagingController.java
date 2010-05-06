@@ -4718,15 +4718,14 @@ public class MessagingController implements Runnable
                         return false;
                     }
                     Pusher pusher = store.getPusher(receiver);
-                    Pusher oldPusher = null;
                     if (pusher != null)
                     {
-                        oldPusher = pushers.putIfAbsent(account, pusher);
-                    }
-                    if (oldPusher == null)
-                    {
-                        pusher.start(names);
-                    }
+			Pusher oldPusher  = pushers.putIfAbsent(account, pusher);
+			if (oldPusher == null)
+			{
+			    pusher.start(names);
+			}
+		    }
                 }
                 catch (Exception e)
                 {
