@@ -4723,11 +4723,7 @@ public class MessagingController implements Runnable
                     {
                         oldPusher = pushers.putIfAbsent(account, pusher);
                     }
-                    if (oldPusher != null)
-                    {
-                        pusher = oldPusher;
-                    }
-                    else
+                    if (oldPusher == null)
                     {
                         pusher.start(names);
                     }
