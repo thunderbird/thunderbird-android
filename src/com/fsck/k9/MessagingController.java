@@ -4720,12 +4720,12 @@ public class MessagingController implements Runnable
                     Pusher pusher = store.getPusher(receiver);
                     if (pusher != null)
                     {
-			Pusher oldPusher  = pushers.putIfAbsent(account, pusher);
-			if (oldPusher == null)
-			{
-			    pusher.start(names);
-			}
-		    }
+                        Pusher oldPusher  = pushers.putIfAbsent(account, pusher);
+                        if (oldPusher == null)
+                        {
+                            pusher.start(names);
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
