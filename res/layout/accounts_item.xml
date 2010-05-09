@@ -47,20 +47,38 @@
         android:id="@+id/active_icons"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingTop="2dip"
         android:paddingBottom="0dip"
         android:paddingLeft="6dip"
         android:paddingRight="6dip"
         android:layout_alignParentRight="true"
         android:clickable="true" >
-
+        
+        <TextView
+            android:id="@+id/flagged_message_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" 
+            android:layout_gravity="top"
+            
+            android:paddingTop="6dip"
+            android:paddingBottom="4dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000000"
+            android:background="@drawable/btn_star_big_buttonless_on"
+            android:clickable="true" />
         <TextView
             android:id="@+id/new_message_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top" 
             android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/flagged_message_count"
             android:paddingTop="4dip"
             android:paddingBottom="4dip"
             android:paddingLeft="10dip"
@@ -73,26 +91,7 @@
             android:textStyle="bold"
             android:background="@drawable/envelope"
             android:clickable="true" />
-
-        <TextView
-            android:id="@+id/flagged_message_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" 
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="1dip"
-            android:layout_below="@id/new_message_count"
-            android:paddingTop="6dip"
-            android:paddingBottom="4dip"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:gravity="right"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#000000"
-            android:background="@drawable/btn_star_big_buttonless_on"
-            android:clickable="true" />
+        
 
     </RelativeLayout>
 
