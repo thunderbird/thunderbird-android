@@ -803,12 +803,21 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             if (stats != null && account instanceof Account && stats.size >= 0)
             {
                 holder.email.setText(SizeFormatter.formatSize(Accounts.this, stats.size));
+                holder.email.setVisibility(View.VISIBLE);
             }
             else
             {
-                holder.email.setText(account.getEmail());
+                if (account.getEmail().equals(account.getDescription()))
+                {
+                    holder.email.setVisibility(View.GONE);
+                }
+                else
+                {
+                    holder.email.setVisibility(View.VISIBLE);
+                    holder.email.setText(account.getEmail());
+                }
             }
-
+            
             String description = account.getDescription();
             if (description == null || description.length() == 0)
             {
@@ -816,11 +825,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
 
             holder.description.setText(description);
-
-            if (account.getEmail().equals(account.getDescription()))
-            {
-                holder.email.setVisibility(View.GONE);
-            }
 
             Integer unreadMessageCount = null;
             if (stats != null)
