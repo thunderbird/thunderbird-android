@@ -82,13 +82,6 @@
             android:dialogTitle="@string/account_settings_folder_push_mode_label" />   
         
         <ListPreference
-            android:key="folder_push_limit"
-            android:title="@string/account_setup_push_limit_label"
-            android:entries="@array/account_settings_push_limit_entries"
-            android:entryValues="@array/account_settings_push_limit_values"
-            android:dialogTitle="@string/account_setup_push_limit_label" /> 
-        
-        <ListPreference
         	android:key="delete_policy"
         	android:title="@string/account_setup_incoming_delete_policy_label"
         	android:entries="@array/account_setup_delete_policy_entries"

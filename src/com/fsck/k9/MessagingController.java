@@ -985,14 +985,7 @@ public class MessagingController implements Runnable
     {
         Folder remoteFolder = null;
         LocalFolder tLocalFolder = null;
-        /*
-         * We don't ever sync the Outbox or errors folder
-         */
-        if (folder.equals(account.getOutboxFolderName()) || folder.equals(account.getErrorFolderName()))
-        {
-            return;
-        }
-
+       
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "Synchronizing folder " + account.getDescription() + ":" + folder);
 
@@ -1003,6 +996,22 @@ public class MessagingController implements Runnable
         if (listener != null && getListeners().contains(listener) == false)
         {
             listener.synchronizeMailboxStarted(account, folder);
+        }
+        /*
+         * We don't ever sync the Outbox or errors folder
+         */
+        if (folder.equals(account.getOutboxFolderName()) || folder.equals(account.getErrorFolderName()))
+        {
+            for (MessagingListener l : getListeners())
+            {
+                l.synchronizeMailboxFinished(account, folder, 0, 0);
+            }
+            if (listener != null && getListeners().contains(listener) == false)
+            {
+                listener.synchronizeMailboxFinished(account, folder, 0, 0);
+            }
+
+            return;
         }
 
         Exception commandException = null;

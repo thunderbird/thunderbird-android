@@ -13,4 +13,6 @@ public interface Pusher
      * @return milliseconds of required refresh interval
      */
     public int getRefreshInterval();
+    public void setLastRefresh(long lastRefresh);
+    public long getLastRefresh();
 }

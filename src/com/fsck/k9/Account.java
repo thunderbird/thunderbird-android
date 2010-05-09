@@ -76,12 +76,14 @@ public class Account implements BaseAccount
     private int mAccountNumber;
     private boolean mVibrate;
     private boolean mRing;
+    private boolean mPushPollOnConnect;
     private String mRingtoneUri;
     private boolean mNotifySync;
     private HideButtons mHideMessageViewButtons;
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
+    private int mIdleRefreshMinutes;
     private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
     private Searchable searchableFolders;
     // Tracks if we have sent a notification for this account for
@@ -111,6 +113,8 @@ public class Account implements BaseAccount
         mUuid = UUID.randomUUID().toString();
         mLocalStoreUri = "local://localhost/" + context.getDatabasePath(mUuid + ".db");
         mAutomaticCheckIntervalMinutes = -1;
+        mIdleRefreshMinutes = 24;
+        mPushPollOnConnect = true;
         mDisplayCount = -1;
         mAccountNumber = -1;
         mNotifyNewMail = true;
@@ -161,6 +165,10 @@ public class Account implements BaseAccount
         mAlwaysBcc = preferences.getPreferences().getString(mUuid + ".alwaysBcc", mAlwaysBcc);
         mAutomaticCheckIntervalMinutes = preferences.getPreferences().getInt(mUuid
                                          + ".automaticCheckIntervalMinutes", -1);
+        mIdleRefreshMinutes = preferences.getPreferences().getInt(mUuid
+                                                 + ".idleRefreshMinutes", 24);
+        mPushPollOnConnect = preferences.getPreferences().getBoolean(mUuid
+                                                    + ".pushPollOnConnect", true);
         mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", -1);
         mLastAutomaticCheckTime = preferences.getPreferences().getLong(mUuid
                                   + ".lastAutomaticCheckTime", 0);
@@ -321,6 +329,8 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".email");
         editor.remove(mUuid + ".alwaysBcc");
         editor.remove(mUuid + ".automaticCheckIntervalMinutes");
+        editor.remove(mUuid + ".pushPollOnConnect");
+        editor.remove(mUuid + ".idleRefreshMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
         editor.remove(mUuid + ".notifyNewMail");
         editor.remove(mUuid + ".notifySelfNewMail");
@@ -397,6 +407,8 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
+        editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
+        editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
         editor.putBoolean(mUuid + ".notifyNewMail", mNotifyNewMail);
@@ -1119,5 +1131,25 @@ public class Account implements BaseAccount
     public void setSearchableFolders(Searchable searchableFolders)
     {
         this.searchableFolders = searchableFolders;
+    }
+
+    public int getIdleRefreshMinutes()
+    {
+        return mIdleRefreshMinutes;
+    }
+
+    public void setIdleRefreshMinutes(int idleRefreshMinutes)
+    {
+        mIdleRefreshMinutes = idleRefreshMinutes;
+    }
+
+    public boolean isPushPollOnConnect()
+    {
+        return mPushPollOnConnect;
+    }
+
+    public void setPushPollOnConnect(boolean pushPollOnConnect)
+    {
+        mPushPollOnConnect = pushPollOnConnect;
     }
 }

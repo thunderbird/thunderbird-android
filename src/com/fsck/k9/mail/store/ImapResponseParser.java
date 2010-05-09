@@ -417,7 +417,7 @@ public class ImapResponseParser
         {
             for (int i = 0, count = size(); i < count; i++)
             {
-                if (get(i).equals(key))
+                if (equalsIgnoreCase(get(i), key))
                 {
                     return get(i + 1);
                 }
@@ -471,7 +471,7 @@ public class ImapResponseParser
 
             for (int i = 0, count = size(); i < count; i++)
             {
-                if (key.equals(get(i)))
+                if (equalsIgnoreCase(key, get(i)))
                 {
                     return true;
                 }
@@ -483,7 +483,7 @@ public class ImapResponseParser
         {
             for (int i = 0, count = size(); i < count; i++)
             {
-                if (key.equals(get(i)))
+                if (equalsIgnoreCase(key, get(i)))
                 {
                     return i;
                 }
@@ -552,7 +552,7 @@ public class ImapResponseParser
 
         public String getAlertText()
         {
-            if (size() > 1 && "[ALERT]".equals(get(1)))
+            if (size() > 1 && equalsIgnoreCase("[ALERT]", get(1)))
             {
                 StringBuffer sb = new StringBuffer();
                 for (int i = 2, count = size(); i < count; i++)
@@ -572,6 +572,27 @@ public class ImapResponseParser
         public String toString()
         {
             return "#" + (mCommandContinuationRequested ? "+" : mTag) + "# " + super.toString();
+        }
+    }
+    public static boolean equalsIgnoreCase(Object o1, Object o2)
+    {
+        if (o1 != null && o2 != null && o1 instanceof String && o2 instanceof String)
+        {
+            String s1 = (String)o1;
+            String s2 = (String)o2;
+            return s1.equalsIgnoreCase(s2);
+        }
+        else if (o1 != null)
+        {
+            return o1.equals(o2);
+        }
+        else if (o2 != null)
+        {
+            return o2.equals(o1);
+        }
+        else
+        {
+            return o1 == o2;
         }
     }
 }

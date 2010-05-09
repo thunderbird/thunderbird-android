@@ -187,8 +187,8 @@ public class MailService extends CoreService
             {
                 if (hasConnectivity && doBackground)
                 {
-                    schedulePushers(null);
-                    refreshPushers(startIdObj);
+                    refreshPushers(null);
+                    schedulePushers(startIdObj);
                     startIdObj = null;
                 }
             }
@@ -427,12 +427,33 @@ public class MailService extends CoreService
             {
                 try
                 {
+                    long nowTime = System.currentTimeMillis();
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Refreshing pushers");
                     Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();
                     for (Pusher pusher : pushers)
                     {
-                        pusher.refresh();
+                        long lastRefresh = pusher.getLastRefresh();
+                        int refreshInterval = pusher.getRefreshInterval();
+                        long sinceLast = nowTime - lastRefresh;
+                        if (sinceLast + 10000 > refreshInterval)  // Add 10 seconds to keep pushers in sync, avoid drift
+                        {
+                            if (K9.DEBUG)
+                            {
+                                Log.d(K9.LOG_TAG, "PUSHREFRESH: refreshing lastRefresh = " + lastRefresh + ", interval = " + refreshInterval
+                                        + ", nowTime = " + nowTime + ", sinceLast = " + sinceLast);
+                            }
+                            pusher.refresh();
+                            pusher.setLastRefresh(nowTime);
+                        }
+                        else
+                        {
+                            if (K9.DEBUG)
+                            {
+                                Log.d(K9.LOG_TAG, "PUSHREFRESH: NOT refreshing lastRefresh = " + lastRefresh + ", interval = " + refreshInterval
+                                        + ", nowTime = " + nowTime + ", sinceLast = " + sinceLast);
+                            }
+                        }
                     }
                 }
                 catch (Exception e)
@@ -456,7 +477,7 @@ public class MailService extends CoreService
                 for (Pusher pusher : pushers)
                 {
                     int interval = pusher.getRefreshInterval();
-                    if (interval != -1 && (interval < minInterval || minInterval == -1))
+                    if (interval > 0 && (interval < minInterval || minInterval == -1))
                     {
                         minInterval = interval;
                     }
@@ -465,7 +486,7 @@ public class MailService extends CoreService
                 {
                     Log.v(K9.LOG_TAG, "Pusher refresh interval = " + minInterval);
                 }
-                if (minInterval != -1)
+                if (minInterval > 0)
                 {
                     long nextTime = System.currentTimeMillis() + minInterval;
                     if (K9.DEBUG)

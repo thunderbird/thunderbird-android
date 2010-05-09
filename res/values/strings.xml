@@ -405,10 +405,20 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_options_mail_check_frequency_12hour">Every 12 hours</string>
     <string name="account_setup_options_mail_check_frequency_24hour">Every 24 hours</string>
 
-
+    <string name="push_poll_on_connect_label">Poll when connecting for push</string>
     <string name="account_setup_options_enable_push_label">Enable push mail for this account</string>
     <string name="account_setup_options_enable_push_summary">If your server supports it, new messages will appear instantly. This option can dramatically improve or hurt performance.</string>
-
+    <string name="idle_refresh_period_label">Refresh IDLE connection</string>
+    <string name="idle_refresh_period_1min">Every minute</string>
+    <string name="idle_refresh_period_2min">Every 2 minutes</string>
+    <string name="idle_refresh_period_3min">Every 3 minutes</string>
+    <string name="idle_refresh_period_6min">Every 6 minutes</string>
+    <string name="idle_refresh_period_12min">Every 12 minutes</string>
+    <string name="idle_refresh_period_24min">Every 24 minutes</string>
+    <string name="idle_refresh_period_36min">Every 36 minutes</string>
+    <string name="idle_refresh_period_48min">Every 48 minutes</string>
+    <string name="idle_refresh_period_60min">Every 60 minutes</string>
+    
     <string name="account_setup_options_default_label">Send mail from this account by default</string>
     <string name="account_setup_options_notify_label">Notify me when mail arrives</string>
     <string name="account_setup_options_notify_sync_label">Notify me while mail is being checked</string>
