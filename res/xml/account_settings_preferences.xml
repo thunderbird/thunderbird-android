@@ -43,8 +43,8 @@
         <Preference
             android:key="chip_color"
             android:singleLine="true"
-            android:title="Account color"
-            android:summary=""
+            android:title="@string/account_settings_color_label"
+            android:summary="@string/account_settings_color_summary"
             />
     </PreferenceCategory>
 

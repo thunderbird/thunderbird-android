@@ -21,7 +21,8 @@
     <string name="compose_title">Verfassen</string>
     <string name="debug_title">Debug</string>
     <string name="choose_folder_title">Ordner wählen</string>
- 
+    <string name="choose_color_title">Farbe wählen</string>
+
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
     
     <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
@@ -57,7 +58,7 @@
     <string name="check_mail_action">Nachrichten abrufen</string>
     <string name="send_messages_action">Nachricht senden</string>
     <string name="list_folders_action">Ordnerliste</string>
-	<string name="refresh_folders_action">Ordnerliste aktualisieren</string>
+    <string name="refresh_folders_action">Ordnerliste aktualisieren</string>
     <string name="mark_all_as_read_action">Alle als gelesen markieren</string>
     <string name="add_account_action">Konto hinzufügen</string>
     <string name="compose_action">Verfassen</string>
@@ -92,6 +93,8 @@
     <string name="add_cc_bcc_action">CC/BCC hinzufügen</string>
     <string name="edit_subject_action">Betreff bearbeiten</string>
     <string name="add_attachment_action">Anlage hinzufügen</string>
+    <string name="add_attachment_action_image">Anlage hinzufügen (Bild)</string>
+    <string name="add_attachment_action_video">Anlage hinzufügen (Video)</string>
     <string name="dump_settings_action">Einstellungen ausgeben (Dump)</string>
     <string name="empty_trash_action">Papierkorb leeren</string>
     <string name="expunge_action">Bereinigen (Expunge)</string>
@@ -99,14 +102,14 @@
     <string name="reverse_sort_action">Sortierung umkehren</string>
     <string name="about_action">Info</string>
 
-	<string name="prefs_title">Einstellungen</string>
+    <string name="prefs_title">Einstellungen</string>
     <string name="accounts_context_menu_title">Konto-Optionen</string>
     <string name="folder_context_menu_title">Ordner-Optionen</string>
 
     <string name="general_no_subject">(Kein Betreff)</string> <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
 
     <string name="general_no_sender">Kein Absender</string>
-    <string name="status_loading">Lade<xliff:g id="progress">%s</xliff:g></string>
+    <string name="status_loading">Lade</string>
     <string name="status_loading_folder">(Lade <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_loading_more">Lade Nachrichten\u2026</string>
     <string name="status_network_error">Verbindungsfehler</string>
@@ -324,7 +327,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Auf Server als gelesen markieren</string>
     
-    <string name="account_setup_incoming_compression_label">Komprimierung bei Netzerk verwenden:</string>
+    <string name="account_setup_incoming_compression_label">Komprimierung bei Netzwerk verwenden:</string>
     <string name="account_setup_incoming_mobile_label">Mobil</string>
     <string name="account_setup_incoming_wifi_label">WLAN</string>
     <string name="account_setup_incoming_other_label">Anderes</string>
@@ -447,6 +450,9 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
     <string name="account_settings_second_class_check_frequency_label">Häufigkeit der Abfrage für Nebenordner</string>
    
+    <string name="account_settings_color_label">Farbe des Kontos</string>
+    <string name="account_settings_color_summary">Wählen Sie die Farbe, in der das Konto in der Konten- und Ordnerliste dargestellt wird</string>
+    
     <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
      
     <string name="account_settings_folder_display_mode_label">Ordner anzeigen</string>
@@ -624,6 +630,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="display_preferences">Globale Einstellungen</string>
     <string name="debug_preferences">Debugging</string>
     <string name="operational_preferences">Synchronisierung</string>
+    <string name="accountlist_preferences">Liste der Konten</string>
     <string name="messagelist_preferences">Liste der Nachrichten</string>
     <string name="settings_theme_label">Theme</string>
     
@@ -635,6 +642,10 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="no_message_seletected_toast">Keine Nachricht ausgewählt</string>
     
     <string name="date_format_label">Datumsformat</string>
+    <!--
+      The values of the date_format_* strings MUST be valid date format strings.
+      See Android SDK documentation for the class SimpleDateFormat.
+    -->
     <string name="date_format_short">SHORT</string>
     <string name="date_format_medium">MEDIUM</string>
     <string name="date_format_common">dd.MMM yyyy</string>
@@ -668,7 +679,84 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="gestures_title">Gesten zulassen</string>
     <string name="gestures_summary">Gesten für vorherige/nächste Nachricht aktivieren</string>
 
+	
+    <string name="measure_accounts_title">Konto-Größe anzeigen</string>
+    <string name="measure_accounts_summary">Deaktivieren für schnellere Anzeige</string>
+    
+    <string name="count_search_title">Suchergebnisse zählen</string>
+    <string name="count_search_summary">Deaktivieren für schnellere Anzeige</string>
+    
+    <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
+    <string name="flagged_modifier"> - Wichtig</string>
+    <string name="unread_modifier"> - Ungelesen</string>
+    
+    <string name="search_all_messages_title">Alle Nachrichten</string>
+    <string name="search_all_messages_detail">Alle Nachrichten in durchsuchbaren Ordnern</string>
+        
+    <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>
+    <string name="integrated_inbox_detail">Alle Nachrichten aus integrierten Ordnern</string>
+    
+    <string name="tap_hint">Umschlag oder Stern anklicken für ungelesene oder wichtige Nachrichten</string>
+    
+    <string name="folder_settings_include_in_integrated_inbox_label">Integration in gemeinsamen Posteingang</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Ungelesene Nachrichten im gemeinsamen Posteingang anzeigen</string>
+    
+    <string name="account_settings_searchable_label">Zu durchsuchende Ordner</string>
+    <string name="account_settings_searchable_all">Alle</string>
+    <string name="account_settings_searchable_displayable">Angezeigte</string>
+    <string name="account_settings_searchable_none">Keine</string>
+
     <string name="remote_control_label">K-9 Mail Fernsteuerung</string>
     <string name="remote_control_desc">Erlaubt dieser Anwendung den Ablauf und die Einstellungen von K-9 Mail zu kontrollieren.</string>
+
+    <string name="font_size_settings_title">Schriftgröße</string>
+    <string name="font_size_settings_description">Schriftgrößen festlegen</string>
+
+    <string name="font_size_account_list">Konten-Liste</string>
+    <string name="font_size_account_name">Konto-Name</string>
+    <string name="font_size_account_description">Konto-Beschreibung</string>
+
+    <string name="font_size_folder_list">Ordner-Liste</string>
+    <string name="font_size_folder_name">Ordner-Name</string>
+    <string name="font_size_folder_status">Ordner-Status</string>
+
+    <string name="font_size_message_list">Nachrichten-Liste</string>
+    <string name="font_size_message_list_subject">Betreff</string>
+    <string name="font_size_message_list_sender">Absender</string>
+    <string name="font_size_message_list_date">Datum</string>
+
+    <string name="font_size_message_view">Nachrichtenanzeige</string>
+    <string name="font_size_message_view_sender">Absender</string>
+    <string name="font_size_message_view_to">Empfänger (To)</string>
+    <string name="font_size_message_view_cc">Empfänger (CC)</string>
+    <string name="font_size_message_view_subject">Betreff</string>
+    <string name="font_size_message_view_time">Zeit</string>
+    <string name="font_size_message_view_date">Datum</string>
+    <string name="font_size_message_view_content">Nachrichtentext</string>
+
+    <string name="font_size_tiniest">Winzig</string>
+    <string name="font_size_tiny">Sehr klein</string>
+    <string name="font_size_smaller">Kleiner</string>
+    <string name="font_size_small">Klein</string>
+    <string name="font_size_medium">Mittel</string>
+    <string name="font_size_large">Groß</string>
+    <string name="font_size_larger">Größer</string>
+
+    <string name="font_size_webview_smaller">Winzig</string>
+    <string name="font_size_webview_small">Kleiner</string>
+    <string name="font_size_webview_normal">Normal</string>
+    <string name="font_size_webview_large">Größer</string>
+    <string name="font_size_webview_larger">Riesig</string>
+
+    <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
+    <string name="message_compose_buggy_gallery">Wählen Sie \"Einstellungen\" -&gt; \"Galerie Work-Around aktivieren\" um Bilder oder Videos mithilfe der 3D-Galerie hinzufügen zu können.</string>
+    
+    <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
+    <string name="message_compose_use_workaround">Verwenden Sie \"Anlage hinzufügen (Bild)\" oder \"Anlage hinzufügen (Video)\" um Bilder oder Videos mit der 3D-Galerie hinzuzufügen.</string>
+
+    <string name="miscellaneous_preferences">Verschiedenes</string>
+    <string name="misc_preferences_attachment_title">Galerie Work-Around aktivieren</string>
+    <string name="misc_preferences_attachment_description">Schaltflächen zum Hinzufügen von Bild- und Video-Anhängen anzeigen (um Fehler in 3D-Galerie zu umgehen)</string>
+   
 </resources>
 
