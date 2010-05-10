@@ -209,7 +209,7 @@ public class LocalStore extends Store implements Serializable
                     }
                     catch (SQLiteException e)
                     {
-                        if (! e.toString().startsWith("duplicate column name: flagged_count"))
+                        if (! e.getMessage().startsWith("duplicate column name: flagged_count"))
                         {
                             throw e;
                         }
