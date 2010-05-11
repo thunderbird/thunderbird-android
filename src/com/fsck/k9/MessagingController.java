@@ -29,6 +29,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.Process;
@@ -4497,6 +4498,7 @@ public class MessagingController implements Runnable
         notif.ledARGB = K9.NOTIFICATION_LED_COLOR;
         notif.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
         notif.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
+        notif.audioStreamType = AudioManager.STREAM_NOTIFICATION;
 
         notifMgr.notify(account.getAccountNumber(), notif);
         return true;
