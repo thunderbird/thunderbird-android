@@ -4128,12 +4128,12 @@ public class MessagingController implements Runnable
                                         if (K9.NOTIFICATION_LED_WHILE_SYNCING)
                                         {
                                             notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                                            notif.ledARGB = K9.NOTIFICATION_LED_DIM_COLOR;
+                                            notif.ledARGB = account.getChipColor();
                                             notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
                                             notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
                                         }
 
-                                        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION_ID, notif);
+                                        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
                                     }
                                     try
                                     {
@@ -4143,7 +4143,7 @@ public class MessagingController implements Runnable
                                     {
                                         if (account.isShowOngoing())
                                         {
-                                            notifMgr.cancel(K9.FETCHING_EMAIL_NOTIFICATION_ID);
+                                            notifMgr.cancel(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
                                         }
                                     }
                                 }
@@ -4234,12 +4234,12 @@ public class MessagingController implements Runnable
                                                 if (K9.NOTIFICATION_LED_WHILE_SYNCING)
                                                 {
                                                     notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                                                    notif.ledARGB = K9.NOTIFICATION_LED_DIM_COLOR;
+                                                    notif.ledARGB = account.getChipColor();
                                                     notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
                                                     notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
                                                 }
 
-                                                notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION_ID, notif);
+                                                notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
                                             }
                                             try
                                             {
@@ -4249,7 +4249,7 @@ public class MessagingController implements Runnable
                                             {
                                                 if (account.isShowOngoing())
                                                 {
-                                                    notifMgr.cancel(K9.FETCHING_EMAIL_NOTIFICATION_ID);
+                                                    notifMgr.cancel(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
                                                 }
                                             }
                                         }
@@ -4495,7 +4495,7 @@ public class MessagingController implements Runnable
         }
 
         notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-        notif.ledARGB = K9.NOTIFICATION_LED_COLOR;
+        notif.ledARGB = account.getChipColor();
         notif.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
         notif.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
         notif.audioStreamType = AudioManager.STREAM_NOTIFICATION;

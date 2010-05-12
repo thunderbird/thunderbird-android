@@ -184,14 +184,8 @@ public class K9 extends Application
 
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 
-
     /**
-     * LED color used for the new email notitication
-     */
-    public static final int NOTIFICATION_LED_COLOR = 0xffff00ff;
-
-    /**
-     * Time the LED is on when blicking on new email notification
+     * Time the LED is on when blinking on new email notification
      */
     public static final int NOTIFICATION_LED_ON_TIME = 500;
 
@@ -201,16 +195,13 @@ public class K9 extends Application
     public static final int NOTIFICATION_LED_OFF_TIME = 2000;
 
     public static final boolean NOTIFICATION_LED_WHILE_SYNCING = false;
-    public static final int NOTIFICATION_LED_DIM_COLOR = 0x77770077;
     public static final int NOTIFICATION_LED_FAST_ON_TIME = 100;
     public static final int NOTIFICATION_LED_FAST_OFF_TIME = 100;
 
     public static final int NOTIFICATION_LED_SENDING_FAILURE_COLOR = 0xffff0000;
 
     // Must not conflict with an account number
-    public static final int FETCHING_EMAIL_NOTIFICATION_ID      = -4;
-    public static final int FETCHING_EMAIL_NOTIFICATION_MULTI_ACCOUNT_ID      = -1;
-    public static final int FETCHING_EMAIL_NOTIFICATION_NO_ACCOUNT = -2;
+    public static final int FETCHING_EMAIL_NOTIFICATION      = -5000;
     public static final int CONNECTIVITY_ID = -3;
 
 
