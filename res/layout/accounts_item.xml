@@ -7,6 +7,7 @@
     android:orientation="horizontal"
     android:paddingRight="6dip"
     android:paddingBottom="2dip"
+    android:descendantFocusability="blocksDescendants"
     android:gravity="center_vertical" >
 
     <View
@@ -16,13 +17,31 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true" />
 
+        
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="1dip" >
+
+        <ImageButton
+            android:id="@+id/folders"
+            android:layout_alignParentTop="true" 
+            android:layout_gravity="top"
+            android:focusable="false"
+            android:background="@drawable/ic_show_folders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center_vertical"
-        android:paddingLeft="6dip" >
+        android:paddingLeft="1dip" >
 
         <TextView
             android:id="@+id/description"
@@ -43,7 +62,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
-
+    </LinearLayout>
     <RelativeLayout
         android:id="@+id/active_icons"
         android:layout_width="wrap_content"
@@ -55,7 +74,7 @@
         android:paddingRight="6dip"
         android:layout_alignParentRight="true"
         android:clickable="true" >
-        
+
         <TextView
             android:id="@+id/flagged_message_count"
             android:layout_width="wrap_content"
@@ -73,6 +92,7 @@
             android:textColor="#000000"
             android:background="@drawable/btn_star_big_buttonless_on"
             android:clickable="true" />
+
         <TextView
             android:id="@+id/new_message_count"
             android:layout_width="wrap_content"

@@ -795,6 +795,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
 
                 holder.chip = view.findViewById(R.id.chip);
+                holder.folders = (ImageButton) view.findViewById(R.id.folders);
 
                 view.setTag(holder);
             }
@@ -879,8 +880,28 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 holder.chip.setBackgroundColor(0x00000000);
             }
 
+
             holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());
             holder.email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountDescription());
+
+
+            if (account instanceof SearchAccount)
+            {
+
+                holder.folders.setVisibility(View.GONE);
+            }
+            else
+            {
+                holder.folders.setVisibility(View.VISIBLE);
+                holder.folders.setOnClickListener(new OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        FolderList.actionHandleAccount(Accounts.this, (Account)account);
+
+                    }
+                });
+            }
 
             return view;
         }
@@ -893,6 +914,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public TextView flaggedMessageCount;
             public RelativeLayout activeIcons;
             public View chip;
+            public ImageButton folders;
         }
     }
     private Flag[] combine(Flag[] set1, Flag[] set2)
