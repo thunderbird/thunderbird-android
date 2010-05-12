@@ -574,11 +574,11 @@ public class K9 extends Application
 
     /**
      * Check if this system contains a buggy Gallery 3D package.
-     * 
+     *
      * We have to work around the fact that those Gallery versions won't show
      * any images or videos when the pick intent is used with a MIME type other
      * than image/* or video/*. See issue 1186.
-     * 
+     *
      * @return true, if a buggy Gallery 3D package was found. False, otherwise.
      */
     private boolean checkForBuggyGallery()
@@ -586,7 +586,7 @@ public class K9 extends Application
         try
         {
             PackageInfo pi = getPackageManager().getPackageInfo("com.cooliris.media", 0);
-            
+
             return (pi.versionCode == 30682);
         }
         catch (NameNotFoundException e)

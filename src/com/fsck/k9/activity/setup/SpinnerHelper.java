@@ -17,11 +17,12 @@ public class SpinnerHelper
     }
     public static void initSpinner(Context context, Spinner spinner, String[] entryArray, String[] valueArray, String curVal)
     {
-        
-        if (entryArray.length != valueArray.length){
+
+        if (entryArray.length != valueArray.length)
+        {
             throw new RuntimeException("Entry and value arrays are of unequal lenght");
         }
-        
+
         EntryValue[] entryValues = new EntryValue[entryArray.length];
         int curSelection = 0;
         for (int i = 0; i < entryArray.length; i++)
@@ -38,7 +39,7 @@ public class SpinnerHelper
         spinner.setAdapter(entryValuesAdapter);
         spinner.setSelection(curSelection);
     }
-    
+
     public static String getSpinnerValue(Spinner spinner)
     {
         EntryValue entryValue = (EntryValue)spinner.getSelectedItem();

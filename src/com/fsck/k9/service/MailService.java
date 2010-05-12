@@ -441,7 +441,7 @@ public class MailService extends CoreService
                             if (K9.DEBUG)
                             {
                                 Log.d(K9.LOG_TAG, "PUSHREFRESH: refreshing lastRefresh = " + lastRefresh + ", interval = " + refreshInterval
-                                        + ", nowTime = " + nowTime + ", sinceLast = " + sinceLast);
+                                      + ", nowTime = " + nowTime + ", sinceLast = " + sinceLast);
                             }
                             pusher.refresh();
                             pusher.setLastRefresh(nowTime);
@@ -451,7 +451,7 @@ public class MailService extends CoreService
                             if (K9.DEBUG)
                             {
                                 Log.d(K9.LOG_TAG, "PUSHREFRESH: NOT refreshing lastRefresh = " + lastRefresh + ", interval = " + refreshInterval
-                                        + ", nowTime = " + nowTime + ", sinceLast = " + sinceLast);
+                                      + ", nowTime = " + nowTime + ", sinceLast = " + sinceLast);
                             }
                         }
                     }

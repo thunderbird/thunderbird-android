@@ -2039,7 +2039,7 @@ public class ImapStore extends Store
 
                 try
                 {
-                    if (mHost.endsWith("yahoo.com")) 
+                    if (mHost.endsWith("yahoo.com"))
                     {
                         if (K9.DEBUG)
                             Log.v(K9.LOG_TAG, "Found Yahoo! account.  Sending proprietary commands.");
@@ -2689,8 +2689,8 @@ public class ImapStore extends Store
                                         Log.d(K9.LOG_TAG, "highest UID = " + highestUid);
                                     newUidNext = highestUid + 1;
                                     if (K9.DEBUG)
-                                        Log.d(K9.LOG_TAG, "highest UID = " + highestUid 
-                                                + ", set newUidNext to " + newUidNext);
+                                        Log.d(K9.LOG_TAG, "highest UID = " + highestUid
+                                              + ", set newUidNext to " + newUidNext);
                                 }
                             }
 

@@ -9,7 +9,7 @@ import com.fsck.k9.activity.MessageReference;
 public abstract class Message implements Part, Body
 {
     private MessageReference mReference = null;
-    
+
     public enum RecipientType
     {
         TO, CC, BCC,
@@ -33,9 +33,9 @@ public abstract class Message implements Part, Body
         Message other = (Message)o;
         return (mFolder.getName().equals(other.getFolder().getName())
                 && mFolder.getAccount().getUuid().equals(other.getFolder().getAccount().getUuid())
-                && mUid.equals(other.getUid()));        
+                && mUid.equals(other.getUid()));
     }
-    
+
     @Override
     public int hashCode()
     {
@@ -47,7 +47,7 @@ public abstract class Message implements Part, Body
         result = MULTIPLIER * result + mUid.hashCode();
         return result;
     }
-    
+
     public String getUid()
     {
         return mUid;
@@ -175,7 +175,7 @@ public abstract class Message implements Part, Body
     public abstract void saveChanges() throws MessagingException;
 
     public abstract void setEncoding(String encoding);
-    
+
     public MessageReference makeMessageReference()
     {
         if (mReference == null)
@@ -187,7 +187,7 @@ public abstract class Message implements Part, Body
         }
         return mReference;
     }
-    
+
     public boolean equalsReference(MessageReference ref)
     {
         MessageReference tmpReference = makeMessageReference();

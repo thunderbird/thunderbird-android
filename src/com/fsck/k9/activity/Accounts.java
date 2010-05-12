@@ -817,7 +817,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     holder.email.setText(account.getEmail());
                 }
             }
-            
+
             String description = account.getDescription();
             if (description == null || description.length() == 0)
             {

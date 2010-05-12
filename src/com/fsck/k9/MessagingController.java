@@ -893,9 +893,9 @@ public class MessagingController implements Runnable
                     try
                     {
                         LocalStore localStore = account.getLocalStore();
-                        localStore.searchForMessages(retrievalListener, query, foldersToSearch, 
-                                messagesToSearch == null ? null : messagesToSearch.toArray(new Message[0]), 
-                                        requiredFlags, forbiddenFlags);
+                        localStore.searchForMessages(retrievalListener, query, foldersToSearch,
+                                                     messagesToSearch == null ? null : messagesToSearch.toArray(new Message[0]),
+                                                     requiredFlags, forbiddenFlags);
 
                     }
                     catch (Exception e)
@@ -986,7 +986,7 @@ public class MessagingController implements Runnable
     {
         Folder remoteFolder = null;
         LocalFolder tLocalFolder = null;
-       
+
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "Synchronizing folder " + account.getDescription() + ":" + folder);
 

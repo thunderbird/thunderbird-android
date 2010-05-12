@@ -132,7 +132,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         idleRefreshPeriod = (Spinner)findViewById(R.id.idle_refresh_period);
 
         folderPushLimit = (Spinner)findViewById(R.id.folder_push_limit);
-        
+
         mImapFolderDrafts.setOnClickListener(this);
         mImapFolderSent.setOnClickListener(this);
         mImapFolderTrash.setOnClickListener(this);
@@ -401,12 +401,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 updatePortFromSecurityType();
             }
             pushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
-            SpinnerHelper.initSpinner(this, idleRefreshPeriod, R.array.idle_refresh_period_entries, 
-                    R.array.idle_refresh_period_values, String.valueOf(mAccount.getIdleRefreshMinutes()));
-            
-            SpinnerHelper.initSpinner(this, folderPushLimit, R.array.account_settings_push_limit_entries, 
-                    R.array.account_settings_push_limit_values, String.valueOf(mAccount.getMaxPushFolders()));
-            
+            SpinnerHelper.initSpinner(this, idleRefreshPeriod, R.array.idle_refresh_period_entries,
+                                      R.array.idle_refresh_period_values, String.valueOf(mAccount.getIdleRefreshMinutes()));
+
+            SpinnerHelper.initSpinner(this, folderPushLimit, R.array.account_settings_push_limit_entries,
+                                      R.array.account_settings_push_limit_values, String.valueOf(mAccount.getMaxPushFolders()));
+
             validateFields();
         }
         catch (Exception e)
@@ -576,7 +576,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 Log.e(K9.LOG_TAG, "Unable to parse max push folders value '" + maxPushFoldersValue + "'", e);
                 mAccount.setMaxPushFolders(10);
             }
-            
+
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
         }
         catch (Exception e)

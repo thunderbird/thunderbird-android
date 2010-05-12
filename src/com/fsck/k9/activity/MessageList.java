@@ -146,7 +146,7 @@ public class MessageList
                         }
                     }
                     resetUnreadCountOnThread();
-                    
+
                     mAdapter.notifyDataSetChanged();
                     toggleBatchButtons();
                 }
@@ -164,10 +164,10 @@ public class MessageList
                 {
                     for (final MessageInfoHolder message : messages)
                     {
-        
+
                         if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
                         {
-        
+
                             int index = Collections.binarySearch(mAdapter.messages, message);
 
                             if (index < 0)
@@ -179,13 +179,13 @@ public class MessageList
 
                         }
                     }
-                
+
                     if (wasEmpty)
                     {
                         mListView.setSelection(0);
                     }
                     resetUnreadCountOnThread();
-                    
+
                     mAdapter.notifyDataSetChanged();
                 }
             });
@@ -1732,7 +1732,7 @@ public class MessageList
                 ref.accountUuid = account.getUuid();
                 ref.folderName = folder;
                 ref.uid = oldUid;
-                
+
                 MessageInfoHolder holder = getMessage(ref);
                 if (holder != null)
                 {
@@ -1833,19 +1833,19 @@ public class MessageList
                     m.populate(message, new FolderInfoHolder(message.getFolder(), account), account);
                     needsSort = true;
                 }
-                
+
             }
             if (messagesToSearch.size() > 0)
             {
-                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(new Message[0]), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, 
-                        new MessagingListener()
+                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(new Message[0]), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
+                                                new MessagingListener()
                 {
                     @Override
                     public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
                     {
                         addOrUpdateMessages(account, folder, messages, false);
                     }
-                    
+
                 });
             }
             if (messagesToRemove.size() > 0)
@@ -1867,8 +1867,8 @@ public class MessageList
         {
             return getMessage(message.makeMessageReference());
         }
-        
-     // XXX TODO - make this not use a for loop
+
+        // XXX TODO - make this not use a for loop
         public MessageInfoHolder getMessage(MessageReference messageReference)
         {
             for (MessageInfoHolder holder : mAdapter.messages)
@@ -2336,7 +2336,7 @@ public class MessageList
         @Override
         public boolean equals(Object o)
         {
-            
+
             if (o instanceof MessageInfoHolder == false)
             {
                 return false;

@@ -166,9 +166,9 @@ public class Account implements BaseAccount
         mAutomaticCheckIntervalMinutes = preferences.getPreferences().getInt(mUuid
                                          + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = preferences.getPreferences().getInt(mUuid
-                                                 + ".idleRefreshMinutes", 24);
+                              + ".idleRefreshMinutes", 24);
         mPushPollOnConnect = preferences.getPreferences().getBoolean(mUuid
-                                                    + ".pushPollOnConnect", true);
+                             + ".pushPollOnConnect", true);
         mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", -1);
         mLastAutomaticCheckTime = preferences.getPreferences().getLong(mUuid
                                   + ".lastAutomaticCheckTime", 0);

@@ -12,7 +12,7 @@ public class AutoSyncHelper
     /**
      * False, if we never tried to load the class for this SDK version.
      * True, otherwise.
-     * 
+     *
      * Note: if sAutoSync is null and sChecked is true, then an error occured
      * while loading the class for the SDK version we're running on.
      */
@@ -27,7 +27,7 @@ public class AutoSyncHelper
 
     /**
      * Try loading the class that implements IAutoSync for this SDK version.
-     * 
+     *
      * @return the IAutoSync object for this SDK version, or null if something
      *         went wrong.
      */
@@ -98,7 +98,7 @@ public class AutoSyncHelper
     /**
      * Checks whether we can query the auto-sync state using
      * getMasterSyncAutomatically() or not.
-     * 
+     *
      * @return true, if calls to getMasterSyncAutomatically() will return the
      *         state of the auto-sync setting. false, otherwise.
      */
@@ -113,7 +113,7 @@ public class AutoSyncHelper
 
     /**
      * Query the state of the auto-sync setting.
-     * 
+     *
      * @return the state of the auto-sync setting.
      * @see IAutoSync
      */
@@ -127,7 +127,7 @@ public class AutoSyncHelper
         if (sAutoSync == null)
         {
             throw new RuntimeException(
-                    "Called getMasterSyncAutomatically() before checking if it's available.");
+                "Called getMasterSyncAutomatically() before checking if it's available.");
         }
 
         return sAutoSync.getMasterSyncAutomatically();

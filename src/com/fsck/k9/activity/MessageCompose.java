@@ -750,7 +750,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Attachment attachment = (Attachment) mAttachments.getChildAt(i).getTag();
 
                 MimeBodyPart bp = new MimeBodyPart(
-                        new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
+                    new LocalStore.LocalAttachmentBody(attachment.uri, getApplication()));
 
                 /*
                  * Correctly encode the filename here. Otherwise the whole
@@ -758,30 +758,30 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                  * MimeHeader.writeTo().
                  */
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"",
-                        attachment.contentType,
-                        EncoderUtil.encodeIfNecessary(attachment.name,
-                                EncoderUtil.Usage.WORD_ENTITY, 7)));
+                             attachment.contentType,
+                             EncoderUtil.encodeIfNecessary(attachment.name,
+                                                           EncoderUtil.Usage.WORD_ENTITY, 7)));
 
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
 
                 /*
                  * TODO: Oh the joys of MIME...
-                 * 
+                 *
                  * From RFC 2183 (The Content-Disposition Header Field):
                  * "Parameter values longer than 78 characters, or which
                  *  contain non-ASCII characters, MUST be encoded as specified
                  *  in [RFC 2184]."
-                 *  
+                 *
                  * Example:
-                 * 
+                 *
                  * Content-Type: application/x-stuff
                  *  title*1*=us-ascii'en'This%20is%20even%20more%20
                  *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
                  *  title*3="isn't it!"
                  */
                 bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(
-                        "attachment;\n filename=\"%s\";\n size=%d",
-                        attachment.name, attachment.size));
+                                 "attachment;\n filename=\"%s\";\n size=%d",
+                                 attachment.name, attachment.size));
 
                 mp.addBodyPart(bp);
             }
@@ -947,14 +947,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             if (K9.useGalleryBugWorkaround())
             {
                 Toast.makeText(MessageCompose.this,
-                        getString(R.string.message_compose_use_workaround),
-                        Toast.LENGTH_LONG).show();
+                               getString(R.string.message_compose_use_workaround),
+                               Toast.LENGTH_LONG).show();
             }
             else
             {
                 Toast.makeText(MessageCompose.this,
-                        getString(R.string.message_compose_buggy_gallery),
-                        Toast.LENGTH_LONG).show();
+                               getString(R.string.message_compose_buggy_gallery),
+                               Toast.LENGTH_LONG).show();
             }
         }
 
@@ -1195,7 +1195,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         /*
          * Show the menu items "Add attachment (Image)" and "Add attachment (Video)"
-         * if the work-around for the Gallery bug is enabled (see Issue 1186). 
+         * if the work-around for the Gallery bug is enabled (see Issue 1186).
          */
         int found = 0;
         for (int i = menu.size() - 1; i >= 0; i--)
@@ -1203,7 +1203,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             MenuItem item = menu.getItem(i);
             int id = item.getItemId();
             if ((id == R.id.add_attachment_image) ||
-                (id == R.id.add_attachment_video))
+                    (id == R.id.add_attachment_video))
             {
                 item.setVisible(K9.useGalleryBugWorkaround());
                 found++;

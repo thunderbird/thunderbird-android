@@ -16,7 +16,7 @@ public class AutoSyncSdk3 implements IAutoSync
         /*
          * There's no documented/official way to query the state of the
          * auto-sync setting for a normal application in SDK 1.5/API 3.
-         * 
+         *
          * We use reflection to get an Sync.Settings.QueryMap" object, so we
          * can call its getListenForNetworkTickles() method. This will return
          * the current auto-sync state.
