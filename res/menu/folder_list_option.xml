@@ -74,11 +74,6 @@
 			android:title="@string/compact_action"
 			android:icon="@drawable/ic_menu_compact"
 		/>
-		<item
-			android:id="@+id/clear"
-			android:title="@string/clear_action"
-			android:icon="@drawable/ic_menu_clear"
-		/>
 		</menu>
     </item>
 	

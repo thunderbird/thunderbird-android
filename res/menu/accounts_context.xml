@@ -15,6 +15,8 @@
         android:title="@string/compact_action" />    
     <item android:id="@+id/clear"
         android:title="@string/clear_action" />
+    <item android:id="@+id/recreate"
+        android:title="@string/recreate_action" />
     <item android:id="@+id/delete_account"
         android:title="@string/remove_account_action" />
     <item android:id="@+id/clear_pending"

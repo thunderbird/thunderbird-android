@@ -4382,7 +4382,43 @@ public class MessagingController implements Runnable
                 }
                 catch (Exception e)
                 {
-                    Log.e(K9.LOG_TAG, "Failed to compact account " + account.getDescription(), e);
+                    Log.e(K9.LOG_TAG, "Failed to clear account " + account.getDescription(), e);
+                }
+            }
+        });
+    }
+    
+    public void recreate(final Account account, final MessagingListener ml)
+    {
+        putBackground("recreate:" + account.getDescription(), ml, new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    LocalStore localStore = account.getLocalStore();
+                    long oldSize = localStore.getSize();
+                    localStore.recreate();
+                    localStore.resetVisibleLimits(account.getDisplayCount());
+                    long newSize = localStore.getSize();
+                    AccountStats stats = new AccountStats();
+                    stats.size = newSize;
+                    stats.unreadMessageCount = 0;
+                    stats.flaggedMessageCount = 0;
+                    if (ml != null)
+                    {
+                        ml.accountSizeChanged(account, oldSize, newSize);
+                        ml.accountStatusChanged(account, stats);
+                    }
+                    for (MessagingListener l : getListeners())
+                    {
+                        l.accountSizeChanged(account, oldSize, newSize);
+                        l.accountStatusChanged(account, stats);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.e(K9.LOG_TAG, "Failed to recreate account " + account.getDescription(), e);
                 }
             }
         });
@@ -4398,6 +4434,18 @@ public class MessagingController implements Runnable
         if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN))
         {
             return false;
+        }
+        
+        Folder folder = message.getFolder();
+        if (folder != null)
+        {
+            String folderName = folder.getName();
+            if (account.getTrashFolderName().equals(folderName)
+                    || account.getDraftsFolderName().equals(folderName)
+                    || account.getSentFolderName().equals(folderName))
+            {
+                return false;
+            }
         }
 
         // If we have a message, set the notification to "<From>: <Subject>"

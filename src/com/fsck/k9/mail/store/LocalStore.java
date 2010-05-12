@@ -90,6 +90,12 @@ public class LocalStore extends Store implements Serializable
         String[] tokens = dbFile.getName().split("\\.");
         uUid = tokens[0];
 
+        openOrCreateDataspace(application);
+
+    }
+    
+    private void openOrCreateDataspace(Application application)
+    {
         File parentDir = new File(mPath).getParentFile();
         if (!parentDir.exists())
         {
@@ -106,8 +112,7 @@ public class LocalStore extends Store implements Serializable
         if (mDb.getVersion() != DB_VERSION)
         {
             doDbUpgrade(mDb, application);
-        }
-
+        } 
     }
 
     private void doDbUpgrade(SQLiteDatabase mDb, Application application)
@@ -436,6 +441,12 @@ public class LocalStore extends Store implements Serializable
         {
 
         }
+    }
+    
+    public void recreate()
+    {
+        delete();
+        openOrCreateDataspace(mApplication);
     }
 
     public void pruneCachedAttachments() throws MessagingException

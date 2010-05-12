@@ -139,6 +139,7 @@
     
     <string name="compacting_account">Compacting account \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Clearing account \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="recreating_account">Recreating account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">New mail</string>
     <string name="notification_new_scrolling">New mail from <xliff:g id="sender">%s</xliff:g></string>
@@ -388,7 +389,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_options_title">Account options</string>
     
     <string name="compact_action">Compact</string>
-   <string name="clear_action">Clear all data (danger!)</string>
+   <string name="clear_action">Clear messages (danger!)</string>
+   <string name="recreate_action">Recreate data (Last Resort!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Folder poll check frequency</string>
     <!-- Frequency also used in account_settings_* -->
@@ -604,9 +606,15 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="sort_by_attach">Attachments</string>
     <string name="message_web_view_error">%s</string>
 
-    <string name="account_delete_dlg_title">Remove</string>
-    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9.</string>
-
+    <string name="account_delete_dlg_title">Remove Account</string>
+    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
+    
+    <string name="account_recreate_dlg_title">Recreate Account</string>
+    <string name="account_recreate_dlg_instructions_fmt">All data for \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
+    
+    <string name="account_clear_dlg_title">Clear Account</string>
+    <string name="account_clear_dlg_instructions_fmt">All messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
+    
     <string name="provider_note_yahoo">Free Yahoo! Mail accounts only work over T-Mobile wireless networks. Yahoo! Mail Plus users should configure POP settings manually.</string>
     <string name="provider_note_live">Only some \"Plus\" accounts include POP access
         allowing this program to connect. If you are not able to sign in with

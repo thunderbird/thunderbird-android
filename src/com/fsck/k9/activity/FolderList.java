@@ -509,10 +509,6 @@ public class FolderList extends K9ListActivity
 
                 return true;
 
-            case R.id.clear:
-                onClear(mAccount);
-
-                return true;
             case R.id.display_1st_class:
             {
                 setDisplayMode(FolderMode.FIRST_CLASS);
@@ -547,12 +543,6 @@ public class FolderList extends K9ListActivity
     {
         mHandler.workingAccount(R.string.compacting_account);
         MessagingController.getInstance(getApplication()).compact(account, null);
-    }
-
-    private void onClear(Account account)
-    {
-        mHandler.workingAccount(R.string.clearing_account);
-        MessagingController.getInstance(getApplication()).clear(account, null);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu)
