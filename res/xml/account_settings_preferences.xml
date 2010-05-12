@@ -195,6 +195,11 @@
             android:title="@string/account_settings_notify_sync_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_notify_sync_summary" />
+     <CheckBoxPreference
+            android:key="notification_opens_unread"
+            android:title="@string/account_settings_notification_opens_unread_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_notification_opens_unread_summary" />
 
     </PreferenceCategory>
 

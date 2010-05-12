@@ -49,6 +49,8 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder";
     private static final String PREFERENCE_SEARCHABLE_FOLDERS = "searchable_folders";
     private static final String PREFERENCE_CHIP_COLOR = "chip_color";
+    private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
+
 
 
     private Account mAccount;
@@ -73,6 +75,7 @@ public class AccountSettings extends K9PreferenceActivity
     private Preference mAutoExpandFolder;
     private Preference mChipColor;
     private boolean mIncomingChanged = false;
+    private CheckBoxPreference mNotificationOpensUnread;
 
 
     public static void actionSettings(Context context, Account account)
@@ -301,6 +304,10 @@ public class AccountSettings extends K9PreferenceActivity
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.isVibrate());
+        
+        mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
+        mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
+        
 
         mAutoExpandFolder = (Preference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
 
@@ -395,6 +402,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
+        mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());

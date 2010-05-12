@@ -84,6 +84,7 @@ public class Account implements BaseAccount
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
     private int mIdleRefreshMinutes;
+    private boolean goToUnreadMessageSearch;
     private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
     private Searchable searchableFolders;
     // Tracks if we have sent a notification for this account for
@@ -133,6 +134,7 @@ public class Account implements BaseAccount
         mAutoExpandFolderName = "INBOX";
         mMaxPushFolders = 10;
         mChipColor = 0;
+        goToUnreadMessageSearch = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -190,7 +192,8 @@ public class Account implements BaseAccount
         mExpungePolicy = preferences.getPreferences().getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
 
         mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
-
+        goToUnreadMessageSearch = preferences.getPreferences().getBoolean(mUuid + ".goToUnreadMessageSearch",
+                true);
         for (String type : networkTypes)
         {
             Boolean useCompression = preferences.getPreferences().getBoolean(mUuid + ".useCompression." + type,
@@ -354,6 +357,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".expungePolicy");
         editor.remove(mUuid + ".maxPushFolders");
         editor.remove(mUuid  + ".searchableFolders");
+        editor.remove(mUuid + ".goToUnreadMessageSearch");
         for (String type : networkTypes)
         {
             editor.remove(mUuid + ".useCompression." + type);
@@ -434,6 +438,7 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
         editor.putString(mUuid  + ".searchableFolders", searchableFolders.name());
         editor.putInt(mUuid + ".chipColor", mChipColor);
+        editor.putBoolean(mUuid + ".goToUnreadMessageSearch", goToUnreadMessageSearch);
 
         for (String type : networkTypes)
         {
@@ -1151,5 +1156,15 @@ public class Account implements BaseAccount
     public void setPushPollOnConnect(boolean pushPollOnConnect)
     {
         mPushPollOnConnect = pushPollOnConnect;
+    }
+
+    public boolean goToUnreadMessageSearch()
+    {
+        return goToUnreadMessageSearch;
+    }
+
+    public void setGoToUnreadMessageSearch(boolean goToUnreadMessageSearch)
+    {
+        this.goToUnreadMessageSearch = goToUnreadMessageSearch;
     }
 }

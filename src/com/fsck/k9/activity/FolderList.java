@@ -48,10 +48,7 @@ public class FolderList extends K9ListActivity
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
-
-    //private static final String STATE_CURRENT_FOLDER = "com.fsck.k9.activity.folderlist_folder";
-
-    private static final String EXTRA_CLEAR_NOTIFICATION = "clearNotification";
+    private static final String EXTRA_FROM_NOTIFICATION = "fromNotification";
 
     private static final boolean REFRESH_REMOTE = true;
 
@@ -227,7 +224,7 @@ public class FolderList extends K9ListActivity
         actionHandleAccount(context, account, null);
     }
 
-    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder)
+    public static Intent actionHandleNotification(Context context, Account account, String initialFolder)
     {
         Intent intent = new Intent(
             Intent.ACTION_VIEW,
@@ -236,18 +233,13 @@ public class FolderList extends K9ListActivity
             FolderList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        intent.putExtra(EXTRA_CLEAR_NOTIFICATION, true);
+        intent.putExtra(EXTRA_FROM_NOTIFICATION, true);
 
         if (initialFolder != null)
         {
             intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
         }
         return intent;
-    }
-
-    public static Intent actionHandleAccountIntent(Context context, Account account)
-    {
-        return actionHandleAccountIntent(context, account, null);
     }
 
     @Override
@@ -290,9 +282,13 @@ public class FolderList extends K9ListActivity
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
-        if (
-            initialFolder != null
-            && !K9.FOLDER_NONE.equals(initialFolder))
+        boolean fromNotification = intent.getBooleanExtra(EXTRA_FROM_NOTIFICATION, false);
+        if (fromNotification && mAccount.goToUnreadMessageSearch())
+        {
+            openUnreadSearch(this, mAccount);
+            finish();
+        }
+        else if (initialFolder != null && !K9.FOLDER_NONE.equals(initialFolder))
         {
             onOpenFolder(initialFolder);
             finish();
@@ -1496,6 +1492,52 @@ public class FolderList extends K9ListActivity
 
     }
 
-
+    private static Flag[] UNREAD_FLAG_ARRAY = { Flag.SEEN };
+    
+    private void openUnreadSearch(Context context, final Account account)
+    {
+        String description = getString(R.string.search_title, mAccount.getDescription(), getString(R.string.unread_modifier));
+        
+        SearchSpecification searchSpec = new SearchSpecification()
+        {
+            @Override
+            public String[] getAccountUuids()
+            {
+                return new String[] { account.getUuid() };
+            }
+    
+            @Override
+            public Flag[] getForbiddenFlags()
+            {
+                return UNREAD_FLAG_ARRAY;
+            }
+    
+            @Override
+            public String getQuery()
+            {
+                return "";
+            }
+    
+            @Override
+            public Flag[] getRequiredFlags()
+            {
+                return null;
+            }
+    
+            @Override
+            public boolean isIntegrate()
+            {
+                return false;
+            }
+    
+            @Override
+            public String[] getFolderNames()
+            {
+                return null;
+            }
+    
+        };
+        MessageList.actionHandle(context, description, searchSpec);
+    }
 
 }

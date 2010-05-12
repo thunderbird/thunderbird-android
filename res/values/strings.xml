@@ -456,6 +456,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_show_combined_label">Show combined Inbox</string>
     <string name="account_settings_notify_self_label">Notify for mail I sent</string>
     <string name="account_settings_notify_self_summary">Notify even for mail sent from an account identity</string>
+    <string name="account_settings_notification_opens_unread_label">Notification opens unread messages</string>
+    <string name="account_settings_notification_opens_unread_summary">Searches for unread messages when Notification is opened</string>
+        
     
     <string name="account_settings_hide_buttons_label">Scroll navigation buttons</string>
     <string name="account_settings_hide_buttons_never">Never</string>
