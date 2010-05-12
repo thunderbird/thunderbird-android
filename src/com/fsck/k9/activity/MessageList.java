@@ -25,6 +25,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
 import com.fsck.k9.MessagingController.SORT_TYPE;
+import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.mail.*;
@@ -786,6 +787,12 @@ public class MessageList
         }
     }
 
+    private void onEditPrefs()
+    {
+        Prefs.actionPrefs(this);
+    }
+
+
     private void onEditAccount()
     {
         AccountSettings.actionSettings(this, mAccount);
@@ -1217,6 +1224,10 @@ public class MessageList
             case R.id.account_settings:
                 onEditAccount();
 
+                return true;
+
+            case R.id.app_settings:
+                onEditPrefs();
                 return true;
 
             case R.id.batch_copy_op:

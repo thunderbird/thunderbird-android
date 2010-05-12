@@ -119,6 +119,12 @@
 		android:icon="@drawable/ic_menu_inbox"
 	/>
     <item
+        android:id="@+id/settings"
+        android:title="@string/preferences_action"
+        android:icon="@drawable/ic_menu_preferences">
+        <menu>
+
+    <item
 		android:id="@+id/folder_settings"
 		android:title="@string/folder_settings_action"
 		android:icon="@drawable/ic_menu_preferences"
@@ -127,7 +133,13 @@
 		android:id="@+id/account_settings"
 		android:title="@string/account_settings_action"
 		android:icon="@android:drawable/ic_menu_preferences"
-	/>	
+	/>
+    <item android:id="@+id/app_settings"
+        android:title="@string/preferences_action" 
+		android:icon="@android:drawable/ic_menu_preferences"
+	/>
+    </menu>
+    </item>
 	<item
         android:id="@+id/expunge"
         android:title="@string/expunge_action"
