@@ -39,6 +39,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -448,6 +449,8 @@ public class ImapStore extends Store
         private OpenMode mMode;
         private boolean mExists;
         private ImapStore store = null;
+        Map<Integer, String> msgSeqUidMap = new ConcurrentHashMap<Integer, String>();
+
 
         public ImapFolder(ImapStore nStore, String name)
         {
@@ -522,6 +525,7 @@ public class ImapStore extends Store
             // 2 OK [READ-WRITE] Select completed.
             try
             {
+                msgSeqUidMap.clear();
                 String command = String.format((mode == OpenMode.READ_WRITE ? "SELECT" : "EXAMINE") + " \"%s\"",
                                                encodeFolderName(getPrefixedName()));
 
@@ -966,6 +970,19 @@ public class ImapStore extends Store
             };
             return search(searcher, listener);
         }
+        
+        protected Message[] getMessagesFromUids(final List<String> mesgUids, final boolean includeDeleted, final MessageRetrievalListener listener)
+        throws MessagingException
+        {
+            ImapSearcher searcher = new ImapSearcher()
+            {
+                public List<ImapResponse> search() throws IOException, MessagingException
+                {
+                    return executeSimpleCommand(String.format("UID SEARCH UID %s" + (includeDeleted ? "" : " NOT DELETED"), Utility.combine(mesgUids.toArray(), ',')));
+                }
+            };
+            return search(searcher, listener);
+        }
 
         private Message[] search(ImapSearcher searcher, MessageRetrievalListener listener) throws MessagingException
         {
@@ -1152,6 +1169,22 @@ public class ImapStore extends Store
                     {
                         ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
                         String uid = fetchList.getKeyedString("UID");
+                        int msgSeq = response.getNumber(0);
+                        if (uid != null)
+                        {
+                            try
+                            {
+                                msgSeqUidMap.put(msgSeq, uid);
+                                if (K9.DEBUG)
+                                {
+                                    Log.v(K9.LOG_TAG, "Stored uid '" + uid + "' for msgSeq " + msgSeq + " into map " + msgSeqUidMap.toString());
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(K9.LOG_TAG, "Unable to store uid '" + uid + "' for msgSeq " + msgSeq);
+                            }
+                        }
 
                         Message message = messageMap.get(uid);
                         if (message == null)
@@ -1371,7 +1404,7 @@ public class ImapStore extends Store
                 {
                     mMessageCount--;
                     if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Got untagged EXPUNGE with value " + mMessageCount + " for " + getLogId());
+                        Log.d(K9.LOG_TAG, "Got untagged EXPUNGE with mMessageCount " + mMessageCount + " for " + getLogId());
                 }
 //            if (response.size() > 1) {
 //                Object bracketedObj = response.get(1);
@@ -2588,8 +2621,9 @@ public class ImapStore extends Store
         final AtomicBoolean doneSent = new AtomicBoolean(false);
         final AtomicInteger delayTime = new AtomicInteger(NORMAL_DELAY_TIME);
         final AtomicInteger idleFailureCount = new AtomicInteger(0);
+        final AtomicBoolean needsPoll = new AtomicBoolean(false);
         List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
-
+        
         public ImapFolderPusher(ImapStore store, String name, PushReceiver nReceiver)
         {
             super(store, name);
@@ -2650,7 +2684,7 @@ public class ImapStore extends Store
                                 Log.e(K9.LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
                             }
                             ImapConnection oldConnection = mConnection;
-                            List<ImapResponse> responses = internalOpen(OpenMode.READ_ONLY);
+                            internalOpen(OpenMode.READ_ONLY);
                             if (mConnection == null)
                             {
                                 receiver.pushError("Could not establish connection for IDLE", null);
@@ -2664,12 +2698,11 @@ public class ImapStore extends Store
                                 throw new MessagingException("IMAP server is not IDLE capable:" + mConnection.toString());
                             }
 
-                            if (responses != null)
+                            if (mAccount.isPushPollOnConnect() && (mConnection != oldConnection || needsPoll.getAndSet(false) == true))
                             {
-                                handleUntaggedResponses(responses);
-                            }
-                            if (mAccount.isPushPollOnConnect() && mConnection != oldConnection)
-                            {
+                                List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
+                                storedUntaggedResponses.clear();
+                                processUntaggedResponses(untaggedResponses);
                                 receiver.syncFolder(ImapFolderPusher.this);
                             }
                             int startUid = oldUidNext;
@@ -2842,10 +2875,11 @@ public class ImapStore extends Store
                 skipSync = true;
             }
             List<Integer> flagSyncMsgSeqs = new ArrayList<Integer>();
+            List<String> removeMsgUids = new LinkedList<String>();
 
             for (ImapResponse response : responses)
             {
-                oldMessageCount += processUntaggedResponse(oldMessageCount, response, flagSyncMsgSeqs);
+                oldMessageCount += processUntaggedResponse(oldMessageCount, response, flagSyncMsgSeqs, removeMsgUids);
             }
             if (skipSync == false)
             {
@@ -2864,6 +2898,10 @@ public class ImapStore extends Store
             if (flagSyncMsgSeqs.size() > 0)
             {
                 syncMessages(flagSyncMsgSeqs);
+            }
+            if (removeMsgUids.size() > 0)
+            {
+                removeMessages(removeMsgUids);
             }
         }
 
@@ -2938,8 +2976,46 @@ public class ImapStore extends Store
                 receiver.pushError("Exception while processing Push untagged responses", e);
             }
         }
+        
+        private void removeMessages(List<String> removeUids)
+        {
+            List<Message> messages = new ArrayList<Message>(removeUids.size());
+            
+            try
+            {
+                Message[] existingMessages = getMessagesFromUids(removeUids, true, null);
+                for (Message existingMessage : existingMessages)
+                {
+                    needsPoll.set(true);
+                    msgSeqUidMap.clear();
+                    String existingUid = existingMessage.getUid();
+                    Log.w(K9.LOG_TAG, "Message with UID " + existingUid + " still exists on server, not expunging");
+                    removeUids.remove(existingUid);
+                }
+                for (String uid : removeUids)
+                {
+                    ImapMessage message = new ImapMessage(uid, this);
+                    try
+                    {
+                        message.setFlagInternal(Flag.DELETED, true);
+                    }
+                    catch (MessagingException me)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to set DELETED flag on message " + message.getUid());
+                    }
+                    messages.add(message);
+                }
+                receiver.messagesRemoved(this, messages);
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Cannot remove EXPUNGEd messages", e);
+                return;
+            }
+          
+        }
 
-        protected int processUntaggedResponse(int oldMessageCount, ImapResponse response, List<Integer> flagSyncMsgSeqs)
+        protected int processUntaggedResponse(int oldMessageCount, ImapResponse response, List<Integer> flagSyncMsgSeqs, List<String> removeMsgUids)
         {
             super.handleUntaggedResponse(response);
             int messageCountDelta = 0;
@@ -2950,7 +3026,9 @@ public class ImapStore extends Store
                     Object responseType = response.get(1);
                     if (ImapResponseParser.equalsIgnoreCase(responseType, "FETCH"))
                     {
+                        Log.i(K9.LOG_TAG, "Got FETCH " + response);
                         int msgSeq = response.getNumber(0);
+                        
                         if (K9.DEBUG)
                             Log.d(K9.LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq + " for " + getLogId());
 
@@ -2984,6 +3062,39 @@ public class ImapStore extends Store
                             }
                         }
                         flagSyncMsgSeqs.addAll(newSeqs);
+                        
+                        
+                        List<Integer> msgSeqs = new ArrayList<Integer>(msgSeqUidMap.keySet());
+                        Collections.sort(msgSeqs);  // Have to do comparisons in order because of msgSeq reductions
+
+                        for (Integer msgSeqNumI : msgSeqs)
+                        {
+                            if (K9.DEBUG)
+                            {
+                                Log.v(K9.LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNumI);
+                            }
+                            int msgSeqNum = msgSeqNumI;
+                            if (msgSeqNum == msgSeq)
+                            {
+                                String uid = msgSeqUidMap.get(msgSeqNum);
+                                if (K9.DEBUG)
+                                {
+                                    Log.d(K9.LOG_TAG, "Scheduling removal of UID " + uid + " because msgSeq " + msgSeqNum + " was expunged");
+                                }
+                                removeMsgUids.add(uid);
+                                msgSeqUidMap.remove(msgSeqNum);
+                            }
+                            else if (msgSeqNum > msgSeq)
+                            {
+                                String uid = msgSeqUidMap.get(msgSeqNum);
+                                if (K9.DEBUG)
+                                {
+                                    Log.d(K9.LOG_TAG, "Reducing msgSeq for UID " + uid + " from " + msgSeqNum + " to " + (msgSeqNum - 1));
+                                }
+                                msgSeqUidMap.remove(msgSeqNum);
+                                msgSeqUidMap.put(msgSeqNum-1, uid);
+                            }
+                        }
                     }
                 }
                 catch (Exception e)

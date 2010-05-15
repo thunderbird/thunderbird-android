@@ -929,7 +929,7 @@ public class MessagingController implements Runnable
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(folder);
             localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
-            synchronizeMailbox(account, folder, listener);
+            synchronizeMailbox(account, folder, listener, null);
         }
         catch (MessagingException me)
         {
@@ -962,14 +962,15 @@ public class MessagingController implements Runnable
      * @param account
      * @param folder
      * @param listener
+     * @param providedRemoteFolder TODO
      */
-    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener)
+    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener, final Folder providedRemoteFolder)
     {
         putBackground("synchronizeMailbox", listener, new Runnable()
         {
             public void run()
             {
-                synchronizeMailboxSynchronous(account, folder, listener);
+                synchronizeMailboxSynchronous(account, folder, listener, providedRemoteFolder);
             }
         });
     }
@@ -981,8 +982,9 @@ public class MessagingController implements Runnable
      * @param folder
      *
      * TODO Break this method up into smaller chunks.
+     * @param providedRemoteFolder TODO
      */
-    public void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener)
+    private void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener, Folder providedRemoteFolder)
     {
         Folder remoteFolder = null;
         LocalFolder tLocalFolder = null;
@@ -1052,47 +1054,54 @@ public class MessagingController implements Runnable
                 localUidMap.put(message.getUid(), message);
             }
 
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "SYNC: About to get remote store for " + folder);
-
-            Store remoteStore = account.getRemoteStore();
-
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "SYNC: About to get remote folder " + folder);
-
-            remoteFolder = remoteStore.getFolder(folder);
-
-            /*
-             * If the folder is a "special" folder we need to see if it exists
-             * on the remote server. It if does not exist we'll try to create it. If we
-             * can't create we'll abort. This will happen on every single Pop3 folder as
-             * designed and on Imap folders during error conditions. This allows us
-             * to treat Pop3 and Imap the same in this code.
-             */
-            if (folder.equals(account.getTrashFolderName()) ||
-                    folder.equals(account.getSentFolderName()) ||
-                    folder.equals(account.getDraftsFolderName()))
+            if (providedRemoteFolder != null)
             {
-                if (!remoteFolder.exists())
-                {
-                    if (!remoteFolder.create(FolderType.HOLDS_MESSAGES))
-                    {
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.synchronizeMailboxFinished(account, folder, 0, 0);
-                        }
-                        if (listener != null && getListeners().contains(listener) == false)
-                        {
-                            listener.synchronizeMailboxFinished(account, folder, 0, 0);
-                        }
-                        if (K9.DEBUG)
-                            Log.i(K9.LOG_TAG, "Done synchronizing folder " + folder);
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "SYNC: using providedRemoteFolder " + folder);
 
-                        return;
+                remoteFolder = providedRemoteFolder;
+            }
+            else
+            {
+                
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "SYNC: About to get remote store for " + folder);
+
+                Store remoteStore = account.getRemoteStore();
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "SYNC: About to get remote folder " + folder);
+                remoteFolder = remoteStore.getFolder(folder);
+
+                /*
+                 * If the folder is a "special" folder we need to see if it exists
+                 * on the remote server. It if does not exist we'll try to create it. If we
+                 * can't create we'll abort. This will happen on every single Pop3 folder as
+                 * designed and on Imap folders during error conditions. This allows us
+                 * to treat Pop3 and Imap the same in this code.
+                 */
+                if (folder.equals(account.getTrashFolderName()) ||
+                        folder.equals(account.getSentFolderName()) ||
+                        folder.equals(account.getDraftsFolderName()))
+                {
+                    if (!remoteFolder.exists())
+                    {
+                        if (!remoteFolder.create(FolderType.HOLDS_MESSAGES))
+                        {
+                            for (MessagingListener l : getListeners())
+                            {
+                                l.synchronizeMailboxFinished(account, folder, 0, 0);
+                            }
+                            if (listener != null && getListeners().contains(listener) == false)
+                            {
+                                listener.synchronizeMailboxFinished(account, folder, 0, 0);
+                            }
+                            if (K9.DEBUG)
+                                Log.i(K9.LOG_TAG, "Done synchronizing folder " + folder);
+    
+                            return;
+                        }
                     }
                 }
-            }
-
             /*
              * Synchronization process:
             Open the folder
@@ -1115,11 +1124,11 @@ public class MessagingController implements Runnable
             /*
              * Open the remote folder. This pre-loads certain metadata like message count.
              */
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "SYNC: About to open remote folder " + folder);
-
-            remoteFolder.open(OpenMode.READ_WRITE);
-
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "SYNC: About to open remote folder " + folder);
+    
+                remoteFolder.open(OpenMode.READ_WRITE);
+            }
             if (Account.EXPUNGE_ON_POLL.equals(account.getExpungePolicy()))
             {
                 if (K9.DEBUG)
@@ -1290,7 +1299,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (remoteFolder != null)
+            if (providedRemoteFolder == null && remoteFolder != null)
             {
                 remoteFolder.close();
             }
@@ -1360,7 +1369,11 @@ public class MessagingController implements Runnable
 
         for (Message message : messages)
         {
-            if (isMessageSuppressed(account, folder, message) == false)
+            if (message.isSet(Flag.DELETED))
+            {
+                syncFlagMessages.add(message);
+            }
+            else if (isMessageSuppressed(account, folder, message) == false)
             {
                 Message localMessage = localFolder.getMessage(message.getUid());
 
@@ -1756,16 +1769,23 @@ public class MessagingController implements Runnable
          */
         if (remoteFolder.supportsFetchingFlags())
         {
-
-
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "SYNC: About to sync flags for "
                       + syncFlagMessages.size() + " remote messages for folder " + folder);
 
-
             fp.clear();
             fp.add(FetchProfile.Item.FLAGS);
-            remoteFolder.fetch(syncFlagMessages.toArray(new Message[0]), fp, null);
+            
+            List<Message> undeletedMessages = new LinkedList<Message>();
+            for (Message message : syncFlagMessages)
+            {
+                if (message.isSet(Flag.DELETED) == false)
+                {
+                    undeletedMessages.add(message);
+                }
+            }
+            
+            remoteFolder.fetch(undeletedMessages.toArray(new Message[0]), fp, null);
             for (Message remoteMessage : syncFlagMessages)
             {
                 Message localMessage = localFolder.getMessage(remoteMessage.getUid());
@@ -4243,7 +4263,7 @@ public class MessagingController implements Runnable
                                             }
                                             try
                                             {
-                                                synchronizeMailboxSynchronous(account, folder.getName(), listener);
+                                                synchronizeMailboxSynchronous(account, folder.getName(), listener, null);
                                             }
                                             finally
                                             {
@@ -4286,6 +4306,19 @@ public class MessagingController implements Runnable
                                     if (K9.DEBUG)
                                         Log.v(K9.LOG_TAG, "Clearing notification flag for " + account.getDescription());
                                     account.setRingNotified(false);
+                                    try
+                                    {
+                                        AccountStats stats = account.getStats(context);
+                                        int unreadMessageCount = stats.unreadMessageCount;
+                                        if (unreadMessageCount == 0)
+                                        {
+                                            notifyAccountCancel(context, account);
+                                        }
+                                    }
+                                    catch (MessagingException e)
+                                    {
+                                        Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+                                    }
                                 }
                             }
                                          );
@@ -4429,6 +4462,17 @@ public class MessagingController implements Runnable
     */
     private boolean notifyAccount(Context context, Account account, Message message)
     {
+        int unreadMessageCount = 0;
+        try
+        {
+            AccountStats stats = account.getStats(context);
+            unreadMessageCount = stats.unreadMessageCount;
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+        }
+
         // Do not notify if the user does not have notifications
         // enabled or if the message has been read
         if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN))
@@ -4504,17 +4548,7 @@ public class MessagingController implements Runnable
             messageNotice.append(context.getString(R.string.notification_new_title));
         }
 
-        int unreadMessageCount = 0;
-        try
-        {
-            AccountStats stats = account.getStats(context);
-            unreadMessageCount = stats.unreadMessageCount;
-        }
-        catch (MessagingException e)
-        {
-            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
-        }
-
+        
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());

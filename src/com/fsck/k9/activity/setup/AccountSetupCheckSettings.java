@@ -109,7 +109,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                         store.checkSettings();
 
                         MessagingController.getInstance(getApplication()).listFolders(mAccount, true, null);
-                        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, K9.INBOX , null);
+                        MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, K9.INBOX , null, null);
 
                     }
                     if (mDestroyed)

@@ -69,11 +69,14 @@ public class MessagingControllerPushReceiver implements PushReceiver
                                      List<Message> messages)
     {
         controller.messagesArrived(account, folder, messages, true);
-
     }
     public void messagesArrived(Folder folder, List<Message> messages)
     {
         controller.messagesArrived(account, folder, messages, false);
+    }
+    public void messagesRemoved(Folder folder, List<Message> messages)
+    {
+        controller.messagesArrived(account, folder, messages, true);
     }
 
     public void syncFolder(Folder folder)
@@ -96,7 +99,7 @@ public class MessagingControllerPushReceiver implements PushReceiver
             {
                 latch.countDown();
             }
-        });
+        }, folder);
 
         if (K9.DEBUG)
             Log.v(K9.LOG_TAG, "syncFolder(" + folder.getName() + ") about to await latch release");

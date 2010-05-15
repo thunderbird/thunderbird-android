@@ -1097,7 +1097,7 @@ public class MessageList
 
     private void checkMail(Account account, String folderName)
     {
-        mController.synchronizeMailbox(account, folderName, mAdapter.mListener);
+        mController.synchronizeMailbox(account, folderName, mAdapter.mListener, null);
         sendMail(account);
     }
 
