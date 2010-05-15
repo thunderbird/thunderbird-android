@@ -133,7 +133,7 @@ public class Account implements BaseAccount
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = "INBOX";
         mMaxPushFolders = 10;
-        mChipColor = 0;
+        mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
         goToUnreadMessageSearch = false;
 
         searchableFolders = Searchable.ALL;
