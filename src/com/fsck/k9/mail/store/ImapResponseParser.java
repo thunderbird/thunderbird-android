@@ -5,8 +5,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.FixedLengthInputStream;
 import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.mail.MessagingException;
-
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -340,11 +338,8 @@ public class ImapResponseParser
             int available = fixed.available();
             if ((available > 0) && (available != size))
             {
-                // If so, read the rest ...
-                while (fixed.read() != -1);
-                
-                // ... and return a placeholder object
-                return String.format("Buggy callback method! (%d/%d)", (size - available), size); 
+                // If so, skip the rest
+                fixed.skip(fixed.available());
             }
             
             if (result != null)
@@ -366,7 +361,6 @@ public class ImapResponseParser
         }
         
         return new String(data, "US-ASCII");
-        //return new ByteArrayInputStream(data);
     }
 
     /**
