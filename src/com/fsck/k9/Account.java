@@ -61,6 +61,7 @@ public class Account implements BaseAccount
     private int mAutomaticCheckIntervalMinutes;
     private int mDisplayCount;
     private int mChipColor;
+    private int mLedColor;
     private long mLastAutomaticCheckTime;
     private boolean mNotifyNewMail;
     private boolean mNotifySelfNewMail;
@@ -134,6 +135,7 @@ public class Account implements BaseAccount
         mAutoExpandFolderName = "INBOX";
         mMaxPushFolders = 10;
         mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
+        mLedColor = mChipColor;
         goToUnreadMessageSearch = false;
 
         searchableFolders = Searchable.ALL;
@@ -234,6 +236,8 @@ public class Account implements BaseAccount
                      (random.nextInt(0x70) * 0xff) +
                      (random.nextInt(0x70) * 0xffff) +
                      0xff000000);
+
+        mLedColor = preferences.getPreferences().getInt(mUuid+".chipColor", mChipColor);
 
         mVibrate = preferences.getPreferences().getBoolean(mUuid + ".vibrate", false);
         mRing = preferences.getPreferences().getBoolean(mUuid + ".ring", true);
@@ -438,6 +442,7 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
         editor.putString(mUuid  + ".searchableFolders", searchableFolders.name());
         editor.putInt(mUuid + ".chipColor", mChipColor);
+        editor.putInt(mUuid + ".ledColor", mLedColor);
         editor.putBoolean(mUuid + ".goToUnreadMessageSearch", goToUnreadMessageSearch);
 
         for (String type : networkTypes)
@@ -530,6 +535,17 @@ public class Account implements BaseAccount
     public int getChipColor()
     {
         return mChipColor;
+    }
+
+
+    public void setLedColor(int color)
+    {
+        mLedColor = color;
+    }
+
+    public int getLedColor()
+    {
+        return mLedColor;
     }
 
     public String getUuid()

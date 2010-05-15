@@ -4148,7 +4148,7 @@ public class MessagingController implements Runnable
                                         if (K9.NOTIFICATION_LED_WHILE_SYNCING)
                                         {
                                             notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                                            notif.ledARGB = account.getChipColor();
+                                            notif.ledARGB = account.getLedColor();
                                             notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
                                             notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
                                         }
@@ -4254,7 +4254,7 @@ public class MessagingController implements Runnable
                                                 if (K9.NOTIFICATION_LED_WHILE_SYNCING)
                                                 {
                                                     notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                                                    notif.ledARGB = account.getChipColor();
+                                                    notif.ledARGB = account.getLedColor();
                                                     notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
                                                     notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
                                                 }
@@ -4577,7 +4577,7 @@ public class MessagingController implements Runnable
         }
 
         notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-        notif.ledARGB = account.getChipColor();
+        notif.ledARGB = account.getLedColor();
         notif.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
         notif.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
         notif.audioStreamType = AudioManager.STREAM_NOTIFICATION;

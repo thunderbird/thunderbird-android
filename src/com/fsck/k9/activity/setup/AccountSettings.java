@@ -49,6 +49,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder";
     private static final String PREFERENCE_SEARCHABLE_FOLDERS = "searchable_folders";
     private static final String PREFERENCE_CHIP_COLOR = "chip_color";
+    private static final String PREFERENCE_LED_COLOR = "led_color";
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
 
 
@@ -74,6 +75,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mSearchableFolders;
     private Preference mAutoExpandFolder;
     private Preference mChipColor;
+    private Preference mLedColor;
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
 
@@ -338,6 +340,19 @@ public class AccountSettings extends K9PreferenceActivity
         }
         );
 
+        mLedColor = (Preference)findPreference(PREFERENCE_LED_COLOR);
+
+        mLedColor.setOnPreferenceClickListener(
+            new Preference.OnPreferenceClickListener()
+        {
+            public boolean onPreferenceClick(Preference preference)
+            {
+                onChooseLedColor();
+                return false;
+            }
+        }
+        );
+
 
 
         findPreference(PREFERENCE_COMPOSITION).setOnPreferenceClickListener(
@@ -508,6 +523,18 @@ public class AccountSettings extends K9PreferenceActivity
             }
         },
         mAccount.getChipColor()).show();
+    }
+
+    public void onChooseLedColor()
+    {
+        new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener()
+        {
+            public void colorChanged(int color)
+            {
+                mAccount.setLedColor(color);
+            }
+        },
+        mAccount.getLedColor()).show();
     }
 
     public void onChooseAutoExpandFolder()

@@ -477,6 +477,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">Choose the color of the account used in folder and account list</string>
 
+    <string name="account_settings_led_color_label">Notification LED color</string>
+    <string name="account_settings_led_color_summary">Choose the color your your phone LED should blink for this account</string>
+
     <string name="account_settings_mail_display_count_label">Number of messages to display</string>
       
     <string name="account_settings_folder_display_mode_label">Folders to display</string>
