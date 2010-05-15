@@ -1153,6 +1153,7 @@ public class MessageList
 
                 return true;
 
+            case R.id.select_all:
             case R.id.batch_select_all:
                 setAllSelected(true);
                 toggleBatchButtons();
@@ -1271,6 +1272,10 @@ public class MessageList
     public boolean onPrepareOptionsMenu(Menu menu)
     {
         boolean anySelected = anySelected();
+
+        menu.findItem(R.id.select_all).setVisible(! anySelected);
+        menu.findItem(R.id.batch_ops).setVisible(anySelected);
+
         setOpsState(menu, true, anySelected);
 
         if (mQueryString != null)

@@ -38,6 +38,10 @@
 		</menu>
 	</item>
 	<item
+        android:id="@+id/select_all"
+		android:title="@string/batch_select_all"
+        android:icon="@drawable/ic_menu_select_all"/>
+	<item
 		android:id="@+id/batch_ops"
 		android:title="@string/batch_ops"
 		android:icon="@drawable/ic_menu_batch">
