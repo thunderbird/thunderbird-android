@@ -673,6 +673,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="background_ops_never">Never</string>
     <string name="background_ops_always">Always</string>
     <string name="background_ops_enabled">When \'Background data\' is checked</string>
+    <string name="background_ops_auto_sync">When \'Background data\' &amp; \'Auto-sync\' are checked</string>
 
     <string name="no_message_seletected_toast">No message selected</string>
     

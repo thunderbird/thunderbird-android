@@ -24,7 +24,10 @@ public class AutoSyncHelper
      */
     private static IAutoSync sAutoSync = null;
 
-
+    /**
+     * String for the auto-sync changed Intent.  This isn't currently exposed by the API
+     */
+    public static String SYNC_CONN_STATUS_CHANGE = "com.android.sync.SYNC_CONN_STATUS_CHANGED";
     /**
      * Try loading the class that implements IAutoSync for this SDK version.
      *

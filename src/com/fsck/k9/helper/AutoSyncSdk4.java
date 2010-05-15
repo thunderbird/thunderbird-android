@@ -1,8 +1,12 @@
 package com.fsck.k9.helper;
 
 import java.lang.reflect.Method;
+
+import com.fsck.k9.K9;
+
 import android.content.ContentResolver;
 import android.content.Context;
+import android.util.Log;
 
 public class AutoSyncSdk4 implements IAutoSync
 {
@@ -39,7 +43,8 @@ public class AutoSyncSdk4 implements IAutoSync
         }
         catch (Exception e)
         {
-            return false;
+            Log.e(K9.LOG_TAG, "Could not query for network tickle", e);
+            return true;
         }
     }
 }

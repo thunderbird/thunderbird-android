@@ -32,7 +32,7 @@ public class K9 extends Application
 
     public enum BACKGROUND_OPS
     {
-        WHEN_CHECKED, ALWAYS, NEVER
+        WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
     }
 
     private static int theme = android.R.style.Theme_Light;

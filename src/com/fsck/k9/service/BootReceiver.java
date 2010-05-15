@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.AutoSyncHelper;
 
 public class BootReceiver extends CoreReceiver
 {
@@ -22,7 +23,7 @@ public class BootReceiver extends CoreReceiver
 
     public static String ALARMED_INTENT = "com.fsck.k9.service.BroadcastReceiver.pendingIntent";
     public static String AT_TIME = "com.fsck.k9.service.BroadcastReceiver.atTime";
-
+    
     @Override
     public Integer receive(Context context, Intent intent, Integer tmpWakeLockId)
     {
@@ -46,14 +47,26 @@ public class BootReceiver extends CoreReceiver
         }
         else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()))
         {
-            boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-            MailService.connectivityChange(context, !noConnectivity, tmpWakeLockId);
+            MailService.connectivityChange(context, tmpWakeLockId);
             tmpWakeLockId = null;
+        }
+        else if (AutoSyncHelper.SYNC_CONN_STATUS_CHANGE.equals(intent.getAction()))
+        {
+            K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
+            if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)
+            {
+                MailService.actionReset(context, tmpWakeLockId);
+                tmpWakeLockId = null;
+            }
         }
         else if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(intent.getAction()))
         {
-            MailService.actionReset(context, tmpWakeLockId);
-            tmpWakeLockId = null;
+            K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
+            if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED || bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)
+            {
+                MailService.actionReset(context, tmpWakeLockId);
+                tmpWakeLockId = null;
+            }
         }
         else if (FIRE_INTENT.equals(intent.getAction()))
         {

@@ -22,6 +22,7 @@ import com.fsck.k9.MessagingController;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.helper.AutoSyncHelper;
 import com.fsck.k9.mail.Pusher;
 
 /**
@@ -36,8 +37,6 @@ public class MailService extends CoreService
     private static final String ACTION_RESTART_PUSHERS = "com.fsck.k9.intent.action.MAIL_SERVICE_RESTART_PUSHERS";
     private static final String CONNECTIVITY_CHANGE = "com.fsck.k9.intent.action.MAIL_SERVICE_CONNECTIVITY_CHANGE";
     private static final String CANCEL_CONNECTIVITY_NOTICE = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
-
-    private static final String HAS_CONNECTIVITY = "com.fsck.k9.intent.action.MAIL_SERVICE_HAS_CONNECTIVITY";
 
     private static long nextCheck = -1;
 
@@ -89,12 +88,11 @@ public class MailService extends CoreService
         context.startService(i);
     }
 
-    public static void connectivityChange(Context context, boolean hasConnectivity, Integer wakeLockId)
+    public static void connectivityChange(Context context, Integer wakeLockId)
     {
         Intent i = new Intent();
         i.setClass(context, MailService.class);
         i.setAction(MailService.CONNECTIVITY_CHANGE);
-        i.putExtra(HAS_CONNECTIVITY, hasConnectivity);
         addWakeLockId(i, wakeLockId);
         context.startService(i);
     }
@@ -127,11 +125,32 @@ public class MailService extends CoreService
                     hasConnectivity = state == State.CONNECTED;
                 }
                 boolean backgroundData = connectivityManager.getBackgroundDataSetting();
+                boolean autoSync = true;
+                if (AutoSyncHelper.isAvailable())
+                {
+                    autoSync = AutoSyncHelper.getMasterSyncAutomatically();
 
+                    Log.i(K9.LOG_TAG, "AutoSync help is available, autoSync = " + autoSync);
+                }
+                
                 K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
-                doBackground = (backgroundData == true && bOps != K9.BACKGROUND_OPS.NEVER)
-                               | (backgroundData == false && bOps == K9.BACKGROUND_OPS.ALWAYS);
-
+                
+                switch (bOps)
+                {
+                    case NEVER:
+                        doBackground = false;
+                        break;
+                    case ALWAYS:
+                        doBackground = true;
+                        break;
+                    case WHEN_CHECKED:
+                        doBackground = backgroundData;
+                        break;
+                    case WHEN_CHECKED_AUTO_SYNC:
+                        doBackground = backgroundData & autoSync;
+                        break;
+                }       
+                
             }
 
             if (K9.DEBUG)

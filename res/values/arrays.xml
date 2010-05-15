@@ -246,12 +246,14 @@
     
     <string-array name="background_ops_entries">
     	<item>@string/background_ops_enabled</item>
+    	<item>@string/background_ops_auto_sync</item>
     	<item>@string/background_ops_always</item>
         <item>@string/background_ops_never</item>
     </string-array>
     
     <string-array name="background_ops_values">
     <item>WHEN_CHECKED</item>
+    <item>WHEN_CHECKED_AUTO_SYNC</item>
     <item>ALWAYS</item>
     <item>NEVER</item>    
     </string-array>

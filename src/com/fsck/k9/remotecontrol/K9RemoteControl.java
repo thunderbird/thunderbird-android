@@ -107,6 +107,7 @@ public class K9RemoteControl
     public final static String K9_BACKGROUND_OPERATIONS_WHEN_CHECKED = "WHEN_CHECKED";
     public final static String K9_BACKGROUND_OPERATIONS_ALWAYS = "ALWAYS";
     public final static String K9_BACKGROUND_OPERATIONS_NEVER = "NEVER";
+    public final static String K9_BACKGROUND_OPERATIONS_WHEN_CHECKED_AUTO_SYNC = "WHEN_CHECKED_AUTO_SYNC";
 
     /**
      * Key for the {@link Intent} Extra to set for controlling which display theme K-9 will use.  Acceptable values are

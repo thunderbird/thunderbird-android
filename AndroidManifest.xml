@@ -13,6 +13,7 @@
 	/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
     <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -237,6 +238,9 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.android.sync.SYNC_CONN_STATUS_CHANGED" />
             </intent-filter>
               <intent-filter>
                 <action android:name="com.fsck.k9.service.BroadcastReceiver.scheduleIntent"/>
