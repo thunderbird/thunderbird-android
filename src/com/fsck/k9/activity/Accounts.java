@@ -590,7 +590,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         })
                .create();
     }
-    
+
     private Dialog createClearAccountDialog()
     {
         return new AlertDialog.Builder(this)
@@ -619,7 +619,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         })
                .create();
     }
-    
+
     private Dialog createRecreateAccountDialog()
     {
         return new AlertDialog.Builder(this)
@@ -708,7 +708,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private void onClear(Account account)
     {
         showDialog(DIALOG_CLEAR_ACCOUNT);
-        
+
     }
     private void onRecreate(Account account)
     {

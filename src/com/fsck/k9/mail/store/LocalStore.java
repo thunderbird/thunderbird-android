@@ -93,7 +93,7 @@ public class LocalStore extends Store implements Serializable
         openOrCreateDataspace(application);
 
     }
-    
+
     private void openOrCreateDataspace(Application application)
     {
         File parentDir = new File(mPath).getParentFile();
@@ -112,7 +112,7 @@ public class LocalStore extends Store implements Serializable
         if (mDb.getVersion() != DB_VERSION)
         {
             doDbUpgrade(mDb, application);
-        } 
+        }
     }
 
     private void doDbUpgrade(SQLiteDatabase mDb, Application application)
@@ -442,7 +442,7 @@ public class LocalStore extends Store implements Serializable
 
         }
     }
-    
+
     public void recreate()
     {
         delete();

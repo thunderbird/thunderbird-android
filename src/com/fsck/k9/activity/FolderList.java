@@ -1493,11 +1493,11 @@ public class FolderList extends K9ListActivity
     }
 
     private static Flag[] UNREAD_FLAG_ARRAY = { Flag.SEEN };
-    
+
     private void openUnreadSearch(Context context, final Account account)
     {
         String description = getString(R.string.search_title, mAccount.getDescription(), getString(R.string.unread_modifier));
-        
+
         SearchSpecification searchSpec = new SearchSpecification()
         {
             @Override
@@ -1505,37 +1505,37 @@ public class FolderList extends K9ListActivity
             {
                 return new String[] { account.getUuid() };
             }
-    
+
             @Override
             public Flag[] getForbiddenFlags()
             {
                 return UNREAD_FLAG_ARRAY;
             }
-    
+
             @Override
             public String getQuery()
             {
                 return "";
             }
-    
+
             @Override
             public Flag[] getRequiredFlags()
             {
                 return null;
             }
-    
+
             @Override
             public boolean isIntegrate()
             {
                 return false;
             }
-    
+
             @Override
             public String[] getFolderNames()
             {
                 return null;
             }
-    
+
         };
         MessageList.actionHandle(context, description, searchSpec);
     }

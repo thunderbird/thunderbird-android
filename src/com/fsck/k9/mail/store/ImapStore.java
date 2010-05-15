@@ -970,7 +970,7 @@ public class ImapStore extends Store
             };
             return search(searcher, listener);
         }
-        
+
         protected Message[] getMessagesFromUids(final List<String> mesgUids, final boolean includeDeleted, final MessageRetrievalListener listener)
         throws MessagingException
         {
@@ -2623,7 +2623,7 @@ public class ImapStore extends Store
         final AtomicInteger idleFailureCount = new AtomicInteger(0);
         final AtomicBoolean needsPoll = new AtomicBoolean(false);
         List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
-        
+
         public ImapFolderPusher(ImapStore store, String name, PushReceiver nReceiver)
         {
             super(store, name);
@@ -2976,11 +2976,11 @@ public class ImapStore extends Store
                 receiver.pushError("Exception while processing Push untagged responses", e);
             }
         }
-        
+
         private void removeMessages(List<String> removeUids)
         {
             List<Message> messages = new ArrayList<Message>(removeUids.size());
-            
+
             try
             {
                 Message[] existingMessages = getMessagesFromUids(removeUids, true, null);
@@ -3012,7 +3012,7 @@ public class ImapStore extends Store
                 Log.e(K9.LOG_TAG, "Cannot remove EXPUNGEd messages", e);
                 return;
             }
-          
+
         }
 
         protected int processUntaggedResponse(int oldMessageCount, ImapResponse response, List<Integer> flagSyncMsgSeqs, List<String> removeMsgUids)
@@ -3028,7 +3028,7 @@ public class ImapStore extends Store
                     {
                         Log.i(K9.LOG_TAG, "Got FETCH " + response);
                         int msgSeq = response.getNumber(0);
-                        
+
                         if (K9.DEBUG)
                             Log.d(K9.LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq + " for " + getLogId());
 
@@ -3062,8 +3062,8 @@ public class ImapStore extends Store
                             }
                         }
                         flagSyncMsgSeqs.addAll(newSeqs);
-                        
-                        
+
+
                         List<Integer> msgSeqs = new ArrayList<Integer>(msgSeqUidMap.keySet());
                         Collections.sort(msgSeqs);  // Have to do comparisons in order because of msgSeq reductions
 

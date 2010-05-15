@@ -1063,7 +1063,7 @@ public class MessagingController implements Runnable
             }
             else
             {
-                
+
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: About to get remote store for " + folder);
 
@@ -1097,36 +1097,36 @@ public class MessagingController implements Runnable
                             }
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Done synchronizing folder " + folder);
-    
+
                             return;
                         }
                     }
                 }
-            /*
-             * Synchronization process:
-            Open the folder
-            Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
-            Get the message count
-            Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
-            getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
-            See if we have each message locally, if not fetch it's flags and envelope
-            Get and update the unread count for the folder
-            Update the remote flags of any messages we have locally with an internal date
-            newer than the remote message.
-            Get the current flags for any messages we have locally but did not just download
-            Update local flags
-            For any message we have locally but not remotely, delete the local message to keep
-            cache clean.
-            Download larger parts of any new messages.
-            (Optional) Download small attachments in the background.
-             */
+                /*
+                 * Synchronization process:
+                Open the folder
+                Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
+                Get the message count
+                Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
+                getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
+                See if we have each message locally, if not fetch it's flags and envelope
+                Get and update the unread count for the folder
+                Update the remote flags of any messages we have locally with an internal date
+                newer than the remote message.
+                Get the current flags for any messages we have locally but did not just download
+                Update local flags
+                For any message we have locally but not remotely, delete the local message to keep
+                cache clean.
+                Download larger parts of any new messages.
+                (Optional) Download small attachments in the background.
+                 */
 
-            /*
-             * Open the remote folder. This pre-loads certain metadata like message count.
-             */
+                /*
+                 * Open the remote folder. This pre-loads certain metadata like message count.
+                 */
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: About to open remote folder " + folder);
-    
+
                 remoteFolder.open(OpenMode.READ_WRITE);
             }
             if (Account.EXPUNGE_ON_POLL.equals(account.getExpungePolicy()))
@@ -1775,7 +1775,7 @@ public class MessagingController implements Runnable
 
             fp.clear();
             fp.add(FetchProfile.Item.FLAGS);
-            
+
             List<Message> undeletedMessages = new LinkedList<Message>();
             for (Message message : syncFlagMessages)
             {
@@ -1784,7 +1784,7 @@ public class MessagingController implements Runnable
                     undeletedMessages.add(message);
                 }
             }
-            
+
             remoteFolder.fetch(undeletedMessages.toArray(new Message[0]), fp, null);
             for (Message remoteMessage : syncFlagMessages)
             {
@@ -4420,7 +4420,7 @@ public class MessagingController implements Runnable
             }
         });
     }
-    
+
     public void recreate(final Account account, final MessagingListener ml)
     {
         putBackground("recreate:" + account.getDescription(), ml, new Runnable()
@@ -4479,7 +4479,7 @@ public class MessagingController implements Runnable
         {
             return false;
         }
-        
+
         Folder folder = message.getFolder();
         if (folder != null)
         {
@@ -4548,7 +4548,7 @@ public class MessagingController implements Runnable
             messageNotice.append(context.getString(R.string.notification_new_title));
         }
 
-        
+
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
