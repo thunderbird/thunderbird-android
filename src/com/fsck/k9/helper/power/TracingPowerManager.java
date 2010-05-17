@@ -12,11 +12,11 @@ import android.util.Log;
 
 public class TracingPowerManager
 {
-    private final static boolean TRACE = true;
+    private final static boolean TRACE = false;
     public static AtomicInteger wakeLockId = new AtomicInteger(0);
     PowerManager pm = null;
     private static TracingPowerManager tracingPowerManager;
-    private Timer timer;
+    private Timer timer = null;
     
     public static synchronized TracingPowerManager getPowerManager(Context context)
     {
@@ -24,7 +24,7 @@ public class TracingPowerManager
         {
             if (K9.DEBUG)
             {
-                Log.i(K9.LOG_TAG, "Creating TracingPowerManager");
+                Log.v(K9.LOG_TAG, "Creating TracingPowerManager");
             }
             tracingPowerManager = new TracingPowerManager(context);
         }
@@ -58,14 +58,14 @@ public class TracingPowerManager
             id = wakeLockId.getAndIncrement();
             if (K9.DEBUG)
             {
-                Log.i(K9.LOG_TAG, "Creating TracingWakeLock for tag " + tag + " with id " + id);
+                Log.v(K9.LOG_TAG, "Creating TracingWakeLock for tag " + tag + " with id " + id);
             }
         }
         public void acquire(long timeout)
         {
             if (K9.DEBUG)
             {
-                Log.i(K9.LOG_TAG, "Acquiring TracingWakeLock for tag " + tag + " and id " + id 
+                Log.v(K9.LOG_TAG, "Acquiring TracingWakeLock for tag " + tag + " and id " + id 
                         + " for " + timeout + " ms");
             }
             raiseNotification();
@@ -76,7 +76,7 @@ public class TracingPowerManager
         {
             if (K9.DEBUG)
             {
-                Log.i(K9.LOG_TAG, "Acquiring TracingWakeLock for tag " + tag + " and id " + id 
+                Log.v(K9.LOG_TAG, "Acquiring TracingWakeLock for tag " + tag + " and id " + id 
                         + " with no timeout");
             }
             raiseNotification();
@@ -90,7 +90,7 @@ public class TracingPowerManager
         {
             if (K9.DEBUG)
             {
-                Log.i(K9.LOG_TAG, "Releasing TracingWakeLock for tag " + tag + " and id " + id );
+                Log.v(K9.LOG_TAG, "Releasing TracingWakeLock for tag " + tag + " and id " + id );
             }
             wakeLock.release();
             cancelNotification();
