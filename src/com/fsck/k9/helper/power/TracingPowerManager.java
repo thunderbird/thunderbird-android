@@ -63,28 +63,37 @@ public class TracingPowerManager
         }
         public void acquire(long timeout)
         {
+            synchronized(wakeLock)
+            {
+                wakeLock.acquire(timeout);
+            }
             if (K9.DEBUG)
             {
-                Log.v(K9.LOG_TAG, "Acquiring TracingWakeLock for tag " + tag + " and id " + id 
+                Log.v(K9.LOG_TAG, "Acquired TracingWakeLock for tag " + tag + " and id " + id 
                         + " for " + timeout + " ms");
             }
             raiseNotification();
-            wakeLock.acquire(timeout);
             
         }
         public void acquire()
         {
-            if (K9.DEBUG)
+            synchronized(wakeLock)
             {
-                Log.v(K9.LOG_TAG, "Acquiring TracingWakeLock for tag " + tag + " and id " + id 
-                        + " with no timeout");
+                wakeLock.acquire();
             }
             raiseNotification();
-            wakeLock.acquire();
+            if (K9.DEBUG)
+            {
+                Log.v(K9.LOG_TAG, "Acquired TracingWakeLock for tag " + tag + " and id " + id 
+                        + " with no timeout");
+            }
         }
         public void setReferenceCounted(boolean counted)
         {
-            wakeLock.setReferenceCounted(counted);
+            synchronized(wakeLock)
+            {
+                wakeLock.setReferenceCounted(counted);
+            }
         }
         public void release()
         {
@@ -92,9 +101,11 @@ public class TracingPowerManager
             {
                 Log.v(K9.LOG_TAG, "Releasing TracingWakeLock for tag " + tag + " and id " + id );
             }
-            wakeLock.release();
             cancelNotification();
-            
+            synchronized(wakeLock)
+            {
+                wakeLock.release();
+            }
         }
         private void cancelNotification()
         {
