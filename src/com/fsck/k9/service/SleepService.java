@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -22,7 +23,7 @@ public class SleepService extends CoreService
 
     private static AtomicInteger latchId = new AtomicInteger();
 
-    public static void sleep(Context context, long sleepTime, WakeLock wakeLock, long wakeLockTimeout)
+    public static void sleep(Context context, long sleepTime, TracingWakeLock wakeLock, long wakeLockTimeout)
     {
         Integer id = latchId.getAndIncrement();
         if (K9.DEBUG)
@@ -47,8 +48,8 @@ public class SleepService extends CoreService
         }
         try
         {
-            boolean timedOut = latch.await(sleepTime, TimeUnit.MILLISECONDS);
-            if (timedOut == false)
+            boolean countedDown = latch.await(sleepTime, TimeUnit.MILLISECONDS);
+            if (countedDown == false)
             {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "SleepService latch timed out for id = " + id + ", thread " + Thread.currentThread().getName());
@@ -110,7 +111,7 @@ public class SleepService extends CoreService
 
     private static void reacquireWakeLock(SleepDatum sleepDatum)
     {
-        WakeLock wakeLock = sleepDatum.wakeLock;
+        TracingWakeLock wakeLock = sleepDatum.wakeLock;
         if (wakeLock != null)
         {
             synchronized (wakeLock)
@@ -137,7 +138,7 @@ public class SleepService extends CoreService
     private static class SleepDatum
     {
         CountDownLatch latch;
-        WakeLock wakeLock;
+        TracingWakeLock wakeLock;
         long timeout;
     }
 

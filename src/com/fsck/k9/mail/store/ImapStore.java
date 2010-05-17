@@ -4,11 +4,14 @@ package com.fsck.k9.mail.store;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.PowerManager;
 import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.Utility;
+import com.fsck.k9.helper.power.TracingPowerManager;
+import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.internet.*;
 import com.fsck.k9.mail.store.ImapResponseParser.ImapList;
@@ -2623,17 +2626,22 @@ public class ImapStore extends Store
         final AtomicInteger idleFailureCount = new AtomicInteger(0);
         final AtomicBoolean needsPoll = new AtomicBoolean(false);
         List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
+        TracingWakeLock wakeLock = null;
 
         public ImapFolderPusher(ImapStore store, String name, PushReceiver nReceiver)
         {
             super(store, name);
             receiver = nReceiver;
+            TracingPowerManager pm = TracingPowerManager.getPowerManager(receiver.getContext());
+            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ImapFolderPusher " + store.getAccount().getDescription() + ":" + getName());
+            wakeLock.setReferenceCounted(false);
+            
         }
         public void refresh() throws IOException, MessagingException
         {
             if (idling.get())
             {
-                receiver.acquireWakeLock();
+                wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
                 sendDone();
             }
         }
@@ -2662,7 +2670,7 @@ public class ImapStore extends Store
             {
                 public void run()
                 {
-                    receiver.acquireWakeLock();
+                    wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Pusher starting for " + getLogId());
 
@@ -2788,7 +2796,7 @@ public class ImapStore extends Store
                         }
                         catch (Exception e)
                         {
-                            receiver.acquireWakeLock();
+                            wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
                             storedUntaggedResponses.clear();
                             idling.set(false);
                             receiver.setPushActive(getName(), false);
@@ -2809,7 +2817,7 @@ public class ImapStore extends Store
                                 receiver.pushError("Push error for " + getName(), e);
                                 Log.e(K9.LOG_TAG, "Got exception while idling for " + getLogId(), e);
                                 int delayTimeInt = delayTime.get();
-                                receiver.sleep(delayTimeInt);
+                                receiver.sleep(wakeLock, delayTimeInt);
                                 delayTimeInt *= 2;
                                 if (delayTimeInt > MAX_DELAY_TIME)
                                 {
@@ -2839,7 +2847,7 @@ public class ImapStore extends Store
                     }
                     finally
                     {
-                        receiver.releaseWakeLock();
+                        wakeLock.release();
                     }
                 }
             };
@@ -3182,7 +3190,7 @@ public class ImapStore extends Store
                         {
                             if (started == false)
                             {
-                                receiver.acquireWakeLock();
+                                wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
                                 started = true;
                             }
 
@@ -3204,7 +3212,7 @@ public class ImapStore extends Store
                         if (K9.DEBUG)
                             Log.d(K9.LOG_TAG, "Idling " + getLogId());
 
-                        receiver.releaseWakeLock();
+                        wakeLock.release();
                     }
                 }
             }

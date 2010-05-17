@@ -13,12 +13,14 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.power.TracingPowerManager;
+import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 
 public abstract class CoreService extends Service
 {
 
     public static String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
-    private static ConcurrentHashMap<Integer, WakeLock> wakeLocks = new ConcurrentHashMap<Integer, WakeLock>();
+    private static ConcurrentHashMap<Integer, TracingWakeLock> wakeLocks = new ConcurrentHashMap<Integer, TracingWakeLock>();
     private static AtomicInteger wakeLockSeq = new AtomicInteger(0);
     private ExecutorService threadPool = null;
     private final String className = getClass().getName();
@@ -43,8 +45,8 @@ public abstract class CoreService extends Service
 
     protected static void addWakeLock(Context context, Intent i)
     {
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
+        TracingPowerManager pm = TracingPowerManager.getPowerManager(context);
+        TracingWakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "CoreService addWakeLock");
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
 
@@ -59,9 +61,8 @@ public abstract class CoreService extends Service
     @Override
     public void onStart(Intent intent, int startId)
     {
-
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
+        TracingPowerManager pm = TracingPowerManager.getPowerManager(this);
+        TracingWakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "CoreService onStart");
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
 
@@ -78,7 +79,7 @@ public abstract class CoreService extends Service
         {
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "Got core wake lock id " + coreWakeLockId);
-            WakeLock coreWakeLock = wakeLocks.remove(coreWakeLockId);
+            TracingWakeLock coreWakeLock = wakeLocks.remove(coreWakeLockId);
             if (coreWakeLock != null)
             {
                 if (K9.DEBUG)
@@ -105,8 +106,8 @@ public abstract class CoreService extends Service
     public void execute(Context context, final Runnable runner, int wakeLockTime, final Integer startId)
     {
 
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        final WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
+        TracingPowerManager pm = TracingPowerManager.getPowerManager(context);
+        final TracingWakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "CoreService execute");
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(wakeLockTime);
 

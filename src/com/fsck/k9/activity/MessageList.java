@@ -3,7 +3,6 @@ package com.fsck.k9.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -507,10 +506,9 @@ public class MessageList
         if (mFolderName != null)
         {
             mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+            mController.notifyAccountCancel(this, mAccount);
 
-            NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notifMgr.cancel(mAccount.getAccountNumber());
-            notifMgr.cancel(-1000 - mAccount.getAccountNumber());
+            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
 
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
         }

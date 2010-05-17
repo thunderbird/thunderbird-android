@@ -39,6 +39,8 @@ import android.util.Log;
 
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.helper.power.TracingPowerManager;
+import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
@@ -4074,15 +4076,16 @@ public class MessagingController implements Runnable
                           final MessagingListener listener)
     {
 
-        WakeLock twakeLock = null;
+        TracingWakeLock twakeLock = null;
         if (useManualWakeLock)
         {
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            twakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
+            TracingPowerManager pm = TracingPowerManager.getPowerManager(context);
+            
+            twakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9 MessagingController.checkMail");
             twakeLock.setReferenceCounted(false);
             twakeLock.acquire(K9.MANUAL_WAKE_LOCK_TIMEOUT);
         }
-        final WakeLock wakeLock = twakeLock;
+        final TracingWakeLock wakeLock = twakeLock;
 
         for (MessagingListener l : getListeners())
         {
@@ -4592,6 +4595,7 @@ public class MessagingController implements Runnable
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         notifMgr.cancel(account.getAccountNumber());
+        notifMgr.cancel(-1000 - account.getAccountNumber());
     }
 
 

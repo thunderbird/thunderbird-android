@@ -2,7 +2,6 @@ package com.fsck.k9.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +23,8 @@ import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
+import com.fsck.k9.helper.power.TracingPowerManager;
+import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -175,8 +176,8 @@ public class FolderList extends K9ListActivity
 
     private void checkMail(FolderInfoHolder folder)
     {
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        final WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Email - UpdateWorker");
+        TracingPowerManager pm = TracingPowerManager.getPowerManager(this);
+        final TracingWakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "FolderList checkMail");
         wakeLock.setReferenceCounted(false);
         wakeLock.acquire(K9.WAKE_LOCK_TIMEOUT);
         MessagingListener listener = new MessagingListener()
@@ -285,6 +286,7 @@ public class FolderList extends K9ListActivity
         boolean fromNotification = intent.getBooleanExtra(EXTRA_FROM_NOTIFICATION, false);
         if (fromNotification && mAccount.goToUnreadMessageSearch())
         {
+            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
             openUnreadSearch(this, mAccount);
             finish();
         }
@@ -348,10 +350,7 @@ public class FolderList extends K9ListActivity
 
         onRefresh(!REFRESH_REMOTE);
 
-        NotificationManager notifMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notifMgr.cancel(mAccount.getAccountNumber());
-        notifMgr.cancel(-1000 - mAccount.getAccountNumber());
-
+        MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
     }
 
 

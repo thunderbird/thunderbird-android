@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
+
+import com.fsck.k9.helper.power.TracingPowerManager;
+import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.Message;
@@ -14,6 +17,8 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.service.SleepService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
 public class MessagingControllerPushReceiver implements PushReceiver
@@ -27,42 +32,6 @@ public class MessagingControllerPushReceiver implements PushReceiver
         account = nAccount;
         controller = nController;
         mApplication = nApplication;
-    }
-    ThreadLocal<WakeLock> threadWakeLock = new ThreadLocal<WakeLock>();
-    public void acquireWakeLock()
-    {
-        WakeLock wakeLock = threadWakeLock.get();
-        if (wakeLock == null)
-        {
-            PowerManager pm = (PowerManager) mApplication.getSystemService(Context.POWER_SERVICE);
-            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9");
-            wakeLock.setReferenceCounted(false);
-            threadWakeLock.set(wakeLock);
-        }
-        wakeLock.acquire(K9.PUSH_WAKE_LOCK_TIMEOUT);
-
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Acquired WakeLock for Pushing for thread " + Thread.currentThread().getName());
-    }
-
-    public void releaseWakeLock()
-    {
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Considering releasing WakeLock for Pushing");
-
-        WakeLock wakeLock = threadWakeLock.get();
-        if (wakeLock != null)
-        {
-
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "Releasing WakeLock for Pushing for thread " + Thread.currentThread().getName());
-
-            wakeLock.release();
-        }
-        else
-        {
-            Log.e(K9.LOG_TAG, "No WakeLock waiting to be released for thread " + Thread.currentThread().getName());
-        }
     }
 
     public void messagesFlagsChanged(Folder folder,
@@ -115,9 +84,10 @@ public class MessagingControllerPushReceiver implements PushReceiver
         }
     }
 
-    public void sleep(long millis)
+    @Override
+    public void sleep(TracingWakeLock wakeLock, long millis)
     {
-        SleepService.sleep(mApplication, millis, threadWakeLock.get(), K9.PUSH_WAKE_LOCK_TIMEOUT);
+        SleepService.sleep(mApplication, millis, wakeLock, K9.PUSH_WAKE_LOCK_TIMEOUT);
     }
 
     public void pushError(String errorMessage, Exception e)
@@ -162,6 +132,12 @@ public class MessagingControllerPushReceiver implements PushReceiver
         {
             l.setPushActive(account, folderName, enabled);
         }
+    }
+
+    @Override
+    public Context getContext()
+    {
+        return mApplication;
     }
 
 }
