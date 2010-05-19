@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.os.PowerManager;
 import android.util.Log;
 import com.fsck.k9.Account;
+import com.fsck.k9.FixedLengthInputStream;
 import com.fsck.k9.K9;
 import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.Utility;
@@ -50,8 +51,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <pre>
  * TODO Need to start keeping track of UIDVALIDITY
  * TODO Need a default response handler for things like folder updates
- * TODO In fetch(), if we need a ImapMessage and were given
- * something else we can try to do a pre-fetch first.
  * </pre>
  */
 public class ImapStore extends Store
@@ -1133,26 +1132,6 @@ public class ImapStore extends Store
             {
                 fetchFields.add("BODY.PEEK[]");
             }
-            for (Object o : fp)
-            {
-                if (o != null && o instanceof Part)
-                {
-                    Part part = (Part) o;
-                    String[] parts = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA);
-                    if (parts != null)
-                    {
-                        String partId = parts[0];
-                        if ("TEXT".equalsIgnoreCase(partId))
-                        {
-                            fetchFields.add(String.format("BODY.PEEK[TEXT]<0.%d>", FETCH_BODY_SANE_SUGGESTED_SIZE));
-                        }
-                        else
-                        {
-                            fetchFields.add("BODY.PEEK[" + partId + "]");
-                        }
-                    }
-                }
-            }
 
             try
             {
@@ -1162,11 +1141,16 @@ public class ImapStore extends Store
                                                      ), false);
                 ImapResponse response;
                 int messageNumber = 0;
+                
+                ImapResponseParser.IImapResponseCallback callback = null;
+                if (fp.contains(FetchProfile.Item.BODY) || fp.contains(FetchProfile.Item.BODY_SANE) || fp.contains(FetchProfile.Item.ENVELOPE))
+                {
+                    callback = new FetchBodyCallback(messageMap);
+                }
+
                 do
                 {
-                    response = mConnection.readResponse();
-                    if (K9.DEBUG)
-                        Log.v(K9.LOG_TAG, "response for fetch: " + response + " for " + getLogId());
+                    response = mConnection.readResponse(callback);
 
                     if (response.mTag == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))
                     {
@@ -1205,116 +1189,24 @@ public class ImapStore extends Store
 
                         ImapMessage imapMessage = (ImapMessage) message;
 
-                        if (fetchList.containsKey("FLAGS"))
-                        {
-                            ImapList flags = fetchList.getKeyedList("FLAGS");
-                            if (flags != null)
-                            {
-                                for (int i = 0, count = flags.size(); i < count; i++)
-                                {
-                                    String flag = flags.getString(i);
-                                    if (flag.equalsIgnoreCase("\\Deleted"))
-                                    {
-                                        imapMessage.setFlagInternal(Flag.DELETED, true);
-                                    }
-                                    else if (flag.equalsIgnoreCase("\\Answered"))
-                                    {
-                                        imapMessage.setFlagInternal(Flag.ANSWERED, true);
-                                    }
-                                    else if (flag.equalsIgnoreCase("\\Seen"))
-                                    {
-                                        imapMessage.setFlagInternal(Flag.SEEN, true);
-                                    }
-                                    else if (flag.equalsIgnoreCase("\\Flagged"))
-                                    {
-                                        imapMessage.setFlagInternal(Flag.FLAGGED, true);
-                                    }
-                                }
-                            }
-                        }
+                        Object literal = handleFetchResponse(imapMessage, fetchList);
 
-                        if (fetchList.containsKey("INTERNALDATE"))
+                        if (literal != null)
                         {
-                            Date internalDate = fetchList.getKeyedDate("INTERNALDATE");
-                            message.setInternalDate(internalDate);
-                        }
-                        if (fetchList.containsKey("RFC822.SIZE"))
-                        {
-                            int size = fetchList.getKeyedNumber("RFC822.SIZE");
-                            imapMessage.setSize(size);
-                        }
-                        if (fetchList.containsKey("BODYSTRUCTURE"))
-                        {
-                            ImapList bs = fetchList.getKeyedList("BODYSTRUCTURE");
-                            if (bs != null)
-                            {
-                                try
-                                {
-                                    parseBodyStructure(bs, message, "TEXT");
-                                }
-                                catch (MessagingException e)
-                                {
-                                    if (K9.DEBUG)
-                                        Log.d(K9.LOG_TAG, "Error handling message for " + getLogId(), e);
-                                    message.setBody(null);
-                                }
-                            }
-                        }
-
-                        if (fetchList.containsKey("BODY"))
-                        {
-                            Part part = null;
-                            for (Object o : fp)
-                            {
-                                if (o instanceof Part)
-                                {
-                                    part = (Part) o;
-                                    break;
-                                }
-                            }
-
-                            int index = fetchList.getKeyIndex("BODY") + 2;
-                            Object literal = fetchList.getObject(index);
-
-                            // Check if there's an origin octet
                             if (literal instanceof String)
                             {
-                                String originOctet = (String)literal;
-                                if (originOctet.startsWith("<"))
-                                {
-                                    literal = fetchList.getObject(index + 1);
-                                }
-                            }
-
-                            InputStream bodyStream;
-                            if (literal instanceof InputStream)
-                            {
-                                bodyStream = (InputStream)literal;
-                            }
-                            else if (literal instanceof String)
-                            {
                                 String bodyString = (String)literal;
-
-                                if (K9.DEBUG)
-                                    Log.v(K9.LOG_TAG, "Part is a String: '" + bodyString + "' for " + getLogId());
-
-                                bodyStream = new ByteArrayInputStream(bodyString.getBytes());
+                                InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
+                                imapMessage.parse(bodyStream);
+                            }
+                            else if (literal instanceof Integer)
+                            {
+                                // All the work was done in FetchBodyCallback.foundLiteral() 
                             }
                             else
                             {
                                 // This shouldn't happen
                                 throw new MessagingException("Got FETCH response with bogus parameters");
-                            }
-
-                            if (part != null)
-                            {
-                                String contentTransferEncoding = part.getHeader(
-                                                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                                part.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
-                            }
-                            else
-                            {
-                                imapMessage.parse(bodyStream);
                             }
                         }
 
@@ -1337,6 +1229,193 @@ public class ImapStore extends Store
             {
                 throw ioExceptionHandler(mConnection, ioe);
             }
+        }
+
+        
+        @Override
+        public void fetchPart(Message message, Part part, MessageRetrievalListener listener)
+            throws MessagingException
+        {
+            checkOpen();
+
+            String[] parts = part.getHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA);
+            if (parts == null)
+            {
+                return;
+            }
+            
+            String fetch;
+            String partId = parts[0];
+            if ("TEXT".equalsIgnoreCase(partId))
+            {
+                fetch = String.format("BODY.PEEK[TEXT]<0.%d>", FETCH_BODY_SANE_SUGGESTED_SIZE);
+            }
+            else
+            {
+                fetch = String.format("BODY.PEEK[%s]", partId);
+            }
+
+            try
+            {
+                mConnection.sendCommand(
+                        String.format("UID FETCH %s (UID %s)", message.getUid(), fetch),
+                        false);
+
+                ImapResponse response;
+                int messageNumber = 0;
+                
+                ImapResponseParser.IImapResponseCallback callback = new FetchPartCallback(part);
+
+                do
+                {
+                    response = mConnection.readResponse(callback);
+
+                    if ((response.mTag == null) &&
+                            (ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")))
+                    {
+                        ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
+                        String uid = fetchList.getKeyedString("UID");
+
+                        if (!message.getUid().equals(uid))
+                        {
+                            if (K9.DEBUG)
+                                Log.d(K9.LOG_TAG, "Did not ask for UID " + uid + " for " + getLogId());
+
+                            handleUntaggedResponse(response);
+                            continue;
+                        }
+                        if (listener != null)
+                        {
+                            listener.messageStarted(uid, messageNumber++, 1);
+                        }
+
+                        ImapMessage imapMessage = (ImapMessage) message;
+
+                        Object literal = handleFetchResponse(imapMessage, fetchList);
+                        
+                        if (literal != null)
+                        {
+                            if (literal instanceof Body)
+                            {
+                                // Most of the work was done in FetchAttchmentCallback.foundLiteral()
+                                part.setBody((Body)literal);
+                            }
+                            else if (literal instanceof String)
+                            {
+                                String bodyString = (String)literal;
+                                InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
+                                
+                                String contentTransferEncoding = part.getHeader(
+                                        MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                part.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
+                            }
+                            else
+                            {
+                                // This shouldn't happen
+                                throw new MessagingException("Got FETCH response with bogus parameters");
+                            }
+                        }
+
+                        if (listener != null)
+                        {
+                            listener.messageFinished(message, messageNumber, 1);
+                        }
+                    }
+                    else
+                    {
+                        handleUntaggedResponse(response);
+                    }
+
+                    while (response.more());
+
+                }
+                while (response.mTag == null);
+            }
+            catch (IOException ioe)
+            {
+                throw ioExceptionHandler(mConnection, ioe);
+            }
+        }
+
+        // Returns value of body field
+        private Object handleFetchResponse(ImapMessage message, ImapList fetchList) throws MessagingException
+        {
+            Object result = null;
+            if (fetchList.containsKey("FLAGS"))
+            {
+                ImapList flags = fetchList.getKeyedList("FLAGS");
+                if (flags != null)
+                {
+                    for (int i = 0, count = flags.size(); i < count; i++)
+                    {
+                        String flag = flags.getString(i);
+                        if (flag.equalsIgnoreCase("\\Deleted"))
+                        {
+                            message.setFlagInternal(Flag.DELETED, true);
+                        }
+                        else if (flag.equalsIgnoreCase("\\Answered"))
+                        {
+                            message.setFlagInternal(Flag.ANSWERED, true);
+                        }
+                        else if (flag.equalsIgnoreCase("\\Seen"))
+                        {
+                            message.setFlagInternal(Flag.SEEN, true);
+                        }
+                        else if (flag.equalsIgnoreCase("\\Flagged"))
+                        {
+                            message.setFlagInternal(Flag.FLAGGED, true);
+                        }
+                    }
+                }
+            }
+
+            if (fetchList.containsKey("INTERNALDATE"))
+            {
+                Date internalDate = fetchList.getKeyedDate("INTERNALDATE");
+                message.setInternalDate(internalDate);
+            }
+
+            if (fetchList.containsKey("RFC822.SIZE"))
+            {
+                int size = fetchList.getKeyedNumber("RFC822.SIZE");
+                message.setSize(size);
+            }
+
+            if (fetchList.containsKey("BODYSTRUCTURE"))
+            {
+                ImapList bs = fetchList.getKeyedList("BODYSTRUCTURE");
+                if (bs != null)
+                {
+                    try
+                    {
+                        parseBodyStructure(bs, message, "TEXT");
+                    }
+                    catch (MessagingException e)
+                    {
+                        if (K9.DEBUG)
+                            Log.d(K9.LOG_TAG, "Error handling message for " + getLogId(), e);
+                        message.setBody(null);
+                    }
+                }
+            }
+
+            if (fetchList.containsKey("BODY"))
+            {
+                int index = fetchList.getKeyIndex("BODY") + 2;
+                result = fetchList.getObject(index);
+
+                // Check if there's an origin octet
+                if (result instanceof String)
+                {
+                    String originOctet = (String)result;
+                    if (originOctet.startsWith("<"))
+                    {
+                        result = fetchList.getObject(index + 1);
+                    }
+                }
+            }
+
+            return result;
         }
 
         @Override
@@ -2385,9 +2464,14 @@ public class ImapStore extends Store
 
         private ImapResponse readResponse() throws IOException, MessagingException
         {
+            return readResponse(null);
+        }
+        
+        private ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException, MessagingException
+        {
             try
             {
-                ImapResponse response = mParser.readResponse();
+                ImapResponse response = mParser.readResponse(callback);
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, getLogId() + "<<<" + response);
 
@@ -3369,4 +3453,61 @@ public class ImapStore extends Store
     {
         List<ImapResponse> search() throws IOException, MessagingException;
     }
+
+    private class FetchBodyCallback implements ImapResponseParser.IImapResponseCallback
+    {
+        private HashMap<String, Message> mMessageMap;
+
+        FetchBodyCallback(HashMap<String, Message> mesageMap)
+        {
+            mMessageMap = mesageMap;            
+        }
+
+        @Override
+        public Object foundLiteral(ImapResponse response,
+                FixedLengthInputStream literal) throws IOException, Exception
+        {
+            if (response.mTag == null &&
+                    ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))
+            {
+                ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
+                String uid = fetchList.getKeyedString("UID");
+
+                ImapMessage message = (ImapMessage) mMessageMap.get(uid);
+                message.parse(literal);
+
+                // Return placeholder object
+                return new Integer(1);
+            }
+            return null;
+        }
+    }
+
+    private class FetchPartCallback implements ImapResponseParser.IImapResponseCallback
+    {
+        private Part mPart;
+
+        FetchPartCallback(Part part)
+        {
+            mPart = part;
+        }
+
+        @Override
+        public Object foundLiteral(ImapResponse response,
+                FixedLengthInputStream literal) throws IOException, Exception
+        {
+            if (response.mTag == null &&
+                    ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))
+            {
+                //TODO: check for correct UID
+
+                String contentTransferEncoding = mPart.getHeader(
+                        MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+
+                return MimeUtility.decodeBody(literal, contentTransferEncoding);
+            }
+            return null;
+        }
+    }
+
 }

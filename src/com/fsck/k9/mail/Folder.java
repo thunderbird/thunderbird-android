@@ -132,6 +132,12 @@ public abstract class Folder
     public abstract void fetch(Message[] messages, FetchProfile fp,
                                MessageRetrievalListener listener) throws MessagingException;
 
+    public void fetchPart(Message message, Part part,
+            MessageRetrievalListener listener) throws MessagingException
+    {
+        throw new RuntimeException("fetchPart() not implemented.");
+    }
+
     public abstract void delete(boolean recurse) throws MessagingException;
 
     public abstract String getName();

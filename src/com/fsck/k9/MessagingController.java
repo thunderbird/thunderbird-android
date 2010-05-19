@@ -1727,11 +1727,7 @@ public class MessagingController implements Runnable
                  */
                 for (Part part : viewables)
                 {
-                    fp.clear();
-                    fp.add(part);
-                    // TODO what happens if the network connection dies? We've got partial
-                    // messages with incorrect status stored.
-                    remoteFolder.fetch(new Message[] { message }, fp, null);
+                    remoteFolder.fetchPart(message, part, null);
                 }
                 // Store the updated message locally
                 localFolder.appendMessages(new Message[] { message });
@@ -3175,9 +3171,11 @@ public class MessagingController implements Runnable
                     remoteFolder = remoteStore.getFolder(message.getFolder().getName());
                     remoteFolder.open(OpenMode.READ_WRITE);
 
-                    FetchProfile fp = new FetchProfile();
-                    fp.add(part);
-                    remoteFolder.fetch(new Message[] { message }, fp, null);
+                    //FIXME: This is an ugly hack that won't be needed once the Message objects have been united.
+                    Message remoteMessage = remoteFolder.getMessage(message.getUid());
+                    remoteMessage.setBody(message.getBody());
+                    remoteFolder.fetchPart(remoteMessage, part, null);
+
                     localFolder.updateMessage((LocalMessage)message);
                     for (MessagingListener l : getListeners())
                     {
