@@ -17,7 +17,6 @@
 package com.fsck.k9.activity;
 
 import com.fsck.k9.R;
-import com.fsck.k9.R.string;
 import android.os.Bundle;
 import android.app.Dialog;
 

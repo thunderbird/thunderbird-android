@@ -46,7 +46,6 @@ public class AutoSyncHelper
          * Check the version of the SDK we are running on. Choose an
          * implementation class designed for that version of the SDK.
          */
-        @SuppressWarnings("deprecation")
         int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
 
         String className = null;

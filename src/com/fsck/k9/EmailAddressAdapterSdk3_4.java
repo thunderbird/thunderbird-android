@@ -27,6 +27,7 @@ import com.fsck.k9.mail.Address;
 
 import static android.provider.Contacts.ContactMethods.CONTENT_EMAIL_URI;
 
+@SuppressWarnings("deprecation")
 public class EmailAddressAdapterSdk3_4 extends EmailAddressAdapter
 {
     public static final int NAME_INDEX = 1;
