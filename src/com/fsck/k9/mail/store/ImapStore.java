@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 import com.fsck.k9.Account;
+import com.fsck.k9.FixedLengthInputStream;
 import com.fsck.k9.K9;
 import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.Utility;
@@ -3333,19 +3334,19 @@ public class ImapStore extends Store
     {
         List<ImapResponse> search() throws IOException, MessagingException;
     }
-    
+
     private class FetchBodyCallback implements ImapResponseParser.IImapResponseCallback
     {
         private HashMap<String, Message> mMessageMap;
-        
+
         FetchBodyCallback(HashMap<String, Message> mesageMap)
         {
             mMessageMap = mesageMap;            
         }
-        
+
         @Override
-        public Object foundLiteral(ImapResponse response, int size,
-                InputStream literal) throws IOException, Exception
+        public Object foundLiteral(ImapResponse response,
+                FixedLengthInputStream literal) throws IOException, Exception
         {
             if (response.mTag == null &&
                     ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))
@@ -3355,7 +3356,7 @@ public class ImapStore extends Store
 
                 ImapMessage message = (ImapMessage) mMessageMap.get(uid);
                 message.parse(literal);
-                
+
                 // Return placeholder object
                 return new Integer(1);
             }
@@ -3366,24 +3367,24 @@ public class ImapStore extends Store
     private class FetchPartCallback implements ImapResponseParser.IImapResponseCallback
     {
         private Part mPart;
-        
+
         FetchPartCallback(Part part)
         {
             mPart = part;
         }
-        
+
         @Override
-        public Object foundLiteral(ImapResponse response, int size,
-                InputStream literal) throws IOException, Exception
+        public Object foundLiteral(ImapResponse response,
+                FixedLengthInputStream literal) throws IOException, Exception
         {
             if (response.mTag == null &&
                     ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))
             {
                 //TODO: check for correct UID
-                
+
                 String contentTransferEncoding = mPart.getHeader(
                         MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
-                
+
                 return MimeUtility.decodeBody(literal, contentTransferEncoding);
             }
             return null;

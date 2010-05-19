@@ -320,7 +320,7 @@ public class ImapResponseParser
             Object result = null;
             try
             {
-                result = mResponse.mCallback.foundLiteral(mResponse, size, fixed);
+                result = mResponse.mCallback.foundLiteral(mResponse, fixed);
             }
             catch (IOException e)
             {
@@ -655,6 +655,24 @@ public class ImapResponseParser
     
     public interface IImapResponseCallback
     {
-        public Object foundLiteral(ImapResponse response, int size, InputStream literal) throws IOException, Exception;
+        /**
+         * Callback method that is called by the parser when a literal string
+         * is found in an IMAP response.
+         *
+         * @param response ImapResponse object with the fields that have been
+         *                 parsed up until now (excluding the literal string).
+         * @param literal  FixedLengthInputStream that can be used to access
+         *                 the literal string.
+         *
+         * @return an Object that will be put in the ImapResponse object at the
+         *         place of the literal string.
+         *
+         * @throws IOException passed-through if thrown by FixedLengthInputStream
+         * @throws Exception if something goes wrong. Parsing will be resumed
+         *                   and the exception will be thrown after the
+         *                   complete IMAP response has been parsed.
+         */
+        public Object foundLiteral(ImapResponse response, FixedLengthInputStream literal)
+                throws IOException, Exception;
     }
 }
