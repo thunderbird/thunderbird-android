@@ -2,13 +2,10 @@ package com.fsck.k9.controller;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.OpenMode;
@@ -19,8 +16,6 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.service.SleepService;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
 public class MessagingControllerPushReceiver implements PushReceiver

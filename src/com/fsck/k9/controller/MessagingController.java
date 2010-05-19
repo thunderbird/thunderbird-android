@@ -33,7 +33,6 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.Process;
-import android.os.PowerManager.WakeLock;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -43,10 +42,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
-import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.Account.Searchable;
-import com.fsck.k9.R.drawable;
-import com.fsck.k9.R.string;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.Utility;
