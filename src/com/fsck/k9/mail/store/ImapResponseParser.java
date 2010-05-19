@@ -2,9 +2,9 @@ package com.fsck.k9.mail.store;
 
 import android.util.Log;
 import com.fsck.k9.K9;
-import com.fsck.k9.FixedLengthInputStream;
-import com.fsck.k9.PeekableInputStream;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.filter.FixedLengthInputStream;
+import com.fsck.k9.mail.filter.PeekableInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;

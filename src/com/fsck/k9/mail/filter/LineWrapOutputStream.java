@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.transport;
+package com.fsck.k9.mail.filter;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;

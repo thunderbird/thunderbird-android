@@ -1,7 +1,10 @@
 
-package com.fsck.k9;
+package com.fsck.k9.controller;
 
 import android.content.Context;
+import com.fsck.k9.Account;
+import com.fsck.k9.AccountStats;
+import com.fsck.k9.BaseAccount;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;

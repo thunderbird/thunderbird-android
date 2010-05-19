@@ -14,6 +14,8 @@ import android.util.Log;
 import android.webkit.WebSettings;
 
 import com.fsck.k9.activity.MessageCompose;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;

@@ -6,7 +6,8 @@ import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.Utility;
+import com.fsck.k9.controller.MessageRetrievalListener;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.internet.MimeMessage;

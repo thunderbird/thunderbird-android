@@ -12,10 +12,11 @@ import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
+import com.fsck.k9.activity.ColorPickerDialog;
+import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
-import com.fsck.k9.ColorPickerDialog;
 
 public class AccountSettings extends K9PreferenceActivity
 {

@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
-import com.fsck.k9.K9ListActivity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import java.util.List;

@@ -5,7 +5,7 @@ import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
 import com.fsck.k9.K9;
-import com.fsck.k9.Utility;
+import com.fsck.k9.helper.Utility;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.field.address.AddressList;
 import org.apache.james.mime4j.field.address.Mailbox;

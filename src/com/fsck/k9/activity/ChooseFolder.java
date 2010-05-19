@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.fsck.k9.*;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import java.util.ArrayList;

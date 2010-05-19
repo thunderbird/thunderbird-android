@@ -1,4 +1,4 @@
-package com.fsck.k9;
+package com.fsck.k9.activity;
 
 
 import android.app.Activity;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.widget.ScrollView;
 
-import com.fsck.k9.activity.DateFormatter;
+import com.fsck.k9.K9;
 
 
 public class K9Activity extends Activity

@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
+import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.helper.Utility;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;

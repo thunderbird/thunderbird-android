@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.fsck.k9.*;
+import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Store;

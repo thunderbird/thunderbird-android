@@ -26,6 +26,8 @@ import android.view.animation.TranslateAnimation;
 import android.webkit.*;
 import android.widget.*;
 import com.fsck.k9.*;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.MimeUtility;

@@ -13,6 +13,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import com.fsck.k9.*;
+import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.helper.Utility;
 
 public class AccountSetupNames extends K9Activity implements OnClickListener
 {

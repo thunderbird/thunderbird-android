@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.transport;
+package com.fsck.k9.mail.filter;
 
 import android.util.Config;
 import android.util.Log;

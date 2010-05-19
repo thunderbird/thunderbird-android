@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;

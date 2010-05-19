@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import com.fsck.k9.*;
+import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.helper.Utility;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;

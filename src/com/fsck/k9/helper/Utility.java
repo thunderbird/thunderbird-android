@@ -1,10 +1,10 @@
 
-package com.fsck.k9;
+package com.fsck.k9.helper;
 
 import android.text.Editable;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.fsck.k9.codec.binary.Base64;
+import com.fsck.k9.mail.filter.Base64;
 
 import java.io.IOException;
 import java.io.InputStream;

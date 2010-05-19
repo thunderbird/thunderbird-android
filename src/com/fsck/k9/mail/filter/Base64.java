@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.fsck.k9.codec.binary;
+package com.fsck.k9.mail.filter;
 
 import org.apache.commons.codec.BinaryDecoder;
 import org.apache.commons.codec.BinaryEncoder;

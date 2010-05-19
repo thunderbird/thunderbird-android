@@ -2,6 +2,7 @@ package com.fsck.k9.mail;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.controller.MessageRetrievalListener;
 
 
 public abstract class Folder

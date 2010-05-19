@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.Utility;
+import com.fsck.k9.helper.Utility;
 
 import java.net.URI;
 import java.net.URLEncoder;

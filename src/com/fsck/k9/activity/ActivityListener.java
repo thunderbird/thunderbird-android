@@ -6,8 +6,8 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.MessagingListener;
 import com.fsck.k9.R;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.service.MailService;
 
 public class ActivityListener extends MessagingListener

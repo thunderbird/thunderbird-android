@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.*;
 import android.view.KeyEvent;
 import com.fsck.k9.*;
+import com.fsck.k9.activity.K9PreferenceActivity;
 
 /**
  * Activity to configure the font size of the information displayed in the

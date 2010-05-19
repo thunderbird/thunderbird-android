@@ -1,7 +1,8 @@
 
-package com.fsck.k9.mail;
+package com.fsck.k9.controller;
 
 import java.util.Comparator;
+import com.fsck.k9.mail.Message;
 
 public class MessageDateComparator implements Comparator<Message>
 {

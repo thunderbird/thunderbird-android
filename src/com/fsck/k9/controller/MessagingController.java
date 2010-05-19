@@ -1,5 +1,5 @@
 
-package com.fsck.k9;
+package com.fsck.k9.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -37,8 +37,19 @@ import android.os.PowerManager.WakeLock;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fsck.k9.Account;
+import com.fsck.k9.AccountStats;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.SearchSpecification;
+import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.Account.Searchable;
+import com.fsck.k9.R.drawable;
+import com.fsck.k9.R.string;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
 import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
@@ -46,8 +57,6 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageRemovalListener;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;

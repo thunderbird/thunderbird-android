@@ -3,10 +3,13 @@ package com.fsck.k9.mail.transport;
 
 import android.util.Log;
 import com.fsck.k9.K9;
-import com.fsck.k9.PeekableInputStream;
-import com.fsck.k9.codec.binary.Base64;
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import com.fsck.k9.mail.filter.LineWrapOutputStream;
+import com.fsck.k9.mail.filter.PeekableInputStream;
+import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.store.TrustManagerFactory;
 
 import javax.net.ssl.SSLContext;

@@ -1,5 +1,6 @@
-package com.fsck.k9;
+package com.fsck.k9.activity;
 
+import com.fsck.k9.K9;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 

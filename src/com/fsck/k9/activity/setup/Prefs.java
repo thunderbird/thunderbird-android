@@ -10,10 +10,10 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.view.KeyEvent;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9PreferenceActivity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.DateFormatter;
+import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.service.MailService;
 
 public class Prefs extends K9PreferenceActivity

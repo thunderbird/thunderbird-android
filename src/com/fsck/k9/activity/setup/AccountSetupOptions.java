@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import com.fsck.k9.*;
+import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.mail.Store;
 
 public class AccountSetupOptions extends K9Activity implements OnClickListener
