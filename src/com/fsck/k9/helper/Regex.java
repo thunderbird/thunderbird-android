@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package android.text.util;
+package com.fsck.k9.helper;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @hide
- */
-public class Regex {
+public class Regex
+{
     /**
      *  Regular expression pattern to match all IANA top-level domains.
      *  List accurate as of 2007/06/15.  List taken from:
@@ -161,16 +159,19 @@ public class Regex {
      *  @return             A String comprising all of the non-null matched
      *                      groups concatenated together
      */
-    public static final String concatGroups(Matcher matcher) {
+    public static final String concatGroups(Matcher matcher)
+    {
         StringBuilder b = new StringBuilder();
         final int numGroups = matcher.groupCount();
 
-        for (int i = 1; i <= numGroups; i++) {
+        for (int i = 1; i <= numGroups; i++)
+        {
             String s = matcher.group(i);
 
             System.err.println("Group(" + i + ") : " + s);
 
-            if (s != null) {
+            if (s != null)
+            {
                 b.append(s);
             }
         }
@@ -188,14 +189,17 @@ public class Regex {
      * @return             A String comprising all of the digits and plus in
      *                     the match
      */
-    public static final String digitsAndPlusOnly(Matcher matcher) {
+    public static final String digitsAndPlusOnly(Matcher matcher)
+    {
         StringBuilder buffer = new StringBuilder();
         String matchingRegion = matcher.group();
 
-        for (int i = 0, size = matchingRegion.length(); i < size; i++) {
+        for (int i = 0, size = matchingRegion.length(); i < size; i++)
+        {
             char character = matchingRegion.charAt(i);
 
-            if (character == '+' || Character.isDigit(character)) {
+            if (character == '+' || Character.isDigit(character))
+            {
                 buffer.append(character);
             }
         }

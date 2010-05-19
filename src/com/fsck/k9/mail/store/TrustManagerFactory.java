@@ -3,9 +3,9 @@ package com.fsck.k9.mail.store;
 
 import android.app.Application;
 import android.content.Context;
-import android.net.http.DomainNameChecker;
 import android.util.Log;
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.DomainNameChecker;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;

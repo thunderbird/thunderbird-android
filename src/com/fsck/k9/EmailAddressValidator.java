@@ -18,6 +18,6 @@ public class EmailAddressValidator implements Validator
 
     public boolean isValidAddressOnly(CharSequence text)
     {
-        return android.text.util.Regex.EMAIL_ADDRESS_PATTERN.matcher(text).matches();
+        return com.fsck.k9.helper.Regex.EMAIL_ADDRESS_PATTERN.matcher(text).matches();
     }
 }
