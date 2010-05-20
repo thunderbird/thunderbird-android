@@ -2441,7 +2441,7 @@ public class ImapStore extends Store
 
         protected boolean hasCapability(String capability)
         {
-            return capabilities.contains(capability);
+            return capabilities.contains(capability.toUpperCase());
         }
 
         private boolean isOpen()
