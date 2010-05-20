@@ -90,7 +90,7 @@ public class ImapStore extends Store
     private AuthType mAuthType;
     private volatile String mPathPrefix;
     private volatile String mCombinedPrefix = null;
-    private volatile String mPathDelimeter;
+    private volatile String mPathDelimeter = null;
 
     private LinkedList<ImapConnection> mConnections =
         new LinkedList<ImapConnection>();
@@ -2284,6 +2284,29 @@ public class ImapStore extends Store
                         mPathPrefix = "";
                     }
                 }
+                if (mPathDelimeter == null)
+                {
+                    try
+                    {
+                        List<ImapResponse> nameResponses =
+                            executeSimpleCommand(String.format("LIST \"\" \"\""));
+                        for (ImapResponse response : nameResponses)
+                        {
+                            if (response.get(0).equals("LIST"))
+                            {
+                                mPathDelimeter = response.getString(2);
+                                if (K9.DEBUG)
+                                    Log.d(K9.LOG_TAG, "Got path delimeter '" + mPathDelimeter + "' for " + getLogId());
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to get path delimeter using LIST", e);
+                    }
+                }
+
+                
             }
             catch (SSLException e)
             {
@@ -2986,7 +3009,7 @@ public class ImapStore extends Store
                 }
             }
             if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "There are " + flagSyncMsgSeqs + " messages needing flag sync for " + getLogId());
+                Log.d(K9.LOG_TAG, "UIDs for messages needing flag sync are " + flagSyncMsgSeqs + "  for " + getLogId());
 
             if (flagSyncMsgSeqs.size() > 0)
             {
