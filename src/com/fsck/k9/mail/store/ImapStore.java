@@ -2039,7 +2039,7 @@ public class ImapStore extends Store
 //                                {
 //                                    Log.v(K9.LOG_TAG, "Saving capability '" + capability + "' for " + getLogId());
 //                                }
-                                capabilities.add((String)capability);
+                                capabilities.add(((String)capability).toUpperCase());
                             }
                         }
 
