@@ -2292,9 +2292,10 @@ public class ImapStore extends Store
                             executeSimpleCommand(String.format("LIST \"\" \"\""));
                         for (ImapResponse response : nameResponses)
                         {
-                            if (response.get(0).equals("LIST"))
+                            if (ImapResponseParser.equalsIgnoreCase(response.get(0), "LIST"))
                             {
                                 mPathDelimeter = response.getString(2);
+                                mCombinedPrefix = null;
                                 if (K9.DEBUG)
                                     Log.d(K9.LOG_TAG, "Got path delimeter '" + mPathDelimeter + "' for " + getLogId());
                             }
