@@ -1165,7 +1165,7 @@ public class ImapStore extends Store
                                 msgSeqUidMap.put(msgSeq, uid);
                                 if (K9.DEBUG)
                                 {
-                                    Log.v(K9.LOG_TAG, "Stored uid '" + uid + "' for msgSeq " + msgSeq + " into map " + msgSeqUidMap.toString());
+                                    Log.v(K9.LOG_TAG, "Stored uid '" + uid + "' for msgSeq " + msgSeq + " into map " /*+ msgSeqUidMap.toString() */);
                                 }
                             }
                             catch (Exception e)
