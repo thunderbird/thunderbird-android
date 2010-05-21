@@ -459,7 +459,8 @@ public class MimeMessage extends Message
         mHeader.removeHeader(name);
     }
 
-    public List<String> getHeaderNames()
+    @Override
+    public Set<String> getHeaderNames()
     {
         return mHeader.getHeaderNames();
     }

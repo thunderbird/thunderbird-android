@@ -212,6 +212,17 @@
                 android:text="@string/account_setup_incoming_other_label"
             />
         </LinearLayout>
+        <TextView
+            android:text="@string/account_setup_incoming_save_all_headers_title"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" />
+        <CheckBox
+	        android:id="@+id/save_all_headers"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:text="@string/account_setup_incoming_save_all_headers_label" />
         <LinearLayout
             android:id="@+id/push_poll_on_connect_section"
             android:layout_width="fill_parent"

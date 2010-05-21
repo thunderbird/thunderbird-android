@@ -85,6 +85,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private CheckBox compressionMobile;
     private CheckBox compressionWifi;
     private CheckBox compressionOther;
+    private CheckBox saveAllHeaders;
     private CheckBox pushPollOnConnect;
     private Spinner idleRefreshPeriod;
     private Spinner folderPushLimit;
@@ -130,6 +131,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         compressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
         compressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
         compressionOther = (CheckBox)findViewById(R.id.compression_other);
+        saveAllHeaders = (CheckBox)findViewById(R.id.save_all_headers);
         pushPollOnConnect = (CheckBox)findViewById(R.id.push_poll_on_connect);
         idleRefreshPeriod = (Spinner)findViewById(R.id.idle_refresh_period);
 
@@ -389,6 +391,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             compressionMobile.setChecked(mAccount.useCompression(Account.TYPE_MOBILE));
             compressionWifi.setChecked(mAccount.useCompression(Account.TYPE_WIFI));
             compressionOther.setChecked(mAccount.useCompression(Account.TYPE_OTHER));
+
             if (uri.getHost() != null)
             {
                 mServerView.setText(uri.getHost());
@@ -402,6 +405,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             {
                 updatePortFromSecurityType();
             }
+
+            saveAllHeaders.setChecked(mAccount.isSaveAllHeaders());
             pushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
             SpinnerHelper.initSpinner(this, idleRefreshPeriod, R.array.idle_refresh_period_entries,
                                       R.array.idle_refresh_period_values, String.valueOf(mAccount.getIdleRefreshMinutes()));
@@ -557,6 +562,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mAccount.setCompression(Account.TYPE_MOBILE, compressionMobile.isChecked());
             mAccount.setCompression(Account.TYPE_WIFI, compressionWifi.isChecked());
             mAccount.setCompression(Account.TYPE_OTHER, compressionOther.isChecked());
+            mAccount.setSaveAllHeaders(saveAllHeaders.isChecked());
             mAccount.setPushPollOnConnect(pushPollOnConnect.isChecked());
             String idleRefreshPeriodValue = SpinnerHelper.getSpinnerValue(idleRefreshPeriod);
             try

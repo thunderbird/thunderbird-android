@@ -1441,6 +1441,13 @@ public class LocalStore extends Store implements Serializable
                 "LocalStore.getMessages(int, int, MessageRetrievalListener) not yet implemented");
         }
 
+        /**
+         * Populate the header fields of the given list of messages by reading
+         * the saved header data from the database.
+         * 
+         * @param messages
+         *            The messages whose headers should be loaded.
+         */
         private void populateHeaders(List<LocalMessage> messages)
         {
             Cursor cursor = null;
@@ -1635,6 +1642,11 @@ public class LocalStore extends Store implements Serializable
          * assigned and it matches the uid of an existing message then this message will replace the
          * old message. It is implemented as a delete/insert. This functionality is used in saving
          * of drafts and re-synchronization of updated server messages.
+         *
+         * NOTE that although this method is located in the LocalStore class, it is not guaranteed
+         * that the messages supplied as parameters are actually {@link LocalMessage} instances (in
+         * fact, in most cases, they are not). Therefore, if you want to make local changes only to a
+         * message, retrieve the appropriate local message instance first (if it already exists).
          */
         @Override
         public void appendMessages(Message[] messages) throws MessagingException
@@ -1647,6 +1659,11 @@ public class LocalStore extends Store implements Serializable
          * assigned and it matches the uid of an existing message then this message will replace the
          * old message. It is implemented as a delete/insert. This functionality is used in saving
          * of drafts and re-synchronization of updated server messages.
+         *
+         * NOTE that although this method is located in the LocalStore class, it is not guaranteed
+         * that the messages supplied as parameters are actually {@link LocalMessage} instances (in
+         * fact, in most cases, they are not). Therefore, if you want to make local changes only to a
+         * message, retrieve the appropriate local message instance first (if it already exists).
          */
         private void appendMessages(Message[] messages, boolean copy) throws MessagingException
         {
@@ -1863,12 +1880,19 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
-        private void saveHeaders(long id, MimeMessage message)
+        /**
+         * Save the headers of the given message. Note that the message is not
+         * necessarily a {@link LocalMessage} instance.
+         */
+        private void saveHeaders(long id, MimeMessage message) throws MessagingException
         {
+            boolean saveAllHeaders = mAccount.isSaveAllHeaders();
+            boolean gotAdditionalHeaders = false;
+
             deleteHeaders(id);
             for (String name : message.getHeaderNames())
             {
-                if (HEADERS_TO_SAVE.contains(name))
+                if (saveAllHeaders || HEADERS_TO_SAVE.contains(name))
                 {
                     String[] values = message.getHeader(name);
                     for (String value : values)
@@ -1880,6 +1904,22 @@ public class LocalStore extends Store implements Serializable
                         mDb.insert("headers", "name", cv);
                     }
                 }
+                else
+                {
+                    gotAdditionalHeaders = true;
+                }
+            }
+
+            if (!gotAdditionalHeaders)
+            {                
+                // Remember that all headers for this message have been saved, so it is
+                // not necessary to download them again in case the user wants to see all headers.
+                List<Flag> appendedFlags = new ArrayList<Flag>();
+                appendedFlags.addAll(Arrays.asList(message.getFlags()));
+                appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
+
+                mDb.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
+                    { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id } );
             }
         }
 
@@ -2698,9 +2738,7 @@ public class LocalStore extends Store implements Serializable
         public void addHeader(String name, String value)
         {
             if (!mHeadersLoaded)
-            {
                 loadHeaders();
-            }
             super.addHeader(name, value);
         }
 
@@ -2717,7 +2755,6 @@ public class LocalStore extends Store implements Serializable
         {
             if (!mHeadersLoaded)
                 loadHeaders();
-
             return super.getHeader(name);
         }
 
@@ -2729,8 +2766,12 @@ public class LocalStore extends Store implements Serializable
             super.removeHeader(name);
         }
 
-
-
+        @Override
+        public Set<String> getHeaderNames() {
+            if (!mHeadersLoaded)
+                loadHeaders();
+            return super.getHeaderNames();
+        }
     }
 
     public class LocalAttachmentBodyPart extends MimeBodyPart

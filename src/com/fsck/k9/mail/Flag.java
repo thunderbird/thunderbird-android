@@ -15,9 +15,6 @@ public enum Flag
 
     /*
      * The following flags are for internal library use only.
-     * TODO Eventually we should creates a Flags class that extends ArrayList that allows
-     * these flags and Strings to represent user defined flags. At that point the below
-     * flags should become user defined flags.
      */
     /**
      * Delete and remove from the LocalStore immediately.
@@ -51,4 +48,11 @@ public enum Flag
      * Indicates that the copy of a message to the Sent folder has started.
      */
     X_REMOTE_COPY_STARTED,
+
+    /**
+     * Indicates that all headers of the message have been stored in the
+     * database. If this is false, additional headers might be retrieved from
+     * the server (if the message is still there).
+     */
+    X_GOT_ALL_HEADERS,
 }

@@ -30,7 +30,11 @@
         android:title="@string/delete_action"
         android:icon="@drawable/ic_menu_delete"
     />
-     <item
+    <item
+		android:id="@+id/show_full_header"
+		android:title="@string/show_full_header_action"
+	/>
+    <item
         android:id="@+id/flag"
         android:alphabeticShortcut="s"
         android:title="@string/flag_action"

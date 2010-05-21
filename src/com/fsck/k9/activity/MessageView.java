@@ -1,4 +1,3 @@
-
 package com.fsck.k9.activity;
 
 import android.content.Context;
@@ -6,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
@@ -15,6 +15,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.Contacts;
 import android.provider.Contacts.Intents;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
@@ -38,7 +41,10 @@ import com.fsck.k9.provider.AttachmentProvider;
 import org.apache.commons.io.IOUtils;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
@@ -62,6 +68,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
     private LinearLayout mCcContainerView;
+    private TextView mAdditionalHeadersView;
     private View mAttachmentIcon;
     private View mDownloadingIcon;
     private View mShowPicturesSection;
@@ -86,13 +93,28 @@ public class MessageView extends K9Activity implements OnClickListener
     private MessageReference mPreviousMessage = null;
 
 
-
     private Menu optionsMenu = null;
 
     private Listener mListener = new Listener();
     private MessageViewHandler mHandler = new MessageViewHandler();
 
     private FontSizes mFontSizes = K9.getFontSizes();
+
+    /** 
+     * Pair class is only available since API Level 5, so we need
+     * this helper class unfortunately
+     */
+    private class HeaderEntry
+    {
+        public String label;
+        public String value;
+        
+        public HeaderEntry(String label, String value)
+        {
+            this.label = label;
+            this.value = value;
+        }
+    }
 
 
     @Override
@@ -410,7 +432,118 @@ public class MessageView extends K9Activity implements OnClickListener
 
         }
 
+        /**
+         * Clear the text field for the additional headers display if they are
+         * not shown, to save UI resources.
+         */
+        public void hideAdditionalHeaders()
+        {
+            runOnUiThread(new Runnable() 
+            {                        
+                public void run()
+                {
+                    mAdditionalHeadersView.setVisibility(View.GONE);
+                    mAdditionalHeadersView.setText("");
+                    mTopView.scrollTo(0, 0);
+                }
+            });
+        }
 
+        /**
+         * Set up and then show the additional headers view. Called by
+         * {@link #onShowAdditionalHeaders()} and
+         * {@link #setHeaders(Account, String, String, Message)}
+         * (when switching between messages).
+         */
+        public void showAdditionalHeaders()
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run() 
+                {
+                    Integer messageToShow = null;
+                    try
+                    {
+                        // Retrieve additional headers
+                        boolean allHeadersDownloaded = mMessage.isSet(Flag.X_GOT_ALL_HEADERS);
+                        List<HeaderEntry> additionalHeaders = getAdditionalHeaders(mMessage);    
+
+                        if (!additionalHeaders.isEmpty())
+                        {
+                            // Show the additional headers that we have got.
+                            setupAdditionalHeadersView(additionalHeaders);                  
+                            mAdditionalHeadersView.setVisibility(View.VISIBLE);
+                        }
+
+                        if (!allHeadersDownloaded)
+                        {
+                            /*
+                             * Tell the user about the "save all headers" setting
+                             *
+                             * NOTE: This is only a temporary solution... in fact,
+                             * the system should download headers on-demand when they
+                             * have not been saved in their entirety initially.
+                             */ 
+                            messageToShow = R.string.message_additional_headers_not_downloaded;
+                        }
+                        else if (additionalHeaders.isEmpty())
+                        {
+                            // All headers have been downloaded, but there are no additional headers.
+                            messageToShow = R.string.message_no_additional_headers_available;
+                        }
+                    }
+                    catch(MessagingException e)
+                    {
+                        messageToShow = R.string.message_additional_headers_retrieval_failed;
+                    }
+
+                    // Show a message to the user, if any
+                    if (messageToShow != null)
+                    {
+                        Toast toast = Toast.makeText(MessageView.this, messageToShow, Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+                        toast.show();
+                    }   
+                }                
+            });
+        }
+
+        /**
+         * Set up the additional headers text view with the supplied header data.
+         * 
+         * @param additionalHeaders
+         * 			List of header entries. Each entry consists of a header
+         * 			name and a header value. Header names may appear multiple
+         *          times.
+         * 
+         * This method is always called from within the UI thread by
+         * {@link #showAdditionalHeaders()}.
+         */
+        private void setupAdditionalHeadersView(final List<HeaderEntry> additionalHeaders)
+        {
+            SpannableStringBuilder sb = new SpannableStringBuilder();
+            boolean first = true;
+            for (HeaderEntry additionalHeader : additionalHeaders)
+            {
+                if (!first)
+                {
+                    sb.append("\n");
+                }
+                else
+                {
+                    first = false;
+                }
+
+                StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+                SpannableString label = new SpannableString(additionalHeader.label + ": ");
+                label.setSpan(boldSpan, 0, label.length(), 0);
+
+                sb.append(label);
+                sb.append(additionalHeader.value.replaceAll("\\r\\n", ""));
+            }
+
+            mAdditionalHeadersView.setText(sb);
+        }
     }
 
     class Attachment
@@ -460,6 +593,8 @@ public class MessageView extends K9Activity implements OnClickListener
         mSubjectView = (TextView)findViewById(R.id.subject);
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
 
+        mAdditionalHeadersView = (TextView)findViewById(R.id.additional_headers_view);
+
         chip = findViewById(R.id.chip);
 
         mDateView = (TextView)findViewById(R.id.date);
@@ -503,7 +638,8 @@ public class MessageView extends K9Activity implements OnClickListener
         mSubjectView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewSubject());
         mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTime());
         mDateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewDate());
-
+        mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewAdditionalHeaders());
+        mAdditionalHeadersView.setVisibility(View.GONE);   
         mAttachments.setVisibility(View.GONE);
         mAttachmentIcon.setVisibility(View.GONE);
 
@@ -514,6 +650,9 @@ public class MessageView extends K9Activity implements OnClickListener
         setOnClickListener(R.id.forward);
         setOnClickListener(R.id.next);
         setOnClickListener(R.id.previous);
+
+        // To show full header
+        setOnClickListener(R.id.header_container);
 
         setOnClickListener(R.id.reply_scrolling);
 //       setOnClickListener(R.id.reply_all_scrolling);
@@ -830,7 +969,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 mMessage.setFlag(Flag.FLAGGED, !mMessage.isSet(Flag.FLAGGED));
                 setHeaders(mAccount, mMessage.getFolder().getName(), mMessage.getUid(), mMessage);
-                setMenuFlag();
+                prepareMenuItems();
             }
             catch (MessagingException me)
             {
@@ -875,6 +1014,43 @@ public class MessageView extends K9Activity implements OnClickListener
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
+    }
+
+    private void onShowAdditionalHeaders()
+    {
+        int currentVisibility = mAdditionalHeadersView.getVisibility();
+
+        if (currentVisibility == View.VISIBLE)
+        {
+            mHandler.hideAdditionalHeaders();
+        }
+        else
+        {
+            mHandler.showAdditionalHeaders();
+        }
+    }
+
+    private List<HeaderEntry> getAdditionalHeaders(final Message message)
+    	throws MessagingException
+	{
+        List<HeaderEntry> additionalHeaders = new LinkedList<HeaderEntry>();
+
+        // Do not include the following headers, since they are always visible anyway
+        Set<String> headerNames = new HashSet<String>(message.getHeaderNames());
+        headerNames.remove("To");
+        headerNames.remove("From");
+        headerNames.remove("Cc");
+        headerNames.remove("Subject");
+
+        for (String headerName : headerNames)
+        {
+            String[] headerValues = message.getHeader(headerName);
+            for (String headerValue : headerValues)
+            {
+                additionalHeaders.add(new HeaderEntry(headerName, headerValue));
+            }
+        }
+        return additionalHeaders;
     }
 
     @Override
@@ -1100,6 +1276,9 @@ public class MessageView extends K9Activity implements OnClickListener
             case R.id.show_pictures:
                 onShowPictures();
                 break;
+            case R.id.header_container:
+            	onShowAdditionalHeaders();
+            	break;
         }
     }
 
@@ -1135,6 +1314,9 @@ public class MessageView extends K9Activity implements OnClickListener
             case R.id.copy:
                 onCopy();
                 break;
+            case R.id.show_full_header:
+                onShowAdditionalHeaders();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -1147,7 +1329,7 @@ public class MessageView extends K9Activity implements OnClickListener
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_view_option, menu);
         optionsMenu = menu;
-        setMenuFlag();
+        prepareMenuItems();
         if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
         {
             menu.findItem(R.id.copy).setVisible(false);
@@ -1162,11 +1344,11 @@ public class MessageView extends K9Activity implements OnClickListener
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
     {
-        setMenuFlag();
+        prepareMenuItems();
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void setMenuFlag()
+    private void prepareMenuItems()
     {
         Menu menu = optionsMenu;
         if (menu != null)
@@ -1175,6 +1357,13 @@ public class MessageView extends K9Activity implements OnClickListener
             if (flagItem != null && mMessage != null)
             {
                 flagItem.setTitle((mMessage.isSet(Flag.FLAGGED) ? R.string.unflag_action : R.string.flag_action));
+            }
+
+            MenuItem additionalHeadersItem = menu.findItem(R.id.show_full_header);
+            if (additionalHeadersItem != null)
+            {
+                additionalHeadersItem.setTitle((mAdditionalHeadersView.getVisibility() == View.VISIBLE) ?
+                        R.string.hide_full_header_action : R.string.show_full_header_action);
             }
         }
     }
@@ -1328,10 +1517,12 @@ public class MessageView extends K9Activity implements OnClickListener
         String timeText = getTimeFormat().format(message.getSentDate());
         String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
         String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
+
         int color = mAccount.getChipColor();
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
         boolean isDownloading = !message.isSet(Flag.X_DOWNLOADED_FULL);
         boolean unread = !message.isSet(Flag.SEEN);
+
         mHandler.setHeaders(subjectText,
                             fromText,
                             dateText,
@@ -1344,6 +1535,12 @@ public class MessageView extends K9Activity implements OnClickListener
                             isDownloading,
                             message.isSet(Flag.FLAGGED),
                             message.isSet(Flag.ANSWERED));
+
+        // Update additional headers display, if visible
+        if (mAdditionalHeadersView.getVisibility() == View.VISIBLE)
+        {
+            mHandler.showAdditionalHeaders();
+        }
     }
 
     class Listener extends MessagingListener

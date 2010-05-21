@@ -98,8 +98,19 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
             </LinearLayout>
-         </LinearLayout>
-            <LinearLayout android:id="@+id/topright_container"
+            <TextView android:id="@+id/additional_headers_view"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:paddingBottom="4dip"
+               android:baselineAligned="true"
+               android:singleLine="false"
+               android:ellipsize="none"
+               android:textSize="10sp"
+               android:textColor="?android:attr/textColorSecondary"
+               android:textAppearance="?android:attr/textAppearanceSmall" >
+            </TextView>
+          </LinearLayout>
+          <LinearLayout android:id="@+id/topright_container"
                 android:orientation="vertical"
                 android:layout_weight="0.1" 
                 android:layout_width="wrap_content"

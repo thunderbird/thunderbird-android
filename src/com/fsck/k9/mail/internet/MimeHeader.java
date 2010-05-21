@@ -9,8 +9,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MimeHeader
 {
@@ -69,9 +68,9 @@ public class MimeHeader
         addHeader(name, value);
     }
 
-    public List<String> getHeaderNames()
+    public Set<String> getHeaderNames()
     {
-        ArrayList<String> names = new ArrayList<String>();
+        Set<String> names = new HashSet<String>();
         for (Field field : mFields)
         {
             names.add(field.name);

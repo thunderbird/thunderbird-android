@@ -78,6 +78,7 @@ public class Account implements BaseAccount
     private int mAccountNumber;
     private boolean mVibrate;
     private boolean mRing;
+    private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
     private String mRingtoneUri;
     private boolean mNotifySync;
@@ -117,6 +118,7 @@ public class Account implements BaseAccount
         mLocalStoreUri = "local://localhost/" + context.getDatabasePath(mUuid + ".db");
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
+        mSaveAllHeaders = false;
         mPushPollOnConnect = true;
         mDisplayCount = -1;
         mAccountNumber = -1;
@@ -172,6 +174,8 @@ public class Account implements BaseAccount
                                          + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = preferences.getPreferences().getInt(mUuid
                               + ".idleRefreshMinutes", 24);
+        mSaveAllHeaders = preferences.getPreferences().getBoolean(mUuid
+                            + ".saveAllHeaders", false);
         mPushPollOnConnect = preferences.getPreferences().getBoolean(mUuid
                              + ".pushPollOnConnect", true);
         mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", -1);
@@ -338,6 +342,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".alwaysBcc");
         editor.remove(mUuid + ".automaticCheckIntervalMinutes");
         editor.remove(mUuid + ".pushPollOnConnect");
+        editor.remove(mUuid + ".saveAllHeaders");
         editor.remove(mUuid + ".idleRefreshMinutes");
         editor.remove(mUuid + ".lastAutomaticCheckTime");
         editor.remove(mUuid + ".notifyNewMail");
@@ -417,6 +422,7 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
         editor.putInt(mUuid + ".automaticCheckIntervalMinutes", mAutomaticCheckIntervalMinutes);
         editor.putInt(mUuid + ".idleRefreshMinutes", mIdleRefreshMinutes);
+        editor.putBoolean(mUuid + ".saveAllHeaders", mSaveAllHeaders);
         editor.putBoolean(mUuid + ".pushPollOnConnect", mPushPollOnConnect);
         editor.putInt(mUuid + ".displayCount", mDisplayCount);
         editor.putLong(mUuid + ".lastAutomaticCheckTime", mLastAutomaticCheckTime);
@@ -1173,6 +1179,16 @@ public class Account implements BaseAccount
     public void setPushPollOnConnect(boolean pushPollOnConnect)
     {
         mPushPollOnConnect = pushPollOnConnect;
+    }
+
+    public boolean isSaveAllHeaders()
+    {
+        return mSaveAllHeaders;
+    }
+
+    public void setSaveAllHeaders(boolean saveAllHeaders)
+    {
+        mSaveAllHeaders = saveAllHeaders;
     }
 
     public boolean goToUnreadMessageSearch()

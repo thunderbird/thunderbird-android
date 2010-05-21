@@ -32,6 +32,7 @@ public class FontSizeSettings extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGE_VIEW_SENDER_FONT = "message_view_sender_font";
     private static final String PREFERENCE_MESSAGE_VIEW_TO_FONT = "message_view_to_font";
     private static final String PREFERENCE_MESSAGE_VIEW_CC_FONT = "message_view_cc_font";
+    private static final String PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT = "message_view_additional_headers_font";
     private static final String PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT = "message_view_subject_font";
     private static final String PREFERENCE_MESSAGE_VIEW_TIME_FONT = "message_view_time_font";
     private static final String PREFERENCE_MESSAGE_VIEW_DATE_FONT = "message_view_date_font";
@@ -47,6 +48,7 @@ public class FontSizeSettings extends K9PreferenceActivity
     private ListPreference mMessageViewSender;
     private ListPreference mMessageViewTo;
     private ListPreference mMessageViewCC;
+    private ListPreference mMessageViewAdditionalHeaders;
     private ListPreference mMessageViewSubject;
     private ListPreference mMessageViewTime;
     private ListPreference mMessageViewDate;
@@ -85,6 +87,7 @@ public class FontSizeSettings extends K9PreferenceActivity
         mMessageViewSender = initializeListPreference(PREFERENCE_MESSAGE_VIEW_SENDER_FONT, fontSizes.getMessageViewSender());
         mMessageViewTo = initializeListPreference(PREFERENCE_MESSAGE_VIEW_TO_FONT, fontSizes.getMessageViewTo());
         mMessageViewCC = initializeListPreference(PREFERENCE_MESSAGE_VIEW_CC_FONT, fontSizes.getMessageViewCC());
+        mMessageViewAdditionalHeaders = initializeListPreference(PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT, fontSizes.getMessageViewAdditionalHeaders());
         mMessageViewSubject = initializeListPreference(PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT, fontSizes.getMessageViewSubject());
         mMessageViewTime = initializeListPreference(PREFERENCE_MESSAGE_VIEW_TIME_FONT, fontSizes.getMessageViewTime());
         mMessageViewDate = initializeListPreference(PREFERENCE_MESSAGE_VIEW_DATE_FONT, fontSizes.getMessageViewDate());
@@ -112,6 +115,7 @@ public class FontSizeSettings extends K9PreferenceActivity
         fontSizes.setMessageViewSender(Integer.parseInt(mMessageViewSender.getValue()));
         fontSizes.setMessageViewTo(Integer.parseInt(mMessageViewTo.getValue()));
         fontSizes.setMessageViewCC(Integer.parseInt(mMessageViewCC.getValue()));
+        fontSizes.setMessageViewAdditionalHeaders(Integer.parseInt(mMessageViewAdditionalHeaders.getValue()));
         fontSizes.setMessageViewSubject(Integer.parseInt(mMessageViewSubject.getValue()));
         fontSizes.setMessageViewTime(Integer.parseInt(mMessageViewTime.getValue()));
         fontSizes.setMessageViewDate(Integer.parseInt(mMessageViewDate.getValue()));

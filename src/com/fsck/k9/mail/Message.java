@@ -3,6 +3,7 @@ package com.fsck.k9.mail;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 import com.fsck.k9.activity.MessageReference;
 
@@ -122,6 +123,8 @@ public abstract class Message implements Part, Body
     public abstract void setHeader(String name, String value) throws MessagingException;
 
     public abstract String[] getHeader(String name) throws MessagingException;
+
+    public abstract Set<String> getHeaderNames();
 
     public abstract void removeHeader(String name) throws MessagingException;
 
