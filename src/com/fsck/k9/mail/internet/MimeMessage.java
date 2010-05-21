@@ -368,6 +368,34 @@ public class MimeMessage extends Message
     @Override
     public void setReferences(String references) throws MessagingException
     {
+        /*
+         * Make sure the References header doesn't exceed 998 characters and
+         * won't get (Q-)encoded later. Otherwise some clients will break
+         * threads apart.
+         * 
+         * For more information see issue 1559.
+         */
+
+        // Make sure separator is SPACE to prevent Q-encoding when TAB is encountered
+        references = references.replaceAll("\\s+", " ");
+
+        final int limit = 986; // "References: "
+        final int originalLength = references.length();
+        if (originalLength >= limit)
+        {
+        	// Find start of first reference
+        	final int start = references.indexOf('<');
+
+        	// First reference + SPACE
+            final String firstReference = references.substring(start,
+            		references.indexOf('<', start + 1));
+
+            // Find longest tail
+            final String tail = references.substring(references.indexOf('<',
+            		firstReference.length() + originalLength - limit));
+
+            references = firstReference + tail;
+        }
         setHeader("References", references);
     }
 
