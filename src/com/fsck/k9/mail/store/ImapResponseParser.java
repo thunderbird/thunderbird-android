@@ -182,7 +182,6 @@ public class ImapResponseParser
     private boolean parseCommandContinuationRequest() throws IOException
     {
         expect('+');
-        expect(' ');
         return true;
     }
 
