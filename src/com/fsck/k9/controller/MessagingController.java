@@ -1540,12 +1540,7 @@ public class MessagingController implements Runnable
                                     l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                                 }
 
-                                // Send a notification of this message
-                                if (notifyAccount(mApplication, account, message) == true)
-                                {
-                                    newMessages.incrementAndGet();
-                                }
-
+                               
                             }
 
                         }
@@ -1634,7 +1629,15 @@ public class MessagingController implements Runnable
                             l.synchronizeMailboxNewMessage(account, folder, localMessage);
                         }
                     }
-                    notifyAccount(mApplication, account, message);
+                    if (!localMessage.isSet(Flag.SEEN))
+                    {
+                        // Send a notification of this message
+                        if (notifyAccount(mApplication, account, message) == true)
+                        {
+                            newMessages.incrementAndGet();
+                        }
+                    }
+
 
                 }
                 catch (MessagingException me)
@@ -1748,9 +1751,9 @@ public class MessagingController implements Runnable
 
             // Update the listener with what we've found
             progress.incrementAndGet();
+            Message localMessage = localFolder.getMessage(message.getUid());
             for (MessagingListener l : getListeners())
             {
-                Message localMessage = localFolder.getMessage(message.getUid());
                 l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                 l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
                 if (!localMessage.isSet(Flag.SEEN))
@@ -1758,7 +1761,16 @@ public class MessagingController implements Runnable
                     l.synchronizeMailboxNewMessage(account, folder, localMessage);
                 }
             }
-            notifyAccount(mApplication, account, message);
+            if (!localMessage.isSet(Flag.SEEN))
+            {
+                // Send a notification of this message
+                if (notifyAccount(mApplication, account, message) == true)
+                {
+                    newMessages.incrementAndGet();
+                }
+            }
+
+
         }//for large messsages
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
