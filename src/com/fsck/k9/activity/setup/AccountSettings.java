@@ -428,10 +428,12 @@ public class AccountSettings extends K9PreferenceActivity
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
 
         boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
+        boolean displayModeChanged = mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
+        
         if (mAccount.getFolderPushMode() != FolderMode.NONE)
         {
-            needsPushRestart |= mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
-            needsPushRestart |= mIncomingChanged;
+            needsPushRestart |= displayModeChanged;
+            displayModeChanged |= mIncomingChanged;
         }
 
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
