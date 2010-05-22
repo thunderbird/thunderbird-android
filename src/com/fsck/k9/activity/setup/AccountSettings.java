@@ -433,7 +433,7 @@ public class AccountSettings extends K9PreferenceActivity
         if (mAccount.getFolderPushMode() != FolderMode.NONE)
         {
             needsPushRestart |= displayModeChanged;
-            displayModeChanged |= mIncomingChanged;
+            needsPushRestart |= mIncomingChanged;
         }
 
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
