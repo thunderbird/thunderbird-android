@@ -242,7 +242,7 @@ public class Account implements BaseAccount
                      (random.nextInt(0x70) * 0xffff) +
                      0xff000000);
 
-        mLedColor = preferences.getPreferences().getInt(mUuid+".chipColor", mChipColor);
+        mLedColor = preferences.getPreferences().getInt(mUuid+".ledColor", mChipColor);
 
         mVibrate = preferences.getPreferences().getBoolean(mUuid + ".vibrate", false);
         mRing = preferences.getPreferences().getBoolean(mUuid + ".ring", true);
@@ -367,6 +367,8 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".expungePolicy");
         editor.remove(mUuid + ".maxPushFolders");
         editor.remove(mUuid  + ".searchableFolders");
+        editor.remove(mUuid  + ".chipColor");
+        editor.remove(mUuid  + ".ledColor");
         editor.remove(mUuid + ".goToUnreadMessageSearch");
         for (String type : networkTypes)
         {
