@@ -462,11 +462,39 @@ public class ImapStore extends Store
             this.mName = name;
         }
 
-        public String getPrefixedName()
+        public String getPrefixedName() throws MessagingException
         {
             String prefixedName = "";
             if (!K9.INBOX.equalsIgnoreCase(mName))
             {
+                ImapConnection connection = null;
+                synchronized (this)
+                {
+                    if (mConnection == null)
+                    {
+                        connection = getConnection();
+                    }
+                    else
+                    {
+                        connection = mConnection;
+                    }
+                }
+                try
+                {
+                    
+                    connection.open();
+                }
+                catch (IOException ioe)
+                {
+                    throw new MessagingException("Unable to get IMAP prefix", ioe);
+                }
+                finally
+                {
+                    if (mConnection == null)
+                    {
+                        releaseConnection(connection);
+                    }
+                }
                 prefixedName = getCombinedPrefix();
             }
 
@@ -1954,7 +1982,7 @@ public class ImapStore extends Store
         {
             if (o instanceof ImapFolder)
             {
-                return ((ImapFolder)o).getPrefixedName().equalsIgnoreCase(getPrefixedName());
+                return ((ImapFolder)o).getName().equalsIgnoreCase(getName());
             }
             return super.equals(o);
         }
@@ -1962,7 +1990,7 @@ public class ImapStore extends Store
         @Override
         public int hashCode()
         {
-            return getPrefixedName().hashCode();
+            return getName().hashCode();
         }
 
         protected ImapStore getStore()
