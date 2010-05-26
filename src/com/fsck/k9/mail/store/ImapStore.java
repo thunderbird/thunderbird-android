@@ -446,11 +446,11 @@ public class ImapStore extends Store
     class ImapFolder extends Folder
     {
         private String mName;
-        protected int mMessageCount = -1;
-        protected int uidNext = -1;
-        protected ImapConnection mConnection;
+        protected volatile int mMessageCount = -1;
+        protected volatile int uidNext = -1;
+        protected volatile ImapConnection mConnection;
         private OpenMode mMode;
-        private boolean mExists;
+        private volatile boolean mExists;
         private ImapStore store = null;
         Map<Integer, String> msgSeqUidMap = new ConcurrentHashMap<Integer, String>();
 
@@ -2850,6 +2850,10 @@ public class ImapStore extends Store
                                 processUntaggedResponses(untaggedResponses);
                                 receiver.syncFolder(ImapFolderPusher.this);
                             }
+                            if (stop.get() == true)
+                            {
+                                continue;
+                            }
                             int startUid = oldUidNext;
 
                             int newUidNext = uidNext;
@@ -2899,36 +2903,29 @@ public class ImapStore extends Store
                             }
                             else
                             {
-                                if (stop.get() == false)
+                                List<ImapResponse> untaggedResponses = null;
+                                while (storedUntaggedResponses.size() > 0)
                                 {
-                                    List<ImapResponse> untaggedResponses = null;
-                                    if (storedUntaggedResponses.size() > 0)
-                                    {
-                                        if (K9.DEBUG)
-                                            Log.i(K9.LOG_TAG, "Processing " + storedUntaggedResponses.size() + " from previous commands for " + getLogId());
-                                        untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
-                                    }
-                                    else
-                                    {
-                                        if (K9.DEBUG)
-                                            Log.i(K9.LOG_TAG, "About to IDLE for " + getLogId());
-
-                                        receiver.setPushActive(getName(), true);
-                                        idling.set(true);
-                                        doneSent.set(false);
-                                        mConnection.setReadTimeout((getAccount().getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
-                                        untaggedResponses = executeSimpleCommand(COMMAND_IDLE, false, ImapFolderPusher.this);
-                                        idling.set(false);
-
-                                    }
-                                    if (stop.get() == false)
-                                    {
-                                        storedUntaggedResponses.clear();
-                                        processUntaggedResponses(untaggedResponses);
-                                    }
-                                    delayTime.set(NORMAL_DELAY_TIME);
-                                    idleFailureCount.set(0);
+                                    if (K9.DEBUG)
+                                        Log.i(K9.LOG_TAG, "Processing " + storedUntaggedResponses.size() + " untagged responses from previous commands for " + getLogId());
+                                    untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
+                                    storedUntaggedResponses.clear();
+                                    processUntaggedResponses(untaggedResponses);
                                 }
+                                
+                                if (K9.DEBUG)
+                                        Log.i(K9.LOG_TAG, "About to IDLE for " + getLogId());
+
+                                receiver.setPushActive(getName(), true);
+                                idling.set(true);
+                                doneSent.set(false);
+                                mConnection.setReadTimeout((getAccount().getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
+                                untaggedResponses = executeSimpleCommand(COMMAND_IDLE, false, ImapFolderPusher.this);
+                                idling.set(false);
+
+                                
+                                delayTime.set(NORMAL_DELAY_TIME);
+                                idleFailureCount.set(0);
                             }
                         }
                         catch (Exception e)
