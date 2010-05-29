@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.os.Environment;
 import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -165,7 +166,7 @@ public class AttachmentProvider extends ContentProvider
             File file = new File(attachmentsDir, id);
             if (!file.exists())
             {
-                file = new File("/sdcard"  + attachmentsDir.getCanonicalPath().substring("/data".length()), id);
+                file = new File(Environment.getExternalStorageDirectory()  + attachmentsDir.getCanonicalPath().substring("/data".length()), id);
                 if (!file.exists())
                 {
                     throw new FileNotFoundException();

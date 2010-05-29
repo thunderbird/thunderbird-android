@@ -10,6 +10,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.webkit.WebSettings;
 
@@ -48,7 +49,7 @@ public class K9 extends Application
      * on the phone, without adb.  Set to null to disable
      */
     public static final String logFile = null;
-    //public static final String logFile = "/sdcard/k9mail/debug.log";
+    //public static final String logFile = Environment.getExternalStorageDirectory() + "/k9mail/debug.log";
 
     /**
      * If this is enabled there will be additional logging information sent to
