@@ -644,7 +644,7 @@ public class LocalStore extends Store implements Serializable
         return true;
     }
 
-    public Message[] searchForMessages(MessageRetrievalListener listener, String queryString,
+    public Message[] searchForMessages(MessageRetrievalListener listener, String[] queryFields, String queryString,
                                        List<LocalFolder> folders, Message[] messages, final Flag[] requiredFlags, final Flag[] forbiddenFlags) throws MessagingException
     {
         List<String> args = new LinkedList<String>();
@@ -652,11 +652,22 @@ public class LocalStore extends Store implements Serializable
         StringBuilder whereClause = new StringBuilder();
         if (queryString != null && queryString.length() > 0)
         {
+            boolean anyAdded = false;
             String likeString = "%"+queryString+"%";
-            whereClause.append(" AND (html_content LIKE ? OR subject LIKE ? OR sender_list LIKE ?)");
-            args.add(likeString);
-            args.add(likeString);
-            args.add(likeString);
+            whereClause.append(" AND (");
+            for (String queryField : queryFields) {
+                
+                if (anyAdded == true)
+                {
+                    whereClause.append(" OR ");
+                }
+                whereClause.append(queryField + " LIKE ? ");
+                args.add(likeString);
+                anyAdded = true;
+            }
+
+
+            whereClause.append(" )");
         }
         if (folders != null && folders.size() > 0)
         {

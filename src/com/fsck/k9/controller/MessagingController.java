@@ -898,8 +898,10 @@ public class MessagingController implements Runnable
 
                     try
                     {
+                        String[] queryFields = {"html_content","subject","sender_list"};
                         LocalStore localStore = account.getLocalStore();
-                        localStore.searchForMessages(retrievalListener, query, foldersToSearch,
+                        localStore.searchForMessages(retrievalListener, queryFields
+                                , query, foldersToSearch,
                                                      messagesToSearch == null ? null : messagesToSearch.toArray(new Message[0]),
                                                      requiredFlags, forbiddenFlags);
 
