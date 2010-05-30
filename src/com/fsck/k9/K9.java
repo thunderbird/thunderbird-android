@@ -79,6 +79,7 @@ public class K9 extends Application
     private static boolean mMessageListCheckboxes = false;
     private static boolean mMessageListTouchable = false;
     private static boolean mGesturesEnabled = true;
+    private static boolean mManageBack = false;
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
 
@@ -297,6 +298,7 @@ public class K9 extends Application
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
+        editor.putBoolean("manageBack", mManageBack);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
         editor.putBoolean("messageListStars",mMessageListStars);
@@ -322,6 +324,7 @@ public class K9 extends Application
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
+        mManageBack = sprefs.getBoolean("manageBack", false);
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
@@ -449,6 +452,17 @@ public class K9 extends Application
     public static void setGesturesEnabled(boolean gestures)
     {
         mGesturesEnabled = gestures;
+    }
+
+
+    public static boolean manageBack()
+    {
+        return mManageBack;
+    }
+
+    public static void setManageBack(boolean manageBack)
+    {
+        mManageBack = manageBack;
     }
 
     public static boolean isAnimations()

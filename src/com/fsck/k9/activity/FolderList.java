@@ -355,9 +355,36 @@ public class FolderList extends K9ListActivity
     }
 
 
+    public void onBackPressed()
+    {
+        // This will be called either automatically for you on 2.0
+        // or later, or by the code above on earlier versions of the
+        // platform.
+        if (K9.manageBack() ) 
+        {
+        onAccounts();
+        }
+    }
+
     @Override public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         //Shortcuts that work no matter what is selected
+
+        if (
+            // TODO - when we move to android 2.0, uncomment this.
+            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
+
+            keyCode == KeyEvent.KEYCODE_BACK
+            && event.getRepeatCount() == 0
+            && K9.manageBack() )
+        {
+            // Take care of calling this method on earlier versions of
+            // the platform where it doesn't exist.
+            onBackPressed();
+            return true;
+        }
+
+
         switch (keyCode)
         {
             case KeyEvent.KEYCODE_Q:
@@ -533,6 +560,7 @@ public class FolderList extends K9ListActivity
     private void onOpenFolder(String folder)
     {
         MessageList.actionHandleFolder(this, mAccount, folder);
+        finish();
     }
 
     private void onCompact(Account account)

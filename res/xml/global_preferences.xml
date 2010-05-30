@@ -48,6 +48,12 @@
             android:title="@string/gestures_title"
             android:summary="@string/gestures_summary" />
 
+        <CheckBoxPreference
+            android:key="manage_back"
+            android:title="@string/manage_back_title"
+            android:summary="@string/manage_back_summary" />
+
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/accountlist_preferences" android:key="accountlist_preferences">
