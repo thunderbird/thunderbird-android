@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import android.util.Log;
+
+import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 
 public abstract class Message implements Part, Body
@@ -23,7 +26,28 @@ public abstract class Message implements Part, Body
     protected Date mInternalDate;
 
     protected Folder mFolder;
-
+    
+    public boolean olderThan(Date earliestDate)
+    {
+        if (earliestDate == null)
+        {
+            return false;
+        }
+        Date myDate = getSentDate();
+        if (myDate == null)
+        {
+            myDate = getInternalDate();
+        }
+        if (myDate == null)
+        {
+            myDate = getReceivedDate();
+        }
+        if (myDate != null)
+        {
+            return myDate.before(earliestDate);
+        }
+        return false;
+    }
     @Override
     public boolean equals(Object o)
     {
@@ -79,9 +103,9 @@ public abstract class Message implements Part, Body
         this.mInternalDate = internalDate;
     }
 
-    public abstract Date getReceivedDate() throws MessagingException;
+    public abstract Date getReceivedDate();
 
-    public abstract Date getSentDate() throws MessagingException;
+    public abstract Date getSentDate();
 
     public abstract void setSentDate(Date sentDate) throws MessagingException;
 

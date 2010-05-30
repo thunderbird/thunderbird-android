@@ -534,7 +534,7 @@ public class LocalStore extends Store implements Serializable
 
     public void resetVisibleLimits()
     {
-        resetVisibleLimits(K9.DEFAULT_VISIBLE_LIMIT);
+        resetVisibleLimits(mAccount.getDisplayCount());
     }
 
     public void resetVisibleLimits(int visibleLimit)
@@ -962,7 +962,7 @@ public class LocalStore extends Store implements Serializable
             mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
                         {
                             mName,
-                            K9.DEFAULT_VISIBLE_LIMIT
+                            mAccount.getDisplayCount()
                         });
             return true;
         }
@@ -1445,7 +1445,7 @@ public class LocalStore extends Store implements Serializable
         }
 
         @Override
-        public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
+        public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException
         {
             open(OpenMode.READ_WRITE);

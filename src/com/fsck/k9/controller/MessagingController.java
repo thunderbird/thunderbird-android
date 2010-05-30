@@ -4,6 +4,7 @@ package com.fsck.k9.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -1139,16 +1140,17 @@ public class MessagingController implements Runnable
                     Log.v(K9.LOG_TAG, "SYNC: About to open remote folder " + folder);
 
                 remoteFolder.open(OpenMode.READ_WRITE);
+                if (Account.EXPUNGE_ON_POLL.equals(account.getExpungePolicy()))
+                {
+                    if (K9.DEBUG)
+                        Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
+
+
+                    remoteFolder.expunge();
+                }
+
             }
-            if (Account.EXPUNGE_ON_POLL.equals(account.getExpungePolicy()))
-            {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "SYNC: Expunging folder " + account.getDescription() + ":" + folder);
-
-                remoteFolder.expunge();
-            }
-
-
+           
             /*
              * Get the remote message count.
              */
@@ -1163,7 +1165,7 @@ public class MessagingController implements Runnable
 
             if (K9.DEBUG)
                 Log.v(K9.LOG_TAG, "SYNC: Remote message count for folder " + folder + " is " + remoteMessageCount);
-
+            final Date earliestDate = account.getEarliestPollDate();
             if (remoteMessageCount > 0)
             {
                 /*
@@ -1175,11 +1177,15 @@ public class MessagingController implements Runnable
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: About to get messages " + remoteStart + " through " + remoteEnd + " for folder " + folder);
 
-                remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteEnd, null);
+                remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteEnd, earliestDate, null);
                 for (Message thisMess : remoteMessageArray)
                 {
-                    remoteMessages.add(thisMess);
-                    remoteUidMap.put(thisMess.getUid(), thisMess);
+                    Message localMessage = localUidMap.get(thisMess.getUid());
+                    if (localMessage == null || localMessage.olderThan(earliestDate) == false)
+                    {
+                        remoteMessages.add(thisMess);
+                        remoteUidMap.put(thisMess.getUid(), thisMess);
+                    }
                 }
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: Got " + remoteUidMap.size() + " messages for folder " + folder);
@@ -1193,8 +1199,9 @@ public class MessagingController implements Runnable
             }
 
             /*
-             * Remove any messages that are in the local store but no longer on the remote store.
+             * Remove any messages that are in the local store but no longer on the remote store or are too old
              */
+           
             for (Message localMessage : localMessages)
             {
                 if (remoteUidMap.get(localMessage.getUid()) == null && !localMessage.isSet(Flag.DELETED))
@@ -1370,6 +1377,14 @@ public class MessagingController implements Runnable
     private int downloadMessages(final Account account, final Folder remoteFolder,
                                  final LocalFolder localFolder, List<Message> inputMessages, boolean flagSyncOnly) throws MessagingException
     {
+        final Date earliestDate = account.getEarliestPollDate();
+        if (earliestDate != null)
+        {
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "Only syncing messages after " + earliestDate);
+            }
+        }
         final String folder = remoteFolder.getName();
 
         ArrayList<Message> syncFlagMessages = new ArrayList<Message>();
@@ -1500,14 +1515,31 @@ public class MessagingController implements Runnable
                         {
                             localFolder.setPushState(newPushState);
                         }
-                        if (message.isSet(Flag.DELETED))
+                        if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate))
                         {
+                            
                             if (K9.DEBUG)
-                                Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid()
-                                      + " was already deleted on server, skipping");
+                            {
+                                if (message.isSet(Flag.DELETED))
+                                {
+                                    Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid()
+                                            + " was already deleted on server, skipping");
+                                }
+                                else
+                                {
+                                    Log.d(K9.LOG_TAG, "Newly downloaded message " + message.getUid() + " is older than "
+                                        + earliestDate + ", skipping");
+                                }
+                            }
+                            progress.incrementAndGet();
+                            for (MessagingListener l : getListeners())
+                            {
+                                l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
+                            }
                             return;
                         }
-
+                            
+                        
                         // Store the new message locally
                         localFolder.appendMessages(new Message[]
                                                    {
@@ -1611,18 +1643,29 @@ public class MessagingController implements Runnable
             {
                 try
                 {
+                    if (message.olderThan(earliestDate))
+                    {
+                        if (K9.DEBUG)
+                        {
+                            Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
+                                    + earliestDate + ", hence not saving");
+                        }
+                        progress.incrementAndGet();
+    
+                        return;
+                    }
+
                     // Store the updated message locally
                     localFolder.appendMessages(new Message[] { message });
 
                     Message localMessage = localFolder.getMessage(message.getUid());
+                    progress.incrementAndGet();
 
                     // Set a flag indicating this message has now be fully downloaded
                     localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
                     if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "About to notify listeners that we got a new small message "
                               + account + ":" + folder + ":" + message.getUid());
-
-                    progress.incrementAndGet();
 
                     // Update the listener with what we've found
                     for (MessagingListener l : getListeners())
@@ -1677,6 +1720,17 @@ public class MessagingController implements Runnable
         remoteFolder.fetch(largeMessages.toArray(new Message[largeMessages.size()]), fp, null);
         for (Message message : largeMessages)
         {
+            if (message.olderThan(earliestDate))
+            {
+                if (K9.DEBUG)
+                {
+                    Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
+                            + earliestDate + ", hence not saving");
+                }
+                progress.incrementAndGet();
+
+                continue;
+            }
             if (message.getBody() == null)
             {
                 /*
@@ -1694,6 +1748,7 @@ public class MessagingController implements Runnable
                  */
 
                 remoteFolder.fetch(new Message[] { message }, fp, null);
+                
                 // Store the updated message locally
                 localFolder.appendMessages(new Message[] { message });
 

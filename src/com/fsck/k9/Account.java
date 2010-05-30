@@ -16,6 +16,8 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -91,6 +93,7 @@ public class Account implements BaseAccount
     private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
+    private int maximumPolledMessageAge;
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
     private boolean mRingNotified;
@@ -142,6 +145,7 @@ public class Account implements BaseAccount
         mLedColor = mChipColor;
         goToUnreadMessageSearch = false;
         subscribedFoldersOnly = false;
+        maximumPolledMessageAge = 10;
 
         searchableFolders = Searchable.ALL;
 
@@ -180,7 +184,7 @@ public class Account implements BaseAccount
                           + ".saveAllHeaders", false);
         mPushPollOnConnect = preferences.getPreferences().getBoolean(mUuid
                              + ".pushPollOnConnect", true);
-        mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", -1);
+        mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         mLastAutomaticCheckTime = preferences.getPreferences().getLong(mUuid
                                   + ".lastAutomaticCheckTime", 0);
         mNotifyNewMail = preferences.getPreferences().getBoolean(mUuid + ".notifyNewMail",
@@ -205,6 +209,8 @@ public class Account implements BaseAccount
                                   false);
         subscribedFoldersOnly = preferences.getPreferences().getBoolean(mUuid + ".subscribedFoldersOnly",
                 false);
+        maximumPolledMessageAge = preferences.getPreferences().getInt(mUuid
+                + ".maximumPolledMessageAge", -1);
         for (String type : networkTypes)
         {
             Boolean useCompression = preferences.getPreferences().getBoolean(mUuid + ".useCompression." + type,
@@ -375,6 +381,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid  + ".ledColor");
         editor.remove(mUuid + ".goToUnreadMessageSearch");
         editor.remove(mUuid + ".subscribedFoldersOnly");
+        editor.remove(mUuid + ".maximumPolledMessageAge");
         for (String type : networkTypes)
         {
             editor.remove(mUuid + ".useCompression." + type);
@@ -459,7 +466,8 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".ledColor", mLedColor);
         editor.putBoolean(mUuid + ".goToUnreadMessageSearch", goToUnreadMessageSearch);
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
-
+        editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
+        
         for (String type : networkTypes)
         {
             Boolean useCompression = compressionMap.get(type);
@@ -718,10 +726,6 @@ public class Account implements BaseAccount
 
     public synchronized int getDisplayCount()
     {
-        if (mDisplayCount == -1)
-        {
-            this.mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
-        }
         return mDisplayCount;
     }
 
@@ -1217,5 +1221,55 @@ public class Account implements BaseAccount
     public void setSubscribedFoldersOnly(boolean subscribedFoldersOnly)
     {
         this.subscribedFoldersOnly = subscribedFoldersOnly;
+    }
+
+    public int getMaximumPolledMessageAge()
+    {
+        return maximumPolledMessageAge;
+    }
+
+    public void setMaximumPolledMessageAge(int maximumPolledMessageAge)
+    {
+        this.maximumPolledMessageAge = maximumPolledMessageAge;
+    }
+    public Date getEarliestPollDate()
+    {
+        int age = getMaximumPolledMessageAge();
+        if (age < 0 == false)
+        {
+            Calendar now = Calendar.getInstance();
+            now.set(Calendar.HOUR_OF_DAY, 0);
+            now.set(Calendar.MINUTE, 0);
+            now.set(Calendar.SECOND, 0);
+            now.set(Calendar.MILLISECOND, 0);
+            if (age < 28)
+            {
+                now.add(Calendar.DATE, age * -1);
+            }
+            else switch (age)
+            {
+                case 28:
+                    now.add(Calendar.MONTH, -1);
+                    break;
+                case 56:
+                    now.add(Calendar.MONTH, -2);
+                    break;
+                case 84:
+                    now.add(Calendar.MONTH, -3);
+                    break;
+                case 168:
+                    now.add(Calendar.MONTH, -6);
+                    break;
+                case 365:
+                    now.add(Calendar.YEAR, -1);
+                    break;
+            }
+            
+            return now.getTime();
+        }
+        else
+        {
+            return null;
+        }
     }
 }

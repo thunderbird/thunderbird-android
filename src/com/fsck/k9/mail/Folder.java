@@ -1,5 +1,7 @@
 package com.fsck.k9.mail;
 
+import java.util.Date;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
@@ -82,7 +84,7 @@ public abstract class Folder
 
     public abstract Message getMessage(String uid) throws MessagingException;
 
-    public abstract Message[] getMessages(int start, int end, MessageRetrievalListener listener)
+    public abstract Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
     throws MessagingException;
 
     /**

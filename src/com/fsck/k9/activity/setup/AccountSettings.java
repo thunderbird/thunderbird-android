@@ -52,6 +52,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_CHIP_COLOR = "chip_color";
     private static final String PREFERENCE_LED_COLOR = "led_color";
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
+    private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
 
 
 
@@ -60,6 +61,7 @@ public class AccountSettings extends K9PreferenceActivity
     private EditTextPreference mAccountDescription;
     private ListPreference mCheckFrequency;
     private ListPreference mDisplayCount;
+    private ListPreference mMessageAge;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
@@ -267,6 +269,21 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
+        
+        mMessageAge = (ListPreference) findPreference(PREFERENCE_MESSAGE_AGE);
+        mMessageAge.setValue(String.valueOf(mAccount.getMaximumPolledMessageAge()));
+        mMessageAge.setSummary(mMessageAge.getEntry());
+        mMessageAge.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mMessageAge.findIndexOfValue(summary);
+                mMessageAge.setSummary(mMessageAge.getEntries()[index]);
+                mMessageAge.setValue(summary);
+                return false;
+            }
+        });
 
         mAccountDefault = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT);
         mAccountDefault.setChecked(
@@ -417,6 +434,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
+        mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));

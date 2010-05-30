@@ -43,6 +43,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -91,6 +92,8 @@ public class ImapStore extends Store
     private volatile String mPathPrefix;
     private volatile String mCombinedPrefix = null;
     private volatile String mPathDelimeter = null;
+    
+    private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy");
 
     private LinkedList<ImapConnection> mConnections =
         new LinkedList<ImapConnection>();
@@ -1000,13 +1003,13 @@ public class ImapStore extends Store
 
 
         @Override
-        public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
+        public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException
         {
-            return getMessages(start, end, false, listener);
+            return getMessages(start, end, earliestDate, false, listener);
         }
 
-        protected Message[] getMessages(final int start, final int end, final boolean includeDeleted, final MessageRetrievalListener listener)
+        protected Message[] getMessages(final int start, final int end, Date earliestDate, final boolean includeDeleted, final MessageRetrievalListener listener)
         throws MessagingException
         {
             if (start < 1 || end < 1 || end < start)
@@ -1015,11 +1018,22 @@ public class ImapStore extends Store
                     String.format("Invalid message set %d %d",
                                   start, end));
             }
+            final StringBuilder dateSearchString = new StringBuilder();
+            if (earliestDate != null)
+            {
+                dateSearchString.append("SINCE ");
+                synchronized(RFC3501_DATE)
+                {
+                    dateSearchString.append(RFC3501_DATE.format(earliestDate));
+                }
+            }
+            
+            
             ImapSearcher searcher = new ImapSearcher()
             {
                 public List<ImapResponse> search() throws IOException, MessagingException
                 {
-                    return executeSimpleCommand(String.format("UID SEARCH %d:%d" + (includeDeleted ? "" : " NOT DELETED"), start, end));
+                    return executeSimpleCommand(String.format("UID SEARCH %d:%d %s " + (includeDeleted ? "" : " NOT DELETED"), start, end, dateSearchString));
                 }
             };
             return search(searcher, listener);
@@ -2008,7 +2022,10 @@ public class ImapStore extends Store
         throws MessagingException
         {
             Log.e(K9.LOG_TAG, "IOException for " + getLogId(), ioe);
-            connection.close();
+            if (connection != null)
+            {
+                connection.close();
+            }
             close();
             return new MessagingException("IO Error", ioe);
         }
@@ -3099,7 +3116,7 @@ public class ImapStore extends Store
                 Log.e(K9.LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
             }
 
-            Message[] messageArray = getMessages(end, end, true, null);
+            Message[] messageArray = getMessages(end, end, null, true, null);
             if (messageArray != null && messageArray.length > 0)
             {
                 int newUid = Integer.parseInt(messageArray[0].getUid());

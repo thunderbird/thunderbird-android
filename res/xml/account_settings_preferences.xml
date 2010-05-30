@@ -39,7 +39,8 @@
             android:title="@string/account_settings_mail_display_count_label"
             android:entries="@array/account_settings_display_count_entries"
             android:entryValues="@array/account_settings_display_count_values"
-            android:dialogTitle="@string/account_settings_mail_display_count_label" />
+            android:dialogTitle="@string/account_settings_mail_display_count_label" />            
+             
         <Preference
             android:key="chip_color"
             android:singleLine="true"
@@ -72,6 +73,13 @@
             android:entries="@array/account_settings_check_frequency_entries"
             android:entryValues="@array/account_settings_check_frequency_values"
             android:dialogTitle="@string/account_settings_mail_check_frequency_label" />
+
+        <ListPreference
+            android:key="account_message_age"
+            android:title="@string/account_settings_message_age_label"
+            android:entries="@array/account_settings_message_age_entries"
+            android:entryValues="@array/account_settings_message_age_values"
+            android:dialogTitle="@string/account_settings_message_age_label" />
         
         <ListPreference
             android:key="folder_sync_mode"

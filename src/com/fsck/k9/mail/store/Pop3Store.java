@@ -20,6 +20,7 @@ import java.net.*;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -435,7 +436,7 @@ public class Pop3Store extends Store
         }
 
         @Override
-        public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
+        public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException
         {
             if (start < 1 || end < 1 || end < start)

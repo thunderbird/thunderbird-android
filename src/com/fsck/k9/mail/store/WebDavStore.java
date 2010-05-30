@@ -1393,7 +1393,7 @@ public class WebDavStore extends Store
         }
 
         @Override
-        public Message[] getMessages(int start, int end, MessageRetrievalListener listener)
+        public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
         throws MessagingException
         {
             ArrayList<Message> messages = new ArrayList<Message>();

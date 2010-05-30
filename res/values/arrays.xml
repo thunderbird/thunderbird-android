@@ -66,6 +66,36 @@
         <item>1000</item>
     </string-array>
     
+    <string-array name="account_settings_message_age_entries">
+        <item>@string/account_settings_message_age_any</item>
+        <item>@string/account_settings_message_age_0</item>
+        <item>@string/account_settings_message_age_1</item>
+        <item>@string/account_settings_message_age_2</item>
+        <item>@string/account_settings_message_age_7</item>
+        <item>@string/account_settings_message_age_14</item>
+        <item>@string/account_settings_message_age_21</item>
+        <item>@string/account_settings_message_age_1_month</item>
+        <item>@string/account_settings_message_age_2_months</item>
+        <item>@string/account_settings_message_age_3_months</item>
+        <item>@string/account_settings_message_age_6_months</item>
+        <item>@string/account_settings_message_age_1_year</item>
+    </string-array>
+
+    <string-array name="account_settings_message_age_values">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>7</item>
+        <item>14</item>
+        <item>21</item>
+        <item>28</item>
+        <item>56</item>
+        <item>84</item>
+        <item>168</item>
+        <item>365</item>
+    </string-array>
+    
     <string-array name="account_settings_folder_display_mode_entries">
         <item>@string/account_settings_folder_display_mode_all</item>
        <item>@string/account_settings_folder_display_mode_first_class</item>
