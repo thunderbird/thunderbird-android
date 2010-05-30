@@ -481,7 +481,7 @@ public class ImapStore extends Store
                 }
                 try
                 {
-                    
+
                     connection.open();
                 }
                 catch (IOException ioe)
@@ -1170,7 +1170,7 @@ public class ImapStore extends Store
                                                      ), false);
                 ImapResponse response;
                 int messageNumber = 0;
-                
+
                 ImapResponseParser.IImapResponseCallback callback = null;
                 if (fp.contains(FetchProfile.Item.BODY) || fp.contains(FetchProfile.Item.BODY_SANE) || fp.contains(FetchProfile.Item.ENVELOPE))
                 {
@@ -1230,7 +1230,7 @@ public class ImapStore extends Store
                             }
                             else if (literal instanceof Integer)
                             {
-                                // All the work was done in FetchBodyCallback.foundLiteral() 
+                                // All the work was done in FetchBodyCallback.foundLiteral()
                             }
                             else
                             {
@@ -1260,10 +1260,10 @@ public class ImapStore extends Store
             }
         }
 
-        
+
         @Override
         public void fetchPart(Message message, Part part, MessageRetrievalListener listener)
-            throws MessagingException
+        throws MessagingException
         {
             checkOpen();
 
@@ -1272,7 +1272,7 @@ public class ImapStore extends Store
             {
                 return;
             }
-            
+
             String fetch;
             String partId = parts[0];
             if ("TEXT".equalsIgnoreCase(partId))
@@ -1287,12 +1287,12 @@ public class ImapStore extends Store
             try
             {
                 mConnection.sendCommand(
-                        String.format("UID FETCH %s (UID %s)", message.getUid(), fetch),
-                        false);
+                    String.format("UID FETCH %s (UID %s)", message.getUid(), fetch),
+                    false);
 
                 ImapResponse response;
                 int messageNumber = 0;
-                
+
                 ImapResponseParser.IImapResponseCallback callback = new FetchPartCallback(part);
 
                 do
@@ -1321,7 +1321,7 @@ public class ImapStore extends Store
                         ImapMessage imapMessage = (ImapMessage) message;
 
                         Object literal = handleFetchResponse(imapMessage, fetchList);
-                        
+
                         if (literal != null)
                         {
                             if (literal instanceof Body)
@@ -1333,9 +1333,9 @@ public class ImapStore extends Store
                             {
                                 String bodyString = (String)literal;
                                 InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
-                                
+
                                 String contentTransferEncoding = part.getHeader(
-                                        MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
                                 part.setBody(MimeUtility.decodeBody(bodyStream, contentTransferEncoding));
                             }
                             else
@@ -2335,7 +2335,7 @@ public class ImapStore extends Store
                     }
                 }
 
-                
+
             }
             catch (SSLException e)
             {
@@ -2519,7 +2519,7 @@ public class ImapStore extends Store
         {
             return readResponse(null);
         }
-        
+
         private ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException, MessagingException
         {
             try
@@ -2772,7 +2772,7 @@ public class ImapStore extends Store
             TracingPowerManager pm = TracingPowerManager.getPowerManager(receiver.getContext());
             wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ImapFolderPusher " + store.getAccount().getDescription() + ":" + getName());
             wakeLock.setReferenceCounted(false);
-            
+
         }
         public void refresh() throws IOException, MessagingException
         {
@@ -2912,9 +2912,9 @@ public class ImapStore extends Store
                                     storedUntaggedResponses.clear();
                                     processUntaggedResponses(untaggedResponses);
                                 }
-                                
+
                                 if (K9.DEBUG)
-                                        Log.i(K9.LOG_TAG, "About to IDLE for " + getLogId());
+                                    Log.i(K9.LOG_TAG, "About to IDLE for " + getLogId());
 
                                 receiver.setPushActive(getName(), true);
                                 idling.set(true);
@@ -2923,7 +2923,7 @@ public class ImapStore extends Store
                                 untaggedResponses = executeSimpleCommand(COMMAND_IDLE, false, ImapFolderPusher.this);
                                 idling.set(false);
 
-                                
+
                                 delayTime.set(NORMAL_DELAY_TIME);
                                 idleFailureCount.set(0);
                             }
@@ -3510,12 +3510,12 @@ public class ImapStore extends Store
 
         FetchBodyCallback(HashMap<String, Message> mesageMap)
         {
-            mMessageMap = mesageMap;            
+            mMessageMap = mesageMap;
         }
 
         @Override
         public Object foundLiteral(ImapResponse response,
-                FixedLengthInputStream literal) throws IOException, Exception
+                                   FixedLengthInputStream literal) throws IOException, Exception
         {
             if (response.mTag == null &&
                     ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))
@@ -3544,7 +3544,7 @@ public class ImapStore extends Store
 
         @Override
         public Object foundLiteral(ImapResponse response,
-                FixedLengthInputStream literal) throws IOException, Exception
+                                   FixedLengthInputStream literal) throws IOException, Exception
         {
             if (response.mTag == null &&
                     ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))
@@ -3552,7 +3552,7 @@ public class ImapStore extends Store
                 //TODO: check for correct UID
 
                 String contentTransferEncoding = mPart.getHeader(
-                        MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
+                                                     MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
 
                 return MimeUtility.decodeBody(literal, contentTransferEncoding);
             }

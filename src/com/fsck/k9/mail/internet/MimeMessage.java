@@ -384,20 +384,20 @@ public class MimeMessage extends Message
          * But at least one implementations seems to have problems with 998
          * characters, so we adjust for that fact.
          */
-        final int limit = 1000 - 2 /* CRLF */ - 12 /* "References: " */ - 1 /* Off-by-one bugs */; 
+        final int limit = 1000 - 2 /* CRLF */ - 12 /* "References: " */ - 1 /* Off-by-one bugs */;
         final int originalLength = references.length();
         if (originalLength >= limit)
         {
-        	// Find start of first reference
-        	final int start = references.indexOf('<');
+            // Find start of first reference
+            final int start = references.indexOf('<');
 
-        	// First reference + SPACE
+            // First reference + SPACE
             final String firstReference = references.substring(start,
-            		references.indexOf('<', start + 1));
+                                          references.indexOf('<', start + 1));
 
             // Find longest tail
             final String tail = references.substring(references.indexOf('<',
-            		firstReference.length() + originalLength - limit));
+                                firstReference.length() + originalLength - limit));
 
             references = firstReference + tail;
         }

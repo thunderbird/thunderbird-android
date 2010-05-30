@@ -360,9 +360,9 @@ public class FolderList extends K9ListActivity
         // This will be called either automatically for you on 2.0
         // or later, or by the code above on earlier versions of the
         // platform.
-        if (K9.manageBack() ) 
+        if (K9.manageBack())
         {
-        onAccounts();
+            onAccounts();
         }
     }
 
@@ -376,7 +376,7 @@ public class FolderList extends K9ListActivity
 
             keyCode == KeyEvent.KEYCODE_BACK
             && event.getRepeatCount() == 0
-            && K9.manageBack() )
+            && K9.manageBack())
         {
             // Take care of calling this method on earlier versions of
             // the platform where it doesn't exist.

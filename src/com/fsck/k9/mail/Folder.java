@@ -134,7 +134,7 @@ public abstract class Folder
                                MessageRetrievalListener listener) throws MessagingException;
 
     public void fetchPart(Message message, Part part,
-            MessageRetrievalListener listener) throws MessagingException
+                          MessageRetrievalListener listener) throws MessagingException
     {
         throw new RuntimeException("fetchPart() not implemented.");
     }

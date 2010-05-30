@@ -132,9 +132,9 @@ public class MailService extends CoreService
 
                     Log.i(K9.LOG_TAG, "AutoSync help is available, autoSync = " + autoSync);
                 }
-                
+
                 K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
-                
+
                 switch (bOps)
                 {
                     case NEVER:
@@ -149,8 +149,8 @@ public class MailService extends CoreService
                     case WHEN_CHECKED_AUTO_SYNC:
                         doBackground = backgroundData & autoSync;
                         break;
-                }       
-                
+                }
+
             }
 
             if (K9.DEBUG)

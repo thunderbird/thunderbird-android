@@ -23,7 +23,7 @@ public class BootReceiver extends CoreReceiver
 
     public static String ALARMED_INTENT = "com.fsck.k9.service.BroadcastReceiver.pendingIntent";
     public static String AT_TIME = "com.fsck.k9.service.BroadcastReceiver.atTime";
-    
+
     @Override
     public Integer receive(Context context, Intent intent, Integer tmpWakeLockId)
     {

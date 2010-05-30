@@ -32,7 +32,7 @@ public class ImapResponseParser
     {
         return readResponse(null);
     }
-    
+
     /**
      * Reads the next response available on the stream and returns an
      * ImapResponse object that represents it.
@@ -47,7 +47,7 @@ public class ImapResponseParser
             ImapResponse response = new ImapResponse();
             mResponse = response;
             mResponse.mCallback = callback;
-    
+
             int ch = mIn.peek();
             if (ch == '*')
             {
@@ -69,12 +69,12 @@ public class ImapResponseParser
             {
                 Log.v(K9.LOG_TAG, "<<< " + response.toString());
             }
-            
+
             if (mException != null)
             {
                 throw new RuntimeException("readResponse(): Exception in callback method", mException);
             }
-            
+
             return response;
         }
         finally
@@ -315,7 +315,7 @@ public class ImapResponseParser
         if (mResponse.mCallback != null)
         {
             FixedLengthInputStream fixed = new FixedLengthInputStream(mIn, size);
-            
+
             Object result = null;
             try
             {
@@ -340,7 +340,7 @@ public class ImapResponseParser
                 // If so, skip the rest
                 fixed.skip(fixed.available());
             }
-            
+
             if (result != null)
             {
                 return result;
@@ -358,7 +358,7 @@ public class ImapResponseParser
             }
             read += count;
         }
-        
+
         return new String(data, "US-ASCII");
     }
 
@@ -651,7 +651,7 @@ public class ImapResponseParser
             return o1 == o2;
         }
     }
-    
+
     public interface IImapResponseCallback
     {
         /**
@@ -672,6 +672,6 @@ public class ImapResponseParser
          *                   complete IMAP response has been parsed.
          */
         public Object foundLiteral(ImapResponse response, FixedLengthInputStream literal)
-                throws IOException, Exception;
+        throws IOException, Exception;
     }
 }

@@ -655,8 +655,9 @@ public class LocalStore extends Store implements Serializable
             boolean anyAdded = false;
             String likeString = "%"+queryString+"%";
             whereClause.append(" AND (");
-            for (String queryField : queryFields) {
-                
+            for (String queryField : queryFields)
+            {
+
                 if (anyAdded == true)
                 {
                     whereClause.append(" OR ");
@@ -1455,7 +1456,7 @@ public class LocalStore extends Store implements Serializable
         /**
          * Populate the header fields of the given list of messages by reading
          * the saved header data from the database.
-         * 
+         *
          * @param messages
          *            The messages whose headers should be loaded.
          */
@@ -1922,7 +1923,7 @@ public class LocalStore extends Store implements Serializable
             }
 
             if (!gotAdditionalHeaders)
-            {                
+            {
                 // Remember that all headers for this message have been saved, so it is
                 // not necessary to download them again in case the user wants to see all headers.
                 List<Flag> appendedFlags = new ArrayList<Flag>();
@@ -1930,7 +1931,7 @@ public class LocalStore extends Store implements Serializable
                 appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
 
                 mDb.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
-                    { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id } );
+                            { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id });
             }
         }
 
@@ -2778,7 +2779,8 @@ public class LocalStore extends Store implements Serializable
         }
 
         @Override
-        public Set<String> getHeaderNames() {
+        public Set<String> getHeaderNames()
+        {
             if (!mHeadersLoaded)
                 loadHeaders();
             return super.getHeaderNames();

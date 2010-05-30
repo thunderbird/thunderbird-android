@@ -82,10 +82,10 @@ public class SleepService extends CoreService
         {
             reacquireWakeLock(releaseDatum);
         }
-        
+
         long endTime = System.currentTimeMillis();
         long actualSleep = endTime - startTime;
-        
+
         if (actualSleep < sleepTime)
         {
             Log.w(K9.LOG_TAG, "SleepService sleep time too short: requested was " + sleepTime + ", actual was " + actualSleep);
@@ -93,7 +93,7 @@ public class SleepService extends CoreService
         else
         {
             if (K9.DEBUG)
-              Log.d(K9.LOG_TAG, "SleepService requested sleep time was " + sleepTime + ", actual was " + actualSleep);
+                Log.d(K9.LOG_TAG, "SleepService requested sleep time was " + sleepTime + ", actual was " + actualSleep);
         }
     }
 

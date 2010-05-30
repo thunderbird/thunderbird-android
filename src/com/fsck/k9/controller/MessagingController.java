@@ -901,7 +901,7 @@ public class MessagingController implements Runnable
                         String[] queryFields = {"html_content","subject","sender_list"};
                         LocalStore localStore = account.getLocalStore();
                         localStore.searchForMessages(retrievalListener, queryFields
-                                , query, foldersToSearch,
+                                                     , query, foldersToSearch,
                                                      messagesToSearch == null ? null : messagesToSearch.toArray(new Message[0]),
                                                      requiredFlags, forbiddenFlags);
 
@@ -1542,7 +1542,7 @@ public class MessagingController implements Runnable
                                     l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
                                 }
 
-                               
+
                             }
 
                         }
@@ -4096,7 +4096,7 @@ public class MessagingController implements Runnable
         if (useManualWakeLock)
         {
             TracingPowerManager pm = TracingPowerManager.getPowerManager(context);
-            
+
             twakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "K9 MessagingController.checkMail");
             twakeLock.setReferenceCounted(false);
             twakeLock.acquire(K9.MANUAL_WAKE_LOCK_TIMEOUT);

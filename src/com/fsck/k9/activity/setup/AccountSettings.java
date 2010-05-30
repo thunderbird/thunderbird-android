@@ -429,7 +429,7 @@ public class AccountSettings extends K9PreferenceActivity
 
         boolean needsPushRestart = mAccount.setFolderPushMode(Account.FolderMode.valueOf(mPushMode.getValue()));
         boolean displayModeChanged = mAccount.setFolderDisplayMode(Account.FolderMode.valueOf(mDisplayMode.getValue()));
-        
+
         if (mAccount.getFolderPushMode() != FolderMode.NONE)
         {
             needsPushRestart |= displayModeChanged;

@@ -53,7 +53,7 @@ public class DomainNameChecker
     /**
      * Checks the site certificate against the domain name of the site being
      * visited
-     * 
+     *
      * @param certificate
      *            The certificate to check
      * @param thisDomain
@@ -95,7 +95,7 @@ public class DomainNameChecker
                 if (rval)
                 {
                     rval = domain.equals(InetAddress.getByName(domain)
-                            .getHostAddress());
+                                         .getHostAddress());
                 }
             }
             catch (UnknownHostException e)
@@ -109,7 +109,7 @@ public class DomainNameChecker
                 if (K9.DEBUG)
                 {
                     Log.v(K9.LOG_TAG, "DomainNameChecker.isIpAddress(): "
-                            + errorMessage);
+                          + errorMessage);
                 }
 
                 rval = false;
@@ -122,7 +122,7 @@ public class DomainNameChecker
     /**
      * Checks the site certificate against the IP domain name of the site being
      * visited
-     * 
+     *
      * @param certificate
      *            The certificate to check
      * @param thisDomain
@@ -144,15 +144,15 @@ public class DomainNameChecker
                 Iterator<?> i = subjectAltNames.iterator();
                 while (i.hasNext())
                 {
-                    List<?> altNameEntry = (List<?>) (i.next());
+                    List<?> altNameEntry = (List<?>)(i.next());
                     if ((altNameEntry != null) && (2 <= altNameEntry.size()))
                     {
-                        Integer altNameType = (Integer) (altNameEntry.get(0));
+                        Integer altNameType = (Integer)(altNameEntry.get(0));
                         if (altNameType != null)
                         {
                             if (altNameType.intValue() == ALT_IPA_NAME)
                             {
-                                String altName = (String) (altNameEntry.get(1));
+                                String altName = (String)(altNameEntry.get(1));
                                 if (altName != null)
                                 {
                                     if (K9.DEBUG)
@@ -180,7 +180,7 @@ public class DomainNameChecker
     /**
      * Checks the site certificate against the DNS domain name of the site being
      * visited
-     * 
+     *
      * @param certificate
      *            The certificate to check
      * @param thisDomain
@@ -198,16 +198,16 @@ public class DomainNameChecker
                 Iterator<?> i = subjectAltNames.iterator();
                 while (i.hasNext())
                 {
-                    List<?> altNameEntry = (List<?>) (i.next());
+                    List<?> altNameEntry = (List<?>)(i.next());
                     if ((altNameEntry != null) && (2 <= altNameEntry.size()))
                     {
-                        Integer altNameType = (Integer) (altNameEntry.get(0));
+                        Integer altNameType = (Integer)(altNameEntry.get(0));
                         if (altNameType != null)
                         {
                             if (altNameType.intValue() == ALT_DNS_NAME)
                             {
                                 hasDns = true;
-                                String altName = (String) (altNameEntry.get(1));
+                                String altName = (String)(altNameEntry.get(1));
                                 if (altName != null)
                                 {
                                     if (matchDns(thisDomain, altName))
@@ -237,7 +237,7 @@ public class DomainNameChecker
                 }
 
                 Log.v(K9.LOG_TAG, "DomainNameChecker.matchDns(): "
-                        + errorMessage);
+                      + errorMessage);
             }
         }
 
@@ -250,7 +250,7 @@ public class DomainNameChecker
             {
                 if (oid.elementAt(i).equals(X509Name.CN))
                 {
-                    return matchDns(thisDomain, (String) (val.elementAt(i)));
+                    return matchDns(thisDomain, (String)(val.elementAt(i)));
                 }
             }
         }
@@ -270,8 +270,8 @@ public class DomainNameChecker
         if (K9.DEBUG)
         {
             Log.v(K9.LOG_TAG, "DomainNameChecker.matchDns():"
-                    + " this domain: " + thisDomain + " that domain: "
-                    + thatDomain);
+                  + " this domain: " + thisDomain + " that domain: "
+                  + thatDomain);
         }
 
         if ((thisDomain == null) || (thisDomain.length() == 0)
@@ -311,7 +311,7 @@ public class DomainNameChecker
                                 // (d) OR we have a *-component match:
                                 // f*.com matches foo.com but not bar.com
                                 rval = domainTokenMatch(thisDomainTokens[0],
-                                        thatDomainTokens[0]);
+                                                        thatDomainTokens[0]);
                             }
                         }
 
@@ -346,7 +346,7 @@ public class DomainNameChecker
                     String suffix = thatDomainToken.substring(starIndex + 1);
 
                     return thisDomainToken.startsWith(prefix)
-                            && thisDomainToken.endsWith(suffix);
+                           && thisDomainToken.endsWith(suffix);
                 }
             }
         }

@@ -100,7 +100,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
-    /** 
+    /**
      * Pair class is only available since API Level 5, so we need
      * this helper class unfortunately
      */
@@ -108,7 +108,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         public String label;
         public String value;
-        
+
         public HeaderEntry(String label, String value)
         {
             this.label = label;
@@ -438,8 +438,8 @@ public class MessageView extends K9Activity implements OnClickListener
          */
         public void hideAdditionalHeaders()
         {
-            runOnUiThread(new Runnable() 
-            {                        
+            runOnUiThread(new Runnable()
+            {
                 public void run()
                 {
                     mAdditionalHeadersView.setVisibility(View.GONE);
@@ -459,19 +459,19 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             runOnUiThread(new Runnable()
             {
-                public void run() 
+                public void run()
                 {
                     Integer messageToShow = null;
                     try
                     {
                         // Retrieve additional headers
                         boolean allHeadersDownloaded = mMessage.isSet(Flag.X_GOT_ALL_HEADERS);
-                        List<HeaderEntry> additionalHeaders = getAdditionalHeaders(mMessage);    
+                        List<HeaderEntry> additionalHeaders = getAdditionalHeaders(mMessage);
 
                         if (!additionalHeaders.isEmpty())
                         {
                             // Show the additional headers that we have got.
-                            setupAdditionalHeadersView(additionalHeaders);                  
+                            setupAdditionalHeadersView(additionalHeaders);
                             mAdditionalHeadersView.setVisibility(View.VISIBLE);
                         }
 
@@ -483,7 +483,7 @@ public class MessageView extends K9Activity implements OnClickListener
                              * NOTE: This is only a temporary solution... in fact,
                              * the system should download headers on-demand when they
                              * have not been saved in their entirety initially.
-                             */ 
+                             */
                             messageToShow = R.string.message_additional_headers_not_downloaded;
                         }
                         else if (additionalHeaders.isEmpty())
@@ -492,7 +492,7 @@ public class MessageView extends K9Activity implements OnClickListener
                             messageToShow = R.string.message_no_additional_headers_available;
                         }
                     }
-                    catch(MessagingException e)
+                    catch (MessagingException e)
                     {
                         messageToShow = R.string.message_additional_headers_retrieval_failed;
                     }
@@ -503,19 +503,19 @@ public class MessageView extends K9Activity implements OnClickListener
                         Toast toast = Toast.makeText(MessageView.this, messageToShow, Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
                         toast.show();
-                    }   
-                }                
+                    }
+                }
             });
         }
 
         /**
          * Set up the additional headers text view with the supplied header data.
-         * 
+         *
          * @param additionalHeaders
-         * 			List of header entries. Each entry consists of a header
-         * 			name and a header value. Header names may appear multiple
+         *          List of header entries. Each entry consists of a header
+         *          name and a header value. Header names may appear multiple
          *          times.
-         * 
+         *
          * This method is always called from within the UI thread by
          * {@link #showAdditionalHeaders()}.
          */
@@ -639,7 +639,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mTimeView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewTime());
         mDateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewDate());
         mAdditionalHeadersView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageViewAdditionalHeaders());
-        mAdditionalHeadersView.setVisibility(View.GONE);   
+        mAdditionalHeadersView.setVisibility(View.GONE);
         mAttachments.setVisibility(View.GONE);
         mAttachmentIcon.setVisibility(View.GONE);
 
@@ -1031,8 +1031,8 @@ public class MessageView extends K9Activity implements OnClickListener
     }
 
     private List<HeaderEntry> getAdditionalHeaders(final Message message)
-    	throws MessagingException
-	{
+    throws MessagingException
+    {
         List<HeaderEntry> additionalHeaders = new LinkedList<HeaderEntry>();
 
         // Do not include the following headers, since they are always visible anyway
@@ -1277,8 +1277,8 @@ public class MessageView extends K9Activity implements OnClickListener
                 onShowPictures();
                 break;
             case R.id.header_container:
-            	onShowAdditionalHeaders();
-            	break;
+                onShowAdditionalHeaders();
+                break;
         }
     }
 
@@ -1363,7 +1363,7 @@ public class MessageView extends K9Activity implements OnClickListener
             if (additionalHeadersItem != null)
             {
                 additionalHeadersItem.setTitle((mAdditionalHeadersView.getVisibility() == View.VISIBLE) ?
-                        R.string.hide_full_header_action : R.string.show_full_header_action);
+                                               R.string.hide_full_header_action : R.string.show_full_header_action);
             }
         }
     }

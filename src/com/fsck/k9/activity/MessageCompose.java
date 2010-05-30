@@ -396,8 +396,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         //TODO: Use constant Intent.ACTION_SEND_MULTIPLE once we drop Android 1.5 support
         else if (Intent.ACTION_SEND.equals(action)
-                || Intent.ACTION_SENDTO.equals(action)
-                || "android.intent.action.SEND_MULTIPLE".equals(action))
+                 || Intent.ACTION_SENDTO.equals(action)
+                 || "android.intent.action.SEND_MULTIPLE".equals(action))
         {
             /*
              * Someone is trying to compose an email with an attachment, probably Pictures.

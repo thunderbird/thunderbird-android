@@ -175,7 +175,7 @@ public class Account implements BaseAccount
         mIdleRefreshMinutes = preferences.getPreferences().getInt(mUuid
                               + ".idleRefreshMinutes", 24);
         mSaveAllHeaders = preferences.getPreferences().getBoolean(mUuid
-                            + ".saveAllHeaders", false);
+                          + ".saveAllHeaders", false);
         mPushPollOnConnect = preferences.getPreferences().getBoolean(mUuid
                              + ".pushPollOnConnect", true);
         mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", -1);

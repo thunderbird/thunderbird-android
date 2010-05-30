@@ -17,7 +17,7 @@ public class TracingPowerManager
     PowerManager pm = null;
     private static TracingPowerManager tracingPowerManager;
     private Timer timer = null;
-    
+
     public static synchronized TracingPowerManager getPowerManager(Context context)
     {
         if (tracingPowerManager == null)
@@ -30,17 +30,17 @@ public class TracingPowerManager
         }
         return tracingPowerManager;
     }
-    
-    
+
+
     private TracingPowerManager(Context context)
     {
-         pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-         if (TRACE)
-         {
-             timer = new Timer();
-         }
+        pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        if (TRACE)
+        {
+            timer = new Timer();
+        }
     }
-    
+
     public TracingWakeLock newWakeLock(int flags, String tag)
     {
         return new TracingWakeLock(flags, tag);
@@ -65,14 +65,14 @@ public class TracingPowerManager
         }
         public void acquire(long timeout)
         {
-            synchronized(wakeLock)
+            synchronized (wakeLock)
             {
                 wakeLock.acquire(timeout);
             }
             if (K9.DEBUG)
             {
-                Log.v(K9.LOG_TAG, "Acquired TracingWakeLock for tag " + tag + " and id " + id 
-                        + " for " + timeout + " ms");
+                Log.v(K9.LOG_TAG, "Acquired TracingWakeLock for tag " + tag + " and id " + id
+                      + " for " + timeout + " ms");
             }
             raiseNotification();
             if (startTime == null)
@@ -83,15 +83,15 @@ public class TracingPowerManager
         }
         public void acquire()
         {
-            synchronized(wakeLock)
+            synchronized (wakeLock)
             {
                 wakeLock.acquire();
             }
             raiseNotification();
             if (K9.DEBUG)
             {
-                Log.w(K9.LOG_TAG, "Acquired TracingWakeLock for tag " + tag + " and id " + id 
-                        + " with no timeout.  K-9 Mail should not do this");
+                Log.w(K9.LOG_TAG, "Acquired TracingWakeLock for tag " + tag + " and id " + id
+                      + " with no timeout.  K-9 Mail should not do this");
             }
             if (startTime == null)
             {
@@ -101,7 +101,7 @@ public class TracingPowerManager
         }
         public void setReferenceCounted(boolean counted)
         {
-            synchronized(wakeLock)
+            synchronized (wakeLock)
             {
                 wakeLock.setReferenceCounted(counted);
             }
@@ -113,8 +113,8 @@ public class TracingPowerManager
                 Long endTime = System.currentTimeMillis();
                 if (K9.DEBUG)
                 {
-                    Log.v(K9.LOG_TAG, "Releasing TracingWakeLock for tag " + tag + " and id " + id + " after " 
-                            + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
+                    Log.v(K9.LOG_TAG, "Releasing TracingWakeLock for tag " + tag + " and id " + id + " after "
+                          + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
                 }
             }
             else
@@ -125,7 +125,7 @@ public class TracingPowerManager
                 }
             }
             cancelNotification();
-            synchronized(wakeLock)
+            synchronized (wakeLock)
             {
                 wakeLock.release();
             }
@@ -135,7 +135,7 @@ public class TracingPowerManager
         {
             if (timer != null)
             {
-                synchronized(timer)
+                synchronized (timer)
                 {
                     if (timerTask != null)
                     {
@@ -148,7 +148,7 @@ public class TracingPowerManager
         {
             if (timer != null)
             {
-                synchronized(timer)
+                synchronized (timer)
                 {
                     if (timerTask != null)
                     {
@@ -163,21 +163,21 @@ public class TracingPowerManager
                             if (startTime != null)
                             {
                                 Long endTime = System.currentTimeMillis();
-                                Log.i(K9.LOG_TAG, "TracingWakeLock for tag " + tag + " and id " + id + " has been active for " 
-                                        + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
-                                
+                                Log.i(K9.LOG_TAG, "TracingWakeLock for tag " + tag + " and id " + id + " has been active for "
+                                      + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
+
                             }
                             else
                             {
                                 Log.i(K9.LOG_TAG, "TracingWakeLock for tag " + tag + " and id " + id + " still active, timeout = " + timeout + " ms");
                             }
                         }
-                        
+
                     };
                     timer.schedule(timerTask, 1000, 1000);
                 }
             }
         }
-        
+
     }
 }
