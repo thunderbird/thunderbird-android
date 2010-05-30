@@ -66,6 +66,8 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
         <TextView
+        
+            android:id="@+id/account_auth_type_label"
             android:text="@string/account_setup_incoming_authtype_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
@@ -132,6 +134,12 @@
                 android:inputType="number"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent" />
+            <CheckBox
+                android:id="@+id/subscribed_folders_only"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/account_setup_incoming_subscribed_folders_only_label"
+            />
                 
         </LinearLayout>
         <LinearLayout
@@ -183,6 +191,7 @@
                 android:layout_width="fill_parent" />
         </LinearLayout>
         <TextView
+            android:id="@+id/compression_label"
             android:text="@string/account_setup_incoming_compression_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"

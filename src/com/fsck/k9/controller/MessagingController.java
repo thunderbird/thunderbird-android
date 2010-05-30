@@ -421,7 +421,7 @@ public class MessagingController implements Runnable
                 try
                 {
                     Store localStore = account.getLocalStore();
-                    localFolders = localStore.getPersonalNamespaces();
+                    localFolders = localStore.getPersonalNamespaces(false);
 
                     Folder[] folderArray = localFolders.toArray(new Folder[0]);
 
@@ -489,7 +489,7 @@ public class MessagingController implements Runnable
                 {
                     Store store = account.getRemoteStore();
 
-                    List<? extends Folder> remoteFolders = store.getPersonalNamespaces();
+                    List<? extends Folder> remoteFolders = store.getPersonalNamespaces(false);
 
                     LocalStore localStore = account.getLocalStore();
                     HashSet<String> remoteFolderNames = new HashSet<String>();
@@ -503,7 +503,7 @@ public class MessagingController implements Runnable
                         remoteFolderNames.add(remoteFolders.get(i).getName());
                     }
 
-                    localFolders = localStore.getPersonalNamespaces();
+                    localFolders = localStore.getPersonalNamespaces(false);
 
                     /*
                      * Clear out any folders that are no longer on the remote store.
@@ -526,7 +526,7 @@ public class MessagingController implements Runnable
                         }
                     }
 
-                    localFolders = localStore.getPersonalNamespaces();
+                    localFolders = localStore.getPersonalNamespaces(false);
                     Folder[] folderArray = localFolders.toArray(new Folder[0]);
 
                     for (MessagingListener l : getListeners())
@@ -810,7 +810,7 @@ public class MessagingController implements Runnable
                         try
                         {
                             LocalStore store = account.getLocalStore();
-                            List<? extends Folder> folders = store.getPersonalNamespaces();
+                            List<? extends Folder> folders = store.getPersonalNamespaces(false);
                             Set<String> folderNameSet = null;
                             if (folderNames != null)
                             {
@@ -879,14 +879,17 @@ public class MessagingController implements Runnable
                         public void messageStarted(String message, int number, int ofTotal) {}
                         public void messageFinished(Message message, int number, int ofTotal)
                         {
-                            List<Message> messages = new ArrayList<Message>();
-
-                            messages.add(message);
-                            stats.unreadMessageCount += (message.isSet(Flag.SEEN) == false) ? 1 : 0;
-                            stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
-                            if (listener != null)
+                            if (isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message) == false)
                             {
-                                listener.listLocalMessagesAddMessages(account, null, messages);
+                                List<Message> messages = new ArrayList<Message>();
+                                
+                                messages.add(message);
+                                stats.unreadMessageCount += (message.isSet(Flag.SEEN) == false) ? 1 : 0;
+                                stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
+                                if (listener != null)
+                                {
+                                    listener.listLocalMessagesAddMessages(account, null, messages);
+                                }
                             }
 
                         }
@@ -4195,7 +4198,7 @@ public class MessagingController implements Runnable
                             Account.FolderMode aSyncMode = account.getFolderSyncMode();
 
                             Store localStore = account.getLocalStore();
-                            for (final Folder folder : localStore.getPersonalNamespaces())
+                            for (final Folder folder : localStore.getPersonalNamespaces(false))
                             {
 
                                 folder.open(Folder.OpenMode.READ_WRITE);
@@ -4764,7 +4767,7 @@ public class MessagingController implements Runnable
             List<String> names = new ArrayList<String>();
 
             Store localStore = account.getLocalStore();
-            for (final Folder folder : localStore.getPersonalNamespaces())
+            for (final Folder folder : localStore.getPersonalNamespaces(false))
             {
                 if (folder.getName().equals(account.getErrorFolderName())
                         || folder.getName().equals(account.getOutboxFolderName()))

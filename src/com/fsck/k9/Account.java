@@ -90,6 +90,7 @@ public class Account implements BaseAccount
     private boolean goToUnreadMessageSearch;
     private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
     private Searchable searchableFolders;
+    private boolean subscribedFoldersOnly;
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
     private boolean mRingNotified;
@@ -140,6 +141,7 @@ public class Account implements BaseAccount
         mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
         mLedColor = mChipColor;
         goToUnreadMessageSearch = false;
+        subscribedFoldersOnly = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -200,7 +202,9 @@ public class Account implements BaseAccount
 
         mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
         goToUnreadMessageSearch = preferences.getPreferences().getBoolean(mUuid + ".goToUnreadMessageSearch",
-                                  true);
+                                  false);
+        subscribedFoldersOnly = preferences.getPreferences().getBoolean(mUuid + ".subscribedFoldersOnly",
+                false);
         for (String type : networkTypes)
         {
             Boolean useCompression = preferences.getPreferences().getBoolean(mUuid + ".useCompression." + type,
@@ -370,6 +374,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid  + ".chipColor");
         editor.remove(mUuid  + ".ledColor");
         editor.remove(mUuid + ".goToUnreadMessageSearch");
+        editor.remove(mUuid + ".subscribedFoldersOnly");
         for (String type : networkTypes)
         {
             editor.remove(mUuid + ".useCompression." + type);
@@ -453,6 +458,7 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".chipColor", mChipColor);
         editor.putInt(mUuid + ".ledColor", mLedColor);
         editor.putBoolean(mUuid + ".goToUnreadMessageSearch", goToUnreadMessageSearch);
+        editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
 
         for (String type : networkTypes)
         {
@@ -484,7 +490,7 @@ public class Account implements BaseAccount
         Account.FolderMode aMode = getFolderDisplayMode();
         Preferences prefs = Preferences.getPreferences(context);
         long folderLoadStart = System.currentTimeMillis();
-        List<? extends Folder> folders = localStore.getPersonalNamespaces();
+        List<? extends Folder> folders = localStore.getPersonalNamespaces(false);
         long folderLoadEnd = System.currentTimeMillis();
         long folderEvalStart = folderLoadEnd;
         for (Folder folder : folders)
@@ -1201,5 +1207,15 @@ public class Account implements BaseAccount
     public void setGoToUnreadMessageSearch(boolean goToUnreadMessageSearch)
     {
         this.goToUnreadMessageSearch = goToUnreadMessageSearch;
+    }
+
+    public boolean subscribedFoldersOnly()
+    {
+        return subscribedFoldersOnly;
+    }
+
+    public void setSubscribedFoldersOnly(boolean subscribedFoldersOnly)
+    {
+        this.subscribedFoldersOnly = subscribedFoldersOnly;
     }
 }

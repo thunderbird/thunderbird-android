@@ -364,6 +364,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_incoming_imap_folder_trash">Trash folder name</string>
     <string name="account_setup_incoming_imap_folder_outbox">Outbox folder name</string>
  
+    <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
     <string name="account_setup_auto_expand_folder">Auto-expand folder</string>
   
     <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV (Exchange) path</string>

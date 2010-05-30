@@ -159,7 +159,7 @@ public class Pop3Store extends Store
     }
 
     @Override
-    public List<? extends Folder> getPersonalNamespaces() throws MessagingException
+    public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException
     {
         List<Folder> folders = new LinkedList<Folder>();
         folders.add(getFolder("INBOX"));

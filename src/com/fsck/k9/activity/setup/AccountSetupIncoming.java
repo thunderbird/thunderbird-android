@@ -89,6 +89,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private CheckBox pushPollOnConnect;
     private Spinner idleRefreshPeriod;
     private Spinner folderPushLimit;
+    private CheckBox subscribedFoldersOnly;
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault)
     {
@@ -133,6 +134,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         compressionOther = (CheckBox)findViewById(R.id.compression_other);
         saveAllHeaders = (CheckBox)findViewById(R.id.save_all_headers);
         pushPollOnConnect = (CheckBox)findViewById(R.id.push_poll_on_connect);
+
+        subscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
         idleRefreshPeriod = (Spinner)findViewById(R.id.idle_refresh_period);
 
         folderPushLimit = (Spinner)findViewById(R.id.folder_push_limit);
@@ -296,8 +299,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_path_debug_section).setVisibility(View.GONE);
+                findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
+                findViewById(R.id.compression_label).setVisibility(View.GONE);
                 findViewById(R.id.push_poll_on_connect_section).setVisibility(View.GONE);
                 findViewById(R.id.idle_refresh_period_label).setVisibility(View.GONE);
                 findViewById(R.id.idle_refresh_period).setVisibility(View.GONE);
@@ -335,13 +340,16 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
                 /** Hide the unnecessary fields */
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
+                findViewById(R.id.compression_label).setVisibility(View.GONE);
                 findViewById(R.id.push_poll_on_connect_section).setVisibility(View.GONE);
                 findViewById(R.id.idle_refresh_period_label).setVisibility(View.GONE);
                 findViewById(R.id.idle_refresh_period).setVisibility(View.GONE);
                 findViewById(R.id.account_setup_push_limit_label).setVisibility(View.GONE);
                 findViewById(R.id.folder_push_limit).setVisibility(View.GONE);
+                subscribedFoldersOnly.setVisibility(View.GONE);
                 if (uri.getPath() != null && uri.getPath().length() > 0)
                 {
                     String[] pathParts = uri.getPath().split("\\|");
@@ -408,6 +416,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
             saveAllHeaders.setChecked(mAccount.isSaveAllHeaders());
             pushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
+            subscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
             SpinnerHelper.initSpinner(this, idleRefreshPeriod, R.array.idle_refresh_period_entries,
                                       R.array.idle_refresh_period_values, String.valueOf(mAccount.getIdleRefreshMinutes()));
 
@@ -564,6 +573,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mAccount.setCompression(Account.TYPE_OTHER, compressionOther.isChecked());
             mAccount.setSaveAllHeaders(saveAllHeaders.isChecked());
             mAccount.setPushPollOnConnect(pushPollOnConnect.isChecked());
+            mAccount.setSubscribedFoldersOnly(subscribedFoldersOnly.isChecked());
             String idleRefreshPeriodValue = SpinnerHelper.getSpinnerValue(idleRefreshPeriod);
             try
             {

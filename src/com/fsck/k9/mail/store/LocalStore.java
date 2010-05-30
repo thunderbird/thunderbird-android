@@ -373,7 +373,7 @@ public class LocalStore extends Store implements Serializable
 
     // TODO this takes about 260-300ms, seems slow.
     @Override
-    public List<? extends Folder> getPersonalNamespaces() throws MessagingException
+    public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException
     {
         LinkedList<LocalFolder> folders = new LinkedList<LocalFolder>();
         Cursor cursor = null;

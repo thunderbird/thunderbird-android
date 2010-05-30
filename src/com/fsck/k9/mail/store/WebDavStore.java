@@ -263,7 +263,7 @@ public class WebDavStore extends Store
     }
 
     @Override
-    public List<? extends Folder> getPersonalNamespaces() throws MessagingException
+    public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException
     {
         LinkedList<Folder> folderList = new LinkedList<Folder>();
         HashMap<String, String> headers = new HashMap<String, String>();

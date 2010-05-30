@@ -251,20 +251,65 @@ public class ImapStore extends Store
     }
 
     @Override
-    public List<? extends Folder> getPersonalNamespaces() throws MessagingException
+    public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException
     {
         ImapConnection connection = getConnection();
         try
         {
+            List<? extends Folder> allFolders = listFolders(connection, false);
+            if (forceListAll || mAccount.subscribedFoldersOnly() == false)
+            {
+                return allFolders;
+            }
+            else
+            {
+                List<Folder> resultFolders = new LinkedList<Folder>();
+                HashSet<String> subscribedFolderNames = new HashSet<String>();
+                List<? extends Folder> subscribedFolders = listFolders(connection, true);
+                for (Folder subscribedFolder : subscribedFolders)
+                {
+                    subscribedFolderNames.add(subscribedFolder.getName());
+                }
+                for (Folder folder : allFolders)
+                {
+                    if (subscribedFolderNames.contains(folder.getName()))
+                    {
+                        resultFolders.add(folder);
+                    }       
+                }
+                return resultFolders;
+            }
+        }
+        catch (IOException ioe)
+        {
+            connection.close();
+            throw new MessagingException("Unable to get folder list.", ioe);
+        }
+        catch (MessagingException me)
+        {
+            connection.close();
+            throw new MessagingException("Unable to get folder list.", me);
+        }
+        finally
+        {
+            releaseConnection(connection);
+        }
+    }
+    
+    
+    private List<? extends Folder> listFolders(ImapConnection connection, boolean LSUB) throws IOException, MessagingException
+    {
+            String commandResponse = LSUB ? "LSUB" : "LIST";
+            
             LinkedList<Folder> folders = new LinkedList<Folder>();
 
             List<ImapResponse> responses =
-                connection.executeSimpleCommand(String.format("LIST \"\" \"%s*\"",
+                connection.executeSimpleCommand(String.format(commandResponse + " \"\" \"%s*\"",
                                                 getCombinedPrefix()));
 
             for (ImapResponse response : responses)
             {
-                if (ImapResponseParser.equalsIgnoreCase(response.get(0), "LIST"))
+                if (ImapResponseParser.equalsIgnoreCase(response.get(0), commandResponse))
                 {
                     boolean includeFolder = true;
                     String folder = decodeFolderName(response.getString(3));
@@ -312,16 +357,7 @@ public class ImapStore extends Store
             }
             folders.add(getFolder("INBOX"));
             return folders;
-        }
-        catch (IOException ioe)
-        {
-            connection.close();
-            throw new MessagingException("Unable to get folder list.", ioe);
-        }
-        finally
-        {
-            releaseConnection(connection);
-        }
+        
     }
 
     @Override
