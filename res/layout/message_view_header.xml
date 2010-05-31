@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-        <LinearLayout 
+        <LinearLayout
           android:layout_width="fill_parent"
           android:layout_alignParentRight="true"
           android:layout_alignParentTop="true"
@@ -27,7 +27,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="4dip"
-            android:layout_weight="5" 
+            android:layout_weight="5"
             android:orientation="vertical">
          <TextView android:id="@+id/subject"
             android:layout_width="fill_parent"
@@ -112,7 +112,7 @@
           </LinearLayout>
           <LinearLayout android:id="@+id/topright_container"
                 android:orientation="vertical"
-                android:layout_weight="0.1" 
+                android:layout_weight="0.1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 >
@@ -180,6 +180,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/message_view_show_pictures_action" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_decrypt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:gravity="right">
+
+        <Button android:id="@+id/btn_decrypt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decrypt" />
+
     </LinearLayout>
     <!-- Content area -->
     <WebView

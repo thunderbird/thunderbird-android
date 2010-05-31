@@ -1,5 +1,21 @@
 package com.fsck.k9.activity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+
+import org.apache.commons.io.IOUtils;
+
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,36 +31,54 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.Contacts;
 import android.provider.Contacts.Intents;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.webkit.*;
-import android.widget.*;
-import com.fsck.k9.*;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.Apg;
+import com.fsck.k9.FontSizes;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
-import org.apache.commons.io.IOUtils;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
@@ -65,6 +99,9 @@ public class MessageView extends K9Activity implements OnClickListener
     public View chip;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
+    private View mLayoutDecrypt;
+    private Button mDecryptButton;
+    private String mCurrentContentData;
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
     private LinearLayout mCcContainerView;
@@ -602,6 +639,39 @@ public class MessageView extends K9Activity implements OnClickListener
         mTopView = (ScrollView)findViewById(R.id.top_view);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
 
+        mLayoutDecrypt = (View)findViewById(R.id.layout_decrypt);
+        mDecryptButton = (Button)findViewById(R.id.btn_decrypt);
+        mDecryptButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(Apg.Intent.DECRYPT_AND_RETURN);
+                    intent.setType("text/plain");
+                    String data = null;
+                    Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
+                    if (part == null)
+                    {
+                        part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
+                    }
+                    if (part != null)
+                    {
+                        data = MimeUtility.getTextFromPart(part);
+                    }
+                    if (data != null) {
+                        intent.putExtra(Apg.EXTRA_DATA, data);
+                    }
+                    try {
+                        startActivityForResult(intent, Apg.DECRYPT_MESSAGE);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(MessageView.this, "No activity to handle that.", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (MessagingException me)
+                {
+                    Log.e(K9.LOG_TAG, "Unable to decrypt email.", me);
+                }
+            }
+        });
+
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
         mDownloadingIcon = findViewById(R.id.downloading);
@@ -1084,6 +1154,18 @@ public class MessageView extends K9Activity implements OnClickListener
                             break;
                     }
                 }
+                break;
+
+            case Apg.DECRYPT_MESSAGE:
+                if (data == null) {
+                    return;
+                }
+
+                String emailText = new String(data.getByteArrayExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
+                mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/plain", "utf-8", null);
+                setCurrentContent(emailText);
+
+                break;
         }
     }
 
@@ -1565,6 +1647,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     public void run()
                     {
                         mMessageContentView.loadUrl("file:///android_asset/downloading.html");
+                        setCurrentContent(null);
                     }
                 });
             }
@@ -1639,6 +1722,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         public void run()
                         {
                             mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/html", "utf-8", null);
+                            setCurrentContent(emailText);
                         }
                     });
                     mHandler.showShowPictures(text.contains("<img"));
@@ -1650,6 +1734,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         public void run()
                         {
                             mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                            setCurrentContent(null);
                         }
                     });
                 }
@@ -1692,6 +1777,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     if (!MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
                         mMessageContentView.loadUrl("file:///android_asset/empty.html");
+                        setCurrentContent(null);
                     }
                 }
             });
@@ -1730,6 +1816,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 public void run()
                 {
                     mMessageContentView.loadUrl("file:///android_asset/loading.html");
+                    setCurrentContent(null);
                     setProgressBarIndeterminateVisibility(true);
                 }
             });
@@ -1884,5 +1971,28 @@ public class MessageView extends K9Activity implements OnClickListener
         slide.setFillBefore(true);
         slide.setInterpolator(new AccelerateInterpolator());
         return slide;
+    }
+
+    private void setCurrentContent(String data)
+    {
+        mCurrentContentData = data;
+        if (data == null) {
+            mLayoutDecrypt.setVisibility(View.GONE);
+            return;
+        }
+
+        Matcher matcher = Apg.PGP_MESSAGE.matcher(data);
+        if (matcher.matches()) {
+            mLayoutDecrypt.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        matcher = Apg.PGP_SIGNED_MESSAGE.matcher(data);
+        if (matcher.matches()) {
+            mLayoutDecrypt.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        mLayoutDecrypt.setVisibility(View.GONE);
     }
 }
