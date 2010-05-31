@@ -131,7 +131,6 @@
             <EditText
                 android:id="@+id/account_imap_folder_outbox"
                 android:singleLine="true"
-                android:inputType="number"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent" />
             <CheckBox
