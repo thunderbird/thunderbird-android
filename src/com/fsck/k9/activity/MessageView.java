@@ -101,6 +101,10 @@ public class MessageView extends K9Activity implements OnClickListener
     private int defaultSubjectColor;
     private View mDecryptLayout;
     private Button mDecryptButton;
+    private LinearLayout mSignatureLayout = null;
+    private ImageView mSignatureStatusImage = null;
+    private TextView mUserId = null;
+    private TextView mUserIdRest = null;
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
     private LinearLayout mCcContainerView;
@@ -124,10 +128,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private int mLastDirection = PREVIOUS;
 
-
     private MessageReference mNextMessage = null;
     private MessageReference mPreviousMessage = null;
-
 
     private Menu optionsMenu = null;
 
@@ -670,6 +672,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
             }
         });
+        mSignatureLayout = (LinearLayout) findViewById(R.id.signature);
+        mSignatureStatusImage = (ImageView) findViewById(R.id.ic_signature_status);
+        mUserId = (TextView) findViewById(R.id.userId);
+        mUserIdRest = (TextView) findViewById(R.id.userIdRest);
+        mSignatureLayout.setVisibility(View.INVISIBLE);
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
@@ -1159,6 +1166,28 @@ public class MessageView extends K9Activity implements OnClickListener
                 if (data == null) {
                     return;
                 }
+
+                String userId = data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID);
+                long signatureKeyId = data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0);
+                mUserIdRest.setText("id: " + Long.toHexString(signatureKeyId & 0xffffffffL));
+                if (userId == null) {
+                    userId = "<unknown>";
+                }
+                String chunks[] = userId.split(" <", 2);
+                userId = chunks[0];
+                if (chunks.length > 1) {
+                    mUserIdRest.setText("<" + chunks[1]);
+                }
+                mUserId.setText(userId);
+
+                if (data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false)) {
+                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
+                } else if (data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false)) {
+                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                } else {
+                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                }
+                mSignatureLayout.setVisibility(View.VISIBLE);
 
                 String emailText = new String(data.getByteArrayExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
                 mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/plain", "utf-8", null);
@@ -1975,7 +2004,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private void updateDecryptLayout()
     {
         try {
-            if (!Apg.isAvailable(this)) {
+            if (!Apg.isAvailable(this) || mMessage == null) {
                 mDecryptLayout.setVisibility(View.GONE);
                 return;
             }
@@ -1998,12 +2027,14 @@ public class MessageView extends K9Activity implements OnClickListener
 
             Matcher matcher = Apg.PGP_MESSAGE.matcher(data);
             if (matcher.matches()) {
+                mDecryptButton.setText("Decrypt");
                 mDecryptLayout.setVisibility(View.VISIBLE);
                 return;
             }
 
             matcher = Apg.PGP_SIGNED_MESSAGE.matcher(data);
             if (matcher.matches()) {
+                mDecryptButton.setText("Verify");
                 mDecryptLayout.setVisibility(View.VISIBLE);
                 return;
             }

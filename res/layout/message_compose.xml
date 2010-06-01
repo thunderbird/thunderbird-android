@@ -186,18 +186,51 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        style="@android:style/ButtonBar"
         android:visibility="gone">
 
-        <Button
-            android:text="Signature"
-            android:id="@+id/btn_select_signature_key"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+
+            <CheckBox
+                android:text="Sign"
+                android:id="@+id/cb_signature"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingRight="2dip">
+
+                <TextView
+                    android:id="@+id/userId"
+                    android:text=""
+                    android:ellipsize="end"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/userIdRest"
+                    android:text=""
+                    android:textSize="10sp"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <Button
-            android:text="Encryption Keys"
+            android:text="Encrypt"
             android:id="@+id/btn_select_encryption_keys"
             android:layout_width="0dip"
             android:layout_height="wrap_content"

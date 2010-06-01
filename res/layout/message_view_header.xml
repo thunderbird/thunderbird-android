@@ -183,15 +183,70 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/layout_decrypt"
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:gravity="right">
+        android:visibility="gone">
 
-        <Button android:id="@+id/btn_decrypt"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/signature"
+            android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:text="Decrypt" />
+            android:layout_width="0dip"
+            android:layout_weight="2">
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ic_signature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/signed_large"/>
+
+                <ImageView
+                    android:id="@+id/ic_signature_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/overlay_error"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingLeft="5dip">
+
+                <TextView
+                    android:id="@+id/userId"
+                    android:text="User Id"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"/>
+
+                <TextView
+                    android:id="@+id/userIdRest"
+                    android:text="User Id Rest"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:text="Decrypt"
+            android:id="@+id/btn_decrypt"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
     </LinearLayout>
     <!-- Content area -->
