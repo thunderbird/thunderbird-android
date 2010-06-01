@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-	android:orientation="vertical"
+    android:orientation="vertical"
     android:background="#ffffff" >
 
     <ScrollView
@@ -77,7 +77,7 @@
                     android:layout_marginLeft="6dip"
                     android:layout_marginRight="6dip"
                     android:hint="@string/message_compose_subject_hint"
-                    android:inputType="textEmailSubject|textAutoCorrect|textCapSentences|textImeMultiLine" 
+                    android:inputType="textEmailSubject|textAutoCorrect|textCapSentences|textImeMultiLine"
                     android:imeOptions="actionNext"
                     android:singleLine="true"
                     android:textColor="@android:color/primary_text_light"
@@ -106,10 +106,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:gravity="left|top"
-                android:hint="@string/message_compose_content_hint" 
+                android:hint="@string/message_compose_content_hint"
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:imeOptions="actionDone|flagNoEnterAction"
-                android:minLines="3"                
+                android:minLines="3"
                 android:textColor="@android:color/primary_text_light"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -180,5 +180,29 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layout_encrypt"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@android:style/ButtonBar"
+        android:visibility="gone">
+
+        <Button
+            android:text="Signature"
+            android:id="@+id/btn_select_signature_key"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <Button
+            android:text="Encryption Keys"
+            android:id="@+id/btn_select_encryption_keys"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,14 +1,24 @@
 package com.fsck.k9;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+
 public class Apg {
+    private static final String mApgPackageName = "org.thialfihar.android.apg";
+    private static final int mRequiredVersion = 14;
+
     public static class Intent {
         public static final String DECRYPT = "org.thialfihar.android.apg.intent.DECRYPT";
         public static final String ENCRYPT = "org.thialfihar.android.apg.intent.ENCRYPT";
         public static final String DECRYPT_FILE = "org.thialfihar.android.apg.intent.DECRYPT_FILE";
         public static final String ENCRYPT_FILE = "org.thialfihar.android.apg.intent.ENCRYPT_FILE";
         public static final String DECRYPT_AND_RETURN = "org.thialfihar.android.apg.intent.DECRYPT_AND_RETURN";
+        public static final String ENCRYPT_AND_RETURN = "org.thialfihar.android.apg.intent.ENCRYPT_AND_RETURN";
+        public static final String SELECT_PUBLIC_KEYS = "org.thialfihar.android.apg.intent.SELECT_PUBLIC_KEYS";
+        public static final String SELECT_SECRET_KEY = "org.thialfihar.android.apg.intent.SELECT_SECRET_KEY";
     }
 
     public static final String EXTRA_DATA = "data";
@@ -33,13 +43,31 @@ public class Apg {
     public static final String EXTRA_ACCOUNT = "account";
 
     public static final int DECRYPT_MESSAGE = 0x21070001;
+    public static final int ENCRYPT_MESSAGE = 0x21070002;
+    public static final int SELECT_PUBLIC_KEYS = 0x21070003;
+    public static final int SELECT_SECRET_KEY = 0x21070004;
 
     public static Pattern PGP_MESSAGE =
-        Pattern.compile(".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
-                        Pattern.DOTALL);
+            Pattern.compile(".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
+                            Pattern.DOTALL);
 
     public static Pattern PGP_SIGNED_MESSAGE =
-        Pattern.compile(".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
-                        Pattern.DOTALL);
+            Pattern.compile(".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
+                            Pattern.DOTALL);
 
+    public static boolean isAvailable(Context context) {
+        List<PackageInfo> packs = context.getPackageManager().getInstalledPackages(0);
+        for (int i = 0; i < packs.size(); ++i) {
+            PackageInfo p = packs.get(i);
+            if (!p.packageName.equals(mApgPackageName)) {
+                continue;
+            }
+            if (p.versionCode >= mRequiredVersion) {
+                return true;
+            }
+            return false;
+        }
+
+        return false;
+    }
 }

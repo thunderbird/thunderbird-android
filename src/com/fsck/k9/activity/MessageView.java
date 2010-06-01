@@ -99,9 +99,8 @@ public class MessageView extends K9Activity implements OnClickListener
     public View chip;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
-    private View mLayoutDecrypt;
+    private View mDecryptLayout;
     private Button mDecryptButton;
-    private String mCurrentContentData;
     private WebView mMessageContentView;
     private LinearLayout mAttachments;
     private LinearLayout mCcContainerView;
@@ -639,7 +638,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mTopView = (ScrollView)findViewById(R.id.top_view);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
 
-        mLayoutDecrypt = (View)findViewById(R.id.layout_decrypt);
+        mDecryptLayout = (View)findViewById(R.id.layout_decrypt);
         mDecryptButton = (Button)findViewById(R.id.btn_decrypt);
         mDecryptButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -1163,7 +1162,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
                 String emailText = new String(data.getByteArrayExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
                 mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/plain", "utf-8", null);
-                setCurrentContent(emailText);
+                updateDecryptLayout();
 
                 break;
         }
@@ -1647,7 +1646,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     public void run()
                     {
                         mMessageContentView.loadUrl("file:///android_asset/downloading.html");
-                        setCurrentContent(null);
+                        updateDecryptLayout();
                     }
                 });
             }
@@ -1722,7 +1721,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         public void run()
                         {
                             mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/html", "utf-8", null);
-                            setCurrentContent(emailText);
+                            updateDecryptLayout();
                         }
                     });
                     mHandler.showShowPictures(text.contains("<img"));
@@ -1734,7 +1733,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         public void run()
                         {
                             mMessageContentView.loadUrl("file:///android_asset/empty.html");
-                            setCurrentContent(null);
+                            updateDecryptLayout();
                         }
                     });
                 }
@@ -1777,7 +1776,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     if (!MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
                         mMessageContentView.loadUrl("file:///android_asset/empty.html");
-                        setCurrentContent(null);
+                        updateDecryptLayout();
                     }
                 }
             });
@@ -1816,7 +1815,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 public void run()
                 {
                     mMessageContentView.loadUrl("file:///android_asset/loading.html");
-                    setCurrentContent(null);
+                    updateDecryptLayout();
                     setProgressBarIndeterminateVisibility(true);
                 }
             });
@@ -1973,26 +1972,47 @@ public class MessageView extends K9Activity implements OnClickListener
         return slide;
     }
 
-    private void setCurrentContent(String data)
+    private void updateDecryptLayout()
     {
-        mCurrentContentData = data;
-        if (data == null) {
-            mLayoutDecrypt.setVisibility(View.GONE);
-            return;
+        try {
+            if (!Apg.isAvailable(this)) {
+                mDecryptLayout.setVisibility(View.GONE);
+                return;
+            }
+
+            String data = null;
+            Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
+            if (part == null)
+            {
+                part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
+            }
+            if (part != null)
+            {
+                data = MimeUtility.getTextFromPart(part);
+            }
+
+            if (data == null) {
+                mDecryptLayout.setVisibility(View.GONE);
+                return;
+            }
+
+            Matcher matcher = Apg.PGP_MESSAGE.matcher(data);
+            if (matcher.matches()) {
+                mDecryptLayout.setVisibility(View.VISIBLE);
+                return;
+            }
+
+            matcher = Apg.PGP_SIGNED_MESSAGE.matcher(data);
+            if (matcher.matches()) {
+                mDecryptLayout.setVisibility(View.VISIBLE);
+                return;
+            }
+        }
+        catch (MessagingException me)
+        {
+            Log.e(K9.LOG_TAG, "Unable to check whether email is encrypted.", me);
         }
 
-        Matcher matcher = Apg.PGP_MESSAGE.matcher(data);
-        if (matcher.matches()) {
-            mLayoutDecrypt.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        matcher = Apg.PGP_SIGNED_MESSAGE.matcher(data);
-        if (matcher.matches()) {
-            mLayoutDecrypt.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        mLayoutDecrypt.setVisibility(View.GONE);
+        mDecryptLayout.setVisibility(View.GONE);
     }
 }
