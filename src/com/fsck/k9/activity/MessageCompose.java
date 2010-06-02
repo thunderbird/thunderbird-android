@@ -1481,6 +1481,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mBccView.setVisibility(View.VISIBLE);
                 }
 
+                // Read In-Reply-To header from draft
+                final String[] inReplyTo = message.getHeader("In-Reply-To");
+                if ((inReplyTo != null) && (inReplyTo.length >= 1))
+                {
+                    mInReplyTo = inReplyTo[0];
+                }
+
+                // Read References header from draft
+                final String[] references = message.getHeader("References");
+                if ((references != null) && (references.length >= 1))
+                {
+                    mReferences = references[0];
+                }
+
                 if (!mSourceMessageProcessed)
                 {
                     loadAttachments(message, 0);
