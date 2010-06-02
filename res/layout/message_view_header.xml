@@ -193,7 +193,8 @@
             android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            android:gravity="center_vertical">
 
             <RelativeLayout
                 android:layout_height="wrap_content"
