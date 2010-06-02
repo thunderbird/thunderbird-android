@@ -2005,6 +2005,10 @@ public class MessageView extends K9Activity implements OnClickListener
         return slide;
     }
 
+    /**
+     * Fill the decrypt layout with signature data, if known, make controls visible, if
+     * they should be visible.
+     */
     private void updateDecryptLayout()
     {
         try {

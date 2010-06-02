@@ -5,10 +5,17 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.net.Uri;
 
 public class Apg {
     private static final String mApgPackageName = "org.thialfihar.android.apg";
     private static final int mRequiredVersion = 14;
+
+    public static final String AUTHORITY = "org.thialfihar.android.apg.provider";
+    public static final Uri CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID =
+            Uri.parse("content://" + AUTHORITY + "/key_rings/secret/key_id/");
+    public static final Uri CONTENT_URI_PUBLIC_KEY_RING_BY_KEY_ID =
+            Uri.parse("content://" + AUTHORITY + "/key_rings/public/key_id/");
 
     public static class Intent {
         public static final String DECRYPT = "org.thialfihar.android.apg.intent.DECRYPT";
@@ -56,6 +63,11 @@ public class Apg {
             Pattern.compile(".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
                             Pattern.DOTALL);
 
+    /**
+     * Check whether APG is installed and at a high enough version.
+     * @param context
+     * @return whether a suitable version of APG was found
+     */
     public static boolean isAvailable(Context context) {
         List<PackageInfo> packs = context.getPackageManager().getInstalledPackages(0);
         for (int i = 0; i < packs.size(); ++i) {

@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -674,6 +675,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftNeedsSaving = false;
     }
 
+    /**
+     * Fill the encrypt layout with the latest data about signature key and encryption keys.
+     */
     private void updateEncryptLayout() {
         if (mSignatureKey == 0) {
             mSignatureCheckbox.setText("Sign");
@@ -685,12 +689,30 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mSignatureUserIdRest.setVisibility(View.VISIBLE);
             mSignatureUserId.setText("<unknown>");
             mSignatureUserIdRest.setText("");
-            if (mSignatureRawUserId != null) {
-                String chunks[] = mSignatureRawUserId.split(" <", 2);
-                mSignatureUserId.setText(chunks[0]);
-                if (chunks.length > 1) {
-                    mSignatureUserIdRest.setText("<" + chunks[1]);
+
+            if (mSignatureRawUserId == null) {
+                Uri contentUri = ContentUris.withAppendedId(
+                                     Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
+                                     mSignatureKey);
+                Cursor c = getContentResolver().query(contentUri,
+                                                      new String[] { "user_id" },
+                                                      null, null, null);
+                if (c != null && c.moveToFirst()) {
+                    mSignatureRawUserId = c.getString(0);
                 }
+                if (c != null) {
+                    c.close();
+                }
+            }
+
+            if (mSignatureRawUserId == null) {
+                mSignatureRawUserId = "<unknown>";
+            }
+
+            String chunks[] = mSignatureRawUserId.split(" <", 2);
+            mSignatureUserId.setText(chunks[0]);
+            if (chunks.length > 1) {
+                mSignatureUserIdRest.setText("<" + chunks[1]);
             }
         }
 
@@ -1237,7 +1259,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             case Apg.SELECT_SECRET_KEY:
                 mSignatureKey = data.getLongExtra(Apg.EXTRA_KEY_ID, 0);
-                mSignatureRawUserId = data.getStringExtra(Apg.EXTRA_USER_ID);
                 updateEncryptLayout();
                 break;
 
