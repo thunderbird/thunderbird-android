@@ -1021,7 +1021,7 @@ public class ImapStore extends Store
             final StringBuilder dateSearchString = new StringBuilder();
             if (earliestDate != null)
             {
-                dateSearchString.append("SINCE ");
+                dateSearchString.append(" SINCE ");
                 synchronized(RFC3501_DATE)
                 {
                     dateSearchString.append(RFC3501_DATE.format(earliestDate));
@@ -1033,7 +1033,7 @@ public class ImapStore extends Store
             {
                 public List<ImapResponse> search() throws IOException, MessagingException
                 {
-                    return executeSimpleCommand(String.format("UID SEARCH %d:%d %s " + (includeDeleted ? "" : " NOT DELETED"), start, end, dateSearchString));
+                    return executeSimpleCommand(String.format("UID SEARCH %d:%d%s" + (includeDeleted ? "" : " NOT DELETED"), start, end, dateSearchString));
                 }
             };
             return search(searcher, listener);
@@ -2972,11 +2972,13 @@ public class ImapStore extends Store
                                 receiver.setPushActive(getName(), true);
                                 idling.set(true);
                                 doneSent.set(false);
-                                mConnection.setReadTimeout((getAccount().getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
+				if (mConnection == null)
+				{
+				    throw new MessagingException("No connection available for idling");
+				}
+				mConnection.setReadTimeout((getAccount().getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
                                 untaggedResponses = executeSimpleCommand(COMMAND_IDLE, false, ImapFolderPusher.this);
                                 idling.set(false);
-
-
                                 delayTime.set(NORMAL_DELAY_TIME);
                                 idleFailureCount.set(0);
                             }
