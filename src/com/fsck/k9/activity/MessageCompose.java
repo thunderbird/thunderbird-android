@@ -53,6 +53,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_FOLDER = "folder";
     private static final String EXTRA_MESSAGE = "message";
+    private static final String EXTRA_MESSAGE_BODY  = "messageBody";
 
     private static final String STATE_KEY_ATTACHMENTS =
         "com.fsck.k9.activity.MessageCompose.attachments";
@@ -88,6 +89,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private String mFolder;
     private String mSourceMessageUid;
     private Message mSourceMessage;
+    private String mSourceMessageBody;
     /**
      * Indicates that the source message has been processed at least once and should not
      * be processed on any subsequent loads. This protects us from adding attachments that
@@ -210,10 +212,30 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         Message message,
         boolean replyAll)
     {
+        actionReply(context, account, message, replyAll, null);
+    }
+
+    /**
+     * Compose a new message as a reply to the given message. If replyAll is true the function
+     * is reply all instead of simply reply.
+     * @param context
+     * @param account
+     * @param message
+     * @param replyAll
+     * @param messageBody
+     */
+    public static void actionReply(
+        Context context,
+        Account account,
+        Message message,
+        boolean replyAll,
+        String messageBody)
+    {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
         i.putExtra(EXTRA_MESSAGE, message.getUid());
+        i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
         if (replyAll)
         {
             i.setAction(ACTION_REPLY_ALL);
@@ -233,10 +255,26 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     public static void actionForward(Context context, Account account, Message message)
     {
+        actionForward(context, account, message, null);
+    }
+
+    /**
+     * Compose a new message as a forward of the given message.
+     * @param context
+     * @param account
+     * @param message
+     */
+    public static void actionForward(
+        Context context,
+        Account account,
+        Message message,
+        String messageBody)
+    {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
         i.putExtra(EXTRA_MESSAGE, message.getUid());
+        i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
         i.setAction(ACTION_FORWARD);
         context.startActivity(i);
     }
@@ -515,6 +553,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             mFolder = (String) intent.getStringExtra(EXTRA_FOLDER);
             mSourceMessageUid = (String) intent.getStringExtra(EXTRA_MESSAGE);
+            mSourceMessageBody = (String) intent.getStringExtra(EXTRA_MESSAGE_BODY);
         }
 
         if (mIdentity == null)
@@ -1461,13 +1500,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
                 Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage,
                             "text/plain");
-                if (part != null)
+                if (part != null || mSourceMessageBody != null)
                 {
                     String quotedText = String.format(
                                             getString(R.string.message_compose_reply_header_fmt),
                                             Address.toString(mSourceMessage.getFrom()));
 
-                    quotedText += MimeUtility.getTextFromPart(part).replaceAll("(?m)^", ">");
+                    if (mSourceMessageBody != null)
+                    {
+                        quotedText += mSourceMessageBody.replaceAll("(?m)^", ">");
+                    }
+                    else
+                    {
+                        quotedText += MimeUtility.getTextFromPart(part).replaceAll("(?m)^", ">");
+                    }
                     quotedText = quotedText.replaceAll("\\\r", "");
                     mQuotedText.setText(quotedText);
 
@@ -1561,9 +1607,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     part = MimeUtility.findFirstPartByMimeType(message, "text/html");
                 }
-                if (part != null)
+                if (part != null || mSourceMessageBody != null)
                 {
-                    String quotedText = MimeUtility.getTextFromPart(part);
+                    String quotedText = mSourceMessageBody;
+                    if (quotedText == null)
+                    {
+                        quotedText = MimeUtility.getTextFromPart(part);
+                    }
                     if (quotedText != null)
                     {
                         String text = String.format(

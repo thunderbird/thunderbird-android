@@ -122,6 +122,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private ArrayList<MessageReference> mMessageReferences;
 
     private Message mMessage;
+    private String mDecryptedMessage;
 
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
@@ -1012,7 +1013,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessageCompose.actionReply(this, mAccount, mMessage, false);
+            MessageCompose.actionReply(this, mAccount, mMessage, false, mDecryptedMessage);
             finish();
         }
     }
@@ -1021,7 +1022,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessageCompose.actionReply(this, mAccount, mMessage, true);
+            MessageCompose.actionReply(this, mAccount, mMessage, true, mDecryptedMessage);
             finish();
         }
     }
@@ -1030,7 +1031,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessageCompose.actionForward(this, mAccount, mMessage);
+            MessageCompose.actionForward(this, mAccount, mMessage, mDecryptedMessage);
             finish();
         }
     }
@@ -1191,6 +1192,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
                 String emailText = new String(data.getByteArrayExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
                 mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/plain", "utf-8", null);
+                mDecryptedMessage = emailText;
                 updateDecryptLayout();
 
                 break;
@@ -1667,6 +1669,7 @@ public class MessageView extends K9Activity implements OnClickListener
             }
 
             MessageView.this.mMessage = message;
+            MessageView.this.mDecryptedMessage = null;
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)
                     && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
             {
@@ -1710,6 +1713,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
 
                 MessageView.this.mMessage = message;
+                MessageView.this.mDecryptedMessage = null;
 
                 String text;
                 Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
