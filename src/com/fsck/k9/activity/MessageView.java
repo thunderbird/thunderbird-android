@@ -903,6 +903,7 @@ public class MessageView extends K9Activity implements OnClickListener
         if (previous_scrolling != null && (previous_scrolling.isEnabled() != enablePrev))
             previous_scrolling.setEnabled(enablePrev);
 
+        mDecryptedMessage = null;
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
             mMessageReference.folderName,
@@ -1676,7 +1677,6 @@ public class MessageView extends K9Activity implements OnClickListener
             }
 
             MessageView.this.mMessage = message;
-            MessageView.this.mDecryptedMessage = null;
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)
                     && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
             {
@@ -1720,33 +1720,40 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
 
                 MessageView.this.mMessage = message;
-                MessageView.this.mDecryptedMessage = null;
 
                 String text;
-                Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
-                if (part == null)
+                String type = "text/html";
+                if (mDecryptedMessage != null) {
+                    text = mDecryptedMessage;
+                    type = "text/plain";
+                }
+                else
                 {
-                    part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
+                    Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
                     if (part == null)
                     {
-                        text = null;
-                    }
-                    else
-                    {
-                        LocalTextBody body = (LocalTextBody)part.getBody();
-                        if (body == null)
+                        part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
+                        if (part == null)
                         {
                             text = null;
                         }
                         else
                         {
-                            text = body.getBodyForDisplay();
+                            LocalTextBody body = (LocalTextBody)part.getBody();
+                            if (body == null)
+                            {
+                                text = null;
+                            }
+                            else
+                            {
+                                text = body.getBodyForDisplay();
+                            }
                         }
                     }
-                }
-                else
-                {
-                    text = MimeUtility.getTextFromPart(part);
+                    else
+                    {
+                        text = MimeUtility.getTextFromPart(part);
+                    }
                 }
 
                 if (text != null)
@@ -1756,11 +1763,12 @@ public class MessageView extends K9Activity implements OnClickListener
                      * get background images and a million other things that HTML allows.
                      */
                     final String emailText = text;
+                    final String mimeType = type;
                     mHandler.post(new Runnable()
                     {
                         public void run()
                         {
-                            mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/html", "utf-8", null);
+                            mMessageContentView.loadDataWithBaseURL("email://", emailText, mimeType, "utf-8", null);
                             updateDecryptLayout();
                         }
                     });
@@ -2024,11 +2032,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 mSignatureUserId = "<unknown>";
             }
             String chunks[] = mSignatureUserId.split(" <", 2);
-            mSignatureUserId = chunks[0];
+            String name = chunks[0];
             if (chunks.length > 1) {
                 mUserIdRest.setText("<" + chunks[1]);
             }
-            mUserId.setText(mSignatureUserId);
+            mUserId.setText(name);
 
             if (mSignatureSuccess) {
                 mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
