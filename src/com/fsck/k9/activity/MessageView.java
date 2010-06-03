@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.Contacts;
 import android.provider.Contacts.Intents;
 import android.text.Html;
@@ -62,6 +63,7 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.Apg;
 import com.fsck.k9.FontSizes;
+import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -123,6 +125,10 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private Message mMessage;
     private String mDecryptedMessage;
+    private long mSignatureKeyId = 0;
+    private String mSignatureUserId = null;
+    private boolean mSignatureSuccess = false;
+    private boolean mSignatureUnknown = false;
 
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
@@ -848,6 +854,25 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         outState.putSerializable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
         outState.putSerializable(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
+        outState.putLong(Apg.EXTRA_SIGNATURE_KEY_ID, mSignatureKeyId);
+        outState.putString(Apg.EXTRA_SIGNATURE_USER_ID, mSignatureUserId);
+        outState.putString(Apg.EXTRA_DECRYPTED_MESSAGE, mDecryptedMessage);
+        outState.putBoolean(Apg.EXTRA_SIGNATURE_SUCCESS, mSignatureSuccess);
+        outState.putBoolean(Apg.EXTRA_SIGNATURE_UNKNOWN, mSignatureUnknown);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        mSignatureKeyId = savedInstanceState.getLong(Apg.EXTRA_SIGNATURE_KEY_ID);
+        mSignatureUserId = savedInstanceState.getString(Apg.EXTRA_SIGNATURE_USER_ID);
+        mDecryptedMessage = savedInstanceState.getString(Apg.EXTRA_DECRYPTED_MESSAGE);
+        mSignatureSuccess = savedInstanceState.getBoolean(Apg.EXTRA_SIGNATURE_SUCCESS);
+        mSignatureUnknown = savedInstanceState.getBoolean(Apg.EXTRA_SIGNATURE_UNKNOWN);
+
+        updateDecryptLayout();
     }
 
     private void displayMessage(MessageReference ref)
@@ -1168,31 +1193,13 @@ public class MessageView extends K9Activity implements OnClickListener
                     return;
                 }
 
-                String userId = data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID);
-                long signatureKeyId = data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0);
-                mUserIdRest.setText("id: " + Long.toHexString(signatureKeyId & 0xffffffffL));
-                if (userId == null) {
-                    userId = "<unknown>";
-                }
-                String chunks[] = userId.split(" <", 2);
-                userId = chunks[0];
-                if (chunks.length > 1) {
-                    mUserIdRest.setText("<" + chunks[1]);
-                }
-                mUserId.setText(userId);
+                mSignatureUserId = data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID);
+                mSignatureKeyId = data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0);
+                mSignatureSuccess = data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false);
+                mSignatureUnknown = data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false);
 
-                if (data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false)) {
-                    mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
-                } else if (data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false)) {
-                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
-                } else {
-                    mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
-                }
-                mSignatureLayout.setVisibility(View.VISIBLE);
-
-                String emailText = new String(data.getByteArrayExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
-                mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/plain", "utf-8", null);
-                mDecryptedMessage = emailText;
+                mDecryptedMessage = new String(data.getByteArrayExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
+                mMessageContentView.loadDataWithBaseURL("email://", mDecryptedMessage, "text/plain", "utf-8", null);
                 updateDecryptLayout();
 
                 break;
@@ -2011,6 +2018,28 @@ public class MessageView extends K9Activity implements OnClickListener
      */
     private void updateDecryptLayout()
     {
+        if (mSignatureKeyId != 0) {
+            mUserIdRest.setText("id: " + Long.toHexString(mSignatureKeyId & 0xffffffffL));
+            if (mSignatureUserId == null) {
+                mSignatureUserId = "<unknown>";
+            }
+            String chunks[] = mSignatureUserId.split(" <", 2);
+            mSignatureUserId = chunks[0];
+            if (chunks.length > 1) {
+                mUserIdRest.setText("<" + chunks[1]);
+            }
+            mUserId.setText(mSignatureUserId);
+
+            if (mSignatureSuccess) {
+                mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
+            } else if (mSignatureUnknown) {
+                mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+            } else {
+                mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+            }
+            mSignatureLayout.setVisibility(View.VISIBLE);
+        }
+
         try {
             if (!Apg.isAvailable(this) || mMessage == null) {
                 mDecryptLayout.setVisibility(View.GONE);

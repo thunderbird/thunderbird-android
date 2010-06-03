@@ -770,6 +770,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
+        outState.putLong(Apg.EXTRA_SIGNATURE_KEY_ID, mSignatureKey);
+        outState.putLongArray(Apg.EXTRA_ENCRYPTION_KEY_IDS, mEncryptionKeyIds);
     }
 
     @Override
@@ -791,8 +793,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
+        mSignatureKey = savedInstanceState.getLong(Apg.EXTRA_SIGNATURE_KEY_ID);
+        mEncryptionKeyIds = savedInstanceState.getLongArray(Apg.EXTRA_ENCRYPTION_KEY_IDS);
         updateFrom();
         updateSignature();
+        updateEncryptLayout();
 
         mDraftNeedsSaving = false;
     }
