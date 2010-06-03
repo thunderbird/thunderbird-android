@@ -183,8 +183,15 @@ public class SmtpTransport extends Transport
 
             if (localHost.equals(localAddress.getHostAddress()))
             {
-                // IP was returned
-                localHost = "[" + localHost + "]";
+                // We don't have a FQDN, so use IP address.
+                if (localAddress instanceof Inet6Address)
+                {
+                    localHost = "[IPV6:" + localHost + "]";
+                }
+                else
+                {
+                    localHost = "[" + localHost + "]";
+                }
             }
 
             List<String> results = executeSimpleCommand("EHLO " + localHost);
