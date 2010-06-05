@@ -183,8 +183,15 @@ public class SmtpTransport extends Transport
 
             if (localHost.equals(localAddress.getHostAddress()))
             {
-                // IP was returned
-                localHost = "[" + localHost + "]";
+                // We don't have a FQDN, so use IP address.
+                if (localAddress instanceof Inet6Address)
+                {
+                    localHost = "[IPV6:" + localHost + "]";
+                }
+                else
+                {
+                    localHost = "[" + localHost + "]";
+                }
             }
 
             List<String> results = executeSimpleCommand("EHLO " + localHost);
@@ -415,10 +422,21 @@ public class SmtpTransport extends Transport
         return ret;
     }
 
-    private void writeLine(String s) throws IOException
+    private void writeLine(String s, boolean sensitive) throws IOException
     {
         if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "SMTP >>> " + s);
+        {
+            final String commandToLog;
+            if (sensitive && !K9.DEBUG_SENSITIVE)
+            {
+                commandToLog = "SMTP >>> *sensitive*";
+            }
+            else
+            {
+                commandToLog = "SMTP >>> " + s;
+    		}
+            Log.d(K9.LOG_TAG, commandToLog);
+        }
 
         /*
          * Note: We can use the string length to compute the buffer size since
@@ -456,10 +474,16 @@ public class SmtpTransport extends Transport
 
     private List<String> executeSimpleCommand(String command) throws IOException, MessagingException
     {
+    	return executeSimpleCommand(command, false);
+    }
+    
+    private List<String> executeSimpleCommand(String command, boolean sensitive)
+    throws IOException, MessagingException
+    {
         List<String> results = new ArrayList<String>();
         if (command != null)
         {
-            writeLine(command);
+            writeLine(command, sensitive);
         }
 
         boolean cont = false;
@@ -509,8 +533,8 @@ public class SmtpTransport extends Transport
         try
         {
             executeSimpleCommand("AUTH LOGIN");
-            executeSimpleCommand(new String(Base64.encodeBase64(username.getBytes())));
-            executeSimpleCommand(new String(Base64.encodeBase64(password.getBytes())));
+            executeSimpleCommand(new String(Base64.encodeBase64(username.getBytes())), true);
+            executeSimpleCommand(new String(Base64.encodeBase64(password.getBytes())), true);
         }
         catch (MessagingException me)
         {
@@ -530,7 +554,7 @@ public class SmtpTransport extends Transport
         data = new Base64().encode(data);
         try
         {
-            executeSimpleCommand("AUTH PLAIN " + new String(data));
+            executeSimpleCommand("AUTH PLAIN " + new String(data), true);
         }
         catch (MessagingException me)
         {
@@ -579,7 +603,7 @@ public class SmtpTransport extends Transport
         String b64CRAMString = new String(b64CRAM, "US-ASCII");
         try
         {
-            executeSimpleCommand(b64CRAMString);
+            executeSimpleCommand(b64CRAMString, true);
         }
         catch (MessagingException me)
         {

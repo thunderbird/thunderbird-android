@@ -175,10 +175,6 @@ public class MessagingController implements Runnable
     // Key is accountUuid:folderName:messageUid   ,   value is unimportant
     private ConcurrentHashMap<String, String> deletedUids = new ConcurrentHashMap<String, String>();
 
-    // Key is accountUuid:folderName   ,  value is a long of the highest message UID ever emptied from Trash
-    private ConcurrentHashMap<String, Long> expungedUid = new ConcurrentHashMap<String, Long>();
-
-
     private String createMessageKey(Account account, String folder, Message message)
     {
         return createMessageKey(account, folder, message.getUid());
@@ -187,11 +183,6 @@ public class MessagingController implements Runnable
     private String createMessageKey(Account account, String folder, String uid)
     {
         return account.getUuid() + ":" + folder + ":" + uid;
-    }
-
-    private String createFolderKey(Account account, String folder)
-    {
-        return account.getUuid() + ":" + folder;
     }
 
     private void suppressMessage(Account account, String folder, Message message)
@@ -228,29 +219,9 @@ public class MessagingController implements Runnable
         {
             return true;
         }
-        Long expungedUidL = expungedUid.get(createFolderKey(account, folder));
-        if (expungedUidL != null)
-        {
-            long expungedUid = expungedUidL;
-            String messageUidS = message.getUid();
-            try
-            {
-                long messageUid = Long.parseLong(messageUidS);
-                if (messageUid <= expungedUid)
-                {
-                    return false;
-                }
-            }
-            catch (NumberFormatException nfe)
-            {
-                // Nothing to do
-            }
-        }
+        
         return false;
     }
-
-
-
 
     private MessagingController(Application application)
     {
