@@ -1429,6 +1429,13 @@ public class MessageList
 
                 break;
 
+            case R.id.same_sender:
+                                MessageList.actionHandle(MessageList.this,
+                                         "From "+holder.sender, holder.sender, true,
+                                         null, null);
+
+                break;
+
         }
 
         return super.onContextItemSelected(item);
