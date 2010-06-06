@@ -640,7 +640,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     CheckBox checkBox = (CheckBox) v;
                     if (checkBox.isChecked()) {
                         Intent intent = new Intent(Apg.Intent.SELECT_SECRET_KEY);
-                        intent.setType("text/plain");
                         try {
                             startActivityForResult(intent, Apg.SELECT_SECRET_KEY);
                         } catch (ActivityNotFoundException e) {
@@ -658,7 +657,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(Apg.Intent.SELECT_PUBLIC_KEYS);
-                    intent.setType("text/plain");
                     intent.putExtra(Apg.EXTRA_SELECTION, mEncryptionKeyIds);
                     try {
                         startActivityForResult(intent, Apg.SELECT_PUBLIC_KEYS);
@@ -1081,13 +1079,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 String text = buildText(true);
                 Intent intent = new Intent(Apg.Intent.ENCRYPT_AND_RETURN);
                 intent.setType("text/plain");
-                intent.putExtra(Apg.EXTRA_DATA, text);
+                intent.putExtra(Apg.EXTRA_TEXT, text);
                 intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, mEncryptionKeyIds);
                 intent.putExtra(Apg.EXTRA_SIGNATURE_KEY_ID, mSignatureKey);
                 try {
                     startActivityForResult(intent, Apg.ENCRYPT_MESSAGE);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(MessageCompose.this, "No activity to handle that.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MessageCompose.this,
+                                   "No activity to handle that.", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -1277,8 +1276,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     return;
                 }
 
-                mEncryptedData = new String(data.getByteArrayExtra(Apg.EXTRA_ENCRYPTED_MESSAGE));
-                onSend();
+                mEncryptedData = data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE);
+                if (mEncryptedData != null) {
+                    onSend();
+                }
                 break;
         }
     }

@@ -9,7 +9,7 @@ import android.net.Uri;
 
 public class Apg {
     private static final String mApgPackageName = "org.thialfihar.android.apg";
-    private static final int mRequiredVersion = 14;
+    private static final int mRequiredVersion = 15;
 
     public static final String AUTHORITY = "org.thialfihar.android.apg.provider";
     public static final Uri CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID =
@@ -28,6 +28,7 @@ public class Apg {
         public static final String SELECT_SECRET_KEY = "org.thialfihar.android.apg.intent.SELECT_SECRET_KEY";
     }
 
+    public static final String EXTRA_TEXT = "text";
     public static final String EXTRA_DATA = "data";
     public static final String EXTRA_STATUS = "status";
     public static final String EXTRA_ERROR = "error";

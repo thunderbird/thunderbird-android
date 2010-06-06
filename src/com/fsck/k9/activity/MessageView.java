@@ -666,7 +666,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         data = MimeUtility.getTextFromPart(part);
                     }
                     if (data != null) {
-                        intent.putExtra(Apg.EXTRA_DATA, data);
+                        intent.putExtra(Apg.EXTRA_TEXT, data);
                     }
                     try {
                         startActivityForResult(intent, Apg.DECRYPT_MESSAGE);
@@ -1199,7 +1199,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 mSignatureSuccess = data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false);
                 mSignatureUnknown = data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false);
 
-                mDecryptedMessage = new String(data.getByteArrayExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
+                mDecryptedMessage = data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE);
                 mMessageContentView.loadDataWithBaseURL("email://", mDecryptedMessage, "text/plain", "utf-8", null);
                 updateDecryptLayout();
 
