@@ -6,10 +6,12 @@ import java.util.regex.Pattern;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
+import android.widget.Toast;
 
 public class Apg {
     private static final String mApgPackageName = "org.thialfihar.android.apg";
-    private static final int mRequiredVersion = 15;
+    private static final int mMinRequiredVersion = 15;
+    private static final int mMaxRequiredVersion = 15;
 
     public static final String AUTHORITY = "org.thialfihar.android.apg.provider";
     public static final Uri CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID =
@@ -76,9 +78,12 @@ public class Apg {
             if (!p.packageName.equals(mApgPackageName)) {
                 continue;
             }
-            if (p.versionCode >= mRequiredVersion) {
+            if (p.versionCode >= mMinRequiredVersion &&
+                p.versionCode <= mMaxRequiredVersion) {
                 return true;
             }
+            Toast.makeText(context,
+                           "The installed APG version is not supported.", Toast.LENGTH_SHORT);
             return false;
         }
 
