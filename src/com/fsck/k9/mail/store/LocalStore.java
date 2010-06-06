@@ -2262,7 +2262,7 @@ public class LocalStore extends Store implements Serializable
                 return null;
             }
 
-            text = text.replaceAll("^.*:","");
+            text = text.replaceAll("^.*\w.*:","");
             text = text.replaceAll("(?m)^>.*$","");
             text = text.replaceAll("^On .*wrote.?$","");
             text = text.replaceAll("(\\r|\\n)+"," ");
