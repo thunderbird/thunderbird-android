@@ -582,7 +582,14 @@ public class MessageList
         // platform.
         if (K9.manageBack())
         {
-            onShowFolderList();
+            if (mQueryString == null)
+            {
+                onShowFolderList();
+            }
+            else
+            {
+                onAccounts();
+            }
         }
         else
         {
