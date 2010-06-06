@@ -2267,13 +2267,13 @@ public class LocalStore extends Store implements Serializable
             text = text.replaceAll("^On .*wrote.?$","");
             text = text.replaceAll("(\\r|\\n)+"," ");
             text = text.replaceAll("\\s+"," ");
-            if (text.length() <= 160)
+            if (text.length() <= 250)
             {
                 return text;
             }
             else
             {
-                text = text.substring(0,160);
+                text = text.substring(0,250);
                 return text;
             }
 
