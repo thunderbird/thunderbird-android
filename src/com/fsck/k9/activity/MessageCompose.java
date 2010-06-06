@@ -111,7 +111,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private ImageButton mQuotedTextDelete;
     private EditText mQuotedText;
     private View mEncryptLayout;
-    private Button mSignatureCheckbox;
+    private CheckBox mSignatureCheckbox;
     private Button mSelectEncryptionKeys;
     private TextView mSignatureUserId;
     private TextView mSignatureUserIdRest;
@@ -645,10 +645,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         } catch (ActivityNotFoundException e) {
                             Toast.makeText(MessageCompose.this, "No activity to handle that.",
                                            Toast.LENGTH_SHORT).show();
-                            checkBox.setSelected(false);
                         }
+                        checkBox.setChecked(false);
                     } else {
-                        mSignatureKey = 0;
+                        setSignatureKey(0);
                         updateEncryptLayout();
                     }
                 }
@@ -666,6 +666,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
             });
+
+            Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_SECRET_KEY_RING_BY_EMAILS,
+                                                  mIdentity.getEmail());
+            Cursor c = getContentResolver().query(contentUri,
+                                                  new String[] { "master_key_id" },
+                                                  null, null, null);
+            if (c != null && c.moveToFirst()) {
+                setSignatureKey(c.getLong(0));
+            }
+
+            if (c != null) {
+                c.close();
+            }
+            updateEncryptLayout();
         } else {
             mEncryptLayout.setVisibility(View.GONE);
         }
@@ -679,10 +693,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private void updateEncryptLayout() {
         if (mSignatureKey == 0) {
             mSignatureCheckbox.setText("Sign");
+            mSignatureCheckbox.setChecked(false);
             mSignatureUserId.setVisibility(View.INVISIBLE);
             mSignatureUserIdRest.setVisibility(View.INVISIBLE);
         } else {
             mSignatureCheckbox.setText("");
+            mSignatureCheckbox.setChecked(true);
             mSignatureUserId.setVisibility(View.VISIBLE);
             mSignatureUserIdRest.setVisibility(View.VISIBLE);
             mSignatureUserId.setText("<unknown>");
@@ -791,7 +807,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
-        mSignatureKey = savedInstanceState.getLong(Apg.EXTRA_SIGNATURE_KEY_ID);
+        setSignatureKey(savedInstanceState.getLong(Apg.EXTRA_SIGNATURE_KEY_ID));
         mEncryptionKeyIds = savedInstanceState.getLongArray(Apg.EXTRA_ENCRYPTION_KEY_IDS);
         updateFrom();
         updateSignature();
@@ -1262,7 +1278,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 break;
 
             case Apg.SELECT_SECRET_KEY:
-                mSignatureKey = data.getLongExtra(Apg.EXTRA_KEY_ID, 0);
+                setSignatureKey(data.getLongExtra(Apg.EXTRA_KEY_ID, 0));
                 updateEncryptLayout();
                 break;
 
@@ -1975,5 +1991,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             mMessageContentView.setText(body.get(0));
         }
+    }
+
+    private void setSignatureKey(long keyId) {
+        mSignatureKey = keyId;
+        mSignatureRawUserId = null;
     }
 }

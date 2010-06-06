@@ -16,8 +16,13 @@ public class Apg {
     public static final String AUTHORITY = "org.thialfihar.android.apg.provider";
     public static final Uri CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID =
             Uri.parse("content://" + AUTHORITY + "/key_rings/secret/key_id/");
+    public static final Uri CONTENT_URI_SECRET_KEY_RING_BY_EMAILS =
+            Uri.parse("content://" + AUTHORITY + "/key_rings/secret/emails/");
+
     public static final Uri CONTENT_URI_PUBLIC_KEY_RING_BY_KEY_ID =
             Uri.parse("content://" + AUTHORITY + "/key_rings/public/key_id/");
+    public static final Uri CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS =
+            Uri.parse("content://" + AUTHORITY + "/key_rings/public/emails/");
 
     public static class Intent {
         public static final String DECRYPT = "org.thialfihar.android.apg.intent.DECRYPT";
