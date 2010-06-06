@@ -2333,9 +2333,11 @@ public class LocalStore extends Store implements Serializable
             text = text.replaceAll("(?m)^([^\r\n]{4,}[\\s\\w,:;+/])(?:\r\n|\n|\r)(?=[a-z]\\S{0,10}[\\s\\n\\r])","$1 ");
             text = text.replaceAll("(?m)(\r\n|\n|\r){4,}","\n\n");
 
+
             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
             StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><body><pre style=\"white-space: pre-wrap; word-wrap:break-word; \">");
+            sb.append("<html><head></head><body>");
+            sb.append(htmlifyMessageHeader());
             while (m.find())
             {
                 int start = m.start();
@@ -2353,10 +2355,36 @@ public class LocalStore extends Store implements Serializable
 
 
             m.appendTail(sb);
-            sb.append("</pre></body></html>");
+            sb.append(htmlifyMessageFooter());
+            sb.append("</body></html>");
             text = sb.toString();
 
             return text;
+        }
+
+        private String htmlifyMessageHeader()
+        {
+            if (K9.messageViewFixedWidthFont())
+            {
+                return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; \">";
+            }
+            else
+            {
+                return "<div style=\"white-space: pre-wrap; word-wrap:break-word; \">";
+            }
+        }
+
+
+        private String htmlifyMessageFooter()
+        {
+            if (K9.messageViewFixedWidthFont())
+            {
+                return "</pre>";
+            }
+            else
+            {
+                return "</div>";
+            }
         }
 
         @Override
