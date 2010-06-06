@@ -1,6 +1,18 @@
 
 package com.fsck.k9.activity;
 
+import java.io.File;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+import org.apache.james.mime4j.codec.EncoderUtil;
+
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -19,30 +31,46 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.Window;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AutoCompleteTextView.Validator;
-import android.widget.*;
 
-import com.fsck.k9.*;
+import com.fsck.k9.Account;
+import com.fsck.k9.Apg;
+import com.fsck.k9.EmailAddressAdapter;
+import com.fsck.k9.EmailAddressValidator;
+import com.fsck.k9.Identity;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.internet.*;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
-import java.io.File;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.StringTokenizer;
-import org.apache.james.mime4j.codec.EncoderUtil;
 
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
 {
@@ -658,7 +686,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(Apg.Intent.SELECT_PUBLIC_KEYS);
+                    long[] initialKeyIds = null;
                     if (mEncryptionKeyIds == null || mEncryptionKeyIds.length == 0) {
+                        Vector<Long> keyIds = new Vector<Long>();
+                        if (mSignatureKey != 0) {
+                            keyIds.add(mSignatureKey);
+                        }
                         String emails = "";
                         Address[][] addresses = new Address[][] { getAddresses(mToView),
                                                                   getAddresses(mCcView),
@@ -671,27 +704,37 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                                 emails += addresses[i][j].getAddress();
                             }
                         }
-                        if (emails.length() > 0) {
-                            Uri contentUri = Uri.withAppendedPath(
-                                    Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS,
-                                    emails);
-                            Cursor c = getContentResolver().query(contentUri,
-                                                                  new String[] { "master_key_id" },
-                                                                  null, null, null);
-                            if (c != null && c.moveToFirst()) {
-                                mEncryptionKeyIds = new long[c.getCount()];
-                                for (int i = 0; i < mEncryptionKeyIds.length; ++i) {
-                                    mEncryptionKeyIds[i] = c.getLong(0);
-                                    c.moveToNext();
-                                }
-                            }
+                        if (emails.length() != 0) {
+                            emails += ",";
+                        }
+                        emails += mIdentity.getEmail();
 
-                            if (c != null) {
-                                c.close();
+                        Uri contentUri = Uri.withAppendedPath(
+                                Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS,
+                                emails);
+                        Cursor c = getContentResolver().query(contentUri,
+                                                              new String[] { "master_key_id" },
+                                                              null, null, null);
+                        if (c != null) {
+                            while (c.moveToNext()) {
+                                keyIds.add(c.getLong(0));
                             }
                         }
+
+                        if (c != null) {
+                            c.close();
+                        }
+
+                        if (keyIds.size() > 0) {
+                            initialKeyIds = new long[keyIds.size()];
+                            for (int i = 0; i < keyIds.size(); ++i) {
+                                initialKeyIds[i] = keyIds.get(i);
+                            }
+                        }
+                    } else {
+                        initialKeyIds = mEncryptionKeyIds;
                     }
-                    intent.putExtra(Apg.EXTRA_SELECTION, mEncryptionKeyIds);
+                    intent.putExtra(Apg.EXTRA_SELECTION, initialKeyIds);
                     try {
                         startActivityForResult(intent, Apg.SELECT_PUBLIC_KEYS);
                     } catch (ActivityNotFoundException e) {
