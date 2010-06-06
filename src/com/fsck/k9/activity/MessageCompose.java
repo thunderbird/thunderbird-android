@@ -653,10 +653,44 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                 }
             });
+
             mSelectEncryptionKeys.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(Apg.Intent.SELECT_PUBLIC_KEYS);
+                    if (mEncryptionKeyIds == null || mEncryptionKeyIds.length == 0) {
+                        String emails = "";
+                        Address[][] addresses = new Address[][] { getAddresses(mToView),
+                                                                  getAddresses(mCcView),
+                                                                  getAddresses(mBccView) };
+                        for (int i = 0; i < 3; ++i) {
+                            for (int j = 0; j < addresses[i].length; ++j) {
+                                if (emails.length() != 0) {
+                                    emails += ",";
+                                }
+                                emails += addresses[i][j].getAddress();
+                            }
+                        }
+                        if (emails.length() > 0) {
+                            Uri contentUri = Uri.withAppendedPath(
+                                    Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS,
+                                    emails);
+                            Cursor c = getContentResolver().query(contentUri,
+                                                                  new String[] { "master_key_id" },
+                                                                  null, null, null);
+                            if (c != null && c.moveToFirst()) {
+                                mEncryptionKeyIds = new long[c.getCount()];
+                                for (int i = 0; i < mEncryptionKeyIds.length; ++i) {
+                                    mEncryptionKeyIds[i] = c.getLong(0);
+                                    c.moveToNext();
+                                }
+                            }
+
+                            if (c != null) {
+                                c.close();
+                            }
+                        }
+                    }
                     intent.putExtra(Apg.EXTRA_SELECTION, mEncryptionKeyIds);
                     try {
                         startActivityForResult(intent, Apg.SELECT_PUBLIC_KEYS);
