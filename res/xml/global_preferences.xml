@@ -74,7 +74,8 @@
 
         <CheckBoxPreference
             android:key="messagelist_touchable"
-            android:title="@string/global_settings_touchable_label" />
+            android:title="@string/global_settings_touchable_label"
+            android:summary="@string/global_settings_touchable_summary" />
 
         <CheckBoxPreference
             android:key="messagelist_stars"
