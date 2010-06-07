@@ -33,6 +33,8 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
     private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
 
+    private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
+
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
@@ -47,6 +49,9 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mStars;
     private CheckBoxPreference mCheckboxes;
     private CheckBoxPreference mTouchable;
+
+    private CheckBoxPreference mFixedWidth;
+
     private CheckBoxPreference mMeasureAccounts;
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mUseGalleryBugWorkaround;
@@ -161,6 +166,10 @@ public class Prefs extends K9PreferenceActivity
         mTouchable = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_TOUCHABLE);
         mTouchable.setChecked(K9.messageListTouchable());
 
+        mFixedWidth = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGEVIEW_FIXEDWIDTH);
+        mFixedWidth.setChecked(K9.messageViewFixedWidthFont());
+
+
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());
 
@@ -190,8 +199,9 @@ public class Prefs extends K9PreferenceActivity
         K9.setManageBack(mManageBack.isChecked());
         K9.setMessageListStars(mStars.isChecked());
         K9.setMessageListCheckboxes(mCheckboxes.isChecked());
-
         K9.setMessageListTouchable(mTouchable.isChecked());
+
+        K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
 
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());

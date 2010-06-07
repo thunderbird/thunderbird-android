@@ -41,12 +41,16 @@
 		android:id="@+id/move"
 		android:title="@string/move_action"
 	/>
-		<item
+	<item
 		android:id="@+id/copy"
 		android:title="@string/copy_action"
-	/>
+    />
 	<item
 		android:id="@+id/send_alternate"
 		android:title="@string/send_alternate_action"
 	/>
+    <item
+        android:id="@+id/same_sender"
+        android:title="@string/from_same_sender"
+    />
 </menu>

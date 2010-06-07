@@ -582,7 +582,14 @@ public class MessageList
         // platform.
         if (K9.manageBack())
         {
-            onShowFolderList();
+            if (mQueryString == null)
+            {
+                onShowFolderList();
+            }
+            else
+            {
+                onAccounts();
+            }
         }
         else
         {
@@ -1419,6 +1426,13 @@ public class MessageList
 
             case R.id.send_alternate:
                 onSendAlternate(mAccount, holder);
+
+                break;
+
+            case R.id.same_sender:
+                                MessageList.actionHandle(MessageList.this,
+                                         "From "+holder.sender, holder.sender, true,
+                                         null, null);
 
                 break;
 

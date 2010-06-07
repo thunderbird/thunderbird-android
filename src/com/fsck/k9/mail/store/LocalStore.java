@@ -2262,18 +2262,19 @@ public class LocalStore extends Store implements Serializable
                 return null;
             }
 
-            text = text.replaceAll("^.*:","");
+            text = text.replaceAll("(?ms)^-----BEGIN PGP SIGNED MESSAGE-----.(Hash:\\s*?.*?$)?","");
+            text = text.replaceAll("^.*\\w.*:","");
             text = text.replaceAll("(?m)^>.*$","");
             text = text.replaceAll("^On .*wrote.?$","");
             text = text.replaceAll("(\\r|\\n)+"," ");
             text = text.replaceAll("\\s+"," ");
-            if (text.length() <= 160)
+            if (text.length() <= 250)
             {
                 return text;
             }
             else
             {
-                text = text.substring(0,160);
+                text = text.substring(0,250);
                 return text;
             }
 
@@ -2333,9 +2334,11 @@ public class LocalStore extends Store implements Serializable
             text = text.replaceAll("(?m)^([^\r\n]{4,}[\\s\\w,:;+/])(?:\r\n|\n|\r)(?=[a-z]\\S{0,10}[\\s\\n\\r])","$1 ");
             text = text.replaceAll("(?m)(\r\n|\n|\r){4,}","\n\n");
 
+
             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
             StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><body><pre style=\"white-space: pre-wrap; word-wrap:break-word; \">");
+            sb.append("<html><head></head><body>");
+            sb.append(htmlifyMessageHeader());
             while (m.find())
             {
                 int start = m.start();
@@ -2353,10 +2356,36 @@ public class LocalStore extends Store implements Serializable
 
 
             m.appendTail(sb);
-            sb.append("</pre></body></html>");
+            sb.append(htmlifyMessageFooter());
+            sb.append("</body></html>");
             text = sb.toString();
 
             return text;
+        }
+
+        private String htmlifyMessageHeader()
+        {
+            if (K9.messageViewFixedWidthFont())
+            {
+                return "<pre style=\"white-space: pre-wrap; word-wrap:break-word; \">";
+            }
+            else
+            {
+                return "<div style=\"white-space: pre-wrap; word-wrap:break-word; \">";
+            }
+        }
+
+
+        private String htmlifyMessageFooter()
+        {
+            if (K9.messageViewFixedWidthFont())
+            {
+                return "</pre>";
+            }
+            else
+            {
+                return "</div>";
+            }
         }
 
         @Override

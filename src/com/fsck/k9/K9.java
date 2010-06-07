@@ -78,6 +78,9 @@ public class K9 extends Application
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
     private static boolean mMessageListTouchable = false;
+
+    private static boolean mMessageViewFixedWidthFont = false;
+
     private static boolean mGesturesEnabled = true;
     private static boolean mManageBack = false;
     private static boolean mMeasureAccounts = true;
@@ -304,6 +307,9 @@ public class K9 extends Application
         editor.putBoolean("messageListStars",mMessageListStars);
         editor.putBoolean("messageListCheckboxes",mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
+
+        editor.putBoolean("messageViewFixedWidthFont",mMessageViewFixedWidthFont);
+
         editor.putInt("theme", theme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
@@ -330,6 +336,9 @@ public class K9 extends Application
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
+
+        mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
+
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
         fontSizes.load(sprefs);
@@ -504,6 +513,16 @@ public class K9 extends Application
         mMessageListCheckboxes = checkboxes;
     }
 
+
+    public static boolean messageViewFixedWidthFont()
+    {
+        return mMessageViewFixedWidthFont;
+    }
+
+    public static void setMessageViewFixedWidthFont(boolean fixed)
+    {
+        mMessageViewFixedWidthFont = fixed;
+    }
 
     private static Method getMethod(Class<?> classObject, String methodName)
     {

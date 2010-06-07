@@ -74,7 +74,8 @@
 
         <CheckBoxPreference
             android:key="messagelist_touchable"
-            android:title="@string/global_settings_touchable_label" />
+            android:title="@string/global_settings_touchable_label"
+            android:summary="@string/global_settings_touchable_summary" />
 
         <CheckBoxPreference
             android:key="messagelist_stars"
@@ -86,6 +87,15 @@
             android:title="@string/global_settings_checkbox_label"
             android:summary="@string/global_settings_checkbox_summary" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/messageview_preferences" android:key="messageview_preferences">
+        <CheckBoxPreference
+            android:key="messageview_fixedwidth_font"
+            android:title="@string/global_settings_messageview_fixedwidth_label"
+            android:summary="@string/global_settings_messageview_fixedwidth_summary"
+
+            />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">

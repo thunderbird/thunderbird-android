@@ -364,6 +364,12 @@ public class FolderList extends K9ListActivity
         {
             onAccounts();
         }
+        else
+        {
+            // TODO - when we move to android 2.0, uncomment this instead.
+            // super.onBackPressed()
+            finish();
+        }
     }
 
     @Override public boolean onKeyDown(int keyCode, KeyEvent event)
