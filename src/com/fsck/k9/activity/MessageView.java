@@ -2054,6 +2054,18 @@ public class MessageView extends K9Activity implements OnClickListener
                 return;
             }
 
+            if (mDecryptedMessage != null) {
+                if (mSignatureKeyId == 0) {
+                    mDecryptLayout.setVisibility(View.GONE);
+                } else {
+                    // no need to show this after decryption/verification
+                    mDecryptButton.setVisibility(View.GONE);
+                }
+                return;
+            }
+
+            mDecryptButton.setVisibility(View.VISIBLE);
+
             String data = null;
             Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
             if (part == null)
