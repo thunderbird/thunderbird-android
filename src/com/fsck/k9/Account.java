@@ -124,7 +124,7 @@ public class Account implements BaseAccount
         mIdleRefreshMinutes = 24;
         mSaveAllHeaders = false;
         mPushPollOnConnect = true;
-        mDisplayCount = -1;
+        mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         mAccountNumber = -1;
         mNotifyNewMail = true;
         mNotifySync = true;
