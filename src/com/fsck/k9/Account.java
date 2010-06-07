@@ -185,6 +185,10 @@ public class Account implements BaseAccount
         mPushPollOnConnect = preferences.getPreferences().getBoolean(mUuid
                              + ".pushPollOnConnect", true);
         mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
+	if (mDisplayCount < 0)
+	{
+	    mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
+	}
         mLastAutomaticCheckTime = preferences.getPreferences().getLong(mUuid
                                   + ".lastAutomaticCheckTime", 0);
         mNotifyNewMail = preferences.getPreferences().getBoolean(mUuid + ".notifyNewMail",
