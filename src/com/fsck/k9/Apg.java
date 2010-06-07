@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 public class Apg {
     private static final String mApgPackageName = "org.thialfihar.android.apg";
-    private static final int mMinRequiredVersion = 15;
-    private static final int mMaxRequiredVersion = 15;
+    private static final int mMinRequiredVersion = 16;
+    private static final int mMaxRequiredVersion = 18;
 
     public static final String AUTHORITY = "org.thialfihar.android.apg.provider";
     public static final Uri CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID =
