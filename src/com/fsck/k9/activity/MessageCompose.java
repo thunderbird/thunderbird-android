@@ -180,6 +180,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     public static void actionCompose(Context context, Account account)
     {
+        if (account == null)
+        {
+            account = Preferences.getPreferences(context).getDefaultAccount();
+        }
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
