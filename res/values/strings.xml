@@ -655,7 +655,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_clear_dlg_title">Clear Account</string>
     <string name="account_clear_dlg_instructions_fmt">All messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
     
-    <string name="provider_note_yahoo">Free Yahoo! Mail accounts only work over T-Mobile wireless networks. Yahoo! Mail Plus users should configure POP settings manually.</string>
     <string name="provider_note_live">Only some \"Plus\" accounts include POP access
         allowing this program to connect. If you are not able to sign in with
         your correct email address and password, you may not have a paid
