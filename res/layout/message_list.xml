@@ -13,14 +13,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
-        android:padding="2sp"
         android:background="#CCCCCC"
         >
         <Button
             android:id="@+id/batch_read_button"
             android:layout_width="0dip"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/message_list_mark_read_action"
         />
         <Button
@@ -33,7 +33,7 @@
         <Button
             android:id="@+id/batch_flag_button"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:text="@string/message_list_flag_action"
         />
