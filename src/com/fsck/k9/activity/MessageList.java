@@ -417,6 +417,12 @@ public class MessageList
     public void onNewIntent(Intent intent)
     {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
+
+        // Only set "touchable" when we're first starting up the 
+        // activity. otherwise we get force closes when the user
+        // toggles it midstream
+        mTouchView = K9.messageListTouchable();
+
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
@@ -496,7 +502,6 @@ public class MessageList
 
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
-        mTouchView = K9.messageListTouchable();
 
         sortType = mController.getSortType();
         sortAscending = mController.isSortAscending(sortType);
