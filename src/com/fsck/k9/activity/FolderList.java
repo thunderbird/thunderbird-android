@@ -566,7 +566,7 @@ public class FolderList extends K9ListActivity
     private void onOpenFolder(String folder)
     {
         MessageList.actionHandleFolder(this, mAccount, folder);
-        if (K9.manageBack())
+        if (K9.manageBack()) 
         {
             finish();
         }
