@@ -75,6 +75,7 @@
         android:layout_marginLeft="1dip"
         android:layout_marginRight="0dip"
         android:singleLine="false"
+        android:fadingEdge="vertical"
         android:bufferType="spannable"
         android:textColor="?android:attr/textColorTertiary"
         android:textAppearance="?android:attr/textAppearanceSmall" />
