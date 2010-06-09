@@ -138,6 +138,7 @@
               android:layout_alignParentRight="true"
               android:textSize="10sp"
               android:singleLine="true"
+              android:ellipsize="none"
               android:textColor="?android:attr/textColorPrimary"
               android:textAppearance="?android:attr/textAppearanceSmall" />
            <LinearLayout android:id="@+id/icons_container"
