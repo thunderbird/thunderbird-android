@@ -2,7 +2,9 @@ package com.fsck.k9.mail;
 
 import java.util.Date;
 
+import android.util.Log;
 import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageRetrievalListener;
 
@@ -138,7 +140,11 @@ public abstract class Folder
     public void fetchPart(Message message, Part part,
                           MessageRetrievalListener listener) throws MessagingException
     {
-        throw new RuntimeException("fetchPart() not implemented.");
+        // This is causing trouble. Disabled for now. See issue 1733
+        //throw new RuntimeException("fetchPart() not implemented.");
+
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "fetchPart() not implemented.");
     }
 
     public abstract void delete(boolean recurse) throws MessagingException;
