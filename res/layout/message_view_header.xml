@@ -128,10 +128,10 @@
               android:layout_height="wrap_content"
               android:layout_alignParentRight="true"
               android:singleLine="true"
-                    android:textSize="10sp"
               android:ellipsize="none"
+              android:textSize="10sp"
               android:textColor="?android:attr/textColorPrimary"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+              android:textAppearance="?android:attr/textAppearanceSmall" />
              <TextView android:id="@+id/time"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
