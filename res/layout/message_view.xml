@@ -65,11 +65,11 @@
 		            android:layout_width="0dip"
 		            android:layout_weight="1" />
 		            
-		        <Button
+		        <ImageButton
 		            android:id="@+id/delete_scrolling"
-		            android:text="@string/delete_action"
-		            android:layout_height="wrap_content"
-		            android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_button_delete"
+                    android:layout_width="0dip"
 		            android:layout_weight="1" />
 		       <Button
 		            android:id="@+id/next_scrolling"
@@ -99,10 +99,11 @@
             android:layout_width="0dip"
             android:layout_weight="1" />
             
-        <Button
+        <ImageButton
             android:id="@+id/delete"
-            android:text="@string/delete_action"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_button_delete"
+            android:textSize="0dip"
             android:layout_width="0dip"
             android:layout_weight="1" />
        <Button

@@ -118,10 +118,10 @@ public class MessageList
     private int mSelectedCount = 0;
 
     private View mBatchButtonArea;
-    private Button mBatchReadButton;
-    private Button mBatchDeleteButton;
-    private Button mBatchFlagButton;
-    private Button mBatchDoneButton;
+    private ImageButton mBatchReadButton;
+    private ImageButton mBatchDeleteButton;
+    private ImageButton mBatchFlagButton;
+    private ImageButton mBatchDoneButton;
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
@@ -547,13 +547,13 @@ public class MessageList
 
 
         mBatchButtonArea = findViewById(R.id.batch_button_area);
-        mBatchReadButton = (Button) findViewById(R.id.batch_read_button);
+        mBatchReadButton = (ImageButton) findViewById(R.id.batch_read_button);
         mBatchReadButton.setOnClickListener(this);
-        mBatchDeleteButton = (Button) findViewById(R.id.batch_delete_button);
+        mBatchDeleteButton = (ImageButton) findViewById(R.id.batch_delete_button);
         mBatchDeleteButton.setOnClickListener(this);
-        mBatchFlagButton = (Button) findViewById(R.id.batch_flag_button);
+        mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
         mBatchFlagButton.setOnClickListener(this);
-        mBatchDoneButton = (Button) findViewById(R.id.batch_done_button);
+        mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
 
         mBatchDoneButton.setOnClickListener(this);
 
@@ -2553,13 +2553,13 @@ public class MessageList
             mSelectedCount = 0;
         }
 
-        int readButtonStringId;
-        int flagButtonStringId;
+        int readButtonIconId;
+        int flagButtonIconId;
 
         if (mSelectedCount==0)
         {
-            readButtonStringId = R.string.message_list_mark_read_action;
-            flagButtonStringId = R.string.message_list_flag_action;
+            readButtonIconId = R.drawable.ic_button_mark_read;
+            flagButtonIconId = R.drawable.ic_button_flag;
             hideBatchButtons();
         }
         else
@@ -2567,26 +2567,26 @@ public class MessageList
             boolean newReadState = computeBatchDirection(false);
             if (newReadState)
             {
-                readButtonStringId = R.string.message_list_mark_read_action;
+                readButtonIconId = R.drawable.ic_button_mark_read;
             }
             else
             {
-                readButtonStringId = R.string.message_list_mark_unread_action;
+                readButtonIconId = R.drawable.ic_button_mark_unread;
             }
             boolean newFlagState = computeBatchDirection(true);
             if (newFlagState)
             {
-                flagButtonStringId = R.string.message_list_flag_action;
+                flagButtonIconId = R.drawable.ic_button_flag;
             }
             else
             {
-                flagButtonStringId = R.string.message_list_unflag_action;
+                flagButtonIconId = R.drawable.ic_button_unflag;
             }
             showBatchButtons();
         }
 
-        mBatchReadButton.setText(readButtonStringId);
-        mBatchFlagButton.setText(flagButtonStringId);
+        mBatchReadButton.setImageResource(readButtonIconId);
+        mBatchFlagButton.setImageResource(flagButtonIconId);
     }
 
     class FooterViewHolder

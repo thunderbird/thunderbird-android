@@ -15,34 +15,34 @@
         android:visibility="gone"
         android:background="#CCCCCC"
         >
-        <Button
+        <ImageButton
             android:id="@+id/batch_read_button"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/message_list_mark_read_action"
+            android:src="@drawable/ic_button_mark_read"
         />
-        <Button
+        <ImageButton
             android:id="@+id/batch_delete_button"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/message_list_delete_action"
+            android:src="@drawable/ic_button_delete"
         />
-        <Button
+        <ImageButton
             android:id="@+id/batch_flag_button"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/message_list_flag_action"
+            android:src="@drawable/ic_button_flag"
         />
-        <Button
+        <ImageButton
             android:id="@+id/batch_done_button"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/done_action"
+            android:src="@drawable/ic_button_close_clear_cancel"
         />
     </LinearLayout>
     <ListView
