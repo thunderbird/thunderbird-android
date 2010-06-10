@@ -153,6 +153,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private String mInReplyTo;
 
     private boolean mDraftNeedsSaving = false;
+    private boolean mPreventDraftSaving = false;
 
     /**
      * The draft uid of this message. This is used when saving drafts so that the same draft is
@@ -669,8 +670,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     if (checkBox.isChecked()) {
                         Intent intent = new Intent(Apg.Intent.SELECT_SECRET_KEY);
                         try {
+                            mPreventDraftSaving = true;
                             startActivityForResult(intent, Apg.SELECT_SECRET_KEY);
                         } catch (ActivityNotFoundException e) {
+                            mPreventDraftSaving = false;
                             Toast.makeText(MessageCompose.this, "No activity to handle that.",
                                            Toast.LENGTH_SHORT).show();
                         }
@@ -687,9 +690,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 public void onClick(View v) {
                     Intent intent = new Intent(Apg.Intent.SELECT_PUBLIC_KEYS);
                     long[] initialKeyIds = null;
-                    if (mEncryptionKeyIds == null || mEncryptionKeyIds.length == 0) {
+                    if (!hasEncryptionKeys()) {
                         Vector<Long> keyIds = new Vector<Long>();
-                        if (mSignatureKey != 0) {
+                        if (hasSignatureKey()) {
                             keyIds.add(mSignatureKey);
                         }
                         String emails = "";
@@ -736,8 +739,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                     intent.putExtra(Apg.EXTRA_SELECTION, initialKeyIds);
                     try {
+                        mPreventDraftSaving = true;
                         startActivityForResult(intent, Apg.SELECT_PUBLIC_KEYS);
                     } catch (ActivityNotFoundException e) {
+                        mPreventDraftSaving = false;
                         Toast.makeText(MessageCompose.this, "No activity to handle that.",
                                        Toast.LENGTH_SHORT).show();
                     }
@@ -768,7 +773,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * Fill the encrypt layout with the latest data about signature key and encryption keys.
      */
     private void updateEncryptLayout() {
-        if (mSignatureKey == 0) {
+        if (!hasSignatureKey()) {
             mSignatureCheckbox.setText("Sign");
             mSignatureCheckbox.setChecked(false);
             mSignatureUserId.setVisibility(View.INVISIBLE);
@@ -807,7 +812,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
         }
 
-        if (mEncryptionKeyIds != null && mEncryptionKeyIds.length > 0) {
+        if (hasEncryptionKeys()) {
             if (mEncryptionKeyIds.length == 1) {
                 mSelectEncryptionKeys.setText("1 Key Selected");
             } else {
@@ -1154,6 +1159,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             return;
         }
+
+        if (hasEncryptionKeys() || mPreventDraftSaving) {
+            return;
+        }
+
         mDraftNeedsSaving = false;
         sendOrSaveMessage(true);
     }
@@ -1166,8 +1176,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
         }
-        if ((mEncryptionKeyIds != null && mEncryptionKeyIds.length > 0) ||
-            mSignatureKey != 0) {
+        if (hasEncryptionKeys() || hasSignatureKey()) {
             if (mEncryptedData == null) {
                 String text = buildText(true);
                 Intent intent = new Intent(Apg.Intent.ENCRYPT_AND_RETURN);
@@ -1176,8 +1185,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, mEncryptionKeyIds);
                 intent.putExtra(Apg.EXTRA_SIGNATURE_KEY_ID, mSignatureKey);
                 try {
+                    mPreventDraftSaving = true;
                     startActivityForResult(intent, Apg.ENCRYPT_MESSAGE);
                 } catch (ActivityNotFoundException e) {
+                    mPreventDraftSaving = false;
                     Toast.makeText(MessageCompose.this,
                                    "No activity to handle that.", Toast.LENGTH_SHORT).show();
                 }
@@ -1337,6 +1348,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        // if an APG activity is returning, then mPreventDraftSaving was set to true
+        mPreventDraftSaving = false;
+
         if (resultCode != RESULT_OK)
             return;
         if (data == null)
@@ -2068,6 +2082,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             mMessageContentView.setText(body.get(0));
         }
+    }
+
+    private boolean hasSignatureKey() {
+        return mSignatureKey != 0;
+    }
+
+    private boolean hasEncryptionKeys() {
+        return mEncryptionKeyIds != null && mEncryptionKeyIds.length > 0;
     }
 
     private void setSignatureKey(long keyId) {
