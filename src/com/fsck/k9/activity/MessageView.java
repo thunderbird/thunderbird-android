@@ -863,40 +863,41 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             Message messageToDelete = mMessage;
 
-            findSurroundingMessagesUid();
-
-            mMessageReferences.remove(mMessageReference);
+            showNextMessage();
 
             MessagingController.getInstance(getApplication()).deleteMessages(
                 new Message[] { messageToDelete },
                 null);
-
-            if (mLastDirection == NEXT && mNextMessage != null)
-            {
-                onNext(K9.isAnimations());
-            }
-            else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
-            {
-                onPrevious(K9.isAnimations());
-            }
-            else if (mNextMessage != null)
-            {
-                onNext(K9.isAnimations());
-            }
-            else if (mPreviousMessage != null)
-            {
-                onPrevious(K9.isAnimations());
-            }
-
-
-
-            else
-            {
-                finish();
-            }
         }
     }
 
+    private void showNextMessage()
+    {
+        findSurroundingMessagesUid();
+        mMessageReferences.remove(mMessageReference);
+
+        if (mLastDirection == NEXT && mNextMessage != null)
+        {
+            onNext(K9.isAnimations());
+        }
+        else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
+        {
+            onPrevious(K9.isAnimations());
+        }
+        else if (mNextMessage != null)
+        {
+            onNext(K9.isAnimations());
+        }
+        else if (mPreviousMessage != null)
+        {
+            onPrevious(K9.isAnimations());
+        }
+        else
+        {
+            finish();
+        }
+    }
+    
     private void onClickSender()
     {
         if (mMessage != null)
@@ -1075,8 +1076,12 @@ public class MessageView extends K9Activity implements OnClickListener
                     switch (requestCode)
                     {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
+                            Message messageToMove = mMessage;
+
+                            showNextMessage();
+
                             MessagingController.getInstance(getApplication()).moveMessage(mAccount,
-                                    srcFolderName, mMessage, destFolderName, null);
+                                    srcFolderName, messageToMove, destFolderName, null);
                             break;
                         case ACTIVITY_CHOOSE_FOLDER_COPY:
                             MessagingController.getInstance(getApplication()).copyMessage(mAccount,
