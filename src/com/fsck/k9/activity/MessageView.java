@@ -1036,11 +1036,12 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         List<HeaderEntry> additionalHeaders = new LinkedList<HeaderEntry>();
 
-        // Do not include the following headers, since they are always visible anyway
+        /*
+         * Remove "Subject" header as it is already shown in the standard
+         * message view header. But do show "From", "To", and "Cc" again.
+         * This time including the email addresses. See issue 1805.
+         */
         Set<String> headerNames = new HashSet<String>(message.getHeaderNames());
-        headerNames.remove("To");
-        headerNames.remove("From");
-        headerNames.remove("Cc");
         headerNames.remove("Subject");
 
         for (String headerName : headerNames)
