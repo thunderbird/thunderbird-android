@@ -223,6 +223,7 @@
                 android:layout_width="wrap_content"
                 android:paddingLeft="5dip">
 
+                <!-- TODO: Put string in strings.xml -->
                 <TextView
                     android:id="@+id/userId"
                     android:text="User Id"
@@ -245,6 +246,7 @@
 
         </LinearLayout>
 
+        <!-- TODO: Put string in strings.xml -->
         <Button
             android:text="Decrypt"
             android:id="@+id/btn_decrypt"

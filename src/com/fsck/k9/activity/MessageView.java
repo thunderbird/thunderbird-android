@@ -654,7 +654,8 @@ public class MessageView extends K9Activity implements OnClickListener
             @Override
             public void onClick(View v)
             {
-                try {
+                try
+                {
                     Intent intent = new Intent(Apg.Intent.DECRYPT_AND_RETURN);
                     intent.setType("text/plain");
                     String data = null;
@@ -671,11 +672,13 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         intent.putExtra(Apg.EXTRA_TEXT, data);
                     }
-                    try {
+                    try
+                    {
                         startActivityForResult(intent, Apg.DECRYPT_MESSAGE);
                     }
                     catch (ActivityNotFoundException e)
                     {
+                        //TODO: More verbose "error message". Place in strings.xml
                         Toast.makeText(MessageView.this,
                                        "No activity to handle that.", Toast.LENGTH_SHORT).show();
                     }
@@ -2052,9 +2055,11 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mSignatureKeyId != 0)
         {
+            //TODO: Put string in strings.xml?
             mUserIdRest.setText("id: " + Long.toHexString(mSignatureKeyId & 0xffffffffL));
             if (mSignatureUserId == null)
             {
+                //TODO: Put string in strings.xml
                 mSignatureUserId = "<unknown>";
             }
             String chunks[] = mSignatureUserId.split(" <", 2);
@@ -2081,8 +2086,9 @@ public class MessageView extends K9Activity implements OnClickListener
             mDecryptLayout.setVisibility(View.VISIBLE);
         }
 
-        try {
-            if (!Apg.isAvailable(this) || (mMessage == null && mDecryptedMessage == null))
+        try
+        {
+            if (!Apg.isAvailable(this) || ((mMessage == null) && (mDecryptedMessage == null)))
             {
                 mDecryptLayout.setVisibility(View.GONE);
                 return;
@@ -2124,6 +2130,7 @@ public class MessageView extends K9Activity implements OnClickListener
             Matcher matcher = Apg.PGP_MESSAGE.matcher(data);
             if (matcher.matches())
             {
+                //TODO: Put string in strings.xml
                 mDecryptButton.setText("Decrypt");
                 mDecryptLayout.setVisibility(View.VISIBLE);
                 return;
@@ -2132,6 +2139,7 @@ public class MessageView extends K9Activity implements OnClickListener
             matcher = Apg.PGP_SIGNED_MESSAGE.matcher(data);
             if (matcher.matches())
             {
+                //TODO: Put string in strings.xml
                 mDecryptButton.setText("Verify");
                 mDecryptLayout.setVisibility(View.VISIBLE);
                 return;

@@ -8,7 +8,8 @@ import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.widget.Toast;
 
-public class Apg {
+public class Apg
+{
     private static final String mApgPackageName = "org.thialfihar.android.apg";
     private static final int mMinRequiredVersion = 16;
     private static final int mMaxRequiredVersion = 18;
@@ -24,7 +25,8 @@ public class Apg {
     public static final Uri CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS =
             Uri.parse("content://" + AUTHORITY + "/key_rings/public/emails/");
 
-    public static class Intent {
+    public static class Intent
+    {
         public static final String DECRYPT = "org.thialfihar.android.apg.intent.DECRYPT";
         public static final String ENCRYPT = "org.thialfihar.android.apg.intent.ENCRYPT";
         public static final String DECRYPT_FILE = "org.thialfihar.android.apg.intent.DECRYPT_FILE";
@@ -73,6 +75,7 @@ public class Apg {
 
     /**
      * Check whether APG is installed and at a high enough version.
+     * 
      * @param context
      * @return whether a suitable version of APG was found
      */

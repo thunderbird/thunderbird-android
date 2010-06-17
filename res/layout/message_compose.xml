@@ -229,6 +229,7 @@
 
         </LinearLayout>
 
+        <!-- TODO: Put string in strings.xml -->
         <Button
             android:text="Encrypt"
             android:id="@+id/btn_select_encryption_keys"

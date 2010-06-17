@@ -677,13 +677,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     if (checkBox.isChecked())
                     {
                         Intent intent = new Intent(Apg.Intent.SELECT_SECRET_KEY);
-                        try {
+                        try
+                        {
                             mPreventDraftSaving = true;
                             startActivityForResult(intent, Apg.SELECT_SECRET_KEY);
                         }
                         catch (ActivityNotFoundException e)
                         {
                             mPreventDraftSaving = false;
+                            //TODO: More verbose "error message". Place in strings.xml
                             Toast.makeText(MessageCompose.this, "No activity to handle that.",
                                            Toast.LENGTH_SHORT).show();
                         }
@@ -715,15 +717,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         Address[][] addresses = new Address[][] { getAddresses(mToView),
                                                                   getAddresses(mCcView),
                                                                   getAddresses(mBccView) };
-                        for (int i = 0; i < 3; ++i)
+                        for (Address[] addressArray : addresses)
                         {
-                            for (int j = 0; j < addresses[i].length; ++j)
+                            for (Address address : addressArray)
                             {
                                 if (emails.length() != 0)
                                 {
                                     emails += ",";
                                 }
-                                emails += addresses[i][j].getAddress();
+                                emails += address.getAddress();
                             }
                         }
                         if (emails.length() != 0)
@@ -754,7 +756,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         if (keyIds.size() > 0)
                         {
                             initialKeyIds = new long[keyIds.size()];
-                            for (int i = 0; i < keyIds.size(); ++i)
+                            for (int i = 0, size = keyIds.size(); i < size; ++i)
                             {
                                 initialKeyIds[i] = keyIds.get(i);
                             }
@@ -765,13 +767,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         initialKeyIds = mEncryptionKeyIds;
                     }
                     intent.putExtra(Apg.EXTRA_SELECTION, initialKeyIds);
-                    try {
+                    try
+                    {
                         mPreventDraftSaving = true;
                         startActivityForResult(intent, Apg.SELECT_PUBLIC_KEYS);
                     }
                     catch (ActivityNotFoundException e)
                     {
                         mPreventDraftSaving = false;
+                        //TODO: More verbose "error message". Place in strings.xml
                         Toast.makeText(MessageCompose.this, "No activity to handle that.",
                                        Toast.LENGTH_SHORT).show();
                     }
@@ -809,6 +813,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     {
         if (!hasSignatureKey())
         {
+            //TODO: Put string in strings.xml
             mSignatureCheckbox.setText("Sign");
             mSignatureCheckbox.setChecked(false);
             mSignatureUserId.setVisibility(View.INVISIBLE);
@@ -816,10 +821,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         else
         {
+            //TODO: Put string in strings.xml?
             mSignatureCheckbox.setText("");
             mSignatureCheckbox.setChecked(true);
             mSignatureUserId.setVisibility(View.VISIBLE);
             mSignatureUserIdRest.setVisibility(View.VISIBLE);
+            //TODO: Put string in strings.xml
             mSignatureUserId.setText("<unknown>");
             mSignatureUserIdRest.setText("");
 
@@ -843,6 +850,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             if (mSignatureRawUserId == null)
             {
+                //TODO: Put string in strings.xml
                 mSignatureRawUserId = "<unknown>";
             }
 
@@ -858,15 +866,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             if (mEncryptionKeyIds.length == 1)
             {
+                //TODO: Put string in strings.xml
                 mSelectEncryptionKeys.setText("1 Key Selected");
             }
             else
             {
+                //TODO: Put string in strings.xml
                 mSelectEncryptionKeys.setText(mEncryptionKeyIds.length + " Keys Selected");
             }
         }
         else
         {
+            //TODO: Put string in strings.xml
             mSelectEncryptionKeys.setText("Encrypt");
         }
     }
@@ -1207,12 +1218,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void saveIfNeeded()
     {
-        if (!mDraftNeedsSaving)
-        {
-            return;
-        }
-
-        if (hasEncryptionKeys() || mPreventDraftSaving)
+        if (!mDraftNeedsSaving || mPreventDraftSaving || hasEncryptionKeys())
         {
             return;
         }
@@ -1239,13 +1245,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 intent.putExtra(Apg.EXTRA_TEXT, text);
                 intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, mEncryptionKeyIds);
                 intent.putExtra(Apg.EXTRA_SIGNATURE_KEY_ID, mSignatureKey);
-                try {
+                try
+                {
                     mPreventDraftSaving = true;
                     startActivityForResult(intent, Apg.ENCRYPT_MESSAGE);
                 }
                 catch (ActivityNotFoundException e)
                 {
                     mPreventDraftSaving = false;
+                    //TODO: More verbose "error message". Place in strings.xml
                     Toast.makeText(MessageCompose.this,
                                    "No activity to handle that.", Toast.LENGTH_SHORT).show();
                 }
@@ -1436,11 +1444,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 break;
 
             case Apg.ENCRYPT_MESSAGE:
-                if (data == null)
-                {
-                    return;
-                }
-
                 mEncryptedData = data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE);
                 if (mEncryptedData != null)
                 {
@@ -2150,7 +2153,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private boolean hasEncryptionKeys()
     {
-        return mEncryptionKeyIds != null && mEncryptionKeyIds.length > 0;
+        return (mEncryptionKeyIds != null) && (mEncryptionKeyIds.length > 0);
     }
 
     private void setSignatureKey(long keyId)
