@@ -665,53 +665,69 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
         mSelectEncryptionKeys = (Button)findViewById(R.id.btn_select_encryption_keys);
 
-        if (Apg.isAvailable(this)) {
+        if (Apg.isAvailable(this))
+        {
             mEncryptLayout.setVisibility(View.VISIBLE);
-            mSignatureCheckbox.setOnClickListener(new OnClickListener() {
+            mSignatureCheckbox.setOnClickListener(new OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     CheckBox checkBox = (CheckBox) v;
-                    if (checkBox.isChecked()) {
+                    if (checkBox.isChecked())
+                    {
                         Intent intent = new Intent(Apg.Intent.SELECT_SECRET_KEY);
                         try {
                             mPreventDraftSaving = true;
                             startActivityForResult(intent, Apg.SELECT_SECRET_KEY);
-                        } catch (ActivityNotFoundException e) {
+                        }
+                        catch (ActivityNotFoundException e)
+                        {
                             mPreventDraftSaving = false;
                             Toast.makeText(MessageCompose.this, "No activity to handle that.",
                                            Toast.LENGTH_SHORT).show();
                         }
                         checkBox.setChecked(false);
-                    } else {
+                    }
+                    else
+                    {
                         setSignatureKey(0);
                         updateEncryptLayout();
                     }
                 }
             });
 
-            mSelectEncryptionKeys.setOnClickListener(new OnClickListener() {
+            mSelectEncryptionKeys.setOnClickListener(new OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     Intent intent = new Intent(Apg.Intent.SELECT_PUBLIC_KEYS);
                     long[] initialKeyIds = null;
-                    if (!hasEncryptionKeys()) {
+                    if (!hasEncryptionKeys())
+                    {
                         Vector<Long> keyIds = new Vector<Long>();
-                        if (hasSignatureKey()) {
+                        if (hasSignatureKey())
+                        {
                             keyIds.add(mSignatureKey);
                         }
                         String emails = "";
                         Address[][] addresses = new Address[][] { getAddresses(mToView),
                                                                   getAddresses(mCcView),
                                                                   getAddresses(mBccView) };
-                        for (int i = 0; i < 3; ++i) {
-                            for (int j = 0; j < addresses[i].length; ++j) {
-                                if (emails.length() != 0) {
+                        for (int i = 0; i < 3; ++i)
+                        {
+                            for (int j = 0; j < addresses[i].length; ++j)
+                            {
+                                if (emails.length() != 0)
+                                {
                                     emails += ",";
                                 }
                                 emails += addresses[i][j].getAddress();
                             }
                         }
-                        if (emails.length() != 0) {
+                        if (emails.length() != 0)
+                        {
                             emails += ",";
                         }
                         emails += mIdentity.getEmail();
@@ -722,30 +738,39 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         Cursor c = getContentResolver().query(contentUri,
                                                               new String[] { "master_key_id" },
                                                               null, null, null);
-                        if (c != null) {
-                            while (c.moveToNext()) {
+                        if (c != null)
+                        {
+                            while (c.moveToNext())
+                            {
                                 keyIds.add(c.getLong(0));
                             }
                         }
 
-                        if (c != null) {
+                        if (c != null)
+                        {
                             c.close();
                         }
 
-                        if (keyIds.size() > 0) {
+                        if (keyIds.size() > 0)
+                        {
                             initialKeyIds = new long[keyIds.size()];
-                            for (int i = 0; i < keyIds.size(); ++i) {
+                            for (int i = 0; i < keyIds.size(); ++i)
+                            {
                                 initialKeyIds[i] = keyIds.get(i);
                             }
                         }
-                    } else {
+                    }
+                    else
+                    {
                         initialKeyIds = mEncryptionKeyIds;
                     }
                     intent.putExtra(Apg.EXTRA_SELECTION, initialKeyIds);
                     try {
                         mPreventDraftSaving = true;
                         startActivityForResult(intent, Apg.SELECT_PUBLIC_KEYS);
-                    } catch (ActivityNotFoundException e) {
+                    }
+                    catch (ActivityNotFoundException e)
+                    {
                         mPreventDraftSaving = false;
                         Toast.makeText(MessageCompose.this, "No activity to handle that.",
                                        Toast.LENGTH_SHORT).show();
@@ -758,15 +783,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Cursor c = getContentResolver().query(contentUri,
                                                   new String[] { "master_key_id" },
                                                   null, null, null);
-            if (c != null && c.moveToFirst()) {
+            if (c != null && c.moveToFirst())
+            {
                 setSignatureKey(c.getLong(0));
             }
 
-            if (c != null) {
+            if (c != null)
+            {
                 c.close();
             }
             updateEncryptLayout();
-        } else {
+        }
+        else
+        {
             mEncryptLayout.setVisibility(View.GONE);
         }
 
@@ -776,13 +805,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * Fill the encrypt layout with the latest data about signature key and encryption keys.
      */
-    private void updateEncryptLayout() {
-        if (!hasSignatureKey()) {
+    private void updateEncryptLayout()
+    {
+        if (!hasSignatureKey())
+        {
             mSignatureCheckbox.setText("Sign");
             mSignatureCheckbox.setChecked(false);
             mSignatureUserId.setVisibility(View.INVISIBLE);
             mSignatureUserIdRest.setVisibility(View.INVISIBLE);
-        } else {
+        }
+        else
+        {
             mSignatureCheckbox.setText("");
             mSignatureCheckbox.setChecked(true);
             mSignatureUserId.setVisibility(View.VISIBLE);
@@ -790,39 +823,50 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mSignatureUserId.setText("<unknown>");
             mSignatureUserIdRest.setText("");
 
-            if (mSignatureRawUserId == null) {
+            if (mSignatureRawUserId == null)
+            {
                 Uri contentUri = ContentUris.withAppendedId(
                                      Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
                                      mSignatureKey);
                 Cursor c = getContentResolver().query(contentUri,
                                                       new String[] { "user_id" },
                                                       null, null, null);
-                if (c != null && c.moveToFirst()) {
+                if (c != null && c.moveToFirst())
+                {
                     mSignatureRawUserId = c.getString(0);
                 }
-                if (c != null) {
+                if (c != null)
+                {
                     c.close();
                 }
             }
 
-            if (mSignatureRawUserId == null) {
+            if (mSignatureRawUserId == null)
+            {
                 mSignatureRawUserId = "<unknown>";
             }
 
             String chunks[] = mSignatureRawUserId.split(" <", 2);
             mSignatureUserId.setText(chunks[0]);
-            if (chunks.length > 1) {
+            if (chunks.length > 1)
+            {
                 mSignatureUserIdRest.setText("<" + chunks[1]);
             }
         }
 
-        if (hasEncryptionKeys()) {
-            if (mEncryptionKeyIds.length == 1) {
+        if (hasEncryptionKeys())
+        {
+            if (mEncryptionKeyIds.length == 1)
+            {
                 mSelectEncryptionKeys.setText("1 Key Selected");
-            } else {
+            }
+            else
+            {
                 mSelectEncryptionKeys.setText(mEncryptionKeyIds.length + " Keys Selected");
             }
-        } else {
+        }
+        else
+        {
             mSelectEncryptionKeys.setText("Encrypt");
         }
     }
@@ -945,7 +989,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return addresses;
     }
 
-    private String buildText(boolean appendSig) {
+    private String buildText(boolean appendSig)
+    {
         /*
          * Build the Body that will contain the text of the message. We'll decide where to
          * include it later.
@@ -993,9 +1038,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         String text = null;
-        if (mEncryptedData != null) {
+        if (mEncryptedData != null)
+        {
             text = mEncryptedData;
-        } else {
+        }
+        else
+        {
             text = buildText(appendSig);
         }
 
@@ -1164,7 +1212,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             return;
         }
 
-        if (hasEncryptionKeys() || mPreventDraftSaving) {
+        if (hasEncryptionKeys() || mPreventDraftSaving)
+        {
             return;
         }
 
@@ -1180,8 +1229,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
         }
-        if (hasEncryptionKeys() || hasSignatureKey()) {
-            if (mEncryptedData == null) {
+        if (hasEncryptionKeys() || hasSignatureKey())
+        {
+            if (mEncryptedData == null)
+            {
                 String text = buildText(true);
                 Intent intent = new Intent(Apg.Intent.ENCRYPT_AND_RETURN);
                 intent.setType("text/plain");
@@ -1191,7 +1242,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 try {
                     mPreventDraftSaving = true;
                     startActivityForResult(intent, Apg.ENCRYPT_MESSAGE);
-                } catch (ActivityNotFoundException e) {
+                }
+                catch (ActivityNotFoundException e)
+                {
                     mPreventDraftSaving = false;
                     Toast.makeText(MessageCompose.this,
                                    "No activity to handle that.", Toast.LENGTH_SHORT).show();
@@ -1383,12 +1436,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 break;
 
             case Apg.ENCRYPT_MESSAGE:
-                if (data == null) {
+                if (data == null)
+                {
                     return;
                 }
 
                 mEncryptedData = data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE);
-                if (mEncryptedData != null) {
+                if (mEncryptedData != null)
+                {
                     onSend();
                 }
                 break;
@@ -2088,15 +2143,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
-    private boolean hasSignatureKey() {
+    private boolean hasSignatureKey()
+    {
         return mSignatureKey != 0;
     }
 
-    private boolean hasEncryptionKeys() {
+    private boolean hasEncryptionKeys()
+    {
         return mEncryptionKeyIds != null && mEncryptionKeyIds.length > 0;
     }
 
-    private void setSignatureKey(long keyId) {
+    private void setSignatureKey(long keyId)
+    {
         mSignatureKey = keyId;
         mSignatureRawUserId = null;
     }

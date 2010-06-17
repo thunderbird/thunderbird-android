@@ -76,15 +76,18 @@ public class Apg {
      * @param context
      * @return whether a suitable version of APG was found
      */
-    public static boolean isAvailable(Context context) {
+    public static boolean isAvailable(Context context)
+    {
         List<PackageInfo> packs = context.getPackageManager().getInstalledPackages(0);
-        for (int i = 0; i < packs.size(); ++i) {
+        for (int i = 0; i < packs.size(); ++i)
+        {
             PackageInfo p = packs.get(i);
-            if (!p.packageName.equals(mApgPackageName)) {
+            if (!p.packageName.equals(mApgPackageName))
+            {
                 continue;
             }
-            if (p.versionCode >= mMinRequiredVersion &&
-                p.versionCode <= mMaxRequiredVersion) {
+            if (p.versionCode >= mMinRequiredVersion && p.versionCode <= mMaxRequiredVersion)
+            {
                 return true;
             }
             Toast.makeText(context,
