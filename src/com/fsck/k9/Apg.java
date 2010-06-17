@@ -12,7 +12,6 @@ public class Apg
 {
     private static final String mApgPackageName = "org.thialfihar.android.apg";
     private static final int mMinRequiredVersion = 16;
-    private static final int mMaxRequiredVersion = 18;
 
     public static final String AUTHORITY = "org.thialfihar.android.apg.provider";
     public static final Uri CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID =
@@ -75,7 +74,7 @@ public class Apg
 
     /**
      * Check whether APG is installed and at a high enough version.
-     * 
+     *
      * @param context
      * @return whether a suitable version of APG was found
      */
@@ -89,12 +88,12 @@ public class Apg
             {
                 continue;
             }
-            if (p.versionCode >= mMinRequiredVersion && p.versionCode <= mMaxRequiredVersion)
+            if (p.versionCode >= mMinRequiredVersion)
             {
                 return true;
             }
             Toast.makeText(context,
-                           "The installed APG version is not supported.", Toast.LENGTH_SHORT);
+                           R.string.error_apg_version_not_supported, Toast.LENGTH_SHORT).show();
             return false;
         }
 
