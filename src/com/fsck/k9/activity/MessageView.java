@@ -678,9 +678,9 @@ public class MessageView extends K9Activity implements OnClickListener
                     }
                     catch (ActivityNotFoundException e)
                     {
-                        //TODO: More verbose "error message". Place in strings.xml
                         Toast.makeText(MessageView.this,
-                                       "No activity to handle that.", Toast.LENGTH_SHORT).show();
+                                       R.string.error_activity_not_found,
+                                       Toast.LENGTH_SHORT).show();
                     }
                 }
                 catch (MessagingException me)
@@ -1017,7 +1017,7 @@ public class MessageView extends K9Activity implements OnClickListener
             finish();
         }
     }
-    
+
     private void onClickSender()
     {
         if (mMessage != null)
@@ -2055,12 +2055,11 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mSignatureKeyId != 0)
         {
-            //TODO: Put string in strings.xml?
-            mUserIdRest.setText("id: " + Long.toHexString(mSignatureKeyId & 0xffffffffL));
+            mUserIdRest.setText(getString(R.string.key_id,
+                                          Long.toHexString(mSignatureKeyId & 0xffffffffL)));
             if (mSignatureUserId == null)
             {
-                //TODO: Put string in strings.xml
-                mSignatureUserId = "<unknown>";
+                mSignatureUserId = getString(R.string.unknown_signature_user_id);
             }
             String chunks[] = mSignatureUserId.split(" <", 2);
             String name = chunks[0];
@@ -2130,8 +2129,7 @@ public class MessageView extends K9Activity implements OnClickListener
             Matcher matcher = Apg.PGP_MESSAGE.matcher(data);
             if (matcher.matches())
             {
-                //TODO: Put string in strings.xml
-                mDecryptButton.setText("Decrypt");
+                mDecryptButton.setText(R.string.btn_decrypt);
                 mDecryptLayout.setVisibility(View.VISIBLE);
                 return;
             }
@@ -2139,8 +2137,7 @@ public class MessageView extends K9Activity implements OnClickListener
             matcher = Apg.PGP_SIGNED_MESSAGE.matcher(data);
             if (matcher.matches())
             {
-                //TODO: Put string in strings.xml
-                mDecryptButton.setText("Verify");
+                mDecryptButton.setText(R.string.btn_verify);
                 mDecryptLayout.setVisibility(View.VISIBLE);
                 return;
             }

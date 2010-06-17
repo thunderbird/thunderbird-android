@@ -685,8 +685,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                         catch (ActivityNotFoundException e)
                         {
                             mPreventDraftSaving = false;
-                            //TODO: More verbose "error message". Place in strings.xml
-                            Toast.makeText(MessageCompose.this, "No activity to handle that.",
+                            Toast.makeText(MessageCompose.this,
+                                           R.string.error_activity_not_found,
                                            Toast.LENGTH_SHORT).show();
                         }
                         checkBox.setChecked(false);
@@ -775,8 +775,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     catch (ActivityNotFoundException e)
                     {
                         mPreventDraftSaving = false;
-                        //TODO: More verbose "error message". Place in strings.xml
-                        Toast.makeText(MessageCompose.this, "No activity to handle that.",
+                        Toast.makeText(MessageCompose.this,
+                                       R.string.error_activity_not_found,
                                        Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -813,21 +813,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     {
         if (!hasSignatureKey())
         {
-            //TODO: Put string in strings.xml
-            mSignatureCheckbox.setText("Sign");
+            mSignatureCheckbox.setText(R.string.btn_sign);
             mSignatureCheckbox.setChecked(false);
             mSignatureUserId.setVisibility(View.INVISIBLE);
             mSignatureUserIdRest.setVisibility(View.INVISIBLE);
         }
         else
         {
-            //TODO: Put string in strings.xml?
+            // if a signature key is selected, then the checkbox itself has no text
             mSignatureCheckbox.setText("");
             mSignatureCheckbox.setChecked(true);
             mSignatureUserId.setVisibility(View.VISIBLE);
             mSignatureUserIdRest.setVisibility(View.VISIBLE);
-            //TODO: Put string in strings.xml
-            mSignatureUserId.setText("<unknown>");
+            mSignatureUserId.setText(R.string.unknown_signature_user_id);
             mSignatureUserIdRest.setText("");
 
             if (mSignatureRawUserId == null)
@@ -850,8 +848,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             if (mSignatureRawUserId == null)
             {
-                //TODO: Put string in strings.xml
-                mSignatureRawUserId = "<unknown>";
+                mSignatureRawUserId = getString(R.string.unknown_signature_user_id);
             }
 
             String chunks[] = mSignatureRawUserId.split(" <", 2);
@@ -866,19 +863,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             if (mEncryptionKeyIds.length == 1)
             {
-                //TODO: Put string in strings.xml
-                mSelectEncryptionKeys.setText("1 Key Selected");
+                mSelectEncryptionKeys.setText(R.string.one_key_selected);
             }
             else
             {
-                //TODO: Put string in strings.xml
-                mSelectEncryptionKeys.setText(mEncryptionKeyIds.length + " Keys Selected");
+                mSelectEncryptionKeys.setText(getString(R.string.n_keys_selected,
+                                                        mEncryptionKeyIds.length));
             }
         }
         else
         {
-            //TODO: Put string in strings.xml
-            mSelectEncryptionKeys.setText("Encrypt");
+            mSelectEncryptionKeys.setText(R.string.btn_encrypt);
         }
     }
 
@@ -1253,9 +1248,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 catch (ActivityNotFoundException e)
                 {
                     mPreventDraftSaving = false;
-                    //TODO: More verbose "error message". Place in strings.xml
                     Toast.makeText(MessageCompose.this,
-                                   "No activity to handle that.", Toast.LENGTH_SHORT).show();
+                                   R.string.error_activity_not_found,
+                                   Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
