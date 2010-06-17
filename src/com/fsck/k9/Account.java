@@ -511,11 +511,13 @@ public class Account implements BaseAccount
             //folder.refresh(prefs);
             Folder.FolderClass fMode = localFolder.getDisplayClass(prefs);
 
-            if (folder.getName().equals(getTrashFolderName()) == false &&
+			// Always get stats about the INBOX (see issue 1817)
+            if (folder.getName().equals(K9.INBOX) || (
+                    folder.getName().equals(getTrashFolderName()) == false &&
                     folder.getName().equals(getDraftsFolderName()) == false &&
                     folder.getName().equals(getOutboxFolderName()) == false &&
                     folder.getName().equals(getSentFolderName()) == false &&
-                    folder.getName().equals(getErrorFolderName()) == false)
+                    folder.getName().equals(getErrorFolderName()) == false))
             {
                 if (aMode == Account.FolderMode.NONE)
                 {

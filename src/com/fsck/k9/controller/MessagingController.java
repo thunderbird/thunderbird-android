@@ -4,7 +4,6 @@ package com.fsck.k9.controller;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -812,7 +811,8 @@ public class MessagingController implements Runnable
                                             include = false;
                                         }
                                     }
-                                    else if (noSpecialFolders && (
+                                    // Never exclude the INBOX (see issue 1817)
+                                    else if (noSpecialFolders && !localFolderName.equals(K9.INBOX) && (
                                                  localFolderName.equals(account.getTrashFolderName()) ||
                                                  localFolderName.equals(account.getOutboxFolderName()) ||
                                                  localFolderName.equals(account.getDraftsFolderName()) ||
@@ -4536,10 +4536,13 @@ public class MessagingController implements Runnable
         Folder folder = message.getFolder();
         if (folder != null)
         {
+            // No notification for new messages in Trash, Drafts, or Sent folder.
+            // But do notify if it's the INBOX (see issue 1817).
             String folderName = folder.getName();
-            if (account.getTrashFolderName().equals(folderName)
+            if (!K9.INBOX.equals(folderName) &&
+                    (account.getTrashFolderName().equals(folderName)
                     || account.getDraftsFolderName().equals(folderName)
-                    || account.getSentFolderName().equals(folderName))
+                    || account.getSentFolderName().equals(folderName)))
             {
                 return false;
             }

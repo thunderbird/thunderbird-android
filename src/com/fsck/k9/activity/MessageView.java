@@ -1017,7 +1017,7 @@ public class MessageView extends K9Activity implements OnClickListener
             finish();
         }
     }
-
+    
     private void onClickSender()
     {
         if (mMessage != null)
