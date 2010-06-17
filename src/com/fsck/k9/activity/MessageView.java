@@ -752,14 +752,21 @@ public class MessageView extends K9Activity implements OnClickListener
         Intent intent = getIntent();
         Uri uri = intent.getData();
 
-        if (icicle!=null)
+        if (icicle != null)
         {
             mMessageReference = (MessageReference)icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
             mMessageReferences = (ArrayList<MessageReference>)icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
+
+            mSignatureKeyId = icicle.getLong(Apg.EXTRA_SIGNATURE_KEY_ID);
+            mSignatureUserId = icicle.getString(Apg.EXTRA_SIGNATURE_USER_ID);
+            mDecryptedMessage = icicle.getString(Apg.EXTRA_DECRYPTED_MESSAGE);
+            mSignatureSuccess = icicle.getBoolean(Apg.EXTRA_SIGNATURE_SUCCESS);
+            mSignatureUnknown = icicle.getBoolean(Apg.EXTRA_SIGNATURE_UNKNOWN);
+            updateDecryptLayout();
         }
         else
         {
-            if (uri==null)
+            if (uri == null)
             {
                 mMessageReference = (MessageReference)intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
                 mMessageReferences = (ArrayList<MessageReference>)intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCES);
@@ -767,7 +774,7 @@ public class MessageView extends K9Activity implements OnClickListener
             else
             {
                 List<String> segmentList = uri.getPathSegments();
-                if (segmentList.size()==3)
+                if (segmentList.size() == 3)
                 {
                     String accountId = segmentList.get(0);
                     Account[] accounts = Preferences.getPreferences(this).getAccounts();
@@ -1200,6 +1207,8 @@ public class MessageView extends K9Activity implements OnClickListener
                 mSignatureUnknown = data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false);
 
                 mDecryptedMessage = data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE);
+                // TODO: this might not be enough if the orientation was changed while in APG,
+                // sometimes shows the original encrypted content
                 mMessageContentView.loadDataWithBaseURL("email://", mDecryptedMessage, "text/plain", "utf-8", null);
                 updateDecryptLayout();
 
@@ -2046,10 +2055,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
             }
             mSignatureLayout.setVisibility(View.VISIBLE);
+            mDecryptLayout.setVisibility(View.VISIBLE);
         }
 
         try {
-            if (!Apg.isAvailable(this) || mMessage == null) {
+            if (!Apg.isAvailable(this) || (mMessage == null && mDecryptedMessage == null)) {
                 mDecryptLayout.setVisibility(View.GONE);
                 return;
             }
