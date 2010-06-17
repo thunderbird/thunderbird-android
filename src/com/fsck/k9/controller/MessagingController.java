@@ -1129,6 +1129,11 @@ public class MessagingController implements Runnable
 
             int visibleLimit = localFolder.getVisibleLimit();
 
+            if (visibleLimit < 1)
+            {
+                    visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
+            }
+
             Message[] remoteMessageArray = new Message[0];
             final ArrayList<Message> remoteMessages = new ArrayList<Message>();
             //  final ArrayList<Message> unsyncedMessages = new ArrayList<Message>();

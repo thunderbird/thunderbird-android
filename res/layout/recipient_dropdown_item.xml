@@ -4,7 +4,7 @@
     android:layout_height="50dip"
     android:orientation="horizontal">
     <TextView android:id="@+id/text1"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="@android:color/primary_text_light"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         android:ellipsize="end"
         />
     <TextView android:id="@+id/text2"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="@android:color/secondary_text_light"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

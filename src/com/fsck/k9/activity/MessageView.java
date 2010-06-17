@@ -973,40 +973,41 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             Message messageToDelete = mMessage;
 
-            findSurroundingMessagesUid();
-
-            mMessageReferences.remove(mMessageReference);
+            showNextMessage();
 
             MessagingController.getInstance(getApplication()).deleteMessages(
                 new Message[] { messageToDelete },
                 null);
-
-            if (mLastDirection == NEXT && mNextMessage != null)
-            {
-                onNext(K9.isAnimations());
-            }
-            else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
-            {
-                onPrevious(K9.isAnimations());
-            }
-            else if (mNextMessage != null)
-            {
-                onNext(K9.isAnimations());
-            }
-            else if (mPreviousMessage != null)
-            {
-                onPrevious(K9.isAnimations());
-            }
-
-
-
-            else
-            {
-                finish();
-            }
         }
     }
 
+    private void showNextMessage()
+    {
+        findSurroundingMessagesUid();
+        mMessageReferences.remove(mMessageReference);
+
+        if (mLastDirection == NEXT && mNextMessage != null)
+        {
+            onNext(K9.isAnimations());
+        }
+        else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
+        {
+            onPrevious(K9.isAnimations());
+        }
+        else if (mNextMessage != null)
+        {
+            onNext(K9.isAnimations());
+        }
+        else if (mPreviousMessage != null)
+        {
+            onPrevious(K9.isAnimations());
+        }
+        else
+        {
+            finish();
+        }
+    }
+    
     private void onClickSender()
     {
         if (mMessage != null)
@@ -1145,11 +1146,12 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         List<HeaderEntry> additionalHeaders = new LinkedList<HeaderEntry>();
 
-        // Do not include the following headers, since they are always visible anyway
+        /*
+         * Remove "Subject" header as it is already shown in the standard
+         * message view header. But do show "From", "To", and "Cc" again.
+         * This time including the email addresses. See issue 1805.
+         */
         Set<String> headerNames = new HashSet<String>(message.getHeaderNames());
-        headerNames.remove("To");
-        headerNames.remove("From");
-        headerNames.remove("Cc");
         headerNames.remove("Subject");
 
         for (String headerName : headerNames)
@@ -1185,8 +1187,12 @@ public class MessageView extends K9Activity implements OnClickListener
                     switch (requestCode)
                     {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
+                            Message messageToMove = mMessage;
+
+                            showNextMessage();
+
                             MessagingController.getInstance(getApplication()).moveMessage(mAccount,
-                                    srcFolderName, mMessage, destFolderName, null);
+                                    srcFolderName, messageToMove, destFolderName, null);
                             break;
                         case ACTIVITY_CHOOSE_FOLDER_COPY:
                             MessagingController.getInstance(getApplication()).copyMessage(mAccount,

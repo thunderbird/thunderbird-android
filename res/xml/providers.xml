@@ -72,7 +72,7 @@
             username="$email" />
         <outgoing uri="smtp://smtp.aim.com:587" username="$email" />
     </provider>
-    <provider id="yahoo" label="Yahoo" domain="yahoo.com" note="@string/provider_note_yahoo">
+    <provider id="yahoo" label="Yahoo" domain="yahoo.com">
         <incoming uri="imap+tls://imap.mail.yahoo.com"
             username="$user" />
         <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com"

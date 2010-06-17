@@ -93,7 +93,7 @@ public class ImapStore extends Store
     private volatile String mCombinedPrefix = null;
     private volatile String mPathDelimeter = null;
     
-    private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy");
+    private static final SimpleDateFormat RFC3501_DATE = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
 
     private LinkedList<ImapConnection> mConnections =
         new LinkedList<ImapConnection>();
