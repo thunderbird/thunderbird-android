@@ -833,7 +833,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="misc_preferences_attachment_description">Show buttons to add image/video attachments (to work around a Gallery 3D bug)</string>
 
     <!-- APG related -->
-    <string name="error_activity_not_found">No application </string>
+    <string name="error_activity_not_found">No suitable application for this action found.</string>
     <string name="error_apg_version_not_supported">The installed APG version is not supported.</string>
     <string name="btn_sign">Sign</string>
     <string name="btn_encrypt">Encrypt</string>
