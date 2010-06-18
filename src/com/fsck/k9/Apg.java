@@ -1,10 +1,10 @@
 package com.fsck.k9;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.widget.Toast;
 
@@ -80,21 +80,16 @@ public class Apg
      */
     public static boolean isAvailable(Context context)
     {
-        List<PackageInfo> packs = context.getPackageManager().getInstalledPackages(0);
-        for (int i = 0; i < packs.size(); ++i)
-        {
-            PackageInfo p = packs.get(i);
-            if (!p.packageName.equals(mApgPackageName))
-            {
-                continue;
-            }
-            if (p.versionCode >= mMinRequiredVersion)
-            {
+        try {
+            PackageInfo pi = context.getPackageManager().getPackageInfo(mApgPackageName, 0);
+            if (pi.versionCode >= mMinRequiredVersion) {
                 return true;
+            } else {
+                Toast.makeText(context,
+                               R.string.error_apg_version_not_supported, Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(context,
-                           R.string.error_apg_version_not_supported, Toast.LENGTH_SHORT).show();
-            return false;
+        } catch (NameNotFoundException e) {
+            // not found
         }
 
         return false;
