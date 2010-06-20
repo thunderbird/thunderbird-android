@@ -49,6 +49,20 @@
             android:layout_width="fill_parent" 
             android:hint="@string/edit_identity_email_hint"
             />
+        <TextView
+            android:text="@string/edit_identity_reply_to_label"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorPrimary" 
+            />
+        <EditText
+            android:id="@+id/reply_to"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" 
+            android:hint="@string/edit_identity_reply_to_hint"
+            />
             <!-- 
         <TextView
             android:text="@string/edit_identity_always_bcc_label"

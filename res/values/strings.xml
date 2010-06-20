@@ -609,6 +609,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="edit_identity_name_hint">(Optional)</string>
     <string name="edit_identity_email_label">Email address</string>
     <string name="edit_identity_email_hint">(Required)</string>
+    <string name="edit_identity_reply_to_label">Reply-to address</string>
+    <string name="edit_identity_reply_to_hint">(Optional)</string>
     <string name="edit_identity_signature_label">Signature</string>
     <string name="edit_identity_signature_hint">(Optional)</string>
     

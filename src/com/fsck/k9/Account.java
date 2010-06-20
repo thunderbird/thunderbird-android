@@ -1044,6 +1044,7 @@ public class Account implements BaseAccount
             boolean signatureUse = prefs.getBoolean(mUuid  + ".signatureUse." + ident, true);
             String signature = prefs.getString(mUuid + ".signature." + ident, null);
             String description = prefs.getString(mUuid + ".description." + ident, null);
+            final String replyTo = prefs.getString(mUuid + ".replyTo." + ident, null);
             if (email != null)
             {
                 Identity identity = new Identity();
@@ -1052,6 +1053,7 @@ public class Account implements BaseAccount
                 identity.setSignatureUse(signatureUse);
                 identity.setSignature(signature);
                 identity.setDescription(description);
+                identity.setReplyTo(replyTo);
                 newIdentities.add(identity);
                 gotOne = true;
             }
@@ -1092,6 +1094,7 @@ public class Account implements BaseAccount
                 editor.remove(mUuid + ".signatureUse." + ident);
                 editor.remove(mUuid + ".signature." + ident);
                 editor.remove(mUuid + ".description." + ident);
+                editor.remove(mUuid + ".replyTo." + ident);
                 gotOne = true;
             }
             ident++;
@@ -1111,6 +1114,7 @@ public class Account implements BaseAccount
             editor.putBoolean(mUuid + ".signatureUse." + ident, identity.getSignatureUse());
             editor.putString(mUuid + ".signature." + ident, identity.getSignature());
             editor.putString(mUuid + ".description." + ident, identity.getDescription());
+            editor.putString(mUuid + ".replyTo." + ident, identity.getReplyTo());
             ident++;
         }
     }

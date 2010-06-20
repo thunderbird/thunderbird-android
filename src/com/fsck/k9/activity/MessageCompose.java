@@ -707,6 +707,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         message.setSubject(mSubjectView.getText().toString());
         message.setHeader("X-User-Agent", getString(R.string.message_header_mua));
 
+        final String replyTo = mIdentity.getReplyTo();
+        if (replyTo != null)
+        {
+            message.setReplyTo(new Address[] { new Address(replyTo) });
+        }
+
         if (mInReplyTo != null)
         {
             message.setInReplyTo(mInReplyTo);

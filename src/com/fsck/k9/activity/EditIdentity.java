@@ -30,6 +30,7 @@ public class EditIdentity extends K9Activity
     private EditText mEmailView;
 //  private EditText mAlwaysBccView;
     private EditText mNameView;
+    private EditText mReplyTo;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -65,6 +66,9 @@ public class EditIdentity extends K9Activity
 
         mEmailView = (EditText)findViewById(R.id.email);
         mEmailView.setText(mIdentity.getEmail());
+
+        mReplyTo = (EditText) findViewById(R.id.reply_to);
+        mReplyTo.setText(mIdentity.getReplyTo());
 
 //      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
 //      mAccountAlwaysBcc.setText(mIdentity.getAlwaysBcc());
@@ -114,6 +118,15 @@ public class EditIdentity extends K9Activity
         mIdentity.setName(mNameView.getText().toString());
         mIdentity.setSignatureUse(mSignatureUse.isChecked());
         mIdentity.setSignature(mSignatureView.getText().toString());
+
+        if (mReplyTo.getText().length() == 0)
+        {
+            mIdentity.setReplyTo(null);
+        }
+        else
+        {
+            mIdentity.setReplyTo(mReplyTo.getText().toString());
+        }
 
         List<Identity> identities = mAccount.getIdentities();
         if (mIdentityIndex == -1)
