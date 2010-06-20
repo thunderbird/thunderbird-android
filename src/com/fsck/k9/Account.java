@@ -492,8 +492,6 @@ public class Account implements BaseAccount
 
     }
 
-    //TODO: Shouldn't this live in MessagingController?
-    // Why should everything be in MessagingController? This is an Account-specific operation. --danapple0
     public AccountStats getStats(Context context) throws MessagingException
     {
         long startTime = System.currentTimeMillis();
