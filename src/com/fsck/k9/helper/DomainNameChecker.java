@@ -82,7 +82,6 @@ public class DomainNameChecker
     /**
      * @return True iff the domain name is specified as an IP address
      */
-    @SuppressWarnings("null")
     private static boolean isIpAddress(String domain)
     {
         boolean rval = ((domain != null) && (domain.length() != 0));

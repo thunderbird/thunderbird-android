@@ -4,10 +4,6 @@ package com.fsck.k9.mail;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import android.util.Log;
-
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 
 public abstract class Message implements Part, Body
