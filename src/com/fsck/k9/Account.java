@@ -44,6 +44,7 @@ public class Account implements BaseAccount
     public static final String TYPE_OTHER = "OTHER";
     private static String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
+    private static final String DEFAULT_QUOTE_PREFIX = ">";
 
     /**
      * <pre>
@@ -97,6 +98,7 @@ public class Account implements BaseAccount
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
     private boolean mRingNotified;
+    private String mQuotePrefix;
 
     private List<Identity> identities;
 
@@ -146,6 +148,7 @@ public class Account implements BaseAccount
         goToUnreadMessageSearch = false;
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = 10;
+        mQuotePrefix = DEFAULT_QUOTE_PREFIX;
 
         searchableFolders = Searchable.ALL;
 
@@ -215,6 +218,7 @@ public class Account implements BaseAccount
                 false);
         maximumPolledMessageAge = preferences.getPreferences().getInt(mUuid
                 + ".maximumPolledMessageAge", -1);
+        mQuotePrefix = preferences.getPreferences().getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         for (String type : networkTypes)
         {
             Boolean useCompression = preferences.getPreferences().getBoolean(mUuid + ".useCompression." + type,
@@ -386,6 +390,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".goToUnreadMessageSearch");
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
+        editor.remove(mUuid + ".quotePrefix");
         for (String type : networkTypes)
         {
             editor.remove(mUuid + ".useCompression." + type);
@@ -471,6 +476,7 @@ public class Account implements BaseAccount
         editor.putBoolean(mUuid + ".goToUnreadMessageSearch", goToUnreadMessageSearch);
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
+        editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
         
         for (String type : networkTypes)
         {
@@ -1242,6 +1248,7 @@ public class Account implements BaseAccount
     {
         this.maximumPolledMessageAge = maximumPolledMessageAge;
     }
+
     public Date getEarliestPollDate()
     {
         int age = getMaximumPolledMessageAge();
@@ -1281,5 +1288,15 @@ public class Account implements BaseAccount
         {
             return null;
         }
+    }
+
+    public String getQuotePrefix()
+    {
+        return mQuotePrefix;
+    }
+
+    public void setQuotePrefix(String quotePrefix)
+    {
+        mQuotePrefix = quotePrefix;
     }
 }

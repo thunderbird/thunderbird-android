@@ -1343,7 +1343,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                                             getString(R.string.message_compose_reply_header_fmt),
                                             Address.toString(mSourceMessage.getFrom()));
 
-                    quotedText += MimeUtility.getTextFromPart(part).replaceAll("(?m)^", ">");
+                    final String prefix = mAccount.getQuotePrefix();
+                    // "$" and "\" in the quote prefix have to be escaped for
+                    // the replaceAll() invocation.
+                    final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
+                    quotedText += MimeUtility.getTextFromPart(part).replaceAll(
+                            "(?m)^", escapedPrefix);
+
                     quotedText = quotedText.replaceAll("\\\r", "");
                     mQuotedText.setText(quotedText);
 
