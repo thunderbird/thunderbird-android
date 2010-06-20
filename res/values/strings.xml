@@ -298,6 +298,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
+    <string name="global_settings_messageview_return_to_list_label">Return to list after delete</string>
+    <string name="global_settings_messageview_return_to_list_summary">Return to message list after message deletion</string>
 
 	<string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_instructions">Enter this account\'s email address:</string>

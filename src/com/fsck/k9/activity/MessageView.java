@@ -863,7 +863,14 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             Message messageToDelete = mMessage;
 
-            showNextMessage();
+            if (K9.messageViewReturnToList())
+            {
+                finish();
+            }
+            else
+            {
+                showNextMessage();
+            }
 
             MessagingController.getInstance(getApplication()).deleteMessages(
                 new Message[] { messageToDelete },
