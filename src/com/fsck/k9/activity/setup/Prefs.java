@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.DateFormatter;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.service.MailService;
@@ -228,6 +229,12 @@ public class Prefs extends K9PreferenceActivity
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
             saveSettings();
+            if (K9.manageBack())
+            {
+                Accounts.listAccounts(this);
+                finish();
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
