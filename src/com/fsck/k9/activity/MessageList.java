@@ -1926,7 +1926,16 @@ public class MessageList
         {
             for (MessageInfoHolder holder : mAdapter.messages)
             {
-                if (holder.message.equalsReference(messageReference))
+                /*
+                 * 2010-06-21 - cketti
+                 * Added null pointer check. Not sure what's causing 'holder'
+                 * to be null. See log provided in issue 1749, comment #15.
+                 * 
+                 * Please remove this comment once the cause was found and the
+                 * bug(?) fixed.
+                 */
+                if ((holder != null) && 
+                        holder.message.equalsReference(messageReference))
                 {
                     return holder;
                 }
