@@ -504,9 +504,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_settings_mail_display_count_label">Number of messages to display</string>
     
-    <string name="account_settings_message_age_label">Synchronize messages sent</string>
+    <string name="account_settings_message_age_label">Download messages sent</string>
     <string name="account_settings_message_age_any">At any time</string>
-    <string name="account_settings_message_age_0">Today</string>
+    <string name="account_settings_message_age_0">today</string>
     <string name="account_settings_message_age_1">since yesterday</string>
     <string name="account_settings_message_age_2">in the last 2 days</string>
     <string name="account_settings_message_age_7">in the last week</string>
