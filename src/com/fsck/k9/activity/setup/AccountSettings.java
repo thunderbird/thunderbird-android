@@ -53,7 +53,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_LED_COLOR = "led_color";
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
-
+    private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
 
 
     private Account mAccount;
@@ -81,6 +81,7 @@ public class AccountSettings extends K9PreferenceActivity
     private Preference mLedColor;
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
+    private EditTextPreference mAccountQuotePrefix;
 
 
     public static void actionSettings(Context context, Account account)
@@ -131,6 +132,20 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
+        mAccountQuotePrefix = (EditTextPreference) findPreference(PREFERENCE_QUOTE_PREFIX);
+        mAccountQuotePrefix.setSummary(mAccount.getQuotePrefix());
+        mAccountQuotePrefix.setText(mAccount.getQuotePrefix());
+        mAccountQuotePrefix.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String value = newValue.toString();
+                mAccountQuotePrefix.setSummary(value);
+                mAccountQuotePrefix.setText(value);
+                return false;
+            }
+        });
 
         mCheckFrequency = (ListPreference) findPreference(PREFERENCE_FREQUENCY);
         mCheckFrequency.setValue(String.valueOf(mAccount.getAutomaticCheckIntervalMinutes()));
@@ -441,6 +456,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
+        mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));

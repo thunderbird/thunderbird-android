@@ -12,13 +12,13 @@ import android.view.KeyEvent;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.DateFormatter;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.service.MailService;
 
 public class Prefs extends K9PreferenceActivity
 {
-
     private static final String PREFERENCE_THEME = "theme";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
     private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
@@ -34,6 +34,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
 
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
+    private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
 
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
@@ -51,6 +52,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mTouchable;
 
     private CheckBoxPreference mFixedWidth;
+    private CheckBoxPreference mReturnToList;
 
     private CheckBoxPreference mMeasureAccounts;
     private CheckBoxPreference mCountSearch;
@@ -169,6 +171,8 @@ public class Prefs extends K9PreferenceActivity
         mFixedWidth = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGEVIEW_FIXEDWIDTH);
         mFixedWidth.setChecked(K9.messageViewFixedWidthFont());
 
+        mReturnToList = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST);
+        mReturnToList.setChecked(K9.messageViewReturnToList());
 
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());
@@ -202,6 +206,7 @@ public class Prefs extends K9PreferenceActivity
         K9.setMessageListTouchable(mTouchable.isChecked());
 
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
+        K9.setMessageViewReturnToList(mReturnToList.isChecked());
 
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());
@@ -224,6 +229,12 @@ public class Prefs extends K9PreferenceActivity
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
             saveSettings();
+            if (K9.manageBack())
+            {
+                Accounts.listAccounts(this);
+                finish();
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

@@ -9,6 +9,7 @@ public class Identity implements Serializable
     private String mEmail;
     private String mSignature;
     private boolean mSignatureUse;
+    private String replyTo;
 
     public synchronized String getName()
     {
@@ -60,9 +61,19 @@ public class Identity implements Serializable
         mDescription = description;
     }
 
+    public synchronized String getReplyTo()
+	{
+        return replyTo;
+    }
+
+    public synchronized void setReplyTo(String replyTo)
+	{
+        this.replyTo = replyTo;
+    }
+
     @Override
     public synchronized String toString()
     {
-        return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", signature=" + mSignature;
+        return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", replyTo=" + replyTo + ", signature=" + mSignature;
     }
 }

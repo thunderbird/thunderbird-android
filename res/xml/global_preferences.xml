@@ -90,12 +90,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/messageview_preferences" android:key="messageview_preferences">
+
         <CheckBoxPreference
             android:key="messageview_fixedwidth_font"
             android:title="@string/global_settings_messageview_fixedwidth_label"
-            android:summary="@string/global_settings_messageview_fixedwidth_summary"
+            android:summary="@string/global_settings_messageview_fixedwidth_summary" />
 
-            />
+        <CheckBoxPreference
+            android:key="messageview_return_to_list"
+            android:title="@string/global_settings_messageview_return_to_list_label"
+            android:summary="@string/global_settings_messageview_return_to_list_summary" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">

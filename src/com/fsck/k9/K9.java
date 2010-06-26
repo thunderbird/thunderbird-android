@@ -10,7 +10,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 import android.webkit.WebSettings;
 
@@ -80,6 +79,7 @@ public class K9 extends Application
     private static boolean mMessageListTouchable = false;
 
     private static boolean mMessageViewFixedWidthFont = false;
+    private static boolean mMessageViewReturnToList = false;
 
     private static boolean mGesturesEnabled = true;
     private static boolean mManageBack = false;
@@ -309,6 +309,7 @@ public class K9 extends Application
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
 
         editor.putBoolean("messageViewFixedWidthFont",mMessageViewFixedWidthFont);
+        editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
 
         editor.putInt("theme", theme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
@@ -338,6 +339,7 @@ public class K9 extends Application
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
 
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
+        mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
 
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
@@ -522,6 +524,16 @@ public class K9 extends Application
     public static void setMessageViewFixedWidthFont(boolean fixed)
     {
         mMessageViewFixedWidthFont = fixed;
+    }
+
+    public static boolean messageViewReturnToList()
+    {
+        return mMessageViewReturnToList;
+    }
+
+    public static void setMessageViewReturnToList(boolean messageViewReturnToList)
+    {
+        mMessageViewReturnToList = messageViewReturnToList;
     }
 
     private static Method getMethod(Class<?> classObject, String methodName)
