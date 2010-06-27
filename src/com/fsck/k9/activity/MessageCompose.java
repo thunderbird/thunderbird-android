@@ -1707,8 +1707,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     // "$" and "\" in the quote prefix have to be escaped for
                     // the replaceAll() invocation.
                     final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
-                    quotedText += MimeUtility.getTextFromPart(part).replaceAll(
-                            "(?m)^", escapedPrefix);
+
+                    if (mSourceMessageBody != null)
+                    {
+                        quotedText += mSourceMessageBody.replaceAll("(?m)^", escapedPrefix);
+                    }
+                    else
+                    {
+                        quotedText += MimeUtility.getTextFromPart(part).replaceAll(
+                                "(?m)^", escapedPrefix);
+                    }
 
                     quotedText = quotedText.replaceAll("\\\r", "");
                     mQuotedText.setText(quotedText);
