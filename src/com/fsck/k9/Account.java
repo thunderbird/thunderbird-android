@@ -145,7 +145,7 @@ public class Account implements BaseAccount
         mLedColor = mChipColor;
         goToUnreadMessageSearch = false;
         subscribedFoldersOnly = false;
-        maximumPolledMessageAge = 10;
+        maximumPolledMessageAge = -1;
 
         searchableFolders = Searchable.ALL;
 
