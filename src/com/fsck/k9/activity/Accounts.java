@@ -541,11 +541,20 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     @Override
     public void onPrepareDialog(int id, Dialog d)
     {
+
+        AlertDialog alert = (AlertDialog) d;
         switch (id)
         {
             case DIALOG_REMOVE_ACCOUNT:
-                AlertDialog alert = (AlertDialog) d;
                 alert.setMessage(getString(R.string.account_delete_dlg_instructions_fmt,
+                                           mSelectedContextAccount.getDescription()));
+                break;
+            case DIALOG_CLEAR_ACCOUNT:
+                alert.setMessage(getString(R.string.account_clear_dlg_instructions_fmt,
+                                           mSelectedContextAccount.getDescription()));
+                break;
+            case DIALOG_RECREATE_ACCOUNT:
+                alert.setMessage(getString(R.string.account_recreate_dlg_instructions_fmt,
                                            mSelectedContextAccount.getDescription()));
                 break;
         }
