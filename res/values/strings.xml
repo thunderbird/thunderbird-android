@@ -504,19 +504,19 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_settings_mail_display_count_label">Number of messages to display</string>
     
-    <string name="account_settings_message_age_label">Download messages sent</string>
-    <string name="account_settings_message_age_any">At any time</string>
-    <string name="account_settings_message_age_0">today</string>
-    <string name="account_settings_message_age_1">since yesterday</string>
-    <string name="account_settings_message_age_2">in the last 2 days</string>
-    <string name="account_settings_message_age_7">in the last week</string>
-    <string name="account_settings_message_age_14">in the last 2 weeks</string>
-    <string name="account_settings_message_age_21">in the last 3 weeks</string>
-    <string name="account_settings_message_age_1_month">in the last month</string>
-    <string name="account_settings_message_age_2_months">in the last 2 months</string>
-    <string name="account_settings_message_age_3_months">in the last 3 months</string>
-    <string name="account_settings_message_age_6_months">in the last 6 months</string>
-    <string name="account_settings_message_age_1_year">in the last year</string>
+    <string name="account_settings_message_age_label">Sync messages newer than</string>
+    <string name="account_settings_message_age_any">the Big Bang</string>
+    <string name="account_settings_message_age_0">one day</string>
+    <string name="account_settings_message_age_1">two days</string>
+    <string name="account_settings_message_age_2">three days</string>
+    <string name="account_settings_message_age_7">the last week</string>
+    <string name="account_settings_message_age_14">the last 2 weeks</string>
+    <string name="account_settings_message_age_21">the last 3 weeks</string>
+    <string name="account_settings_message_age_1_month">the last month</string>
+    <string name="account_settings_message_age_2_months">the last 2 months</string>
+    <string name="account_settings_message_age_3_months">the last 3 months</string>
+    <string name="account_settings_message_age_6_months">the last 6 months</string>
+    <string name="account_settings_message_age_1_year">the last year</string>
     
       
     <string name="account_settings_folder_display_mode_label">Folders to display</string>
