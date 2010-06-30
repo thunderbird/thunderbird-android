@@ -1515,13 +1515,6 @@ public class MessagingController implements Runnable
                             return;
                         }
                             
-                        
-                        // Store the new message locally
-                        localFolder.appendMessages(new Message[]
-                                                   {
-                                                       message
-                                                   });
-
                         if (message.getSize() > (MAX_SMALL_MESSAGE_SIZE))
                         {
                             largeMessages.add(message);
@@ -1543,6 +1536,12 @@ public class MessagingController implements Runnable
                              */
                             if (isMessageSuppressed(account, folder, message) == false)
                             {
+                                // Store the new message locally
+                                localFolder.appendMessages(new Message[]
+                                                           {
+                                                               message
+                                                           });
+
                                 Message localMessage = localFolder.getMessage(message.getUid());
                                 syncFlags(localMessage, message);
                                 if (K9.DEBUG)
