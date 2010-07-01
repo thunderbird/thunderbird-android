@@ -9,13 +9,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import org.apache.james.mime4j.codec.EncoderUtil;
 
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -31,9 +28,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.Window;
+import android.widget.AutoCompleteTextView.Validator;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -42,10 +40,9 @@ import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AutoCompleteTextView.Validator;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Apg;
+import com.fsck.k9.CryptoSystem;
 import com.fsck.k9.EmailAddressAdapter;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Identity;
@@ -59,10 +56,10 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -100,6 +97,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
         "com.fsck.k9.activity.MessageCompose.identity";
+    private static final String STATE_CRYPTO = "crypto";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -144,10 +142,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private TextView mSignatureUserId;
     private TextView mSignatureUserIdRest;
 
-    private long mEncryptionKeyIds[] = null;
-    private long mSignatureKey = 0;
-    private String mSignatureRawUserId = null;
-    private String mEncryptedData = null;
+    private CryptoSystem mCrypto = null;
 
     private String mReferences;
     private String mInReplyTo;
@@ -665,7 +660,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
         mSelectEncryptionKeys = (Button)findViewById(R.id.btn_select_encryption_keys);
 
-        if (Apg.isAvailable(this))
+        if (mCrypto == null)
+        {
+            mCrypto = CryptoSystem.createInstance();
+        }
+        if (mCrypto.isAvailable(this))
         {
             mEncryptLayout.setVisibility(View.VISIBLE);
             mSignatureCheckbox.setOnClickListener(new OnClickListener()
@@ -676,24 +675,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     CheckBox checkBox = (CheckBox) v;
                     if (checkBox.isChecked())
                     {
-                        Intent intent = new Intent(Apg.Intent.SELECT_SECRET_KEY);
-                        try
-                        {
-                            mPreventDraftSaving = true;
-                            startActivityForResult(intent, Apg.SELECT_SECRET_KEY);
-                        }
-                        catch (ActivityNotFoundException e)
+                        mPreventDraftSaving = true;
+                        if (!mCrypto.selectSecretKey(MessageCompose.this))
                         {
                             mPreventDraftSaving = false;
-                            Toast.makeText(MessageCompose.this,
-                                           R.string.error_activity_not_found,
-                                           Toast.LENGTH_SHORT).show();
                         }
                         checkBox.setChecked(false);
                     }
                     else
                     {
-                        setSignatureKey(0);
+                        mCrypto.setSignatureKeyId(0);
                         updateEncryptLayout();
                     }
                 }
@@ -704,97 +695,43 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 @Override
                 public void onClick(View v)
                 {
-                    Intent intent = new Intent(Apg.Intent.SELECT_PUBLIC_KEYS);
-                    long[] initialKeyIds = null;
-                    if (!hasEncryptionKeys())
+                    String emails = "";
+                    Address[][] addresses = new Address[][] { getAddresses(mToView),
+                                                              getAddresses(mCcView),
+                                                              getAddresses(mBccView) };
+                    for (Address[] addressArray : addresses)
                     {
-                        Vector<Long> keyIds = new Vector<Long>();
-                        if (hasSignatureKey())
+                        for (Address address : addressArray)
                         {
-                            keyIds.add(mSignatureKey);
-                        }
-                        String emails = "";
-                        Address[][] addresses = new Address[][] { getAddresses(mToView),
-                                                                  getAddresses(mCcView),
-                                                                  getAddresses(mBccView) };
-                        for (Address[] addressArray : addresses)
-                        {
-                            for (Address address : addressArray)
+                            if (emails.length() != 0)
                             {
-                                if (emails.length() != 0)
-                                {
-                                    emails += ",";
-                                }
-                                emails += address.getAddress();
+                                emails += ",";
                             }
-                        }
-                        if (emails.length() != 0)
-                        {
-                            emails += ",";
-                        }
-                        emails += mIdentity.getEmail();
-
-                        Uri contentUri = Uri.withAppendedPath(
-                                Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS,
-                                emails);
-                        Cursor c = getContentResolver().query(contentUri,
-                                                              new String[] { "master_key_id" },
-                                                              null, null, null);
-                        if (c != null)
-                        {
-                            while (c.moveToNext())
-                            {
-                                keyIds.add(c.getLong(0));
-                            }
-                        }
-
-                        if (c != null)
-                        {
-                            c.close();
-                        }
-
-                        if (keyIds.size() > 0)
-                        {
-                            initialKeyIds = new long[keyIds.size()];
-                            for (int i = 0, size = keyIds.size(); i < size; ++i)
-                            {
-                                initialKeyIds[i] = keyIds.get(i);
-                            }
+                            emails += address.getAddress();
                         }
                     }
-                    else
+                    if (emails.length() != 0)
                     {
-                        initialKeyIds = mEncryptionKeyIds;
+                        emails += ",";
                     }
-                    intent.putExtra(Apg.EXTRA_SELECTION, initialKeyIds);
-                    try
-                    {
-                        mPreventDraftSaving = true;
-                        startActivityForResult(intent, Apg.SELECT_PUBLIC_KEYS);
-                    }
-                    catch (ActivityNotFoundException e)
+                    emails += mIdentity.getEmail();
+
+                    mPreventDraftSaving = true;
+                    if (!mCrypto.selectEncryptionKeys(MessageCompose.this, emails))
                     {
                         mPreventDraftSaving = false;
-                        Toast.makeText(MessageCompose.this,
-                                       R.string.error_activity_not_found,
-                                       Toast.LENGTH_SHORT).show();
                     }
                 }
             });
 
-            Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_SECRET_KEY_RING_BY_EMAILS,
-                                                  mIdentity.getEmail());
-            Cursor c = getContentResolver().query(contentUri,
-                                                  new String[] { "master_key_id" },
-                                                  null, null, null);
-            if (c != null && c.moveToFirst())
+            long ids[] = mCrypto.getSecretKeyIdsFromEmail(this, mIdentity.getEmail());
+            if (ids != null && ids.length > 0)
             {
-                setSignatureKey(c.getLong(0));
+                mCrypto.setSignatureKeyId(ids[0]);
             }
-
-            if (c != null)
+            else
             {
-                c.close();
+                mCrypto.setSignatureKeyId(0);
             }
             updateEncryptLayout();
         }
@@ -809,9 +746,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     /**
      * Fill the encrypt layout with the latest data about signature key and encryption keys.
      */
-    private void updateEncryptLayout()
+    public void updateEncryptLayout()
     {
-        if (!hasSignatureKey())
+        if (!mCrypto.hasSignatureKey())
         {
             mSignatureCheckbox.setText(R.string.btn_sign);
             mSignatureCheckbox.setChecked(false);
@@ -828,30 +765,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mSignatureUserId.setText(R.string.unknown_signature_user_id);
             mSignatureUserIdRest.setText("");
 
-            if (mSignatureRawUserId == null)
-            {
-                Uri contentUri = ContentUris.withAppendedId(
-                                     Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
-                                     mSignatureKey);
-                Cursor c = getContentResolver().query(contentUri,
-                                                      new String[] { "user_id" },
-                                                      null, null, null);
-                if (c != null && c.moveToFirst())
-                {
-                    mSignatureRawUserId = c.getString(0);
-                }
-                if (c != null)
-                {
-                    c.close();
-                }
-            }
-
-            if (mSignatureRawUserId == null)
-            {
-                mSignatureRawUserId = getString(R.string.unknown_signature_user_id);
-            }
-
-            String chunks[] = mSignatureRawUserId.split(" <", 2);
+            String chunks[] = mCrypto.getUserId(this, mCrypto.getSignatureKeyId()).split(" <", 2);
             mSignatureUserId.setText(chunks[0]);
             if (chunks.length > 1)
             {
@@ -859,16 +773,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
         }
 
-        if (hasEncryptionKeys())
+        if (mCrypto.hasEncryptionKeys())
         {
-            if (mEncryptionKeyIds.length == 1)
+            if (mCrypto.getEncryptionKeys().length == 1)
             {
                 mSelectEncryptionKeys.setText(R.string.one_key_selected);
             }
             else
             {
                 mSelectEncryptionKeys.setText(getString(R.string.n_keys_selected,
-                                                        mEncryptionKeyIds.length));
+                                                        mCrypto.getEncryptionKeys().length));
             }
         }
         else
@@ -920,8 +834,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
-        outState.putLong(Apg.EXTRA_SIGNATURE_KEY_ID, mSignatureKey);
-        outState.putLongArray(Apg.EXTRA_ENCRYPTION_KEY_IDS, mEncryptionKeyIds);
+        outState.putSerializable(STATE_CRYPTO, mCrypto);
     }
 
     @Override
@@ -943,8 +856,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
-        setSignatureKey(savedInstanceState.getLong(Apg.EXTRA_SIGNATURE_KEY_ID));
-        mEncryptionKeyIds = savedInstanceState.getLongArray(Apg.EXTRA_ENCRYPTION_KEY_IDS);
+        mCrypto = (CryptoSystem) savedInstanceState.getSerializable(STATE_CRYPTO);
+        if (mCrypto == null)
+        {
+            mCrypto = CryptoSystem.createInstance();
+        }
         updateFrom();
         updateSignature();
         updateEncryptLayout();
@@ -1050,9 +966,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         String text = null;
-        if (mEncryptedData != null)
+        if (mCrypto.getEncryptedData() != null)
         {
-            text = mEncryptedData;
+            text = mCrypto.getEncryptedData();
         }
         else
         {
@@ -1219,13 +1135,21 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void saveIfNeeded()
     {
-        if (!mDraftNeedsSaving || mPreventDraftSaving || hasEncryptionKeys())
+        if (!mDraftNeedsSaving || mPreventDraftSaving || mCrypto.hasEncryptionKeys())
         {
             return;
         }
 
         mDraftNeedsSaving = false;
         sendOrSaveMessage(true);
+    }
+
+    public void onEncryptDone()
+    {
+        if (mCrypto.getEncryptedData() != null)
+        {
+            onSend();
+        }
     }
 
     private void onSend()
@@ -1236,27 +1160,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
         }
-        if (hasEncryptionKeys() || hasSignatureKey())
+        if (mCrypto.hasEncryptionKeys() || mCrypto.hasSignatureKey())
         {
-            if (mEncryptedData == null)
+            if (mCrypto.getEncryptedData() == null)
             {
                 String text = buildText(true);
-                Intent intent = new Intent(Apg.Intent.ENCRYPT_AND_RETURN);
-                intent.setType("text/plain");
-                intent.putExtra(Apg.EXTRA_TEXT, text);
-                intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, mEncryptionKeyIds);
-                intent.putExtra(Apg.EXTRA_SIGNATURE_KEY_ID, mSignatureKey);
-                try
-                {
-                    mPreventDraftSaving = true;
-                    startActivityForResult(intent, Apg.ENCRYPT_MESSAGE);
-                }
-                catch (ActivityNotFoundException e)
+                mPreventDraftSaving = true;
+                if (!mCrypto.encrypt(this, text))
                 {
                     mPreventDraftSaving = false;
-                    Toast.makeText(MessageCompose.this,
-                                   R.string.error_activity_not_found,
-                                   Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -1414,8 +1326,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        // if an APG activity is returning, then mPreventDraftSaving was set to true
+        // if a CryptoSystem activity is returning, then mPreventDraftSaving was set to true
         mPreventDraftSaving = false;
+
+        if (mCrypto.onActivityResult(this, requestCode, resultCode, data))
+        {
+            return;
+        }
 
         if (resultCode != RESULT_OK)
             return;
@@ -1432,24 +1349,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             case ACTIVITY_CHOOSE_IDENTITY:
                 onIdentityChosen(data);
-                break;
-
-            case Apg.SELECT_SECRET_KEY:
-                setSignatureKey(data.getLongExtra(Apg.EXTRA_KEY_ID, 0));
-                updateEncryptLayout();
-                break;
-
-            case Apg.SELECT_PUBLIC_KEYS:
-                mEncryptionKeyIds = data.getLongArrayExtra(Apg.EXTRA_SELECTION);
-                updateEncryptLayout();
-                break;
-
-            case Apg.ENCRYPT_MESSAGE:
-                mEncryptedData = data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE);
-                if (mEncryptedData != null)
-                {
-                    onSend();
-                }
                 break;
         }
     }
@@ -2152,21 +2051,5 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             mMessageContentView.setText(body.get(0));
         }
-    }
-
-    private boolean hasSignatureKey()
-    {
-        return mSignatureKey != 0;
-    }
-
-    private boolean hasEncryptionKeys()
-    {
-        return (mEncryptionKeyIds != null) && (mEncryptionKeyIds.length > 0);
-    }
-
-    private void setSignatureKey(long keyId)
-    {
-        mSignatureKey = keyId;
-        mSignatureRawUserId = null;
     }
 }

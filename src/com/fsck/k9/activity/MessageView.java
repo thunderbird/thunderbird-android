@@ -11,11 +11,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
 
 import org.apache.commons.io.IOUtils;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -29,10 +27,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.provider.Contacts;
 import android.provider.Contacts.Intents;
-import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
@@ -45,8 +41,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -61,9 +57,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Apg;
+import com.fsck.k9.CryptoSystem;
 import com.fsck.k9.FontSizes;
-import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -72,10 +67,10 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
@@ -87,6 +82,8 @@ public class MessageView extends K9Activity implements OnClickListener
     private static final String EXTRA_MESSAGE_REFERENCE = "com.fsck.k9.MessageView_messageReference";
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
+
+    private static final String STATE_CRYPTO = "crypto";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
 
@@ -124,11 +121,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private ArrayList<MessageReference> mMessageReferences;
 
     private Message mMessage;
-    private String mDecryptedMessage;
-    private long mSignatureKeyId = 0;
-    private String mSignatureUserId = null;
-    private boolean mSignatureSuccess = false;
-    private boolean mSignatureUnknown = false;
+    private CryptoSystem mCrypto = null;
 
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
@@ -656,8 +649,6 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 try
                 {
-                    Intent intent = new Intent(Apg.Intent.DECRYPT_AND_RETURN);
-                    intent.setType("text/plain");
                     String data = null;
                     Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
                     if (part == null)
@@ -668,20 +659,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         data = MimeUtility.getTextFromPart(part);
                     }
-                    if (data != null)
-                    {
-                        intent.putExtra(Apg.EXTRA_TEXT, data);
-                    }
-                    try
-                    {
-                        startActivityForResult(intent, Apg.DECRYPT_MESSAGE);
-                    }
-                    catch (ActivityNotFoundException e)
-                    {
-                        Toast.makeText(MessageView.this,
-                                       R.string.error_activity_not_found,
-                                       Toast.LENGTH_SHORT).show();
-                    }
+                    mCrypto.decrypt(MessageView.this, data);
                 }
                 catch (MessagingException me)
                 {
@@ -767,11 +745,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mMessageReference = (MessageReference)icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
             mMessageReferences = (ArrayList<MessageReference>)icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
 
-            mSignatureKeyId = icicle.getLong(Apg.EXTRA_SIGNATURE_KEY_ID);
-            mSignatureUserId = icicle.getString(Apg.EXTRA_SIGNATURE_USER_ID);
-            mDecryptedMessage = icicle.getString(Apg.EXTRA_DECRYPTED_MESSAGE);
-            mSignatureSuccess = icicle.getBoolean(Apg.EXTRA_SIGNATURE_SUCCESS);
-            mSignatureUnknown = icicle.getBoolean(Apg.EXTRA_SIGNATURE_UNKNOWN);
+            mCrypto = (CryptoSystem) icicle.getSerializable(STATE_CRYPTO);
             updateDecryptLayout();
         }
         else
@@ -820,6 +794,12 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
             }
         }
+
+        if (mCrypto == null)
+        {
+            mCrypto = CryptoSystem.createInstance();
+        }
+
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView got message " + mMessageReference);
 
@@ -871,11 +851,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         outState.putSerializable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
         outState.putSerializable(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
-        outState.putLong(Apg.EXTRA_SIGNATURE_KEY_ID, mSignatureKeyId);
-        outState.putString(Apg.EXTRA_SIGNATURE_USER_ID, mSignatureUserId);
-        outState.putString(Apg.EXTRA_DECRYPTED_MESSAGE, mDecryptedMessage);
-        outState.putBoolean(Apg.EXTRA_SIGNATURE_SUCCESS, mSignatureSuccess);
-        outState.putBoolean(Apg.EXTRA_SIGNATURE_UNKNOWN, mSignatureUnknown);
+        outState.putSerializable(STATE_CRYPTO, mCrypto);
     }
 
     @Override
@@ -883,11 +859,11 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         super.onRestoreInstanceState(savedInstanceState);
 
-        mSignatureKeyId = savedInstanceState.getLong(Apg.EXTRA_SIGNATURE_KEY_ID);
-        mSignatureUserId = savedInstanceState.getString(Apg.EXTRA_SIGNATURE_USER_ID);
-        mDecryptedMessage = savedInstanceState.getString(Apg.EXTRA_DECRYPTED_MESSAGE);
-        mSignatureSuccess = savedInstanceState.getBoolean(Apg.EXTRA_SIGNATURE_SUCCESS);
-        mSignatureUnknown = savedInstanceState.getBoolean(Apg.EXTRA_SIGNATURE_UNKNOWN);
+        mCrypto = (CryptoSystem) savedInstanceState.getSerializable(STATE_CRYPTO);
+        if (mCrypto == null)
+        {
+            mCrypto = CryptoSystem.createInstance();
+        }
 
         updateDecryptLayout();
     }
@@ -920,7 +896,6 @@ public class MessageView extends K9Activity implements OnClickListener
         if (previous_scrolling != null && (previous_scrolling.isEnabled() != enablePrev))
             previous_scrolling.setEnabled(enablePrev);
 
-        mDecryptedMessage = null;
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
             mMessageReference.folderName,
@@ -1024,7 +999,7 @@ public class MessageView extends K9Activity implements OnClickListener
             finish();
         }
     }
-    
+
     private void onClickSender()
     {
         if (mMessage != null)
@@ -1064,7 +1039,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessageCompose.actionReply(this, mAccount, mMessage, false, mDecryptedMessage);
+            MessageCompose.actionReply(this, mAccount, mMessage, false, mCrypto.getDecryptedData());
             finish();
         }
     }
@@ -1073,7 +1048,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessageCompose.actionReply(this, mAccount, mMessage, true, mDecryptedMessage);
+            MessageCompose.actionReply(this, mAccount, mMessage, true, mCrypto.getDecryptedData());
             finish();
         }
     }
@@ -1082,7 +1057,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessageCompose.actionForward(this, mAccount, mMessage, mDecryptedMessage);
+            MessageCompose.actionForward(this, mAccount, mMessage, mCrypto.getDecryptedData());
             finish();
         }
     }
@@ -1185,6 +1160,11 @@ public class MessageView extends K9Activity implements OnClickListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        if (mCrypto.onActivityResult(this, requestCode, resultCode, data))
+        {
+            return;
+        }
+
         if (resultCode != RESULT_OK)
             return;
 
@@ -1219,24 +1199,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
                 break;
 
-            case Apg.DECRYPT_MESSAGE:
-                if (data == null)
-                {
-                    return;
-                }
 
-                mSignatureUserId = data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID);
-                mSignatureKeyId = data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0);
-                mSignatureSuccess = data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false);
-                mSignatureUnknown = data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false);
-
-                mDecryptedMessage = data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE);
-                // TODO: this might not be enough if the orientation was changed while in APG,
-                // sometimes shows the original encrypted content
-                mMessageContentView.loadDataWithBaseURL("email://", mDecryptedMessage, "text/plain", "utf-8", null);
-                updateDecryptLayout();
-
-                break;
         }
     }
 
@@ -1756,9 +1719,9 @@ public class MessageView extends K9Activity implements OnClickListener
 
                 String text;
                 String type = "text/html";
-                if (mDecryptedMessage != null)
+                if (mCrypto.getDecryptedData() != null)
                 {
-                    text = mDecryptedMessage;
+                    text = mCrypto.getDecryptedData();
                     type = "text/plain";
                 }
                 else
@@ -2058,17 +2021,18 @@ public class MessageView extends K9Activity implements OnClickListener
      * Fill the decrypt layout with signature data, if known, make controls visible, if
      * they should be visible.
      */
-    private void updateDecryptLayout()
+    public void updateDecryptLayout()
     {
-        if (mSignatureKeyId != 0)
+        if (mCrypto.getSignatureKeyId() != 0)
         {
             mUserIdRest.setText(getString(R.string.key_id,
-                                          Long.toHexString(mSignatureKeyId & 0xffffffffL)));
-            if (mSignatureUserId == null)
+                                          Long.toHexString(mCrypto.getSignatureKeyId() & 0xffffffffL)));
+            String userId = mCrypto.getSignatureUserId();
+            if (userId == null)
             {
-                mSignatureUserId = getString(R.string.unknown_signature_user_id);
+                userId = getString(R.string.unknown_signature_user_id);
             }
-            String chunks[] = mSignatureUserId.split(" <", 2);
+            String chunks[] = userId.split(" <", 2);
             String name = chunks[0];
             if (chunks.length > 1)
             {
@@ -2076,11 +2040,11 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             mUserId.setText(name);
 
-            if (mSignatureSuccess)
+            if (mCrypto.getSignatureSuccess())
             {
                 mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
             }
-            else if (mSignatureUnknown)
+            else if (mCrypto.getSignatureUnknown())
             {
                 mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
             }
@@ -2092,68 +2056,50 @@ public class MessageView extends K9Activity implements OnClickListener
             mDecryptLayout.setVisibility(View.VISIBLE);
         }
 
-        try
+        if (!true || ((mMessage == null) && (mCrypto.getDecryptedData() == null)))
         {
-            if (!Apg.isAvailable(this) || ((mMessage == null) && (mDecryptedMessage == null)))
-            {
-                mDecryptLayout.setVisibility(View.GONE);
-                return;
-            }
-
-            if (mDecryptedMessage != null)
-            {
-                if (mSignatureKeyId == 0)
-                {
-                    mDecryptLayout.setVisibility(View.GONE);
-                }
-                else
-                {
-                    // no need to show this after decryption/verification
-                    mDecryptButton.setVisibility(View.GONE);
-                }
-                return;
-            }
-
-            mDecryptButton.setVisibility(View.VISIBLE);
-
-            String data = null;
-            Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/plain");
-            if (part == null)
-            {
-                part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
-            }
-            if (part != null)
-            {
-                data = MimeUtility.getTextFromPart(part);
-            }
-
-            if (data == null)
-            {
-                mDecryptLayout.setVisibility(View.GONE);
-                return;
-            }
-
-            Matcher matcher = Apg.PGP_MESSAGE.matcher(data);
-            if (matcher.matches())
-            {
-                mDecryptButton.setText(R.string.btn_decrypt);
-                mDecryptLayout.setVisibility(View.VISIBLE);
-                return;
-            }
-
-            matcher = Apg.PGP_SIGNED_MESSAGE.matcher(data);
-            if (matcher.matches())
-            {
-                mDecryptButton.setText(R.string.btn_verify);
-                mDecryptLayout.setVisibility(View.VISIBLE);
-                return;
-            }
-        }
-        catch (MessagingException me)
-        {
-            Log.e(K9.LOG_TAG, "Unable to check whether email is encrypted.", me);
+            mDecryptLayout.setVisibility(View.GONE);
+            return;
         }
 
-        mDecryptLayout.setVisibility(View.GONE);
+        if (mCrypto.getDecryptedData() != null)
+        {
+            if (mCrypto.getSignatureKeyId() == 0)
+            {
+                mDecryptLayout.setVisibility(View.GONE);
+            }
+            else
+            {
+                // no need to show this after decryption/verification
+                mDecryptButton.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        mDecryptButton.setVisibility(View.VISIBLE);
+
+        if (mCrypto.isEncrypted(mMessage))
+        {
+            mDecryptButton.setText(R.string.btn_decrypt);
+            mDecryptLayout.setVisibility(View.VISIBLE);
+        }
+        else if (mCrypto.isSigned(mMessage))
+        {
+            mDecryptButton.setText(R.string.btn_verify);
+            mDecryptLayout.setVisibility(View.VISIBLE);
+
+        }
+        else
+        {
+            mDecryptLayout.setVisibility(View.GONE);
+        }
+    }
+
+    public void onDecryptDone()
+    {
+        // TODO: this might not be enough if the orientation was changed while in APG,
+        // sometimes shows the original encrypted content
+        mMessageContentView.loadDataWithBaseURL("email://", mCrypto.getDecryptedData(), "text/plain", "utf-8", null);
+        updateDecryptLayout();
     }
 }
