@@ -80,6 +80,8 @@ public class Account implements BaseAccount
     private FolderMode mFolderTargetMode;
     private int mAccountNumber;
     private boolean mVibrate;
+    private int mVibratePattern;
+    private int mVibrateTimes;
     private boolean mRing;
     private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
@@ -131,6 +133,8 @@ public class Account implements BaseAccount
         mNotifyNewMail = true;
         mNotifySync = true;
         mVibrate = false;
+        mVibratePattern = 0;
+        mVibrateTimes = 5;
         mRing = true;
         mNotifySelfNewMail = true;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
@@ -263,6 +267,10 @@ public class Account implements BaseAccount
         mLedColor = preferences.getPreferences().getInt(mUuid+".ledColor", mChipColor);
 
         mVibrate = preferences.getPreferences().getBoolean(mUuid + ".vibrate", false);
+        mVibratePattern = preferences.getPreferences().getInt(mUuid + ".vibratePattern", 0);
+        mVibrateTimes = preferences.getPreferences().getInt(mUuid + ".vibrateTimes", 5);
+
+
         mRing = preferences.getPreferences().getBoolean(mUuid + ".ring", true);
 
         try
@@ -373,6 +381,8 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".autoExpandFolderName");
         editor.remove(mUuid + ".accountNumber");
         editor.remove(mUuid + ".vibrate");
+        editor.remove(mUuid + ".vibratePattern");
+        editor.remove(mUuid + ".vibrateTimes");
         editor.remove(mUuid + ".ring");
         editor.remove(mUuid + ".ringtone");
         editor.remove(mUuid + ".lastFullSync");
@@ -460,6 +470,8 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
         editor.putBoolean(mUuid + ".vibrate", mVibrate);
+        editor.putInt(mUuid + ".vibratePattern", mVibratePattern);
+        editor.putInt(mUuid + ".vibrateTimes", mVibrateTimes);
         editor.putBoolean(mUuid + ".ring", mRing);
         editor.putString(mUuid + ".hideButtonsEnum", mHideMessageViewButtons.name());
         editor.putString(mUuid + ".ringtone", mRingtoneUri);
@@ -679,6 +691,26 @@ public class Account implements BaseAccount
     public synchronized void setVibrate(boolean vibrate)
     {
         mVibrate = vibrate;
+    }
+
+    public synchronized int getVibratePattern()
+    {
+        return mVibratePattern;
+    }
+
+    public synchronized void setVibratePattern(int pattern)
+    {
+        mVibratePattern = pattern;
+    }
+
+    public synchronized int getVibrateTimes()
+    {
+        return mVibrateTimes;
+    }
+
+    public synchronized void setVibrateTimes(int times)
+    {
+        mVibrateTimes = times;
     }
 
 

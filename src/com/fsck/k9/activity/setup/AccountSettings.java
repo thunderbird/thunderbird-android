@@ -38,6 +38,8 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
+    private static final String PREFERENCE_VIBRATE_PATTERN = "account_vibrate_pattern";
+    private static final String PREFERENCE_VIBRATE_TIMES = "account_vibrate_times";
     private static final String PREFERENCE_RINGTONE = "account_ringtone";
     private static final String PREFERENCE_INCOMING = "incoming";
     private static final String PREFERENCE_OUTGOING = "outgoing";
@@ -68,6 +70,8 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mAccountHideButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
+    private ListPreference mAccountVibratePattern;
+    private EditTextPreference mAccountVibrateTimes;
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
     private ListPreference mSyncMode;
@@ -340,6 +344,36 @@ public class AccountSettings extends K9PreferenceActivity
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.isVibrate());
 
+        mAccountVibratePattern = (ListPreference) findPreference(PREFERENCE_VIBRATE_PATTERN);
+        mAccountVibratePattern.setValue(String.valueOf(mAccount.getVibratePattern()));
+        mAccountVibratePattern.setSummary(mAccountVibratePattern.getEntry());
+        mAccountVibratePattern.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mAccountVibratePattern.findIndexOfValue(summary);
+                mAccountVibratePattern.setSummary(mAccountVibratePattern.getEntries()[index]);
+                mAccountVibratePattern.setValue(summary);
+                return false;
+            }
+        });
+
+        mAccountVibrateTimes = (EditTextPreference) findPreference(PREFERENCE_VIBRATE_TIMES);
+        mAccountVibrateTimes.setSummary(String.valueOf(mAccount.getVibrateTimes()));
+        mAccountVibrateTimes.setText(String.valueOf(mAccount.getVibrateTimes()));
+        mAccountVibrateTimes.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String value = newValue.toString();
+                mAccountVibrateTimes.setSummary(value);
+                mAccountVibrateTimes.setText(value);
+                return false;
+            }
+        });
+
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
 
@@ -451,6 +485,8 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
+        mAccount.setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
+        mAccount.setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getText()));
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));

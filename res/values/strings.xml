@@ -578,6 +578,14 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_ring_summary">Ring when mail arrives</string>
     <string name="account_settings_vibrate_enable">Vibrate</string>
     <string name="account_settings_vibrate_summary">Vibrate when mail arrives</string>
+    <string name="account_settings_vibrate_pattern_label">Vibrate patterns</string>
+    <string name="account_settings_vibrate_pattern_default">defaults</string>
+    <string name="account_settings_vibrate_pattern_1">pattern 1</string>
+    <string name="account_settings_vibrate_pattern_2">pattern 2</string>
+    <string name="account_settings_vibrate_pattern_3">pattern 3</string>
+    <string name="account_settings_vibrate_pattern_4">pattern 4</string>
+    <string name="account_settings_vibrate_pattern_5">pattern 5</string>
+    <string name="account_settings_vibrate_times">Number of vibrates</string>
     <string name="account_settings_ringtone">New mail ringtone</string>
     <string name="account_settings_servers">Server settings</string>
 

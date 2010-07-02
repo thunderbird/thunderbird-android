@@ -4627,7 +4627,33 @@ public class MessagingController implements Runnable
             }
             if (account.isVibrate())
             {
-                notif.defaults |= Notification.DEFAULT_VIBRATE;
+                int times = account.getVibrateTimes();
+                long[] pattern1 = new long[]{100,200};
+                long[] pattern2 = new long[]{100,500};
+                long[] pattern3 = new long[]{200,200};
+                long[] pattern4 = new long[]{200,500};
+                long[] pattern5 = new long[]{500,500};
+                long[] src = null;
+
+                switch (account.getVibratePattern())
+                {
+                    case 1: src = pattern1; break;
+                    case 2: src = pattern2; break;
+                    case 3: src = pattern3; break;
+                    case 4: src = pattern4; break;
+                    case 5: src = pattern5; break;
+                    default:
+                        notif.defaults |= Notification.DEFAULT_VIBRATE;
+                        break;
+                }
+
+                if (src != null) {
+                    long[] dest = new long[src.length * times];
+                    for (int n = 0; n < times; n++) {
+                        System.arraycopy(src, 0, dest, n * src.length, src.length);
+                    }
+                    notif.vibrate = dest;
+                }
             }
         }
 

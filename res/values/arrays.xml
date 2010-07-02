@@ -359,5 +359,23 @@
         <item>48</item>  
         <item>60</item> 
     </string-array>
-   
+
+    <string-array name="account_settings_vibrate_pattern_entries">
+        <item>@string/account_settings_vibrate_pattern_default</item>
+        <item>@string/account_settings_vibrate_pattern_1</item>
+        <item>@string/account_settings_vibrate_pattern_2</item>
+        <item>@string/account_settings_vibrate_pattern_3</item>
+        <item>@string/account_settings_vibrate_pattern_4</item>
+        <item>@string/account_settings_vibrate_pattern_5</item>
+    </string-array>
+
+    <string-array name="account_settings_vibrate_pattern_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
 </resources>
