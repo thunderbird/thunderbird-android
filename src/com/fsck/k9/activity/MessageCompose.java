@@ -69,6 +69,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
         "com.fsck.k9.activity.MessageCompose.identity";
+    private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
+    private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -625,6 +627,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
+        outState.putString(STATE_IN_REPLY_TO, mInReplyTo);
+        outState.putString(STATE_REFERENCES, mReferences);
     }
 
     @Override
@@ -646,6 +650,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
+        mInReplyTo = savedInstanceState.getString(STATE_IN_REPLY_TO);
+        mReferences = savedInstanceState.getString(STATE_REFERENCES);
         updateFrom();
         updateSignature();
 
