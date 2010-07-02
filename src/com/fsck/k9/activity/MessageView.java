@@ -539,7 +539,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 label.setSpan(boldSpan, 0, label.length(), 0);
 
                 sb.append(label);
-                sb.append(additionalHeader.value.replaceAll("\\r\\n", ""));
+                sb.append(MimeUtility.unfoldAndDecode(additionalHeader.value));
             }
 
             mAdditionalHeadersView.setText(sb);
