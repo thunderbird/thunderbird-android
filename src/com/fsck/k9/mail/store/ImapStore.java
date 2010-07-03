@@ -2509,7 +2509,11 @@ public class ImapStore extends Store
 
         protected void setReadTimeout(int millis) throws SocketException
         {
-            mSocket.setSoTimeout(millis);
+            Socket sock = mSocket;
+            if (sock != null)
+            {
+                sock.setSoTimeout(millis);
+            }
         }
 
         protected boolean isIdleCapable()
@@ -2840,17 +2844,23 @@ public class ImapStore extends Store
         {
             if (doneSent.compareAndSet(false, true) == true)
             {
-                mConnection.setReadTimeout(Store.SOCKET_READ_TIMEOUT);
-                sendContinuation("DONE");
+                ImapConnection conn = mConnection;
+                if (conn != null)
+                {
+                    conn.setReadTimeout(Store.SOCKET_READ_TIMEOUT);
+                    sendContinuation("DONE");
+                }
+                
             }
         }
 
         private void sendContinuation(String continuation)
         throws MessagingException, IOException
         {
-            if (mConnection != null)
+            ImapConnection conn = mConnection;
+            if (conn != null)
             {
-                mConnection.sendContinuation(continuation);
+                conn.sendContinuation(continuation);
             }
         }
 
@@ -2883,24 +2893,29 @@ public class ImapStore extends Store
                             }
                             ImapConnection oldConnection = mConnection;
                             internalOpen(OpenMode.READ_ONLY);
-                            if (mConnection == null)
+                            ImapConnection conn = mConnection;
+                            if (conn == null)
                             {
                                 receiver.pushError("Could not establish connection for IDLE", null);
                                 throw new MessagingException("Could not establish connection for IDLE");
 
                             }
-                            if (mConnection.isIdleCapable() == false)
+                            if (conn.isIdleCapable() == false)
                             {
                                 stop.set(true);
-                                receiver.pushError("IMAP server is not IDLE capable: " + mConnection.toString(), null);
-                                throw new MessagingException("IMAP server is not IDLE capable:" + mConnection.toString());
+                                receiver.pushError("IMAP server is not IDLE capable: " + conn.toString(), null);
+                                throw new MessagingException("IMAP server is not IDLE capable:" + conn.toString());
                             }
-
-                            if (mAccount.isPushPollOnConnect() && (mConnection != oldConnection || needsPoll.getAndSet(false) == true))
+                            
+                            if (stop.get() != true && mAccount.isPushPollOnConnect() && (conn != oldConnection || needsPoll.getAndSet(false) == true))
                             {
                                 List<ImapResponse> untaggedResponses = new ArrayList<ImapResponse>(storedUntaggedResponses);
                                 storedUntaggedResponses.clear();
                                 processUntaggedResponses(untaggedResponses);
+                                if (mMessageCount == -1)
+                                {
+                                    throw new MessagingException("Message count = -1 for idling");
+                                }
                                 receiver.syncFolder(ImapFolderPusher.this);
                             }
                             if (stop.get() == true)
@@ -2972,11 +2987,12 @@ public class ImapStore extends Store
                                 receiver.setPushActive(getName(), true);
                                 idling.set(true);
                                 doneSent.set(false);
-				if (mConnection == null)
-				{
-				    throw new MessagingException("No connection available for idling");
-				}
-				mConnection.setReadTimeout((getAccount().getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
+                                
+                				if (conn == null)
+                				{
+                				    throw new MessagingException("No connection available for idling");
+                				}
+                				conn.setReadTimeout((getAccount().getIdleRefreshMinutes() * 60 * 1000) + IDLE_READ_TIMEOUT_INCREMENT);
                                 untaggedResponses = executeSimpleCommand(COMMAND_IDLE, false, ImapFolderPusher.this);
                                 idling.set(false);
                                 delayTime.set(NORMAL_DELAY_TIME);
@@ -3335,11 +3351,12 @@ public class ImapStore extends Store
             {
                 listeningThread.interrupt();
             }
-            if (mConnection != null)
+            ImapConnection conn = mConnection;
+            if (conn != null)
             {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "Closing mConnection to stop pushing for " + getLogId());
-                mConnection.close();
+                conn.close();
             }
             else
             {
