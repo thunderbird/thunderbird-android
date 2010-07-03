@@ -56,6 +56,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
+    private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
 
 
     private Account mAccount;
@@ -86,6 +87,7 @@ public class AccountSettings extends K9PreferenceActivity
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
     private EditTextPreference mAccountQuotePrefix;
+    private CheckBoxPreference mSyncRemoteDeletions;
 
 
     public static void actionSettings(Context context, Account account)
@@ -258,6 +260,9 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
+        
+        mSyncRemoteDeletions = (CheckBoxPreference) findPreference(PREFERENCE_SYNC_REMOTE_DELETIONS);
+        mSyncRemoteDeletions.setChecked(mAccount.syncRemoteDeletions());
 
         mSearchableFolders = (ListPreference) findPreference(PREFERENCE_SEARCHABLE_FOLDERS);
         mSearchableFolders.setValue(mAccount.getSearchableFolders().name());
@@ -491,6 +496,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
 

@@ -1177,20 +1177,22 @@ public class MessagingController implements Runnable
             /*
              * Remove any messages that are in the local store but no longer on the remote store or are too old
              */
-           
-            for (Message localMessage : localMessages)
+            if (account.syncRemoteDeletions())
             {
-                if (remoteUidMap.get(localMessage.getUid()) == null && !localMessage.isSet(Flag.DELETED))
+                for (Message localMessage : localMessages)
                 {
-                    localMessage.setFlag(Flag.X_DESTROYED, true);
-
-                    for (MessagingListener l : getListeners())
+                    if (remoteUidMap.get(localMessage.getUid()) == null && !localMessage.isSet(Flag.DELETED))
                     {
-                        l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
-                    }
-                    if (listener != null && getListeners().contains(listener) == false)
-                    {
-                        listener.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                        localMessage.setFlag(Flag.X_DESTROYED, true);
+    
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                        }
+                        if (listener != null && getListeners().contains(listener) == false)
+                        {
+                            listener.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                        }
                     }
                 }
             }
@@ -1892,15 +1894,21 @@ public class MessagingController implements Runnable
         }
         if (remoteMessage.isSet(Flag.DELETED))
         {
-            localMessage.setFlag(Flag.DELETED, true);
-            messageChanged = true;
-        }
-        for (Flag flag : new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED })
-        {
-            if (remoteMessage.isSet(flag) != localMessage.isSet(flag))
+            if (localMessage.getFolder().getAccount().syncRemoteDeletions())
             {
-                localMessage.setFlag(flag, remoteMessage.isSet(flag));
+                localMessage.setFlag(Flag.DELETED, true);
                 messageChanged = true;
+            }
+        }
+        else
+        {
+            for (Flag flag : new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED })
+            {
+                if (remoteMessage.isSet(flag) != localMessage.isSet(flag))
+                {
+                    localMessage.setFlag(flag, remoteMessage.isSet(flag));
+                    messageChanged = true;
+                }
             }
         }
         return messageChanged;

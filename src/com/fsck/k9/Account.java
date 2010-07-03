@@ -101,6 +101,7 @@ public class Account implements BaseAccount
     // current set of fetched messages
     private boolean mRingNotified;
     private String mQuotePrefix;
+    private boolean mSyncRemoteDeletions;
 
     private List<Identity> identities;
 
@@ -153,6 +154,7 @@ public class Account implements BaseAccount
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = -1;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
+        mSyncRemoteDeletions = true;
 
         searchableFolders = Searchable.ALL;
 
@@ -214,7 +216,8 @@ public class Account implements BaseAccount
         mOutboxFolderName = preferences.getPreferences().getString(mUuid  + ".outboxFolderName",
                             "Outbox");
         mExpungePolicy = preferences.getPreferences().getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
-
+        mSyncRemoteDeletions = preferences.getPreferences().getBoolean(mUuid  + ".syncRemoteDeletions", true);
+        
         mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
         goToUnreadMessageSearch = preferences.getPreferences().getBoolean(mUuid + ".goToUnreadMessageSearch",
                                   false);
@@ -393,6 +396,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".hideButtonsEnum");
         editor.remove(mUuid + ".signatureBeforeQuotedText");
         editor.remove(mUuid + ".expungePolicy");
+        editor.remove(mUuid + ".syncRemoteDeletions");
         editor.remove(mUuid + ".maxPushFolders");
         editor.remove(mUuid  + ".searchableFolders");
         editor.remove(mUuid  + ".chipColor");
@@ -481,6 +485,7 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".folderTargetMode", mFolderTargetMode.name());
         editor.putBoolean(mUuid + ".signatureBeforeQuotedText", this.mIsSignatureBeforeQuotedText);
         editor.putString(mUuid + ".expungePolicy", mExpungePolicy);
+        editor.putBoolean(mUuid + ".syncRemoteDeletions", mSyncRemoteDeletions);
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
         editor.putString(mUuid  + ".searchableFolders", searchableFolders.name());
         editor.putInt(mUuid + ".chipColor", mChipColor);
@@ -1328,5 +1333,15 @@ public class Account implements BaseAccount
     public void setQuotePrefix(String quotePrefix)
     {
         mQuotePrefix = quotePrefix;
+    }
+
+    public boolean syncRemoteDeletions()
+    {
+        return mSyncRemoteDeletions;
+    }
+
+    public void setSyncRemoteDeletions(boolean syncRemoteDeletions)
+    {
+        mSyncRemoteDeletions = syncRemoteDeletions;
     }
 }
