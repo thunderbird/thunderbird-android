@@ -53,6 +53,10 @@
             android:title="@string/manage_back_title"
             android:summary="@string/manage_back_summary" />
 
+        <CheckBoxPreference
+            android:key="start_integrated_inbox"
+            android:title="@string/start_integrated_inbox_title"
+            android:summary="@string/start_integrated_inbox_summary" />
 
     </PreferenceCategory>
 
