@@ -451,6 +451,10 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_hide_buttons_keyboard_avail">Nur wenn Tastatur aktiv</string>
     <string name="account_settings_hide_buttons_always">Immer</string>
 
+    <string name="account_settings_enable_move_buttons_label">Verschiebungsbuttons</string>
+    <string name="account_settings_enable_move_buttons_summary">Zeige Sichern, Verschieben und Spam Buttons.</string>
+    <string name="account_settings_hide_move_buttons_label">Verschiebungs-Scrollbuttons</string>
+
     <string name="account_settings_composition">Nachricht verfassen</string>
     <string name="account_settings_sync">Ordner synchronisieren</string>
     <string name="account_settings_folders">Ordner</string>

@@ -31,9 +31,9 @@
         android:icon="@drawable/ic_menu_delete"
     />
     <item
-		android:id="@+id/show_full_header"
-		android:title="@string/show_full_header_action"
-	/>
+        android:id="@+id/show_full_header"
+        android:title="@string/show_full_header_action"
+    />
     <item
         android:id="@+id/flag"
         android:alphabeticShortcut="s"
@@ -46,11 +46,19 @@
         android:icon="@drawable/ic_menu_forward_mail"
     />
     <item
-		android:id="@+id/move"
-		android:title="@string/move_action"
-	/>
-	<item
-		android:id="@+id/copy"
-		android:title="@string/copy_action"
-	/>
+        android:id="@+id/archive"
+        android:title="@string/archive_action"
+    />
+    <item
+        android:id="@+id/spam"
+        android:title="@string/spam_action"
+    />
+    <item
+        android:id="@+id/move"
+        android:title="@string/move_action"
+    />
+    <item
+        android:id="@+id/copy"
+        android:title="@string/copy_action"
+    />
 </menu>

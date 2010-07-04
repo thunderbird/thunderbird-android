@@ -929,6 +929,40 @@ public class MessageList
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
     }
 
+    private void onArchive(MessageInfoHolder holder)
+    {
+        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == false)
+        {
+            return;
+        }
+
+        if (mController.isMoveCapable(holder.message) == false)
+        {
+            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
+        onMoveChosen(holder, holder.message.getFolder().getAccount().getArchiveFolderName());
+    }
+
+    private void onSpam(MessageInfoHolder holder)
+    {
+        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == false)
+        {
+            return;
+        }
+
+        if (mController.isMoveCapable(holder.message) == false)
+        {
+            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
+        onMoveChosen(holder, holder.message.getFolder().getAccount().getSpamFolderName());
+    }
+
     private void onCopy(MessageInfoHolder holder)
     {
         if (mController.isCopyCapable(holder.message.getFolder().getAccount()) == false)
@@ -1416,6 +1450,16 @@ public class MessageList
 
             case R.id.flag:
                 onToggleFlag(holder);
+
+                break;
+
+            case R.id.archive:
+                onArchive(holder);
+
+                break;
+
+            case R.id.spam:
+                onSpam(holder);
 
                 break;
 
