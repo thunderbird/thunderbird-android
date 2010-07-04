@@ -23,6 +23,7 @@ import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
+import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -1038,6 +1039,9 @@ public class MessageList
     {
         if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == true && folderName != null)
         {
+            if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
+                return;
+            }
             mAdapter.removeMessage(holder);
             mController.moveMessage(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), holder.message, folderName, null);
         }
@@ -1400,15 +1404,13 @@ public class MessageList
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_list_option, menu);
 
-
-
         return true;
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item)
     {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(info.position);
 
         switch (item.getItemId())
@@ -1583,15 +1585,28 @@ public class MessageList
             menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
         }
 
-        if (mController.isCopyCapable(message.message.getFolder().getAccount()) == false)
+        Account account = message.message.getFolder().getAccount();
+        if (mController.isCopyCapable(account) == false)
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
 
-        if (mController.isMoveCapable(message.message.getFolder().getAccount()) == false)
+        if (mController.isMoveCapable(account) == false)
         {
             menu.findItem(R.id.move).setVisible(false);
+            menu.findItem(R.id.archive).setVisible(false);
+            menu.findItem(R.id.spam).setVisible(false);
         }
+
+        if (K9.FOLDER_NONE.equalsIgnoreCase(account.getArchiveFolderName()))
+        {
+            menu.findItem(R.id.archive).setVisible(false);
+        }
+        if (K9.FOLDER_NONE.equalsIgnoreCase(account.getSpamFolderName()))
+        {
+            menu.findItem(R.id.spam).setVisible(false);
+        }
+
         if (message.selected)
         {
             menu.findItem(R.id.select).setVisible(false);

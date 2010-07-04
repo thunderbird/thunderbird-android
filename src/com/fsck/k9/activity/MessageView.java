@@ -878,7 +878,6 @@ public class MessageView extends K9Activity implements OnClickListener
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
-
         boolean enableNext = (mNextMessage != null);
         boolean enablePrev = (mPreviousMessage != null);
 
@@ -904,9 +903,13 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         else
         {
-            boolean enableArchive = !mMessageReference.folderName.equals(mAccount.getArchiveFolderName());
+            // Only enable the button if the Archive folder is not the current folder and not NONE.
+            boolean enableArchive = !mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
+                                    !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName());
             boolean enableMove = true;
-            boolean enableSpam = !mMessageReference.folderName.equals(mAccount.getSpamFolderName());
+            // Only enable the button if the Spam folder is not the current folder and not NONE.
+            boolean enableSpam = !mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
+                                 !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName());
             mArchive.setEnabled(enableArchive);
             mMove.setEnabled(enableMove);
             mSpam.setEnabled(enableSpam);
@@ -1026,8 +1029,10 @@ public class MessageView extends K9Activity implements OnClickListener
         String srcFolder = mMessageReference.folderName;
         String dstFolder = mAccount.getArchiveFolderName();
         Message messageToMove = mMessage;
+        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
+            return;
+        }
         showNextMessage();
-        System.out.println("oi: " + srcFolder + " " + mMessage.getUid() + " " + dstFolder);
         MessagingController.getInstance(getApplication())
                 .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
@@ -1048,8 +1053,10 @@ public class MessageView extends K9Activity implements OnClickListener
         String srcFolder = mMessageReference.folderName;
         String dstFolder = mAccount.getSpamFolderName();
         Message messageToMove = mMessage;
+        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
+            return;
+        }
         showNextMessage();
-        System.out.println("oi: " + srcFolder + " " + mMessage.getUid() + " " + dstFolder);
         MessagingController.getInstance(getApplication())
                 .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
@@ -1545,6 +1552,14 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             menu.findItem(R.id.move).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
+            menu.findItem(R.id.spam).setVisible(false);
+        }
+        if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()))
+        {
+            menu.findItem(R.id.archive).setVisible(false);
+        }
+        if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()))
+        {
             menu.findItem(R.id.spam).setVisible(false);
         }
         return true;
