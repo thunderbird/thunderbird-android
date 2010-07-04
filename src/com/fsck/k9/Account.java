@@ -148,7 +148,7 @@ public class Account implements BaseAccount
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mHideMessageViewButtons = HideButtons.NEVER;
         mHideMessageViewMoveButtons = HideButtons.NEVER;
-        mEnableMoveButtons = true;
+        mEnableMoveButtons = false;
         mRingtoneUri = "content://settings/system/notification_sound";
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
@@ -285,7 +285,7 @@ public class Account implements BaseAccount
             mHideMessageViewMoveButtons = HideButtons.NEVER;
         }
 
-        mEnableMoveButtons = preferences.getPreferences().getBoolean(mUuid + ".enableMoveButtons", true);
+        mEnableMoveButtons = preferences.getPreferences().getBoolean(mUuid + ".enableMoveButtons", false);
 
         mRingtoneUri = preferences.getPreferences().getString(mUuid  + ".ringtone",
                        "content://settings/system/notification_sound");
