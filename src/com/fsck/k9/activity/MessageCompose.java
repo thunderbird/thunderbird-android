@@ -1,8 +1,11 @@
 
 package com.fsck.k9.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -14,6 +17,7 @@ import android.provider.OpenableColumns;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +47,8 @@ import org.apache.james.mime4j.codec.EncoderUtil;
 
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
 {
+    private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
+
     private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
     private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
     private static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
@@ -595,7 +601,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     public void onPause()
     {
         super.onPause();
-        saveIfNeeded();
         MessagingController.getInstance(getApplication()).removeListener(mListener);
     }
 
@@ -611,7 +616,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        saveIfNeeded();
         ArrayList<Uri> attachments = new ArrayList<Uri>();
         for (int i = 0, count = mAttachments.getChildCount(); i < count; i++)
         {
@@ -1235,6 +1239,64 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         return true;
+    }
+
+    public void onBackPressed()
+    {
+        // This will be called either automatically for you on 2.0
+        // or later, or by the code above on earlier versions of the
+        // platform.
+        showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+    }
+
+    @Override
+    public Dialog onCreateDialog(int id)
+    {
+        switch (id)
+        {
+            case DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE:
+                return new AlertDialog.Builder(this)
+                    .setTitle(R.string.save_or_discard_draft_message_dlg_title)
+                    .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
+                    .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int whichButton)
+                        {
+                            dismissDialog(1);
+                            onSave();
+                        }
+                        })
+                    .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int whichButton)
+                        {
+                            dismissDialog(1);
+                            onDiscard();
+                        }
+                        })
+                    .create();
+        }
+        return super.onCreateDialog(id);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (
+            // TODO - when we move to android 2.0, uncomment this.
+            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
+
+            keyCode == KeyEvent.KEYCODE_BACK
+            && event.getRepeatCount() == 0
+            && K9.manageBack())
+        {
+            // Take care of calling this method on earlier versions of
+            // the platform where it doesn't exist.
+            onBackPressed();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     /**

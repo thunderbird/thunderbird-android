@@ -855,4 +855,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="misc_preferences_attachment_title">Use Gallery bug work-around</string>
     <string name="misc_preferences_attachment_description">Show buttons to add image/video attachments (to work around a Gallery 3D bug)</string>
 
+    <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>
 </resources>
