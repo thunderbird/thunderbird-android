@@ -105,6 +105,14 @@ public class Account implements BaseAccount
     private String mQuotePrefix;
     private boolean mSyncRemoteDeletions;
 
+    /**
+     * Name of the folder that was last selected for a copy or move operation.
+     *
+     * Note: For now this value isn't persisted. So it will be reset when
+     *       K-9 Mail is restarted.  
+     */
+    private String lastSelectedFolderName = null;
+
     private List<Identity> identities;
 
     public enum FolderMode
@@ -568,23 +576,23 @@ public class Account implements BaseAccount
     }
 
 
-    public void setChipColor(int color)
+    public synchronized void setChipColor(int color)
     {
         mChipColor = color;
     }
 
-    public int getChipColor()
+    public synchronized int getChipColor()
     {
         return mChipColor;
     }
 
 
-    public void setLedColor(int color)
+    public synchronized void setLedColor(int color)
     {
         mLedColor = color;
     }
 
-    public int getLedColor()
+    public synchronized int getLedColor()
     {
         return mLedColor;
     }
@@ -1033,12 +1041,12 @@ public class Account implements BaseAccount
         return mDescription;
     }
 
-    public void setCompression(String networkType, boolean useCompression)
+    public synchronized void setCompression(String networkType, boolean useCompression)
     {
         compressionMap.put(networkType, useCompression);
     }
 
-    public boolean useCompression(String networkType)
+    public synchronized boolean useCompression(String networkType)
     {
         Boolean useCompression = compressionMap.get(networkType);
         if (useCompression == null)
@@ -1225,72 +1233,72 @@ public class Account implements BaseAccount
         return null;
     }
 
-    public Searchable getSearchableFolders()
+    public synchronized Searchable getSearchableFolders()
     {
         return searchableFolders;
     }
 
-    public void setSearchableFolders(Searchable searchableFolders)
+    public synchronized void setSearchableFolders(Searchable searchableFolders)
     {
         this.searchableFolders = searchableFolders;
     }
 
-    public int getIdleRefreshMinutes()
+    public synchronized int getIdleRefreshMinutes()
     {
         return mIdleRefreshMinutes;
     }
 
-    public void setIdleRefreshMinutes(int idleRefreshMinutes)
+    public synchronized void setIdleRefreshMinutes(int idleRefreshMinutes)
     {
         mIdleRefreshMinutes = idleRefreshMinutes;
     }
 
-    public boolean isPushPollOnConnect()
+    public synchronized boolean isPushPollOnConnect()
     {
         return mPushPollOnConnect;
     }
 
-    public void setPushPollOnConnect(boolean pushPollOnConnect)
+    public synchronized void setPushPollOnConnect(boolean pushPollOnConnect)
     {
         mPushPollOnConnect = pushPollOnConnect;
     }
 
-    public boolean isSaveAllHeaders()
+    public synchronized boolean isSaveAllHeaders()
     {
         return mSaveAllHeaders;
     }
 
-    public void setSaveAllHeaders(boolean saveAllHeaders)
+    public synchronized void setSaveAllHeaders(boolean saveAllHeaders)
     {
         mSaveAllHeaders = saveAllHeaders;
     }
 
-    public boolean goToUnreadMessageSearch()
+    public synchronized boolean goToUnreadMessageSearch()
     {
         return goToUnreadMessageSearch;
     }
 
-    public void setGoToUnreadMessageSearch(boolean goToUnreadMessageSearch)
+    public synchronized void setGoToUnreadMessageSearch(boolean goToUnreadMessageSearch)
     {
         this.goToUnreadMessageSearch = goToUnreadMessageSearch;
     }
 
-    public boolean subscribedFoldersOnly()
+    public synchronized boolean subscribedFoldersOnly()
     {
         return subscribedFoldersOnly;
     }
 
-    public void setSubscribedFoldersOnly(boolean subscribedFoldersOnly)
+    public synchronized void setSubscribedFoldersOnly(boolean subscribedFoldersOnly)
     {
         this.subscribedFoldersOnly = subscribedFoldersOnly;
     }
 
-    public int getMaximumPolledMessageAge()
+    public synchronized int getMaximumPolledMessageAge()
     {
         return maximumPolledMessageAge;
     }
 
-    public void setMaximumPolledMessageAge(int maximumPolledMessageAge)
+    public synchronized void setMaximumPolledMessageAge(int maximumPolledMessageAge)
     {
         this.maximumPolledMessageAge = maximumPolledMessageAge;
     }
@@ -1336,23 +1344,33 @@ public class Account implements BaseAccount
         }
     }
 
-    public String getQuotePrefix()
+    public synchronized String getQuotePrefix()
     {
         return mQuotePrefix;
     }
 
-    public void setQuotePrefix(String quotePrefix)
+    public synchronized void setQuotePrefix(String quotePrefix)
     {
         mQuotePrefix = quotePrefix;
     }
 
-    public boolean syncRemoteDeletions()
+    public synchronized boolean syncRemoteDeletions()
     {
         return mSyncRemoteDeletions;
     }
 
-    public void setSyncRemoteDeletions(boolean syncRemoteDeletions)
+    public synchronized void setSyncRemoteDeletions(boolean syncRemoteDeletions)
     {
         mSyncRemoteDeletions = syncRemoteDeletions;
+    }
+
+    public synchronized String getLastSelectedFolderName()
+    {
+        return lastSelectedFolderName;
+    }
+
+    public synchronized void setLastSelectedFolderName(String folderName)
+    {
+        lastSelectedFolderName = folderName;
     }
 }

@@ -922,9 +922,12 @@ public class MessageList
             return;
         }
 
+        final Account account = holder.message.getFolder().getAccount();
+
         Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.message.getFolder().getAccount().getUuid());
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, account.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, account.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, holder.message.makeMessageReference());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
     }
@@ -943,9 +946,12 @@ public class MessageList
             return;
         }
 
+        final Account account = holder.message.getFolder().getAccount();
+
         Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.message.getFolder().getAccount().getUuid());
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, account.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, account.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, holder.message.makeMessageReference());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
     }
@@ -964,13 +970,16 @@ public class MessageList
                 if (data == null)
                     return;
 
-                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                final String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                final MessageReference ref = (MessageReference)data.getSerializableExtra(ChooseFolder.EXTRA_MESSAGE);
+                final MessageInfoHolder m = mAdapter.getMessage(ref);
 
-                MessageReference ref = (MessageReference)data.getSerializableExtra(ChooseFolder.EXTRA_MESSAGE);
-
-                MessageInfoHolder m = mAdapter.getMessage(ref);
-                if (destFolderName != null && m != null)
+                if ((destFolderName != null) && (m != null))
                 {
+                    final Account account = m.message.getFolder().getAccount(); 
+
+                    account.setLastSelectedFolderName(destFolderName);
+                    
                     switch (requestCode)
                     {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
@@ -985,16 +994,24 @@ public class MessageList
                 break;
             }
             case ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH:
-            {
-                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-                onMoveChosenBatch(destFolderName);
-                break;
-            }
             case ACTIVITY_CHOOSE_FOLDER_COPY_BATCH:
             {
-                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-                onCopyChosenBatch(destFolderName);
-                break;
+                final String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                final String accountUuid = data.getStringExtra(ChooseFolder.EXTRA_ACCOUNT);
+                final Account account = Preferences.getPreferences(this).getAccount(accountUuid);
+
+                account.setLastSelectedFolderName(destFolderName);
+
+                switch (requestCode)
+                {
+                    case ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH:
+                        onMoveChosenBatch(destFolderName);
+                        break;
+
+                    case ACTIVITY_CHOOSE_FOLDER_COPY_BATCH:
+                        onCopyChosenBatch(destFolderName);
+                        break;
+                }
             }
         }
     }
@@ -2860,9 +2877,12 @@ public class MessageList
                 }
             }
         }
-        Intent intent = new Intent(this, ChooseFolder.class);
+
+        final Folder folder = mCurrentFolder.folder;
+        final Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH);
     }
     private void onMoveChosenBatch(String folderName)
@@ -2914,9 +2934,12 @@ public class MessageList
                 }
             }
         }
-        Intent intent = new Intent(this, ChooseFolder.class);
+
+        final Folder folder = mCurrentFolder.folder;
+        final Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY_BATCH);
     }
     private void onCopyChosenBatch(String folderName)

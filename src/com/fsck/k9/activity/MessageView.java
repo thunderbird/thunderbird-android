@@ -1001,6 +1001,7 @@ public class MessageView extends K9Activity implements OnClickListener
         Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
     }
@@ -1020,6 +1021,7 @@ public class MessageView extends K9Activity implements OnClickListener
         Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.folderName);
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference);
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
     }
@@ -1080,6 +1082,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
                 if (mMessageReference.equals(ref))
                 {
+                    mAccount.setLastSelectedFolderName(destFolderName);
 
                     switch (requestCode)
                     {

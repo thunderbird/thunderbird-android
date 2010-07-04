@@ -23,6 +23,7 @@ import java.util.Comparator;
 public class ChooseFolder extends K9ListActivity
 {
     String mFolder;
+    String mSelectFolder;
     Account mAccount;
     MessageReference mMessageReference;
     ArrayAdapter<String> adapter;
@@ -34,6 +35,7 @@ public class ChooseFolder extends K9ListActivity
 
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseFolder_account";
     public static final String EXTRA_CUR_FOLDER = "com.fsck.k9.ChooseFolder_curfolder";
+    public static final String EXTRA_SEL_FOLDER = "com.fsck.k9.ChooseFolder_selfolder";
     public static final String EXTRA_NEW_FOLDER = "com.fsck.k9.ChooseFolder_newfolder";
     public static final String EXTRA_MESSAGE = "com.fsck.k9.ChooseFolder_message";
     public static final String EXTRA_SHOW_CURRENT = "com.fsck.k9.ChooseFolder_showcurrent";
@@ -55,6 +57,7 @@ public class ChooseFolder extends K9ListActivity
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mMessageReference = (MessageReference)intent.getSerializableExtra(EXTRA_MESSAGE);
         mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
+        mSelectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
         if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null)
         {
             hideCurrentFolder = false;
@@ -84,6 +87,7 @@ public class ChooseFolder extends K9ListActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 Intent intent = new Intent();
+                intent.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
                 intent.putExtra(EXTRA_CUR_FOLDER, mFolder);
                 String destFolderName = (String)((TextView)view).getText();
                 if (heldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName))
@@ -119,9 +123,7 @@ public class ChooseFolder extends K9ListActivity
                     adapter.notifyDataSetChanged();
                     break;
                 case MSG_SET_SELECTED_FOLDER:
-                    // TODO: I want this to highlight the chosen folder, but this doesn't work.
-//          getListView().setSelection(msg.arg1);
-//          getListView().setItemChecked(msg.arg1, true);
+                    getListView().setSelection(msg.arg1);
                     break;
             }
         }
@@ -275,18 +277,32 @@ public class ChooseFolder extends K9ListActivity
                     adapter.add(name);
                 }
 
-                if ((name.equals(mFolder) || (K9.INBOX.equalsIgnoreCase(mFolder) && K9.INBOX.equalsIgnoreCase(name))))
+                if (mSelectFolder != null)
+                {
+                    /*
+                     * Never select EXTRA_CUR_FOLDER (mFolder) if EXTRA_SEL_FOLDER
+                     * (mSelectedFolder) was provided.
+                     */
+
+                    if (name.equals(mSelectFolder))
+                    {
+                        selectedFolder = position;
+                    }
+                }
+                else if (name.equals(mFolder) ||
+                        (K9.INBOX.equalsIgnoreCase(mFolder) && K9.INBOX.equalsIgnoreCase(name)))
                 {
                     selectedFolder = position;
                 }
                 position++;
             }
+
+            mHandler.dataChanged();
+
             if (selectedFolder != -1)
             {
                 mHandler.setSelectedFolder(selectedFolder);
             }
-            mHandler.dataChanged();
-
         }
     };
 }
