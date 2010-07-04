@@ -418,7 +418,7 @@ public class MessageList
     {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
 
-        // Only set "touchable" when we're first starting up the 
+        // Only set "touchable" when we're first starting up the
         // activity. otherwise we get force closes when the user
         // toggles it midstream
         mTouchView = K9.messageListTouchable();
@@ -1930,11 +1930,11 @@ public class MessageList
                  * 2010-06-21 - cketti
                  * Added null pointer check. Not sure what's causing 'holder'
                  * to be null. See log provided in issue 1749, comment #15.
-                 * 
+                 *
                  * Please remove this comment once the cause was found and the
                  * bug(?) fixed.
                  */
-                if ((holder != null) && 
+                if ((holder != null) &&
                         holder.message.equalsReference(messageReference))
                 {
                     return holder;
@@ -2658,6 +2658,16 @@ public class MessageList
             if (this.name.equals(account.getSentFolderName()))
             {
                 this.displayName = String.format(getString(R.string.special_mailbox_name_sent_fmt), this.name);
+            }
+
+            if (this.name.equals(account.getArchiveFolderName()))
+            {
+                this.displayName = String.format(getString(R.string.special_mailbox_name_archive_fmt), this.name);
+            }
+
+            if (this.name.equals(account.getSpamFolderName()))
+            {
+                this.displayName = String.format(getString(R.string.special_mailbox_name_spam_fmt), this.name);
             }
         }
     }

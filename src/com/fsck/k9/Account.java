@@ -72,6 +72,8 @@ public class Account implements BaseAccount
     private String mDraftsFolderName;
     private String mSentFolderName;
     private String mTrashFolderName;
+    private String mArchiveFolderName;
+    private String mSpamFolderName;
     private String mOutboxFolderName;
     private String mAutoExpandFolderName;
     private FolderMode mFolderDisplayMode;
@@ -194,10 +196,10 @@ public class Account implements BaseAccount
         mPushPollOnConnect = preferences.getPreferences().getBoolean(mUuid
                              + ".pushPollOnConnect", true);
         mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
-	if (mDisplayCount < 0)
-	{
-	    mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
-	}
+        if (mDisplayCount < 0)
+        {
+            mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
+        }
         mLastAutomaticCheckTime = preferences.getPreferences().getLong(mUuid
                                   + ".lastAutomaticCheckTime", 0);
         mNotifyNewMail = preferences.getPreferences().getBoolean(mUuid + ".notifyNewMail",
@@ -213,11 +215,15 @@ public class Account implements BaseAccount
                           "Sent");
         mTrashFolderName = preferences.getPreferences().getString(mUuid  + ".trashFolderName",
                            "Trash");
+        mArchiveFolderName = preferences.getPreferences().getString(mUuid  + ".archiveFolderName",
+                             "Archive");
+        mSpamFolderName = preferences.getPreferences().getString(mUuid  + ".spamFolderName",
+                          "Spam");
         mOutboxFolderName = preferences.getPreferences().getString(mUuid  + ".outboxFolderName",
                             "Outbox");
         mExpungePolicy = preferences.getPreferences().getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = preferences.getPreferences().getBoolean(mUuid  + ".syncRemoteDeletions", true);
-        
+
         mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
         goToUnreadMessageSearch = preferences.getPreferences().getBoolean(mUuid + ".goToUnreadMessageSearch",
                                   false);
@@ -380,6 +386,8 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".draftsFolderName");
         editor.remove(mUuid + ".sentFolderName");
         editor.remove(mUuid + ".trashFolderName");
+        editor.remove(mUuid + ".archiveFolderName");
+        editor.remove(mUuid + ".spamFolderName");
         editor.remove(mUuid + ".outboxFolderName");
         editor.remove(mUuid + ".autoExpandFolderName");
         editor.remove(mUuid + ".accountNumber");
@@ -470,6 +478,8 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".draftsFolderName", mDraftsFolderName);
         editor.putString(mUuid + ".sentFolderName", mSentFolderName);
         editor.putString(mUuid + ".trashFolderName", mTrashFolderName);
+        editor.putString(mUuid + ".archiveFolderName", mArchiveFolderName);
+        editor.putString(mUuid + ".spamFolderName", mSpamFolderName);
         editor.putString(mUuid + ".outboxFolderName", mOutboxFolderName);
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
@@ -494,7 +504,7 @@ public class Account implements BaseAccount
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
-        
+
         for (String type : networkTypes)
         {
             Boolean useCompression = compressionMap.get(type);
@@ -532,10 +542,12 @@ public class Account implements BaseAccount
             //folder.refresh(prefs);
             Folder.FolderClass fMode = localFolder.getDisplayClass(prefs);
 
-			// Always get stats about the INBOX (see issue 1817)
+            // Always get stats about the INBOX (see issue 1817)
             if (folder.getName().equals(K9.INBOX) || (
                     folder.getName().equals(getTrashFolderName()) == false &&
                     folder.getName().equals(getDraftsFolderName()) == false &&
+                    folder.getName().equals(getArchiveFolderName()) == false &&
+                    folder.getName().equals(getSpamFolderName()) == false &&
                     folder.getName().equals(getOutboxFolderName()) == false &&
                     folder.getName().equals(getSentFolderName()) == false &&
                     folder.getName().equals(getErrorFolderName()) == false))
@@ -851,6 +863,26 @@ public class Account implements BaseAccount
     public synchronized void setTrashFolderName(String trashFolderName)
     {
         mTrashFolderName = trashFolderName;
+    }
+
+    public synchronized String getArchiveFolderName()
+    {
+        return mArchiveFolderName;
+    }
+
+    public synchronized void setArchiveFolderName(String archiveFolderName)
+    {
+        mArchiveFolderName = archiveFolderName;
+    }
+
+    public synchronized String getSpamFolderName()
+    {
+        return mSpamFolderName;
+    }
+
+    public synchronized void setSpamFolderName(String spamFolderName)
+    {
+        mSpamFolderName = spamFolderName;
     }
 
     public synchronized String getOutboxFolderName()
@@ -1316,7 +1348,7 @@ public class Account implements BaseAccount
                     now.add(Calendar.YEAR, -1);
                     break;
             }
-            
+
             return now.getTime();
         }
         else

@@ -30,7 +30,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private static final int SELECT_DRAFT_FOLDER = 100;
     private static final int SELECT_SENT_FOLDER = 101;
     private static final int SELECT_TRASH_FOLDER = 102;
-    //private static final int SELECT_OUTBOX_FOLDER = 103;
+    private static final int SELECT_ARCHIVE_FOLDER = 103;
+    private static final int SELECT_SPAM_FOLDER = 104;
 
     private static final int popPorts[] =
     {
@@ -75,6 +76,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private Button mImapFolderDrafts;
     private Button mImapFolderSent;
     private Button mImapFolderTrash;
+    private Button mImapFolderArchive;
+    private Button mImapFolderSpam;
     private EditText mImapFolderOutbox;
     private EditText mWebdavPathPrefixView;
     private EditText mWebdavAuthPathView;
@@ -124,6 +127,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         mImapFolderDrafts = (Button)findViewById(R.id.account_imap_folder_drafts);
         mImapFolderSent = (Button)findViewById(R.id.account_imap_folder_sent);
         mImapFolderTrash = (Button)findViewById(R.id.account_imap_folder_trash);
+        mImapFolderArchive = (Button)findViewById(R.id.account_imap_folder_archive);
+        mImapFolderSpam = (Button)findViewById(R.id.account_imap_folder_spam);
         mImapFolderOutbox = (EditText)findViewById(R.id.account_imap_folder_outbox);
         mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
         mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
@@ -143,6 +148,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         mImapFolderDrafts.setOnClickListener(this);
         mImapFolderSent.setOnClickListener(this);
         mImapFolderTrash.setOnClickListener(this);
+        mImapFolderArchive.setOnClickListener(this);
+        mImapFolderSpam.setOnClickListener(this);
         mNextButton.setOnClickListener(this);
 
         SpinnerOption securityTypes[] =
@@ -287,6 +294,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mImapFolderDrafts.setText(mAccount.getDraftsFolderName());
             mImapFolderSent.setText(mAccount.getSentFolderName());
             mImapFolderTrash.setText(mAccount.getTrashFolderName());
+            mImapFolderArchive.setText(mAccount.getArchiveFolderName());
+            mImapFolderSpam.setText(mAccount.getSpamFolderName());
             mImapFolderOutbox.setText(mAccount.getOutboxFolderName());
 
             if (uri.getScheme().startsWith("pop3"))
@@ -474,6 +483,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 case SELECT_TRASH_FOLDER:
                     mImapFolderTrash.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
                     return;
+                case SELECT_ARCHIVE_FOLDER:
+                    mImapFolderArchive.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+                    return;
+                case SELECT_SPAM_FOLDER:
+                    mImapFolderSpam.setText(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+                    return;
             }
             if (Intent.ACTION_EDIT.equals(getIntent().getAction()))
             {
@@ -567,6 +582,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mAccount.setDraftsFolderName(mImapFolderDrafts.getText().toString());
             mAccount.setSentFolderName(mImapFolderSent.getText().toString());
             mAccount.setTrashFolderName(mImapFolderTrash.getText().toString());
+            mAccount.setArchiveFolderName(mImapFolderArchive.getText().toString());
+            mAccount.setSpamFolderName(mImapFolderSpam.getText().toString());
             mAccount.setOutboxFolderName(mImapFolderOutbox.getText().toString());
             mAccount.setCompression(Account.TYPE_MOBILE, compressionMobile.isChecked());
             mAccount.setCompression(Account.TYPE_WIFI, compressionWifi.isChecked());
@@ -622,6 +639,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 case R.id.account_imap_folder_trash:
                     selectImapFolder(SELECT_TRASH_FOLDER);
                     break;
+                case R.id.account_imap_folder_archive:
+                    selectImapFolder(SELECT_ARCHIVE_FOLDER);
+                    break;
+                case R.id.account_imap_folder_spam:
+                    selectImapFolder(SELECT_SPAM_FOLDER);
+                    break;
             }
         }
         catch (Exception e)
@@ -645,6 +668,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 break;
             case SELECT_TRASH_FOLDER:
                 curFolder = mImapFolderTrash.getText().toString();
+                showFolderNone = true;
+                break;
+            case SELECT_ARCHIVE_FOLDER:
+                curFolder = mImapFolderArchive.getText().toString();
+                showFolderNone = true;
+                break;
+            case SELECT_SPAM_FOLDER:
+                curFolder = mImapFolderSpam.getText().toString();
                 showFolderNone = true;
                 break;
             default:

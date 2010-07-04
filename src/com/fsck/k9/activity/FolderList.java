@@ -566,7 +566,7 @@ public class FolderList extends K9ListActivity
     private void onOpenFolder(String folder)
     {
         MessageList.actionHandleFolder(this, mAccount, folder);
-        if (K9.manageBack()) 
+        if (K9.manageBack())
         {
             finish();
         }
@@ -1425,6 +1425,16 @@ public class FolderList extends K9ListActivity
             if (this.name.equals(mAccount.getSentFolderName()))
             {
                 this.displayName = String.format(getString(R.string.special_mailbox_name_sent_fmt), this.name);
+            }
+
+            if (this.name.equals(mAccount.getArchiveFolderName()))
+            {
+                this.displayName = String.format(getString(R.string.special_mailbox_name_archive_fmt), this.name);
+            }
+
+            if (this.name.equals(mAccount.getSpamFolderName()))
+            {
+                this.displayName = String.format(getString(R.string.special_mailbox_name_spam_fmt), this.name);
             }
 
             this.lastChecked = folder.getLastUpdate();
