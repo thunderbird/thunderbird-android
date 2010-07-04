@@ -671,6 +671,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="batch_mark_unread_op">Ausgewählte als ungelesen markieren</string>
     <string name="batch_flag_op">Ausgewählte als wichtig markieren</string>
     <string name="batch_unflag_op">Markierung bei Ausgewählten entfernen</string>
+    <string name="batch_archive_op">Ausgewählte sichern</string>
+    <string name="batch_spam_op">Ausgewählte als Spam markieren</string>
     <string name="batch_move_op">Ausgewählte verschieben</string>
     <string name="batch_copy_op">Ausgewählte kopieren</string>
     <string name="batch_flag_mode">Stern-Modus</string>

@@ -59,9 +59,7 @@ public class MessageList
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
-
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH = 3;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY_BATCH = 4;
 
@@ -543,9 +541,7 @@ public class MessageList
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(this);
 
-
         registerForContextMenu(mListView);
-
 
         mBatchButtonArea = findViewById(R.id.batch_button_area);
         mBatchReadButton = (ImageButton) findViewById(R.id.batch_read_button);
@@ -1314,10 +1310,17 @@ public class MessageList
                 onCopyBatch();
                 return true;
 
+            case R.id.batch_archive_op:
+                onArchiveBatch();
+                return true;
+
+            case R.id.batch_spam_op:
+                onSpamBatch();
+                return true;
+
             case R.id.batch_move_op:
                 onMoveBatch();
                 return true;
-
 
             case R.id.expunge:
                 if (mCurrentFolder != null)
@@ -1332,7 +1335,8 @@ public class MessageList
     }
 
     private final int[] batch_ops = { R.id.batch_copy_op, R.id.batch_delete_op, R.id.batch_flag_op,
-                                      R.id.batch_unflag_op, R.id.batch_mark_read_op, R.id.batch_mark_unread_op, R.id.batch_move_op ,
+                                      R.id.batch_unflag_op, R.id.batch_mark_read_op, R.id.batch_mark_unread_op,
+                                      R.id.batch_archive_op, R.id.batch_spam_op, R.id.batch_move_op,
                                       R.id.batch_select_all, R.id.batch_deselect_all
                                     };
 
@@ -1364,6 +1368,8 @@ public class MessageList
             menu.findItem(R.id.account_settings).setVisible(false);
             menu.findItem(R.id.list_folders).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
+            menu.findItem(R.id.batch_archive_op).setVisible(false);
+            menu.findItem(R.id.batch_spam_op).setVisible(false);
             menu.findItem(R.id.batch_move_op).setVisible(false);
             menu.findItem(R.id.batch_copy_op).setVisible(false);
             menu.findItem(R.id.check_mail).setVisible(false);
@@ -2924,6 +2930,7 @@ public class MessageList
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH);
     }
+
     private void onMoveChosenBatch(String folderName)
     {
         if (mController.isMoveCapable(mAccount) == false)
@@ -2954,6 +2961,65 @@ public class MessageList
         mSelectedCount = 0;
         toggleBatchButtons();
     }
+
+    private void onArchiveBatch()
+    {
+        if (mController.isMoveCapable(mAccount) == false)
+        {
+            return;
+        }
+        Account account = null;
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                Message message = holder.message;
+                if (mController.isMoveCapable(message) == false)
+                {
+                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+            }
+        }
+
+        String folderName = mAccount.getArchiveFolderName();
+        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName))
+        {
+            return;
+        }
+        onMoveChosenBatch(folderName);
+    }
+
+    private void onSpamBatch()
+    {
+        if (mController.isMoveCapable(mAccount) == false)
+        {
+            return;
+        }
+        Account account = null;
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                Message message = holder.message;
+                if (mController.isMoveCapable(message) == false)
+                {
+                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+            }
+        }
+
+        String folderName = mAccount.getSpamFolderName();
+        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName))
+        {
+            return;
+        }
+        onMoveChosenBatch(folderName);
+    }
+
     private void onCopyBatch()
     {
         if (mController.isCopyCapable(mAccount) == false)
@@ -2978,6 +3044,7 @@ public class MessageList
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY_BATCH);
     }
+
     private void onCopyChosenBatch(String folderName)
     {
         if (mController.isCopyCapable(mAccount) == false)

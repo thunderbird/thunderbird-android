@@ -756,6 +756,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="batch_mark_unread_op">Mark selected unread</string>
     <string name="batch_flag_op">Add star to selected</string>
     <string name="batch_unflag_op">Remove star from selected</string>
+    <string name="batch_archive_op">Move selected to Archive</string>
+    <string name="batch_spam_op">Move selected to Spam</string>
     <string name="batch_move_op">Move selected</string>
     <string name="batch_copy_op">Copy selected</string>
     <string name="batch_flag_mode">Star mode</string>
