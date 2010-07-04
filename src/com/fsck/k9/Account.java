@@ -239,27 +239,6 @@ public class Account implements BaseAccount
             compressionMap.put(type, useCompression);
         }
 
-        // Between r418 and r431 (version 0.103), folder names were set empty if the Incoming settings were
-        // opened for non-IMAP accounts.  0.103 was never a market release, so perhaps this code
-        // should be deleted sometime soon
-        if (mDraftsFolderName == null || mDraftsFolderName.equals(""))
-        {
-            mDraftsFolderName = "Drafts";
-        }
-        if (mSentFolderName == null || mSentFolderName.equals(""))
-        {
-            mSentFolderName = "Sent";
-        }
-        if (mTrashFolderName == null || mTrashFolderName.equals(""))
-        {
-            mTrashFolderName = "Trash";
-        }
-        if (mOutboxFolderName == null || mOutboxFolderName.equals(""))
-        {
-            mOutboxFolderName = "Outbox";
-        }
-        // End of 0.103 repair
-
         mAutoExpandFolderName = preferences.getPreferences().getString(mUuid  + ".autoExpandFolderName",
                                 "INBOX");
 
