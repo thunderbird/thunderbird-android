@@ -57,7 +57,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.CryptoSystem;
+import com.fsck.k9.CryptoProvider;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -121,7 +121,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private ArrayList<MessageReference> mMessageReferences;
 
     private Message mMessage;
-    private CryptoSystem mCrypto = null;
+    private CryptoProvider mCrypto = null;
 
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
@@ -745,7 +745,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mMessageReference = (MessageReference)icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
             mMessageReferences = (ArrayList<MessageReference>)icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
 
-            mCrypto = (CryptoSystem) icicle.getSerializable(STATE_CRYPTO);
+            mCrypto = (CryptoProvider) icicle.getSerializable(STATE_CRYPTO);
             updateDecryptLayout();
         }
         else
@@ -797,7 +797,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         if (mCrypto == null)
         {
-            mCrypto = CryptoSystem.createInstance();
+            mCrypto = CryptoProvider.createInstance();
         }
 
         if (K9.DEBUG)
@@ -859,10 +859,10 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         super.onRestoreInstanceState(savedInstanceState);
 
-        mCrypto = (CryptoSystem) savedInstanceState.getSerializable(STATE_CRYPTO);
+        mCrypto = (CryptoProvider) savedInstanceState.getSerializable(STATE_CRYPTO);
         if (mCrypto == null)
         {
-            mCrypto = CryptoSystem.createInstance();
+            mCrypto = CryptoProvider.createInstance();
         }
 
         updateDecryptLayout();

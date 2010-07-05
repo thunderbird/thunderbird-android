@@ -21,7 +21,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
 
-public class Apg extends CryptoSystem
+public class Apg extends CryptoProvider
 {
     static final long serialVersionUID = 0x21071235;
 

@@ -42,7 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.CryptoSystem;
+import com.fsck.k9.CryptoProvider;
 import com.fsck.k9.EmailAddressAdapter;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Identity;
@@ -142,7 +142,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private TextView mSignatureUserId;
     private TextView mSignatureUserIdRest;
 
-    private CryptoSystem mCrypto = null;
+    private CryptoProvider mCrypto = null;
 
     private String mReferences;
     private String mInReplyTo;
@@ -662,7 +662,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         if (mCrypto == null)
         {
-            mCrypto = CryptoSystem.createInstance();
+            mCrypto = CryptoProvider.createInstance();
         }
         if (mCrypto.isAvailable(this))
         {
@@ -856,10 +856,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
-        mCrypto = (CryptoSystem) savedInstanceState.getSerializable(STATE_CRYPTO);
+        mCrypto = (CryptoProvider) savedInstanceState.getSerializable(STATE_CRYPTO);
         if (mCrypto == null)
         {
-            mCrypto = CryptoSystem.createInstance();
+            mCrypto = CryptoProvider.createInstance();
         }
         updateFrom();
         updateSignature();

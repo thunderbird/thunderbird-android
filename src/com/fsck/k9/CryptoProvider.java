@@ -8,7 +8,7 @@ import android.content.Intent;
 
 import com.fsck.k9.mail.Message;
 
-abstract public class CryptoSystem implements Serializable
+abstract public class CryptoProvider implements Serializable
 {
     static final long serialVersionUID = 0x21071234;
 
@@ -32,7 +32,7 @@ abstract public class CryptoSystem implements Serializable
     abstract public long[] getSecretKeyIdsFromEmail(Context context, String email);
     abstract public String getUserId(Context context, long keyId);
 
-    public static CryptoSystem createInstance() {
+    public static CryptoProvider createInstance() {
         return new Apg();
     }
 
