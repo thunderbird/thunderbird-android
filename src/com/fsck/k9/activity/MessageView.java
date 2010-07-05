@@ -1029,7 +1029,8 @@ public class MessageView extends K9Activity implements OnClickListener
         String srcFolder = mMessageReference.folderName;
         String dstFolder = mAccount.getArchiveFolderName();
         Message messageToMove = mMessage;
-        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
+        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder))
+        {
             return;
         }
         showNextMessage();
@@ -1053,7 +1054,8 @@ public class MessageView extends K9Activity implements OnClickListener
         String srcFolder = mMessageReference.folderName;
         String dstFolder = mAccount.getSpamFolderName();
         Message messageToMove = mMessage;
-        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
+        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder))
+        {
             return;
         }
         showNextMessage();

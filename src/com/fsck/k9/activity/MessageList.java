@@ -1007,10 +1007,10 @@ public class MessageList
 
                 if ((destFolderName != null) && (m != null))
                 {
-                    final Account account = m.message.getFolder().getAccount(); 
+                    final Account account = m.message.getFolder().getAccount();
 
                     account.setLastSelectedFolderName(destFolderName);
-                    
+
                     switch (requestCode)
                     {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
@@ -1052,7 +1052,8 @@ public class MessageList
     {
         if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == true && folderName != null)
         {
-            if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)) {
+            if (K9.FOLDER_NONE.equalsIgnoreCase(folderName))
+            {
                 return;
             }
             mAdapter.removeMessage(holder);
