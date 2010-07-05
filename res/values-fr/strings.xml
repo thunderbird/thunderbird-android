@@ -25,7 +25,7 @@
   <string name="app_name">K-9 Mail</string>
   <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="app_authors">Google, Les K-9 Dog Warlkers.</string>
-  <string name="app_authors_fmt">Auteurs : %s</string>
+  <string name="app_authors_fmt">Auteurs : <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
   <string name="app_revision_fmt">Information de révision : %s</string>
   <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
@@ -91,7 +91,6 @@
   <string name="send_alternate_action">Transférer avec une autre application</string>
   <string name="send_alternate_chooser_title">Choisir l\'envoyeur</string>
   <string name="mark_all_as_read_dlg_title">Marquer tous les messages comme lus</string>
-    messages in the folder that are not displayed in K-9)-->
   <string name="mark_all_as_read_dlg_instructions_fmt">Marquer tous les messages dans \'%s\' comme lus ? (incluant les messages dans le dossier qui ne sont pas affichés ?)</string>
   <string name="flag_action">Ajouter une étoile</string>
   <string name="unflag_action">Enlever l\'étoile</string>
@@ -126,16 +125,11 @@
   <string name="status_error">Erreur</string>
   <string name="status_sending">Envoi\u2026</string>
   <string name="status_loading_more_failed">Réessayer de charger plus de messages</string>
-    to %d more-->
   <string name="load_more_messages_fmt">Charger jusqu\'à %d de plus</string>
   <string name="abbrev_gigabytes">Go</string>
   <string name="abbrev_megabytes">Mo</string>
   <string name="abbrev_kilobytes">ko</string>
   <string name="abbrev_bytes">oct.</string>
-    Account \"%s\" shrunk from
-    %s
-    to
-    %s-->
   <string name="account_size_changed">
     Espace sur «%s» passé de
     %s
@@ -170,12 +164,6 @@
   <string name="special_mailbox_name_spam_fmt">%s (Pourriels)</string>
   <string name="send_failure_subject">Échec d\'envoi de certains messages</string>
   <string name="send_failure_body_abbrev">Voir le dossier %s pour les détails.</string>
-     However, due to the nature of the problem, K-9 cannot be certain if the messages
-    were sent or not.  The recipients may have already received copies of the message.
-    \u000a\u000aThe messages for which this type of problem occurred are now starred in your Outbox.
-    If you remove the stars, K-9 will try to send the messages again.
-    Long-press the Outbox to find the \"Send messages\" action in order to initiate another sending attempt.\u000A\u000a
-    The %s folder may contain error messages regarding the failures.-->
   <string name="send_failure_body_fmt">K-9 a rencontré un problème lors de l\'envoi de certains messages.
      Cependant, du à la natude de ce problème, K-9 ne peut être certain si les messages
     ont été envoyés. Les destinataires ont peut-être déjà reçu une copie des messages.
@@ -186,29 +174,6 @@
   <string name="alert_header">Alerte K-9</string>
   <string name="no_connection_alert">Synchronisation et envoi suspendus dû au réseau inaccessible.</string>
   <string name="end_of_folder">Aucun message</string>
-Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android originally based on the standard Android Mail client.
-\n
-\n\nK-9\'s improved features include:
-\n * Push mail using IMAP IDLE
-\n * Better performance
-\n * Message refiling
-\n * Email signatures
-\n * Bcc-to-self
-\n * Folder subscriptions
-\n * All folder synchronization
-\n * Return-address configuration
-\n * Keyboard shortcuts
-\n * Better IMAP support
-\n * Saving attachments to SD
-\n * Empty Trash
-\n * Message sorting
-\n * ...and more
-\n
-\nPlease note that K-9 does not support most free hotmail accounts and, like many mail clients, has some quirks when talking to Microsoft Exchange.
-\n
-\n Please submit bug reports, contribute new features and ask questions at http://k9mail.googlecode.com/
-
--->
   <string name="accounts_welcome">Bienvenue à la configuration de la messagerie !\n\nUtilisez n\'importe quel compte de messagerie.\n\nLa plupart des comptes de messagerie populaires peuvent être configurés en 2 étapes !</string>
   <string name="debug_version_fmt">Version : %s</string>
   <string name="debug_enable_debug_logging_title">Activer le journal de déboguage</string>
@@ -586,10 +551,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
   <string name="account_recreate_dlg_instructions_fmt">Toutes les données de «%s» vont être effacées de K-9 Mail, mais les paramètres du compte seront sauvegardés.</string>
   <string name="account_clear_dlg_title">Vider le compte</string>
   <string name="account_clear_dlg_instructions_fmt">Tous les messages de «%s» vont être effacés de K-9 Mail, mais les paramàtres du compte seront sauvegardés</string>
-        allowing this program to connect. If you are not able to sign in with
-        your correct email address and password, you may not have a paid
-        \"Plus\" account. Please launch the Web browser to gain access to
-        these mail accounts.-->
   <string name="provider_note_live">Seuls certains comptes \"Plus\" comprennent l\'accès POP
         permettant à ce programme de se connecter. Si vous ne pouvez pas
         vous connecter avec votre adresse électronique et votre mot de passe,
@@ -598,26 +559,14 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
   <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
-    Reply\u000AA - Reply All\u000AF - Forward\u000AJ or P - Previous
-    Message\u000AK, N - Next Message\u000AM - Move\u000AY - Copy\u000AZ - Zoom Out\u000AShift-Z -
-    Zoom In\u000aG - Star-->
   <string name="message_help_key">Suppr (ou D) - Effacer\u000AR -
     Répondre\u000AA - Répondre à tous\u000AF - Transférer\u000AJ ou P - Message
     précédent\u000AK, N - Prochain message\u000AM - Déplacer\u000AY - Copier\u000AZ - Zoom arrière\u000AShift-Z -
     Zoom avant\u000aG - Étoile</string>
-    Reply\u000AA - Reply All\u000AC - Compose\u000AF - Forward\u000aM -
-    Move\u000AY - Copy\u000AG - Star\u000AO - Sort type\u000AI - Sort order\u000AQ
-    - Return to Folders\u000AS - Select/deselect-->
   <string name="message_list_help_key">Suppr (ou D) - Supprimer\u000AR -
     Répondre\u000AA - Répondre à tous\u000AC - Composer\u000AF - Transférer\u000aM -
     Déplacer\u000AY - Copier\u000AG - Étoile\u000AO - Trier\u000AI - Ordre de tri\u000AQ
     - Retourner aux dossiers\u000AS - Sélectionner/Désélectionner</string>
-      1 - Display only 1st Class folders\u000A
-      2 - Display 1st and 2nd Class folders\u000A
-      3 - Display all except 2nd Class folders\u000A
-      4 - Display all folders\u000A
-      Q - Return to Accounts\u000A
-      S - Edit Account Settings-->
   <string name="folder_list_help_key">
       1 - Afficher seulement les dossiers de 1ere classe \u000A
       2 - Afficher les dossiers de 1ere et 2e classes\u000A
