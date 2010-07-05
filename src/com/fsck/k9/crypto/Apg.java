@@ -1,4 +1,4 @@
-package com.fsck.k9;
+package com.fsck.k9.crypto;
 
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -14,6 +14,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.widget.Toast;
 
+import com.fsck.k9.R;
+import com.fsck.k9.R.string;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageView;
 import com.fsck.k9.mail.Message;

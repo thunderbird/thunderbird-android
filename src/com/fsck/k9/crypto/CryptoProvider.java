@@ -1,4 +1,4 @@
-package com.fsck.k9;
+package com.fsck.k9.crypto;
 
 import java.io.Serializable;
 
