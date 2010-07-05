@@ -22,68 +22,124 @@
             android:layout_weight="1">
             <include layout="@layout/message_view_header" />
             <View
-       	     	android:layout_width="fill_parent"
-        	 	android:layout_height="0dip"
-         	 	android:layout_weight="1" /> 
-		   <LinearLayout
-		    	android:id="@+id/extra_buttons"
-		        android:orientation="horizontal"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:gravity="center_vertical">
-		        <Button
-		            android:id="@+id/reply"
-		            android:text="@string/reply_action"
-		            android:layout_height="wrap_content"
-		            android:layout_width="0dip"
-		            android:layout_weight="1" />
-		        <Button
-		            android:id="@+id/reply_all"
-		            android:text="@string/reply_all_action"
-		            android:layout_height="wrap_content"
-		            android:layout_width="0dip"
-		            android:layout_weight="1" />
-		        <Button
-		            android:id="@+id/forward"
-		            android:text="@string/forward_action"
-		            android:layout_height="wrap_content"
-		            android:layout_width="0dip"
-		            android:layout_weight="1" />
-		    </LinearLayout> 
-			<LinearLayout
-		    	android:id="@+id/scrolling_buttons"
-		        android:orientation="horizontal"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:gravity="center_vertical">
-		        <Button
-		            android:id="@+id/previous_scrolling"
-		            android:text="@string/message_view_prev_action"
+                android:layout_width="fill_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1" />
+            <LinearLayout
+                android:id="@+id/extra_buttons"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <Button
+                    android:id="@+id/reply"
+                    android:text="@string/reply_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+                <Button
+                    android:id="@+id/reply_all"
+                    android:text="@string/reply_all_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+                <Button
+                    android:id="@+id/forward"
+                    android:text="@string/forward_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/scrolling_move_buttons"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <Button
+                    android:id="@+id/archive_scrolling"
+                    android:text="@string/message_view_archive_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/move_scrolling"
+                    android:text="@string/message_view_move_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/spam_scrolling"
+                    android:text="@string/message_view_spam_action"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/scrolling_buttons"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+                <Button
+                    android:id="@+id/previous_scrolling"
+                    android:text="@string/message_view_prev_action"
                     android:textSize="35dip"
                     android:padding="0dip"
-		            android:layout_height="wrap_content"
-		            android:layout_width="0dip"
-		            android:layout_weight="1" />
-		            
-		        <ImageButton
-		            android:id="@+id/delete_scrolling"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/delete_scrolling"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_button_delete"
                     android:layout_width="0dip"
-		            android:layout_weight="1" />
-		       <Button
-		            android:id="@+id/next_scrolling"
+                    android:layout_weight="1" />
+               <Button
+                    android:id="@+id/next_scrolling"
                     android:padding="0dip"
-		            android:text="@string/message_view_next_action"
+                    android:text="@string/message_view_next_action"
                     android:textSize="35dip"
-		            android:layout_height="wrap_content"
-		            android:layout_width="0dip"
-		            android:layout_weight="1" /> 
-		    </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="1" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <LinearLayout
-    	android:id="@+id/bottom_buttons"
+        android:id="@+id/move_buttons"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="6dip"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical">
+        <Button
+            android:id="@+id/archive"
+            android:text="@string/message_view_archive_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/move"
+            android:text="@string/message_view_move_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/spam"
+            android:text="@string/message_view_spam_action"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/bottom_buttons"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -98,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dip"
             android:layout_weight="1" />
-            
+
         <ImageButton
             android:id="@+id/delete"
             android:layout_height="wrap_content"
@@ -113,6 +169,6 @@
             android:padding="0dip"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:layout_weight="1" /> 
+            android:layout_weight="1" />
     </LinearLayout>
 </LinearLayout>

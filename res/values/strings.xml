@@ -45,6 +45,7 @@
     <string name="reply_all_action">Reply all</string>
     <string name="delete_action">Delete</string>
     <string name="archive_action">Archive</string>
+    <string name="spam_action">Spam</string>
     <string name="delete_all_action">Clear folder</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
@@ -259,6 +260,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_view_attachment_download_action">Save</string>
     <string name="message_view_prev_action">\u25BC</string>
     <string name="message_view_next_action">\u25B2</string>
+    <string name="message_view_archive_action">Archive</string>
+    <string name="message_view_move_action">Move</string>
+    <string name="message_view_spam_action">Spam</string>
     <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Attachment saved to SD card as <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
@@ -490,6 +494,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_hide_buttons_never">Never</string>
     <string name="account_settings_hide_buttons_keyboard_avail">When keyboard is available</string>
     <string name="account_settings_hide_buttons_always">Always</string>
+
+    <string name="account_settings_enable_move_buttons_label">Enable move buttons</string>
+    <string name="account_settings_enable_move_buttons_summary">Show the Archive, Move, and Spam button.</string>
+    <string name="account_settings_hide_move_buttons_label">Scroll move buttons</string>
 
     <string name="account_settings_composition">Writing messages</string>
     <string name="account_settings_sync">Syncing folders</string>
@@ -748,6 +756,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="batch_mark_unread_op">Mark selected unread</string>
     <string name="batch_flag_op">Add star to selected</string>
     <string name="batch_unflag_op">Remove star from selected</string>
+    <string name="batch_archive_op">Move selected to Archive</string>
+    <string name="batch_spam_op">Move selected to Spam</string>
     <string name="batch_move_op">Move selected</string>
     <string name="batch_copy_op">Copy selected</string>
     <string name="batch_flag_mode">Star mode</string>

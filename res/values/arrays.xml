@@ -4,9 +4,9 @@
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
-  
+
           http://www.apache.org/licenses/LICENSE-2.0
-  
+
      Unless required by applicable law or agreed to in writing, software
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,14 +38,14 @@
         <item>10</item>
         <item>15</item>
         <item>30</item>
-        <item>60</item>  
-        <item>120</item>  
-        <item>180</item>  
-        <item>360</item>  
-        <item>720</item>  
-        <item>1440</item>  
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
     </string-array>
-    
+
     <string-array name="account_settings_display_count_entries">
         <item>@string/account_setup_options_mail_display_count_10</item>
         <item>@string/account_setup_options_mail_display_count_25</item>
@@ -65,7 +65,7 @@
         <item>500</item>
         <item>1000</item>
     </string-array>
-    
+
     <string-array name="account_settings_message_age_entries">
         <item>@string/account_settings_message_age_any</item>
         <item>@string/account_settings_message_age_0</item>
@@ -95,7 +95,7 @@
         <item>168</item>
         <item>365</item>
     </string-array>
-    
+
     <string-array name="account_settings_folder_display_mode_entries">
         <item>@string/account_settings_folder_display_mode_all</item>
        <item>@string/account_settings_folder_display_mode_first_class</item>
@@ -107,9 +107,9 @@
         <item>ALL</item>
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
-        <item>NOT_SECOND_CLASS</item> 
+        <item>NOT_SECOND_CLASS</item>
     </string-array>
-    
+
     <string-array name="account_settings_hide_buttons_entries">
         <item>@string/account_settings_hide_buttons_never</item>
        <item>@string/account_settings_hide_buttons_keyboard_avail</item>
@@ -121,7 +121,19 @@
         <item>KEYBOARD_AVAILABLE</item>
         <item>ALWAYS</item>
     </string-array>
-    
+
+    <string-array name="account_settings_hide_move_buttons_entries">
+        <item>@string/account_settings_hide_buttons_never</item>
+       <item>@string/account_settings_hide_buttons_keyboard_avail</item>
+       <item>@string/account_settings_hide_buttons_always</item>
+    </string-array>
+
+    <string-array name="account_settings_hide_move_buttons_values">
+        <item>NEVER</item>
+        <item>KEYBOARD_AVAILABLE</item>
+        <item>ALWAYS</item>
+    </string-array>
+
     <string-array name="account_settings_searchable_entries">
         <item>@string/account_settings_searchable_all</item>
        <item>@string/account_settings_searchable_displayable</item>
@@ -133,7 +145,7 @@
         <item>DISPLAYABLE</item>
         <item>NONE</item>
     </string-array>
-  
+
      <string-array name="account_settings_folder_sync_mode_entries">
         <item>@string/account_settings_folder_sync_mode_all</item>
        <item>@string/account_settings_folder_sync_mode_first_class</item>
@@ -146,10 +158,10 @@
         <item>ALL</item>
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
-        <item>NOT_SECOND_CLASS</item> 
+        <item>NOT_SECOND_CLASS</item>
         <item>NONE</item>
     </string-array>
-    
+
     <string-array name="account_settings_folder_push_mode_entries">
         <item>@string/account_settings_folder_push_mode_all</item>
        <item>@string/account_settings_folder_push_mode_first_class</item>
@@ -162,10 +174,10 @@
         <item>ALL</item>
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
-        <item>NOT_SECOND_CLASS</item> 
+        <item>NOT_SECOND_CLASS</item>
         <item>NONE</item>
     </string-array>
-    
+
     <string-array name="account_settings_push_limit_entries">
     <item>@string/account_setup_push_limit_10</item>
     <item>@string/account_setup_push_limit_25</item>
@@ -175,7 +187,7 @@
     <item>@string/account_setup_push_limit_500</item>
     <item>@string/account_setup_push_limit_1000</item>
     </string-array>
-    
+
     <string-array name="account_settings_push_limit_values">
         <item>10</item>
         <item>25</item>
@@ -185,7 +197,7 @@
         <item>500</item>
         <item>1000</item>
     </string-array>
-    
+
     <string-array name="account_settings_folder_target_mode_entries">
         <item>@string/account_settings_folder_target_mode_all</item>
        <item>@string/account_settings_folder_target_mode_first_class</item>
@@ -197,9 +209,9 @@
         <item>ALL</item>
         <item>FIRST_CLASS</item>
         <item>FIRST_AND_SECOND_CLASS</item>
-        <item>NOT_SECOND_CLASS</item> 
+        <item>NOT_SECOND_CLASS</item>
     </string-array>
-    
+
     <string-array name="folder_settings_folder_display_mode_entries">
        <item>@string/folder_settings_folder_display_mode_normal</item>
        <item>@string/folder_settings_folder_display_mode_first_class</item>
@@ -209,85 +221,85 @@
     <string-array name="folder_settings_folder_display_mode_values">
         <item>NO_CLASS</item>
         <item>FIRST_CLASS</item>
-        <item>SECOND_CLASS</item> 
+        <item>SECOND_CLASS</item>
     </string-array>
-    
+
     <string-array name="folder_settings_folder_sync_mode_entries">
        <item>@string/folder_settings_folder_sync_mode_normal</item>
        <item>@string/folder_settings_folder_sync_mode_first_class</item>
        <item>@string/folder_settings_folder_sync_mode_second_class</item>
        <item>@string/folder_settings_folder_sync_mode_inherited</item>
     </string-array>
-    
+
     <string-array name="folder_settings_folder_sync_mode_values">
     <item>NO_CLASS</item>
     <item>FIRST_CLASS</item>
-    <item>SECOND_CLASS</item> 
-    <item>INHERITED</item>    
+    <item>SECOND_CLASS</item>
+    <item>INHERITED</item>
     </string-array>
-    
+
     <string-array name="folder_settings_folder_push_mode_entries">
        <item>@string/folder_settings_folder_push_mode_normal</item>
        <item>@string/folder_settings_folder_push_mode_first_class</item>
        <item>@string/folder_settings_folder_push_mode_second_class</item>
        <item>@string/folder_settings_folder_push_mode_inherited</item>
     </string-array>
-    
+
     <string-array name="folder_settings_folder_push_mode_values">
     <item>NO_CLASS</item>
     <item>FIRST_CLASS</item>
-    <item>SECOND_CLASS</item>  
-    <item>INHERITED</item>    
+    <item>SECOND_CLASS</item>
+    <item>INHERITED</item>
     </string-array>
-    
+
     <string-array name="account_setup_delete_policy_entries">
-    	<item>@string/account_setup_incoming_delete_policy_never_label</item>
-    	<item>@string/account_setup_incoming_delete_policy_delete_label</item>
-    	<item>@string/account_setup_incoming_delete_policy_markread_label</item>
+        <item>@string/account_setup_incoming_delete_policy_never_label</item>
+        <item>@string/account_setup_incoming_delete_policy_delete_label</item>
+        <item>@string/account_setup_incoming_delete_policy_markread_label</item>
     </string-array>
-    
+
     <string-array name="account_setup_delete_policy_values">
-    	<item>0</item>
-    	<item>2</item>
-    	<item>3</item>
+        <item>0</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
-    
+
     <string-array name="account_setup_expunge_policy_entries">
       <item>@string/account_setup_expunge_policy_immediately</item>
       <item>@string/account_setup_expunge_policy_on_poll</item>
       <item>@string/account_setup_expunge_policy_manual</item>
     </string-array>
-    
+
      <string-array name="account_setup_expunge_policy_values">
        <item>EXPUNGE_IMMEDIATELY</item>
        <item>EXPUNGE_ON_POLL</item>
        <item>EXPUNGE_MANUALLY</item>
     </string-array>
-    
+
     <string-array name="settings_theme_entries">
-    	<item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_light</item>
         <item>@string/setting_theme_dark</item>
     </string-array>
-    
+
     <string-array name="settings_theme_values">
         <item>light</item>
         <item>dark</item>
     </string-array>
-    
+
     <string-array name="background_ops_entries">
-    	<item>@string/background_ops_enabled</item>
-    	<item>@string/background_ops_auto_sync</item>
-    	<item>@string/background_ops_always</item>
+        <item>@string/background_ops_enabled</item>
+        <item>@string/background_ops_auto_sync</item>
+        <item>@string/background_ops_always</item>
         <item>@string/background_ops_never</item>
     </string-array>
-    
+
     <string-array name="background_ops_values">
     <item>WHEN_CHECKED</item>
     <item>WHEN_CHECKED_AUTO_SYNC</item>
     <item>ALWAYS</item>
-    <item>NEVER</item>    
+    <item>NEVER</item>
     </string-array>
-    
+
     <string-array name="date_formats">
     <item>@string/date_format_short</item>
     <item>@string/date_format_medium</item>
@@ -297,45 +309,45 @@
 
 
     <string-array name="font_entries">
-    	<item>@string/font_size_tiniest</item>
-    	<item>@string/font_size_tiny</item>
-    	<item>@string/font_size_smaller</item>
-    	<item>@string/font_size_small</item>
-    	<item>@string/font_size_medium</item>
-    	<item>@string/font_size_large</item>
-    	<item>@string/font_size_larger</item>
+        <item>@string/font_size_tiniest</item>
+        <item>@string/font_size_tiny</item>
+        <item>@string/font_size_smaller</item>
+        <item>@string/font_size_small</item>
+        <item>@string/font_size_medium</item>
+        <item>@string/font_size_large</item>
+        <item>@string/font_size_larger</item>
     </string-array>
 
     <string-array name="font_values">
-    	<item>10</item>
-    	<item>12</item>
-    	<item>14</item>
-    	<item>16</item>
-    	<item>18</item>
-    	<item>20</item>
-    	<item>22</item>
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>20</item>
+        <item>22</item>
     </string-array>
 
     <string-array name="font_entries_webview">
-    	<item>@string/font_size_webview_smaller</item>
-    	<item>@string/font_size_webview_small</item>
-    	<item>@string/font_size_webview_normal</item>
-    	<item>@string/font_size_webview_large</item>
-    	<item>@string/font_size_webview_larger</item>
+        <item>@string/font_size_webview_smaller</item>
+        <item>@string/font_size_webview_small</item>
+        <item>@string/font_size_webview_normal</item>
+        <item>@string/font_size_webview_large</item>
+        <item>@string/font_size_webview_larger</item>
     </string-array>
 
-	<!--
-    	Be sure to also change FontSizes.getMessageViewContentAsInt() and
-	    FontSizes.setMessageViewContent() if you change this.
-	-->
+    <!--
+        Be sure to also change FontSizes.getMessageViewContentAsInt() and
+        FontSizes.setMessageViewContent() if you change this.
+    -->
     <string-array name="font_values_webview">
-    	<item>1</item>
-    	<item>2</item>
-    	<item>3</item>
-    	<item>4</item>
-    	<item>5</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
-    
+
     <string-array name="idle_refresh_period_entries">
     <item>@string/idle_refresh_period_1min</item>
     <item>@string/idle_refresh_period_2min</item>
@@ -355,9 +367,9 @@
         <item>6</item>
         <item>12</item>
         <item>24</item>
-        <item>36</item>  
-        <item>48</item>  
-        <item>60</item> 
+        <item>36</item>
+        <item>48</item>
+        <item>60</item>
     </string-array>
 
     <string-array name="account_settings_vibrate_pattern_entries">

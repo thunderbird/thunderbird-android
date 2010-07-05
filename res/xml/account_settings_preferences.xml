@@ -30,17 +30,17 @@
             android:key="account_default"
             android:title="@string/account_settings_default_label"
             android:summary="@string/account_settings_default_summary" />
-		</PreferenceCategory>
-	
-		<PreferenceCategory android:title="@string/account_settings_message_lists">
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/account_settings_message_lists">
 
         <ListPreference
             android:key="account_display_count"
             android:title="@string/account_settings_mail_display_count_label"
             android:entries="@array/account_settings_display_count_entries"
             android:entryValues="@array/account_settings_display_count_values"
-            android:dialogTitle="@string/account_settings_mail_display_count_label" />            
-             
+            android:dialogTitle="@string/account_settings_mail_display_count_label" />
+
         <Preference
             android:key="chip_color"
             android:singleLine="true"
@@ -64,6 +64,20 @@
             android:entryValues="@array/account_settings_hide_buttons_values"
             android:dialogTitle="@string/account_settings_hide_buttons_label" />
 
+       <CheckBoxPreference
+            android:key="enable_move_buttons"
+            android:title="@string/account_settings_enable_move_buttons_label"
+            android:defaultValue="true"
+            android:summary="@string/account_settings_enable_move_buttons_summary" />
+
+       <ListPreference
+            android:key="hide_move_buttons_enum"
+            android:dependency="enable_move_buttons"
+            android:title="@string/account_settings_hide_move_buttons_label"
+            android:entries="@array/account_settings_hide_move_buttons_entries"
+            android:entryValues="@array/account_settings_hide_move_buttons_values"
+            android:dialogTitle="@string/account_settings_hide_move_buttons_label" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/account_settings_sync">
@@ -80,35 +94,35 @@
             android:entries="@array/account_settings_message_age_entries"
             android:entryValues="@array/account_settings_message_age_values"
             android:dialogTitle="@string/account_settings_message_age_label" />
-        
+
         <ListPreference
             android:key="folder_sync_mode"
             android:title="@string/account_settings_folder_sync_mode_label"
             android:entries="@array/account_settings_folder_sync_mode_entries"
             android:entryValues="@array/account_settings_folder_sync_mode_values"
-            android:dialogTitle="@string/account_settings_folder_sync_mode_label" />  
-           
-	    <ListPreference
+            android:dialogTitle="@string/account_settings_folder_sync_mode_label" />
+
+        <ListPreference
             android:key="folder_push_mode"
             android:title="@string/account_settings_folder_push_mode_label"
             android:entries="@array/account_settings_folder_push_mode_entries"
             android:entryValues="@array/account_settings_folder_push_mode_values"
-            android:dialogTitle="@string/account_settings_folder_push_mode_label" />   
-        
+            android:dialogTitle="@string/account_settings_folder_push_mode_label" />
+
         <ListPreference
-        	android:key="delete_policy"
-        	android:title="@string/account_setup_incoming_delete_policy_label"
-        	android:entries="@array/account_setup_delete_policy_entries"
-        	android:entryValues="@array/account_setup_delete_policy_values"
-        	android:dialogTitle="@string/account_setup_incoming_delete_policy_label" />
-            
+            android:key="delete_policy"
+            android:title="@string/account_setup_incoming_delete_policy_label"
+            android:entries="@array/account_setup_delete_policy_entries"
+            android:entryValues="@array/account_setup_delete_policy_values"
+            android:dialogTitle="@string/account_setup_incoming_delete_policy_label" />
+
          <ListPreference
             android:key="expunge_policy"
             android:title="@string/account_setup_expunge_policy_label"
             android:entries="@array/account_setup_expunge_policy_entries"
             android:entryValues="@array/account_setup_expunge_policy_values"
             android:dialogTitle="@string/account_setup_expunge_policy_label" />
-            
+
          <CheckBoxPreference
             android:key="account_sync_remote_deletetions"
             android:title="@string/account_settings_sync_remote_deletetions_label"
@@ -117,15 +131,15 @@
             
         <PreferenceScreen
             android:key="incoming"
-			android:title="@string/account_settings_incoming_label"
-			android:summary="@string/account_settings_incoming_summary"
-			/>
+            android:title="@string/account_settings_incoming_label"
+            android:summary="@string/account_settings_incoming_summary"
+            />
 
     </PreferenceCategory>
-	
-	<PreferenceCategory android:title="@string/account_settings_folders">
 
-		<Preference
+    <PreferenceCategory android:title="@string/account_settings_folders">
+
+        <Preference
             android:key="account_setup_auto_expand_folder"
             android:singleLine="true"
             android:title="@string/account_setup_auto_expand_folder"
@@ -137,45 +151,45 @@
             android:entries="@array/account_settings_folder_display_mode_entries"
             android:entryValues="@array/account_settings_folder_display_mode_values"
             android:dialogTitle="@string/account_settings_folder_display_mode_label" />
-  
+
          <ListPreference
             android:key="folder_target_mode"
             android:title="@string/account_settings_folder_target_mode_label"
             android:entries="@array/account_settings_folder_target_mode_entries"
             android:entryValues="@array/account_settings_folder_target_mode_values"
             android:dialogTitle="@string/account_settings_folder_target_mode_label" />
-            
+
          <ListPreference
             android:key="searchable_folders"
             android:title="@string/account_settings_searchable_label"
             android:entries="@array/account_settings_searchable_entries"
             android:entryValues="@array/account_settings_searchable_values"
             android:dialogTitle="@string/account_settings_searchable_label" />
-           
-           
+
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/account_settings_composition">
 
         <PreferenceScreen
             android:key="composition"
-			android:summary="@string/account_settings_composition_summary"
-			android:title="@string/account_settings_composition_label"
+            android:summary="@string/account_settings_composition_summary"
+            android:title="@string/account_settings_composition_label"
 
-			/>
+            />
 
         <PreferenceScreen
             android:key="manage_identities"
-			android:title="@string/account_settings_identities_label"
-			android:summary="@string/account_settings_identities_summary"
-		   />
+            android:title="@string/account_settings_identities_label"
+            android:summary="@string/account_settings_identities_summary"
+           />
 
         <PreferenceScreen
             android:key="outgoing"
-			android:title="@string/account_settings_outgoing_label"
-			android:summary="@string/account_settings_outgoing_summary"
-		
-			/>
+            android:title="@string/account_settings_outgoing_label"
+            android:summary="@string/account_settings_outgoing_summary"
+
+            />
 
         <EditTextPreference
             android:key="account_quote_prefix"
@@ -193,14 +207,14 @@
             android:title="@string/account_settings_notify_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_notify_summary" />
-            
+
        <CheckBoxPreference
             android:key="account_notify_self"
             android:dependency="account_notify"
             android:title="@string/account_settings_notify_self_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_notify_self_summary" />
-        
+
         <RingtonePreference
             android:layout="?android:attr/preferenceLayoutChild"
             android:dependency="account_notify"

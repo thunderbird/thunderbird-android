@@ -1,5 +1,19 @@
 package com.fsck.k9.activity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.io.IOUtils;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -21,30 +35,46 @@ import android.text.style.StyleSpan;
 import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.webkit.*;
-import android.widget.*;
-import com.fsck.k9.*;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.FontSizes;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
-import org.apache.commons.io.IOUtils;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
@@ -53,7 +83,6 @@ public class MessageView extends K9Activity implements OnClickListener
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
-
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
 
     private TextView mFromView;
@@ -76,6 +105,12 @@ public class MessageView extends K9Activity implements OnClickListener
     View next_scrolling;
     View previous;
     View previous_scrolling;
+    private View mArchive;
+    private View mMove;
+    private View mSpam;
+    private View mArchiveScrolling;
+    private View mMoveScrolling;
+    private View mSpamScrolling;
 
     private Account mAccount;
     private MessageReference mMessageReference;
@@ -172,6 +207,16 @@ public class MessageView extends K9Activity implements OnClickListener
             case KeyEvent.KEYCODE_M:
             {
                 onMove();
+                return true;
+            }
+            case KeyEvent.KEYCODE_S:
+            {
+                onSpam();
+                return true;
+            }
+            case KeyEvent.KEYCODE_V:
+            {
+                onArchive();
                 return true;
             }
             case KeyEvent.KEYCODE_Y:
@@ -650,6 +695,9 @@ public class MessageView extends K9Activity implements OnClickListener
         setOnClickListener(R.id.forward);
         setOnClickListener(R.id.next);
         setOnClickListener(R.id.previous);
+        setOnClickListener(R.id.archive);
+        setOnClickListener(R.id.move);
+        setOnClickListener(R.id.spam);
 
         // To show full header
         setOnClickListener(R.id.header_container);
@@ -660,9 +708,11 @@ public class MessageView extends K9Activity implements OnClickListener
         setOnClickListener(R.id.forward_scrolling);
         setOnClickListener(R.id.next_scrolling);
         setOnClickListener(R.id.previous_scrolling);
+        setOnClickListener(R.id.archive_scrolling);
+        setOnClickListener(R.id.move_scrolling);
+        setOnClickListener(R.id.spam_scrolling);
 
         setOnClickListener(R.id.show_pictures);
-
 
         setTitle("");
 
@@ -726,12 +776,16 @@ public class MessageView extends K9Activity implements OnClickListener
         next = findViewById(R.id.next);
         previous = findViewById(R.id.previous);
 
-        setOnClickListener(R.id.next);
-        setOnClickListener(R.id.previous);
-
         next_scrolling = findViewById(R.id.next_scrolling);
         previous_scrolling = findViewById(R.id.previous_scrolling);
 
+        mArchive = findViewById(R.id.archive);
+        mMove = findViewById(R.id.move);
+        mSpam = findViewById(R.id.spam);
+
+        mArchiveScrolling = findViewById(R.id.archive_scrolling);
+        mMoveScrolling = findViewById(R.id.move_scrolling);
+        mSpamScrolling = findViewById(R.id.spam_scrolling);
 
         boolean goNext = intent.getBooleanExtra(EXTRA_NEXT, false);
         if (goNext)
@@ -763,6 +817,43 @@ public class MessageView extends K9Activity implements OnClickListener
                 showButtons();
             }
         }
+
+        Account.HideButtons hideMoveButtons = mAccount.getHideMessageViewMoveButtons();
+        if (Account.HideButtons.ALWAYS == hideMoveButtons)
+        {
+            hideMoveButtons();
+        }
+        else if (Account.HideButtons.NEVER == hideMoveButtons)
+        {
+            showMoveButtons();
+        }
+        else   // Account.HideButtons.KEYBOARD_AVAIL
+        {
+            final Configuration config = this.getResources().getConfiguration();
+            if (config.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO)
+            {
+                hideMoveButtons();
+            }
+            else
+            {
+                showMoveButtons();
+            }
+        }
+
+        if (!mAccount.getEnableMoveButtons())
+        {
+            View buttons = findViewById(R.id.move_buttons);
+            if (buttons != null)
+            {
+                buttons.setVisibility(View.GONE);
+            }
+            buttons = findViewById(R.id.scrolling_move_buttons);
+            if (buttons != null)
+            {
+                buttons.setVisibility(View.GONE);
+            }
+        }
+
         displayMessage(mMessageReference);
     }
 
@@ -787,7 +878,6 @@ public class MessageView extends K9Activity implements OnClickListener
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
-
         boolean enableNext = (mNextMessage != null);
         boolean enablePrev = (mPreviousMessage != null);
 
@@ -800,6 +890,33 @@ public class MessageView extends K9Activity implements OnClickListener
             next_scrolling.setEnabled(enableNext);
         if (previous_scrolling != null && (previous_scrolling.isEnabled() != enablePrev))
             previous_scrolling.setEnabled(enablePrev);
+
+        // If moving isn't support at all, then all of them must be disabled anyway.
+        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        {
+            mArchive.setEnabled(false);
+            mMove.setEnabled(false);
+            mSpam.setEnabled(false);
+            mArchiveScrolling.setEnabled(false);
+            mMoveScrolling.setEnabled(false);
+            mSpamScrolling.setEnabled(false);
+        }
+        else
+        {
+            // Only enable the button if the Archive folder is not the current folder and not NONE.
+            boolean enableArchive = !mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
+                                    !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName());
+            boolean enableMove = true;
+            // Only enable the button if the Spam folder is not the current folder and not NONE.
+            boolean enableSpam = !mMessageReference.folderName.equals(mAccount.getSpamFolderName()) &&
+                                 !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName());
+            mArchive.setEnabled(enableArchive);
+            mMove.setEnabled(enableMove);
+            mSpam.setEnabled(enableSpam);
+            mArchiveScrolling.setEnabled(enableArchive);
+            mMoveScrolling.setEnabled(enableMove);
+            mSpamScrolling.setEnabled(enableSpam);
+        }
 
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
@@ -824,6 +941,24 @@ public class MessageView extends K9Activity implements OnClickListener
     private void hideButtons()
     {
         View buttons = findViewById(R.id.bottom_buttons);
+        if (buttons != null)
+        {
+            buttons.setVisibility(View.GONE);
+        }
+    }
+
+    private void showMoveButtons()
+    {
+        View buttons = findViewById(R.id.scrolling_move_buttons);
+        if (buttons != null)
+        {
+            buttons.setVisibility(View.GONE);
+        }
+    }
+
+    private void hideMoveButtons()
+    {
+        View buttons = findViewById(R.id.move_buttons);
         if (buttons != null)
         {
             buttons.setVisibility(View.GONE);
@@ -878,6 +1013,54 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
+    private void onArchive()
+    {
+        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        {
+            return;
+        }
+        if (MessagingController.getInstance(getApplication()).isMoveCapable(mMessage) == false)
+        {
+            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
+        String srcFolder = mMessageReference.folderName;
+        String dstFolder = mAccount.getArchiveFolderName();
+        Message messageToMove = mMessage;
+        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
+            return;
+        }
+        showNextMessage();
+        MessagingController.getInstance(getApplication())
+                .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
+    }
+
+    private void onSpam()
+    {
+        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        {
+            return;
+        }
+        if (MessagingController.getInstance(getApplication()).isMoveCapable(mMessage) == false)
+        {
+            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
+        String srcFolder = mMessageReference.folderName;
+        String dstFolder = mAccount.getSpamFolderName();
+        Message messageToMove = mMessage;
+        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
+            return;
+        }
+        showNextMessage();
+        MessagingController.getInstance(getApplication())
+                .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
+    }
+
     private void showNextMessage()
     {
         findSurroundingMessagesUid();
@@ -904,7 +1087,7 @@ public class MessageView extends K9Activity implements OnClickListener
             finish();
         }
     }
-    
+
     private void onClickSender()
     {
         if (mMessage != null)
@@ -1275,6 +1458,18 @@ public class MessageView extends K9Activity implements OnClickListener
             case R.id.forward_scrolling:
                 onForward();
                 break;
+            case R.id.archive:
+            case R.id.archive_scrolling:
+                onArchive();
+                break;
+            case R.id.spam:
+            case R.id.spam_scrolling:
+                onSpam();
+                break;
+            case R.id.move:
+            case R.id.move_scrolling:
+                onMove();
+                break;
             case R.id.next:
             case R.id.next_scrolling:
                 onNext(K9.isAnimations());
@@ -1324,6 +1519,12 @@ public class MessageView extends K9Activity implements OnClickListener
             case R.id.flag:
                 onFlag();
                 break;
+            case R.id.archive:
+                onArchive();
+                break;
+            case R.id.spam:
+                onSpam();
+                break;
             case R.id.move:
                 onMove();
                 break;
@@ -1353,6 +1554,16 @@ public class MessageView extends K9Activity implements OnClickListener
         if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
         {
             menu.findItem(R.id.move).setVisible(false);
+            menu.findItem(R.id.archive).setVisible(false);
+            menu.findItem(R.id.spam).setVisible(false);
+        }
+        if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()))
+        {
+            menu.findItem(R.id.archive).setVisible(false);
+        }
+        if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()))
+        {
+            menu.findItem(R.id.spam).setVisible(false);
         }
         return true;
     }

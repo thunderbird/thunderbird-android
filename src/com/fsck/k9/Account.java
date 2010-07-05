@@ -90,6 +90,8 @@ public class Account implements BaseAccount
     private String mRingtoneUri;
     private boolean mNotifySync;
     private HideButtons mHideMessageViewButtons;
+    private HideButtons mHideMessageViewMoveButtons;
+    private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
     private int mMaxPushFolders;
@@ -153,6 +155,8 @@ public class Account implements BaseAccount
         mFolderPushMode = FolderMode.FIRST_CLASS;
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mHideMessageViewButtons = HideButtons.NEVER;
+        mHideMessageViewMoveButtons = HideButtons.NEVER;
+        mEnableMoveButtons = false;
         mRingtoneUri = "content://settings/system/notification_sound";
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
@@ -278,6 +282,18 @@ public class Account implements BaseAccount
         {
             mHideMessageViewButtons = HideButtons.NEVER;
         }
+
+        try
+        {
+            mHideMessageViewMoveButtons = HideButtons.valueOf(preferences.getPreferences().getString(mUuid + ".hideMoveButtonsEnum",
+                                          HideButtons.NEVER.name()));
+        }
+        catch (Exception e)
+        {
+            mHideMessageViewMoveButtons = HideButtons.NEVER;
+        }
+
+        mEnableMoveButtons = preferences.getPreferences().getBoolean(mUuid + ".enableMoveButtons", false);
 
         mRingtoneUri = preferences.getPreferences().getString(mUuid  + ".ringtone",
                        "content://settings/system/notification_sound");
@@ -475,6 +491,8 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".vibrateTimes", mVibrateTimes);
         editor.putBoolean(mUuid + ".ring", mRing);
         editor.putString(mUuid + ".hideButtonsEnum", mHideMessageViewButtons.name());
+        editor.putString(mUuid + ".hideMoveButtonsEnum", mHideMessageViewMoveButtons.name());
+        editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".ringtone", mRingtoneUri);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
@@ -963,6 +981,16 @@ public class Account implements BaseAccount
         mHideMessageViewButtons = hideMessageViewButtons;
     }
 
+    public synchronized HideButtons getHideMessageViewMoveButtons()
+    {
+        return mHideMessageViewMoveButtons;
+    }
+
+    public synchronized void setHideMessageViewMoveButtons(HideButtons hideMessageViewButtons)
+    {
+        mHideMessageViewMoveButtons = hideMessageViewButtons;
+    }
+
     public synchronized FolderMode getFolderTargetMode()
     {
         return mFolderTargetMode;
@@ -1352,6 +1380,16 @@ public class Account implements BaseAccount
     public synchronized void setQuotePrefix(String quotePrefix)
     {
         mQuotePrefix = quotePrefix;
+    }
+
+    public boolean getEnableMoveButtons()
+    {
+        return mEnableMoveButtons;
+    }
+
+    public void setEnableMoveButtons(boolean enableMoveButtons)
+    {
+        mEnableMoveButtons = enableMoveButtons;
     }
 
     public synchronized boolean syncRemoteDeletions()
