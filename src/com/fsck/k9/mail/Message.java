@@ -22,7 +22,7 @@ public abstract class Message implements Part, Body
     protected Date mInternalDate;
 
     protected Folder mFolder;
-    
+
     public boolean olderThan(Date earliestDate)
     {
         if (earliestDate == null)

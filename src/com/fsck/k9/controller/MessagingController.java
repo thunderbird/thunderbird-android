@@ -218,7 +218,7 @@ public class MessagingController implements Runnable
         {
             return true;
         }
-        
+
         return false;
     }
 
@@ -854,7 +854,7 @@ public class MessagingController implements Runnable
                             if (isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message) == false)
                             {
                                 List<Message> messages = new ArrayList<Message>();
-                                
+
                                 messages.add(message);
                                 stats.unreadMessageCount += (message.isSet(Flag.SEEN) == false) ? 1 : 0;
                                 stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
@@ -1121,7 +1121,7 @@ public class MessagingController implements Runnable
                 }
 
             }
-           
+
             /*
              * Get the remote message count.
              */
@@ -1131,7 +1131,7 @@ public class MessagingController implements Runnable
 
             if (visibleLimit < 1)
             {
-                    visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
+                visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
             }
 
             Message[] remoteMessageArray = new Message[0];
@@ -1177,20 +1177,22 @@ public class MessagingController implements Runnable
             /*
              * Remove any messages that are in the local store but no longer on the remote store or are too old
              */
-           
-            for (Message localMessage : localMessages)
+            if (account.syncRemoteDeletions())
             {
-                if (remoteUidMap.get(localMessage.getUid()) == null && !localMessage.isSet(Flag.DELETED))
+                for (Message localMessage : localMessages)
                 {
-                    localMessage.setFlag(Flag.X_DESTROYED, true);
+                    if (remoteUidMap.get(localMessage.getUid()) == null && !localMessage.isSet(Flag.DELETED))
+                    {
+                        localMessage.setFlag(Flag.X_DESTROYED, true);
 
-                    for (MessagingListener l : getListeners())
-                    {
-                        l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
-                    }
-                    if (listener != null && getListeners().contains(listener) == false)
-                    {
-                        listener.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                        }
+                        if (listener != null && getListeners().contains(listener) == false)
+                        {
+                            listener.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                        }
                     }
                 }
             }
@@ -1493,18 +1495,18 @@ public class MessagingController implements Runnable
                         }
                         if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate))
                         {
-                            
+
                             if (K9.DEBUG)
                             {
                                 if (message.isSet(Flag.DELETED))
                                 {
                                     Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid()
-                                            + " was already deleted on server, skipping");
+                                          + " was already deleted on server, skipping");
                                 }
                                 else
                                 {
                                     Log.d(K9.LOG_TAG, "Newly downloaded message " + message.getUid() + " is older than "
-                                        + earliestDate + ", skipping");
+                                          + earliestDate + ", skipping");
                                 }
                             }
                             progress.incrementAndGet();
@@ -1514,7 +1516,7 @@ public class MessagingController implements Runnable
                             }
                             return;
                         }
-                            
+
                         if (message.getSize() > (MAX_SMALL_MESSAGE_SIZE))
                         {
                             largeMessages.add(message);
@@ -1623,10 +1625,10 @@ public class MessagingController implements Runnable
                         if (K9.DEBUG)
                         {
                             Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
-                                    + earliestDate + ", hence not saving");
+                                  + earliestDate + ", hence not saving");
                         }
                         progress.incrementAndGet();
-    
+
                         return;
                     }
 
@@ -1700,7 +1702,7 @@ public class MessagingController implements Runnable
                 if (K9.DEBUG)
                 {
                     Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
-                            + earliestDate + ", hence not saving");
+                          + earliestDate + ", hence not saving");
                 }
                 progress.incrementAndGet();
 
@@ -1723,7 +1725,7 @@ public class MessagingController implements Runnable
                  */
 
                 remoteFolder.fetch(new Message[] { message }, fp, null);
-                
+
                 // Store the updated message locally
                 localFolder.appendMessages(new Message[] { message });
 
@@ -1892,15 +1894,21 @@ public class MessagingController implements Runnable
         }
         if (remoteMessage.isSet(Flag.DELETED))
         {
-            localMessage.setFlag(Flag.DELETED, true);
-            messageChanged = true;
-        }
-        for (Flag flag : new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED })
-        {
-            if (remoteMessage.isSet(flag) != localMessage.isSet(flag))
+            if (localMessage.getFolder().getAccount().syncRemoteDeletions())
             {
-                localMessage.setFlag(flag, remoteMessage.isSet(flag));
+                localMessage.setFlag(Flag.DELETED, true);
                 messageChanged = true;
+            }
+        }
+        else
+        {
+            for (Flag flag : new Flag[] { Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED })
+            {
+                if (remoteMessage.isSet(flag) != localMessage.isSet(flag))
+                {
+                    localMessage.setFlag(flag, remoteMessage.isSet(flag));
+                    messageChanged = true;
+                }
             }
         }
         return messageChanged;
@@ -4540,8 +4548,8 @@ public class MessagingController implements Runnable
             String folderName = folder.getName();
             if (!K9.INBOX.equals(folderName) &&
                     (account.getTrashFolderName().equals(folderName)
-                    || account.getDraftsFolderName().equals(folderName)
-                    || account.getSentFolderName().equals(folderName)))
+                     || account.getDraftsFolderName().equals(folderName)
+                     || account.getSentFolderName().equals(folderName)))
             {
                 return false;
             }
@@ -4628,28 +4636,40 @@ public class MessagingController implements Runnable
             if (account.isVibrate())
             {
                 int times = account.getVibrateTimes();
-                long[] pattern1 = new long[]{100,200};
-                long[] pattern2 = new long[]{100,500};
-                long[] pattern3 = new long[]{200,200};
-                long[] pattern4 = new long[]{200,500};
-                long[] pattern5 = new long[]{500,500};
+                long[] pattern1 = new long[] {100,200};
+                long[] pattern2 = new long[] {100,500};
+                long[] pattern3 = new long[] {200,200};
+                long[] pattern4 = new long[] {200,500};
+                long[] pattern5 = new long[] {500,500};
                 long[] src = null;
 
                 switch (account.getVibratePattern())
                 {
-                    case 1: src = pattern1; break;
-                    case 2: src = pattern2; break;
-                    case 3: src = pattern3; break;
-                    case 4: src = pattern4; break;
-                    case 5: src = pattern5; break;
+                    case 1:
+                        src = pattern1;
+                        break;
+                    case 2:
+                        src = pattern2;
+                        break;
+                    case 3:
+                        src = pattern3;
+                        break;
+                    case 4:
+                        src = pattern4;
+                        break;
+                    case 5:
+                        src = pattern5;
+                        break;
                     default:
                         notif.defaults |= Notification.DEFAULT_VIBRATE;
                         break;
                 }
 
-                if (src != null) {
+                if (src != null)
+                {
                     long[] dest = new long[src.length * times];
-                    for (int n = 0; n < times; n++) {
+                    for (int n = 0; n < times; n++)
+                    {
                         System.arraycopy(src, 0, dest, n * src.length, src.length);
                     }
                     notif.vibrate = dest;

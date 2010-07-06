@@ -34,6 +34,8 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_HIDE_BUTTONS = "hide_buttons_enum";
+    private static final String PREFERENCE_HIDE_MOVE_BUTTONS = "hide_move_buttons_enum";
+    private static final String PREFERENCE_ENABLE_MOVE_BUTTONS = "enable_move_buttons";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
@@ -56,6 +58,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
+    private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
 
 
     private Account mAccount;
@@ -68,6 +71,8 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
     private ListPreference mAccountHideButtons;
+    private ListPreference mAccountHideMoveButtons;
+    private CheckBoxPreference mAccountEnableMoveButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
     private ListPreference mAccountVibratePattern;
@@ -86,6 +91,7 @@ public class AccountSettings extends K9PreferenceActivity
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
     private EditTextPreference mAccountQuotePrefix;
+    private CheckBoxPreference mSyncRemoteDeletions;
 
 
     public static void actionSettings(Context context, Account account)
@@ -259,6 +265,9 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
+        mSyncRemoteDeletions = (CheckBoxPreference) findPreference(PREFERENCE_SYNC_REMOTE_DELETIONS);
+        mSyncRemoteDeletions.setChecked(mAccount.syncRemoteDeletions());
+
         mSearchableFolders = (ListPreference) findPreference(PREFERENCE_SEARCHABLE_FOLDERS);
         mSearchableFolders.setValue(mAccount.getSearchableFolders().name());
         mSearchableFolders.setSummary(mSearchableFolders.getEntry());
@@ -288,7 +297,7 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
-        
+
         mMessageAge = (ListPreference) findPreference(PREFERENCE_MESSAGE_AGE);
         mMessageAge.setValue(String.valueOf(mAccount.getMaximumPolledMessageAge()));
         mMessageAge.setSummary(mMessageAge.getEntry());
@@ -320,6 +329,24 @@ public class AccountSettings extends K9PreferenceActivity
                 int index = mAccountHideButtons.findIndexOfValue(summary);
                 mAccountHideButtons.setSummary(mAccountHideButtons.getEntries()[index]);
                 mAccountHideButtons.setValue(summary);
+                return false;
+            }
+        });
+
+        mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
+        mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
+
+        mAccountHideMoveButtons = (ListPreference) findPreference(PREFERENCE_HIDE_MOVE_BUTTONS);
+        mAccountHideMoveButtons.setValue("" + mAccount.getHideMessageViewMoveButtons());
+        mAccountHideMoveButtons.setSummary(mAccountHideMoveButtons.getEntry());
+        mAccountHideMoveButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mAccountHideMoveButtons.findIndexOfValue(summary);
+                mAccountHideMoveButtons.setSummary(mAccountHideMoveButtons.getEntries()[index]);
+                mAccountHideMoveButtons.setValue(summary);
                 return false;
             }
         });
@@ -491,6 +518,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
 
@@ -522,6 +550,8 @@ public class AccountSettings extends K9PreferenceActivity
         }
 
         mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
+        mAccount.setHideMessageViewMoveButtons(Account.HideButtons.valueOf(mAccountHideMoveButtons.getValue()));
+        mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
         mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
         mAccount.save(Preferences.getPreferences(this));
         if (needsRefresh && needsPushRestart)

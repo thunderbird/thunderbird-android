@@ -8,7 +8,7 @@
 <ScrollView
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginBottom="54dip" 
+    android:layout_marginBottom="54dip"
     android:padding="6dip"
     android:fadingEdge="none"
     android:scrollbarStyle="outsideInset">
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
         <TextView
-        
+
             android:id="@+id/account_auth_type_label"
             android:text="@string/account_setup_incoming_authtype_label"
             android:layout_height="wrap_content"
@@ -111,6 +111,11 @@
             android:layout_height="wrap_content" android:id="@+id/imap_folder_setup_section"
             android:orientation="vertical">
             <TextView android:layout_height="wrap_content"
+                android:text="@string/account_setup_incoming_imap_folder_archive"
+                android:layout_width="fill_parent"></TextView>
+            <Button android:layout_height="wrap_content"
+                android:id="@+id/account_imap_folder_archive" android:layout_width="fill_parent"></Button>
+            <TextView android:layout_height="wrap_content"
                 android:text="@string/account_setup_incoming_imap_folder_drafts"
                 android:layout_width="fill_parent"></TextView>
             <Button android:layout_height="wrap_content"
@@ -120,6 +125,11 @@
                 android:layout_width="fill_parent"></TextView>
             <Button android:layout_height="wrap_content"
                 android:id="@+id/account_imap_folder_sent" android:layout_width="fill_parent"></Button>
+            <TextView android:layout_height="wrap_content"
+                android:text="@string/account_setup_incoming_imap_folder_spam"
+                android:layout_width="fill_parent"></TextView>
+            <Button android:layout_height="wrap_content"
+                android:id="@+id/account_imap_folder_spam" android:layout_width="fill_parent"></Button>
             <TextView android:layout_height="wrap_content"
                 android:text="@string/account_setup_incoming_imap_folder_trash"
                 android:layout_width="fill_parent"></TextView>
@@ -139,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:text="@string/account_setup_incoming_subscribed_folders_only_label"
             />
-                
+
         </LinearLayout>
         <LinearLayout
             android:id="@+id/webdav_path_prefix_section"
@@ -202,12 +212,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <CheckBox
-		        android:id="@+id/compression_mobile"
-		        android:layout_height="wrap_content"
-		        android:layout_width="wrap_content"
-		        android:text="@string/account_setup_incoming_mobile_label"
-	        />
-	        <CheckBox
+                android:id="@+id/compression_mobile"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/account_setup_incoming_mobile_label"
+            />
+            <CheckBox
                 android:id="@+id/compression_wifi"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -227,10 +237,10 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorPrimary" />
         <CheckBox
-	        android:id="@+id/save_all_headers"
-	        android:layout_height="wrap_content"
-	        android:layout_width="wrap_content"
-	        android:text="@string/account_setup_incoming_save_all_headers_label" />
+            android:id="@+id/save_all_headers"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/account_setup_incoming_save_all_headers_label" />
         <LinearLayout
             android:id="@+id/push_poll_on_connect_section"
             android:layout_width="fill_parent"
@@ -242,12 +252,12 @@
                 android:layout_width="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="?android:attr/textColorPrimary" />
-	        <CheckBox
-	            android:id="@+id/push_poll_on_connect"
-	            android:layout_height="wrap_content"
-	            android:layout_width="wrap_content"
-	            android:label="foo"
-	        />
+            <CheckBox
+                android:id="@+id/push_poll_on_connect"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:label="foo"
+            />
         </LinearLayout>
         <TextView
                 android:id="@+id/idle_refresh_period_label"
@@ -273,7 +283,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             />
-            
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="0dip"

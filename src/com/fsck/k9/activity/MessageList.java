@@ -23,6 +23,7 @@ import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
+import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -58,9 +59,7 @@ public class MessageList
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
-
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH = 3;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY_BATCH = 4;
 
@@ -418,7 +417,7 @@ public class MessageList
     {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
 
-        // Only set "touchable" when we're first starting up the 
+        // Only set "touchable" when we're first starting up the
         // activity. otherwise we get force closes when the user
         // toggles it midstream
         mTouchView = K9.messageListTouchable();
@@ -542,9 +541,7 @@ public class MessageList
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnItemClickListener(this);
 
-
         registerForContextMenu(mListView);
-
 
         mBatchButtonArea = findViewById(R.id.batch_button_area);
         mBatchReadButton = (ImageButton) findViewById(R.id.batch_read_button);
@@ -922,11 +919,48 @@ public class MessageList
             return;
         }
 
+        final Account account = holder.message.getFolder().getAccount();
+
         Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.message.getFolder().getAccount().getUuid());
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, account.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, account.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, holder.message.makeMessageReference());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE);
+    }
+
+    private void onArchive(MessageInfoHolder holder)
+    {
+        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == false)
+        {
+            return;
+        }
+
+        if (mController.isMoveCapable(holder.message) == false)
+        {
+            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
+        onMoveChosen(holder, holder.message.getFolder().getAccount().getArchiveFolderName());
+    }
+
+    private void onSpam(MessageInfoHolder holder)
+    {
+        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == false)
+        {
+            return;
+        }
+
+        if (mController.isMoveCapable(holder.message) == false)
+        {
+            Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
+
+        onMoveChosen(holder, holder.message.getFolder().getAccount().getSpamFolderName());
     }
 
     private void onCopy(MessageInfoHolder holder)
@@ -943,9 +977,12 @@ public class MessageList
             return;
         }
 
+        final Account account = holder.message.getFolder().getAccount();
+
         Intent intent = new Intent(this, ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, holder.message.getFolder().getAccount().getUuid());
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, account.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, holder.folder.name);
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, account.getLastSelectedFolderName());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, holder.message.makeMessageReference());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY);
     }
@@ -964,13 +1001,16 @@ public class MessageList
                 if (data == null)
                     return;
 
-                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                final String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                final MessageReference ref = (MessageReference)data.getSerializableExtra(ChooseFolder.EXTRA_MESSAGE);
+                final MessageInfoHolder m = mAdapter.getMessage(ref);
 
-                MessageReference ref = (MessageReference)data.getSerializableExtra(ChooseFolder.EXTRA_MESSAGE);
-
-                MessageInfoHolder m = mAdapter.getMessage(ref);
-                if (destFolderName != null && m != null)
+                if ((destFolderName != null) && (m != null))
                 {
+                    final Account account = m.message.getFolder().getAccount();
+
+                    account.setLastSelectedFolderName(destFolderName);
+
                     switch (requestCode)
                     {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
@@ -985,16 +1025,24 @@ public class MessageList
                 break;
             }
             case ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH:
-            {
-                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-                onMoveChosenBatch(destFolderName);
-                break;
-            }
             case ACTIVITY_CHOOSE_FOLDER_COPY_BATCH:
             {
-                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-                onCopyChosenBatch(destFolderName);
-                break;
+                final String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                final String accountUuid = data.getStringExtra(ChooseFolder.EXTRA_ACCOUNT);
+                final Account account = Preferences.getPreferences(this).getAccount(accountUuid);
+
+                account.setLastSelectedFolderName(destFolderName);
+
+                switch (requestCode)
+                {
+                    case ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH:
+                        onMoveChosenBatch(destFolderName);
+                        break;
+
+                    case ACTIVITY_CHOOSE_FOLDER_COPY_BATCH:
+                        onCopyChosenBatch(destFolderName);
+                        break;
+                }
             }
         }
     }
@@ -1004,6 +1052,10 @@ public class MessageList
     {
         if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == true && folderName != null)
         {
+            if (K9.FOLDER_NONE.equalsIgnoreCase(folderName))
+            {
+                return;
+            }
             mAdapter.removeMessage(holder);
             mController.moveMessage(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), holder.message, folderName, null);
         }
@@ -1276,10 +1328,17 @@ public class MessageList
                 onCopyBatch();
                 return true;
 
+            case R.id.batch_archive_op:
+                onArchiveBatch();
+                return true;
+
+            case R.id.batch_spam_op:
+                onSpamBatch();
+                return true;
+
             case R.id.batch_move_op:
                 onMoveBatch();
                 return true;
-
 
             case R.id.expunge:
                 if (mCurrentFolder != null)
@@ -1294,7 +1353,8 @@ public class MessageList
     }
 
     private final int[] batch_ops = { R.id.batch_copy_op, R.id.batch_delete_op, R.id.batch_flag_op,
-                                      R.id.batch_unflag_op, R.id.batch_mark_read_op, R.id.batch_mark_unread_op, R.id.batch_move_op ,
+                                      R.id.batch_unflag_op, R.id.batch_mark_read_op, R.id.batch_mark_unread_op,
+                                      R.id.batch_archive_op, R.id.batch_spam_op, R.id.batch_move_op,
                                       R.id.batch_select_all, R.id.batch_deselect_all
                                     };
 
@@ -1326,6 +1386,8 @@ public class MessageList
             menu.findItem(R.id.account_settings).setVisible(false);
             menu.findItem(R.id.list_folders).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
+            menu.findItem(R.id.batch_archive_op).setVisible(false);
+            menu.findItem(R.id.batch_spam_op).setVisible(false);
             menu.findItem(R.id.batch_move_op).setVisible(false);
             menu.findItem(R.id.batch_copy_op).setVisible(false);
             menu.findItem(R.id.check_mail).setVisible(false);
@@ -1366,15 +1428,13 @@ public class MessageList
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.message_list_option, menu);
 
-
-
         return true;
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item)
     {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(info.position);
 
         switch (item.getItemId())
@@ -1419,6 +1479,16 @@ public class MessageList
 
                 break;
 
+            case R.id.archive:
+                onArchive(holder);
+
+                break;
+
+            case R.id.spam:
+                onSpam(holder);
+
+                break;
+
             case R.id.move:
                 onMove(holder);
 
@@ -1435,7 +1505,7 @@ public class MessageList
                 break;
 
             case R.id.same_sender:
-                                MessageList.actionHandle(MessageList.this,
+                MessageList.actionHandle(MessageList.this,
                                          "From "+holder.sender, holder.sender, true,
                                          null, null);
 
@@ -1539,15 +1609,28 @@ public class MessageList
             menu.findItem(R.id.flag).setTitle(R.string.unflag_action);
         }
 
-        if (mController.isCopyCapable(message.message.getFolder().getAccount()) == false)
+        Account account = message.message.getFolder().getAccount();
+        if (mController.isCopyCapable(account) == false)
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
 
-        if (mController.isMoveCapable(message.message.getFolder().getAccount()) == false)
+        if (mController.isMoveCapable(account) == false)
         {
             menu.findItem(R.id.move).setVisible(false);
+            menu.findItem(R.id.archive).setVisible(false);
+            menu.findItem(R.id.spam).setVisible(false);
         }
+
+        if (K9.FOLDER_NONE.equalsIgnoreCase(account.getArchiveFolderName()))
+        {
+            menu.findItem(R.id.archive).setVisible(false);
+        }
+        if (K9.FOLDER_NONE.equalsIgnoreCase(account.getSpamFolderName()))
+        {
+            menu.findItem(R.id.spam).setVisible(false);
+        }
+
         if (message.selected)
         {
             menu.findItem(R.id.select).setVisible(false);
@@ -1930,11 +2013,11 @@ public class MessageList
                  * 2010-06-21 - cketti
                  * Added null pointer check. Not sure what's causing 'holder'
                  * to be null. See log provided in issue 1749, comment #15.
-                 * 
+                 *
                  * Please remove this comment once the cause was found and the
                  * bug(?) fixed.
                  */
-                if ((holder != null) && 
+                if ((holder != null) &&
                         holder.message.equalsReference(messageReference))
                 {
                     return holder;
@@ -2659,6 +2742,16 @@ public class MessageList
             {
                 this.displayName = String.format(getString(R.string.special_mailbox_name_sent_fmt), this.name);
             }
+
+            if (this.name.equals(account.getArchiveFolderName()))
+            {
+                this.displayName = String.format(getString(R.string.special_mailbox_name_archive_fmt), this.name);
+            }
+
+            if (this.name.equals(account.getSpamFolderName()))
+            {
+                this.displayName = String.format(getString(R.string.special_mailbox_name_spam_fmt), this.name);
+            }
         }
     }
 
@@ -2850,11 +2943,15 @@ public class MessageList
                 }
             }
         }
-        Intent intent = new Intent(this, ChooseFolder.class);
+
+        final Folder folder = mCurrentFolder.folder;
+        final Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_MOVE_BATCH);
     }
+
     private void onMoveChosenBatch(String folderName)
     {
         if (mController.isMoveCapable(mAccount) == false)
@@ -2885,6 +2982,65 @@ public class MessageList
         mSelectedCount = 0;
         toggleBatchButtons();
     }
+
+    private void onArchiveBatch()
+    {
+        if (mController.isMoveCapable(mAccount) == false)
+        {
+            return;
+        }
+        Account account = null;
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                Message message = holder.message;
+                if (mController.isMoveCapable(message) == false)
+                {
+                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+            }
+        }
+
+        String folderName = mAccount.getArchiveFolderName();
+        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName))
+        {
+            return;
+        }
+        onMoveChosenBatch(folderName);
+    }
+
+    private void onSpamBatch()
+    {
+        if (mController.isMoveCapable(mAccount) == false)
+        {
+            return;
+        }
+        Account account = null;
+        for (MessageInfoHolder holder : mAdapter.messages)
+        {
+            if (holder.selected)
+            {
+                Message message = holder.message;
+                if (mController.isMoveCapable(message) == false)
+                {
+                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+            }
+        }
+
+        String folderName = mAccount.getSpamFolderName();
+        if (K9.FOLDER_NONE.equalsIgnoreCase(folderName))
+        {
+            return;
+        }
+        onMoveChosenBatch(folderName);
+    }
+
     private void onCopyBatch()
     {
         if (mController.isCopyCapable(mAccount) == false)
@@ -2904,11 +3060,15 @@ public class MessageList
                 }
             }
         }
-        Intent intent = new Intent(this, ChooseFolder.class);
+
+        final Folder folder = mCurrentFolder.folder;
+        final Intent intent = new Intent(this, ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mCurrentFolder.folder.getName());
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, folder.getName());
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, folder.getAccount().getLastSelectedFolderName());
         startActivityForResult(intent, ACTIVITY_CHOOSE_FOLDER_COPY_BATCH);
     }
+
     private void onCopyChosenBatch(String folderName)
     {
         if (mController.isCopyCapable(mAccount) == false)

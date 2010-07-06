@@ -434,7 +434,7 @@ public class SmtpTransport extends Transport
             else
             {
                 commandToLog = "SMTP >>> " + s;
-    		}
+            }
             Log.d(K9.LOG_TAG, commandToLog);
         }
 
@@ -474,9 +474,9 @@ public class SmtpTransport extends Transport
 
     private List<String> executeSimpleCommand(String command) throws IOException, MessagingException
     {
-    	return executeSimpleCommand(command, false);
+        return executeSimpleCommand(command, false);
     }
-    
+
     private List<String> executeSimpleCommand(String command, boolean sensitive)
     throws IOException, MessagingException
     {

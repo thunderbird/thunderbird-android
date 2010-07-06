@@ -325,7 +325,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
         boolean startup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, true);
-        if (startup && accounts.length == 1)
+        if (startup && K9.startIntegratedInbox())
+        {
+            onOpenAccount(integratedInboxAccount);
+            finish();
+        }
+        else if (startup && accounts.length == 1)
         {
             onOpenAccount(accounts[0]);
             finish();

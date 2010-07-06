@@ -83,6 +83,7 @@ public class K9 extends Application
 
     private static boolean mGesturesEnabled = true;
     private static boolean mManageBack = false;
+    private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
 
@@ -302,6 +303,7 @@ public class K9 extends Application
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
         editor.putBoolean("manageBack", mManageBack);
+        editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
         editor.putBoolean("messageListStars",mMessageListStars);
@@ -332,6 +334,7 @@ public class K9 extends Application
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
         mManageBack = sprefs.getBoolean("manageBack", false);
+        mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
@@ -474,6 +477,16 @@ public class K9 extends Application
     public static void setManageBack(boolean manageBack)
     {
         mManageBack = manageBack;
+    }
+
+    public static boolean startIntegratedInbox()
+    {
+        return mStartIntegratedInbox;
+    }
+
+    public static void setStartIntegratedInbox(boolean startIntegratedInbox)
+    {
+        mStartIntegratedInbox = startIntegratedInbox;
     }
 
     public static boolean isAnimations()

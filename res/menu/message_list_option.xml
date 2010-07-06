@@ -1,127 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
    <item
-		android:id="@+id/compose"
+        android:id="@+id/compose"
         android:alphabeticShortcut="c"
-		android:title="@string/compose_action"
-		android:icon="@drawable/ic_menu_compose"
-	/>
-	<item
-		android:id="@+id/set_sort"
-		android:title="@string/sort_by"
-		android:icon="@drawable/ic_menu_set_sort">
-		<menu>
-			<item
-				android:id="@+id/set_sort_date"
-				android:title="@string/sort_by_date"
-			/>
-			<item
-				android:id="@+id/set_sort_subject"
-				android:title="@string/sort_by_subject"
-			/>
-			<item
-				android:id="@+id/set_sort_sender"
-				android:title="@string/sort_by_sender"
-			/>
-			<item
-				android:id="@+id/set_sort_flag"
-				android:title="@string/sort_by_flag"
-			/>
-			<item
-				android:id="@+id/set_sort_unread"
-				android:title="@string/sort_by_unread"
-			/>
-			<item
-				android:id="@+id/set_sort_attach"
-				android:title="@string/sort_by_attach"
-			/>
-		</menu>
-	</item>
-	<item
+        android:title="@string/compose_action"
+        android:icon="@drawable/ic_menu_compose"
+    />
+    <item
+        android:id="@+id/set_sort"
+        android:title="@string/sort_by"
+        android:icon="@drawable/ic_menu_set_sort">
+        <menu>
+            <item
+                android:id="@+id/set_sort_date"
+                android:title="@string/sort_by_date"
+            />
+            <item
+                android:id="@+id/set_sort_subject"
+                android:title="@string/sort_by_subject"
+            />
+            <item
+                android:id="@+id/set_sort_sender"
+                android:title="@string/sort_by_sender"
+            />
+            <item
+                android:id="@+id/set_sort_flag"
+                android:title="@string/sort_by_flag"
+            />
+            <item
+                android:id="@+id/set_sort_unread"
+                android:title="@string/sort_by_unread"
+            />
+            <item
+                android:id="@+id/set_sort_attach"
+                android:title="@string/sort_by_attach"
+            />
+        </menu>
+    </item>
+    <item
         android:id="@+id/select_all"
-		android:title="@string/batch_select_all"
+        android:title="@string/batch_select_all"
         android:icon="@drawable/ic_menu_select_all"/>
-	<item
-		android:id="@+id/batch_ops"
-		android:title="@string/batch_ops"
-		android:icon="@drawable/ic_menu_batch">
-		<menu>
-			<item
-				android:id="@+id/batch_flag_mode"
-				android:title="@string/batch_flag_mode"
-				android:visible="false"
-			/>
-			<item
-				android:id="@+id/batch_plain_mode"
-				android:title="@string/batch_plain_mode"
-				android:visible="false"
-			/>
-			<item
-				android:id="@+id/batch_delete_op"
-				android:title="@string/batch_delete_op"
-			/>
-			<item
-				android:id="@+id/batch_mark_read_op"
-				android:title="@string/batch_mark_read_op"
-			/>
-			<item
-				android:id="@+id/batch_flag_op"
-				android:title="@string/batch_flag_op"
-			/>
-			<item
-				android:id="@+id/batch_mark_unread_op"
-				android:title="@string/batch_mark_unread_op"
-			/>
-			<item
-				android:id="@+id/batch_unflag_op"
-				android:title="@string/batch_unflag_op"
-			/>
-			<item
-				android:id="@+id/batch_move_op"
-				android:title="@string/batch_move_op"
-			/>
-			<item
-				android:id="@+id/batch_copy_op"
-				android:title="@string/batch_copy_op"
-			/>	
-			<item
-				android:id="@+id/batch_select_all"
-				android:title="@string/batch_select_all"
-			/>
-			<item
-				android:id="@+id/batch_deselect_all"
-				android:title="@string/batch_deselect_all"
-			/>
-		</menu>
-	</item>			
+    <item
+        android:id="@+id/batch_ops"
+        android:title="@string/batch_ops"
+        android:icon="@drawable/ic_menu_batch">
+        <menu>
+            <item
+                android:id="@+id/batch_flag_mode"
+                android:title="@string/batch_flag_mode"
+                android:visible="false"
+            />
+            <item
+                android:id="@+id/batch_plain_mode"
+                android:title="@string/batch_plain_mode"
+                android:visible="false"
+            />
+            <item
+                android:id="@+id/batch_delete_op"
+                android:title="@string/batch_delete_op"
+            />
+            <item
+                android:id="@+id/batch_mark_read_op"
+                android:title="@string/batch_mark_read_op"
+            />
+            <item
+                android:id="@+id/batch_flag_op"
+                android:title="@string/batch_flag_op"
+            />
+            <item
+                android:id="@+id/batch_mark_unread_op"
+                android:title="@string/batch_mark_unread_op"
+            />
+            <item
+                android:id="@+id/batch_unflag_op"
+                android:title="@string/batch_unflag_op"
+            />
+            <item
+                android:id="@+id/batch_archive_op"
+                android:title="@string/batch_archive_op"
+            />
+            <item
+                android:id="@+id/batch_spam_op"
+                android:title="@string/batch_spam_op"
+            />
+            <item
+                android:id="@+id/batch_move_op"
+                android:title="@string/batch_move_op"
+            />
+            <item
+                android:id="@+id/batch_copy_op"
+                android:title="@string/batch_copy_op"
+            />
+            <item
+                android:id="@+id/batch_select_all"
+                android:title="@string/batch_select_all"
+            />
+            <item
+                android:id="@+id/batch_deselect_all"
+                android:title="@string/batch_deselect_all"
+            />
+        </menu>
+    </item>
     <item
         android:id="@+id/list_folders"
         android:alphabeticShortcut="f"
-		android:title="@string/list_folders_action"
-		android:icon="@drawable/ic_menu_navigate"
+        android:title="@string/list_folders_action"
+        android:icon="@drawable/ic_menu_navigate"
     />
-	<item
-		android:id="@+id/send_messages"
+    <item
+        android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
-		android:title="@string/send_messages_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
-	<item
-		android:id="@+id/check_mail"
+        android:title="@string/send_messages_action"
+        android:icon="@drawable/ic_menu_refresh"
+    />
+    <item
+        android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
-		android:title="@string/check_mail_action"
-		android:icon="@drawable/ic_menu_refresh"
-	/>
+        android:title="@string/check_mail_action"
+        android:icon="@drawable/ic_menu_refresh"
+    />
     <item
                 android:id="@+id/accounts"
                 android:title="@string/accounts_action"
                 android:icon="@drawable/ic_menu_account_list"
         />
     <item
-		android:id="@+id/mark_all_as_read"
-		android:title="@string/mark_all_as_read_action"
-		android:icon="@drawable/ic_menu_inbox"
-	/>
+        android:id="@+id/mark_all_as_read"
+        android:title="@string/mark_all_as_read_action"
+        android:icon="@drawable/ic_menu_inbox"
+    />
     <item
         android:id="@+id/settings"
         android:title="@string/preferences_action"
@@ -129,22 +137,22 @@
         <menu>
 
     <item
-		android:id="@+id/folder_settings"
-		android:title="@string/folder_settings_action"
-		android:icon="@drawable/ic_menu_preferences"
-	/>
-	<item
-		android:id="@+id/account_settings"
-		android:title="@string/account_settings_action"
-		android:icon="@android:drawable/ic_menu_preferences"
-	/>
+        android:id="@+id/folder_settings"
+        android:title="@string/folder_settings_action"
+        android:icon="@drawable/ic_menu_preferences"
+    />
+    <item
+        android:id="@+id/account_settings"
+        android:title="@string/account_settings_action"
+        android:icon="@android:drawable/ic_menu_preferences"
+    />
     <item android:id="@+id/app_settings"
-        android:title="@string/preferences_action" 
-		android:icon="@android:drawable/ic_menu_preferences"
-	/>
+        android:title="@string/preferences_action"
+        android:icon="@android:drawable/ic_menu_preferences"
+    />
     </menu>
     </item>
-	<item
+    <item
         android:id="@+id/expunge"
         android:title="@string/expunge_action"
     />

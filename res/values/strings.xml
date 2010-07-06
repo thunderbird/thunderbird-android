@@ -45,6 +45,7 @@
     <string name="reply_all_action">Reply all</string>
     <string name="delete_action">Delete</string>
     <string name="archive_action">Archive</string>
+    <string name="spam_action">Spam</string>
     <string name="delete_all_action">Clear folder</string>
     <string name="forward_action">Forward</string>
     <string name="move_action">Move</string>
@@ -162,12 +163,16 @@
     <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="special_mailbox_name_trash">Trash</string>
     <string name="special_mailbox_name_sent">Sent</string>
+    <string name="special_mailbox_name_archive">Archive</string>
+    <string name="special_mailbox_name_spam">Spam</string>
     <!-- Mailbox names displayed to user -->
 
     <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Outbox)</string>
     <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Drafts)</string>
     <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Trash)</string>
     <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Sent)</string>
+    <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archive)</string>
+    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
     
     <string name="send_failure_subject">Failed to send some messages</string>
     <string name="send_failure_body_abbrev">See your <xliff:g id="errorFolder">%s</xliff:g> folder for details.</string>
@@ -255,6 +260,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_view_attachment_download_action">Save</string>
     <string name="message_view_prev_action">\u25BC</string>
     <string name="message_view_next_action">\u25B2</string>
+    <string name="message_view_archive_action">Archive</string>
+    <string name="message_view_move_action">Move</string>
+    <string name="message_view_spam_action">Spam</string>
     <string name="message_view_datetime_fmt">MMM dd yyyy hh:mm a</string>
     <string name="message_view_status_attachment_saved">Attachment saved to SD card as <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
@@ -371,6 +379,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_incoming_imap_folder_drafts">Drafts folder name</string>
     <string name="account_setup_incoming_imap_folder_sent">Sent folder name</string>
     <string name="account_setup_incoming_imap_folder_trash">Trash folder name</string>
+    <string name="account_setup_incoming_imap_folder_archive">Archive folder name</string>
+    <string name="account_setup_incoming_imap_folder_spam">Spam folder name</string>
     <string name="account_setup_incoming_imap_folder_outbox">Outbox folder name</string>
  
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
@@ -486,6 +496,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_hide_buttons_keyboard_avail">When keyboard is available</string>
     <string name="account_settings_hide_buttons_always">Always</string>
     
+    <string name="account_settings_enable_move_buttons_label">Enable move buttons</string>
+    <string name="account_settings_enable_move_buttons_summary">Show the Archive, Move, and Spam button.</string>
+    <string name="account_settings_hide_move_buttons_label">Scroll move buttons</string>
+
     <string name="account_settings_composition">Writing messages</string>
 	<string name="account_settings_sync">Syncing folders</string>
     <string name="account_settings_folders">Folders</string>
@@ -545,6 +559,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_folder_target_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="account_settings_folder_target_mode_not_second_class">All except 2nd Class folders</string>
    
+    <string name="account_settings_sync_remote_deletetions_label">Sync remote deletions</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
+
     <string name="folder_settings_title">Folder settings</string>
     
     <string name="folder_settings_in_top_group_label">Show in top group</string>
@@ -741,6 +758,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="batch_mark_unread_op">Mark selected unread</string>
     <string name="batch_flag_op">Add star to selected</string>
     <string name="batch_unflag_op">Remove star from selected</string>
+    <string name="batch_archive_op">Move selected to Archive</string>
+    <string name="batch_spam_op">Move selected to Spam</string>
     <string name="batch_move_op">Move selected</string>
     <string name="batch_copy_op">Copy selected</string>
     <string name="batch_flag_mode">Star mode</string>
@@ -766,6 +785,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="manage_back_title">Manage \"Back\" button</string>
     <string name="manage_back_summary">Make \"Back\" always go up a level</string>
 
+    <string name="start_integrated_inbox_title">Integrated Inbox on start</string>
+    <string name="start_integrated_inbox_summary">Show the Integrated Inbox after startup</string>
 
     <string name="measure_accounts_title">Show account size</string>
     <string name="measure_accounts_summary">Turn off for faster display</string>
@@ -846,4 +867,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="misc_preferences_attachment_title">Use Gallery bug work-around</string>
     <string name="misc_preferences_attachment_description">Show buttons to add image/video attachments (to work around a Gallery 3D bug)</string>
 
+    <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>
 </resources>
