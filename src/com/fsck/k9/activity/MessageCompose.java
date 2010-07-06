@@ -1256,25 +1256,25 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             case DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE:
                 return new AlertDialog.Builder(this)
-                    .setTitle(R.string.save_or_discard_draft_message_dlg_title)
-                    .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
-                    .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener()
+                       .setTitle(R.string.save_or_discard_draft_message_dlg_title)
+                       .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
+                       .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int whichButton)
                     {
-                        public void onClick(DialogInterface dialog, int whichButton)
-                        {
-                            dismissDialog(1);
-                            onSave();
-                        }
-                        })
-                    .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener()
+                        dismissDialog(1);
+                        onSave();
+                    }
+                })
+                       .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int whichButton)
                     {
-                        public void onClick(DialogInterface dialog, int whichButton)
-                        {
-                            dismissDialog(1);
-                            onDiscard();
-                        }
-                        })
-                    .create();
+                        dismissDialog(1);
+                        onDiscard();
+                    }
+                })
+                       .create();
         }
         return super.onCreateDialog(id);
     }
@@ -1416,7 +1416,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     // the replaceAll() invocation.
                     final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
                     quotedText += MimeUtility.getTextFromPart(part).replaceAll(
-                            "(?m)^", escapedPrefix);
+                                      "(?m)^", escapedPrefix);
 
                     quotedText = quotedText.replaceAll("\\\r", "");
                     mQuotedText.setText(quotedText);

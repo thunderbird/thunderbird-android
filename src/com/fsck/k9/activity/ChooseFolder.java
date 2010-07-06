@@ -290,7 +290,7 @@ public class ChooseFolder extends K9ListActivity
                     }
                 }
                 else if (name.equals(mFolder) ||
-                        (K9.INBOX.equalsIgnoreCase(mFolder) && K9.INBOX.equalsIgnoreCase(name)))
+                         (K9.INBOX.equalsIgnoreCase(mFolder) && K9.INBOX.equalsIgnoreCase(name)))
                 {
                     selectedFolder = position;
                 }

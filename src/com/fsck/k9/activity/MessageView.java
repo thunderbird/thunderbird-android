@@ -1035,7 +1035,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         showNextMessage();
         MessagingController.getInstance(getApplication())
-                .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
+        .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
 
     private void onSpam()
@@ -1060,7 +1060,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
         showNextMessage();
         MessagingController.getInstance(getApplication())
-                .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
+        .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
 
     private void showNextMessage()

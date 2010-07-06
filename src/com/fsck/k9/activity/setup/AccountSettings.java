@@ -264,7 +264,7 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
-        
+
         mSyncRemoteDeletions = (CheckBoxPreference) findPreference(PREFERENCE_SYNC_REMOTE_DELETIONS);
         mSyncRemoteDeletions.setChecked(mAccount.syncRemoteDeletions());
 

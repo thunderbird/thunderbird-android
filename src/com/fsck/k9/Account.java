@@ -111,7 +111,7 @@ public class Account implements BaseAccount
      * Name of the folder that was last selected for a copy or move operation.
      *
      * Note: For now this value isn't persisted. So it will be reset when
-     *       K-9 Mail is restarted.  
+     *       K-9 Mail is restarted.
      */
     private String lastSelectedFolderName = null;
 
@@ -240,9 +240,9 @@ public class Account implements BaseAccount
         goToUnreadMessageSearch = preferences.getPreferences().getBoolean(mUuid + ".goToUnreadMessageSearch",
                                   false);
         subscribedFoldersOnly = preferences.getPreferences().getBoolean(mUuid + ".subscribedFoldersOnly",
-                false);
+                                false);
         maximumPolledMessageAge = preferences.getPreferences().getInt(mUuid
-                + ".maximumPolledMessageAge", -1);
+                                  + ".maximumPolledMessageAge", -1);
         mQuotePrefix = preferences.getPreferences().getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         for (String type : networkTypes)
         {
@@ -549,13 +549,13 @@ public class Account implements BaseAccount
 
             // Always get stats about the INBOX (see issue 1817)
             if (folder.getName().equals(K9.INBOX) || (
-                    folder.getName().equals(getTrashFolderName()) == false &&
-                    folder.getName().equals(getDraftsFolderName()) == false &&
-                    folder.getName().equals(getArchiveFolderName()) == false &&
-                    folder.getName().equals(getSpamFolderName()) == false &&
-                    folder.getName().equals(getOutboxFolderName()) == false &&
-                    folder.getName().equals(getSentFolderName()) == false &&
-                    folder.getName().equals(getErrorFolderName()) == false))
+                        folder.getName().equals(getTrashFolderName()) == false &&
+                        folder.getName().equals(getDraftsFolderName()) == false &&
+                        folder.getName().equals(getArchiveFolderName()) == false &&
+                        folder.getName().equals(getSpamFolderName()) == false &&
+                        folder.getName().equals(getOutboxFolderName()) == false &&
+                        folder.getName().equals(getSentFolderName()) == false &&
+                        folder.getName().equals(getErrorFolderName()) == false))
             {
                 if (aMode == Account.FolderMode.NONE)
                 {
@@ -1346,23 +1346,23 @@ public class Account implements BaseAccount
                 now.add(Calendar.DATE, age * -1);
             }
             else switch (age)
-            {
-                case 28:
-                    now.add(Calendar.MONTH, -1);
-                    break;
-                case 56:
-                    now.add(Calendar.MONTH, -2);
-                    break;
-                case 84:
-                    now.add(Calendar.MONTH, -3);
-                    break;
-                case 168:
-                    now.add(Calendar.MONTH, -6);
-                    break;
-                case 365:
-                    now.add(Calendar.YEAR, -1);
-                    break;
-            }
+                {
+                    case 28:
+                        now.add(Calendar.MONTH, -1);
+                        break;
+                    case 56:
+                        now.add(Calendar.MONTH, -2);
+                        break;
+                    case 84:
+                        now.add(Calendar.MONTH, -3);
+                        break;
+                    case 168:
+                        now.add(Calendar.MONTH, -6);
+                        break;
+                    case 365:
+                        now.add(Calendar.YEAR, -1);
+                        break;
+                }
 
             return now.getTime();
         }
