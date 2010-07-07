@@ -327,6 +327,7 @@ public class MessageList
         context.startActivity(intent);
 
     }
+
     public static Intent actionHandleFolderIntent(Context context, Account account, String folder)
     {
         Intent intent = new Intent(context, MessageList.class);

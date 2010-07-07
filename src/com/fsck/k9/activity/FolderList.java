@@ -208,7 +208,12 @@ public class FolderList extends K9ListActivity
         sendMail(mAccount);
     }
 
-    private static void actionHandleAccount(Context context, Account account, String initialFolder)
+    public static Intent actionHandleAccountIntent(Context context, Account account)
+    {
+        return actionHandleAccountIntent(context, account, null);
+    }
+
+    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder)
     {
         Intent intent = new Intent(context, FolderList.class);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -217,7 +222,12 @@ public class FolderList extends K9ListActivity
         {
             intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
         }
+        return intent;
+    }
 
+    private static void actionHandleAccount(Context context, Account account, String initialFolder)
+    {
+        Intent intent = actionHandleAccountIntent(context, account, initialFolder);
         context.startActivity(intent);
     }
 
