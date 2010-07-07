@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <ScrollView
+    <com.fsck.k9.activity.ToggleScrollView
         android:id="@+id/top_view"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
@@ -108,7 +108,7 @@
                     android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.fsck.k9.activity.ToggleScrollView>
     <LinearLayout
         android:id="@+id/move_buttons"
         android:orientation="horizontal"

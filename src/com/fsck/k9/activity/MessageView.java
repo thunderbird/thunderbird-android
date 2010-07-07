@@ -40,6 +40,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -52,7 +53,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,6 +111,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private View mArchiveScrolling;
     private View mMoveScrolling;
     private View mSpamScrolling;
+    private ToggleScrollView mToggleScrollView;
 
     private Account mAccount;
     private MessageReference mMessageReference;
@@ -151,6 +152,17 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev)
+    {
+        if (ev.getAction() == MotionEvent.ACTION_UP)
+        {
+            // Text selection is finished. Allow scrolling again.
+            mToggleScrollView.setScrolling(true);
+        }
+
+        return super.dispatchTouchEvent(ev);
+    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
@@ -173,6 +185,16 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         switch (keyCode)
         {
+            case KeyEvent.KEYCODE_SHIFT_LEFT:
+            case KeyEvent.KEYCODE_SHIFT_RIGHT:
+            {
+                /*
+                 * Selecting text started via shift key. Disable scrolling as
+                 * this causes problems when selecting text.
+                 */
+                mToggleScrollView.setScrolling(false);
+                break;
+            }
             case KeyEvent.KEYCODE_DEL:
             {
                 onDelete();
@@ -644,7 +666,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         mDateView = (TextView)findViewById(R.id.date);
         mTimeView = (TextView)findViewById(R.id.time);
-        mTopView = (ScrollView)findViewById(R.id.top_view);
+        mTopView = mToggleScrollView = (ToggleScrollView)findViewById(R.id.top_view);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
@@ -1536,6 +1558,9 @@ public class MessageView extends K9Activity implements OnClickListener
             case R.id.show_full_header:
                 onShowAdditionalHeaders();
                 break;
+            case R.id.select_text:
+                emulateShiftHeld(mMessageContentView);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -2113,5 +2138,25 @@ public class MessageView extends K9Activity implements OnClickListener
         slide.setFillBefore(true);
         slide.setInterpolator(new AccelerateInterpolator());
         return slide;
+    }
+
+    /**
+     * Emulate the shift key being pressed to trigger the text selection mode
+     * of a WebView.
+     */
+    private void emulateShiftHeld(WebView view)
+    {
+        try
+        {
+            mToggleScrollView.setScrolling(false);
+            
+            KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
+                    KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
+            shiftPressEvent.dispatch(view);
+        }
+        catch (Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);
+        }
     }
 }

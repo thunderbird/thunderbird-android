@@ -92,6 +92,7 @@
     <string name="copy_action">Copy</string>
     <string name="show_full_header_action">Show full header</string>
     <string name="hide_full_header_action">Hide full header</string>
+    <string name="select_text_action">Select text</string>
 
     <string name="mark_as_unread_action">Mark as unread</string>
     <string name="move_to_action">Move to</string>

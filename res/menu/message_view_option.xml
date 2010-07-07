@@ -61,4 +61,8 @@
         android:id="@+id/copy"
         android:title="@string/copy_action"
     />
+	<item
+		android:id="@+id/select_text"
+		android:title="@string/select_text_action"
+	/>
 </menu>
