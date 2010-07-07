@@ -1867,7 +1867,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         public void run()
                         {
-                            mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/html", "utf-8", null);
+                            mMessageContentView.loadDataWithBaseURL("http://", emailText, "text/html", "utf-8", null);
                         }
                     });
                     mHandler.showShowPictures(text.contains("<img"));
