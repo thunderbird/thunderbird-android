@@ -2445,7 +2445,7 @@ public class MessageList
             {
                 LocalMessage message = (LocalMessage) m;
                 Date date = message.getSentDate();
-                this.compareDate = date;
+                this.compareDate = message.getInternalDate();
                 this.folder = folder;
 
                 if (Utility.isDateToday(date))
