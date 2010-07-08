@@ -26,7 +26,8 @@
         <Spinner
             android:id="@+id/account_check_frequency"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_options_mail_check_frequency_label" />
         <CheckBox
             android:id="@+id/account_enable_push"
             android:layout_height="wrap_content"
@@ -44,7 +45,8 @@
         <Spinner
             android:id="@+id/account_display_count"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_options_mail_display_count_label" />
         <CheckBox
             android:id="@+id/account_notify"
             android:layout_height="wrap_content"

@@ -27,7 +27,8 @@
             android:singleLine="true"
             android:inputType="textEmailAddress"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_incoming_username_label" />
         <TextView
             android:text="@string/account_setup_incoming_password_label"
             android:layout_height="wrap_content"
@@ -48,7 +49,8 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary"
+            android:contentDescription="@string/account_setup_incoming_password_label" />
         <EditText
             android:id="@+id/account_server"
             android:singleLine="true"
@@ -64,7 +66,8 @@
         <Spinner
             android:id="@+id/account_security_type"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_incoming_security_label" />
         <TextView
 
             android:id="@+id/account_auth_type_label"
@@ -74,9 +77,10 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorPrimary" />
         <Spinner
-            android:id="@+id/account_auth_type"
+            android:id="@+id/account_authtype"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_incoming_authtype_label" />
         <TextView
             android:text="@string/account_setup_incoming_port_label"
             android:layout_height="wrap_content"
@@ -88,7 +92,8 @@
             android:singleLine="true"
             android:inputType="number"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_incoming_port_label" />
         <LinearLayout
             android:id="@+id/imap_path_prefix_section"
             android:layout_width="fill_parent"
@@ -105,7 +110,8 @@
                 android:hint="@string/account_setup_incoming_imap_path_prefix_hint"
                 android:singleLine="true"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_incoming_imap_path_prefix_label" />
         </LinearLayout>
         <LinearLayout android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:id="@+id/imap_folder_setup_section"
@@ -119,12 +125,14 @@
                 android:text="@string/account_setup_incoming_imap_folder_drafts"
                 android:layout_width="fill_parent"></TextView>
             <Button android:layout_height="wrap_content"
-                android:id="@+id/account_imap_folder_drafts" android:layout_width="fill_parent"></Button>
+                android:id="@+id/account_imap_folder_drafts" android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_incoming_imap_folder_drafts"></Button>
             <TextView android:layout_height="wrap_content"
                 android:text="@string/account_setup_incoming_imap_folder_sent"
                 android:layout_width="fill_parent"></TextView>
             <Button android:layout_height="wrap_content"
-                android:id="@+id/account_imap_folder_sent" android:layout_width="fill_parent"></Button>
+                android:id="@+id/account_imap_folder_sent" android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_incoming_imap_folder_sent"></Button>
             <TextView android:layout_height="wrap_content"
                 android:text="@string/account_setup_incoming_imap_folder_spam"
                 android:layout_width="fill_parent"></TextView>
@@ -134,7 +142,8 @@
                 android:text="@string/account_setup_incoming_imap_folder_trash"
                 android:layout_width="fill_parent"></TextView>
             <Button android:layout_height="wrap_content"
-                android:id="@+id/account_imap_folder_trash" android:layout_width="fill_parent"></Button>
+                android:id="@+id/account_imap_folder_trash" android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_incoming_imap_folder_trash"></Button>
             <TextView android:layout_height="wrap_content"
                 android:text="@string/account_setup_incoming_imap_folder_outbox"
                 android:layout_width="fill_parent"></TextView>
@@ -142,7 +151,8 @@
                 android:id="@+id/account_imap_folder_outbox"
                 android:singleLine="true"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_incoming_imap_folder_outbox" />
             <CheckBox
                 android:id="@+id/subscribed_folders_only"
                 android:layout_height="wrap_content"
@@ -167,7 +177,8 @@
                 android:hint="@string/account_setup_incoming_imap_path_prefix_hint"
                 android:singleLine="true"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_incoming_webdav_path_prefix_label" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/webdav_path_debug_section"
@@ -185,7 +196,8 @@
                 android:hint="@string/account_setup_incoming_webdav_auth_path_hint"
                 android:singleLine="true"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_incoming_webdav_auth_path_label" />
             <TextView
                 android:text="@string/account_setup_incoming_webdav_mailbox_path_label"
                 android:layout_height="wrap_content"
@@ -197,7 +209,8 @@
                 android:hint="@string/account_setup_incoming_webdav_mailbox_path_hint"
                 android:singleLine="true"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_incoming_webdav_mailbox_path_label" />
         </LinearLayout>
         <TextView
             android:id="@+id/compression_label"
@@ -222,12 +235,14 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/account_setup_incoming_wifi_label"
+                android:contentDescription="@string/account_setup_incoming_compression_label"
             />
              <CheckBox
                 android:id="@+id/compression_other"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/account_setup_incoming_other_label"
+                android:contentDescription="@string/account_setup_incoming_compression_label"
             />
         </LinearLayout>
         <TextView
@@ -270,6 +285,7 @@
             android:id="@+id/idle_refresh_period"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
+            android:contentDescription="@string/idle_refresh_period_label"
             />
         <TextView
                 android:id="@+id/account_setup_push_limit_label"
@@ -282,6 +298,7 @@
             android:id="@+id/folder_push_limit"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_push_limit_label"
             />
 
         <View

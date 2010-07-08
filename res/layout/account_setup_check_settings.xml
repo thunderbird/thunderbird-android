@@ -20,12 +20,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?android:attr/textColorPrimary"
         android:paddingBottom="6dip"
+        android:focusable="true"
        />
     <ProgressBar
         android:id="@+id/progress"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        style="?android:attr/progressBarStyleHorizontal" />
+        style="?android:attr/progressBarStyleHorizontal"
+        android:focusable="true" />
     <View
         android:layout_width="fill_parent"
         android:layout_height="0dip"
