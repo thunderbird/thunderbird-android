@@ -23,7 +23,6 @@ import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.fsck.k9.*;
-import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -578,6 +577,7 @@ public class MessageList
     }
 
 
+    @Override
     public void onBackPressed()
     {
         // This will be called either automatically for you on 2.0
@@ -1278,11 +1278,27 @@ public class MessageList
                 flagSelected(Flag.FLAGGED, false);
                 return true;
 
+            case R.id.settings:
+                if (mQueryString == null)
+                {
+                    break;
+                }
+
+                /*
+                 * Fall-through in search results view. Otherwise a sub-menu
+                 * with only one option would be opened.
+                 */
+
+            case R.id.app_settings:
+                onEditPrefs();
+                return true;
         }
 
         if (mQueryString != null)
         {
-            return false; // none of the options after this point are "safe" for search results
+            // none of the options after this point are "safe" for search results
+            //TODO: This is not true for "unread" and "starred" searches in regular folders
+            return false;
         }
 
         switch (itemId)
@@ -1319,10 +1335,6 @@ public class MessageList
             case R.id.account_settings:
                 onEditAccount();
 
-                return true;
-
-            case R.id.app_settings:
-                onEditPrefs();
                 return true;
 
             case R.id.batch_copy_op:
@@ -1383,8 +1395,6 @@ public class MessageList
         if (mQueryString != null)
         {
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
-            menu.findItem(R.id.folder_settings).setVisible(false);
-            menu.findItem(R.id.account_settings).setVisible(false);
             menu.findItem(R.id.list_folders).setVisible(false);
             menu.findItem(R.id.expunge).setVisible(false);
             menu.findItem(R.id.batch_archive_op).setVisible(false);
