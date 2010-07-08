@@ -740,6 +740,12 @@ public class MessageList
                             return true;
                         }
 
+                        case KeyEvent.KEYCODE_V:
+                        {
+                            onArchive(message);
+                            return true;
+                        }
+
                         case KeyEvent.KEYCODE_Y:
                         {
                             onCopy(message);
