@@ -1620,6 +1620,21 @@ public class MessagingController implements Runnable
             {
                 try
                 {
+
+
+                    if (isMessageSuppressed(account, folder, message ))
+                    {
+                        if (K9.DEBUG)
+                        {
+                            Log.d(K9.LOG_TAG, "Message " + message.getUid() + " was suppressed "+
+                                "but just downloaded. "+
+                                "The race condition means we wasted some bandwidth. Oh well.");
+                        }
+                        progress.incrementAndGet();
+
+                        return;
+
+                    }
                     if (message.olderThan(earliestDate))
                     {
                         if (K9.DEBUG)
