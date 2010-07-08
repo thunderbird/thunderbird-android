@@ -1943,7 +1943,8 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         mHandler.networkError();
                     }
-                    if (!MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
+                    if ((MessageView.this.mMessage == null) || 
+                            !MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
                         mMessageContentView.loadUrl("file:///android_asset/empty.html");
                     }
