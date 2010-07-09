@@ -1,12 +1,16 @@
 package com.fsck.k9.activity;
 
 
+import java.util.Locale;
+
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.widget.ScrollView;
 
 import com.fsck.k9.K9;
@@ -26,6 +30,7 @@ public class K9Activity extends Activity
 
     public void onCreate(Bundle icicle, boolean useTheme)
     {
+        setLanguage(this, K9.getK9Language());
         if (useTheme)
         {
             setTheme(K9.getK9Theme());
@@ -36,6 +41,23 @@ public class K9Activity extends Activity
         // Gesture detection
         gestureDetector = new GestureDetector(new MyGestureDetector());
 
+    }
+
+    public static void setLanguage(Context context, String language)
+    {
+        Locale locale;
+        if (language == null || language.equals(""))
+        {
+            locale = Locale.getDefault();
+        }
+        else
+        {
+            locale = new Locale(language);
+        }
+        Configuration config = new Configuration();
+        config.locale = locale;
+        context.getResources().updateConfiguration(config,
+                                                   context.getResources().getDisplayMetrics());
     }
 
     @Override

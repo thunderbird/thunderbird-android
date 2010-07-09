@@ -19,6 +19,7 @@ import com.fsck.k9.service.MailService;
 
 public class Prefs extends K9PreferenceActivity
 {
+    private static final String PREFERENCE_LANGUAGE = "language";
     private static final String PREFERENCE_THEME = "theme";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
     private static final String PREFERENCE_DATE_FORMAT = "dateFormat";
@@ -40,6 +41,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
+    private ListPreference mLanguage;
     private ListPreference mTheme;
     private ListPreference mDateFormat;
     private ListPreference mBackgroundOps;
@@ -77,6 +79,21 @@ public class Prefs extends K9PreferenceActivity
 
 
         addPreferencesFromResource(R.xml.global_preferences);
+
+        mLanguage = (ListPreference) findPreference(PREFERENCE_LANGUAGE);
+        mLanguage.setValue(K9.getK9Language());
+        mLanguage.setSummary(mLanguage.getEntry());
+        mLanguage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mLanguage.findIndexOfValue(summary);
+                mLanguage.setSummary(mLanguage.getEntries()[index]);
+                mLanguage.setValue(summary);
+                return false;
+            }
+        });
 
         mTheme = (ListPreference) findPreference(PREFERENCE_THEME);
         mTheme.setValue(String.valueOf(K9.getK9Theme() == android.R.style.Theme ? "dark" : "light"));
@@ -198,6 +215,7 @@ public class Prefs extends K9PreferenceActivity
     private void saveSettings()
     {
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
+        K9.setK9Language(mLanguage.getValue());
         K9.setK9Theme(mTheme.getValue().equals("dark") ? android.R.style.Theme : android.R.style.Theme_Light);
         K9.DEBUG = mDebugLogging.isChecked();
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();

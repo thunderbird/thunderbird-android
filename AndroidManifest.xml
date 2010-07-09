@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionCode="2903"
     android:versionName="2.903" package="com.fsck.k9">
     <uses-sdk
@@ -7,9 +8,10 @@
        android:targetSdkVersion="4"
        />
     <supports-screens
-        largeScreens="true"
-        normalScreens="true"
-        smallScreens="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:anyDensity="true"
     />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -44,6 +46,7 @@
         <activity
             android:name="com.fsck.k9.activity.Accounts"
             android:launchMode="singleInstance"
+            android:configChanges="locale"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,68 +58,81 @@
         <activity
             android:name="com.fsck.k9.activity.setup.Prefs"
             android:label="@string/prefs_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.FontSizeSettings"
             android:label="@string/font_size_settings_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupBasics"
             android:label="@string/account_setup_basics_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupAccountType"
             android:label="@string/account_setup_account_type_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupIncoming"
             android:label="@string/account_setup_incoming_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupComposition"
             android:label="@string/account_settings_composition_title"
+            android:configChanges="locale"
         >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupOutgoing"
             android:label="@string/account_setup_outgoing_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupOptions"
             android:label="@string/account_setup_options_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupNames"
             android:label="@string/account_setup_names_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.ChooseFolder"
             android:theme="@style/Theme.K9Dialog"
             android:label="@string/choose_folder_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.ChooseIdentity"
             android:theme="@style/Theme.K9Dialog"
             android:label="@string/choose_identity_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.ManageIdentities"
             android:label="@string/manage_identities_title"
+            android:configChanges="locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.EditIdentity"
             android:label="@string/edit_identity_title"
+            android:configChanges="locale"
             >
         </activity>
         <!-- XXX Note: this activity is hacked to ignore config changes,
@@ -124,12 +140,13 @@
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSetupCheckSettings"
             android:label="@string/account_setup_check_settings_title"
-            android:configChanges="keyboardHidden|orientation"
+            android:configChanges="keyboardHidden|orientation|locale"
             >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.setup.AccountSettings"
             android:label="@string/account_settings_title_fmt"
+            android:configChanges="locale"
             >
         </activity>
 
@@ -137,12 +154,14 @@
             android:name="com.fsck.k9.activity.setup.FolderSettings"
             android:theme="@android:style/Theme.Dialog"
             android:label="@string/folder_settings_title"
+            android:configChanges="locale"
             >
         </activity>
-
         <activity
             android:name="com.fsck.k9.activity.FolderList"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:configChanges="locale"
+            >
             <intent-filter>
                 <!-- This action is only to allow an entry point for launcher shortcuts -->
                 <action android:name="android.intent.action.MAIN" />
@@ -150,11 +169,15 @@
         </activity>
         <activity
             android:name="com.fsck.k9.activity.MessageList"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:configChanges="locale"
+            >
         </activity>
         <activity
             android:name="com.fsck.k9.activity.MessageView"
-            android:theme="@android:style/Theme.Light">
+            android:theme="@android:style/Theme.Light"
+            android:configChanges="locale"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
@@ -168,6 +191,7 @@
             android:name="com.fsck.k9.activity.MessageCompose"
             android:label="@string/app_name"
             android:enabled="false"
+            android:configChanges="locale"
             >
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
@@ -194,6 +218,7 @@
         <!-- Search Activity - searchable -->
         <activity android:name="com.fsck.k9.activity.Search"
                   android:label="@string/search_action"
+                  android:configChanges="locale"
                   >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -202,8 +227,11 @@
             <meta-data android:name="android.app.searchable"
                        android:resource="@xml/searchable" />
         </activity>
-        <activity android:name="com.fsck.k9.activity.LauncherShortcuts"
-                  android:label="@string/shortcuts_title">
+        <activity
+            android:name="com.fsck.k9.activity.LauncherShortcuts"
+            android:label="@string/shortcuts_title"
+            android:configChanges="locale"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
                 <category android:name="android.intent.category.DEFAULT" />

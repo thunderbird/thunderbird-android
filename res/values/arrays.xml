@@ -276,6 +276,32 @@
        <item>EXPUNGE_MANUALLY</item>
     </string-array>
 
+    <string-array name="settings_language_entries">
+        <item>@string/setting_language_system</item>
+        <item>@string/setting_language_chinese</item>
+        <item>@string/setting_language_czech</item>
+        <item>@string/setting_language_english</item>
+        <item>@string/setting_language_german</item>
+        <item>@string/setting_language_france</item>
+        <item>@string/setting_language_italian</item>
+        <item>@string/setting_language_polish</item>
+        <item>@string/setting_language_spanish</item>
+        <item>@string/setting_language_russian</item>
+    </string-array>
+
+    <string-array name="settings_language_values">
+        <item></item>
+        <item>zh</item>
+        <item>cs</item>
+        <item>en</item>
+        <item>de</item>
+        <item>fr</item>
+        <item>it</item>
+        <item>pl</item>
+        <item>es</item>
+        <item>ru</item>
+    </string-array>
+
     <string-array name="settings_theme_entries">
         <item>@string/setting_theme_light</item>
         <item>@string/setting_theme_dark</item>

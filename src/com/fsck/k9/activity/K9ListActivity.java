@@ -10,6 +10,7 @@ public class K9ListActivity extends ListActivity
     @Override
     public void onCreate(Bundle icicle)
     {
+        K9Activity.setLanguage(this, K9.getK9Language());
         setTheme(K9.getK9Theme());
         super.onCreate(icicle);
         setupFormats();

@@ -37,6 +37,7 @@ public class K9 extends Application
         WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
     }
 
+    private static String language = "";
     private static int theme = android.R.style.Theme_Light;
 
     private static final FontSizes fontSizes = new FontSizes();
@@ -313,6 +314,7 @@ public class K9 extends Application
         editor.putBoolean("messageViewFixedWidthFont",mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
 
+        editor.putString("language", language);
         editor.putInt("theme", theme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
@@ -357,6 +359,7 @@ public class K9 extends Application
             setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
         }
 
+        K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
 
@@ -429,6 +432,16 @@ public class K9 extends Application
 
         });
 
+    }
+
+    public static String getK9Language()
+    {
+        return language;
+    }
+
+    public static void setK9Language(String nlanguage)
+    {
+        language = nlanguage;
     }
 
     public static int getK9Theme()
