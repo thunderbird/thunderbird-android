@@ -278,7 +278,7 @@
   <string name="account_setup_incoming_webdav_server_label">Serveur WebDAV (Exchange)</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Type de sécurité</string>
-  <string name="account_setup_incoming_authtype_label">Type d\'authentification</string>
+  <string name="account_setup_incoming_auth_type_label">Type d\'authentification</string>
   <string name="account_setup_incoming_security_none_label">Aucun</string>
   <string name="account_setup_incoming_security_ssl_optional_label">SSL (si disponible)</string>
   <string name="account_setup_incoming_security_ssl_label">SSL (toujours)</string>

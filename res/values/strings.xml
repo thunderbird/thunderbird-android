@@ -349,7 +349,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange) server</string>
     <string name="account_setup_incoming_port_label">Port</string>
     <string name="account_setup_incoming_security_label">Security type</string>
-    <string name="account_setup_incoming_authtype_label">Authentication type</string>
+    <string name="account_setup_incoming_auth_type_label">Authentication type</string>
     <string name="account_setup_incoming_security_none_label">None</string>
     <string name="account_setup_incoming_security_ssl_optional_label">SSL (if available)</string>
     <string name="account_setup_incoming_security_ssl_label">SSL (always)</string>

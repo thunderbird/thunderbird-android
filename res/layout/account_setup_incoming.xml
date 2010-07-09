@@ -71,16 +71,16 @@
         <TextView
 
             android:id="@+id/account_auth_type_label"
-            android:text="@string/account_setup_incoming_authtype_label"
+            android:text="@string/account_setup_incoming_auth_type_label"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorPrimary" />
         <Spinner
-            android:id="@+id/account_authtype"
+            android:id="@+id/account_auth_type"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:contentDescription="@string/account_setup_incoming_authtype_label" />
+            android:contentDescription="@string/account_setup_incoming_auth_type_label" />
         <TextView
             android:text="@string/account_setup_incoming_port_label"
             android:layout_height="wrap_content"

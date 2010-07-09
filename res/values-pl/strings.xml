@@ -24,10 +24,10 @@
     <string name="read_attachment_desc">Zezwalaj tej aplikacji na czytanie załaczników z Twoich maili.</string>
 
     <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
-	<string name="accounts_title">Konta</string>
-	<string name="advanced">Zaawansowane</string>
-   	<string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
-   	<string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
+    <string name="accounts_title">Konta</string>
+    <string name="advanced">Zaawansowane</string>
+       <string name="folder_list_title"><xliff:g id="account">%s</xliff:g> </string>
+       <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title">Nie</string>
     <string name="debug_title">Debug</string>
@@ -293,8 +293,8 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_saved_toast">Wiadomość zapisana jako szkic</string>
     <string name="message_delete_failed">Nie moge skasować wiadomości</string>
 
-	<string name="about_header"><xliff:g id="app_name">%s</xliff:g></string>
-	<string name="about_version">wersja <xliff:g id="version">%s</xliff:g></string>
+    <string name="about_header"><xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_version">wersja <xliff:g id="version">%s</xliff:g></string>
 
 
     <string name="global_settings_flag_label">Oznaczaj gwiazdkami</string>
@@ -347,7 +347,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_setup_incoming_webdav_server_label">Serwer WebDAV (Exchange)</string>
     <string name="account_setup_incoming_port_label">Port</string>
     <string name="account_setup_incoming_security_label">Zabezpieczenia</string>
-    <string name="account_setup_incoming_authtype_label">Rodzaj autentykacji</string>
+    <string name="account_setup_incoming_auth_type_label">Rodzaj autentykacji</string>
     <string name="account_setup_incoming_security_none_label">Brak</string>
     <string name="account_setup_incoming_security_ssl_optional_label">SSL (jeśli dostępne)</string>
     <string name="account_setup_incoming_security_ssl_label">SSL (zawsze)</string>
@@ -495,10 +495,10 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_hide_buttons_always">Przyciski są zawsze przesuwalne</string>
 
     <string name="account_settings_composition">Tworzenie wiadomości</string>
-	<string name="account_settings_sync">Synchronizacja folderów</string>
+    <string name="account_settings_sync">Synchronizacja folderów</string>
     <string name="account_settings_folders">Foldery</string>
-	<string name="account_settings_message_lists">Lista wiadomości</string>
-	<string name="account_settings_message_view">Wyświetlanie wiadomości</string>
+    <string name="account_settings_message_lists">Lista wiadomości</string>
+    <string name="account_settings_message_view">Wyświetlanie wiadomości</string>
     <string name="account_settings_quote_prefix_label">Prefiks cytowania</string>
 
     <string name="account_settings_mail_check_frequency_label">Sprawdzanie konta</string>
@@ -608,16 +608,16 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="manage_identities_context_menu_title">Zarządzaj tożsamością</string>
 
     <string name="edit_identity_title">Edytcja tożsamość</string>
-	<string name="new_identity_action">Nowa tożsamość</string>
+    <string name="new_identity_action">Nowa tożsamość</string>
 
     <string name="account_settings_always_bcc_label">Adres UDW dla wysyłanych wiadomości (opcja)</string>
     <string name="account_settings_always_bcc_summary">Na ten adres będzie wysyłana kopia każdej wiadomości wychodzącej</string>
 
-	<string name="manage_identities_edit_action">Edytuj</string>
-	<string name="manage_identities_move_up_action">Przesuń w górę</string>
-	<string name="manage_identities_move_down_action">Przesuń w dół</string>
-	<string name="manage_identities_move_top_action">Na początek (jako domyślna)</string>
-	<string name="manage_identities_remove_action">Usuń</string>
+    <string name="manage_identities_edit_action">Edytuj</string>
+    <string name="manage_identities_move_up_action">Przesuń w górę</string>
+    <string name="manage_identities_move_down_action">Przesuń w dół</string>
+    <string name="manage_identities_move_top_action">Na początek (jako domyślna)</string>
+    <string name="manage_identities_remove_action">Usuń</string>
 
     <string name="edit_identity_description_label">Opis tożsamości</string>
     <string name="edit_identity_description_hint">(Opcjonalny)</string>
@@ -676,10 +676,10 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_clear_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie wiadomości zostaną usunięte z bazy programu.</string>
 
     <string name="provider_note_live">Tylko niektóre konta Yahoo! \"Plus\" obsługują protokół POP3,
-    	umożliwiający K-9 odbiór poczty. Jeśli nie możesz zalogować się
-    	do swojego konta z użyciem poprawnego hasła i adresu email, najprawdopodobniej
-    	nie masz płatnego konta typu \"Plus\". W takim przypadku musisz z poczty
-    	korzystać w dotychczasowy sposób, za pośrednictwem przeglądarki.</string>
+        umożliwiający K-9 odbiór poczty. Jeśli nie możesz zalogować się
+        do swojego konta z użyciem poprawnego hasła i adresu email, najprawdopodobniej
+        nie masz płatnego konta typu \"Plus\". W takim przypadku musisz z poczty
+        korzystać w dotychczasowy sposób, za pośrednictwem przeglądarki.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
