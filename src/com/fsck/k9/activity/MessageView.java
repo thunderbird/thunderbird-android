@@ -1943,7 +1943,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         mHandler.networkError();
                     }
-                    if ((MessageView.this.mMessage == null) || 
+                    if ((MessageView.this.mMessage == null) ||
                             !MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
                         mMessageContentView.loadUrl("file:///android_asset/empty.html");
@@ -2150,9 +2150,9 @@ public class MessageView extends K9Activity implements OnClickListener
         try
         {
             mToggleScrollView.setScrolling(false);
-            
+
             KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
+                                                    KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
             shiftPressEvent.dispatch(view);
         }
         catch (Exception e)

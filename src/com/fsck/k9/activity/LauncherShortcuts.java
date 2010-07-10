@@ -34,7 +34,8 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
         super.onCreate(icicle);
 
         // finish() immediately if we aren't supposed to be here
-        if (!Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction())) {
+        if (!Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction()))
+        {
             finish();
             return;
         }

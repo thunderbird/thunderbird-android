@@ -319,7 +319,7 @@ public class FolderList extends K9ListActivity
             finish();
         }
         else if (intent.getBooleanExtra(EXTRA_FROM_SHORTCUT, false) &&
-                !K9.FOLDER_NONE.equals(mAccount.getAutoExpandFolderName()))
+                 !K9.FOLDER_NONE.equals(mAccount.getAutoExpandFolderName()))
         {
             onOpenFolder(mAccount.getAutoExpandFolderName());
             finish();

@@ -1631,13 +1631,13 @@ public class MessagingController implements Runnable
                 {
 
 
-                    if (isMessageSuppressed(account, folder, message ))
+                    if (isMessageSuppressed(account, folder, message))
                     {
                         if (K9.DEBUG)
                         {
                             Log.d(K9.LOG_TAG, "Message " + message.getUid() + " was suppressed "+
-                                "but just downloaded. "+
-                                "The race condition means we wasted some bandwidth. Oh well.");
+                                  "but just downloaded. "+
+                                  "The race condition means we wasted some bandwidth. Oh well.");
                         }
                         progress.incrementAndGet();
 
@@ -2752,7 +2752,8 @@ public class MessagingController implements Runnable
             t.printStackTrace(ps);
             ps.close();
 
-            if (subject == null) {
+            if (subject == null)
+            {
                 subject = getRootCauseMessage(t);
             }
 

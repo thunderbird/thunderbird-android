@@ -527,7 +527,8 @@ public class MessageList
         mState.putInt(EXTRA_LIST_POSITION, mListView.getSelectedItemPosition());
     }
 
-    public void restoreListState() {
+    public void restoreListState()
+    {
         if (mState == null)
         {
             return;
@@ -2508,7 +2509,7 @@ public class MessageList
                 LocalMessage message = (LocalMessage) m;
                 Date date = message.getSentDate();
                 this.compareDate = message.getInternalDate();
-                if (this.compareDate == null) 
+                if (this.compareDate == null)
                 {
                     this.compareDate = message.getSentDate();
                 }

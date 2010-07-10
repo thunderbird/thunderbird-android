@@ -57,7 +57,7 @@ public class K9Activity extends Activity
         Configuration config = new Configuration();
         config.locale = locale;
         context.getResources().updateConfiguration(config,
-                                                   context.getResources().getDisplayMetrics());
+                context.getResources().getDisplayMetrics());
     }
 
     @Override
