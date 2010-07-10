@@ -2236,6 +2236,7 @@ public class ImapStore extends Store
 
                 try
                 {
+                    // Yahoo! requires a custom IMAP command to work right over a non-3G network
                     if (mHost.endsWith("yahoo.com"))
                     {
                         if (K9.DEBUG)
