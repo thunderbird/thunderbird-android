@@ -1388,7 +1388,7 @@ public class MessagingController implements Runnable
                         if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
                         {
                             if (K9.DEBUG)
-                                Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is not downloaded at all");
+                                Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " has not yet been downloaded");
 
                             unsyncedMessages.add(message);
                         }
@@ -1419,7 +1419,7 @@ public class MessagingController implements Runnable
                 else if (localMessage.isSet(Flag.DELETED) == false)
                 {
                     if (K9.DEBUG)
-                        Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is already locally present");
+                        Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is present in the local store");
 
                     if (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
@@ -1479,7 +1479,7 @@ public class MessagingController implements Runnable
             fp.add(FetchProfile.Item.ENVELOPE);
 
             if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "SYNC: About to sync " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
+                Log.d(K9.LOG_TAG, "SYNC: About to fetch " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
 
             remoteFolder.fetch(unsyncedMessages.toArray(new Message[0]), fp,
                                new MessageRetrievalListener()
@@ -1501,7 +1501,7 @@ public class MessagingController implements Runnable
                                 if (message.isSet(Flag.DELETED))
                                 {
                                     Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid()
-                                          + " was already deleted on server, skipping");
+                                          + " was marked deleted on server, skipping");
                                 }
                                 else
                                 {
