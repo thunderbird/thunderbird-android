@@ -2727,10 +2727,6 @@ public class MessagingController implements Runnable
     static AtomicBoolean loopCatch = new AtomicBoolean();
     public void addErrorMessage(Account account, String subject, Throwable t)
     {
-        if (K9.ENABLE_ERROR_FOLDER == false)
-        {
-            return;
-        }
         if (loopCatch.compareAndSet(false, true) == false)
         {
             return;
@@ -2742,44 +2738,16 @@ public class MessagingController implements Runnable
                 return;
             }
 
-            String rootCauseMessage = getRootCauseMessage(t);
-            Log.e(K9.LOG_TAG, "Error " + "'" + rootCauseMessage + "'", t);
-
-            Store localStore = account.getLocalStore();
-            LocalFolder localFolder = (LocalFolder)localStore.getFolder(account.getErrorFolderName());
-            Message[] messages = new Message[1];
-            MimeMessage message = new MimeMessage();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PrintStream ps = new PrintStream(baos);
             t.printStackTrace(ps);
             ps.close();
-            message.setBody(new TextBody(baos.toString()));
-            message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            if (subject != null)
-            {
-                message.setSubject(subject);
-            }
-            else
-            {
-                message.setSubject(rootCauseMessage);
+
+            if (subject == null) {
+                subject = getRootCauseMessage(t);
             }
 
-            long nowTime = System.currentTimeMillis();
-            Date nowDate = new Date(nowTime);
-            message.setInternalDate(nowDate);
-            message.addSentDate(nowDate);
-            message.setFrom(new Address(account.getEmail(), "K9mail internal"));
-            messages[0] = message;
-
-            localFolder.appendMessages(messages);
-
-            localFolder.deleteMessagesOlderThan(nowTime - (15 * 60 * 1000));
-
-            for (MessagingListener l : getListeners())
-            {
-                l.folderStatusChanged(account, localFolder.getName(), localFolder.getUnreadMessageCount());
-            }
-
+            addErrorMessage(account, subject, baos.toString());
         }
         catch (Throwable it)
         {
