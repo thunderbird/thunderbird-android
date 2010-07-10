@@ -76,12 +76,6 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public Date getReceivedDate()
-    {
-        return null;
-    }
-
-    @Override
     public Date getSentDate()
     {
         if (mSentDate == null)

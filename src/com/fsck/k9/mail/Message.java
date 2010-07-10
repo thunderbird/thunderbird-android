@@ -34,10 +34,6 @@ public abstract class Message implements Part, Body
         {
             myDate = getInternalDate();
         }
-        if (myDate == null)
-        {
-            myDate = getReceivedDate();
-        }
         if (myDate != null)
         {
             return myDate.before(earliestDate);
@@ -98,8 +94,6 @@ public abstract class Message implements Part, Body
     {
         this.mInternalDate = internalDate;
     }
-
-    public abstract Date getReceivedDate();
 
     public abstract Date getSentDate();
 
