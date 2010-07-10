@@ -1046,45 +1046,20 @@ public class MessagingController implements Runnable
             }
             else
             {
-
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "SYNC: About to get remote store for " + folder);
-
                 Store remoteStore = account.getRemoteStore();
+
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: About to get remote folder " + folder);
                 remoteFolder = remoteStore.getFolder(folder);
 
-                /*
-                 * If the folder is a "special" folder we need to see if it exists
-                 * on the remote server. It if does not exist we'll try to create it. If we
-                 * can't create we'll abort. This will happen on every single Pop3 folder as
-                 * designed and on Imap folders during error conditions. This allows us
-                 * to treat Pop3 and Imap the same in this code.
-                 */
-                if (folder.equals(account.getTrashFolderName()) ||
-                        folder.equals(account.getSentFolderName()) ||
-                        folder.equals(account.getDraftsFolderName()))
-                {
-                    if (!remoteFolder.exists())
-                    {
-                        if (!remoteFolder.create(FolderType.HOLDS_MESSAGES))
-                        {
-                            for (MessagingListener l : getListeners())
-                            {
-                                l.synchronizeMailboxFinished(account, folder, 0, 0);
-                            }
-                            if (listener != null && getListeners().contains(listener) == false)
-                            {
-                                listener.synchronizeMailboxFinished(account, folder, 0, 0);
-                            }
-                            if (K9.DEBUG)
-                                Log.i(K9.LOG_TAG, "Done synchronizing folder " + folder);
 
-                            return;
-                        }
-                    }
+
+                if (!  verifyOrCreateRemoteSpecialFolder(account, folder, remoteFolder, listener))
+                {
+                    return;
                 }
+
+
                 /*
                  * Synchronization process:
                 Open the folder
@@ -1307,6 +1282,40 @@ public class MessagingController implements Runnable
 
     }
 
+    /*
+     * If the folder is a "special" folder we need to see if it exists
+     * on the remote server. It if does not exist we'll try to create it. If we
+     * can't create we'll abort. This will happen on every single Pop3 folder as
+     * designed and on Imap folders during error conditions. This allows us
+     * to treat Pop3 and Imap the same in this code.
+     */
+    private boolean verifyOrCreateRemoteSpecialFolder(final Account account, final String folder, final Folder remoteFolder, final MessagingListener listener) throws MessagingException
+    {
+        if (folder.equals(account.getTrashFolderName()) ||
+                folder.equals(account.getSentFolderName()) ||
+                folder.equals(account.getDraftsFolderName()))
+        {
+            if (!remoteFolder.exists())
+            {
+                if (!remoteFolder.create(FolderType.HOLDS_MESSAGES))
+                {
+                    for (MessagingListener l : getListeners())
+                    {
+                        l.synchronizeMailboxFinished(account, folder, 0, 0);
+                    }
+                    if (listener != null && getListeners().contains(listener) == false)
+                    {
+                        listener.synchronizeMailboxFinished(account, folder, 0, 0);
+                    }
+                    if (K9.DEBUG)
+                        Log.i(K9.LOG_TAG, "Done synchronizing folder " + folder);
+
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     private int setLocalUnreadCountToRemote(LocalFolder localFolder, Folder remoteFolder, int newMessageCount) throws MessagingException
     {
         int remoteUnreadMessageCount = remoteFolder.getUnreadMessageCount();
