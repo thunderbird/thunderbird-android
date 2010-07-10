@@ -1619,6 +1619,108 @@ public class MessagingController implements Runnable
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
 
+
+
+
+        downloadSmallMessages(account, remoteFolder, localFolder, smallMessages, progress, newMessages, todo, fp);
+
+
+        smallMessages.clear();
+
+        /*
+         * Now do the large messages that require more round trips.
+         */
+        fp.clear();
+        fp.add(FetchProfile.Item.STRUCTURE);
+
+
+
+        downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress, newMessages, todo, fp);
+        largeMessages.clear();
+
+        /*
+         * Refresh the flags for any messages in the local store that we didn't just
+         * download.
+         */
+        if (remoteFolder.supportsFetchingFlags())
+        {
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "SYNC: About to sync flags for "
+                      + syncFlagMessages.size() + " remote messages for folder " + folder);
+
+            fp.clear();
+            fp.add(FetchProfile.Item.FLAGS);
+
+            List<Message> undeletedMessages = new LinkedList<Message>();
+            for (Message message : syncFlagMessages)
+            {
+                if (message.isSet(Flag.DELETED) == false)
+                {
+                    undeletedMessages.add(message);
+                }
+            }
+
+            remoteFolder.fetch(undeletedMessages.toArray(new Message[0]), fp, null);
+            for (Message remoteMessage : syncFlagMessages)
+            {
+                Message localMessage = localFolder.getMessage(remoteMessage.getUid());
+                boolean messageChanged = syncFlags(localMessage, remoteMessage);
+                if (messageChanged)
+                {
+                    if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(account, folder, localMessage))
+                    {
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                        }
+                    }
+                    else
+                    {
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                        }
+                    }
+
+                }
+                progress.incrementAndGet();
+                for (MessagingListener l : getListeners())
+                {
+                    l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
+                }
+            }
+        }
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
+
+        localFolder.purgeToVisibleLimit(new MessageRemovalListener()
+        {
+            public void messageRemoved(Message message)
+            {
+                for (MessagingListener l : getListeners())
+                {
+                    l.synchronizeMailboxRemovedMessage(account, folder, message);
+                }
+            }
+
+        });
+
+        return newMessages.get();
+    }
+
+    private void downloadSmallMessages(final Account account, final Folder remoteFolder,
+                                       final LocalFolder localFolder,
+                                       ArrayList<Message> smallMessages,
+                                       final AtomicInteger progress,
+                                       final AtomicInteger newMessages,
+                                       final int todo,
+                                       FetchProfile fp) throws MessagingException
+    {
+        final String folder = remoteFolder.getName();
+
+        final Date earliestDate = account.getEarliestPollDate();
+
+
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
 
@@ -1706,94 +1808,12 @@ public class MessagingController implements Runnable
 
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Done fetching small messages for folder " + folder);
-
-        smallMessages.clear();
-
-        /*
-         * Now do the large messages that require more round trips.
-         */
-        fp.clear();
-        fp.add(FetchProfile.Item.STRUCTURE);
-
-
-
-        downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress, newMessages, todo, fp);
-        largeMessages.clear();
-
-        /*
-         * Refresh the flags for any messages in the local store that we didn't just
-         * download.
-         */
-        if (remoteFolder.supportsFetchingFlags())
-        {
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "SYNC: About to sync flags for "
-                      + syncFlagMessages.size() + " remote messages for folder " + folder);
-
-            fp.clear();
-            fp.add(FetchProfile.Item.FLAGS);
-
-            List<Message> undeletedMessages = new LinkedList<Message>();
-            for (Message message : syncFlagMessages)
-            {
-                if (message.isSet(Flag.DELETED) == false)
-                {
-                    undeletedMessages.add(message);
-                }
-            }
-
-            remoteFolder.fetch(undeletedMessages.toArray(new Message[0]), fp, null);
-            for (Message remoteMessage : syncFlagMessages)
-            {
-                Message localMessage = localFolder.getMessage(remoteMessage.getUid());
-                boolean messageChanged = syncFlags(localMessage, remoteMessage);
-                if (messageChanged)
-                {
-                    if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(account, folder, localMessage))
-                    {
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
-                        }
-                    }
-                    else
-                    {
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                        }
-                    }
-
-                }
-                progress.incrementAndGet();
-                for (MessagingListener l : getListeners())
-                {
-                    l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
-                }
-            }
-        }
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
-
-        localFolder.purgeToVisibleLimit(new MessageRemovalListener()
-        {
-            public void messageRemoved(Message message)
-            {
-                for (MessagingListener l : getListeners())
-                {
-                    l.synchronizeMailboxRemovedMessage(account, folder, message);
-                }
-            }
-
-        });
-
-        return newMessages.get();
     }
+
+
 
     private void downloadLargeMessages(final Account account, final Folder remoteFolder,
                                        final LocalFolder localFolder,
-
-
                                        ArrayList<Message> largeMessages,
                                        final AtomicInteger progress,
                                        final AtomicInteger newMessages,
