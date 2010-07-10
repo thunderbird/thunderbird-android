@@ -2508,6 +2508,11 @@ public class MessageList
                 LocalMessage message = (LocalMessage) m;
                 Date date = message.getSentDate();
                 this.compareDate = message.getInternalDate();
+                if (this.compareDate == null) 
+                {
+                    this.compareDate = message.getSentDate();
+                }
+
                 this.folder = folder;
 
                 if (Utility.isDateToday(date))
