@@ -1642,54 +1642,9 @@ public class MessagingController implements Runnable
          * Refresh the flags for any messages in the local store that we didn't just
          * download.
          */
-        if (remoteFolder.supportsFetchingFlags())
-        {
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "SYNC: About to sync flags for "
-                      + syncFlagMessages.size() + " remote messages for folder " + folder);
 
-            fp.clear();
-            fp.add(FetchProfile.Item.FLAGS);
+        refreshLocalMessageFlags(account,remoteFolder,localFolder,syncFlagMessages,progress,todo);
 
-            List<Message> undeletedMessages = new LinkedList<Message>();
-            for (Message message : syncFlagMessages)
-            {
-                if (message.isSet(Flag.DELETED) == false)
-                {
-                    undeletedMessages.add(message);
-                }
-            }
-
-            remoteFolder.fetch(undeletedMessages.toArray(new Message[0]), fp, null);
-            for (Message remoteMessage : syncFlagMessages)
-            {
-                Message localMessage = localFolder.getMessage(remoteMessage.getUid());
-                boolean messageChanged = syncFlags(localMessage, remoteMessage);
-                if (messageChanged)
-                {
-                    if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(account, folder, localMessage))
-                    {
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
-                        }
-                    }
-                    else
-                    {
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                        }
-                    }
-
-                }
-                progress.incrementAndGet();
-                for (MessagingListener l : getListeners())
-                {
-                    l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
-                }
-            }
-        }
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
 
@@ -1944,6 +1899,65 @@ public class MessagingController implements Runnable
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Done fetching large messages for folder " + folder);
 
+    }
+
+    private void refreshLocalMessageFlags(final Account account, final Folder remoteFolder,
+                                          final LocalFolder localFolder,
+                                          ArrayList<Message> syncFlagMessages,
+                                          final AtomicInteger progress,
+                                          final int todo
+                                         ) throws MessagingException
+    {
+
+        final String folder = remoteFolder.getName();
+        if (remoteFolder.supportsFetchingFlags())
+        {
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "SYNC: About to sync flags for "
+                      + syncFlagMessages.size() + " remote messages for folder " + folder);
+
+            FetchProfile fp = new FetchProfile();
+            fp.add(FetchProfile.Item.FLAGS);
+
+            List<Message> undeletedMessages = new LinkedList<Message>();
+            for (Message message : syncFlagMessages)
+            {
+                if (message.isSet(Flag.DELETED) == false)
+                {
+                    undeletedMessages.add(message);
+                }
+            }
+
+            remoteFolder.fetch(undeletedMessages.toArray(new Message[0]), fp, null);
+            for (Message remoteMessage : syncFlagMessages)
+            {
+                Message localMessage = localFolder.getMessage(remoteMessage.getUid());
+                boolean messageChanged = syncFlags(localMessage, remoteMessage);
+                if (messageChanged)
+                {
+                    if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(account, folder, localMessage))
+                    {
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                        }
+                    }
+                    else
+                    {
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                        }
+                    }
+
+                }
+                progress.incrementAndGet();
+                for (MessagingListener l : getListeners())
+                {
+                    l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
+                }
+            }
+        }
     }
 
     private boolean syncFlags(Message localMessage, Message remoteMessage) throws MessagingException
