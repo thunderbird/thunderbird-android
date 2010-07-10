@@ -1490,99 +1490,9 @@ public class MessagingController implements Runnable
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "SYNC: About to fetch " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
 
-            remoteFolder.fetch(unsyncedMessages.toArray(new Message[0]), fp,
-                               new MessageRetrievalListener()
-            {
-                public void messageFinished(Message message, int number, int ofTotal)
-                {
-                    try
-                    {
-                        String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
-                        if (newPushState != null)
-                        {
-                            localFolder.setPushState(newPushState);
-                        }
-                        if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate))
-                        {
 
-                            if (K9.DEBUG)
-                            {
-                                if (message.isSet(Flag.DELETED))
-                                {
-                                    Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid()
-                                          + " was marked deleted on server, skipping");
-                                }
-                                else
-                                {
-                                    Log.d(K9.LOG_TAG, "Newly downloaded message " + message.getUid() + " is older than "
-                                          + earliestDate + ", skipping");
-                                }
-                            }
-                            progress.incrementAndGet();
-                            for (MessagingListener l : getListeners())
-                            {
-                                l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
-                            }
-                            return;
-                        }
+            fetchUnsyncedMessages(account, remoteFolder, localFolder, unsyncedMessages, smallMessages,largeMessages, progress, todo, fp);
 
-                        if (message.getSize() > (MAX_SMALL_MESSAGE_SIZE))
-                        {
-                            largeMessages.add(message);
-                        }
-                        else
-                        {
-                            smallMessages.add(message);
-                        }
-
-                        // And include it in the view
-                        if (message.getSubject() != null &&
-                                message.getFrom() != null)
-                        {
-                            /*
-                             * We check to make sure that we got something worth
-                             * showing (subject and from) because some protocols
-                             * (POP) may not be able to give us headers for
-                             * ENVELOPE, only size.
-                             */
-                            if (isMessageSuppressed(account, folder, message) == false)
-                            {
-                                // Store the new message locally
-                                localFolder.appendMessages(new Message[]
-                                                           {
-                                                               message
-                                                           });
-
-                                Message localMessage = localFolder.getMessage(message.getUid());
-                                syncFlags(localMessage, message);
-                                if (K9.DEBUG)
-                                    Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
-                                          + account + ":" + folder + ":" + message.getUid());
-                                for (MessagingListener l : getListeners())
-                                {
-                                    l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                                }
-
-
-                            }
-
-                        }
-
-                    }
-                    catch (Exception e)
-                    {
-                        Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
-                        addErrorMessage(account, null, e);
-
-                    }
-                }
-
-                public void messageStarted(String uid, int number, int ofTotal)
-                {
-                }
-
-                public void messagesFinished(int total) {}
-            });
             // If a message didn't exist, messageFinished won't be called, but we shouldn't try again
             // If we got here, nothing failed
             for (Message message : unsyncedMessages)
@@ -1661,6 +1571,113 @@ public class MessagingController implements Runnable
         });
 
         return newMessages.get();
+    }
+
+    private void fetchUnsyncedMessages(final Account account, final Folder remoteFolder,
+                                       final LocalFolder localFolder,
+                                       List<Message> unsyncedMessages,
+                                       final ArrayList<Message> smallMessages,
+                                       final ArrayList<Message> largeMessages,
+                                       final AtomicInteger progress,
+                                       final int todo,
+                                       FetchProfile fp) throws MessagingException
+    {
+        final String folder = remoteFolder.getName();
+
+        final Date earliestDate = account.getEarliestPollDate();
+        remoteFolder.fetch(unsyncedMessages.toArray(new Message[0]), fp,
+                           new MessageRetrievalListener()
+        {
+            public void messageFinished(Message message, int number, int ofTotal)
+            {
+                try
+                {
+                    String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
+                    if (newPushState != null)
+                    {
+                        localFolder.setPushState(newPushState);
+                    }
+                    if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate))
+                    {
+
+                        if (K9.DEBUG)
+                        {
+                            if (message.isSet(Flag.DELETED))
+                            {
+                                Log.v(K9.LOG_TAG, "Newly downloaded message " + account + ":" + folder + ":" + message.getUid()
+                                      + " was marked deleted on server, skipping");
+                            }
+                            else
+                            {
+                                Log.d(K9.LOG_TAG, "Newly downloaded message " + message.getUid() + " is older than "
+                                      + earliestDate + ", skipping");
+                            }
+                        }
+                        progress.incrementAndGet();
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
+                        }
+                        return;
+                    }
+
+                    if (message.getSize() > (MAX_SMALL_MESSAGE_SIZE))
+                    {
+                        largeMessages.add(message);
+                    }
+                    else
+                    {
+                        smallMessages.add(message);
+                    }
+
+                    // And include it in the view
+                    if (message.getSubject() != null &&
+                            message.getFrom() != null)
+                    {
+                        /*
+                         * We check to make sure that we got something worth
+                         * showing (subject and from) because some protocols
+                         * (POP) may not be able to give us headers for
+                         * ENVELOPE, only size.
+                         */
+                        if (isMessageSuppressed(account, folder, message) == false)
+                        {
+                            // Store the new message locally
+                            localFolder.appendMessages(new Message[]
+                                                       {
+                                                           message
+                                                       });
+
+                            Message localMessage = localFolder.getMessage(message.getUid());
+                            syncFlags(localMessage, message);
+                            if (K9.DEBUG)
+                                Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
+                                      + account + ":" + folder + ":" + message.getUid());
+                            for (MessagingListener l : getListeners())
+                            {
+                                l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                            }
+
+
+                        }
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
+                    addErrorMessage(account, null, e);
+
+                }
+            }
+
+            public void messageStarted(String uid, int number, int ofTotal)
+            {
+            }
+
+            public void messagesFinished(int total) {}
+        });
     }
 
     private void downloadSmallMessages(final Account account, final Folder remoteFolder,
