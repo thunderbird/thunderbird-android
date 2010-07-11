@@ -1083,6 +1083,8 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
+            // Disable the delete button after it's tapped (to try to prevent
+            // accidental clicks)
             disableButtons();
             Message messageToDelete = mMessage;
 
