@@ -2668,12 +2668,12 @@ public class ImapStore extends Store
             }
 
 
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "Sending IMAP command " + commandToLog + " on connection " + getLogId());
+            //if (K9.DEBUG)
+            //    Log.v(K9.LOG_TAG, "Sending IMAP command " + commandToLog + " on connection " + getLogId());
 
             String tag = sendCommand(command, sensitive);
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
+            //if (K9.DEBUG)
+            //    Log.v(K9.LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
 
             ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
             ImapResponse response;
