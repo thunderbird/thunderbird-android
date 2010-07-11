@@ -500,6 +500,37 @@ public class MessageView extends K9Activity implements OnClickListener
 
         }
 
+
+
+        private void showHeaderContainer()
+        {
+            {
+                runOnUiThread(new Runnable()
+                {
+                    public void run()
+                    {
+                        mHeaderContainer.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        }
+
+        private void hideHeaderContainer()
+        {
+            {
+                runOnUiThread(new Runnable()
+                {
+                    public void run()
+                    {
+                        mHeaderContainer.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }
+
+
+
+
         /**
          * Clear the text field for the additional headers display if they are
          * not shown, to save UI resources.
@@ -899,6 +930,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mMessageContentView.getSettings().setBlockNetworkImage(true);
         K9.setBlockNetworkLoads(mMessageContentView.getSettings(), true);
 
+        mHandler.hideHeaderContainer();
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
@@ -1843,6 +1875,7 @@ public class MessageView extends K9Activity implements OnClickListener
             try
             {
                 setHeaders(account, folder, uid, message);
+                mHandler.showHeaderContainer();
             }
             catch (MessagingException me)
             {
@@ -1868,6 +1901,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 {
 
                     setHeaders(account, folder, uid, message);
+                    mHandler.showHeaderContainer();
                 }
 
                 MessageView.this.mMessage = message;
