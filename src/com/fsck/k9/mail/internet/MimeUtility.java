@@ -2,12 +2,14 @@
 package com.fsck.k9.mail.internet;
 
 import android.util.Log;
+import com.fsck.k9.R;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.decoder.Base64InputStream;
 import org.apache.james.mime4j.decoder.DecoderUtil;
 import org.apache.james.mime4j.decoder.QuotedPrintableInputStream;
+import org.apache.james.mime4j.util.CharsetUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -345,67 +347,57 @@ public class MimeUtility
      * to be done.
      * @param part
      * @return
-     * @throws IOException
      */
     public static String getTextFromPart(Part part)
     {
-        Charset mCharsetConverter;
-
         try
         {
-            if (part != null && part.getBody() != null)
+            if ((part != null) && (part.getBody() != null))
             {
-                Body body = part.getBody();
+                final Body body = part.getBody();
                 if (body instanceof TextBody)
                 {
                     return ((TextBody)body).getText();
                 }
-                else
+
+                final String mimeType = part.getMimeType();
+                if ((mimeType != null) && MimeUtility.mimeTypeMatches(mimeType, "text/*"))
                 {
-                    InputStream in = part.getBody().getInputStream();
-                    String mimeType = part.getMimeType();
-                    if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*"))
+                    /*
+                     * We've got a text part, so let's see if it needs to be processed further.
+                     */
+                    final String originalCharset = getHeaderParameter(part.getContentType(), "charset");
+                    String charset = "ASCII";   // No encoding, so use us-ascii, which is the standard.
+                    if (originalCharset != null)
                     {
                         /*
-                         * Now we read the part into a buffer for further processing. Because
-                         * the stream is now wrapped we'll remove any transfer encoding at this point.
+                         * See if there is conversion from the MIME charset to the Java one.
                          */
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        IOUtils.copy(in, out);
-
-                        byte[] bytes = out.toByteArray();
-                        in.close();
-                        out.close();
-
-                        String charset = getHeaderParameter(part.getContentType(), "charset");
-                        /*
-                         * We've got a text part, so let's see if it needs to be processed further.
-                         */
-                        if (charset != null)
+                        charset = CharsetUtil.toJavaCharset(originalCharset);
+                        
+                        if (charset == null)
                         {
-                            /*
-                             * See if there is conversion from the MIME charset to the Java one.
-                             */
-                            mCharsetConverter = Charset.forName(charset);
-                            charset = mCharsetConverter.name();
-                        }
-                        if (charset != null)
-                        {
-                            /*
-                             * We've got a charset encoding, so decode using it.
-                             */
-                            return new String(bytes, 0, bytes.length, charset);
-                        }
-                        else
-                        {
-                            /*
-                             * No encoding, so use us-ascii, which is the standard.
-                             */
-                            return new String(bytes, 0, bytes.length, "ASCII");
+                            return String.format(K9.app.getString(R.string.charset_not_found), originalCharset);
                         }
                     }
+
+                    /*
+                     * Now we read the part into a buffer for further processing. Because
+                     * the stream is now wrapped we'll remove any transfer encoding at this point.
+                     */
+                    final InputStream in = part.getBody().getInputStream();
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    IOUtils.copy(in, out);
+                    in.close();
+
+                    /*
+                     * Convert and return as new String
+                     */
+                    final String result = out.toString(charset);
+                    out.close();
+                    return result;
                 }
-            }//if text body
+            }
         }
         catch (Exception e)
         {
