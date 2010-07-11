@@ -758,6 +758,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="setting_language_german">German</string>
     <string name="setting_language_france">French</string>
     <string name="setting_language_italian">Italian</string>
+    <string name="setting_language_japanese">Japanese</string>
     <string name="setting_language_polish">Polish</string>
     <string name="setting_language_spanish">Spanish</string>
     <string name="setting_language_russian">Russian</string>

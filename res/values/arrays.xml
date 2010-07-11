@@ -317,6 +317,7 @@
         <item>@string/setting_language_german</item>
         <item>@string/setting_language_france</item>
         <item>@string/setting_language_italian</item>
+        <item>@string/setting_language_japanese</item>
         <item>@string/setting_language_polish</item>
         <item>@string/setting_language_spanish</item>
         <item>@string/setting_language_russian</item>
@@ -330,6 +331,7 @@
         <item>de</item>
         <item>fr</item>
         <item>it</item>
+        <item>ja</item>
         <item>pl</item>
         <item>es</item>
         <item>ru</item>
