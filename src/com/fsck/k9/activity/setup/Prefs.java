@@ -170,7 +170,7 @@ public class Prefs extends K9PreferenceActivity
         mSensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
 
         mAnimations = (CheckBoxPreference)findPreference(PREFERENCE_ANIMATIONS);
-        mAnimations.setChecked(K9.isAnimations());
+        mAnimations.setChecked(K9.showAnimations());
         mGestures = (CheckBoxPreference)findPreference(PREFERENCE_GESTURES);
         mGestures.setChecked(K9.gesturesEnabled());
 

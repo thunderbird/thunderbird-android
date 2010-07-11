@@ -249,13 +249,13 @@ public class MessageView extends K9Activity implements OnClickListener
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P:
             {
-                onPrevious(K9.isAnimations());
+                onPrevious(K9.showAnimations());
                 return true;
             }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K:
             {
-                onNext(K9.isAnimations());
+                onNext(K9.showAnimations());
                 return true;
             }
             case KeyEvent.KEYCODE_Z:
@@ -1092,19 +1092,19 @@ public class MessageView extends K9Activity implements OnClickListener
 
         if (mLastDirection == NEXT && mNextMessage != null)
         {
-            onNext(K9.isAnimations());
+            onNext(K9.showAnimations());
         }
         else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
         {
-            onPrevious(K9.isAnimations());
+            onPrevious(K9.showAnimations());
         }
         else if (mNextMessage != null)
         {
-            onNext(K9.isAnimations());
+            onNext(K9.showAnimations());
         }
         else if (mPreviousMessage != null)
         {
-            onPrevious(K9.isAnimations());
+            onPrevious(K9.showAnimations());
         }
         else
         {
@@ -1498,11 +1498,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 break;
             case R.id.next:
             case R.id.next_scrolling:
-                onNext(K9.isAnimations());
+                onNext(K9.showAnimations());
                 break;
             case R.id.previous:
             case R.id.previous_scrolling:
-                onPrevious(K9.isAnimations());
+                onPrevious(K9.showAnimations());
                 break;
             case R.id.download:
                 onDownloadAttachment((Attachment) view.getTag());

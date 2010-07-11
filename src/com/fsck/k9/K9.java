@@ -502,7 +502,7 @@ public class K9 extends Application
         mStartIntegratedInbox = startIntegratedInbox;
     }
 
-    public static boolean isAnimations()
+    public static boolean showAnimations()
     {
         return mAnimations;
     }
