@@ -107,7 +107,7 @@ public class MessageView extends K9Activity implements OnClickListener
     View previous;
     View previous_scrolling;
 
-    private view mDelete;
+    private View mDelete;
     private View mArchive;
     private View mMove;
     private View mSpam;
@@ -1083,6 +1083,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
+            disableButtons();
             Message messageToDelete = mMessage;
 
             if (K9.messageViewReturnToList())
