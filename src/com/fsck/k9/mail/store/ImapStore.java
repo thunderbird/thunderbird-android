@@ -909,7 +909,7 @@ public class ImapStore extends Store
         }
 
 
-        private int getMessageCount(String criteria) throws MessagingException
+        private int getRemoteMessageCount(String criteria) throws MessagingException
         {
             checkOpen();
             try
@@ -938,13 +938,13 @@ public class ImapStore extends Store
         @Override
         public int getUnreadMessageCount() throws MessagingException
         {
-            return getMessageCount("UNSEEN NOT DELETED");
+            return getRemoteMessageCount("UNSEEN NOT DELETED");
         }
 
         @Override
         public int getFlaggedMessageCount() throws MessagingException
         {
-            return getMessageCount("FLAGGED NOT DELETED");
+            return getRemoteMessageCount("FLAGGED NOT DELETED");
         }
 
         protected int getHighestUid()
