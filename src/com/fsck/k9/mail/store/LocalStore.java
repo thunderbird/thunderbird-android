@@ -2015,6 +2015,8 @@ public class LocalStore extends Store implements Serializable
                                     MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA), ',');
 
             String name = MimeUtility.getHeaderParameter(attachment.getContentType(), "name");
+            String contentId = MimeUtility.getHeaderParameter(attachment.getContentId(), null);
+
             String contentDisposition = MimeUtility.unfoldAndDecode(attachment.getDisposition());
             if (name == null && contentDisposition != null)
             {
@@ -2044,7 +2046,7 @@ public class LocalStore extends Store implements Serializable
                     new String[] { Long.toString(attachmentId) });
             }
 
-            if (tempAttachmentFile != null)
+            if (attachmentId != -1 && tempAttachmentFile != null)
             {
                 File attachmentFile = new File(mAttachmentsDir, Long.toString(attachmentId));
                 tempAttachmentFile.renameTo(attachmentFile);
@@ -2061,7 +2063,30 @@ public class LocalStore extends Store implements Serializable
                     new String[] { Long.toString(attachmentId) });
             }
 
-            if (attachment instanceof LocalAttachmentBodyPart)
+            /* The message has attachment with Content-ID */
+            if (contentId != null && contentUri != null)
+            {
+                Cursor cursor = null;
+                cursor = mDb.query("messages", new String[] { "html_content" }, "id = ?", new String[] { Long.toString(messageId) }, null, null, null);
+                try {
+                    if (cursor.moveToNext())
+                    {
+                        String new_html;
+
+                        new_html = cursor.getString(0);
+                        new_html = new_html.replaceAll("cid:" + contentId, contentUri.toString());
+
+                        ContentValues cv = new ContentValues();
+                        cv.put("html_content", new_html);
+                        mDb.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
+                    }
+                }
+                finally {
+                    if (cursor != null) { cursor.close(); }
+                }
+            }
+
+            if (attachmentId != -1 && attachment instanceof LocalAttachmentBodyPart)
             {
                 ((LocalAttachmentBodyPart) attachment).setAttachmentId(attachmentId);
             }
@@ -2290,14 +2315,7 @@ public class LocalStore extends Store implements Serializable
                 html = htmlifyString(text);
             }
 
-            if (html.indexOf("cid:") != -1)
-            {
-                return html.replaceAll("cid:", "http://cid/");
-            }
-            else
-            {
-                return html;
-            }
+            return html;
         }
 
         public String htmlifyString(String text)

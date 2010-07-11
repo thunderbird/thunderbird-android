@@ -18,6 +18,8 @@ public interface Part
 
     public String getDisposition() throws MessagingException;
 
+    public String getContentId() throws MessagingException;
+
     public String[] getHeader(String name) throws MessagingException;
 
     public int getSize() throws MessagingException;

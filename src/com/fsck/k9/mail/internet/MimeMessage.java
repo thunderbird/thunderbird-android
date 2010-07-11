@@ -150,7 +150,10 @@ public class MimeMessage extends Message
             return contentDisposition;
         }
     }
-
+    public String getContentId() throws MessagingException
+    {
+        return null;
+    }
     public String getMimeType() throws MessagingException
     {
         return MimeUtility.getHeaderParameter(getContentType(), null);
