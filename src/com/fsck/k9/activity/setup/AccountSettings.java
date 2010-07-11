@@ -57,6 +57,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_LED_COLOR = "led_color";
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
+    private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
 
@@ -67,6 +68,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mCheckFrequency;
     private ListPreference mDisplayCount;
     private ListPreference mMessageAge;
+    private ListPreference mMessageSize;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
@@ -313,6 +315,25 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
+
+
+        mMessageSize = (ListPreference) findPreference(PREFERENCE_MESSAGE_SIZE);
+        mMessageSize.setValue(String.valueOf(mAccount.getMaximumAutoDownloadMessageSize()));
+        mMessageSize.setSummary(mMessageSize.getEntry());
+        mMessageSize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mMessageSize.findIndexOfValue(summary);
+                mMessageSize.setSummary(mMessageSize.getEntries()[index]);
+                mMessageSize.setValue(summary);
+                return false;
+            }
+        });
+
+
+
         mAccountDefault = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT);
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
@@ -511,6 +532,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));
+        mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
         mAccount.setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
         mAccount.setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getText()));

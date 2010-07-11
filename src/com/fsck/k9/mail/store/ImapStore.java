@@ -1205,7 +1205,7 @@ public class ImapStore extends Store
             }
             if (fp.contains(FetchProfile.Item.BODY_SANE))
             {
-                fetchFields.add(String.format("BODY.PEEK[]<0.%d>", FETCH_BODY_SANE_SUGGESTED_SIZE));
+                fetchFields.add(String.format("BODY.PEEK[]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize()));
             }
             if (fp.contains(FetchProfile.Item.BODY))
             {
@@ -1327,7 +1327,7 @@ public class ImapStore extends Store
             String partId = parts[0];
             if ("TEXT".equalsIgnoreCase(partId))
             {
-                fetch = String.format("BODY.PEEK[TEXT]<0.%d>", FETCH_BODY_SANE_SUGGESTED_SIZE);
+                fetch = String.format("BODY.PEEK[TEXT]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize());
             }
             else
             {

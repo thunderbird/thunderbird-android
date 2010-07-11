@@ -697,7 +697,7 @@ public class Pop3Store extends Store
                          * divided by the maximum line size (76).
                          */
                         fetchBody(pop3Message,
-                                  FETCH_BODY_SANE_SUGGESTED_SIZE / 76);
+                                  (mAccount.getMaximumAutoDownloadMessageSize() / 76));
                     }
                     else if (fp.contains(FetchProfile.Item.STRUCTURE))
                     {

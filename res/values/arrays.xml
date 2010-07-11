@@ -96,6 +96,39 @@
         <item>365</item>
     </string-array>
 
+
+    <string-array name="account_settings_autodownload_message_size_entries">
+        <item>@string/account_settings_autodownload_message_size_1</item>
+        <item>@string/account_settings_autodownload_message_size_2</item>
+        <item>@string/account_settings_autodownload_message_size_4</item>
+        <item>@string/account_settings_autodownload_message_size_8</item>
+        <item>@string/account_settings_autodownload_message_size_16</item>
+        <item>@string/account_settings_autodownload_message_size_32</item>
+        <item>@string/account_settings_autodownload_message_size_64</item>
+        <item>@string/account_settings_autodownload_message_size_128</item>
+        <item>@string/account_settings_autodownload_message_size_256</item>
+        <item>@string/account_settings_autodownload_message_size_512</item>
+        <item>@string/account_settings_autodownload_message_size_1024</item>
+        <item>@string/account_settings_autodownload_message_size_2048</item>
+        <item>@string/account_settings_autodownload_message_size_0</item>
+    </string-array>
+
+    <string-array name="account_settings_autodownload_message_size_values">
+        <item>1024</item>
+        <item>2048</item>
+        <item>4096</item>
+        <item>8192</item>
+        <item>16384</item>
+        <item>32768</item>
+        <item>65536</item>
+        <item>131072</item>
+        <item>262144</item>
+        <item>524288</item>
+        <item>1048576</item>
+        <item>2097152</item>
+        <item>0</item>
+    </string-array>
+
     <string-array name="account_settings_folder_display_mode_entries">
         <item>@string/account_settings_folder_display_mode_all</item>
        <item>@string/account_settings_folder_display_mode_first_class</item>

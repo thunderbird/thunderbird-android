@@ -101,7 +101,6 @@ public class MessagingController implements Runnable
      * </pre>
      * So 25k gives good performance and a reasonable data footprint. Sounds good to me.
      */
-    private static final int MAX_SMALL_MESSAGE_SIZE = Store.FETCH_BODY_SANE_SUGGESTED_SIZE;
 
     private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.fsck.k9.MessagingController.moveOrCopy";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.fsck.k9.MessagingController.moveOrCopyBulk";
@@ -1621,7 +1620,7 @@ public class MessagingController implements Runnable
                         return;
                     }
 
-                    if (message.getSize() > (MAX_SMALL_MESSAGE_SIZE))
+                    if (message.getSize() > account.getMaximumAutoDownloadMessageSize())
                     {
                         largeMessages.add(message);
                     }
@@ -1841,11 +1840,11 @@ public class MessagingController implements Runnable
                 {
                     /*
                      * Mark the message as fully downloaded if the message size is smaller than
-                     * the FETCH_BODY_SANE_SUGGESTED_SIZE, otherwise mark as only a partial
+                     * the account's autodownload size limit, otherwise mark as only a partial
                      * download.  This will prevent the system from downloading the same message
                      * twice.
                      */
-                    if (message.getSize() < Store.FETCH_BODY_SANE_SUGGESTED_SIZE)
+                    if (message.getSize() < account.getMaximumAutoDownloadMessageSize())
                     {
                         localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
                     }

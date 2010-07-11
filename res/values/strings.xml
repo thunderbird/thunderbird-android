@@ -519,6 +519,22 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_settings_mail_display_count_label">Number of messages to display</string>
 
+    <string name="account_settings_autodownload_message_size_label">Automatically download message content up to</string>
+    <string name="account_settings_autodownload_message_size_1">1Kb</string>
+    <string name="account_settings_autodownload_message_size_2">2Kb</string>
+    <string name="account_settings_autodownload_message_size_4">4Kb</string>
+    <string name="account_settings_autodownload_message_size_8">8Kb</string>
+    <string name="account_settings_autodownload_message_size_16">16Kb</string>
+    <string name="account_settings_autodownload_message_size_32">32Kb</string>
+    <string name="account_settings_autodownload_message_size_64">64Kb</string>
+    <string name="account_settings_autodownload_message_size_128">128Kb</string>
+    <string name="account_settings_autodownload_message_size_256">256Kb</string>
+    <string name="account_settings_autodownload_message_size_512">512Kb</string>
+    <string name="account_settings_autodownload_message_size_1024">1Mb</string>
+    <string name="account_settings_autodownload_message_size_2048">2Mb</string>
+    <string name="account_settings_autodownload_message_size_any">any size</string>
+    <string name="account_settings_autodownload_message_size_0">only download headers</string>
+
     <string name="account_settings_message_age_label">Sync messages newer than</string>
     <string name="account_settings_message_age_any">the Big Bang</string>
     <string name="account_settings_message_age_0">one day</string>

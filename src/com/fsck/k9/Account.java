@@ -101,6 +101,7 @@ public class Account implements BaseAccount
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
     private int maximumPolledMessageAge;
+    private int maximumAutoDownloadMessageSize;
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
     private boolean mRingNotified;
@@ -167,6 +168,7 @@ public class Account implements BaseAccount
         goToUnreadMessageSearch = false;
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = -1;
+        maximumAutoDownloadMessageSize = 32768;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mSyncRemoteDeletions = true;
 
@@ -243,6 +245,8 @@ public class Account implements BaseAccount
                                 false);
         maximumPolledMessageAge = preferences.getPreferences().getInt(mUuid
                                   + ".maximumPolledMessageAge", -1);
+        maximumAutoDownloadMessageSize = preferences.getPreferences().getInt(mUuid
+                                  + ".maximumAutoDownloadMessageSize", 32768);
         mQuotePrefix = preferences.getPreferences().getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         for (String type : networkTypes)
         {
@@ -415,6 +419,7 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".goToUnreadMessageSearch");
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
+        editor.remove(mUuid + ".maximumAutoDownloadMessageSize");
         editor.remove(mUuid + ".quotePrefix");
         for (String type : networkTypes)
         {
@@ -508,6 +513,7 @@ public class Account implements BaseAccount
         editor.putBoolean(mUuid + ".goToUnreadMessageSearch", goToUnreadMessageSearch);
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
+        editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
 
         for (String type : networkTypes)
@@ -1329,6 +1335,16 @@ public class Account implements BaseAccount
     public synchronized void setMaximumPolledMessageAge(int maximumPolledMessageAge)
     {
         this.maximumPolledMessageAge = maximumPolledMessageAge;
+    }
+
+    public synchronized int getMaximumAutoDownloadMessageSize()
+    {
+        return maximumAutoDownloadMessageSize;
+    }
+
+    public synchronized void setMaximumAutoDownloadMessageSize(int maximumAutoDownloadMessageSize)
+    {
+        this.maximumAutoDownloadMessageSize = maximumAutoDownloadMessageSize;
     }
 
     public Date getEarliestPollDate()
