@@ -918,12 +918,7 @@ public class MessageView extends K9Activity implements OnClickListener
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
         {
-            mArchive.setEnabled(false);
-            mMove.setEnabled(false);
-            mSpam.setEnabled(false);
-            mArchiveScrolling.setEnabled(false);
-            mMoveScrolling.setEnabled(false);
-            mSpamScrolling.setEnabled(false);
+            disableButtons();
         }
         else
         {
@@ -987,6 +982,17 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             buttons.setVisibility(View.GONE);
         }
+    }
+
+
+    private void disableButtons()
+    {
+            mArchive.setEnabled(false);
+            mMove.setEnabled(false);
+            mSpam.setEnabled(false);
+            mArchiveScrolling.setEnabled(false);
+            mMoveScrolling.setEnabled(false);
+            mSpamScrolling.setEnabled(false);
     }
 
     private void setOnClickListener(int viewCode)
@@ -1333,10 +1339,15 @@ public class MessageView extends K9Activity implements OnClickListener
             return;
         }
         mLastDirection = NEXT;
+
+        disableButtons();
+
         if (animate)
         {
             mTopView.startAnimation(outToLeftAnimation());
         }
+
+
         displayMessage(mNextMessage);
         next.requestFocus();
     }
@@ -1351,6 +1362,9 @@ public class MessageView extends K9Activity implements OnClickListener
         }
 
         mLastDirection = PREVIOUS;
+
+        disableButtons();
+
         if (animate)
         {
             mTopView.startAnimation(inFromRightAnimation());
