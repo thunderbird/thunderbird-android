@@ -200,7 +200,11 @@ public class MessageList
                         if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
                         {
 
-                            int index = Collections.binarySearch(mAdapter.messages, message);
+                            int index;
+                            synchronized (mAdapter.messages)
+                            {
+                                index = Collections.binarySearch(mAdapter.messages, message);
+                            }
 
                             if (index < 0)
                             {
@@ -238,9 +242,12 @@ public class MessageList
             if (mQueryString != null)
             {
                 int unreadCount = 0;
-                for (MessageInfoHolder holder : mAdapter.messages)
+                synchronized (mAdapter.messages)
                 {
-                    unreadCount += holder.read ? 0 : 1;
+                    for (MessageInfoHolder holder : mAdapter.messages)
+                    {
+                        unreadCount += holder.read ? 0 : 1;
+                    }
                 }
                 mUnreadMessageCount = unreadCount;
                 refreshTitleOnThread();
@@ -843,10 +850,13 @@ public class MessageList
             // Need to get the list before the sort starts
             ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
 
-            for (MessageInfoHolder holder : mAdapter.messages)
+            synchronized (mAdapter.messages)
             {
-                MessageReference ref = holder.message.makeMessageReference();
-                messageRefs.add(ref);
+                for (MessageInfoHolder holder : mAdapter.messages)
+                {
+                    MessageReference ref = holder.message.makeMessageReference();
+                    messageRefs.add(ref);
+                }
             }
             MessageReference ref = message.message.makeMessageReference();
             Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
@@ -1216,11 +1226,13 @@ public class MessageList
 
                     mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
 
-                    for (MessageInfoHolder holder : mAdapter.messages)
+                    synchronized (mAdapter.messages)
                     {
-                        holder.read = true;
+                        for (MessageInfoHolder holder : mAdapter.messages)
+                        {
+                            holder.read = true;
+                        }
                     }
-
                     mHandler.sortMessages();
 
 
@@ -2087,20 +2099,22 @@ public class MessageList
         // XXX TODO - make this not use a for loop
         public MessageInfoHolder getMessage(MessageReference messageReference)
         {
-            for (MessageInfoHolder holder : mAdapter.messages)
+            synchronized (mAdapter.messages)
             {
-                /*
-                 * 2010-06-21 - cketti
-                 * Added null pointer check. Not sure what's causing 'holder'
-                 * to be null. See log provided in issue 1749, comment #15.
-                 *
-                 * Please remove this comment once the cause was found and the
-                 * bug(?) fixed.
-                 */
-                if ((holder != null) &&
-                        holder.message.equalsReference(messageReference))
+                for (MessageInfoHolder holder : mAdapter.messages)
                 {
-                    return holder;
+                    /*
+                     * 2010-06-21 - cketti
+                     * Added null pointer check. Not sure what's causing 'holder'
+                     * to be null. See log provided in issue 1749, comment #15.
+                     * 
+                     * Please remove this comment once the cause was found and the
+                     * bug(?) fixed.
+                     */
+                    if ((holder != null) && holder.message.equalsReference(messageReference))
+                    {
+                        return holder;
+                    }
                 }
             }
             return null;
@@ -2166,9 +2180,12 @@ public class MessageList
         {
             try
             {
-                if (position < mAdapter.messages.size())
+                synchronized (mAdapter.messages)
                 {
-                    return mAdapter.messages.get(position);
+                    if (position < mAdapter.messages.size())
+                    {
+                        return mAdapter.messages.get(position);
+                    }
                 }
             }
             catch (Exception e)
@@ -2844,22 +2861,25 @@ public class MessageList
     {
         boolean newState = false;
 
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                if (flagged)
+                if (holder.selected)
                 {
-                    if (!holder.flagged)
+                    if (flagged)
                     {
-                        newState = true;
+                        if (!holder.flagged)
+                        {
+                            newState = true;
+                        }
                     }
-                }
-                else
-                {
-                    if (!holder.read)
+                    else
                     {
-                        newState = true;
+                        if (!holder.read)
+                        {
+                            newState = true;
+                        }
                     }
                 }
             }
@@ -2869,11 +2889,14 @@ public class MessageList
 
     private boolean anySelected()
     {
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                return true;
+                if (holder.selected)
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -2899,24 +2922,27 @@ public class MessageList
         {
             newState = computeBatchDirection(false);
         }
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                if (v == mBatchDeleteButton)
+
+                if (holder.selected)
                 {
-                    removeHolderList.add(holder);
+                    if (v == mBatchDeleteButton)
+                    {
+                        removeHolderList.add(holder);
+                    }
+                    else if (v == mBatchFlagButton)
+                    {
+                        holder.flagged = newState;
+                    }
+                    else if (v == mBatchReadButton)
+                    {
+                        holder.read = newState;
+                    }
+                    messageList.add(holder.message);
                 }
-                else if (v == mBatchFlagButton)
-                {
-                    holder.flagged = newState;
-                }
-                else if (v == mBatchReadButton)
-                {
-                    holder.read = newState;
-                }
-                messageList.add(holder.message);
             }
         }
         mAdapter.removeMessages(removeHolderList);
@@ -2945,10 +2971,13 @@ public class MessageList
     private void setAllSelected(boolean isSelected)
     {
         mSelectedCount = 0;
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-            holder.selected = isSelected;
-            mSelectedCount += (isSelected ? 1 : 0);
+            for (MessageInfoHolder holder : mAdapter.messages)
+            {
+                holder.selected = isSelected;
+                mSelectedCount += (isSelected ? 1 : 0);
+            }
         }
         mAdapter.notifyDataSetChanged();
         toggleBatchButtons();
@@ -2971,18 +3000,21 @@ public class MessageList
     private void flagSelected(Flag flag, boolean newState)
     {
         List<Message> messageList = new ArrayList<Message>();
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                messageList.add(holder.message);
-                if (flag == Flag.SEEN)
+                if (holder.selected)
                 {
-                    holder.read = newState;
-                }
-                else if (flag == Flag.FLAGGED)
-                {
-                    holder.flagged = newState;
+                    messageList.add(holder.message);
+                    if (flag == Flag.SEEN)
+                    {
+                        holder.read = newState;
+                    }
+                    else if (flag == Flag.FLAGGED)
+                    {
+                        holder.flagged = newState;
+                    }
                 }
             }
         }
@@ -2994,12 +3026,15 @@ public class MessageList
     {
         List<Message> messageList = new ArrayList<Message>();
         List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                removeHolderList.add(holder);
-                messageList.add(holder.message);
+                if (holder.selected)
+                {
+                    removeHolderList.add(holder);
+                    messageList.add(holder.message);
+                }
             }
         }
         mAdapter.removeMessages(removeHolderList);
@@ -3015,16 +3050,20 @@ public class MessageList
         {
             return;
         }
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                Message message = holder.message;
-                if (mController.isMoveCapable(message) == false)
+                if (holder.selected)
                 {
-                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                    toast.show();
-                    return;
+                    Message message = holder.message;
+                    if (mController.isMoveCapable(message) == false)
+                    {
+                        Toast toast = Toast.makeText(this,
+                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
                 }
             }
         }
@@ -3046,19 +3085,23 @@ public class MessageList
         List<Message> messageList = new ArrayList<Message>();
 
         List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                Message message = holder.message;
-                if (mController.isMoveCapable(message) == false)
+                if (holder.selected)
                 {
-                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                    toast.show();
-                    return;
+                    Message message = holder.message;
+                    if (mController.isMoveCapable(message) == false)
+                    {
+                        Toast toast = Toast.makeText(this,
+                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
+                    messageList.add(holder.message);
+                    removeHolderList.add(holder);
                 }
-                messageList.add(holder.message);
-                removeHolderList.add(holder);
             }
         }
         mAdapter.removeMessages(removeHolderList);
@@ -3074,17 +3117,20 @@ public class MessageList
         {
             return;
         }
-        Account account = null;
-        for (MessageInfoHolder holder : mAdapter.messages)
+
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                Message message = holder.message;
-                if (mController.isMoveCapable(message) == false)
+                if (holder.selected)
                 {
-                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                    toast.show();
-                    return;
+                    Message message = holder.message;
+                    if (mController.isMoveCapable(message) == false)
+                    {
+                        Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
                 }
             }
         }
@@ -3103,17 +3149,20 @@ public class MessageList
         {
             return;
         }
-        Account account = null;
-        for (MessageInfoHolder holder : mAdapter.messages)
+
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                Message message = holder.message;
-                if (mController.isMoveCapable(message) == false)
+                if (holder.selected)
                 {
-                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                    toast.show();
-                    return;
+                    Message message = holder.message;
+                    if (mController.isMoveCapable(message) == false)
+                    {
+                        Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
                 }
             }
         }
@@ -3132,16 +3181,20 @@ public class MessageList
         {
             return;
         }
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                Message message = holder.message;
-                if (mController.isCopyCapable(message) == false)
+                if (holder.selected)
                 {
-                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                    toast.show();
-                    return;
+                    Message message = holder.message;
+                    if (mController.isCopyCapable(message) == false)
+                    {
+                        Toast toast = Toast.makeText(this,
+                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
                 }
             }
         }
@@ -3162,21 +3215,24 @@ public class MessageList
         }
         List<Message> messageList = new ArrayList<Message>();
 
-        for (MessageInfoHolder holder : mAdapter.messages)
+        synchronized (mAdapter.messages)
         {
-            if (holder.selected)
+            for (MessageInfoHolder holder : mAdapter.messages)
             {
-                Message message = holder.message;
-                if (mController.isCopyCapable(message) == false)
+                if (holder.selected)
                 {
-                    Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
-                    toast.show();
-                    return;
+                    Message message = holder.message;
+                    if (mController.isCopyCapable(message) == false)
+                    {
+                        Toast toast = Toast.makeText(this,
+                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                        toast.show();
+                        return;
+                    }
+                    messageList.add(holder.message);
                 }
-                messageList.add(holder.message);
             }
         }
-
         mController.copyMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), folderName, null);
     }
 }
