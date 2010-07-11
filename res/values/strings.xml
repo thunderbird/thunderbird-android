@@ -498,7 +498,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_hide_buttons_always">Always</string>
 
     <string name="account_settings_enable_move_buttons_label">Enable move buttons</string>
-    <string name="account_settings_enable_move_buttons_summary">Show the Archive, Move, and Spam button.</string>
+    <string name="account_settings_enable_move_buttons_summary">Show the Archive, Move, and Spam buttons.</string>
     <string name="account_settings_hide_move_buttons_label">Scroll move buttons</string>
 
     <string name="account_settings_composition">Writing messages</string>
