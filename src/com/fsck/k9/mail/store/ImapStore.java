@@ -908,8 +908,8 @@ public class ImapStore extends Store
             return mMessageCount;
         }
 
-        @Override
-        public int getUnreadMessageCount() throws MessagingException
+
+        private int getMessageCount(String criteria) throws MessagingException
         {
             checkOpen();
             try
@@ -917,7 +917,7 @@ public class ImapStore extends Store
                 int count = 0;
                 int start = 1; 
 
-                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* UNSEEN NOT DELETED", start));
+                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* "+criteria, start));
                 for (ImapResponse response : responses)
                 {
                     if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH"))
@@ -931,31 +931,20 @@ public class ImapStore extends Store
             {
                 throw ioExceptionHandler(mConnection, ioe);
             }
+
+
+        }
+
+        @Override
+        public int getUnreadMessageCount() throws MessagingException
+        {
+            return getMessageCount("UNSEEN NOT DELETED");
         }
 
         @Override
         public int getFlaggedMessageCount() throws MessagingException
         {
-            checkOpen();
-            try
-            {
-                int count = 0;
-                int start = 1;
-
-                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* FLAGGED NOT DELETED", start));
-                for (ImapResponse response : responses)
-                {
-                    if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH"))
-                    {
-                        count += response.size() - 1;
-                    }
-                }
-                return count;
-            }
-            catch (IOException ioe)
-            {
-                throw ioExceptionHandler(mConnection, ioe);
-            }
+            return getMessageCount("FLAGGED NOT DELETED");
         }
 
         protected int getHighestUid()
