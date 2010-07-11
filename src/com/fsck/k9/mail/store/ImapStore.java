@@ -915,7 +915,7 @@ public class ImapStore extends Store
             try
             {
                 int count = 0;
-                int start = 1; 
+                int start = 1;
 
                 List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* "+criteria, start));
                 for (ImapResponse response : responses)

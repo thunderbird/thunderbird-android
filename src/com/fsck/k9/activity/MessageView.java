@@ -419,6 +419,8 @@ public class MessageView extends K9Activity implements OnClickListener
             });
         }
 
+
+
         public void networkError()
         {
             runOnUiThread(new Runnable()
@@ -1019,12 +1021,12 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void disableButtons()
     {
-            mArchive.setEnabled(false);
-            mMove.setEnabled(false);
-            mSpam.setEnabled(false);
-            mArchiveScrolling.setEnabled(false);
-            mMoveScrolling.setEnabled(false);
-            mSpamScrolling.setEnabled(false);
+        mArchive.setEnabled(false);
+        mMove.setEnabled(false);
+        mSpam.setEnabled(false);
+        mArchiveScrolling.setEnabled(false);
+        mMoveScrolling.setEnabled(false);
+        mSpamScrolling.setEnabled(false);
     }
 
     private void setOnClickListener(int viewCode)
@@ -1861,6 +1863,8 @@ public class MessageView extends K9Activity implements OnClickListener
             }
 
             MessageView.this.mMessage = message;
+
+
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)
                     && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
             {

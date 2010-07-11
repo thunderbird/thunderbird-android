@@ -246,7 +246,7 @@ public class Account implements BaseAccount
         maximumPolledMessageAge = preferences.getPreferences().getInt(mUuid
                                   + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = preferences.getPreferences().getInt(mUuid
-                                  + ".maximumAutoDownloadMessageSize", 32768);
+                                         + ".maximumAutoDownloadMessageSize", 32768);
         mQuotePrefix = preferences.getPreferences().getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         for (String type : networkTypes)
         {

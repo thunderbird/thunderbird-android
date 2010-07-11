@@ -374,7 +374,7 @@ public class MimeUtility
                          * See if there is conversion from the MIME charset to the Java one.
                          */
                         charset = CharsetUtil.toJavaCharset(originalCharset);
-                        
+
                         if (charset == null)
                         {
                             return String.format(K9.app.getString(R.string.charset_not_found), originalCharset);
