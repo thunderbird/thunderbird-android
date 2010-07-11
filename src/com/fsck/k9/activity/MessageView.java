@@ -106,6 +106,8 @@ public class MessageView extends K9Activity implements OnClickListener
     View next_scrolling;
     View previous;
     View previous_scrolling;
+
+    private view mDelete;
     private View mArchive;
     private View mMove;
     private View mSpam;
@@ -836,6 +838,8 @@ public class MessageView extends K9Activity implements OnClickListener
         next_scrolling = findViewById(R.id.next_scrolling);
         previous_scrolling = findViewById(R.id.previous_scrolling);
 
+        mDelete = findViewById(R.id.delete);
+
         mArchive = findViewById(R.id.archive);
         mMove = findViewById(R.id.move);
         mSpam = findViewById(R.id.spam);
@@ -936,8 +940,26 @@ public class MessageView extends K9Activity implements OnClickListener
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
+        setupDisplayMessageButtons();
+
+        MessagingController.getInstance(getApplication()).loadMessageForView(
+            mAccount,
+            mMessageReference.folderName,
+            mMessageReference.uid,
+            mListener);
+
+
+        mTopView.scrollTo(0, 0);
+        mMessageContentView.scrollTo(0, 0);
+    }
+
+    private void setupDisplayMessageButtons()
+    {
+
         boolean enableNext = (mNextMessage != null);
         boolean enablePrev = (mPreviousMessage != null);
+
+        mDelete.setEnabled(true);
 
         if (next.isEnabled() != enableNext)
             next.setEnabled(enableNext);
@@ -952,7 +974,7 @@ public class MessageView extends K9Activity implements OnClickListener
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
         {
-            disableButtons();
+            disableMoveButtons();
         }
         else
         {
@@ -971,16 +993,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mSpamScrolling.setEnabled(enableSpam);
         }
 
-        MessagingController.getInstance(getApplication()).loadMessageForView(
-            mAccount,
-            mMessageReference.folderName,
-            mMessageReference.uid,
-            mListener);
-
-        mTopView.scrollTo(0, 0);
-        mMessageContentView.scrollTo(0, 0);
     }
-
 
     private void showButtons()
     {
@@ -1018,8 +1031,17 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-
     private void disableButtons()
+    {
+        disableMoveButtons();
+        next.setEnabled(false);
+        next_scrolling.setEnabled(false);
+        previous.setEnabled(false);
+        previous_scrolling.setEnabled(false);
+        mDelete.setEnabled(false);
+    }
+
+    private void disableMoveButtons()
     {
         mArchive.setEnabled(false);
         mMove.setEnabled(false);
@@ -1028,6 +1050,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mMoveScrolling.setEnabled(false);
         mSpamScrolling.setEnabled(false);
     }
+
 
     private void setOnClickListener(int viewCode)
     {
