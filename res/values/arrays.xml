@@ -110,7 +110,6 @@
         <item>@string/account_settings_autodownload_message_size_512</item>
         <item>@string/account_settings_autodownload_message_size_1024</item>
         <item>@string/account_settings_autodownload_message_size_2048</item>
-        <item>@string/account_settings_autodownload_message_size_0</item>
     </string-array>
 
     <string-array name="account_settings_autodownload_message_size_values">
@@ -126,7 +125,6 @@
         <item>524288</item>
         <item>1048576</item>
         <item>2097152</item>
-        <item>0</item>
     </string-array>
 
     <string-array name="account_settings_folder_display_mode_entries">
