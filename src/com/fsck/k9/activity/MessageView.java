@@ -95,6 +95,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private CheckBox mFlagged;
     private int defaultSubjectColor;
     private WebView mMessageContentView;
+    private LinearLayout mHeaderContainer;
     private LinearLayout mAttachments;
     private LinearLayout mCcContainerView;
     private TextView mAdditionalHeadersView;
@@ -652,6 +653,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         setContentView(R.layout.message_view);
 
+        mHeaderContainer = (LinearLayout)findViewById(R.id.header_container);
 
         mFromView = (TextView)findViewById(R.id.from);
         mToView = (TextView)findViewById(R.id.to);
