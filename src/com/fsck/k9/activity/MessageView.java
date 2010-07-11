@@ -1195,7 +1195,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onMove()
     {
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if ((MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+                || (mMessage == null))
         {
             return;
         }
@@ -1215,7 +1216,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onCopy()
     {
-        if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+        if ((MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+                || (mMessage == null))
         {
             return;
         }
