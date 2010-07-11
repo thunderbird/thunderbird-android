@@ -915,11 +915,8 @@ public class ImapStore extends Store
             try
             {
                 int count = 0;
-                int start = mMessageCount - 299;
-                if (start < 1)
-                {
-                    start = 1;
-                }
+                int start = 1; 
+
                 List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* UNSEEN NOT DELETED", start));
                 for (ImapResponse response : responses)
                 {
@@ -943,11 +940,8 @@ public class ImapStore extends Store
             try
             {
                 int count = 0;
-                int start = mMessageCount - 299;
-                if (start < 1)
-                {
-                    start = 1;
-                }
+                int start = 1;
+
                 List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* FLAGGED NOT DELETED", start));
                 for (ImapResponse response : responses)
                 {
