@@ -2793,6 +2793,7 @@ public class MessageList
                         if (!holder.flagged)
                         {
                             newState = true;
+                            break;
                         }
                     }
                     else
@@ -2800,6 +2801,7 @@ public class MessageList
                         if (!holder.read)
                         {
                             newState = true;
+                            break;
                         }
                     }
                 }
