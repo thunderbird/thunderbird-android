@@ -76,12 +76,6 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public Date getReceivedDate()
-    {
-        return null;
-    }
-
-    @Override
     public Date getSentDate()
     {
         if (mSentDate == null)
@@ -156,7 +150,10 @@ public class MimeMessage extends Message
             return contentDisposition;
         }
     }
-
+    public String getContentId() throws MessagingException
+    {
+        return null;
+    }
     public String getMimeType() throws MessagingException
     {
         return MimeUtility.getHeaderParameter(getContentType(), null);

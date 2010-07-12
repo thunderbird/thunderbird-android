@@ -19,6 +19,13 @@
     <PreferenceCategory android:title="@string/display_preferences" android:key="global_preferences">
 
         <ListPreference
+            android:key="language"
+            android:title="@string/settings_language_label"
+            android:entries="@array/settings_language_entries"
+            android:entryValues="@array/settings_language_values"
+            android:dialogTitle="@string/settings_language_label" />
+
+        <ListPreference
             android:key="theme"
             android:title="@string/settings_theme_label"
             android:entries="@array/settings_theme_entries"

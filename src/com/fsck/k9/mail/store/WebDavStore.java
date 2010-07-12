@@ -1537,9 +1537,8 @@ public class WebDavStore extends Store
 
             if (fp.contains(FetchProfile.Item.BODY_SANE))
             {
-                fetchMessages(messages, listener, FETCH_BODY_SANE_SUGGESTED_SIZE / 76);
+                fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
             }
-
             if (fp.contains(FetchProfile.Item.BODY))
             {
                 fetchMessages(messages, listener, -1);

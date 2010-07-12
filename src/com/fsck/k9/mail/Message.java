@@ -29,14 +29,10 @@ public abstract class Message implements Part, Body
         {
             return false;
         }
-        Date myDate = getSentDate();
+        Date myDate = getInternalDate();
         if (myDate == null)
         {
-            myDate = getInternalDate();
-        }
-        if (myDate == null)
-        {
-            myDate = getReceivedDate();
+            myDate = getSentDate();
         }
         if (myDate != null)
         {
@@ -98,8 +94,6 @@ public abstract class Message implements Part, Body
     {
         this.mInternalDate = internalDate;
     }
-
-    public abstract Date getReceivedDate();
 
     public abstract Date getSentDate();
 

@@ -908,19 +908,16 @@ public class ImapStore extends Store
             return mMessageCount;
         }
 
-        @Override
-        public int getUnreadMessageCount() throws MessagingException
+
+        private int getRemoteMessageCount(String criteria) throws MessagingException
         {
             checkOpen();
             try
             {
                 int count = 0;
-                int start = mMessageCount - 299;
-                if (start < 1)
-                {
-                    start = 1;
-                }
-                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* UNSEEN NOT DELETED", start));
+                int start = 1;
+
+                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* "+criteria, start));
                 for (ImapResponse response : responses)
                 {
                     if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH"))
@@ -934,34 +931,20 @@ public class ImapStore extends Store
             {
                 throw ioExceptionHandler(mConnection, ioe);
             }
+
+
+        }
+
+        @Override
+        public int getUnreadMessageCount() throws MessagingException
+        {
+            return getRemoteMessageCount("UNSEEN NOT DELETED");
         }
 
         @Override
         public int getFlaggedMessageCount() throws MessagingException
         {
-            checkOpen();
-            try
-            {
-                int count = 0;
-                int start = mMessageCount - 299;
-                if (start < 1)
-                {
-                    start = 1;
-                }
-                List<ImapResponse> responses = executeSimpleCommand(String.format("SEARCH %d:* FLAGGED NOT DELETED", start));
-                for (ImapResponse response : responses)
-                {
-                    if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH"))
-                    {
-                        count += response.size() - 1;
-                    }
-                }
-                return count;
-            }
-            catch (IOException ioe)
-            {
-                throw ioExceptionHandler(mConnection, ioe);
-            }
+            return getRemoteMessageCount("FLAGGED NOT DELETED");
         }
 
         protected int getHighestUid()
@@ -1205,7 +1188,7 @@ public class ImapStore extends Store
             }
             if (fp.contains(FetchProfile.Item.BODY_SANE))
             {
-                fetchFields.add(String.format("BODY.PEEK[]<0.%d>", FETCH_BODY_SANE_SUGGESTED_SIZE));
+                fetchFields.add(String.format("BODY.PEEK[]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize()));
             }
             if (fp.contains(FetchProfile.Item.BODY))
             {
@@ -1327,7 +1310,7 @@ public class ImapStore extends Store
             String partId = parts[0];
             if ("TEXT".equalsIgnoreCase(partId))
             {
-                fetch = String.format("BODY.PEEK[TEXT]<0.%d>", FETCH_BODY_SANE_SUGGESTED_SIZE);
+                fetch = String.format("BODY.PEEK[TEXT]<0.%d>", mAccount.getMaximumAutoDownloadMessageSize());
             }
             else
             {
@@ -2236,6 +2219,7 @@ public class ImapStore extends Store
 
                 try
                 {
+                    // Yahoo! requires a custom IMAP command to work right over a non-3G network
                     if (mHost.endsWith("yahoo.com"))
                     {
                         if (K9.DEBUG)
@@ -2684,12 +2668,12 @@ public class ImapStore extends Store
             }
 
 
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "Sending IMAP command " + commandToLog + " on connection " + getLogId());
+            //if (K9.DEBUG)
+            //    Log.v(K9.LOG_TAG, "Sending IMAP command " + commandToLog + " on connection " + getLogId());
 
             String tag = sendCommand(command, sensitive);
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
+            //if (K9.DEBUG)
+            //    Log.v(K9.LOG_TAG, "Sent IMAP command " + commandToLog + " with tag " + tag + " for " + getLogId());
 
             ArrayList<ImapResponse> responses = new ArrayList<ImapResponse>();
             ImapResponse response;

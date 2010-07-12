@@ -96,6 +96,13 @@
             android:dialogTitle="@string/account_settings_message_age_label" />
 
         <ListPreference
+            android:key="account_autodownload_size"
+            android:title="@string/account_settings_autodownload_message_size_label"
+            android:entries="@array/account_settings_autodownload_message_size_entries"
+            android:entryValues="@array/account_settings_autodownload_message_size_values"
+            android:dialogTitle="@string/account_settings_autodownload_message_size_label" />
+
+        <ListPreference
             android:key="folder_sync_mode"
             android:title="@string/account_settings_folder_sync_mode_label"
             android:entries="@array/account_settings_folder_sync_mode_entries"

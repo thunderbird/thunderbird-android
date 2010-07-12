@@ -40,6 +40,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -52,7 +53,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,6 +95,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private CheckBox mFlagged;
     private int defaultSubjectColor;
     private WebView mMessageContentView;
+    private LinearLayout mHeaderContainer;
     private LinearLayout mAttachments;
     private LinearLayout mCcContainerView;
     private TextView mAdditionalHeadersView;
@@ -105,12 +106,15 @@ public class MessageView extends K9Activity implements OnClickListener
     View next_scrolling;
     View previous;
     View previous_scrolling;
+
+    private View mDelete;
     private View mArchive;
     private View mMove;
     private View mSpam;
     private View mArchiveScrolling;
     private View mMoveScrolling;
     private View mSpamScrolling;
+    private ToggleScrollView mToggleScrollView;
 
     private Account mAccount;
     private MessageReference mMessageReference;
@@ -151,6 +155,17 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev)
+    {
+        if (ev.getAction() == MotionEvent.ACTION_UP)
+        {
+            // Text selection is finished. Allow scrolling again.
+            mToggleScrollView.setScrolling(true);
+        }
+
+        return super.dispatchTouchEvent(ev);
+    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
@@ -173,6 +188,16 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         switch (keyCode)
         {
+            case KeyEvent.KEYCODE_SHIFT_LEFT:
+            case KeyEvent.KEYCODE_SHIFT_RIGHT:
+            {
+                /*
+                 * Selecting text started via shift key. Disable scrolling as
+                 * this causes problems when selecting text.
+                 */
+                mToggleScrollView.setScrolling(false);
+                break;
+            }
             case KeyEvent.KEYCODE_DEL:
             {
                 onDelete();
@@ -227,13 +252,13 @@ public class MessageView extends K9Activity implements OnClickListener
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P:
             {
-                onPrevious(K9.isAnimations());
+                onPrevious(K9.showAnimations());
                 return true;
             }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K:
             {
-                onNext(K9.isAnimations());
+                onNext(K9.showAnimations());
                 return true;
             }
             case KeyEvent.KEYCODE_Z:
@@ -396,6 +421,8 @@ public class MessageView extends K9Activity implements OnClickListener
             });
         }
 
+
+
         public void networkError()
         {
             runOnUiThread(new Runnable()
@@ -476,6 +503,37 @@ public class MessageView extends K9Activity implements OnClickListener
             });
 
         }
+
+
+
+        private void showHeaderContainer()
+        {
+            {
+                runOnUiThread(new Runnable()
+                {
+                    public void run()
+                    {
+                        mHeaderContainer.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        }
+
+        private void hideHeaderContainer()
+        {
+            {
+                runOnUiThread(new Runnable()
+                {
+                    public void run()
+                    {
+                        mHeaderContainer.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }
+
+
+
 
         /**
          * Clear the text field for the additional headers display if they are
@@ -630,6 +688,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         setContentView(R.layout.message_view);
 
+        mHeaderContainer = (LinearLayout)findViewById(R.id.header_container);
 
         mFromView = (TextView)findViewById(R.id.from);
         mToView = (TextView)findViewById(R.id.to);
@@ -644,7 +703,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         mDateView = (TextView)findViewById(R.id.date);
         mTimeView = (TextView)findViewById(R.id.time);
-        mTopView = (ScrollView)findViewById(R.id.top_view);
+        mTopView = mToggleScrollView = (ToggleScrollView)findViewById(R.id.top_view);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
@@ -779,6 +838,8 @@ public class MessageView extends K9Activity implements OnClickListener
         next_scrolling = findViewById(R.id.next_scrolling);
         previous_scrolling = findViewById(R.id.previous_scrolling);
 
+        mDelete = findViewById(R.id.delete);
+
         mArchive = findViewById(R.id.archive);
         mMove = findViewById(R.id.move);
         mSpam = findViewById(R.id.spam);
@@ -875,11 +936,30 @@ public class MessageView extends K9Activity implements OnClickListener
         mMessageContentView.getSettings().setBlockNetworkImage(true);
         K9.setBlockNetworkLoads(mMessageContentView.getSettings(), true);
 
+        mHandler.hideHeaderContainer();
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
+        setupDisplayMessageButtons();
+
+        MessagingController.getInstance(getApplication()).loadMessageForView(
+            mAccount,
+            mMessageReference.folderName,
+            mMessageReference.uid,
+            mListener);
+
+
+        mTopView.scrollTo(0, 0);
+        mMessageContentView.scrollTo(0, 0);
+    }
+
+    private void setupDisplayMessageButtons()
+    {
+
         boolean enableNext = (mNextMessage != null);
         boolean enablePrev = (mPreviousMessage != null);
+
+        mDelete.setEnabled(true);
 
         if (next.isEnabled() != enableNext)
             next.setEnabled(enableNext);
@@ -894,12 +974,7 @@ public class MessageView extends K9Activity implements OnClickListener
         // If moving isn't support at all, then all of them must be disabled anyway.
         if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
         {
-            mArchive.setEnabled(false);
-            mMove.setEnabled(false);
-            mSpam.setEnabled(false);
-            mArchiveScrolling.setEnabled(false);
-            mMoveScrolling.setEnabled(false);
-            mSpamScrolling.setEnabled(false);
+            disableMoveButtons();
         }
         else
         {
@@ -918,16 +993,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mSpamScrolling.setEnabled(enableSpam);
         }
 
-        MessagingController.getInstance(getApplication()).loadMessageForView(
-            mAccount,
-            mMessageReference.folderName,
-            mMessageReference.uid,
-            mListener);
-
-        mTopView.scrollTo(0, 0);
-        mMessageContentView.scrollTo(0, 0);
     }
-
 
     private void showButtons()
     {
@@ -965,6 +1031,27 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
+    private void disableButtons()
+    {
+        disableMoveButtons();
+        next.setEnabled(false);
+        next_scrolling.setEnabled(false);
+        previous.setEnabled(false);
+        previous_scrolling.setEnabled(false);
+        mDelete.setEnabled(false);
+    }
+
+    private void disableMoveButtons()
+    {
+        mArchive.setEnabled(false);
+        mMove.setEnabled(false);
+        mSpam.setEnabled(false);
+        mArchiveScrolling.setEnabled(false);
+        mMoveScrolling.setEnabled(false);
+        mSpamScrolling.setEnabled(false);
+    }
+
+
     private void setOnClickListener(int viewCode)
     {
         View thisView = findViewById(viewCode);
@@ -996,6 +1083,9 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
+            // Disable the delete button after it's tapped (to try to prevent
+            // accidental clicks)
+            disableButtons();
             Message messageToDelete = mMessage;
 
             if (K9.messageViewReturnToList())
@@ -1070,19 +1160,19 @@ public class MessageView extends K9Activity implements OnClickListener
 
         if (mLastDirection == NEXT && mNextMessage != null)
         {
-            onNext(K9.isAnimations());
+            onNext(K9.showAnimations());
         }
         else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
         {
-            onPrevious(K9.isAnimations());
+            onPrevious(K9.showAnimations());
         }
         else if (mNextMessage != null)
         {
-            onNext(K9.isAnimations());
+            onNext(K9.showAnimations());
         }
         else if (mPreviousMessage != null)
         {
-            onPrevious(K9.isAnimations());
+            onPrevious(K9.showAnimations());
         }
         else
         {
@@ -1173,7 +1263,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onMove()
     {
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if ((MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+                || (mMessage == null))
         {
             return;
         }
@@ -1193,7 +1284,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onCopy()
     {
-        if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+        if ((MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+                || (mMessage == null))
         {
             return;
         }
@@ -1307,10 +1399,15 @@ public class MessageView extends K9Activity implements OnClickListener
             return;
         }
         mLastDirection = NEXT;
+
+        disableButtons();
+
         if (animate)
         {
             mTopView.startAnimation(outToLeftAnimation());
         }
+
+
         displayMessage(mNextMessage);
         next.requestFocus();
     }
@@ -1325,6 +1422,9 @@ public class MessageView extends K9Activity implements OnClickListener
         }
 
         mLastDirection = PREVIOUS;
+
+        disableButtons();
+
         if (animate)
         {
             mTopView.startAnimation(inFromRightAnimation());
@@ -1474,11 +1574,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 break;
             case R.id.next:
             case R.id.next_scrolling:
-                onNext(K9.isAnimations());
+                onNext(K9.showAnimations());
                 break;
             case R.id.previous:
             case R.id.previous_scrolling:
-                onPrevious(K9.isAnimations());
+                onPrevious(K9.showAnimations());
                 break;
             case R.id.download:
                 onDownloadAttachment((Attachment) view.getTag());
@@ -1535,6 +1635,9 @@ public class MessageView extends K9Activity implements OnClickListener
                 break;
             case R.id.show_full_header:
                 onShowAdditionalHeaders();
+                break;
+            case R.id.select_text:
+                emulateShiftHeld(mMessageContentView);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -1786,6 +1889,8 @@ public class MessageView extends K9Activity implements OnClickListener
             }
 
             MessageView.this.mMessage = message;
+
+
             if (!message.isSet(Flag.X_DOWNLOADED_FULL)
                     && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
             {
@@ -1800,6 +1905,7 @@ public class MessageView extends K9Activity implements OnClickListener
             try
             {
                 setHeaders(account, folder, uid, message);
+                mHandler.showHeaderContainer();
             }
             catch (MessagingException me)
             {
@@ -1825,6 +1931,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 {
 
                     setHeaders(account, folder, uid, message);
+                    mHandler.showHeaderContainer();
                 }
 
                 MessageView.this.mMessage = message;
@@ -1867,7 +1974,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         public void run()
                         {
-                            mMessageContentView.loadDataWithBaseURL("email://", emailText, "text/html", "utf-8", null);
+                            mMessageContentView.loadDataWithBaseURL("http://", emailText, "text/html", "utf-8", null);
                         }
                     });
                     mHandler.showShowPictures(text.contains("<img"));
@@ -1918,7 +2025,8 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         mHandler.networkError();
                     }
-                    if (!MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
+                    if ((MessageView.this.mMessage == null) ||
+                            !MessageView.this.mMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
                     {
                         mMessageContentView.loadUrl("file:///android_asset/empty.html");
                     }
@@ -2113,5 +2221,25 @@ public class MessageView extends K9Activity implements OnClickListener
         slide.setFillBefore(true);
         slide.setInterpolator(new AccelerateInterpolator());
         return slide;
+    }
+
+    /**
+     * Emulate the shift key being pressed to trigger the text selection mode
+     * of a WebView.
+     */
+    private void emulateShiftHeld(WebView view)
+    {
+        try
+        {
+            mToggleScrollView.setScrolling(false);
+
+            KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
+                                                    KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
+            shiftPressEvent.dispatch(view);
+        }
+        catch (Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Exception in emulateShiftHeld()", e);
+        }
     }
 }

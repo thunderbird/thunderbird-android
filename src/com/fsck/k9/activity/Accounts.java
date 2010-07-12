@@ -312,6 +312,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     @Override
     public void onCreate(Bundle icicle)
     {
+        super.onCreate(icicle);
+
         unreadAccount = new SearchAccount(this, false, null, null);
         unreadAccount.setDescription(getString(R.string.search_all_messages_title));
         unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
@@ -319,8 +321,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         integratedInboxAccount = new SearchAccount(this, true, null,  null);
         integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
         integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
-
-        super.onCreate(icicle);
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();

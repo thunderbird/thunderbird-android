@@ -338,7 +338,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="account_setup_incoming_webdav_server_label">Server WebDAV (Exchange)</string>
     <string name="account_setup_incoming_port_label">Port</string>
     <string name="account_setup_incoming_security_label">Typ zabezpečení</string>
-    <string name="account_setup_incoming_authtype_label">Typ autentizace</string>
+    <string name="account_setup_incoming_auth_type_label">Typ autentizace</string>
     <string name="account_setup_incoming_security_none_label">Žádné</string>
     <string name="account_setup_incoming_security_ssl_optional_label">SSL (je-li dostupné)</string>
     <string name="account_setup_incoming_security_ssl_label">SSL (vždy)</string>

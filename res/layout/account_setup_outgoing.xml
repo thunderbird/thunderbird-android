@@ -27,7 +27,8 @@
             android:singleLine="true"
             android:inputType="textUri"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_outgoing_smtp_server_label" />
         <TextView
             android:text="@string/account_setup_outgoing_security_label"
             android:layout_height="wrap_content"
@@ -37,7 +38,8 @@
         <Spinner
             android:id="@+id/account_security_type"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_outgoing_security_label" />
         <TextView
             android:text="@string/account_setup_outgoing_port_label"
             android:layout_height="wrap_content"
@@ -49,7 +51,8 @@
             android:singleLine="true"
             android:inputType="number"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_outgoing_port_label" />
         <CheckBox
             android:id="@+id/account_require_login"
             android:layout_width="fill_parent"
@@ -70,7 +73,8 @@
         <Spinner
             android:id="@+id/account_auth_type"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:contentDescription="@string/account_setup_outgoing_authentication_label" />
             <TextView
                 android:text="@string/account_setup_outgoing_username_label"
                 android:layout_height="wrap_content"
@@ -82,7 +86,8 @@
                 android:singleLine="true"
                 android:inputType="textEmailAddress"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_outgoing_username_label" />
             <TextView
                 android:text="@string/account_setup_outgoing_password_label"
                 android:layout_height="wrap_content"
@@ -95,7 +100,8 @@
                 android:singleLine="true"
                 android:inputType="textPassword"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_outgoing_password_label" />
         </LinearLayout>
         <View
             android:layout_width="fill_parent"

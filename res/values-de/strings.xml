@@ -322,7 +322,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_incoming_webdav_server_label">WebDAV(Exchange)-Server</string>
     <string name="account_setup_incoming_port_label">Port</string>
     <string name="account_setup_incoming_security_label">Sicherheitstyp</string>
-    <string name="account_setup_incoming_authtype_label">Authentifizierungstyp</string>
+    <string name="account_setup_incoming_auth_type_label">Authentifizierungstyp</string>
     <string name="account_setup_incoming_security_none_label">Keine Verschlüsselung</string>
     <string name="account_setup_incoming_security_ssl_optional_label">SSL (falls verfügbar)</string>
     <string name="account_setup_incoming_security_ssl_label">SSL (immer)</string>
