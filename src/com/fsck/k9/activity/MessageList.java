@@ -1701,9 +1701,9 @@ public class MessageList
 
     class MessageListAdapter extends BaseAdapter
     {
-        private List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
+        private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
-        private ActivityListener mListener = new ActivityListener()
+        private final ActivityListener mListener = new ActivityListener()
         {
             @Override
             public void synchronizeMailboxStarted(Account account, String folder)
@@ -2100,7 +2100,7 @@ public class MessageList
         private static final int NON_MESSAGE_ITEMS = 1;
         public int getCount()
         {
-            if (mAdapter.messages == null || mAdapter.messages.size() == 0)
+            if (mAdapter.messages.size() == 0)
             {
                 return NON_MESSAGE_ITEMS ;
             }
@@ -2845,11 +2845,11 @@ public class MessageList
         {
             newState = computeBatchDirection(false);
         }
+
         synchronized (mAdapter.messages)
         {
             for (MessageInfoHolder holder : mAdapter.messages)
             {
-
                 if (holder.selected)
                 {
                     if (v == mBatchDeleteButton)
