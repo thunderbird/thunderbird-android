@@ -379,7 +379,6 @@ public class MessageList
         intent.putExtra(EXTRA_INTEGRATE, integrate);
         intent.putExtra(EXTRA_TITLE, title);
         context.startActivity(intent);
-
     }
 
     public static void actionHandle(Context context, String title, SearchSpecification searchSpecification)
@@ -1967,7 +1966,6 @@ public class MessageList
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
             addOrUpdateMessages(account, folder, messages, verifyAgainstSearch);
-
         }
 
         private void addOrUpdateMessages(Account account, String folder, List<Message> messages, boolean verifyAgainstSearch)
@@ -2015,8 +2013,8 @@ public class MessageList
                     m.populate(message, new FolderInfoHolder(message.getFolder(), account), account);
                     needsSort = true;
                 }
-
             }
+
             if (messagesToSearch.size() > 0)
             {
                 mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(new Message[0]), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
@@ -2027,17 +2025,19 @@ public class MessageList
                     {
                         addOrUpdateMessages(account, folder, messages, false);
                     }
-
                 });
             }
+
             if (messagesToRemove.size() > 0)
             {
                 removeMessages(messagesToRemove);
             }
+
             if (messagesToAdd.size() > 0)
             {
                 mHandler.addMessages(messagesToAdd);
             }
+
             if (needsSort)
             {
                 mHandler.sortMessages();
@@ -2178,7 +2178,6 @@ public class MessageList
                     view = mInflater.inflate(R.layout.message_list_item_touchable, parent, false);
                     view.setId(R.layout.message_list_item);
                 }
-
                 else
                 {
                     view = mInflater.inflate(R.layout.message_list_item, parent, false);
@@ -2198,6 +2197,8 @@ public class MessageList
                 holder.preview = (TextView) view.findViewById(R.id.preview);
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
+                
+                // TODO: Don't create an instance of OnClickListener for every message
                 holder.flagged.setOnClickListener(new OnClickListener()
                 {
                     public void onClick(View v)
@@ -2209,55 +2210,46 @@ public class MessageList
                 });
 
                 if (mStars == false)
+                {
                     holder.flagged.setVisibility(View.GONE);
+                }
 
                 if (mCheckboxes == true)
+                {
                     holder.selected.setVisibility(View.VISIBLE);
+                }
 
-                if (holder.selected!=null)
+                if (holder.selected != null)
                 {
                     holder.selected.setOnCheckedChangeListener(holder);
                 }
+
                 view.setTag(holder);
             }
 
             if (message != null)
             {
-                holder.subject.setTypeface(null, message.read ? Typeface.NORMAL  : Typeface.BOLD);
+                holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
                 // XXX TODO there has to be some way to walk our view hierarchy and get this
                 holder.flagged.setTag((Integer)position);
-
                 holder.flagged.setChecked(message.flagged);
-                //So that the mSelectedCount is only incremented/decremented
-                //when a user checks the checkbox (vs code)
+
+                // So that the mSelectedCount is only incremented/decremented
+                // when a user checks the checkbox (vs code)
                 holder.position = -1;
                 holder.selected.setChecked(message.selected);
 
                 if (!mCheckboxes)
                 {
-                    if (message.selected == true)
-                    {
-                        holder.selected.setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
-                        holder.selected.setVisibility(View.GONE);
-                    }
+                    holder.selected.setVisibility(message.selected ? View.VISIBLE : View.GONE);
                 }
+
                 holder.chip.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
                 holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
+                view.getBackground().setAlpha(message.downloaded ? 0 : 127);
 
-                if (message.downloaded)
-                {
-                    view.getBackground().setAlpha(0);
-                }
-                else
-                {
-                    view.getBackground().setAlpha(127);
-                }
-
-                if (message.subject == null || message.subject.equals(""))
+                if ((message.subject == null) || message.subject.equals(""))
                 {
                     holder.subject.setText(getText(R.string.general_no_subject));
                 }
@@ -2268,24 +2260,34 @@ public class MessageList
 
                 if (holder.preview != null)
                 {
-                    // in the touchable UI, we have previews
-                    // otherwise, we have just a "from" line
-                    // because text views can't wrap around each other(?)
-                    // we compose a custom view containing the preview and the
-                    // from
-
-
-                    holder.preview.setText(message.sender+  " " + message.preview, TextView.BufferType.SPANNABLE);
+                    /*
+                     * In the touchable UI, we have previews. Otherwise, we
+                     * have just a "from" line.
+                     * Because text views can't wrap around each other(?) we
+                     * compose a custom view containing the preview and the
+                     * from.
+                     */
+                    holder.preview.setText(message.sender + " " + message.preview,
+                            TextView.BufferType.SPANNABLE);
                     Spannable str = (Spannable)holder.preview.getText();
 
                     // Create our span sections, and assign a format to each.
-                    str.setSpan(new TextAppearanceSpan(null ,Typeface.BOLD ,-1, holder.subject.getTextColors(), holder.subject.getLinkTextColors()), 0, message.sender.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    str.setSpan(
+                            new TextAppearanceSpan(
+                                    null,
+                                    Typeface.BOLD,
+                                    -1,
+                                    holder.subject.getTextColors(),
+                                    holder.subject.getLinkTextColors()),
+                            0,
+                            message.sender.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    );
                 }
                 else
                 {
                     holder.from.setText(message.sender);
                     holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
-
                 }
 
                 holder.date.setText(message.date);
@@ -2298,6 +2300,8 @@ public class MessageList
             }
             else
             {
+                // TODO is this branch ever reached/executed?
+
                 holder.chip.getBackground().setAlpha(0);
                 holder.subject.setText("No subject");
                 holder.subject.setTypeface(null, Typeface.NORMAL);
@@ -2312,7 +2316,6 @@ public class MessageList
                     holder.from.setText("No sender");
                     holder.from.setTypeface(null, Typeface.NORMAL);
                     holder.from.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-
                 }
 
                 holder.date.setText("No date");
@@ -2330,6 +2333,7 @@ public class MessageList
 
             holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
             holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
+
             if (mTouchView)
             {
                 holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
@@ -2497,7 +2501,6 @@ public class MessageList
                 this.uid = message.getUid();
                 this.message = m;
                 this.preview = message.getPreview();
-
             }
             catch (MessagingException me)
             {
