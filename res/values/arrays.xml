@@ -309,30 +309,168 @@
 
     <string-array name="settings_language_entries">
         <item>@string/setting_language_system</item>
-        <item>@string/setting_language_chinese</item>
-        <item>@string/setting_language_czech</item>
-        <item>@string/setting_language_english</item>
-        <item>@string/setting_language_german</item>
-        <item>@string/setting_language_france</item>
-        <item>@string/setting_language_italian</item>
-        <item>@string/setting_language_japanese</item>
-        <item>@string/setting_language_polish</item>
-        <item>@string/setting_language_spanish</item>
-        <item>@string/setting_language_russian</item>
+        <item>Afrikaans</item>
+        <item>Bahasa indonesia</item>
+        <item>Bahasa melayu</item>
+        <item>Bamanankan</item>
+        <item>Català</item>
+        <item>Cymraeg</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Dholuo</item>
+        <item>Eesti</item>
+        <item>Español</item>
+        <item>Fulfulde, Pulaar, Pular</item>
+        <item>Gaeilge</item>
+        <item>Galego</item>
+        <item>Hausa</item>
+        <item>Hrvatski</item>
+        <item>Kinyarwanda</item>
+        <item>Kirundi</item>
+        <item>Kiswahili</item>
+        <item>Latviešu</item>
+        <item>Lietuviškai</item>
+        <item>Magyar</item>
+        <item>Malti</item>
+        <item>Nederlands</item>
+        <item>Norsk</item>
+        <item>Pyccĸий</item>
+        <item>Română</item>
+        <item>Slovenčina</item>
+        <item>Slovenščina</item>
+        <item>Somali</item>
+        <item>Српски</item>
+        <item>Tiếng Việt</item>
+        <item>Tϋrkçe</item>
+        <item>Wolof</item>
+        <item>Yorùbá</item>
+        <item>Azərbaycan</item>
+        <item>Euskera</item>
+        <item>Français</item>
+        <item>isiXhosa</item>
+        <item>isiZulu</item>
+        <item>Italiano</item>
+        <item>O\'zbek</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Shqip</item>
+        <item>Suomi</item>
+        <item>Svenska</item>
+        <item>Íslenska</item>
+        <item>Čeština</item>
+        <item>Ɛʋɛ</item>
+        <item>Ελληνικά</item>
+        <item>Беларуская</item>
+        <item>Български</item>
+        <item>Кыргыз</item>
+        <item>Македонски</item>
+        <item>Українська</item>
+        <item>аҧсуа бызшәа</item>
+        <item>Қазақ</item>
+        <item>Հայերեն</item>
+        <item>עברית</item>
+        <item>اردو</item>
+        <item>العربية</item>
+        <item>فارسی</item>
+        <item>پښتو</item>
+        <item>हिंदी</item>
+        <item>తెలుగు</item>
+        <item>ಕನ್ನಡ</item>
+        <item>ภาษาไทย</item>
+        <item>አማርኛ</item>
+        <item>中文</item>
+        <item>日本語</item>
+        <item>한국어</item>
     </string-array>
 
     <string-array name="settings_language_values">
         <item></item>
-        <item>zh</item>
-        <item>cs</item>
-        <item>en</item>
+        <item>af</item>
+        <item>id</item>
+        <item>ms</item>
+        <item>bm</item>
+        <item>ca</item>
+        <item>cy</item>
+        <item>da</item>
         <item>de</item>
+        <item>luo</item>
+        <item>et</item>
+        <item>es</item>
+        <item>ff</item>
+        <item>ga</item>
+        <item>gl</item>
+        <item>ha</item>
+        <item>hr</item>
+        <item>rw</item>
+        <item>rn</item>
+        <item>sw</item>
+        <item>lv</item>
+        <item>lt</item>
+        <item>hu</item>
+        <item>mt</item>
+        <item>nl</item>
+        <item>no</item>
+        <item>ru</item>
+        <item>ro</item>
+        <item>sk</item>
+        <item>sl</item>
+        <item>so</item>
+        <item>sr</item>
+        <item>vi</item>
+        <item>tr</item>
+        <item>wo</item>
+        <item>yo</item>
+        <item>az</item>
+        <item>eu</item>
+        <item>fr</item>
+        <item>xs</item>
+        <item>zu</item>
+        <item>it</item>
+        <item>uz</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>sq</item>
+        <item>fi</item>
+        <item>sv</item>
+        <item>is</item>
+        <item>cs</item>
+        <item>ee</item>
+        <item>el</item>
+        <item>be</item>
+        <item>bg</item>
+        <item>ky</item>
+        <item>mk</item>
+        <item>uk</item>
+        <item>ab</item>
+        <item>kk</item>
+        <item>hy</item>
+        <item>he</item>
+        <item>ur</item>
+        <item>ar</item>
+        <item>fa</item>
+        <item>ps</item>
+        <item>hi</item>
+        <item>te</item>
+        <item>kn</item>
+        <item>th</item>
+        <item>am</item>
+        <item>zh</item>
+        <item>ja</item>
+        <item>ko</item>
+    </string-array>
+
+    <string-array name="supported_languages">
+        <item></item>
+        <item>cs</item>
+        <item>de</item>
+        <item>en</item>
+        <item>es</item>
         <item>fr</item>
         <item>it</item>
         <item>ja</item>
         <item>pl</item>
-        <item>es</item>
         <item>ru</item>
+        <item>zh</item>
     </string-array>
 
     <string-array name="settings_theme_entries">

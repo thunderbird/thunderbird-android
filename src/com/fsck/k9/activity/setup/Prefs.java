@@ -1,5 +1,9 @@
 package com.fsck.k9.activity.setup;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Vector;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +13,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.view.KeyEvent;
+
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -81,6 +86,21 @@ public class Prefs extends K9PreferenceActivity
         addPreferencesFromResource(R.xml.global_preferences);
 
         mLanguage = (ListPreference) findPreference(PREFERENCE_LANGUAGE);
+        Vector<CharSequence> entryVector = new Vector<CharSequence>(Arrays.asList(mLanguage.getEntries()));
+        Vector<CharSequence> entryValueVector = new Vector<CharSequence>(Arrays.asList(mLanguage.getEntryValues()));
+        String supportedLanguages[] = getResources().getStringArray(R.array.supported_languages);
+        HashSet<String> supportedLanguageSet = new HashSet<String>(Arrays.asList(supportedLanguages));
+        for (int i = entryVector.size() - 1; i > -1; --i)
+        {
+            if (!supportedLanguageSet.contains(entryValueVector.get(i)))
+            {
+                entryVector.remove(i);
+                entryValueVector.remove(i);
+            }
+        }
+        CharSequence dummy[] = new CharSequence[0];
+        mLanguage.setEntries(entryVector.toArray(dummy));
+        mLanguage.setEntryValues(entryValueVector.toArray(dummy));
         mLanguage.setValue(K9.getK9Language());
         mLanguage.setSummary(mLanguage.getEntry());
         mLanguage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
