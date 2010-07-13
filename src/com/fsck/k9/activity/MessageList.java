@@ -1716,6 +1716,23 @@ public class MessageList
                 }
                 mHandler.refreshTitle();
             }
+            @Override
+            public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total)
+            {
+                super.synchronizeMailboxHeadersProgress(account,folder,completed, total);
+                mHandler.refreshTitle();
+            }
+
+            @Override
+            public void synchronizeMailboxHeadersFinished(Account account, String folder,
+                    int total, int completed)
+            {
+                super.synchronizeMailboxHeadersFinished(account,folder, total, completed);
+                mHandler.refreshTitle();
+            }
+
+
+
 
             @Override
             public void synchronizeMailboxFinished(Account account, String folder,

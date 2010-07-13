@@ -1092,9 +1092,24 @@ public class MessagingController implements Runnable
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "SYNC: About to get messages " + remoteStart + " through " + remoteEnd + " for folder " + folder);
 
+                final AtomicInteger headerProgress = new AtomicInteger(0);
+                for (MessagingListener l : getListeners(listener))
+                {
+                    l.synchronizeMailboxHeadersStarted(account, folder);
+                }
+
+
                 remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteEnd, earliestDate, null);
+
+                int messageCount = remoteMessageArray.length;
+
                 for (Message thisMess : remoteMessageArray)
                 {
+                    headerProgress.incrementAndGet();
+                    for (MessagingListener l : getListeners(listener))
+                    {
+                        l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
+                    }
                     Message localMessage = localUidMap.get(thisMess.getUid());
                     if (localMessage == null || localMessage.olderThan(earliestDate) == false)
                     {
@@ -1106,6 +1121,10 @@ public class MessagingController implements Runnable
                     Log.v(K9.LOG_TAG, "SYNC: Got " + remoteUidMap.size() + " messages for folder " + folder);
 
                 remoteMessageArray = null;
+                for (MessagingListener l : getListeners(listener))
+                {
+                    l.synchronizeMailboxHeadersFinished(account, folder, headerProgress.get(), remoteUidMap.size());
+                }
 
             }
             else if (remoteMessageCount < 0)
