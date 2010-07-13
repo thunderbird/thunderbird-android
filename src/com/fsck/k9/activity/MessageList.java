@@ -1,6 +1,13 @@
 package com.fsck.k9.activity;
 // import android.os.Debug;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,32 +22,54 @@ import android.text.style.TextAppearanceSpan;
 import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.View.OnClickListener;
+import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.widget.*;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import com.fsck.k9.*;
-import com.fsck.k9.activity.setup.Prefs;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.AccountStats;
+import com.fsck.k9.FontSizes;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.SearchSpecification;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
+import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.MessagingController.SORT_TYPE;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -418,7 +447,7 @@ public class MessageList
     {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
 
-        // Only set "touchable" when we're first starting up the 
+        // Only set "touchable" when we're first starting up the
         // activity. otherwise we get force closes when the user
         // toggles it midstream
         mTouchView = K9.messageListTouchable();
@@ -1930,11 +1959,11 @@ public class MessageList
                  * 2010-06-21 - cketti
                  * Added null pointer check. Not sure what's causing 'holder'
                  * to be null. See log provided in issue 1749, comment #15.
-                 * 
+                 *
                  * Please remove this comment once the cause was found and the
                  * bug(?) fixed.
                  */
-                if ((holder != null) && 
+                if ((holder != null) &&
                         holder.message.equalsReference(messageReference))
                 {
                     return holder;
