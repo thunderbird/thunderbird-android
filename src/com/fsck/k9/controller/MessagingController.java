@@ -359,8 +359,8 @@ public class MessagingController implements Runnable
 
     public Set<MessagingListener> getListeners(MessagingListener listener)
     {
-        Set<MessagingListener> listeners = mListeners;
-        if (listener != null && getListeners().contains(listener) == false)
+        Set<MessagingListener> listeners = new CopyOnWriteArraySet<MessagingListener>(mListeners);
+        if (listener != null)
         {
             listeners.add(listener);
         }
