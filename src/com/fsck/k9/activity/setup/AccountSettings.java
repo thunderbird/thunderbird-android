@@ -34,10 +34,14 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_HIDE_BUTTONS = "hide_buttons_enum";
+    private static final String PREFERENCE_HIDE_MOVE_BUTTONS = "hide_move_buttons_enum";
+    private static final String PREFERENCE_ENABLE_MOVE_BUTTONS = "enable_move_buttons";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
+    private static final String PREFERENCE_VIBRATE_PATTERN = "account_vibrate_pattern";
+    private static final String PREFERENCE_VIBRATE_TIMES = "account_vibrate_times";
     private static final String PREFERENCE_RINGTONE = "account_ringtone";
     private static final String PREFERENCE_INCOMING = "incoming";
     private static final String PREFERENCE_OUTGOING = "outgoing";
@@ -53,7 +57,9 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_LED_COLOR = "led_color";
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
+    private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
+    private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
 
 
     private Account mAccount;
@@ -62,12 +68,17 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mCheckFrequency;
     private ListPreference mDisplayCount;
     private ListPreference mMessageAge;
+    private ListPreference mMessageSize;
     private CheckBoxPreference mAccountDefault;
     private CheckBoxPreference mAccountNotify;
     private CheckBoxPreference mAccountNotifySelf;
     private ListPreference mAccountHideButtons;
+    private ListPreference mAccountHideMoveButtons;
+    private CheckBoxPreference mAccountEnableMoveButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
+    private ListPreference mAccountVibratePattern;
+    private EditTextPreference mAccountVibrateTimes;
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
     private ListPreference mSyncMode;
@@ -82,6 +93,7 @@ public class AccountSettings extends K9PreferenceActivity
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
     private EditTextPreference mAccountQuotePrefix;
+    private CheckBoxPreference mSyncRemoteDeletions;
 
 
     public static void actionSettings(Context context, Account account)
@@ -255,6 +267,9 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
+        mSyncRemoteDeletions = (CheckBoxPreference) findPreference(PREFERENCE_SYNC_REMOTE_DELETIONS);
+        mSyncRemoteDeletions.setChecked(mAccount.syncRemoteDeletions());
+
         mSearchableFolders = (ListPreference) findPreference(PREFERENCE_SEARCHABLE_FOLDERS);
         mSearchableFolders.setValue(mAccount.getSearchableFolders().name());
         mSearchableFolders.setSummary(mSearchableFolders.getEntry());
@@ -284,7 +299,7 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
-        
+
         mMessageAge = (ListPreference) findPreference(PREFERENCE_MESSAGE_AGE);
         mMessageAge.setValue(String.valueOf(mAccount.getMaximumPolledMessageAge()));
         mMessageAge.setSummary(mMessageAge.getEntry());
@@ -299,6 +314,25 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
+
+
+
+        mMessageSize = (ListPreference) findPreference(PREFERENCE_MESSAGE_SIZE);
+        mMessageSize.setValue(String.valueOf(mAccount.getMaximumAutoDownloadMessageSize()));
+        mMessageSize.setSummary(mMessageSize.getEntry());
+        mMessageSize.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mMessageSize.findIndexOfValue(summary);
+                mMessageSize.setSummary(mMessageSize.getEntries()[index]);
+                mMessageSize.setValue(summary);
+                return false;
+            }
+        });
+
+
 
         mAccountDefault = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT);
         mAccountDefault.setChecked(
@@ -316,6 +350,24 @@ public class AccountSettings extends K9PreferenceActivity
                 int index = mAccountHideButtons.findIndexOfValue(summary);
                 mAccountHideButtons.setSummary(mAccountHideButtons.getEntries()[index]);
                 mAccountHideButtons.setValue(summary);
+                return false;
+            }
+        });
+
+        mAccountEnableMoveButtons = (CheckBoxPreference) findPreference(PREFERENCE_ENABLE_MOVE_BUTTONS);
+        mAccountEnableMoveButtons.setChecked(mAccount.getEnableMoveButtons());
+
+        mAccountHideMoveButtons = (ListPreference) findPreference(PREFERENCE_HIDE_MOVE_BUTTONS);
+        mAccountHideMoveButtons.setValue("" + mAccount.getHideMessageViewMoveButtons());
+        mAccountHideMoveButtons.setSummary(mAccountHideMoveButtons.getEntry());
+        mAccountHideMoveButtons.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mAccountHideMoveButtons.findIndexOfValue(summary);
+                mAccountHideMoveButtons.setSummary(mAccountHideMoveButtons.getEntries()[index]);
+                mAccountHideMoveButtons.setValue(summary);
                 return false;
             }
         });
@@ -339,6 +391,36 @@ public class AccountSettings extends K9PreferenceActivity
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
         mAccountVibrate.setChecked(mAccount.isVibrate());
+
+        mAccountVibratePattern = (ListPreference) findPreference(PREFERENCE_VIBRATE_PATTERN);
+        mAccountVibratePattern.setValue(String.valueOf(mAccount.getVibratePattern()));
+        mAccountVibratePattern.setSummary(mAccountVibratePattern.getEntry());
+        mAccountVibratePattern.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mAccountVibratePattern.findIndexOfValue(summary);
+                mAccountVibratePattern.setSummary(mAccountVibratePattern.getEntries()[index]);
+                mAccountVibratePattern.setValue(summary);
+                return false;
+            }
+        });
+
+        mAccountVibrateTimes = (EditTextPreference) findPreference(PREFERENCE_VIBRATE_TIMES);
+        mAccountVibrateTimes.setSummary(String.valueOf(mAccount.getVibrateTimes()));
+        mAccountVibrateTimes.setText(String.valueOf(mAccount.getVibrateTimes()));
+        mAccountVibrateTimes.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String value = newValue.toString();
+                mAccountVibrateTimes.setSummary(value);
+                mAccountVibrateTimes.setText(value);
+                return false;
+            }
+        });
 
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
@@ -450,11 +532,15 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));
+        mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
+        mAccount.setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
+        mAccount.setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getText()));
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
+        mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
 
@@ -486,6 +572,8 @@ public class AccountSettings extends K9PreferenceActivity
         }
 
         mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
+        mAccount.setHideMessageViewMoveButtons(Account.HideButtons.valueOf(mAccountHideMoveButtons.getValue()));
+        mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
         mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
         mAccount.save(Preferences.getPreferences(this));
         if (needsRefresh && needsPushRestart)

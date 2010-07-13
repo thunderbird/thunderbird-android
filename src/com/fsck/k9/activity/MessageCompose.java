@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.james.mime4j.codec.EncoderUtil;
-
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -25,6 +27,7 @@ import android.provider.OpenableColumns;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -71,6 +74,8 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
 {
+    private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
+
     private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
     private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
     private static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
@@ -98,6 +103,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String STATE_IDENTITY =
         "com.fsck.k9.activity.MessageCompose.identity";
     private static final String STATE_CRYPTO = "crypto";
+    private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
+    private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -835,6 +842,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
         outState.putSerializable(STATE_CRYPTO, mCrypto);
+        outState.putString(STATE_IN_REPLY_TO, mInReplyTo);
+        outState.putString(STATE_REFERENCES, mReferences);
     }
 
     @Override
@@ -861,6 +870,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             mCrypto = CryptoProvider.createInstance();
         }
+        mInReplyTo = savedInstanceState.getString(STATE_IN_REPLY_TO);
+        mReferences = savedInstanceState.getString(STATE_REFERENCES);
         updateFrom();
         updateSignature();
         updateEncryptLayout();
@@ -1488,6 +1499,64 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         return true;
+    }
+
+    public void onBackPressed()
+    {
+        // This will be called either automatically for you on 2.0
+        // or later, or by the code above on earlier versions of the
+        // platform.
+        showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+    }
+
+    @Override
+    public Dialog onCreateDialog(int id)
+    {
+        switch (id)
+        {
+            case DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE:
+                return new AlertDialog.Builder(this)
+                       .setTitle(R.string.save_or_discard_draft_message_dlg_title)
+                       .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
+                       .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
+                        dismissDialog(1);
+                        onSave();
+                    }
+                })
+                       .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
+                        dismissDialog(1);
+                        onDiscard();
+                    }
+                })
+                       .create();
+        }
+        return super.onCreateDialog(id);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (
+            // TODO - when we move to android 2.0, uncomment this.
+            // android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR &&
+
+            keyCode == KeyEvent.KEYCODE_BACK
+            && event.getRepeatCount() == 0
+            && K9.manageBack())
+        {
+            // Take care of calling this method on earlier versions of
+            // the platform where it doesn't exist.
+            onBackPressed();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     /**

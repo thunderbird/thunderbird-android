@@ -22,6 +22,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?android:attr/textColorPrimary"
         android:paddingBottom="10dip"
+        android:focusable="true"
           />
     <EditText
         android:id="@+id/account_email"

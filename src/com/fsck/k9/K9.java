@@ -37,6 +37,7 @@ public class K9 extends Application
         WHEN_CHECKED, ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
     }
 
+    private static String language = "";
     private static int theme = android.R.style.Theme_Light;
 
     private static final FontSizes fontSizes = new FontSizes();
@@ -83,6 +84,7 @@ public class K9 extends Application
 
     private static boolean mGesturesEnabled = true;
     private static boolean mManageBack = false;
+    private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
 
@@ -302,6 +304,7 @@ public class K9 extends Application
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
         editor.putBoolean("manageBack", mManageBack);
+        editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
         editor.putBoolean("messageListStars",mMessageListStars);
@@ -311,6 +314,7 @@ public class K9 extends Application
         editor.putBoolean("messageViewFixedWidthFont",mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
 
+        editor.putString("language", language);
         editor.putInt("theme", theme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
 
@@ -332,6 +336,7 @@ public class K9 extends Application
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
         mManageBack = sprefs.getBoolean("manageBack", false);
+        mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
         mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
@@ -354,6 +359,7 @@ public class K9 extends Application
             setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED);
         }
 
+        K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
 
@@ -428,6 +434,16 @@ public class K9 extends Application
 
     }
 
+    public static String getK9Language()
+    {
+        return language;
+    }
+
+    public static void setK9Language(String nlanguage)
+    {
+        language = nlanguage;
+    }
+
     public static int getK9Theme()
     {
         return theme;
@@ -476,7 +492,17 @@ public class K9 extends Application
         mManageBack = manageBack;
     }
 
-    public static boolean isAnimations()
+    public static boolean startIntegratedInbox()
+    {
+        return mStartIntegratedInbox;
+    }
+
+    public static void setStartIntegratedInbox(boolean startIntegratedInbox)
+    {
+        mStartIntegratedInbox = startIntegratedInbox;
+    }
+
+    public static boolean showAnimations()
     {
         return mAnimations;
     }

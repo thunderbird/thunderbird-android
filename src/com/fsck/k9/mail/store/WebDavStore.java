@@ -369,7 +369,7 @@ public class WebDavStore extends Store
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n");
-        buffer.append(" FROM SCOPE('hierarchical traversal of \""+this.mUrl+"\"')\r\n"); 
+        buffer.append(" FROM SCOPE('hierarchical traversal of \""+this.mUrl+"\"')\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
         return buffer.toString();
@@ -1537,9 +1537,8 @@ public class WebDavStore extends Store
 
             if (fp.contains(FetchProfile.Item.BODY_SANE))
             {
-                fetchMessages(messages, listener, FETCH_BODY_SANE_SUGGESTED_SIZE / 76);
+                fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
             }
-
             if (fp.contains(FetchProfile.Item.BODY))
             {
                 fetchMessages(messages, listener, -1);

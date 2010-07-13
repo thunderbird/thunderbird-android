@@ -51,6 +51,7 @@ public class FolderList extends K9ListActivity
 
     private static final String EXTRA_INITIAL_FOLDER = "initialFolder";
     private static final String EXTRA_FROM_NOTIFICATION = "fromNotification";
+    private static final String EXTRA_FROM_SHORTCUT = "fromShortcut";
 
     private static final boolean REFRESH_REMOTE = true;
 
@@ -208,7 +209,17 @@ public class FolderList extends K9ListActivity
         sendMail(mAccount);
     }
 
-    private static void actionHandleAccount(Context context, Account account, String initialFolder)
+    public static Intent actionHandleAccountIntent(Context context, Account account)
+    {
+        return actionHandleAccountIntent(context, account, null, false);
+    }
+
+    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder)
+    {
+        return actionHandleAccountIntent(context, account, initialFolder, false);
+    }
+
+    public static Intent actionHandleAccountIntent(Context context, Account account, String initialFolder, boolean fromShortcut)
     {
         Intent intent = new Intent(context, FolderList.class);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -218,6 +229,17 @@ public class FolderList extends K9ListActivity
             intent.putExtra(EXTRA_INITIAL_FOLDER, initialFolder);
         }
 
+        if (fromShortcut)
+        {
+            intent.putExtra(EXTRA_FROM_SHORTCUT, true);
+        }
+
+        return intent;
+    }
+
+    private static void actionHandleAccount(Context context, Account account, String initialFolder)
+    {
+        Intent intent = actionHandleAccountIntent(context, account, initialFolder);
         context.startActivity(intent);
     }
 
@@ -294,6 +316,12 @@ public class FolderList extends K9ListActivity
         else if (initialFolder != null && !K9.FOLDER_NONE.equals(initialFolder))
         {
             onOpenFolder(initialFolder);
+            finish();
+        }
+        else if (intent.getBooleanExtra(EXTRA_FROM_SHORTCUT, false) &&
+                 !K9.FOLDER_NONE.equals(mAccount.getAutoExpandFolderName()))
+        {
+            onOpenFolder(mAccount.getAutoExpandFolderName());
             finish();
         }
         else
@@ -566,7 +594,7 @@ public class FolderList extends K9ListActivity
     private void onOpenFolder(String folder)
     {
         MessageList.actionHandleFolder(this, mAccount, folder);
-        if (K9.manageBack()) 
+        if (K9.manageBack())
         {
             finish();
         }
@@ -1425,6 +1453,16 @@ public class FolderList extends K9ListActivity
             if (this.name.equals(mAccount.getSentFolderName()))
             {
                 this.displayName = String.format(getString(R.string.special_mailbox_name_sent_fmt), this.name);
+            }
+
+            if (this.name.equals(mAccount.getArchiveFolderName()))
+            {
+                this.displayName = String.format(getString(R.string.special_mailbox_name_archive_fmt), this.name);
+            }
+
+            if (this.name.equals(mAccount.getSpamFolderName()))
+            {
+                this.displayName = String.format(getString(R.string.special_mailbox_name_spam_fmt), this.name);
             }
 
             this.lastChecked = folder.getLastUpdate();

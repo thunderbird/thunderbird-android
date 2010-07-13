@@ -117,6 +117,26 @@ public class MimeBodyPart extends BodyPart
         }
     }
 
+    public String getContentId() throws MessagingException
+    {
+        String contentId = getFirstHeader(MimeHeader.HEADER_CONTENT_ID);
+        if (contentId == null)
+        {
+            return null;
+        }
+        else
+        {
+	    int first = contentId.indexOf('<');
+	    int last = contentId.lastIndexOf('>');
+	    if (first != -1 && last != -1) {
+		return contentId.substring(first+1, last);
+	    }
+	    else {
+		return contentId;
+	    }
+        }
+    }
+
     public String getMimeType() throws MessagingException
     {
         return MimeUtility.getHeaderParameter(getContentType(), null);

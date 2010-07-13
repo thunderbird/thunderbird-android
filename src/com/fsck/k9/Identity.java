@@ -62,12 +62,12 @@ public class Identity implements Serializable
     }
 
     public synchronized String getReplyTo()
-	{
+    {
         return replyTo;
     }
 
     public synchronized void setReplyTo(String replyTo)
-	{
+    {
         this.replyTo = replyTo;
     }
 

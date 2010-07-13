@@ -312,6 +312,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     @Override
     public void onCreate(Bundle icicle)
     {
+        super.onCreate(icicle);
+
         unreadAccount = new SearchAccount(this, false, null, null);
         unreadAccount.setDescription(getString(R.string.search_all_messages_title));
         unreadAccount.setEmail(getString(R.string.search_all_messages_detail));
@@ -320,12 +322,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         integratedInboxAccount.setDescription(getString(R.string.integrated_inbox_title));
         integratedInboxAccount.setEmail(getString(R.string.integrated_inbox_detail));
 
-        super.onCreate(icicle);
-
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
         boolean startup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, true);
-        if (startup && accounts.length == 1)
+        if (startup && K9.startIntegratedInbox())
+        {
+            onOpenAccount(integratedInboxAccount);
+            finish();
+        }
+        else if (startup && accounts.length == 1)
         {
             onOpenAccount(accounts[0]);
             finish();
@@ -541,11 +546,20 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     @Override
     public void onPrepareDialog(int id, Dialog d)
     {
+
+        AlertDialog alert = (AlertDialog) d;
         switch (id)
         {
             case DIALOG_REMOVE_ACCOUNT:
-                AlertDialog alert = (AlertDialog) d;
                 alert.setMessage(getString(R.string.account_delete_dlg_instructions_fmt,
+                                           mSelectedContextAccount.getDescription()));
+                break;
+            case DIALOG_CLEAR_ACCOUNT:
+                alert.setMessage(getString(R.string.account_clear_dlg_instructions_fmt,
+                                           mSelectedContextAccount.getDescription()));
+                break;
+            case DIALOG_RECREATE_ACCOUNT:
+                alert.setMessage(getString(R.string.account_recreate_dlg_instructions_fmt,
                                            mSelectedContextAccount.getDescription()));
                 break;
         }
