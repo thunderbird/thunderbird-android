@@ -2168,7 +2168,7 @@ public class ImapStore extends Store
 
                 capabilities.clear();
                 ImapResponse nullResponse = mParser.readResponse();
-                if (K9.DEBUG)
+                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
                     Log.v(K9.LOG_TAG, getLogId() + "<<<" + nullResponse);
 
                 List<ImapResponse> nullResponses = new LinkedList<ImapResponse>();
@@ -2566,7 +2566,7 @@ public class ImapStore extends Store
             try
             {
                 ImapResponse response = mParser.readResponse(callback);
-                if (K9.DEBUG)
+                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
                     Log.v(K9.LOG_TAG, getLogId() + "<<<" + response);
 
                 return response;
@@ -2596,7 +2596,7 @@ public class ImapStore extends Store
             mOut.write('\n');
             mOut.flush();
 
-            if (K9.DEBUG)
+            if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
                 Log.v(K9.LOG_TAG, getLogId() + ">>> " + continuation);
 
         }
@@ -2614,7 +2614,7 @@ public class ImapStore extends Store
                 mOut.write('\n');
                 mOut.flush();
 
-                if (K9.DEBUG)
+                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
                 {
                     if (sensitive && !K9.DEBUG_SENSITIVE)
                     {
@@ -2680,7 +2680,7 @@ public class ImapStore extends Store
             do
             {
                 response = mParser.readResponse();
-                if (K9.DEBUG)
+                if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
                     Log.v(K9.LOG_TAG, getLogId() + "<<<" + response);
 
                 if (response.mTag != null && response.mTag.equalsIgnoreCase(tag) == false)

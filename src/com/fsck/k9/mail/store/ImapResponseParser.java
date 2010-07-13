@@ -65,7 +65,7 @@ public class ImapResponseParser
                 response.mTag = parseTaggedResponse();
                 readTokens(response);
             }
-            if (K9.DEBUG)
+            if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
             {
                 Log.v(K9.LOG_TAG, "<<< " + response.toString());
             }
