@@ -1166,33 +1166,6 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private void showNextMessage()
-    {
-        findSurroundingMessagesUid();
-        mMessageReferences.remove(mMessageReference);
-
-        if (mLastDirection == NEXT && mNextMessage != null)
-        {
-            onNext(K9.isAnimations());
-        }
-        else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
-        {
-            onPrevious(K9.isAnimations());
-        }
-        else if (mNextMessage != null)
-        {
-            onNext(K9.isAnimations());
-        }
-        else if (mPreviousMessage != null)
-        {
-            onPrevious(K9.isAnimations());
-        }
-        else
-        {
-            finish();
-        }
-    }
-
     private void onArchive()
     {
         if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)

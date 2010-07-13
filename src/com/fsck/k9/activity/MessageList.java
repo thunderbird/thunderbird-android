@@ -2061,7 +2061,7 @@ public class MessageList
                      * 2010-06-21 - cketti
                      * Added null pointer check. Not sure what's causing 'holder'
                      * to be null. See log provided in issue 1749, comment #15.
-                     * 
+                     *
                      * Please remove this comment once the cause was found and the
                      * bug(?) fixed.
                      */
@@ -2197,7 +2197,7 @@ public class MessageList
                 holder.preview = (TextView) view.findViewById(R.id.preview);
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
-                
+
                 // TODO: Don't create an instance of OnClickListener for every message
                 holder.flagged.setOnClickListener(new OnClickListener()
                 {
@@ -3159,3 +3159,5 @@ public class MessageList
             }
         }
         mController.copyMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), folderName, null);
+    }
+}
