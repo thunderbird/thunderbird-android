@@ -1679,6 +1679,33 @@ public class MessagingController implements Runnable
         });
     }
 
+
+    private boolean shouldImportMessage(final Account account, final String folder, final Message message, final AtomicInteger progress, final Date earliestDate)
+    {
+
+        if (isMessageSuppressed(account, folder, message))
+        {
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "Message " + message.getUid() + " was suppressed "+
+                      "but just downloaded. "+
+                      "The race condition means we wasted some bandwidth. Oh well.");
+            }
+            return false;
+
+        }
+        if (message.olderThan(earliestDate))
+        {
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
+                      + earliestDate + ", hence not saving");
+            }
+            return false;
+        }
+        return true;
+    }
+
     private void downloadSmallMessages(final Account account, final Folder remoteFolder,
                                        final LocalFolder localFolder,
                                        ArrayList<Message> smallMessages,
@@ -1703,27 +1730,8 @@ public class MessagingController implements Runnable
                 try
                 {
 
-
-                    if (isMessageSuppressed(account, folder, message))
+                    if (!shouldImportMessage(account, folder, message, progress, earliestDate))
                     {
-                        if (K9.DEBUG)
-                        {
-                            Log.d(K9.LOG_TAG, "Message " + message.getUid() + " was suppressed "+
-                                  "but just downloaded. "+
-                                  "The race condition means we wasted some bandwidth. Oh well.");
-                        }
-                        progress.incrementAndGet();
-
-                        return;
-
-                    }
-                    if (message.olderThan(earliestDate))
-                    {
-                        if (K9.DEBUG)
-                        {
-                            Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
-                                  + earliestDate + ", hence not saving");
-                        }
                         progress.incrementAndGet();
 
                         return;
@@ -1800,17 +1808,13 @@ public class MessagingController implements Runnable
         remoteFolder.fetch(largeMessages.toArray(new Message[largeMessages.size()]), fp, null);
         for (Message message : largeMessages)
         {
-            if (message.olderThan(earliestDate))
-            {
-                if (K9.DEBUG)
-                {
-                    Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
-                          + earliestDate + ", hence not saving");
-                }
-                progress.incrementAndGet();
 
+            if (!shouldImportMessage(account, folder, message, progress, earliestDate))
+            {
+                progress.incrementAndGet();
                 continue;
             }
+
             if (message.getBody() == null)
             {
                 /*
