@@ -2061,7 +2061,7 @@ public class MessageList
                      * 2010-06-21 - cketti
                      * Added null pointer check. Not sure what's causing 'holder'
                      * to be null. See log provided in issue 1749, comment #15.
-                     * 
+                     *
                      * Please remove this comment once the cause was found and the
                      * bug(?) fixed.
                      */
@@ -2197,7 +2197,7 @@ public class MessageList
                 holder.preview = (TextView) view.findViewById(R.id.preview);
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
-                
+
                 // TODO: Don't create an instance of OnClickListener for every message
                 holder.flagged.setOnClickListener(new OnClickListener()
                 {
@@ -2268,20 +2268,20 @@ public class MessageList
                      * from.
                      */
                     holder.preview.setText(message.sender + " " + message.preview,
-                            TextView.BufferType.SPANNABLE);
+                                           TextView.BufferType.SPANNABLE);
                     Spannable str = (Spannable)holder.preview.getText();
 
                     // Create our span sections, and assign a format to each.
                     str.setSpan(
-                            new TextAppearanceSpan(
-                                    null,
-                                    Typeface.BOLD,
-                                    -1,
-                                    holder.subject.getTextColors(),
-                                    holder.subject.getLinkTextColors()),
-                            0,
-                            message.sender.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        new TextAppearanceSpan(
+                            null,
+                            Typeface.BOLD,
+                            -1,
+                            holder.subject.getTextColors(),
+                            holder.subject.getLinkTextColors()),
+                        0,
+                        message.sender.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                     );
                 }
                 else
@@ -2984,7 +2984,7 @@ public class MessageList
                     if (mController.isMoveCapable(message) == false)
                     {
                         Toast toast = Toast.makeText(this,
-                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
                         return;
                     }
@@ -3019,7 +3019,7 @@ public class MessageList
                     if (mController.isMoveCapable(message) == false)
                     {
                         Toast toast = Toast.makeText(this,
-                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
                         return;
                     }
@@ -3116,7 +3116,7 @@ public class MessageList
                     if (mController.isCopyCapable(message) == false)
                     {
                         Toast toast = Toast.makeText(this,
-                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
                         return;
                     }
@@ -3150,7 +3150,7 @@ public class MessageList
                     if (mController.isCopyCapable(message) == false)
                     {
                         Toast toast = Toast.makeText(this,
-                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
                         return;
                     }
