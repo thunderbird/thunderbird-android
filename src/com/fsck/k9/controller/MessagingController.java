@@ -1450,15 +1450,8 @@ public class MessagingController implements Runnable
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "SYNC: About to fetch " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
 
-<<<<<<< HEAD
-
             fetchUnsyncedMessages(account, remoteFolder, localFolder, unsyncedMessages, smallMessages,largeMessages, progress, todo, fp);
 
-=======
-
-            fetchUnsyncedMessages(account, remoteFolder, localFolder, unsyncedMessages, smallMessages,largeMessages, progress, todo, fp);
-
->>>>>>> trunk
             // If a message didn't exist, messageFinished won't be called, but we shouldn't try again
             // If we got here, nothing failed
             for (Message message : unsyncedMessages)
@@ -1521,7 +1514,6 @@ public class MessagingController implements Runnable
 
         refreshLocalMessageFlags(account,remoteFolder,localFolder,syncFlagMessages,progress,todo);
 
-<<<<<<< HEAD
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Synced remote messages for folder " + folder + ", " + newMessages.get() + " new messages");
 
@@ -1645,6 +1637,32 @@ public class MessagingController implements Runnable
 
             public void messagesFinished(int total) {}
         });
+    }
+
+    private boolean shouldImportMessage(final Account account, final String folder, final Message message, final AtomicInteger progress, final Date earliestDate)
+    {
+
+        if (isMessageSuppressed(account, folder, message))
+        {
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "Message " + message.getUid() + " was suppressed "+
+                      "but just downloaded. "+
+                      "The race condition means we wasted some bandwidth. Oh well.");
+            }
+            return false;
+
+        }
+        if (message.olderThan(earliestDate))
+        {
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
+                      + earliestDate + ", hence not saving");
+            }
+            return false;
+        }
+        return true;
     }
 
     private void downloadSmallMessages(final Account account, final Folder remoteFolder,
