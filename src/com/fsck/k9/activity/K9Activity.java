@@ -100,6 +100,9 @@ public class K9Activity extends Activity
     protected void onPrevious(boolean animate)
     {
     }
+    protected void onLongPressGesture()
+    {
+    }
 
     class MyGestureDetector extends SimpleOnGestureListener
     {
@@ -163,7 +166,10 @@ public class K9Activity extends Activity
             return false;
         }
 
-
+        @Override
+        public void onLongPress(MotionEvent e) {
+            onLongPressGesture();
+        }
     }
 
 }
