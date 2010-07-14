@@ -59,6 +59,37 @@ public class K9 extends Application
     public static boolean DEBUG = false;
 
     /**
+     * Should K-9 log the conversation it has over the wire with
+     * SMTP servers?
+     */
+
+    public static boolean DEBUG_PROTOCOL_SMTP = true;
+
+    /**
+     * Should K-9 log the conversation it has over the wire with
+     * IMAP servers?
+     */
+
+    public static boolean DEBUG_PROTOCOL_IMAP = true;
+
+
+    /**
+     * Should K-9 log the conversation it has over the wire with
+     * POP3 servers?
+     */
+
+    public static boolean DEBUG_PROTOCOL_POP3 = true;
+
+    /**
+     * Should K-9 log the conversation it has over the wire with
+     * WebDAV servers?
+     */
+
+    public static boolean DEBUG_PROTOCOL_WEBDAV = true;
+
+
+
+    /**
      * If this is enabled than logging that normally hides sensitive information
      * like passwords will show that information.
      */

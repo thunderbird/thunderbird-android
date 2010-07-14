@@ -126,14 +126,16 @@ public class MimeBodyPart extends BodyPart
         }
         else
         {
-	    int first = contentId.indexOf('<');
-	    int last = contentId.lastIndexOf('>');
-	    if (first != -1 && last != -1) {
-		return contentId.substring(first+1, last);
-	    }
-	    else {
-		return contentId;
-	    }
+            int first = contentId.indexOf('<');
+            int last = contentId.lastIndexOf('>');
+            if (first != -1 && last != -1)
+            {
+                return contentId.substring(first+1, last);
+            }
+            else
+            {
+                return contentId;
+            }
         }
     }
 

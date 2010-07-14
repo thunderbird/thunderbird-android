@@ -962,6 +962,34 @@ public class FolderList extends K9ListActivity
             }
 
             @Override
+            public void synchronizeMailboxHeadersStarted(Account account, String folder)
+            {
+
+                super.synchronizeMailboxHeadersStarted(account, folder);
+                mHandler.refreshTitle();
+            }
+
+
+            @Override
+            public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total)
+            {
+                super.synchronizeMailboxHeadersProgress(account,folder,completed, total);
+                mHandler.refreshTitle();
+            }
+
+            @Override
+            public void synchronizeMailboxHeadersFinished(Account account, String folder,
+                    int total, int completed)
+            {
+                super.synchronizeMailboxHeadersFinished(account,folder, total, completed);
+                mHandler.refreshTitle();
+            }
+
+
+
+
+
+            @Override
             public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
             {
                 super.synchronizeMailboxProgress(account, folder, completed, total);

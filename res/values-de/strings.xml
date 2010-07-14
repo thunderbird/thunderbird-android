@@ -647,6 +647,9 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="accountlist_preferences">Liste der Konten</string>
     <string name="messagelist_preferences">Liste der Nachrichten</string>
     <string name="settings_theme_label">Theme</string>
+    <string name="settings_language_label">Sprache</string>
+
+    <string name="setting_language_system">Systemvorgabe</string>
 
     <string name="background_ops_label">Hintergrund-Synchronisierung</string>
     <string name="background_ops_never">Nie</string>

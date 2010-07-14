@@ -13,6 +13,7 @@ import com.fsck.k9.service.MailService;
 public class ActivityListener extends MessagingListener
 {
     private String mLoadingFolderName = null;
+    private String mLoadingHeaderFolderName = null;
     private String mLoadingAccountDescription = null;
     private String mSendingAccountDescription = null;
     private int mFolderCompleted = 0;
@@ -20,22 +21,36 @@ public class ActivityListener extends MessagingListener
     private String mProcessingAccountDescription = null;
     private String mProcessingCommandTitle = null;
 
+
     public String formatHeader(Context context, String activityPrefix, int unreadMessageCount, DateFormat timeFormat)
     {
         String operation = null;
         String progress = null;
-        if (mLoadingAccountDescription  != null || mSendingAccountDescription != null || mProcessingAccountDescription != null)
+        if (mLoadingAccountDescription  != null
+                || mSendingAccountDescription != null
+                || mLoadingHeaderFolderName != null
+                || mProcessingAccountDescription != null)
         {
-            progress = (mFolderTotal > 0 ? context.getString(R.string.folder_progress, mFolderCompleted, mFolderTotal) : "");
+            progress = (mFolderTotal > 0 ?
+                        context.getString(R.string.folder_progress, mFolderCompleted, mFolderTotal) : "");
 
-            if (mLoadingFolderName != null)
+            if (mLoadingFolderName != null || mLoadingHeaderFolderName != null)
             {
                 String displayName = mLoadingFolderName;
                 if (K9.INBOX.equalsIgnoreCase(displayName))
                 {
                     displayName = context.getString(R.string.special_mailbox_name_inbox);
                 }
-                operation = context.getString(R.string.status_loading_account_folder, mLoadingAccountDescription, displayName, progress);
+
+                if (mLoadingHeaderFolderName != null)
+                {
+
+                    operation = context.getString(R.string.status_loading_account_folder_headers, mLoadingAccountDescription, displayName, progress);
+                }
+                else
+                {
+                    operation = context.getString(R.string.status_loading_account_folder, mLoadingAccountDescription, displayName, progress);
+                }
             }
 
             else if (mSendingAccountDescription != null)
@@ -88,6 +103,29 @@ public class ActivityListener extends MessagingListener
         mFolderCompleted = 0;
         mFolderTotal = 0;
     }
+
+
+    @Override
+    public void synchronizeMailboxHeadersStarted(Account account, String folder)
+    {
+        mLoadingHeaderFolderName = folder;
+    }
+
+
+    @Override
+    public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total)
+    {
+        mFolderCompleted = completed;
+        mFolderTotal = total;
+    }
+
+    @Override
+    public void synchronizeMailboxHeadersFinished(Account account, String folder,
+            int total, int completed)
+    {
+        mLoadingHeaderFolderName = null;
+    }
+
 
     @Override
     public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)

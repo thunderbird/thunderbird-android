@@ -28,6 +28,7 @@
 
     <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">\u0020(Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_account_folder_headers">\u0020(Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_sending_account">\u0020(Sending <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_processing_account">\u0020(Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
@@ -752,16 +753,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="settings_language_label">Language</string>
 
     <string name="setting_language_system">System default</string>
-    <string name="setting_language_chinese">Chinese</string>
-    <string name="setting_language_czech">Czech</string>
-    <string name="setting_language_english">English</string>
-    <string name="setting_language_german">German</string>
-    <string name="setting_language_france">French</string>
-    <string name="setting_language_italian">Italian</string>
-    <string name="setting_language_japanese">Japanese</string>
-    <string name="setting_language_polish">Polish</string>
-    <string name="setting_language_spanish">Spanish</string>
-    <string name="setting_language_russian">Russian</string>
 
     <string name="background_ops_label">Background sync</string>
     <string name="background_ops_never">Never</string>

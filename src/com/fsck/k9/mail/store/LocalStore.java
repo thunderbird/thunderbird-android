@@ -2068,7 +2068,8 @@ public class LocalStore extends Store implements Serializable
             {
                 Cursor cursor = null;
                 cursor = mDb.query("messages", new String[] { "html_content" }, "id = ?", new String[] { Long.toString(messageId) }, null, null, null);
-                try {
+                try
+                {
                     if (cursor.moveToNext())
                     {
                         String new_html;
@@ -2081,8 +2082,12 @@ public class LocalStore extends Store implements Serializable
                         mDb.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
                     }
                 }
-                finally {
-                    if (cursor != null) { cursor.close(); }
+                finally
+                {
+                    if (cursor != null)
+                    {
+                        cursor.close();
+                    }
                 }
             }
 

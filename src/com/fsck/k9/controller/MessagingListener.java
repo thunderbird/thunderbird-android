@@ -78,6 +78,20 @@ public class MessagingListener
     {
     }
 
+    public void synchronizeMailboxHeadersStarted(Account account, String folder)
+    {
+    }
+
+    public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total)
+    {
+    }
+
+    public void synchronizeMailboxHeadersFinished(Account account, String folder,
+            int totalMessagesInMailbox, int numNewMessages)
+    {
+    }
+
+
     public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
     {}
 
