@@ -1292,6 +1292,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         if (Preferences.getPreferences(this).getAccounts().length > 1)
         {
             final Intent intent = new Intent(this, ChooseAccount.class);
+            intent.putExtra(ChooseAccount.EXTRA_ACCOUNT, mAccount.getUuid());
+            intent.putExtra(ChooseAccount.EXTRA_IDENTITY, mIdentity);
             startActivityForResult(intent, ACTIVITY_CHOOSE_ACCOUNT);
         }
         else if (mAccount.getIdentities().size() > 1)
