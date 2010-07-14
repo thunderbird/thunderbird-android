@@ -107,6 +107,8 @@ public class Account implements BaseAccount
     private boolean mRingNotified;
     private String mQuotePrefix;
     private boolean mSyncRemoteDeletions;
+    private String mCryptoApp;
+    private boolean mDefaultSignature;
 
     /**
      * Name of the folder that was last selected for a copy or move operation.
@@ -171,6 +173,8 @@ public class Account implements BaseAccount
         maximumAutoDownloadMessageSize = 32768;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mSyncRemoteDeletions = true;
+        mCryptoApp = "";
+        mDefaultSignature = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -353,6 +357,9 @@ public class Account implements BaseAccount
 
         mIsSignatureBeforeQuotedText = preferences.getPreferences().getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(preferences.getPreferences());
+
+        mCryptoApp = preferences.getPreferences().getString(mUuid + ".cryptoApp", "");
+        mDefaultSignature = preferences.getPreferences().getBoolean(mUuid + ".defaultSignature", false);
     }
 
 
@@ -515,6 +522,8 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
+        editor.putString(mUuid + ".cryptoApp", mCryptoApp);
+        editor.putBoolean(mUuid + ".defaultSignature", mDefaultSignature);
 
         for (String type : networkTypes)
         {
@@ -1406,6 +1415,26 @@ public class Account implements BaseAccount
     public void setEnableMoveButtons(boolean enableMoveButtons)
     {
         mEnableMoveButtons = enableMoveButtons;
+    }
+
+    public String getCryptoApp()
+    {
+        return mCryptoApp;
+    }
+
+    public void setCryptoApp(String cryptoApp)
+    {
+        mCryptoApp = cryptoApp;
+    }
+
+    public boolean getDefaultSignature()
+    {
+        return mDefaultSignature;
+    }
+
+    public void setDefaultSignature(boolean defaultSignature)
+    {
+        mDefaultSignature = defaultSignature;
     }
 
     public synchronized boolean syncRemoteDeletions()

@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.widget.Toast;
 
 import com.fsck.k9.R;
-import com.fsck.k9.R.string;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageView;
 import com.fsck.k9.mail.Message;
@@ -26,6 +25,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 public class Apg extends CryptoProvider
 {
     static final long serialVersionUID = 0x21071235;
+    public static final String NAME = "apg";
 
     private static final String mApgPackageName = "org.thialfihar.android.apg";
     private static final int mMinRequiredVersion = 16;
@@ -98,15 +98,21 @@ public class Apg extends CryptoProvider
     @Override
     public boolean isAvailable(Context context)
     {
-        try {
+        try
+        {
             PackageInfo pi = context.getPackageManager().getPackageInfo(mApgPackageName, 0);
-            if (pi.versionCode >= mMinRequiredVersion) {
+            if (pi.versionCode >= mMinRequiredVersion)
+            {
                 return true;
-            } else {
+            }
+            else
+            {
                 Toast.makeText(context,
                                R.string.error_apg_version_not_supported, Toast.LENGTH_SHORT).show();
             }
-        } catch (NameNotFoundException e) {
+        }
+        catch (NameNotFoundException e)
+        {
             // not found
         }
 
@@ -245,7 +251,8 @@ public class Apg extends CryptoProvider
      * @return user id
      */
     @Override
-    public String getUserId(Context context, long keyId) {
+    public String getUserId(Context context, long keyId)
+    {
         Uri contentUri = ContentUris.withAppendedId(
                                  Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
                                  keyId);
@@ -281,7 +288,8 @@ public class Apg extends CryptoProvider
      */
     @Override
     public boolean onActivityResult(Activity activity, int requestCode, int resultCode,
-                                    android.content.Intent data) {
+                                    android.content.Intent data)
+    {
         switch (requestCode)
         {
             case Apg.SELECT_SECRET_KEY:
@@ -308,7 +316,8 @@ public class Apg extends CryptoProvider
                     break;
                 }
                 mEncryptedData = data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE);
-                if (mEncryptedData != null) {
+                if (mEncryptedData != null)
+                {
                     ((MessageCompose) activity).onEncryptDone();
                 }
                 break;
@@ -344,7 +353,8 @@ public class Apg extends CryptoProvider
      * @return success or failure
      */
     @Override
-    public boolean encrypt(Activity activity, String data) {
+    public boolean encrypt(Activity activity, String data)
+    {
         android.content.Intent intent = new android.content.Intent(Intent.ENCRYPT_AND_RETURN);
         intent.setType("text/plain");
         intent.putExtra(Apg.EXTRA_TEXT, data);
@@ -409,7 +419,8 @@ public class Apg extends CryptoProvider
                 data = MimeUtility.getTextFromPart(part);
             }
         }
-        catch (MessagingException e) {
+        catch (MessagingException e)
+        {
             // guess not...
             // TODO: maybe log this?
         }
@@ -437,7 +448,8 @@ public class Apg extends CryptoProvider
                 data = MimeUtility.getTextFromPart(part);
             }
         }
-        catch (MessagingException e) {
+        catch (MessagingException e)
+        {
             // guess not...
             // TODO: maybe log this?
         }
@@ -449,5 +461,16 @@ public class Apg extends CryptoProvider
 
         Matcher matcher = PGP_SIGNED_MESSAGE.matcher(data);
         return matcher.matches();
+    }
+
+    /**
+     * Get the name of the provider.
+     *
+     * @return provider name
+     */
+    @Override
+    public String getName()
+    {
+        return NAME;
     }
 }

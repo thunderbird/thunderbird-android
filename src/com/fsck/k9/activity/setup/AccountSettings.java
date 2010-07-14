@@ -5,16 +5,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.*;
+import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.RingtonePreference;
 import android.util.Log;
 import android.view.KeyEvent;
-import com.fsck.k9.*;
+
+import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
+import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
 
@@ -60,7 +69,8 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
-
+    private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
+    private static final String PREFERENCE_DEFAULT_SIGNATURE = "default_signature";
 
     private Account mAccount;
 
@@ -94,7 +104,8 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mNotificationOpensUnread;
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mSyncRemoteDeletions;
-
+    private ListPreference mCryptoApp;
+    private CheckBoxPreference mDefaultSignature;
 
     public static void actionSettings(Context context, Account account)
     {
@@ -510,6 +521,47 @@ public class AccountSettings extends K9PreferenceActivity
                 return true;
             }
         });
+
+        mCryptoApp = (ListPreference) findPreference(PREFERENCE_CRYPTO_APP);
+        CharSequence cryptoAppEntries[] = mCryptoApp.getEntries();
+        if (!new Apg().isAvailable(this)) {
+            int apgIndex = mCryptoApp.findIndexOfValue(Apg.NAME);
+            if (apgIndex >= 0) {
+                cryptoAppEntries[apgIndex] = "APG (" + getResources().getString(R.string.account_settings_crypto_app_not_available) + ")";
+                mCryptoApp.setEntries(cryptoAppEntries);
+            }
+        }
+        mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
+        mCryptoApp.setSummary(mCryptoApp.getEntry());
+        mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mCryptoApp.findIndexOfValue(summary);
+                mCryptoApp.setSummary(mCryptoApp.getEntries()[index]);
+                mCryptoApp.setValue(summary);
+                handleCryptoAppDependencies();
+                return false;
+            }
+        });
+
+        mDefaultSignature = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT_SIGNATURE);
+        mDefaultSignature.setChecked(mAccount.getDefaultSignature());
+
+        handleCryptoAppDependencies();
+    }
+
+    private void handleCryptoAppDependencies()
+    {
+        if ("".equals(mCryptoApp.getValue()))
+        {
+            mDefaultSignature.setEnabled(false);
+        }
+        else
+        {
+            mDefaultSignature.setEnabled(true);
+        }
     }
 
     @Override
@@ -543,6 +595,8 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
+        mAccount.setCryptoApp(mCryptoApp.getValue());
+        mAccount.setDefaultSignature(mDefaultSignature.isChecked());
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));

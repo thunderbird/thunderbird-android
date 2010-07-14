@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.mail.Message;
 
 abstract public class CryptoProvider implements Serializable
@@ -31,9 +32,15 @@ abstract public class CryptoProvider implements Serializable
     abstract public boolean decrypt(Activity activity, String data);
     abstract public long[] getSecretKeyIdsFromEmail(Context context, String email);
     abstract public String getUserId(Context context, long keyId);
+    abstract public String getName();
 
-    public static CryptoProvider createInstance() {
-        return new Apg();
+    public static CryptoProvider createInstance(Account account) {
+        if (Apg.NAME.equals(account.getCryptoApp()))
+        {
+            return new Apg();
+        }
+
+        return new None();
     }
 
     public void setSignatureKeyId(long keyId)

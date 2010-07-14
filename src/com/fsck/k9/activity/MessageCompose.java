@@ -667,10 +667,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
         mSelectEncryptionKeys = (Button)findViewById(R.id.btn_select_encryption_keys);
 
-        if (mCrypto == null)
-        {
-            mCrypto = CryptoProvider.createInstance();
-        }
+        initializeCrypto();
         if (mCrypto.isAvailable(this))
         {
             mEncryptLayout.setVisibility(View.VISIBLE);
@@ -731,14 +728,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             });
 
-            long ids[] = mCrypto.getSecretKeyIdsFromEmail(this, mIdentity.getEmail());
-            if (ids != null && ids.length > 0)
+            if (mAccount.getDefaultSignature())
             {
-                mCrypto.setSignatureKeyId(ids[0]);
-            }
-            else
-            {
-                mCrypto.setSignatureKeyId(0);
+                long ids[] = mCrypto.getSecretKeyIdsFromEmail(this, mIdentity.getEmail());
+                if (ids != null && ids.length > 0)
+                {
+                    mCrypto.setSignatureKeyId(ids[0]);
+                }
+                else
+                {
+                    mCrypto.setSignatureKeyId(0);
+                }
             }
             updateEncryptLayout();
         }
@@ -748,6 +748,15 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         mDraftNeedsSaving = false;
+    }
+
+    private void initializeCrypto()
+    {
+        if (mCrypto != null)
+        {
+            return;
+        }
+        mCrypto = CryptoProvider.createInstance(mAccount);
     }
 
     /**
@@ -866,12 +875,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         mCrypto = (CryptoProvider) savedInstanceState.getSerializable(STATE_CRYPTO);
-        if (mCrypto == null)
-        {
-            mCrypto = CryptoProvider.createInstance();
-        }
         mInReplyTo = savedInstanceState.getString(STATE_IN_REPLY_TO);
         mReferences = savedInstanceState.getString(STATE_REFERENCES);
+
+        initializeCrypto();
         updateFrom();
         updateSignature();
         updateEncryptLayout();

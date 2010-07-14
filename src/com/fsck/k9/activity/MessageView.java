@@ -872,11 +872,6 @@ public class MessageView extends K9Activity implements OnClickListener
             }
         }
 
-        if (mCrypto == null)
-        {
-            mCrypto = CryptoProvider.createInstance();
-        }
-
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView got message " + mMessageReference);
 
@@ -963,6 +958,8 @@ public class MessageView extends K9Activity implements OnClickListener
             }
         }
 
+        initializeCrypto();
+
         displayMessage(mMessageReference);
     }
 
@@ -980,10 +977,7 @@ public class MessageView extends K9Activity implements OnClickListener
         super.onRestoreInstanceState(savedInstanceState);
 
         mCrypto = (CryptoProvider) savedInstanceState.getSerializable(STATE_CRYPTO);
-        if (mCrypto == null)
-        {
-            mCrypto = CryptoProvider.createInstance();
-        }
+        initializeCrypto();
 
         updateDecryptLayout();
     }
@@ -2307,6 +2301,19 @@ public class MessageView extends K9Activity implements OnClickListener
         slide.setFillBefore(true);
         slide.setInterpolator(new AccelerateInterpolator());
         return slide;
+    }
+
+    private void initializeCrypto()
+    {
+        if (mCrypto != null)
+        {
+            return;
+        }
+        if (mAccount == null)
+        {
+            mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+        }
+        mCrypto = CryptoProvider.createInstance(mAccount);
     }
 
     /**
