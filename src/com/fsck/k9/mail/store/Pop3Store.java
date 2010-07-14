@@ -960,7 +960,7 @@ public class Pop3Store extends Store
             String ret = sb.toString();
             if (Config.LOGD)
             {
-                if (K9.DEBUG)
+                if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
                 {
                     Log.d(K9.LOG_TAG, "<<< " + ret);
                 }
@@ -972,7 +972,7 @@ public class Pop3Store extends Store
         {
             if (Config.LOGD)
             {
-                if (K9.DEBUG)
+                if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
                 {
                     Log.d(K9.LOG_TAG, ">>> " + s);
                 }

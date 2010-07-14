@@ -32,7 +32,7 @@ public abstract class Message implements Part, Body
         Date myDate = getInternalDate();
         if (myDate == null)
         {
-            myDate = getSentDate();
+            myDate = getInternalDate();
         }
         if (myDate != null)
         {

@@ -1716,6 +1716,23 @@ public class MessageList
                 }
                 mHandler.refreshTitle();
             }
+            @Override
+            public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total)
+            {
+                super.synchronizeMailboxHeadersProgress(account,folder,completed, total);
+                mHandler.refreshTitle();
+            }
+
+            @Override
+            public void synchronizeMailboxHeadersFinished(Account account, String folder,
+                    int total, int completed)
+            {
+                super.synchronizeMailboxHeadersFinished(account,folder, total, completed);
+                mHandler.refreshTitle();
+            }
+
+
+
 
             @Override
             public void synchronizeMailboxFinished(Account account, String folder,
@@ -2268,20 +2285,20 @@ public class MessageList
                      * from.
                      */
                     holder.preview.setText(message.sender + " " + message.preview,
-                            TextView.BufferType.SPANNABLE);
+                                           TextView.BufferType.SPANNABLE);
                     Spannable str = (Spannable)holder.preview.getText();
 
                     // Create our span sections, and assign a format to each.
                     str.setSpan(
-                            new TextAppearanceSpan(
-                                    null,
-                                    Typeface.BOLD,
-                                    -1,
-                                    holder.subject.getTextColors(),
-                                    holder.subject.getLinkTextColors()),
-                            0,
-                            message.sender.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        new TextAppearanceSpan(
+                            null,
+                            Typeface.BOLD,
+                            -1,
+                            holder.subject.getTextColors(),
+                            holder.subject.getLinkTextColors()),
+                        0,
+                        message.sender.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                     );
                 }
                 else
@@ -2984,7 +3001,7 @@ public class MessageList
                     if (mController.isMoveCapable(message) == false)
                     {
                         Toast toast = Toast.makeText(this,
-                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
                         return;
                     }
@@ -3019,7 +3036,7 @@ public class MessageList
                     if (mController.isMoveCapable(message) == false)
                     {
                         Toast toast = Toast.makeText(this,
-                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
                         return;
                     }
@@ -3116,7 +3133,7 @@ public class MessageList
                     if (mController.isCopyCapable(message) == false)
                     {
                         Toast toast = Toast.makeText(this,
-                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
                         return;
                     }
@@ -3150,7 +3167,7 @@ public class MessageList
                     if (mController.isCopyCapable(message) == false)
                     {
                         Toast toast = Toast.makeText(this,
-                                R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
+                                                     R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
                         return;
                     }

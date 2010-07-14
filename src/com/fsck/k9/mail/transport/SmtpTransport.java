@@ -416,7 +416,7 @@ public class SmtpTransport extends Transport
             }
         }
         String ret = sb.toString();
-        if (K9.DEBUG)
+        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP)
             Log.d(K9.LOG_TAG, "SMTP <<< " + ret);
 
         return ret;
@@ -424,7 +424,7 @@ public class SmtpTransport extends Transport
 
     private void writeLine(String s, boolean sensitive) throws IOException
     {
-        if (K9.DEBUG)
+        if (K9.DEBUG && K9.DEBUG_PROTOCOL_SMTP)
         {
             final String commandToLog;
             if (sensitive && !K9.DEBUG_SENSITIVE)

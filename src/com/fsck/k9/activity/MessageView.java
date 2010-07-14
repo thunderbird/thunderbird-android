@@ -429,6 +429,8 @@ public class MessageView extends K9Activity implements OnClickListener
             });
         }
 
+
+
         public void networkError()
         {
             runOnUiThread(new Runnable()

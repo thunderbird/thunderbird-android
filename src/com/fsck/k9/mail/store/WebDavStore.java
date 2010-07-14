@@ -1032,7 +1032,7 @@ public class WebDavStore extends Store
     throws MessagingException
     {
         DataSet dataset = new DataSet();
-        if (K9.DEBUG)
+        if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV)
         {
             Log.v(K9.LOG_TAG, "processRequest url = '" + url + "', method = '" + method + "', messageBody = '" + messageBody + "'");
         }
@@ -2607,7 +2607,7 @@ public class WebDavStore extends Store
                     url = urlParts[i];
                 }
             }
-            if (K9.DEBUG)
+            if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV)
             {
                 Log.v(K9.LOG_TAG, "url = '" + url + "' length = " + url.length()
                       + ", end = '" + end + "' length = " + end.length());
