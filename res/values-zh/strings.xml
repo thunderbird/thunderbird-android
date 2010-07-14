@@ -115,7 +115,7 @@
   <string name="edit_subject_action">編輯主旨</string>
   <string name="empty_trash_action">清空垃圾筒</string>
   <string name="folders_action">資料夾</string>
-  <string name="forward_action">下一頁</string>
+  <string name="forward_action">转发</string>
   <string name="general_no_subject">(無主旨)</string>
   <string name="mailbox_select_dlg_new_mailbox_action">新增資料夾</string>
   <string name="mailbox_select_dlg_title">資料夾</string>
