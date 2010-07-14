@@ -25,9 +25,9 @@
   <string name="app_name">K-9 Mail</string>
   <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="app_authors">Google, Les K-9 Dog Walkers.</string>
-  <string name="app_authors_fmt">Auteurs : <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="app_authors_fmt">Auteurs\u00A0: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
-  <string name="app_revision_fmt">Information de révision : %s</string>
+  <string name="app_revision_fmt">Information de révision\u00A0: %s</string>
   <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
 
   <string name="read_attachment_label">lire les pièces jointes</string>
@@ -90,7 +90,7 @@
   <string name="account_settings_action">Paramètres du compte</string>
   <string name="folder_settings_action">Paramètre du dossier</string>
   <string name="remove_account_action">Supprimer le compte</string>
-  <string name="clear_pending_action">Annuler les actions en attente (Danger !)</string>
+  <string name="clear_pending_action">Annuler les actions en attente (Danger\u00A0!)</string>
   <string name="accounts_action">Comptes</string>
   <string name="back_to_accounts_action">◀</string>
   <string name="back_to_folder_list_action">◀</string>
@@ -99,7 +99,7 @@
   <string name="send_alternate_action">Transférer avec une autre application</string>
   <string name="send_alternate_chooser_title">Choisir l\'envoyeur</string>
   <string name="mark_all_as_read_dlg_title">Marquer tous les messages comme lus</string>
-  <string name="mark_all_as_read_dlg_instructions_fmt">Marquer tous les messages dans \'<xliff:g id="folder">%s</xliff:g>\' comme lus ? (incluant les messages dans le dossier qui ne sont pas affichés ?)</string>
+  <string name="mark_all_as_read_dlg_instructions_fmt">Marquer tous les messages dans \'<xliff:g id="folder">%s</xliff:g>\' comme lus\u00A0? (incluant les messages dans le dossier qui ne sont pas affichés\u00A0?)</string>
   <string name="flag_action">Ajouter une étoile</string>
   <string name="unflag_action">Enlever l\'étoile</string>
   <string name="copy_action">Copier</string>
@@ -140,14 +140,14 @@
   <string name="abbrev_kilobytes">ko</string>
   <string name="abbrev_bytes">oct.</string>
   <string name="account_size_changed">
-    Espace sur «<xliff:g id="account">%s</xliff:g>» passé de
+    Espace sur «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» passé de
     <xliff:g id="oldSize">%s</xliff:g>
     à
     <xliff:g id="newSize">%s</xliff:g>
   </string>
-  <string name="compacting_account">Compactage du compte «<xliff:g id="account">%s</xliff:g>»</string>
-  <string name="clearing_account">Effacement du compte «<xliff:g id="account">%s</xliff:g>»</string>
-  <string name="recreating_account">Recréation du compte «<xliff:g id="account">%s</xliff:g>»</string>
+  <string name="compacting_account">Compactage du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
+  <string name="clearing_account">Effacement du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
+  <string name="recreating_account">Recréation du compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0»</string>
   <string name="notification_new_title">Nouveau courriel</string>
   <string name="notification_new_scrolling">Nouveau courriel de <xliff:g id="sender">%s</xliff:g></string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> non lu(s) (<xliff:g id="account">%s</xliff:g>)</string>
@@ -155,9 +155,9 @@
   <string name="notification_new_multi_account_fmt">dans les comptes <xliff:g id="number_accounts">%d</xliff:g></string>
   <string name="notification_unsent_title">Message non envoyé</string>
   
-  <string name="notification_bg_sync_ticker">Vérification du courrier : <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_ticker">Vérification du courrier\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Vérification du courrier</string>
-  <string name="notification_bg_send_ticker">Envoi du courrier : <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_bg_send_ticker">Envoi du courrier\u00A0: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Envoi du courrier</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="special_mailbox_name_inbox">Boîte de réception</string>
@@ -182,14 +182,14 @@
     ont été envoyés. Les destinataires ont peut-être déjà reçu une copie des messages.
     \u000a\u000aLes messages qui sont touchés par ce problème sont maintenant marqués d\'une étoile dans votre boîte d\'envoi.
     Si vous enlevez ces étoiles, K-9 essaiera de les envoyer de nouveau.
-    Maintenez votre doigt sur la boîte d\'envoi et sélectionnez «Envoyer les messages» pour initier l\'envoi.\u000A\u000a
+    Maintenez votre doigt sur la boîte d\'envoi et sélectionnez «\u00A0Envoyer les messages\u00A0» pour initier l\'envoi.\u000A\u000a
     Le dossier <xliff:g id="errorFolder">%s</xliff:g> pourrait contenir des messages d\'erreur à propos de ces échecs.</string>
 
   <string name="alert_header">Alerte K-9</string>
   <string name="no_connection_alert">Synchronisation et envoi suspendus dû au réseau inaccessible.</string>
   <string name="end_of_folder">Aucun message</string>
-  <string name="accounts_welcome">Bienvenue à la configuration de la messagerie !\n\nUtilisez n\'importe quel compte de messagerie.\n\nLa plupart des comptes de messagerie populaires peuvent être configurés en 2 étapes !</string>
-  <string name="debug_version_fmt">Version : <xliff:g id="version">%s</xliff:g></string>
+  <string name="accounts_welcome">Bienvenue à la configuration de la messagerie\u00A0!\n\nUtilisez n\'importe quel compte de messagerie.\n\nLa plupart des comptes de messagerie populaires peuvent être configurés en 2 étapes\u00A0!</string>
+  <string name="debug_version_fmt">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
   <string name="debug_enable_debug_logging_title">Activer le journal de déboguage</string>
   <string name="debug_enable_debug_logging_summary">Journaliser les informations de diagnostic supplémentaires</string>
   <string name="debug_enable_sensitive_logging_title">Journaliser les informations personnelles</string>
@@ -204,7 +204,7 @@
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
   <string name="message_list_load_more_messages_action">Charger plus de messages</string>
-  <string name="message_list_to_fmt">Pour : <xliff:g id="counterParty">%s</xliff:g></string>
+  <string name="message_list_to_fmt">Pour\u00A0: <xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_list_delete_action">Supprimer</string>
   <string name="message_list_mark_read_action">Marquer comme lu</string>
   <string name="message_list_mark_unread_action">Marquer comme non lu</string>
@@ -216,8 +216,8 @@
   <string name="message_compose_bcc_hint">Cci</string>
   <string name="message_compose_subject_hint">Objet</string>
   <string name="message_compose_content_hint">Texte du message</string>
-  <string name="message_compose_fwd_header_fmt">\n\n-------- Message d\'origine --------\nObjet : <xliff:g id="subject">%s</xliff:g>\nDe : <xliff:g id="sender">%s</xliff:g>\nÀ : <xliff:g id="to">%s</xliff:g>\nCc : <xliff:g id="cc">%s</xliff:g>\n\n</string>
-  <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> a écrit :\n\n</string>
+  <string name="message_compose_fwd_header_fmt">\n\n-------- Message d\'origine --------\nObjet\u00A0: <xliff:g id="subject">%s</xliff:g>\nDe\u00A0: <xliff:g id="sender">%s</xliff:g>\nÀ\u00A0: <xliff:g id="to">%s</xliff:g>\nCc\u00A0: <xliff:g id="cc">%s</xliff:g>\n\n</string>
+  <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> a écrit\u00A0:\n\n</string>
   <string name="message_compose_quoted_text_label">Texte cité</string>
   <string name="message_compose_error_no_recipients">Vous devez ajouter au moins un destinataire.</string>
   <string name="message_compose_downloading_attachments_toast">Certaines pièces jointes n\'ont pas été téléchargées. Elles seront téléchargées automatiquement avant l\'envoi de ce message.</string>
@@ -225,9 +225,9 @@
   
   
   
-  <string name="message_view_from_format">De : <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
-  <string name="message_view_to_label">Pour :</string>
-  <string name="message_view_cc_label">Cc :</string>
+  <string name="message_view_from_format">De\u00A0: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_view_to_label">Pour\u00A0:</string>
+  <string name="message_view_cc_label">Cc\u00A0:</string>
   <string name="message_view_attachment_view_action">Ouvrir</string>
   <string name="message_view_attachment_download_action">Enregistrer</string>
   <string name="message_view_prev_action">\u25BC</string>
@@ -238,11 +238,11 @@
   <string name="message_view_datetime_fmt">MMM jj aaaa hh:mm a</string>
   <string name="message_view_status_attachment_saved">Pièce jointe enregistrée sur la carte SD en tant que <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Impossible d\'enregistrer la pièce jointe sur la carte SD.</string>
-  <string name="message_view_show_pictures_instructions">Sélectionnez «Afficher les images» pour afficher les images intégrées.</string>
+  <string name="message_view_show_pictures_instructions">Sélectionnez «\u00A0Afficher les images\u00A0» pour afficher les images intégrées.</string>
   <string name="message_view_show_pictures_action">Afficher les images</string>
   <string name="message_view_fetching_attachment_toast">Récupération de la pièce jointe.</string>
   <string name="message_view_no_viewer">Impossible de trouver un visualisateur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
-  <string name="message_additional_headers_not_downloaded">Les entêtes n\'ont pas toutes été téléchargées ou enregistrées. Sélectionnez «Enregistrer toutes les entêtes localement» dans les paramètres du serveur entrant pour activer cette fonction.</string>
+  <string name="message_additional_headers_not_downloaded">Les entêtes n\'ont pas toutes été téléchargées ou enregistrées. Sélectionnez «\u00A0Enregistrer toutes les entêtes localement\u00A0» dans les paramètres du serveur entrant pour activer cette fonction.</string>
   <string name="message_no_additional_headers_available">Toutes les entêtes ont été téléchargées, mais il n\'y en a pas d\'autres à montrer.</string>
   <string name="message_additional_headers_retrieval_failed">La récupération d\'entêtes supplémentaires de la base de données ou du serveur a échouée.</string>
   <string name="mailbox_select_dlg_title">Dossiers</string>
@@ -258,7 +258,7 @@
   <string name="message_saved_toast">Message enregistré comme brouillon</string>
   <string name="message_delete_failed">Le message n\'a pû être supprimé</string>
   <string name="about_header">À propos de <xliff:g id="app_name">%s</xliff:g></string>
-  <string name="about_version">Version : <xliff:g id="version">%s</xliff:g></string>
+  <string name="about_version">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
   <string name="global_settings_flag_label">Étoiles des messages
 </string>
   <string name="global_settings_flag_summary">Les étoiles indiquent des messages signalés</string>
@@ -271,7 +271,7 @@
   <string name="global_settings_messageview_return_to_list_label">Retour à la liste après suppression</string>
   <string name="global_settings_messageview_return_to_list_summary">Retourne à la liste de messages après la suppression d\'un message</string>
   <string name="account_setup_basics_title">Configurer la messagerie</string>
-  <string name="account_setup_basics_instructions">Saisissez l\'adresse de messagerie de votre compte :</string>
+  <string name="account_setup_basics_instructions">Saisissez l\'adresse de messagerie de votre compte\u00A0:</string>
   <string name="account_setup_basics_instructions2_fmt">(Vous pouvez ajouter %d comptes supplémentaires.)</string>
   <string name="account_setup_basics_email_hint">Adresse courriel</string>
   <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> n\'est pas une adresse de messagerie valide.</string>
@@ -285,13 +285,13 @@
   <string name="account_setup_check_settings_check_outgoing_msg">Vérification des paramètres de serveur sortant\u2026</string>
   <string name="account_setup_check_settings_finishing_msg">Finition\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Annulation\u2026</string>
-  <string name="account_setup_names_title">Presque terminé !</string>
-  <string name="account_setup_names_instructions">Votre compte est configure et les messages sont en route !</string>
-  <string name="account_setup_names_account_name_label">Donnez un nom à ce compte (optionnel) :</string>
-  <string name="account_setup_names_user_name_label">Saisissez votre nom (s\'affiche sur les messages sortants) :</string>
-  <string name="account_setup_finished_toast">Votre compte est configuré !\n\nRécupération des messages\u2026</string>
+  <string name="account_setup_names_title">Presque terminé\u00A0!</string>
+  <string name="account_setup_names_instructions">Votre compte est configure et les messages sont en route\u00A0!</string>
+  <string name="account_setup_names_account_name_label">Donnez un nom à ce compte (optionnel)\u00A0:</string>
+  <string name="account_setup_names_user_name_label">Saisissez votre nom (s\'affiche sur les messages sortants)\u00A0:</string>
+  <string name="account_setup_finished_toast">Votre compte est configuré\u00A0!\n\nRécupération des messages\u2026</string>
   <string name="account_setup_account_type_title">Ajouter un nouveau compte de messagerie</string>
-  <string name="account_setup_account_type_instructions">Quel type de compte est-ce ?</string>
+  <string name="account_setup_account_type_instructions">Quel type de compte est-ce\u00A0?</string>
   <string name="account_setup_account_type_pop_action">Compte POP3</string>
   <string name="account_setup_account_type_imap_action">Compte IMAP</string>
   <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
@@ -309,12 +309,12 @@
   <string name="account_setup_incoming_security_ssl_label">SSL (toujours)</string>
   <string name="account_setup_incoming_security_tls_optional_label">TLS (si disponible)</string>
   <string name="account_setup_incoming_security_tls_label">TLS (toujours)</string>
-  <string name="account_setup_incoming_delete_policy_label">Supprimer les messages du serveur :</string>
+  <string name="account_setup_incoming_delete_policy_label">Supprimer les messages du serveur\u00A0:</string>
   <string name="account_setup_incoming_delete_policy_never_label">Jamais</string>
   <string name="account_setup_incoming_delete_policy_7days_label">Après 7 jours</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Lorsque je supprime de la boîte de réception</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Marquer comme lu sur le serveur</string>
-  <string name="account_setup_incoming_compression_label">Utiliser la compression sur le réseau :</string>
+  <string name="account_setup_incoming_compression_label">Utiliser la compression sur le réseau\u00A0:</string>
   <string name="account_setup_incoming_mobile_label">Sans fil</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Autre</string>
@@ -358,11 +358,11 @@
   <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP avant SMTP</string>
   <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP avant SMTP</string>
   <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) avant SMTP</string>
-  <string name="account_setup_bad_uri">Paramétrage incorrect : <xliff:g id="err_mess">%s</xliff:g></string>
+  <string name="account_setup_bad_uri">Paramétrage incorrect\u00A0: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Options du compte</string>
   <string name="compact_action">Compacter</string>
-  <string name="clear_action">Vider les messages (Danger !)</string>
-  <string name="recreate_action">Recréer les données (Dernier recours !)</string>
+  <string name="clear_action">Vider les messages (Danger\u00A0!)</string>
+  <string name="recreate_action">Recréer les données (Dernier recours\u00A0!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Fréquence de vérification de la messagerie</string>
   <string name="account_setup_options_mail_check_frequency_never">Jamais</string>
   <string name="account_setup_options_mail_check_frequency_1min">Toutes les minutes</string>
@@ -538,7 +538,7 @@
   <string name="account_settings_composition_label">Défauts pour la composition</string>
   <string name="account_settings_composition_summary">Choisir vos champs De, Cci et signature par défaut</string>
   <string name="account_settings_identities_label">Gérer les identités</string>
-  <string name="account_settings_identities_summary">Créer des adresses «De» et signatures alternatives</string>
+  <string name="account_settings_identities_summary">Créer des adresses «\u00A0De\u00A0» et signatures alternatives</string>
   <string name="manage_identities_title">Gérer les identités</string>
   <string name="manage_identities_context_menu_title">Gérer l\'identité</string>
   <string name="edit_identity_title">Éditer l\'identité</string>
@@ -592,15 +592,15 @@
   <string name="sort_by_attach">Pièces jointes</string>
   <string name="message_web_view_error">%s</string>
   <string name="account_delete_dlg_title">Supprimer</string>
-  <string name="account_delete_dlg_instructions_fmt">Le compte «<xliff:g id="account">%s</xliff:g>\» sera supprimé de la messagerie.</string>
+  <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera supprimé de la messagerie.</string>
   <string name="account_recreate_dlg_title">Recréer compte</string>
-  <string name="account_recreate_dlg_instructions_fmt">Toutes les données de «<xliff:g id="account">%s</xliff:g>\» vont être effacées de K-9 Mail, mais les paramètres du compte seront sauvegardés.</string>
+  <string name="account_recreate_dlg_instructions_fmt">Toutes les données de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacées de K-9 Mail, mais les paramètres du compte seront sauvegardés.</string>
   <string name="account_clear_dlg_title">Vider le compte</string>
-  <string name="account_clear_dlg_instructions_fmt">Tous les messages de «<xliff:g id="account">%s</xliff:g>\» vont être effacés de K-9 Mail, mais les paramàtres du compte seront sauvegardés</string>
-  <string name="provider_note_live">Seuls certains comptes «Plus» comprennent l\'accès POP
+  <string name="account_clear_dlg_instructions_fmt">Tous les messages de «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» vont être effacés de K-9 Mail, mais les paramàtres du compte seront sauvegardés</string>
+  <string name="provider_note_live">Seuls certains comptes «\u00A0Plus\u00A0» comprennent l\'accès POP
         permettant à ce programme de se connecter. Si vous ne pouvez pas
         vous connecter avec votre adresse électronique et votre mot de passe,
-        il est possible que vous n\'ayez pas payé un compte «Plus». Veuillez
+        il est possible que vous n\'ayez pas payé un compte «\u00A0Plus\u00A0». Veuillez
         lancer le navigateur Web pour accéder à ces comptes de messagerie.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
@@ -653,8 +653,8 @@
   <string name="background_ops_label">Synchronisation en arrière-plan</string>
   <string name="background_ops_never">Jamais</string>
   <string name="background_ops_always">Toujours</string>
-  <string name="background_ops_enabled">Lorsque «Données en arrière-plan» est activé</string>
-  <string name="background_ops_auto_sync">Lorsque «Données en arrière-plan» et «Synchronisation auto» sont activés</string>
+  <string name="background_ops_enabled">Lorsque «\u00A0Données en arrière-plan\u00A0» est activé</string>
+  <string name="background_ops_auto_sync">Lorsque «\u00A0Données en arrière-plan\u00A0» et «\u00A0Synchronisation auto\u00A0» sont activés</string>
   <string name="no_message_seletected_toast">Aucun message sélectionné</string>
   <string name="date_format_label">Format de date</string>
   <string name="date_format_short">SHORT</string>
@@ -688,8 +688,8 @@
   <string name="animations_summary">Utiliser des effets visuels criards</string>
   <string name="gestures_title">Interface gestuelle</string>
   <string name="gestures_summary">Accepter le contrôle par gestuelle</string>
-  <string name="manage_back_title">Gérer la touche «Retour»</string>
-  <string name="manage_back_summary">La touche «Retour» remonte toujours un niveau</string>
+  <string name="manage_back_title">Gérer la touche «\u00A0Retour\u00A0»</string>
+  <string name="manage_back_summary">La touche «\u00A0Retour\u00A0» remonte toujours un niveau</string>
   <string name="start_integrated_inbox_title">Boîte de messagerie unifiée au démarrage</string>
   <string name="start_integrated_inbox_summary">Afficher la boîte de messagerie unifiée au démarrage</string>
   <string name="measure_accounts_title">Afficher la taille du compte</string>
@@ -745,14 +745,14 @@
   <string name="font_size_webview_normal">Normal</string>
   <string name="font_size_webview_large">Grand</string>
   <string name="font_size_webview_larger">Plus grand</string>
-  <string name="message_compose_buggy_gallery">Cochez «Paramètres &gt; Utiliser le contounement du bogue de gallerie» pour être capable d\'attacher des images ou vidéos en utilisant Gallerie 3D.</string>
-  <string name="message_compose_use_workaround">Utiliser «Joindre une image» ou »Joindre une vidéo» pour joindres des images ou vidéos avec Gallerie 3D</string>
+  <string name="message_compose_buggy_gallery">Cochez «\u00A0Paramètres &gt; Utiliser le contounement du bogue de gallerie\u00A0» pour être capable d\'attacher des images ou vidéos en utilisant Gallerie 3D.</string>
+  <string name="message_compose_use_workaround">Utiliser «\u00A0Joindre une image\u00A0» ou «\u00A0Joindre une vidéo\u00A0» pour joindres des images ou vidéos avec Gallerie 3D</string>
   <string name="miscellaneous_preferences">Divers</string>
   <string name="misc_preferences_attachment_title">Utiliser le contounement du bogue de gallerie</string>
   <string name="misc_preferences_attachment_description">Afficher les boutons pour ajouter des images ou vidéos en pièces jointes (pour contourner le bogue de gallerie 3D)</string>
   
-  <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon ?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message ?</string>
+  <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
 
-  <string name="charset_not_found">Ce message ne peut être affiché parce que le jeu de caractères «<xliff:g id="charset">%s</xliff:g>» n\'a pu être trouvé.</string>
+  <string name="charset_not_found">Ce message ne peut être affiché parce que le jeu de caractères «\u00A0<xliff:g id="charset">%s</xliff:g>\u00A0» n\'a pu être trouvé.</string>
 </resources>
