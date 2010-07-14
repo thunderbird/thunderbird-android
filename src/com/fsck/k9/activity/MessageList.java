@@ -152,6 +152,7 @@ public class MessageList
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private Bundle mState = null;
+    private MessageInfoHolder mSelectedMessage = null;
 
     class MessageListHandler extends Handler
     {
@@ -1490,7 +1491,13 @@ public class MessageList
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-        MessageInfoHolder holder = (MessageInfoHolder) mAdapter.getItem(info.position);
+        MessageInfoHolder holder = mSelectedMessage;
+        // don't need this anymore
+        mSelectedMessage = null;
+        if (holder == null)
+        {
+            holder = (MessageInfoHolder) mAdapter.getItem(info.position);
+        }
 
         switch (item.getItemId())
         {
@@ -1644,6 +1651,9 @@ public class MessageList
 
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
         MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
+        // remember which message was originally selected, in case the list changes while the
+        // dialog is up
+        mSelectedMessage = message;
 
         if (message == null)
         {
