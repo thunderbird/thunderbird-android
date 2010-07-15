@@ -532,7 +532,6 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
     <string name="account_settings_autodownload_message_size_any">上限なし</string>
-    <string name="account_settings_autodownload_message_size_0">ヘッダのみ</string>
 
     <string name="account_settings_message_age_label">いつまでに受信したメッセージをダウンロードするか</string>
     <string name="account_settings_message_age_any">すべて</string>
@@ -745,16 +744,6 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="settings_language_label">言語</string>
 
     <string name="setting_language_system">システム設定</string>
-    <string name="setting_language_chinese">中国語</string>
-    <string name="setting_language_czech">チェコ語</string>
-    <string name="setting_language_english">英語</string>
-    <string name="setting_language_german">ドイツ語</string>
-    <string name="setting_language_france">フランス語</string>
-    <string name="setting_language_italian">イタリア語</string>
-    <string name="setting_language_japanese">日本語</string>
-    <string name="setting_language_polish">ポーランド語</string>
-    <string name="setting_language_spanish">スペイン語</string>
-    <string name="setting_language_russian">ロシア語</string>
 
     <string name="background_ops_label">バックグラウンド同期</string>
     <string name="background_ops_never">使用しない</string>
