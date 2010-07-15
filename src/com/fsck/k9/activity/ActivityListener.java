@@ -124,6 +124,8 @@ public class ActivityListener extends MessagingListener
             int total, int completed)
     {
         mLoadingHeaderFolderName = null;
+        mFolderCompleted = 0;
+        mFolderTotal = 0;
     }
 
 
