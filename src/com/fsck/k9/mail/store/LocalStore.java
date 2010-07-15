@@ -1772,7 +1772,8 @@ public class LocalStore extends Store implements Serializable
                     cv.put("reply_to_list", Address.pack(message.getReplyTo()));
                     cv.put("attachment_count", attachments.size());
                     cv.put("internal_date",  message.getInternalDate() == null
-                           ? null : message.getInternalDate().getTime());
+                           ? System.currentTimeMillis() : message.getInternalDate().getTime());
+
                     String messageId = message.getMessageId();
                     if (messageId != null)
                     {
