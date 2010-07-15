@@ -4621,7 +4621,7 @@ public class MessagingController implements Runnable
         if (!account.isRingNotified())
         {
             account.setRingNotified(true);
-            if (account.isRing())
+            if (account.shouldRing())
             {
                 String ringtone = account.getRingtone();
                 notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);

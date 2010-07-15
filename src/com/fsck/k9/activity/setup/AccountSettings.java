@@ -386,7 +386,7 @@ public class AccountSettings extends K9PreferenceActivity
         // XXX: The following two lines act as a workaround for the RingtonePreference
         //      which does not let us set/get the value programmatically
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
-        String currentRingtone = (!mAccount.isRing() ? null : mAccount.getRingtone());
+        String currentRingtone = (!mAccount.shouldRing() ? null : mAccount.getRingtone());
         prefs.edit().putString(PREFERENCE_RINGTONE, currentRingtone).commit();
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
@@ -565,7 +565,7 @@ public class AccountSettings extends K9PreferenceActivity
         }
         else
         {
-            if (mAccount.isRing())
+            if (mAccount.shouldRing())
             {
                 mAccount.setRingtone(null);
             }
