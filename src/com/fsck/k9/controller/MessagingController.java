@@ -1681,6 +1681,21 @@ public class MessagingController implements Runnable
 
         final Date earliestDate = account.getEarliestPollDate();
 
+        int tmpRead = 0;
+
+        try
+        {
+            AccountStats stats = account.getStats(mApplication);
+            tmpRead = stats.unreadMessageCount;
+
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+        }
+
+        final int unreadBeforeStart = tmpRead;
+
 
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
@@ -1723,10 +1738,11 @@ public class MessagingController implements Runnable
                         }
                     }
                     // Send a notification of this message
-                    if (notifyAccount(mApplication, account, message) == true)
+
+
+                    if (notifyAccount(mApplication, account, message, (unreadBeforeStart + newMessages.get())) == true)
                     {
                         newMessages.incrementAndGet();
-                    }
                     }
 
 
@@ -1763,6 +1779,20 @@ public class MessagingController implements Runnable
         final String folder = remoteFolder.getName();
 
         final Date earliestDate = account.getEarliestPollDate();
+
+        int unreadBeforeStart = 0;
+        try
+        {
+            AccountStats stats = account.getStats(mApplication);
+            unreadBeforeStart = stats.unreadMessageCount;
+
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+        }
+
+
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
 
@@ -1868,9 +1898,9 @@ public class MessagingController implements Runnable
             }
 
             // Send a notification of this message
-            if (notifyAccount(mApplication, account, message) == true)
+            if (notifyAccount(mApplication, account, message, (unreadBeforeStart+newMessages.get())) == true)
             {
-                    newMessages.incrementAndGet();
+                newMessages.incrementAndGet();
             }
 
 
@@ -4511,25 +4541,15 @@ public class MessagingController implements Runnable
     /** Creates a notification of new email messages
       * ringtone, lights, and vibration to be played
     */
-    private boolean notifyAccount(Context context, Account account, Message message)
+    private boolean notifyAccount(Context context, Account account, Message message, int unreadMessageCount)
     {
-        int unreadMessageCount = 0;
-        try
-        {
-            AccountStats stats = account.getStats(context);
-            unreadMessageCount = stats.unreadMessageCount;
-        }
-        catch (MessagingException e)
-        {
-            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
-        }
-
         // Do not notify if the user does not have notifications
         // enabled or if the message has been read
         if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN))
         {
             return false;
         }
+
 
         Folder folder = message.getFolder();
         if (folder != null)
@@ -4596,6 +4616,8 @@ public class MessagingController implements Runnable
         {
             Log.e(K9.LOG_TAG, "Unable to get message information for notification.", e);
         }
+
+
         // If we could not set a per-message notification, revert to a default message
         if (messageNotice.length() == 0)
         {
@@ -4606,12 +4628,12 @@ public class MessagingController implements Runnable
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
-        notif.number = unreadMessageCount;
+        notif.number = unreadMessageCount+1;
 
         Intent i = FolderList.actionHandleNotification(context, account, account.getAutoExpandFolderName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount, account.getDescription());
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, (unreadMessageCount+1), account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
         // Only ring or vibrate if we have not done so already on this
