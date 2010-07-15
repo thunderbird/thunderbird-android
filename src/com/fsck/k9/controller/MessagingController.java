@@ -1722,13 +1722,11 @@ public class MessagingController implements Runnable
                             l.synchronizeMailboxNewMessage(account, folder, localMessage);
                         }
                     }
-                    if (!localMessage.isSet(Flag.SEEN))
+                    // Send a notification of this message
+                    if (notifyAccount(mApplication, account, message) == true)
                     {
-                        // Send a notification of this message
-                        if (notifyAccount(mApplication, account, message) == true)
-                        {
-                            newMessages.incrementAndGet();
-                        }
+                        newMessages.incrementAndGet();
+                    }
                     }
 
 
@@ -1868,13 +1866,11 @@ public class MessagingController implements Runnable
                     l.synchronizeMailboxNewMessage(account, folder, localMessage);
                 }
             }
-            if (!localMessage.isSet(Flag.SEEN))
+
+            // Send a notification of this message
+            if (notifyAccount(mApplication, account, message) == true)
             {
-                // Send a notification of this message
-                if (notifyAccount(mApplication, account, message) == true)
-                {
                     newMessages.incrementAndGet();
-                }
             }
 
 
