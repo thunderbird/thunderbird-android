@@ -140,8 +140,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
-    private boolean mIgnoreNextUpEvent = false;
-
     /**
      * Pair class is only available since API Level 5, so we need
      * this helper class unfortunately
@@ -163,16 +161,8 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (ev.getAction() == MotionEvent.ACTION_UP)
         {
-            if (mIgnoreNextUpEvent)
-            {
-                mIgnoreNextUpEvent = false;
-            }
-            else
-            {
-                // Text selection is finished. Allow scrolling and gestures again.
-                mToggleScrollView.setScrolling(true);
-                setIgnoreGestures(false);
-            }
+            // Text selection is finished. Allow scrolling again.
+            mToggleScrollView.setScrolling(true);
         }
 
         return super.dispatchTouchEvent(ev);
@@ -2234,14 +2224,6 @@ public class MessageView extends K9Activity implements OnClickListener
         return slide;
     }
 
-    @Override
-    protected void onLongPressGesture()
-    {
-        mMessageContentView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-        mIgnoreNextUpEvent = true;
-        emulateShiftHeld(mMessageContentView);
-    }
-
     /**
      * Emulate the shift key being pressed to trigger the text selection mode
      * of a WebView.
@@ -2255,7 +2237,6 @@ public class MessageView extends K9Activity implements OnClickListener
             KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
                                                     KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
             shiftPressEvent.dispatch(view);
-            setIgnoreGestures(true);
             Toast.makeText(this, R.string.select_text_now, Toast.LENGTH_SHORT).show();
         }
         catch (Exception e)

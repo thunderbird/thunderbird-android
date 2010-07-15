@@ -19,7 +19,6 @@ import com.fsck.k9.K9;
 public class K9Activity extends Activity
 {
     private GestureDetector gestureDetector;
-    private boolean mIgnoreGestures = false;
 
     protected ScrollView mTopView;
 
@@ -101,14 +100,6 @@ public class K9Activity extends Activity
     protected void onPrevious(boolean animate)
     {
     }
-    protected void onLongPressGesture()
-    {
-    }
-
-    protected void setIgnoreGestures(boolean ignoreGestures)
-    {
-        mIgnoreGestures = ignoreGestures;
-    }
 
     class MyGestureDetector extends SimpleOnGestureListener
     {
@@ -141,7 +132,7 @@ public class K9Activity extends Activity
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
         {
-            if (K9.gesturesEnabled() && !mIgnoreGestures)
+            if (K9.gesturesEnabled())
             {
                 // Convert the dips to pixels
                 final float mGestureScale = getResources().getDisplayMetrics().density;
@@ -170,12 +161,6 @@ public class K9Activity extends Activity
                 }
             }
             return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e)
-        {
-            onLongPressGesture();
         }
     }
 
