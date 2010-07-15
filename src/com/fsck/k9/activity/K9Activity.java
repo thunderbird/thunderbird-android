@@ -173,7 +173,8 @@ public class K9Activity extends Activity
         }
 
         @Override
-        public void onLongPress(MotionEvent e) {
+        public void onLongPress(MotionEvent e)
+        {
             onLongPressGesture();
         }
     }
