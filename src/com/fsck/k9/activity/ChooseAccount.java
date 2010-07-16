@@ -11,7 +11,6 @@ import android.view.Window;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fsck.k9.Account;
@@ -20,12 +19,11 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * Activity displaying list of accounts/identity for user choice
- * 
+ *
  * @see K9ExpandableListActivity
  */
 public class ChooseAccount extends K9ExpandableListActivity
@@ -48,19 +46,16 @@ public class ChooseAccount extends K9ExpandableListActivity
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.choose_account);
 
         final ExpandableListView expandableListView = getExpandableListView();
-        expandableListView.setTextFilterEnabled(true);
         expandableListView.setItemsCanFocus(false);
-        expandableListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
 
         final ExpandableListAdapter adapter = createAdapter();
-
         setListAdapter(adapter);
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
         {
-
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
                     int childPosition, long id)
@@ -69,10 +64,8 @@ public class ChooseAccount extends K9ExpandableListActivity
                 final Account account = (Account) adapter.getGroup(groupPosition);
 
                 final Intent intent = new Intent();
-
                 intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
                 intent.putExtra(EXTRA_IDENTITY, identity);
-
                 setResult(RESULT_OK, intent);
 
                 finish();
@@ -120,31 +113,28 @@ public class ChooseAccount extends K9ExpandableListActivity
 
     private ExpandableListAdapter createAdapter()
     {
-        return new IdentitiesAdapter(this);
+        return new IdentitiesAdapter(this, getLayoutInflater());
     }
 
     /**
      * Dynamically provides accounts/identities data for
      * {@link ExpandableListView#setAdapter(ExpandableListAdapter)}:
-     * 
+     *
      * <ul>
      * <li>Groups represent {@link Account accounts}</li>
      * <li>Children represent {@link Identity identities} of the parent account</li>
      * </ul>
      */
-    public/* static */class IdentitiesAdapter extends BaseExpandableListAdapter
+    public static class IdentitiesAdapter extends BaseExpandableListAdapter
     {
 
         private Context mContext;
         private LayoutInflater mLayoutInflater;
 
-        public IdentitiesAdapter(final Context context)
+        public IdentitiesAdapter(final Context context, final LayoutInflater layoutInflater)
         {
             mContext = context;
-            // mLayoutInflater = (LayoutInflater) context
-            // .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            mLayoutInflater = ChooseAccount.this.getLayoutInflater();
+            mLayoutInflater = layoutInflater;
         }
 
         @Override
@@ -191,7 +181,7 @@ public class ChooseAccount extends K9ExpandableListActivity
             if (convertView == null)
             {
                 // is it okay to reuse?
-                v = mLayoutInflater.inflate(R.layout.accounts_item, parent, false);
+                v = mLayoutInflater.inflate(R.layout.choose_account_item, parent, false);
             }
             else
             {
@@ -201,14 +191,9 @@ public class ChooseAccount extends K9ExpandableListActivity
             final TextView description = (TextView) v.findViewById(R.id.description);
             final Account account = getAccounts()[groupPosition];
             description.setText(account.getDescription());
-            description
-                    .setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
+            description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
 
-            // since we're reusing existing layout, manually hide unwanted views
             v.findViewById(R.id.chip).setBackgroundColor(account.getChipColor());
-            v.findViewById(R.id.active_icons).setVisibility(View.GONE);
-            v.findViewById(R.id.folders).setVisibility(View.INVISIBLE);
-            v.findViewById(R.id.email).setVisibility(View.GONE);
 
             return v;
         }
@@ -217,26 +202,28 @@ public class ChooseAccount extends K9ExpandableListActivity
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                 View convertView, ViewGroup parent)
         {
-            final Identity identity = getAccounts()[groupPosition].getIdentity(childPosition);
+            final Account account = getAccounts()[groupPosition];
+            final Identity identity = account.getIdentity(childPosition);
 
             final View v;
             if (convertView == null)
             {
-                v = mLayoutInflater.inflate(android.R.layout.simple_expandable_list_item_2, parent,
-                        false);
+                v = mLayoutInflater.inflate(R.layout.choose_identity_item, parent, false);
             }
             else
             {
                 v = convertView;
             }
 
-            final TextView textView1 = (TextView) v.findViewById(android.R.id.text1);
-            final TextView textView2 = (TextView) v.findViewById(android.R.id.text2);
-            textView1.setText(identity.getDescription());
-            // XXX: consider proper string?
-            textView2.setText(mContext.getString(R.string.message_view_from_format,
-                    identity.getName(), identity.getEmail()));
-            textView2.setHorizontallyScrolling(true);
+            final TextView name = (TextView) v.findViewById(R.id.name);
+            final TextView description = (TextView) v.findViewById(R.id.description);
+            name.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
+            description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountDescription());
+
+            name.setText(identity.getDescription());
+            description.setText(String.format("%s <%s>", identity.getName(), identity.getEmail()));
+
+            v.findViewById(R.id.chip).setBackgroundColor(account.getChipColor());
 
             return v;
         }
@@ -258,7 +245,5 @@ public class ChooseAccount extends K9ExpandableListActivity
         {
             return Preferences.getPreferences(mContext).getAccounts();
         }
-
     }
-
 }
