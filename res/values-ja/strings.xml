@@ -134,7 +134,7 @@
     <string name="abbrev_bytes">B</string>
 
     <string name="account_size_changed">
-    アカウント \"<xliff:g id="account">%s</xliff:g>\" 現在 
+    アカウント \"<xliff:g id="account">%s</xliff:g>\" 現在
     <xliff:g id="oldSize">%s</xliff:g>
     から
     <xliff:g id="newSize">%s</xliff:g> へ
@@ -175,11 +175,11 @@
 
     <string name="send_failure_subject">メール送信に失敗しました</string>
     <string name="send_failure_body_abbrev"><xliff:g id="errorFolder">%s</xliff:g> フォルダ詳細を確認してください</string>
-    <string name="send_failure_body_fmt">K-9 はメール送信中にトラブルが発生しました． 
+    <string name="send_failure_body_fmt">K-9 はメール送信中にトラブルが発生しました．
      メッセージが送信されたかどうかについては、トラブルに応じるため不明です．
-      送信宛先は、メールを既に受信している場合があります．  
-    \u000a\u000a送信済みトレイにトラブルで発生したメールを格納します．  
-    フラグ解除されたメールを再送信することができます． 
+      送信宛先は、メールを既に受信している場合があります．
+    \u000a\u000a送信済みトレイにトラブルで発生したメールを格納します．
+    フラグ解除されたメールを再送信することができます．
     送信済みトレイを長く押下することで「メール送信」メニューを表示させて送信することができます．\u000A\u000a
     <xliff:g id="errorFolder">%s</xliff:g> フォルダには失敗したエラーメッセージが含まれています．</string>
 
@@ -191,7 +191,7 @@
     <string name="accounts_welcome">
 K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで開発されているAndroid用の標準的な電子メールクライアントです。
 \n
-\nK-9での改良された機能: 
+\nK-9での改良された機能:
 \n * IMAP IDLE利用でのプッシュメール
 \n * パフォーマンス改善
 \n * メッセージフィルタ
@@ -211,7 +211,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
 \n
 \nバグレポートや新機能の貢献や質問がある場合 http://code.google.com/p/k9mail
 \n日本語版についての貢献や質問がある場合 http://groups.google.co.jp/group/k9mail_ja/
-            
+
 </string>
 
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
@@ -624,7 +624,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_composition_title">メール本文構成管理</string>
     <string name="account_settings_composition_label">本文構成</string>
     <string name="account_settings_composition_summary">送信元 Bcc 署名の標準設定</string>
- 
+
     <string name="account_settings_identities_label">差出人情報管理</string>
     <string name="account_settings_identities_summary">送信者名、送信者アドレスと署名を行う</string>
 
@@ -744,19 +744,6 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="settings_language_label">言語</string>
 
     <string name="setting_language_system">システム設定</string>
-<<<<<<< HEAD
-    <string name="setting_language_chinese">中国語</string>
-    <string name="setting_language_czech">チェコ語</string>
-    <string name="setting_language_english">英語</string>
-    <string name="setting_language_german">ドイツ語</string>
-    <string name="setting_language_france">フランス語</string>
-    <string name="setting_language_italian">イタリア語</string>
-    <string name="setting_language_japanese">日本語</string>
-    <string name="setting_language_polish">ポーランド語</string>
-    <string name="setting_language_spanish">スペイン語</string>
-    <string name="setting_language_russian">ロシア語</string>
-=======
->>>>>>> trunk
 
     <string name="background_ops_label">バックグラウンド同期</string>
     <string name="background_ops_never">使用しない</string>

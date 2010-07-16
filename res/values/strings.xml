@@ -510,7 +510,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_message_view">Viewing messages</string>
     <string name="account_settings_quote_prefix_label">Quote prefix</string>
 
-<<<<<<< HEAD
     <string name="account_settings_crypto">Encryption</string>
     <string name="account_settings_crypto_app">Use encryption</string>
     <string name="account_settings_crypto_app_none">None</string>
@@ -518,8 +517,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_default_signature">Auto-sign</string>
     <string name="account_settings_default_signature_summary">Use the account\'s email address to guess the signature key.</string>
 
-=======
->>>>>>> trunk
     <string name="account_settings_mail_check_frequency_label">Folder poll check frequency</string>
     <string name="account_settings_second_class_check_frequency_label">2nd class check frequency</string>
 
@@ -531,11 +528,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_settings_mail_display_count_label">Number of messages to display</string>
 
-<<<<<<< HEAD
-    <string name="account_settings_autodownload_message_size_label">Automatically download message content up to</string>
-=======
     <string name="account_settings_autodownload_message_size_label">Automatically download messages up to</string>
->>>>>>> trunk
     <string name="account_settings_autodownload_message_size_1">1Kb</string>
     <string name="account_settings_autodownload_message_size_2">2Kb</string>
     <string name="account_settings_autodownload_message_size_4">4Kb</string>
@@ -548,23 +541,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_autodownload_message_size_512">512Kb</string>
     <string name="account_settings_autodownload_message_size_1024">1Mb</string>
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
-<<<<<<< HEAD
-    <string name="account_settings_autodownload_message_size_any">any size</string>
-
-    <string name="account_settings_message_age_label">Download messages received</string>
-    <string name="account_settings_message_age_any">at any time</string>
-    <string name="account_settings_message_age_0">today</string>
-    <string name="account_settings_message_age_1">in the last 2 days</string>
-    <string name="account_settings_message_age_2">in the last 3 days</string>
-    <string name="account_settings_message_age_7">in the last week</string>
-    <string name="account_settings_message_age_14">in the last 2 weeks</string>
-    <string name="account_settings_message_age_21">in the last 3 weeks</string>
-    <string name="account_settings_message_age_1_month">in the last month</string>
-    <string name="account_settings_message_age_2_months">in the last 2 months</string>
-    <string name="account_settings_message_age_3_months">in the last 3 months</string>
-    <string name="account_settings_message_age_6_months">in the last 6 months</string>
-    <string name="account_settings_message_age_1_year">in the last year</string>
-=======
     <string name="account_settings_autodownload_message_size_any">any size (no limit)</string>
 
     <string name="account_settings_message_age_label">Sync messages from</string>
@@ -580,7 +556,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_message_age_3_months">the last 3 months</string>
     <string name="account_settings_message_age_6_months">the last 6 months</string>
     <string name="account_settings_message_age_1_year">the last year</string>
->>>>>>> trunk
 
 
     <string name="account_settings_folder_display_mode_label">Folders to display</string>
@@ -919,7 +894,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="misc_preferences_attachment_title">Use Gallery bug work-around</string>
     <string name="misc_preferences_attachment_description">Show buttons to add image/video attachments (to work around a Gallery 3D bug)</string>
 
-<<<<<<< HEAD
     <!-- APG related -->
     <string name="error_activity_not_found">No suitable application for this action found.</string>
     <string name="error_apg_version_not_supported">The installed APG version is not supported.</string>
@@ -932,15 +906,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="n_keys_selected">%s Key Selected</string>
     <string name="key_id">id: %s</string>
 
-=======
->>>>>>> trunk
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>
 
     <string name="charset_not_found">This message can\'t be displayed because the charset \"<xliff:g id="charset">%s</xliff:g>\" wasn\'t found.</string>
-<<<<<<< HEAD
-=======
 
     <string name="select_text_now">Select text to copy.</string>
->>>>>>> trunk
 </resources>

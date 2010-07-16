@@ -364,7 +364,7 @@ public class MessagingController implements Runnable
             return mListeners;
         }
 
-        Set<MessagingListener> listeners = new HashSet<MessagingListener>(mListeners);
+        Set<MessagingListener> listeners = new CopyOnWriteArraySet<MessagingListener>(mListeners);
         listeners.add(listener);
         return listeners;
 
@@ -1574,8 +1574,6 @@ public class MessagingController implements Runnable
                                 Log.d(K9.LOG_TAG, "Newly downloaded message " + message.getUid() + " is older than "
                                       + earliestDate + ", skipping");
                             }
-<<<<<<< HEAD
-=======
                         }
                         progress.incrementAndGet();
                         for (MessagingListener l : getListeners())
@@ -1623,7 +1621,6 @@ public class MessagingController implements Runnable
                             }
 
 
->>>>>>> trunk
                         }
 
                     }
@@ -1714,128 +1711,6 @@ public class MessagingController implements Runnable
                     if (!shouldImportMessage(account, folder, message, progress, earliestDate))
                     {
                         progress.incrementAndGet();
-<<<<<<< HEAD
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
-                        }
-                        return;
-                    }
-
-                    if (message.getSize() > account.getMaximumAutoDownloadMessageSize())
-                    {
-                        largeMessages.add(message);
-                    }
-                    else
-                    {
-                        smallMessages.add(message);
-                    }
-
-                    // And include it in the view
-                    if (message.getSubject() != null &&
-                            message.getFrom() != null)
-                    {
-                        /*
-                         * We check to make sure that we got something worth
-                         * showing (subject and from) because some protocols
-                         * (POP) may not be able to give us headers for
-                         * ENVELOPE, only size.
-                         */
-                        if (isMessageSuppressed(account, folder, message) == false)
-                        {
-                            // Store the new message locally
-                            localFolder.appendMessages(new Message[]
-                                                       {
-                                                           message
-                                                       });
-
-                            Message localMessage = localFolder.getMessage(message.getUid());
-                            syncFlags(localMessage, message);
-                            if (K9.DEBUG)
-                                Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
-                                      + account + ":" + folder + ":" + message.getUid());
-                            for (MessagingListener l : getListeners())
-                            {
-                                l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                            }
-
-
-                        }
-
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
-                    addErrorMessage(account, null, e);
-
-                }
-            }
-
-            public void messageStarted(String uid, int number, int ofTotal)
-            {
-            }
-
-            public void messagesFinished(int total) {}
-        });
-    }
-
-    private boolean shouldImportMessage(final Account account, final String folder, final Message message, final AtomicInteger progress, final Date earliestDate)
-    {
-
-        if (isMessageSuppressed(account, folder, message))
-        {
-            if (K9.DEBUG)
-            {
-                Log.d(K9.LOG_TAG, "Message " + message.getUid() + " was suppressed "+
-                      "but just downloaded. "+
-                      "The race condition means we wasted some bandwidth. Oh well.");
-            }
-            return false;
-
-        }
-        if (message.olderThan(earliestDate))
-        {
-            if (K9.DEBUG)
-            {
-                Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
-                      + earliestDate + ", hence not saving");
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private void downloadSmallMessages(final Account account, final Folder remoteFolder,
-                                       final LocalFolder localFolder,
-                                       ArrayList<Message> smallMessages,
-                                       final AtomicInteger progress,
-                                       final AtomicInteger newMessages,
-                                       final int todo,
-                                       FetchProfile fp) throws MessagingException
-    {
-        final String folder = remoteFolder.getName();
-
-        final Date earliestDate = account.getEarliestPollDate();
-
-
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
-
-        remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
-                           fp, new MessageRetrievalListener()
-        {
-            public void messageFinished(Message message, int number, int ofTotal)
-            {
-                try
-                {
-
-                    if (!shouldImportMessage(account, folder, message, progress, earliestDate))
-                    {
-                        progress.incrementAndGet();
-=======
->>>>>>> trunk
 
                         return;
                     }
