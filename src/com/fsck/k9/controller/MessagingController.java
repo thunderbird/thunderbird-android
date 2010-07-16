@@ -364,7 +364,7 @@ public class MessagingController implements Runnable
             return mListeners;
         }
 
-        Set<MessagingListener> listeners = new CopyOnWriteArraySet<MessagingListener>(mListeners);
+        Set<MessagingListener> listeners = new HashSet<MessagingListener>(mListeners);
         listeners.add(listener);
         return listeners;
 
