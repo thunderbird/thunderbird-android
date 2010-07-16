@@ -108,7 +108,7 @@ public class Account implements BaseAccount
     private String mQuotePrefix;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
-    private boolean mDefaultSignature;
+    private boolean mCryptoAutoSignature;
 
     /**
      * Name of the folder that was last selected for a copy or move operation.
@@ -174,7 +174,7 @@ public class Account implements BaseAccount
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mSyncRemoteDeletions = true;
         mCryptoApp = "";
-        mDefaultSignature = false;
+        mCryptoAutoSignature = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -359,7 +359,7 @@ public class Account implements BaseAccount
         identities = loadIdentities(preferences.getPreferences());
 
         mCryptoApp = preferences.getPreferences().getString(mUuid + ".cryptoApp", "");
-        mDefaultSignature = preferences.getPreferences().getBoolean(mUuid + ".defaultSignature", false);
+        mCryptoAutoSignature = preferences.getPreferences().getBoolean(mUuid + ".cryptoAutoSignature", false);
     }
 
 
@@ -523,7 +523,7 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
-        editor.putBoolean(mUuid + ".defaultSignature", mDefaultSignature);
+        editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
 
         for (String type : networkTypes)
         {
@@ -1427,14 +1427,14 @@ public class Account implements BaseAccount
         mCryptoApp = cryptoApp;
     }
 
-    public boolean getDefaultSignature()
+    public boolean getCryptoAutoSignature()
     {
-        return mDefaultSignature;
+        return mCryptoAutoSignature;
     }
 
-    public void setDefaultSignature(boolean defaultSignature)
+    public void setCryptoAutoSignature(boolean cryptoAutoSignature)
     {
-        mDefaultSignature = defaultSignature;
+        mCryptoAutoSignature = cryptoAutoSignature;
     }
 
     public synchronized boolean syncRemoteDeletions()

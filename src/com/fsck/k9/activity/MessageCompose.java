@@ -144,10 +144,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private ImageButton mQuotedTextDelete;
     private EditText mQuotedText;
     private View mEncryptLayout;
-    private CheckBox mSignatureCheckbox;
+    private CheckBox mCryptoSignatureCheckbox;
     private Button mSelectEncryptionKeys;
-    private TextView mSignatureUserId;
-    private TextView mSignatureUserIdRest;
+    private TextView mCryptoSignatureUserId;
+    private TextView mCryptoSignatureUserIdRest;
 
     private CryptoProvider mCrypto = null;
 
@@ -241,24 +241,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param account
      * @param message
      * @param replyAll
-     */
-    public static void actionReply(
-        Context context,
-        Account account,
-        Message message,
-        boolean replyAll)
-    {
-        actionReply(context, account, message, replyAll, null);
-    }
-
-    /**
-     * Compose a new message as a reply to the given message. If replyAll is true the function
-     * is reply all instead of simply reply.
-     * @param context
-     * @param account
-     * @param message
-     * @param replyAll
-     * @param messageBody
+     * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
     public static void actionReply(
         Context context,
@@ -288,17 +271,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param context
      * @param account
      * @param message
-     */
-    public static void actionForward(Context context, Account account, Message message)
-    {
-        actionForward(context, account, message, null);
-    }
-
-    /**
-     * Compose a new message as a forward of the given message.
-     * @param context
-     * @param account
-     * @param message
+     * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
     public static void actionForward(
         Context context,
@@ -662,16 +635,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         mEncryptLayout = (View)findViewById(R.id.layout_encrypt);
-        mSignatureCheckbox = (CheckBox)findViewById(R.id.cb_signature);
-        mSignatureUserId = (TextView)findViewById(R.id.userId);
-        mSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
+        mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
+        mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
+        mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
         mSelectEncryptionKeys = (Button)findViewById(R.id.btn_select_encryption_keys);
 
         initializeCrypto();
         if (mCrypto.isAvailable(this))
         {
             mEncryptLayout.setVisibility(View.VISIBLE);
-            mSignatureCheckbox.setOnClickListener(new OnClickListener()
+            mCryptoSignatureCheckbox.setOnClickListener(new OnClickListener()
             {
                 @Override
                 public void onClick(View v)
@@ -729,7 +702,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             });
 
-            if (mAccount.getDefaultSignature())
+            if (mAccount.getCryptoAutoSignature())
             {
                 long ids[] = mCrypto.getSecretKeyIdsFromEmail(this, mIdentity.getEmail());
                 if (ids != null && ids.length > 0)
@@ -767,26 +740,26 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     {
         if (!mCrypto.hasSignatureKey())
         {
-            mSignatureCheckbox.setText(R.string.btn_sign);
-            mSignatureCheckbox.setChecked(false);
-            mSignatureUserId.setVisibility(View.INVISIBLE);
-            mSignatureUserIdRest.setVisibility(View.INVISIBLE);
+            mCryptoSignatureCheckbox.setText(R.string.btn_crypto_sign);
+            mCryptoSignatureCheckbox.setChecked(false);
+            mCryptoSignatureUserId.setVisibility(View.INVISIBLE);
+            mCryptoSignatureUserIdRest.setVisibility(View.INVISIBLE);
         }
         else
         {
             // if a signature key is selected, then the checkbox itself has no text
-            mSignatureCheckbox.setText("");
-            mSignatureCheckbox.setChecked(true);
-            mSignatureUserId.setVisibility(View.VISIBLE);
-            mSignatureUserIdRest.setVisibility(View.VISIBLE);
-            mSignatureUserId.setText(R.string.unknown_signature_user_id);
-            mSignatureUserIdRest.setText("");
+            mCryptoSignatureCheckbox.setText("");
+            mCryptoSignatureCheckbox.setChecked(true);
+            mCryptoSignatureUserId.setVisibility(View.VISIBLE);
+            mCryptoSignatureUserIdRest.setVisibility(View.VISIBLE);
+            mCryptoSignatureUserId.setText(R.string.unknown_crypto_signature_user_id);
+            mCryptoSignatureUserIdRest.setText("");
 
             String chunks[] = mCrypto.getUserId(this, mCrypto.getSignatureKeyId()).split(" <", 2);
-            mSignatureUserId.setText(chunks[0]);
+            mCryptoSignatureUserId.setText(chunks[0]);
             if (chunks.length > 1)
             {
-                mSignatureUserIdRest.setText("<" + chunks[1]);
+                mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
             }
         }
 

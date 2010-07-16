@@ -196,8 +196,8 @@
             android:layout_weight="1">
 
             <CheckBox
-                android:text="Sign"
-                android:id="@+id/cb_signature"
+                android:text="@string/btn_crypto_sign"
+                android:id="@+id/cb_crypto_signature"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

@@ -100,10 +100,10 @@ public class MessageView extends K9Activity implements OnClickListener
     private int defaultSubjectColor;
     private View mDecryptLayout;
     private Button mDecryptButton;
-    private LinearLayout mSignatureLayout = null;
-    private ImageView mSignatureStatusImage = null;
-    private TextView mUserId = null;
-    private TextView mUserIdRest = null;
+    private LinearLayout mCryptoSignatureLayout = null;
+    private ImageView mCryptoSignatureStatusImage = null;
+    private TextView mCryptoSignatureUserId = null;
+    private TextView mCryptoSignatureUserIdRest = null;
     private WebView mMessageContentView;
     private LinearLayout mHeaderContainer;
     private LinearLayout mAttachments;
@@ -742,11 +742,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
             }
         });
-        mSignatureLayout = (LinearLayout) findViewById(R.id.signature);
-        mSignatureStatusImage = (ImageView) findViewById(R.id.ic_signature_status);
-        mUserId = (TextView) findViewById(R.id.userId);
-        mUserIdRest = (TextView) findViewById(R.id.userIdRest);
-        mSignatureLayout.setVisibility(View.INVISIBLE);
+        mCryptoSignatureLayout = (LinearLayout) findViewById(R.id.crypto_signature);
+        mCryptoSignatureStatusImage = (ImageView) findViewById(R.id.ic_crypto_signature_status);
+        mCryptoSignatureUserId = (TextView) findViewById(R.id.userId);
+        mCryptoSignatureUserIdRest = (TextView) findViewById(R.id.userIdRest);
+        mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
@@ -2327,34 +2327,34 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mCrypto.getSignatureKeyId() != 0)
         {
-            mUserIdRest.setText(getString(R.string.key_id,
-                                          Long.toHexString(mCrypto.getSignatureKeyId() & 0xffffffffL)));
+            mCryptoSignatureUserIdRest.setText(
+                    getString(R.string.key_id, Long.toHexString(mCrypto.getSignatureKeyId() & 0xffffffffL)));
             String userId = mCrypto.getSignatureUserId();
             if (userId == null)
             {
-                userId = getString(R.string.unknown_signature_user_id);
+                userId = getString(R.string.unknown_crypto_signature_user_id);
             }
             String chunks[] = userId.split(" <", 2);
             String name = chunks[0];
             if (chunks.length > 1)
             {
-                mUserIdRest.setText("<" + chunks[1]);
+                mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
             }
-            mUserId.setText(name);
+            mCryptoSignatureUserId.setText(name);
 
             if (mCrypto.getSignatureSuccess())
             {
-                mSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
+                mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
             }
             else if (mCrypto.getSignatureUnknown())
             {
-                mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_error);
             }
             else
             {
-                mSignatureStatusImage.setImageResource(R.drawable.overlay_error);
+                mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_error);
             }
-            mSignatureLayout.setVisibility(View.VISIBLE);
+            mCryptoSignatureLayout.setVisibility(View.VISIBLE);
             mDecryptLayout.setVisibility(View.VISIBLE);
         }
 

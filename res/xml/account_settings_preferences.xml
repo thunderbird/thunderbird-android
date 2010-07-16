@@ -135,7 +135,7 @@
             android:title="@string/account_settings_sync_remote_deletetions_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_sync_remote_deletetions_summary" />
-            
+
         <PreferenceScreen
             android:key="incoming"
             android:title="@string/account_settings_incoming_label"
@@ -217,9 +217,9 @@
             android:dialogTitle="@string/account_settings_crypto_app" />
 
         <CheckBoxPreference
-            android:key="default_signature"
-            android:title="@string/account_settings_default_signature"
-            android:summary="@string/account_settings_default_signature_summary"
+            android:key="crypto_auto_signature"
+            android:title="@string/account_settings_crypto_auto_signature"
+            android:summary="@string/account_settings_crypto_auto_signature_summary"
             android:dependency="crypto_app"/>
 
     </PreferenceCategory>

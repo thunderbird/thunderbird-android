@@ -70,7 +70,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
-    private static final String PREFERENCE_DEFAULT_SIGNATURE = "default_signature";
+    private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
 
     private Account mAccount;
 
@@ -105,7 +105,7 @@ public class AccountSettings extends K9PreferenceActivity
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mSyncRemoteDeletions;
     private ListPreference mCryptoApp;
-    private CheckBoxPreference mDefaultSignature;
+    private CheckBoxPreference mCryptoAutoSignature;
 
     public static void actionSettings(Context context, Account account)
     {
@@ -548,8 +548,8 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
-        mDefaultSignature = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT_SIGNATURE);
-        mDefaultSignature.setChecked(mAccount.getDefaultSignature());
+        mCryptoAutoSignature = (CheckBoxPreference) findPreference(PREFERENCE_CRYPTO_AUTO_SIGNATURE);
+        mCryptoAutoSignature.setChecked(mAccount.getCryptoAutoSignature());
 
         handleCryptoAppDependencies();
     }
@@ -558,11 +558,11 @@ public class AccountSettings extends K9PreferenceActivity
     {
         if ("".equals(mCryptoApp.getValue()))
         {
-            mDefaultSignature.setEnabled(false);
+            mCryptoAutoSignature.setEnabled(false);
         }
         else
         {
-            mDefaultSignature.setEnabled(true);
+            mCryptoAutoSignature.setEnabled(true);
         }
     }
 
@@ -598,7 +598,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
         mAccount.setCryptoApp(mCryptoApp.getValue());
-        mAccount.setDefaultSignature(mDefaultSignature.isChecked());
+        mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));

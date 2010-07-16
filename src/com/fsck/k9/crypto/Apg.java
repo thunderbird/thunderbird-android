@@ -32,14 +32,14 @@ public class Apg extends CryptoProvider
 
     public static final String AUTHORITY = "org.thialfihar.android.apg.provider";
     public static final Uri CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID =
-        Uri.parse("content://" + AUTHORITY + "/key_rings/secret/key_id/");
+            Uri.parse("content://" + AUTHORITY + "/key_rings/secret/key_id/");
     public static final Uri CONTENT_URI_SECRET_KEY_RING_BY_EMAILS =
-        Uri.parse("content://" + AUTHORITY + "/key_rings/secret/emails/");
+            Uri.parse("content://" + AUTHORITY + "/key_rings/secret/emails/");
 
     public static final Uri CONTENT_URI_PUBLIC_KEY_RING_BY_KEY_ID =
-        Uri.parse("content://" + AUTHORITY + "/key_rings/public/key_id/");
+            Uri.parse("content://" + AUTHORITY + "/key_rings/public/key_id/");
     public static final Uri CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS =
-        Uri.parse("content://" + AUTHORITY + "/key_rings/public/emails/");
+            Uri.parse("content://" + AUTHORITY + "/key_rings/public/emails/");
 
     public static class Intent
     {
@@ -58,7 +58,7 @@ public class Apg extends CryptoProvider
     public static final String EXTRA_STATUS = "status";
     public static final String EXTRA_ERROR = "error";
     public static final String EXTRA_DECRYPTED_MESSAGE = "decryptedMessage";
-    public static final String EXTRA_ENCRYPTED_MESSAGE = "decryptedMessage";
+    public static final String EXTRA_ENCRYPTED_MESSAGE = "encryptedMessage";
     public static final String EXTRA_SIGNATURE = "signature";
     public static final String EXTRA_SIGNATURE_KEY_ID = "signatureKeyId";
     public static final String EXTRA_SIGNATURE_USER_ID = "signatureUserId";
@@ -82,12 +82,12 @@ public class Apg extends CryptoProvider
     public static final int SELECT_SECRET_KEY = 0x21070004;
 
     public static Pattern PGP_MESSAGE =
-        Pattern.compile(".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
-                        Pattern.DOTALL);
+            Pattern.compile(".*?(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
+                            Pattern.DOTALL);
 
     public static Pattern PGP_SIGNED_MESSAGE =
-        Pattern.compile(".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
-                        Pattern.DOTALL);
+            Pattern.compile(".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
+                            Pattern.DOTALL);
 
     /**
      * Check whether APG is installed and at a high enough version.
@@ -164,11 +164,11 @@ public class Apg extends CryptoProvider
             }
 
             Uri contentUri = Uri.withAppendedPath(
-                                 Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS,
-                                 emails);
+                    Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS,
+                    emails);
             Cursor c = activity.getContentResolver().query(contentUri,
-                       new String[] { "master_key_id" },
-                       null, null, null);
+                                                  new String[] { "master_key_id" },
+                                                  null, null, null);
             if (c != null)
             {
                 while (c.moveToNext())
@@ -223,8 +223,8 @@ public class Apg extends CryptoProvider
         Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_SECRET_KEY_RING_BY_EMAILS,
                                               email);
         Cursor c = context.getContentResolver().query(contentUri,
-                   new String[] { "master_key_id" },
-                   null, null, null);
+                                              new String[] { "master_key_id" },
+                                              null, null, null);
         long ids[] = null;
         if (c != null && c.getCount() > 0)
         {
@@ -254,11 +254,11 @@ public class Apg extends CryptoProvider
     public String getUserId(Context context, long keyId)
     {
         Uri contentUri = ContentUris.withAppendedId(
-                             Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
-                             keyId);
+                                 Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
+                                 keyId);
         Cursor c = context.getContentResolver().query(contentUri,
-                   new String[] { "user_id" },
-                   null, null, null);
+                                                  new String[] { "user_id" },
+                                                  null, null, null);
         String userId = null;
         if (c != null && c.moveToFirst())
         {
@@ -272,7 +272,7 @@ public class Apg extends CryptoProvider
 
         if (userId == null)
         {
-            userId = context.getString(R.string.unknown_signature_user_id);
+            userId = context.getString(R.string.unknown_crypto_signature_user_id);
         }
         return userId;
     }
@@ -316,6 +316,11 @@ public class Apg extends CryptoProvider
                     break;
                 }
                 mEncryptedData = data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE);
+                // this was a stupid bug in an earlier version, just gonna leave this in for an APG
+                // version or two
+                if (mEncryptedData == null) {
+                    mEncryptedData = data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE);
+                }
                 if (mEncryptedData != null)
                 {
                     ((MessageCompose) activity).onEncryptDone();
@@ -408,8 +413,7 @@ public class Apg extends CryptoProvider
     public boolean isEncrypted(Message message)
     {
         String data = null;
-        try
-        {
+        try {
             Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
             if (part == null)
             {
@@ -438,8 +442,7 @@ public class Apg extends CryptoProvider
     public boolean isSigned(Message message)
     {
         String data = null;
-        try
-        {
+        try {
             Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
             if (part == null)
             {

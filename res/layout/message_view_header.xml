@@ -192,7 +192,7 @@
         android:visibility="gone">
 
         <LinearLayout
-            android:id="@+id/signature"
+            android:id="@+id/crypto_signature"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
@@ -204,13 +204,13 @@
                 android:layout_width="wrap_content">
 
                 <ImageView
-                    android:id="@+id/ic_signature"
+                    android:id="@+id/ic_crypto_signature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/signed_large"/>
 
                 <ImageView
-                    android:id="@+id/ic_signature_status"
+                    android:id="@+id/ic_crypto_signature_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/overlay_error"/>
