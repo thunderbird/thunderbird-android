@@ -521,7 +521,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_settings_mail_display_count_label">Number of messages to display</string>
 
-    <string name="account_settings_autodownload_message_size_label">Automatically download message content up to</string>
+    <string name="account_settings_autodownload_message_size_label">Automatically download messages up to</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>
     <string name="account_settings_autodownload_message_size_2">2Kb</string>
     <string name="account_settings_autodownload_message_size_4">4Kb</string>
