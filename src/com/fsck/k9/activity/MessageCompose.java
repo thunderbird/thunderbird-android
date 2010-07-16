@@ -701,8 +701,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     String emails = "";
                     Address[][] addresses = new Address[][] { getAddresses(mToView),
-                                                              getAddresses(mCcView),
-                                                              getAddresses(mBccView) };
+                            getAddresses(mCcView),
+                            getAddresses(mBccView)
+                                                            };
                     for (Address[] addressArray : addresses)
                     {
                         for (Address address : addressArray)
@@ -1690,7 +1691,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     else
                     {
                         quotedText += MimeUtility.getTextFromPart(part).replaceAll(
-                                "(?m)^", escapedPrefix);
+                                          "(?m)^", escapedPrefix);
                     }
 
                     quotedText = quotedText.replaceAll("\\\r", "");

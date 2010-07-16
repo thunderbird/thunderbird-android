@@ -524,9 +524,11 @@ public class AccountSettings extends K9PreferenceActivity
 
         mCryptoApp = (ListPreference) findPreference(PREFERENCE_CRYPTO_APP);
         CharSequence cryptoAppEntries[] = mCryptoApp.getEntries();
-        if (!new Apg().isAvailable(this)) {
+        if (!new Apg().isAvailable(this))
+        {
             int apgIndex = mCryptoApp.findIndexOfValue(Apg.NAME);
-            if (apgIndex >= 0) {
+            if (apgIndex >= 0)
+            {
                 cryptoAppEntries[apgIndex] = "APG (" + getResources().getString(R.string.account_settings_crypto_app_not_available) + ")";
                 mCryptoApp.setEntries(cryptoAppEntries);
             }

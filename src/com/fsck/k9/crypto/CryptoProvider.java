@@ -25,7 +25,7 @@ abstract public class CryptoProvider implements Serializable
     abstract public boolean isEncrypted(Message message);
     abstract public boolean isSigned(Message message);
     abstract public boolean onActivityResult(Activity activity, int requestCode, int resultCode,
-                                             Intent data);
+            Intent data);
     abstract public boolean selectSecretKey(Activity activity);
     abstract public boolean selectEncryptionKeys(Activity activity, String emails);
     abstract public boolean encrypt(Activity activity, String data);
@@ -34,7 +34,8 @@ abstract public class CryptoProvider implements Serializable
     abstract public String getUserId(Context context, long keyId);
     abstract public String getName();
 
-    public static CryptoProvider createInstance(Account account) {
+    public static CryptoProvider createInstance(Account account)
+    {
         if (Apg.NAME.equals(account.getCryptoApp()))
         {
             return new Apg();
