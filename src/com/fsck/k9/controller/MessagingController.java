@@ -359,11 +359,13 @@ public class MessagingController implements Runnable
 
     public Set<MessagingListener> getListeners(MessagingListener listener)
     {
-        Set<MessagingListener> listeners = new CopyOnWriteArraySet<MessagingListener>(mListeners);
-        if (listener != null)
+        if (listener == null)
         {
-            listeners.add(listener);
+            return mListeners;
         }
+
+        Set<MessagingListener> listeners = new HashSet<MessagingListener>(mListeners);
+        listeners.add(listener);
         return listeners;
 
     }
@@ -1450,6 +1452,7 @@ public class MessagingController implements Runnable
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "SYNC: About to fetch " + unsyncedMessages.size() + " unsynced messages for folder " + folder);
 
+
             fetchUnsyncedMessages(account, remoteFolder, localFolder, unsyncedMessages, smallMessages,largeMessages, progress, todo, fp);
 
             // If a message didn't exist, messageFinished won't be called, but we shouldn't try again
@@ -1571,8 +1574,147 @@ public class MessagingController implements Runnable
                                 Log.d(K9.LOG_TAG, "Newly downloaded message " + message.getUid() + " is older than "
                                       + earliestDate + ", skipping");
                             }
+<<<<<<< HEAD
+=======
                         }
                         progress.incrementAndGet();
+                        for (MessagingListener l : getListeners())
+                        {
+                            l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
+                        }
+                        return;
+                    }
+
+                    if (message.getSize() > account.getMaximumAutoDownloadMessageSize())
+                    {
+                        largeMessages.add(message);
+                    }
+                    else
+                    {
+                        smallMessages.add(message);
+                    }
+
+                    // And include it in the view
+                    if (message.getSubject() != null &&
+                            message.getFrom() != null)
+                    {
+                        /*
+                         * We check to make sure that we got something worth
+                         * showing (subject and from) because some protocols
+                         * (POP) may not be able to give us headers for
+                         * ENVELOPE, only size.
+                         */
+                        if (isMessageSuppressed(account, folder, message) == false)
+                        {
+                            // Store the new message locally
+                            localFolder.appendMessages(new Message[]
+                                                       {
+                                                           message
+                                                       });
+
+                            Message localMessage = localFolder.getMessage(message.getUid());
+                            syncFlags(localMessage, message);
+                            if (K9.DEBUG)
+                                Log.v(K9.LOG_TAG, "About to notify listeners that we got a new unsynced message "
+                                      + account + ":" + folder + ":" + message.getUid());
+                            for (MessagingListener l : getListeners())
+                            {
+                                l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                            }
+
+
+>>>>>>> trunk
+                        }
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Log.e(K9.LOG_TAG, "Error while storing downloaded message.", e);
+                    addErrorMessage(account, null, e);
+
+                }
+            }
+
+            public void messageStarted(String uid, int number, int ofTotal)
+            {
+            }
+
+            public void messagesFinished(int total) {}
+        });
+    }
+
+
+    private boolean shouldImportMessage(final Account account, final String folder, final Message message, final AtomicInteger progress, final Date earliestDate)
+    {
+
+        if (isMessageSuppressed(account, folder, message))
+        {
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "Message " + message.getUid() + " was suppressed "+
+                      "but just downloaded. "+
+                      "The race condition means we wasted some bandwidth. Oh well.");
+            }
+            return false;
+
+        }
+        if (message.olderThan(earliestDate))
+        {
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "Message " + message.getUid() + " is older than "
+                      + earliestDate + ", hence not saving");
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private void downloadSmallMessages(final Account account, final Folder remoteFolder,
+                                       final LocalFolder localFolder,
+                                       ArrayList<Message> smallMessages,
+                                       final AtomicInteger progress,
+                                       final AtomicInteger newMessages,
+                                       final int todo,
+                                       FetchProfile fp) throws MessagingException
+    {
+        final String folder = remoteFolder.getName();
+
+        final Date earliestDate = account.getEarliestPollDate();
+
+        int tmpRead = 0;
+
+        try
+        {
+            AccountStats stats = account.getStats(mApplication);
+            tmpRead = stats.unreadMessageCount;
+
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+        }
+
+        final int unreadBeforeStart = tmpRead;
+
+
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
+
+        remoteFolder.fetch(smallMessages.toArray(new Message[smallMessages.size()]),
+                           fp, new MessageRetrievalListener()
+        {
+            public void messageFinished(Message message, int number, int ofTotal)
+            {
+                try
+                {
+
+                    if (!shouldImportMessage(account, folder, message, progress, earliestDate))
+                    {
+                        progress.incrementAndGet();
+<<<<<<< HEAD
                         for (MessagingListener l : getListeners())
                         {
                             l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
@@ -1692,6 +1834,8 @@ public class MessagingController implements Runnable
                     if (!shouldImportMessage(account, folder, message, progress, earliestDate))
                     {
                         progress.incrementAndGet();
+=======
+>>>>>>> trunk
 
                         return;
                     }
@@ -1718,13 +1862,12 @@ public class MessagingController implements Runnable
                             l.synchronizeMailboxNewMessage(account, folder, localMessage);
                         }
                     }
-                    if (!localMessage.isSet(Flag.SEEN))
+                    // Send a notification of this message
+
+
+                    if (notifyAccount(mApplication, account, message, (unreadBeforeStart + newMessages.get())) == true)
                     {
-                        // Send a notification of this message
-                        if (notifyAccount(mApplication, account, message) == true)
-                        {
-                            newMessages.incrementAndGet();
-                        }
+                        newMessages.incrementAndGet();
                     }
 
 
@@ -1761,6 +1904,20 @@ public class MessagingController implements Runnable
         final String folder = remoteFolder.getName();
 
         final Date earliestDate = account.getEarliestPollDate();
+
+        int unreadBeforeStart = 0;
+        try
+        {
+            AccountStats stats = account.getStats(mApplication);
+            unreadBeforeStart = stats.unreadMessageCount;
+
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+        }
+
+
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
 
@@ -1864,13 +2021,11 @@ public class MessagingController implements Runnable
                     l.synchronizeMailboxNewMessage(account, folder, localMessage);
                 }
             }
-            if (!localMessage.isSet(Flag.SEEN))
+
+            // Send a notification of this message
+            if (notifyAccount(mApplication, account, message, (unreadBeforeStart+newMessages.get())) == true)
             {
-                // Send a notification of this message
-                if (notifyAccount(mApplication, account, message) == true)
-                {
-                    newMessages.incrementAndGet();
-                }
+                newMessages.incrementAndGet();
             }
 
 
@@ -4511,25 +4666,15 @@ public class MessagingController implements Runnable
     /** Creates a notification of new email messages
       * ringtone, lights, and vibration to be played
     */
-    private boolean notifyAccount(Context context, Account account, Message message)
+    private boolean notifyAccount(Context context, Account account, Message message, int unreadMessageCount)
     {
-        int unreadMessageCount = 0;
-        try
-        {
-            AccountStats stats = account.getStats(context);
-            unreadMessageCount = stats.unreadMessageCount;
-        }
-        catch (MessagingException e)
-        {
-            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
-        }
-
         // Do not notify if the user does not have notifications
         // enabled or if the message has been read
         if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN))
         {
             return false;
         }
+
 
         Folder folder = message.getFolder();
         if (folder != null)
@@ -4596,6 +4741,8 @@ public class MessagingController implements Runnable
         {
             Log.e(K9.LOG_TAG, "Unable to get message information for notification.", e);
         }
+
+
         // If we could not set a per-message notification, revert to a default message
         if (messageNotice.length() == 0)
         {
@@ -4606,12 +4753,12 @@ public class MessagingController implements Runnable
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
-        notif.number = unreadMessageCount;
+        notif.number = unreadMessageCount+1;
 
         Intent i = FolderList.actionHandleNotification(context, account, account.getAutoExpandFolderName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount, account.getDescription());
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, (unreadMessageCount+1), account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
         // Only ring or vibrate if we have not done so already on this
@@ -4619,7 +4766,7 @@ public class MessagingController implements Runnable
         if (!account.isRingNotified())
         {
             account.setRingNotified(true);
-            if (account.isRing())
+            if (account.shouldRing())
             {
                 String ringtone = account.getRingtone();
                 notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);

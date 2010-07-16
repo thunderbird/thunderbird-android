@@ -36,6 +36,7 @@ import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -2417,6 +2418,7 @@ public class MessageView extends K9Activity implements OnClickListener
             KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
                                                     KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
             shiftPressEvent.dispatch(view);
+            Toast.makeText(this, R.string.select_text_now, Toast.LENGTH_SHORT).show();
         }
         catch (Exception e)
         {

@@ -205,13 +205,6 @@
             android:summary=""
             android:dialogTitle="@string/account_settings_quote_prefix_label" />
 
-        <EditTextPreference
-            android:key="account_quote_prefix"
-            android:singleLine="true"
-            android:title="@string/account_settings_quote_prefix_label"
-            android:summary=""
-            android:dialogTitle="@string/account_settings_quote_prefix_label" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/account_settings_crypto">

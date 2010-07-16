@@ -1005,7 +1005,7 @@ public class ImapStore extends Store
             if (earliestDate != null)
             {
                 dateSearchString.append(" SINCE ");
-                synchronized(RFC3501_DATE)
+                synchronized (RFC3501_DATE)
                 {
                     dateSearchString.append(RFC3501_DATE.format(earliestDate));
                 }

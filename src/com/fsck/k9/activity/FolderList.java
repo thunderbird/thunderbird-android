@@ -20,6 +20,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.controller.MessagingController;
@@ -486,6 +487,10 @@ public class FolderList extends K9ListActivity
 
     }
 
+    private void onEditPrefs()
+    {
+        Prefs.actionPrefs(this);
+    }
     private void onEditAccount()
     {
         AccountSettings.actionSettings(this, mAccount);
@@ -553,6 +558,11 @@ public class FolderList extends K9ListActivity
 
             case R.id.account_settings:
                 onEditAccount();
+
+                return true;
+
+            case R.id.app_settings:
+                onEditPrefs();
 
                 return true;
 

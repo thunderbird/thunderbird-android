@@ -147,7 +147,7 @@
         android:icon="@android:drawable/ic_menu_preferences"
     />
     <item android:id="@+id/app_settings"
-        android:title="@string/preferences_action"
+        android:title="@string/global_settings_action"
         android:icon="@android:drawable/ic_menu_preferences"
     />
     </menu>

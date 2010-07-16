@@ -1058,7 +1058,7 @@ public class Account implements BaseAccount
         return oldMaxPushFolders != maxPushFolders;
     }
 
-    public synchronized boolean isRing()
+    public synchronized boolean shouldRing()
     {
         return mRing;
     }
