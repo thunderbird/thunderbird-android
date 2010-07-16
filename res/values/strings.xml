@@ -71,6 +71,7 @@
     <string name="open_action">Open</string>
     <string name="account_settings_action">Account settings</string>
     <string name="folder_settings_action">Folder settings</string>
+    <string name="global_settings_action">Global settings</string>
     <string name="remove_account_action">Remove account</string>
     <string name="clear_pending_action">Clear pending actions (danger!)</string>
 
