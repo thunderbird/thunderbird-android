@@ -33,15 +33,16 @@ abstract public class CryptoProvider implements Serializable
     abstract public long[] getSecretKeyIdsFromEmail(Context context, String email);
     abstract public String getUserId(Context context, long keyId);
     abstract public String getName();
+    abstract public boolean test(Context context);
 
     public static CryptoProvider createInstance(Account account)
     {
         if (Apg.NAME.equals(account.getCryptoApp()))
         {
-            return new Apg();
+            return Apg.createInstance(account);
         }
 
-        return new None();
+        return None.createInstance(account);
     }
 
     public void setSignatureKeyId(long keyId)
@@ -82,6 +83,11 @@ abstract public class CryptoProvider implements Serializable
     public String getDecryptedData()
     {
         return mDecryptedData;
+    }
+
+    public void setSignatureUserId(String userId)
+    {
+        mSignatureUserId = userId;
     }
 
     public String getSignatureUserId()

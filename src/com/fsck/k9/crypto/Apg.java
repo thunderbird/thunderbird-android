@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.widget.Toast;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageView;
@@ -89,6 +90,11 @@ public class Apg extends CryptoProvider
             Pattern.compile(".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
                             Pattern.DOTALL);
 
+    public static Apg createInstance(Account account)
+    {
+        return new Apg();
+    }
+
     /**
      * Check whether APG is installed and at a high enough version.
      *
@@ -163,25 +169,33 @@ public class Apg extends CryptoProvider
                 keyIds.add(getSignatureKeyId());
             }
 
-            Uri contentUri = Uri.withAppendedPath(
-                    Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS,
-                    emails);
-            Cursor c = activity.getContentResolver().query(contentUri,
-                                                  new String[] { "master_key_id" },
-                                                  null, null, null);
-            if (c != null)
+            try
             {
-                while (c.moveToNext())
+                Uri contentUri = Uri.withAppendedPath(
+                        Apg.CONTENT_URI_PUBLIC_KEY_RING_BY_EMAILS,
+                        emails);
+                Cursor c = activity.getContentResolver().query(contentUri,
+                                                      new String[] { "master_key_id" },
+                                                      null, null, null);
+                if (c != null)
                 {
-                    keyIds.add(c.getLong(0));
+                    while (c.moveToNext())
+                    {
+                        keyIds.add(c.getLong(0));
+                    }
+                }
+
+                if (c != null)
+                {
+                    c.close();
                 }
             }
-
-            if (c != null)
+            catch (SecurityException e)
             {
-                c.close();
+                Toast.makeText(activity,
+                               activity.getResources().getString(R.string.insufficient_apg_permissions),
+                               Toast.LENGTH_LONG).show();
             }
-
             if (keyIds.size() > 0)
             {
                 initialKeyIds = new long[keyIds.size()];
@@ -220,24 +234,33 @@ public class Apg extends CryptoProvider
     @Override
     public long[] getSecretKeyIdsFromEmail(Context context, String email)
     {
-        Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_SECRET_KEY_RING_BY_EMAILS,
-                                              email);
-        Cursor c = context.getContentResolver().query(contentUri,
-                                              new String[] { "master_key_id" },
-                                              null, null, null);
         long ids[] = null;
-        if (c != null && c.getCount() > 0)
+        try
         {
-            ids = new long[c.getCount()];
-            while (c.moveToNext())
+            Uri contentUri = Uri.withAppendedPath(Apg.CONTENT_URI_SECRET_KEY_RING_BY_EMAILS,
+                                                  email);
+            Cursor c = context.getContentResolver().query(contentUri,
+                                                  new String[] { "master_key_id" },
+                                                  null, null, null);
+            if (c != null && c.getCount() > 0)
             {
-                ids[c.getPosition()] = c.getLong(0);
+                ids = new long[c.getCount()];
+                while (c.moveToNext())
+                {
+                    ids[c.getPosition()] = c.getLong(0);
+                }
+            }
+
+            if (c != null)
+            {
+                c.close();
             }
         }
-
-        if (c != null)
+        catch (SecurityException e)
         {
-            c.close();
+            Toast.makeText(context,
+                           context.getResources().getString(R.string.insufficient_apg_permissions),
+                           Toast.LENGTH_LONG).show();
         }
 
         return ids;
@@ -253,21 +276,30 @@ public class Apg extends CryptoProvider
     @Override
     public String getUserId(Context context, long keyId)
     {
-        Uri contentUri = ContentUris.withAppendedId(
-                                 Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
-                                 keyId);
-        Cursor c = context.getContentResolver().query(contentUri,
-                                                  new String[] { "user_id" },
-                                                  null, null, null);
         String userId = null;
-        if (c != null && c.moveToFirst())
+        try
         {
-            userId = c.getString(0);
-        }
+            Uri contentUri = ContentUris.withAppendedId(
+                                     Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
+                                     keyId);
+            Cursor c = context.getContentResolver().query(contentUri,
+                                                      new String[] { "user_id" },
+                                                      null, null, null);
+            if (c != null && c.moveToFirst())
+            {
+                userId = c.getString(0);
+            }
 
-        if (c != null)
+            if (c != null)
+            {
+                c.close();
+            }
+        }
+        catch (SecurityException e)
         {
-            c.close();
+            Toast.makeText(context,
+                           context.getResources().getString(R.string.insufficient_apg_permissions),
+                           Toast.LENGTH_LONG).show();
         }
 
         if (userId == null)
@@ -298,6 +330,7 @@ public class Apg extends CryptoProvider
                     break;
                 }
                 setSignatureKeyId(data.getLongExtra(Apg.EXTRA_KEY_ID, 0));
+                setSignatureUserId(data.getStringExtra(Apg.EXTRA_USER_ID));
                 ((MessageCompose) activity).updateEncryptLayout();
                 break;
 
@@ -477,5 +510,43 @@ public class Apg extends CryptoProvider
     public String getName()
     {
         return NAME;
+    }
+
+    /**
+     * Test the APG installation.
+     *
+     * @return success or failure
+     */
+    public boolean test(Context context)
+    {
+        if (!isAvailable(context))
+        {
+            return false;
+        }
+
+        try
+        {
+            // try out one content provider to check permissions
+            Uri contentUri = ContentUris.withAppendedId(
+                                     Apg.CONTENT_URI_SECRET_KEY_RING_BY_KEY_ID,
+                                     12345);
+            Cursor c = context.getContentResolver().query(contentUri,
+                                                      new String[] { "user_id" },
+                                                      null, null, null);
+            if (c != null)
+            {
+                c.close();
+            }
+        }
+        catch (SecurityException e)
+        {
+            // if there was a problem, then let the user know, this will not stop K9/APG from
+            // working, but some features won't be available, so we can still return "true"
+            Toast.makeText(context,
+                           context.getResources().getString(R.string.insufficient_apg_permissions),
+                           Toast.LENGTH_LONG).show();
+        }
+
+        return true;
     }
 }

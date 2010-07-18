@@ -510,8 +510,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_message_view">Viewing messages</string>
     <string name="account_settings_quote_prefix_label">Quote prefix</string>
 
-    <string name="account_settings_crypto">Encryption</string>
-    <string name="account_settings_crypto_app">Use encryption</string>
+    <string name="account_settings_crypto">Cryptography</string>
+    <string name="account_settings_crypto_app">OpenPGP Provider</string>
     <string name="account_settings_crypto_app_none">None</string>
     <string name="account_settings_crypto_app_not_available">not available</string>
     <string name="account_settings_crypto_auto_signature">Auto-sign</string>
@@ -905,6 +905,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="one_key_selected">1 Key Selected</string>
     <string name="n_keys_selected">%s Key Selected</string>
     <string name="key_id">id: %s</string>
+    <string name="insufficient_apg_permissions">K-9 doesn\'t have permission to access APG fully, please reinstall K-9 to fix that.</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>

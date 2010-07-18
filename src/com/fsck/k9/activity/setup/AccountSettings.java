@@ -539,11 +539,15 @@ public class AccountSettings extends K9PreferenceActivity
         {
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
-                final String summary = newValue.toString();
-                int index = mCryptoApp.findIndexOfValue(summary);
+                String value = newValue.toString();
+                int index = mCryptoApp.findIndexOfValue(value);
                 mCryptoApp.setSummary(mCryptoApp.getEntries()[index]);
-                mCryptoApp.setValue(summary);
+                mCryptoApp.setValue(value);
                 handleCryptoAppDependencies();
+                if (Apg.NAME.equals(value))
+                {
+                    Apg.createInstance(null).test(AccountSettings.this);
+                }
                 return false;
             }
         });

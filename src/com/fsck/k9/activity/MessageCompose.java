@@ -708,10 +708,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 if (ids != null && ids.length > 0)
                 {
                     mCrypto.setSignatureKeyId(ids[0]);
+                    mCrypto.setSignatureUserId(mCrypto.getUserId(this, ids[0]));
                 }
                 else
                 {
                     mCrypto.setSignatureKeyId(0);
+                    mCrypto.setSignatureUserId(null);
                 }
             }
             updateEncryptLayout();
@@ -755,11 +757,21 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mCryptoSignatureUserId.setText(R.string.unknown_crypto_signature_user_id);
             mCryptoSignatureUserIdRest.setText("");
 
-            String chunks[] = mCrypto.getUserId(this, mCrypto.getSignatureKeyId()).split(" <", 2);
-            mCryptoSignatureUserId.setText(chunks[0]);
-            if (chunks.length > 1)
+            String userId = mCrypto.getSignatureUserId();
+            if (userId == null)
             {
-                mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
+                userId = mCrypto.getUserId(this, mCrypto.getSignatureKeyId());
+                mCrypto.setSignatureUserId(userId);
+            }
+
+            if (userId != null)
+            {
+                String chunks[] = mCrypto.getSignatureUserId().split(" <", 2);
+                mCryptoSignatureUserId.setText(chunks[0]);
+                if (chunks.length > 1)
+                {
+                    mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
+                }
             }
         }
 

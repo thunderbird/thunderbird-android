@@ -3,12 +3,18 @@ package com.fsck.k9.crypto;
 import android.app.Activity;
 import android.content.Context;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.mail.Message;
 
 public class None extends CryptoProvider
 {
     static final long serialVersionUID = 0x21071230;
     public static final String NAME = "";
+
+    public static None createInstance(Account account)
+    {
+        return new None();
+    }
 
     @Override
     public boolean isAvailable(Context context)
@@ -73,5 +79,11 @@ public class None extends CryptoProvider
     public String getName()
     {
         return NAME;
+    }
+
+    @Override
+    public boolean test(Context context)
+    {
+        return true;
     }
 }
