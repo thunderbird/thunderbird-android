@@ -1515,7 +1515,6 @@ public class MessageView extends K9Activity implements OnClickListener
                             return;
                         }
 
-                    Log.v(K9.LOG_TAG, "downloading remainder");
 
 
         mDownloadRemainder.setEnabled(false);
