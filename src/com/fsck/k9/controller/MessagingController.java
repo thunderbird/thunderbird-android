@@ -2933,9 +2933,8 @@ public class MessagingController implements Runnable
             localFolder = localStore.getFolder(folderName);
             localFolder.open(OpenMode.READ_WRITE);
             ArrayList<Message> messages = new ArrayList<Message>();
-            for (int i = 0; i < uids.length; i++)
+            for (String uid : uids)
             {
-                String uid = uids[i];
                 // Allows for re-allowing sending of messages that could not be sent
                 if (flag == Flag.FLAGGED && newState == false
                         && uid != null

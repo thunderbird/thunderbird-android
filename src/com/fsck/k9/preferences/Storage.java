@@ -51,9 +51,8 @@ public class Storage implements SharedPreferences
             if (accountUuids != null && accountUuids.length() != 0)
             {
                 String[] uuids = accountUuids.split(",");
-                for (int i = 0, length = uuids.length; i < length; i++)
+                for (String uuid : uuids)
                 {
-                    String uuid = uuids[i];
                     try
                     {
                         String storeUriStr = Utility.base64Decode(readValue(mDb, uuid + ".storeUri"));

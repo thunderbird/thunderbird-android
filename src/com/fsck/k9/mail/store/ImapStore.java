@@ -1879,9 +1879,8 @@ public class ImapStore extends Store
         private String combineFlags(Flag[] flags)
         {
             ArrayList<String> flagNames = new ArrayList<String>();
-            for (int i = 0, count = flags.length; i < count; i++)
+            for (Flag flag : flags)
             {
-                Flag flag = flags[i];
                 if (flag == Flag.SEEN)
                 {
                     flagNames.add("\\Seen");
@@ -1960,9 +1959,8 @@ public class ImapStore extends Store
                 uids[i] = messages[i].getUid();
             }
             ArrayList<String> flagNames = new ArrayList<String>();
-            for (int i = 0, count = flags.length; i < count; i++)
+            for (Flag flag : flags)
             {
-                Flag flag = flags[i];
                 if (flag == Flag.SEEN)
                 {
                     flagNames.add("\\Seen");

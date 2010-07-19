@@ -489,9 +489,9 @@ public class WebDavStore extends Store
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:propertyupdate xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
-        for (int i = 0, count = urls.length; i < count; i++)
+        for (String url : urls)
         {
-            buffer.append(" <a:href>"+urls[i]+"</a:href>\r\n");
+            buffer.append(" <a:href>"+url+"</a:href>\r\n");
         }
         buffer.append("</a:target>\r\n");
         buffer.append("<a:set>\r\n");
@@ -515,9 +515,9 @@ public class WebDavStore extends Store
         buffer.append("<?xml version='1.0' ?>\r\n");
         buffer.append("<a:" + action + " xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
-        for (int i = 0, count = urls.length; i < count; i++)
+        for (String url : urls)
         {
-            buffer.append(" <a:href>"+urls[i]+"</a:href>\r\n");
+            buffer.append(" <a:href>"+url+"</a:href>\r\n");
         }
         buffer.append("</a:target>\r\n");
 
@@ -1865,10 +1865,8 @@ public class WebDavStore extends Store
                 uids[i] = messages[i].getUid();
             }
 
-            for (int i = 0, count = flags.length; i < count; i++)
+            for (Flag flag : flags)
             {
-                Flag flag = flags[i];
-
                 if (flag == Flag.SEEN)
                 {
                     markServerMessagesRead(uids, value);
@@ -1903,10 +1901,9 @@ public class WebDavStore extends Store
         {
             HashMap<String, String> uidToUrl = getMessageUrls(uids);
 
-            for (int i = 0, count = uids.length; i < count; i++)
+            for (String uid : uids)
             {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                String uid = uids[i];
                 String url = uidToUrl.get(uid);
                 String destinationUrl = generateDeleteUrl(url);
 
@@ -2161,19 +2158,19 @@ public class WebDavStore extends Store
             String[] headers = envelope.getHeaderList();
             HashMap<String, String> messageHeaders = envelope.getMessageHeaders();
 
-            for (int i = 0, count = headers.length; i < count; i++)
+            for (String header : headers)
             {
-                String headerValue = messageHeaders.get(headers[i]);
-                if (headers[i].equals("Content-Length"))
+                String headerValue = messageHeaders.get(header);
+                if (header.equals("Content-Length"))
                 {
-                    int size = Integer.parseInt(messageHeaders.get(headers[i]));
+                    int size = Integer.parseInt(messageHeaders.get(header));
                     this.setSize(size);
                 }
 
                 if (headerValue != null &&
                         !headerValue.equals(""))
                 {
-                    this.addHeader(headers[i], headerValue);
+                    this.addHeader(header, headerValue);
                 }
             }
         }

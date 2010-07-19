@@ -47,9 +47,9 @@ public class Preferences
         {
             String[] uuids = accountUuids.split(",");
             accounts = new ArrayList<Account>(uuids.length);
-            for (int i = 0, length = uuids.length; i < length; i++)
+            for (String uuid : uuids)
             {
-                accounts.add(new Account(this, uuids[i]));
+                accounts.add(new Account(this, uuid));
             }
         }
         else

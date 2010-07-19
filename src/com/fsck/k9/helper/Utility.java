@@ -29,9 +29,9 @@ public class Utility
 
     public final static boolean arrayContains(Object[] a, Object o)
     {
-        for (int i = 0, count = a.length; i < count; i++)
+        for (Object element : a)
         {
-            if (a[i].equals(o))
+            if (element.equals(o))
             {
                 return true;
             }
