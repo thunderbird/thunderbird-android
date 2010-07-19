@@ -65,7 +65,19 @@ public class AttachmentProvider extends ContentProvider
     @Override
     public boolean onCreate()
     {
-        clear(getContext());
+        /*
+         * We use the cache dir as a temporary directory (since Android doesn't give us one) so
+         * on startup we'll clean up any .tmp files from the last run.
+         */
+        File[] files = getContext().getCacheDir().listFiles();
+        for (File file : files)
+        {
+            if (file.getName().endsWith(".tmp"))
+            {
+                file.delete();
+            }
+        }
+    
         return true;
     }
 
