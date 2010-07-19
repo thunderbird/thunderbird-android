@@ -194,92 +194,95 @@ public class Account implements BaseAccount
      */
     private synchronized void loadAccount(Preferences preferences)
     {
-        mStoreUri = Utility.base64Decode(preferences.getPreferences().getString(mUuid
+
+        SharedPreferences prefs = preferences.getPreferences();
+
+        mStoreUri = Utility.base64Decode(prefs.getString(mUuid
                                          + ".storeUri", null));
-        mLocalStoreUri = preferences.getPreferences().getString(mUuid + ".localStoreUri", null);
-        mTransportUri = Utility.base64Decode(preferences.getPreferences().getString(mUuid
+        mLocalStoreUri = prefs.getString(mUuid + ".localStoreUri", null);
+        mTransportUri = Utility.base64Decode(prefs.getString(mUuid
                                              + ".transportUri", null));
-        mDescription = preferences.getPreferences().getString(mUuid + ".description", null);
-        mAlwaysBcc = preferences.getPreferences().getString(mUuid + ".alwaysBcc", mAlwaysBcc);
-        mAutomaticCheckIntervalMinutes = preferences.getPreferences().getInt(mUuid
+        mDescription = prefs.getString(mUuid + ".description", null);
+        mAlwaysBcc = prefs.getString(mUuid + ".alwaysBcc", mAlwaysBcc);
+        mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid
                                          + ".automaticCheckIntervalMinutes", -1);
-        mIdleRefreshMinutes = preferences.getPreferences().getInt(mUuid
+        mIdleRefreshMinutes = prefs.getInt(mUuid
                               + ".idleRefreshMinutes", 24);
-        mSaveAllHeaders = preferences.getPreferences().getBoolean(mUuid
+        mSaveAllHeaders = prefs.getBoolean(mUuid
                           + ".saveAllHeaders", false);
-        mPushPollOnConnect = preferences.getPreferences().getBoolean(mUuid
+        mPushPollOnConnect = prefs.getBoolean(mUuid
                              + ".pushPollOnConnect", true);
-        mDisplayCount = preferences.getPreferences().getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
+        mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         if (mDisplayCount < 0)
         {
             mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         }
-        mLastAutomaticCheckTime = preferences.getPreferences().getLong(mUuid
+        mLastAutomaticCheckTime = prefs.getLong(mUuid
                                   + ".lastAutomaticCheckTime", 0);
-        mNotifyNewMail = preferences.getPreferences().getBoolean(mUuid + ".notifyNewMail",
+        mNotifyNewMail = prefs.getBoolean(mUuid + ".notifyNewMail",
                          false);
-        mNotifySelfNewMail = preferences.getPreferences().getBoolean(mUuid + ".notifySelfNewMail",
+        mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail",
                              true);
-        mNotifySync = preferences.getPreferences().getBoolean(mUuid + ".notifyMailCheck",
+        mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck",
                       false);
-        mDeletePolicy = preferences.getPreferences().getInt(mUuid + ".deletePolicy", 0);
-        mDraftsFolderName = preferences.getPreferences().getString(mUuid  + ".draftsFolderName",
+        mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
+        mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName",
                             "Drafts");
-        mSentFolderName = preferences.getPreferences().getString(mUuid  + ".sentFolderName",
+        mSentFolderName = prefs.getString(mUuid  + ".sentFolderName",
                           "Sent");
-        mTrashFolderName = preferences.getPreferences().getString(mUuid  + ".trashFolderName",
+        mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName",
                            "Trash");
-        mArchiveFolderName = preferences.getPreferences().getString(mUuid  + ".archiveFolderName",
+        mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName",
                              "Archive");
-        mSpamFolderName = preferences.getPreferences().getString(mUuid  + ".spamFolderName",
+        mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName",
                           "Spam");
-        mOutboxFolderName = preferences.getPreferences().getString(mUuid  + ".outboxFolderName",
+        mOutboxFolderName = prefs.getString(mUuid  + ".outboxFolderName",
                             "Outbox");
-        mExpungePolicy = preferences.getPreferences().getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
-        mSyncRemoteDeletions = preferences.getPreferences().getBoolean(mUuid  + ".syncRemoteDeletions", true);
+        mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
+        mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
 
-        mMaxPushFolders = preferences.getPreferences().getInt(mUuid + ".maxPushFolders", 10);
-        goToUnreadMessageSearch = preferences.getPreferences().getBoolean(mUuid + ".goToUnreadMessageSearch",
+        mMaxPushFolders = prefs.getInt(mUuid + ".maxPushFolders", 10);
+        goToUnreadMessageSearch = prefs.getBoolean(mUuid + ".goToUnreadMessageSearch",
                                   false);
-        subscribedFoldersOnly = preferences.getPreferences().getBoolean(mUuid + ".subscribedFoldersOnly",
+        subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly",
                                 false);
-        maximumPolledMessageAge = preferences.getPreferences().getInt(mUuid
+        maximumPolledMessageAge = prefs.getInt(mUuid
                                   + ".maximumPolledMessageAge", -1);
-        maximumAutoDownloadMessageSize = preferences.getPreferences().getInt(mUuid
+        maximumAutoDownloadMessageSize = prefs.getInt(mUuid
                                          + ".maximumAutoDownloadMessageSize", 32768);
-        mQuotePrefix = preferences.getPreferences().getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
+        mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
         for (String type : networkTypes)
         {
-            Boolean useCompression = preferences.getPreferences().getBoolean(mUuid + ".useCompression." + type,
+            Boolean useCompression = prefs.getBoolean(mUuid + ".useCompression." + type,
                                      true);
             compressionMap.put(type, useCompression);
         }
 
-        mAutoExpandFolderName = preferences.getPreferences().getString(mUuid  + ".autoExpandFolderName",
+        mAutoExpandFolderName = prefs.getString(mUuid  + ".autoExpandFolderName",
                                 "INBOX");
 
-        mAccountNumber = preferences.getPreferences().getInt(mUuid + ".accountNumber", 0);
+        mAccountNumber = prefs.getInt(mUuid + ".accountNumber", 0);
 
         Random random = new Random((long)mAccountNumber+4);
 
-        mChipColor = preferences.getPreferences().getInt(mUuid+".chipColor",
+        mChipColor = prefs.getInt(mUuid+".chipColor",
                      (random.nextInt(0x70)) +
                      (random.nextInt(0x70) * 0xff) +
                      (random.nextInt(0x70) * 0xffff) +
                      0xff000000);
 
-        mLedColor = preferences.getPreferences().getInt(mUuid+".ledColor", mChipColor);
+        mLedColor = prefs.getInt(mUuid+".ledColor", mChipColor);
 
-        mVibrate = preferences.getPreferences().getBoolean(mUuid + ".vibrate", false);
-        mVibratePattern = preferences.getPreferences().getInt(mUuid + ".vibratePattern", 0);
-        mVibrateTimes = preferences.getPreferences().getInt(mUuid + ".vibrateTimes", 5);
+        mVibrate = prefs.getBoolean(mUuid + ".vibrate", false);
+        mVibratePattern = prefs.getInt(mUuid + ".vibratePattern", 0);
+        mVibrateTimes = prefs.getInt(mUuid + ".vibrateTimes", 5);
 
 
-        mRing = preferences.getPreferences().getBoolean(mUuid + ".ring", true);
+        mRing = prefs.getBoolean(mUuid + ".ring", true);
 
         try
         {
-            mHideMessageViewButtons = HideButtons.valueOf(preferences.getPreferences().getString(mUuid + ".hideButtonsEnum",
+            mHideMessageViewButtons = HideButtons.valueOf(prefs.getString(mUuid + ".hideButtonsEnum",
                                       HideButtons.NEVER.name()));
         }
         catch (Exception e)
@@ -289,7 +292,7 @@ public class Account implements BaseAccount
 
         try
         {
-            mHideMessageViewMoveButtons = HideButtons.valueOf(preferences.getPreferences().getString(mUuid + ".hideMoveButtonsEnum",
+            mHideMessageViewMoveButtons = HideButtons.valueOf(prefs.getString(mUuid + ".hideMoveButtonsEnum",
                                           HideButtons.NEVER.name()));
         }
         catch (Exception e)
@@ -297,13 +300,13 @@ public class Account implements BaseAccount
             mHideMessageViewMoveButtons = HideButtons.NEVER;
         }
 
-        mEnableMoveButtons = preferences.getPreferences().getBoolean(mUuid + ".enableMoveButtons", false);
+        mEnableMoveButtons = prefs.getBoolean(mUuid + ".enableMoveButtons", false);
 
-        mRingtoneUri = preferences.getPreferences().getString(mUuid  + ".ringtone",
+        mRingtoneUri = prefs.getString(mUuid  + ".ringtone",
                        "content://settings/system/notification_sound");
         try
         {
-            mFolderDisplayMode = FolderMode.valueOf(preferences.getPreferences().getString(mUuid  + ".folderDisplayMode",
+            mFolderDisplayMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderDisplayMode",
                                                     FolderMode.NOT_SECOND_CLASS.name()));
         }
         catch (Exception e)
@@ -313,7 +316,7 @@ public class Account implements BaseAccount
 
         try
         {
-            mFolderSyncMode = FolderMode.valueOf(preferences.getPreferences().getString(mUuid  + ".folderSyncMode",
+            mFolderSyncMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderSyncMode",
                                                  FolderMode.FIRST_CLASS.name()));
         }
         catch (Exception e)
@@ -323,7 +326,7 @@ public class Account implements BaseAccount
 
         try
         {
-            mFolderPushMode = FolderMode.valueOf(preferences.getPreferences().getString(mUuid  + ".folderPushMode",
+            mFolderPushMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderPushMode",
                                                  FolderMode.FIRST_CLASS.name()));
         }
         catch (Exception e)
@@ -333,7 +336,7 @@ public class Account implements BaseAccount
 
         try
         {
-            mFolderTargetMode = FolderMode.valueOf(preferences.getPreferences().getString(mUuid  + ".folderTargetMode",
+            mFolderTargetMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderTargetMode",
                                                    FolderMode.NOT_SECOND_CLASS.name()));
         }
         catch (Exception e)
@@ -343,7 +346,7 @@ public class Account implements BaseAccount
 
         try
         {
-            searchableFolders = Searchable.valueOf(preferences.getPreferences().getString(mUuid  + ".searchableFolders",
+            searchableFolders = Searchable.valueOf(prefs.getString(mUuid  + ".searchableFolders",
                                                    Searchable.ALL.name()));
         }
         catch (Exception e)
@@ -351,8 +354,8 @@ public class Account implements BaseAccount
             searchableFolders = Searchable.ALL;
         }
 
-        mIsSignatureBeforeQuotedText = preferences.getPreferences().getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
-        identities = loadIdentities(preferences.getPreferences());
+        mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
+        identities = loadIdentities(prefs);
     }
 
 
