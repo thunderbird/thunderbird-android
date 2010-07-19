@@ -4624,12 +4624,12 @@ public class MessagingController implements Runnable
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
-        notif.number = unreadMessageCount+1;
+        notif.number = unreadMessageCount;
 
         Intent i = FolderList.actionHandleNotification(context, account, account.getAutoExpandFolderName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, (unreadMessageCount+1), account.getDescription());
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, (unreadMessageCount), account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
         // Only ring or vibrate if we have not done so already on this
