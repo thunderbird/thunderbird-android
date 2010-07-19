@@ -329,16 +329,16 @@ public class MessageView extends K9Activity implements OnClickListener
         public void removeAllAttachments()
         {
             runOnUiThread(new Runnable()
-                    {
-                        public void run()
             {
+                public void run()
+                {
                     for (int i = 0, count = mAttachments.getChildCount(); i < count; i++)
                     {
                         mAttachments.removeView(mAttachments.getChildAt(i));
                     }
-            }
+                }
 
-                    });
+            });
         }
 
 
@@ -434,13 +434,16 @@ public class MessageView extends K9Activity implements OnClickListener
                             null); // bottom
                     }
 
-                        if(mMessage.isSet(Flag.X_DOWNLOADED_FULL))  {
-                            mDownloadRemainder.setVisibility(View.GONE);
-                        } else {
-                            mDownloadRemainder.setEnabled(true);
-                            mDownloadRemainder.setVisibility(View.VISIBLE);
+                    if (mMessage.isSet(Flag.X_DOWNLOADED_FULL))
+                    {
+                        mDownloadRemainder.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        mDownloadRemainder.setEnabled(true);
+                        mDownloadRemainder.setVisibility(View.VISIBLE);
 
-                        }
+                    }
 
                 }
             });
@@ -1521,11 +1524,11 @@ public class MessageView extends K9Activity implements OnClickListener
     }
 
     private void onDownloadRemainder()
+    {
+        if (mMessage.isSet(Flag.X_DOWNLOADED_FULL))
         {
-                        if(mMessage.isSet(Flag.X_DOWNLOADED_FULL))
-                        {
-                            return;
-                        }
+            return;
+        }
 
 
 
@@ -1536,7 +1539,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mMessageReference.uid,
             mListener);
 
-        }
+    }
 
     private void onDownloadAttachment(Attachment attachment)
     {

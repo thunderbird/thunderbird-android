@@ -2996,7 +2996,7 @@ public class MessagingController implements Runnable
     }
 
     public void loadMessageForViewRemote(final Account account, final String folder,
-                                          final String uid, final MessagingListener listener)
+                                         final String uid, final MessagingListener listener)
     {
         put("loadMessageForViewRemote", listener, new Runnable()
         {

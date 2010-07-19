@@ -207,37 +207,37 @@ public class Account implements BaseAccount
         mAutomaticCheckIntervalMinutes = prefs.getInt(mUuid
                                          + ".automaticCheckIntervalMinutes", -1);
         mIdleRefreshMinutes = prefs.getInt(mUuid
-                              + ".idleRefreshMinutes", 24);
+                                           + ".idleRefreshMinutes", 24);
         mSaveAllHeaders = prefs.getBoolean(mUuid
-                          + ".saveAllHeaders", false);
+                                           + ".saveAllHeaders", false);
         mPushPollOnConnect = prefs.getBoolean(mUuid
-                             + ".pushPollOnConnect", true);
+                                              + ".pushPollOnConnect", true);
         mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
         if (mDisplayCount < 0)
         {
             mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         }
         mLastAutomaticCheckTime = prefs.getLong(mUuid
-                                  + ".lastAutomaticCheckTime", 0);
+                                                + ".lastAutomaticCheckTime", 0);
         mNotifyNewMail = prefs.getBoolean(mUuid + ".notifyNewMail",
-                         false);
+                                          false);
         mNotifySelfNewMail = prefs.getBoolean(mUuid + ".notifySelfNewMail",
-                             true);
+                                              true);
         mNotifySync = prefs.getBoolean(mUuid + ".notifyMailCheck",
-                      false);
+                                       false);
         mDeletePolicy = prefs.getInt(mUuid + ".deletePolicy", 0);
         mDraftsFolderName = prefs.getString(mUuid  + ".draftsFolderName",
-                            "Drafts");
+                                            "Drafts");
         mSentFolderName = prefs.getString(mUuid  + ".sentFolderName",
-                          "Sent");
+                                          "Sent");
         mTrashFolderName = prefs.getString(mUuid  + ".trashFolderName",
-                           "Trash");
+                                           "Trash");
         mArchiveFolderName = prefs.getString(mUuid  + ".archiveFolderName",
-                             "Archive");
+                                             "Archive");
         mSpamFolderName = prefs.getString(mUuid  + ".spamFolderName",
-                          "Spam");
+                                          "Spam");
         mOutboxFolderName = prefs.getString(mUuid  + ".outboxFolderName",
-                            "Outbox");
+                                            "Outbox");
         mExpungePolicy = prefs.getString(mUuid  + ".expungePolicy", EXPUNGE_IMMEDIATELY);
         mSyncRemoteDeletions = prefs.getBoolean(mUuid  + ".syncRemoteDeletions", true);
 
@@ -247,7 +247,7 @@ public class Account implements BaseAccount
         subscribedFoldersOnly = prefs.getBoolean(mUuid + ".subscribedFoldersOnly",
                                 false);
         maximumPolledMessageAge = prefs.getInt(mUuid
-                                  + ".maximumPolledMessageAge", -1);
+                                               + ".maximumPolledMessageAge", -1);
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid
                                          + ".maximumAutoDownloadMessageSize", 32768);
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
@@ -259,17 +259,17 @@ public class Account implements BaseAccount
         }
 
         mAutoExpandFolderName = prefs.getString(mUuid  + ".autoExpandFolderName",
-                                "INBOX");
+                                                "INBOX");
 
         mAccountNumber = prefs.getInt(mUuid + ".accountNumber", 0);
 
         Random random = new Random((long)mAccountNumber+4);
 
         mChipColor = prefs.getInt(mUuid+".chipColor",
-                     (random.nextInt(0x70)) +
-                     (random.nextInt(0x70) * 0xff) +
-                     (random.nextInt(0x70) * 0xffff) +
-                     0xff000000);
+                                  (random.nextInt(0x70)) +
+                                  (random.nextInt(0x70) * 0xff) +
+                                  (random.nextInt(0x70) * 0xffff) +
+                                  0xff000000);
 
         mLedColor = prefs.getInt(mUuid+".ledColor", mChipColor);
 
@@ -303,7 +303,7 @@ public class Account implements BaseAccount
         mEnableMoveButtons = prefs.getBoolean(mUuid + ".enableMoveButtons", false);
 
         mRingtoneUri = prefs.getString(mUuid  + ".ringtone",
-                       "content://settings/system/notification_sound");
+                                       "content://settings/system/notification_sound");
         try
         {
             mFolderDisplayMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderDisplayMode",
