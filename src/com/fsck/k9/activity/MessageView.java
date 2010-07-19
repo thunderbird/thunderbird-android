@@ -1803,6 +1803,22 @@ public class MessageView extends K9Activity implements OnClickListener
         String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
         String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
         String name = MimeUtility.getHeaderParameter(contentType, "name");
+
+
+        // Inline parts with a content-id are almost certainly components of an HTML message
+        // not attachments. Don't show attachment download buttons for them.
+        //
+        // TODO: This code won't work until we correct attachment storage
+
+        if ("inline".equalsIgnoreCase(MimeUtility.getHeaderParameter(contentDisposition, null))
+                && part.getHeader("Content-Id") != null)
+        {
+            return;
+        }
+
+
+
+
         if (name == null)
         {
             name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
