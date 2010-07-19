@@ -2485,10 +2485,10 @@ public class MessageList
             {
                 LocalMessage message = (LocalMessage) m;
                 Date date = message.getSentDate();
-                this.compareDate = message.getInternalDate();
+                this.compareDate = message.getSentDate();
                 if (this.compareDate == null)
                 {
-                    this.compareDate = message.getSentDate();
+                    this.compareDate = message.getInternalDate();
                 }
 
                 this.folder = folder;
