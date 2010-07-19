@@ -194,5 +194,6 @@
     <Button android:id="@+id/download_remainder"
         android:text="@string/message_view_download_remainder"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_width="fill_parent" />
 </merge>

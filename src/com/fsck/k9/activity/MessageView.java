@@ -326,6 +326,22 @@ public class MessageView extends K9Activity implements OnClickListener
             });
         }
 
+        public void removeAllAttachments()
+        {
+            runOnUiThread(new Runnable()
+                    {
+                        public void run()
+            {
+                    for (int i = 0, count = mAttachments.getChildCount(); i < count; i++)
+                    {
+                        mAttachments.removeView(mAttachments.getChildAt(i));
+                    }
+            }
+
+                    });
+        }
+
+
         public void setAttachmentsEnabled(final boolean enabled)
         {
             runOnUiThread(new Runnable()
@@ -1965,6 +1981,9 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
 
                 MessageView.this.mMessage = message;
+
+
+                mHandler.removeAllAttachments();
 
                 String text;
                 Part part = MimeUtility.findFirstPartByMimeType(mMessage, "text/html");
