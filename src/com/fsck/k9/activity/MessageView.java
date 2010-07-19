@@ -101,7 +101,6 @@ public class MessageView extends K9Activity implements OnClickListener
     private LinearLayout mCcContainerView;
     private TextView mAdditionalHeadersView;
     private View mAttachmentIcon;
-    private View mDownloadingIcon;
     private View mShowPicturesSection;
 
     private Button mDownloadRemainder;
@@ -354,7 +353,6 @@ public class MessageView extends K9Activity implements OnClickListener
             final   int accountColor,
             final   boolean unread,
             final   boolean hasAttachments,
-            final   boolean isDownloading,
             final   boolean flagged,
             final   boolean answered)
         {
@@ -388,7 +386,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
                     mCcView.setText(cc);
                     mAttachmentIcon.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
-                    mDownloadingIcon.setVisibility(isDownloading ? View.VISIBLE : View.GONE);
                     if (flagged)
                     {
                         mFlagged.setChecked(true);
@@ -720,7 +717,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
-        mDownloadingIcon = findViewById(R.id.downloading);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
 
         mDownloadRemainder = (Button)findViewById(R.id.download_remainder);
@@ -1888,7 +1884,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
         int color = mAccount.getChipColor();
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
-        boolean isDownloading = !message.isSet(Flag.X_DOWNLOADED_FULL);
         boolean unread = !message.isSet(Flag.SEEN);
 
         mHandler.setHeaders(subjectText,
@@ -1900,7 +1895,6 @@ public class MessageView extends K9Activity implements OnClickListener
                             color,
                             unread,
                             hasAttachments,
-                            isDownloading,
                             message.isSet(Flag.FLAGGED),
                             message.isSet(Flag.ANSWERED));
 

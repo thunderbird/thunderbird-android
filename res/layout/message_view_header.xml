@@ -150,11 +150,6 @@
                  android:layout_width="22sp"
                  android:layout_height="22sp"
                  android:background="@drawable/ic_email_attachment_small" />
-             <View android:id="@+id/downloading"
-                 android:layout_width="22sp"
-                 android:layout_height="22sp"
-                 android:background="@drawable/ic_menu_reverse_sort"
-                 android:visibility="gone" />
            </LinearLayout>
            </LinearLayout>
             </LinearLayout>
