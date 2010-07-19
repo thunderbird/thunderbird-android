@@ -39,11 +39,7 @@ public class AttachmentProvider extends ContentProvider
 
     public static Uri getAttachmentUri(Account account, long id)
     {
-        return CONTENT_URI.buildUpon()
-               .appendPath(account.getUuid() + ".db")
-               .appendPath(Long.toString(id))
-               .appendPath(FORMAT_RAW)
-               .build();
+        return getAttachmentUri(account.getUuid() + ".db" , id);
     }
 
     public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height)
