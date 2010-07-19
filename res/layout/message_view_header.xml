@@ -196,4 +196,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="4dip" />
+    <Button android:id="@+id/download_remainder"
+        android:text="@string/message_view_download_remainder"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
 </merge>

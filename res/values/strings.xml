@@ -275,6 +275,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_view_fetching_attachment_toast">Fetching attachment.</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
 
+
+    <string name="message_view_download_remainder">Download complete message</string>
+
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
     <string name="message_additional_headers_not_downloaded">Not all headers have been downloaded or saved. Select \"Save all headers locally\" in the account\'s incoming server settings to enable this for the future.</string>
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>

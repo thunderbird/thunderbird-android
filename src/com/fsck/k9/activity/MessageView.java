@@ -103,6 +103,10 @@ public class MessageView extends K9Activity implements OnClickListener
     private View mAttachmentIcon;
     private View mDownloadingIcon;
     private View mShowPicturesSection;
+
+    private Button mDownloadRemainder;
+
+
     View next;
     View next_scrolling;
     View previous;
@@ -417,6 +421,13 @@ public class MessageView extends K9Activity implements OnClickListener
                             null); // bottom
                     }
 
+                        if(mMessage.isSet(Flag.X_DOWNLOADED_FULL))  {
+                            mDownloadRemainder.setVisibility(View.GONE);
+                        } else {
+                            mDownloadRemainder.setEnabled(true);
+                            mDownloadRemainder.setVisibility(View.VISIBLE);
+
+                        }
 
                 }
             });
@@ -712,6 +723,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mDownloadingIcon = findViewById(R.id.downloading);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
 
+        mDownloadRemainder = (Button)findViewById(R.id.download_remainder);
 
         mFlagged = (CheckBox)findViewById(R.id.flagged);
         mFlagged.setOnClickListener(new OnClickListener()
@@ -773,6 +785,8 @@ public class MessageView extends K9Activity implements OnClickListener
         setOnClickListener(R.id.spam_scrolling);
 
         setOnClickListener(R.id.show_pictures);
+
+        setOnClickListener(R.id.download_remainder);
 
         setTitle("");
 
@@ -1494,6 +1508,25 @@ public class MessageView extends K9Activity implements OnClickListener
         return null;
     }
 
+    private void onDownloadRemainder()
+        {
+                        if(mMessage.isSet(Flag.X_DOWNLOADED_FULL))
+                        {
+                            return;
+                        }
+
+                    Log.v(K9.LOG_TAG, "downloading remainder");
+
+
+        mDownloadRemainder.setEnabled(false);
+        MessagingController.getInstance(getApplication()).loadMessageForViewRemote(
+            mAccount,
+            mMessageReference.folderName,
+            mMessageReference.uid,
+            mListener);
+
+        }
+
     private void onDownloadAttachment(Attachment attachment)
     {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
@@ -1592,6 +1625,9 @@ public class MessageView extends K9Activity implements OnClickListener
                 break;
             case R.id.header_container:
                 onShowAdditionalHeaders();
+                break;
+            case R.id.download_remainder:
+                onDownloadRemainder();
                 break;
         }
     }
