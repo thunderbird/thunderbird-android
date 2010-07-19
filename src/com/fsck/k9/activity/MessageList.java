@@ -830,7 +830,6 @@ public class MessageList
         if (!message.read)
         {
             message.read = true;
-            mHandler.sortMessages();
         }
     }
 
