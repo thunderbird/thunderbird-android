@@ -189,7 +189,7 @@ public class AttachmentProvider extends ContentProvider
         {
             int width = Integer.parseInt(segments.get(3));
             int height = Integer.parseInt(segments.get(4));
-            String filename = "thmb_" + dbName + "_" + id;
+            String filename = "thmb_" + dbName + "_" + id + ".tmp";
             File dir = getContext().getCacheDir();
             File file = new File(dir, filename);
             if (!file.exists())
