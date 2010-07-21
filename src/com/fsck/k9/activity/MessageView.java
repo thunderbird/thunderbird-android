@@ -2389,11 +2389,23 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             mDecryptButton.setText(R.string.btn_verify);
             mDecryptLayout.setVisibility(View.VISIBLE);
-
         }
         else
         {
             mDecryptLayout.setVisibility(View.GONE);
+            try
+            {
+                // check for PGP/MIME encryption
+                Part pgp = MimeUtility.findFirstPartByMimeType(mMessage, "application/pgp-encrypted");
+                if (pgp != null)
+                {
+                    Toast.makeText(this, R.string.pgp_mime_unsupported, Toast.LENGTH_LONG).show();
+                }
+            }
+            catch (MessagingException e)
+            {
+                // nothing to do...
+            }
         }
     }
 
