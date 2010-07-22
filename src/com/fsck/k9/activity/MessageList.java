@@ -558,7 +558,7 @@ public class MessageList
 
         if (mFolderName != null)
         {
-            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+            mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
             mController.notifyAccountCancel(this, mAccount);
 
             MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
