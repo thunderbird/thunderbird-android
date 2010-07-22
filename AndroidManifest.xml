@@ -124,6 +124,12 @@
             >
         </activity>
         <activity
+            android:name="com.fsck.k9.activity.ChooseAccount"
+            android:theme="@style/Theme.K9Dialog"
+            android:label="@string/choose_account_title"
+            >
+        </activity>
+        <activity
             android:name="com.fsck.k9.activity.ManageIdentities"
             android:label="@string/manage_identities_title"
             android:configChanges="locale"
