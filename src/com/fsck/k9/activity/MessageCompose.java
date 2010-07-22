@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -871,87 +872,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void sendMessage()
     {
-        /*
-         * Create the message from all the data the user has entered.
-         */
-        MimeMessage message;
-        try
-        {
-            message = createMessage(true);  // Only append sig on save
-        }
-        catch (MessagingException me)
-        {
-            Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
-            throw new RuntimeException("Failed to create a new message for send or save.", me);
-        }
-
-        MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
-        if (mDraftUid != null)
-        {
-            MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
-            mDraftUid = null;
-        }
+        new SendMessageTask().execute();
     }
     private void saveMessage()
     {
-        /*
-         * Create the message from all the data the user has entered.
-         */
-        MimeMessage message;
-        try
-        {
-            message = createMessage(false);  // Only append sig on save
-        }
-        catch (MessagingException me)
-        {
-            Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
-            throw new RuntimeException("Failed to create a new message for send or save.", me);
-        }
-
-        /*
-         * Save a draft
-         */
-        if (mDraftUid != null)
-        {
-            message.setUid(mDraftUid);
-        }
-        else if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()))
-        {
-            /*
-             * We're saving a previously saved draft, so update the new message's uid
-             * to the old message's uid.
-             */
-            message.setUid(mMessageReference.uid);
-        }
-
-        String k9identity = Utility.base64Encode("" + mMessageContentView.getText().toString().length());
-
-        if (mIdentityChanged || mSignatureChanged)
-        {
-            String signature  = mSignatureView.getText().toString();
-            k9identity += ":" + Utility.base64Encode(signature);
-            if (mIdentityChanged)
-            {
-
-                String name = mIdentity.getName();
-                String email = mIdentity.getEmail();
-
-                k9identity +=  ":" + Utility.base64Encode(name) + ":" + Utility.base64Encode(email);
-            }
-        }
-
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
-        message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
-
-        Message draftMessage = MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
-        mDraftUid = draftMessage.getUid();
-
-        // Don't display the toast if the user is just changing the orientation
-        if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0)
-        {
-            mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
-        }
+        new SaveMessageTask().execute();
     }
 
     private void saveIfNeeded()
@@ -1966,4 +1891,101 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mMessageContentView.setText(body.get(0));
         }
     }
+
+    private class SendMessageTask extends AsyncTask<Void, Void, Void>
+    {
+        protected Void doInBackground(Void... params)
+        {
+            /*
+             * Create the message from all the data the user has entered.
+             */
+            MimeMessage message;
+            try
+            {
+                message = createMessage(true);  // Only append sig on save
+            }
+            catch (MessagingException me)
+            {
+                Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
+                throw new RuntimeException("Failed to create a new message for send or save.", me);
+            }
+
+            MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
+            if (mDraftUid != null)
+            {
+                MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
+                mDraftUid = null;
+            }
+
+            return null;
+        }
+    }
+
+    private class SaveMessageTask extends AsyncTask<Void, Void, Void>
+    {
+        protected Void doInBackground(Void... params)
+        {
+
+            /*
+             * Create the message from all the data the user has entered.
+             */
+            MimeMessage message;
+            try
+            {
+                message = createMessage(false);  // Only append sig on save
+            }
+            catch (MessagingException me)
+            {
+                Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
+                throw new RuntimeException("Failed to create a new message for send or save.", me);
+            }
+
+            /*
+             * Save a draft
+             */
+            if (mDraftUid != null)
+            {
+                message.setUid(mDraftUid);
+            }
+            else if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()))
+            {
+                /*
+                 * We're saving a previously saved draft, so update the new message's uid
+                 * to the old message's uid.
+                 */
+                message.setUid(mMessageReference.uid);
+            }
+
+            String k9identity = Utility.base64Encode("" + mMessageContentView.getText().toString().length());
+
+            if (mIdentityChanged || mSignatureChanged)
+            {
+                String signature  = mSignatureView.getText().toString();
+                k9identity += ":" + Utility.base64Encode(signature);
+                if (mIdentityChanged)
+                {
+
+                    String name = mIdentity.getName();
+                    String email = mIdentity.getEmail();
+
+                    k9identity +=  ":" + Utility.base64Encode(name) + ":" + Utility.base64Encode(email);
+                }
+            }
+
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
+            message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
+
+            Message draftMessage = MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
+            mDraftUid = draftMessage.getUid();
+
+            // Don't display the toast if the user is just changing the orientation
+            if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0)
+            {
+                mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
+            }
+            return null;
+        }
+    }
+
 }
