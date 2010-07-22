@@ -58,7 +58,7 @@ public class ChooseAccount extends K9ExpandableListActivity
         {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
-                    int childPosition, long id)
+                                        int childPosition, long id)
             {
                 final Identity identity = (Identity) adapter.getChild(groupPosition, childPosition);
                 final Account account = (Account) adapter.getGroup(groupPosition);
@@ -175,7 +175,7 @@ public class ChooseAccount extends K9ExpandableListActivity
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-                ViewGroup parent)
+                                 ViewGroup parent)
         {
             final View v;
             if (convertView == null)
@@ -200,7 +200,7 @@ public class ChooseAccount extends K9ExpandableListActivity
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                View convertView, ViewGroup parent)
+                                 View convertView, ViewGroup parent)
         {
             final Account account = getAccounts()[groupPosition];
             final Identity identity = account.getIdentity(childPosition);

@@ -77,7 +77,7 @@ public class AttachmentProvider extends ContentProvider
                 file.delete();
             }
         }
-    
+
         return true;
     }
 

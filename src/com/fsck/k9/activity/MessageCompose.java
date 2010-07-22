@@ -90,13 +90,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int ACTIVITY_CHOOSE_ACCOUNT = 3;
 
     /**
-     * The account used for message composition. 
+     * The account used for message composition.
      */
     private Account mAccount;
 
     /**
      * This identity's settings are used for message composition.
-     * Note: This has to be an identity of the account {@link #mAccount}. 
+     * Note: This has to be an identity of the account {@link #mAccount}.
      */
     private Identity mIdentity;
 
@@ -284,8 +284,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mMessageReference = (MessageReference) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
 
         final String accountUuid = (mMessageReference != null) ?
-                mMessageReference.accountUuid :
-                intent.getStringExtra(EXTRA_ACCOUNT);
+                                   mMessageReference.accountUuid :
+                                   intent.getStringExtra(EXTRA_ACCOUNT);
 
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
@@ -555,9 +555,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             updateSignature();
 
             if (ACTION_REPLY.equals(action) ||
-                ACTION_REPLY_ALL.equals(action) ||
-                ACTION_FORWARD.equals(action) ||
-                ACTION_EDIT_DRAFT.equals(action))
+                    ACTION_REPLY_ALL.equals(action) ||
+                    ACTION_FORWARD.equals(action) ||
+                    ACTION_EDIT_DRAFT.equals(action))
             {
                 /*
                  * If we need to load the message we add ourself as a message listener here
@@ -588,7 +588,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             */
 
             if (ACTION_REPLY.equals(action) ||
-                ACTION_REPLY_ALL.equals(action))
+                    ACTION_REPLY_ALL.equals(action))
             {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "Setting message ANSWERED flag to true");
@@ -606,8 +606,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         if (ACTION_REPLY.equals(action) ||
-            ACTION_REPLY_ALL.equals(action) ||
-            ACTION_EDIT_DRAFT.equals(action))
+                ACTION_REPLY_ALL.equals(action) ||
+                ACTION_EDIT_DRAFT.equals(action))
         {
             //change focus to message body.
             mMessageContentView.requestFocus();
@@ -1791,8 +1791,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             //TODO: is this really necessary here? mDraftUid is update after the call to MessagingController.saveDraft()
             // Track UID changes of the draft message
             if (account.equals(mAccount) &&
-                folder.equals(mAccount.getDraftsFolderName()) &&
-                oldUid.equals(mDraftUid))
+                    folder.equals(mAccount.getDraftsFolderName()) &&
+                    oldUid.equals(mDraftUid))
             {
                 mDraftUid = newUid;
             }
@@ -1802,8 +1802,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             {
                 final Account sourceAccount = Preferences.getPreferences(MessageCompose.this).getAccount(mMessageReference.accountUuid);
                 final String sourceFolder = mMessageReference.folderName;
-                final String sourceMessageUid = mMessageReference.uid; 
-    
+                final String sourceMessageUid = mMessageReference.uid;
+
                 if (account.equals(sourceAccount) && (folder.equals(sourceFolder)))
                 {
                     if (oldUid.equals(sourceMessageUid))
