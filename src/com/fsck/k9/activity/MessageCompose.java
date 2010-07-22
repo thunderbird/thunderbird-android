@@ -867,7 +867,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return text;
     }
 
-    private void sendOrSaveMessage(boolean save)
+
+
+    private void sendMessage()
     {
         /*
          * Create the message from all the data the user has entered.
@@ -875,7 +877,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         MimeMessage message;
         try
         {
-            message = createMessage(!save);  // Only append sig on save
+            message = createMessage(true);  // Only append sig on save
         }
         catch (MessagingException me)
         {
@@ -883,61 +885,72 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             throw new RuntimeException("Failed to create a new message for send or save.", me);
         }
 
-        if (save)
+        MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
+        if (mDraftUid != null)
+        {
+            MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
+            mDraftUid = null;
+        }
+    }
+    private void saveMessage()
+    {
+        /*
+         * Create the message from all the data the user has entered.
+         */
+        MimeMessage message;
+        try
+        {
+            message = createMessage(false);  // Only append sig on save
+        }
+        catch (MessagingException me)
+        {
+            Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
+            throw new RuntimeException("Failed to create a new message for send or save.", me);
+        }
+
+        /*
+         * Save a draft
+         */
+        if (mDraftUid != null)
+        {
+            message.setUid(mDraftUid);
+        }
+        else if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()))
         {
             /*
-             * Save a draft
+             * We're saving a previously saved draft, so update the new message's uid
+             * to the old message's uid.
              */
-            if (mDraftUid != null)
+            message.setUid(mMessageReference.uid);
+        }
+
+        String k9identity = Utility.base64Encode("" + mMessageContentView.getText().toString().length());
+
+        if (mIdentityChanged || mSignatureChanged)
+        {
+            String signature  = mSignatureView.getText().toString();
+            k9identity += ":" + Utility.base64Encode(signature);
+            if (mIdentityChanged)
             {
-                message.setUid(mDraftUid);
-            }
-            else if (ACTION_EDIT_DRAFT.equals(getIntent().getAction()))
-            {
-                /*
-                 * We're saving a previously saved draft, so update the new message's uid
-                 * to the old message's uid.
-                 */
-                message.setUid(mMessageReference.uid);
-            }
 
-            String k9identity = Utility.base64Encode("" + mMessageContentView.getText().toString().length());
+                String name = mIdentity.getName();
+                String email = mIdentity.getEmail();
 
-            if (mIdentityChanged || mSignatureChanged)
-            {
-                String signature  = mSignatureView.getText().toString();
-                k9identity += ":" + Utility.base64Encode(signature);
-                if (mIdentityChanged)
-                {
-
-                    String name = mIdentity.getName();
-                    String email = mIdentity.getEmail();
-
-                    k9identity +=  ":" + Utility.base64Encode(name) + ":" + Utility.base64Encode(email);
-                }
-            }
-
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
-            message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
-
-            Message draftMessage = MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
-            mDraftUid = draftMessage.getUid();
-
-            // Don't display the toast if the user is just changing the orientation
-            if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0)
-            {
-                mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
+                k9identity +=  ":" + Utility.base64Encode(name) + ":" + Utility.base64Encode(email);
             }
         }
-        else
+
+        if (K9.DEBUG)
+            Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
+        message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
+
+        Message draftMessage = MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
+        mDraftUid = draftMessage.getUid();
+
+        // Don't display the toast if the user is just changing the orientation
+        if ((getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION) == 0)
         {
-            MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);
-            if (mDraftUid != null)
-            {
-                MessagingController.getInstance(getApplication()).deleteDraft(mAccount, mDraftUid);
-                mDraftUid = null;
-            }
+            mHandler.sendEmptyMessage(MSG_SAVED_DRAFT);
         }
     }
 
@@ -948,7 +961,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             return;
         }
         mDraftNeedsSaving = false;
-        sendOrSaveMessage(true);
+        saveMessage();
     }
 
     private void onSend()
@@ -959,7 +972,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
         }
-        sendOrSaveMessage(false);
+        sendMessage();
         mDraftNeedsSaving = false;
         finish();
     }
@@ -1171,14 +1184,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     Log.v(K9.LOG_TAG, "Account switch, saving new draft in new account");
                 }
-                sendOrSaveMessage(true);
+                saveMessage();
 
                 if (previousDraftUid != null)
                 {
                     if (K9.DEBUG)
                     {
                         Log.v(K9.LOG_TAG, "Account switch, deleting draft from previous account: "
-                                + previousDraftUid);
+                              + previousDraftUid);
                     }
                     MessagingController.getInstance(getApplication()).deleteDraft(previousAccount,
                             previousDraftUid);
