@@ -558,7 +558,7 @@ public class MessageList
 
         if (mFolderName != null)
         {
-            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+            mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
             mController.notifyAccountCancel(this, mAccount);
 
             MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
@@ -830,7 +830,6 @@ public class MessageList
         if (!message.read)
         {
             message.read = true;
-            mHandler.sortMessages();
         }
     }
 
@@ -2485,10 +2484,10 @@ public class MessageList
             {
                 LocalMessage message = (LocalMessage) m;
                 Date date = message.getSentDate();
-                this.compareDate = message.getInternalDate();
+                this.compareDate = message.getSentDate();
                 if (this.compareDate == null)
                 {
-                    this.compareDate = message.getSentDate();
+                    this.compareDate = message.getInternalDate();
                 }
 
                 this.folder = folder;

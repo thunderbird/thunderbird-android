@@ -216,10 +216,10 @@ public final class TrustManagerFactory
         try
         {
             javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
-            for (int i = 0; i < chain.length; i++)
+            for (X509Certificate element : chain)
             {
                 keyStore.setCertificateEntry
-                (chain[i].getSubjectDN().toString(), chain[i]);
+                (element.getSubjectDN().toString(), element);
             }
 
             tmf.init(keyStore);

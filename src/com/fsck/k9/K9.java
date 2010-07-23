@@ -209,7 +209,7 @@ public class K9 extends Application
      * so we should probably factor that in. A 5MB attachment will generally be around
      * 6.8MB downloaded but only 5MB saved.
      */
-    public static final int MAX_ATTACHMENT_DOWNLOAD_SIZE = (5 * 1024 * 1024);
+    public static final int MAX_ATTACHMENT_DOWNLOAD_SIZE = (128 * 1024 * 1024);
 
     /**
      * Max time (in millis) the wake lock will be held for when background sync is happening

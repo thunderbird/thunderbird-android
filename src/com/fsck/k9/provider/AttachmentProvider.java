@@ -39,11 +39,7 @@ public class AttachmentProvider extends ContentProvider
 
     public static Uri getAttachmentUri(Account account, long id)
     {
-        return CONTENT_URI.buildUpon()
-               .appendPath(account.getUuid() + ".db")
-               .appendPath(Long.toString(id))
-               .appendPath(FORMAT_RAW)
-               .build();
+        return getAttachmentUri(account.getUuid() + ".db" , id);
     }
 
     public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height)
@@ -81,6 +77,7 @@ public class AttachmentProvider extends ContentProvider
                 file.delete();
             }
         }
+
         return true;
     }
 
@@ -192,7 +189,7 @@ public class AttachmentProvider extends ContentProvider
         {
             int width = Integer.parseInt(segments.get(3));
             int height = Integer.parseInt(segments.get(4));
-            String filename = "thmb_" + dbName + "_" + id;
+            String filename = "thmb_" + dbName + "_" + id + ".tmp";
             File dir = getContext().getCacheDir();
             File file = new File(dir, filename);
             if (!file.exists())

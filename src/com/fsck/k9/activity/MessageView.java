@@ -110,8 +110,11 @@ public class MessageView extends K9Activity implements OnClickListener
     private LinearLayout mCcContainerView;
     private TextView mAdditionalHeadersView;
     private View mAttachmentIcon;
-    private View mDownloadingIcon;
     private View mShowPicturesSection;
+
+    private Button mDownloadRemainder;
+
+
     View next;
     View next_scrolling;
     View previous;
@@ -331,6 +334,22 @@ public class MessageView extends K9Activity implements OnClickListener
             });
         }
 
+        public void removeAllAttachments()
+        {
+            runOnUiThread(new Runnable()
+            {
+                public void run()
+                {
+                    for (int i = 0, count = mAttachments.getChildCount(); i < count; i++)
+                    {
+                        mAttachments.removeView(mAttachments.getChildAt(i));
+                    }
+                }
+
+            });
+        }
+
+
         public void setAttachmentsEnabled(final boolean enabled)
         {
             runOnUiThread(new Runnable()
@@ -358,7 +377,6 @@ public class MessageView extends K9Activity implements OnClickListener
             final   int accountColor,
             final   boolean unread,
             final   boolean hasAttachments,
-            final   boolean isDownloading,
             final   boolean flagged,
             final   boolean answered)
         {
@@ -392,7 +410,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
                     mCcView.setText(cc);
                     mAttachmentIcon.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
-                    mDownloadingIcon.setVisibility(isDownloading ? View.VISIBLE : View.GONE);
                     if (flagged)
                     {
                         mFlagged.setChecked(true);
@@ -425,6 +442,16 @@ public class MessageView extends K9Activity implements OnClickListener
                             null); // bottom
                     }
 
+                    if (mMessage.isSet(Flag.X_DOWNLOADED_FULL))
+                    {
+                        mDownloadRemainder.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        mDownloadRemainder.setEnabled(true);
+                        mDownloadRemainder.setVisibility(View.VISIBLE);
+
+                    }
 
                 }
             });
@@ -750,9 +777,9 @@ public class MessageView extends K9Activity implements OnClickListener
 
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
-        mDownloadingIcon = findViewById(R.id.downloading);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
 
+        mDownloadRemainder = (Button)findViewById(R.id.download_remainder);
 
         mFlagged = (CheckBox)findViewById(R.id.flagged);
         mFlagged.setOnClickListener(new OnClickListener()
@@ -814,6 +841,8 @@ public class MessageView extends K9Activity implements OnClickListener
         setOnClickListener(R.id.spam_scrolling);
 
         setOnClickListener(R.id.show_pictures);
+
+        setOnClickListener(R.id.download_remainder);
 
         setTitle("");
 
@@ -1562,6 +1591,24 @@ public class MessageView extends K9Activity implements OnClickListener
         return null;
     }
 
+    private void onDownloadRemainder()
+    {
+        if (mMessage.isSet(Flag.X_DOWNLOADED_FULL))
+        {
+            return;
+        }
+
+
+
+        mDownloadRemainder.setEnabled(false);
+        MessagingController.getInstance(getApplication()).loadMessageForViewRemote(
+            mAccount,
+            mMessageReference.folderName,
+            mMessageReference.uid,
+            mListener);
+
+    }
+
     private void onDownloadAttachment(Attachment attachment)
     {
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
@@ -1660,6 +1707,9 @@ public class MessageView extends K9Activity implements OnClickListener
                 break;
             case R.id.header_container:
                 onShowAdditionalHeaders();
+                break;
+            case R.id.download_remainder:
+                onDownloadRemainder();
                 break;
         }
     }
@@ -1821,6 +1871,22 @@ public class MessageView extends K9Activity implements OnClickListener
         String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
         String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
         String name = MimeUtility.getHeaderParameter(contentType, "name");
+
+
+        // Inline parts with a content-id are almost certainly components of an HTML message
+        // not attachments. Don't show attachment download buttons for them.
+        //
+        // TODO: This code won't work until we correct attachment storage
+
+        if ("inline".equalsIgnoreCase(MimeUtility.getHeaderParameter(contentDisposition, null))
+                && part.getHeader("Content-Id") != null)
+        {
+            return;
+        }
+
+
+
+
         if (name == null)
         {
             name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
@@ -1921,7 +1987,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
         int color = mAccount.getChipColor();
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
-        boolean isDownloading = !message.isSet(Flag.X_DOWNLOADED_FULL);
         boolean unread = !message.isSet(Flag.SEEN);
 
         mHandler.setHeaders(subjectText,
@@ -1933,7 +1998,6 @@ public class MessageView extends K9Activity implements OnClickListener
                             color,
                             unread,
                             hasAttachments,
-                            isDownloading,
                             message.isSet(Flag.FLAGGED),
                             message.isSet(Flag.ANSWERED));
 
@@ -2005,6 +2069,9 @@ public class MessageView extends K9Activity implements OnClickListener
                 }
 
                 MessageView.this.mMessage = message;
+
+
+                mHandler.removeAllAttachments();
 
                 String text;
                 String type = "text/html";

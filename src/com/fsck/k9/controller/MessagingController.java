@@ -2933,9 +2933,8 @@ public class MessagingController implements Runnable
             localFolder = localStore.getFolder(folderName);
             localFolder.open(OpenMode.READ_WRITE);
             ArrayList<Message> messages = new ArrayList<Message>();
-            for (int i = 0; i < uids.length; i++)
+            for (String uid : uids)
             {
-                String uid = uids[i];
                 // Allows for re-allowing sending of messages that could not be sent
                 if (flag == Flag.FLAGGED && newState == false
                         && uid != null
@@ -2996,8 +2995,8 @@ public class MessagingController implements Runnable
         }
     }
 
-    private void loadMessageForViewRemote(final Account account, final String folder,
-                                          final String uid, final MessagingListener listener)
+    public void loadMessageForViewRemote(final Account account, final String folder,
+                                         final String uid, final MessagingListener listener)
     {
         put("loadMessageForViewRemote", listener, new Runnable()
         {
@@ -3043,11 +3042,18 @@ public class MessagingController implements Runnable
 
                         // Store the message locally and load the stored message into memory
                         localFolder.appendMessages(new Message[] { remoteMessage });
+                        fp.add(FetchProfile.Item.ENVELOPE);
                         message = localFolder.getMessage(uid);
                         localFolder.fetch(new Message[] { message }, fp, null);
 
                         // Mark that this message is now fully synched
                         message.setFlag(Flag.X_DOWNLOADED_FULL, true);
+                    }
+
+                    // now that we have the full message, refresh the headers
+                    for (MessagingListener l : getListeners(listener))
+                    {
+                        l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
                     }
 
                     for (MessagingListener l : getListeners(listener))
@@ -3117,16 +3123,6 @@ public class MessagingController implements Runnable
                     for (MessagingListener l : getListeners(listener))
                     {
                         l.loadMessageForViewHeadersAvailable(account, folder, uid, message);
-                    }
-
-                    if (!message.isSet(Flag.X_DOWNLOADED_FULL))
-                    {
-                        loadMessageForViewRemote(account, folder, uid, listener);
-                        if (!message.isSet(Flag.X_DOWNLOADED_PARTIAL))
-                        {
-                            localFolder.close();
-                            return;
-                        }
                     }
 
                     FetchProfile fp = new FetchProfile();
@@ -4633,7 +4629,7 @@ public class MessagingController implements Runnable
         Intent i = FolderList.actionHandleNotification(context, account, account.getAutoExpandFolderName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, (unreadMessageCount+1), account.getDescription());
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, (unreadMessageCount), account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
         // Only ring or vibrate if we have not done so already on this

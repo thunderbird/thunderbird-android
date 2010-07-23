@@ -557,9 +557,9 @@ public class Base64 implements BinaryEncoder, BinaryDecoder
      */
     private static boolean containsBase64Byte(byte[] arrayOctet)
     {
-        for (int i = 0; i < arrayOctet.length; i++)
+        for (byte element : arrayOctet)
         {
-            if (isBase64(arrayOctet[i]))
+            if (isBase64(element))
             {
                 return true;
             }
@@ -730,11 +730,11 @@ public class Base64 implements BinaryEncoder, BinaryDecoder
         byte groomedData[] = new byte[data.length];
         int bytesCopied = 0;
 
-        for (int i = 0; i < data.length; i++)
+        for (byte element : data)
         {
-            if (isBase64(data[i]))
+            if (isBase64(element))
             {
-                groomedData[bytesCopied++] = data[i];
+                groomedData[bytesCopied++] = element;
             }
         }
 
