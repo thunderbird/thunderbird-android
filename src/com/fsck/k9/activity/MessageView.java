@@ -961,8 +961,6 @@ public class MessageView extends K9Activity implements OnClickListener
             }
         }
 
-        initializeCrypto();
-
         displayMessage(mMessageReference);
     }
 
@@ -999,6 +997,9 @@ public class MessageView extends K9Activity implements OnClickListener
         mHandler.hideHeaderContainer();
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
+
+        mCrypto = null;
+        initializeCrypto();
 
         setupDisplayMessageButtons();
 
