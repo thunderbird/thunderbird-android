@@ -83,8 +83,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
 
     private static final String EXTRA_ACCOUNT = "account";
-    private static final String EXTRA_FOLDER = "folder";
-    private static final String EXTRA_MESSAGE = "message";
     private static final String EXTRA_MESSAGE_BODY  = "messageBody";
     private static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
 
@@ -269,9 +267,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         String messageBody)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
-        i.putExtra(EXTRA_MESSAGE, message.getUid());
         i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
         if (replyAll)
@@ -299,9 +294,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         String messageBody)
     {
         Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_FOLDER, message.getFolder().getName());
-        i.putExtra(EXTRA_MESSAGE, message.getUid());
         i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
         i.setAction(ACTION_FORWARD);
@@ -579,12 +571,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
             mBccView.setText(addressList);
 
-        }
-        else
-        {
-            mFolder = (String) intent.getStringExtra(EXTRA_FOLDER);
-            mSourceMessageUid = (String) intent.getStringExtra(EXTRA_MESSAGE);
-            mSourceMessageBody = (String) intent.getStringExtra(EXTRA_MESSAGE_BODY);
         }
 
         if (mIdentity == null)
