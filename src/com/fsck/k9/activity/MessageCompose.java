@@ -145,7 +145,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private EditText mQuotedText;
     private View mEncryptLayout;
     private CheckBox mCryptoSignatureCheckbox;
-    private Button mSelectEncryptionKeys;
+    private CheckBox mEncryptCheckbox;
     private TextView mCryptoSignatureUserId;
     private TextView mCryptoSignatureUserIdRest;
 
@@ -638,7 +638,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
         mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
         mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
-        mSelectEncryptionKeys = (Button)findViewById(R.id.btn_select_encryption_keys);
+        mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
 
         initializeCrypto();
         if (mCrypto.isAvailable(this))
@@ -663,41 +663,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     {
                         mCrypto.setSignatureKeyId(0);
                         updateEncryptLayout();
-                    }
-                }
-            });
-
-            mSelectEncryptionKeys.setOnClickListener(new OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    String emails = "";
-                    Address[][] addresses = new Address[][] { getAddresses(mToView),
-                            getAddresses(mCcView),
-                            getAddresses(mBccView)
-                                                            };
-                    for (Address[] addressArray : addresses)
-                    {
-                        for (Address address : addressArray)
-                        {
-                            if (emails.length() != 0)
-                            {
-                                emails += ",";
-                            }
-                            emails += address.getAddress();
-                        }
-                    }
-                    if (emails.length() != 0)
-                    {
-                        emails += ",";
-                    }
-                    emails += mIdentity.getEmail();
-
-                    mPreventDraftSaving = true;
-                    if (!mCrypto.selectEncryptionKeys(MessageCompose.this, emails))
-                    {
-                        mPreventDraftSaving = false;
                     }
                 }
             });
@@ -773,23 +738,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
                 }
             }
-        }
-
-        if (mCrypto.hasEncryptionKeys())
-        {
-            if (mCrypto.getEncryptionKeys().length == 1)
-            {
-                mSelectEncryptionKeys.setText(R.string.one_key_selected);
-            }
-            else
-            {
-                mSelectEncryptionKeys.setText(getString(R.string.n_keys_selected,
-                                                        mCrypto.getEncryptionKeys().length));
-            }
-        }
-        else
-        {
-            mSelectEncryptionKeys.setText(R.string.btn_encrypt);
         }
     }
 
@@ -1148,11 +1096,27 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         sendOrSaveMessage(true);
     }
 
+    public void onEncryptionKeySelectionDone()
+    {
+        if (mCrypto.hasEncryptionKeys())
+        {
+            onSend();
+        }
+        else
+        {
+            Toast.makeText(this, R.string.send_aborted, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void onEncryptDone()
     {
         if (mCrypto.getEncryptedData() != null)
         {
             onSend();
+        }
+        else
+        {
+            Toast.makeText(this, R.string.send_aborted, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1162,6 +1126,38 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             mToView.setError(getString(R.string.message_compose_error_no_recipients));
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (mEncryptCheckbox.isChecked() && !mCrypto.hasEncryptionKeys())
+        {
+            // key selection before encryption
+            String emails = "";
+            Address[][] addresses = new Address[][] { getAddresses(mToView),
+                    getAddresses(mCcView),
+                    getAddresses(mBccView)
+                                                    };
+            for (Address[] addressArray : addresses)
+            {
+                for (Address address : addressArray)
+                {
+                    if (emails.length() != 0)
+                    {
+                        emails += ",";
+                    }
+                    emails += address.getAddress();
+                }
+            }
+            if (emails.length() != 0)
+            {
+                emails += ",";
+            }
+            emails += mIdentity.getEmail();
+
+            mPreventDraftSaving = true;
+            if (!mCrypto.selectEncryptionKeys(MessageCompose.this, emails))
+            {
+                mPreventDraftSaving = false;
+            }
             return;
         }
         if (mCrypto.hasEncryptionKeys() || mCrypto.hasSignatureKey())
@@ -1421,6 +1417,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         switch (item.getItemId())
         {
             case R.id.send:
+                mCrypto.setEncryptionKeys(null);
                 onSend();
                 break;
             case R.id.save:

@@ -337,15 +337,19 @@ public class Apg extends CryptoProvider
             case Apg.SELECT_PUBLIC_KEYS:
                 if (resultCode != Activity.RESULT_OK || data == null)
                 {
+                    mEncryptionKeyIds = null;
+                    ((MessageCompose) activity).onEncryptionKeySelectionDone();
                     break;
                 }
                 mEncryptionKeyIds = data.getLongArrayExtra(Apg.EXTRA_SELECTION);
-                ((MessageCompose) activity).updateEncryptLayout();
+                ((MessageCompose) activity).onEncryptionKeySelectionDone();
                 break;
 
             case Apg.ENCRYPT_MESSAGE:
                 if (resultCode != Activity.RESULT_OK || data == null)
                 {
+                    mEncryptedData = null;
+                    ((MessageCompose) activity).onEncryptDone();
                     break;
                 }
                 mEncryptedData = data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE);
