@@ -328,6 +328,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         final Intent intent = getIntent();
 
         mMessageReference = (MessageReference) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
+        mSourceMessageBody = (String) intent.getStringExtra(EXTRA_MESSAGE_BODY);
 
         final String accountUuid = (mMessageReference != null) ?
                                    mMessageReference.accountUuid :
@@ -1308,7 +1309,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 addAttachment(data.getData());
                 mDraftNeedsSaving = true;
                 break;
-
             case ACTIVITY_CHOOSE_IDENTITY:
                 onIdentityChosen(data);
                 break;
