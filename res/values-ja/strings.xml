@@ -3,14 +3,14 @@
     <string name="app_name">K-9 Mail</string>
     <string name="beta_app_name">K-9 Mail BETA</string>
     <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-    <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g>
-    </string>
+    <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_url">http://code.google.com/p/k9mail/wiki/ReleaseNotes</string>
-    <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g>
-    </string>
+    <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_webpage_url">http://code.google.com/p/k9mail/</string>
+
     <string name="read_attachment_label">添付ファイルを開く</string>
     <string name="read_attachment_desc">このアプリケーションでは電子メールの添付ファイルを読むことができます</string>
+
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">アカウント一覧</string>
     <string name="advanced">拡張機能</string>
@@ -22,12 +22,13 @@
     <string name="compose_title">作成</string>
     <string name="debug_title">デバッグ</string>
     <string name="choose_folder_title">フォルダ選択</string>
-    <string name="choose_color_title">Choose a Color</string>
+    <string name="choose_color_title">色選択</string>
 
     <string name="activity_header_format"><xliff:g id="activity_prefix">%s</xliff:g><xliff:g id="unread_count">%s</xliff:g><xliff:g id="operation">%s</xliff:g></string>
 
     <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
     <string name="status_loading_account_folder">\u0020(受信 <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+    <string name="status_loading_account_folder_headers">\u0020(ヘッダ取込 <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_sending_account">\u0020(送信 <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="status_processing_account">\u0020(処理 <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
     <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
@@ -70,6 +71,7 @@
     <string name="open_action">開く</string>
     <string name="account_settings_action">アカウント設定</string>
     <string name="folder_settings_action">フォルダ設定</string>
+    <string name="global_settings_action">グローバル設定</string>
     <string name="remove_account_action">アカウント削除</string>
     <string name="clear_pending_action">保留中のアクションをクリア (危険！)</string>
 
@@ -100,8 +102,8 @@
     <string name="add_cc_bcc_action">Cc/Bcc追加</string>
     <string name="edit_subject_action">件名編集</string>
     <string name="add_attachment_action">添付追加</string>
-    <string name="add_attachment_action_image">Add attachment (Image)</string>
-    <string name="add_attachment_action_video">Add attachment (Video)</string>
+    <string name="add_attachment_action_image">添付ファイル追加 (画像)</string>
+    <string name="add_attachment_action_video">添付ファイル追加 (動画)</string>
     <string name="dump_settings_action">ダンプ設定</string>
     <string name="empty_trash_action">ゴミ箱を空に</string>
     <string name="expunge_action">完全削除(Expunge)</string>
@@ -140,9 +142,9 @@
     <xliff:g id="newSize">%s</xliff:g> へ
     </string>
 
-    <string name="compacting_account">アカウント最適化 \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="clearing_account">アカウント消去 \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="recreating_account">Recreating account \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="compacting_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" を最適化しています</string>
+    <string name="clearing_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" をクリアしています</string>
+    <string name="recreating_account">アカウント \"<xliff:g id="account">%s</xliff:g>\" を再作成しています</string>
 
     <string name="notification_new_title">新着メール</string>
     <string name="notification_new_scrolling"><xliff:g id="sender">%s</xliff:g> からの新着メール</string>
@@ -159,6 +161,7 @@
 
     <string name="special_mailbox_name_inbox">受信トレイ</string>
     <string name="special_mailbox_name_outbox">送信トレイ</string>
+    <!-- The following mailbox names will be used if the user has not specified one from the server -->
     <string name="special_mailbox_name_drafts">下書き</string>
     <string name="special_mailbox_name_trash">ゴミ箱</string>
     <string name="special_mailbox_name_sent">送信済み</string>
@@ -222,9 +225,9 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
 
     <string name="message_header_mua">K-9 for Android </string>
 
-    <string name="combined_inbox_title">全てのメール</string>
+    <string name="combined_inbox_title">すべてのメール</string>
     <string name="combined_inbox_label">全アカウントの最新メール</string>
-    <string name="combined_inbox_list_title">受信トレイ全てのメール</string>
+    <string name="combined_inbox_list_title">受信トレイすべてのメール</string>
 
     <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
                        <xliff:g id="unread_count">%s</xliff:g>
@@ -269,13 +272,14 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="message_view_show_pictures_instructions">\"画像表示\"ボタンを押下すると描画します</string>
     <string name="message_view_show_pictures_action">画像表示</string>
     <string name="message_view_fetching_attachment_toast">添付取込中</string>
-    <string name="message_view_no_viewer">添付ファイルのビューワー見つけられません .<xliff:g id="mimetype">%s</xliff:g>
-    </string>
+    <string name="message_view_no_viewer">添付ファイルのビューワー見つけられません .<xliff:g id="mimetype">%s</xliff:g></string>
+
+    <string name="message_view_download_remainder">すべてダウンロード</string>
 
     <!-- NOTE: The following message refers to strings with id 'account_setup_incoming_save_all_headers_label' and 'account_setup_incoming_title' -->
-    <string name="message_additional_headers_not_downloaded">Not all headers have been downloaded or saved. Select \"Save all headers locally\" in the account\'s incoming server settings to enable this for the future.</string>
-       <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
-       <string name="message_additional_headers_retrieval_failed">The retrieval of additional headers from the database or mail server failed.</string>
+    <string name="message_additional_headers_not_downloaded">一部のヘッダしか保存されていません．ヘッダをすべて保存するためには、アカウント設定の受信メールサーバ設定で「すべてのヘッダを端末に保存」をチェックしてください．</string>
+    <string name="message_no_additional_headers_available">すべてのヘッダをダウンロードしましたが、表示すべき追加ヘッダはありませんでした．</string>
+    <string name="message_additional_headers_retrieval_failed">追加ヘッダをデータベースまたはメールサーバから取得できませんでした．</string>
 
     <string name="mailbox_select_dlg_title">フォルダ</string>
     <string name="mailbox_select_dlg_new_mailbox_action">新しいフォルダ</string>
@@ -284,8 +288,8 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
 
     <string name="folder_push_active_symbol">(プッシュ)</string>
 
-    <string name="find_action">Find messages</string>
-    <string name="from_same_sender">More from this sender</string>
+    <string name="find_action">メール検索</string>
+    <string name="from_same_sender">この送信者からのメールを検索</string>
 
     <string name="message_copied_toast">メールをコピーしました</string>
     <string name="message_moved_toast">メールを移動しました</string>
@@ -303,12 +307,12 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="global_settings_checkbox_label">複数選択チェックボックス</string>
     <string name="global_settings_checkbox_summary">複数選択チェックボックス常時表示</string>
     <string name="global_settings_touchable_label">タッチビュー</string>
-    <string name="global_settings_touchable_summary">Roomier list items with message previews</string>
+    <string name="global_settings_touchable_summary">メッセージ一覧にプレビューを追加</string>
 
-    <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
-    <string name="global_settings_messageview_return_to_list_label">Return to list after delete</string>
-    <string name="global_settings_messageview_return_to_list_summary">Return to message list after message deletion</string>
+    <string name="global_settings_messageview_fixedwidth_label">固定幅フォント</string>
+    <string name="global_settings_messageview_fixedwidth_summary">プレーンテキストメッセージを表示する際、固定幅フォントを利用します．</string>
+    <string name="global_settings_messageview_return_to_list_label">削除後メッセージ一覧へ戻る</string>
+    <string name="global_settings_messageview_return_to_list_summary">メッセージの削除後、メッセージ一覧に戻る</string>
 
     <string name="account_setup_basics_title">電子メールセットアップ</string>
     <string name="account_setup_basics_instructions">このアカウントで使用するメールアドレスを入力して下さい</string>
@@ -366,8 +370,8 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_incoming_wifi_label">WiFi</string>
     <string name="account_setup_incoming_other_label">その他</string>
 
-    <string name="account_setup_incoming_save_all_headers_title">Downloading of mail headers</string>
-    <string name="account_setup_incoming_save_all_headers_label">Save all headers locally</string>
+    <string name="account_setup_incoming_save_all_headers_title">メールヘッダのダウンロード</string>
+    <string name="account_setup_incoming_save_all_headers_label">すべてのヘッダを端末に保存</string>
 
     <string name="account_setup_expunge_policy_label">メッセージ完全削除(Expunge)</string>
     <string name="account_setup_expunge_policy_immediately">削除または移動後即時</string>
@@ -384,7 +388,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_incoming_imap_folder_spam">迷惑メールフォルダ名</string>
     <string name="account_setup_incoming_imap_folder_outbox">送信トレイフォルダ名</string>
 
-    <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">購読フォルダのみ表示</string>
     <string name="account_setup_auto_expand_folder">自動表示フォルダ</string>
 
     <string name="account_setup_incoming_webdav_path_prefix_label">WebDav(Exchange) パス</string>
@@ -420,8 +424,8 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_options_title">アカウントオプション</string>
 
     <string name="compact_action">最適化</string>
-    <string name="clear_action">全メッセージ削除 (危険！)</string>
-    <string name="recreate_action">Recreate data (Last Resort!)</string>
+    <string name="clear_action">アカウントクリア (危険！)</string>
+    <string name="recreate_action">アカウント再作成(最終手段！)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">電子メールの自動受信間隔</string>
     <!-- Frequency also used in account_settings_* -->
@@ -438,20 +442,19 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_options_mail_check_frequency_12hour">１２時間毎</string>
     <string name="account_setup_options_mail_check_frequency_24hour">２４時間毎</string>
 
-    <string name="push_poll_on_connect_label">Poll when connecting for push</string>
+    <string name="push_poll_on_connect_label">プッシュ接続時の取込</string>
     <string name="account_setup_options_enable_push_label">このアカウントにプッシュメールを有効化</string>
     <string name="account_setup_options_enable_push_summary">メールサーバがサポートしていれば新しいメッセージは即座に表示されます．当オプションはパフォーマンスが改善もしくは低下します．</string>
-
-    <string name="idle_refresh_period_label">Refresh IDLE connection</string>
-    <string name="idle_refresh_period_1min">Every minute</string>
-    <string name="idle_refresh_period_2min">Every 2 minutes</string>
-    <string name="idle_refresh_period_3min">Every 3 minutes</string>
-    <string name="idle_refresh_period_6min">Every 6 minutes</string>
-    <string name="idle_refresh_period_12min">Every 12 minutes</string>
-    <string name="idle_refresh_period_24min">Every 24 minutes</string>
-    <string name="idle_refresh_period_36min">Every 36 minutes</string>
-    <string name="idle_refresh_period_48min">Every 48 minutes</string>
-    <string name="idle_refresh_period_60min">Every 60 minutes</string>
+    <string name="idle_refresh_period_label">IMAP IDLE（プッシュ）接続のリフレッシュ</string>
+    <string name="idle_refresh_period_1min">１分毎</string>
+    <string name="idle_refresh_period_2min">２分毎</string>
+    <string name="idle_refresh_period_3min">３分毎</string>
+    <string name="idle_refresh_period_6min">６分毎</string>
+    <string name="idle_refresh_period_12min">１２分毎</string>
+    <string name="idle_refresh_period_24min">２４分毎</string>
+    <string name="idle_refresh_period_36min">３６分毎</string>
+    <string name="idle_refresh_period_48min">４８分毎</string>
+    <string name="idle_refresh_period_60min">６０分毎</string>
 
     <string name="account_setup_options_default_label">標準設定でこのアカウントからメールを送信</string>
     <string name="account_setup_options_notify_label">メール到着時に通知</string>
@@ -466,6 +469,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_options_mail_display_count_250">２５０件</string>
     <string name="account_setup_options_mail_display_count_500">５００件</string>
     <string name="account_setup_options_mail_display_count_1000">１０００件</string>
+
 
     <string name="move_copy_cannot_copy_unsynced_message">サーバーと同期されていないメールをコピーまたは移動できません</string>
 
@@ -488,8 +492,8 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_show_combined_label">受信トレイの組合せを表示</string>
     <string name="account_settings_notify_self_label">自分が送信したメールも通知</string>
     <string name="account_settings_notify_self_summary">このアカウントからのメールも通知する</string>
-    <string name="account_settings_notification_opens_unread_label">Notification opens unread messages</string>
-    <string name="account_settings_notification_opens_unread_summary">Searches for unread messages when Notification is opened</string>
+    <string name="account_settings_notification_opens_unread_label">未読メール通知の動作</string>
+    <string name="account_settings_notification_opens_unread_summary">通知を開いた際に未読メールを検索する</string>
 
     <string name="account_settings_hide_buttons_label">ナビゲーションボタンのスクロール</string>
     <string name="account_settings_hide_buttons_never">しない</string>
@@ -510,11 +514,11 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_mail_check_frequency_label">電子メールの自動受信間隔</string>
     <string name="account_settings_second_class_check_frequency_label">2nd クラス自動受信間隔</string>
 
-    <string name="account_settings_color_label">Account color</string>
-    <string name="account_settings_color_summary">Choose the color of the account used in folder and account list</string>
+    <string name="account_settings_color_label">アカウントの色</string>
+    <string name="account_settings_color_summary">アカウント一覧とフォルダで使用する色を選択</string>
 
-    <string name="account_settings_led_color_label">Notification LED color</string>
-    <string name="account_settings_led_color_summary">Choose the color your phone LED should blink for this account</string>
+    <string name="account_settings_led_color_label">LEDの色</string>
+    <string name="account_settings_led_color_summary">このアカウントの通知時に点滅するLEDの色を選択</string>
 
     <string name="account_settings_mail_display_count_label">一度に表示するメール数</string>
 
@@ -549,33 +553,33 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
 
 
     <string name="account_settings_folder_display_mode_label">フォルダ表示モード</string>
-    <string name="account_settings_folder_display_mode_all">全て</string>
+    <string name="account_settings_folder_display_mode_all">すべて</string>
     <string name="account_settings_folder_display_mode_first_class">1st クラスフォルダのみ</string>
     <string name="account_settings_folder_display_mode_first_and_second_class">1st および 2nd クラスフォルダ</string>
-    <string name="account_settings_folder_display_mode_not_second_class">2nd クラスフォルダを除く全て</string>
+    <string name="account_settings_folder_display_mode_not_second_class">2nd クラスフォルダを除くすべて</string>
 
     <string name="account_settings_folder_sync_mode_label">フォルダ同期モード</string>
-    <string name="account_settings_folder_sync_mode_all">全て</string>
+    <string name="account_settings_folder_sync_mode_all">すべて</string>
     <string name="account_settings_folder_sync_mode_first_class">1st クラスフォルダのみ</string>
     <string name="account_settings_folder_sync_mode_first_and_second_class">1st および 2nd クラスフォルダ</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">2nd クラスフォルダを除く全て</string>
+    <string name="account_settings_folder_sync_mode_not_second_class">2nd クラスフォルダを除くすべて</string>
     <string name="account_settings_folder_sync_mode_none">何もしない</string>
 
     <string name="account_settings_folder_push_mode_label">プッシュ受信するフォルダ</string>
-    <string name="account_settings_folder_push_mode_all">全て</string>
+    <string name="account_settings_folder_push_mode_all">すべて</string>
     <string name="account_settings_folder_push_mode_first_class">1st クラスフォルダのみ</string>
     <string name="account_settings_folder_push_mode_first_and_second_class">1st および 2nd クラスフォルダ</string>
-    <string name="account_settings_folder_push_mode_not_second_class">2nd クラスフォルダを除く全て</string>
+    <string name="account_settings_folder_push_mode_not_second_class">2nd クラスフォルダを除くすべて</string>
     <string name="account_settings_folder_push_mode_none">何もしない</string>
 
     <string name="account_settings_folder_target_mode_label">移動/コピー先のフォルダ</string>
-    <string name="account_settings_folder_target_mode_all">全て</string>
+    <string name="account_settings_folder_target_mode_all">すべて</string>
     <string name="account_settings_folder_target_mode_first_class">1st クラスフォルダのみ</string>
     <string name="account_settings_folder_target_mode_first_and_second_class">1st および 2nd クラスフォルダ</string>
-    <string name="account_settings_folder_target_mode_not_second_class">2nd クラスフォルダを除く全て</string>
+    <string name="account_settings_folder_target_mode_not_second_class">2nd クラスフォルダを除くすべて</string>
 
-    <string name="account_settings_sync_remote_deletetions_label">Sync remote deletions</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
+    <string name="account_settings_sync_remote_deletetions_label">メッセージ削除の同期</string>
+    <string name="account_settings_sync_remote_deletetions_summary">サーバでメッセージを削除したときにローカルも削除する</string>
 
     <string name="folder_settings_title">フォルダ設定</string>
 
@@ -650,19 +654,20 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="edit_identity_name_hint">(オプション)</string>
     <string name="edit_identity_email_label">メールアドレス</string>
     <string name="edit_identity_email_hint">(必須)</string>
-    <string name="edit_identity_reply_to_label">Reply-to address</string>
-    <string name="edit_identity_reply_to_hint">(Optional)</string>
+    <string name="edit_identity_reply_to_label">Reply-to</string>
+    <string name="edit_identity_reply_to_hint">(オプション)</string>
     <string name="edit_identity_signature_label">署名</string>
     <string name="edit_identity_signature_hint">(オプション)</string>
 
     <string name="account_settings_signature_use_label">署名を付ける</string>
     <string name="account_settings_signature_label">署名</string>
-    <string name="account_settings_signature_summary">送信する全てのメールに署名を付与します</string>
+    <string name="account_settings_signature_summary">送信するすべてのメールに署名を付与します</string>
 
     <string name="default_signature">--\nSent from my Android phone with K-9. Please excuse my brevity.</string>
     <string name="default_identity_description">差出人情報の初期設定</string>
     <string name="choose_identity">差出人情報選択</string>
     <string name="choose_identity_title">差出人情報選択</string>
+    <string name="choose_account_title">アカウント選択</string>
 
     <string name="no_identities">アカウント設定 -&gt; 差出人情報管理 で差出人情報を作成してください</string>
     <string name="no_removable_identity">最後の差出人情報は削除できません</string>
@@ -673,8 +678,8 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="sort_latest_first">日付昇順</string>
     <string name="sort_sender_alpha">送信者アルファベット順</string>
     <string name="sort_sender_re_alpha">送信者逆アルファベット順</string>
-    <string name="sort_subject_alpha">表題アルファベット順</string>
-    <string name="sort_subject_re_alpha">表題逆アルファベット順</string>
+    <string name="sort_subject_alpha">件名アルファベット順</string>
+    <string name="sort_subject_re_alpha">件名逆アルファベット順</string>
     <string name="sort_flagged_first">フラグメール順</string>
     <string name="sort_flagged_last">フラグメール逆順</string>
     <string name="sort_unread_first">未読メール順</string>
@@ -694,10 +699,11 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_delete_dlg_title">アカウント削除</string>
     <string name="account_delete_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" はK-9 Mailから削除されます。</string>
 
-    <string name="account_recreate_dlg_title">Recreate Account</string>
-    <string name="account_recreate_dlg_instructions_fmt">All data for \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
-    <string name="account_clear_dlg_title">Clear Account</string>
-    <string name="account_clear_dlg_instructions_fmt">All messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail, but account settings will be retained.</string>
+    <string name="account_recreate_dlg_title">アカウント再作成</string>
+    <string name="account_recreate_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" の全データはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
+
+    <string name="account_clear_dlg_title">アカウントクリア</string>
+    <string name="account_clear_dlg_instructions_fmt">アカウント \"<xliff:g id="account">%s</xliff:g>\" の全メッセージはK-9 Mailから削除されますが、アカウントの設定は残ります。</string>
 
     <string name="provider_note_live">このプログラムでPOPアクセスが許可されているのは一部の「Plus」アカウントだけです。有料の「Plus」アカウントがなければ、正しいメールアドレスとパスワードを入力してもログインできません。これらのアカウントにはブラウザからアクセスしてください。</string>
 
@@ -716,7 +722,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="folder_list_help_key">
       1 - 1st クラスフォルダ表示\u000A
       2 - 1st と 2nd クラスフォルダ表示\u000A
-      3 - 2nd クラスフォルダを除く全て表示\u000A
+      3 - 2nd クラスフォルダを除くすべて表示\u000A
       4 - 全フォルダ表示\u000A
       Q - アカウント設定に戻る\u000A
       S - アカウント設定編集</string>
@@ -725,7 +731,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="folder_list_display_mode_all">全フォルダ表示</string>
     <string name="folder_list_display_mode_first_class">1st クラスフォルダ表示</string>
     <string name="folder_list_display_mode_first_and_second_class">1st と 2nd クラスフォルダ表示</string>
-    <string name="folder_list_display_mode_not_second_class">2nd クラスフォルダを除く全て表示</string>
+    <string name="folder_list_display_mode_not_second_class">2nd クラスフォルダを除くすべて表示</string>
 
 
 
@@ -737,9 +743,9 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="display_preferences">表示設定</string>
     <string name="debug_preferences">デバッグ</string>
     <string name="operational_preferences">同期設定</string>
-    <string name="accountlist_preferences">Account List</string>
+    <string name="accountlist_preferences">アカウント一覧</string>
     <string name="messagelist_preferences">メッセージ一覧</string>
-    <string name="messageview_preferences">Messages</string>
+    <string name="messageview_preferences">メッセージ表示</string>
     <string name="settings_theme_label">テーマ</string>
     <string name="settings_language_label">言語</string>
 
@@ -748,8 +754,8 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="background_ops_label">バックグラウンド同期</string>
     <string name="background_ops_never">使用しない</string>
     <string name="background_ops_always">常時利用</string>
-    <string name="background_ops_enabled">バックグランドデータ がチェックされた時</string>
-    <string name="background_ops_auto_sync">When \'Background data\' &amp; \'Auto-sync\' are checked</string>
+    <string name="background_ops_enabled">バックグランドデータがチェックされた時</string>
+    <string name="background_ops_auto_sync">バックグランドデータと自動同期がチェックされた時</string>
 
     <string name="no_message_seletected_toast">メッセージが選択されていません</string>
 
@@ -793,94 +799,95 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="gestures_title">ジェスチャー</string>
     <string name="gestures_summary">ジェスチャー制御の許可</string>
 
-    <string name="manage_back_title">Manage \"Back\" button</string>
-    <string name="manage_back_summary">Make \"Back\" always go up a level</string>
+    <string name="manage_back_title">\"戻る\" ボタンの制御</string>
+    <string name="manage_back_summary">\"戻る\" ボタンで常に一つ前に戻る</string>
 
-    <string name="start_integrated_inbox_title">Integrated Inbox on start</string>
-    <string name="start_integrated_inbox_summary">Show the Integrated Inbox after startup</string>
+    <string name="start_integrated_inbox_title">起動時の統合フォルダ表示</string>
+    <string name="start_integrated_inbox_summary">起動時に統合フォルダを表示する</string>
 
+    <string name="measure_accounts_title">アカウントのサイズ表示</string>
+    <string name="measure_accounts_summary">表示を早くしたい場合はチェックをはずしてください</string>
 
-    <string name="measure_accounts_title">Show account size</string>
-    <string name="measure_accounts_summary">Turn off for faster display</string>
-
-    <string name="count_search_title">Count search results</string>
-    <string name="count_search_summary">Turn off for faster display</string>
+    <string name="count_search_title">検索結果の件数表示</string>
+    <string name="count_search_summary">表示を早くしたい場合はチェックをはずしてください</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - Starred</string>
-    <string name="unread_modifier"> - Unread</string>
+    <string name="flagged_modifier"> - スター</string>
+    <string name="unread_modifier"> - 未読</string>
 
-    <string name="search_all_messages_title">All messages</string>
-    <string name="search_all_messages_detail">All messages in searchable folders</string>
+    <string name="search_all_messages_title">全メッセージ</string>
+    <string name="search_all_messages_detail">検索可能フォルダの全メッセージを表示</string>
 
-    <string name="integrated_inbox_title">Integrated Inbox</string>
-    <string name="integrated_inbox_detail">All messages in integrated folders</string>
+    <string name="integrated_inbox_title">統合フォルダ</string>
+    <string name="integrated_inbox_detail">統合フォルダの全メッセージを表示</string>
 
-    <string name="tap_hint">Tap envelope or star for unread or starred messages</string>
+    <string name="tap_hint">未読またはスターのメッセージをタップすることができます</string>
 
-    <string name="folder_settings_include_in_integrated_inbox_label">Integrate</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Unread messages are shown in Integrated Inbox</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">統合化</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">未読メッセージを統合フォルダで表示</string>
 
-    <string name="account_settings_searchable_label">Folders to search</string>
-    <string name="account_settings_searchable_all">All</string>
-    <string name="account_settings_searchable_displayable">Displayable</string>
-    <string name="account_settings_searchable_none">None</string>
+    <string name="account_settings_searchable_label">フォルダ検索</string>
+    <string name="account_settings_searchable_all">すべて</string>
+    <string name="account_settings_searchable_displayable">表示可能範囲</string>
+    <string name="account_settings_searchable_none">設定しない</string>
 
     <string name="remote_control_label">K-9 Mail リモート制御</string>
     <string name="remote_control_desc">K-9 Mail のアクティビティ・設定の制御を許可</string>
 
-    <string name="font_size_settings_title">Font size</string>
-    <string name="font_size_settings_description">Configure font size</string>
+    <string name="font_size_settings_title">フォントサイズ</string>
+    <string name="font_size_settings_description">フォントサイズの設定</string>
 
-    <string name="font_size_account_list">Account list</string>
-    <string name="font_size_account_name">Account name</string>
-    <string name="font_size_account_description">Account description</string>
+    <string name="font_size_account_list">アカウント一覧</string>
+    <string name="font_size_account_name">アカウント名</string>
+    <string name="font_size_account_description">アカウントの説明</string>
 
-    <string name="font_size_folder_list">Folder list</string>
-    <string name="font_size_folder_name">Folder name</string>
-    <string name="font_size_folder_status">Folder status</string>
+    <string name="font_size_folder_list">フォルダ一覧</string>
+    <string name="font_size_folder_name">フォルダ名</string>
+    <string name="font_size_folder_status">フォルダステータス</string>
 
-    <string name="font_size_message_list">Message list</string>
-    <string name="font_size_message_list_subject">Message subject</string>
-    <string name="font_size_message_list_sender">Message sender</string>
-    <string name="font_size_message_list_date">Message date</string>
+    <string name="font_size_message_list">メッセージ一覧</string>
+    <string name="font_size_message_list_subject">件名</string>
+    <string name="font_size_message_list_sender">送信者</string>
+    <string name="font_size_message_list_date">日付</string>
 
-    <string name="font_size_message_view">Message view</string>
-    <string name="font_size_message_view_sender">Message sender</string>
-    <string name="font_size_message_view_to">Message receiver (To)</string>
-    <string name="font_size_message_view_cc">Message receiver (CC)</string>
-    <string name="font_size_message_view_additional_headers">Additional headers</string>
-    <string name="font_size_message_view_subject">Message subject</string>
-    <string name="font_size_message_view_time">Message time</string>
-    <string name="font_size_message_view_date">Message date</string>
-    <string name="font_size_message_view_content">Message content</string>
+    <string name="font_size_message_view">メッセージ表示</string>
+    <string name="font_size_message_view_sender">送信者</string>
+    <string name="font_size_message_view_to">宛先 (To)</string>
+    <string name="font_size_message_view_cc">宛先 (CC)</string>
+    <string name="font_size_message_view_additional_headers">追加ヘッダ</string>
+    <string name="font_size_message_view_subject">件名</string>
+    <string name="font_size_message_view_time">時刻</string>
+    <string name="font_size_message_view_date">日付</string>
+    <string name="font_size_message_view_content">本文</string>
 
-    <string name="font_size_tiniest">Tiniest</string>
-    <string name="font_size_tiny">Tiny</string>
-    <string name="font_size_smaller">Smaller</string>
-    <string name="font_size_small">Small</string>
-    <string name="font_size_medium">Medium</string>
-    <string name="font_size_large">Large</string>
-    <string name="font_size_larger">Larger</string>
+    <string name="font_size_tiniest">極小</string>
+    <string name="font_size_tiny">かなり小</string>
+    <string name="font_size_smaller">やや小</string>
+    <string name="font_size_small">小</string>
+    <string name="font_size_medium">中</string>
+    <string name="font_size_large">大</string>
+    <string name="font_size_larger">極大</string>
 
-    <string name="font_size_webview_smaller">Smallest</string>
-    <string name="font_size_webview_small">Smaller</string>
-    <string name="font_size_webview_normal">Normal</string>
-    <string name="font_size_webview_large">Larger</string>
-    <string name="font_size_webview_larger">Largest</string>
+    <string name="font_size_webview_smaller">極小</string>
+    <string name="font_size_webview_small">小</string>
+    <string name="font_size_webview_normal">標準</string>
+    <string name="font_size_webview_large">大</string>
+    <string name="font_size_webview_larger">極大</string>
 
     <!-- Note: Contains references to preferences_action and misc_preferences_attachment_title -->
-    <string name="message_compose_buggy_gallery">Check \"Settings\" -&gt; \"Use Gallery bug work-around\" to be able to attach images or videos using Gallery 3D.</string>
+    <string name="message_compose_buggy_gallery">ギャラリ3Dを使って画像/動画を添付するには\"設定\" -&gt; \"ギャラリのバグ回避\"をチェックしてください</string>
 
     <!-- Note: Contains references to add_attachment_action_image and add_attachment_action_video -->
-    <string name="message_compose_use_workaround">Use \"Add attachment (Image)\" or \"Add attachment (Video)\" to attach images or videos with Gallery 3D.</string>
+    <string name="message_compose_use_workaround">ギャラリ3Dで画像/動画を添付するには\"添付ファイル追加 (画像)\"や\"添付ファイル追加 (動画)\" を使ってください</string>
 
-    <string name="miscellaneous_preferences">Miscellaneous</string>
-    <string name="misc_preferences_attachment_title">Use Gallery bug work-around</string>
-    <string name="misc_preferences_attachment_description">Show buttons to add image/video attachments (to work around a Gallery 3D bug)</string>
+    <string name="miscellaneous_preferences">その他</string>
+    <string name="misc_preferences_attachment_title">ギャラリのバグ回避</string>
+    <string name="misc_preferences_attachment_description">添付ファイルに画像/動画を追加するボタンを表示する(ギャラリ3Dバグを回避するため)</string>
 
     <string name="save_or_discard_draft_message_dlg_title">メッセージの下書き保存</string>
     <string name="save_or_discard_draft_message_instructions_fmt">メッセージを保存しますか？</string>
 
-    <string name="charset_not_found">This message can\'t be displayed because the charset \"<xliff:g id="charset">%s</xliff:g>\" wasn\'t found.</string>
+    <string name="charset_not_found">このメッセージに使われている文字セット \"<xliff:g id="charset">%s</xliff:g>\" は存在していません</string>
+
+    <string name="select_text_now">選択したテキストをコピーします</string>
 </resources>
