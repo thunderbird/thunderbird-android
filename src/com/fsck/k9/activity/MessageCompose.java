@@ -1195,6 +1195,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     private void onAddAttachment2(final String mime_type)
     {
+        if (mCrypto.isAvailable(this))
+        {
+            Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
+        }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType(mime_type);
