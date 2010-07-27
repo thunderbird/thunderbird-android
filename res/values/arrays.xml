@@ -589,4 +589,14 @@
         <item>5</item>
     </string-array>
 
+    <string-array name="account_settings_crypto_app_entries">
+        <item>@string/account_settings_crypto_app_none</item>
+        <item>APG</item>
+    </string-array>
+
+    <string-array name="account_settings_crypto_app_values">
+        <item></item>
+        <item>apg</item>
+    </string-array>
+
 </resources>

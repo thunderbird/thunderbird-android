@@ -470,7 +470,6 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_options_mail_display_count_500">５００件</string>
     <string name="account_setup_options_mail_display_count_1000">１０００件</string>
 
-
     <string name="move_copy_cannot_copy_unsynced_message">サーバーと同期されていないメールをコピーまたは移動できません</string>
 
     <string name="account_setup_failed_dlg_title">設定エラー</string>
@@ -886,7 +885,6 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
 
     <string name="save_or_discard_draft_message_dlg_title">メッセージの下書き保存</string>
     <string name="save_or_discard_draft_message_instructions_fmt">メッセージを保存しますか？</string>
-
     <string name="charset_not_found">このメッセージに使われている文字セット \"<xliff:g id="charset">%s</xliff:g>\" は存在していません</string>
 
     <string name="select_text_now">選択したテキストをコピーします</string>

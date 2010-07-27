@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-        <LinearLayout 
+        <LinearLayout
           android:layout_width="fill_parent"
           android:layout_alignParentRight="true"
           android:layout_alignParentTop="true"
@@ -27,7 +27,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="4dip"
-            android:layout_weight="5" 
+            android:layout_weight="5"
             android:orientation="vertical">
          <TextView android:id="@+id/subject"
             android:layout_width="fill_parent"
@@ -112,7 +112,7 @@
           </LinearLayout>
           <LinearLayout android:id="@+id/topright_container"
                 android:orientation="vertical"
-                android:layout_weight="0.1" 
+                android:layout_weight="0.1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -178,6 +178,73 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/message_view_show_pictures_action" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_decrypt"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/crypto_signature"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="2"
+            android:gravity="center_vertical">
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ic_crypto_signature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/signed_large"/>
+
+                <ImageView
+                    android:id="@+id/ic_crypto_signature_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/overlay_error"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingLeft="5dip">
+
+                <TextView
+                    android:id="@+id/userId"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"/>
+
+                <TextView
+                    android:id="@+id/userIdRest"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:ellipsize="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:text="@string/btn_decrypt"
+            android:id="@+id/btn_decrypt"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
     </LinearLayout>
     <!-- Content area -->
     <WebView

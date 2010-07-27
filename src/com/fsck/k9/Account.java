@@ -107,6 +107,8 @@ public class Account implements BaseAccount
     private boolean mRingNotified;
     private String mQuotePrefix;
     private boolean mSyncRemoteDeletions;
+    private String mCryptoApp;
+    private boolean mCryptoAutoSignature;
 
     /**
      * Name of the folder that was last selected for a copy or move operation.
@@ -171,6 +173,8 @@ public class Account implements BaseAccount
         maximumAutoDownloadMessageSize = 32768;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mSyncRemoteDeletions = true;
+        mCryptoApp = "";
+        mCryptoAutoSignature = false;
 
         searchableFolders = Searchable.ALL;
 
@@ -270,13 +274,11 @@ public class Account implements BaseAccount
                                   (random.nextInt(0x70) * 0xff) +
                                   (random.nextInt(0x70) * 0xffff) +
                                   0xff000000);
-
         mLedColor = prefs.getInt(mUuid+".ledColor", mChipColor);
 
         mVibrate = prefs.getBoolean(mUuid + ".vibrate", false);
         mVibratePattern = prefs.getInt(mUuid + ".vibratePattern", 0);
         mVibrateTimes = prefs.getInt(mUuid + ".vibrateTimes", 5);
-
 
         mRing = prefs.getBoolean(mUuid + ".ring", true);
 
@@ -356,6 +358,9 @@ public class Account implements BaseAccount
 
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
+
+        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", "");
+        mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
     }
 
 
@@ -518,6 +523,8 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
+        editor.putString(mUuid + ".cryptoApp", mCryptoApp);
+        editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
 
         for (String type : networkTypes)
         {
@@ -1411,6 +1418,25 @@ public class Account implements BaseAccount
         mEnableMoveButtons = enableMoveButtons;
     }
 
+    public String getCryptoApp()
+    {
+        return mCryptoApp;
+    }
+
+    public void setCryptoApp(String cryptoApp)
+    {
+        mCryptoApp = cryptoApp;
+    }
+
+    public boolean getCryptoAutoSignature()
+    {
+        return mCryptoAutoSignature;
+    }
+
+    public void setCryptoAutoSignature(boolean cryptoAutoSignature)
+    {
+        mCryptoAutoSignature = cryptoAutoSignature;
+    }
     public synchronized boolean syncRemoteDeletions()
     {
         return mSyncRemoteDeletions;

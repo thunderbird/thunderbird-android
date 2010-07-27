@@ -1,6 +1,16 @@
 
 package com.fsck.k9.activity;
 
+import java.io.File;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import org.apache.james.mime4j.codec.EncoderUtil;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -26,25 +36,42 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.AutoCompleteTextView.Validator;
-import android.widget.*;
-import com.fsck.k9.*;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.EmailAddressAdapter;
+import com.fsck.k9.EmailAddressValidator;
+import com.fsck.k9.Identity;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.internet.*;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
-import java.io.File;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.StringTokenizer;
-import org.apache.james.mime4j.codec.EncoderUtil;
 
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
 {
@@ -55,8 +82,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final String ACTION_FORWARD = "com.fsck.k9.intent.action.FORWARD";
     private static final String ACTION_EDIT_DRAFT = "com.fsck.k9.intent.action.EDIT_DRAFT";
 
-
     private static final String EXTRA_ACCOUNT = "account";
+    private static final String EXTRA_MESSAGE_BODY  = "messageBody";
     private static final String EXTRA_MESSAGE_REFERENCE = "message_reference";
 
     private static final String STATE_KEY_ATTACHMENTS =
@@ -75,6 +102,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
         "com.fsck.k9.activity.MessageCompose.identity";
+    private static final String STATE_CRYPTO = "crypto";
     private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
 
@@ -110,6 +138,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private MessageReference mMessageReference;
 
     private Message mSourceMessage;
+    private String mSourceMessageBody;
 
     /**
      * Indicates that the source message has been processed at least once and should not
@@ -130,11 +159,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private View mQuotedTextBar;
     private ImageButton mQuotedTextDelete;
     private EditText mQuotedText;
+    private View mEncryptLayout;
+    private CheckBox mCryptoSignatureCheckbox;
+    private CheckBox mEncryptCheckbox;
+    private TextView mCryptoSignatureUserId;
+    private TextView mCryptoSignatureUserIdRest;
+
+    private CryptoProvider mCrypto = null;
 
     private String mReferences;
     private String mInReplyTo;
 
     private boolean mDraftNeedsSaving = false;
+    private boolean mPreventDraftSaving = false;
 
     /**
      * The draft uid of this message. This is used when saving drafts so that the same draft is
@@ -220,14 +257,17 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param account
      * @param message
      * @param replyAll
+     * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
     public static void actionReply(
         Context context,
         Account account,
         Message message,
-        boolean replyAll)
+        boolean replyAll,
+        String messageBody)
     {
         Intent i = new Intent(context, MessageCompose.class);
+        i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
         if (replyAll)
         {
@@ -245,10 +285,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      * @param context
      * @param account
      * @param message
+     * @param messageBody optional, for decrypted messages, null if it should be grabbed from the given message
      */
-    public static void actionForward(Context context, Account account, Message message)
+    public static void actionForward(
+        Context context,
+        Account account,
+        Message message,
+        String messageBody)
     {
         Intent i = new Intent(context, MessageCompose.class);
+        i.putExtra(EXTRA_MESSAGE_BODY, messageBody);
         i.putExtra(EXTRA_MESSAGE_REFERENCE, message.makeMessageReference());
         i.setAction(ACTION_FORWARD);
         context.startActivity(i);
@@ -282,6 +328,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         final Intent intent = getIntent();
 
         mMessageReference = (MessageReference) intent.getSerializableExtra(EXTRA_MESSAGE_REFERENCE);
+        mSourceMessageBody = (String) intent.getStringExtra(EXTRA_MESSAGE_BODY);
 
         final String accountUuid = (mMessageReference != null) ?
                                    mMessageReference.accountUuid :
@@ -613,7 +660,111 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mMessageContentView.requestFocus();
         }
 
+        mEncryptLayout = (View)findViewById(R.id.layout_encrypt);
+        mCryptoSignatureCheckbox = (CheckBox)findViewById(R.id.cb_crypto_signature);
+        mCryptoSignatureUserId = (TextView)findViewById(R.id.userId);
+        mCryptoSignatureUserIdRest = (TextView)findViewById(R.id.userIdRest);
+        mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
+
+        initializeCrypto();
+        if (mCrypto.isAvailable(this))
+        {
+            mEncryptLayout.setVisibility(View.VISIBLE);
+            mCryptoSignatureCheckbox.setOnClickListener(new OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    CheckBox checkBox = (CheckBox) v;
+                    if (checkBox.isChecked())
+                    {
+                        mPreventDraftSaving = true;
+                        if (!mCrypto.selectSecretKey(MessageCompose.this))
+                        {
+                            mPreventDraftSaving = false;
+                        }
+                        checkBox.setChecked(false);
+                    }
+                    else
+                    {
+                        mCrypto.setSignatureKeyId(0);
+                        updateEncryptLayout();
+                    }
+                }
+            });
+
+            if (mAccount.getCryptoAutoSignature())
+            {
+                long ids[] = mCrypto.getSecretKeyIdsFromEmail(this, mIdentity.getEmail());
+                if (ids != null && ids.length > 0)
+                {
+                    mCrypto.setSignatureKeyId(ids[0]);
+                    mCrypto.setSignatureUserId(mCrypto.getUserId(this, ids[0]));
+                }
+                else
+                {
+                    mCrypto.setSignatureKeyId(0);
+                    mCrypto.setSignatureUserId(null);
+                }
+            }
+            updateEncryptLayout();
+        }
+        else
+        {
+            mEncryptLayout.setVisibility(View.GONE);
+        }
+
         mDraftNeedsSaving = false;
+    }
+
+    private void initializeCrypto()
+    {
+        if (mCrypto != null)
+        {
+            return;
+        }
+        mCrypto = CryptoProvider.createInstance(mAccount);
+    }
+
+    /**
+     * Fill the encrypt layout with the latest data about signature key and encryption keys.
+     */
+    public void updateEncryptLayout()
+    {
+        if (!mCrypto.hasSignatureKey())
+        {
+            mCryptoSignatureCheckbox.setText(R.string.btn_crypto_sign);
+            mCryptoSignatureCheckbox.setChecked(false);
+            mCryptoSignatureUserId.setVisibility(View.INVISIBLE);
+            mCryptoSignatureUserIdRest.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            // if a signature key is selected, then the checkbox itself has no text
+            mCryptoSignatureCheckbox.setText("");
+            mCryptoSignatureCheckbox.setChecked(true);
+            mCryptoSignatureUserId.setVisibility(View.VISIBLE);
+            mCryptoSignatureUserIdRest.setVisibility(View.VISIBLE);
+            mCryptoSignatureUserId.setText(R.string.unknown_crypto_signature_user_id);
+            mCryptoSignatureUserIdRest.setText("");
+
+            String userId = mCrypto.getSignatureUserId();
+            if (userId == null)
+            {
+                userId = mCrypto.getUserId(this, mCrypto.getSignatureKeyId());
+                mCrypto.setSignatureUserId(userId);
+            }
+
+            if (userId != null)
+            {
+                String chunks[] = mCrypto.getSignatureUserId().split(" <", 2);
+                mCryptoSignatureUserId.setText(chunks[0]);
+                if (chunks.length > 1)
+                {
+                    mCryptoSignatureUserIdRest.setText("<" + chunks[1]);
+                }
+            }
+        }
     }
 
     @Override
@@ -659,6 +810,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
+        outState.putSerializable(STATE_CRYPTO, mCrypto);
         outState.putString(STATE_IN_REPLY_TO, mInReplyTo);
         outState.putString(STATE_REFERENCES, mReferences);
     }
@@ -682,10 +834,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
+        mCrypto = (CryptoProvider) savedInstanceState.getSerializable(STATE_CRYPTO);
         mInReplyTo = savedInstanceState.getString(STATE_IN_REPLY_TO);
         mReferences = savedInstanceState.getString(STATE_REFERENCES);
+
+        initializeCrypto();
         updateFrom();
         updateSignature();
+        updateEncryptLayout();
 
         mDraftNeedsSaving = false;
     }
@@ -733,6 +889,32 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return addresses;
     }
 
+    private String buildText(boolean appendSig)
+    {
+        /*
+         * Build the Body that will contain the text of the message. We'll decide where to
+         * include it later.
+         */
+
+        String text = mMessageContentView.getText().toString();
+        if (appendSig && mAccount.isSignatureBeforeQuotedText())
+        {
+            text = appendSignature(text);
+        }
+
+        if (mQuotedTextBar.getVisibility() == View.VISIBLE)
+        {
+            text += "\n" + mQuotedText.getText().toString();
+        }
+
+        if (appendSig && mAccount.isSignatureBeforeQuotedText() == false)
+        {
+            text = appendSignature(text);
+        }
+
+        return text;
+    }
+
     private MimeMessage createMessage(boolean appendSig) throws MessagingException
     {
         MimeMessage message = new MimeMessage();
@@ -761,27 +943,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             message.setReferences(mReferences);
         }
 
-
-        /*
-         * Build the Body that will contain the text of the message. We'll decide where to
-         * include it later.
-         */
-
-        String text = mMessageContentView.getText().toString();
-        if (appendSig && mAccount.isSignatureBeforeQuotedText())
+        String text = null;
+        if (mCrypto.getEncryptedData() != null)
         {
-            text = appendSignature(text);
+            text = mCrypto.getEncryptedData();
         }
-
-        if (mQuotedTextBar.getVisibility() == View.VISIBLE)
+        else
         {
-            text += "\n" + mQuotedText.getText().toString();
-        }
-
-
-        if (appendSig && mAccount.isSignatureBeforeQuotedText() == false)
-        {
-            text = appendSignature(text);
+            text = buildText(appendSig);
         }
 
         TextBody body = new TextBody(text);
@@ -869,7 +1038,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     }
 
 
-
     private void sendMessage()
     {
         new SendMessageTask().execute();
@@ -881,9 +1049,36 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void saveIfNeeded()
     {
-        if (!mDraftNeedsSaving)
+        if (!mDraftNeedsSaving || mPreventDraftSaving || mCrypto.hasEncryptionKeys())
         {
             return;
+        }
+
+        mDraftNeedsSaving = false;
+        saveMessage();
+    }
+
+    public void onEncryptionKeySelectionDone()
+    {
+        if (mCrypto.hasEncryptionKeys())
+        {
+            onSend();
+        }
+        else
+        {
+            Toast.makeText(this, R.string.send_aborted, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onEncryptDone()
+    {
+        if (mCrypto.getEncryptedData() != null)
+        {
+            onSend();
+        }
+        else
+        {
+            Toast.makeText(this, R.string.send_aborted, Toast.LENGTH_SHORT).show();
         }
         mDraftNeedsSaving = false;
         saveMessage();
@@ -896,6 +1091,51 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mToView.setError(getString(R.string.message_compose_error_no_recipients));
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
+        }
+        if (mEncryptCheckbox.isChecked() && !mCrypto.hasEncryptionKeys())
+        {
+            // key selection before encryption
+            String emails = "";
+            Address[][] addresses = new Address[][] { getAddresses(mToView),
+                    getAddresses(mCcView),
+                    getAddresses(mBccView)
+                                                    };
+            for (Address[] addressArray : addresses)
+            {
+                for (Address address : addressArray)
+                {
+                    if (emails.length() != 0)
+                    {
+                        emails += ",";
+                    }
+                    emails += address.getAddress();
+                }
+            }
+            if (emails.length() != 0)
+            {
+                emails += ",";
+            }
+            emails += mIdentity.getEmail();
+
+            mPreventDraftSaving = true;
+            if (!mCrypto.selectEncryptionKeys(MessageCompose.this, emails))
+            {
+                mPreventDraftSaving = false;
+            }
+            return;
+        }
+        if (mCrypto.hasEncryptionKeys() || mCrypto.hasSignatureKey())
+        {
+            if (mCrypto.getEncryptedData() == null)
+            {
+                String text = buildText(true);
+                mPreventDraftSaving = true;
+                if (!mCrypto.encrypt(this, text))
+                {
+                    mPreventDraftSaving = false;
+                }
+                return;
+            }
         }
         sendMessage();
         mDraftNeedsSaving = false;
@@ -956,6 +1196,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     private void onAddAttachment2(final String mime_type)
     {
+        if (mCrypto.isAvailable(this))
+        {
+            Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
+        }
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType(mime_type);
@@ -1050,6 +1294,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        // if a CryptoSystem activity is returning, then mPreventDraftSaving was set to true
+        mPreventDraftSaving = false;
+
+        if (mCrypto.onActivityResult(this, requestCode, resultCode, data))
+        {
+            return;
+        }
+
         if (resultCode != RESULT_OK)
             return;
         if (data == null)
@@ -1059,7 +1311,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         switch (requestCode)
         {
             case ACTIVITY_REQUEST_PICK_ATTACHMENT:
-
                 addAttachment(data.getData());
                 mDraftNeedsSaving = true;
                 break;
@@ -1196,6 +1447,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         switch (item.getItemId())
         {
             case R.id.send:
+                mCrypto.setEncryptionKeys(null);
                 onSend();
                 break;
             case R.id.save:
@@ -1442,7 +1694,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
                 Part part = MimeUtility.findFirstPartByMimeType(mSourceMessage,
                             "text/plain");
-                if (part != null)
+                if (part != null || mSourceMessageBody != null)
                 {
                     String quotedText = String.format(
                                             getString(R.string.message_compose_reply_header_fmt),
@@ -1452,8 +1704,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     // "$" and "\" in the quote prefix have to be escaped for
                     // the replaceAll() invocation.
                     final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
-                    quotedText += MimeUtility.getTextFromPart(part).replaceAll(
-                                      "(?m)^", escapedPrefix);
+
+                    if (mSourceMessageBody != null)
+                    {
+                        quotedText += mSourceMessageBody.replaceAll("(?m)^", escapedPrefix);
+                    }
+                    else
+                    {
+                        quotedText += MimeUtility.getTextFromPart(part).replaceAll(
+                                          "(?m)^", escapedPrefix);
+                    }
 
                     quotedText = quotedText.replaceAll("\\\r", "");
                     mQuotedText.setText(quotedText);
@@ -1548,9 +1808,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     part = MimeUtility.findFirstPartByMimeType(message, "text/html");
                 }
-                if (part != null)
+                if (part != null || mSourceMessageBody != null)
                 {
-                    String quotedText = MimeUtility.getTextFromPart(part);
+                    String quotedText = mSourceMessageBody;
+                    if (quotedText == null)
+                    {
+                        quotedText = MimeUtility.getTextFromPart(part);
+                    }
                     if (quotedText != null)
                     {
                         String text = String.format(

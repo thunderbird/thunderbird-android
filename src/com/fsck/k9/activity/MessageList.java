@@ -1103,17 +1103,17 @@ public class MessageList
 
     private void onReply(MessageInfoHolder holder)
     {
-        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, false);
+        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, false, null);
     }
 
     private void onReplyAll(MessageInfoHolder holder)
     {
-        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, true);
+        MessageCompose.actionReply(this, holder.message.getFolder().getAccount(), holder.message, true, null);
     }
 
     private void onForward(MessageInfoHolder holder)
     {
-        MessageCompose.actionForward(this, holder.message.getFolder().getAccount(), holder.message);
+        MessageCompose.actionForward(this, holder.message.getFolder().getAccount(), holder.message, null);
     }
 
     private void onMarkAllAsRead(final Account account, final String folder)

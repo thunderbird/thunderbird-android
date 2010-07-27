@@ -207,6 +207,22 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/account_settings_crypto">
+
+        <ListPreference
+            android:key="crypto_app"
+            android:title="@string/account_settings_crypto_app"
+            android:entries="@array/account_settings_crypto_app_entries"
+            android:entryValues="@array/account_settings_crypto_app_values"
+            android:dialogTitle="@string/account_settings_crypto_app" />
+
+        <CheckBoxPreference
+            android:key="crypto_auto_signature"
+            android:title="@string/account_settings_crypto_auto_signature"
+            android:summary="@string/account_settings_crypto_auto_signature_summary"
+            android:dependency="crypto_app"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/account_settings_notifications">
 
         <CheckBoxPreference
