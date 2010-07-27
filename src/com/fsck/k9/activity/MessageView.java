@@ -1002,11 +1002,8 @@ public class MessageView extends K9Activity implements OnClickListener
             previous_scrolling.setEnabled(enablePrev);
 
         // If moving isn't support at all, then all of them must be disabled anyway.
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
-        {
-            disableMoveButtons();
-        }
-        else
+        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
+
         {
             // Only enable the button if the Archive folder is not the current folder and not NONE.
             boolean enableArchive = !mMessageReference.folderName.equals(mAccount.getArchiveFolderName()) &&
@@ -1022,6 +1019,11 @@ public class MessageView extends K9Activity implements OnClickListener
             mMoveScrolling.setEnabled(enableMove);
             mSpamScrolling.setEnabled(enableSpam);
         }
+        else
+         {
+            disableMoveButtons();
+        }
+
 
     }
 
