@@ -558,13 +558,13 @@ public class Account implements BaseAccount
 
             // Always get stats about the INBOX (see issue 1817)
             if (folder.getName().equals(K9.INBOX) || (
-                        folder.getName().equals(getTrashFolderName()) == false &&
-                        folder.getName().equals(getDraftsFolderName()) == false &&
-                        folder.getName().equals(getArchiveFolderName()) == false &&
-                        folder.getName().equals(getSpamFolderName()) == false &&
-                        folder.getName().equals(getOutboxFolderName()) == false &&
-                        folder.getName().equals(getSentFolderName()) == false &&
-                        folder.getName().equals(getErrorFolderName()) == false))
+                    !folder.getName().equals(getTrashFolderName()) &&
+                            !folder.getName().equals(getDraftsFolderName()) &&
+                            !folder.getName().equals(getArchiveFolderName()) &&
+                            !folder.getName().equals(getSpamFolderName()) &&
+                            !folder.getName().equals(getOutboxFolderName()) &&
+                            !folder.getName().equals(getSentFolderName()) &&
+                            !folder.getName().equals(getErrorFolderName())))
             {
                 if (aMode == Account.FolderMode.NONE)
                 {
@@ -1353,7 +1353,7 @@ public class Account implements BaseAccount
     public Date getEarliestPollDate()
     {
         int age = getMaximumPolledMessageAge();
-        if (age < 0 == false)
+        if (age >= 0)
         {
             Calendar now = Calendar.getInstance();
             now.set(Calendar.HOUR_OF_DAY, 0);

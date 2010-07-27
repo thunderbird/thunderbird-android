@@ -3921,11 +3921,11 @@ public class MessagingController implements Runnable
             else
             {
                 localTrashFolder = localStore.getFolder(account.getTrashFolderName());
-                if (localTrashFolder.exists() == false)
+                if (!localTrashFolder.exists())
                 {
                     localTrashFolder.create(Folder.FolderType.HOLDS_MESSAGES);
                 }
-                if (localTrashFolder.exists() == true)
+                if (localTrashFolder.exists())
                 {
                     if (K9.DEBUG)
                         Log.d(K9.LOG_TAG, "Deleting messages in normal folder, moving");

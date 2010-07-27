@@ -1135,11 +1135,11 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onArchive()
     {
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
         {
             return;
         }
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mMessage) == false)
+        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mMessage))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1160,11 +1160,11 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onSpam()
     {
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
         {
             return;
         }
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mMessage) == false)
+        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mMessage))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1293,12 +1293,12 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onMove()
     {
-        if ((MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if ((!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
                 || (mMessage == null))
         {
             return;
         }
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mMessage) == false)
+        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mMessage))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1314,12 +1314,12 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onCopy()
     {
-        if ((MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+        if ((!MessagingController.getInstance(getApplication()).isCopyCapable(mAccount))
                 || (mMessage == null))
         {
             return;
         }
-        if (MessagingController.getInstance(getApplication()).isCopyCapable(mMessage) == false)
+        if (!MessagingController.getInstance(getApplication()).isCopyCapable(mMessage))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
