@@ -17,6 +17,8 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class TrustManagerFactory
 {
@@ -52,21 +54,30 @@ public final class TrustManagerFactory
 
     private static class SecureX509TrustManager implements X509TrustManager
     {
-        private String mHost;
-        private static SecureX509TrustManager me;
+        private static final Map<String, SecureX509TrustManager> mTrustManager =
+            new HashMap<String, SecureX509TrustManager>();
 
-        private SecureX509TrustManager()
+        private final String mHost;
+
+        private SecureX509TrustManager(String host)
         {
+            mHost = host;
         }
 
-        public static X509TrustManager getInstance(String host)
+        public synchronized static X509TrustManager getInstance(String host)
         {
-            if (me == null)
+            SecureX509TrustManager trustManager;
+            if (mTrustManager.containsKey(host))
             {
-                me = new SecureX509TrustManager();
+                trustManager = mTrustManager.get(host);
             }
-            me.mHost = host;
-            return me;
+            else
+            {
+                trustManager = new SecureX509TrustManager(host);
+                mTrustManager.put(host, trustManager);
+            }
+
+            return trustManager;
         }
 
         public void checkClientTrusted(X509Certificate[] chain, String authType)
