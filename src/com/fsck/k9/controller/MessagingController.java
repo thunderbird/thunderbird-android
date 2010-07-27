@@ -4541,7 +4541,7 @@ public class MessagingController implements Runnable
     {
         // Do not notify if the user does not have notifications
         // enabled or if the message has been read
-        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN))
+        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN) || ( account.getName() == null) )
         {
             return false;
         }
