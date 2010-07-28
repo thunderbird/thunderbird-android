@@ -1080,8 +1080,6 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             Toast.makeText(this, R.string.send_aborted, Toast.LENGTH_SHORT).show();
         }
-        mDraftNeedsSaving = false;
-        saveMessage();
     }
 
     private void onSend()
