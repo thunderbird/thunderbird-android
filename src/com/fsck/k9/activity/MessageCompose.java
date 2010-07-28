@@ -36,7 +36,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.AutoCompleteTextView.Validator;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -1528,12 +1527,20 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return true;
     }
 
+    @Override
     public void onBackPressed()
     {
         // This will be called either automatically for you on 2.0
         // or later, or by the code above on earlier versions of the
         // platform.
-        showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+        if (mDraftNeedsSaving)
+        {
+            showDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+        }
+        else
+        {
+            finish();
+        }
     }
 
     @Override
@@ -2156,6 +2163,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private class SendMessageTask extends AsyncTask<Void, Void, Void>
     {
+        @Override
         protected Void doInBackground(Void... params)
         {
             /*
@@ -2185,6 +2193,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private class SaveMessageTask extends AsyncTask<Void, Void, Void>
     {
+        @Override
         protected Void doInBackground(Void... params)
         {
 
