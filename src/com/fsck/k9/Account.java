@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
+import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
@@ -173,7 +174,7 @@ public class Account implements BaseAccount
         maximumAutoDownloadMessageSize = 32768;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
         mSyncRemoteDeletions = true;
-        mCryptoApp = "";
+        mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
 
         searchableFolders = Searchable.ALL;
