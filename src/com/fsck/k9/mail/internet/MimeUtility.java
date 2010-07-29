@@ -385,8 +385,8 @@ public class MimeUtility
                      * Now we read the part into a buffer for further processing. Because
                      * the stream is now wrapped we'll remove any transfer encoding at this point.
                      */
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
                     InputStream in = part.getBody().getInputStream();
+                    ByteArrayOutputStream out = new ByteArrayOutputStream(in.available());
                     IOUtils.copy(in, out);
                     in.close();
                     in = null;      // we want all of our memory back, and close might not release
