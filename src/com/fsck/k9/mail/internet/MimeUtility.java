@@ -398,6 +398,15 @@ public class MimeUtility
                     return result;
                 }
             }
+
+        }
+        catch (OutOfMemoryError oom)
+        {
+            /*
+             * If we are not able to process the body there's nothing we can do about it. Return
+             * null and let the upper layers handle the missing content.
+             */
+            Log.e(K9.LOG_TAG, "Unable to getTextFromPart " + oom.toString());
         }
         catch (Exception e)
         {
