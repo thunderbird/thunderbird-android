@@ -1,7 +1,6 @@
 
 package com.fsck.k9.mail.store;
 
-import android.util.Config;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -291,7 +290,7 @@ public class Pop3Store extends Store
                 try
                 {
                     executeSimpleCommand("USER " + mUsername);
-                    executeSimpleCommand("PASS " + mPassword);
+                    executeSimpleCommand("PASS " + mPassword, true);
                 }
                 catch (MessagingException me)
                 {
@@ -560,7 +559,7 @@ public class Pop3Store extends Store
             {
                 if (mUidToMsgMap.get(uid) == null)
                 {
-                    if (Config.LOGD)
+                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
                     {
                         Log.d(K9.LOG_TAG, "Need to index UID " + uid);
                     }
@@ -588,7 +587,7 @@ public class Pop3Store extends Store
                 String msgUid = uidParts[1];
                 if (unindexedUids.contains(msgUid))
                 {
-                    if (Config.LOGD)
+                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
                     {
                         Log.d(K9.LOG_TAG, "Got msgNum " + msgNum + " for UID " + msgUid);
                     }
@@ -605,7 +604,7 @@ public class Pop3Store extends Store
 
         private void indexMessage(int msgNum, Pop3Message message)
         {
-            if (Config.LOGD)
+            if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
             {
                 Log.d(K9.LOG_TAG, "Adding index for UID " + message.getUid() + " to msgNum " + msgNum);
             }
@@ -958,25 +957,15 @@ public class Pop3Store extends Store
             }
             while ((d = mIn.read()) != -1);
             String ret = sb.toString();
-            if (Config.LOGD)
+            if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
             {
-                if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
-                {
-                    Log.d(K9.LOG_TAG, "<<< " + ret);
-                }
+                Log.d(K9.LOG_TAG, "<<< " + ret);
             }
             return ret;
         }
 
         private void writeLine(String s) throws IOException
         {
-            if (Config.LOGD)
-            {
-                if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
-                {
-                    Log.d(K9.LOG_TAG, ">>> " + s);
-                }
-            }
             mOut.write(s.getBytes());
             mOut.write('\r');
             mOut.write('\n');
@@ -1029,24 +1018,34 @@ public class Pop3Store extends Store
 
         private String executeSimpleCommand(String command) throws MessagingException
         {
+            return executeSimpleCommand(command, false);
+        }
+
+        private String executeSimpleCommand(String command, boolean sensitive) throws MessagingException
+        {
             try
             {
                 open(OpenMode.READ_WRITE);
-                if (Config.LOGV)
-                {
-                    Log.v(K9.LOG_TAG, "POP3: command '" + command + "'");
-                }
+
                 if (command != null)
                 {
+                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
+                    {
+                        if (sensitive && !K9.DEBUG_SENSITIVE)
+                        {
+                            Log.d(K9.LOG_TAG, ">>> "
+                                  + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
+                        }
+                        else
+                        {
+                            Log.d(K9.LOG_TAG, ">>> " + command);
+                        }
+                    }
+
                     writeLine(command);
                 }
 
                 String response = readLine();
-                if (Config.LOGV)
-                {
-                    Log.v(K9.LOG_TAG, "POP3: response '" + command + "'");
-                }
-
                 if (response.length() > 1 && response.charAt(0) == '-')
                 {
                     throw new MessagingException(response);
