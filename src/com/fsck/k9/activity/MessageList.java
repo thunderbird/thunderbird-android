@@ -1463,6 +1463,14 @@ public class MessageList
             {
                 menu.findItem(R.id.expunge).setVisible(false);
             }
+            if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getArchiveFolderName()))
+            {
+                menu.findItem(R.id.batch_archive_op).setVisible(false);
+            }
+            if (K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()))
+            {
+                menu.findItem(R.id.batch_spam_op).setVisible(false);
+            }
         }
 
         boolean newFlagState = computeBatchDirection(true);
