@@ -256,11 +256,11 @@ public class Pop3Store extends Store
                 // Eat the banner
                 executeSimpleCommand(null);
 
-                mCapabilities = getCapabilities();
-
                 if (mConnectionSecurity == CONNECTION_SECURITY_TLS_OPTIONAL
                         || mConnectionSecurity == CONNECTION_SECURITY_TLS_REQUIRED)
                 {
+                    mCapabilities = getCapabilities();
+
                     if (mCapabilities.stls)
                     {
                         writeLine("STLS");
@@ -296,6 +296,8 @@ public class Pop3Store extends Store
                 {
                     throw new AuthenticationFailedException(null, me);
                 }
+
+                mCapabilities = getCapabilities();
             }
             catch (SSLException e)
             {
