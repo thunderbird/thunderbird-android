@@ -10,6 +10,12 @@ import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 
 public class TextBody implements Body
 {
+
+    /**
+     * Immutable empty byte array
+     */
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     private String mBody;
     private String mEncoding;
 
@@ -59,7 +65,7 @@ public class TextBody implements Body
             }
             else
             {
-                b = new byte[0];
+                b = EMPTY_BYTE_ARRAY;
             }
             return new ByteArrayInputStream(b);
         }

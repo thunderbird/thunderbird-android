@@ -24,6 +24,12 @@ import com.fsck.k9.service.MailService;
 
 public class Prefs extends K9PreferenceActivity
 {
+
+    /**
+     * Immutable empty {@link CharSequence} array
+     */
+    private static final CharSequence[] EMPTY_CHAR_SEQUENCE_ARRAY = new CharSequence[0];
+
     private static final String PREFERENCE_LANGUAGE = "language";
     private static final String PREFERENCE_THEME = "theme";
     private static final String PREFERENCE_FONT_SIZE = "font_size";
@@ -98,9 +104,8 @@ public class Prefs extends K9PreferenceActivity
                 entryValueVector.remove(i);
             }
         }
-        CharSequence dummy[] = new CharSequence[0];
-        mLanguage.setEntries(entryVector.toArray(dummy));
-        mLanguage.setEntryValues(entryValueVector.toArray(dummy));
+        mLanguage.setEntries(entryVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
+        mLanguage.setEntryValues(entryValueVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
         mLanguage.setValue(K9.getK9Language());
         mLanguage.setSummary(mLanguage.getEntry());
         mLanguage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()

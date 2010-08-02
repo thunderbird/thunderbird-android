@@ -36,6 +36,12 @@ import java.util.regex.Matcher;
  */
 public class LocalStore extends Store implements Serializable
 {
+
+    /**
+     * Immutable empty {@link String} array
+     */
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
     private static final int DB_VERSION = 35;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
@@ -752,7 +758,7 @@ public class LocalStore extends Store implements Serializable
                    "SELECT "
                    + GET_MESSAGES_COLS
                    + "FROM messages WHERE deleted = 0 " + whereClause.toString() + " ORDER BY date DESC"
-                   , args.toArray(new String[0])
+                   , args.toArray(EMPTY_STRING_ARRAY)
                );
     }
     /*
@@ -3680,6 +3686,7 @@ public class LocalStore extends Store implements Serializable
 
     public static class LocalAttachmentBody implements Body
     {
+        private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
         private Application mApplication;
         private Uri mUri;
 
@@ -3701,7 +3708,7 @@ public class LocalStore extends Store implements Serializable
                  * Since it's completely normal for us to try to serve up attachments that
                  * have been blown away, we just return an empty stream.
                  */
-                return new ByteArrayInputStream(new byte[0]);
+                return new ByteArrayInputStream(EMPTY_BYTE_ARRAY);
             }
         }
 

@@ -12,6 +12,12 @@ import com.fsck.k9.preferences.Storage;
 
 public class Preferences
 {
+
+    /**
+     * Immutable empty {@link Account} array
+     */
+    private static final Account[] EMPTY_ACCOUNT_ARRAY = new Account[0];
+
     private static Preferences preferences;
 
     public static synchronized Preferences getPreferences(Context context)
@@ -75,7 +81,7 @@ public class Preferences
             newAccount = null;
         }
 
-        return accounts.toArray(new Account[0]);
+        return accounts.toArray(EMPTY_ACCOUNT_ARRAY);
     }
 
     public synchronized Account getAccount(String uuid)

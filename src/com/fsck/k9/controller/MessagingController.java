@@ -83,6 +83,22 @@ import com.fsck.k9.mail.store.LocalStore.PendingCommand;
  */
 public class MessagingController implements Runnable
 {
+
+    /**
+     * Immutable empty {@link String} array
+     */
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
+    /**
+     * Immutable empty {@link Message} array
+     */
+    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
+
+    /**
+     * Immutable empty {@link Folder} array
+     */
+    private static final Folder[] EMPTY_FOLDER_ARRAY = new Folder[0];
+
     /**
      * The maximum message size that we'll consider to be "small". A small message is downloaded
      * in full immediately instead of in pieces. Anything over this size will be downloaded in
@@ -400,7 +416,7 @@ public class MessagingController implements Runnable
                     Store localStore = account.getLocalStore();
                     localFolders = localStore.getPersonalNamespaces(false);
 
-                    Folder[] folderArray = localFolders.toArray(new Folder[0]);
+                    Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
 
                     if (refreshRemote || localFolders == null || localFolders.size() == 0)
                     {
@@ -494,7 +510,7 @@ public class MessagingController implements Runnable
                     }
 
                     localFolders = localStore.getPersonalNamespaces(false);
-                    Folder[] folderArray = localFolders.toArray(new Folder[0]);
+                    Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
 
                     for (MessagingListener l : getListeners())
                     {
@@ -851,7 +867,7 @@ public class MessagingController implements Runnable
                         LocalStore localStore = account.getLocalStore();
                         localStore.searchForMessages(retrievalListener, queryFields
                                                      , query, foldersToSearch,
-                                                     messagesToSearch == null ? null : messagesToSearch.toArray(new Message[0]),
+                                                     messagesToSearch == null ? null : messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY),
                                                      requiredFlags, forbiddenFlags);
 
                     }
@@ -1075,7 +1091,7 @@ public class MessagingController implements Runnable
                 visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
             }
 
-            Message[] remoteMessageArray = new Message[0];
+            Message[] remoteMessageArray = EMPTY_MESSAGE_ARRAY;
             final ArrayList<Message> remoteMessages = new ArrayList<Message>();
             //  final ArrayList<Message> unsyncedMessages = new ArrayList<Message>();
             HashMap<String, Message> remoteUidMap = new HashMap<String, Message>();
@@ -1547,7 +1563,7 @@ public class MessagingController implements Runnable
         final String folder = remoteFolder.getName();
 
         final Date earliestDate = account.getEarliestPollDate();
-        remoteFolder.fetch(unsyncedMessages.toArray(new Message[0]), fp,
+        remoteFolder.fetch(unsyncedMessages.toArray(EMPTY_MESSAGE_ARRAY), fp,
                            new MessageRetrievalListener()
         {
             public void messageFinished(Message message, int number, int ofTotal)
@@ -1937,7 +1953,7 @@ public class MessagingController implements Runnable
                 }
             }
 
-            remoteFolder.fetch(undeletedMessages.toArray(new Message[0]), fp, null);
+            remoteFolder.fetch(undeletedMessages.toArray(EMPTY_MESSAGE_ARRAY), fp, null);
             for (Message remoteMessage : syncFlagMessages)
             {
                 Message localMessage = localFolder.getMessage(remoteMessage.getUid());
@@ -2423,7 +2439,7 @@ public class MessagingController implements Runnable
                 {
                     destFolderName = null;
                 }
-                remoteSrcFolder.delete(messages.toArray(new Message[0]), destFolderName);
+                remoteSrcFolder.delete(messages.toArray(EMPTY_MESSAGE_ARRAY), destFolderName);
             }
             else
             {
@@ -2431,11 +2447,11 @@ public class MessagingController implements Runnable
 
                 if (isCopy)
                 {
-                    remoteSrcFolder.copyMessages(messages.toArray(new Message[0]), remoteDestFolder);
+                    remoteSrcFolder.copyMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
                 }
                 else
                 {
-                    remoteSrcFolder.moveMessages(messages.toArray(new Message[0]), remoteDestFolder);
+                    remoteSrcFolder.moveMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
                 }
             }
             if (isCopy == false && Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
@@ -2530,7 +2546,7 @@ public class MessagingController implements Runnable
             {
                 return;
             }
-            remoteFolder.setFlags(messages.toArray(new Message[0]), new Flag[] { flag }, newState);
+            remoteFolder.setFlags(messages.toArray(EMPTY_MESSAGE_ARRAY), new Flag[] { flag }, newState);
         }
         finally
         {
@@ -2889,7 +2905,7 @@ public class MessagingController implements Runnable
         args.add(folder);
         PendingCommand command = new PendingCommand();
         command.command = PENDING_COMMAND_MARK_ALL_AS_READ;
-        command.arguments = args.toArray(new String[0]);
+        command.arguments = args.toArray(EMPTY_STRING_ARRAY);
         queuePendingCommand(account, command);
         processPendingCommands(account);
     }
@@ -2949,7 +2965,7 @@ public class MessagingController implements Runnable
                 }
             }
 
-            localFolder.setFlags(messages.toArray(new Message[0]), new Flag[] {flag}, newState);
+            localFolder.setFlags(messages.toArray(EMPTY_MESSAGE_ARRAY), new Flag[] {flag}, newState);
 
 
             for (MessagingListener l : getListeners())
@@ -3775,7 +3791,7 @@ public class MessagingController implements Runnable
                 }
             }
 
-            Message[] messages = localSrcFolder.getMessages(uids.toArray(new String[0]), null);
+            Message[] messages = localSrcFolder.getMessages(uids.toArray(EMPTY_STRING_ARRAY), null);
             if (messages.length > 0)
             {
                 Map<String, Message> origUidMap = new HashMap<String, Message>();
@@ -3810,7 +3826,7 @@ public class MessagingController implements Runnable
                     }
                 }
 
-                queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidMap.keySet().toArray(new String[0]));
+                queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidMap.keySet().toArray(EMPTY_STRING_ARRAY));
             }
 
             processPendingCommands(account);
@@ -3879,7 +3895,7 @@ public class MessagingController implements Runnable
                 {
                     public void run()
                     {
-                        deleteMessagesSynchronous(account, folder.getName(), messages.toArray(new Message[0]), listener);
+                        deleteMessagesSynchronous(account, folder.getName(), messages.toArray(EMPTY_MESSAGE_ARRAY), listener);
                     }
                 });
             }
@@ -4067,7 +4083,7 @@ public class MessagingController implements Runnable
                     List<String> args = new ArrayList<String>();
                     PendingCommand command = new PendingCommand();
                     command.command = PENDING_COMMAND_EMPTY_TRASH;
-                    command.arguments = args.toArray(new String[0]);
+                    command.arguments = args.toArray(EMPTY_STRING_ARRAY);
                     queuePendingCommand(account, command);
                     processPendingCommands(account);
                 }

@@ -36,6 +36,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener
 {
+
+    /**
+     * Immutable empty {@link BaseAccount} array
+     */
+    private static final BaseAccount[] EMPTY_BASE_ACCOUNT_ARRAY = new BaseAccount[0];
+
+    /**
+     * Immutable empty {@link Flag} array
+     */
+    private static final Flag[] EMPTY_FLAG_ARRAY = new Flag[0];
+
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
     private static final int DIALOG_CLEAR_ACCOUNT = 2;
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
@@ -408,7 +419,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             newAccounts.add(account);
         }
 
-        mAdapter = new AccountsAdapter(newAccounts.toArray(new BaseAccount[0]));
+        mAdapter = new AccountsAdapter(newAccounts.toArray(EMPTY_BASE_ACCOUNT_ARRAY));
         getListView().setAdapter(mAdapter);
         if (newAccounts.size() > 0)
         {
@@ -1023,7 +1034,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         {
             flags.add(flag);
         }
-        return flags.toArray(new Flag[0]);
+        return flags.toArray(EMPTY_FLAG_ARRAY);
     }
 
     private class AccountClickListener implements OnClickListener

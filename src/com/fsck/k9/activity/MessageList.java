@@ -80,6 +80,12 @@ public class MessageList
         extends K9Activity
         implements OnClickListener, AdapterView.OnItemClickListener
 {
+
+    /**
+     * Immutable empty {@link Message} array
+     */
+    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
+
     private static final int DIALOG_MARK_ALL_AS_READ = 1;
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -2051,7 +2057,7 @@ public class MessageList
 
             if (messagesToSearch.size() > 0)
             {
-                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(new Message[0]), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
+                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
                                                 new MessagingListener()
                 {
                     @Override
@@ -2911,13 +2917,13 @@ public class MessageList
         {
             if (v == mBatchDeleteButton)
             {
-                mController.deleteMessages(messageList.toArray(new Message[0]), null);
+                mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
                 mSelectedCount = 0;
                 toggleBatchButtons();
             }
             else
             {
-                mController.setFlag(messageList.toArray(new Message[0]), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
+                mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), (v == mBatchReadButton ? Flag.SEEN : Flag.FLAGGED), newState);
             }
         }
         else
@@ -2975,7 +2981,7 @@ public class MessageList
                 }
             }
         }
-        mController.setFlag(messageList.toArray(new Message[0]), flag, newState);
+        mController.setFlag(messageList.toArray(EMPTY_MESSAGE_ARRAY), flag, newState);
         mHandler.sortMessages();
     }
 
@@ -2996,7 +3002,7 @@ public class MessageList
         }
         mAdapter.removeMessages(removeHolderList);
 
-        mController.deleteMessages(messageList.toArray(new Message[0]), null);
+        mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
         mSelectedCount = 0;
         toggleBatchButtons();
     }
@@ -3064,7 +3070,7 @@ public class MessageList
         }
         mAdapter.removeMessages(removeHolderList);
 
-        mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), folderName, null);
+        mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
         mSelectedCount = 0;
         toggleBatchButtons();
     }
@@ -3192,6 +3198,6 @@ public class MessageList
                 }
             }
         }
-        mController.copyMessages(mAccount, mCurrentFolder.name, messageList.toArray(new Message[0]), folderName, null);
+        mController.copyMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
     }
 }
