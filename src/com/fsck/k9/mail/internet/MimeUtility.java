@@ -9,7 +9,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.decoder.Base64InputStream;
 import org.apache.james.mime4j.decoder.DecoderUtil;
 import org.apache.james.mime4j.decoder.QuotedPrintableInputStream;
-import org.apache.james.mime4j.util.CharsetUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,6 +16,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import java.nio.charset.Charset;
+
 
 public class MimeUtility
 {
@@ -373,11 +374,12 @@ public class MimeUtility
                         /*
                          * See if there is conversion from the MIME charset to the Java one.
                          */
-                        charset = CharsetUtil.toJavaCharset(originalCharset);
+                        charset = Charset.forName(originalCharset).name();
 
                         if (charset == null)
                         {
-                            return String.format(K9.app.getString(R.string.charset_not_found), originalCharset);
+                            Log.e(K9.LOG_TAG,"I don't know how to deal with the charset "+originalCharset+". Falling back to US-ASCII");
+                            charset = "US-ASCII";
                         }
                     }
 
