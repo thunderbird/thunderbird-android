@@ -2322,6 +2322,8 @@ public class LocalStore extends Store implements Serializable
                 html = htmlifyString(text);
             }
 
+            html = convertEmoji2ImgForDocomo(html);
+
             return html;
         }
 
@@ -2414,6 +2416,807 @@ public class LocalStore extends Store implements Serializable
             {
                 return "</div>";
             }
+        }
+
+        public String convertEmoji2ImgForDocomo(String html)
+        {
+            StringReader reader = new StringReader(html);
+            StringBuilder buff = new StringBuilder(html.length() + 512);
+            int c = 0;
+            try
+            {
+                while ((c = reader.read()) != -1)
+                {
+                    switch (c)
+                    {
+                        // Emoji
+                        case 0xE63E: // Fine
+                            buff.append("<img src=\"file:///android_asset/emoticons/sun.gif\"/>");
+                            break;
+                        case 0xE63F: // Cloudy
+                            buff.append("<img src=\"file:///android_asset/emoticons/cloud.gif\"/>");
+                            break;
+                        case 0xE640: // Rain
+                            buff.append("<img src=\"file:///android_asset/emoticons/rain.gif\"/>");
+                            break;
+                        case 0xE641: // Snow
+                            buff.append("<img src=\"file:///android_asset/emoticons/snow.gif\"/>");
+                            break;
+                        case 0xE642: // Thunder
+                            buff.append("<img src=\"file:///android_asset/emoticons/thunder.gif\"/>");
+                            break;
+                        case 0xE643: // Typhoon
+                            buff.append("<img src=\"file:///android_asset/emoticons/typhoon.gif\"/>");
+                            break;
+                        case 0xE644: // Fog
+                            buff.append("<img src=\"file:///android_asset/emoticons/mist.gif\"/>");
+                            break;
+                        case 0xE645: // Drizzle
+                            buff.append("<img src=\"file:///android_asset/emoticons/sprinkle.gif\"/>");
+                            break;
+
+                        // Zodiacal symbol
+                        case 0xE646: // Aries
+                            buff.append("<img src=\"file:///android_asset/emoticons/aries.gif\"/>");
+                            break;
+                        case 0xE647: // Taurus
+                            buff.append("<img src=\"file:///android_asset/emoticons/taurus.gif\"/>");
+                            break;
+                        case 0xE648: // Gemini
+                            buff.append("<img src=\"file:///android_asset/emoticons/gemini.gif\"/>");
+                            break;
+                        case 0xE649: // Cancer
+                            buff.append("<img src=\"file:///android_asset/emoticons/cancer.gif\"/>");
+                            break;
+                        case 0xE64A: // Leo
+                            buff.append("<img src=\"file:///android_asset/emoticons/leo.gif\"/>");
+                            break;
+                        case 0xE64B: // Virgo
+                            buff.append("<img src=\"file:///android_asset/emoticons/virgo.gif\"/>");
+                            break;
+                        case 0xE64C: // Libra
+                            buff.append("<img src=\"file:///android_asset/emoticons/libra.gif\"/>");
+                            break;
+                        case 0xE64D: // Scorpio
+                            buff.append("<img src=\"file:///android_asset/emoticons/scorpius.gif\"/>");
+                            break;
+                        case 0xE64E: // Sagittarius
+                            buff.append("<img src=\"file:///android_asset/emoticons/sagittarius.gif\"/>");
+                            break;
+                        case 0xE64F: // Capricorn
+                            buff.append("<img src=\"file:///android_asset/emoticons/capricornus.gif\"/>");
+                            break;
+                        case 0xE650: // Aquarius
+                            buff.append("<img src=\"file:///android_asset/emoticons/aquarius.gif\"/>");
+                            break;
+                        case 0xE651: // Pisces
+                            buff.append("<img src=\"file:///android_asset/emoticons/pisces.gif\"/>");
+                            break;
+
+                        case 0xE652:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sports.gif\"/>");
+                            break;
+                        case 0xE653:
+                            buff.append("<img src=\"file:///android_asset/emoticons/baseball.gif\"/>");
+                            break;
+                        case 0xE654:
+                            buff.append("<img src=\"file:///android_asset/emoticons/golf.gif\"/>");
+                            break;
+                        case 0xE655:
+                            buff.append("<img src=\"file:///android_asset/emoticons/tennis.gif\"/>");
+                            break;
+                        case 0xE656:
+                            buff.append("<img src=\"file:///android_asset/emoticons/soccer.gif\"/>");
+                            break;
+                        case 0xE657:
+                            buff.append("<img src=\"file:///android_asset/emoticons/ski.gif\"/>");
+                            break;
+                        case 0xE658:
+                            buff.append("<img src=\"file:///android_asset/emoticons/basketball.gif\"/>");
+                            break;
+                        case 0xE659:
+                            buff.append("<img src=\"file:///android_asset/emoticons/motorsports.gif\"/>");
+                            break;
+                        case 0xE65A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/pocketbell.gif\"/>");
+                            break;
+                        case 0xE65B:
+                            buff.append("<img src=\"file:///android_asset/emoticons/train.gif\"/>");
+                            break;
+                        case 0xE65C:
+                            buff.append("<img src=\"file:///android_asset/emoticons/subway.gif\"/>");
+                            break;
+                        case 0xE65D:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bullettrain.gif\"/>");
+                            break;
+                        case 0xE65E:
+                            buff.append("<img src=\"file:///android_asset/emoticons/car.gif\"/>");
+                            break;
+                        case 0xE65F:
+                            buff.append("<img src=\"file:///android_asset/emoticons/rvcar.gif\"/>");
+                            break;
+                        case 0xE660:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bus.gif\"/>");
+                            break;
+                        case 0xE661:
+                            buff.append("<img src=\"file:///android_asset/emoticons/ship.gif\"/>");
+                            break;
+                        case 0xE662:
+                            buff.append("<img src=\"file:///android_asset/emoticons/airplane.gif\"/>");
+                            break;
+                        case 0xE663:
+                            buff.append("<img src=\"file:///android_asset/emoticons/house.gif\"/>");
+                            break;
+                        case 0xE664:
+                            buff.append("<img src=\"file:///android_asset/emoticons/building.gif\"/>");
+                            break;
+                        case 0xE665:
+                            buff.append("<img src=\"file:///android_asset/emoticons/postoffice.gif\"/>");
+                            break;
+                        case 0xE666:
+                            buff.append("<img src=\"file:///android_asset/emoticons/hospital.gif\"/>");
+                            break;
+                        case 0xE667:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bank.gif\"/>");
+                            break;
+                        case 0xE668:
+                            buff.append("<img src=\"file:///android_asset/emoticons/atm.gif\"/>");
+                            break;
+                        case 0xE669:
+                            buff.append("<img src=\"file:///android_asset/emoticons/hotel.gif\"/>");
+                            break;
+                        case 0xE66A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/24hours.gif\"/>");
+                            break;
+                        case 0xE66B:
+                            buff.append("<img src=\"file:///android_asset/emoticons/gasstation.gif\"/>");
+                            break;
+                        case 0xE66C:
+                            buff.append("<img src=\"file:///android_asset/emoticons/parking.gif\"/>");
+                            break;
+                        case 0xE66D:
+                            buff.append("<img src=\"file:///android_asset/emoticons/signaler.gif\"/>");
+                            break;
+                        case 0xE66E:
+                            buff.append("<img src=\"file:///android_asset/emoticons/toilet.gif\"/>");
+                            break;
+                        case 0xE66F:
+                            buff.append("<img src=\"file:///android_asset/emoticons/restaurant.gif\"/>");
+                            break;
+                        case 0xE670:
+                            buff.append("<img src=\"file:///android_asset/emoticons/cafe.gif\"/>");
+                            break;
+                        case 0xE671:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bar.gif\"/>");
+                            break;
+                        case 0xE672:
+                            buff.append("<img src=\"file:///android_asset/emoticons/beer.gif\"/>");
+                            break;
+                        case 0xE673:
+                            buff.append("<img src=\"file:///android_asset/emoticons/fastfood.gif\"/>");
+                            break;
+                        case 0xE674:
+                            buff.append("<img src=\"file:///android_asset/emoticons/boutique.gif\"/>");
+                            break;
+                        case 0xE675: // Hairdresser
+                            buff.append("<img src=\"file:///android_asset/emoticons/hairsalon.gif\"/>");
+                            break;
+                        case 0xE676:
+                            buff.append("<img src=\"file:///android_asset/emoticons/karaoke.gif\"/>");
+                            break;
+                        case 0xE677:
+                            buff.append("<img src=\"file:///android_asset/emoticons/movie.gif\"/>");
+                            break;
+                        case 0xE678:
+                            buff.append("<img src=\"file:///android_asset/emoticons/upwardright.gif\"/>");
+                            break;
+                        case 0xE679:
+                            buff.append("<img src=\"file:///android_asset/emoticons/carouselpony.gif\"/>");
+                            break;
+                        case 0xE67A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/music.gif\"/>");
+                            break;
+                        case 0xE67B:
+                            buff.append("<img src=\"file:///android_asset/emoticons/art.gif\"/>");
+                            break;
+                        case 0xE67C:
+                            buff.append("<img src=\"file:///android_asset/emoticons/drama.gif\"/>");
+                            break;
+                        case 0xE67D:
+                            buff.append("<img src=\"file:///android_asset/emoticons/event.gif\"/>");
+                            break;
+                        case 0xE67E:
+                            buff.append("<img src=\"file:///android_asset/emoticons/ticket.gif\"/>");
+                            break;
+                        case 0xE67F:
+                            buff.append("<img src=\"file:///android_asset/emoticons/smoking.gif\"/>");
+                            break;
+
+                        case 0xE680:
+                            buff.append("<img src=\"file:///android_asset/emoticons/nosmoking.gif\"/>");
+                            break;
+                        case 0xE681:
+                            buff.append("<img src=\"file:///android_asset/emoticons/camera.gif\"/>");
+                            break;
+                        case 0xE682:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bag.gif\"/>");
+                            break;
+                        case 0xE683:
+                            buff.append("<img src=\"file:///android_asset/emoticons/book.gif\"/>");
+                            break;
+                        case 0xE684:
+                            buff.append("<img src=\"file:///android_asset/emoticons/ribbon.gif\"/>");
+                            break;
+                        case 0xE685:
+                            buff.append("<img src=\"file:///android_asset/emoticons/present.gif\"/>");
+                            break;
+                        case 0xE686:
+                            buff.append("<img src=\"file:///android_asset/emoticons/birthday.gif\"/>");
+                            break;
+                        case 0xE687:
+                            buff.append("<img src=\"file:///android_asset/emoticons/telephone.gif\"/>");
+                            break;
+                        case 0xE688:
+                            buff.append("<img src=\"file:///android_asset/emoticons/mobilephone.gif\"/>");
+                            break;
+                        case 0xE689:
+                            buff.append("<img src=\"file:///android_asset/emoticons/memo.gif\"/>");
+                            break;
+                        case 0xE68A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/tv.gif\"/>");
+                            break;
+                        case 0xE68B:
+                            buff.append("<img src=\"file:///android_asset/emoticons/game.gif\"/>");
+                            break;
+                        case 0xE68C:
+                            buff.append("<img src=\"file:///android_asset/emoticons/cd.gif\"/>");
+                            break;
+                        case 0xE68D:
+                            buff.append("<img src=\"file:///android_asset/emoticons/heart.gif\"/>");
+                            break;
+                        case 0xE68E:
+                            buff.append("<img src=\"file:///android_asset/emoticons/spade.gif\"/>");
+                            break;
+                        case 0xE68F:
+                            buff.append("<img src=\"file:///android_asset/emoticons/diamond.gif\"/>");
+                            break;
+
+                        case 0xE690:
+                            buff.append("<img src=\"file:///android_asset/emoticons/club.gif\"/>");
+                            break;
+                        case 0xE691: // Eyes
+                            buff.append("<img src=\"file:///android_asset/emoticons/eye.gif\"/>");
+                            break;
+                        case 0xE692: // Ear
+                            buff.append("<img src=\"file:///android_asset/emoticons/ear.gif\"/>");
+                            break;
+                        case 0xE693:
+                            buff.append("<img src=\"file:///android_asset/emoticons/rock.gif\"/>");
+                            break;
+                        case 0xE694:
+                            buff.append("<img src=\"file:///android_asset/emoticons/scissors.gif\"/>");
+                            break;
+                        case 0xE695:
+                            buff.append("<img src=\"file:///android_asset/emoticons/paper.gif\"/>");
+                            break;
+                        case 0xE696:
+                            buff.append("<img src=\"file:///android_asset/emoticons/downwardright.gif\"/>");
+                            break;
+                        case 0xE697:
+                            buff.append("<img src=\"file:///android_asset/emoticons/upwardleft.gif\"/>");
+                            break;
+                        case 0xE698:
+                            buff.append("<img src=\"file:///android_asset/emoticons/foot.gif\"/>");
+                            break;
+                        case 0xE699:
+                            buff.append("<img src=\"file:///android_asset/emoticons/shoe.gif\"/>");
+                            break;
+                        case 0xE69A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/eyeglass.gif\"/>");
+                            break;
+                        case 0xE69B:
+                            buff.append("<img src=\"file:///android_asset/emoticons/wheelchair.gif\"/>");
+                            break;
+                        case 0xE69C: // New moon
+                            buff.append("<img src=\"file:///android_asset/emoticons/newmoon.gif\"/>");
+                            break;
+                        case 0xE69D: // Waning moon
+                            buff.append("<img src=\"file:///android_asset/emoticons/moon1.gif\"/>");
+                            break;
+                        case 0xE69E: // Half moon
+                            buff.append("<img src=\"file:///android_asset/emoticons/moon2.gif\"/>");
+                            break;
+                        case 0xE69F: // Crescent moon
+                            buff.append("<img src=\"file:///android_asset/emoticons/moon3.gif\"/>");
+                            break;
+
+                        case 0xE6A0: // Full moon
+                            buff.append("<img src=\"file:///android_asset/emoticons/fullmoon.gif\"/>");
+                            break;
+                        case 0xE6A1:
+                            buff.append("<img src=\"file:///android_asset/emoticons/dog.gif\"/>");
+                            break;
+                        case 0xE6A2:
+                            buff.append("<img src=\"file:///android_asset/emoticons/cat.gif\"/>");
+                            break;
+                        case 0xE6A3:
+                            buff.append("<img src=\"file:///android_asset/emoticons/yacht.gif\"/>");
+                            break;
+                        case 0xE6A4:
+                            buff.append("<img src=\"file:///android_asset/emoticons/xmas.gif\"/>");
+                            break;
+                        case 0xE6A5:
+                            buff.append("<img src=\"file:///android_asset/emoticons/downwardleft.gif\"/>");
+                            break;
+
+                        case 0xE6AC:
+                            buff.append("<img src=\"file:///android_asset/emoticons/slate.gif\"/>");
+                            break;
+                        case 0xE6AD:
+                            buff.append("<img src=\"file:///android_asset/emoticons/pouch.gif\"/>");
+                            break;
+                        case 0xE6AE:
+                            buff.append("<img src=\"file:///android_asset/emoticons/pen.gif\"/>");
+                            break;
+
+                        case 0xE6B1: // Silhouette
+                            buff.append("<img src=\"file:///android_asset/emoticons/shadow.gif\"/>");
+                            break;
+                        case 0xE6B2:
+                            buff.append("<img src=\"file:///android_asset/emoticons/chair.gif\"/>");
+                            break;
+                        case 0xE6B3: // Night
+                            buff.append("<img src=\"file:///android_asset/emoticons/night.gif\"/>");
+                            break;
+
+                        case 0xE6B7:
+                            buff.append("<img src=\"file:///android_asset/emoticons/soon.gif\"/>");
+                            break;
+                        case 0xE6B8:
+                            buff.append("<img src=\"file:///android_asset/emoticons/on.gif\"/>");
+                            break;
+                        case 0xE6B9:
+                            buff.append("<img src=\"file:///android_asset/emoticons/end.gif\"/>");
+                            break;
+                        case 0xE6BA: // Clock
+                            buff.append("<img src=\"file:///android_asset/emoticons/clock.gif\"/>");
+                            break;
+
+                        case 0xE6CE:
+                            buff.append("<img src=\"file:///android_asset/emoticons/phoneto.gif\"/>");
+                            break;
+                        case 0xE6CF:
+                            buff.append("<img src=\"file:///android_asset/emoticons/mailto.gif\"/>");
+                            break;
+
+                        case 0xE6D0:
+                            buff.append("<img src=\"file:///android_asset/emoticons/faxto.gif\"/>");
+                            break;
+                        case 0xE6D1:
+                            buff.append("<img src=\"file:///android_asset/emoticons/info01.gif\"/>");
+                            break;
+                        case 0xE6D2:
+                            buff.append("<img src=\"file:///android_asset/emoticons/info02.gif\"/>");
+                            break;
+                        case 0xE6D3:
+                            buff.append("<img src=\"file:///android_asset/emoticons/mail.gif\"/>");
+                            break;
+                        case 0xE6D4:
+                            buff.append("<img src=\"file:///android_asset/emoticons/by-d.gif\"/>");
+                            break;
+                        case 0xE6D5:
+                            buff.append("<img src=\"file:///android_asset/emoticons/d-point.gif\"/>");
+                            break;
+                        case 0xE6D6:
+                            buff.append("<img src=\"file:///android_asset/emoticons/yen.gif\"/>");
+                            break;
+                        case 0xE6D7:
+                            buff.append("<img src=\"file:///android_asset/emoticons/free.gif\"/>");
+                            break;
+                        case 0xE6D8:
+                            buff.append("<img src=\"file:///android_asset/emoticons/id.gif\"/>");
+                            break;
+                        case 0xE6D9:
+                            buff.append("<img src=\"file:///android_asset/emoticons/key.gif\"/>");
+                            break;
+                        case 0xE6DA:
+                            buff.append("<img src=\"file:///android_asset/emoticons/enter.gif\"/>");
+                            break;
+                        case 0xE6DB:
+                            buff.append("<img src=\"file:///android_asset/emoticons/clear.gif\"/>");
+                            break;
+                        case 0xE6DC:
+                            buff.append("<img src=\"file:///android_asset/emoticons/search.gif\"/>");
+                            break;
+                        case 0xE6DD:
+                            buff.append("<img src=\"file:///android_asset/emoticons/new.gif\"/>");
+                            break;
+                        case 0xE6DE:
+                            buff.append("<img src=\"file:///android_asset/emoticons/flag.gif\"/>");
+                            break;
+                        case 0xE6DF:
+                            buff.append("<img src=\"file:///android_asset/emoticons/freedial.gif\"/>");
+                            break;
+
+                        case 0xE6E0:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sharp.gif\"/>");
+                            break;
+                        case 0xE6E1:
+                            buff.append("<img src=\"file:///android_asset/emoticons/mobaq.gif\"/>");
+                            break;
+                        case 0xE6E2:
+                            buff.append("<img src=\"file:///android_asset/emoticons/one.gif\"/>");
+                            break;
+                        case 0xE6E3:
+                            buff.append("<img src=\"file:///android_asset/emoticons/two.gif\"/>");
+                            break;
+                        case 0xE6E4:
+                            buff.append("<img src=\"file:///android_asset/emoticons/three.gif\"/>");
+                            break;
+                        case 0xE6E5:
+                            buff.append("<img src=\"file:///android_asset/emoticons/four.gif\"/>");
+                            break;
+                        case 0xE6E6:
+                            buff.append("<img src=\"file:///android_asset/emoticons/five.gif\"/>");
+                            break;
+                        case 0xE6E7:
+                            buff.append("<img src=\"file:///android_asset/emoticons/six.gif\"/>");
+                            break;
+                        case 0xE6E8:
+                            buff.append("<img src=\"file:///android_asset/emoticons/seven.gif\"/>");
+                            break;
+                        case 0xE6E9:
+                            buff.append("<img src=\"file:///android_asset/emoticons/eight.gif\"/>");
+                            break;
+                        case 0xE6EA:
+                            buff.append("<img src=\"file:///android_asset/emoticons/nine.gif\"/>");
+                            break;
+                        case 0xE6EB:
+                            buff.append("<img src=\"file:///android_asset/emoticons/zero.gif\"/>");
+                            break;
+                        case 0xE6EC: // Black heart
+                            buff.append("<img src=\"file:///android_asset/emoticons/heart01.gif\"/>");
+                            break;
+                        case 0xE6ED:
+                            buff.append("<img src=\"file:///android_asset/emoticons/heart02.gif\"/>");
+                            break;
+                        case 0xE6EE:
+                            buff.append("<img src=\"file:///android_asset/emoticons/heart03.gif\"/>");
+                            break;
+                        case 0xE6EF:
+                            buff.append("<img src=\"file:///android_asset/emoticons/heart04.gif\"/>");
+                            break;
+
+                        case 0xE6F0: // Happy face
+                            buff.append("<img src=\"file:///android_asset/emoticons/happy01.gif\"/>");
+                            break;
+                        case 0xE6F1:
+                            buff.append("<img src=\"file:///android_asset/emoticons/angry.gif\"/>");
+                            break;
+                        case 0xE6F2:
+                            buff.append("<img src=\"file:///android_asset/emoticons/despair.gif\"/>");
+                            break;
+                        case 0xE6F3:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sad.gif\"/>");
+                            break;
+                        case 0xE6F4:
+                            buff.append("<img src=\"file:///android_asset/emoticons/wobbly.gif\"/>");
+                            break;
+                        case 0xE6F5:
+                            buff.append("<img src=\"file:///android_asset/emoticons/up.gif\"/>");
+                            break;
+                        case 0xE6F6:
+                            buff.append("<img src=\"file:///android_asset/emoticons/note.gif\"/>");
+                            break;
+                        case 0xE6F7:
+                            buff.append("<img src=\"file:///android_asset/emoticons/spa.gif\"/>");
+                            break;
+                        case 0xE6F8:
+                            buff.append("<img src=\"file:///android_asset/emoticons/cute.gif\"/>");
+                            break;
+                        case 0xE6F9: // Kiss
+                            buff.append("<img src=\"file:///android_asset/emoticons/kissmark.gif\"/>");
+                            break;
+                        case 0xE6FA:
+                            buff.append("<img src=\"file:///android_asset/emoticons/shine.gif\"/>");
+                            break;
+                        case 0xE6FB:
+                            buff.append("<img src=\"file:///android_asset/emoticons/flair.gif\"/>");
+                            break;
+                        case 0xE6FC:
+                            buff.append("<img src=\"file:///android_asset/emoticons/annoy.gif\"/>");
+                            break;
+                        case 0xE6FD:
+                            buff.append("<img src=\"file:///android_asset/emoticons/punch.gif\"/>");
+                            break;
+                        case 0xE6FE:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bomb.gif\"/>");
+                            break;
+                        case 0xE6FF:
+                            buff.append("<img src=\"file:///android_asset/emoticons/notes.gif\"/>");
+                            break;
+
+                        case 0xE700:
+                            buff.append("<img src=\"file:///android_asset/emoticons/down.gif\"/>");
+                            break;
+                        case 0xE701:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sleepy.gif\"/>");
+                            break;
+                        case 0xE702:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sign01.gif\"/>");
+                            break;
+                        case 0xE703:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sign02.gif\"/>");
+                            break;
+                        case 0xE704:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sign03.gif\"/>");
+                            break;
+                        case 0xE705:
+                            buff.append("<img src=\"file:///android_asset/emoticons/impact.gif\"/>");
+                            break;
+                        case 0xE706:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sweat01.gif\"/>");
+                            break;
+                        case 0xE707:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sweat02.gif\"/>");
+                            break;
+                        case 0xE708:
+                            buff.append("<img src=\"file:///android_asset/emoticons/dash.gif\"/>");
+                            break;
+                        case 0xE709:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sign04.gif\"/>");
+                            break;
+                        case 0xE70A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/sign05.gif\"/>");
+                            break;
+                        case 0xE70B:
+                            buff.append("<img src=\"file:///android_asset/emoticons/ok.gif\"/>");
+                            break;
+                        case 0xE70C:
+                            buff.append("<img src=\"file:///android_asset/emoticons/appli01.gif\"/>");
+                            break;
+                        case 0xE70D:
+                            buff.append("<img src=\"file:///android_asset/emoticons/appli02.gif\"/>");
+                            break;
+                        case 0xE70E:
+                            buff.append("<img src=\"file:///android_asset/emoticons/t-shirt.gif\"/>");
+                            break;
+                        case 0xE70F:
+                            buff.append("<img src=\"file:///android_asset/emoticons/moneybag.gif\"/>");
+                            break;
+
+                        case 0xE710: // Make-up
+                            buff.append("<img src=\"file:///android_asset/emoticons/rouge.gif\"/>");
+                            break;
+                        case 0xE711:
+                            buff.append("<img src=\"file:///android_asset/emoticons/denim.gif\"/>");
+                            break;
+                        case 0xE712:
+                            buff.append("<img src=\"file:///android_asset/emoticons/snowboard.gif\"/>");
+                            break;
+                        case 0xE713:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bell.gif\"/>");
+                            break;
+                        case 0xE714:
+                            buff.append("<img src=\"file:///android_asset/emoticons/door.gif\"/>");
+                            break;
+                        case 0xE715:
+                            buff.append("<img src=\"file:///android_asset/emoticons/dollar.gif\"/>");
+                            break;
+                        case 0xE716:
+                            buff.append("<img src=\"file:///android_asset/emoticons/pc.gif\"/>");
+                            break;
+                        case 0xE717:
+                            buff.append("<img src=\"file:///android_asset/emoticons/loveletter.gif\"/>");
+                            break;
+                        case 0xE718:
+                            buff.append("<img src=\"file:///android_asset/emoticons/wrench.gif\"/>");
+                            break;
+                        case 0xE719:
+                            buff.append("<img src=\"file:///android_asset/emoticons/pencil.gif\"/>");
+                            break;
+                        case 0xE71A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/crown.gif\"/>");
+                            break;
+                        case 0xE71B:
+                            buff.append("<img src=\"file:///android_asset/emoticons/ring.gif\"/>");
+                            break;
+                        case 0xE71C: // Sandglass
+                            buff.append("<img src=\"file:///android_asset/emoticons/sandclock.gif\"/>");
+                            break;
+                        case 0xE71D:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bicycle.gif\"/>");
+                            break;
+                        case 0xE71E:
+                            buff.append("<img src=\"file:///android_asset/emoticons/japanesetea.gif\"/>");
+                            break;
+                        case 0xE71F: // Wrist watch
+                            buff.append("<img src=\"file:///android_asset/emoticons/watch.gif\"/>");
+                            break;
+
+                        case 0xE720:
+                            buff.append("<img src=\"file:///android_asset/emoticons/think.gif\"/>");
+                            break;
+                        case 0xE721:
+                            buff.append("<img src=\"file:///android_asset/emoticons/confident.gif\"/>");
+                            break;
+                        case 0xE722:
+                            buff.append("<img src=\"file:///android_asset/emoticons/coldsweats01.gif\"/>");
+                            break;
+                        case 0xE723:
+                            buff.append("<img src=\"file:///android_asset/emoticons/coldsweats02.gif\"/>");
+                            break;
+                        case 0xE724: // Pouting face
+                            buff.append("<img src=\"file:///android_asset/emoticons/pout.gif\"/>");
+                            break;
+                        case 0xE725:
+                            buff.append("<img src=\"file:///android_asset/emoticons/gawk.gif\"/>");
+                            break;
+                        case 0xE726:
+                            buff.append("<img src=\"file:///android_asset/emoticons/lovely.gif\"/>");
+                            break;
+                        case 0xE727:
+                            buff.append("<img src=\"file:///android_asset/emoticons/good.gif\"/>");
+                            break;
+                        case 0xE728: // Sticking tongue out
+                            buff.append("<img src=\"file:///android_asset/emoticons/bleah.gif\"/>");
+                            break;
+                        case 0xE729:
+                            buff.append("<img src=\"file:///android_asset/emoticons/wink.gif\"/>");
+                            break;
+                        case 0xE72A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/happy02.gif\"/>");
+                            break;
+                        case 0xE72B: // Enduring face
+                            buff.append("<img src=\"file:///android_asset/emoticons/bearing.gif\"/>");
+                            break;
+                        case 0xE72C:
+                            buff.append("<img src=\"file:///android_asset/emoticons/catface.gif\"/>");
+                            break;
+                        case 0xE72D:
+                            buff.append("<img src=\"file:///android_asset/emoticons/crying.gif\"/>");
+                            break;
+                        case 0xE72E: // Tear
+                            buff.append("<img src=\"file:///android_asset/emoticons/weep.gif\"/>");
+                            break;
+                        case 0xE72F:
+                            buff.append("<img src=\"file:///android_asset/emoticons/ng.gif\"/>");
+                            break;
+
+                        case 0xE730:
+                            buff.append("<img src=\"file:///android_asset/emoticons/clip.gif\"/>");
+                            break;
+                        case 0xE731:
+                            buff.append("<img src=\"file:///android_asset/emoticons/copyright.gif\"/>");
+                            break;
+                        case 0xE732:
+                            buff.append("<img src=\"file:///android_asset/emoticons/tm.gif\"/>");
+                            break;
+                        case 0xE733:
+                            buff.append("<img src=\"file:///android_asset/emoticons/run.gif\"/>");
+                            break;
+                        case 0xE734:
+                            buff.append("<img src=\"file:///android_asset/emoticons/secret.gif\"/>");
+                            break;
+                        case 0xE735:
+                            buff.append("<img src=\"file:///android_asset/emoticons/recycle.gif\"/>");
+                            break;
+                        case 0xE736:
+                            buff.append("<img src=\"file:///android_asset/emoticons/r-mark.gif\"/>");
+                            break;
+                        case 0xE737:
+                            buff.append("<img src=\"file:///android_asset/emoticons/danger.gif\"/>");
+                            break;
+                        case 0xE738:
+                            buff.append("<img src=\"file:///android_asset/emoticons/ban.gif\"/>");
+                            break;
+                        case 0xE739:
+                            buff.append("<img src=\"file:///android_asset/emoticons/empty.gif\"/>");
+                            break;
+                        case 0xE73A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/pass.gif\"/>");
+                            break;
+                        case 0xE73B:
+                            buff.append("<img src=\"file:///android_asset/emoticons/full.gif\"/>");
+                            break;
+                        case 0xE73C:
+                            buff.append("<img src=\"file:///android_asset/emoticons/leftright.gif\"/>");
+                            break;
+                        case 0xE73D:
+                            buff.append("<img src=\"file:///android_asset/emoticons/updown.gif\"/>");
+                            break;
+                        case 0xE73E:
+                            buff.append("<img src=\"file:///android_asset/emoticons/school.gif\"/>");
+                            break;
+                        case 0xE73F: // Wave
+                            buff.append("<img src=\"file:///android_asset/emoticons/wave.gif\"/>");
+                            break;
+
+                        case 0xE740:
+                            buff.append("<img src=\"file:///android_asset/emoticons/fuji.gif\"/>");
+                            break;
+                        case 0xE741: // 4-leaf clover
+                            buff.append("<img src=\"file:///android_asset/emoticons/clover.gif\"/>");
+                            break;
+                        case 0xE742: // Cherries
+                            buff.append("<img src=\"file:///android_asset/emoticons/cherry.gif\"/>");
+                            break;
+                        case 0xE743: // Tulip
+                            buff.append("<img src=\"file:///android_asset/emoticons/tulip.gif\"/>");
+                            break;
+                        case 0xE744: // Banana
+                            buff.append("<img src=\"file:///android_asset/emoticons/banana.gif\"/>");
+                            break;
+                        case 0xE745: // Apple
+                            buff.append("<img src=\"file:///android_asset/emoticons/apple.gif\"/>");
+                            break;
+                        case 0xE746: // Seedling
+                            buff.append("<img src=\"file:///android_asset/emoticons/bud.gif\"/>");
+                            break;
+                        case 0xE747: // Maple leaf
+                            buff.append("<img src=\"file:///android_asset/emoticons/maple.gif\"/>");
+                            break;
+                        case 0xE748: // Cherry blossom
+                            buff.append("<img src=\"file:///android_asset/emoticons/cherryblossom.gif\"/>");
+                            break;
+                        case 0xE749:
+                            buff.append("<img src=\"file:///android_asset/emoticons/riceball.gif\"/>");
+                            break;
+                        case 0xE74A:
+                            buff.append("<img src=\"file:///android_asset/emoticons/cake.gif\"/>");
+                            break;
+                        case 0xE74B:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bottle.gif\"/>");
+                            break;
+                        case 0xE74C:
+                            buff.append("<img src=\"file:///android_asset/emoticons/noodle.gif\"/>");
+                            break;
+                        case 0xE74D:
+                            buff.append("<img src=\"file:///android_asset/emoticons/bread.gif\"/>");
+                            break;
+                        case 0xE74E:
+                            buff.append("<img src=\"file:///android_asset/emoticons/snail.gif\"/>");
+                            break;
+                        case 0xE74F:
+                            buff.append("<img src=\"file:///android_asset/emoticons/chick.gif\"/>");
+                            break;
+
+                        case 0xE750:
+                            buff.append("<img src=\"file:///android_asset/emoticons/penguin.gif\"/>");
+                            break;
+                        case 0xE751:
+                            buff.append("<img src=\"file:///android_asset/emoticons/fish.gif\"/>");
+                            break;
+                        case 0xE752:
+                            buff.append("<img src=\"file:///android_asset/emoticons/delicious.gif\"/>");
+                            break;
+                        case 0xE753:
+                            buff.append("<img src=\"file:///android_asset/emoticons/smile.gif\"/>");
+                            break;
+                        case 0xE754:
+                            buff.append("<img src=\"file:///android_asset/emoticons/horse.gif\"/>");
+                            break;
+                        case 0xE755:
+                            buff.append("<img src=\"file:///android_asset/emoticons/pig.gif\"/>");
+                            break;
+                        case 0xE756:
+                            buff.append("<img src=\"file:///android_asset/emoticons/wine.gif\"/>");
+                            break;
+                        case 0xE757: // Very thin
+                            buff.append("<img src=\"file:///android_asset/emoticons/shock.gif\"/>");
+                            break;
+                        default:
+                            buff.append((char)c);
+                    }//switch
+                }
+            }
+            catch (IOException e)
+            {
+                //Should never happen
+                Log.e(K9.LOG_TAG, null, e);
+            }
+
+            return buff.toString();
         }
 
         @Override
