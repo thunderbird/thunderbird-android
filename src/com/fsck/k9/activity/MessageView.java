@@ -1023,7 +1023,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
         mAccount = Preferences.getPreferences(this).getAccount(ref.accountUuid);
 
-        mMessageContentView.clearView();
         mMessageContentView.getSettings().setBlockNetworkImage(true);
         K9.setBlockNetworkLoads(mMessageContentView.getSettings(), true);
 
@@ -2222,6 +2221,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 public void run()
                 {
+                    mMessageContentView.loadUrl("file:///android_asset/loading.html");
                     updateDecryptLayout();
                     setProgressBarIndeterminateVisibility(true);
                 }
