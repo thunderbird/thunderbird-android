@@ -1080,7 +1080,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mSpamScrolling.setEnabled(enableSpam);
         }
         else
-         {
+        {
             disableMoveButtons();
         }
 
@@ -2398,7 +2398,7 @@ public class MessageView extends K9Activity implements OnClickListener
         if (mCrypto.getSignatureKeyId() != 0)
         {
             mCryptoSignatureUserIdRest.setText(
-                    getString(R.string.key_id, Long.toHexString(mCrypto.getSignatureKeyId() & 0xffffffffL)));
+                getString(R.string.key_id, Long.toHexString(mCrypto.getSignatureKeyId() & 0xffffffffL)));
             String userId = mCrypto.getSignatureUserId();
             if (userId == null)
             {

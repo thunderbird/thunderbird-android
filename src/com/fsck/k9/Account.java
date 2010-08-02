@@ -566,13 +566,13 @@ public class Account implements BaseAccount
 
             // Always get stats about the INBOX (see issue 1817)
             if (folder.getName().equals(K9.INBOX) || (
-                    !folder.getName().equals(getTrashFolderName()) &&
-                            !folder.getName().equals(getDraftsFolderName()) &&
-                            !folder.getName().equals(getArchiveFolderName()) &&
-                            !folder.getName().equals(getSpamFolderName()) &&
-                            !folder.getName().equals(getOutboxFolderName()) &&
-                            !folder.getName().equals(getSentFolderName()) &&
-                            !folder.getName().equals(getErrorFolderName())))
+                        !folder.getName().equals(getTrashFolderName()) &&
+                        !folder.getName().equals(getDraftsFolderName()) &&
+                        !folder.getName().equals(getArchiveFolderName()) &&
+                        !folder.getName().equals(getSpamFolderName()) &&
+                        !folder.getName().equals(getOutboxFolderName()) &&
+                        !folder.getName().equals(getSentFolderName()) &&
+                        !folder.getName().equals(getErrorFolderName())))
             {
                 if (aMode == Account.FolderMode.NONE)
                 {

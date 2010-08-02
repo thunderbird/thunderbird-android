@@ -390,7 +390,7 @@ public class MimeUtility
                     IOUtils.copy(in, out);
                     in.close();
                     in = null;      // we want all of our memory back, and close might not release
-                                    // Cargo culted from AOSP - This disagrees with the platform docs
+                    // Cargo culted from AOSP - This disagrees with the platform docs
 
                     /*
                      * Convert and return as new String
@@ -523,7 +523,8 @@ public class MimeUtility
          * If the part is HTML and it got this far it's part of a mixed (et
          * al) and should be rendered inline.
          */
-        else if (isPartTextualBody(part))  {
+        else if (isPartTextualBody(part))
+        {
             viewables.add(part);
         }
         else
@@ -534,7 +535,7 @@ public class MimeUtility
     }
 
 
-    public static Boolean isPartTextualBody (Part part) throws MessagingException
+    public static Boolean isPartTextualBody(Part part) throws MessagingException
     {
         String disposition = part.getDisposition();
         String dispositionType = null;
@@ -549,7 +550,7 @@ public class MimeUtility
          * A best guess that this part is intended to be an attachment and not inline.
          */
         boolean attachment = ("attachment".equalsIgnoreCase(dispositionType)
-                             || (dispositionFilename != null));
+                              || (dispositionFilename != null));
 
         if ((!attachment) && (part.getMimeType().equalsIgnoreCase("text/html")))
         {
