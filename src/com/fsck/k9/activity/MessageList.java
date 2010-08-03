@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Spannable;
 import android.text.style.TextAppearanceSpan;
 import android.util.Config;
@@ -160,7 +159,7 @@ public class MessageList
     private Bundle mState = null;
     private MessageInfoHolder mSelectedMessage = null;
 
-    class MessageListHandler extends Handler
+    class MessageListHandler
     {
         public void removeMessage(final List<MessageInfoHolder> messages)
         {
