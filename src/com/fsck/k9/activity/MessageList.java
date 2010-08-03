@@ -1,11 +1,8 @@
 package com.fsck.k9.activity;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,7 +12,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -56,17 +52,12 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
-import com.fsck.k9.activity.MessageList.MessageInfoHolder;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingController.SORT_TYPE;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.grouping.MessageGroup;
-import com.fsck.k9.grouping.MessageGrouper;
-import com.fsck.k9.grouping.MessageInfo;
-import com.fsck.k9.grouping.thread.ThreadMessageGrouper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -424,7 +415,7 @@ public class MessageList
             return;
         }
 
-        MessageInfoHolder message = mAdapter.getItem(position).getMessages().get(0).getTag();
+        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
         if (mSelectedCount > 0)
         {
             // In multiselect mode make sure that clicking on the item results
@@ -737,7 +728,7 @@ public class MessageList
         {
             if (position >= 0)
             {
-                MessageInfoHolder message = mAdapter.getItem(position).getMessages().get(0).getTag();
+                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
 
                 if (message != null)
                 {
@@ -1650,7 +1641,7 @@ public class MessageList
 
                 if (position != AdapterView.INVALID_POSITION)
                 {
-                    MessageInfoHolder msgInfoHolder = mAdapter.getItem(position).getMessages().get(0).getTag();
+                    MessageInfoHolder msgInfoHolder = (MessageInfoHolder) mAdapter.getItem(position);
 
                     if (msgInfoHolder != null && msgInfoHolder.selected != selected)
                     {
@@ -1733,9 +1724,6 @@ public class MessageList
     class MessageListAdapter extends BaseAdapter
     {
         private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
-
-        private final List<MessageGroup<MessageInfoHolder>> groups = Collections
-                .synchronizedList(new ArrayList<MessageGroup<MessageInfoHolder>>());
 
         private final ActivityListener mListener = new ActivityListener()
         {
@@ -1992,96 +1980,10 @@ public class MessageList
         private Drawable mAnsweredIcon;
         private View footerView = null;
 
-        private MessageGrouper messageGrouper = new ThreadMessageGrouper();
-
         MessageListAdapter()
         {
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_mms_attachment_small);
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
-
-            registerDataSetObserver(new DataSetObserver()
-            {
-                @Override
-                public synchronized void onChanged()
-                {
-                    final List<MessageInfo<MessageInfoHolder>> toGroup = new ArrayList<MessageInfo<MessageInfoHolder>>(
-                            messages.size());
-                    synchronized (messages)
-                    {
-                        for (final MessageInfoHolder holder : messages)
-                        {
-                            final MessageInfo<MessageInfoHolder> messageInfo = new MessageInfo<MessageInfoHolder>();
-                            final Message message = holder.message;
-                            try
-                            {
-                                messageInfo.setId(message.getMessageId());
-                                final String[] references = message.getReferences();
-                                if (references != null)
-                                {
-                                    messageInfo.getReferences().addAll(getReferences(references));
-                                }
-                                final String[] inReplyTo = message.getHeader("In-Reply-To");
-                                if (inReplyTo != null && inReplyTo.length > 0)
-                                {
-                                    messageInfo.getReferences().add(inReplyTo[0]);
-                                }
-                            }
-                            catch (MessagingException e)
-                            {
-                                // should not happen?
-                                Log.w(K9.LOG_TAG, "Unable to retrieve header from "
-                                        + message, e);
-                                continue;
-                            }
-                            messageInfo.setDate(holder.compareDate);
-                            messageInfo.setSubject(holder.subject);
-
-                            messageInfo.setTag(holder);
-
-                            toGroup.add(messageInfo);
-                        }
-                    }
-                    final List<MessageGroup<MessageInfoHolder>> messageGroups = messageGrouper
-                            .group(toGroup);
-
-                    groups.clear();
-                    groups.addAll(messageGroups);
-
-                    for (MessageGroup<MessageInfoHolder> messageGroup : messageGroups)
-                    {
-                        final List<MessageInfo<MessageInfoHolder>> groupMessages = messageGroup.getMessages();
-                        final MessageInfoHolder holder = groupMessages.get(0).getTag();
-                        // FIXME (circular reference)
-                        holder.group = messageGroup;
-                    }
-
-                    // TODO: sort group messages?
-                }
-
-                private final Pattern splitter = Pattern.compile("\\s");
-                /**
-                 * @param references
-                 * @return
-                 */
-                private List<String> getReferences(final String[] references)
-                {
-                    final List<String> result = new ArrayList<String>();
-                    for (final String reference : references)
-                    {
-                        List<String> split = Arrays.asList(splitter.split(reference));
-                        result.addAll(split);
-                    }
-                    for (final Iterator<String> iterator = result.iterator(); iterator.hasNext();)
-                    {
-                        String string = iterator.next();
-                        if (string.length() == 0)
-                        {
-                            iterator.remove();
-                        }
-                    }
-                    return result;
-                }
-            });
         }
 
         public void removeMessages(List<MessageInfoHolder> holders)
@@ -2250,7 +2152,7 @@ public class MessageList
         @Override
         public int getCount()
         {
-            return groups.size() + NON_MESSAGE_ITEMS;
+            return messages.size() + NON_MESSAGE_ITEMS;
         }
 
         @Override
@@ -2258,8 +2160,7 @@ public class MessageList
         {
             try
             {
-                // FIXME
-                MessageInfoHolder messageHolder = getItem(position).getMessages().get(0).getTag();
+                MessageInfoHolder messageHolder =(MessageInfoHolder) getItem(position);
                 if (messageHolder != null)
                 {
                     return ((LocalStore.LocalMessage)  messageHolder.message).getId();
@@ -2272,22 +2173,27 @@ public class MessageList
             return -1;
         }
 
+        public Object getItem(long position)
+        {
+            return getItem((int)position);
+        }
+
         @Override
-        public MessageGroup<MessageInfoHolder> getItem(int position)
+        public Object getItem(int position)
         {
             try
             {
-                synchronized (groups)
+                synchronized (mAdapter.messages)
                 {
-                    if (position < groups.size())
+                    if (position < mAdapter.messages.size())
                     {
-                        return groups.get(position);
+                        return mAdapter.messages.get(position);
                     }
                 }
             }
             catch (Exception e)
             {
-                Log.e(K9.LOG_TAG, "getItem(" + position + "), but groups.size() = " + groups.size(), e);
+                Log.e(K9.LOG_TAG, "getItem(" + position + "), but folder.messages.size() = " + mAdapter.messages.size(), e);
             }
             return null;
         }
@@ -2296,21 +2202,19 @@ public class MessageList
         public View getView(int position, View convertView, ViewGroup parent)
         {
 
-            if (position == groups.size())
+            if (position == mAdapter.messages.size())
             {
                 return getFooterView(position, convertView, parent);
             }
             else
             {
-                return getItemView(position, convertView, parent);
+                return  getItemView(position, convertView, parent);
             }
         }
 
-        private View getItemView(int position, View convertView, ViewGroup parent)
+        public View getItemView(int position, View convertView, ViewGroup parent)
         {
-            final MessageGroup<MessageInfoHolder> messageGroup = getItem(position);
-            final MessageInfo<MessageInfoHolder> messageInfo = messageGroup.getMessages().get(0);
-            MessageInfoHolder message = (MessageInfoHolder) messageInfo.getTag();
+            MessageInfoHolder message = (MessageInfoHolder) getItem(position);
             View view;
 
             if ((convertView != null) && (convertView.getId() == R.layout.message_list_item))
@@ -2459,8 +2363,7 @@ public class MessageList
             }
             else
             {
-                // FIXME
-                holder.subject.setText(MessageFormat.format("({0}) {1}", message.group.getMessages().size(), message.subject));
+                holder.subject.setText(message.subject);
             }
 
             if (holder.preview != null)
@@ -2559,7 +2462,7 @@ public class MessageList
 
         public boolean isItemSelectable(int position)
         {
-            if (position < messages.size())
+            if (position < mAdapter.messages.size())
             {
                 return true;
             }
@@ -2572,7 +2475,6 @@ public class MessageList
 
     public class MessageInfoHolder implements Comparable<MessageInfoHolder>
     {
-        protected MessageGroup<MessageInfoHolder> group;
         public String subject;
         public String date;
         public Date compareDate;
@@ -2593,7 +2495,7 @@ public class MessageList
         public boolean selected;
 
         // Empty constructor for comparison
-        private MessageInfoHolder()
+        public MessageInfoHolder()
         {
             this.selected = false;
         }
