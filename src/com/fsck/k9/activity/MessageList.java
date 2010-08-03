@@ -2139,15 +2139,20 @@ public class MessageList
 
         private static final int NON_MESSAGE_ITEMS = 1;
 
+        private final OnClickListener flagClickListener = new OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                // Perform action on clicks
+                MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
+                onToggleFlag(message);
+            }
+        };
+
         @Override
         public int getCount()
         {
-            if (mAdapter.messages.size() == 0)
-            {
-                return NON_MESSAGE_ITEMS ;
-            }
-
-            return mAdapter.messages.size() + NON_MESSAGE_ITEMS  ;
+            return messages.size() + NON_MESSAGE_ITEMS;
         }
 
         @Override
@@ -2243,16 +2248,7 @@ public class MessageList
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
 
-                // TODO: Don't create an instance of OnClickListener for every message
-                holder.flagged.setOnClickListener(new OnClickListener()
-                {
-                    public void onClick(View v)
-                    {
-                        // Perform action on clicks
-                        MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
-                        onToggleFlag(message);
-                    }
-                });
+                holder.flagged.setOnClickListener(flagClickListener);
 
                 if (mStars == false)
                 {
@@ -2274,74 +2270,7 @@ public class MessageList
 
             if (message != null)
             {
-                holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
-
-                // XXX TODO there has to be some way to walk our view hierarchy and get this
-                holder.flagged.setTag((Integer)position);
-                holder.flagged.setChecked(message.flagged);
-
-                // So that the mSelectedCount is only incremented/decremented
-                // when a user checks the checkbox (vs code)
-                holder.position = -1;
-                holder.selected.setChecked(message.selected);
-
-                if (!mCheckboxes)
-                {
-                    holder.selected.setVisibility(message.selected ? View.VISIBLE : View.GONE);
-                }
-
-                holder.chip.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
-                holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
-                view.getBackground().setAlpha(message.downloaded ? 0 : 127);
-
-                if ((message.subject == null) || message.subject.equals(""))
-                {
-                    holder.subject.setText(getText(R.string.general_no_subject));
-                }
-                else
-                {
-                    holder.subject.setText(message.subject);
-                }
-
-                if (holder.preview != null)
-                {
-                    /*
-                     * In the touchable UI, we have previews. Otherwise, we
-                     * have just a "from" line.
-                     * Because text views can't wrap around each other(?) we
-                     * compose a custom view containing the preview and the
-                     * from.
-                     */
-                    holder.preview.setText(message.sender + " " + message.preview,
-                                           TextView.BufferType.SPANNABLE);
-                    Spannable str = (Spannable)holder.preview.getText();
-
-                    // Create our span sections, and assign a format to each.
-                    str.setSpan(
-                        new TextAppearanceSpan(
-                            null,
-                            Typeface.BOLD,
-                            -1,
-                            holder.subject.getTextColors(),
-                            holder.subject.getLinkTextColors()),
-                        0,
-                        message.sender.length(),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    );
-                }
-                else
-                {
-                    holder.from.setText(message.sender);
-                    holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
-                }
-
-                holder.date.setText(message.date);
-                holder.subject.setCompoundDrawablesWithIntrinsicBounds(
-                    message.answered ? mAnsweredIcon : null, // left
-                    null, // top
-                    message.hasAttachments ? mAttachmentIcon : null, // right
-                    null); // bottom
-                holder.position = position;
+                bindView(position, view, holder, message);
             }
             else
             {
@@ -2389,6 +2318,93 @@ public class MessageList
             }
 
             return view;
+        }
+
+        /**
+         * Associate model data to view object.
+         * 
+         * @param position
+         *            The position of the item within the adapter's data set of
+         *            the item whose view we want.
+         * @param view
+         *            Main view component to alter. Never <code>null</code>.
+         * @param holder
+         *            Convenience view holder - eases access to <tt>view</tt>
+         *            child views. Never <code>null</code>.
+         * @param message
+         *            Never <code>null</code>.
+         */
+        private void bindView(final int position, final View view, final MessageViewHolder holder,
+                final MessageInfoHolder message)
+        {
+            holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
+
+            // XXX TODO there has to be some way to walk our view hierarchy and get this
+            holder.flagged.setTag((Integer)position);
+            holder.flagged.setChecked(message.flagged);
+
+            // So that the mSelectedCount is only incremented/decremented
+            // when a user checks the checkbox (vs code)
+            holder.position = -1;
+            holder.selected.setChecked(message.selected);
+
+            if (!mCheckboxes)
+            {
+                holder.selected.setVisibility(message.selected ? View.VISIBLE : View.GONE);
+            }
+
+            holder.chip.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
+            holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
+            view.getBackground().setAlpha(message.downloaded ? 0 : 127);
+
+            if ((message.subject == null) || message.subject.equals(""))
+            {
+                holder.subject.setText(getText(R.string.general_no_subject));
+            }
+            else
+            {
+                holder.subject.setText(message.subject);
+            }
+
+            if (holder.preview != null)
+            {
+                /*
+                 * In the touchable UI, we have previews. Otherwise, we
+                 * have just a "from" line.
+                 * Because text views can't wrap around each other(?) we
+                 * compose a custom view containing the preview and the
+                 * from.
+                 */
+                holder.preview.setText(message.sender + " " + message.preview,
+                                       TextView.BufferType.SPANNABLE);
+                Spannable str = (Spannable)holder.preview.getText();
+
+                // Create our span sections, and assign a format to each.
+                str.setSpan(
+                    new TextAppearanceSpan(
+                        null,
+                        Typeface.BOLD,
+                        -1,
+                        holder.subject.getTextColors(),
+                        holder.subject.getLinkTextColors()),
+                    0,
+                    message.sender.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+            }
+            else
+            {
+                holder.from.setText(message.sender);
+                holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
+            }
+
+            holder.date.setText(message.date);
+            holder.subject.setCompoundDrawablesWithIntrinsicBounds(
+                message.answered ? mAnsweredIcon : null, // left
+                null, // top
+                message.hasAttachments ? mAttachmentIcon : null, // right
+                null); // bottom
+            holder.position = position;
         }
 
         public View getFooterView(int position, View convertView, ViewGroup parent)
