@@ -407,6 +407,7 @@ public class MessageList
         context.startActivity(intent);
     }
 
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
         if (mCurrentFolder != null && ((position+1) == mAdapter.getCount()))
@@ -2138,6 +2139,8 @@ public class MessageList
         }
 
         private static final int NON_MESSAGE_ITEMS = 1;
+
+        @Override
         public int getCount()
         {
             if (mAdapter.messages.size() == 0)
@@ -2148,6 +2151,7 @@ public class MessageList
             return mAdapter.messages.size() + NON_MESSAGE_ITEMS  ;
         }
 
+        @Override
         public long getItemId(int position)
         {
             try
@@ -2170,6 +2174,7 @@ public class MessageList
             return getItem((int)position);
         }
 
+        @Override
         public Object getItem(int position)
         {
             try
@@ -2189,6 +2194,7 @@ public class MessageList
             return null;
         }
 
+        @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
 
@@ -2568,6 +2574,7 @@ public class MessageList
             return uid.hashCode();
         }
 
+        @Override
         public int compareTo(MessageInfoHolder o)
         {
             int ascender = (sortAscending ? 1 : -1);
@@ -2659,6 +2666,7 @@ public class MessageList
         public CheckBox selected;
         public int position = -1;
 
+        @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
         {
             if (position!=-1)
@@ -2868,6 +2876,7 @@ public class MessageList
         return false;
     }
 
+    @Override
     public void onClick(View v)
     {
         boolean newState = false;
