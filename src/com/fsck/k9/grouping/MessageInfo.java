@@ -5,9 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Working data for grouping computations.
- *
+ * Describes a message, working unit data for grouping computations.
+ * 
  * @param <T>
+ *            Convenience payload data
  */
 public class MessageInfo<T>
 {
@@ -52,11 +53,20 @@ public class MessageInfo<T>
         this.id = id;
     }
 
+    /**
+     * @return Message identifiers the current instance refers to. Usually not
+     *         <code>null</code>.
+     */
     public List<String> getReferences()
     {
         return references;
     }
 
+    /**
+     * @param references
+     *            <code>null</code> should be avoided (prefer an empty
+     *            {@link List}).
+     */
     public void setReferences(List<String> references)
     {
         this.references = references;

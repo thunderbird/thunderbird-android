@@ -39,13 +39,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,7 +87,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
  */
 public class MessageList
         extends K9Activity
-        implements OnClickListener, AdapterView.OnItemClickListener
+        implements OnClickListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener
 {
 
     /**
@@ -113,7 +113,7 @@ public class MessageList
     private static final String EXTRA_TITLE = "title";
     private static final String EXTRA_LIST_POSITION = "listPosition";
 
-    private ListView mListView;
+    private ExpandableListView mListView;
 
     private boolean mTouchView = true;
 
@@ -417,26 +417,32 @@ public class MessageList
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
     {
-        if (mCurrentFolder != null && ((position+1) == mAdapter.getCount()))
+        if (mCurrentFolder != null && ((groupPosition + 1) == mAdapter.getGroupCount()))
         {
             mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
-            return;
+            return true;
         }
+        return false;
+    }
 
-        MessageInfoHolder message = mAdapter.getItem(position).getMessages().get(0).getTag();
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+            int childPosition, long id)
+    {
+        final MessageInfoHolder message = mAdapter.getChild(groupPosition, childPosition);
         if (mSelectedCount > 0)
         {
             // In multiselect mode make sure that clicking on the item results
             // in toggling the 'selected' checkbox.
             setSelected(message, !message.selected);
-            return;
+            return true;
         }
         else
         {
             onOpenMessage(message);
-            return;
+            return true;
         }
     }
 
@@ -534,14 +540,14 @@ public class MessageList
             return;
         }
 
-        int pos = mState.getInt(EXTRA_LIST_POSITION, ListView.INVALID_POSITION);
+        int pos = mState.getInt(EXTRA_LIST_POSITION, AdapterView.INVALID_POSITION);
 
         if (pos >= mListView.getCount())
         {
             pos = mListView.getCount() - 1;
         }
 
-        if (pos == ListView.INVALID_POSITION)
+        if (pos == AdapterView.INVALID_POSITION)
         {
             mListView.setSelected(false);
         }
@@ -597,12 +603,13 @@ public class MessageList
         requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.message_list);
 
-        mListView = (ListView) findViewById(R.id.message_list);
+        mListView = (ExpandableListView) findViewById(R.id.message_list);
         mListView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(true);
-        mListView.setOnItemClickListener(this);
+        mListView.setOnChildClickListener(this);
+        mListView.setOnGroupClickListener(this);
 
         registerForContextMenu(mListView);
 
@@ -738,7 +745,12 @@ public class MessageList
         {
             if (position >= 0)
             {
-                MessageInfoHolder message = mAdapter.getItem(position).getMessages().get(0).getTag();
+                final Object item = mListView.getItemAtPosition(position);
+                if (!(item instanceof MessageInfoHolder))
+                {
+                    return false;
+                }
+                MessageInfoHolder message = (MessageInfoHolder) item;
 
                 if (message != null)
                 {
@@ -746,7 +758,7 @@ public class MessageList
                     {
                         case KeyEvent.KEYCODE_DEL:
                         {
-                            onDelete(message, position);
+                            onDelete(message);
                             return true;
                         }
                         case KeyEvent.KEYCODE_S:
@@ -756,7 +768,7 @@ public class MessageList
                         }
                         case KeyEvent.KEYCODE_D:
                         {
-                            onDelete(message, position);
+                            onDelete(message);
                             return true;
                         }
                         case KeyEvent.KEYCODE_F:
@@ -947,7 +959,7 @@ public class MessageList
         reSort();
     }
 
-    private void onDelete(MessageInfoHolder holder, int position)
+    private void onDelete(MessageInfoHolder holder)
     {
         mAdapter.removeMessage(holder);
         mController.deleteMessages(new Message[] { holder.message }, null);
@@ -1513,13 +1525,12 @@ public class MessageList
     @Override
     public boolean onContextItemSelected(MenuItem item)
     {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         MessageInfoHolder holder = mSelectedMessage;
         // don't need this anymore
         mSelectedMessage = null;
         if (holder == null)
         {
-            holder = (MessageInfoHolder) mAdapter.getItem(info.position);
+            holder = getMessage(item.getMenuInfo());
         }
 
         switch (item.getItemId())
@@ -1541,7 +1552,7 @@ public class MessageList
             }
             case R.id.delete:
             {
-                onDelete(holder, info.position);
+                onDelete(holder);
                 break;
             }
             case R.id.reply:
@@ -1651,14 +1662,17 @@ public class MessageList
 
                 if (position != AdapterView.INVALID_POSITION)
                 {
-                    MessageInfoHolder msgInfoHolder = mAdapter.getItem(position).getMessages().get(0).getTag();
+                    final Object item = mListView.getItemAtPosition(position);
+                    if (item instanceof MessageInfoHolder) {
+                        MessageInfoHolder msgInfoHolder = (MessageInfoHolder) item;
 
-                    if (msgInfoHolder != null && msgInfoHolder.selected != selected)
-                    {
-                        msgInfoHolder.selected = selected;
-                        mSelectedCount += (selected ? 1 : -1);
-                        mAdapter.notifyDataSetChanged();
-                        toggleBatchButtons();
+                        if (msgInfoHolder != null && msgInfoHolder.selected != selected)
+                        {
+                            msgInfoHolder.selected = selected;
+                            mSelectedCount += (selected ? 1 : -1);
+                            mAdapter.notifyDataSetChanged();
+                            toggleBatchButtons();
+                        }
                     }
                 }
             }
@@ -1672,8 +1686,7 @@ public class MessageList
     {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
+        MessageInfoHolder message = getMessage(menuInfo);
         // remember which message was originally selected, in case the list changes while the
         // dialog is up
         mSelectedMessage = message;
@@ -1731,7 +1744,35 @@ public class MessageList
         }
     }
 
-    class MessageListAdapter extends BaseAdapter
+    /**
+     * @param menuInfo
+     * @return
+     */
+    private MessageInfoHolder getMessage(ContextMenuInfo menuInfo)
+    {
+        if (menuInfo instanceof ExpandableListView.ExpandableListContextMenuInfo)
+        {
+            final ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
+            final int packedPositionType = ExpandableListView.getPackedPositionType(info.packedPosition);
+            MessageInfoHolder message = null;
+            if (packedPositionType == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
+            {
+                // message
+                final int packedPositionChild = ExpandableListView.getPackedPositionChild(info.packedPosition);
+                final int packedPositionGroup = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+                message = mAdapter.getChild(packedPositionGroup, packedPositionChild);
+            }
+            return message;
+        }
+//        else if (menuInfo instanceof AdapterView.AdapterContextMenuInfo)
+//        {
+//            final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+//            MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
+//        }
+        return null;
+    }
+
+    class MessageListAdapter extends BaseExpandableListAdapter
     {
         private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
@@ -2290,80 +2331,84 @@ public class MessageList
 
         private static final int NON_MESSAGE_ITEMS = 1;
 
-        private final OnClickListener flagClickListener = new OnClickListener()
+        private final ExpandableListView.OnChildClickListener flagClickListener = new ExpandableListView.OnChildClickListener()
         {
-            public void onClick(View v)
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+                    int childPosition, long id)
             {
+                if (v.getId() != R.id.flag)
+                {
+                    return false;
+                }
                 // Perform action on clicks
-                MessageInfoHolder message = (MessageInfoHolder) getItem((Integer)v.getTag());
+                MessageInfoHolder message = getChild(groupPosition, childPosition);
                 onToggleFlag(message);
+                return true;
             }
         };
 
-        @Override
-        public int getCount()
-        {
-            return groups.size() + NON_MESSAGE_ITEMS;
-        }
+//        @Override
+//        public int getCount()
+//        {
+//            return groups.size() + NON_MESSAGE_ITEMS;
+//        }
 
-        @Override
-        public long getItemId(int position)
-        {
-            try
-            {
-                // FIXME
-                MessageInfoHolder messageHolder = getItem(position).getMessages().get(0).getTag();
-                if (messageHolder != null)
-                {
-                    return ((LocalStore.LocalMessage)  messageHolder.message).getId();
-                }
-            }
-            catch (Exception e)
-            {
-                Log.i(K9.LOG_TAG,"getItemId("+position+") ",e);
-            }
-            return -1;
-        }
+//        @Override
+//        public long getItemId(int position)
+//        {
+//            try
+//            {
+//                // FIXME
+//                MessageInfoHolder messageHolder = getItem(position).getMessages().get(0).getTag();
+//                if (messageHolder != null)
+//                {
+//                    return ((LocalStore.LocalMessage)  messageHolder.message).getId();
+//                }
+//            }
+//            catch (Exception e)
+//            {
+//                Log.i(K9.LOG_TAG,"getItemId("+position+") ",e);
+//            }
+//            return -1;
+//        }
 
-        @Override
-        public MessageGroup<MessageInfoHolder> getItem(int position)
-        {
-            try
-            {
-                synchronized (groups)
-                {
-                    if (position < groups.size())
-                    {
-                        return groups.get(position);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "getItem(" + position + "), but groups.size() = " + groups.size(), e);
-            }
-            return null;
-        }
+//        @Override
+//        public MessageGroup<MessageInfoHolder> getItem(int position)
+//        {
+//            try
+//            {
+//                synchronized (groups)
+//                {
+//                    if (position < groups.size())
+//                    {
+//                        return groups.get(position);
+//                    }
+//                }
+//            }
+//            catch (Exception e)
+//            {
+//                Log.e(K9.LOG_TAG, "getItem(" + position + "), but groups.size() = " + groups.size(), e);
+//            }
+//            return null;
+//        }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent)
+//        {
+//
+//            if (position == groups.size())
+//            {
+//                return getFooterView(position, convertView, parent);
+//            }
+//            else
+//            {
+//                return getItemView(position, convertView, parent);
+//            }
+//        }
 
-            if (position == groups.size())
-            {
-                return getFooterView(position, convertView, parent);
-            }
-            else
-            {
-                return getItemView(position, convertView, parent);
-            }
-        }
-
-        private View getItemView(int position, View convertView, ViewGroup parent)
+        private View getItemView(int groupPosition, int position, View convertView, ViewGroup parent)
         {
-            final MessageGroup<MessageInfoHolder> messageGroup = getItem(position);
-            final MessageInfo<MessageInfoHolder> messageInfo = messageGroup.getMessages().get(0);
-            MessageInfoHolder message = (MessageInfoHolder) messageInfo.getTag();
+            MessageInfoHolder message = getChild(groupPosition, position);
             View view;
 
             if ((convertView != null) && (convertView.getId() == R.layout.message_list_item))
@@ -2397,7 +2442,7 @@ public class MessageList
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
 
-                holder.flagged.setOnClickListener(flagClickListener);
+//                holder.flagged.setOnClickListener(flagClickListener);
 
                 if (mStars == false)
                 {
@@ -2419,7 +2464,7 @@ public class MessageList
 
             if (message != null)
             {
-                bindView(position, view, holder, message);
+                bindView(groupPosition, position, view, holder, message);
             }
             else
             {
@@ -2446,6 +2491,7 @@ public class MessageList
                 //WARNING: Order of the next 2 lines matter
                 holder.position = -1;
                 holder.selected.setChecked(false);
+                holder.groupPosition = -1;
 
                 if (!mCheckboxes)
                 {
@@ -2471,7 +2517,7 @@ public class MessageList
 
         /**
          * Associate model data to view object.
-         * 
+         * @param groupPosition TODO
          * @param position
          *            The position of the item within the adapter's data set of
          *            the item whose view we want.
@@ -2483,8 +2529,8 @@ public class MessageList
          * @param message
          *            Never <code>null</code>.
          */
-        private void bindView(final int position, final View view, final MessageViewHolder holder,
-                final MessageInfoHolder message)
+        private void bindView(int groupPosition, final int position, final View view,
+                final MessageViewHolder holder, final MessageInfoHolder message)
         {
             holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 
@@ -2496,6 +2542,7 @@ public class MessageList
             // when a user checks the checkbox (vs code)
             holder.position = -1;
             holder.selected.setChecked(message.selected);
+            holder.groupPosition = -1;
 
             if (!mCheckboxes)
             {
@@ -2513,7 +2560,7 @@ public class MessageList
             else
             {
                 // FIXME
-                holder.subject.setText(MessageFormat.format("({0}) {1}", message.group.getMessages().size(), message.subject));
+                holder.subject.setText(message.subject);
             }
 
             if (holder.preview != null)
@@ -2555,6 +2602,7 @@ public class MessageList
                 message.hasAttachments ? mAttachmentIcon : null, // right
                 null); // bottom
             holder.position = position;
+            holder.groupPosition = position;
         }
 
         public View getFooterView(int position, View convertView, ViewGroup parent)
@@ -2620,6 +2668,119 @@ public class MessageList
             {
                 return false;
             }
+        }
+
+
+        @Override
+        public int getGroupCount()
+        {
+            return groups.size() + NON_MESSAGE_ITEMS;
+        }
+
+
+        @Override
+        public int getChildrenCount(int groupPosition)
+        {
+            if (groupPosition < groups.size())
+            {
+                return getGroup(groupPosition).getMessages().size();
+            }
+            // (fake) last element should have no children
+            return 0;
+        }
+
+
+        @Override
+        public MessageGroup<MessageInfoHolder> getGroup(int groupPosition)
+        {
+            if (groupPosition < groups.size())
+            {
+                return groups.get(groupPosition);
+            }
+            // (fake) last element isn't a group
+            return null;
+        }
+
+
+        @Override
+        public MessageInfoHolder getChild(int groupPosition, int childPosition)
+        {
+            final MessageGroup<MessageInfoHolder> group = getGroup(groupPosition);
+            if (group == null)
+            {
+                return null;
+            }
+            return group.getMessages().get(childPosition).getTag();
+        }
+
+
+        @Override
+        public long getGroupId(int groupPosition)
+        {
+            return Integer.valueOf(groupPosition).longValue();
+        }
+
+
+        @Override
+        public long getChildId(int groupPosition, int childPosition)
+        {
+            return ((LocalMessage) getChild(groupPosition, childPosition).message).getId();
+        }
+
+
+        @Override
+        public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
+                ViewGroup parent)
+        {
+            if (groupPosition < groups.size())
+            {
+                return getMessageGroupView(groupPosition, isExpanded, convertView, parent);
+            }
+            else
+            {
+                return getFooterView(groupPosition, convertView, parent);
+            }
+        }
+
+
+        private View getMessageGroupView(int groupPosition, boolean isExpanded, View convertView,
+                ViewGroup parent)
+        {
+            final MessageGroup<MessageInfoHolder> group = getGroup(groupPosition);
+            final View view;
+            if (convertView == null || R.layout.message_list_group_header != convertView.getId())
+            {
+                // create new view
+                view = getLayoutInflater().inflate(R.layout.message_list_group_header, parent, false);
+            }
+            else
+            {
+                // reuse view
+                view = convertView;
+            }
+            final TextView subjectView = (TextView) view.findViewById(R.id.subject);
+            final TextView fromView = (TextView) view.findViewById(R.id.from);
+            final TextView dateView = (TextView) view.findViewById(R.id.date);
+            
+            subjectView.setText(MessageFormat.format("({0}) {1}",
+                    Integer.toString(group.getMessages().size()), group.getSubject()));
+
+            return view;
+        }
+
+
+        @Override
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+                View convertView, ViewGroup parent)
+        {
+            return getItemView(groupPosition, childPosition, convertView, parent);
+        }
+
+
+        @Override
+        public boolean isChildSelectable(int groupPosition, int childPosition)
+        {
+            return true;
         }
 
     }
@@ -2832,13 +2993,14 @@ public class MessageList
         public View chip;
         public CheckBox selected;
         public int position = -1;
+        private int groupPosition = -1;
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
         {
             if (position!=-1)
             {
-                MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(position);
+                MessageInfoHolder message = mAdapter.getChild(position, groupPosition);
                 if (message.selected!=isChecked)
                 {
                     if (isChecked)

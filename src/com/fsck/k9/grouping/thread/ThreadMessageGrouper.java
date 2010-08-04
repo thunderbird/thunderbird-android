@@ -51,7 +51,9 @@ public class ThreadMessageGrouper implements MessageGrouper
         for (Container<T> root = firstRoot; root != null; root = root.getNext())
         {
             final SimpleMessageGroup<T> messageGroup = new SimpleMessageGroup<T>();
-            messageGroup.setMessages(toList(root, false));
+            final List<MessageInfo<T>> messages = toList(root, false);
+            messageGroup.setMessages(messages);
+            messageGroup.setSubject(messages.get(0).getSubject());
             result.add(messageGroup);
         }
         return result;
