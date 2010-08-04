@@ -21,8 +21,10 @@ import com.fsck.k9.grouping.MessageInfo;
 public class Threader
 {
 
+    private static final String EMPTY_SUBJECT = "";
+
     private static final Pattern RESPONSE_PATTERN = Pattern.compile(
-            "^(Re|Fw|Fwd|Aw)(\\[\\d+\\])? *: *", Pattern.CASE_INSENSITIVE);
+            "^((Re|Fw|Fwd|Aw)(\\[\\d+\\])? *: *)*", Pattern.CASE_INSENSITIVE);
 
     /**
      * @param <T>
@@ -76,7 +78,7 @@ public class Threader
         for (Container<T> root = node; root != null; root = root.getNext())
         {
             // Find the subject of that sub-tree:
-            final String subject = findSubject(root, true);
+            final String subject = extractSubject(root, true);
 
             if (subject.length() == 0)
             {
@@ -98,8 +100,8 @@ public class Threader
                 // table instead.
                 subjectTable.put(subject, root);
             }
-            else if (findSubject(previous, false).length() > subject.length()
-                    && subject.equals(findSubject(root, false)))
+            else if (extractSubject(previous, false).length() > subject.length()
+                    && subject.equals(extractSubject(root, false)))
             {
                 // The container in the table has a ``Re:'' version of this
                 // subject, and this container has a non-``Re:'' version of this
@@ -122,7 +124,7 @@ public class Threader
             next = root.getNext();
 
             // Find the subject of this Container (as above.)
-            final String subject = findSubject(root, true);
+            final String subject = extractSubject(root, true);
 
             // Look up the Container of that subject in the table.
             final Container<T> match = subjectTable.get(subject);
@@ -215,7 +217,7 @@ public class Threader
      * @return
      * @throws PatternSyntaxException
      */
-    private <T> String findSubject(Container<T> container, final boolean strip)
+    private <T> String extractSubject(Container<T> container, final boolean strip)
             throws PatternSyntaxException
     {
         String subject;
@@ -230,7 +232,9 @@ public class Threader
             // If there is no message in the Container, then the Container
             // will have at least one child Container, and that Container
             // will have a message. Use the subject of that message instead.
-            subject = container.getChild().getMessage().getSubject();
+
+            subject = findChildSubject(container);
+
         }
 
         if (strip)
@@ -239,6 +243,49 @@ public class Threader
             subject = stripSubject(subject);
         }
 
+        return subject;
+    }
+
+    /**
+     * Find a subject in the child hierarchy. If no subject is found, an empty
+     * String is returned. Walking through (siblings then children) the child
+     * hierarchy is done until a non-empty String is found or if the end of the
+     * hierarchy is reached.
+     * 
+     * @param <T>
+     * @param container
+     *            Never <code>null</code>
+     * @return Found subject, or an empty String if not found
+     */
+    private <T> String findChildSubject(final Container<T> container)
+    {
+        String subject = EMPTY_SUBJECT;
+        // since we are reparenting empty containers, the first child does not
+        // necessarly contain a message, looping
+
+        // siblings first
+        for (Container<T> child = container.getChild(); child != null; child = child.getNext())
+        {
+            final MessageInfo<T> childMessage = child.getMessage();
+            if (childMessage != null)
+            {
+                subject = childMessage.getSubject();
+                break;
+            }
+        }
+
+        if (EMPTY_SUBJECT.equals(subject))
+        {
+            // if siblings unsuccessful, going deeper
+            for (Container<T> child = container.getChild(); child != null; child = child.getNext())
+            {
+                subject = findChildSubject(child);
+                if (!EMPTY_SUBJECT.equals(subject))
+                {
+                    break;
+                }
+            }
+        }
         return subject;
     }
 
