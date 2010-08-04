@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +17,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -56,7 +57,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
-import com.fsck.k9.activity.MessageList.MessageInfoHolder;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
@@ -67,6 +67,7 @@ import com.fsck.k9.grouping.MessageGroup;
 import com.fsck.k9.grouping.MessageGrouper;
 import com.fsck.k9.grouping.MessageInfo;
 import com.fsck.k9.grouping.thread.ThreadMessageGrouper;
+import com.fsck.k9.helper.UiThrottler;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -1994,96 +1995,148 @@ public class MessageList
 
         private MessageGrouper messageGrouper = new ThreadMessageGrouper();
 
-        MessageListAdapter()
+        private UiThrottler<Void> throttler;
+
+        private MessageListAdapter()
         {
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_mms_attachment_small);
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
 
-            registerDataSetObserver(new DataSetObserver()
+            throttler = new UiThrottler<Void>(MessageList.this, new Callable<Void>()
             {
                 @Override
-                public synchronized void onChanged()
+                public Void call()
                 {
-                    final List<MessageInfo<MessageInfoHolder>> toGroup = new ArrayList<MessageInfo<MessageInfoHolder>>(
-                            messages.size());
-                    synchronized (messages)
-                    {
-                        for (final MessageInfoHolder holder : messages)
-                        {
-                            final MessageInfo<MessageInfoHolder> messageInfo = new MessageInfo<MessageInfoHolder>();
-                            final Message message = holder.message;
-                            try
-                            {
-                                messageInfo.setId(message.getMessageId());
-                                final String[] references = message.getReferences();
-                                if (references != null)
-                                {
-                                    messageInfo.getReferences().addAll(getReferences(references));
-                                }
-                                final String[] inReplyTo = message.getHeader("In-Reply-To");
-                                if (inReplyTo != null && inReplyTo.length > 0)
-                                {
-                                    messageInfo.getReferences().add(inReplyTo[0]);
-                                }
-                            }
-                            catch (MessagingException e)
-                            {
-                                // should not happen?
-                                Log.w(K9.LOG_TAG, "Unable to retrieve header from "
-                                        + message, e);
-                                continue;
-                            }
-                            messageInfo.setDate(holder.compareDate);
-                            messageInfo.setSubject(holder.subject);
-
-                            messageInfo.setTag(holder);
-
-                            toGroup.add(messageInfo);
-                        }
-                    }
-                    final List<MessageGroup<MessageInfoHolder>> messageGroups = messageGrouper
-                            .group(toGroup);
-
-                    groups.clear();
-                    groups.addAll(messageGroups);
-
-                    for (MessageGroup<MessageInfoHolder> messageGroup : messageGroups)
-                    {
-                        final List<MessageInfo<MessageInfoHolder>> groupMessages = messageGroup.getMessages();
-                        final MessageInfoHolder holder = groupMessages.get(0).getTag();
-                        // FIXME (circular reference)
-                        holder.group = messageGroup;
-                    }
-
-                    // TODO: sort group messages?
+                    synchronizeGroups();
+                    return null;
                 }
-
-                private final Pattern splitter = Pattern.compile("\\s");
-                /**
-                 * @param references
-                 * @return
-                 */
-                private List<String> getReferences(final String[] references)
+            }, Executors.newScheduledThreadPool(1));
+            throttler.setCoolDownDuration(200L);
+            throttler.setPostExecute(new Runnable()
+            {
+                @Override
+                public void run()
                 {
-                    final List<String> result = new ArrayList<String>();
-                    for (final String reference : references)
-                    {
-                        List<String> split = Arrays.asList(splitter.split(reference));
-                        result.addAll(split);
-                    }
-                    for (final Iterator<String> iterator = result.iterator(); iterator.hasNext();)
-                    {
-                        String string = iterator.next();
-                        if (string.length() == 0)
-                        {
-                            iterator.remove();
-                        }
-                    }
-                    return result;
+                    doNotifyDataSetChanged();
                 }
             });
         }
 
+
+        /**
+         * Override the regular notifyDataSetChanged() method so that we can
+         * throttle message list updates, regardless of how fast/repeatly we
+         * call this method.
+         * 
+         * <p>
+         * This prevent any computation from being a CPU-hog.
+         * </p>
+         * 
+         * <p>
+         * If you NEED to trigger immediate UI update, please use
+         * {@link #doNotifyDataSetChanged()}
+         * </p>
+         * 
+         * {@inheritDoc}
+         */
+        @Override
+        public void notifyDataSetChanged()
+        {
+            // buffer dataset update otherwise we might get continous CPU
+            // processing in case of repeated call!
+            throttler.attempt();
+        }
+
+        /**
+         * Actual (non-throttled) call to the regular
+         * {@link BaseAdapter#notifyDataSetChanged()}
+         */
+        public void doNotifyDataSetChanged()
+        {
+            super.notifyDataSetChanged();
+        }
+
+        /**
+         * 
+         */
+        private void synchronizeGroups()
+        {
+            final List<MessageInfo<MessageInfoHolder>> toGroup = new ArrayList<MessageInfo<MessageInfoHolder>>(
+                    messages.size());
+            synchronized (messages)
+            {
+                for (final MessageInfoHolder holder : messages)
+                {
+                    final MessageInfo<MessageInfoHolder> messageInfo = new MessageInfo<MessageInfoHolder>();
+                    final Message message = holder.message;
+                    try
+                    {
+                        messageInfo.setId(message.getMessageId());
+                        final String[] references = message.getReferences();
+                        if (references != null)
+                        {
+                            messageInfo.getReferences().addAll(getReferences(references));
+                        }
+                        final String[] inReplyTo = message.getHeader("In-Reply-To");
+                        if (inReplyTo != null && inReplyTo.length > 0)
+                        {
+                            messageInfo.getReferences().add(inReplyTo[0]);
+                        }
+                    }
+                    catch (MessagingException e)
+                    {
+                        // should not happen?
+                        Log.w(K9.LOG_TAG, "Unable to retrieve header from "
+                                + message, e);
+                        continue;
+                    }
+                    messageInfo.setDate(holder.compareDate);
+                    messageInfo.setSubject(holder.subject);
+
+                    messageInfo.setTag(holder);
+
+                    toGroup.add(messageInfo);
+                }
+            }
+            final List<MessageGroup<MessageInfoHolder>> messageGroups = messageGrouper
+                    .group(toGroup);
+
+            groups.clear();
+            groups.addAll(messageGroups);
+
+            for (MessageGroup<MessageInfoHolder> messageGroup : messageGroups)
+            {
+                final List<MessageInfo<MessageInfoHolder>> groupMessages = messageGroup.getMessages();
+                final MessageInfoHolder holder = groupMessages.get(0).getTag();
+                // FIXME (circular reference)
+                holder.group = messageGroup;
+            }
+
+            // TODO: sort group messages?
+        }
+        private final Pattern splitter = Pattern.compile("\\s");
+        /**
+         * @param references
+         * @return
+         */
+        private List<String> getReferences(final String[] references)
+        {
+            final List<String> result = new ArrayList<String>();
+            for (final String reference : references)
+            {
+                List<String> split = Arrays.asList(splitter.split(reference));
+                result.addAll(split);
+            }
+            for (final Iterator<String> iterator = result.iterator(); iterator.hasNext();)
+            {
+                String string = iterator.next();
+                if (string.length() == 0)
+                {
+                    iterator.remove();
+                }
+            }
+            return result;
+        }
         public void removeMessages(List<MessageInfoHolder> holders)
         {
             if (holders != null)
@@ -2568,6 +2621,7 @@ public class MessageList
                 return false;
             }
         }
+
     }
 
     public class MessageInfoHolder implements Comparable<MessageInfoHolder>
