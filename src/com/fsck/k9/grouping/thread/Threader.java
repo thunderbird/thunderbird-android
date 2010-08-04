@@ -1,18 +1,33 @@
 package com.fsck.k9.grouping.thread;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
+import android.util.Log;
+
+import com.fsck.k9.K9;
 import com.fsck.k9.grouping.MessageInfo;
 
+/**
+ * <a href="http://www.jwz.org/doc/threading.html">Jamie Zawinski's message
+ * threading algorithm</a> implementation.
+ */
 public class Threader
 {
+
+    private static final Pattern RESPONSE_PATTERN = Pattern.compile(
+            "^(Re|Fw|Fwd|Aw)(\\[\\d+\\])? *: *", Pattern.CASE_INSENSITIVE);
 
     /**
      * @param <T>
      * @param messages
+     *            Never <code>null</code>.
      * @return First root or <code>null</code> if <tt>messages</tt> is empty.
      */
     public <T> Container<T> thread(final Collection<MessageInfo<T>> messages)
@@ -34,12 +49,220 @@ public class Threader
         // 4. Prune empty containers.
         final Container<T> fakeRoot = new Container<T>();
         addChild(fakeRoot, firstRoot);
-
         pruneEmptyContainer(null, fakeRoot, fakeRoot);
+
+        // 5. Group root set by subject.
+        groupRootBySubject(fakeRoot.getChild());
 
         return fakeRoot.getChild();
 
-        // TODO 5. Group root set by subject.
+    }
+
+    /**
+     * If any two members of the root set have the same subject, merge them.
+     * This is so that messages which don't have References headers at all still
+     * get threaded (to the extent possible, at least.)
+     * 
+     * @param <T>
+     * @param node
+     */
+    private <T> void groupRootBySubject(final Container<T> node)
+    {
+        // A. Construct a new hash table, subject_table, which associates
+        // subject strings with Container objects.
+        final Map<String, Container<T>> subjectTable = new HashMap<String, Container<T>>();
+
+        // B. For each Container in the root set:
+        for (Container<T> root = node; root != null; root = root.getNext())
+        {
+            // Find the subject of that sub-tree:
+            final String subject = findSubject(root, true);
+
+            if (subject.length() == 0)
+            {
+                // If the subject is now "", give up on this Container.
+                continue;
+            }
+
+            // Add this Container to the subject_table if:
+            final Container<T> previous = subjectTable.get(subject);
+            if (previous == null)
+            {
+                // There is no container in the table with this subject, or
+                subjectTable.put(subject, root);
+            }
+            else if (root.getMessage() == null && previous.getMessage() != null)
+            {
+                // This one is an empty container and the old one is not: the
+                // empty one is more interesting as a root, so put it in the
+                // table instead.
+                subjectTable.put(subject, root);
+            }
+            else if (findSubject(previous, false).length() > subject.length()
+                    && subject.equals(findSubject(root, false)))
+            {
+                // The container in the table has a ``Re:'' version of this
+                // subject, and this container has a non-``Re:'' version of this
+                // subject. The non-re version is the more interesting of the
+                // two.
+                subjectTable.put(subject, root);
+            }
+        }
+
+        // C. Now the subject_table is populated with one entry for each subject
+        // which occurs in the root set. Now iterate over the root set, and
+        // gather together the difference.
+
+        Container<T> next;
+        // For each Container in the root set:
+        for (Container<T> root = node; root != null; root = next)
+        {
+            // saving next now since current root might be removed from
+            // siblings!
+            next = root.getNext();
+
+            // Find the subject of this Container (as above.)
+            final String subject = findSubject(root, true);
+
+            // Look up the Container of that subject in the table.
+            final Container<T> match = subjectTable.get(subject);
+
+            if (match == null || match == root)
+            {
+                // If it is null, or if it is this container, continue.
+                continue;
+            }
+
+            // Otherwise, we want to group together this Container and the one
+            // in the table. There are a few possibilities:
+
+            final MessageInfo<T> thisMessage = root.getMessage();
+            final MessageInfo<T> thatMessage = match.getMessage();
+            final boolean thisEmpty = thisMessage == null;
+            final boolean thatEmpty = thatMessage == null;
+            if (thisEmpty && thatEmpty)
+            {
+                // If both are dummies, append one's children to the other, and
+                // remove the now-empty container.
+                addChild(root, match.getChild());
+                removeChild(match);
+            }
+            else if (thisEmpty ^ thatEmpty)
+            {
+                // If one container is a empty and the other is not, make the
+                // non-empty one be a child of the empty, and a sibling of the
+                // other ``real'' messages with the same subject (the empty's
+                // children.)
+                if (thisEmpty)
+                {
+                    removeChild(match);
+                    addChild(root, match);
+                }
+                else
+                {
+                    removeChild(root);
+                    addChild(match, root);
+                }
+            }
+            else
+            {
+                final boolean thatIsResponse = RESPONSE_PATTERN.matcher(thatMessage.getSubject())
+                        .find();
+                final boolean thisIsResponse = RESPONSE_PATTERN.matcher(thisMessage.getSubject())
+                        .find();
+                if (!thatEmpty && !thatIsResponse && thisIsResponse)
+                {
+                    // If that container is a non-empty, and that message's
+                    // subject does not begin with ``Re:'', but this message's
+                    // subject does, then make this be a child of the other.
+                    removeChild(root);
+                    addChild(match, root);
+                }
+                else if (!thatEmpty && thatIsResponse && !thisIsResponse)
+                {
+                    // If that container is a non-empty, and that message's
+                    // subject begins with ``Re:'', but this message's subject
+                    // does not, then make that be a child of this one -- they
+                    // were misordered. (This happens somewhat implicitly, since
+                    // if there are two messages, one with Re: and one without,
+                    // the one without will be in the hash table, regardless of
+                    // the order in which they were seen.)
+                    removeChild(match);
+                    addChild(root, match);
+                }
+                else
+                {
+                    // Otherwise, make a new empty container and make both msgs
+                    // be a child of it. This catches the both-are-replies and
+                    // neither-are-replies cases, and makes them be siblings
+                    // instead of asserting a hierarchical relationship which
+                    // might not be true.
+                    final Container<T> newParent = new Container<T>();
+                    spliceChild(match, newParent);
+                    addChild(newParent, match);
+                    removeChild(root);
+                    addChild(newParent, root);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param <T>
+     * @param container
+     * @param strip
+     *            TODO
+     * @return
+     * @throws PatternSyntaxException
+     */
+    private <T> String findSubject(Container<T> container, final boolean strip)
+            throws PatternSyntaxException
+    {
+        String subject;
+        if (container.getMessage() != null)
+        {
+            // If there is a message in the Container, the subject is the
+            // subject of that message.
+            subject = container.getMessage().getSubject();
+        }
+        else
+        {
+            // If there is no message in the Container, then the Container
+            // will have at least one child Container, and that Container
+            // will have a message. Use the subject of that message instead.
+            subject = container.getChild().getMessage().getSubject();
+        }
+
+        if (strip)
+        {
+            // Strip ``Re:'', ``RE:'', ``RE[5]:'', ``Re: Re[4]: Re:'' and so on.
+            subject = stripSubject(subject);
+        }
+
+        return subject;
+    }
+
+    /**
+     * @param subject
+     * @return TODO
+     * @throws PatternSyntaxException
+     */
+    private String stripSubject(final String subject) throws PatternSyntaxException
+    {
+        final Matcher matcher = RESPONSE_PATTERN.matcher(subject);
+        int lastPrefix = -1;
+        while (matcher.find())
+        {
+            lastPrefix = matcher.end();
+        }
+        if (lastPrefix > -1 && lastPrefix < subject.length() - 1)
+        {
+            return subject.substring(lastPrefix);
+        }
+        else
+        {
+            return subject;
+        }
     }
 
     /**
@@ -54,6 +277,10 @@ public class Threader
      */
     public static <T> int count(final Container<T> node, final int count, final boolean countEmpty)
     {
+        if (node == null)
+        {
+            return 0;
+        }
         int i = 0;
         if (countEmpty || node.getMessage() != null)
         {
@@ -180,7 +407,8 @@ public class Threader
      * 
      * @param <T>
      * @param containers
-     * @return
+     * @return First found root having no parent, as a linked list.
+     *         <code>null</code> if none found.
      */
     private <T> Container<T> findRoot(final Map<String, Container<T>> containers)
     {
@@ -216,7 +444,7 @@ public class Threader
      *            The node to remove from its parent/sibling list and eventually
      *            replaced with its children
      * @param root
-     *            TODO
+     *            Hierarchy root
      */
     private <T> void pruneEmptyContainer(final Container<T> previous, final Container<T> container,
             final Container<T> root)
@@ -249,7 +477,7 @@ public class Threader
                 {
                     // not a root node OR only 1 child
 
-                    spliceChild(previous, container, child);
+                    spliceChild(container, child);
                     removed = true;
                     promoted = true;
                 }
@@ -290,6 +518,8 @@ public class Threader
      */
     private <T> void addChild(final Container<T> parent, final Container<T> child)
     {
+        final Map<Container<T>, Boolean> currentChildren = new IdentityHashMap<Container<T>, Boolean>();
+
         Container<T> sibling;
         if ((sibling = parent.getChild()) == null)
         {
@@ -301,6 +531,7 @@ public class Threader
             // at least one child, advancing
             while (sibling.getNext() != null)
             {
+                currentChildren.put(sibling, Boolean.TRUE);
                 sibling = sibling.getNext();
             }
             // last child, adding new sibling
@@ -343,6 +574,20 @@ public class Threader
 
             // old parent was verified, replacing
             newSibling.setParent(parent);
+
+            currentChildren.put(newSibling, Boolean.TRUE);
+            if (currentChildren.containsKey(newSibling.getNext()))
+            {
+                // circular reference detected!
+                if (K9.DEBUG && Log.isLoggable(K9.LOG_TAG, Log.WARN))
+                {
+                    Log.w(K9.LOG_TAG, MessageFormat.format(
+                            "Circular reference detected on {0} / parent: {1} / next: {2}",
+                            newSibling, newSibling.getParent(), newSibling.getNext()));
+                }
+                newSibling.setNext(null);
+                break;
+            }
         }
     }
 
@@ -351,8 +596,8 @@ public class Threader
      * removed node.
      * 
      * <p>
-     * As a consistency measure following siblings removed child will get their
-     * {@link Container#setParent(Container) parent} updated.
+     * As a consistency measure following siblings of the removed child will get
+     * their {@link Container#setParent(Container) parent} updated.
      * </p>
      * 
      * @param <T>
@@ -403,37 +648,52 @@ public class Threader
      * </p>
      * 
      * @param <T>
-     * @param prevSibling
      * @param oldChild
      *            Node to remove. Never <code>null</code>.
      * @param newChild
      *            Node to insert. Never <code>null</code>.
      */
-    private <T> void spliceChild(final Container<T> prevSibling, final Container<T> oldChild,
-            final Container<T> newChild)
+    private <T> void spliceChild(final Container<T> oldChild, final Container<T> newChild)
     {
         final Container<T> parent = oldChild.getParent();
-        if (prevSibling == null)
+        // final Container<T> oldNext = oldChild.getNext();
+        // oldChild.setNext(null);
+        // removeChild(oldChild);
+        // addChild(parent, newChild);
+        // addChild(parent, oldNext);
+        Container<T> previous = null;
+        boolean found = false;
+        for (Container<T> sibling = parent.getChild(); sibling != null; sibling = sibling.getNext())
         {
-            if (parent != null)
+            if (sibling == oldChild)
             {
-                parent.setChild(newChild);
+                if (previous == null)
+                {
+                    parent.setChild(newChild);
+                }
+                else
+                {
+                    previous.setNext(newChild);
+                }
+                sibling = newChild;
+                found = true;
             }
+            if (found)
+            {
+                sibling.setParent(parent);
+                if (sibling.getNext() == null)
+                {
+                    sibling.setNext(oldChild.getNext());
+                    break;
+                }
+            }
+            previous = sibling;
         }
-        else
+        if (found)
         {
-            prevSibling.setNext(newChild);
+            oldChild.setNext(null);
+            oldChild.setParent(null);
         }
-        oldChild.setParent(null);
-        Container<T> lastSibling = null;
-        for (Container<T> sibling = newChild; sibling != null; sibling = sibling.getNext())
-        {
-            // update parent of newly inserted children
-            sibling.setParent(parent);
-            lastSibling = sibling;
-        }
-        lastSibling.setNext(oldChild.getNext());
-        oldChild.setNext(null);
     }
 
     /**
