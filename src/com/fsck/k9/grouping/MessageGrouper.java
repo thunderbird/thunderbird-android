@@ -11,8 +11,8 @@ public interface MessageGrouper
 
     /**
      * Given a message list, compute them into groups. Grouping logic is
-     * implementation-dependant.
-     * 
+     * implementation-dependent.
+     *
      * @param <T>
      * @param messages
      *            Never <code>null</code>.
