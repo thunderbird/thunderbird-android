@@ -2429,6 +2429,8 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             mCryptoSignatureLayout.setVisibility(View.VISIBLE);
             mDecryptLayout.setVisibility(View.VISIBLE);
+        } else {
+            mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
         }
 
         if (!true || ((mMessage == null) && (mCrypto.getDecryptedData() == null)))
