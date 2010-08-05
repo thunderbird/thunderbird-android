@@ -2,19 +2,28 @@ package com.fsck.k9.helper;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.fsck.k9.K9;
+
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 
 /**
  * Helper class to manage UI interation throttling in order not to stress the UI
  * thread with fast and repeated update requests. Throttling is achieved by
  * <strong>ignoring</strong> extra processing attemps: there is no stack
- * involved and will result in less processing executions than initially
+ * involved and may result in less processing executions than initially
  * attempted.
+ * 
+ * <p>
+ * The last attempt will always trigger an immediate or delayed processing
+ * execution (unless Executor service is shutdown).
+ * </p>
  * 
  * <p>
  * A throttled action will only be executed after a cool-down sleep time which
@@ -79,8 +88,19 @@ public class UiThrottler<Result>
             // back on UI thread, can do the actual dataset update
             postExecute.run();
 
-            // trigger cool-down
-            scheduledExecutorService.schedule(coolDown, coolDownDuration, TimeUnit.MILLISECONDS);
+            try
+            {
+                // trigger cool-down
+                scheduledExecutorService
+                        .schedule(coolDown, coolDownDuration, TimeUnit.MILLISECONDS);
+            }
+            catch (RejectedExecutionException e)
+            {
+                // happens when executor service is shut down before processing completes
+                Log.v(K9.LOG_TAG,
+                        "UiThrottler: Caller must have shut down Executor during processing (happens when integrating with Activity lifecycle). Stopping cool-down and ignoring any potential pending process.",
+                        e);
+            }
         }
 
         @Override
@@ -114,6 +134,7 @@ public class UiThrottler<Result>
         @Override
         public void run()
         {
+            // we're in the UI thread
             attempt();
         }
     };
