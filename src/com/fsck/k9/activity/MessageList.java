@@ -20,6 +20,9 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.text.style.TextAppearanceSpan;
 import android.util.Config;
 import android.util.Log;
@@ -2800,7 +2803,49 @@ public class MessageList
             subjectView.setText(group.getSubject());
             subjectView
                     .setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
-            countView.setText(Integer.toString(group.getMessages().size()));
+
+            int unreadCount = 0;
+            for (final MessageInfo<MessageInfoHolder> messageInfo : group.getMessages())
+            {
+                if (!messageInfo.getTag().read)
+                {
+                    unreadCount++;
+                }
+            }
+            final int count = group.getMessages().size();
+            if (unreadCount == 0)
+            {
+                // all read
+                subjectView.setTypeface(null, Typeface.NORMAL);
+                countView.setText(Integer.toString(count));
+                countView.setTypeface(null, Typeface.NORMAL);
+            }
+            else
+            {
+                // at least 1 unread
+
+                subjectView.setTypeface(null, Typeface.BOLD);
+
+                if (unreadCount == count)
+                {
+                    // none read
+                    countView.setText(Integer.toString(count));
+                    countView.setTypeface(null, Typeface.BOLD);
+                }
+                else
+                {
+                    // mixed
+                    final String unreadString = Integer.toString(unreadCount);
+                    final String totalString = Integer.toString(count);
+
+                    final Spannable spannableStringBuilder = new SpannableStringBuilder(
+                            unreadString + '/' + totalString);
+                    spannableStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0,
+                            unreadString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    countView.setText(spannableStringBuilder);
+                }
+            }
 
             return view;
         }
