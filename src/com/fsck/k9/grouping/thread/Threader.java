@@ -29,7 +29,7 @@ public class Threader
      *            {@link MessageInfo} payload
      * @param <R>
      *            Result
-     * @see Threader#walkIterative(ContainerWalk, Container)
+     * @see Threader#walkIterative(ContainerWalk, Container, boolean)
      */
     public static interface ContainerWalk<T, R>
     {
@@ -45,8 +45,10 @@ public class Threader
          * Called for each node
          * 
          * @param node
+         * @return <code>true</code> if iteration should go on.
+         *         <code>false</code> if iteration should stop.
          */
-        void process(Container<T> node);
+        boolean process(Container<T> node);
 
         /**
          * Called once
@@ -74,22 +76,29 @@ public class Threader
      * @param <R>
      * @param walk
      * @param root
+     * @param followSiblings
+     *            If <code>true</code>, <tt>root</tt>'s siblings are walked
+     *            through.
      * @return Whatever the {@link ContainerWalk#result() walk} argument returns
      */
-    public static <T, R> R walkIterative(final ContainerWalk<T, R> walk, final Container<T> root)
+    public static <T, R> R walkIterative(final ContainerWalk<T, R> walk, final Container<T> root,
+            final boolean followSiblings)
     {
         walk.init(root);
 
         main: for (Container<T> current = root; current != null;)
         {
-            walk.process(current);
+            if (!walk.process(current))
+            {
+                break;
+            }
 
             if (current.getChild() != null)
             {
                 // deeper
                 current = current.getChild();
             }
-            else if (current != root && current.getNext() != null)
+            else if ((followSiblings || current != root) && current.getNext() != null)
             {
                 // siblings
                 current = current.getNext();
@@ -106,8 +115,8 @@ public class Threader
                         break;
                     }
                 }
-                // make sure we're not back at the root
-                if (current == root || current == null)
+                // make sure we're not back at the root (or if followSiblings is true, ignore root)
+                if ((!followSiblings && current == root) || current == null)
                 {
                     break main;
                 }
@@ -438,7 +447,8 @@ public class Threader
 
     /**
      * @param subject
-     * @return TODO
+     *            Never <code>null</code>.
+     * @return Never <code>null</code>.
      * @throws PatternSyntaxException
      */
     private String stripSubject(final String subject) throws PatternSyntaxException
@@ -612,12 +622,13 @@ public class Threader
             }
 
             @Override
-            public void process(final Container<T> node)
+            public boolean process(final Container<T> node)
             {
                 if (countEmpty || node.getMessage() != null)
                 {
                     count++;
                 }
+                return true;
             }
 
             @Override
@@ -631,7 +642,7 @@ public class Threader
             {
                 return count;
             }
-        }, root);
+        }, root, true);
     }
 
     /**

@@ -53,7 +53,10 @@ public class ThreadMessageGrouper implements MessageGrouper
         for (Container<T> root = firstRoot; root != null; root = root.getNext())
         {
             final MessageGroup<T> messageGroup = toMessageGroup(root);
-            result.add(messageGroup);
+            if (messageGroup != null)
+            {
+                result.add(messageGroup);
+            }
         }
         return result;
     }
@@ -62,12 +65,18 @@ public class ThreadMessageGrouper implements MessageGrouper
      * @param <T>
      * @param root
      *            Never <code>null</code>.
-     * @return Never <code>null</code>.
+     * @return <code>null</code> if the given branch didn't contain any
+     *         non-empty container (no message found).
      */
     protected <T> MessageGroup<T> toMessageGroup(final Container<T> root)
     {
         final SimpleMessageGroup<T> messageGroup = new SimpleMessageGroup<T>();
         final List<MessageInfo<T>> messages = convertToList(root); //toList(root, false);
+
+        if (messages.isEmpty())
+        {
+            return null;
+        }
 
         messageGroup.setMessages(messages);
 
@@ -142,13 +151,14 @@ public class ThreadMessageGrouper implements MessageGrouper
             }
 
             @Override
-            public void process(final Container<T> node)
+            public boolean process(final Container<T> node)
             {
                 final MessageInfo<T> message = node.getMessage();
                 if (message != null)
                 {
                     list.add(message);
                 }
+                return true;
             }
 
             @Override
@@ -162,7 +172,7 @@ public class ThreadMessageGrouper implements MessageGrouper
             {
                 return list;
             }
-        }, root);
+        }, root, false);
 
         //        main: for (Container<T> current = root; current != null;)
         //        {
