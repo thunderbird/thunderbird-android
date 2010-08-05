@@ -283,7 +283,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
 
     <string name="folder_push_active_symbol">(Push)</string>
 
-    <string name="find_action">Znajdź wiadomości</string>
     <string name="from_same_sender">Więcej od tego nadawcy</string>
 
     <string name="message_copied_toast">Wiadomość skopiowana</string>

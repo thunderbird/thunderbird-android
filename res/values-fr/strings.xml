@@ -154,7 +154,7 @@
   <string name="notification_new_one_account_unknown_unread_count_fmt"><xliff:g id="new_message_count">%d</xliff:g> nouveaux messages (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_new_multi_account_fmt">dans les comptes <xliff:g id="number_accounts">%d</xliff:g></string>
   <string name="notification_unsent_title">Message non envoyé</string>
-  
+
   <string name="notification_bg_sync_ticker">Vérification du courrier\u00A0: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Vérification du courrier</string>
   <string name="notification_bg_send_ticker">Envoi du courrier\u00A0: <xliff:g id="account">%s</xliff:g></string>
@@ -167,14 +167,14 @@
   <string name="special_mailbox_name_sent">Envoyés</string>
   <string name="special_mailbox_name_archive">Archive</string>
   <string name="special_mailbox_name_spam">Pourriels</string>
-  
+
   <string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Boîte d\'envoi)</string>
   <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Brouillons)</string>
   <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Corbeille)</string>
   <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Envoyés)</string>
   <string name="_fmt"><xliff:g id="folder">%s</xliff:g> (Archive)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Pourriels)</string>
-  
+
   <string name="send_failure_subject">Échec d\'envoi de certains messages</string>
   <string name="send_failure_body_abbrev">Voir le dossier <xliff:g id="errorFolder">%s</xliff:g> pour les détails.</string>
   <string name="send_failure_body_fmt">K-9 a rencontré un problème lors de l\'envoi de certains messages.
@@ -210,7 +210,7 @@
   <string name="message_list_mark_unread_action">Marquer comme non lu</string>
   <string name="message_list_flag_action">Ajouter une étoile</string>
   <string name="message_list_unflag_action">Enlever l\'étoile</string>
-  
+
   <string name="message_compose_to_hint">Pour</string>
   <string name="message_compose_cc_hint">Cc</string>
   <string name="message_compose_bcc_hint">Cci</string>
@@ -222,9 +222,9 @@
   <string name="message_compose_error_no_recipients">Vous devez ajouter au moins un destinataire.</string>
   <string name="message_compose_downloading_attachments_toast">Certaines pièces jointes n\'ont pas été téléchargées. Elles seront téléchargées automatiquement avant l\'envoi de ce message.</string>
   <string name="message_compose_attachments_skipped_toast">Certaines pièces jointes ne peuvent pas être transmises car elles n\'ont pas été téléchargées.</string>
-  
-  
-  
+
+
+
   <string name="message_view_from_format">De\u00A0: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_view_to_label">Pour\u00A0:</string>
   <string name="message_view_cc_label">Cc\u00A0:</string>
@@ -249,7 +249,6 @@
   <string name="mailbox_select_dlg_new_mailbox_action">Nouveau dossier</string>
   <string name="new_mailbox_dlg_title">Nouveau nom de dossier</string>
   <string name="folder_push_active_symbol">(Poussé)</string>
-  <string name="find_action">Rechercher des messages</string>
   <string name="from_same_sender">Plus de cet expéditeur</string>
   <string name="message_copied_toast">Message copié</string>
   <string name="message_moved_toast">Message déplacé</string>
@@ -425,11 +424,11 @@
   <string name="account_settings_hide_buttons_never">Jamais</string>
   <string name="account_settings_hide_buttons_keyboard_avail">Lorsque le clavier est disponible</string>
   <string name="account_settings_hide_buttons_always">Toujours</string>
- 
+
   <string name="account_settings_enable_move_buttons_label">Activer les boutons de déplacement</string>
   <string name="account_settings_enable_move_buttons_summary">Montrer les boutons Archiver, Déplacer ou Pourriel.</string>
-  <string name="account_settings_hide_move_buttons_label">Défiler les boutons de déplacement</string> 
-  
+  <string name="account_settings_hide_move_buttons_label">Défiler les boutons de déplacement</string>
+
   <string name="account_settings_composition">Composition de messages</string>
   <string name="account_settings_sync">Synchronication de dossiers</string>
   <string name="account_settings_folders">Dossiers</string>
@@ -443,7 +442,7 @@
   <string name="account_settings_led_color_label">Couleur du DEL de notification</string>
   <string name="account_settings_led_color_summary">Choisissez la couleur de clignotement du DEL de votre téléphone</string>
   <string name="account_settings_mail_display_count_label">Nombres de messages à afficher</string>
-    
+
   <string name="account_settings_autodownload_message_size_label">Télécharger automatiquement le contenu des messages jusqu\'à</string>
   <string name="account_settings_autodownload_message_size_1">1 Ko</string>
   <string name="account_settings_autodownload_message_size_2">2 Ko</string>
@@ -458,7 +457,7 @@
   <string name="account_settings_autodownload_message_size_1024">1 Mo</string>
   <string name="account_settings_autodownload_message_size_2048">2 Mo</string>
   <string name="account_settings_autodownload_message_size_any">Toutes tailles</string>
-  
+
   <string name="account_settings_message_age_label">Synchroniser les messages plus récents que</string>
   <string name="account_settings_message_age_any">Toutes dates</string>
   <string name="account_settings_message_age_0">Aujourd\'hui</string>
@@ -750,7 +749,7 @@
   <string name="miscellaneous_preferences">Divers</string>
   <string name="misc_preferences_attachment_title">Utiliser le contounement du bogue de gallerie</string>
   <string name="misc_preferences_attachment_description">Afficher les boutons pour ajouter des images ou vidéos en pièces jointes (pour contourner le bogue de gallerie 3D)</string>
-  
+
   <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
 
