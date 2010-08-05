@@ -1,9 +1,11 @@
 package com.fsck.k9.grouping.thread;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,11 +52,24 @@ public class Threader
             return null;
         }
 
+        final boolean devDebug = K9.DEBUG && Log.isLoggable(K9.LOG_TAG, Log.VERBOSE);
+
         // 1. Index messages
         Map<String, Container<T>> containers = indexMessages(messages);
 
         // 2. Find the root set.
         final Container<T> firstRoot = findRoot(containers);
+
+        if (devDebug)
+        {
+            Log.v(K9.LOG_TAG,
+                    MessageFormat
+                            .format("Threader: initial={0} | index w/-empty={1} w/o-empty={2} | root set: w/-empty={3} w/o-empty={4}",
+                                    messages.size(), Threader.count(containers, true),
+                                    Threader.count(containers, false),
+                                    Threader.count(firstRoot, 0, true),
+                                    Threader.count(firstRoot, 0, false)));
+        }
 
         // 3. Discard id_table. We don't need it any more.
         containers = null;
@@ -63,6 +78,14 @@ public class Threader
         final Container<T> fakeRoot = new Container<T>();
         addChild(fakeRoot, firstRoot);
         pruneEmptyContainer(null, fakeRoot, fakeRoot);
+
+        if (devDebug)
+        {
+            Log.v(K9.LOG_TAG, MessageFormat.format(
+                    "Threader: after prune: w/-empty={0} w/o-empty={1}",
+                    Threader.count(fakeRoot.getChild(), 0, true),
+                    Threader.count(fakeRoot.getChild(), 0, false)));
+        }
 
         // 5. Group root set by subject.
         groupRootBySubject(fakeRoot.getChild());
@@ -387,6 +410,39 @@ public class Threader
     }
 
     /**
+     * Debug method, count the number of messages in the given Map.
+     * 
+     * @param <T>
+     * @param <I>
+     * @param containers
+     * @param countEmpty
+     * @return Count
+     */
+    public static <T, I> int count(final Map<I, Container<T>> containers, final boolean countEmpty)
+    {
+        if (containers.isEmpty())
+        {
+            return 0;
+        }
+        int i = 0;
+        if (countEmpty)
+        {
+            i = containers.size();
+        }
+        else
+        {
+            for (final Container<T> container : containers.values())
+            {
+                if (container.getMessage() != null)
+                {
+                    i++;
+                }
+            }
+        }
+        return i;
+    }
+
+    /**
      * Debug method, count the number of messages in the given tree.
      * 
      * @param <T>
@@ -439,7 +495,7 @@ public class Threader
         for (final MessageInfo<T> message : messages)
         {
             // A. If id_table contains an empty Container for this ID:
-            final String id = message.getId();
+            String id = message.getId();
             Container<T> container;
             if ((container = containers.get(id)) != null && container.getMessage() == null)
             {
@@ -448,6 +504,21 @@ public class Threader
             }
             else
             {
+                if (container != null)
+                {
+                    // ID clash detected!
+                    Log.w(K9.LOG_TAG, "Threader: Message-ID clash detected for " + id);
+
+                    // making this a follower of the original message
+                    final List<String> newReferences = new ArrayList<String>(
+                            message.getReferences());
+                    newReferences.add(id);
+                    message.setReferences(newReferences);
+
+                    // and replacing ID with a self-generated one (it should be unique)
+                    id = Integer.toHexString(System.identityHashCode(message));
+                }
+
                 // Else:
                 // Create a new Container object holding this message;
                 // Index the Container by Message-ID in id_table.
@@ -575,7 +646,7 @@ public class Threader
         final Container<T> child = container.getChild();
         final Container<T> next = container.getNext();
 
-        if (container.getMessage() == null)
+        if (container != root && container.getMessage() == null)
         {
             if (child == null)
             {
