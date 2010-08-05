@@ -3,6 +3,7 @@ package com.fsck.k9.grouping.thread;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -22,6 +23,8 @@ import com.fsck.k9.grouping.MessageInfo;
  */
 public class Threader
 {
+
+    private static final boolean consistencyCheck = true;
 
     private static final String EMPTY_SUBJECT = "";
 
@@ -710,7 +713,15 @@ public class Threader
      */
     private <T> void addChild(final Container<T> parent, final Container<T> child)
     {
-        final Map<Container<T>, Boolean> currentChildren = new IdentityHashMap<Container<T>, Boolean>();
+        final Map<Container<T>, Boolean> currentChildren;
+        if (consistencyCheck)
+        {
+            currentChildren = new IdentityHashMap<Container<T>, Boolean>();
+        }
+        else
+        {
+            currentChildren = Collections.emptyMap();
+        }
 
         Container<T> sibling;
         if ((sibling = parent.getChild()) == null)
@@ -723,7 +734,10 @@ public class Threader
             // at least one child, advancing
             while (sibling.getNext() != null)
             {
-                currentChildren.put(sibling, Boolean.TRUE);
+                if (consistencyCheck)
+                {
+                    currentChildren.put(sibling, Boolean.TRUE);
+                }
                 sibling = sibling.getNext();
             }
             // last child, adding new sibling
@@ -733,52 +747,75 @@ public class Threader
         // update the parent for the current node and its siblings
 
         // cache already verified parents for performance purpose
-        final Map<Container<T>, Boolean> alreadyVerified = new IdentityHashMap<Container<T>, Boolean>();
+        final Map<Container<T>, Boolean> alreadyVerified;
 
-        // don't verify new parent
-        alreadyVerified.put(parent, Boolean.TRUE);
+        if (consistencyCheck)
+        {
+            alreadyVerified = new IdentityHashMap<Container<T>, Boolean>();
+            // don't verify new parent
+            alreadyVerified.put(parent, Boolean.TRUE);
+        }
+        else
+        {
+            alreadyVerified = Collections.emptyMap();
+        }
 
         for (Container<T> newSibling = child; newSibling != null; newSibling = newSibling.getNext())
         {
-            // discard old parent (make sure each getParent() is consistent)
-            final Container<T> oldParent = newSibling.getParent();
-            if (oldParent != null && !alreadyVerified.containsKey(oldParent))
+            if (consistencyCheck || child == newSibling)
             {
-                Container<T> previousOldSibling = null;
-                for (Container<T> oldSibling = oldParent.getChild(); oldSibling != null; oldSibling = oldSibling
-                        .getNext())
+                // discard old parent (make sure each getParent() is consistent)
+                final Container<T> oldParent = newSibling.getParent();
+                if (oldParent != null
+                        && (consistencyCheck ? !alreadyVerified.containsKey(oldParent)
+                                : oldParent != parent))
                 {
-                    if (newSibling == oldSibling)
+                    Container<T> previousOldSibling = null;
+                    for (Container<T> oldSibling = oldParent.getChild(); oldSibling != null; oldSibling = oldSibling
+                            .getNext())
                     {
-                        if (previousOldSibling == null)
+                        if (newSibling == oldSibling)
                         {
-                            oldParent.setChild(null);
+                            if (previousOldSibling == null)
+                            {
+                                oldParent.setChild(null);
+                            }
+                            else
+                            {
+                                previousOldSibling.setNext(null);
+                            }
+                            if (!consistencyCheck)
+                            {
+                                // TODO: actually, should break even if consistency check is enabled
+                                break;
+                            }
                         }
-                        else
-                        {
-                            previousOldSibling.setNext(null);
-                        }
+                        previousOldSibling = oldSibling;
                     }
-                    previousOldSibling = oldSibling;
+                    if (consistencyCheck)
+                    {
+                        alreadyVerified.put(oldParent, Boolean.TRUE);
+                    }
                 }
-                alreadyVerified.put(oldParent, Boolean.TRUE);
             }
-
             // old parent was verified, replacing
             newSibling.setParent(parent);
 
-            currentChildren.put(newSibling, Boolean.TRUE);
-            if (currentChildren.containsKey(newSibling.getNext()))
+            if (consistencyCheck)
             {
-                // circular reference detected!
-                if (K9.DEBUG && Log.isLoggable(K9.LOG_TAG, Log.WARN))
+                currentChildren.put(newSibling, Boolean.TRUE);
+                if (currentChildren.containsKey(newSibling.getNext()))
                 {
-                    Log.w(K9.LOG_TAG, MessageFormat.format(
-                            "Circular reference detected on {0} / parent: {1} / next: {2}",
-                            newSibling, newSibling.getParent(), newSibling.getNext()));
+                    // circular reference detected!
+                    if (K9.DEBUG && Log.isLoggable(K9.LOG_TAG, Log.WARN))
+                    {
+                        Log.w(K9.LOG_TAG, MessageFormat.format(
+                                "Circular reference detected on {0} / parent: {1} / next: {2}",
+                                newSibling, newSibling.getParent(), newSibling.getNext()));
+                    }
+                    newSibling.setNext(null);
+                    break;
                 }
-                newSibling.setNext(null);
-                break;
             }
         }
     }
@@ -817,8 +854,12 @@ public class Threader
                 {
                     previous.setNext(sibling.getNext());
                 }
+                if (!consistencyCheck)
+                {
+                    break;
+                }
             }
-            else
+            else if (consistencyCheck)
             {
                 // sanity measure, reset the parent to ensure consistency
                 sibling.setParent(parent);
