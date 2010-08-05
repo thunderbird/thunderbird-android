@@ -41,8 +41,8 @@ public class ThreadMessageGrouper implements MessageGrouper
             Log.v(K9.LOG_TAG,
                     MessageFormat
                             .format("Grouping result: input={0} w/o-empty={1} w/-empty={2} groups={3} resulting={4}",
-                                    messages.size(), Threader.count(firstRoot, 0, false),
-                                    Threader.count(firstRoot, 0, true), result.size(), total));
+                                    messages.size(), Threader.count(firstRoot, false),
+                                    Threader.count(firstRoot, true), result.size(), total));
         }
         return result;
     }
@@ -67,7 +67,7 @@ public class ThreadMessageGrouper implements MessageGrouper
     protected <T> MessageGroup<T> toMessageGroup(final Container<T> root)
     {
         final SimpleMessageGroup<T> messageGroup = new SimpleMessageGroup<T>();
-        final List<MessageInfo<T>> messages = toList(root, false);
+        final List<MessageInfo<T>> messages = convertToList(root); //toList(root, false);
 
         messageGroup.setMessages(messages);
 
@@ -84,6 +84,11 @@ public class ThreadMessageGrouper implements MessageGrouper
     /**
      * Convert the linked list into a proper {@link List}. Children get
      * flattened. Empty messages are ignored.
+     * 
+     * <p>
+     * This method is recursive and subject to {@link StackOverflowError} in
+     * case of deep hierarchy.
+     * </p>
      * 
      * @param <T>
      * @param current
@@ -112,4 +117,97 @@ public class ThreadMessageGrouper implements MessageGrouper
         }
         return results;
     }
+
+    /**
+     * Iterative (as in 'non-recursive') version of
+     * {@link #toList(Container, boolean)}
+     * 
+     * @param <T>
+     * @param root
+     *            Never <code>null</code>.
+     * @return Never <code>null</code>.
+     */
+    protected <T> List<MessageInfo<T>> convertToList(final Container<T> root)
+    {
+        final List<MessageInfo<T>> results;
+
+        results = Threader.walkIterative(new Threader.ContainerWalk<T, List<MessageInfo<T>>>()
+        {
+            private List<MessageInfo<T>> list;
+
+            @Override
+            public void init(final Container<T> root)
+            {
+                list = new ArrayList<MessageInfo<T>>();
+            }
+
+            @Override
+            public void process(final Container<T> node)
+            {
+                final MessageInfo<T> message = node.getMessage();
+                if (message != null)
+                {
+                    list.add(message);
+                }
+            }
+
+            @Override
+            public void finish()
+            {
+                // no-op
+            }
+
+            @Override
+            public List<MessageInfo<T>> result()
+            {
+                return list;
+            }
+        }, root);
+
+        //        main: for (Container<T> current = root; current != null;)
+        //        {
+        //            if (current.getMessage() != null)
+        //            {
+        //                results.add(current.getMessage());
+        //            }
+        //
+        //            if (current.getChild() != null)
+        //            {
+        //                // deeper
+        //                current = current.getChild();
+        //            }
+        //            else if (current != root && current.getNext() != null)
+        //            {
+        //                // siblings
+        //                current = current.getNext();
+        //            }
+        //            else if (current != root && current.getParent() != null)
+        //            {
+        //                while (current != null && current != root && current.getParent() != null)
+        //                {
+        //                    // back to parent
+        //                    current = current.getParent();
+        //                    if (current.getNext() != null)
+        //                    {
+        //                        // we (former parent) have siblings, cool!
+        //                        break;
+        //                    }
+        //                }
+        //                // make sure we're not back at the root
+        //                if (current == root || current == null)
+        //                {
+        //                    break main;
+        //                }
+        //                // go to siblings!
+        //                current = current.getNext();
+        //            }
+        //            else
+        //            {
+        //                current = null;
+        //            }
+        //        }
+
+        return results;
+    }
+
 }

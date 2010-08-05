@@ -24,6 +24,107 @@ import com.fsck.k9.grouping.MessageInfo;
 public class Threader
 {
 
+    /**
+     * @param <T>
+     *            {@link MessageInfo} payload
+     * @param <R>
+     *            Result
+     * @see Threader#walkIterative(ContainerWalk, Container)
+     */
+    public static interface ContainerWalk<T, R>
+    {
+
+        /**
+         * Called once
+         * 
+         * @param root
+         */
+        void init(Container<T> root);
+
+        /**
+         * Called for each node
+         * 
+         * @param node
+         */
+        void process(Container<T> node);
+
+        /**
+         * Called once
+         */
+        void finish();
+
+        R result();
+    }
+
+    /**
+     * Helper method to iterate throught a tree of {@link Container}.
+     * 
+     * <p>
+     * Call {@link ContainerWalk#init(Container)} once for the root node, then
+     * {@link ContainerWalk#process(Container)} for each node (including the
+     * root node) and finally {@link ContainerWalk#finish()} at the end of the
+     * iteration.
+     * </p>
+     * 
+     * <p>
+     * Tree <strong>must not</strong> be circular.
+     * </p>
+     * 
+     * @param <T>
+     * @param <R>
+     * @param walk
+     * @param root
+     * @return Whatever the {@link ContainerWalk#result() walk} argument returns
+     */
+    public static <T, R> R walkIterative(final ContainerWalk<T, R> walk, final Container<T> root)
+    {
+        walk.init(root);
+
+        main: for (Container<T> current = root; current != null;)
+        {
+            walk.process(current);
+
+            if (current.getChild() != null)
+            {
+                // deeper
+                current = current.getChild();
+            }
+            else if (current != root && current.getNext() != null)
+            {
+                // siblings
+                current = current.getNext();
+            }
+            else if (current != root && current.getParent() != null)
+            {
+                while (current != null && current != root && current.getParent() != null)
+                {
+                    // back to parent
+                    current = current.getParent();
+                    if (current.getNext() != null)
+                    {
+                        // we (former parent) have siblings, cool!
+                        break;
+                    }
+                }
+                // make sure we're not back at the root
+                if (current == root || current == null)
+                {
+                    break main;
+                }
+                // go to siblings!
+                current = current.getNext();
+            }
+            else
+            {
+                current = null;
+            }
+        }
+
+        walk.finish();
+
+        return walk.result();
+    }
+
     private static final boolean consistencyCheck = true;
 
     private static final String EMPTY_SUBJECT = "";
@@ -80,7 +181,14 @@ public class Threader
         // 4. Prune empty containers.
         final Container<T> fakeRoot = new Container<T>();
         addChild(fakeRoot, firstRoot);
-        pruneEmptyContainer(null, fakeRoot, fakeRoot);
+        try
+        {
+            pruneEmptyContainer(null, fakeRoot, fakeRoot);
+        }
+        catch (StackOverflowError e)
+        {
+            Log.w(K9.LOG_TAG, "Whoops! let's keep the tree untouched if possible", e);
+        }
 
         if (devDebug)
         {
@@ -448,12 +556,17 @@ public class Threader
     /**
      * Debug method, count the number of messages in the given tree.
      * 
+     * <p>
+     * Recursive method, subject to {@link StackOverflowError}.
+     * </p>
+     * 
      * @param <T>
      * @param node
      * @param count
      * @param countEmpty
      *            If <code>true</code>, empty messages are included in the sum.
      * @return Number of nodes (current (1) + descendants + <tt>count</tt>)
+     * @see #count(Container, boolean)
      */
     public static <T> int count(final Container<T> node, final int count, final boolean countEmpty)
     {
@@ -475,6 +588,50 @@ public class Threader
             i = count(node.getNext(), i, countEmpty);
         }
         return count + i;
+    }
+
+    /**
+     * Iterative version of {@link #count(Container, int, boolean)}
+     * 
+     * @param <T>
+     * @param root
+     * @param countEmpty
+     * @return Count
+     */
+    public static <T> int count(final Container<T> root, final boolean countEmpty)
+    {
+        return walkIterative(new ContainerWalk<T, Integer>()
+        {
+
+            private int count;
+
+            @Override
+            public void init(final Container<T> root)
+            {
+                count = 0;
+            }
+
+            @Override
+            public void process(final Container<T> node)
+            {
+                if (countEmpty || node.getMessage() != null)
+                {
+                    count++;
+                }
+            }
+
+            @Override
+            public void finish()
+            {
+                // no-op
+            }
+
+            @Override
+            public Integer result()
+            {
+                return count;
+            }
+        }, root);
     }
 
     /**
@@ -630,6 +787,11 @@ public class Threader
     /**
      * Prune empty containers. Recursively walk all containers under the root
      * set.
+     * 
+     * <p>
+     * This method is subject to {@link StackOverflowError} in case of deep
+     * hierarchy (even more if there are many empty containers).
+     * </p>
      * 
      * @param <T>
      * @param previous
