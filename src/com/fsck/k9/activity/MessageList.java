@@ -2342,19 +2342,27 @@ public class MessageList
 
         private static final int NON_MESSAGE_ITEMS = 1;
 
-        private final ExpandableListView.OnChildClickListener flagClickListener = new ExpandableListView.OnChildClickListener()
+        private final View.OnClickListener flaggedClickListener = new View.OnClickListener()
         {
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
-                    int childPosition, long id)
+            @Override
+            public void onClick(final View v)
             {
-                if (v.getId() != R.id.flag)
+                if (v.getId() != R.id.flagged)
                 {
-                    return false;
+                    return;
                 }
                 // Perform action on clicks
-                MessageInfoHolder message = getChild(groupPosition, childPosition);
-                onToggleFlag(message);
-                return true;
+                final int position = mListView.getPositionForView(v);
+                if (position == AdapterView.INVALID_POSITION)
+                {
+                    return;
+                }
+                final Object item = mListView.getItemAtPosition(position);
+                if (item instanceof MessageInfoHolder)
+                {
+                    final MessageInfoHolder message = (MessageInfoHolder) item;
+                    onToggleFlag(message);
+                }
             }
         };
 
@@ -2453,7 +2461,7 @@ public class MessageList
                 holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
                 holder.flagged = (CheckBox) view.findViewById(R.id.flagged);
 
-//                holder.flagged.setOnClickListener(flagClickListener);
+                holder.flagged.setOnClickListener(flaggedClickListener);
 
                 if (mStars == false)
                 {
