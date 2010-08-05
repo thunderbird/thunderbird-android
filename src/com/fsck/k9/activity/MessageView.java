@@ -1031,6 +1031,10 @@ public class MessageView extends K9Activity implements OnClickListener
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
+        // grab a new crypto provider object, as the account may have changed, and currently
+        // the decrypted data and signature are stored in the crypto provider object
+        // TODO: separate that storage from the provider
+        // TODO: then move the provider object directly into the account object
         mCrypto = null;
         initializeCrypto();
 
