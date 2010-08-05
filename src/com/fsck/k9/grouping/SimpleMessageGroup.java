@@ -17,6 +17,8 @@ public class SimpleMessageGroup<T> implements MessageGroup<T>
 
     private Date date;
 
+    private int id;
+
     @Override
     public List<MessageInfo<T>> getMessages()
     {
@@ -40,6 +42,12 @@ public class SimpleMessageGroup<T> implements MessageGroup<T>
         return date;
     }
 
+    @Override
+    public int getId()
+    {
+        return id;
+    }
+
     public void setSubject(String subject)
     {
         this.subject = subject;
@@ -48,6 +56,11 @@ public class SimpleMessageGroup<T> implements MessageGroup<T>
     public void setDate(Date date)
     {
         this.date = date;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
 }

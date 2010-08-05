@@ -27,4 +27,9 @@ public interface MessageGroup<T>
      */
     Date getDate();
 
+    /**
+     * @return An identifier for this group.
+     */
+    int getId();
+
 }

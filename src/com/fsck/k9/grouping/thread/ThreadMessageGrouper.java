@@ -20,27 +20,29 @@ public class ThreadMessageGrouper implements MessageGrouper
     private Threader threader = new Threader();
 
     @Override
-    public <T> List<MessageGroup<T>> group(Collection<MessageInfo<T>> messages)
+    public <T> List<MessageGroup<T>> group(final Collection<MessageInfo<T>> messages)
     {
         if (messages.isEmpty())
         {
             return Collections.emptyList();
         }
 
-        Container<T> firstRoot = threader.thread(messages);
+        final Container<T> firstRoot = threader.thread(messages);
 
-        List<MessageGroup<T>> result = toMessageGroups(firstRoot);
+        final List<MessageGroup<T>> result = toMessageGroups(firstRoot);
 
-        if (Log.isLoggable(K9.LOG_TAG, Log.INFO))
+        if (K9.DEBUG && Log.isLoggable(K9.LOG_TAG, Log.VERBOSE))
         {
             int total = 0;
             for (final MessageGroup<T> messageGroup : result)
             {
                 total += messageGroup.getMessages().size();
             }
-            Log.i(K9.LOG_TAG, MessageFormat.format("{0} {1} {2} {3} {4}", messages.size(),
-                    Threader.count(firstRoot, 0, false), Threader.count(firstRoot, 0, true),
-                    result.size(), total));
+            Log.v(K9.LOG_TAG,
+                    MessageFormat
+                            .format("Grouping result: input={0} w/o-empty={1} w/-empty={2} groups={3} resulting={4}",
+                                    messages.size(), Threader.count(firstRoot, 0, false),
+                                    Threader.count(firstRoot, 0, true), result.size(), total));
         }
         return result;
     }
@@ -50,13 +52,33 @@ public class ThreadMessageGrouper implements MessageGrouper
         final List<MessageGroup<T>> result = new ArrayList<MessageGroup<T>>();
         for (Container<T> root = firstRoot; root != null; root = root.getNext())
         {
-            final SimpleMessageGroup<T> messageGroup = new SimpleMessageGroup<T>();
-            final List<MessageInfo<T>> messages = toList(root, false);
-            messageGroup.setMessages(messages);
-            messageGroup.setSubject(messages.get(0).getSubject());
+            final MessageGroup<T> messageGroup = toMessageGroup(root);
             result.add(messageGroup);
         }
         return result;
+    }
+
+    /**
+     * @param <T>
+     * @param root
+     *            Never <code>null</code>.
+     * @return Never <code>null</code>.
+     */
+    protected <T> MessageGroup<T> toMessageGroup(final Container<T> root)
+    {
+        final SimpleMessageGroup<T> messageGroup = new SimpleMessageGroup<T>();
+        final List<MessageInfo<T>> messages = toList(root, false);
+
+        messageGroup.setMessages(messages);
+
+        // we assume there is at least 1 message in the given hierarchy
+        final String subject = messages.get(0).getSubject();
+        messageGroup.setSubject(subject);
+
+        // since we grouped by subject, using it as an identifier
+        messageGroup.setId(subject.hashCode());
+
+        return messageGroup;
     }
 
     /**
@@ -69,7 +91,8 @@ public class ThreadMessageGrouper implements MessageGrouper
      * @param followSiblings
      * @return Never <code>null</code>.
      */
-    private <T> List<MessageInfo<T>> toList(final Container<T> current, final boolean followSiblings)
+    protected <T> List<MessageInfo<T>> toList(final Container<T> current,
+            final boolean followSiblings)
     {
         final List<MessageInfo<T>> results = new ArrayList<MessageInfo<T>>();
 

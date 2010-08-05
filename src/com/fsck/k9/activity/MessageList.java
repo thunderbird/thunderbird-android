@@ -1,6 +1,5 @@
 package com.fsck.k9.activity;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -524,6 +523,12 @@ public class MessageList
     {
         super.onPause();
         mController.removeListener(mAdapter.mListener);
+
+        // prevent any throttled UI processing (we're stopping!)
+        // (don't set it to null since it needed if a processing is
+        // occuring)
+        mAdapter.throttler.getScheduledExecutorService().shutdown();
+
         saveListState();
     }
 
@@ -573,6 +578,12 @@ public class MessageList
         sortType = mController.getSortType();
         sortAscending = mController.isSortAscending(sortType);
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+
+        if (mAdapter.throttler.getScheduledExecutorService() == null
+                || mAdapter.throttler.getScheduledExecutorService().isShutdown())
+        {
+            mAdapter.throttler.setScheduledExecutorService(Executors.newScheduledThreadPool(1));
+        }
 
         mController.addListener(mAdapter.mListener);
         mAdapter.messages.clear();
@@ -2051,7 +2062,7 @@ public class MessageList
                     synchronizeGroups();
                     return null;
                 }
-            }, Executors.newScheduledThreadPool(1));
+            }, null); // not setting Executor now as we want to integrate into Activity onResume/onPause
             throttler.setCoolDownDuration(200L);
             throttler.setPostExecute(new Runnable()
             {
@@ -2655,7 +2666,8 @@ public class MessageList
         @Override
         public boolean hasStableIds()
         {
-            return true;
+            // remain consistent with underlying data and the UI state
+            return false;
         }
 
         public boolean isItemSelectable(int position)
@@ -2717,14 +2729,30 @@ public class MessageList
         @Override
         public long getGroupId(int groupPosition)
         {
-            return Integer.valueOf(groupPosition).longValue();
+            final MessageGroup<MessageInfoHolder> group = getGroup(groupPosition);
+            if (group == null)
+            {
+                // the last group should match this case (as any other invalid
+                // position)
+                return -1;
+            }
+            // UI should stay consistent with the underlying data and needs to
+            // keep track of the groups when list is updating (ie the selection/
+            // expanded state should remain the "same" group if possible)
+            return group.getId();
         }
 
 
         @Override
         public long getChildId(int groupPosition, int childPosition)
         {
-            return ((LocalMessage) getChild(groupPosition, childPosition).message).getId();
+            final MessageInfoHolder child = getChild(groupPosition, childPosition);
+            if (child == null)
+            {
+                // unlikely to occur but still possible, returning fixed value
+                return -1;
+            }
+            return ((LocalMessage) child.message).getId();
         }
 
 
@@ -2751,7 +2779,7 @@ public class MessageList
             if (convertView == null || R.layout.message_list_group_header != convertView.getId())
             {
                 // create new view
-                view = getLayoutInflater().inflate(R.layout.message_list_group_header, parent, false);
+                view = mInflater.inflate(R.layout.message_list_group_header, parent, false);
             }
             else
             {
@@ -2760,10 +2788,11 @@ public class MessageList
             }
             final TextView subjectView = (TextView) view.findViewById(R.id.subject);
             final TextView countView = (TextView) view.findViewById(R.id.count);
-            
+
             subjectView.setText(group.getSubject());
-            subjectView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,mFontSizes.getMessageListSubject());
-            countView.setText(Integer.toString(group.getMessages().size())); 
+            subjectView
+                    .setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
+            countView.setText(Integer.toString(group.getMessages().size()));
 
             return view;
         }

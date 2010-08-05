@@ -35,4 +35,10 @@ public class MessageInfoSingletonGroup<T> implements MessageGroup<T>
         return messageInfo.getDate();
     }
 
+    @Override
+    public int getId()
+    {
+        return messageInfo.hashCode();
+    }
+
 }
