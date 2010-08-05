@@ -82,7 +82,7 @@
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_gravity="center_vertical"
-                        android:layout_width="0dip"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
@@ -128,7 +128,7 @@
                         android:id="@+id/cb_encrypt"
                         android:textColor="@android:color/primary_text_light"
                         android:layout_gravity="center_vertical"
-                        android:layout_width="0dip"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
 
