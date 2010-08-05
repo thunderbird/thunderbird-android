@@ -89,6 +89,7 @@
                         <CheckBox
                             android:text="@string/btn_crypto_sign"
                             android:id="@+id/cb_crypto_signature"
+                            android:textColor="@android:color/primary_text_light"
                             android:layout_gravity="center_vertical"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -105,6 +106,7 @@
                                 android:text=""
                                 android:ellipsize="end"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="@android:color/primary_text_light"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -113,6 +115,7 @@
                                 android:text=""
                                 android:textSize="10sp"
                                 android:ellipsize="end"
+                                android:textColor="@android:color/primary_text_light"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
@@ -123,6 +126,7 @@
                     <CheckBox
                         android:text="@string/btn_encrypt"
                         android:id="@+id/cb_encrypt"
+                        android:textColor="@android:color/primary_text_light"
                         android:layout_gravity="center_vertical"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
