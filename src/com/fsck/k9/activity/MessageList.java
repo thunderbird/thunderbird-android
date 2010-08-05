@@ -2759,11 +2759,11 @@ public class MessageList
                 view = convertView;
             }
             final TextView subjectView = (TextView) view.findViewById(R.id.subject);
-            final TextView fromView = (TextView) view.findViewById(R.id.from);
-            final TextView dateView = (TextView) view.findViewById(R.id.date);
+            final TextView countView = (TextView) view.findViewById(R.id.count);
             
-            subjectView.setText(MessageFormat.format("({0}) {1}",
-                    Integer.toString(group.getMessages().size()), group.getSubject()));
+            subjectView.setText(group.getSubject());
+            subjectView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,mFontSizes.getMessageListSubject());
+            countView.setText(Integer.toString(group.getMessages().size())); 
 
             return view;
         }

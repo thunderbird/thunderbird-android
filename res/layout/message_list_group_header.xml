@@ -2,60 +2,58 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingRight="1dip"
+    android:minHeight="38dip"
     android:paddingTop="2dip"
-    android:gravity="center_vertical"
-    android:background="#ccc">
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:paddingLeft="6dip" >
-
+    android:paddingLeft="40dip" 
+    >
         <TextView
             android:id="@+id/subject"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="1dip"
+            android:layout_toLeftOf="@+id/count_wrapper"
+            android:layout_weight="2"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:ellipsize="end"
             android:textColor="?android:attr/textColorPrimary"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+    <RelativeLayout
+        android:id="@+id/count_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:paddingTop="2dip"
+        android:paddingBottom="0dip"
+        android:paddingLeft="6dip"
+        android:paddingRight="6dip"
+        android:gravity="right"
+        android:clickable="true" >
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginBottom="1dip"
+            android:layout_weight="1"
+            android:paddingTop="6dip"
+            android:paddingBottom="4dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:gravity="right"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000000"
+            android:background="@drawable/envelope"
+            />
 
-            <TextView
-                android:id="@+id/from"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingLeft="2dip"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+        
 
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right|bottom"
-                android:paddingRight="5dip"
-                android:paddingLeft="5dip"
-                android:singleLine="true"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
