@@ -75,8 +75,14 @@ public class UiThrottler<Result>
             }
             catch (Exception e)
             {
-                // XXX improve exception handling
-                throw new IllegalStateException(e);
+                if (swallowExceptions)
+                {
+                    Log.e(K9.LOG_TAG, "UiThrottler: processing task threw an exception! Swallowed!", e);
+                    return null;
+                }
+                // throwing an exception here will result in the application crashing!
+                throw new IllegalStateException("UiThrottler: processing task threw an exception.",
+                        e);
             }
         }
 
@@ -185,6 +191,8 @@ public class UiThrottler<Result>
      * processing (if any)
      */
     private long coolDownDuration = DEFAULT_COOLDOWN_DURATION;
+
+    private boolean swallowExceptions = false;
 
     public UiThrottler()
     {
@@ -318,6 +326,16 @@ public class UiThrottler<Result>
     public void setCoolDownDuration(long coolDownDuration)
     {
         this.coolDownDuration = coolDownDuration;
+    }
+
+    public boolean isSwallowExceptions()
+    {
+        return swallowExceptions;
+    }
+
+    public void setSwallowExceptions(boolean swallowExceptions)
+    {
+        this.swallowExceptions = swallowExceptions;
     }
 
 }
