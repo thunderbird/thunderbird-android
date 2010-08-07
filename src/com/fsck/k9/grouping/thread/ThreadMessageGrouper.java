@@ -145,20 +145,20 @@ public class ThreadMessageGrouper implements MessageGrouper
             private List<MessageInfo<T>> list;
 
             @Override
-            public boolean processRoot(final Container<T> root)
+            public WalkAction processRoot(final Container<T> root)
             {
                 list = new ArrayList<MessageInfo<T>>();
 
                 add(root);
 
-                return true;
+                return WalkAction.CONTINUE;
             }
 
             @Override
-            public boolean processNode(final Container<T> node)
+            public WalkAction processNode(final Container<T> node)
             {
                 add(node);
-                return true;
+                return WalkAction.CONTINUE;
             }
 
             private void add(final Container<T> node)

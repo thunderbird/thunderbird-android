@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -34,23 +35,50 @@ public class Threader
     public static interface ContainerWalk<T, R>
     {
 
+        public static enum WalkAction
+        {
+            /**
+             * Go on iterating
+             */
+            CONTINUE,
+            /**
+             * Halt iteration
+             */
+            HALT,
+            /**
+             * Restart iteration at last known node
+             */
+            LAST,
+        }
+
         /**
          * Called once for the root node at start
          * 
          * @param root
-         * @return <code>true</code> if iteration should go on.
-         *         <code>false</code> if iteration should stop.
+         * @return {@link WalkAction#CONTINUE} to continue iteration,
+         *         {@link WalkAction#HALT} to halt iteration. Any other value
+         *         will cause an {@link IllegalStateException}.
          */
-        boolean processRoot(Container<T> root);
+        WalkAction processRoot(Container<T> root);
 
         /**
-         * Called for each root descendant
+         * Called for each root descendant until end is reached or
+         * {@link WalkAction#HALT} is returned. If {@link WalkAction#LAST} is
+         * returned for the first node (the root first child), this method will
+         * be called again for the root node.
+         * 
+         * <p>
+         * Be careful not to go into infinite iteration (happens when always
+         * returning {@link WalkAction#LAST} for the same node)!
+         * </p>
          * 
          * @param node
-         * @return <code>true</code> if iteration should go on.
-         *         <code>false</code> if iteration should stop.
+         * @return {@link WalkAction#CONTINUE} to continue iteration,
+         *         {@link WalkAction#HALT} to halt iteration,
+         *         {@link WalkAction#LAST} to rewind iteration to the last
+         *         processed node.
          */
-        boolean processNode(Container<T> node);
+        WalkAction processNode(Container<T> node);
 
         /**
          * Called once
@@ -82,14 +110,43 @@ public class Threader
      */
     public static <T, R> R walkIterative(final ContainerWalk<T, R> walk, final Container<T> root)
     {
-        walk.processRoot(root);
+        ContainerWalk.WalkAction action;
+
+        action = walk.processRoot(root);
+
+        switch (action)
+        {
+            case LAST:
+                throw new IllegalStateException("Only CONTINUE/HALT are supported for the root node");
+            case HALT:
+                walk.finish();
+                return walk.result();
+            case CONTINUE:
+                break;
+            default:
+                throw new IllegalStateException("Unkown action: " + action);
+        }
+
+        Container<T> last = root;
 
         main: for (Container<T> current = root.getChild(); current != null;)
         {
-            if (!walk.processNode(current))
+            action = walk.processNode(current);
+
+            choose: switch (action)
             {
-                break;
+                case HALT:
+                    break main;
+                case LAST:
+                    current = last;
+                    continue main;
+                case CONTINUE:
+                    break choose;
+                default:
+                    throw new IllegalStateException("Unkown action: " + action);
             }
+
+            last = current;
 
             if (current.getChild() != null)
             {
@@ -239,6 +296,14 @@ public class Threader
      */
     private <T> void groupRootBySubject(final Container<T> fakeRoot)
     {
+        int lastCount = -1;
+        // counting is a CPU-intensive operation as it involves tree walking!
+        final boolean devDebug = K9.DEBUG && Log.isLoggable(K9.LOG_TAG, Log.VERBOSE);
+        if (devDebug)
+        {
+            lastCount = count(fakeRoot, false);
+        }
+
         // A. Construct a new hash table, subject_table, which associates
         // subject strings with Container objects.
         final Map<String, Container<T>> subjectTable = new HashMap<String, Container<T>>();
@@ -288,6 +353,9 @@ public class Threader
         // For each Container in the root set:
         for (Container<T> root = fakeRoot.getChild(); root != null; root = next)
         {
+            // XXX DEBUG VARIABLE
+            String action = null;
+
             // saving next now since current root might be removed from
             // siblings!
             next = root.getNext();
@@ -318,6 +386,11 @@ public class Threader
                 removeChild(otherRoot.getChild(), true);
                 addChild(root, otherRoot.getChild());
                 removeChild(otherRoot);
+
+                if (devDebug)
+                {
+                    action = "both are dummies";
+                }
             }
             else if (thisEmpty ^ thatEmpty)
             {
@@ -335,6 +408,11 @@ public class Threader
                     removeChild(root);
                     addChild(otherRoot, root);
                 }
+
+                if (devDebug)
+                {
+                    action = "one container is a empty and the other is not";
+                }
             }
             else
             {
@@ -351,6 +429,11 @@ public class Threader
                     // subject does, then make this be a child of the other.
                     removeChild(root);
                     addChild(otherRoot, root);
+
+                    if (devDebug)
+                    {
+                        action = "that container is a non-empty, and that message's subject does not begin with ``Re:'', but this message's subject does";
+                    }
                 }
                 else if (!thatEmpty && thatIsResponse && !thisIsResponse)
                 {
@@ -363,6 +446,11 @@ public class Threader
                     // the order in which they were seen.)
                     removeChild(otherRoot);
                     addChild(root, otherRoot);
+
+                    if (devDebug)
+                    {
+                        action = "that container is a non-empty, and that message's subject begins with ``Re:'', but this message's subject does not";
+                    }
                 }
                 else
                 {
@@ -376,8 +464,31 @@ public class Threader
                     addChild(newParent, otherRoot);
                     removeChild(root);
                     addChild(newParent, root);
+
+                    if (devDebug)
+                    {
+                        action = "Otherwise";
+                    }
                 }
             }
+
+            if (devDebug)
+            {
+                // FIXME trying to identify message loss...
+
+                // again: count involves tree walking, it will affect performance!
+                final int count = count(fakeRoot, false);
+                if (count < lastCount)
+                {
+                    Log.v(K9.LOG_TAG, "Threader: groupRootBySubject: (loop end) WRONG! lastCount= " + lastCount + " count=" + count + " node=" + root + " action=" + action);
+                    lastCount = count;
+                }
+            }
+        }
+
+        if (devDebug)
+        {
+            Log.v(K9.LOG_TAG, "Threader: groupRootBySubject: (end) count=" + count(fakeRoot, false));
         }
     }
 
@@ -632,20 +743,20 @@ public class Threader
             private int count;
 
             @Override
-            public boolean processRoot(final Container<T> root)
+            public WalkAction processRoot(final Container<T> root)
             {
                 count = 0;
-                return true;
+                return WalkAction.CONTINUE;
             }
 
             @Override
-            public boolean processNode(final Container<T> node)
+            public WalkAction processNode(final Container<T> node)
             {
                 if (countEmpty || node.getMessage() != null)
                 {
                     count++;
                 }
-                return true;
+                return WalkAction.CONTINUE;
             }
 
             @Override
@@ -678,7 +789,8 @@ public class Threader
      */
     private <T> Map<String, Container<T>> indexMessages(final Collection<MessageInfo<T>> messages)
     {
-        final Map<String, Container<T>> containers = new HashMap<String, Container<T>>();
+        // use a LinkedHashMap to be more respectul of the original message ordering
+        final Map<String, Container<T>> containers = new LinkedHashMap<String, Container<T>>();
 
         for (final MessageInfo<T> message : messages)
         {
@@ -897,15 +1009,15 @@ public class Threader
      */
     private <T> void pruneEmptyContainer(final Container<T> fakeRoot)
     {
-        final ContainerWalk<T, Boolean> walk = new ContainerWalk<T, Boolean>()
+        final ContainerWalk<T, Void> walk = new ContainerWalk<T, Void>()
         {
-            private boolean stopped;
+            private Container<T> root;
 
             @Override
-            public boolean processRoot(final Container<T> root)
+            public WalkAction processRoot(final Container<T> root)
             {
-                stopped = false;
-                return true;
+                this.root = root;
+                return WalkAction.CONTINUE;
             }
 
             /*
@@ -915,8 +1027,15 @@ public class Threader
              * loop).
              */
             @Override
-            public boolean processNode(final Container<T> node)
+            public WalkAction processNode(final Container<T> node)
             {
+                if (node == root)
+                {
+                    // since we use the ability to rewind iteration,
+                    // we have to properly ignore the root node here
+                    return WalkAction.CONTINUE;
+                }
+
                 if (node.getMessage() == null)
                 {
                     final Container<T> child = node.getChild();
@@ -926,8 +1045,7 @@ public class Threader
 
                         // if current node removed, drop iteration and start it again
                         removeChild(node);
-                        stopped = true;
-                        return false;
+                        return WalkAction.LAST;
                     }
                     else if (!(node.getParent() == fakeRoot && child.getNext() != null))
                     {
@@ -941,11 +1059,10 @@ public class Threader
 
                         removeChild(child, true);
                         spliceChild(node, child);
-                        stopped = true;
-                        return false;
+                        return WalkAction.LAST;
                     }
                 }
-                return true;
+                return WalkAction.CONTINUE;
             }
 
             @Override
@@ -955,15 +1072,13 @@ public class Threader
             }
 
             @Override
-            public Boolean result()
+            public Void result()
             {
-                return stopped;
+                return null;
             }
         };
 
-        // execute iteration as long it gets interrupted (due to node removing, see above)
-        while (walkIterative(walk, fakeRoot))
-            ;
+        walkIterative(walk, fakeRoot);
     }
 
     /**
