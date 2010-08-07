@@ -27,11 +27,11 @@ public class ThreadMessageGrouper implements MessageGrouper
             return Collections.emptyList();
         }
 
-        final Container<T> firstRoot = threader.thread(messages);
+        final Container<T> fakeRoot = threader.thread(messages, true);
 
-        final List<MessageGroup<T>> result = toMessageGroups(firstRoot);
+        final List<MessageGroup<T>> result = toMessageGroups(fakeRoot);
 
-        if (K9.DEBUG && Log.isLoggable(K9.LOG_TAG, Log.VERBOSE))
+        if (K9.DEBUG)
         {
             int total = 0;
             for (final MessageGroup<T> messageGroup : result)
@@ -41,16 +41,16 @@ public class ThreadMessageGrouper implements MessageGrouper
             Log.v(K9.LOG_TAG,
                     MessageFormat
                             .format("Grouping result: input={0} w/o-empty={1} w/-empty={2} groups={3} resulting={4}",
-                                    messages.size(), Threader.count(firstRoot, false),
-                                    Threader.count(firstRoot, true), result.size(), total));
+                                    messages.size(), Threader.count(fakeRoot, false),
+                                    Threader.count(fakeRoot, true), result.size(), total));
         }
         return result;
     }
 
-    private <T> List<MessageGroup<T>> toMessageGroups(final Container<T> firstRoot)
+    private <T> List<MessageGroup<T>> toMessageGroups(final Container<T> fakeRoot)
     {
         final List<MessageGroup<T>> result = new ArrayList<MessageGroup<T>>();
-        for (Container<T> root = firstRoot; root != null; root = root.getNext())
+        for (Container<T> root = fakeRoot.getChild(); root != null; root = root.getNext())
         {
             final MessageGroup<T> messageGroup = toMessageGroup(root);
             if (messageGroup != null)
@@ -145,20 +145,29 @@ public class ThreadMessageGrouper implements MessageGrouper
             private List<MessageInfo<T>> list;
 
             @Override
-            public void init(final Container<T> root)
+            public boolean processRoot(final Container<T> root)
             {
                 list = new ArrayList<MessageInfo<T>>();
+
+                add(root);
+
+                return true;
             }
 
             @Override
-            public boolean process(final Container<T> node)
+            public boolean processNode(final Container<T> node)
+            {
+                add(node);
+                return true;
+            }
+
+            private void add(final Container<T> node)
             {
                 final MessageInfo<T> message = node.getMessage();
                 if (message != null)
                 {
                     list.add(message);
                 }
-                return true;
             }
 
             @Override
@@ -172,50 +181,7 @@ public class ThreadMessageGrouper implements MessageGrouper
             {
                 return list;
             }
-        }, root, false);
-
-        //        main: for (Container<T> current = root; current != null;)
-        //        {
-        //            if (current.getMessage() != null)
-        //            {
-        //                results.add(current.getMessage());
-        //            }
-        //
-        //            if (current.getChild() != null)
-        //            {
-        //                // deeper
-        //                current = current.getChild();
-        //            }
-        //            else if (current != root && current.getNext() != null)
-        //            {
-        //                // siblings
-        //                current = current.getNext();
-        //            }
-        //            else if (current != root && current.getParent() != null)
-        //            {
-        //                while (current != null && current != root && current.getParent() != null)
-        //                {
-        //                    // back to parent
-        //                    current = current.getParent();
-        //                    if (current.getNext() != null)
-        //                    {
-        //                        // we (former parent) have siblings, cool!
-        //                        break;
-        //                    }
-        //                }
-        //                // make sure we're not back at the root
-        //                if (current == root || current == null)
-        //                {
-        //                    break main;
-        //                }
-        //                // go to siblings!
-        //                current = current.getNext();
-        //            }
-        //            else
-        //            {
-        //                current = null;
-        //            }
-        //        }
+        }, root);
 
         return results;
     }

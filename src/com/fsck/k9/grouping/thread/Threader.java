@@ -29,26 +29,28 @@ public class Threader
      *            {@link MessageInfo} payload
      * @param <R>
      *            Result
-     * @see Threader#walkIterative(ContainerWalk, Container, boolean)
+     * @see Threader#walkIterative(ContainerWalk, Container)
      */
     public static interface ContainerWalk<T, R>
     {
 
         /**
-         * Called once
+         * Called once for the root node at start
          * 
          * @param root
+         * @return <code>true</code> if iteration should go on.
+         *         <code>false</code> if iteration should stop.
          */
-        void init(Container<T> root);
+        boolean processRoot(Container<T> root);
 
         /**
-         * Called for each node
+         * Called for each root descendant
          * 
          * @param node
          * @return <code>true</code> if iteration should go on.
          *         <code>false</code> if iteration should stop.
          */
-        boolean process(Container<T> node);
+        boolean processNode(Container<T> node);
 
         /**
          * Called once
@@ -62,10 +64,10 @@ public class Threader
      * Helper method to iterate throught a tree of {@link Container}.
      * 
      * <p>
-     * Call {@link ContainerWalk#init(Container)} once for the root node, then
-     * {@link ContainerWalk#process(Container)} for each node (including the
-     * root node) and finally {@link ContainerWalk#finish()} at the end of the
-     * iteration.
+     * Call {@link ContainerWalk#processRoot(Container)} once for the root node,
+     * then {@link ContainerWalk#processNode(Container)} for each root
+     * descandant one and finally {@link ContainerWalk#finish()} at the end of
+     * the iteration.
      * </p>
      * 
      * <p>
@@ -76,50 +78,53 @@ public class Threader
      * @param <R>
      * @param walk
      * @param root
-     * @param followSiblings
-     *            If <code>true</code>, <tt>root</tt>'s siblings are walked
-     *            through.
      * @return Whatever the {@link ContainerWalk#result() walk} argument returns
      */
-    public static <T, R> R walkIterative(final ContainerWalk<T, R> walk, final Container<T> root,
-            final boolean followSiblings)
+    public static <T, R> R walkIterative(final ContainerWalk<T, R> walk, final Container<T> root)
     {
-        walk.init(root);
+        walk.processRoot(root);
 
-        main: for (Container<T> current = root; current != null;)
+        main: for (Container<T> current = root.getChild(); current != null;)
         {
-            if (!walk.process(current))
+            if (!walk.processNode(current))
             {
                 break;
             }
 
             if (current.getChild() != null)
             {
-                // deeper
+                // there is a child, going deeper
                 current = current.getChild();
             }
-            else if ((followSiblings || current != root) && current.getNext() != null)
+            else if (current != root && current.getNext() != null)
             {
-                // siblings
+                // no child but siblings
                 current = current.getNext();
             }
             else if (current != root && current.getParent() != null)
             {
-                while (current != null && current != root && current.getParent() != null)
+                // we're the last descendant in this path, we have to find the
+                // nearest "next" by going up
+                do
                 {
+                    if (consistencyCheck && current.getParent() == null)
+                    {
+                        // something is wrong with this tree: can't find our parent back!
+                        throw new IllegalStateException(
+                                "Tree is inconsistent: unable to track back parent node for "
+                                        + current);
+                    }
+                    
                     // back to parent
                     current = current.getParent();
-                    if (current.getNext() != null)
+
+                    if (current == root)
                     {
-                        // we (former parent) have siblings, cool!
-                        break;
+                        break main;
                     }
                 }
-                // make sure we're not back at the root (or if followSiblings is true, ignore root)
-                if ((!followSiblings && current == root) || current == null)
-                {
-                    break main;
-                }
+                while (current.getNext() == null);
+
                 // go to siblings!
                 current = current.getNext();
             }
@@ -156,13 +161,18 @@ public class Threader
      * @param <T>
      * @param messages
      *            Never <code>null</code>.
-     * @return First root or <code>null</code> if <tt>messages</tt> is empty.
+     * @param compactTree
+     *            Whether the resulting tree should be compacted by pruning
+     *            empty containers so that obvious empty containers are removed
+     *            and their children re-parented.
+     * @return A virtual root node. Never <code>null</code>.
      */
-    public <T> Container<T> thread(final Collection<MessageInfo<T>> messages)
+    public <T> Container<T> thread(final Collection<MessageInfo<T>> messages,
+            final boolean compactTree)
     {
         if (messages.isEmpty())
         {
-            return null;
+            return new Container<T>();
         }
 
         final boolean devDebug = K9.DEBUG && Log.isLoggable(K9.LOG_TAG, Log.VERBOSE);
@@ -187,30 +197,34 @@ public class Threader
         // 3. Discard id_table. We don't need it any more.
         containers = null;
 
-        // 4. Prune empty containers.
         final Container<T> fakeRoot = new Container<T>();
         addChild(fakeRoot, firstRoot);
-        try
-        {
-            pruneEmptyContainer(null, fakeRoot, fakeRoot);
-        }
-        catch (StackOverflowError e)
-        {
-            Log.w(K9.LOG_TAG, "Whoops! let's keep the tree untouched if possible", e);
-        }
 
-        if (devDebug)
+        // 4. Prune empty containers.
+        if (compactTree)
         {
-            Log.v(K9.LOG_TAG, MessageFormat.format(
-                    "Threader: after prune: w/-empty={0} w/o-empty={1}",
-                    Threader.count(fakeRoot.getChild(), 0, true),
-                    Threader.count(fakeRoot.getChild(), 0, false)));
+            try
+            {
+//                pruneEmptyContainer(null, fakeRoot, fakeRoot);
+                pruneEmptyContainer(fakeRoot);
+            }
+            catch (final StackOverflowError e)
+            {
+                Log.w(K9.LOG_TAG, "Whoops! let's keep the tree untouched if possible", e);
+            }
+            if (devDebug)
+            {
+                Log.v(K9.LOG_TAG, MessageFormat.format(
+                        "Threader: after prune: w/-empty={0} w/o-empty={1}",
+                        Threader.count(fakeRoot, true),
+                        Threader.count(fakeRoot, false)));
+            }
         }
 
         // 5. Group root set by subject.
-        groupRootBySubject(fakeRoot.getChild());
+        groupRootBySubject(fakeRoot);
 
-        return fakeRoot.getChild();
+        return fakeRoot;
 
     }
 
@@ -220,16 +234,17 @@ public class Threader
      * get threaded (to the extent possible, at least.)
      * 
      * @param <T>
-     * @param node
+     * @param fakeRoot
+     *            Never <code>null</code>.
      */
-    private <T> void groupRootBySubject(final Container<T> node)
+    private <T> void groupRootBySubject(final Container<T> fakeRoot)
     {
         // A. Construct a new hash table, subject_table, which associates
         // subject strings with Container objects.
         final Map<String, Container<T>> subjectTable = new HashMap<String, Container<T>>();
 
         // B. For each Container in the root set:
-        for (Container<T> root = node; root != null; root = root.getNext())
+        for (Container<T> root = fakeRoot.getChild(); root != null; root = root.getNext())
         {
             // Find the subject of that sub-tree:
             final String subject = extractSubject(root, true);
@@ -241,20 +256,20 @@ public class Threader
             }
 
             // Add this Container to the subject_table if:
-            final Container<T> previous = subjectTable.get(subject);
-            if (previous == null)
+            final Container<T> otherRoot = subjectTable.get(subject);
+            if (otherRoot == null)
             {
                 // There is no container in the table with this subject, or
                 subjectTable.put(subject, root);
             }
-            else if (root.getMessage() == null && previous.getMessage() != null)
+            else if (root.getMessage() == null && otherRoot.getMessage() != null)
             {
                 // This one is an empty container and the old one is not: the
                 // empty one is more interesting as a root, so put it in the
                 // table instead.
                 subjectTable.put(subject, root);
             }
-            else if (extractSubject(previous, false).length() > subject.length()
+            else if (extractSubject(otherRoot, false).length() > subject.length()
                     && subject.equals(extractSubject(root, false)))
             {
                 // The container in the table has a ``Re:'' version of this
@@ -271,7 +286,7 @@ public class Threader
 
         Container<T> next;
         // For each Container in the root set:
-        for (Container<T> root = node; root != null; root = next)
+        for (Container<T> root = fakeRoot.getChild(); root != null; root = next)
         {
             // saving next now since current root might be removed from
             // siblings!
@@ -281,9 +296,9 @@ public class Threader
             final String subject = extractSubject(root, true);
 
             // Look up the Container of that subject in the table.
-            final Container<T> match = subjectTable.get(subject);
+            final Container<T> otherRoot = subjectTable.get(subject);
 
-            if (match == null || match == root)
+            if (otherRoot == null || otherRoot == root)
             {
                 // If it is null, or if it is this container, continue.
                 continue;
@@ -293,15 +308,16 @@ public class Threader
             // in the table. There are a few possibilities:
 
             final MessageInfo<T> thisMessage = root.getMessage();
-            final MessageInfo<T> thatMessage = match.getMessage();
+            final MessageInfo<T> thatMessage = otherRoot.getMessage();
             final boolean thisEmpty = thisMessage == null;
             final boolean thatEmpty = thatMessage == null;
             if (thisEmpty && thatEmpty)
             {
                 // If both are dummies, append one's children to the other, and
                 // remove the now-empty container.
-                addChild(root, match.getChild());
-                removeChild(match);
+                removeChild(otherRoot.getChild(), true);
+                addChild(root, otherRoot.getChild());
+                removeChild(otherRoot);
             }
             else if (thisEmpty ^ thatEmpty)
             {
@@ -311,22 +327,22 @@ public class Threader
                 // children.)
                 if (thisEmpty)
                 {
-                    removeChild(match);
-                    addChild(root, match);
+                    removeChild(otherRoot);
+                    addChild(root, otherRoot);
                 }
                 else
                 {
                     removeChild(root);
-                    addChild(match, root);
+                    addChild(otherRoot, root);
                 }
             }
             else
             {
                 Matcher tempMatcher;
                 final boolean thatIsResponse = (tempMatcher = RESPONSE_PATTERN.matcher(thatMessage
-                        .getSubject())).find() && tempMatcher.start() == 0;
+                        .getSubject())).find(0) && tempMatcher.start() == 0;
                 final boolean thisIsResponse = (tempMatcher = RESPONSE_PATTERN.matcher(thisMessage
-                        .getSubject())).find() && tempMatcher.start() == 0;
+                        .getSubject())).find(0) && tempMatcher.start() == 0;
                 tempMatcher = null;
                 if (!thatEmpty && !thatIsResponse && thisIsResponse)
                 {
@@ -334,7 +350,7 @@ public class Threader
                     // subject does not begin with ``Re:'', but this message's
                     // subject does, then make this be a child of the other.
                     removeChild(root);
-                    addChild(match, root);
+                    addChild(otherRoot, root);
                 }
                 else if (!thatEmpty && thatIsResponse && !thisIsResponse)
                 {
@@ -345,8 +361,8 @@ public class Threader
                     // if there are two messages, one with Re: and one without,
                     // the one without will be in the hash table, regardless of
                     // the order in which they were seen.)
-                    removeChild(match);
-                    addChild(root, match);
+                    removeChild(otherRoot);
+                    addChild(root, otherRoot);
                 }
                 else
                 {
@@ -356,8 +372,8 @@ public class Threader
                     // instead of asserting a hierarchical relationship which
                     // might not be true.
                     final Container<T> newParent = new Container<T>();
-                    spliceChild(match, newParent);
-                    addChild(newParent, match);
+                    spliceChild(otherRoot, newParent);
+                    addChild(newParent, otherRoot);
                     removeChild(root);
                     addChild(newParent, root);
                 }
@@ -616,13 +632,14 @@ public class Threader
             private int count;
 
             @Override
-            public void init(final Container<T> root)
+            public boolean processRoot(final Container<T> root)
             {
                 count = 0;
+                return true;
             }
 
             @Override
-            public boolean process(final Container<T> node)
+            public boolean processNode(final Container<T> node)
             {
                 if (countEmpty || node.getMessage() != null)
                 {
@@ -642,7 +659,7 @@ public class Threader
             {
                 return count;
             }
-        }, root, true);
+        }, root);
     }
 
     /**
@@ -870,6 +887,86 @@ public class Threader
     }
 
     /**
+     * Iterative version of
+     * {@link #pruneEmptyContainer(Container, Container, Container)}
+     * 
+     * @param <T>
+     * @param fakeRoot
+     *            The node under which empty containers should be removed. Never
+     *            <code>null</code>.
+     */
+    private <T> void pruneEmptyContainer(final Container<T> fakeRoot)
+    {
+        final ContainerWalk<T, Boolean> walk = new ContainerWalk<T, Boolean>()
+        {
+            private boolean stopped;
+
+            @Override
+            public boolean processRoot(final Container<T> root)
+            {
+                stopped = false;
+                return true;
+            }
+
+            /*
+             * Return false if tree walking is compromised. Removing current
+             * node from tree would fall in this situation. Returning false
+             * would trigger a new iteration loop on the tree (see following
+             * loop).
+             */
+            @Override
+            public boolean processNode(final Container<T> node)
+            {
+                if (node.getMessage() == null)
+                {
+                    final Container<T> child = node.getChild();
+                    if (child == null)
+                    {
+                        // A. If it is an empty container with no children, nuke it.
+
+                        // if current node removed, drop iteration and start it again
+                        removeChild(node);
+                        stopped = true;
+                        return false;
+                    }
+                    else if (!(node.getParent() == fakeRoot && child.getNext() != null))
+                    {
+                        // B. If the Container has no Message, but does have children,
+                        // remove this container but promote its children to this level
+                        // (that is, splice them in to the current child list.)
+
+                        // Do not promote the children if doing so would promote them to
+                        // the root set -- unless there is only one child, in which
+                        // case, do.
+
+                        removeChild(child, true);
+                        spliceChild(node, child);
+                        stopped = true;
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public void finish()
+            {
+                // no-op
+            }
+
+            @Override
+            public Boolean result()
+            {
+                return stopped;
+            }
+        };
+
+        // execute iteration as long it gets interrupted (due to node removing, see above)
+        while (walkIterative(walk, fakeRoot))
+            ;
+    }
+
+    /**
      * Add a child to a parent node.
      * 
      * <p>
@@ -1008,39 +1105,70 @@ public class Threader
      */
     private <T> void removeChild(final Container<T> child)
     {
+        removeChild(child, false);
+    }
+
+    /**
+     * Remove a single node. Cancel the {@link Container#getNext()} link of the
+     * removed node.
+     * 
+     * <p>
+     * As a consistency measure following siblings of the removed child will get
+     * their {@link Container#setParent(Container) parent} updated.
+     * </p>
+     * 
+     * @param <T>
+     * @param child
+     *            Child to remove from its parent. Never <code>null</code>
+     * @param withSiblings TODO
+     */
+    private <T> void removeChild(final Container<T> child, final boolean withSiblings)
+    {
         final Container<T> parent = child.getParent();
         child.setParent(null);
         if (parent.getChild() == null)
         {
             return;
         }
+        boolean found = false;
         Container<T> previous = null;
         for (Container<T> sibling = parent.getChild(); sibling != null; sibling = sibling.getNext())
         {
             if (sibling == child)
             {
-                if (previous == null)
+                found = true;
+                if (withSiblings)
                 {
-                    parent.setChild(sibling.getNext());
+                    if (previous == null)
+                    {
+                        parent.setChild(null);
+                    }
+                    else
+                    {
+                        previous.setNext(null);
+                    }
                 }
                 else
                 {
-                    previous.setNext(sibling.getNext());
-                }
-                if (!consistencyCheck)
-                {
+                    if (previous == null)
+                    {
+                        parent.setChild(sibling.getNext());
+                    }
+                    else
+                    {
+                        previous.setNext(sibling.getNext());
+                    }
+                    child.setNext(null);
                     break;
                 }
             }
-            else if (consistencyCheck)
+            else if (found && withSiblings)
             {
-                // sanity measure, reset the parent to ensure consistency
-                sibling.setParent(parent);
+                sibling.setParent(null);
             }
 
             previous = sibling;
         }
-        child.setNext(null);
     }
 
     /**
@@ -1062,16 +1190,22 @@ public class Threader
     private <T> void spliceChild(final Container<T> oldChild, final Container<T> newChild)
     {
         final Container<T> parent = oldChild.getParent();
-        // final Container<T> oldNext = oldChild.getNext();
-        // oldChild.setNext(null);
-        // removeChild(oldChild);
-        // addChild(parent, newChild);
-        // addChild(parent, oldNext);
+
+//        final Container<T> oldNext = oldChild.getNext();
+//        removeChild(newChild, true);
+//        removeChild(oldChild, true);
+//        oldChild.setNext(null);
+//        addChild(parent, newChild);
+//        if (oldNext != null)
+//        {
+//            addChild(parent, oldNext);
+//        }
+
         Container<T> previous = null;
         boolean found = false;
         for (Container<T> sibling = parent.getChild(); sibling != null; sibling = sibling.getNext())
         {
-            if (sibling == oldChild)
+            if (!found && sibling == oldChild)
             {
                 if (previous == null)
                 {
