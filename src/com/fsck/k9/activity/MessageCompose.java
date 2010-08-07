@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 import org.apache.james.mime4j.codec.EncoderUtil;
 import android.app.AlertDialog;
@@ -115,6 +116,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private static final int ACTIVITY_REQUEST_PICK_ATTACHMENT = 1;
     private static final int ACTIVITY_CHOOSE_IDENTITY = 2;
     private static final int ACTIVITY_CHOOSE_ACCOUNT = 3;
+
+    /**
+     * Regular expression to remove the first localized "Re:" prefix in subjects.
+     *
+     * Currently:
+     * - "Aw:" (german: abbreviation for "Antwort")
+     */
+    private static final Pattern prefix = Pattern.compile("^AW[:\\s]\\s*", Pattern.CASE_INSENSITIVE);
 
     /**
      * The account used for message composition.
@@ -1650,14 +1659,24 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         {
             try
             {
-                if (message.getSubject() != null && !message.getSubject().toLowerCase().startsWith("re:"))
+                if (message.getSubject() != null)
                 {
-                    mSubjectView.setText("Re: " + message.getSubject());
+                    final String subject = prefix.matcher(message.getSubject()).replaceFirst("");
+
+                    if (subject.toLowerCase().startsWith("re:") == false)
+                    {
+                        mSubjectView.setText("Re: " + subject);
+                    }
+                    else
+                    {
+                        mSubjectView.setText(subject);
+                    }
                 }
                 else
                 {
-                    mSubjectView.setText(message.getSubject());
+                    mSubjectView.setText("");
                 }
+
                 /*
                  * If a reply-to was included with the message use that, otherwise use the from
                  * or sender address.
