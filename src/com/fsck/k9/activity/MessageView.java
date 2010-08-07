@@ -36,7 +36,6 @@ import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -84,6 +83,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
 
+    private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_CRYPTO = "crypto";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -112,6 +112,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private TextView mAdditionalHeadersView;
     private View mAttachmentIcon;
     private View mShowPicturesSection;
+    private boolean mShowPictures;
 
     private Button mDownloadRemainder;
 
@@ -781,6 +782,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
+        mShowPictures = false;
 
         mDownloadRemainder = (Button)findViewById(R.id.download_remainder);
 
@@ -1002,12 +1004,16 @@ public class MessageView extends K9Activity implements OnClickListener
         outState.putSerializable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
         outState.putSerializable(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
         outState.putSerializable(STATE_CRYPTO, mCrypto);
+        outState.putBoolean(SHOW_PICTURES, mShowPictures);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
         super.onRestoreInstanceState(savedInstanceState);
+
+        mShowPictures = savedInstanceState.getBoolean(SHOW_PICTURES);
+        setLoadPictures(mShowPictures);
 
         mCrypto = (CryptoProvider) savedInstanceState.getSerializable(STATE_CRYPTO);
         initializeCrypto();
@@ -1024,8 +1030,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mAccount = Preferences.getPreferences(this).getAccount(ref.accountUuid);
 
         mMessageContentView.clearView();
-        mMessageContentView.getSettings().setBlockNetworkImage(true);
-        K9.setBlockNetworkLoads(mMessageContentView.getSettings(), true);
+        setLoadPictures(false);
 
         mHandler.hideHeaderContainer();
         mAttachments.removeAllViews();
@@ -1133,6 +1138,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void disableButtons()
     {
+        setLoadPictures(false);
         disableMoveButtons();
         next.setEnabled(false);
         next_scrolling.setEnabled(false);
@@ -1658,11 +1664,18 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onShowPictures()
     {
-        K9.setBlockNetworkLoads(mMessageContentView.getSettings(), false);
-        mMessageContentView.getSettings().setBlockNetworkImage(false);
-        mShowPicturesSection.setVisibility(View.GONE);
+        // TODO: Download attachments that are used as inline image
+
+        setLoadPictures(true);
     }
 
+    private void setLoadPictures(boolean enable)
+    {
+        K9.setBlockNetworkLoads(mMessageContentView.getSettings(), !enable);
+        mMessageContentView.getSettings().setBlockNetworkImage(!enable);
+        mShowPictures = enable;
+        mHandler.showShowPictures(!enable);
+    }
 
     public void onClick(View view)
     {
@@ -2135,7 +2148,10 @@ public class MessageView extends K9Activity implements OnClickListener
                             updateDecryptLayout();
                         }
                     });
-                    mHandler.showShowPictures(text.contains("<img"));
+                    if (mShowPictures == false)
+                    {
+                        mHandler.showShowPictures(text.contains("<img"));
+                    }
                 }
                 else
                 {
