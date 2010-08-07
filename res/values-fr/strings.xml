@@ -50,6 +50,7 @@
 
   <string name="activity_unread_count">\u0020[<xliff:g id="unread_count">%d</xliff:g>]</string>
   <string name="status_loading_account_folder">\u0020(Charge <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
+  <string name="status_loading_account_folder_headers">\u0020(Récup. entêtes <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
   <string name="status_sending_account">\u0020(Envoi <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
   <string name="status_processing_account">\u0020(Prép <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g>)</string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
@@ -89,6 +90,7 @@
   <string name="open_action">Ouvrir</string>
   <string name="account_settings_action">Paramètres du compte</string>
   <string name="folder_settings_action">Paramètre du dossier</string>
+  <string name="global_settings_action">Paramètres globaux</string>
   <string name="remove_account_action">Supprimer le compte</string>
   <string name="clear_pending_action">Annuler les actions en attente (Danger\u00A0!)</string>
   <string name="accounts_action">Comptes</string>
@@ -242,6 +244,9 @@
   <string name="message_view_show_pictures_action">Afficher les images</string>
   <string name="message_view_fetching_attachment_toast">Récupération de la pièce jointe.</string>
   <string name="message_view_no_viewer">Impossible de trouver un visualisateur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
+  
+  <string name="message_view_download_remainder">Télécharger le message complet</string>
+
   <string name="message_additional_headers_not_downloaded">Les entêtes n\'ont pas toutes été téléchargées ou enregistrées. Sélectionnez «\u00A0Enregistrer toutes les entêtes localement\u00A0» dans les paramètres du serveur entrant pour activer cette fonction.</string>
   <string name="message_no_additional_headers_available">Toutes les entêtes ont été téléchargées, mais il n\'y en a pas d\'autres à montrer.</string>
   <string name="message_additional_headers_retrieval_failed">La récupération d\'entêtes supplémentaires de la base de données ou du serveur a échouée.</string>
@@ -435,6 +440,13 @@
   <string name="account_settings_message_lists">Listage de messages</string>
   <string name="account_settings_message_view">Visualisation de messages</string>
   <string name="account_settings_quote_prefix_label">Préfixe de citation</string>
+  <string name="account_settings_crypto">Cryptographie</string>
+  <string name="account_settings_crypto_app">Fournisseur OpenPGP</string>
+  <string name="account_settings_crypto_app_none">Aucun</string>
+  <string name="account_settings_crypto_app_not_available">non disponible</string>
+  <string name="account_settings_crypto_auto_signature">Auto-signer</string>
+  <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse courriel du compte pour deviner la clé de signature.</string>
+  
   <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
   <string name="account_settings_second_class_check_frequency_label">Fréquence de vérification pour 2e classe</string>
   <string name="account_settings_color_label">Couleur du compte</string>
@@ -566,6 +578,7 @@
   <string name="default_identity_description">Identité initiale</string>
   <string name="choose_identity">Choisir l\'identité</string>
   <string name="choose_identity_title">Choisir l\'identité</string>
+  <string name="choose_account_title">Choisir le compte/l\'identité</string>
   <string name="no_identities">Aller dans Paramètres du compte &gt; Gérer les identités pour créer des identités</string>
   <string name="no_removable_identity">Vous ne pouvez votre seule identité</string>
   <string name="identity_has_no_email">Vous ne pouvez pas utiliser une identité sans adresse courriel</string>
@@ -639,16 +652,6 @@
   <string name="settings_language_label">Langue</string>
 
   <string name="setting_language_system">Langue du système</string>
-  <string name="setting_language_chinese">Chinois</string>
-  <string name="setting_language_czech">Tchèque</string>
-  <string name="setting_language_english">Anglais</string>
-  <string name="setting_language_german">Allemand</string>
-  <string name="setting_language_france">Français</string>
-  <string name="setting_language_italian">Italien</string>
-  <string name="setting_language_japanese">Japonais</string>
-  <string name="setting_language_polish">Polonais</string>
-  <string name="setting_language_spanish">Espagnol</string>
-  <string name="setting_language_russian">Russe</string>
   <string name="background_ops_label">Synchronisation en arrière-plan</string>
   <string name="background_ops_never">Jamais</string>
   <string name="background_ops_always">Toujours</string>
@@ -750,8 +753,23 @@
   <string name="misc_preferences_attachment_title">Utiliser le contounement du bogue de gallerie</string>
   <string name="misc_preferences_attachment_description">Afficher les boutons pour ajouter des images ou vidéos en pièces jointes (pour contourner le bogue de gallerie 3D)</string>
 
+ <!-- APG related -->
+  <string name="error_activity_not_found">Aucune application n\'a été trouvée pour cette action.</string>
+  <string name="error_apg_version_not_supported">La version installée de APG n\'est pas supportée.</string>
+  <string name="btn_crypto_sign">Signer</string>
+  <string name="btn_encrypt">Chiffrer</string>
+  <string name="btn_decrypt">Déchiffrer</string>
+  <string name="btn_verify">Vérifier</string>
+  <string name="unknown_crypto_signature_user_id">«\u00A0inconnu\u00A0»</string>
+  <string name="key_id">id\u00A0: %s</string>
+  <string name="insufficient_apg_permissions">K-9 n\'a pas la permission d\'accéder à AGP, veuillez réinstaller K-9 pour corriger cela.</string>
+  <string name="pgp_mime_unsupported">Les messages PGP/MIME ne sont pas encore supportés</string>
+  <string name="attachment_encryption_unsupported">Attention\u00A0: La signature et le chiffrement des pièces jointes ne sont pas encore supportés.</string>
+  <string name="send_aborted">Envoi annulé.</string>
+
   <string name="save_or_discard_draft_message_dlg_title">Enregistrer le brouillon\u00A0?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
 
   <string name="charset_not_found">Ce message ne peut être affiché parce que le jeu de caractères «\u00A0<xliff:g id="charset">%s</xliff:g>\u00A0» n\'a pu être trouvé.</string>
+  <string name="select_text_now">Sélectionner le texte à copier.</string>
 </resources>
