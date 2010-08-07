@@ -73,6 +73,10 @@ public class WebDavStore extends Store
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN, Flag.ANSWERED };
 
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
+    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
+
     private int mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
     private String alias;
@@ -1448,7 +1452,7 @@ public class WebDavStore extends Store
                 }
             }
 
-            return messages.toArray(new Message[] {});
+            return messages.toArray(EMPTY_MESSAGE_ARRAY);
         }
 
 
@@ -1467,7 +1471,7 @@ public class WebDavStore extends Store
             if (uids == null ||
                     uids.length == 0)
             {
-                return messageList.toArray(new Message[] {});
+                return messageList.toArray(EMPTY_MESSAGE_ARRAY);
             }
 
             for (int i = 0, count = uids.length; i < count; i++)
@@ -1485,7 +1489,7 @@ public class WebDavStore extends Store
                     listener.messageFinished(message, i, count);
                 }
             }
-            messages = messageList.toArray(new Message[] {});
+            messages = messageList.toArray(EMPTY_MESSAGE_ARRAY);
 
             return messages;
         }
@@ -2298,7 +2302,7 @@ public class WebDavStore extends Store
 
         public String[] getHeaderList()
         {
-            return this.mHeaders.toArray(new String[] {});
+            return this.mHeaders.toArray(EMPTY_STRING_ARRAY);
         }
 
         public void setReadStatus(boolean status)
@@ -2430,7 +2434,7 @@ public class WebDavStore extends Store
                 hrefs.add(href);
             }
 
-            return hrefs.toArray(new String[] {});
+            return hrefs.toArray(EMPTY_STRING_ARRAY);
         }
 
         /**
@@ -2445,7 +2449,7 @@ public class WebDavStore extends Store
                 uids.add(uid);
             }
 
-            return uids.toArray(new String[] {});
+            return uids.toArray(EMPTY_STRING_ARRAY);
         }
 
         /**

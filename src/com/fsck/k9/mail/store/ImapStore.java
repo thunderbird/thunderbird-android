@@ -83,6 +83,10 @@ public class ImapStore extends Store
     private static final String CAPABILITY_COMPRESS_DEFLATE = "COMPRESS=DEFLATE";
     private static final String COMMAND_COMPRESS_DEFLATE = "COMPRESS DEFLATE";
 
+    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
+
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
     private String mHost;
     private int mPort;
     private String mUsername;
@@ -1091,7 +1095,7 @@ public class ImapStore extends Store
             {
                 throw ioExceptionHandler(mConnection, ioe);
             }
-            return messages.toArray(new Message[] {});
+            return messages.toArray(EMPTY_MESSAGE_ARRAY);
         }
 
 
@@ -1123,7 +1127,7 @@ public class ImapStore extends Store
                             }
                         }
                     }
-                    uids = tempUids.toArray(new String[] {});
+                    uids = tempUids.toArray(EMPTY_STRING_ARRAY);
                 }
                 for (int i = 0, count = uids.length; i < count; i++)
                 {
@@ -1143,7 +1147,7 @@ public class ImapStore extends Store
             {
                 throw ioExceptionHandler(mConnection, ioe);
             }
-            return messages.toArray(new Message[] {});
+            return messages.toArray(EMPTY_MESSAGE_ARRAY);
         }
 
         @Override

@@ -115,7 +115,7 @@ public class Address
         if (addressList == null
                 && !"".equals(addressList))
         {
-            return new Address[] {};
+            return EMPTY_ADDRESS_ARRAY;
         }
         try
         {
@@ -145,7 +145,7 @@ public class Address
         catch (ParseException pe)
         {
         }
-        return addresses.toArray(new Address[] {});
+        return addresses.toArray(EMPTY_ADDRESS_ARRAY);
     }
 
     @Override

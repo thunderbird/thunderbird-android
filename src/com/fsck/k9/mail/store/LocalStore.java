@@ -37,6 +37,8 @@ import java.util.regex.Matcher;
 public class LocalStore extends Store implements Serializable
 {
 
+    private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
+
     /**
      * Immutable empty {@link String} array
      */
@@ -805,7 +807,7 @@ public class LocalStore extends Store implements Serializable
             }
         }
 
-        return messages.toArray(new Message[] {});
+        return messages.toArray(EMPTY_MESSAGE_ARRAY);
 
     }
 
@@ -1498,7 +1500,7 @@ public class LocalStore extends Store implements Serializable
 
                 cursor = mDb.rawQuery(
                              "SELECT message_id, name, value FROM headers " + "WHERE message_id in ( " + questions + ") ",
-                             ids.toArray(new String[] {}));
+                             ids.toArray(EMPTY_STRING_ARRAY));
 
 
                 while (cursor.moveToNext())
@@ -1596,7 +1598,7 @@ public class LocalStore extends Store implements Serializable
                     messages.add(message);
                 }
             }
-            return messages.toArray(new Message[] {});
+            return messages.toArray(EMPTY_MESSAGE_ARRAY);
         }
 
         @Override
