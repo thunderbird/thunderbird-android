@@ -44,6 +44,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_HIDE_BUTTONS = "hide_buttons_enum";
     private static final String PREFERENCE_HIDE_MOVE_BUTTONS = "hide_move_buttons_enum";
+    private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
     private static final String PREFERENCE_ENABLE_MOVE_BUTTONS = "enable_move_buttons";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
@@ -84,6 +85,7 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mAccountNotifySelf;
     private ListPreference mAccountHideButtons;
     private ListPreference mAccountHideMoveButtons;
+    private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountEnableMoveButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
@@ -124,10 +126,9 @@ public class AccountSettings extends K9PreferenceActivity
 
         boolean isPushCapable = false;
         boolean isExpungeCapable = false;
-        Store store = null;
         try
         {
-            store = mAccount.getRemoteStore();
+            final Store store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
             isExpungeCapable = store.isExpungeCapable();
         }
@@ -383,6 +384,21 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
+        mAccountShowPictures = (ListPreference) findPreference(PREFERENCE_SHOW_PICTURES);
+        mAccountShowPictures.setValue("" + mAccount.getShowPictures());
+        mAccountShowPictures.setSummary(mAccountShowPictures.getEntry());
+        mAccountShowPictures.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String summary = newValue.toString();
+                int index = mAccountShowPictures.findIndexOfValue(summary);
+                mAccountShowPictures.setSummary(mAccountShowPictures.getEntries()[index]);
+                mAccountShowPictures.setValue(summary);
+                return false;
+            }
+        });
+
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
         mAccountNotify.setChecked(mAccount.isNotifyNewMail());
 
@@ -633,6 +649,7 @@ public class AccountSettings extends K9PreferenceActivity
 
         mAccount.setHideMessageViewButtons(Account.HideButtons.valueOf(mAccountHideButtons.getValue()));
         mAccount.setHideMessageViewMoveButtons(Account.HideButtons.valueOf(mAccountHideMoveButtons.getValue()));
+        mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
         mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
         mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
         mAccount.save(Preferences.getPreferences(this));

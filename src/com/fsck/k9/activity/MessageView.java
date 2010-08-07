@@ -55,6 +55,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.provider.ContactsContract.Data;
+import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.database.Cursor;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
@@ -1669,12 +1672,19 @@ public class MessageView extends K9Activity implements OnClickListener
         setLoadPictures(true);
     }
 
+    /**
+     * Enable/disable image loading of the WebView. But always hide the
+     * "Show pictures" button!
+     *
+     * @param enable true, if (network) images should be loaded.
+     *               false, otherwise.
+     */
     private void setLoadPictures(boolean enable)
     {
         K9.setBlockNetworkLoads(mMessageContentView.getSettings(), !enable);
         mMessageContentView.getSettings().setBlockNetworkImage(!enable);
         mShowPictures = enable;
-        mHandler.showShowPictures(!enable);
+        mHandler.showShowPictures(false);
     }
 
     public void onClick(View view)
@@ -2148,9 +2158,42 @@ public class MessageView extends K9Activity implements OnClickListener
                             updateDecryptLayout();
                         }
                     });
-                    if (mShowPictures == false)
+
+                    // TODO: Only check for external (non inline) images
+                    final boolean hasPictures = text.contains("<img");
+
+                    // If the message contains pictures and the "Show pictures"
+                    // button wasn't already pressed...
+                    if (hasPictures && (mShowPictures == false))
                     {
-                        mHandler.showShowPictures(text.contains("<img"));
+                        boolean forceShowPictures = false;
+                        if (account.getShowPictures() == Account.ShowPictures.ALWAYS)
+                        {
+                            forceShowPictures = true;
+                        }
+                        else if (account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS)
+                        {
+                            // TODO: change to _COUNT for speed
+                            Cursor c = getContentResolver().query(Data.CONTENT_URI, new String[]{Data._ID},
+                                Data.MIMETYPE + "='" + Email.CONTENT_ITEM_TYPE + "' AND "
+                                    + Data.DATA1 + "=? AND "
+                                    + Data.IN_VISIBLE_GROUP + "='1'",
+                                new String[] { message.getFrom()[0].getAddress() }, null);
+
+                            if ((c != null) && (c.getCount() > 0))
+                            {
+                                forceShowPictures = true;
+                            }
+                        }
+
+                        if (forceShowPictures)
+                        {
+                            onShowPictures();
+                        }
+                        else
+                        {
+                            mHandler.showShowPictures(true);
+                        }
                     }
                 }
                 else

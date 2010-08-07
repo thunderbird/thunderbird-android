@@ -30,9 +30,10 @@
             android:key="account_default"
             android:title="@string/account_settings_default_label"
             android:summary="@string/account_settings_default_summary" />
-        </PreferenceCategory>
 
-        <PreferenceCategory android:title="@string/account_settings_message_lists">
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/account_settings_message_lists">
 
         <ListPreference
             android:key="account_display_count"
@@ -45,14 +46,14 @@
             android:key="chip_color"
             android:singleLine="true"
             android:title="@string/account_settings_color_label"
-            android:summary="@string/account_settings_color_summary"
-            />
+            android:summary="@string/account_settings_color_summary" />
+
         <Preference
             android:key="led_color"
             android:singleLine="true"
             android:title="@string/account_settings_led_color_label"
-            android:summary="@string/account_settings_led_color_summary"
-            />
+            android:summary="@string/account_settings_led_color_summary" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/account_settings_message_view">
@@ -78,9 +79,17 @@
             android:entryValues="@array/account_settings_hide_move_buttons_values"
             android:dialogTitle="@string/account_settings_hide_move_buttons_label" />
 
+       <ListPreference
+            android:key="show_pictures_enum"
+            android:title="@string/account_settings_show_pictures_label"
+            android:entries="@array/account_settings_show_pictures_entries"
+            android:entryValues="@array/account_settings_show_pictures_values"
+            android:dialogTitle="@string/account_settings_show_pictures_label" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/account_settings_sync">
+
         <ListPreference
             android:key="account_check_frequency"
             android:title="@string/account_settings_mail_check_frequency_label"
@@ -135,12 +144,11 @@
             android:title="@string/account_settings_sync_remote_deletetions_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_sync_remote_deletetions_summary" />
-            
+
         <PreferenceScreen
             android:key="incoming"
             android:title="@string/account_settings_incoming_label"
-            android:summary="@string/account_settings_incoming_summary"
-            />
+            android:summary="@string/account_settings_incoming_summary" />
 
     </PreferenceCategory>
 
@@ -150,8 +158,8 @@
             android:key="account_setup_auto_expand_folder"
             android:singleLine="true"
             android:title="@string/account_setup_auto_expand_folder"
-            android:summary=""
-            />
+            android:summary="" />
+
         <ListPreference
             android:key="folder_display_mode"
             android:title="@string/account_settings_folder_display_mode_label"
@@ -181,22 +189,17 @@
         <PreferenceScreen
             android:key="composition"
             android:summary="@string/account_settings_composition_summary"
-            android:title="@string/account_settings_composition_label"
-
-            />
+            android:title="@string/account_settings_composition_label" />
 
         <PreferenceScreen
             android:key="manage_identities"
             android:title="@string/account_settings_identities_label"
-            android:summary="@string/account_settings_identities_summary"
-           />
+            android:summary="@string/account_settings_identities_summary" />
 
         <PreferenceScreen
             android:key="outgoing"
             android:title="@string/account_settings_outgoing_label"
-            android:summary="@string/account_settings_outgoing_summary"
-
-            />
+            android:summary="@string/account_settings_outgoing_summary" />
 
         <EditTextPreference
             android:key="account_quote_prefix"
@@ -221,6 +224,7 @@
             android:title="@string/account_settings_crypto_auto_signature"
             android:summary="@string/account_settings_crypto_auto_signature_summary"
             android:dependency="crypto_app"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/account_settings_notifications">
@@ -253,6 +257,7 @@
             android:defaultValue="false"
             android:title="@string/account_settings_vibrate_enable"
             android:summary="@string/account_settings_vibrate_summary" />
+
         <ListPreference
             android:dependency="account_vibrate"
             android:key="account_vibrate_pattern"
@@ -260,6 +265,7 @@
             android:entries="@array/account_settings_vibrate_pattern_entries"
             android:entryValues="@array/account_settings_vibrate_pattern_values"
             android:dialogTitle="@string/account_settings_vibrate_pattern_label" />
+
         <EditTextPreference
             android:dependency="account_vibrate"
             android:key="account_vibrate_times"
@@ -269,12 +275,13 @@
             android:summary=""
             android:dialogTitle="@string/account_settings_vibrate_times" />
 
-      <CheckBoxPreference
+        <CheckBoxPreference
             android:key="account_notify_sync"
             android:title="@string/account_settings_notify_sync_label"
             android:defaultValue="true"
             android:summary="@string/account_settings_notify_sync_summary" />
-     <CheckBoxPreference
+
+        <CheckBoxPreference
             android:key="notification_opens_unread"
             android:title="@string/account_settings_notification_opens_unread_label"
             android:defaultValue="true"
