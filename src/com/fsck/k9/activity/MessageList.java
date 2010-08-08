@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -2052,6 +2053,8 @@ public class MessageList
 
         private UiThrottler<Void> throttler;
 
+        private boolean groupingInProgress = false;
+
         private MessageListAdapter()
         {
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_mms_attachment_small);
@@ -2073,6 +2076,15 @@ public class MessageList
                 public void run()
                 {
                     doNotifyDataSetChanged();
+                }
+            });
+            throttler.setCompleted(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    groupingInProgress = false;
+                    updateFooterView();
                 }
             });
         }
@@ -2099,6 +2111,7 @@ public class MessageList
         {
             // buffer dataset update otherwise we might get continous CPU
             // processing in case of repeated call!
+            groupingInProgress = mCurrentFolder != null && mAccount != null && mCurrentFolder.loading;
             throttler.attempt();
         }
 
@@ -2644,11 +2657,22 @@ public class MessageList
                 footerView.setTag(holder);
             }
 
+            updateFooterView();
+
+            return footerView;
+        }
+
+
+        /**
+         * 
+         */
+        private void updateFooterView()
+        {
             FooterViewHolder holder = (FooterViewHolder)footerView.getTag();
 
             if (mCurrentFolder != null && mAccount != null)
             {
-                if (mCurrentFolder.loading)
+                if (mCurrentFolder.loading || groupingInProgress)
                 {
                     holder.main.setText(getString(R.string.status_loading_more));
                     holder.progress.setVisibility(ProgressBar.VISIBLE);
@@ -2670,8 +2694,6 @@ public class MessageList
             {
                 holder.progress.setVisibility(ProgressBar.INVISIBLE);
             }
-
-            return footerView;
         }
 
         @Override
