@@ -617,8 +617,7 @@ public class Threader
      */
     private String stripSubject(final String subject) throws PatternSyntaxException
     {
-        // -1 is safe to use in Matcher.find(int)
-        int lastPrefix = -1;
+        int lastPrefix = 0;
 
         final Matcher tagMatcher = TAG_PATTERN.matcher(subject);
         String tag = null;
@@ -648,8 +647,11 @@ public class Threader
         // (to make sure we don't catch response markers that are part of
         // the actual subject)
 
-        while (lastPrefix < subject.length() - 1 && matcher.find(lastPrefix)
-                && matcher.start() == (lastPrefix == -1 ? 0 : lastPrefix))
+        while (lastPrefix < subject.length() - 1
+                && matcher.find(lastPrefix)
+                && matcher.start() == lastPrefix
+                && (!tagPresent || tag == null || subject.regionMatches(matcher.end(), tag, 0,
+                        tag.length())))
         {
             lastPrefix = matcher.end();
 
