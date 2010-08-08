@@ -1751,7 +1751,7 @@ public class MessagingController implements Runnable
 
                     if (shouldNotifyForMessage(account, message))
                     {
-
+                        newMessages.incrementAndGet();
                         notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
                     }
 
@@ -1897,6 +1897,7 @@ public class MessagingController implements Runnable
             // Send a notification of this message
             if (shouldNotifyForMessage(account, message))
             {
+                newMessages.incrementAndGet();
                 notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
             }
 
@@ -4621,9 +4622,6 @@ public class MessagingController implements Runnable
         {
             messageNotice.append(context.getString(R.string.notification_new_title));
         }
-
-        newMessageCount.incrementAndGet();
-
 
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
