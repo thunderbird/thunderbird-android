@@ -4389,9 +4389,7 @@ public class MessagingController implements Runnable
                                     account.setRingNotified(false);
                                     try
                                     {
-                                        AccountStats stats = account.getStats(context);
-                                        int unreadMessageCount = stats.unreadMessageCount;
-                                        if (unreadMessageCount == 0)
+                                        if (account.getStats(context).unreadMessageCount == 0)
                                         {
                                             notifyAccountCancel(context, account);
                                         }
