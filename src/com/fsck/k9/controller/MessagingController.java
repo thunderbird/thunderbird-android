@@ -3094,7 +3094,7 @@ public class MessagingController implements Runnable
         {
             l.loadMessageForViewStarted(account, folder, uid);
         }
-        threadPool.execute(new Runnable()
+        new Thread(new Runnable()
         {
             public void run()
             {
@@ -3152,7 +3152,7 @@ public class MessagingController implements Runnable
 
                 }
             }
-        });
+        }).start();
     }
 
     /**
