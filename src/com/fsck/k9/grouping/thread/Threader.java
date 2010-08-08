@@ -372,6 +372,12 @@ public class Threader
                 continue;
             }
 
+            if (next == otherRoot)
+            {
+                // making sure we don't compare them twice
+                next = otherRoot.getNext();
+            }
+
             // Otherwise, we want to group together this Container and the one
             // in the table. There are a few possibilities:
 
@@ -383,9 +389,14 @@ public class Threader
             {
                 // If both are dummies, append one's children to the other, and
                 // remove the now-empty container.
-                removeChild(otherRoot.getChild(), true);
-                addChild(root, otherRoot.getChild());
+                final Container<T> otherChild = otherRoot.getChild();
+                removeChild(otherChild, true);
+                addChild(root, otherChild);
                 removeChild(otherRoot);
+
+                // we just removed the matching node from the tree, we have to
+                // replace it in the index
+                subjectTable.put(subject, root);
 
                 if (devDebug)
                 {
@@ -402,6 +413,9 @@ public class Threader
                 {
                     removeChild(otherRoot);
                     addChild(root, otherRoot);
+
+                    // removed from tree, replacing
+                    subjectTable.put(subject, root);
                 }
                 else
                 {
@@ -447,6 +461,9 @@ public class Threader
                     removeChild(otherRoot);
                     addChild(root, otherRoot);
 
+                    // removed from tree, replacing
+                    subjectTable.put(subject, root);
+
                     if (devDebug)
                     {
                         action = "that container is a non-empty, and that message's subject begins with ``Re:'', but this message's subject does not";
@@ -465,6 +482,8 @@ public class Threader
                     removeChild(root);
                     addChild(newParent, root);
 
+                    // removed from tree, replacing
+                    subjectTable.put(subject, newParent);
                     if (devDebug)
                     {
                         action = "Otherwise";
@@ -480,7 +499,7 @@ public class Threader
                 final int count = count(fakeRoot, false);
                 if (count < lastCount)
                 {
-                    Log.v(K9.LOG_TAG, "Threader: groupRootBySubject: (loop end) WRONG! lastCount= " + lastCount + " count=" + count + " node=" + root + " action=" + action);
+                    Log.v(K9.LOG_TAG, "Threader: groupRootBySubject: (loop end) WRONG! lastCount=" + lastCount + " count=" + count + " node=" + root + " action=" + action);
                     lastCount = count;
                 }
             }
@@ -490,6 +509,24 @@ public class Threader
         {
             Log.v(K9.LOG_TAG, "Threader: groupRootBySubject: (end) count=" + count(fakeRoot, false));
         }
+    }
+
+    public static <T> boolean isCircular(final Container<T> node)
+    {
+        if (node == null || node.getNext() == null)
+        {
+            return false;
+        }
+        final IdentityHashMap<Container<T>, Boolean> index = new IdentityHashMap<Container<T>, Boolean>();
+        for (Container<T> current = node; current != null; current = current.getNext())
+        {
+            if (index.containsKey(current))
+            {
+                return true;
+            }
+            index.put(current, Boolean.TRUE);
+        }
+        return false;
     }
 
     /**
@@ -649,11 +686,11 @@ public class Threader
         }
         if (lastPrefix > -1 && lastPrefix < subject.length() - 1)
         {
-            return subject.substring(lastPrefix);
+            return subject.substring(lastPrefix).trim();
         }
         else
         {
-            return subject;
+            return subject.trim();
         }
     }
 
