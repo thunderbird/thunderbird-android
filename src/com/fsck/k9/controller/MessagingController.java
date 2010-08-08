@@ -1352,6 +1352,18 @@ public class MessagingController implements Runnable
         }
         final String folder = remoteFolder.getName();
 
+        int unreadBeforeStart = 0;
+        try
+        {
+            AccountStats stats = account.getStats(mApplication);
+            unreadBeforeStart = stats.unreadMessageCount;
+
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+        }
+
         ArrayList<Message> syncFlagMessages = new ArrayList<Message>();
         List<Message> unsyncedMessages = new ArrayList<Message>();
         final AtomicInteger newMessages = new AtomicInteger(0);
@@ -1499,19 +1511,9 @@ public class MessagingController implements Runnable
 
 
 
-        int unreadBeforeStart = 0;
-        try
-        {
-            AccountStats stats = account.getStats(mApplication);
-            unreadBeforeStart = stats.unreadMessageCount;
-
-        }
 
 
-        catch (MessagingException e)
-        {
-            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
-        }
+
 
 
         /*
