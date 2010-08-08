@@ -81,7 +81,7 @@ public class UiThrottler<Result>
                     return null;
                 }
                 // throwing an exception here will result in the application crashing!
-                throw new IllegalStateException("UiThrottler: processing task threw an exception.",
+                throw new IllegalStateException("UiThrottler: processing task threw an exception",
                         e);
             }
         }
@@ -128,6 +128,10 @@ public class UiThrottler<Result>
             if (processingPending)
             {
                 activity.runOnUiThread(newAttempt);
+            }
+            else
+            {
+                activity.runOnUiThread(completed);
             }
         }
     };
@@ -187,6 +191,11 @@ public class UiThrottler<Result>
     private Runnable cancelled = NO_OP;
 
     /**
+     * Executed after cool-down period if no processing task is pending
+     */
+    private Runnable completed = NO_OP;
+
+    /**
      * Cool-down duration in milliseconds before beginning the pending
      * processing (if any)
      */
@@ -199,31 +208,11 @@ public class UiThrottler<Result>
         this(null, null, null);
     }
 
-    public UiThrottler(final Activity activity, final Callable<Result> processing)
-    {
-        this(activity, processing, DEFAULT_COOLDOWN_DURATION, NO_OP, NO_OP, NO_OP, Executors
-                .newScheduledThreadPool(1));
-    }
-
-    // consider using this constructor instead of the one above as this one
-    // doesn't instantiate a new ScheduledExecutorService on its own
     public UiThrottler(final Activity activity, final Callable<Result> processing,
             final ScheduledExecutorService scheduledExecutorService)
     {
-        this(activity, processing, DEFAULT_COOLDOWN_DURATION, NO_OP, NO_OP, NO_OP,
-                scheduledExecutorService);
-    }
-
-    public UiThrottler(final Activity activity, final Callable<Result> processing,
-            final long coolDownDuration, final Runnable preExecute, final Runnable postExecute,
-            final Runnable cancelled, final ScheduledExecutorService scheduledExecutorService)
-    {
         this.activity = activity;
         this.processing = processing;
-        this.coolDownDuration = coolDownDuration;
-        this.preExecute = preExecute;
-        this.postExecute = postExecute;
-        this.cancelled = cancelled;
         this.scheduledExecutorService = scheduledExecutorService;
     }
 
@@ -336,6 +325,16 @@ public class UiThrottler<Result>
     public void setSwallowExceptions(boolean swallowExceptions)
     {
         this.swallowExceptions = swallowExceptions;
+    }
+
+    public Runnable getCompleted()
+    {
+        return completed;
+    }
+
+    public void setCompleted(Runnable completed)
+    {
+        this.completed = completed;
     }
 
 }
