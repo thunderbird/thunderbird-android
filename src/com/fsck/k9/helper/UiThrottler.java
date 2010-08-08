@@ -257,16 +257,6 @@ public class UiThrottler<Result>
         this.scheduledExecutorService = scheduledExecutorService;
     }
 
-    public boolean isProcessingPending()
-    {
-        return processingPending;
-    }
-
-    public void setProcessingPending(boolean processingPending)
-    {
-        this.processingPending = processingPending;
-    }
-
     public Callable<Result> getProcessing()
     {
         return processing;
