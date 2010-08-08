@@ -1509,13 +1509,6 @@ public class MessagingController implements Runnable
 
         unsyncedMessages.clear();
 
-
-
-
-
-
-
-
         /*
          * Grab the content of the small messages first. This is going to
          * be very fast and at very worst will be a single up of a few bytes and a single
@@ -1525,9 +1518,6 @@ public class MessagingController implements Runnable
         fp.add(FetchProfile.Item.BODY);
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
-
-
-
 
         downloadSmallMessages(account, remoteFolder, localFolder, smallMessages, progress, unreadBeforeStart, newMessages, todo, fp);
 
@@ -4643,7 +4633,7 @@ public class MessagingController implements Runnable
         Intent i = FolderList.actionHandleNotification(context, account, account.getAutoExpandFolderName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, (previousUnreadMessageCount + newMessageCount.get()), account.getDescription());
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, notif.number, account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
         // Only ring or vibrate if we have not done so already on this
