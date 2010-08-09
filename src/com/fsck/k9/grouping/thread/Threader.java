@@ -739,6 +739,11 @@ public class Threader
 
         for (final MessageInfo<T> message : messages)
         {
+            if (K9.DEBUG)
+            {
+                Log.v(K9.LOG_TAG, "Threader: indexing " + message.getId() + " / References: " + message.getReferences());
+            }
+
             // A. If id_table contains an empty Container for this ID:
             String id = message.getId();
             Container<T> container;
@@ -752,8 +757,10 @@ public class Threader
                 if (container != null)
                 {
                     // ID clash detected!
-                    Log.w(K9.LOG_TAG, "Threader: Message-ID clash detected for " + id);
-
+                    if (K9.DEBUG)
+                    {
+                        Log.d(K9.LOG_TAG, "Threader: Message-ID clash detected for " + id);
+                    }
                     // making this a follower of the original message
                     final List<String> newReferences = new ArrayList<String>(
                             message.getReferences());
@@ -992,7 +999,7 @@ public class Threader
                         removeChild(node);
                         return WalkAction.LAST;
                     }
-                    else if (!(node.getParent() == fakeRoot && child.getNext() != null))
+                    else if (node.getParent() != root || child.getNext() == null)
                     {
                         // B. If the Container has no Message, but does have children,
                         // remove this container but promote its children to this level
