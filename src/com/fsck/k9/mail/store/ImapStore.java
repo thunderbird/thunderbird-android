@@ -1179,7 +1179,7 @@ public class ImapStore extends Store
             {
                 fetchFields.add("INTERNALDATE");
                 fetchFields.add("RFC822.SIZE");
-                fetchFields.add("BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc reply-to "
+                fetchFields.add("BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc reply-to message-id references in-reply-to "
                                 + K9.K9MAIL_IDENTITY + ")]");
             }
             if (fp.contains(FetchProfile.Item.STRUCTURE))
