@@ -1030,12 +1030,13 @@ public class MessageView extends K9Activity implements OnClickListener
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
 
-        mAccount = Preferences.getPreferences(this).getAccount(ref.accountUuid);
-
-        mMessageContentView.clearView();
-        setLoadPictures(false);
+        mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+        mTopView.scrollTo(0, 0);
+        mMessageContentView.scrollTo(0, 0);
 
         mHandler.hideHeaderContainer();
+        mMessageContentView.clearView();
+        setLoadPictures(false);
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
@@ -1046,17 +1047,15 @@ public class MessageView extends K9Activity implements OnClickListener
         mCrypto = null;
         initializeCrypto();
 
-        setupDisplayMessageButtons();
 
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
             mMessageReference.folderName,
             mMessageReference.uid,
             mListener);
+        setupDisplayMessageButtons();
 
 
-        mTopView.scrollTo(0, 0);
-        mMessageContentView.scrollTo(0, 0);
     }
 
     private void setupDisplayMessageButtons()
@@ -2155,6 +2154,8 @@ public class MessageView extends K9Activity implements OnClickListener
                         public void run()
                         {
                             mMessageContentView.loadDataWithBaseURL("http://", emailText, mimeType, "utf-8", null);
+                            mTopView.scrollTo(0, 0);
+                            mMessageContentView.scrollTo(0, 0);
                             updateDecryptLayout();
                         }
                     });
