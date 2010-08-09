@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.util.Log;
@@ -13,9 +14,19 @@ import com.fsck.k9.grouping.MessageGroup;
 import com.fsck.k9.grouping.MessageGrouper;
 import com.fsck.k9.grouping.MessageInfo;
 import com.fsck.k9.grouping.SimpleMessageGroup;
+import com.fsck.k9.helper.Utility;
 
 public class ThreadMessageGrouper implements MessageGrouper
 {
+
+    private static final class DateComparator<T> implements Comparator<MessageInfo<T>>
+    {
+        @Override
+        public int compare(final MessageInfo<T> object1, final MessageInfo<T> object2)
+        {
+            return object1.getDate().compareTo(object2.getDate());
+        }
+    }
 
     private Threader threader = new Threader();
 
@@ -29,7 +40,7 @@ public class ThreadMessageGrouper implements MessageGrouper
 
         final Container<T> fakeRoot = threader.thread(messages, true);
 
-        final List<MessageGroup<T>> result = toMessageGroups(fakeRoot);
+        final List<MessageGroup<T>> result = toMessageGroups(fakeRoot, messages);
 
         if (K9.DEBUG)
         {
@@ -47,12 +58,13 @@ public class ThreadMessageGrouper implements MessageGrouper
         return result;
     }
 
-    private <T> List<MessageGroup<T>> toMessageGroups(final Container<T> fakeRoot)
+    private <T> List<MessageGroup<T>> toMessageGroups(final Container<T> fakeRoot,
+            Collection<MessageInfo<T>> originalList)
     {
         final List<MessageGroup<T>> result = new ArrayList<MessageGroup<T>>();
         for (Container<T> root = fakeRoot.getChild(); root != null; root = root.getNext())
         {
-            final MessageGroup<T> messageGroup = toMessageGroup(root);
+            final MessageGroup<T> messageGroup = toMessageGroup(root, null);
             if (messageGroup != null)
             {
                 result.add(messageGroup);
@@ -65,10 +77,13 @@ public class ThreadMessageGrouper implements MessageGrouper
      * @param <T>
      * @param root
      *            Never <code>null</code>.
+     * @param originalList
+     *            TODO
      * @return <code>null</code> if the given branch didn't contain any
      *         non-empty container (no message found).
      */
-    protected <T> MessageGroup<T> toMessageGroup(final Container<T> root)
+    protected <T> MessageGroup<T> toMessageGroup(final Container<T> root,
+            Collection<MessageInfo<T>> originalList)
     {
         final SimpleMessageGroup<T> messageGroup = new SimpleMessageGroup<T>();
         final List<MessageInfo<T>> messages = convertToList(root); //toList(root, false);
@@ -78,11 +93,19 @@ public class ThreadMessageGrouper implements MessageGrouper
             return null;
         }
 
+        // sorting, but we need to keep the same first one as found by the
+        // threading algorithm
+        final MessageInfo<T> first = messages.remove(0);
+        Collections.sort(messages, new DateComparator<T>());
+        messages.add(0, first);
+
         messageGroup.setMessages(messages);
 
-        // we assume there is at least 1 message in the given hierarchy
-        final String subject = messages.get(0).getSubject();
+        final String subject = Utility.stripSubject(first.getSubject());
         messageGroup.setSubject(subject);
+
+        final MessageInfo<T> last = messages.get(messages.size() - 1);
+        messageGroup.setDate(last.getDate());
 
         // since we grouped by subject, using it as an identifier
         messageGroup.setId(subject.hashCode());
