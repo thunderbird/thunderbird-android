@@ -18,8 +18,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -138,8 +136,6 @@ public class MessagingController implements Runnable
     private ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
 
     ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
-
-    private final ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
     public enum SORT_TYPE
     {
@@ -402,7 +398,7 @@ public class MessagingController implements Runnable
      */
     public void listFolders(final Account account, final boolean refreshRemote, final MessagingListener listener)
     {
-        threadPool.execute(new Runnable()
+        new Thread (new Runnable()
         {
             public void run()
             {
@@ -458,7 +454,7 @@ public class MessagingController implements Runnable
                     l.listFoldersFinished(account);
                 }
             }
-        });
+        }).start();
     }
 
     private void doRefreshRemote(final Account account, MessagingListener listener)
@@ -558,13 +554,13 @@ public class MessagingController implements Runnable
      */
     public void listLocalMessages(final Account account, final String folder, final MessagingListener listener)
     {
-        threadPool.execute(new Runnable()
+        new Thread(new Runnable()
         {
             public void run()
             {
                 listLocalMessagesSynchronous(account, folder, listener);
             }
-        });
+        }).start();
     }
 
 
@@ -700,7 +696,7 @@ public class MessagingController implements Runnable
                   + ")");
         }
 
-        threadPool.execute(new Runnable()
+        new Thread(new Runnable()
         {
             public void run()
             {
@@ -892,7 +888,7 @@ public class MessagingController implements Runnable
                     listener.searchStats(stats);
                 }
             }
-        });
+        }).start();
     }
 
     public void loadMoreMessages(Account account, String folder, MessagingListener listener)
@@ -1352,6 +1348,18 @@ public class MessagingController implements Runnable
         }
         final String folder = remoteFolder.getName();
 
+        int unreadBeforeStart = 0;
+        try
+        {
+            AccountStats stats = account.getStats(mApplication);
+            unreadBeforeStart = stats.unreadMessageCount;
+
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
+        }
+
         ArrayList<Message> syncFlagMessages = new ArrayList<Message>();
         List<Message> unsyncedMessages = new ArrayList<Message>();
         final AtomicInteger newMessages = new AtomicInteger(0);
@@ -1507,10 +1515,7 @@ public class MessagingController implements Runnable
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
 
-
-
-
-        downloadSmallMessages(account, remoteFolder, localFolder, smallMessages, progress, newMessages, todo, fp);
+        downloadSmallMessages(account, remoteFolder, localFolder, smallMessages, progress, unreadBeforeStart, newMessages, todo, fp);
 
 
         smallMessages.clear();
@@ -1523,7 +1528,7 @@ public class MessagingController implements Runnable
 
 
 
-        downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress, newMessages, todo, fp);
+        downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress, unreadBeforeStart,  newMessages, todo, fp);
         largeMessages.clear();
 
         /*
@@ -1689,6 +1694,7 @@ public class MessagingController implements Runnable
                                        final LocalFolder localFolder,
                                        ArrayList<Message> smallMessages,
                                        final AtomicInteger progress,
+                                       final int unreadBeforeStart,
                                        final AtomicInteger newMessages,
                                        final int todo,
                                        FetchProfile fp) throws MessagingException
@@ -1696,22 +1702,6 @@ public class MessagingController implements Runnable
         final String folder = remoteFolder.getName();
 
         final Date earliestDate = account.getEarliestPollDate();
-
-        int tmpRead = 0;
-
-        try
-        {
-            AccountStats stats = account.getStats(mApplication);
-            tmpRead = stats.unreadMessageCount;
-
-        }
-        catch (MessagingException e)
-        {
-            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
-        }
-
-        final int unreadBeforeStart = tmpRead;
-
 
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Fetching small messages for folder " + folder);
@@ -1755,12 +1745,11 @@ public class MessagingController implements Runnable
                     }
                     // Send a notification of this message
 
-
-                    if (notifyAccount(mApplication, account, message, (unreadBeforeStart + newMessages.get())) == true)
+                    if (shouldNotifyForMessage(account, message))
                     {
                         newMessages.incrementAndGet();
+                        notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
                     }
-
 
                 }
                 catch (MessagingException me)
@@ -1788,6 +1777,7 @@ public class MessagingController implements Runnable
                                        final LocalFolder localFolder,
                                        ArrayList<Message> largeMessages,
                                        final AtomicInteger progress,
+                                       final int unreadBeforeStart,
                                        final AtomicInteger newMessages,
                                        final int todo,
                                        FetchProfile fp) throws MessagingException
@@ -1795,19 +1785,6 @@ public class MessagingController implements Runnable
         final String folder = remoteFolder.getName();
 
         final Date earliestDate = account.getEarliestPollDate();
-
-        int unreadBeforeStart = 0;
-        try
-        {
-            AccountStats stats = account.getStats(mApplication);
-            unreadBeforeStart = stats.unreadMessageCount;
-
-        }
-        catch (MessagingException e)
-        {
-            Log.e(K9.LOG_TAG, "Unable to getUnreadMessageCount for account: " + account, e);
-        }
-
 
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "SYNC: Fetching large messages for folder " + folder);
@@ -1914,11 +1891,11 @@ public class MessagingController implements Runnable
             }
 
             // Send a notification of this message
-            if (notifyAccount(mApplication, account, message, (unreadBeforeStart+newMessages.get())) == true)
+            if (shouldNotifyForMessage(account, message))
             {
                 newMessages.incrementAndGet();
+                notifyAccount(mApplication, account, message, unreadBeforeStart, newMessages);
             }
-
 
         }//for large messsages
         if (K9.DEBUG)
@@ -3113,7 +3090,7 @@ public class MessagingController implements Runnable
         {
             l.loadMessageForViewStarted(account, folder, uid);
         }
-        threadPool.execute(new Runnable()
+        new Thread(new Runnable()
         {
             public void run()
             {
@@ -3171,7 +3148,7 @@ public class MessagingController implements Runnable
 
                 }
             }
-        });
+        }).start();
     }
 
     /**
@@ -4401,9 +4378,7 @@ public class MessagingController implements Runnable
                                     account.setRingNotified(false);
                                     try
                                     {
-                                        AccountStats stats = account.getStats(context);
-                                        int unreadMessageCount = stats.unreadMessageCount;
-                                        if (unreadMessageCount == 0)
+                                        if (account.getStats(context).unreadMessageCount == 0)
                                         {
                                             notifyAccountCancel(context, account);
                                         }
@@ -4550,10 +4525,8 @@ public class MessagingController implements Runnable
         });
     }
 
-    /** Creates a notification of new email messages
-      * ringtone, lights, and vibration to be played
-    */
-    private boolean notifyAccount(Context context, Account account, Message message, int unreadMessageCount)
+
+    private boolean shouldNotifyForMessage(Account account, Message message)
     {
         // Do not notify if the user does not have notifications
         // enabled or if the message has been read
@@ -4578,6 +4551,17 @@ public class MessagingController implements Runnable
             }
         }
 
+        return true;
+
+    }
+
+
+
+    /** Creates a notification of new email messages
+      * ringtone, lights, and vibration to be played
+    */
+    private boolean notifyAccount(Context context, Account account, Message message, int previousUnreadMessageCount, AtomicInteger newMessageCount)
+    {
         // If we have a message, set the notification to "<From>: <Subject>"
         StringBuffer messageNotice = new StringBuffer();
         try
@@ -4602,7 +4586,6 @@ public class MessagingController implements Runnable
                     // show To: if the message was sent from me
                     else
                     {
-                        // Do not notify of mail from self if !isNotifySelfNewMail
                         if (!account.isNotifySelfNewMail())
                         {
                             return false;
@@ -4636,16 +4619,15 @@ public class MessagingController implements Runnable
             messageNotice.append(context.getString(R.string.notification_new_title));
         }
 
-
         NotificationManager notifMgr =
             (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
-        notif.number = unreadMessageCount;
+        notif.number = previousUnreadMessageCount + newMessageCount.get();
 
         Intent i = FolderList.actionHandleNotification(context, account, account.getAutoExpandFolderName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
-        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, (unreadMessageCount), account.getDescription());
+        String accountNotice = context.getString(R.string.notification_new_one_account_fmt, notif.number, account.getDescription());
         notif.setLatestEventInfo(context, accountNotice, messageNotice, pi);
 
         // Only ring or vibrate if we have not done so already on this

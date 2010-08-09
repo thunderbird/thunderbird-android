@@ -36,7 +36,6 @@ import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,6 +55,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.provider.ContactsContract.Data;
+import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.database.Cursor;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
@@ -84,6 +86,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private static final String EXTRA_MESSAGE_REFERENCES = "com.fsck.k9.MessageView_messageReferences";
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
 
+    private static final String SHOW_PICTURES = "showPictures";
     private static final String STATE_CRYPTO = "crypto";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
@@ -112,6 +115,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private TextView mAdditionalHeadersView;
     private View mAttachmentIcon;
     private View mShowPicturesSection;
+    private boolean mShowPictures;
 
     private Button mDownloadRemainder;
 
@@ -781,6 +785,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mAttachments = (LinearLayout)findViewById(R.id.attachments);
         mAttachmentIcon = findViewById(R.id.attachment);
         mShowPicturesSection = findViewById(R.id.show_pictures_section);
+        mShowPictures = false;
 
         mDownloadRemainder = (Button)findViewById(R.id.download_remainder);
 
@@ -1002,12 +1007,16 @@ public class MessageView extends K9Activity implements OnClickListener
         outState.putSerializable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
         outState.putSerializable(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
         outState.putSerializable(STATE_CRYPTO, mCrypto);
+        outState.putBoolean(SHOW_PICTURES, mShowPictures);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
         super.onRestoreInstanceState(savedInstanceState);
+
+        mShowPictures = savedInstanceState.getBoolean(SHOW_PICTURES);
+        setLoadPictures(mShowPictures);
 
         mCrypto = (CryptoProvider) savedInstanceState.getSerializable(STATE_CRYPTO);
         initializeCrypto();
@@ -1021,30 +1030,32 @@ public class MessageView extends K9Activity implements OnClickListener
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
 
-        mAccount = Preferences.getPreferences(this).getAccount(ref.accountUuid);
-
-        mMessageContentView.clearView();
-        mMessageContentView.getSettings().setBlockNetworkImage(true);
-        K9.setBlockNetworkLoads(mMessageContentView.getSettings(), true);
+        mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+        mTopView.scrollTo(0, 0);
+        mMessageContentView.scrollTo(0, 0);
 
         mHandler.hideHeaderContainer();
+        mMessageContentView.clearView();
+        setLoadPictures(false);
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
+        // grab a new crypto provider object, as the account may have changed, and currently
+        // the decrypted data and signature are stored in the crypto provider object
+        // TODO: separate that storage from the provider
+        // TODO: then move the provider object directly into the account object
         mCrypto = null;
         initializeCrypto();
 
-        setupDisplayMessageButtons();
 
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
             mMessageReference.folderName,
             mMessageReference.uid,
             mListener);
+        setupDisplayMessageButtons();
 
 
-        mTopView.scrollTo(0, 0);
-        mMessageContentView.scrollTo(0, 0);
     }
 
     private void setupDisplayMessageButtons()
@@ -1129,6 +1140,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void disableButtons()
     {
+        setLoadPictures(false);
         disableMoveButtons();
         next.setEnabled(false);
         next_scrolling.setEnabled(false);
@@ -1654,11 +1666,25 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void onShowPictures()
     {
-        K9.setBlockNetworkLoads(mMessageContentView.getSettings(), false);
-        mMessageContentView.getSettings().setBlockNetworkImage(false);
-        mShowPicturesSection.setVisibility(View.GONE);
+        // TODO: Download attachments that are used as inline image
+
+        setLoadPictures(true);
     }
 
+    /**
+     * Enable/disable image loading of the WebView. But always hide the
+     * "Show pictures" button!
+     *
+     * @param enable true, if (network) images should be loaded.
+     *               false, otherwise.
+     */
+    private void setLoadPictures(boolean enable)
+    {
+        K9.setBlockNetworkLoads(mMessageContentView.getSettings(), !enable);
+        mMessageContentView.getSettings().setBlockNetworkImage(!enable);
+        mShowPictures = enable;
+        mHandler.showShowPictures(false);
+    }
 
     public void onClick(View view)
     {
@@ -2128,10 +2154,48 @@ public class MessageView extends K9Activity implements OnClickListener
                         public void run()
                         {
                             mMessageContentView.loadDataWithBaseURL("http://", emailText, mimeType, "utf-8", null);
+                            mTopView.scrollTo(0, 0);
+                            mMessageContentView.scrollTo(0, 0);
                             updateDecryptLayout();
                         }
                     });
-                    mHandler.showShowPictures(text.contains("<img"));
+
+                    // TODO: Only check for external (non inline) images
+                    final boolean hasPictures = text.contains("<img");
+
+                    // If the message contains pictures and the "Show pictures"
+                    // button wasn't already pressed...
+                    if (hasPictures && (mShowPictures == false))
+                    {
+                        boolean forceShowPictures = false;
+                        if (account.getShowPictures() == Account.ShowPictures.ALWAYS)
+                        {
+                            forceShowPictures = true;
+                        }
+                        else if (account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS)
+                        {
+                            // TODO: change to _COUNT for speed
+                            Cursor c = getContentResolver().query(Data.CONTENT_URI, new String[]{Data._ID},
+                                Data.MIMETYPE + "='" + Email.CONTENT_ITEM_TYPE + "' AND "
+                                    + Data.DATA1 + "=? AND "
+                                    + Data.IN_VISIBLE_GROUP + "='1'",
+                                new String[] { message.getFrom()[0].getAddress() }, null);
+
+                            if ((c != null) && (c.getCount() > 0))
+                            {
+                                forceShowPictures = true;
+                            }
+                        }
+
+                        if (forceShowPictures)
+                        {
+                            onShowPictures();
+                        }
+                        else
+                        {
+                            mHandler.showShowPictures(true);
+                        }
+                    }
                 }
                 else
                 {
@@ -2429,6 +2493,8 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             mCryptoSignatureLayout.setVisibility(View.VISIBLE);
             mDecryptLayout.setVisibility(View.VISIBLE);
+        } else {
+            mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
         }
 
         if (!true || ((mMessage == null) && (mCrypto.getDecryptedData() == null)))

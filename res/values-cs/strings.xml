@@ -276,7 +276,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
 
     <string name="folder_push_active_symbol">(Push)</string>
 
-    <string name="find_action">Najít zprávy</string>
     <string name="from_same_sender">Více od tohoto odesílatele</string>
 
     <string name="message_copied_toast">Zpráva byla zkopírována</string>

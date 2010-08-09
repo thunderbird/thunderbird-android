@@ -92,6 +92,7 @@ public class Account implements BaseAccount
     private boolean mNotifySync;
     private HideButtons mHideMessageViewButtons;
     private HideButtons mHideMessageViewMoveButtons;
+    private ShowPictures mShowPictures;
     private boolean mEnableMoveButtons;
     private boolean mIsSignatureBeforeQuotedText;
     private String mExpungePolicy = EXPUNGE_IMMEDIATELY;
@@ -131,6 +132,11 @@ public class Account implements BaseAccount
         NEVER, ALWAYS, KEYBOARD_AVAILABLE;
     }
 
+    public enum ShowPictures
+    {
+        NEVER, ALWAYS, ONLY_FROM_CONTACTS;
+    }
+
     public enum Searchable
     {
         ALL, DISPLAYABLE, NONE
@@ -160,6 +166,7 @@ public class Account implements BaseAccount
         mFolderTargetMode = FolderMode.NOT_SECOND_CLASS;
         mHideMessageViewButtons = HideButtons.NEVER;
         mHideMessageViewMoveButtons = HideButtons.NEVER;
+        mShowPictures = ShowPictures.NEVER;
         mEnableMoveButtons = false;
         mRingtoneUri = "content://settings/system/notification_sound";
         mIsSignatureBeforeQuotedText = false;
@@ -301,6 +308,16 @@ public class Account implements BaseAccount
         catch (Exception e)
         {
             mHideMessageViewMoveButtons = HideButtons.NEVER;
+        }
+
+        try
+        {
+            mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
+                                          ShowPictures.NEVER.name()));
+        }
+        catch (Exception e)
+        {
+            mShowPictures = ShowPictures.NEVER;
         }
 
         mEnableMoveButtons = prefs.getBoolean(mUuid + ".enableMoveButtons", false);
@@ -506,6 +523,7 @@ public class Account implements BaseAccount
         editor.putBoolean(mUuid + ".ring", mRing);
         editor.putString(mUuid + ".hideButtonsEnum", mHideMessageViewButtons.name());
         editor.putString(mUuid + ".hideMoveButtonsEnum", mHideMessageViewMoveButtons.name());
+        editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
         editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
         editor.putString(mUuid + ".ringtone", mRingtoneUri);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
@@ -1006,6 +1024,16 @@ public class Account implements BaseAccount
     public synchronized void setHideMessageViewMoveButtons(HideButtons hideMessageViewButtons)
     {
         mHideMessageViewMoveButtons = hideMessageViewButtons;
+    }
+
+    public synchronized ShowPictures getShowPictures()
+    {
+        return mShowPictures;
+    }
+
+    public synchronized void setShowPictures(ShowPictures showPictures)
+    {
+        mShowPictures = showPictures;
     }
 
     public synchronized FolderMode getFolderTargetMode()

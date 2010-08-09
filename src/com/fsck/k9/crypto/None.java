@@ -6,6 +6,10 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.Message;
 
+/**
+ * Dummy CryptoProvider for when cryptography is disabled. It is never "available" and doesn't
+ * do anything.
+ */
 public class None extends CryptoProvider
 {
     static final long serialVersionUID = 0x21071230;

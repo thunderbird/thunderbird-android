@@ -9,6 +9,11 @@ import android.content.Intent;
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.Message;
 
+/**
+ * A CryptoProvider provides functionalities such as encryption, decryption, digital signatures.
+ * It currently also stores the results of such encryption or decryption.
+ * TODO: separate the storage from the provider
+ */
 abstract public class CryptoProvider implements Serializable
 {
     static final long serialVersionUID = 0x21071234;
