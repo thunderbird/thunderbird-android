@@ -1,17 +1,16 @@
 package com.fsck.k9.helper;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.fsck.k9.K9;
-
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.fsck.k9.K9;
 
 /**
  * Helper class to manage UI interation throttling in order not to stress the UI
