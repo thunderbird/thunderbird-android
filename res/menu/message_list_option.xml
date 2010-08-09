@@ -38,6 +38,34 @@
         </menu>
     </item>
     <item
+        android:id="@+id/set_group_by"
+        android:title="@string/group_by"
+        android:icon="@drawable/ic_menu_set_sort">
+        <menu>
+            <item
+                android:id="@+id/set_group_by_none"
+                android:title="@string/group_by_none"/>
+            <item
+                android:id="@+id/set_group_by_thread"
+                android:title="@string/group_by_thread"/>
+            <item
+                android:id="@+id/set_group_by_date"
+                android:title="@string/group_by_date"/>
+            <item
+                android:id="@+id/set_group_by_sender"
+                android:title="@string/group_by_sender"/>
+        </menu>
+    </item>
+<!-- 
+    <item
+        android:id="@+id/set_ordering"
+        android:title="@string/sort_group"
+        android:icon="@drawable/ic_menu_set_sort">
+        <menu>
+        </menu>
+    </item>
+ -->
+    <item
         android:id="@+id/select_all"
         android:title="@string/batch_select_all"
         android:icon="@drawable/ic_menu_select_all"/>

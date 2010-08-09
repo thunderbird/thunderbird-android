@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -67,6 +68,7 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.grouping.MessageGroup;
 import com.fsck.k9.grouping.MessageGrouper;
 import com.fsck.k9.grouping.MessageInfo;
+import com.fsck.k9.grouping.SingletonMessageGrouper;
 import com.fsck.k9.grouping.thread.ThreadMessageGrouper;
 import com.fsck.k9.helper.UiThrottler;
 import com.fsck.k9.helper.Utility;
@@ -168,7 +170,18 @@ public class MessageList
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private Bundle mState = null;
+
+    /**
+     * Remember the selection to be consistent between menu display and menu item
+     * selection
+     */
     private MessageInfoHolder mSelectedMessage = null;
+
+    /**
+     * Remember the selection to be consistent between menu display and menu item
+     * selection
+     */
+    private MessageGroup<MessageInfoHolder> mSelectedGroup = null;
 
     class MessageListHandler
     {
@@ -420,6 +433,13 @@ public class MessageList
     @Override
     public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
     {
+        // FIXME Android 2.1 dosen't invoke this method for expanded groups: can't prevent collapsing
+//        if (mAdapter.groupLessMode)
+//        {
+//            // ignore collapse attempt in groupless mode
+//            return true;
+//        }
+
         if (mCurrentFolder != null && ((groupPosition + 1) == mAdapter.getGroupCount()))
         {
             mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
@@ -1312,6 +1332,22 @@ public class MessageList
                 changeSort(SORT_TYPE.SORT_ATTACHMENT);
                 return true;
             }
+            case R.id.set_group_by_none:
+                mAdapter.messageGrouper = new SingletonMessageGrouper();
+                mAdapter.groupLessMode = true;
+                reSort();
+                break;
+            case R.id.set_group_by_thread:
+                mAdapter.messageGrouper = new ThreadMessageGrouper();
+                mAdapter.groupLessMode = false;
+                reSort();
+                break;
+            case R.id.set_group_by_sender:
+                // TODO
+                break;
+            case R.id.set_group_by_date:
+                // TODO
+                break;
             case R.id.select_all:
             case R.id.batch_select_all:
             {
@@ -1536,16 +1572,39 @@ public class MessageList
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item)
+    public boolean onContextItemSelected(final MenuItem item)
     {
-        MessageInfoHolder holder = mSelectedMessage;
-        // don't need this anymore
+        final MessageInfoHolder holder = mSelectedMessage;
+        final MessageGroup<MessageInfoHolder> group = mSelectedGroup;
+
+        // don't need them anymore
         mSelectedMessage = null;
-        if (holder == null)
+        mSelectedGroup = null;
+
+        if (holder != null && group == null)
         {
-            holder = getMessage(item.getMenuInfo());
+            return onContextItemSelectedForMessage(item, holder);
+        }
+        else if (holder == null && group != null)
+        {
+            return onContextItemSelectedForGroup(item, group);
+        }
+        else
+        {
+            return super.onContextItemSelected(item);
         }
 
+    }
+
+    /**
+     * @param item
+     *            Never <code>null</code>.
+     * @param holder
+     *            Never <code>null</code>.
+     * @return See {@link Activity#onContextItemSelected(MenuItem)}
+     */
+    private boolean onContextItemSelectedForMessage(MenuItem item, final MessageInfoHolder holder)
+    {
         switch (item.getItemId())
         {
             case R.id.open:
@@ -1629,6 +1688,95 @@ public class MessageList
         return super.onContextItemSelected(item);
     }
 
+    /**
+     * @param item
+     *            Never <code>null</code>.
+     * @param group
+     *            Never <code>null</code>.
+     * @return See {@link Activity#onContextItemSelected(MenuItem)}
+     */
+    private boolean onContextItemSelectedForGroup(final MenuItem item,
+            final MessageGroup<MessageInfoHolder> group)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.expand:
+                int i = findGroupPosition(group);
+                if (i >= 0)
+                {
+                    mListView.expandGroup(i);
+                }
+                break;
+            case R.id.collapse:
+                int j = findGroupPosition(group);
+                if (j >= 0)
+                {
+                    mListView.collapseGroup(j);
+                }
+                break;
+            case R.id.expand_all:
+                expandAll();
+                break;
+            case R.id.collapse_all:
+                collapseAll();
+                break;
+            default:
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    /**
+     * @param group
+     *            Never <code>null</code>.
+     * @return -1 if not found
+     */
+    private int findGroupPosition(final MessageGroup<MessageInfoHolder> group)
+    {
+        final int groupCount = mAdapter.getGroupCount();
+        if (groupCount > 0)
+        {
+            int i = 0;
+            for (MessageGroup<MessageInfoHolder> otherGroup; i < groupCount; i++)
+            {
+                otherGroup = mAdapter.getGroup(i);
+                if (group.getId() == otherGroup.getId())
+                {
+                    break;
+                }
+            }
+            return i;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    private void collapseAll()
+    {
+        final int groupCount = mAdapter.getGroupCount() - MessageListAdapter.NON_MESSAGE_ITEMS;
+        for (int i = 0; i < groupCount; i++)
+        {
+            if (mListView.isGroupExpanded(i))
+            {
+                mListView.collapseGroup(i);
+            }
+        }
+    }
+
+    private void expandAll()
+    {
+        final int groupCount = mAdapter.getGroupCount() - MessageListAdapter.NON_MESSAGE_ITEMS;
+        for (int i = 0; i < groupCount; i++)
+        {
+            if (!mListView.isGroupExpanded(i))
+            {
+                mListView.expandGroup(i);
+            }
+        }
+    }
+
     public void onSendAlternate(Account account, MessageInfoHolder holder)
     {
         mController.sendAlternate(this, account, holder.message);
@@ -1697,21 +1845,73 @@ public class MessageList
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
     {
-        super.onCreateContextMenu(menu, v, menuInfo);
+        // reset remembered selection
+        mSelectedGroup = null;
+        mSelectedMessage = null;
 
-        MessageInfoHolder message = getMessage(menuInfo);
-        // remember which message was originally selected, in case the list changes while the
-        // dialog is up
-        mSelectedMessage = message;
+        // hide by default
+        menu.setGroupVisible(R.id.message_group, false);
+        menu.setGroupVisible(R.id.single_message, false);
 
-        if (message == null)
+        if (menuInfo instanceof ExpandableListView.ExpandableListContextMenuInfo)
         {
-            return;
-        }
+            final ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
+            final long packedPosition = info.packedPosition;
+            final int packedPositionType = ExpandableListView.getPackedPositionType(packedPosition);
 
+            switch (packedPositionType)
+            {
+                case ExpandableListView.PACKED_POSITION_TYPE_GROUP:
+                    // group
+                    final int groupPosition = ExpandableListView
+                            .getPackedPositionGroup(packedPosition);
+                    mSelectedGroup = mAdapter.getGroup(groupPosition);
+
+                    if (mSelectedGroup == null)
+                    {
+                        break;
+                    }
+
+                    onCreateContextMenuForGroup(menu, v, menuInfo, mSelectedGroup, groupPosition);
+
+                    break;
+                case ExpandableListView.PACKED_POSITION_TYPE_CHILD:
+                    // message
+                    final int packedPositionChild = ExpandableListView
+                            .getPackedPositionChild(packedPosition);
+                    final int packedPositionGroup = ExpandableListView
+                            .getPackedPositionGroup(packedPosition);
+
+                    // remember which message was originally selected, in case the list changes while the
+                    // dialog is up
+                    mSelectedMessage = mAdapter.getChild(packedPositionGroup, packedPositionChild);
+
+                    if (mSelectedMessage == null)
+                    {
+                        break;
+                    }
+
+                    onCreateContextMenuForMessage(menu, mSelectedMessage);
+
+                    break;
+            }
+        }
+    }
+
+    /**
+     * @param menu
+     *            Never <code>null</code>.
+     * @param message
+     *            Never <code>null</code>.
+     * @see Activity#onCreateContextMenu(ContextMenu, View, ContextMenuInfo)
+     */
+    private void onCreateContextMenuForMessage(final ContextMenu menu, final MessageInfoHolder message)
+    {
         getMenuInflater().inflate(R.menu.message_list_context, menu);
 
         menu.setHeaderTitle((CharSequence) message.subject);
+
+        menu.setGroupVisible(R.id.single_message, true);
 
         if (message.read)
         {
@@ -1758,31 +1958,34 @@ public class MessageList
     }
 
     /**
+     * @param menu
+     *            Never <code>null</code>.
+     * @param v
+     *            Never <code>null</code>.
      * @param menuInfo
-     * @return
+     *            Never <code>null</code>.
+     * @param group
+     *            Never <code>null</code>.
+     * @param groupPosition
+     * @see Activity#onCreateContextMenu(ContextMenu, View, ContextMenuInfo)
      */
-    private MessageInfoHolder getMessage(ContextMenuInfo menuInfo)
+    private void onCreateContextMenuForGroup(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo,
+            final MessageGroup<MessageInfoHolder> group, final int groupPosition)
     {
-        if (menuInfo instanceof ExpandableListView.ExpandableListContextMenuInfo)
+        getMenuInflater().inflate(R.menu.message_list_context, menu);
+        menu.setHeaderTitle(group.getSubject());
+        menu.setGroupVisible(R.id.message_group, true);
+
+        if (mListView.isGroupExpanded(groupPosition))
         {
-            final ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
-            final int packedPositionType = ExpandableListView.getPackedPositionType(info.packedPosition);
-            MessageInfoHolder message = null;
-            if (packedPositionType == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
-            {
-                // message
-                final int packedPositionChild = ExpandableListView.getPackedPositionChild(info.packedPosition);
-                final int packedPositionGroup = ExpandableListView.getPackedPositionGroup(info.packedPosition);
-                message = mAdapter.getChild(packedPositionGroup, packedPositionChild);
-            }
-            return message;
+            menu.findItem(R.id.expand).setVisible(false);
+            menu.findItem(R.id.collapse).setVisible(true);
         }
-//        else if (menuInfo instanceof AdapterView.AdapterContextMenuInfo)
-//        {
-//            final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-//            MessageInfoHolder message = (MessageInfoHolder) mAdapter.getItem(info.position);
-//        }
-        return null;
+        else
+        {
+            menu.findItem(R.id.expand).setVisible(true);
+            menu.findItem(R.id.collapse).setVisible(false);
+        }
     }
 
     class MessageListAdapter extends BaseExpandableListAdapter
@@ -2047,7 +2250,8 @@ public class MessageList
         private Drawable mAnsweredIcon;
         private View footerView = null;
 
-        private MessageGrouper messageGrouper = new ThreadMessageGrouper();
+        private MessageGrouper messageGrouper;
+        private boolean groupLessMode = false;
 
         private UiThrottler<Void> throttler;
 
@@ -2057,6 +2261,9 @@ public class MessageList
         {
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_mms_attachment_small);
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
+
+            // TODO restore previous active/selected implementation
+            messageGrouper = new ThreadMessageGrouper();
 
             throttler = new UiThrottler<Void>(MessageList.this, new Callable<Void>()
             {
@@ -2083,6 +2290,11 @@ public class MessageList
                 {
                     groupingInProgress = false;
                     updateFooterView();
+                    if (groupLessMode)
+                    {
+                        // making sure we expand the sole group in groupless mode
+                        expandAll();
+                    }
                 }
             });
         }
@@ -2770,6 +2982,13 @@ public class MessageList
             // UI should stay consistent with the underlying data and needs to
             // keep track of the groups when list is updating (ie the selection/
             // expanded state should remain the "same" group if possible)
+
+            if (groupLessMode)
+            {
+                // make sure we always get the same ID in groupless mode
+                return 0;
+            }
+
             return group.getId();
         }
 
@@ -2820,7 +3039,15 @@ public class MessageList
             final TextView subjectView = (TextView) view.findViewById(R.id.subject);
             final TextView countView = (TextView) view.findViewById(R.id.count);
 
-            subjectView.setText(group.getSubject());
+            if (groupLessMode)
+            {
+                // TODO set localized text (or hide view?)
+                subjectView.setText(group.getSubject());
+            }
+            else
+            {
+                subjectView.setText(group.getSubject());
+            }
             subjectView
                     .setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
 

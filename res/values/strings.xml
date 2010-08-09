@@ -702,6 +702,16 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="sort_by_flag">Star</string>
     <string name="sort_by_unread">Read/unread</string>
     <string name="sort_by_attach">Attachments</string>
+    <string name="group_by">Group by...</string>
+    <string name="group_by_none">None</string>
+    <string name="group_by_thread">Thread</string>
+    <string name="group_by_date">Date</string>
+    <string name="group_by_sender">Sender</string>
+    <string name="sort_group">Sort/group by...</string>
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
+    <string name="expand_all">Expand all</string>
+    <string name="collapse_all">Collapse all</string>
     <string name="message_web_view_error">%s</string>
 
     <string name="account_delete_dlg_title">Remove Account</string>

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/message_group" android:visible="false">
+        <item android:id="@+id/expand" android:title="@string/expand"/>
+        <item android:id="@+id/collapse" android:title="@string/collapse"/>
+        <item android:id="@+id/expand_all" android:title="@string/expand_all"/>
+        <item android:id="@+id/collapse_all" android:title="@string/collapse_all"/>
+    </group>
+    <group android:id="@+id/single_message" android:visible="false">
     <item
         android:id="@+id/open"
         android:title="@string/open_action"
@@ -61,4 +68,5 @@
         android:id="@+id/same_sender"
         android:title="@string/from_same_sender"
     />
+    </group>
 </menu>
