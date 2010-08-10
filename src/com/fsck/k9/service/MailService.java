@@ -153,7 +153,7 @@ public class MailService extends CoreService
 
             }
 
-            if (K9.DEBUG)
+            //if (K9.DEBUG)
                 Log.i(K9.LOG_TAG, "MailService.onStart(" + intent + ", " + startId
                       + "), hasConnectivity = " + hasConnectivity + ", doBackground = " + doBackground);
 
@@ -409,6 +409,13 @@ public class MailService extends CoreService
                 {
                     setupPushers(null);
                     schedulePushers(startId);
+                } 
+                else
+                {
+//                    if (K9.DEBUG) {
+                        Log.i(K9.LOG_TAG, "Not scheduling pushers:  connectivity? "+hasConnectivity + " -- doBackground? "+doBackground);
+                
+ //                   }
                 }
 
             }
