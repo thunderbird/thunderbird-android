@@ -18,8 +18,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -138,8 +136,6 @@ public class MessagingController implements Runnable
     private ConcurrentHashMap<String, AtomicInteger> sendCount = new ConcurrentHashMap<String, AtomicInteger>();
 
     ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<Account, Pusher>();
-
-    private final ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
     public enum SORT_TYPE
     {
@@ -402,7 +398,7 @@ public class MessagingController implements Runnable
      */
     public void listFolders(final Account account, final boolean refreshRemote, final MessagingListener listener)
     {
-        threadPool.execute(new Runnable()
+        new Thread (new Runnable()
         {
             public void run()
             {
@@ -458,7 +454,7 @@ public class MessagingController implements Runnable
                     l.listFoldersFinished(account);
                 }
             }
-        });
+        }).start();
     }
 
     private void doRefreshRemote(final Account account, MessagingListener listener)
@@ -558,13 +554,13 @@ public class MessagingController implements Runnable
      */
     public void listLocalMessages(final Account account, final String folder, final MessagingListener listener)
     {
-        threadPool.execute(new Runnable()
+        new Thread(new Runnable()
         {
             public void run()
             {
                 listLocalMessagesSynchronous(account, folder, listener);
             }
-        });
+        }).start();
     }
 
 
@@ -700,7 +696,7 @@ public class MessagingController implements Runnable
                   + ")");
         }
 
-        threadPool.execute(new Runnable()
+        new Thread(new Runnable()
         {
             public void run()
             {
@@ -892,7 +888,7 @@ public class MessagingController implements Runnable
                     listener.searchStats(stats);
                 }
             }
-        });
+        }).start();
     }
 
     public void loadMoreMessages(Account account, String folder, MessagingListener listener)
