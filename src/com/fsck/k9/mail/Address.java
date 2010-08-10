@@ -10,7 +10,6 @@ import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.field.address.AddressList;
 import org.apache.james.mime4j.field.address.Mailbox;
 import org.apache.james.mime4j.field.address.MailboxList;
-import org.apache.james.mime4j.field.address.NamedMailbox;
 import org.apache.james.mime4j.field.address.parser.ParseException;
 
 import java.util.ArrayList;
@@ -123,16 +122,14 @@ public class Address
             for (int i = 0, count = parsedList.size(); i < count; i++)
             {
                 org.apache.james.mime4j.field.address.Address address = parsedList.get(i);
-                if (address instanceof NamedMailbox)
-                {
-                    NamedMailbox namedMailbox = (NamedMailbox)address;
-                    addresses.add(new Address(namedMailbox.getLocalPart() + "@"
-                                              + namedMailbox.getDomain(), namedMailbox.getName()));
-                }
-                else if (address instanceof Mailbox)
+                if (address instanceof Mailbox)
                 {
                     Mailbox mailbox = (Mailbox)address;
+                    if (mailbox.getName() != null ){
+                    addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName()));
+                    } else{
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain()));
+                    }
                 }
                 else
                 {

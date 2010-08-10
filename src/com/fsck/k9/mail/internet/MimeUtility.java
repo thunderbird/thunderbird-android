@@ -6,9 +6,9 @@ import com.fsck.k9.R;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.*;
 import org.apache.commons.io.IOUtils;
-import org.apache.james.mime4j.decoder.Base64InputStream;
-import org.apache.james.mime4j.decoder.DecoderUtil;
-import org.apache.james.mime4j.decoder.QuotedPrintableInputStream;
+import org.apache.james.mime4j.codec.Base64InputStream;
+import org.apache.james.mime4j.codec.DecoderUtil;
+import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

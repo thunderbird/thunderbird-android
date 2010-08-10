@@ -2,12 +2,13 @@
 package com.fsck.k9.mail.internet;
 
 import com.fsck.k9.mail.*;
-import org.apache.james.mime4j.BodyDescriptor;
-import org.apache.james.mime4j.ContentHandler;
-import org.apache.james.mime4j.EOLConvertingInputStream;
-import org.apache.james.mime4j.MimeStreamParser;
-import org.apache.james.mime4j.field.DateTimeField;
-import org.apache.james.mime4j.field.Field;
+import org.apache.james.mime4j.descriptor.BodyDescriptor;
+import org.apache.james.mime4j.parser.ContentHandler;
+import org.apache.james.mime4j.message.MessageBuilder;
+import org.apache.james.mime4j.io.EOLConvertingInputStream;
+import org.apache.james.mime4j.parser.MimeStreamParser;
+import org.apache.james.mime4j.field.datetime.DateTime;
+import org.apache.james.mime4j.field.AbstractField;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -71,8 +72,12 @@ public class MimeMessage extends Message
         mBody = null;
 
         MimeStreamParser parser = new MimeStreamParser();
-        parser.setContentHandler(new MimeMessageBuilder());
-        parser.parse(new EOLConvertingInputStream(in));
+        parser.setContentHandler(new MessageBuilder(new org.apache.james.mime4j.message.Message()));
+        try {
+            parser.parse(new EOLConvertingInputStream(in));
+        }
+        catch (org.apache.james.mime4j.MimeException e) {
+        }
     }
 
     @Override
@@ -82,7 +87,7 @@ public class MimeMessage extends Message
         {
             try
             {
-                DateTimeField field = (DateTimeField)Field.parse("Date: "
+                DateTime field = (DateTime)AbstractField.parse("Date: "
                                       + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
                 mSentDate = field.getDate();
             }
@@ -499,167 +504,4 @@ public class MimeMessage extends Message
         }
     }
 
-    class MimeMessageBuilder implements ContentHandler
-    {
-        private Stack<Object> stack = new Stack<Object>();
-
-        public MimeMessageBuilder()
-        {
-        }
-
-        private void expect(Class<?> c)
-        {
-            if (!c.isInstance(stack.peek()))
-            {
-                throw new IllegalStateException("Internal stack error: " + "Expected '"
-                                                + c.getName() + "' found '" + stack.peek().getClass().getName() + "'");
-            }
-        }
-
-        public void startMessage()
-        {
-            if (stack.isEmpty())
-            {
-                stack.push(MimeMessage.this);
-            }
-            else
-            {
-                expect(Part.class);
-                try
-                {
-                    MimeMessage m = new MimeMessage();
-                    ((Part)stack.peek()).setBody(m);
-                    stack.push(m);
-                }
-                catch (MessagingException me)
-                {
-                    throw new Error(me);
-                }
-            }
-        }
-
-        public void endMessage()
-        {
-            expect(MimeMessage.class);
-            stack.pop();
-        }
-
-        public void startHeader()
-        {
-            expect(Part.class);
-        }
-
-        public void field(String fieldData)
-        {
-            expect(Part.class);
-            try
-            {
-                String[] tokens = fieldData.split(":", 2);
-                ((Part)stack.peek()).addHeader(tokens[0], tokens[1].trim());
-            }
-            catch (MessagingException me)
-            {
-                throw new Error(me);
-            }
-        }
-
-        public void endHeader()
-        {
-            expect(Part.class);
-        }
-
-        public void startMultipart(BodyDescriptor bd)
-        {
-            expect(Part.class);
-
-            Part e = (Part)stack.peek();
-            try
-            {
-                MimeMultipart multiPart = new MimeMultipart(e.getContentType());
-                e.setBody(multiPart);
-                stack.push(multiPart);
-            }
-            catch (MessagingException me)
-            {
-                throw new Error(me);
-            }
-        }
-
-        public void body(BodyDescriptor bd, InputStream in) throws IOException
-        {
-            expect(Part.class);
-            Body body = MimeUtility.decodeBody(in, bd.getTransferEncoding());
-            try
-            {
-                ((Part)stack.peek()).setBody(body);
-            }
-            catch (MessagingException me)
-            {
-                throw new Error(me);
-            }
-        }
-
-        public void endMultipart()
-        {
-            stack.pop();
-        }
-
-        public void startBodyPart()
-        {
-            expect(MimeMultipart.class);
-
-            try
-            {
-                MimeBodyPart bodyPart = new MimeBodyPart();
-                ((MimeMultipart)stack.peek()).addBodyPart(bodyPart);
-                stack.push(bodyPart);
-            }
-            catch (MessagingException me)
-            {
-                throw new Error(me);
-            }
-        }
-
-        public void endBodyPart()
-        {
-            expect(BodyPart.class);
-            stack.pop();
-        }
-
-        public void epilogue(InputStream is) throws IOException
-        {
-            expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
-            int b;
-            while ((b = is.read()) != -1)
-            {
-                sb.append((char)b);
-            }
-            // ((Multipart) stack.peek()).setEpilogue(sb.toString());
-        }
-
-        public void preamble(InputStream is) throws IOException
-        {
-            expect(MimeMultipart.class);
-            StringBuffer sb = new StringBuffer();
-            int b;
-            while ((b = is.read()) != -1)
-            {
-                sb.append((char)b);
-            }
-            try
-            {
-                ((MimeMultipart)stack.peek()).setPreamble(sb.toString());
-            }
-            catch (MessagingException me)
-            {
-                throw new Error(me);
-            }
-        }
-
-        public void raw(InputStream is) throws IOException
-        {
-            throw new UnsupportedOperationException("Not supported");
-        }
-    }
 }
