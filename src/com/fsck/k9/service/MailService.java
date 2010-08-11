@@ -417,6 +417,13 @@ public class MailService extends CoreService
                 
  //                   }
                 }
+                else
+                {
+                    if (K9.DEBUG) {
+                        Log.i(K9.LOG_TAG, "Not scheduling pushers:  connectivity? "+hasConnectivity + " -- doBackground? "+doBackground);
+
+                    }
+                }
 
             }
         }
