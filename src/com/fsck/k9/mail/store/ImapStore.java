@@ -70,6 +70,8 @@ public class ImapStore extends Store
     private static int MAX_DELAY_TIME = 5 * 60 * 1000; // 5 minutes
     private static int NORMAL_DELAY_TIME = 5000;
 
+    private static int FETCH_WINDOW_SIZE = 100;
+
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN };
 
     private static final String CAPABILITY_IDLE = "IDLE";
@@ -1155,12 +1157,14 @@ public class ImapStore extends Store
                 return;
             }
             checkOpen();
-            String[] uids = new String[messages.length];
+            List<String> uids = new ArrayList<String>(messages.length);
             HashMap<String, Message> messageMap = new HashMap<String, Message>();
             for (int i = 0, count = messages.length; i < count; i++)
             {
-                uids[i] = messages[i].getUid();
-                messageMap.put(uids[i], messages[i]);
+
+                String uid = messages[i].getUid();
+                uids.add(uid);
+                messageMap.put(uid, messages[i]);
             }
 
             /*
@@ -1195,101 +1199,108 @@ public class ImapStore extends Store
                 fetchFields.add("BODY.PEEK[]");
             }
 
-            try
+
+
+            for (int windowStart=1; windowStart <= messages.length; windowStart += (FETCH_WINDOW_SIZE +1))
             {
-                mConnection.sendCommand(String.format("UID FETCH %s (%s)",
-                                                      Utility.combine(uids, ','),
-                                                      Utility.combine(fetchFields.toArray(new String[fetchFields.size()]), ' ')
-                                                     ), false);
-                ImapResponse response;
-                int messageNumber = 0;
+                List<String> uidWindow = uids.subList(windowStart, Math.min((windowStart+FETCH_WINDOW_SIZE),messages.length));
 
-                ImapResponseParser.IImapResponseCallback callback = null;
-                if (fp.contains(FetchProfile.Item.BODY) || fp.contains(FetchProfile.Item.BODY_SANE) || fp.contains(FetchProfile.Item.ENVELOPE))
+                try
                 {
-                    callback = new FetchBodyCallback(messageMap);
-                }
+                    mConnection.sendCommand(String.format("UID FETCH %s (%s)",
+                                                      Utility.combine(uidWindow.toArray(new String[uidWindow.size()]), ','),
+                                                          Utility.combine(fetchFields.toArray(new String[fetchFields.size()]), ' ')
+                                                         ), false);
+                    ImapResponse response;
+                    int messageNumber = 0;
 
-                do
-                {
-                    response = mConnection.readResponse(callback);
-
-                    if (response.mTag == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))
+                    ImapResponseParser.IImapResponseCallback callback = null;
+                    if (fp.contains(FetchProfile.Item.BODY) || fp.contains(FetchProfile.Item.BODY_SANE) || fp.contains(FetchProfile.Item.ENVELOPE))
                     {
-                        ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
-                        String uid = fetchList.getKeyedString("UID");
-                        int msgSeq = response.getNumber(0);
-                        if (uid != null)
+                        callback = new FetchBodyCallback(messageMap);
+                    }
+
+                    do
+                    {
+                        response = mConnection.readResponse(callback);
+
+                        if (response.mTag == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH"))
                         {
-                            try
+                            ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
+                            String uid = fetchList.getKeyedString("UID");
+                            int msgSeq = response.getNumber(0);
+                            if (uid != null)
                             {
-                                msgSeqUidMap.put(msgSeq, uid);
-                                if (K9.DEBUG)
+                                try
                                 {
-                                    Log.v(K9.LOG_TAG, "Stored uid '" + uid + "' for msgSeq " + msgSeq + " into map " /*+ msgSeqUidMap.toString() */);
+                                    msgSeqUidMap.put(msgSeq, uid);
+                                    if (K9.DEBUG)
+                                    {
+                                        Log.v(K9.LOG_TAG, "Stored uid '" + uid + "' for msgSeq " + msgSeq + " into map " /*+ msgSeqUidMap.toString() */);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.e(K9.LOG_TAG, "Unable to store uid '" + uid + "' for msgSeq " + msgSeq);
                                 }
                             }
-                            catch (Exception e)
+
+                            Message message = messageMap.get(uid);
+                            if (message == null)
                             {
-                                Log.e(K9.LOG_TAG, "Unable to store uid '" + uid + "' for msgSeq " + msgSeq);
+                                if (K9.DEBUG)
+                                    Log.d(K9.LOG_TAG, "Do not have message in messageMap for UID " + uid + " for " + getLogId());
+
+                                handleUntaggedResponse(response);
+                                continue;
+                            }
+                            if (listener != null)
+                            {
+                                listener.messageStarted(uid, messageNumber++, messageMap.size());
+                            }
+
+                            ImapMessage imapMessage = (ImapMessage) message;
+
+                            Object literal = handleFetchResponse(imapMessage, fetchList);
+
+                            if (literal != null)
+                            {
+                                if (literal instanceof String)
+                                {
+                                    String bodyString = (String)literal;
+                                    InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
+                                    imapMessage.parse(bodyStream);
+                                }
+                                else if (literal instanceof Integer)
+                                {
+                                    // All the work was done in FetchBodyCallback.foundLiteral()
+                                }
+                                else
+                                {
+                                    // This shouldn't happen
+                                    throw new MessagingException("Got FETCH response with bogus parameters");
+                                }
+                            }
+
+                            if (listener != null)
+                            {
+                                listener.messageFinished(message, messageNumber, messageMap.size());
                             }
                         }
-
-                        Message message = messageMap.get(uid);
-                        if (message == null)
+                        else
                         {
-                            if (K9.DEBUG)
-                                Log.d(K9.LOG_TAG, "Do not have message in messageMap for UID " + uid + " for " + getLogId());
-
                             handleUntaggedResponse(response);
-                            continue;
-                        }
-                        if (listener != null)
-                        {
-                            listener.messageStarted(uid, messageNumber++, messageMap.size());
                         }
 
-                        ImapMessage imapMessage = (ImapMessage) message;
+                        while (response.more());
 
-                        Object literal = handleFetchResponse(imapMessage, fetchList);
-
-                        if (literal != null)
-                        {
-                            if (literal instanceof String)
-                            {
-                                String bodyString = (String)literal;
-                                InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
-                                imapMessage.parse(bodyStream);
-                            }
-                            else if (literal instanceof Integer)
-                            {
-                                // All the work was done in FetchBodyCallback.foundLiteral()
-                            }
-                            else
-                            {
-                                // This shouldn't happen
-                                throw new MessagingException("Got FETCH response with bogus parameters");
-                            }
-                        }
-
-                        if (listener != null)
-                        {
-                            listener.messageFinished(message, messageNumber, messageMap.size());
-                        }
                     }
-                    else
-                    {
-                        handleUntaggedResponse(response);
-                    }
-
-                    while (response.more());
-
+                    while (response.mTag == null);
                 }
-                while (response.mTag == null);
-            }
-            catch (IOException ioe)
-            {
-                throw ioExceptionHandler(mConnection, ioe);
+                catch (IOException ioe)
+                {
+                    throw ioExceptionHandler(mConnection, ioe);
+                }
             }
         }
 
