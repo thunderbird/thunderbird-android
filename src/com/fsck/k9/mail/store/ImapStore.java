@@ -1201,7 +1201,7 @@ public class ImapStore extends Store
 
 
 
-            for (int windowStart=1; windowStart <= messages.length; windowStart += (FETCH_WINDOW_SIZE +1))
+            for (int windowStart=0; windowStart <= messages.length; windowStart += (FETCH_WINDOW_SIZE +1))
             {
                 List<String> uidWindow = uids.subList(windowStart, Math.min((windowStart+FETCH_WINDOW_SIZE),messages.length));
 
