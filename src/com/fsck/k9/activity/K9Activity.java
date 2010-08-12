@@ -50,6 +50,11 @@ public class K9Activity extends Activity
         {
             locale = Locale.getDefault();
         }
+        else if (language.length() == 5 && language.charAt(2) == '_')
+        {
+            // language is in the form: en_US
+            locale = new Locale(language.substring(0, 2), language.substring(3));
+        }
         else
         {
             locale = new Locale(language);
