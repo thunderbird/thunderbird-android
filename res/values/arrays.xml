@@ -360,6 +360,7 @@
         <item>Azərbaycan</item>
         <item>Euskera</item>
         <item>Français</item>
+        <item>Français (Canada)</item>
         <item>isiXhosa</item>
         <item>isiZulu</item>
         <item>Italiano</item>
@@ -437,6 +438,7 @@
         <item>az</item>
         <item>eu</item>
         <item>fr</item>
+        <item>fr_CA</item>
         <item>xs</item>
         <item>zu</item>
         <item>it</item>
@@ -480,6 +482,7 @@
         <item>en</item>
         <item>es</item>
         <item>fr</item>
+        <item>fr_CA</item>
         <item>it</item>
         <item>ja</item>
         <item>pl</item>
