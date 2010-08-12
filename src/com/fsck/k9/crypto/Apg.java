@@ -59,7 +59,6 @@ public class Apg extends CryptoProvider
 
     public static final String EXTRA_TEXT = "text";
     public static final String EXTRA_DATA = "data";
-    public static final String EXTRA_STATUS = "status";
     public static final String EXTRA_ERROR = "error";
     public static final String EXTRA_DECRYPTED_MESSAGE = "decryptedMessage";
     public static final String EXTRA_ENCRYPTED_MESSAGE = "encryptedMessage";
@@ -70,15 +69,12 @@ public class Apg extends CryptoProvider
     public static final String EXTRA_SIGNATURE_UNKNOWN = "signatureUnknown";
     public static final String EXTRA_USER_ID = "userId";
     public static final String EXTRA_KEY_ID = "keyId";
-    public static final String EXTRA_REPLY_TO = "replyTo";
-    public static final String EXTRA_SEND_TO = "sendTo";
-    public static final String EXTRA_SUBJECT = "subject";
     public static final String EXTRA_ENCRYPTION_KEY_IDS = "encryptionKeyIds";
     public static final String EXTRA_SELECTION = "selection";
     public static final String EXTRA_MESSAGE = "message";
-    public static final String EXTRA_PROGRESS = "progress";
-    public static final String EXTRA_MAX = "max";
-    public static final String EXTRA_ACCOUNT = "account";
+    public static final String EXTRA_INTENT_VERSION = "intentVersion";
+
+    public static final String INTENT_VERSION = "1";
 
     public static final int DECRYPT_MESSAGE = 0x21070001;
     public static final int ENCRYPT_MESSAGE = 0x21070002;
@@ -138,6 +134,7 @@ public class Apg extends CryptoProvider
     public boolean selectSecretKey(Activity activity)
     {
         android.content.Intent intent = new android.content.Intent(Intent.SELECT_SECRET_KEY);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         try
         {
             activity.startActivityForResult(intent, Apg.SELECT_SECRET_KEY);
@@ -163,6 +160,7 @@ public class Apg extends CryptoProvider
     public boolean selectEncryptionKeys(Activity activity, String emails)
     {
         android.content.Intent intent = new android.content.Intent(Apg.Intent.SELECT_PUBLIC_KEYS);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         long[] initialKeyIds = null;
         if (!hasEncryptionKeys())
         {
@@ -402,6 +400,7 @@ public class Apg extends CryptoProvider
     public boolean encrypt(Activity activity, String data)
     {
         android.content.Intent intent = new android.content.Intent(Intent.ENCRYPT_AND_RETURN);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         intent.setType("text/plain");
         intent.putExtra(Apg.EXTRA_TEXT, data);
         intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, mEncryptionKeyIds);
@@ -431,6 +430,7 @@ public class Apg extends CryptoProvider
     public boolean decrypt(Activity activity, String data)
     {
         android.content.Intent intent = new android.content.Intent(Apg.Intent.DECRYPT_AND_RETURN);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         intent.setType("text/plain");
         if (data == null)
         {
