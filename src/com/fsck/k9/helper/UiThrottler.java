@@ -59,7 +59,7 @@ public class UiThrottler<Result>
         @Override
         protected void onPreExecute()
         {
-            preExecute.run();
+            mPreExecute.run();
         }
 
         @Override
@@ -67,14 +67,14 @@ public class UiThrottler<Result>
         {
             // we're going to begin processing, any data that came until now
             // will be processed, discarding dirty state
-            processingPending = false;
+            mProcessingPending = false;
             try
             {
-                return processing.call();
+                return mProcessing.call();
             }
             catch (Exception e)
             {
-                if (swallowExceptions)
+                if (mSwallowExceptions)
                 {
                     Log.e(K9.LOG_TAG, "UiThrottler: processing task threw an exception! Swallowed!", e);
                     return null;
@@ -91,13 +91,13 @@ public class UiThrottler<Result>
         protected void onPostExecute(final Result result)
         {
             // back on UI thread, can do the actual dataset update
-            postExecute.run();
+            mPostExecute.run();
 
             try
             {
                 // trigger cool-down
-                scheduledExecutorService
-                        .schedule(coolDown, coolDownDuration, TimeUnit.MILLISECONDS);
+                mScheduledExecutorService
+                        .schedule(mCoolDown, mCoolDownDuration, TimeUnit.MILLISECONDS);
             }
             catch (RejectedExecutionException e)
             {
@@ -111,26 +111,26 @@ public class UiThrottler<Result>
         @Override
         protected void onCancelled()
         {
-            cancelled.run();
+            mCancelled.run();
         }
     }
 
     /**
      * Cool-down end internal processing.
      */
-    private final Runnable coolDown = new Runnable()
+    private final Runnable mCoolDown = new Runnable()
     {
         @Override
         public void run()
         {
-            processingInProgress.set(false);
-            if (processingPending)
+            mProcessingInProgress.set(false);
+            if (mProcessingPending)
             {
-                activity.runOnUiThread(newAttempt);
+                mActivity.runOnUiThread(mNewAttempt);
             }
             else
             {
-                activity.runOnUiThread(completed);
+                mActivity.runOnUiThread(mCompleted);
             }
         }
     };
@@ -138,7 +138,7 @@ public class UiThrottler<Result>
     /**
      * Trigger a new attempt.
      */
-    private final Runnable newAttempt = new Runnable()
+    private final Runnable mNewAttempt = new Runnable()
     {
         @Override
         public void run()
@@ -151,20 +151,20 @@ public class UiThrottler<Result>
     /**
      * Indicate whether a processing is currently occuring.
      */
-    private final AtomicBoolean processingInProgress = new AtomicBoolean(false);
+    private final AtomicBoolean mProcessingInProgress = new AtomicBoolean(false);
 
     /**
      * Used for UI threading purpose
      */
-    private Activity activity;
+    private Activity mActivity;
 
-    private ScheduledExecutorService scheduledExecutorService;
+    private ScheduledExecutorService mScheduledExecutorService;
 
     /**
      * Indicate whether a processing is pending and should be triggered when
      * possible.
      */
-    private boolean processingPending = false;
+    private boolean mProcessingPending = false;
 
     /**
      * Main processing, which will be executed in a background thread (as
@@ -172,35 +172,35 @@ public class UiThrottler<Result>
      * 
      * @see AsyncTask#doInBackground(Params)
      */
-    private Callable<Result> processing;
+    private Callable<Result> mProcessing;
 
     /**
      * @see AsyncTask#onPreExecute()
      */
-    private Runnable preExecute = NO_OP;
+    private Runnable mPreExecute = NO_OP;
 
     /**
      * @see AsyncTask#onPostExecute(Result)
      */
-    private Runnable postExecute = NO_OP;
+    private Runnable mPostExecute = NO_OP;
 
     /**
      * @see AsyncTask#onCancelled()
      */
-    private Runnable cancelled = NO_OP;
+    private Runnable mCancelled = NO_OP;
 
     /**
      * Executed after cool-down period if no processing task is pending
      */
-    private Runnable completed = NO_OP;
+    private Runnable mCompleted = NO_OP;
 
     /**
      * Cool-down duration in milliseconds before beginning the pending
      * processing (if any)
      */
-    private long coolDownDuration = DEFAULT_COOLDOWN_DURATION;
+    private long mCoolDownDuration = DEFAULT_COOLDOWN_DURATION;
 
-    private boolean swallowExceptions = false;
+    private boolean mSwallowExceptions = false;
 
     public UiThrottler()
     {
@@ -210,9 +210,9 @@ public class UiThrottler<Result>
     public UiThrottler(final Activity activity, final Callable<Result> processing,
             final ScheduledExecutorService scheduledExecutorService)
     {
-        this.activity = activity;
-        this.processing = processing;
-        this.scheduledExecutorService = scheduledExecutorService;
+        this.mActivity = activity;
+        this.mProcessing = processing;
+        this.mScheduledExecutorService = scheduledExecutorService;
     }
 
     /**
@@ -228,8 +228,8 @@ public class UiThrottler<Result>
      */
     public AsyncTask<Void, Void, Result> attempt()
     {
-        processingPending = true;
-        if (processingInProgress.compareAndSet(false, true))
+        mProcessingPending = true;
+        if (mProcessingInProgress.compareAndSet(false, true))
         {
             return new ProcessingTask().execute();
         }
@@ -238,92 +238,92 @@ public class UiThrottler<Result>
 
     public Activity getActivity()
     {
-        return activity;
+        return mActivity;
     }
 
     public void setActivity(Activity activity)
     {
-        this.activity = activity;
+        this.mActivity = activity;
     }
 
     public ScheduledExecutorService getScheduledExecutorService()
     {
-        return scheduledExecutorService;
+        return mScheduledExecutorService;
     }
 
     public void setScheduledExecutorService(ScheduledExecutorService scheduledExecutorService)
     {
-        this.scheduledExecutorService = scheduledExecutorService;
+        this.mScheduledExecutorService = scheduledExecutorService;
     }
 
     public Callable<Result> getProcessing()
     {
-        return processing;
+        return mProcessing;
     }
 
     public void setProcessing(Callable<Result> processing)
     {
-        this.processing = processing;
+        this.mProcessing = processing;
     }
 
     public Runnable getPreExecute()
     {
-        return preExecute;
+        return mPreExecute;
     }
 
     public void setPreExecute(Runnable preExecute)
     {
-        this.preExecute = preExecute;
+        this.mPreExecute = preExecute;
     }
 
     public Runnable getPostExecute()
     {
-        return postExecute;
+        return mPostExecute;
     }
 
     public void setPostExecute(Runnable postExecute)
     {
-        this.postExecute = postExecute;
+        this.mPostExecute = postExecute;
     }
 
     public Runnable getCancelled()
     {
-        return cancelled;
+        return mCancelled;
     }
 
     public void setCancelled(Runnable cancelled)
     {
-        this.cancelled = cancelled;
+        this.mCancelled = cancelled;
     }
 
     public long getCoolDownDuration()
     {
-        return coolDownDuration;
+        return mCoolDownDuration;
     }
 
     public void setCoolDownDuration(long coolDownDuration)
     {
-        this.coolDownDuration = coolDownDuration;
+        this.mCoolDownDuration = coolDownDuration;
     }
 
     public boolean isSwallowExceptions()
     {
-        return swallowExceptions;
+        return mSwallowExceptions;
     }
 
     public void setSwallowExceptions(boolean swallowExceptions)
     {
-        this.swallowExceptions = swallowExceptions;
+        this.mSwallowExceptions = swallowExceptions;
     }
 
     public Runnable getCompleted()
     {
-        return completed;
+        return mCompleted;
     }
 
     public void setCompleted(Runnable completed)
     {
-        this.completed = completed;
+        this.mCompleted = completed;
     }
 
 }
