@@ -1,0 +1,15 @@
+my $emoji = do 'Emoticon.pl';
+use YAML;
+
+
+for my $carrier qw(docomo softbank kddi) {
+
+print "\t\t// Emoji for $carrier\n";
+
+for $codepoint (keys %{$emoji->{$carrier}}) {
+    print "\t\tcase 0x$codepoint: \n";
+    print "\t\t\t".'buf.append("<img src=\"file:///android_asset/emoticons/'.$emoji->{$carrier}->{$codepoint}.'.gif\" alt=\"'.$emoji->{$carrier}->{$codepoint}.'\">'.");\n\t\t\tbreak;\n";
+
+
+}
+}
