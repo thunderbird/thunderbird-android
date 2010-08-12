@@ -577,7 +577,7 @@ public class MessageList
         // prevent any throttled UI processing (we're stopping!)
         // (don't set it to null since it needed if a processing is
         // occuring)
-        mAdapter.throttler.getScheduledExecutorService().shutdown();
+        mAdapter.mThrottler.getScheduledExecutorService().shutdown();
 
         saveListState();
     }
@@ -629,10 +629,10 @@ public class MessageList
         sortAscending = mController.isSortAscending(sortType);
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
-        if (mAdapter.throttler.getScheduledExecutorService() == null
-                || mAdapter.throttler.getScheduledExecutorService().isShutdown())
+        if (mAdapter.mThrottler.getScheduledExecutorService() == null
+                || mAdapter.mThrottler.getScheduledExecutorService().isShutdown())
         {
-            mAdapter.throttler.setScheduledExecutorService(Executors.newScheduledThreadPool(1));
+            mAdapter.mThrottler.setScheduledExecutorService(Executors.newScheduledThreadPool(1));
         }
 
         mController.addListener(mAdapter.mListener);
@@ -1362,13 +1362,13 @@ public class MessageList
                 return true;
             }
             case R.id.set_group_by_none:
-                mAdapter.messageGrouper = new SingletonMessageGrouper();
-                mAdapter.groupLessMode = true;
+                mAdapter.mMessageGrouper = new SingletonMessageGrouper();
+                mAdapter.mGroupLessMode = true;
                 reSort();
                 break;
             case R.id.set_group_by_thread:
-                mAdapter.messageGrouper = new ThreadMessageGrouper();
-                mAdapter.groupLessMode = false;
+                mAdapter.mMessageGrouper = new ThreadMessageGrouper();
+                mAdapter.mGroupLessMode = false;
                 reSort();
                 break;
             case R.id.set_group_by_sender:
@@ -2021,7 +2021,7 @@ public class MessageList
     {
         private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
-        private final List<MessageGroup<MessageInfoHolder>> groups = Collections
+        private final List<MessageGroup<MessageInfoHolder>> mGroups = Collections
                 .synchronizedList(new ArrayList<MessageGroup<MessageInfoHolder>>());
 
         private final ActivityListener mListener = new ActivityListener()
@@ -2279,12 +2279,12 @@ public class MessageList
         private Drawable mAnsweredIcon;
         private View footerView = null;
 
-        private MessageGrouper messageGrouper;
-        private boolean groupLessMode = false;
+        private MessageGrouper mMessageGrouper;
+        private boolean mGroupLessMode = false;
 
-        private UiThrottler<Void> throttler;
+        private UiThrottler<Void> mThrottler;
 
-        private boolean groupingInProgress = false;
+        private boolean mGroupingInProgress = false;
 
         private MessageListAdapter()
         {
@@ -2292,9 +2292,9 @@ public class MessageList
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
 
             // TODO restore previous active/selected implementation
-            messageGrouper = new ThreadMessageGrouper();
+            mMessageGrouper = new ThreadMessageGrouper();
 
-            throttler = new UiThrottler<Void>(MessageList.this, new Callable<Void>()
+            mThrottler = new UiThrottler<Void>(MessageList.this, new Callable<Void>()
             {
                 @Override
                 public Void call()
@@ -2303,8 +2303,8 @@ public class MessageList
                     return null;
                 }
             }, null); // not setting Executor now as we want to integrate into Activity onResume/onPause
-            throttler.setCoolDownDuration(200L);
-            throttler.setPostExecute(new Runnable()
+            mThrottler.setCoolDownDuration(200L);
+            mThrottler.setPostExecute(new Runnable()
             {
                 @Override
                 public void run()
@@ -2312,14 +2312,14 @@ public class MessageList
                     doNotifyDataSetChanged();
                 }
             });
-            throttler.setCompleted(new Runnable()
+            mThrottler.setCompleted(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    groupingInProgress = false;
+                    mGroupingInProgress = false;
                     updateFooterView();
-                    if (groupLessMode)
+                    if (mGroupLessMode)
                     {
                         // making sure we expand the sole group in groupless mode
                         expandAll();
@@ -2351,8 +2351,8 @@ public class MessageList
         {
             // buffer dataset update otherwise we might get continous CPU
             // processing in case of repeated call!
-            groupingInProgress = mCurrentFolder != null && mAccount != null && mCurrentFolder.loading;
-            throttler.attempt();
+            mGroupingInProgress = mCurrentFolder != null && mAccount != null && mCurrentFolder.loading;
+            mThrottler.attempt();
         }
 
         /**
@@ -2406,11 +2406,11 @@ public class MessageList
                     toGroup.add(messageInfo);
                 }
             }
-            final List<MessageGroup<MessageInfoHolder>> messageGroups = messageGrouper
+            final List<MessageGroup<MessageInfoHolder>> messageGroups = mMessageGrouper
                     .group(toGroup);
 
-            groups.clear();
-            groups.addAll(messageGroups);
+            mGroups.clear();
+            mGroups.addAll(messageGroups);
 
             for (MessageGroup<MessageInfoHolder> messageGroup : messageGroups)
             {
@@ -2920,7 +2920,7 @@ public class MessageList
 
             if (mCurrentFolder != null && mAccount != null)
             {
-                if (mCurrentFolder.loading || groupingInProgress)
+                if (mCurrentFolder.loading || mGroupingInProgress)
                 {
                     holder.main.setText(getString(R.string.status_loading_more));
                     holder.progress.setVisibility(ProgressBar.VISIBLE);
@@ -2967,14 +2967,14 @@ public class MessageList
         @Override
         public int getGroupCount()
         {
-            return groups.size() + NON_MESSAGE_ITEMS;
+            return mGroups.size() + NON_MESSAGE_ITEMS;
         }
 
 
         @Override
         public int getChildrenCount(int groupPosition)
         {
-            if (groupPosition < groups.size())
+            if (groupPosition < mGroups.size())
             {
                 return getGroup(groupPosition).getMessages().size();
             }
@@ -2986,9 +2986,9 @@ public class MessageList
         @Override
         public MessageGroup<MessageInfoHolder> getGroup(int groupPosition)
         {
-            if (groupPosition < groups.size())
+            if (groupPosition < mGroups.size())
             {
-                return groups.get(groupPosition);
+                return mGroups.get(groupPosition);
             }
             // (fake) last element isn't a group
             return null;
@@ -3021,7 +3021,7 @@ public class MessageList
             // keep track of the groups when list is updating (ie the selection/
             // expanded state should remain the "same" group if possible)
 
-            if (groupLessMode)
+            if (mGroupLessMode)
             {
                 // make sure we always get the same ID in groupless mode
                 return 0;
@@ -3063,7 +3063,7 @@ public class MessageList
         public int getGroupType(int groupPosition)
         {
             // must match the number of type of view returned by the above getGroupView method
-            if (groupPosition < groups.size())
+            if (groupPosition < mGroups.size())
             {
                 return 0;
             }
@@ -3099,7 +3099,7 @@ public class MessageList
             final TextView subjectView = (TextView) view.findViewById(R.id.subject);
             final TextView countView = (TextView) view.findViewById(R.id.count);
 
-            if (groupLessMode)
+            if (mGroupLessMode)
             {
                 // TODO set localized text (or hide view?)
                 subjectView.setText(group.getSubject());

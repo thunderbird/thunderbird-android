@@ -7,38 +7,38 @@ import java.util.List;
 public class MessageInfoSingletonGroup<T> implements MessageGroup<T>
 {
 
-    private final MessageInfo<T> messageInfo;
+    private final MessageInfo<T> mMessageInfo;
 
-    private final List<MessageInfo<T>> messages;
+    private final List<MessageInfo<T>> mMessages;
 
     public MessageInfoSingletonGroup(final MessageInfo<T> messageInfo)
     {
-        this.messageInfo = messageInfo;
-        messages = Collections.singletonList(messageInfo);
+        this.mMessageInfo = messageInfo;
+        mMessages = Collections.singletonList(messageInfo);
     }
 
     @Override
     public List<MessageInfo<T>> getMessages()
     {
-        return messages;
+        return mMessages;
     }
 
     @Override
     public String getSubject()
     {
-        return messageInfo.getSubject();
+        return mMessageInfo.getSubject();
     }
 
     @Override
     public Date getDate()
     {
-        return messageInfo.getDate();
+        return mMessageInfo.getDate();
     }
 
     @Override
     public int getId()
     {
-        return messageInfo.hashCode();
+        return mMessageInfo.hashCode();
     }
 
 }

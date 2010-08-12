@@ -28,7 +28,7 @@ public class ThreadMessageGrouper implements MessageGrouper
         }
     }
 
-    private Threader threader = new Threader();
+    private Threader mThreader = new Threader();
 
     @Override
     public <T> List<MessageGroup<T>> group(final Collection<MessageInfo<T>> messages)
@@ -38,7 +38,7 @@ public class ThreadMessageGrouper implements MessageGrouper
             return Collections.emptyList();
         }
 
-        final Container<T> fakeRoot = threader.thread(messages, true);
+        final Container<T> fakeRoot = mThreader.thread(messages, true);
 
         final List<MessageGroup<T>> result = toMessageGroups(fakeRoot, messages);
 

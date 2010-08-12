@@ -13,44 +13,44 @@ import java.util.List;
 public class MessageInfo<T>
 {
 
-    private String subject;
+    private String mSubject;
 
-    private Date date;
+    private Date mDate;
 
-    private String id;
+    private String mId;
 
-    private List<String> references = new ArrayList<String>();
+    private List<String> mReferences = new ArrayList<String>();
 
-    private T tag;
+    private T mTag;
 
     public String getSubject()
     {
-        return subject;
+        return mSubject;
     }
 
     public void setSubject(String subject)
     {
-        this.subject = subject;
+        this.mSubject = subject;
     }
 
     public Date getDate()
     {
-        return date;
+        return mDate;
     }
 
     public void setDate(Date date)
     {
-        this.date = date;
+        this.mDate = date;
     }
 
     public String getId()
     {
-        return id;
+        return mId;
     }
 
     public void setId(String id)
     {
-        this.id = id;
+        this.mId = id;
     }
 
     /**
@@ -59,7 +59,7 @@ public class MessageInfo<T>
      */
     public List<String> getReferences()
     {
-        return references;
+        return mReferences;
     }
 
     /**
@@ -69,7 +69,7 @@ public class MessageInfo<T>
      */
     public void setReferences(List<String> references)
     {
-        this.references = references;
+        this.mReferences = references;
     }
 
     /**
@@ -77,19 +77,19 @@ public class MessageInfo<T>
      */
     public T getTag()
     {
-        return tag;
+        return mTag;
     }
 
     public void setTag(T tag)
     {
-        this.tag = tag;
+        this.mTag = tag;
     }
 
     @Override
     public String toString()
     {
         return getClass().getName() + '@' + Integer.toHexString(System.identityHashCode(this))
-                + "[id=" + id + "]";
+                + "[id=" + mId + "]";
     }
 
 }

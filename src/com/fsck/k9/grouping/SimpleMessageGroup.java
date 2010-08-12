@@ -11,56 +11,56 @@ import java.util.List;
 public class SimpleMessageGroup<T> implements MessageGroup<T>
 {
 
-    private List<MessageInfo<T>> messages;
+    private List<MessageInfo<T>> mMessages;
 
-    private String subject;
+    private String mSubject;
 
-    private Date date;
+    private Date mDate;
 
-    private int id;
+    private int mId;
 
     @Override
     public List<MessageInfo<T>> getMessages()
     {
-        return messages;
+        return mMessages;
     }
 
     public void setMessages(List<MessageInfo<T>> list)
     {
-        this.messages = list;
+        this.mMessages = list;
     }
 
     @Override
     public String getSubject()
     {
-        return subject;
+        return mSubject;
     }
 
     @Override
     public Date getDate()
     {
-        return date;
+        return mDate;
     }
 
     @Override
     public int getId()
     {
-        return id;
+        return mId;
     }
 
     public void setSubject(String subject)
     {
-        this.subject = subject;
+        this.mSubject = subject;
     }
 
     public void setDate(Date date)
     {
-        this.date = date;
+        this.mDate = date;
     }
 
     public void setId(int id)
     {
-        this.id = id;
+        this.mId = id;
     }
 
 }
