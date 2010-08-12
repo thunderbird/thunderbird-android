@@ -22,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.text.style.TextAppearanceSpan;
 import android.util.Config;
@@ -49,6 +50,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,7 +92,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
  */
 public class MessageList
         extends K9Activity
-        implements OnClickListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener
+        implements OnClickListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener, AdapterView.OnItemSelectedListener
 {
 
     /**
@@ -182,6 +184,32 @@ public class MessageList
      * selection
      */
     private MessageGroup<MessageInfoHolder> mSelectedGroup = null;
+
+    /**
+     * The last selected item (for text ellipsis purpose)
+     */
+    private View mLastSelectedItem = null;
+
+    @Override
+    public void onItemSelected(final AdapterView<?> parent, final View view, final int position, final long id)
+    {
+        if (mLastSelectedItem != null)
+        {
+            mAdapter.marquee(mLastSelectedItem, false);
+        }
+        mLastSelectedItem = view;
+        mAdapter.marquee(view, true);
+    }
+
+    @Override
+    public void onNothingSelected(final AdapterView<?> parent)
+    {
+        if (mLastSelectedItem != null)
+        {
+            mAdapter.marquee(mLastSelectedItem, false);
+            mLastSelectedItem = null;
+        }
+    }
 
     class MessageListHandler
     {
@@ -643,6 +671,7 @@ public class MessageList
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnChildClickListener(this);
         mListView.setOnGroupClickListener(this);
+        mListView.setOnItemSelectedListener(this);
 
         registerForContextMenu(mListView);
 
@@ -1988,7 +2017,7 @@ public class MessageList
         }
     }
 
-    class MessageListAdapter extends BaseExpandableListAdapter
+    class MessageListAdapter extends BaseExpandableListAdapter implements SectionIndexer
     {
         private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
@@ -2295,6 +2324,7 @@ public class MessageList
                         // making sure we expand the sole group in groupless mode
                         expandAll();
                     }
+                    synchronizeFastScroll();
                 }
             });
         }
@@ -2392,6 +2422,14 @@ public class MessageList
 
             // TODO: sort group messages?
         }
+
+        private void synchronizeFastScroll()
+        {
+            // only way to make getSections() invoked again: disable/enable back
+            mListView.setFastScrollEnabled(false);
+            mListView.setFastScrollEnabled(true);
+        }
+
         private final Pattern splitter = Pattern.compile("\\s");
         /**
          * @param references
@@ -3010,7 +3048,8 @@ public class MessageList
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
                 ViewGroup parent)
         {
-            if (groupPosition < groups.size())
+            // use of the 2.2 API for proper view recycling
+            if (getGroupType(groupPosition) == 0)
             {
                 return getMessageGroupView(groupPosition, isExpanded, convertView, parent);
             }
@@ -3020,6 +3059,26 @@ public class MessageList
             }
         }
 
+        @Override // automatically called from API level 8 for proper view recycling
+        public int getGroupType(int groupPosition)
+        {
+            // must match the number of type of view returned by the above getGroupView method
+            if (groupPosition < groups.size())
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
+        @Override // automatically called from API level 8 for proper view recycling
+        public int getGroupTypeCount()
+        {
+            // must match the above getGroupType method
+            return 2;
+        }
 
         private View getMessageGroupView(int groupPosition, boolean isExpanded, View convertView,
                 ViewGroup parent)
@@ -3030,6 +3089,7 @@ public class MessageList
             {
                 // create new view
                 view = mInflater.inflate(R.layout.message_list_group_header, parent, false);
+                view.setId(R.layout.message_list_group_header);
             }
             else
             {
@@ -3110,6 +3170,55 @@ public class MessageList
         public boolean isChildSelectable(int groupPosition, int childPosition)
         {
             return true;
+        }
+
+        @Override
+        public Object[] getSections()
+        {
+            // XXX setFastScrollEnabled HAS to be disabled then enabled back for this method to be called again!!!
+            final int count = mListView.getCount();
+
+            final String[] sections = new String[count];
+            Arrays.fill(sections, 0, count, " ");
+            return sections;
+        }
+
+        @Override
+        public int getPositionForSection(int section)
+        {
+            // for some obscure reason (or I didn't read the documentation right), the returned
+            // value must match a group position
+            final long packedPosition = mListView.getExpandableListPosition(section);
+            final int index = ExpandableListView.getPackedPositionGroup(packedPosition);
+            return index;
+        }
+
+        @Override
+        public int getSectionForPosition(int position)
+        {
+            // doesn't seem to be used by the Android framework?
+            return position;
+        }
+
+        /**
+         * Switch the marquee mode for the given view
+         *
+         * @param view Never <code>null</code>.
+         * @param enabled Whether the marquee mode should be enabled.
+         */
+        public void marquee(final View view, final boolean enabled)
+        {
+            final int viewId = view.getId();
+            if (viewId == R.layout.message_list_group_header)
+            {
+                final TextView subjectView = (TextView) view.findViewById(R.id.subject);
+                subjectView.setEllipsize(enabled ? TextUtils.TruncateAt.MARQUEE : TextUtils.TruncateAt.END);
+            }
+            else if (viewId == R.layout.message_list_item)
+            {
+                final TextView subjectView = (TextView) view.findViewById(R.id.subject);
+                subjectView.setEllipsize(enabled ? TextUtils.TruncateAt.MARQUEE : TextUtils.TruncateAt.END);
+            }
         }
 
     }
