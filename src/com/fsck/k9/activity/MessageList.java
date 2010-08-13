@@ -92,7 +92,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
  */
 public class MessageList
         extends K9Activity
-        implements OnClickListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener, AdapterView.OnItemSelectedListener
+        implements OnClickListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener
 {
 
     /**
@@ -184,32 +184,6 @@ public class MessageList
      * selection
      */
     private MessageGroup<MessageInfoHolder> mSelectedGroup = null;
-
-    /**
-     * The last selected item (for text ellipsis purpose)
-     */
-    private View mLastSelectedItem = null;
-
-    @Override
-    public void onItemSelected(final AdapterView<?> parent, final View view, final int position, final long id)
-    {
-        if (mLastSelectedItem != null)
-        {
-            mAdapter.marquee(mLastSelectedItem, false);
-        }
-        mLastSelectedItem = view;
-        mAdapter.marquee(view, true);
-    }
-
-    @Override
-    public void onNothingSelected(final AdapterView<?> parent)
-    {
-        if (mLastSelectedItem != null)
-        {
-            mAdapter.marquee(mLastSelectedItem, false);
-            mLastSelectedItem = null;
-        }
-    }
 
     class MessageListHandler
     {
@@ -671,7 +645,6 @@ public class MessageList
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnChildClickListener(this);
         mListView.setOnGroupClickListener(this);
-        mListView.setOnItemSelectedListener(this);
 
         registerForContextMenu(mListView);
 
@@ -2836,14 +2809,15 @@ public class MessageList
             holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
             view.getBackground().setAlpha(message.downloaded ? 0 : 127);
 
-            if ((message.subject == null) || message.subject.equals(""))
+            if ((message.subject == null) || "".equals(message.subject))
             {
                 holder.subject.setText(getText(R.string.general_no_subject));
+                holder.subject.setTypeface(null,  Typeface.ITALIC);
             }
             else
             {
-                // FIXME
                 holder.subject.setText(message.subject);
+                holder.subject.setTypeface(null,  Typeface.NORMAL);
             }
 
             if (holder.preview != null)
@@ -3150,6 +3124,7 @@ public class MessageList
                     spannableStringBuilder.setSpan(new StyleSpan(Typeface.BOLD), 0,
                             unreadString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+                    countView.setTypeface(null, Typeface.NORMAL);
                     countView.setText(spannableStringBuilder);
                 }
             }
@@ -3198,27 +3173,6 @@ public class MessageList
         {
             // doesn't seem to be used by the Android framework?
             return position;
-        }
-
-        /**
-         * Switch the marquee mode for the given view
-         *
-         * @param view Never <code>null</code>.
-         * @param enabled Whether the marquee mode should be enabled.
-         */
-        public void marquee(final View view, final boolean enabled)
-        {
-            final int viewId = view.getId();
-            if (viewId == R.layout.message_list_group_header)
-            {
-                final TextView subjectView = (TextView) view.findViewById(R.id.subject);
-                subjectView.setEllipsize(enabled ? TextUtils.TruncateAt.MARQUEE : TextUtils.TruncateAt.END);
-            }
-            else if (viewId == R.layout.message_list_item)
-            {
-                final TextView subjectView = (TextView) view.findViewById(R.id.subject);
-                subjectView.setEllipsize(enabled ? TextUtils.TruncateAt.MARQUEE : TextUtils.TruncateAt.END);
-            }
         }
 
     }
