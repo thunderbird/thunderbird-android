@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- 
+	<item
+        android:title="@string/folder_list_display_mode_label"
+        android:icon="@drawable/ic_show_folders"
+    >
+        <menu>-->
+            <item
+            android:id="@+id/display_all"
+            android:title="@string/folder_list_display_mode_all"
+            android:icon="@drawable/ic_menu_clear"
+           />
+           <item
+            android:id="@+id/display_1st_class"
+            android:title="@string/folder_list_display_mode_first_class"
+            android:icon="@drawable/ic_menu_clear"
+           />
+           <item
+            android:id="@+id/display_1st_and_2nd_class"
+            android:title="@string/folder_list_display_mode_first_and_second_class"
+            android:icon="@drawable/ic_menu_clear"
+           />
+           <item
+            android:id="@+id/display_not_second_class"
+            android:title="@string/folder_list_display_mode_not_second_class"
+            android:icon="@drawable/ic_menu_clear"
+           />
+           <item
+            android:id="@+id/list_folders"
+            android:title="@string/refresh_folders_action"
+            android:icon="@drawable/ic_menu_refresh"
+         />
+        
+    <!--     </menu>
+    </item>-->
+	
+	
+</menu>
