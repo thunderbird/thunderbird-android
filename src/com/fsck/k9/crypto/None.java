@@ -69,11 +69,13 @@ public class None extends CryptoProvider
         return false;
     }
 
+    @Override
     public boolean isEncrypted(Message message)
     {
         return false;
     }
 
+    @Override
     public boolean isSigned(Message message)
     {
         return false;

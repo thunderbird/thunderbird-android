@@ -384,6 +384,7 @@ public class FolderList extends K9ListActivity
     }
 
 
+    @Override
     public void onBackPressed()
     {
         // This will be called either automatically for you on 2.0

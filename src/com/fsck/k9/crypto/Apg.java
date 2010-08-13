@@ -451,6 +451,7 @@ public class Apg extends CryptoProvider
         }
     }
 
+    @Override
     public boolean isEncrypted(Message message)
     {
         String data = null;
@@ -481,6 +482,7 @@ public class Apg extends CryptoProvider
         return matcher.matches();
     }
 
+    @Override
     public boolean isSigned(Message message)
     {
         String data = null;
@@ -527,6 +529,7 @@ public class Apg extends CryptoProvider
      *
      * @return success or failure
      */
+    @Override
     public boolean test(Context context)
     {
         if (!isAvailable(context))
