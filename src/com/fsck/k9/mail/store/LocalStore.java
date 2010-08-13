@@ -12,6 +12,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.Account.LocalStoreMigrationListener;
 import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Regex;
@@ -24,6 +25,7 @@ import com.fsck.k9.provider.AttachmentProvider;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.*;
@@ -34,7 +36,7 @@ import java.util.regex.Matcher;
  * Implements a SQLite database backed local store for Messages.
  * </pre>
  */
-public class LocalStore extends Store implements Serializable
+public class LocalStore extends Store implements Serializable, LocalStoreMigrationListener
 {
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
@@ -51,7 +53,6 @@ public class LocalStore extends Store implements Serializable
     private SQLiteDatabase mDb;
     private File mAttachmentsDir;
     private Application mApplication;
-    private String uUid = null;
 
     private static Set<String> HEADERS_TO_SAVE = new HashSet<String>();
     static
@@ -74,6 +75,7 @@ public class LocalStore extends Store implements Serializable
 
     /**
      * local://localhost/path/to/database/uuid.db
+     * This constructor is only used by {@link Store#getLocalInstance(Account, Application)}
      */
     public LocalStore(Account account, Application application) throws MessagingException
     {
@@ -93,18 +95,127 @@ public class LocalStore extends Store implements Serializable
             throw new MessagingException("Invalid scheme");
         }
         mPath = uri.getPath();
-
-
-        // We need to associate the localstore with the account.  Since we don't have the account
-        // handy here, we'll take the filename from the DB and use the basename of the filename
-        // Folders probably should have references to their containing accounts
-        //TODO: We do have an account object now
-        File dbFile = new File(mPath);
-        String[] tokens = dbFile.getName().split("\\.");
-        uUid = tokens[0];
+        account.setLocalStoreMigraionListener(this);
 
         openOrCreateDataspace(application);
 
+    }
+
+    public void onLocalStoreMigration(String oldStoreUri,
+            String newStoreUri) throws MessagingException {
+
+        // valiate new Uri
+        URI uri = null;
+        URI oldUri = null;
+        try
+        {
+            oldUri = new URI(oldStoreUri);
+            uri = new URI(newStoreUri);
+        }
+        catch (Exception e)
+        {
+            throw new MessagingException("Invalid new uri for LocalStore");
+        }
+        if (!uri.getScheme().equals("local"))
+        {
+            throw new MessagingException("Invalid scheme");
+        }
+
+        // cache old path + close old DB-instance
+        String oldPath = oldUri.getPath();
+        try
+        {
+            mDb.close();
+        }
+        catch (Exception e)
+        {
+
+        }
+        // create new path
+        mPath = uri.getPath();
+        File parentDir = new File(mPath).getParentFile();
+        if (!parentDir.exists())
+        {
+            parentDir.mkdirs();
+        }
+
+        mAttachmentsDir = new File(mPath + "_att");
+        if (!mAttachmentsDir.exists())
+        {
+            mAttachmentsDir.mkdirs();
+        }
+       // move all database files
+        moveRecursive(new File(oldPath), new File(mPath));
+        // move all attachment files
+        moveRecursive(new File(oldPath + "_att"), mAttachmentsDir);
+
+        // re-initialize this class with the new Uri
+        openOrCreateDataspace(mApplication);
+    }
+    private void moveRecursive(File fromDir, File toDir) {
+        if (!fromDir.exists()) {
+            return;
+        }
+        if (!fromDir.isDirectory()) {
+            if (toDir.exists()) {
+                if (!toDir.delete()) {
+                    Log.w(K9.LOG_TAG, "cannot delete already existing file/directory " + toDir.getAbsolutePath() + " during migration to/from SD-card");
+                }
+            }
+            if (!fromDir.renameTo(toDir)) {
+                Log.w(K9.LOG_TAG, "cannot rename " + fromDir.getAbsolutePath() + " to " + toDir.getAbsolutePath());
+                move(fromDir, toDir);
+            }
+            return;
+        }
+        if (!toDir.exists() || !toDir.isDirectory()) {
+            if (toDir.exists() ) {
+                toDir.delete();
+            }
+            if (!toDir.mkdirs()) {
+                Log.w(K9.LOG_TAG, "cannot create directory " + toDir.getAbsolutePath() + " during migration to/from SD-card");
+            }
+        }
+        File[] files = fromDir.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                moveRecursive(file, new File(toDir, file.getName()));
+                file.delete();
+            } else {
+                File target = new File(toDir, file.getName());
+                if (!file.renameTo(target)) {
+                    Log.w(K9.LOG_TAG, "cannot rename " + file.getAbsolutePath() + " to " + target.getAbsolutePath());
+                    move(file, target);
+                }
+            }
+        }
+        if (!fromDir.delete()) {
+            Log.w(K9.LOG_TAG, "cannot delete " + fromDir.getAbsolutePath() + " after migration to/from SD-card");
+        }
+    }
+    private boolean move(File from, File to) {
+        if (to.exists()) {
+            to.delete();
+        }
+        to.getParentFile().mkdirs();
+        
+        try {
+            FileInputStream in = new FileInputStream(from);
+            FileOutputStream out = new FileOutputStream(to);
+            byte[] buffer = new byte[1024];
+            int count = -1;
+            while ((count = in.read(buffer)) > 0) {
+                out.write(buffer, 0, count);
+            }
+            out.close();
+            in.close();
+            from.delete();
+            return true;
+        } catch (Exception e) {
+            Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
+            return false;
+        }
+        
     }
 
     private void openOrCreateDataspace(Application application)
@@ -1194,7 +1305,7 @@ public class LocalStore extends Store implements Serializable
 
             if (prefId == null)
             {
-                prefId = uUid + "." + mName;
+                prefId = super.mAccount.getUuid() + "." + mName;
             }
 
             return prefId;
@@ -2060,7 +2171,7 @@ public class LocalStore extends Store implements Serializable
                 File attachmentFile = new File(mAttachmentsDir, Long.toString(attachmentId));
                 tempAttachmentFile.renameTo(attachmentFile);
                 contentUri = AttachmentProvider.getAttachmentUri(
-                                 new File(mPath).getName(),
+                                 mAccount,
                                  attachmentId);
                 attachment.setBody(new LocalAttachmentBody(contentUri, mApplication));
                 ContentValues cv = new ContentValues();

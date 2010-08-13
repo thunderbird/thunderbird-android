@@ -89,6 +89,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private CheckBox compressionWifi;
     private CheckBox compressionOther;
     private CheckBox saveAllHeaders;
+    private CheckBox useSDCard;
     private CheckBox pushPollOnConnect;
     private Spinner idleRefreshPeriod;
     private Spinner folderPushLimit;
@@ -138,6 +139,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         compressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
         compressionOther = (CheckBox)findViewById(R.id.compression_other);
         saveAllHeaders = (CheckBox)findViewById(R.id.save_all_headers);
+        useSDCard = (CheckBox)findViewById(R.id.use_sd_card);
         pushPollOnConnect = (CheckBox)findViewById(R.id.push_poll_on_connect);
 
         subscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
@@ -228,6 +230,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+//        if (mAccount.isInUse()) {
+//            // not enabled unless in initial account-setup until
+//            // migration to/from SD-card in LocalStore#onLocalStoreMigration is implemented
+//            useSDCard.setEnabled(false);
+//        }
         mMakeDefault = (boolean)getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
         /*
@@ -424,6 +431,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             }
 
             saveAllHeaders.setChecked(mAccount.isSaveAllHeaders());
+            useSDCard.setChecked(mAccount.isUsingSDCard());
             pushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
             subscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
             SpinnerHelper.initSpinner(this, idleRefreshPeriod, R.array.idle_refresh_period_entries,
@@ -589,6 +597,19 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mAccount.setCompression(Account.TYPE_WIFI, compressionWifi.isChecked());
             mAccount.setCompression(Account.TYPE_OTHER, compressionOther.isChecked());
             mAccount.setSaveAllHeaders(saveAllHeaders.isChecked());
+            if (mAccount.isUsingSDCard() != useSDCard.isChecked()) {
+                boolean successful = false;
+                try {
+                    mAccount.setUsingSDCard(this, useSDCard.isChecked());
+                    successful = true;
+                } finally {
+                    // if migration to/from SD-card failed once, it will fail again.
+                    if (!successful) {
+                        useSDCard.setChecked(false);
+                        useSDCard.setEnabled(false);
+                    }
+                }
+            }
             mAccount.setPushPollOnConnect(pushPollOnConnect.isChecked());
             mAccount.setSubscribedFoldersOnly(subscribedFoldersOnly.isChecked());
             String idleRefreshPeriodValue = SpinnerHelper.getSpinnerValue(idleRefreshPeriod);

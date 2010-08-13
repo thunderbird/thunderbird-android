@@ -25,7 +25,14 @@ public abstract class Store
     protected static final int SOCKET_CONNECT_TIMEOUT = 30000;
     protected static final int SOCKET_READ_TIMEOUT = 60000;
 
+    /**
+     * Remote stores indexed by Uri.
+     */
     private static HashMap<String, Store> mStores = new HashMap<String, Store>();
+    /**
+     * Local stores indexed by UUid because the Uri may change due to migration to/from SD-card.
+     */
+    private static HashMap<String, Store> mLocalStores = new HashMap<String, Store>();
 
     protected final Account mAccount;
 
@@ -88,14 +95,14 @@ public abstract class Store
             throw new RuntimeException("LocalStore URI doesn't start with 'local'");
         }
 
-        Store store = mStores.get(uri);
+        Store store = mLocalStores.get(account.getUuid());
         if (store == null)
         {
             store = new LocalStore(account, application);
 
             if (store != null)
             {
-                mStores.put(uri, store);
+                mLocalStores.put(account.getUuid(), store);
             }
         }
 

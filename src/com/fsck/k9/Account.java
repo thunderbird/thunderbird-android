@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.util.Log;
 
+import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -15,6 +16,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.provider.AttachmentProvider;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -31,6 +34,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Account implements BaseAccount
 {
+    /**
+     * @see Account#setLocalStoreMigraionListener(LocalStoreMigrationListener)
+     *
+     */
+    public interface LocalStoreMigrationListener {
+
+        void onLocalStoreMigration(String oldStoreUri,
+                String newStoreUri) throws MessagingException;
+
+    }
+
+    public static final String SDCARD_LOCALSTORE_PREFIX = "/sdcard/k9/";
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
@@ -59,7 +74,19 @@ public class Account implements BaseAccount
 
     private String mUuid;
     private String mStoreUri;
+
+    /**
+     * This URL starts with {@link #SDCARD_LOCALSTORE_PREFIX}
+     * if we are storing on the SD-card.<br/>
+     * Warning: {@link AttachmentProvider} makes assumptions about the content of this Uri.
+     */
     private String mLocalStoreUri;
+    /**
+     * True if {@link #mLocalStoreUri} may be in use at
+     * the moment. 
+     */
+    private boolean mIsInUse = false;
+    private LocalStoreMigrationListener mLocalStoreMigrationListener;
     private String mTransportUri;
     private String mDescription;
     private String mAlwaysBcc;
@@ -146,7 +173,10 @@ public class Account implements BaseAccount
     {
         // TODO Change local store path to something readable / recognizable
         mUuid = UUID.randomUUID().toString();
-        mLocalStoreUri = "local://localhost/" + context.getDatabasePath(mUuid + ".db");
+
+        String path =  SDCARD_LOCALSTORE_PREFIX + mUuid + ".db";
+        mLocalStoreUri = "local://localhost/" + context.getDatabasePath(path);
+
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
         mSaveAllHeaders = false;
@@ -793,15 +823,20 @@ public class Account implements BaseAccount
         mRingtoneUri = ringtoneUri;
     }
 
+    /**
+     * Values may change due to {@link #setUsingSDCard(Context, boolean)}.
+     * @return
+     */
     public synchronized String getLocalStoreUri()
     {
+        mIsInUse = true;
         return mLocalStoreUri;
     }
 
-    public synchronized void setLocalStoreUri(String localStoreUri)
-    {
-        this.mLocalStoreUri = localStoreUri;
-    }
+//    public synchronized void setLocalStoreUri(String localStoreUri)
+//    {
+//        this.mLocalStoreUri = localStoreUri;
+//    }
 
     /**
      * Returns -1 for never.
@@ -1341,9 +1376,49 @@ public class Account implements BaseAccount
         return mSaveAllHeaders;
     }
 
+    /**
+     * Are we storing out localStore on the SD-card
+     * instead of the local device memory?
+     * @return true if we are using the SD-card
+     */
+    public synchronized boolean isUsingSDCard()
+    {
+        return (mLocalStoreUri.indexOf(SDCARD_LOCALSTORE_PREFIX) > -1);
+    }
+
     public synchronized void setSaveAllHeaders(boolean saveAllHeaders)
     {
         mSaveAllHeaders = saveAllHeaders;
+    }
+
+    /**
+     * Are we storing out localStore on the SD-card
+     * instead of the local device memory?<br/>
+     * Only to be called durin initial account-setup!<br/>
+     * Side-effect: changes {@link #mLocalStoreUri}.
+     * @param context 
+     * @param useSDCard true to use the SD-card
+     * @throws MessagingException 
+     */
+    public synchronized void setUsingSDCard(Context context, boolean useSDCard) throws MessagingException
+    {
+        String oldStoreUri = mLocalStoreUri;
+        String path =  mUuid + ".db";
+        if (useSDCard) {
+            path =  SDCARD_LOCALSTORE_PREFIX + path ;
+        }
+        mLocalStoreUri = "local://localhost/" + context.getDatabasePath(path);
+        if ( this.mLocalStoreMigrationListener != null) {
+            boolean success = false;
+            try {
+                this.mLocalStoreMigrationListener.onLocalStoreMigration(oldStoreUri, mLocalStoreUri);
+                success = true;
+            } finally {
+                if (!success) {
+                    mLocalStoreUri = oldStoreUri;
+                }
+            }
+        }
     }
 
     public synchronized boolean goToUnreadMessageSearch()
@@ -1484,5 +1559,19 @@ public class Account implements BaseAccount
     public synchronized void setLastSelectedFolderName(String folderName)
     {
         lastSelectedFolderName = folderName;
+    }
+
+    public boolean isInUse() {
+        return mIsInUse;
+    }
+
+    /**
+     * Set a listener to be informed when the path of the {@link LocalStore} of
+     * this account changes. (e.g. via setUsingSDCard())
+     * @param listener
+     * @see #setUsingSDCard(Context, boolean)
+     */
+    public void setLocalStoreMigraionListener(LocalStoreMigrationListener listener) {
+        this.mLocalStoreMigrationListener = listener;
     }
 }

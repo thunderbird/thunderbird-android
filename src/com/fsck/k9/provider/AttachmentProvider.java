@@ -15,12 +15,14 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.LocalStore;
 
 import java.io.*;
 import java.util.List;
 
-/*
- * A simple ContentProvider that allows file access to Email's attachments.
+/**
+ * A simple ContentProvider that allows file access to Email's attachments.<br/>
+ * Warning! We make heavy assumptions about the Uris used by the {@link LocalStore} for an {@link Account} here.
  */
 public class AttachmentProvider extends ContentProvider
 {
@@ -39,13 +41,13 @@ public class AttachmentProvider extends ContentProvider
 
     public static Uri getAttachmentUri(Account account, long id)
     {
-        return getAttachmentUri(account.getUuid() + ".db" , id);
+        return getAttachmentUri((account.isUsingSDCard()?"/mnt" + Account.SDCARD_LOCALSTORE_PREFIX:"") + account.getUuid() + ".db" , id);
     }
 
     public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height)
     {
         return CONTENT_URI.buildUpon()
-               .appendPath(account.getUuid() + ".db")
+               .appendPath((account.isUsingSDCard()?"/mnt" + Account.SDCARD_LOCALSTORE_PREFIX:"") + account.getUuid() + ".db")
                .appendPath(Long.toString(id))
                .appendPath(FORMAT_THUMBNAIL)
                .appendPath(Integer.toString(width))
@@ -53,7 +55,7 @@ public class AttachmentProvider extends ContentProvider
                .build();
     }
 
-    public static Uri getAttachmentUri(String db, long id)
+    private static Uri getAttachmentUri(String db, long id)
     {
         return CONTENT_URI.buildUpon()
                .appendPath(db)
@@ -166,7 +168,7 @@ public class AttachmentProvider extends ContentProvider
                 file = new File(Environment.getExternalStorageDirectory()  + attachmentsDir.getCanonicalPath().substring("/data".length()), id);
                 if (!file.exists())
                 {
-                    throw new FileNotFoundException();
+                    throw new FileNotFoundException(file.getAbsolutePath() + " and " + file.getAbsolutePath());
                 }
             }
             return file;
@@ -182,7 +184,7 @@ public class AttachmentProvider extends ContentProvider
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException
     {
         List<String> segments = uri.getPathSegments();
-        String dbName = segments.get(0);
+        String dbName = segments.get(0); // "/sdcard/..." is URL-encoded and makes up only 1 segment
         String id = segments.get(1);
         String format = segments.get(2);
         if (FORMAT_THUMBNAIL.equals(format))
@@ -190,6 +192,10 @@ public class AttachmentProvider extends ContentProvider
             int width = Integer.parseInt(segments.get(3));
             int height = Integer.parseInt(segments.get(4));
             String filename = "thmb_" + dbName + "_" + id + ".tmp";
+            int index = dbName.lastIndexOf('/');
+            if (index >= 0) {
+                filename = /*dbName.substring(0, index + 1) + */"thmb_" + dbName.substring(index + 1) + "_" + id + ".tmp";
+            }
             File dir = getContext().getCacheDir();
             File file = new File(dir, filename);
             if (!file.exists())
@@ -199,12 +205,17 @@ public class AttachmentProvider extends ContentProvider
                 try
                 {
                     FileInputStream in = new FileInputStream(getFile(dbName, id));
-                    Bitmap thumbnail = createThumbnail(type, in);
-                    thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
-                    FileOutputStream out = new FileOutputStream(file);
-                    thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
-                    out.close();
-                    in.close();
+                    try {
+                        Bitmap thumbnail = createThumbnail(type, in);
+                        if (thumbnail != null) {
+                            thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
+                            FileOutputStream out = new FileOutputStream(file);
+                            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
+                            out.close();
+                        }
+                    } finally {
+                        in.close();
+                    }
                 }
                 catch (IOException ioe)
                 {
