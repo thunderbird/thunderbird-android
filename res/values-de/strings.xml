@@ -340,6 +340,9 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_incoming_wifi_label">WLAN</string>
     <string name="account_setup_incoming_other_label">Anderes</string>
 
+    <string name="account_setup_incoming_save_all_headers_title">Alle Header Laden</string>
+    <string name="account_setup_incoming_save_all_headers_label">Speichere alle Header lokal</string>
+
     <string name="account_setup_expunge_policy_label">Ordner bereinigen (Expunge)</string>
     <string name="account_setup_expunge_policy_immediately">Sofort nach Verschieben oder Kopieren</string>
     <string name="account_setup_expunge_policy_on_poll">Bei jedem Abrufen</string>
