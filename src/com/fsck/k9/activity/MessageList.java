@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -3016,6 +3022,11 @@ public class MessageList
          */
         private void updateFooterView()
         {
+            if (footerView == null)
+            {
+                // can happen when configration is changed (screen orientation)
+                return;
+            }
             FooterViewHolder holder = (FooterViewHolder)footerView.getTag();
 
             if (mCurrentFolder != null && mAccount != null)
@@ -3201,8 +3212,6 @@ public class MessageList
             final TextView flagCountView = (TextView) view.findViewById(R.id.flagged_message_count);
             final TextView dateView = (TextView) view.findViewById(R.id.date);
 
-            view.findViewById(R.id.from).setVisibility(View.GONE); // TODO
-
             final Date date = group.getDate();
             if (date == null)
             {
@@ -3236,6 +3245,11 @@ public class MessageList
 
             int unreadCount = 0;
             int flagCount = 0;
+
+            // remember senders for later
+            final Set<String> unreadSenders = new HashSet<String>();
+            final Map<String, String> senders = new LinkedHashMap<String, String>();
+
             for (final MessageInfo<MessageInfoHolder> messageInfo : group.getMessages())
             {
                 final MessageInfoHolder holder = messageInfo.getTag();
@@ -3246,6 +3260,30 @@ public class MessageList
                 if (holder.flagged)
                 {
                     flagCount++;
+                }
+                try
+                {
+                    final Address[] from = holder.message.getFrom();
+                    // TODO handle user's identities to display 'me'
+                    if (from.length > 0)
+                    {
+                        final String address = from[0].getAddress().toLowerCase(Locale.US);
+                        if (!senders.containsKey(address))
+                        {
+                            final String friendly = from[0].toFriendly();
+                            // TODO toFriendly isn't as friendly as Gmail implementation which display only the first part to gain space
+                            senders.put(address, friendly);
+                        }
+                        if (!holder.read)
+                        {
+                            unreadSenders.add(address);
+                        }
+                    }
+                }
+                catch (MessagingException e)
+                {
+                    // should this happen?
+                    Log.w(K9.LOG_TAG, e);
                 }
             }
             final int count = group.getMessages().size();
@@ -3292,6 +3330,32 @@ public class MessageList
             {
                 flagCountView.setText(Integer.toString(flagCount));
                 flagCountView.setVisibility(View.VISIBLE);
+            }
+
+            {
+                // display unread sender in bold
+                // XXX do that in 2 phases: StringBuilder for the text then styles
+                final SpannableStringBuilder fromText = new SpannableStringBuilder();
+                for (final Iterator<Map.Entry<String, String>> iterator = senders.entrySet()
+                        .iterator(); iterator.hasNext();)
+                {
+                    final Entry<String, String> entry = iterator.next();
+                    final String name = entry.getValue();
+                    fromText.append(name);
+                    if (unreadSenders.contains(entry.getKey()))
+                    {
+                        fromText.setSpan(new StyleSpan(Typeface.BOLD), fromText.toString().length()
+                                - name.length(), fromText.length(),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    if (iterator.hasNext())
+                    {
+                        fromText.append(", ");
+                    }
+                }
+                final TextView fromView = (TextView) view.findViewById(R.id.from);
+                fromView.setText(fromText);
+                fromView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
             }
 
             return view;
