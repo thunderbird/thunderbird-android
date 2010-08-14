@@ -33,7 +33,26 @@
         android:paddingLeft="6dip"
         android:paddingRight="6dip"
         android:gravity="right"
-        android:clickable="true" >
+        android:clickable="false" >
+
+        <TextView
+            android:id="@+id/flagged_message_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" 
+            android:layout_gravity="top"
+            
+            android:paddingTop="6dip"
+            android:paddingBottom="4dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000000"
+            android:background="@drawable/btn_star_big_buttonless_on"
+            android:clickable="false" />
+
         <TextView
             android:id="@+id/count"
             android:layout_width="wrap_content"
@@ -50,6 +69,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#000000"
             android:background="@drawable/envelope"
+            android:layout_toRightOf="@id/flagged_message_count"
             />
 
         

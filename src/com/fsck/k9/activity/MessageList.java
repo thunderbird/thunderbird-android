@@ -2076,6 +2076,46 @@ public class MessageList
             menu.findItem(R.id.expand).setVisible(true);
             menu.findItem(R.id.collapse).setVisible(false);
         }
+        boolean unread = false;
+        boolean read = false;
+        boolean unflagged = false;
+        boolean flagged = false;
+        boolean selected = false;
+        boolean unselected = false;
+        for (final MessageInfo<MessageInfoHolder> info : group.getMessages())
+        {
+            final MessageInfoHolder holder = info.getTag();
+            if (!read && holder.read)
+            {
+                read = true;
+            }
+            else if (!unread && !holder.read)
+            {
+                unread = true;
+            }
+            if (!flagged && holder.flagged)
+            {
+                flagged = true;
+            }
+            else if (!unflagged && !holder.flagged)
+            {
+                unflagged = true;
+            }
+            if (!selected && holder.selected)
+            {
+                selected = true;
+            }
+            else if (!unselected && !holder.selected)
+            {
+                unselected = true;
+            }
+        }
+        menu.findItem(R.id.group_mark_as_read).setVisible(unread);
+        menu.findItem(R.id.group_mark_as_unread).setVisible(read);
+        menu.findItem(R.id.group_flag).setVisible(unflagged);
+        menu.findItem(R.id.group_unflag).setVisible(flagged);
+        menu.findItem(R.id.group_select).setVisible(unselected);
+        menu.findItem(R.id.group_deselect).setVisible(selected);
     }
 
     class MessageListAdapter extends BaseExpandableListAdapter implements SectionIndexer
@@ -2876,8 +2916,6 @@ public class MessageList
         private void bindView(int groupPosition, final int position, final View view,
                 final MessageViewHolder holder, final MessageInfoHolder message)
         {
-            holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
-
             // XXX TODO there has to be some way to walk our view hierarchy and get this
             holder.flagged.setTag((Integer)position);
             holder.flagged.setChecked(message.flagged);
@@ -2900,12 +2938,12 @@ public class MessageList
             if ((message.subject == null) || "".equals(message.subject))
             {
                 holder.subject.setText(getText(R.string.general_no_subject));
-                holder.subject.setTypeface(null,  Typeface.ITALIC);
+                holder.subject.setTypeface(null, message.read ? Typeface.ITALIC : Typeface.BOLD_ITALIC);
             }
             else
             {
                 holder.subject.setText(message.subject);
-                holder.subject.setTypeface(null,  Typeface.NORMAL);
+                holder.subject.setTypeface(null,  message.read ? Typeface.NORMAL : Typeface.BOLD);
             }
 
             if (holder.preview != null)
@@ -3160,6 +3198,7 @@ public class MessageList
             }
             final TextView subjectView = (TextView) view.findViewById(R.id.subject);
             final TextView countView = (TextView) view.findViewById(R.id.count);
+            final TextView flagCountView = (TextView) view.findViewById(R.id.flagged_message_count);
 
             if (mGroupLessMode)
             {
@@ -3174,11 +3213,17 @@ public class MessageList
                     .setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
 
             int unreadCount = 0;
+            int flagCount = 0;
             for (final MessageInfo<MessageInfoHolder> messageInfo : group.getMessages())
             {
-                if (!messageInfo.getTag().read)
+                final MessageInfoHolder holder = messageInfo.getTag();
+                if (!holder.read)
                 {
                     unreadCount++;
+                }
+                if (holder.flagged)
+                {
+                    flagCount++;
                 }
             }
             final int count = group.getMessages().size();
@@ -3215,6 +3260,16 @@ public class MessageList
                     countView.setTypeface(null, Typeface.NORMAL);
                     countView.setText(spannableStringBuilder);
                 }
+            }
+
+            if (!mStars || flagCount == 0)
+            {
+                flagCountView.setVisibility(View.GONE);
+            }
+            else
+            {
+                flagCountView.setText(Integer.toString(flagCount));
+                flagCountView.setVisibility(View.VISIBLE);
             }
 
             return view;
