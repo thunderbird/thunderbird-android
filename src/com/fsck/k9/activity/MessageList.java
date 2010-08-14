@@ -3199,6 +3199,28 @@ public class MessageList
             final TextView subjectView = (TextView) view.findViewById(R.id.subject);
             final TextView countView = (TextView) view.findViewById(R.id.count);
             final TextView flagCountView = (TextView) view.findViewById(R.id.flagged_message_count);
+            final TextView dateView = (TextView) view.findViewById(R.id.date);
+
+            view.findViewById(R.id.from).setVisibility(View.GONE); // TODO
+
+            final Date date = group.getDate();
+            if (date == null)
+            {
+                dateView.setVisibility(View.GONE);
+            }
+            else
+            {
+                if (Utility.isDateToday(date))
+                {
+                    dateView.setText(getTimeFormat().format(date));
+                }
+                else
+                {
+                    dateView.setText(getDateFormat().format(date));
+                }
+                dateView.setVisibility(View.VISIBLE);
+                dateView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
+            }
 
             if (mGroupLessMode)
             {

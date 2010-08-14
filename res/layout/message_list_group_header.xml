@@ -10,17 +10,56 @@
     android:paddingTop="2dip"
     android:paddingLeft="40dip" 
     >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_toLeftOf="@+id/count_wrapper"
+        >
         <TextView
             android:id="@+id/subject"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/count_wrapper"
             android:layout_weight="2"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:ellipsize="end"
             android:textColor="?android:attr/textColorPrimary"
             android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="2dip"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right|bottom"
+                android:paddingRight="5dip"
+                android:paddingLeft="5dip"
+                android:singleLine="true"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <RelativeLayout
         android:id="@+id/count_wrapper"
