@@ -16,66 +16,58 @@
 
 package com.fsck.k9;
 
-import android.content.ContentResolver;
+import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.mail.Address;
 import android.content.Context;
-import android.os.Build;
+import android.database.Cursor;
+import android.view.View;
 import android.widget.ResourceCursorAdapter;
+import android.widget.TextView;
 
-public abstract class EmailAddressAdapter extends ResourceCursorAdapter
+public class EmailAddressAdapter extends ResourceCursorAdapter
 {
     private static EmailAddressAdapter sInstance;
-    private static Context sContext;
 
     public static EmailAddressAdapter getInstance(Context context)
     {
         if (sInstance == null)
         {
-            String className;
-
-            sContext = context;
-
-            /*
-             * Check the version of the SDK we are running on. Choose an
-             * implementation class designed for that version of the SDK.
-             */
-            int sdkVersion = Integer.parseInt(Build.VERSION.SDK);       // Cupcake style
-            if (sdkVersion < Build.VERSION_CODES.ECLAIR)
-            {
-                className = "com.fsck.k9.EmailAddressAdapterSdk3_4";
-            }
-            else
-            {
-                className = "com.fsck.k9.EmailAddressAdapterSdk5";
-            }
-
-            /*
-             * Find the required class by name and instantiate it.
-             */
-            try
-            {
-                Class<? extends EmailAddressAdapter> clazz =
-                    Class.forName(className).asSubclass(EmailAddressAdapter.class);
-                sInstance = clazz.newInstance();
-            }
-            catch (Exception e)
-            {
-                throw new IllegalStateException(e);
-            }
+            sInstance = new EmailAddressAdapter(context);
         }
 
         return sInstance;
     }
 
-    public static Context getContext()
+
+    private Contacts mContacts;
+
+    private EmailAddressAdapter(Context context)
     {
-        return sContext;
+        super(context, R.layout.recipient_dropdown_item, null);
+        mContacts = Contacts.getInstance(context);
     }
 
-    protected ContentResolver mContentResolver;
-
-    public EmailAddressAdapter()
+    @Override
+    public final String convertToString(final Cursor cursor)
     {
-        super(getContext(), R.layout.recipient_dropdown_item, null);
-        mContentResolver = getContext().getContentResolver();
+        final String name = mContacts.getName(cursor);
+        final String address = mContacts.getEmail(cursor);;
+
+        return new Address(address, name).toString();
+    }
+
+    @Override
+    public final void bindView(final View view, final Context context, final Cursor cursor)
+    {
+        final TextView text1 = (TextView) view.findViewById(R.id.text1);
+        final TextView text2 = (TextView) view.findViewById(R.id.text2);
+        text1.setText(mContacts.getName(cursor));
+        text2.setText(mContacts.getEmail(cursor));
+    }
+
+    @Override
+    public Cursor runQueryOnBackgroundThread(CharSequence constraint)
+    {
+        return mContacts.searchContacts(constraint);
     }
 }
