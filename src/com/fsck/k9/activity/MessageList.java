@@ -22,7 +22,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.text.style.TextAppearanceSpan;
 import android.util.Config;
@@ -459,7 +458,7 @@ public class MessageList
         {
             // In multiselect mode make sure that clicking on the item results
             // in toggling the 'selected' checkbox.
-            setSelected(message, !message.selected);
+            setSelected(Collections.singletonList(message), !message.selected);
             return true;
         }
         else
@@ -793,17 +792,17 @@ public class MessageList
                     {
                         case KeyEvent.KEYCODE_DEL:
                         {
-                            onDelete(message);
+                            onDelete(Collections.singletonList(message));
                             return true;
                         }
                         case KeyEvent.KEYCODE_S:
                         {
-                            setSelected(message, !message.selected);
+                            setSelected(Collections.singletonList(message), !message.selected);
                             return true;
                         }
                         case KeyEvent.KEYCODE_D:
                         {
-                            onDelete(message);
+                            onDelete(Collections.singletonList(message));
                             return true;
                         }
                         case KeyEvent.KEYCODE_F:
@@ -823,7 +822,7 @@ public class MessageList
                         }
                         case KeyEvent.KEYCODE_G:
                         {
-                            onToggleFlag(message);
+                            setFlagStatus(Collections.singletonList(message), !message.flagged);
                             return true;
                         }
                         case KeyEvent.KEYCODE_M:
@@ -843,7 +842,7 @@ public class MessageList
                         }
                         case KeyEvent.KEYCODE_Z:
                         {
-                            onToggleRead(message);
+                            setReadStatus(Collections.singletonList(message), !message.read);
                             return true;
                         }
                     }
@@ -994,10 +993,15 @@ public class MessageList
         reSort();
     }
 
-    private void onDelete(MessageInfoHolder holder)
+    private void onDelete(final List<MessageInfoHolder> holders)
     {
-        mAdapter.removeMessage(holder);
-        mController.deleteMessages(new Message[] { holder.message }, null);
+        final List<Message> messages = new ArrayList<Message>(holders.size());
+        for (final MessageInfoHolder holder : holders)
+        {
+            messages.add(holder.message);
+        }
+        mAdapter.removeMessages(holders);
+        mController.deleteMessages(messages.toArray(new Message[messages.size()]), null);
     }
 
     private void onMove(MessageInfoHolder holder)
@@ -1263,17 +1267,55 @@ public class MessageList
                .create();
     }
 
-    private void onToggleRead(MessageInfoHolder holder)
+    private void setReadStatus(final List<MessageInfoHolder> holders, final boolean read)
     {
-        mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.SEEN, !holder.read);
-        holder.read = !holder.read;
+        if (holders.isEmpty())
+        {
+            return;
+        }
+        if (mQueryString != null)
+        {
+            // TODO handle mixed folders/accounts mode (integrated INBOX)
+            return;
+        }
+        Folder folder = null;
+        final List<String> uids = new ArrayList<String>(holders.size());
+        for (final MessageInfoHolder holder : holders)
+        {
+            if (folder == null)
+            {
+                folder = holder.message.getFolder();
+            }
+            uids.add(holder.uid);
+            holder.read = read;
+        }
+        mController.setFlag(folder.getAccount(), folder.getName(), uids.toArray(new String[uids.size()]), Flag.SEEN, read);
         mHandler.sortMessages();
     }
 
-    private void onToggleFlag(MessageInfoHolder holder)
+    private void setFlagStatus(final List<MessageInfoHolder> holders, boolean enabled)
     {
-        mController.setFlag(holder.message.getFolder().getAccount(), holder.message.getFolder().getName(), new String[] { holder.uid }, Flag.FLAGGED, !holder.flagged);
-        holder.flagged = !holder.flagged;
+        if (holders.isEmpty())
+        {
+            return;
+        }
+        if (mQueryString != null)
+        {
+            // TODO handle mixed folders/accounts mode (integrated INBOX)
+            return;
+        }
+        Folder folder = null;
+        final List<String> uids = new ArrayList<String>(holders.size());
+        for (final MessageInfoHolder holder : holders)
+        {
+            if (folder == null)
+            {
+                folder = holder.message.getFolder();
+            }
+            uids.add(holder.uid);
+            holder.flagged = enabled;
+        }
+        mController.setFlag(folder.getAccount(), folder.getName(), uids.toArray(new String[uids.size()]), Flag.FLAGGED, enabled);
         mHandler.sortMessages();
     }
 
@@ -1616,17 +1658,17 @@ public class MessageList
             }
             case R.id.select:
             {
-                setSelected(holder, true);
+                setSelected(Collections.singletonList(holder), true);
                 break;
             }
             case R.id.deselect:
             {
-                setSelected(holder, false);
+                setSelected(Collections.singletonList(holder), false);
                 break;
             }
             case R.id.delete:
             {
-                onDelete(holder);
+                onDelete(Collections.singletonList(holder));
                 break;
             }
             case R.id.reply:
@@ -1646,12 +1688,12 @@ public class MessageList
             }
             case R.id.mark_as_read:
             {
-                onToggleRead(holder);
+                setReadStatus(Collections.singletonList(holder), !holder.read);
                 break;
             }
             case R.id.flag:
             {
-                onToggleFlag(holder);
+                setFlagStatus(Collections.singletonList(holder), !holder.flagged);
                 break;
             }
             case R.id.archive:
@@ -1700,27 +1742,73 @@ public class MessageList
     private boolean onContextItemSelectedForGroup(final MenuItem item,
             final MessageGroup<MessageInfoHolder> group)
     {
-        switch (item.getItemId())
+        final List<MessageInfoHolder> holders = new ArrayList<MessageInfoHolder>(group.getMessages().size());
+        for (final MessageInfo<MessageInfoHolder> info : group.getMessages())
+        {
+            holders.add(info.getTag());
+        }
+        final int itemId = item.getItemId();
+        switch (itemId)
         {
             case R.id.expand:
+            {
                 int i = findGroupPosition(group);
                 if (i >= 0)
                 {
                     mListView.expandGroup(i);
                 }
                 break;
+            }
             case R.id.collapse:
-                int j = findGroupPosition(group);
-                if (j >= 0)
+            {
+                int i = findGroupPosition(group);
+                if (i >= 0)
                 {
-                    mListView.collapseGroup(j);
+                    mListView.collapseGroup(i);
                 }
                 break;
+            }
             case R.id.expand_all:
                 expandAll();
                 break;
             case R.id.collapse_all:
                 collapseAll();
+                break;
+            case R.id.group_delete:
+                onDelete(holders);
+                break;
+            case R.id.group_select:
+            case R.id.group_deselect:
+                setSelected(holders, itemId == R.id.group_select);
+                if (itemId == R.id.group_select)
+                {
+                    // display selection to user
+                    int i = findGroupPosition(group);
+                    if (i >= 0)
+                    {
+                        mListView.expandGroup(i);
+                    }
+                }
+                break;
+            case R.id.group_flag:
+            case R.id.group_unflag:
+                setFlagStatus(holders, itemId == R.id.group_flag);
+                break;
+            case R.id.group_mark_as_read:
+            case R.id.group_mark_as_unread:
+                setReadStatus(holders, itemId == R.id.group_mark_as_read);
+                break;
+            case R.id.group_copy:
+                // TODO
+                break;
+            case R.id.group_move:
+                // TODO
+                break;
+            case R.id.group_archive:
+                // TODO
+                break;
+            case R.id.group_spam:
+                // TODO
                 break;
             default:
                 break;
@@ -2598,7 +2686,7 @@ public class MessageList
                 if (item instanceof MessageInfoHolder)
                 {
                     final MessageInfoHolder message = (MessageInfoHolder) item;
-                    onToggleFlag(message);
+                    setFlagStatus(Collections.singletonList(message), !message.flagged);
                 }
             }
         };
@@ -3663,7 +3751,7 @@ public class MessageList
         }
         mHandler.sortMessages();
     }
-
+    
     private void setAllSelected(boolean isSelected)
     {
         mSelectedCount = 0;
@@ -3679,12 +3767,15 @@ public class MessageList
         toggleBatchButtons();
     }
 
-    private void setSelected(MessageInfoHolder holder, boolean newState)
+    private void setSelected(final List<MessageInfoHolder> holders, final boolean newState)
     {
-        if (holder.selected != newState)
+        for (final MessageInfoHolder holder : holders)
         {
-            holder.selected = newState;
-            mSelectedCount += (newState ? 1 : -1);
+            if (holder.selected != newState)
+            {
+                holder.selected = newState;
+                mSelectedCount += (newState ? 1 : -1);
+            }
         }
         mAdapter.notifyDataSetChanged();
         toggleBatchButtons();

@@ -5,6 +5,17 @@
         <item android:id="@+id/collapse" android:title="@string/collapse"/>
         <item android:id="@+id/expand_all" android:title="@string/expand_all"/>
         <item android:id="@+id/collapse_all" android:title="@string/collapse_all"/>
+        <item android:id="@+id/group_select" android:title="@string/select_action"/>
+        <item android:id="@+id/group_deselect" android:title="@string/deselect_action"/>
+        <item android:id="@+id/group_delete" android:title="@string/delete_action"/>
+        <item android:id="@+id/group_mark_as_read" android:title="@string/mark_as_read_action"/>
+        <item android:id="@+id/group_mark_as_unread" android:title="@string/mark_as_unread_action"/>
+        <item android:id="@+id/group_flag" android:title="@string/flag_action"/>
+        <item android:id="@+id/group_unflag" android:title="@string/unflag_action"/>
+        <item android:id="@+id/group_archive" android:title="@string/archive_action" android:enabled="false"/>
+        <item android:id="@+id/group_spam" android:title="@string/spam_action" android:enabled="false"/>
+        <item android:id="@+id/group_move" android:title="@string/move_action" android:enabled="false"/>
+        <item android:id="@+id/group_copy" android:title="@string/copy_action" android:enabled="false"/>
     </group>
     <group android:id="@+id/single_message" android:visible="false">
     <item
