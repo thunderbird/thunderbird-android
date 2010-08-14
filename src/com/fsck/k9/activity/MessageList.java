@@ -3211,6 +3211,7 @@ public class MessageList
             final TextView countView = (TextView) view.findViewById(R.id.count);
             final TextView flagCountView = (TextView) view.findViewById(R.id.flagged_message_count);
             final TextView dateView = (TextView) view.findViewById(R.id.date);
+            final TextView fromView = (TextView) view.findViewById(R.id.from);
 
             final Date date = group.getDate();
             if (date == null)
@@ -3247,9 +3248,18 @@ public class MessageList
             int flagCount = 0;
 
             // remember senders for later
-            final Set<String> unreadSenders = new HashSet<String>();
-            final Map<String, String> senders = new LinkedHashMap<String, String>();
-
+            final Set<String> unreadSenders;
+            final Map<String, String> senders;
+            if (mGroupLessMode)
+            {
+                unreadSenders = null;
+                senders = null;
+            }
+            else
+            {
+                unreadSenders = new HashSet<String>();
+                senders = new LinkedHashMap<String, String>();
+            }
             for (final MessageInfo<MessageInfoHolder> messageInfo : group.getMessages())
             {
                 final MessageInfoHolder holder = messageInfo.getTag();
@@ -3261,29 +3271,32 @@ public class MessageList
                 {
                     flagCount++;
                 }
-                try
+                if (!mGroupLessMode)
                 {
-                    final Address[] from = holder.message.getFrom();
-                    // TODO handle user's identities to display 'me'
-                    if (from.length > 0)
+                    try
                     {
-                        final String address = from[0].getAddress().toLowerCase(Locale.US);
-                        if (!senders.containsKey(address))
+                        final Address[] from = holder.message.getFrom();
+                        // TODO handle user's identities to display 'me'
+                        if (from.length > 0)
                         {
-                            final String friendly = from[0].toFriendly();
-                            // TODO toFriendly isn't as friendly as Gmail implementation which display only the first part to gain space
-                            senders.put(address, friendly);
-                        }
-                        if (!holder.read)
-                        {
-                            unreadSenders.add(address);
+                            final String address = from[0].getAddress().toLowerCase(Locale.US);
+                            if (!senders.containsKey(address))
+                            {
+                                final String friendly = from[0].toFriendly();
+                                // TODO toFriendly isn't as friendly as Gmail implementation which display only the first part to gain space
+                                senders.put(address, friendly);
+                            }
+                            if (!holder.read)
+                            {
+                                unreadSenders.add(address);
+                            }
                         }
                     }
-                }
-                catch (MessagingException e)
-                {
-                    // should this happen?
-                    Log.w(K9.LOG_TAG, e);
+                    catch (MessagingException e)
+                    {
+                        // should this happen?
+                        Log.w(K9.LOG_TAG, e);
+                    }
                 }
             }
             final int count = group.getMessages().size();
@@ -3332,6 +3345,11 @@ public class MessageList
                 flagCountView.setVisibility(View.VISIBLE);
             }
 
+            if (mGroupLessMode)
+            {
+                fromView.setVisibility(View.GONE);
+            }
+            else
             {
                 // display unread sender in bold
                 // XXX do that in 2 phases: StringBuilder for the text then styles
@@ -3353,7 +3371,6 @@ public class MessageList
                         fromText.append(", ");
                     }
                 }
-                final TextView fromView = (TextView) view.findViewById(R.id.from);
                 fromView.setText(fromText);
                 fromView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
             }
