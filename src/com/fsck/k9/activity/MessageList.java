@@ -874,12 +874,16 @@ public class MessageList
             // Need to get the list before the sort starts
             final List<MessageReference> messageRefs = new ArrayList<MessageReference>(mAdapter.messages.size());
 
-            synchronized (mAdapter.messages)
+            synchronized (mAdapter.mGroups)
             {
-                for (MessageInfoHolder holder : mAdapter.messages)
+                for (final MessageGroup<MessageInfoHolder> group : mAdapter.mGroups)
                 {
-                    MessageReference ref = holder.message.makeMessageReference();
-                    messageRefs.add(ref);
+                    for (final MessageInfo<MessageInfoHolder> info : group.getMessages())
+                    {
+                        final MessageInfoHolder holder = info.getTag();
+                        final MessageReference reference = holder.message.makeMessageReference();
+                        messageRefs.add(reference);
+                    }
                 }
             }
             MessageReference ref = message.message.makeMessageReference();
