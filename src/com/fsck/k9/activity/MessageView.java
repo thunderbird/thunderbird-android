@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 
@@ -1887,17 +1889,13 @@ public class MessageView extends K9Activity implements OnClickListener
 
         // Inline parts with a content-id are almost certainly components of an HTML message
         // not attachments. Don't show attachment download buttons for them.
-        //
-        // TODO: This code won't work until we correct attachment storage
 
-        if ("inline".equalsIgnoreCase(MimeUtility.getHeaderParameter(contentDisposition, null))
-                && part.getHeader("Content-Id") != null)
+        if ( contentDisposition != null &&
+                MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
+                && part.getHeader("Content-ID") != null)
         {
             return;
         }
-
-
-
 
         if (name == null)
         {
@@ -2140,22 +2138,15 @@ public class MessageView extends K9Activity implements OnClickListener
                         }
                     });
 
-                    // TODO: Only check for external (non inline) images
-                    final boolean hasPictures = text.contains("<img");
-
-                    // If the message contains pictures and the "Show pictures"
-                    // button wasn't already pressed...
-                    if (hasPictures && (mShowPictures == false))
+                    // If the message contains external pictures and the "Show pictures"
+                    // button wasn't already pressed, see if the user's preferences has us
+                    // showing them anyway.
+                    if ( hasExternalImages(MimeUtility.unfoldAndDecode(text))
+                            && (mShowPictures == false))
                     {
-                        boolean forceShowPictures = false;
                         if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                                 ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
                                 mContacts.isInContacts(message.getFrom()[0].getAddress())))
-                        {
-                            forceShowPictures = true;
-                        }
-
-                        if (forceShowPictures)
                         {
                             onShowPictures();
                         }
@@ -2188,6 +2179,21 @@ public class MessageView extends K9Activity implements OnClickListener
             }
         }//loadMessageForViewBodyAvailable
 
+        private static final String IMG_SRC_REGEX = "(?is:<img[^>]+src\\s*=\\s*['\"]?([a-z]+)\\:)";
+        private boolean hasExternalImages(final String message) {
+            Pattern mImgPattern = Pattern.compile(IMG_SRC_REGEX);
+            Matcher mImgMatches = mImgPattern.matcher(message);
+            while(mImgMatches.find()) {
+                if(!mImgMatches.group(1).equals("content")) {
+                    if (K9.DEBUG)
+                        Log.d(K9.LOG_TAG, "External images found.");
+                    return true;
+                }
+            }
+            if (K9.DEBUG)
+                Log.d(K9.LOG_TAG, "No external images.");
+            return false;
+        }
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid,

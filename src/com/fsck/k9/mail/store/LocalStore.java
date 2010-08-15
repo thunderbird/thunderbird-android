@@ -44,7 +44,7 @@ public class LocalStore extends Store implements Serializable
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final int DB_VERSION = 35;
+    private static final int DB_VERSION = 37;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
     private String mPath;
@@ -62,6 +62,8 @@ public class LocalStore extends Store implements Serializable
         HEADERS_TO_SAVE.add("From");
         HEADERS_TO_SAVE.add("In-Reply-To");
         HEADERS_TO_SAVE.add("References");
+        HEADERS_TO_SAVE.add("Content-ID");
+        HEADERS_TO_SAVE.add("Content-Disposition");
         HEADERS_TO_SAVE.add("X-User-Agent");
     }
     /*
@@ -164,7 +166,7 @@ public class LocalStore extends Store implements Serializable
                 mDb.execSQL("DROP TABLE IF EXISTS attachments");
                 mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
                             + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
-                            + "mime_type TEXT)");
+                            + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
 
                 mDb.execSQL("DROP TABLE IF EXISTS pending_commands");
                 mDb.execSQL("CREATE TABLE pending_commands " +
@@ -242,6 +244,28 @@ public class LocalStore extends Store implements Serializable
                     catch (SQLiteException e)
                     {
                         Log.e(K9.LOG_TAG, "Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
+                    }
+                }
+                if (mDb.getVersion() < 36)
+                {
+                    try
+                    {
+                        mDb.execSQL("ALTER TABLE attachments ADD content_id TEXT");
+                    }
+                    catch (SQLiteException e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to add content_id column to attachments");
+                    }
+                }
+                if (mDb.getVersion() < 37)
+                {
+                    try
+                    {
+                        mDb.execSQL("ALTER TABLE attachments ADD content_disposition TEXT");
+                    }
+                    catch (SQLiteException e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to add content_disposition column to attachments");
                     }
                 }
 
@@ -1391,7 +1415,9 @@ public class LocalStore extends Store implements Serializable
                                          "name",
                                          "mime_type",
                                          "store_data",
-                                         "content_uri"
+                                         "content_uri",
+                                        "content_id",
+                                        "content_disposition"
                                      },
                                      "message_id = ?",
                                      new String[] { Long.toString(localMessage.mId) },
@@ -1407,7 +1433,15 @@ public class LocalStore extends Store implements Serializable
                             String type = cursor.getString(3);
                             String storeData = cursor.getString(4);
                             String contentUri = cursor.getString(5);
+                            String contentId = cursor.getString(6);
+                            String contentDisposition = cursor.getString(7);
                             Body body = null;
+
+                            if (contentDisposition == null )
+                            {
+                                contentDisposition = "attachment";
+                            }
+
                             if (contentUri != null)
                             {
                                 body = new LocalAttachmentBody(Uri.parse(contentUri), mApplication);
@@ -1419,10 +1453,12 @@ public class LocalStore extends Store implements Serializable
                                                        name));
                             bp.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
                             bp.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION,
-                                         String.format("attachment;\n filename=\"%s\";\n size=%d",
+                                         String.format("%s;\n filename=\"%s\";\n size=%d",
+                                                       contentDisposition,
                                                        name,
                                                        size));
 
+                            bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
                             /*
                              * HEADER_ANDROID_ATTACHMENT_STORE_DATA is a custom header we add to that
                              * we can later pull the attachment from the remote store if neccesary.
@@ -2040,6 +2076,8 @@ public class LocalStore extends Store implements Serializable
                 cv.put("size", size);
                 cv.put("name", name);
                 cv.put("mime_type", attachment.getMimeType());
+                cv.put("content_id", contentId);
+                cv.put("content_disposition", contentDisposition);
 
                 attachmentId = mDb.insert("attachments", "message_id", cv);
             }
