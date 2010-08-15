@@ -872,7 +872,7 @@ public class MessageList
         else
         {
             // Need to get the list before the sort starts
-            ArrayList<MessageReference> messageRefs = new ArrayList<MessageReference>();
+            final List<MessageReference> messageRefs = new ArrayList<MessageReference>(mAdapter.messages.size());
 
             synchronized (mAdapter.messages)
             {
@@ -2126,7 +2126,7 @@ public class MessageList
 
     class MessageListAdapter extends BaseExpandableListAdapter implements SectionIndexer
     {
-        private final List<MessageInfoHolder> messages = java.util.Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
+        private final List<MessageInfoHolder> messages = Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
         private final List<MessageGroup<MessageInfoHolder>> mGroups = Collections
                 .synchronizedList(new ArrayList<MessageGroup<MessageInfoHolder>>());
@@ -2570,16 +2570,12 @@ public class MessageList
 
         public void removeMessage(MessageInfoHolder holder)
         {
-            List<MessageInfoHolder> messages = new ArrayList<MessageInfoHolder>();
-            messages.add(holder);
-            removeMessages(messages);
+            removeMessages(Collections.singletonList(holder));
         }
 
         private void addOrUpdateMessage(Account account, String folder, Message message, boolean verifyAgainstSearch)
         {
-            List<Message> messages = new ArrayList<Message>();
-            messages.add(message);
-            addOrUpdateMessages(account, folder, messages, verifyAgainstSearch);
+            addOrUpdateMessages(account, folder, Collections.singletonList(message), verifyAgainstSearch);
         }
 
         private void addOrUpdateMessages(Account account, String folder, List<Message> messages, boolean verifyAgainstSearch)
