@@ -97,7 +97,9 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
  */
 public class MessageList
         extends K9Activity
-        implements OnClickListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener
+ implements OnClickListener,
+        ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener,
+        ExpandableListView.OnGroupExpandListener, ExpandableListView.OnGroupCollapseListener
 {
 
     /**
@@ -475,6 +477,18 @@ public class MessageList
     }
 
     @Override
+    public void onGroupExpand(final int groupPosition)
+    {
+        mAdapter.synchronizeFastScroll();
+    }
+
+    @Override
+    public void onGroupCollapse(final int groupPosition)
+    {
+        mAdapter.synchronizeFastScroll();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -650,6 +664,8 @@ public class MessageList
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnChildClickListener(this);
         mListView.setOnGroupClickListener(this);
+        mListView.setOnGroupCollapseListener(this);
+        mListView.setOnGroupExpandListener(this);
 
         registerForContextMenu(mListView);
 
