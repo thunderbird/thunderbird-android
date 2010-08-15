@@ -2121,10 +2121,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
                 if (text != null)
                 {
-                    /*
-                     * TODO this should be smarter, change to regex for img, but consider how to
-                     * get background images and a million other things that HTML allows.
-                     */
                     final String emailText = text;
                     final String mimeType = type;
                     mHandler.post(new Runnable()
@@ -2141,8 +2137,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     // If the message contains external pictures and the "Show pictures"
                     // button wasn't already pressed, see if the user's preferences has us
                     // showing them anyway.
-                    if ( hasExternalImages(MimeUtility.unfoldAndDecode(text))
-                            && (mShowPictures == false))
+                    if (hasExternalImages(text) && (mShowPictures == false))
                     {
                         if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                                 ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
@@ -2180,18 +2175,25 @@ public class MessageView extends K9Activity implements OnClickListener
         }//loadMessageForViewBodyAvailable
 
         private static final String IMG_SRC_REGEX = "(?is:<img[^>]+src\\s*=\\s*['\"]?([a-z]+)\\:)";
-        private boolean hasExternalImages(final String message) {
-            Pattern mImgPattern = Pattern.compile(IMG_SRC_REGEX);
-            Matcher mImgMatches = mImgPattern.matcher(message);
-            while(mImgMatches.find()) {
-                if(!mImgMatches.group(1).equals("content")) {
+        private final Pattern mImgPattern = Pattern.compile(IMG_SRC_REGEX);
+        private boolean hasExternalImages(final String message)
+        {
+            Matcher imgMatches = mImgPattern.matcher(message);
+            while (imgMatches.find())
+            {
+                if (!imgMatches.group(1).equals("content"))
+                {
                     if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "External images found.");
+                    {
+                        Log.d(K9.LOG_TAG, "External images found");
+                    }
                     return true;
                 }
             }
             if (K9.DEBUG)
+            {
                 Log.d(K9.LOG_TAG, "No external images.");
+            }
             return false;
         }
 
