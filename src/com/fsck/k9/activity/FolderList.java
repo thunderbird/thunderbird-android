@@ -353,7 +353,7 @@ public class FolderList extends K9ListActivity
 
     @Override public Object onRetainNonConfigurationInstance()
     {
-        return mAdapter.mFolders;
+        return (mAdapter == null) ? null : mAdapter.mFolders;
     }
 
     @Override public void onPause()
