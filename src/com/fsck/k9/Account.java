@@ -1406,8 +1406,12 @@ public class Account implements BaseAccount
         String path =  mUuid + ".db";
         if (useSDCard) {
             path =  SDCARD_LOCALSTORE_PREFIX + path ;
+            mLocalStoreUri = "local://localhost//sdcard/k9/" + mUuid + ".db";
+        } else {
+            mLocalStoreUri = "local://localhost/" + context.getDatabasePath(path);
         }
-        mLocalStoreUri = "local://localhost/" + context.getDatabasePath(path);
+        //= local://localhost//data/data/com.fsck.k9/databases/c9a804ec-46ee-4df2-b1b1-1f64d53c05a5.db
+        //or local://localhost//sdcard/k9/c9a804ec-46ee-4df2-b1b1-1f64d53c05a5.db
         if ( this.mLocalStoreMigrationListener != null) {
             boolean success = false;
             try {
