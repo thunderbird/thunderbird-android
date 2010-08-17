@@ -53,7 +53,9 @@ public class SenderMessageGrouper implements MessageGrouper
                 currentGroup = new SimpleMessageGroup<T>();
                 currentGroup.setMessages(currentList);
                 currentGroup.setDate(message.getDate());
-                currentGroup.setSubject(message.getSender());
+                final String sender = message.getSender();
+                currentGroup.setSubject(sender);
+                currentGroup.setId(sender.hashCode());
                 groups.add(currentGroup);
             }
             currentList.add(message);

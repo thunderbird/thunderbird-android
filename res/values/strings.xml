@@ -718,6 +718,15 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="collapse_all">Collapse all</string>
     <string name="message_web_view_error">%s</string>
 
+    <string name="group_by_date_today">Today</string>
+    <string name="group_by_date_yesterday">Yesterday</string>
+    <string name="group_by_date_this_week">This week</string>
+    <string name="group_by_date_last_week">Last week</string>
+    <string name="group_by_date_this_month">This month</string>
+    <string name="group_by_date_last_month">Last month</string>
+    <string name="group_by_date_this_year">This year</string>
+    <string name="group_by_date_earlier">Earlier</string>
+
     <string name="account_delete_dlg_title">Remove Account</string>
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
 

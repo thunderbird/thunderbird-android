@@ -72,6 +72,7 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingController.SORT_TYPE;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.grouping.DateMessageGrouper;
 import com.fsck.k9.grouping.MessageGroup;
 import com.fsck.k9.grouping.MessageGrouper;
 import com.fsck.k9.grouping.MessageInfo;
@@ -1419,8 +1420,10 @@ public class MessageList
                 reSort();
                 return true;
             case R.id.set_group_by_date:
-                // TODO
-                break;
+                mAdapter.mMessageGrouper = new DateMessageGrouper(this);
+                mAdapter.mGroupLessMode = false;
+                reSort();
+                return true;
             case R.id.select_all:
             case R.id.batch_select_all:
             {
