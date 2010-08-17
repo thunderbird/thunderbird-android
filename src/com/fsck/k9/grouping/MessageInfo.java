@@ -21,6 +21,8 @@ public class MessageInfo<T>
 
     private List<String> mReferences = new ArrayList<String>();
 
+    private String mSender;
+
     private T mTag;
 
     public String getSubject()
@@ -70,6 +72,16 @@ public class MessageInfo<T>
     public void setReferences(List<String> references)
     {
         this.mReferences = references;
+    }
+
+    public String getSender()
+    {
+        return mSender;
+    }
+
+    public void setSender(String sender)
+    {
+        this.mSender = sender;
     }
 
     /**

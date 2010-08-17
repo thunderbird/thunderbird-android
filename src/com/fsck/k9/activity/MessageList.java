@@ -75,6 +75,7 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.grouping.MessageGroup;
 import com.fsck.k9.grouping.MessageGrouper;
 import com.fsck.k9.grouping.MessageInfo;
+import com.fsck.k9.grouping.SenderMessageGrouper;
 import com.fsck.k9.grouping.SingletonMessageGrouper;
 import com.fsck.k9.grouping.thread.ThreadMessageGrouper;
 import com.fsck.k9.helper.UiThrottler;
@@ -1406,15 +1407,17 @@ public class MessageList
                 mAdapter.mMessageGrouper = new SingletonMessageGrouper();
                 mAdapter.mGroupLessMode = true;
                 reSort();
-                break;
+                return true;
             case R.id.set_group_by_thread:
                 mAdapter.mMessageGrouper = new ThreadMessageGrouper();
                 mAdapter.mGroupLessMode = false;
                 reSort();
-                break;
+                return true;
             case R.id.set_group_by_sender:
-                // TODO
-                break;
+                mAdapter.mMessageGrouper = new SenderMessageGrouper();
+                mAdapter.mGroupLessMode = false;
+                reSort();
+                return true;
             case R.id.set_group_by_date:
                 // TODO
                 break;
@@ -2527,6 +2530,7 @@ public class MessageList
                     }
                     messageInfo.setDate(holder.compareDate);
                     messageInfo.setSubject(holder.subject);
+                    messageInfo.setSender(holder.sender);
 
                     messageInfo.setTag(holder);
 
