@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 
@@ -27,8 +29,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.Contacts;
-import android.provider.Contacts.Intents;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
@@ -55,9 +55,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.provider.ContactsContract.Data;
-import android.provider.ContactsContract.CommonDataKinds.Email;
-import android.database.Cursor;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
@@ -67,6 +64,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -155,6 +153,8 @@ public class MessageView extends K9Activity implements OnClickListener
     private MessageViewHandler mHandler = new MessageViewHandler();
 
     private FontSizes mFontSizes = K9.getFontSizes();
+
+    private Contacts mContacts;
 
     /**
      * Pair class is only available since API Level 5, so we need
@@ -724,6 +724,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         super.onCreate(icicle, false);
 
+        mContacts = Contacts.getInstance(this);
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -1294,31 +1295,12 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             try
             {
-                Address senderEmail = mMessage.getFrom()[0];
-                Uri contactUri = Uri.fromParts("mailto", senderEmail.getAddress(), null);
-
-                Intent contactIntent = new Intent(Contacts.Intents.SHOW_OR_CREATE_CONTACT);
-                contactIntent.setData(contactUri);
-
-                // Pass along full E-mail string for possible create dialog
-                contactIntent.putExtra(Contacts.Intents.EXTRA_CREATE_DESCRIPTION,
-                                       senderEmail.toString());
-
-                // Only provide personal name hint if we have one
-                String senderPersonal = senderEmail.getPersonal();
-                if (senderPersonal != null)
-                {
-                    contactIntent.putExtra(Intents.Insert.NAME, senderPersonal);
-                }
-
-                startActivity(contactIntent);
+                final Address senderEmail = mMessage.getFrom()[0];
+                mContacts.createContact(this, senderEmail);
             }
-            catch (MessagingException me)
+            catch (Exception e)
             {
-                if (Config.LOGV)
-                {
-                    Log.v(K9.LOG_TAG, "loadMessageForViewHeadersAvailable", me);
-                }
+                Log.e(K9.LOG_TAG, "Couldn't create contact", e);
             }
         }
     }
@@ -1907,17 +1889,13 @@ public class MessageView extends K9Activity implements OnClickListener
 
         // Inline parts with a content-id are almost certainly components of an HTML message
         // not attachments. Don't show attachment download buttons for them.
-        //
-        // TODO: This code won't work until we correct attachment storage
 
-        if ("inline".equalsIgnoreCase(MimeUtility.getHeaderParameter(contentDisposition, null))
-                && part.getHeader("Content-Id") != null)
+        if ( contentDisposition != null &&
+                MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
+                && part.getHeader("Content-ID") != null)
         {
             return;
         }
-
-
-
 
         if (name == null)
         {
@@ -2143,10 +2121,6 @@ public class MessageView extends K9Activity implements OnClickListener
 
                 if (text != null)
                 {
-                    /*
-                     * TODO this should be smarter, change to regex for img, but consider how to
-                     * get background images and a million other things that HTML allows.
-                     */
                     final String emailText = text;
                     final String mimeType = type;
                     mHandler.post(new Runnable()
@@ -2160,34 +2134,14 @@ public class MessageView extends K9Activity implements OnClickListener
                         }
                     });
 
-                    // TODO: Only check for external (non inline) images
-                    final boolean hasPictures = text.contains("<img");
-
-                    // If the message contains pictures and the "Show pictures"
-                    // button wasn't already pressed...
-                    if (hasPictures && (mShowPictures == false))
+                    // If the message contains external pictures and the "Show pictures"
+                    // button wasn't already pressed, see if the user's preferences has us
+                    // showing them anyway.
+                    if (hasExternalImages(text) && (mShowPictures == false))
                     {
-                        boolean forceShowPictures = false;
-                        if (account.getShowPictures() == Account.ShowPictures.ALWAYS)
-                        {
-                            forceShowPictures = true;
-                        }
-                        else if (account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS)
-                        {
-                            // TODO: change to _COUNT for speed
-                            Cursor c = getContentResolver().query(Data.CONTENT_URI, new String[]{Data._ID},
-                                Data.MIMETYPE + "='" + Email.CONTENT_ITEM_TYPE + "' AND "
-                                    + Data.DATA1 + "=? AND "
-                                    + Data.IN_VISIBLE_GROUP + "='1'",
-                                new String[] { message.getFrom()[0].getAddress() }, null);
-
-                            if ((c != null) && (c.getCount() > 0))
-                            {
-                                forceShowPictures = true;
-                            }
-                        }
-
-                        if (forceShowPictures)
+                        if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
+                                ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
+                                mContacts.isInContacts(message.getFrom()[0].getAddress())))
                         {
                             onShowPictures();
                         }
@@ -2220,6 +2174,28 @@ public class MessageView extends K9Activity implements OnClickListener
             }
         }//loadMessageForViewBodyAvailable
 
+        private static final String IMG_SRC_REGEX = "(?is:<img[^>]+src\\s*=\\s*['\"]?([a-z]+)\\:)";
+        private final Pattern mImgPattern = Pattern.compile(IMG_SRC_REGEX);
+        private boolean hasExternalImages(final String message)
+        {
+            Matcher imgMatches = mImgPattern.matcher(message);
+            while (imgMatches.find())
+            {
+                if (!imgMatches.group(1).equals("content"))
+                {
+                    if (K9.DEBUG)
+                    {
+                        Log.d(K9.LOG_TAG, "External images found");
+                    }
+                    return true;
+                }
+            }
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "No external images.");
+            }
+            return false;
+        }
 
         @Override
         public void loadMessageForViewFailed(Account account, String folder, String uid,

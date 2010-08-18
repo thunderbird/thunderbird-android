@@ -407,7 +407,7 @@ public class Account implements BaseAccount
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
 
-        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", "");
+        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
     }
 

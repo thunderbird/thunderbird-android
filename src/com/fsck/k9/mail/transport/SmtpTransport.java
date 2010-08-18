@@ -180,17 +180,19 @@ public class SmtpTransport extends Transport
 
             InetAddress localAddress = mSocket.getLocalAddress();
             String localHost = localAddress.getHostName();
+            String ipAddr = localAddress.getHostAddress();
 
-            if (localHost.equals(localAddress.getHostAddress()))
+            if (localHost.equals(ipAddr) || localHost.contains("_"))
             {
-                // We don't have a FQDN, so use IP address.
+                // We don't have a FQDN or the hostname contains invalid
+                // characters (see issue 2143), so use IP address.
                 if (localAddress instanceof Inet6Address)
                 {
-                    localHost = "[IPV6:" + localHost + "]";
+                    localHost = "[IPV6:" + ipAddr + "]";
                 }
                 else
                 {
-                    localHost = "[" + localHost + "]";
+                    localHost = "[" + ipAddr + "]";
                 }
             }
 

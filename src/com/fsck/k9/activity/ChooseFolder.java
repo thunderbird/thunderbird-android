@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -13,6 +15,7 @@ import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.fsck.k9.*;
+import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
@@ -33,6 +36,20 @@ public class ChooseFolder extends K9ListActivity
     boolean hideCurrentFolder = true;
     boolean showOptionNone = false;
     boolean showDisplayableOnly = false;
+
+    /**
+     * What folders to display.<br/>
+     * Initialized to whatever is configured
+     * but can be overridden via {@link #onOptionsItemSelected(MenuItem)}
+     * while this activity is showing.
+     */
+    private Account.FolderMode mMode;
+    /**
+     * Current filter used by our ArrayAdapter.<br/>
+     * Created on the fly and invalidated if a new
+     * set of folders is chosen via {@link #onOptionsItemSelected(MenuItem)}
+     */
+    private FolderListFilter<String> myFilter = null;
 
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseFolder_account";
     public static final String EXTRA_CUR_FOLDER = "com.fsck.k9.ChooseFolder_curfolder";
@@ -169,6 +186,55 @@ public class ChooseFolder extends K9ListActivity
         }
     }
 
+    @Override public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.folder_select_option, menu);
+        return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+
+
+            case R.id.display_1st_class:
+            {
+                setDisplayMode(FolderMode.FIRST_CLASS);
+                return true;
+            }
+            case R.id.display_1st_and_2nd_class:
+            {
+                setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS);
+                return true;
+            }
+            case R.id.display_not_second_class:
+            {
+                setDisplayMode(FolderMode.NOT_SECOND_CLASS);
+                return true;
+            }
+            case R.id.display_all:
+            {
+                setDisplayMode(FolderMode.ALL);
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void setDisplayMode(FolderMode aMode) {
+        mMode = aMode;
+        // invalidate the current filter as it is working on an inval
+        if (myFilter != null) {
+            myFilter.invalidate();
+        }
+        //re-populate the list
+        MessagingController.getInstance(getApplication()).listFolders(mAccount,
+                false, mListener);
+    }
+
     private MessagingListener mListener = new MessagingListener()
     {
         @Override
@@ -207,15 +273,7 @@ public class ChooseFolder extends K9ListActivity
             {
                 return;
             }
-            Account.FolderMode aMode = Account.FolderMode.ALL;
-            if (showDisplayableOnly)
-            {
-                aMode = account.getFolderDisplayMode();
-            }
-            else
-            {
-                aMode = account.getFolderTargetMode();
-            }
+            Account.FolderMode aMode = mMode;
             Preferences prefs = Preferences.getPreferences(getApplication().getApplicationContext());
             ArrayList<String> localFolders = new ArrayList<String>();
 

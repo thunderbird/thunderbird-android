@@ -7,11 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.XmlResourceParser;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Contacts;
-import android.provider.Contacts.People.ContactMethods;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -153,20 +150,7 @@ public class AccountSetupBasics extends K9Activity
         String name = null;
         try
         {
-            String projection[] =
-            {
-                ContactMethods.NAME
-            };
-            Cursor c = getContentResolver().query(
-                           // TODO: For Android 2.0, needs to change to ContactsContract.People...
-                           Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"), projection, null, null,
-                           null);
-            if (c.getCount() > 0)
-            {
-                c.moveToFirst();
-                name = c.getString(0);
-                c.close();
-            }
+            name = Contacts.getInstance(this).getOwnerName();
         }
         catch (Exception e)
         {

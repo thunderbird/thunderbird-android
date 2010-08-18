@@ -1587,7 +1587,7 @@ public class MessageList
             case R.id.same_sender:
             {
                 MessageList.actionHandle(MessageList.this,
-                                         "From "+holder.sender, holder.sender, true,
+                                         "From "+holder.sender, holder.senderAddress, true,
                                          null, null);
                 break;
             }
@@ -2480,6 +2480,7 @@ public class MessageList
         public Date compareDate;
         public String compareSubject;
         public String sender;
+        public String senderAddress;
         public String compareCounterparty;
         public String preview;
         public String[] recipients;
@@ -2556,6 +2557,17 @@ public class MessageList
                     this.sender = Address.toFriendly(addrs);
                     this.compareCounterparty = this.sender;
                 }
+
+                if (addrs.length > 0)
+                {
+                    this.senderAddress = addrs[0].getAddress();
+                }
+                else
+                {
+                    // a reasonable fallback "whomever we were corresponding with
+                    this.senderAddress = this.compareCounterparty;
+                }
+
 
                 this.subject = message.getSubject();
 
