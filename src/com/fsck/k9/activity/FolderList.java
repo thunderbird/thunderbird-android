@@ -20,6 +20,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import com.fsck.k9.*;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
@@ -69,6 +70,7 @@ public class FolderList extends K9ListActivity
     private int mUnreadMessageCount;
 
     private FontSizes mFontSizes = K9.getFontSizes();
+    private Context context;
 
     class FolderListHandler extends Handler
     {
@@ -293,6 +295,8 @@ public class FolderList extends K9ListActivity
         mInflater = getLayoutInflater();
 
         onNewIntent(getIntent());
+
+        context = this;
     }
 
     @Override
@@ -776,16 +780,6 @@ public class FolderList extends K9ListActivity
         menu.setHeaderTitle(folder.displayName);
     }
 
-    private String truncateStatus(String mess)
-    {
-        if (mess != null && mess.length() > 27)
-        {
-            mess = mess.substring(0, 27);
-        }
-
-        return mess;
-    }
-
     class FolderListAdapter extends BaseAdapter
     {
         private ArrayList<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
@@ -932,11 +926,11 @@ public class FolderList extends K9ListActivity
 
                     if (holder == null)
                     {
-                        holder = new FolderInfoHolder(folder, unreadMessageCount);
+                        holder = new FolderInfoHolder(context, folder, mAccount, unreadMessageCount);
                     }
                     else
                     {
-                        holder.populate(folder, unreadMessageCount);
+                        holder.populate(context, folder, mAccount, unreadMessageCount);
 
                     }
                     if (folder.isInTopGroup())
@@ -1039,7 +1033,7 @@ public class FolderList extends K9ListActivity
                             FolderInfoHolder folderHolder = getFolder(folderName);
                             if (folderHolder != null)
                             {
-                                folderHolder.populate(localFolder, unreadMessageCount);
+                                folderHolder.populate(context, localFolder, mAccount, unreadMessageCount);
                                 mHandler.dataChanged();
                             }
                         }
@@ -1383,147 +1377,6 @@ public class FolderList extends K9ListActivity
             return true;
         }
 
-    }
-
-    public class FolderInfoHolder implements Comparable<FolderInfoHolder>
-    {
-        public String name;
-
-        public String displayName;
-
-        public long lastChecked;
-
-        public int unreadMessageCount;
-
-        public int flaggedMessageCount;
-
-        public boolean loading;
-
-        public String status;
-
-        public boolean pushActive;
-
-        public boolean lastCheckFailed;
-
-        /**
-         * Outbox is handled differently from any other folder.
-         */
-        public boolean outbox;
-
-
-        @Override
-        public boolean equals(Object o)
-        {
-            return this.name.equals(((FolderInfoHolder)o).name);
-        }
-
-        @Override
-        public int hashCode()
-        {
-            return name.hashCode();
-        }
-
-        public int compareTo(FolderInfoHolder o)
-        {
-            String s1 = this.name;
-            String s2 = o.name;
-
-            int ret = s1.compareToIgnoreCase(s2);
-            if (ret != 0)
-            {
-                return ret;
-            }
-            else
-            {
-                return s1.compareTo(s2);
-            }
-
-        }
-
-        // constructor for an empty object for comparisons
-        public FolderInfoHolder()
-        {
-        }
-
-        public FolderInfoHolder(Folder folder, int unreadCount)
-        {
-            populate(folder, unreadCount);
-        }
-        public void populate(Folder folder, int unreadCount)
-        {
-
-            try
-            {
-                folder.open(Folder.OpenMode.READ_WRITE);
-                //  unreadCount = folder.getUnreadMessageCount();
-            }
-            catch (MessagingException me)
-            {
-                Log.e(K9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
-            }
-
-            this.name = folder.getName();
-
-            if (this.name.equalsIgnoreCase(K9.INBOX))
-            {
-                this.displayName = getString(R.string.special_mailbox_name_inbox);
-            }
-            else
-            {
-                this.displayName = folder.getName();
-            }
-
-            if (this.name.equals(mAccount.getOutboxFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_outbox_fmt), this.name);
-                this.outbox = true;
-            }
-
-            if (this.name.equals(mAccount.getDraftsFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_drafts_fmt), this.name);
-            }
-
-            if (this.name.equals(mAccount.getTrashFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_trash_fmt), this.name);
-            }
-
-            if (this.name.equals(mAccount.getSentFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_sent_fmt), this.name);
-            }
-
-            if (this.name.equals(mAccount.getArchiveFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_archive_fmt), this.name);
-            }
-
-            if (this.name.equals(mAccount.getSpamFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_spam_fmt), this.name);
-            }
-
-            this.lastChecked = folder.getLastUpdate();
-
-            String mess = truncateStatus(folder.getStatus());
-
-            this.status = mess;
-
-            this.unreadMessageCount = unreadCount;
-
-            try
-            {
-                this.flaggedMessageCount = folder.getFlaggedMessageCount();
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to get flaggedMessageCount", e);
-            }
-
-            folder.close();
-
-        }
     }
 
     class FolderViewHolder

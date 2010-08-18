@@ -20,6 +20,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.provider.MessageProvider;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 
@@ -252,6 +253,7 @@ public class K9 extends Application
         {
             public static final String ACTION_EMAIL_RECEIVED    = "com.fsck.k9.intent.action.EMAIL_RECEIVED";
             public static final String ACTION_EMAIL_DELETED     = "com.fsck.k9.intent.action.EMAIL_DELETED";
+            public static final String ACTION_REFRESH_OBSERVER  = "com.fsck.k9.intent.action.REFRESH_OBSERVER";
             public static final String EXTRA_ACCOUNT            = "com.fsck.k9.intent.extra.ACCOUNT";
             public static final String EXTRA_FOLDER             = "com.fsck.k9.intent.extra.FOLDER";
             public static final String EXTRA_SENT_DATE          = "com.fsck.k9.intent.extra.SENT_DATE";
@@ -393,6 +395,8 @@ public class K9 extends Application
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
+        MessageProvider mp = new MessageProvider();
+        mp.setApplication(this);
 
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)

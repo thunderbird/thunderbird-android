@@ -37,6 +37,18 @@
                  android:label="@string/remote_control_label"
                  android:description="@string/remote_control_desc"/>
     <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
+    <permission android:name="com.fsck.k9.permission.READ_MESSAGES"
+                android:permissionGroup="android.permission-group.MESSAGES"
+                android:protectionLevel="normal"
+                android:label="@string/read_messages_label"
+                android:description="@string/read_messages_desc"/>
+    <uses-permission android:name="com.fsck.k9.permission.READ_MESSAGES"/>
+    <permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"
+                android:permissionGroup="android.permission-group.MESSAGES"
+                android:protectionLevel="normal"
+                android:label="@string/delete_messages_label"
+                android:description="@string/read_messages_desc"/>
+    <uses-permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"/>
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -328,6 +340,14 @@
             android:multiprocess="true"
             android:grantUriPermissions="true"
             android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"
+            />
+        <provider
+            android:name="com.fsck.k9.provider.MessageProvider"
+            android:authorities="com.fsck.k9.messageprovider"
+            android:multiprocess="true"
+            android:grantUriPermissions="true"
+            android:readPermission="com.fsck.k9.permission.READ_MESSAGES"
+            android:writePermission="com.fsck.k9.permission.DELETE_MESSAGES"
             />
     </application>
 </manifest>

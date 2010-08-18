@@ -44,6 +44,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.text.format.DateFormat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
@@ -68,7 +69,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-
+import com.fsck.k9.activity.MessageInfoHolder;
+import com.fsck.k9.activity.FolderInfoHolder;
 
 /**
  * MessageList is the primary user interface for the program. This Activity
@@ -158,6 +160,8 @@ public class MessageList
 
     private Bundle mState = null;
     private MessageInfoHolder mSelectedMessage = null;
+
+    private Context context = null;
 
     class MessageListHandler
     {
@@ -437,6 +441,7 @@ public class MessageList
         mInflater = getLayoutInflater();
         initializeLayout();
         onNewIntent(getIntent());
+        context=this;
     }
 
     @Override
@@ -2029,7 +2034,7 @@ public class MessageList
                 {
                     if (updateForMe(account, folder))
                     {
-                        m = new MessageInfoHolder(message);
+                        m = new MessageInfoHolder(context, message);
                         messagesToAdd.add(m);
                     }
                     else
@@ -2042,7 +2047,7 @@ public class MessageList
                             }
                             else
                             {
-                                m = new MessageInfoHolder(message);
+                                m = new MessageInfoHolder(context, message);
                                 messagesToAdd.add(m);
                             }
                         }
@@ -2050,7 +2055,7 @@ public class MessageList
                 }
                 else
                 {
-                    m.populate(message, new FolderInfoHolder(message.getFolder(), account), account);
+                    m.populate(context, message, new FolderInfoHolder(context, message.getFolder(), account), account);
                     needsSort = true;
                 }
             }
@@ -2121,7 +2126,7 @@ public class MessageList
             {
                 LocalStore localStore = account.getLocalStore();
                 local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder((Folder)local_folder, account);
+                return new FolderInfoHolder(context, (Folder)local_folder, account);
             }
             catch (Exception e)
             {
@@ -2473,213 +2478,6 @@ public class MessageList
         }
     }
 
-    public class MessageInfoHolder implements Comparable<MessageInfoHolder>
-    {
-        public String subject;
-        public String date;
-        public Date compareDate;
-        public String compareSubject;
-        public String sender;
-        public String senderAddress;
-        public String compareCounterparty;
-        public String preview;
-        public String[] recipients;
-        public boolean hasAttachments;
-        public String uid;
-        public boolean read;
-        public boolean answered;
-        public boolean flagged;
-        public boolean downloaded;
-        public boolean partially_downloaded;
-        public Message message;
-        public FolderInfoHolder folder;
-        public boolean selected;
-
-        // Empty constructor for comparison
-        public MessageInfoHolder()
-        {
-            this.selected = false;
-        }
-
-        public MessageInfoHolder(Message m)
-        {
-            this();
-            Account account = m.getFolder().getAccount();
-            populate(m, new FolderInfoHolder(m.getFolder(), m.getFolder().getAccount()), account);
-        }
-
-        public MessageInfoHolder(Message m, FolderInfoHolder folder, Account account)
-        {
-            this();
-            populate(m, folder, account);
-        }
-
-        public void populate(Message m, FolderInfoHolder folder, Account account)
-        {
-            try
-            {
-                LocalMessage message = (LocalMessage) m;
-                Date date = message.getSentDate();
-                this.compareDate = message.getSentDate();
-                if (this.compareDate == null)
-                {
-                    this.compareDate = message.getInternalDate();
-                }
-
-                this.folder = folder;
-
-                if (Utility.isDateToday(date))
-                {
-                    this.date = getTimeFormat().format(date);
-                }
-                else
-                {
-                    this.date = getDateFormat().format(date);
-                }
-
-                this.hasAttachments = message.getAttachmentCount() > 0;
-
-                this.read = message.isSet(Flag.SEEN);
-                this.answered = message.isSet(Flag.ANSWERED);
-                this.flagged = message.isSet(Flag.FLAGGED);
-                this.downloaded = message.isSet(Flag.X_DOWNLOADED_FULL);
-                this.partially_downloaded = message.isSet(Flag.X_DOWNLOADED_PARTIAL);
-
-                Address[] addrs = message.getFrom();
-
-                if (addrs.length > 0 &&  account.isAnIdentity(addrs[0]))
-                {
-                    this.compareCounterparty = Address.toFriendly(message .getRecipients(RecipientType.TO));
-                    this.sender = String.format(getString(R.string.message_list_to_fmt), this.compareCounterparty);
-                }
-                else
-                {
-                    this.sender = Address.toFriendly(addrs);
-                    this.compareCounterparty = this.sender;
-                }
-
-                if (addrs.length > 0)
-                {
-                    this.senderAddress = addrs[0].getAddress();
-                }
-                else
-                {
-                    // a reasonable fallback "whomever we were corresponding with
-                    this.senderAddress = this.compareCounterparty;
-                }
-
-
-                this.subject = message.getSubject();
-
-                this.uid = message.getUid();
-                this.message = m;
-                this.preview = message.getPreview();
-            }
-            catch (MessagingException me)
-            {
-                if (Config.LOGV)
-                {
-                    Log.v(K9.LOG_TAG, "Unable to load message info", me);
-                }
-            }
-        }
-
-        @Override
-        public boolean equals(Object o)
-        {
-            if (o instanceof MessageInfoHolder == false)
-            {
-                return false;
-            }
-            MessageInfoHolder other = (MessageInfoHolder)o;
-            return message.equals(other.message);
-        }
-
-        @Override
-        public int hashCode()
-        {
-            return uid.hashCode();
-        }
-
-        @Override
-        public int compareTo(MessageInfoHolder o)
-        {
-            int ascender = (sortAscending ? 1 : -1);
-            int comparison = 0;
-
-            if (sortType == SORT_TYPE.SORT_SUBJECT)
-            {
-                if (compareSubject == null)
-                {
-                    compareSubject = stripPrefixes(subject).toLowerCase();
-                }
-
-                if (o.compareSubject == null)
-                {
-                    o.compareSubject = stripPrefixes(o.subject).toLowerCase();
-                }
-
-                comparison = this.compareSubject.compareTo(o.compareSubject);
-            }
-            else if (sortType == SORT_TYPE.SORT_SENDER)
-            {
-                comparison = this.compareCounterparty.toLowerCase().compareTo(o.compareCounterparty.toLowerCase());
-            }
-            else if (sortType == SORT_TYPE.SORT_FLAGGED)
-            {
-                comparison = (this.flagged ? 0 : 1) - (o.flagged ? 0 : 1);
-            }
-            else if (sortType == SORT_TYPE.SORT_UNREAD)
-            {
-                comparison = (this.read ? 1 : 0) - (o.read ? 1 : 0);
-            }
-            else if (sortType == SORT_TYPE.SORT_ATTACHMENT)
-            {
-                comparison = (this.hasAttachments ? 0 : 1) - (o.hasAttachments ? 0 : 1);
-            }
-
-            if (comparison != 0)
-            {
-                return comparison * ascender;
-            }
-
-            int dateAscender = (sortDateAscending ? 1 : -1);
-
-            return this.compareDate.compareTo(o.compareDate) * dateAscender;
-        }
-
-        Pattern pattern = null;
-        String patternString = "^ *(re|aw|fw|fwd): *";
-        private String stripPrefixes(String in)
-        {
-            synchronized (patternString)
-            {
-                if (pattern == null)
-                {
-                    pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
-                }
-            }
-
-            Matcher matcher = pattern.matcher(in);
-
-            int lastPrefix = -1;
-
-            while (matcher.find())
-            {
-                lastPrefix = matcher.end();
-            }
-
-            if (lastPrefix > -1 && lastPrefix < in.length() - 1)
-            {
-                return in.substring(lastPrefix);
-            }
-            else
-            {
-                return in;
-            }
-        }
-    }
-
     class MessageViewHolder
             implements OnCheckedChangeListener
     {
@@ -2791,70 +2589,6 @@ public class MessageList
         public TextView main;
     }
 
-    public class FolderInfoHolder
-    {
-        public String name;
-        public String displayName;
-        public boolean loading;
-        public boolean lastCheckFailed;
-        public Folder folder;
-
-        /**
-         * Outbox is handled differently from any other folder.
-         */
-        public boolean outbox;
-
-        public FolderInfoHolder(Folder folder, Account account)
-        {
-            populate(folder, account);
-        }
-
-        public void populate(Folder folder, Account account)
-        {
-            this.folder = folder;
-            this.name = folder.getName();
-
-            if (this.name.equalsIgnoreCase(K9.INBOX))
-            {
-                this.displayName = getString(R.string.special_mailbox_name_inbox);
-            }
-            else
-            {
-                this.displayName = this.name;
-            }
-
-            if (this.name.equals(account.getOutboxFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_outbox_fmt), this.name);
-                this.outbox = true;
-            }
-
-            if (this.name.equals(account.getDraftsFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_drafts_fmt), this.name);
-            }
-
-            if (this.name.equals(account.getTrashFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_trash_fmt), this.name);
-            }
-
-            if (this.name.equals(account.getSentFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_sent_fmt), this.name);
-            }
-
-            if (this.name.equals(account.getArchiveFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_archive_fmt), this.name);
-            }
-
-            if (this.name.equals(account.getSpamFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_spam_fmt), this.name);
-            }
-        }
-    }
 
     private boolean computeBatchDirection(boolean flagged)
     {
