@@ -292,6 +292,17 @@
                 <action android:name="com.fsck.k9.service.CoreReceiver.wakeLockRelease"/>
             </intent-filter>
         </receiver>
+        <!-- TODO
+        <receiver android:name="com.fsck.k9.service.SDCardReceiver"
+              android:enabled="true"
+              >
+              <intent-filter>
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/> restart accounts that use SD-storage
+                <action android:name="android.intent.action.MEDIA_EJECT"/> close databases on SD-storage and stop their accounts
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED"/> stop accounts that use SD-storage
+            </intent-filter>
+        </receiver>
+         -->
         <service
             android:name="com.fsck.k9.service.MailService"
             android:enabled="true"
