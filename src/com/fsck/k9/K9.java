@@ -395,7 +395,7 @@ public class K9 extends Application
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
-        MessageProvider mp = new MessageProvider();
+        MessageProvider mp = new MessageProvider(); //TODO: is this correct? MessageProvider is a ContentProvider and not a POJO  
         mp.setApplication(this);
 
         /*

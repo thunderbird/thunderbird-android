@@ -134,6 +134,9 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder>
 
     public FolderInfoHolder(Context context, Folder folder, Account account)
     {
+    	if (context == null) {
+    		throw new IllegalArgumentException("null context given");
+    	}
         populate(context, folder, account);
     }
 

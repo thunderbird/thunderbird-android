@@ -437,11 +437,11 @@ public class MessageList
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        context=this;
         super.onCreate(savedInstanceState);
         mInflater = getLayoutInflater();
         initializeLayout();
         onNewIntent(getIntent());
-        context=this;
     }
 
     @Override
