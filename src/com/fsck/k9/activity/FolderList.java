@@ -1614,19 +1614,19 @@ public class FolderList extends K9ListActivity
 
         SearchSpecification searchSpec = new SearchSpecification()
         {
-          //interface has no override            @Override
+            //interface has no override            @Override
             public String[] getAccountUuids()
             {
                 return new String[] { account.getUuid() };
             }
 
-          //interface has no override            @Override
+            //interface has no override            @Override
             public Flag[] getForbiddenFlags()
             {
                 return UNREAD_FLAG_ARRAY;
             }
 
-          //interface has no override            @Override
+            //interface has no override            @Override
             public String getQuery()
             {
                 return "";

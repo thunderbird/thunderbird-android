@@ -224,10 +224,12 @@ public class ChooseFolder extends K9ListActivity
         }
     }
 
-    private void setDisplayMode(FolderMode aMode) {
+    private void setDisplayMode(FolderMode aMode)
+    {
         mMode = aMode;
         // invalidate the current filter as it is working on an inval
-        if (myFilter != null) {
+        if (myFilter != null)
+        {
             myFilter.invalidate();
         }
         //re-populate the list

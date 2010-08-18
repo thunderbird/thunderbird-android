@@ -24,8 +24,10 @@ import android.text.Html;
 import android.text.Spanned;
 import android.widget.ArrayAdapter;
 
-public class AccessibleEmailContentActivity extends ListActivity {
-    String[] listItems = {
+public class AccessibleEmailContentActivity extends ListActivity
+{
+    String[] listItems =
+    {
         ""
     };
 
@@ -35,7 +37,8 @@ public class AccessibleEmailContentActivity extends ListActivity {
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         htmlSource = getIntent().getStringExtra("content");
@@ -43,8 +46,10 @@ public class AccessibleEmailContentActivity extends ListActivity {
         String[] rawListItems = parsedHtml.toString().split("\n");
 
         cleanedList = new ArrayList<String>();
-        for (int i = 0; i < rawListItems.length; i++) {
-            if (rawListItems[i].trim().length() > 0) {
+        for (int i = 0; i < rawListItems.length; i++)
+        {
+            if (rawListItems[i].trim().length() > 0)
+            {
                 addToCleanedList(rawListItems[i]);
             }
         }
@@ -55,21 +60,30 @@ public class AccessibleEmailContentActivity extends ListActivity {
         setListAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems));
     }
 
-    private void addToCleanedList(String line) {
-        if (line.length() < 80) {
+    private void addToCleanedList(String line)
+    {
+        if (line.length() < 80)
+        {
             cleanedList.add(line);
-        } else {
-            while (line.length() > 80) {
+        }
+        else
+        {
+            while (line.length() > 80)
+            {
                 int cutPoint = line.indexOf(" ", 80);
-                if ((cutPoint > 0) && (cutPoint < line.length())) {
+                if ((cutPoint > 0) && (cutPoint < line.length()))
+                {
                     cleanedList.add(line.substring(0, cutPoint));
                     line = line.substring(cutPoint).trim();
-                } else {
+                }
+                else
+                {
                     cleanedList.add(line);
                     line = "";
                 }
             }
-            if (line.length() > 0) {
+            if (line.length() > 0)
+            {
                 cleanedList.add(line);
             }
         }

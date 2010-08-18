@@ -26,84 +26,101 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-public class AccessibleWebView extends TextView {
+public class AccessibleWebView extends TextView
+{
     private Activity parent;
 
     private String htmlSource;
 
     private WebView dummyWebView;
 
-    public AccessibleWebView(Context context) {
+    public AccessibleWebView(Context context)
+    {
         super(context);
         parent = (Activity) context;
         dummyWebView = new WebView(context);
         setFocusable(true);
         setFocusableInTouchMode(true);
-        setOnClickListener(new OnClickListener() {
+        setOnClickListener(new OnClickListener()
+        {
             @Override
-            public void onClick(View arg0) {
+            public void onClick(View arg0)
+            {
                 diveIn();
             }
         });
     }
 
-    public AccessibleWebView(Context context, AttributeSet attributes) {
+    public AccessibleWebView(Context context, AttributeSet attributes)
+    {
         super(context, attributes);
         parent = (Activity) context;
         dummyWebView = new WebView(context);
         setFocusable(true);
         setFocusableInTouchMode(true);
-        setOnClickListener(new OnClickListener() {
+        setOnClickListener(new OnClickListener()
+        {
             @Override
-            public void onClick(View arg0) {
+            public void onClick(View arg0)
+            {
                 diveIn();
             }
         });
 
     }
 
-    public void loadData(String data, String mimeType, String encoding) {
+    public void loadData(String data, String mimeType, String encoding)
+    {
         htmlSource = data;
         this.setText(Html.fromHtml(htmlSource, null, null));
     }
 
-    public WebSettings getSettings() {
+    public WebSettings getSettings()
+    {
         return dummyWebView.getSettings();
     }
 
-    public void setVerticalScrollbarOverlay(boolean booleanValue) {
+    public void setVerticalScrollbarOverlay(boolean booleanValue)
+    {
         // Do nothing here; dummy stub method to maintain compatibility with
         // standard WebView.
     }
 
     public void loadDataWithBaseURL(String baseUrl, String data, String mimeType, String encoding,
-            String historyUrl) {
+                                    String historyUrl)
+    {
         htmlSource = data;
         this.setText(Html.fromHtml(htmlSource, null, null));
     }
 
-    public void loadUrl(String url) {
+    public void loadUrl(String url)
+    {
         // Do nothing here; dummy stub method to maintain compatibility with
         // standard WebView.
     }
 
-    public boolean zoomIn() {
-        if (getTextSize() < 100) {
+    public boolean zoomIn()
+    {
+        if (getTextSize() < 100)
+        {
             setTextSize(getTextSize() + 5);
             return true;
         }
         return false;
     }
 
-    public boolean zoomOut() {
-        if (getTextSize() > 5) {
+    public boolean zoomOut()
+    {
+        if (getTextSize() > 5)
+        {
             setTextSize(getTextSize() - 5);
             return true;
         }
         return false;
     }
 
-    private void diveIn() {
+    private void diveIn()
+    {
         Intent i = new Intent();
         i.setClass(parent, AccessibleEmailContentActivity.class);
         i.putExtra("content", htmlSource);

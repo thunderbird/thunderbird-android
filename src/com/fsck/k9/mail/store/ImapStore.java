@@ -1212,14 +1212,14 @@ public class ImapStore extends Store
                 try
                 {
                     mConnection.sendCommand(String.format("UID FETCH %s (%s)",
-                                                      Utility.combine(uidWindow.toArray(new String[uidWindow.size()]), ','),
+                                                          Utility.combine(uidWindow.toArray(new String[uidWindow.size()]), ','),
                                                           Utility.combine(fetchFields.toArray(new String[fetchFields.size()]), ' ')
                                                          ), false);
                     ImapResponse response;
                     int messageNumber = 0;
 
                     ImapResponseParser.IImapResponseCallback callback = null;
-                    if (fp.contains(FetchProfile.Item.BODY) || fp.contains(FetchProfile.Item.BODY_SANE) )
+                    if (fp.contains(FetchProfile.Item.BODY) || fp.contains(FetchProfile.Item.BODY_SANE))
                     {
                         callback = new FetchBodyCallback(messageMap);
                     }

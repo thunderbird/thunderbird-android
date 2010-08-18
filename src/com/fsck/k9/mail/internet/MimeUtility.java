@@ -597,10 +597,10 @@ public class MimeUtility
     private static String fixupCharset(String charset)
     {
         charset = charset.toLowerCase();
-            if (charset.equals("cp932"))
-                return "shift-jis";
-            else if (charset.equals("koi8-u"))
-                return "koi8-r";
+        if (charset.equals("cp932"))
+            return "shift-jis";
+        else if (charset.equals("koi8-u"))
+            return "koi8-r";
 
         return charset;
 

@@ -2322,7 +2322,7 @@ public class MessageList
 
         /**
          * Associate model data to view object.
-         * 
+         *
          * @param position
          *            The position of the item within the adapter's data set of
          *            the item whose view we want.
@@ -2335,7 +2335,7 @@ public class MessageList
          *            Never <code>null</code>.
          */
         private void bindView(final int position, final View view, final MessageViewHolder holder,
-                final MessageInfoHolder message)
+                              final MessageInfoHolder message)
         {
             holder.subject.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
 

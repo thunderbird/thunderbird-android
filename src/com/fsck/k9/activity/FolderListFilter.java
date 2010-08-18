@@ -136,7 +136,8 @@ public class FolderListFilter<T> extends Filter
         mFolders.notifyDataSetChanged();
     }
 
-    public void invalidate() {
+    public void invalidate()
+    {
         mOriginalValues = null;
     }
 }

@@ -313,7 +313,7 @@ public class Account implements BaseAccount
         try
         {
             mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
-                                          ShowPictures.NEVER.name()));
+                                                 ShowPictures.NEVER.name()));
         }
         catch (Exception e)
         {

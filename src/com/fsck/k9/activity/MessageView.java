@@ -1964,7 +1964,7 @@ public class MessageView extends K9Activity implements OnClickListener
         // Inline parts with a content-id are almost certainly components of an HTML message
         // not attachments. Don't show attachment download buttons for them.
 
-        if ( contentDisposition != null &&
+        if (contentDisposition != null &&
                 MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)")
                 && part.getHeader("Content-ID") != null)
         {
@@ -2224,7 +2224,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                                 ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
-                                mContacts.isInContacts(message.getFrom()[0].getAddress())))
+                                 mContacts.isInContacts(message.getFrom()[0].getAddress())))
                         {
                             onShowPictures();
                         }
@@ -2552,7 +2552,9 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             mCryptoSignatureLayout.setVisibility(View.VISIBLE);
             mDecryptLayout.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else
+        {
             mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
         }
 
