@@ -16,9 +16,12 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -77,6 +80,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
+import com.fsck.k9.web.AccessibleWebView;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
@@ -106,6 +110,11 @@ public class MessageView extends K9Activity implements OnClickListener
     private TextView mCryptoSignatureUserId = null;
     private TextView mCryptoSignatureUserIdRest = null;
     private WebView mMessageContentView;
+
+    private boolean mScreenReaderEnabled;
+
+    private AccessibleWebView mAccessibleMessageContentView;
+
     private LinearLayout mHeaderContainer;
     private LinearLayout mAttachments;
     private LinearLayout mToContainerView;
@@ -286,7 +295,14 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         public void run()
                         {
-                            mMessageContentView.zoomIn();
+                            if (mScreenReaderEnabled)
+                            {
+                                mAccessibleMessageContentView.zoomIn();
+                            }
+                            else
+                            {
+                                mMessageContentView.zoomIn();
+                            }
                         }
                     });
                 }
@@ -296,7 +312,14 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         public void run()
                         {
-                            mMessageContentView.zoomOut();
+                            if (mScreenReaderEnabled)
+                            {
+                                mAccessibleMessageContentView.zoomIn();
+                            }
+                            else
+                            {
+                                mMessageContentView.zoomOut();
+                            }
                         }
                     });
                 }
@@ -749,6 +772,20 @@ public class MessageView extends K9Activity implements OnClickListener
         mTimeView = (TextView)findViewById(R.id.time);
         mTopView = mToggleScrollView = (ToggleScrollView)findViewById(R.id.top_view);
         mMessageContentView = (WebView)findViewById(R.id.message_content);
+        mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
+
+        mScreenReaderEnabled = isScreenReaderActive();
+
+        if (mScreenReaderEnabled)
+        {
+            mAccessibleMessageContentView.setVisibility(View.VISIBLE);
+            mMessageContentView.setVisibility(View.GONE);
+        }
+        else
+        {
+            mAccessibleMessageContentView.setVisibility(View.GONE);
+            mMessageContentView.setVisibility(View.VISIBLE);
+        }
 
         mDecryptLayout = (View)findViewById(R.id.layout_decrypt);
         mDecryptButton = (Button)findViewById(R.id.btn_decrypt);
@@ -1000,6 +1037,43 @@ public class MessageView extends K9Activity implements OnClickListener
         }
 
         displayMessage(mMessageReference);
+    }
+
+    private boolean isScreenReaderActive()
+    {
+        final String SCREENREADER_INTENT_ACTION = "android.accessibilityservice.AccessibilityService";
+        final String SCREENREADER_INTENT_CATEGORY = "android.accessibilityservice.category.FEEDBACK_SPOKEN";
+        // Restrict the set of intents to only accessibility services that have
+        // the category FEEDBACK_SPOKEN (aka, screen readers).
+        Intent screenReaderIntent = new Intent(SCREENREADER_INTENT_ACTION);
+        screenReaderIntent.addCategory(SCREENREADER_INTENT_CATEGORY);
+        List<ResolveInfo> screenReaders = getPackageManager().queryIntentServices(
+                                              screenReaderIntent, 0);
+        ContentResolver cr = getContentResolver();
+        Cursor cursor = null;
+        int status = 0;
+        for (ResolveInfo screenReader : screenReaders)
+        {
+            // All screen readers are expected to implement a content provider
+            // that responds to
+            // content://<nameofpackage>.providers.StatusProvider
+            cursor = cr.query(Uri.parse("content://" + screenReader.serviceInfo.packageName
+                                        + ".providers.StatusProvider"), null, null, null, null);
+            if (cursor != null)
+            {
+                cursor.moveToFirst();
+                // These content providers use a special cursor that only has
+                // one element,
+                // an integer that is 1 if the screen reader is running.
+                status = cursor.getInt(0);
+                cursor.close();
+                if (status == 1)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -2127,9 +2201,18 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         public void run()
                         {
-                            mMessageContentView.loadDataWithBaseURL("http://", emailText, mimeType, "utf-8", null);
                             mTopView.scrollTo(0, 0);
-                            mMessageContentView.scrollTo(0, 0);
+                            if (mScreenReaderEnabled)
+                            {
+                                mAccessibleMessageContentView.loadDataWithBaseURL("http://",
+                                        emailText, "text/html", "utf-8", null);
+                            }
+                            else
+                            {
+                                mMessageContentView.loadDataWithBaseURL("http://", emailText,
+                                                                        "text/html", "utf-8", null);
+                                mMessageContentView.scrollTo(0, 0);
+                            }
                             updateDecryptLayout();
                         }
                     });
