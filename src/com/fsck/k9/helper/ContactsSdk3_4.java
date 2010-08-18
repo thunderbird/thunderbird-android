@@ -31,11 +31,12 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
      * {@link com.fsck.k9.EmailAddressAdapter} or more specificly by
      * {@link android.widget.ResourceCursorAdapter}.
      */
-    private static final String PROJECTION[] = {
-            Contacts.People.ContactMethods._ID,
-            Contacts.People.ContactMethods.NAME,
-            Contacts.People.ContactMethods.DATA
-        };
+    private static final String PROJECTION[] =
+    {
+        Contacts.People.ContactMethods._ID,
+        Contacts.People.ContactMethods.NAME,
+        Contacts.People.ContactMethods.DATA
+    };
 
     /**
      * Index of the name field in the projection. This must match the order in
@@ -65,7 +66,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
 
         // Pass along full E-mail string for possible create dialog
         contactIntent.putExtra(Contacts.Intents.EXTRA_CREATE_DESCRIPTION,
-                email.toString());
+                               email.toString());
 
         // Only provide personal name hint if we have one
         final String senderPersonal = email.getPersonal();
@@ -82,11 +83,11 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     {
         String name = null;
         final Cursor c = mContentResolver.query(
-                       Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"),
-                       PROJECTION,
-                       null,
-                       null,
-                       null);
+                             Uri.withAppendedPath(Contacts.People.CONTENT_URI, "owner"),
+                             PROJECTION,
+                             null,
+                             null,
+                             null);
 
         if (c != null)
         {
@@ -110,15 +111,15 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
         final String[] args = new String[] {emailAddress};
 
         final Cursor c = mContentResolver.query(
-                Contacts.ContactMethods.CONTENT_EMAIL_URI,
-                PROJECTION,
-                where,
-                args,
-                null);
+                             Contacts.ContactMethods.CONTENT_EMAIL_URI,
+                             PROJECTION,
+                             where,
+                             args,
+                             null);
 
         if (c != null)
         {
-            if  (c.getCount() > 0)
+            if (c.getCount() > 0)
             {
                 result = true;
             }
@@ -141,20 +142,20 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
         else
         {
             where = "(" +
-                Contacts.People.NAME + " LIKE ?" +
-                ") OR (" +
-                Contacts.ContactMethods.DATA + " LIKE ?" +
-                ")";
+                    Contacts.People.NAME + " LIKE ?" +
+                    ") OR (" +
+                    Contacts.ContactMethods.DATA + " LIKE ?" +
+                    ")";
             final String filter = constraint.toString() + "%";
             args = new String[] {filter, filter};
         }
 
         final Cursor c = mContentResolver.query(
-                Contacts.ContactMethods.CONTENT_EMAIL_URI,
-                PROJECTION,
-                where,
-                args,
-                SORT_ORDER);
+                             Contacts.ContactMethods.CONTENT_EMAIL_URI,
+                             PROJECTION,
+                             where,
+                             args,
+                             SORT_ORDER);
 
         if (c != null)
         {

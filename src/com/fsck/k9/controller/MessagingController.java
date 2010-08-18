@@ -398,7 +398,7 @@ public class MessagingController implements Runnable
      */
     public void listFolders(final Account account, final boolean refreshRemote, final MessagingListener listener)
     {
-        new Thread (new Runnable()
+        new Thread(new Runnable()
         {
             public void run()
             {

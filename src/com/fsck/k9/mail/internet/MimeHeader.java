@@ -163,5 +163,12 @@ public class MimeHeader
             this.name = name;
             this.value = value;
         }
+
+        public String toString()
+        {
+          StringBuilder sb = new StringBuilder("(");
+           sb.append(name).append('=').append(value).append(')');
+           return sb.toString();
+    	}
     }
 }

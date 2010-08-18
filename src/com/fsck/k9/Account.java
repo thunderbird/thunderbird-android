@@ -171,12 +171,9 @@ public class Account implements BaseAccount
 
     protected Account(Context context)
     {
-        // TODO Change local store path to something readable / recognizable
         mUuid = UUID.randomUUID().toString();
-
-        String path =  SDCARD_LOCALSTORE_PREFIX + mUuid + ".db";
-        mLocalStoreUri = "local://localhost/" + context.getDatabasePath(path);
-
+        String path = SDCARD_LOCALSTORE_PREFIX + mUuid + ".db";
+        mLocalStoreUri = "local://localhost//sdcard/k9/" + mUuid + ".db";
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
         mSaveAllHeaders = false;
@@ -343,7 +340,7 @@ public class Account implements BaseAccount
         try
         {
             mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
-                                          ShowPictures.NEVER.name()));
+                                                 ShowPictures.NEVER.name()));
         }
         catch (Exception e)
         {

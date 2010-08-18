@@ -10,6 +10,10 @@
 
     <string name="read_attachment_label">read Email attachments</string>
     <string name="read_attachment_desc">Allows this application to read your Email attachments.</string>
+    <string name="read_messages_label">read Emails</string>
+    <string name="read_messages_desc">Allows this application to read your Emails.</string>
+    <string name="delete_messages_label">Delete Emails</string>
+    <string name="delete_messages_desc">Allows this application to delete your Emails.</string>
 
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Accounts</string>

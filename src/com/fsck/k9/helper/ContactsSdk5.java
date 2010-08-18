@@ -34,11 +34,12 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
      * {@link com.fsck.k9.EmailAddressAdapter} or more specificly by
      * {@link android.widget.ResourceCursorAdapter}.
      */
-    private static final String PROJECTION[] = {
-            Contacts._ID,
-            Contacts.DISPLAY_NAME,
-            Email.DATA
-        };
+    private static final String PROJECTION[] =
+    {
+        Contacts._ID,
+        Contacts.DISPLAY_NAME,
+        Email.DATA
+    };
 
     /**
      * Index of the name field in the projection. This must match the order in
@@ -68,7 +69,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
 
         // Pass along full E-mail string for possible create dialog
         contactIntent.putExtra(Intents.EXTRA_CREATE_DESCRIPTION,
-                email.toString());
+                               email.toString());
 
         // Only provide personal name hint if we have one
         final String senderPersonal = email.getPersonal();
@@ -110,7 +111,7 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
 
         if (c != null)
         {
-            if  (c.getCount() > 0)
+            if (c.getCount() > 0)
             {
                 result = true;
             }
@@ -126,11 +127,11 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
         final String filter = (constraint == null) ? "" : constraint.toString();
         final Uri uri = Uri.withAppendedPath(Email.CONTENT_FILTER_URI, Uri.encode(filter));
         final Cursor c = mContentResolver.query(
-                uri,
-                PROJECTION,
-                null,
-                null,
-                SORT_ORDER);
+                             uri,
+                             PROJECTION,
+                             null,
+                             null,
+                             SORT_ORDER);
 
         if (c != null)
         {
