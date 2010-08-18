@@ -3235,6 +3235,7 @@ public class MessageList
             final TextView flagCountView = (TextView) view.findViewById(R.id.flagged_message_count);
             final TextView dateView = (TextView) view.findViewById(R.id.date);
             final TextView fromView = (TextView) view.findViewById(R.id.from);
+            final View chipView = view.findViewById(R.id.chip);
 
             final Date date = group.getDate();
             if (date == null)
@@ -3283,6 +3284,8 @@ public class MessageList
                 unreadSenders = new HashSet<String>();
                 senders = new LinkedHashMap<String, String>();
             }
+            boolean first = true;
+            Account account = null;
             for (final MessageInfo<MessageInfoHolder> messageInfo : group.getMessages())
             {
                 final MessageInfoHolder holder = messageInfo.getTag();
@@ -3321,7 +3324,30 @@ public class MessageList
                         Log.w(K9.LOG_TAG, e);
                     }
                 }
+
+                if (first)
+                {
+                    account = holder.message.getFolder().getAccount();
+                }
+                else if (account != null)
+                {
+                    if (!account.equals(holder.message.getFolder().getAccount()))
+                    {
+                        account = null;
+                    }
+                }
+                first = false;
             }
+
+            if (account == null)
+            {
+                chipView.setBackgroundColor(android.R.color.transparent);
+            }
+            else
+            {
+                chipView.setBackgroundColor(account.getChipColor());
+            }
+
             final int count = group.getMessages().size();
             if (unreadCount == 0)
             {
@@ -3329,12 +3355,22 @@ public class MessageList
                 subjectView.setTypeface(null, Typeface.NORMAL);
                 countView.setText(Integer.toString(count));
                 countView.setTypeface(null, Typeface.NORMAL);
+
+                if (account != null)
+                {
+                    chipView.getBackground().setAlpha(127);
+                }
             }
             else
             {
                 // at least 1 unread
 
                 subjectView.setTypeface(null, Typeface.BOLD);
+
+                if (account != null)
+                {
+                    chipView.getBackground().setAlpha(255);
+                }
 
                 if (unreadCount == count)
                 {

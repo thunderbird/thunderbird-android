@@ -8,8 +8,22 @@
     android:paddingRight="1dip"
     android:minHeight="38dip"
     android:paddingTop="2dip"
-    android:paddingLeft="40dip" 
+    android:paddingLeft="0dip" 
     >
+
+    <RelativeLayout
+        android:id="@+id/chip"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:minHeight="38dip"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="2dip"
+        android:background="@android:color/transparent">
+        <View
+            android:layout_width="6dip"
+            android:layout_height="fill_parent" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -17,6 +31,7 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:layout_toLeftOf="@+id/count_wrapper"
+        android:layout_marginLeft="30dip"
         >
         <TextView
             android:id="@+id/subject"
