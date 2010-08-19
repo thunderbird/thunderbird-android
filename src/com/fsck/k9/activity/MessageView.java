@@ -1271,14 +1271,7 @@ public class MessageView extends K9Activity implements OnClickListener
             disableButtons();
             Message messageToDelete = mMessage;
 
-            if (K9.messageViewReturnToList())
-            {
-                finish();
-            }
-            else
-            {
-                showNextMessage();
-            }
+            showNextMessageOrReturn();
 
             MessagingController.getInstance(getApplication()).deleteMessages(
                 new Message[] { messageToDelete },
@@ -1306,7 +1299,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             return;
         }
-        showNextMessage();
+        showNextMessageOrReturn();
         MessagingController.getInstance(getApplication())
         .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
@@ -1331,9 +1324,21 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             return;
         }
-        showNextMessage();
+        showNextMessageOrReturn();
         MessagingController.getInstance(getApplication())
         .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
+    }
+
+    private void showNextMessageOrReturn()
+    {
+        if (K9.messageViewReturnToList())
+        {
+            finish();
+        }
+        else
+        {
+            showNextMessage();
+        }
     }
 
     private void showNextMessage()
@@ -1535,7 +1540,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
                             Message messageToMove = mMessage;
 
-                            showNextMessage();
+                            showNextMessageOrReturn();
 
                             MessagingController.getInstance(getApplication()).moveMessage(mAccount,
                                     srcFolderName, messageToMove, destFolderName, null);
