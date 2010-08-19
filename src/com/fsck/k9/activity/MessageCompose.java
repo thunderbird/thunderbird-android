@@ -76,6 +76,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
 {
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
+    private static final int REPLY_WRAP_LINE_WIDTH = 72;
 
     private static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
     private static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
@@ -1729,15 +1730,13 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     // the replaceAll() invocation.
                     final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
 
-                    if (mSourceMessageBody != null)
-                    {
-                        quotedText += mSourceMessageBody.replaceAll("(?m)^", escapedPrefix);
-                    }
-                    else
-                    {
-                        quotedText += MimeUtility.getTextFromPart(part).replaceAll(
-                                          "(?m)^", escapedPrefix);
-                    }
+                    final String text = (mSourceMessageBody != null) ?
+                            mSourceMessageBody :
+                            MimeUtility.getTextFromPart(part);
+
+                    final String wrappedText = Utility.wrap(text, REPLY_WRAP_LINE_WIDTH - prefix.length());
+
+                    quotedText += wrappedText.replaceAll("(?m)^", escapedPrefix);
 
                     quotedText = quotedText.replaceAll("\\\r", "");
                     mQuotedText.setText(quotedText);
