@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.crypto.Apg;
+import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
@@ -111,6 +112,8 @@ public class Account implements BaseAccount
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
     private boolean mCryptoAutoSignature;
+
+    private CryptoProvider mCryptoProvider = null;
 
     /**
      * Name of the folder that was last selected for a copy or move operation.
@@ -1455,6 +1458,8 @@ public class Account implements BaseAccount
     public void setCryptoApp(String cryptoApp)
     {
         mCryptoApp = cryptoApp;
+        // invalidate the provider
+        mCryptoProvider = null;
     }
 
     public boolean getCryptoAutoSignature()
@@ -1484,5 +1489,12 @@ public class Account implements BaseAccount
     public synchronized void setLastSelectedFolderName(String folderName)
     {
         lastSelectedFolderName = folderName;
+    }
+
+    public synchronized CryptoProvider getCryptoProvider() {
+        if (mCryptoProvider == null) {
+            mCryptoProvider = CryptoProvider.createInstance(getCryptoApp());
+        }
+        return mCryptoProvider;
     }
 }

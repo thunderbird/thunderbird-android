@@ -55,6 +55,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
+import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -103,7 +104,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
         "com.fsck.k9.activity.MessageCompose.identity";
-    private static final String STATE_CRYPTO = "crypto";
+    private static final String STATE_PGP_DATA = "pgpData";
     private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
 
@@ -174,7 +175,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private TextView mCryptoSignatureUserId;
     private TextView mCryptoSignatureUserIdRest;
 
-    private CryptoProvider mCrypto = null;
+    private PgpData mPgpData = null;
 
     private String mReferences;
     private String mInReplyTo;
@@ -676,7 +677,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mEncryptCheckbox = (CheckBox)findViewById(R.id.cb_encrypt);
 
         initializeCrypto();
-        if (mCrypto.isAvailable(this))
+        final CryptoProvider crypto = mAccount.getCryptoProvider();
+        if (crypto.isAvailable(this))
         {
             mEncryptLayout.setVisibility(View.VISIBLE);
             mCryptoSignatureCheckbox.setOnClickListener(new OnClickListener()
@@ -688,7 +690,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     if (checkBox.isChecked())
                     {
                         mPreventDraftSaving = true;
-                        if (!mCrypto.selectSecretKey(MessageCompose.this))
+                        if (!crypto.selectSecretKey(MessageCompose.this, mPgpData))
                         {
                             mPreventDraftSaving = false;
                         }
@@ -696,7 +698,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     }
                     else
                     {
-                        mCrypto.setSignatureKeyId(0);
+                        mPgpData.setSignatureKeyId(0);
                         updateEncryptLayout();
                     }
                 }
@@ -704,16 +706,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
             if (mAccount.getCryptoAutoSignature())
             {
-                long ids[] = mCrypto.getSecretKeyIdsFromEmail(this, mIdentity.getEmail());
+                long ids[] = crypto.getSecretKeyIdsFromEmail(this, mIdentity.getEmail());
                 if (ids != null && ids.length > 0)
                 {
-                    mCrypto.setSignatureKeyId(ids[0]);
-                    mCrypto.setSignatureUserId(mCrypto.getUserId(this, ids[0]));
+                    mPgpData.setSignatureKeyId(ids[0]);
+                    mPgpData.setSignatureUserId(crypto.getUserId(this, ids[0]));
                 }
                 else
                 {
-                    mCrypto.setSignatureKeyId(0);
-                    mCrypto.setSignatureUserId(null);
+                    mPgpData.setSignatureKeyId(0);
+                    mPgpData.setSignatureUserId(null);
                 }
             }
             updateEncryptLayout();
@@ -728,11 +730,11 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void initializeCrypto()
     {
-        if (mCrypto != null)
+        if (mPgpData != null)
         {
             return;
         }
-        mCrypto = CryptoProvider.createInstance(mAccount);
+        mPgpData = new PgpData();
     }
 
     /**
@@ -740,7 +742,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     public void updateEncryptLayout()
     {
-        if (!mCrypto.hasSignatureKey())
+        if (!mPgpData.hasSignatureKey())
         {
             mCryptoSignatureCheckbox.setText(R.string.btn_crypto_sign);
             mCryptoSignatureCheckbox.setChecked(false);
@@ -757,16 +759,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             mCryptoSignatureUserId.setText(R.string.unknown_crypto_signature_user_id);
             mCryptoSignatureUserIdRest.setText("");
 
-            String userId = mCrypto.getSignatureUserId();
+            String userId = mPgpData.getSignatureUserId();
             if (userId == null)
             {
-                userId = mCrypto.getUserId(this, mCrypto.getSignatureKeyId());
-                mCrypto.setSignatureUserId(userId);
+                userId = mAccount.getCryptoProvider().getUserId(this, mPgpData.getSignatureKeyId());
+                mPgpData.setSignatureUserId(userId);
             }
 
             if (userId != null)
             {
-                String chunks[] = mCrypto.getSignatureUserId().split(" <", 2);
+                String chunks[] = mPgpData.getSignatureUserId().split(" <", 2);
                 mCryptoSignatureUserId.setText(chunks[0]);
                 if (chunks.length > 1)
                 {
@@ -819,7 +821,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         outState.putString(STATE_KEY_DRAFT_UID, mDraftUid);
         outState.putSerializable(STATE_IDENTITY, mIdentity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, mIdentityChanged);
-        outState.putSerializable(STATE_CRYPTO, mCrypto);
+        outState.putSerializable(STATE_PGP_DATA, mPgpData);
         outState.putString(STATE_IN_REPLY_TO, mInReplyTo);
         outState.putString(STATE_REFERENCES, mReferences);
     }
@@ -843,7 +845,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         mDraftUid = savedInstanceState.getString(STATE_KEY_DRAFT_UID);
         mIdentity = (Identity)savedInstanceState.getSerializable(STATE_IDENTITY);
         mIdentityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
-        mCrypto = (CryptoProvider) savedInstanceState.getSerializable(STATE_CRYPTO);
+        mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         mInReplyTo = savedInstanceState.getString(STATE_IN_REPLY_TO);
         mReferences = savedInstanceState.getString(STATE_REFERENCES);
 
@@ -953,9 +955,9 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         String text = null;
-        if (mCrypto.getEncryptedData() != null)
+        if (mPgpData.getEncryptedData() != null)
         {
-            text = mCrypto.getEncryptedData();
+            text = mPgpData.getEncryptedData();
         }
         else
         {
@@ -1058,7 +1060,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void saveIfNeeded()
     {
-        if (!mDraftNeedsSaving || mPreventDraftSaving || mCrypto.hasEncryptionKeys())
+        if (!mDraftNeedsSaving || mPreventDraftSaving || mPgpData.hasEncryptionKeys())
         {
             return;
         }
@@ -1069,7 +1071,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     public void onEncryptionKeySelectionDone()
     {
-        if (mCrypto.hasEncryptionKeys())
+        if (mPgpData.hasEncryptionKeys())
         {
             onSend();
         }
@@ -1081,7 +1083,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     public void onEncryptDone()
     {
-        if (mCrypto.getEncryptedData() != null)
+        if (mPgpData.getEncryptedData() != null)
         {
             onSend();
         }
@@ -1099,7 +1101,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Toast.makeText(this, getString(R.string.message_compose_error_no_recipients), Toast.LENGTH_LONG).show();
             return;
         }
-        if (mEncryptCheckbox.isChecked() && !mCrypto.hasEncryptionKeys())
+        if (mEncryptCheckbox.isChecked() && !mPgpData.hasEncryptionKeys())
         {
             // key selection before encryption
             String emails = "";
@@ -1125,19 +1127,19 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             emails += mIdentity.getEmail();
 
             mPreventDraftSaving = true;
-            if (!mCrypto.selectEncryptionKeys(MessageCompose.this, emails))
+            if (!mAccount.getCryptoProvider().selectEncryptionKeys(MessageCompose.this, emails, mPgpData))
             {
                 mPreventDraftSaving = false;
             }
             return;
         }
-        if (mCrypto.hasEncryptionKeys() || mCrypto.hasSignatureKey())
+        if (mPgpData.hasEncryptionKeys() || mPgpData.hasSignatureKey())
         {
-            if (mCrypto.getEncryptedData() == null)
+            if (mPgpData.getEncryptedData() == null)
             {
                 String text = buildText(true);
                 mPreventDraftSaving = true;
-                if (!mCrypto.encrypt(this, text))
+                if (!mAccount.getCryptoProvider().encrypt(this, text, mPgpData))
                 {
                     mPreventDraftSaving = false;
                 }
@@ -1203,7 +1205,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
      */
     private void onAddAttachment2(final String mime_type)
     {
-        if (mCrypto.isAvailable(this))
+        if (mAccount.getCryptoProvider().isAvailable(this))
         {
             Toast.makeText(this, R.string.attachment_encryption_unsupported, Toast.LENGTH_LONG).show();
         }
@@ -1304,7 +1306,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         // if a CryptoSystem activity is returning, then mPreventDraftSaving was set to true
         mPreventDraftSaving = false;
 
-        if (mCrypto.onActivityResult(this, requestCode, resultCode, data))
+        if (mAccount.getCryptoProvider().onActivityResult(this, requestCode, resultCode, data, mPgpData))
         {
             return;
         }
@@ -1454,7 +1456,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         switch (item.getItemId())
         {
             case R.id.send:
-                mCrypto.setEncryptionKeys(null);
+                mPgpData.setEncryptionKeys(null);
                 onSend();
                 break;
             case R.id.save:
