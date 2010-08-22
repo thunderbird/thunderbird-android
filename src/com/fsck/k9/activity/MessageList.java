@@ -1040,8 +1040,6 @@ public class MessageList
         }
         mAdapter.removeMessages(holders);
         mController.deleteMessages(messages, null);
-
-        updateBatchSelectionOnRemoval(holders);
     }
 
     /**
@@ -3896,23 +3894,6 @@ public class MessageList
         mHandler.sortMessages();
     }
 
-    private void updateBatchSelectionOnRemoval(final List<MessageInfoHolder> holders)
-    {
-        int selectionCount = 0;
-        for (final MessageInfoHolder holder: holders)
-        {
-            if (holder.selected)
-            {
-                selectionCount += 1;
-            }
-        }
-        if (selectionCount > 0)
-        {
-            mSelectedCount -= selectionCount;
-            toggleBatchButtons();
-        }
-    }
-
     private void onMove(final List<MessageInfoHolder> holders)
     {
         if (!checkCopyOrMovePossible(holders, true))
@@ -4041,8 +4022,6 @@ public class MessageList
             mController.moveMessages(account, folderName,
                     messages.toArray(new Message[messages.size()]), destination, null);
             mAdapter.removeMessages(holders);
-
-            updateBatchSelectionOnRemoval(holders);
         }
         else
         {
