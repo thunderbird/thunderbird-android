@@ -38,7 +38,21 @@ public class ThreadMessageGrouper implements MessageGrouper
             return Collections.emptyList();
         }
 
-        final Container<T> fakeRoot = mThreader.thread(messages, true);
+        Container<T> fakeRoot;
+        try
+        {
+            fakeRoot = mThreader.thread(messages, true);
+        }
+        catch (RuntimeException e)
+        {
+            // XXX dumping interesting data for debugging purpose
+            Log.d(K9.LOG_TAG, "ERROR! Dumping interesting data");
+            for (final MessageInfo<T> info : messages)
+            {
+                Log.d(K9.LOG_TAG, "ID: " + info.getId() + " References: " + info.getReferences());
+            }
+            throw e;
+        }
 
         final List<MessageGroup<T>> result = toMessageGroups(fakeRoot, messages);
 
