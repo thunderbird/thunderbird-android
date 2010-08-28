@@ -266,13 +266,12 @@
             android:entryValues="@array/account_settings_vibrate_pattern_values"
             android:dialogTitle="@string/account_settings_vibrate_pattern_label" />
 
-        <EditTextPreference
+        <ListPreference
             android:dependency="account_vibrate"
             android:key="account_vibrate_times"
-            android:singleLine="true"
-            android:inputType="number"
             android:title="@string/account_settings_vibrate_times"
-            android:summary=""
+            android:entries="@array/account_settings_vibrate_times_label"
+            android:entryValues="@array/account_settings_vibrate_times_label"
             android:dialogTitle="@string/account_settings_vibrate_times" />
 
         <CheckBoxPreference

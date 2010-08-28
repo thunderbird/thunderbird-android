@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -23,6 +24,7 @@ import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
@@ -90,7 +92,7 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
     private ListPreference mAccountVibratePattern;
-    private EditTextPreference mAccountVibrateTimes;
+    private ListPreference mAccountVibrateTimes;
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
     private ListPreference mSyncMode;
@@ -430,13 +432,14 @@ public class AccountSettings extends K9PreferenceActivity
                 int index = mAccountVibratePattern.findIndexOfValue(summary);
                 mAccountVibratePattern.setSummary(mAccountVibratePattern.getEntries()[index]);
                 mAccountVibratePattern.setValue(summary);
+                doVibrateTest(preference);
                 return false;
             }
         });
 
-        mAccountVibrateTimes = (EditTextPreference) findPreference(PREFERENCE_VIBRATE_TIMES);
+        mAccountVibrateTimes = (ListPreference) findPreference(PREFERENCE_VIBRATE_TIMES);
+        mAccountVibrateTimes.setValue(String.valueOf(mAccount.getVibrateTimes()));
         mAccountVibrateTimes.setSummary(String.valueOf(mAccount.getVibrateTimes()));
-        mAccountVibrateTimes.setText(String.valueOf(mAccount.getVibrateTimes()));
         mAccountVibrateTimes.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             @Override
@@ -444,7 +447,8 @@ public class AccountSettings extends K9PreferenceActivity
             {
                 final String value = newValue.toString();
                 mAccountVibrateTimes.setSummary(value);
-                mAccountVibrateTimes.setText(value);
+                mAccountVibrateTimes.setValue(value);
+                doVibrateTest(preference);
                 return false;
             }
         });
@@ -609,7 +613,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
         mAccount.setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
-        mAccount.setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getText()));
+        mAccount.setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
@@ -778,4 +782,13 @@ public class AccountSettings extends K9PreferenceActivity
         }
     }
 
+    private void doVibrateTest(Preference preference)
+    {
+        // Do the vibration to show the user what it's like.
+        Vibrator vibrate = (Vibrator)preference.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = MessagingController.getVibratePattern(
+                Integer.parseInt(mAccountVibratePattern.getValue()),
+                Integer.parseInt(mAccountVibrateTimes.getValue()));
+        vibrate.vibrate(pattern, -1);
+    }
 }

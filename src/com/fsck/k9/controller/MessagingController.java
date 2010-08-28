@@ -4642,45 +4642,8 @@ public class MessagingController implements Runnable
             }
             if (account.isVibrate())
             {
-                int times = account.getVibrateTimes();
-                long[] pattern1 = new long[] {100,200};
-                long[] pattern2 = new long[] {100,500};
-                long[] pattern3 = new long[] {200,200};
-                long[] pattern4 = new long[] {200,500};
-                long[] pattern5 = new long[] {500,500};
-                long[] src = null;
-
-                switch (account.getVibratePattern())
-                {
-                    case 1:
-                        src = pattern1;
-                        break;
-                    case 2:
-                        src = pattern2;
-                        break;
-                    case 3:
-                        src = pattern3;
-                        break;
-                    case 4:
-                        src = pattern4;
-                        break;
-                    case 5:
-                        src = pattern5;
-                        break;
-                    default:
-                        notif.defaults |= Notification.DEFAULT_VIBRATE;
-                        break;
-                }
-
-                if (src != null)
-                {
-                    long[] dest = new long[src.length * times];
-                    for (int n = 0; n < times; n++)
-                    {
-                        System.arraycopy(src, 0, dest, n * src.length, src.length);
-                    }
-                    notif.vibrate = dest;
-                }
+                long[] pattern = getVibratePattern(account.getVibratePattern(), account.getVibrateTimes());
+                notif.vibrate = pattern;
             }
         }
 
@@ -4692,6 +4655,54 @@ public class MessagingController implements Runnable
 
         notifMgr.notify(account.getAccountNumber(), notif);
         return true;
+    }
+
+    /*
+     * Fetch a vibration pattern.
+     *
+     * @param vibratePattern Vibration pattern index to use.
+     * @param vibrateTimes Number of times to do the vibration pattern.
+     * @return Pattern multiplied by the number of times requested.
+     */
+    public static long[] getVibratePattern(int vibratePattern, int vibrateTimes)
+    {
+        // These are "off, on" patterns, specified in milliseconds
+        long[] pattern0 = new long[] {300,200}; // like the default pattern
+        long[] pattern1 = new long[] {100,200};
+        long[] pattern2 = new long[] {100,500};
+        long[] pattern3 = new long[] {200,200};
+        long[] pattern4 = new long[] {200,500};
+        long[] pattern5 = new long[] {500,500};
+
+        long[] selectedPattern = pattern0; //default pattern
+
+        switch (vibratePattern)
+        {
+            case 1:
+                selectedPattern = pattern1;
+                break;
+            case 2:
+                selectedPattern = pattern2;
+                break;
+            case 3:
+                selectedPattern = pattern3;
+                break;
+            case 4:
+                selectedPattern = pattern4;
+                break;
+            case 5:
+                selectedPattern = pattern5;
+                break;
+        }
+
+        long[] repeatedPattern = new long[selectedPattern.length * vibrateTimes];
+        for (int n = 0; n < vibrateTimes; n++)
+        {
+            System.arraycopy(selectedPattern, 0, repeatedPattern, n * selectedPattern.length, selectedPattern.length);
+        }
+        // Do not wait before starting the vibration pattern.
+        repeatedPattern[0] = 0;
+        return repeatedPattern;
     }
 
     /** Cancel a notification of new email messages */
