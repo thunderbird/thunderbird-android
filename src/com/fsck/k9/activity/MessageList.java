@@ -449,6 +449,7 @@ public class MessageList
     public void onGroupExpand(final int groupPosition)
     {
         mAdapter.synchronizeFastScroll();
+        mAdapter.mAutoExpanded.add(mAdapter.getGroupId(groupPosition));
     }
 
     @Override
@@ -2078,6 +2079,12 @@ public class MessageList
         private final List<MessageGroup<MessageInfoHolder>> mGroups = Collections
                 .synchronizedList(new ArrayList<MessageGroup<MessageInfoHolder>>());
 
+        /**
+         * Track groups expanded at load-time, to prevent from expanding at
+         * subsequent loading
+         */
+        private Set<Long> mAutoExpanded = new HashSet<Long>();
+
         private final ActivityListener mListener = new ActivityListener()
         {
             @Override
@@ -2364,6 +2371,17 @@ public class MessageList
                 public void run()
                 {
                     doNotifyDataSetChanged();
+
+                    // auto expand groups at initial display
+                    final int groupCount = mAdapter.getGroupCount() - MessageListAdapter.NON_MESSAGE_ITEMS;
+                    for (int i = 0; i < groupCount; i++)
+                    {
+                        final long groupId = mAdapter.getGroupId(i);
+                        if (!mListView.isGroupExpanded(i) && !mAutoExpanded.contains(groupId))
+                        {
+                            mListView.expandGroup(i);
+                        }
+                    }
                 }
             });
             mThrottler.setCompleted(new Runnable()
