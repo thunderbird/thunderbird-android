@@ -1273,6 +1273,12 @@ public class MessageList
                 mAdapter.mGroupLessMode = false;
                 reSort();
                 return true;
+            case R.id.expand_all:
+                expandAll();
+                return true;
+            case R.id.collapse_all:
+                collapseAll();
+                return true;
             case R.id.select_all:
             case R.id.batch_select_all:
             {
@@ -1646,12 +1652,6 @@ public class MessageList
                 }
                 return true;
             }
-            case R.id.expand_all:
-                expandAll();
-                return true;
-            case R.id.collapse_all:
-                collapseAll();
-                return true;
             case R.id.group_delete:
                 onDelete(selection);
                 return true;

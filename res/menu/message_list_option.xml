@@ -184,4 +184,6 @@
         android:id="@+id/expunge"
         android:title="@string/expunge_action"
     />
+    <item android:id="@+id/expand_all" android:title="@string/expand_all"/>
+    <item android:id="@+id/collapse_all" android:title="@string/collapse_all"/>
 </menu>

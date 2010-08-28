@@ -3,8 +3,6 @@
     <group android:id="@+id/message_group" android:visible="false">
         <item android:id="@+id/expand" android:title="@string/expand"/>
         <item android:id="@+id/collapse" android:title="@string/collapse"/>
-        <item android:id="@+id/expand_all" android:title="@string/expand_all"/>
-        <item android:id="@+id/collapse_all" android:title="@string/collapse_all"/>
         <item android:id="@+id/group_select" android:title="@string/select_action"/>
         <item android:id="@+id/group_deselect" android:title="@string/deselect_action"/>
         <item android:id="@+id/group_delete" android:title="@string/delete_action"/>
