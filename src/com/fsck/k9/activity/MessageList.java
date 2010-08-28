@@ -100,7 +100,6 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 public class MessageList
         extends K9Activity
  implements OnClickListener,
-        ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener,
         ExpandableListView.OnGroupExpandListener, ExpandableListView.OnGroupCollapseListener
 {
 
@@ -140,8 +139,8 @@ public class MessageList
     private Account mAccount;
     private int mUnreadMessageCount = 0;
 
-    private GestureDetector gestureDetector;
-    private View.OnTouchListener gestureListener;
+    private ItemListener itemListener = new ItemListener();
+
     /**
      * Stores the name of the folder that we want to open as soon as possible
      * after load.
@@ -447,44 +446,6 @@ public class MessageList
     }
 
     @Override
-    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
-    {
-        // XXX Android 2.1 dosen't invoke this method for expanded groups: can't prevent collapsing
-//        if (mAdapter.groupLessMode)
-//        {
-//            // ignore collapse attempt in groupless mode
-//            return true;
-//        }
-
-        if (mCurrentFolder != null && ((groupPosition + 1) == mAdapter.getGroupCount()))
-        {
-            mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
-            int childPosition, long id)
-    {
-        final MessageInfoHolder message = mAdapter.getChild(groupPosition, childPosition);
-        if (mSelectedCount > 0)
-        {
-            // In multiselect mode make sure that clicking on the item results
-            // in toggling the 'selected' checkbox.
-            final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
-            setSelected(selection, !message.selected);
-            return true;
-        }
-        else
-        {
-            onOpenMessage(message);
-            return true;
-        }
-    }
-
-    @Override
     public void onGroupExpand(final int groupPosition)
     {
         mAdapter.synchronizeFastScroll();
@@ -670,8 +631,9 @@ public class MessageList
         mListView.setLongClickable(true);
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(true);
-        mListView.setOnChildClickListener(this);
-        mListView.setOnGroupClickListener(this);
+        mListView.setOnChildClickListener(itemListener);
+        mListView.setOnGroupClickListener(itemListener);
+        mListView.setOnTouchListener(itemListener);
         mListView.setOnGroupCollapseListener(this);
         mListView.setOnGroupExpandListener(this);
 
@@ -688,21 +650,6 @@ public class MessageList
 
         mBatchDoneButton.setOnClickListener(this);
 
-        // Gesture detection
-        gestureDetector = new GestureDetector(new MyGestureDetector());
-        gestureListener = new View.OnTouchListener()
-        {
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (gestureDetector.onTouchEvent(event))
-                {
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        mListView.setOnTouchListener(gestureListener);
     }
 
     @Override
@@ -1822,43 +1769,114 @@ public class MessageList
         }
     }
 
-    class MyGestureDetector extends SimpleOnGestureListener
+    /**
+     * Handle touch/click events on list items
+     */
+    private class ItemListener implements View.OnTouchListener,
+            ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener
     {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+        /**
+         * When switching from ListView to ExpandableListView, the onChildClick
+         * method is still invoked, this flag allow to ignore subsequent "click"
+         * behavior when sliding
+         */
+        private boolean prevent = false;
+
+        private GestureDetector gestureDetector = new GestureDetector(new SimpleOnGestureListener()
         {
-            if (e2 == null || e1 == null)
-                return true;
-
-            float deltaX = e2.getX() - e1.getX(),
-                           deltaY = e2.getY() - e1.getY();
-
-            boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
-            boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
-
-            if (movedAcross && steadyHand)
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
             {
-                boolean selected = (deltaX > 0);
-                int position = mListView.pointToPosition((int)e1.getX(), (int)e1.getY());
-
-                if (position != AdapterView.INVALID_POSITION)
+                if (e2 == null || e1 == null)
                 {
-                    final Object item = mListView.getItemAtPosition(position);
-                    if (item instanceof MessageInfoHolder) {
-                        MessageInfoHolder msgInfoHolder = (MessageInfoHolder) item;
+                    return true;
+                }
 
-                        if (msgInfoHolder != null && msgInfoHolder.selected != selected)
+                float deltaX = e2.getX() - e1.getX(), deltaY = e2.getY() - e1.getY();
+
+                boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
+                boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
+
+                if (movedAcross && steadyHand)
+                {
+                    boolean selected = (deltaX > 0);
+                    int position = mListView.pointToPosition((int) e1.getX(), (int) e1.getY());
+
+                    if (position != AdapterView.INVALID_POSITION)
+                    {
+                        final Object item = mListView.getItemAtPosition(position);
+                        if (item instanceof MessageInfoHolder)
                         {
-                            msgInfoHolder.selected = selected;
-                            mSelectedCount += (selected ? 1 : -1);
-                            mAdapter.notifyDataSetChanged();
-                            toggleBatchButtons();
+                            MessageInfoHolder msgInfoHolder = (MessageInfoHolder) item;
+
+                            if (msgInfoHolder != null && msgInfoHolder.selected != selected)
+                            {
+                                msgInfoHolder.selected = selected;
+                                mSelectedCount += (selected ? 1 : -1);
+                                mAdapter.notifyDataSetChanged();
+                                toggleBatchButtons();
+                                prevent = true;
+                            }
                         }
                     }
                 }
+
+                return false;
+            }
+        });
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            if (gestureDetector.onTouchEvent(event))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
+        {
+            // XXX Android 2.1 dosen't invoke this method for expanded groups: can't prevent collapsing
+            //            if (mAdapter.groupLessMode)
+            //            {
+            //                // ignore collapse attempt in groupless mode
+            //                return true;
+            //            }
+
+            if (mCurrentFolder != null && ((groupPosition + 1) == mAdapter.getGroupCount()))
+            {
+                mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+                int childPosition, long id)
+        {
+            if (prevent)
+            {
+                prevent = false;
+                return true;
             }
 
-            return false;
+            final MessageInfoHolder message = mAdapter.getChild(groupPosition, childPosition);
+            if (mSelectedCount > 0)
+            {
+                // In multiselect mode make sure that clicking on the item results
+                // in toggling the 'selected' checkbox.
+                final List<MessageInfoHolder> selection = getSelectionFromMessage(message);
+                setSelected(selection, !message.selected);
+                return true;
+            }
+            else
+            {
+                onOpenMessage(message);
+                return true;
+            }
         }
     }
 
