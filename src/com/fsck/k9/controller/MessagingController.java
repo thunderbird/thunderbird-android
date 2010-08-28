@@ -2498,12 +2498,20 @@ public class MessagingController implements Runnable
 
         Store remoteStore = account.getRemoteStore();
         Folder remoteFolder = remoteStore.getFolder(folder);
+        if (!remoteFolder.exists() ||
+            /*
+             * Don't proceed if the remote folder doesn't support flags and
+             * the flag to be changed isn't the deleted flag. This avoids
+             * unnecessary connections to POP3 servers.
+             */
+            // TODO: This should actually call a supportsSettingFlag(flag) method.
+            (!remoteFolder.supportsFetchingFlags() && !Flag.DELETED.equals(flag)))
+        {
+            return;
+        }
+
         try
         {
-            if (!remoteFolder.exists())
-            {
-                return;
-            }
             remoteFolder.open(OpenMode.READ_WRITE);
             if (remoteFolder.getMode() != OpenMode.READ_WRITE)
             {
