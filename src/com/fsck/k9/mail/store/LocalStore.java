@@ -2333,7 +2333,7 @@ public class LocalStore extends Store implements Serializable
         }
 
         /*
-         * calcualteContentPreview
+         * calculateContentPreview
          * Takes a plain text message body as a string.
          * Returns a message summary as a string suitable for showing in a message list
          *
