@@ -3220,7 +3220,6 @@ public class ImapStore extends Store
             catch (Exception e)
             {
                 Log.e(K9.LOG_TAG, "Cannot remove EXPUNGEd messages", e);
-                return;
             }
 
         }

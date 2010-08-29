@@ -2062,7 +2062,6 @@ public class WebDavStore extends Store
         {
             Log.e(K9.LOG_TAG, "Unimplemented method setFlags(Flag[], boolean) breaks markAllMessagesAsRead and EmptyTrash");
             // Try to make this efficient by not retrieving all of the messages
-            return;
         }
     }
 

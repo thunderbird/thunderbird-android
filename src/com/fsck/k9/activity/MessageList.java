@@ -425,12 +425,10 @@ public class MessageList
             // In multiselect mode make sure that clicking on the item results
             // in toggling the 'selected' checkbox.
             setSelected(message, !message.selected);
-            return;
         }
         else
         {
             onOpenMessage(message);
-            return;
         }
     }
 

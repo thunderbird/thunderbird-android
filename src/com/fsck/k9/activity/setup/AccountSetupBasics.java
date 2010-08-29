@@ -271,8 +271,7 @@ public class AccountSetupBasics extends K9Activity
              * manual setup.
              */
             onManualSetup();
-            return;
-        }
+            }
     }
 
     private void onNext()

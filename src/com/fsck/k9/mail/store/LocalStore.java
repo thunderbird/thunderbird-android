@@ -4665,7 +4665,6 @@ public class LocalStore extends Store implements Serializable
             if (mMessageId != null) super.setMessageId(mMessageId);
 
             mMessageDirty = false;
-            return;
         }
 
         public String getPreview()
