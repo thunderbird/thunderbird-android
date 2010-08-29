@@ -842,7 +842,7 @@ public class MessagingController implements Runnable
                                 List<Message> messages = new ArrayList<Message>();
 
                                 messages.add(message);
-                                stats.unreadMessageCount += (message.isSet(Flag.SEEN) == false) ? 1 : 0;
+                                stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
                                 stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
                                 if (listener != null)
                                 {
