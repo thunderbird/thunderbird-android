@@ -4773,6 +4773,12 @@ public class LocalStore extends Store implements Serializable
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException
         {
+            /*
+             * If a message is being marked as deleted we want to clear out it's content
+             * and attachments as well. Delete will not actually remove the row since we need
+             * to retain the uid for synchronization purposes.
+             */
+
             if (flag == Flag.DELETED && set)
             {
                 delete();
