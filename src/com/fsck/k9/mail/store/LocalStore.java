@@ -2261,6 +2261,47 @@ public class LocalStore extends Store implements Serializable
             return PERMANENT_FLAGS;
         }
 
+
+        private void deleteAttachments(long messageId) throws MessagingException
+        {
+            open(OpenMode.READ_WRITE);
+            Cursor attachmentsCursor = null;
+            try
+            {
+                attachmentsCursor = mDb.query(
+                                        "attachments",
+                                        new String[] { "id" },
+                                        "message_id = ?",
+                                        new String[] { Long.toString(messageId) },
+                                        null,
+                                        null,
+                                        null);
+                while (attachmentsCursor.moveToNext())
+                {
+                    long attachmentId = attachmentsCursor.getLong(0);
+                    try
+                    {
+                        File file = new File(mAttachmentsDir, Long.toString(attachmentId));
+                        if (file.exists())
+                        {
+                            file.delete();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+            finally
+            {
+                if (attachmentsCursor != null)
+                {
+                    attachmentsCursor.close();
+                }
+            }
+        }
+
         private void deleteAttachments(String uid) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
@@ -2278,41 +2319,8 @@ public class LocalStore extends Store implements Serializable
                 while (messagesCursor.moveToNext())
                 {
                     long messageId = messagesCursor.getLong(0);
-                    Cursor attachmentsCursor = null;
-                    try
-                    {
-                        attachmentsCursor = mDb.query(
-                                                "attachments",
-                                                new String[] { "id" },
-                                                "message_id = ?",
-                                                new String[] { Long.toString(messageId) },
-                                                null,
-                                                null,
-                                                null);
-                        while (attachmentsCursor.moveToNext())
-                        {
-                            long attachmentId = attachmentsCursor.getLong(0);
-                            try
-                            {
-                                File file = new File(mAttachmentsDir, Long.toString(attachmentId));
-                                if (file.exists())
-                                {
-                                    file.delete();
-                                }
-                            }
-                            catch (Exception e)
-                            {
+                    deleteAttachments(messageId);
 
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        if (attachmentsCursor != null)
-                        {
-                            attachmentsCursor.close();
-                        }
-                    }
                 }
             }
             finally
