@@ -44,7 +44,7 @@ public class LocalStore extends Store implements Serializable
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final int DB_VERSION = 37;
+    private static final int DB_VERSION = 38;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
     private String mPath;
@@ -269,6 +269,8 @@ public class LocalStore extends Store implements Serializable
                     }
                 }
 
+
+                // Database version 38 is solely to prune cached attachments now that we clear them better
 
             }
 
