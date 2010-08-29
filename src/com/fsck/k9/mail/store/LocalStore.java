@@ -2188,6 +2188,19 @@ public class LocalStore extends Store implements Serializable
         public void deleteMessagesOlderThan(long cutoff) throws MessagingException
         {
             open(OpenMode.READ_ONLY);
+            Message[] messages  = LocalStore.this.getMessages(
+                       null,
+                       this,
+                       "SELECT " + GET_MESSAGES_COLS
+                       + "FROM messages WHERE  folder_id = ? and date < ?", new String[]
+                        {
+                            Long.toString(mFolderId), Long.toString(cutoff)
+                        });
+
+            for (Message message : messages)
+            {
+                deleteAttachments(message.getUid());
+            }
             mDb.execSQL("DELETE FROM messages WHERE folder_id = ? and date < ?", new Object[]
                         {
                             Long.toString(mFolderId), new Long(cutoff)
