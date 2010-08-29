@@ -787,8 +787,8 @@ public class AccountSettings extends K9PreferenceActivity
         // Do the vibration to show the user what it's like.
         Vibrator vibrate = (Vibrator)preference.getContext().getSystemService(Context.VIBRATOR_SERVICE);
         long[] pattern = MessagingController.getVibratePattern(
-                Integer.parseInt(mAccountVibratePattern.getValue()),
-                Integer.parseInt(mAccountVibrateTimes.getValue()));
+                             Integer.parseInt(mAccountVibratePattern.getValue()),
+                             Integer.parseInt(mAccountVibrateTimes.getValue()));
         vibrate.vibrate(pattern, -1);
     }
 }

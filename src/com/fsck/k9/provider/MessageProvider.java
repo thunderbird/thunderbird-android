@@ -202,9 +202,10 @@ public class MessageProvider extends ContentProvider
 
     public void setApplication(Application app)
     {
-    	if (context == null) {
-    		context = app.getApplicationContext();
-    	}
+        if (context == null)
+        {
+            context = app.getApplicationContext();
+        }
         if (app != null)
         {
             mApp = app;

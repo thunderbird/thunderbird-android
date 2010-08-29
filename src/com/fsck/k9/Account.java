@@ -1491,8 +1491,10 @@ public class Account implements BaseAccount
         lastSelectedFolderName = folderName;
     }
 
-    public synchronized CryptoProvider getCryptoProvider() {
-        if (mCryptoProvider == null) {
+    public synchronized CryptoProvider getCryptoProvider()
+    {
+        if (mCryptoProvider == null)
+        {
             mCryptoProvider = CryptoProvider.createInstance(getCryptoApp());
         }
         return mCryptoProvider;

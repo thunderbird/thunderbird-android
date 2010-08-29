@@ -2,7 +2,8 @@ package com.fsck.k9.crypto;
 
 import java.io.Serializable;
 
-public class PgpData implements Serializable {
+public class PgpData implements Serializable
+{
     protected long mEncryptionKeyIds[] = null;
     protected long mSignatureKeyId = 0;
     protected String mSignatureUserId = null;

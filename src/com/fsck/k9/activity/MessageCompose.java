@@ -1733,8 +1733,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
 
                     final String text = (mSourceMessageBody != null) ?
-                            mSourceMessageBody :
-                            MimeUtility.getTextFromPart(part);
+                                        mSourceMessageBody :
+                                        MimeUtility.getTextFromPart(part);
 
                     final String wrappedText = Utility.wrap(text, REPLY_WRAP_LINE_WIDTH - prefix.length());
 

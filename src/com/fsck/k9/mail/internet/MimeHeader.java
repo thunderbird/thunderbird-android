@@ -166,9 +166,9 @@ public class MimeHeader
 
         public String toString()
         {
-          StringBuilder sb = new StringBuilder("(");
-           sb.append(name).append('=').append(value).append(')');
-           return sb.toString();
-    	}
+            StringBuilder sb = new StringBuilder("(");
+            sb.append(name).append('=').append(value).append(')');
+            return sb.toString();
+        }
     }
 }
