@@ -4779,10 +4779,8 @@ public class LocalStore extends Store implements Serializable
             }
             else if (flag == Flag.X_DESTROYED && set)
             {
-                ((LocalFolder) mFolder).deleteAttachments(getUid());
-                mDb.execSQL("DELETE FROM messages WHERE id = ?",
-                            new Object[] { mId });
-                ((LocalFolder)mFolder).deleteHeaders(mId);
+                ((LocalFolder) mFolder).deleteAttachments(mId);
+                mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
             }
 
             /*
