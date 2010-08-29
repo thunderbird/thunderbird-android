@@ -4794,10 +4794,10 @@ public class LocalStore extends Store implements Serializable
              */
             try
             {
+                LocalFolder folder = (LocalFolder)mFolder;
                 if (flag == Flag.DELETED || flag == Flag.X_DESTROYED
                         || (flag == Flag.SEEN && !isSet(Flag.DELETED)))
                 {
-                    LocalFolder folder = (LocalFolder)mFolder;
                     if (set && !isSet(Flag.SEEN))
                     {
                         folder.setUnreadMessageCount(folder.getUnreadMessageCount() - 1);
@@ -4809,27 +4809,11 @@ public class LocalStore extends Store implements Serializable
                 }
                 if ((flag == Flag.DELETED || flag == Flag.X_DESTROYED) && isSet(Flag.FLAGGED))
                 {
-                    LocalFolder folder = (LocalFolder)mFolder;
-                    if (set)
-                    {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() - 1);
-                    }
-                    else
-                    {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + 1);
-                    }
+                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ? -1 : 1));
                 }
                 if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
                 {
-                    LocalFolder folder = (LocalFolder)mFolder;
-                    if (set)
-                    {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + 1);
-                    }
-                    else
-                    {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() - 1);
-                    }
+                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
                 }
             }
             catch (MessagingException me)
