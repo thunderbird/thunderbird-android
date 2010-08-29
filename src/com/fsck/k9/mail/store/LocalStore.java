@@ -4866,13 +4866,13 @@ public class LocalStore extends Store implements Serializable
              * We do this explicit deletion here because we're not deleting the record
              * in messages, which means our ON DELETE trigger for messages won't cascade
              */
+            ((LocalFolder)mFolder).deleteAttachments(mId);
             mDb.execSQL("DELETE FROM attachments WHERE message_id = ?",
                         new Object[]
                         {
                             mId
                         });
 
-            ((LocalFolder)mFolder).deleteAttachments(mId);
             ((LocalFolder)mFolder).deleteHeaders(mId);
 
 
