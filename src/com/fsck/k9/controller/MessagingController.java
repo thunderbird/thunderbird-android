@@ -594,7 +594,7 @@ public class MessagingController implements Runnable
             public void messageFinished(Message message, int number, int ofTotal)
             {
 
-                if (isMessageSuppressed(account, folder, message) == false)
+                if (!isMessageSuppressed(account, folder, message))
                 {
                     pendingMessages.add(message);
                     totalDone++;
@@ -717,17 +717,17 @@ public class MessagingController implements Runnable
                 boolean noSpecialFolders = true;
                 for (final Account account : accounts)
                 {
-                    if (accountUuids != null && accountUuidsSet.contains(account.getUuid()) == false)
+                    if (accountUuids != null && !accountUuidsSet.contains(account.getUuid()))
                     {
                         continue;
                     }
 
-                    if (accountUuids != null && accountUuidsSet.contains(account.getUuid()) == true)
+                    if (accountUuids != null && accountUuidsSet.contains(account.getUuid()))
                     {
                         displayableOnly = true;
                         noSpecialFolders = true;
                     }
-                    else if (integrate == false && folderNames == null)
+                    else if (!integrate && folderNames == null)
                     {
                         Account.Searchable searchableFolders = account.getSearchableFolders();
                         switch (searchableFolders)
@@ -791,7 +791,7 @@ public class MessagingController implements Runnable
                                 {
                                     if (folderNameSet != null)
                                     {
-                                        if (folderNameSet.contains(localFolderName) == false)
+                                        if (!folderNameSet.contains(localFolderName))
 
                                         {
                                             include = false;
@@ -837,7 +837,7 @@ public class MessagingController implements Runnable
                         public void messageStarted(String message, int number, int ofTotal) {}
                         public void messageFinished(Message message, int number, int ofTotal)
                         {
-                            if (isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message) == false)
+                            if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message))
                             {
                                 List<Message> messages = new ArrayList<Message>();
 
@@ -1125,7 +1125,7 @@ public class MessagingController implements Runnable
                         l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
                     }
                     Message localMessage = localUidMap.get(thisMess.getUid());
-                    if (localMessage == null || localMessage.olderThan(earliestDate) == false)
+                    if (localMessage == null || !localMessage.olderThan(earliestDate))
                     {
                         remoteMessages.add(thisMess);
                         remoteUidMap.put(thisMess.getUid(), thisMess);
@@ -1303,7 +1303,7 @@ public class MessagingController implements Runnable
             Message[] messages = localFolder.getMessages(null, false);
             for (Message message : messages)
             {
-                if (message.isSet(Flag.SEEN) == false && message.isSet(Flag.DELETED) == false)
+                if (!message.isSet(Flag.SEEN) && !message.isSet(Flag.DELETED))
                 {
                     unreadCount++;
                 }
@@ -1326,7 +1326,7 @@ public class MessagingController implements Runnable
             Message[] messages = localFolder.getMessages(null, false);
             for (Message message : messages)
             {
-                if (message.isSet(Flag.FLAGGED) == true && message.isSet(Flag.DELETED) == false)
+                if (message.isSet(Flag.FLAGGED) && !message.isSet(Flag.DELETED))
                 {
                     flaggedCount++;
                 }
@@ -1372,7 +1372,7 @@ public class MessagingController implements Runnable
             {
                 syncFlagMessages.add(message);
             }
-            else if (isMessageSuppressed(account, folder, message) == false)
+            else if (!isMessageSuppressed(account, folder, message))
             {
                 Message localMessage = localFolder.getMessage(message.getUid());
 
@@ -1411,7 +1411,7 @@ public class MessagingController implements Runnable
                         }
                     }
                 }
-                else if (localMessage.isSet(Flag.DELETED) == false)
+                else if (!localMessage.isSet(Flag.DELETED))
                 {
                     if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is present in the local store");
@@ -1623,7 +1623,7 @@ public class MessagingController implements Runnable
                          * (POP) may not be able to give us headers for
                          * ENVELOPE, only size.
                          */
-                        if (isMessageSuppressed(account, folder, message) == false)
+                        if (!isMessageSuppressed(account, folder, message))
                         {
                             // Store the new message locally
                             localFolder.appendMessages(new Message[]
@@ -1924,7 +1924,7 @@ public class MessagingController implements Runnable
             List<Message> undeletedMessages = new LinkedList<Message>();
             for (Message message : syncFlagMessages)
             {
-                if (message.isSet(Flag.DELETED) == false)
+                if (!message.isSet(Flag.DELETED))
                 {
                     undeletedMessages.add(message);
                 }
@@ -2406,7 +2406,7 @@ public class MessagingController implements Runnable
                 Log.d(K9.LOG_TAG, "processingPendingMoveOrCopy: source folder = " + srcFolder
                       + ", " + messages.size() + " messages, destination folder = " + destFolder + ", isCopy = " + isCopy);
 
-            if (isCopy == false && destFolder.equals(account.getTrashFolderName()))
+            if (!isCopy && destFolder.equals(account.getTrashFolderName()))
             {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "processingPendingMoveOrCopy doing special case for deleting message");
@@ -2431,7 +2431,7 @@ public class MessagingController implements Runnable
                     remoteSrcFolder.moveMessages(messages.toArray(EMPTY_MESSAGE_ARRAY), remoteDestFolder);
                 }
             }
-            if (isCopy == false && Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
+            if (!isCopy && Account.EXPUNGE_IMMEDIATELY.equals(account.getExpungePolicy()))
             {
                 if (K9.DEBUG)
                     Log.i(K9.LOG_TAG, "processingPendingMoveOrCopy expunging folder " + account.getDescription() + ":" + srcFolder);
@@ -2698,7 +2698,7 @@ public class MessagingController implements Runnable
             Log.d(K9.LOG_TAG, "processPendingMoveOrCopyOld: source folder = " + srcFolder
                   + ", uid = " + uid + ", destination folder = " + destFolder + ", isCopy = " + isCopy);
 
-        if (isCopy == false && destFolder.equals(account.getTrashFolderName()))
+        if (!isCopy && destFolder.equals(account.getTrashFolderName()))
         {
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "processPendingMoveOrCopyOld doing special case for deleting message");
@@ -2739,7 +2739,7 @@ public class MessagingController implements Runnable
             Message[] messages = localFolder.getMessages(null, false);
             for (Message message : messages)
             {
-                if (message.isSet(Flag.SEEN) == false)
+                if (!message.isSet(Flag.SEEN))
                 {
                     message.setFlag(Flag.SEEN, true);
                     for (MessagingListener l : getListeners())
@@ -2797,7 +2797,7 @@ public class MessagingController implements Runnable
     static AtomicBoolean loopCatch = new AtomicBoolean();
     public void addErrorMessage(Account account, String subject, Throwable t)
     {
-        if (loopCatch.compareAndSet(false, true) == false)
+        if (!loopCatch.compareAndSet(false, true))
         {
             return;
         }
@@ -2832,11 +2832,11 @@ public class MessagingController implements Runnable
 
     public void addErrorMessage(Account account, String subject, String body)
     {
-        if (K9.ENABLE_ERROR_FOLDER == false)
+        if (!K9.ENABLE_ERROR_FOLDER)
         {
             return;
         }
-        if (loopCatch.compareAndSet(false, true) == false)
+        if (!loopCatch.compareAndSet(false, true))
         {
             return;
         }
@@ -2937,7 +2937,7 @@ public class MessagingController implements Runnable
             for (String uid : uids)
             {
                 // Allows for re-allowing sending of messages that could not be sent
-                if (flag == Flag.FLAGGED && newState == false
+                if (flag == Flag.FLAGGED && !newState
                         && uid != null
                         && account.getOutboxFolderName().equals(folderName))
                 {
@@ -3513,7 +3513,7 @@ public class MessagingController implements Runnable
                         if (e instanceof MessagingException)
                         {
                             MessagingException me = (MessagingException)e;
-                            if (me.isPermanentFailure() == false)
+                            if (!me.isPermanentFailure())
                             {
                                 // Decrement the counter if the message could not possibly have been sent
                                 int newVal = count.decrementAndGet();
@@ -3754,11 +3754,11 @@ public class MessagingController implements Runnable
         {
             Store localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
-            if (isCopy == false && (remoteStore.isMoveCapable() == false || localStore.isMoveCapable() == false))
+            if (!isCopy && (!remoteStore.isMoveCapable() || !localStore.isMoveCapable()))
             {
                 return;
             }
-            if (isCopy == true && (remoteStore.isCopyCapable() == false || localStore.isCopyCapable() == false))
+            if (isCopy && (!remoteStore.isCopyCapable() || !localStore.isCopyCapable()))
             {
                 return;
             }
@@ -4195,7 +4195,7 @@ public class MessagingController implements Runnable
                     for (final Account account : accounts)
                     {
                         final long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
-                        if (ignoreLastCheckedTime == false && accountInterval <= 0)
+                        if (!ignoreLastCheckedTime && accountInterval <= 0)
                         {
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Skipping synchronizing account " + account.getDescription());
@@ -4287,7 +4287,7 @@ public class MessagingController implements Runnable
                                     Log.v(K9.LOG_TAG, "Folder " + folder.getName() + " was last synced @ " +
                                           new Date(folder.getLastChecked()));
 
-                                if (ignoreLastCheckedTime == false && folder.getLastChecked() >
+                                if (!ignoreLastCheckedTime && folder.getLastChecked() >
                                         (System.currentTimeMillis() - accountInterval))
                                 {
                                     if (K9.DEBUG)
@@ -4310,7 +4310,7 @@ public class MessagingController implements Runnable
                                             tLocalFolder = localStore.getFolder(folder.getName());
                                             tLocalFolder.open(Folder.OpenMode.READ_WRITE);
 
-                                            if (ignoreLastCheckedTime == false && tLocalFolder.getLastChecked() >
+                                            if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
                                                     (System.currentTimeMillis() - accountInterval))
                                             {
                                                 if (K9.DEBUG)
@@ -4587,7 +4587,7 @@ public class MessagingController implements Runnable
                 if (from != null)
                 {
                     // Show From: address by default
-                    if (account.isAnIdentity(fromAddrs) == false)
+                    if (!account.isAnIdentity(fromAddrs))
                     {
                         messageNotice.append(from + ": " + subject);
                     }
@@ -4792,11 +4792,11 @@ public class MessagingController implements Runnable
         @Override
         public int compareTo(Command other)
         {
-            if (other.isForeground == true && isForeground == false)
+            if (other.isForeground && !isForeground)
             {
                 return 1;
             }
-            else if (other.isForeground == false && isForeground == true)
+            else if (!other.isForeground && isForeground)
             {
                 return -1;
             }
@@ -4931,7 +4931,7 @@ public class MessagingController implements Runnable
                 try
                 {
                     Store store = account.getRemoteStore();
-                    if (store.isPushCapable() == false)
+                    if (!store.isPushCapable())
                     {
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG, "Account " + account.getDescription() + " is not push capable, skipping");

@@ -950,12 +950,12 @@ public class MessageList
 
     private void onMove(MessageInfoHolder holder)
     {
-        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == false)
+        if (!mController.isMoveCapable(holder.message.getFolder().getAccount()))
         {
             return;
         }
 
-        if (mController.isMoveCapable(holder.message) == false)
+        if (!mController.isMoveCapable(holder.message))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -974,12 +974,12 @@ public class MessageList
 
     private void onArchive(MessageInfoHolder holder)
     {
-        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == false)
+        if (!mController.isMoveCapable(holder.message.getFolder().getAccount()))
         {
             return;
         }
 
-        if (mController.isMoveCapable(holder.message) == false)
+        if (!mController.isMoveCapable(holder.message))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -991,12 +991,12 @@ public class MessageList
 
     private void onSpam(MessageInfoHolder holder)
     {
-        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == false)
+        if (!mController.isMoveCapable(holder.message.getFolder().getAccount()))
         {
             return;
         }
 
-        if (mController.isMoveCapable(holder.message) == false)
+        if (!mController.isMoveCapable(holder.message))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1008,12 +1008,12 @@ public class MessageList
 
     private void onCopy(MessageInfoHolder holder)
     {
-        if (mController.isCopyCapable(holder.message.getFolder().getAccount()) == false)
+        if (!mController.isCopyCapable(holder.message.getFolder().getAccount()))
         {
             return;
         }
 
-        if (mController.isCopyCapable(holder.message) == false)
+        if (!mController.isCopyCapable(holder.message))
         {
             Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
@@ -1092,7 +1092,7 @@ public class MessageList
 
     private void onMoveChosen(MessageInfoHolder holder, String folderName)
     {
-        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) == true && folderName != null)
+        if (mController.isMoveCapable(holder.message.getFolder().getAccount()) && folderName != null)
         {
             if (K9.FOLDER_NONE.equalsIgnoreCase(folderName))
             {
@@ -1105,7 +1105,7 @@ public class MessageList
 
     private void onCopyChosen(MessageInfoHolder holder, String folderName)
     {
-        if (mController.isCopyCapable(holder.message.getFolder().getAccount()) == true && folderName != null)
+        if (mController.isCopyCapable(holder.message.getFolder().getAccount()) && folderName != null)
         {
             mController.copyMessage(holder.message.getFolder().getAccount(),
                                     holder.message.getFolder().getName(), holder.message, folderName, null);
@@ -1693,12 +1693,12 @@ public class MessageList
         }
 
         Account account = message.message.getFolder().getAccount();
-        if (mController.isCopyCapable(account) == false)
+        if (!mController.isCopyCapable(account))
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
 
-        if (mController.isMoveCapable(account) == false)
+        if (!mController.isMoveCapable(account))
         {
             menu.findItem(R.id.move).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
@@ -2255,12 +2255,12 @@ public class MessageList
 
                 holder.flagged.setOnClickListener(flagClickListener);
 
-                if (mStars == false)
+                if (!mStars)
                 {
                     holder.flagged.setVisibility(View.GONE);
                 }
 
-                if (mCheckboxes == true)
+                if (mCheckboxes)
                 {
                     holder.selected.setVisibility(View.VISIBLE);
                 }
@@ -2440,7 +2440,7 @@ public class MessageList
                 }
                 else
                 {
-                    if (mCurrentFolder.lastCheckFailed == false)
+                    if (!mCurrentFolder.lastCheckFailed)
                     {
                         holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
                     }
@@ -2513,7 +2513,7 @@ public class MessageList
                     message.selected = isChecked;
                     if (!mCheckboxes)
                     {
-                        if (isChecked == true)
+                        if (isChecked)
                         {
                             selected.setVisibility(View.VISIBLE);
                         }
@@ -2779,7 +2779,7 @@ public class MessageList
 
     private void onMoveBatch()
     {
-        if (mController.isMoveCapable(mAccount) == false)
+        if (!mController.isMoveCapable(mAccount))
         {
             return;
         }
@@ -2791,7 +2791,7 @@ public class MessageList
                 if (holder.selected)
                 {
                     Message message = holder.message;
-                    if (mController.isMoveCapable(message) == false)
+                    if (!mController.isMoveCapable(message))
                     {
                         Toast toast = Toast.makeText(this,
                                                      R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
@@ -2812,7 +2812,7 @@ public class MessageList
 
     private void onMoveChosenBatch(String folderName)
     {
-        if (mController.isMoveCapable(mAccount) == false)
+        if (!mController.isMoveCapable(mAccount))
         {
             return;
         }
@@ -2826,7 +2826,7 @@ public class MessageList
                 if (holder.selected)
                 {
                     Message message = holder.message;
-                    if (mController.isMoveCapable(message) == false)
+                    if (!mController.isMoveCapable(message))
                     {
                         Toast toast = Toast.makeText(this,
                                                      R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
@@ -2847,7 +2847,7 @@ public class MessageList
 
     private void onArchiveBatch()
     {
-        if (mController.isMoveCapable(mAccount) == false)
+        if (!mController.isMoveCapable(mAccount))
         {
             return;
         }
@@ -2859,7 +2859,7 @@ public class MessageList
                 if (holder.selected)
                 {
                     Message message = holder.message;
-                    if (mController.isMoveCapable(message) == false)
+                    if (!mController.isMoveCapable(message))
                     {
                         Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
@@ -2879,7 +2879,7 @@ public class MessageList
 
     private void onSpamBatch()
     {
-        if (mController.isMoveCapable(mAccount) == false)
+        if (!mController.isMoveCapable(mAccount))
         {
             return;
         }
@@ -2891,7 +2891,7 @@ public class MessageList
                 if (holder.selected)
                 {
                     Message message = holder.message;
-                    if (mController.isMoveCapable(message) == false)
+                    if (!mController.isMoveCapable(message))
                     {
                         Toast toast = Toast.makeText(this, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
                         toast.show();
@@ -2911,7 +2911,7 @@ public class MessageList
 
     private void onCopyBatch()
     {
-        if (mController.isCopyCapable(mAccount) == false)
+        if (!mController.isCopyCapable(mAccount))
         {
             return;
         }
@@ -2923,7 +2923,7 @@ public class MessageList
                 if (holder.selected)
                 {
                     Message message = holder.message;
-                    if (mController.isCopyCapable(message) == false)
+                    if (!mController.isCopyCapable(message))
                     {
                         Toast toast = Toast.makeText(this,
                                                      R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
@@ -2944,7 +2944,7 @@ public class MessageList
 
     private void onCopyChosenBatch(String folderName)
     {
-        if (mController.isCopyCapable(mAccount) == false)
+        if (!mController.isCopyCapable(mAccount))
         {
             return;
         }
@@ -2957,7 +2957,7 @@ public class MessageList
                 if (holder.selected)
                 {
                     Message message = holder.message;
-                    if (mController.isCopyCapable(message) == false)
+                    if (!mController.isCopyCapable(message))
                     {
                         Toast toast = Toast.makeText(this,
                                                      R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);

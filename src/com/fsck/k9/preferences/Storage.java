@@ -247,7 +247,7 @@ public class Storage implements SharedPreferences
     private void keyChange(String key)
     {
         ArrayList<String> changedKeys = workingChangedKeys.get();
-        if (changedKeys.contains(key) == false)
+        if (!changedKeys.contains(key))
         {
             changedKeys.add(key);
         }

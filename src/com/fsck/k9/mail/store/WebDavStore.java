@@ -203,7 +203,7 @@ public class WebDavStore extends Store
             }
         }
         String path = mPath;
-        if (path.length() > 0 && path.startsWith("/") == false)
+        if (path.length() > 0 && !path.startsWith("/"))
         {
             path = "/" + mPath;
         }
@@ -570,7 +570,7 @@ public class WebDavStore extends Store
     {
         boolean status = false;
         long currentTime = -1;
-        if (this.mAuthenticated == false)
+        if (!this.mAuthenticated)
         {
             status = true;
         }
@@ -990,7 +990,7 @@ public class WebDavStore extends Store
             else
             {
                 if (tryAuth &&
-                        mAuthenticated == false)
+                        !mAuthenticated)
                 {
                     doFBA();
                     sendRequest(url, method, messageBody, headers, false);
@@ -1217,7 +1217,7 @@ public class WebDavStore extends Store
                     encodedName = "Inbox";
                 }
                 this.mFolderUrl = WebDavStore.this.mUrl;
-                if (WebDavStore.this.mUrl.endsWith("/") == false)
+                if (!WebDavStore.this.mUrl.endsWith("/"))
                 {
                     this.mFolderUrl += "/";
                 }
@@ -1994,7 +1994,7 @@ public class WebDavStore extends Store
                     bodyEntity.setContentType("message/rfc822");
 
                     String messageURL = mFolderUrl;
-                    if (messageURL.endsWith("/") == false)
+                    if (!messageURL.endsWith("/"))
                     {
                         messageURL += "/";
                     }
@@ -2412,7 +2412,7 @@ public class WebDavStore extends Store
                 if (readStatus != null &&
                         !readStatus.equals(""))
                 {
-                    Boolean value = readStatus.equals("0") ? false : true;
+                    Boolean value = !readStatus.equals("0");
                     uidToRead.put(uid, value);
                 }
             }
@@ -2494,7 +2494,7 @@ public class WebDavStore extends Store
                         if (header.equals("read"))
                         {
                             String read = data.get(header);
-                            Boolean readStatus = read.equals("0") ? false : true;
+                            Boolean readStatus = !read.equals("0");
 
                             envelope.setReadStatus(readStatus);
                         }

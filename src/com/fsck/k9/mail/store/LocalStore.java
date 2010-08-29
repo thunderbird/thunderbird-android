@@ -695,7 +695,7 @@ public class LocalStore extends Store implements Serializable
             for (String queryField : queryFields)
             {
 
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(" OR ");
                 }
@@ -713,7 +713,7 @@ public class LocalStore extends Store implements Serializable
             boolean anyAdded = false;
             for (LocalFolder folder : folders)
             {
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(",");
                 }
@@ -729,7 +729,7 @@ public class LocalStore extends Store implements Serializable
             boolean anyAdded = false;
             for (Message message : messages)
             {
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(" OR ");
                 }
@@ -746,7 +746,7 @@ public class LocalStore extends Store implements Serializable
             boolean anyAdded = false;
             for (Flag flag : forbiddenFlags)
             {
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(" AND ");
                 }
@@ -763,7 +763,7 @@ public class LocalStore extends Store implements Serializable
             boolean anyAdded = false;
             for (Flag flag : requiredFlags)
             {
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(" OR ");
                 }
@@ -973,7 +973,7 @@ public class LocalStore extends Store implements Serializable
                 if (cursor.moveToFirst())
                 {
                     int folderId = cursor.getInt(0);
-                    return (folderId > 0) ? true : false;
+                    return (folderId > 0);
                 }
                 else
                 {
@@ -1748,11 +1748,11 @@ public class LocalStore extends Store implements Serializable
                 else
                 {
                     Message oldMessage = getMessage(uid);
-                    if (oldMessage != null && oldMessage.isSet(Flag.SEEN) == false)
+                    if (oldMessage != null && !oldMessage.isSet(Flag.SEEN))
                     {
                         setUnreadMessageCount(getUnreadMessageCount() - 1);
                     }
-                    if (oldMessage != null && oldMessage.isSet(Flag.FLAGGED) == true)
+                    if (oldMessage != null && oldMessage.isSet(Flag.FLAGGED))
                     {
                         setFlaggedMessageCount(getFlaggedMessageCount() - 1);
                     }
@@ -1831,11 +1831,11 @@ public class LocalStore extends Store implements Serializable
                         saveAttachment(messageUid, attachment, copy);
                     }
                     saveHeaders(messageUid, (MimeMessage)message);
-                    if (message.isSet(Flag.SEEN) == false)
+                    if (!message.isSet(Flag.SEEN))
                     {
                         setUnreadMessageCount(getUnreadMessageCount() + 1);
                     }
-                    if (message.isSet(Flag.FLAGGED) == true)
+                    if (message.isSet(Flag.FLAGGED))
                     {
                         setFlaggedMessageCount(getFlaggedMessageCount() + 1);
                     }
@@ -2218,11 +2218,11 @@ public class LocalStore extends Store implements Serializable
                 Message[] messages = getMessages(null);
                 for (Message message : messages)
                 {
-                    if (message.isSet(Flag.SEEN) == false)
+                    if (!message.isSet(Flag.SEEN))
                     {
                         newUnread++;
                     }
-                    if (message.isSet(Flag.FLAGGED) == true)
+                    if (message.isSet(Flag.FLAGGED))
                     {
                         newFlagged++;
                     }
@@ -4607,7 +4607,7 @@ public class LocalStore extends Store implements Serializable
 
                     catch (Exception e)
                     {
-                        if ("X_BAD_FLAG".equals(flag) == false)
+                        if (!"X_BAD_FLAG".equals(flag))
                         {
                             Log.w(K9.LOG_TAG, "Unable to parse flag " + flag);
                         }

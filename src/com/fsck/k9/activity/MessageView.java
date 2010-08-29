@@ -203,7 +203,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             ret = onKeyDown(event.getKeyCode(), event);
         }
-        if (ret == false)
+        if (!ret)
         {
             ret = super.dispatchKeyEvent(event);
         }
@@ -1859,11 +1859,11 @@ public class MessageView extends K9Activity implements OnClickListener
         getMenuInflater().inflate(R.menu.message_view_option, menu);
         optionsMenu = menu;
         prepareMenuItems();
-        if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+        if (!MessagingController.getInstance(getApplication()).isCopyCapable(mAccount))
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
         {
             menu.findItem(R.id.move).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
@@ -2220,7 +2220,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     // If the message contains external pictures and the "Show pictures"
                     // button wasn't already pressed, see if the user's preferences has us
                     // showing them anyway.
-                    if (hasExternalImages(text) && (mShowPictures == false))
+                    if (hasExternalImages(text) && !mShowPictures)
                     {
                         if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                                 ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
@@ -2558,7 +2558,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
         }
 
-        if (!true || ((mMessage == null) && (mPgpData.getDecryptedData() == null)))
+        if (false || ((mMessage == null) && (mPgpData.getDecryptedData() == null)))
         {
             mDecryptLayout.setVisibility(View.GONE);
             return;

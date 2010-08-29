@@ -918,7 +918,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             text += "\n" + mQuotedText.getText().toString();
         }
 
-        if (appendSig && mAccount.isSignatureBeforeQuotedText() == false)
+        if (appendSig && !mAccount.isSignatureBeforeQuotedText())
         {
             text = appendSignature(text);
         }
@@ -1666,7 +1666,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     final String subject = prefix.matcher(message.getSubject()).replaceFirst("");
 
-                    if (subject.toLowerCase().startsWith("re:") == false)
+                    if (!subject.toLowerCase().startsWith("re:"))
                     {
                         mSubjectView.setText("Re: " + subject);
                     }
