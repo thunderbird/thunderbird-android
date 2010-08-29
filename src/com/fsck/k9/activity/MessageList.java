@@ -3909,14 +3909,16 @@ public class MessageList
      */
     protected void setFlag(final List<MessageInfoHolder> holders, final Flag flag, final boolean newState)
     {
-        final List<Message> messageList = new ArrayList<Message>(holders.size());
-        if (messageList.isEmpty())
+        if (holders.isEmpty())
         {
             return;
         }
-        for (final MessageInfoHolder holder : holders)
+        final Message[] messageList = new Message[holders.size()];
+        int i = 0;
+        for (final Iterator<MessageInfoHolder> iterator = holders.iterator(); iterator.hasNext(); i++)
         {
-            messageList.add(holder.message);
+            final MessageInfoHolder holder = iterator.next();
+            messageList[i] = holder.message;
             if (flag == Flag.SEEN)
             {
                 holder.read = newState;
@@ -3926,7 +3928,7 @@ public class MessageList
                 holder.flagged = newState;
             }
         }
-        mController.setFlag(messageList.toArray(new Message[messageList.size()]), flag, newState);
+        mController.setFlag(messageList, flag, newState);
         mHandler.sortMessages();
     }
 
