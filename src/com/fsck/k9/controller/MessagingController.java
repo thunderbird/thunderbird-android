@@ -3665,14 +3665,7 @@ public class MessagingController implements Runnable
 
     public boolean isMoveCapable(Message message)
     {
-        if (!message.getUid().startsWith(K9.LOCAL_UID_PREFIX))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return !message.getUid().startsWith(K9.LOCAL_UID_PREFIX);
     }
     public boolean isCopyCapable(Message message)
     {
