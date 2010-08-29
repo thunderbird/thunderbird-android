@@ -4775,47 +4775,7 @@ public class LocalStore extends Store implements Serializable
         {
             if (flag == Flag.DELETED && set)
             {
-                /*
-                 * If a message is being marked as deleted we want to clear out it's content
-                 * and attachments as well. Delete will not actually remove the row since we need
-                 * to retain the uid for synchronization purposes.
-                 */
-
-                /*
-                 * Delete all of the messages' content to save space.
-                 */
-                ((LocalFolder) mFolder).deleteAttachments(getUid());
-
-                mDb.execSQL(
-                    "UPDATE messages SET " +
-                    "deleted = 1," +
-                    "subject = NULL, " +
-                    "sender_list = NULL, " +
-                    "date = NULL, " +
-                    "to_list = NULL, " +
-                    "cc_list = NULL, " +
-                    "bcc_list = NULL, " +
-                    "preview = NULL, " +
-                    "html_content = NULL, " +
-                    "text_content = NULL, " +
-                    "reply_to_list = NULL " +
-                    "WHERE id = ?",
-                    new Object[]
-                    {
-                        mId
-                    });
-
-                /*
-                 * Delete all of the messages' attachments to save space.
-                 */
-                mDb.execSQL("DELETE FROM attachments WHERE message_id = ?",
-                            new Object[]
-                            {
-                                mId
-                            });
-
-                ((LocalFolder)mFolder).deleteHeaders(mId);
-
+                delete();
             }
             else if (flag == Flag.X_DESTROYED && set)
             {
@@ -4883,7 +4843,54 @@ public class LocalStore extends Store implements Serializable
                         {
                             Utility.combine(getFlags(), ',').toUpperCase(), mId
                         });
+
+
         }
+
+        private void delete() throws MessagingException
+
+        {
+            /*
+             * Delete all of the message's content to save space.
+             */
+
+            mDb.execSQL(
+                "UPDATE messages SET " +
+                "deleted = 1," +
+                "subject = NULL, " +
+                "sender_list = NULL, " +
+                "date = NULL, " +
+                "to_list = NULL, " +
+                "cc_list = NULL, " +
+                "bcc_list = NULL, " +
+                "preview = NULL, " +
+                "html_content = NULL, " +
+                "text_content = NULL, " +
+                "reply_to_list = NULL " +
+                "WHERE id = ?",
+                new Object[]
+                {
+                    mId
+                });
+
+            /*
+             * Delete all of the message's attachments to save space.
+             * We do this explicit deletion here because we're not deleting the record
+             * in messages, which means our ON DELETE trigger for messages won't cascade
+             */
+            mDb.execSQL("DELETE FROM attachments WHERE message_id = ?",
+                        new Object[]
+                        {
+                            mId
+                        });
+
+            ((LocalFolder)mFolder).deleteAttachments(mId);
+            ((LocalFolder)mFolder).deleteHeaders(mId);
+
+
+        }
+
+
 
 
         private void loadHeaders()
