@@ -219,7 +219,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 if(K9.useVolumeKeysForNavigationEnabled())
                 {
-                    onPrevious(true);
+                    onNext(true);
                     return true;
                 }
             }
@@ -227,7 +227,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 if(K9.useVolumeKeysForNavigationEnabled())
                 {
-                    onNext(true);
+                    onPrevious(true);
                     return true;
                 }
             }
