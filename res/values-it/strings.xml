@@ -62,7 +62,7 @@
 	<string name="end_of_folder">Non vi sono altri messaggi</string>
 	<string name="message_header_mua">K-9 per Android <xliff:g id="version">%s</xliff:g></string>
 	<string name="message_compose_content_hint">Testo del messaggio</string>
-	<string name="message_list_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
+	<string name="message_list_to_fmt">A:</string>
 	<string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
 	<string name="message_view_cc_label">Cc:</string>
 	<string name="message_delete_failed">Impossibile cancellare il messaggio</string>

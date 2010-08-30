@@ -217,7 +217,7 @@
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Загрузить болюше сообщений</string>
-    <string name="message_list_to_fmt">Для:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_to_fmt">Для:</string>
     <string name="message_list_delete_action">Удалить</string>
     <string name="message_list_mark_read_action">Отметить как прочитанное</string>
     <string name="message_list_mark_unread_action">Отметить как непрочитанное</string>

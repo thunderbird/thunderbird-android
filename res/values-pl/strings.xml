@@ -238,7 +238,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Pobierz więcej wiadomości</string>
-    <string name="message_list_to_fmt">Do:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_to_fmt">Do:</string>
     <string name="message_list_delete_action">Usuń</string>
     <string name="message_list_mark_read_action">Przecz.</string>
     <string name="message_list_mark_unread_action">Nieprz.</string>

@@ -1,74 +1,26 @@
 package com.fsck.k9.activity;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.Spannable;
-import android.text.style.TextAppearanceSpan;
+import android.text.SpannableStringBuilder;
 import android.util.Config;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.text.format.DateFormat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.SearchSpecification;
-import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.activity.setup.FolderSettings;
-import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingController.SORT_TYPE;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 public class MessageInfoHolder implements Comparable<MessageInfoHolder>
@@ -78,7 +30,7 @@ public class MessageInfoHolder implements Comparable<MessageInfoHolder>
     public String fullDate;
     public Date compareDate;
     public String compareSubject;
-    public String sender;
+    public CharSequence sender;
     public String senderAddress;
     public String compareCounterparty;
     public String preview;
@@ -96,6 +48,8 @@ public class MessageInfoHolder implements Comparable<MessageInfoHolder>
     public String account;
     public String uri;
 
+    private Contacts mContacts;
+
     private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
 
     private boolean sortAscending = true;
@@ -111,6 +65,9 @@ public class MessageInfoHolder implements Comparable<MessageInfoHolder>
     public MessageInfoHolder(Context context, Message m)
     {
         this();
+
+        mContacts = Contacts.getInstance(context);
+
         Account account = m.getFolder().getAccount();
         mController = MessagingController.getInstance(K9.app);
         sortType = mController.getSortType();
@@ -122,6 +79,9 @@ public class MessageInfoHolder implements Comparable<MessageInfoHolder>
     public MessageInfoHolder(Context context ,Message m, SORT_TYPE t_sort, boolean asc)
     {
         this();
+
+        mContacts = Contacts.getInstance(context);
+
         Account account = m.getFolder().getAccount();
         mController = MessagingController.getInstance(K9.app);
         sortType = t_sort;
@@ -133,11 +93,15 @@ public class MessageInfoHolder implements Comparable<MessageInfoHolder>
     public MessageInfoHolder(Context context, Message m, FolderInfoHolder folder, Account account)
     {
         this();
+
+        mContacts = Contacts.getInstance(context);
+
         mController = MessagingController.getInstance(K9.app);
         sortType = mController.getSortType();
         sortAscending = mController.isSortAscending(sortType);
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
         populate(context, m, folder, account);
+
     }
 
     public void populate(Context context, Message m, FolderInfoHolder folder, Account account)
@@ -175,13 +139,13 @@ public class MessageInfoHolder implements Comparable<MessageInfoHolder>
 
             if (addrs.length > 0 &&  account.isAnIdentity(addrs[0]))
             {
-                this.compareCounterparty = Address.toFriendly(message .getRecipients(RecipientType.TO));
-                this.sender = String.format(context.getString(R.string.message_list_to_fmt), this.compareCounterparty);
-            }
+                CharSequence to = Address.toFriendly(message .getRecipients(RecipientType.TO), mContacts);
+                this.compareCounterparty = to.toString();
+                this.sender = new SpannableStringBuilder(context.getString(R.string.message_list_to_fmt)).append(to);            }
             else
             {
-                this.sender = Address.toFriendly(addrs);
-                this.compareCounterparty = this.sender;
+                this.sender = Address.toFriendly(addrs, mContacts);
+                this.compareCounterparty = this.sender.toString();
             }
 
             if (addrs.length > 0)

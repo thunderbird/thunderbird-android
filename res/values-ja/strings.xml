@@ -235,7 +235,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">他メールを読込</string>
-    <string name="message_list_to_fmt">宛先:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_to_fmt">宛先:</string>
     <string name="message_list_delete_action">削除</string>
     <string name="message_list_mark_read_action">既読にする</string>
     <string name="message_list_mark_unread_action">未読にする</string>

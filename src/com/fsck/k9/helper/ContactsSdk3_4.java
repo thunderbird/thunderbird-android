@@ -174,6 +174,45 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     }
 
     @Override
+    public Cursor searchByAddress(String address)
+    {
+        final String where;
+        final String[] args;
+        if (address == null)
+        {
+            where = null;
+            args = null;
+        }
+        else
+        {
+            where = Contacts.ContactMethods.DATA + " = ?";
+            args = new String[] {address};
+        }
+
+        final Cursor c = mContentResolver.query(
+                Contacts.ContactMethods.CONTENT_EMAIL_URI,
+                PROJECTION,
+                where,
+                args,
+                SORT_ORDER);
+
+        if (c != null)
+        {
+            /*
+             * To prevent expensive execution in the UI thread:
+             * Cursors get lazily executed, so if you don't call anything on
+             * the cursor before returning it from the background thread you'll
+             * have a complied program for the cursor, but it won't have been
+             * executed to generate the data yet. Often the execution is more
+             * expensive than the compilation...
+             */
+            c.getCount();
+        }
+
+        return c;
+    }
+
+    @Override
     public String getName(Cursor c)
     {
         return c.getString(NAME_INDEX);

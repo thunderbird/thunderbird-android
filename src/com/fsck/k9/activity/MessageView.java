@@ -428,11 +428,11 @@ public class MessageView extends K9Activity implements OnClickListener
 
         public void setHeaders(
             final   String subject,
-            final   String from,
+            final   CharSequence from,
             final   String date,
             final   String time,
-            final   String to,
-            final   String cc,
+            final   CharSequence to,
+            final   CharSequence cc,
             final   int accountColor,
             final   boolean unread,
             final   boolean hasAttachments,
@@ -2093,11 +2093,11 @@ public class MessageView extends K9Activity implements OnClickListener
                             final Message message) throws MessagingException
     {
         String subjectText = message.getSubject();
-        String fromText = Address.toFriendly(message.getFrom());
+        CharSequence fromText = Address.toFriendly(message.getFrom(), mContacts);
         String dateText = getDateFormat().format(message.getSentDate());
         String timeText = getTimeFormat().format(message.getSentDate());
-        String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
-        String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
+        CharSequence toText = Address.toFriendly(message.getRecipients(RecipientType.TO), mContacts);
+        CharSequence ccText = Address.toFriendly(message.getRecipients(RecipientType.CC), mContacts);
 
         int color = mAccount.getChipColor();
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;

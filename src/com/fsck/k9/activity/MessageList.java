@@ -12,11 +12,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
-import android.text.style.TextAppearanceSpan;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
@@ -59,6 +62,7 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingController.SORT_TYPE;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -437,6 +441,7 @@ public class MessageList
     {
         context=this;
         super.onCreate(savedInstanceState);
+
         mInflater = getLayoutInflater();
         initializeLayout();
         onNewIntent(getIntent());
@@ -2416,21 +2421,20 @@ public class MessageList
                  * compose a custom view containing the preview and the
                  * from.
                  */
-                holder.preview.setText(message.sender + " " + message.preview,
+                holder.preview.setText(new SpannableStringBuilder(message.sender).append(" ").append(message.preview),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create our span sections, and assign a format to each.
-                str.setSpan(
-                    new TextAppearanceSpan(
-                        null,
-                        Typeface.BOLD,
-                        -1,
-                        holder.subject.getTextColors(),
-                        holder.subject.getLinkTextColors()),
+                str.setSpan(new StyleSpan(Typeface.BOLD),
                     0,
                     message.sender.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+                str.setSpan(new ForegroundColorSpan(Color.rgb(128,128,128)), // TODO: How do I can specify the android.R.attr.textColorTertiary
+                        message.sender.length(),
+                        str.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 );
             }
             else

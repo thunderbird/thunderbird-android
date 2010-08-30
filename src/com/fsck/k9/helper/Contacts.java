@@ -147,6 +147,8 @@ public abstract class Contacts
      */
     public abstract Cursor searchContacts(CharSequence filter);
 
+    public abstract Cursor searchByAddress(String address);
+
     /**
      * Extract the name from a {@link Cursor} instance returned by
      * {@link #searchContacts(CharSequence)}.

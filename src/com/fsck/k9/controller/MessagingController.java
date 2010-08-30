@@ -4570,7 +4570,7 @@ public class MessagingController implements Runnable
             if (message != null && message.getFrom() != null)
             {
                 Address[] fromAddrs = message.getFrom();
-                String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly() : null;
+                String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly().toString() : null;
                 String subject = message.getSubject();
                 if (subject == null)
                 {
@@ -4593,7 +4593,7 @@ public class MessagingController implements Runnable
                         }
 
                         Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
-                        String to = rcpts.length > 0 ? rcpts[0].toFriendly() : null;
+                        String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
                         if (to != null)
                         {
                             messageNotice.append(String.format(context.getString(R.string.message_list_to_fmt), to) +": "+subject);

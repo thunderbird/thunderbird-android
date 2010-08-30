@@ -227,7 +227,7 @@
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
   <string name="message_list_load_more_messages_action">Charger plus de messages</string>
-  <string name="message_list_to_fmt">Pour\u00A0: <xliff:g id="counterParty">%s</xliff:g></string>
+  <string name="message_list_to_fmt">Pour\u00A0: </string>
   <string name="message_list_delete_action">Supprimer</string>
   <string name="message_list_mark_read_action">Marquer comme lu</string>
   <string name="message_list_mark_unread_action">Marquer comme non lu</string>
