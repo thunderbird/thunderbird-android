@@ -143,7 +143,21 @@ public class Threader
                 case HALT:
                     break main;
                 case LAST:
-                    current = last;
+                    if (current == root)
+                    {
+                        throw new IllegalStateException(
+                                "Only CONTINUE/HALT are supported for the root node");
+                    }
+                    else if (last.getParent() == null)
+                    {
+                        // last has no parent, meaning that it has been removed
+                        // from the tree, restarting iteration
+                        current = root;
+                    }
+                    else
+                    {
+                        current = last;
+                    }
                     continue main;
                 case CONTINUE:
                     break choose;
