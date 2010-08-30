@@ -675,6 +675,31 @@ public class MessageList
         // Shortcuts that work no matter what is selected
         switch (keyCode)
         {
+
+        // messagelist is actually a K9Activity, not a K9ListActivity
+        // This saddens me greatly, but to support volume key navigation
+        // in MessageView, we implement this bit of wrapper code
+            case KeyEvent.KEYCODE_VOLUME_UP:
+            {
+                if(K9.useVolumeKeysForNavigationEnabled())
+                {
+
+                    if (mListView.getSelectedItemPosition() > 0) {
+                        mListView.setSelection(mListView.getSelectedItemPosition()-1);
+                    }
+                    return true;
+                }
+            }
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+            {
+                if(K9.useVolumeKeysForNavigationEnabled())
+                {
+                    if (mListView.getSelectedItemPosition() < mListView.getCount()) {
+                        mListView.setSelection(mListView.getSelectedItemPosition()+1);
+                    }
+                    return true;
+                }
+            }
             case KeyEvent.KEYCODE_DPAD_LEFT:
             {
                 if (mBatchButtonArea.hasFocus())
@@ -803,6 +828,21 @@ public class MessageList
 
         return result;
     }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event)
+    {
+        // Swallow these events too to avoid the audible notification of a volume change
+        if(K9.useVolumeKeysForNavigationEnabled()) {
+            if((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "Swallowed key up.");
+                return true;
+            }
+        }
+        return super.onKeyUp(keyCode,event);
+    }
+
 
     private void onOpenMessage(MessageInfoHolder message)
     {
