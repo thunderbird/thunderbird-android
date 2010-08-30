@@ -158,11 +158,11 @@ public class FontSizes
         editor.putInt(MESSAGE_LIST_SENDER, messageListSender);
         editor.putInt(MESSAGE_LIST_DATE, messageListDate);
 
-        editor.putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
+        editor.putInt(MESSAGE_VIEW_SENDER, messageViewSender);
         editor.putInt(MESSAGE_VIEW_TO, messageViewTo);
         editor.putInt(MESSAGE_VIEW_CC, messageViewCC);
         editor.putInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
-        editor.putInt(MESSAGE_VIEW_SENDER, messageViewSender);
+        editor.putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         editor.putInt(MESSAGE_VIEW_TIME, messageViewTime);
         editor.putInt(MESSAGE_VIEW_DATE, messageViewDate);
         editor.putInt(MESSAGE_VIEW_CONTENT, getMessageViewContentAsInt());
@@ -185,11 +185,11 @@ public class FontSizes
         messageListSender = prefs.getInt(MESSAGE_LIST_SENDER, messageListSender);
         messageListDate = prefs.getInt(MESSAGE_LIST_DATE, messageListDate);
 
-        messageViewSubject = prefs.getInt(MESSAGE_VIEW_SENDER, FONT_12DIP);
+        messageViewSender = prefs.getInt(MESSAGE_VIEW_SENDER, messageViewSender);
         messageViewTo = prefs.getInt(MESSAGE_VIEW_TO, messageViewTo);
         messageViewCC = prefs.getInt(MESSAGE_VIEW_CC, messageViewCC);
         messageViewAdditionalHeaders = prefs.getInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
-        messageViewSender = prefs.getInt(MESSAGE_VIEW_SUBJECT, messageViewSender);
+        messageViewSubject = prefs.getInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         messageViewTime = prefs.getInt(MESSAGE_VIEW_TIME, messageViewTime);
         messageViewDate = prefs.getInt(MESSAGE_VIEW_DATE, messageViewDate);
         setMessageViewContent(prefs.getInt(MESSAGE_VIEW_CONTENT, 3));

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.fsck.k9.crypto.Apg;
+import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder;
@@ -46,6 +47,8 @@ public class Account implements BaseAccount
     private static String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
     private static final String DEFAULT_QUOTE_PREFIX = ">";
+
+    private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
 
     /**
      * <pre>
@@ -108,9 +111,12 @@ public class Account implements BaseAccount
     // current set of fetched messages
     private boolean mRingNotified;
     private String mQuotePrefix;
+    private boolean mReplyAfterQuote;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
     private boolean mCryptoAutoSignature;
+
+    private CryptoProvider mCryptoProvider = null;
 
     /**
      * Name of the folder that was last selected for a copy or move operation.
@@ -180,6 +186,7 @@ public class Account implements BaseAccount
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
+        mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mSyncRemoteDeletions = true;
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
@@ -263,6 +270,7 @@ public class Account implements BaseAccount
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid
                                          + ".maximumAutoDownloadMessageSize", 32768);
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
+        mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
         for (String type : networkTypes)
         {
             Boolean useCompression = prefs.getBoolean(mUuid + ".useCompression." + type,
@@ -313,7 +321,7 @@ public class Account implements BaseAccount
         try
         {
             mShowPictures = ShowPictures.valueOf(prefs.getString(mUuid + ".showPicturesEnum",
-                                          ShowPictures.NEVER.name()));
+                                                 ShowPictures.NEVER.name()));
         }
         catch (Exception e)
         {
@@ -377,7 +385,7 @@ public class Account implements BaseAccount
         mIsSignatureBeforeQuotedText = prefs.getBoolean(mUuid  + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(prefs);
 
-        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", "");
+        mCryptoApp = prefs.getString(mUuid + ".cryptoApp", Apg.NAME);
         mCryptoAutoSignature = prefs.getBoolean(mUuid + ".cryptoAutoSignature", false);
     }
 
@@ -1437,6 +1445,16 @@ public class Account implements BaseAccount
         mQuotePrefix = quotePrefix;
     }
 
+    public synchronized boolean isReplyAfterQuote()
+    {
+        return mReplyAfterQuote;
+    }
+
+    public synchronized void setReplyAfterQuote(boolean replyAfterQuote)
+    {
+        mReplyAfterQuote = replyAfterQuote;
+    }
+
     public boolean getEnableMoveButtons()
     {
         return mEnableMoveButtons;
@@ -1455,6 +1473,8 @@ public class Account implements BaseAccount
     public void setCryptoApp(String cryptoApp)
     {
         mCryptoApp = cryptoApp;
+        // invalidate the provider
+        mCryptoProvider = null;
     }
 
     public boolean getCryptoAutoSignature()
@@ -1484,5 +1504,14 @@ public class Account implements BaseAccount
     public synchronized void setLastSelectedFolderName(String folderName)
     {
         lastSelectedFolderName = folderName;
+    }
+
+    public synchronized CryptoProvider getCryptoProvider()
+    {
+        if (mCryptoProvider == null)
+        {
+            mCryptoProvider = CryptoProvider.createInstance(getCryptoApp());
+        }
+        return mCryptoProvider;
     }
 }

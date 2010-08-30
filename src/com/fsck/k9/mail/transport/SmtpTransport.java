@@ -180,17 +180,19 @@ public class SmtpTransport extends Transport
 
             InetAddress localAddress = mSocket.getLocalAddress();
             String localHost = localAddress.getHostName();
+            String ipAddr = localAddress.getHostAddress();
 
-            if (localHost.equals(localAddress.getHostAddress()))
+            if (localHost.equals(ipAddr) || localHost.contains("_"))
             {
-                // We don't have a FQDN, so use IP address.
+                // We don't have a FQDN or the hostname contains invalid
+                // characters (see issue 2143), so use IP address.
                 if (localAddress instanceof Inet6Address)
                 {
-                    localHost = "[IPV6:" + localHost + "]";
+                    localHost = "[IPV6:" + ipAddr + "]";
                 }
                 else
                 {
-                    localHost = "[" + localHost + "]";
+                    localHost = "[" + ipAddr + "]";
                 }
             }
 
@@ -245,15 +247,15 @@ public class SmtpTransport extends Transport
             boolean authCramMD5Supported = false;
             for (String result : results)
             {
-                if (result.matches(".*AUTH.*LOGIN.*$") == true)
+                if (result.matches(".*AUTH.*LOGIN.*$"))
                 {
                     authLoginSupported = true;
                 }
-                if (result.matches(".*AUTH.*PLAIN.*$") == true)
+                if (result.matches(".*AUTH.*PLAIN.*$"))
                 {
                     authPlainSupported = true;
                 }
-                if (result.matches(".*AUTH.*CRAM-MD5.*$") == true && mAuthType != null && mAuthType.equals("CRAM_MD5"))
+                if (result.matches(".*AUTH.*CRAM-MD5.*$") && mAuthType != null && mAuthType.equals("CRAM_MD5"))
                 {
                     authCramMD5Supported = true;
                 }

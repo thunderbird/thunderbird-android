@@ -14,7 +14,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
@@ -23,14 +22,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.text.style.TextAppearanceSpan;
-import android.util.Config;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -85,12 +84,10 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-
 
 /**
  * MessageList is the primary user interface for the program. This Activity
@@ -462,6 +459,7 @@ public class MessageList
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         mInflater = getLayoutInflater();
         initializeLayout();
         onNewIntent(getIntent());
@@ -701,6 +699,31 @@ public class MessageList
         // Shortcuts that work no matter what is selected
         switch (keyCode)
         {
+
+        // messagelist is actually a K9Activity, not a K9ListActivity
+        // This saddens me greatly, but to support volume key navigation
+        // in MessageView, we implement this bit of wrapper code
+            case KeyEvent.KEYCODE_VOLUME_UP:
+            {
+                if(K9.useVolumeKeysForNavigationEnabled())
+                {
+
+                    if (mListView.getSelectedItemPosition() > 0) {
+                        mListView.setSelection(mListView.getSelectedItemPosition()-1);
+                    }
+                    return true;
+                }
+            }
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+            {
+                if(K9.useVolumeKeysForNavigationEnabled())
+                {
+                    if (mListView.getSelectedItemPosition() < mListView.getCount()) {
+                        mListView.setSelection(mListView.getSelectedItemPosition()+1);
+                    }
+                    return true;
+                }
+            }
             case KeyEvent.KEYCODE_DPAD_LEFT:
             {
                 if (mBatchButtonArea.hasFocus())
@@ -751,7 +774,6 @@ public class MessageList
             }
         }
 
-        boolean result;
         int position = mListView.getSelectedItemPosition();
         try
         {
@@ -831,11 +853,25 @@ public class MessageList
         }
         finally
         {
-            result = super.onKeyDown(keyCode, event);
+            return super.onKeyDown(keyCode, event);
         }
 
-        return result;
     }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event)
+    {
+        // Swallow these events too to avoid the audible notification of a volume change
+        if(K9.useVolumeKeysForNavigationEnabled()) {
+            if((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "Swallowed key up.");
+                return true;
+            }
+        }
+        return super.onKeyUp(keyCode,event);
+    }
+
 
     private void onOpenMessage(MessageInfoHolder message)
     {
@@ -1612,7 +1648,7 @@ public class MessageList
             case R.id.same_sender:
             {
                 MessageList.actionHandle(MessageList.this,
-                                         "From "+holder.sender, holder.sender, true,
+                                         "From "+holder.sender, holder.senderAddress, true,
                                          null, null);
                 break;
             }
@@ -1963,12 +1999,12 @@ public class MessageList
         }
 
         Account account = message.message.getFolder().getAccount();
-        if (mController.isCopyCapable(account) == false)
+        if (!mController.isCopyCapable(account))
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
 
-        if (mController.isMoveCapable(account) == false)
+        if (!mController.isMoveCapable(account))
         {
             menu.findItem(R.id.move).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
@@ -2472,7 +2508,7 @@ public class MessageList
                     }
                     messageInfo.setDate(holder.compareDate);
                     messageInfo.setSubject(holder.subject);
-                    messageInfo.setSender(holder.sender);
+                    messageInfo.setSender(holder.sender.toString());
 
                     messageInfo.setTag(holder);
 
@@ -2485,14 +2521,6 @@ public class MessageList
             mGroups.clear();
             mGroups.addAll(messageGroups);
 
-            for (MessageGroup<MessageInfoHolder> messageGroup : messageGroups)
-            {
-                final List<MessageInfo<MessageInfoHolder>> groupMessages = messageGroup.getMessages();
-                final MessageInfoHolder holder = groupMessages.get(0).getTag();
-                holder.group = messageGroup;
-            }
-
-            // TODO: sort group messages?
         }
 
         private void synchronizeFastScroll()
@@ -2564,7 +2592,7 @@ public class MessageList
                 {
                     if (updateForMe(account, folder))
                     {
-                        m = new MessageInfoHolder(message);
+                        m = new MessageInfoHolder(MessageList.this, message);
                         messagesToAdd.add(m);
                     }
                     else
@@ -2577,7 +2605,7 @@ public class MessageList
                             }
                             else
                             {
-                                m = new MessageInfoHolder(message);
+                                m = new MessageInfoHolder(MessageList.this, message);
                                 messagesToAdd.add(m);
                             }
                         }
@@ -2585,7 +2613,7 @@ public class MessageList
                 }
                 else
                 {
-                    m.populate(message, new FolderInfoHolder(message.getFolder(), account), account);
+                    m.populate(MessageList.this, message, new FolderInfoHolder(MessageList.this, message.getFolder(), account), account);
                     needsSort = true;
                 }
             }
@@ -2656,7 +2684,7 @@ public class MessageList
             {
                 LocalStore localStore = account.getLocalStore();
                 local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder((Folder)local_folder, account);
+                return new FolderInfoHolder(MessageList.this, (Folder)local_folder, account);
             }
             catch (Exception e)
             {
@@ -2755,12 +2783,12 @@ public class MessageList
 
                 holder.flagged.setOnClickListener(flaggedClickListener);
 
-                if (mStars == false)
+                if (!mStars)
                 {
                     holder.flagged.setVisibility(View.GONE);
                 }
 
-                if (mCheckboxes == true)
+                if (mCheckboxes)
                 {
                     holder.selected.setVisibility(View.VISIBLE);
                 }
@@ -2828,7 +2856,7 @@ public class MessageList
 
         /**
          * Associate model data to view object.
-         * 
+         *
          * @param groupPosition
          *            the position of the group that contains the child
          * @param position
@@ -2884,21 +2912,20 @@ public class MessageList
                  * compose a custom view containing the preview and the
                  * from.
                  */
-                holder.preview.setText(message.sender + " " + message.preview,
+                holder.preview.setText(new SpannableStringBuilder(message.sender).append(" ").append(message.preview),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create our span sections, and assign a format to each.
-                str.setSpan(
-                    new TextAppearanceSpan(
-                        null,
-                        Typeface.BOLD,
-                        -1,
-                        holder.subject.getTextColors(),
-                        holder.subject.getLinkTextColors()),
+                str.setSpan(new StyleSpan(Typeface.BOLD),
                     0,
                     message.sender.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+                str.setSpan(new ForegroundColorSpan(Color.rgb(128,128,128)), // TODO: How do I can specify the android.R.attr.textColorTertiary
+                        message.sender.length(),
+                        str.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 );
             }
             else
@@ -2961,7 +2988,7 @@ public class MessageList
                 }
                 else
                 {
-                    if (mCurrentFolder.lastCheckFailed == false)
+                    if (!mCurrentFolder.lastCheckFailed)
                     {
                         holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
                     }
@@ -3208,7 +3235,7 @@ public class MessageList
                             final String address = from[0].getAddress().toLowerCase(Locale.US);
                             if (!senders.containsKey(address))
                             {
-                                final String friendly = from[0].toFriendly();
+                                final String friendly = from[0].toFriendly().toString();
                                 // XXX toFriendly isn't as friendly as Gmail implementation which display only the first part to gain space
                                 senders.put(address, friendly);
                             }
@@ -3383,202 +3410,6 @@ public class MessageList
 
     }
 
-    public class MessageInfoHolder implements Comparable<MessageInfoHolder>
-    {
-        protected MessageGroup<MessageInfoHolder> group;
-        public String subject;
-        public String date;
-        public Date compareDate;
-        public String compareSubject;
-        public String sender;
-        public String compareCounterparty;
-        public String preview;
-        public String[] recipients;
-        public boolean hasAttachments;
-        public String uid;
-        public boolean read;
-        public boolean answered;
-        public boolean flagged;
-        public boolean downloaded;
-        public boolean partially_downloaded;
-        public Message message;
-        public FolderInfoHolder folder;
-        public boolean selected;
-
-        // Empty constructor for comparison
-        private MessageInfoHolder()
-        {
-            this.selected = false;
-        }
-
-        public MessageInfoHolder(Message m)
-        {
-            this();
-            Account account = m.getFolder().getAccount();
-            populate(m, new FolderInfoHolder(m.getFolder(), m.getFolder().getAccount()), account);
-        }
-
-        public MessageInfoHolder(Message m, FolderInfoHolder folder, Account account)
-        {
-            this();
-            populate(m, folder, account);
-        }
-
-        public void populate(Message m, FolderInfoHolder folder, Account account)
-        {
-            try
-            {
-                LocalMessage message = (LocalMessage) m;
-                Date date = message.getSentDate();
-                this.compareDate = message.getSentDate();
-                if (this.compareDate == null)
-                {
-                    this.compareDate = message.getInternalDate();
-                }
-
-                this.folder = folder;
-
-                if (Utility.isDateToday(date))
-                {
-                    this.date = getTimeFormat().format(date);
-                }
-                else
-                {
-                    this.date = getDateFormat().format(date);
-                }
-
-                this.hasAttachments = message.getAttachmentCount() > 0;
-
-                this.read = message.isSet(Flag.SEEN);
-                this.answered = message.isSet(Flag.ANSWERED);
-                this.flagged = message.isSet(Flag.FLAGGED);
-                this.downloaded = message.isSet(Flag.X_DOWNLOADED_FULL);
-                this.partially_downloaded = message.isSet(Flag.X_DOWNLOADED_PARTIAL);
-
-                Address[] addrs = message.getFrom();
-
-                if (addrs.length > 0 &&  account.isAnIdentity(addrs[0]))
-                {
-                    this.compareCounterparty = Address.toFriendly(message .getRecipients(RecipientType.TO));
-                    this.sender = String.format(getString(R.string.message_list_to_fmt), this.compareCounterparty);
-                }
-                else
-                {
-                    this.sender = Address.toFriendly(addrs);
-                    this.compareCounterparty = this.sender;
-                }
-
-                this.subject = message.getSubject();
-
-                this.uid = message.getUid();
-                this.message = m;
-                this.preview = message.getPreview();
-            }
-            catch (MessagingException me)
-            {
-                if (Config.LOGV)
-                {
-                    Log.v(K9.LOG_TAG, "Unable to load message info", me);
-                }
-            }
-        }
-
-        @Override
-        public boolean equals(Object o)
-        {
-            if (o instanceof MessageInfoHolder == false)
-            {
-                return false;
-            }
-            MessageInfoHolder other = (MessageInfoHolder)o;
-            return message.equals(other.message);
-        }
-
-        @Override
-        public int hashCode()
-        {
-            return uid.hashCode();
-        }
-
-        @Override
-        public int compareTo(MessageInfoHolder o)
-        {
-            int ascender = (sortAscending ? 1 : -1);
-            int comparison = 0;
-
-            if (sortType == SORT_TYPE.SORT_SUBJECT)
-            {
-                if (compareSubject == null)
-                {
-                    compareSubject = stripPrefixes(subject).toLowerCase();
-                }
-
-                if (o.compareSubject == null)
-                {
-                    o.compareSubject = stripPrefixes(o.subject).toLowerCase();
-                }
-
-                comparison = this.compareSubject.compareTo(o.compareSubject);
-            }
-            else if (sortType == SORT_TYPE.SORT_SENDER)
-            {
-                comparison = this.compareCounterparty.toLowerCase().compareTo(o.compareCounterparty.toLowerCase());
-            }
-            else if (sortType == SORT_TYPE.SORT_FLAGGED)
-            {
-                comparison = (this.flagged ? 0 : 1) - (o.flagged ? 0 : 1);
-            }
-            else if (sortType == SORT_TYPE.SORT_UNREAD)
-            {
-                comparison = (this.read ? 1 : 0) - (o.read ? 1 : 0);
-            }
-            else if (sortType == SORT_TYPE.SORT_ATTACHMENT)
-            {
-                comparison = (this.hasAttachments ? 0 : 1) - (o.hasAttachments ? 0 : 1);
-            }
-
-            if (comparison != 0)
-            {
-                return comparison * ascender;
-            }
-
-            int dateAscender = (sortDateAscending ? 1 : -1);
-
-            return this.compareDate.compareTo(o.compareDate) * dateAscender;
-        }
-
-        Pattern pattern = null;
-        String patternString = "^ *(re|aw|fw|fwd): *";
-        private String stripPrefixes(String in)
-        {
-            synchronized (patternString)
-            {
-                if (pattern == null)
-                {
-                    pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
-                }
-            }
-
-            Matcher matcher = pattern.matcher(in);
-
-            int lastPrefix = -1;
-
-            while (matcher.find())
-            {
-                lastPrefix = matcher.end();
-            }
-
-            if (lastPrefix > -1 && lastPrefix < in.length() - 1)
-            {
-                return in.substring(lastPrefix);
-            }
-            else
-            {
-                return in;
-            }
-        }
-    }
-
     class MessageViewHolder
             implements OnCheckedChangeListener
     {
@@ -3615,7 +3446,7 @@ public class MessageList
                     message.selected = isChecked;
                     if (!mCheckboxes)
                     {
-                        if (isChecked == true)
+                        if (isChecked)
                         {
                             selected.setVisibility(View.VISIBLE);
                         }
@@ -3691,70 +3522,6 @@ public class MessageList
         public TextView main;
     }
 
-    public class FolderInfoHolder
-    {
-        public String name;
-        public String displayName;
-        public boolean loading;
-        public boolean lastCheckFailed;
-        public Folder folder;
-
-        /**
-         * Outbox is handled differently from any other folder.
-         */
-        public boolean outbox;
-
-        public FolderInfoHolder(Folder folder, Account account)
-        {
-            populate(folder, account);
-        }
-
-        public void populate(Folder folder, Account account)
-        {
-            this.folder = folder;
-            this.name = folder.getName();
-
-            if (this.name.equalsIgnoreCase(K9.INBOX))
-            {
-                this.displayName = getString(R.string.special_mailbox_name_inbox);
-            }
-            else
-            {
-                this.displayName = this.name;
-            }
-
-            if (this.name.equals(account.getOutboxFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_outbox_fmt), this.name);
-                this.outbox = true;
-            }
-
-            if (this.name.equals(account.getDraftsFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_drafts_fmt), this.name);
-            }
-
-            if (this.name.equals(account.getTrashFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_trash_fmt), this.name);
-            }
-
-            if (this.name.equals(account.getSentFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_sent_fmt), this.name);
-            }
-
-            if (this.name.equals(account.getArchiveFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_archive_fmt), this.name);
-            }
-
-            if (this.name.equals(account.getSpamFolderName()))
-            {
-                this.displayName = String.format(getString(R.string.special_mailbox_name_spam_fmt), this.name);
-            }
-        }
-    }
 
     private boolean computeBatchDirection(boolean flagged)
     {

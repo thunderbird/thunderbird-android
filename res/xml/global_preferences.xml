@@ -56,6 +56,11 @@
             android:summary="@string/gestures_summary" />
 
         <CheckBoxPreference
+            android:key="volumeNavigation"
+            android:title="@string/volume_navigation_title"
+            android:summary="@string/volume_navigation_summary" />
+
+        <CheckBoxPreference
             android:key="manage_back"
             android:title="@string/manage_back_title"
             android:summary="@string/manage_back_summary" />

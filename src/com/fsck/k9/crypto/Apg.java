@@ -59,7 +59,6 @@ public class Apg extends CryptoProvider
 
     public static final String EXTRA_TEXT = "text";
     public static final String EXTRA_DATA = "data";
-    public static final String EXTRA_STATUS = "status";
     public static final String EXTRA_ERROR = "error";
     public static final String EXTRA_DECRYPTED_MESSAGE = "decryptedMessage";
     public static final String EXTRA_ENCRYPTED_MESSAGE = "encryptedMessage";
@@ -70,15 +69,12 @@ public class Apg extends CryptoProvider
     public static final String EXTRA_SIGNATURE_UNKNOWN = "signatureUnknown";
     public static final String EXTRA_USER_ID = "userId";
     public static final String EXTRA_KEY_ID = "keyId";
-    public static final String EXTRA_REPLY_TO = "replyTo";
-    public static final String EXTRA_SEND_TO = "sendTo";
-    public static final String EXTRA_SUBJECT = "subject";
     public static final String EXTRA_ENCRYPTION_KEY_IDS = "encryptionKeyIds";
     public static final String EXTRA_SELECTION = "selection";
     public static final String EXTRA_MESSAGE = "message";
-    public static final String EXTRA_PROGRESS = "progress";
-    public static final String EXTRA_MAX = "max";
-    public static final String EXTRA_ACCOUNT = "account";
+    public static final String EXTRA_INTENT_VERSION = "intentVersion";
+
+    public static final String INTENT_VERSION = "1";
 
     public static final int DECRYPT_MESSAGE = 0x21070001;
     public static final int ENCRYPT_MESSAGE = 0x21070002;
@@ -93,7 +89,7 @@ public class Apg extends CryptoProvider
         Pattern.compile(".*?(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
                         Pattern.DOTALL);
 
-    public static Apg createInstance(Account account)
+    public static Apg createInstance()
     {
         return new Apg();
     }
@@ -132,12 +128,14 @@ public class Apg extends CryptoProvider
      * Select the signature key.
      *
      * @param activity
+     * @param pgpData
      * @return success or failure
      */
     @Override
-    public boolean selectSecretKey(Activity activity)
+    public boolean selectSecretKey(Activity activity, PgpData pgpData)
     {
         android.content.Intent intent = new android.content.Intent(Intent.SELECT_SECRET_KEY);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         try
         {
             activity.startActivityForResult(intent, Apg.SELECT_SECRET_KEY);
@@ -157,19 +155,21 @@ public class Apg extends CryptoProvider
      *
      * @param activity
      * @param emails The emails that should be used for preselection.
+     * @param pgpData
      * @return success or failure
      */
     @Override
-    public boolean selectEncryptionKeys(Activity activity, String emails)
+    public boolean selectEncryptionKeys(Activity activity, String emails, PgpData pgpData)
     {
         android.content.Intent intent = new android.content.Intent(Apg.Intent.SELECT_PUBLIC_KEYS);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         long[] initialKeyIds = null;
-        if (!hasEncryptionKeys())
+        if (!pgpData.hasEncryptionKeys())
         {
             Vector<Long> keyIds = new Vector<Long>();
-            if (hasSignatureKey())
+            if (pgpData.hasSignatureKey())
             {
-                keyIds.add(getSignatureKeyId());
+                keyIds.add(pgpData.getSignatureKeyId());
             }
 
             try
@@ -210,7 +210,7 @@ public class Apg extends CryptoProvider
         }
         else
         {
-            initialKeyIds = mEncryptionKeyIds;
+            initialKeyIds = pgpData.getEncryptionKeys();
         }
         intent.putExtra(Apg.EXTRA_SELECTION, initialKeyIds);
         try
@@ -323,7 +323,7 @@ public class Apg extends CryptoProvider
      */
     @Override
     public boolean onActivityResult(Activity activity, int requestCode, int resultCode,
-                                    android.content.Intent data)
+                                    android.content.Intent data, PgpData pgpData)
     {
         switch (requestCode)
         {
@@ -332,37 +332,37 @@ public class Apg extends CryptoProvider
                 {
                     break;
                 }
-                setSignatureKeyId(data.getLongExtra(Apg.EXTRA_KEY_ID, 0));
-                setSignatureUserId(data.getStringExtra(Apg.EXTRA_USER_ID));
+                pgpData.setSignatureKeyId(data.getLongExtra(Apg.EXTRA_KEY_ID, 0));
+                pgpData.setSignatureUserId(data.getStringExtra(Apg.EXTRA_USER_ID));
                 ((MessageCompose) activity).updateEncryptLayout();
                 break;
 
             case Apg.SELECT_PUBLIC_KEYS:
                 if (resultCode != Activity.RESULT_OK || data == null)
                 {
-                    mEncryptionKeyIds = null;
+                    pgpData.setEncryptionKeys(null);
                     ((MessageCompose) activity).onEncryptionKeySelectionDone();
                     break;
                 }
-                mEncryptionKeyIds = data.getLongArrayExtra(Apg.EXTRA_SELECTION);
+                pgpData.setEncryptionKeys(data.getLongArrayExtra(Apg.EXTRA_SELECTION));
                 ((MessageCompose) activity).onEncryptionKeySelectionDone();
                 break;
 
             case Apg.ENCRYPT_MESSAGE:
                 if (resultCode != Activity.RESULT_OK || data == null)
                 {
-                    mEncryptedData = null;
+                    pgpData.setEncryptionKeys(null);
                     ((MessageCompose) activity).onEncryptDone();
                     break;
                 }
-                mEncryptedData = data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE);
+                pgpData.setEncryptedData(data.getStringExtra(Apg.EXTRA_ENCRYPTED_MESSAGE));
                 // this was a stupid bug in an earlier version, just gonna leave this in for an APG
                 // version or two
-                if (mEncryptedData == null)
+                if (pgpData.getEncryptedData() == null)
                 {
-                    mEncryptedData = data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE);
+                    pgpData.setEncryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
                 }
-                if (mEncryptedData != null)
+                if (pgpData.getEncryptedData() != null)
                 {
                     ((MessageCompose) activity).onEncryptDone();
                 }
@@ -374,12 +374,12 @@ public class Apg extends CryptoProvider
                     break;
                 }
 
-                mSignatureUserId = data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID);
-                mSignatureKeyId = data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0);
-                mSignatureSuccess = data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false);
-                mSignatureUnknown = data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false);
+                pgpData.setSignatureUserId(data.getStringExtra(Apg.EXTRA_SIGNATURE_USER_ID));
+                pgpData.setSignatureKeyId(data.getLongExtra(Apg.EXTRA_SIGNATURE_KEY_ID, 0));
+                pgpData.setSignatureSuccess(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_SUCCESS, false));
+                pgpData.setSignatureUnknown(data.getBooleanExtra(Apg.EXTRA_SIGNATURE_UNKNOWN, false));
 
-                mDecryptedData = data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE);
+                pgpData.setDecryptedData(data.getStringExtra(Apg.EXTRA_DECRYPTED_MESSAGE));
                 ((MessageView) activity).onDecryptDone();
 
                 break;
@@ -396,16 +396,18 @@ public class Apg extends CryptoProvider
      *
      * @param activity
      * @param data
+     * @param pgpData
      * @return success or failure
      */
     @Override
-    public boolean encrypt(Activity activity, String data)
+    public boolean encrypt(Activity activity, String data, PgpData pgpData)
     {
         android.content.Intent intent = new android.content.Intent(Intent.ENCRYPT_AND_RETURN);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         intent.setType("text/plain");
         intent.putExtra(Apg.EXTRA_TEXT, data);
-        intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, mEncryptionKeyIds);
-        intent.putExtra(Apg.EXTRA_SIGNATURE_KEY_ID, mSignatureKeyId);
+        intent.putExtra(Apg.EXTRA_ENCRYPTION_KEY_IDS, pgpData.getEncryptionKeys());
+        intent.putExtra(Apg.EXTRA_SIGNATURE_KEY_ID, pgpData.getSignatureKeyId());
         try
         {
             activity.startActivityForResult(intent, Apg.ENCRYPT_MESSAGE);
@@ -425,12 +427,14 @@ public class Apg extends CryptoProvider
      *
      * @param activity
      * @param data
+     * @param pgpData
      * @return success or failure
      */
     @Override
-    public boolean decrypt(Activity activity, String data)
+    public boolean decrypt(Activity activity, String data, PgpData pgpData)
     {
         android.content.Intent intent = new android.content.Intent(Apg.Intent.DECRYPT_AND_RETURN);
+        intent.putExtra(EXTRA_INTENT_VERSION, INTENT_VERSION);
         intent.setType("text/plain");
         if (data == null)
         {
@@ -451,6 +455,7 @@ public class Apg extends CryptoProvider
         }
     }
 
+    @Override
     public boolean isEncrypted(Message message)
     {
         String data = null;
@@ -481,6 +486,7 @@ public class Apg extends CryptoProvider
         return matcher.matches();
     }
 
+    @Override
     public boolean isSigned(Message message)
     {
         String data = null;
@@ -527,6 +533,7 @@ public class Apg extends CryptoProvider
      *
      * @return success or failure
      */
+    @Override
     public boolean test(Context context)
     {
         if (!isAvailable(context))

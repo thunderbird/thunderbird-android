@@ -111,7 +111,7 @@
     <string name="reverse_sort_action">並び替えの反転</string>
     <string name="about_action">k9mailについて</string>
 
-    <string name="prefs_title">設定</string>
+    <string name="prefs_title">グローバル設定</string>
     <string name="accounts_context_menu_title">アカウントオプション</string>
     <string name="folder_context_menu_title">フォルダオプション</string>
 
@@ -235,7 +235,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">他メールを読込</string>
-    <string name="message_list_to_fmt">宛先:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_to_fmt">宛先:</string>
     <string name="message_list_delete_action">削除</string>
     <string name="message_list_mark_read_action">既読にする</string>
     <string name="message_list_mark_unread_action">未読にする</string>
@@ -248,7 +248,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="message_compose_subject_hint">件名</string>
     <string name="message_compose_content_hint">本文</string>
     <string name="message_compose_fwd_header_fmt">\n-------- 元メール --------\n件名: <xliff:g id="subject">%s</xliff:g>\n送信者: <xliff:g id="sender">%s</xliff:g>\n宛先: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
-    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">テキスト引用</string>
     <string name="message_compose_error_no_recipients">少なくとも1つの受信者を追加する必要があります</string>
     <string name="message_compose_downloading_attachments_toast">一部の添付ファイルをダウンロードしていません．このメールが送信される前に自動的にダウンロードされます．</string>
@@ -478,7 +478,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_failed_dlg_edit_details_action">詳細再編集</string>
     <string name="account_setup_failed_dlg_continue_action">続行</string>
 
-    <string name="account_settings_title_fmt">一般設定</string>
+    <string name="account_settings_title_fmt">アカウント設定</string>
     <string name="account_settings_default">標準アカウント</string>
     <string name="account_settings_default_label">標準アカウント</string>
     <string name="account_settings_default_summary">このアカウントをメール送信に利用する</string>
@@ -501,6 +501,11 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_enable_move_buttons_label">メッセージ移動ボタンを有効にする</string>
     <string name="account_settings_enable_move_buttons_summary">アーカイブ、移動、迷惑メールボタンを表示</string>
     <string name="account_settings_hide_move_buttons_label">メッセージ移動ボタンをスクロール</string>
+
+    <string name="account_settings_show_pictures_label">画像を自動で表示</string>
+    <string name="account_settings_show_pictures_never">しない</string>
+    <string name="account_settings_show_pictures_only_from_contacts">連絡先に登録しているユーザからのメールのみ</string>
+    <string name="account_settings_show_pictures_always">常に</string>
 
     <string name="account_settings_composition">メッセージ作成</string>
     <string name="account_settings_sync">フォルダ同期</string>
@@ -615,7 +620,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_description_label">アカウント名</string>
     <string name="account_settings_name_label">名前</string>
     <string name="account_settings_notifications">通知設定</string>
-    <string name="account_settings_ring_summary">メール受信時の着信音</string>
+    <string name="account_settings_ring_summary">メール音受信時の通知音</string>
     <string name="account_settings_vibrate_enable">バイブレーション</string>
     <string name="account_settings_vibrate_summary">メール着信時バイブレーションをONにする</string>
     <string name="account_settings_vibrate_pattern_label">バイブレーションパターン</string>
@@ -626,7 +631,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_vibrate_pattern_4">パターン 4</string>
     <string name="account_settings_vibrate_pattern_5">パターン 5</string>
     <string name="account_settings_vibrate_times">バイブレーションの繰り返し回数</string>
-    <string name="account_settings_ringtone">着信音</string>
+    <string name="account_settings_ringtone">通知音</string>
     <string name="account_settings_servers">サーバ設定</string>
 
     <string name="account_settings_composition_title">メール本文構成管理</string>

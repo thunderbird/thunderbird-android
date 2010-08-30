@@ -360,6 +360,7 @@
         <item>Azərbaycan</item>
         <item>Euskera</item>
         <item>Français</item>
+        <item>Français (Canada)</item>
         <item>isiXhosa</item>
         <item>isiZulu</item>
         <item>Italiano</item>
@@ -437,6 +438,7 @@
         <item>az</item>
         <item>eu</item>
         <item>fr</item>
+        <item>fr_CA</item>
         <item>xs</item>
         <item>zu</item>
         <item>it</item>
@@ -480,6 +482,7 @@
         <item>en</item>
         <item>es</item>
         <item>fr</item>
+        <item>fr_CA</item>
         <item>it</item>
         <item>ja</item>
         <item>pl</item>
@@ -598,6 +601,18 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+    </string-array>
+
+    <string-array name="account_settings_vibrate_times_label">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
     </string-array>
 
     <string-array name="account_settings_crypto_app_entries">

@@ -81,7 +81,7 @@ public class ChooseIdentity extends K9ListActivity
             {
                 Identity identity = mAccount.getIdentity(position);
                 String email = identity.getEmail();
-                if (email != null && email.trim().equals("") == false)
+                if (email != null && !email.trim().equals(""))
                 {
                     Intent intent = new Intent();
 

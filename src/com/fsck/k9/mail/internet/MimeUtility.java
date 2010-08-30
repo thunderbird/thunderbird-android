@@ -2,7 +2,6 @@
 package com.fsck.k9.mail.internet;
 
 import android.util.Log;
-import com.fsck.k9.R;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.*;
 import org.apache.commons.io.IOUtils;
@@ -374,7 +373,8 @@ public class MimeUtility
                         /*
                          * See if there is conversion from the MIME charset to the Java one.
                          */
-                        charset = Charset.forName(originalCharset).name();
+
+                        charset = Charset.forName(fixupCharset(originalCharset)).name();
 
                         if (charset == null)
                         {
@@ -592,4 +592,19 @@ public class MimeUtility
         }
         return DEFAULT_ATTACHMENT_MIME_TYPE;
     }
+
+
+    private static String fixupCharset(String charset)
+    {
+        charset = charset.toLowerCase();
+        if (charset.equals("cp932"))
+            return "shift-jis";
+        else if (charset.equals("koi8-u"))
+            return "koi8-r";
+
+        return charset;
+
+    }
+
+
 }
