@@ -900,25 +900,44 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         return addresses;
     }
 
+    /*
+     * Build the Body that will contain the text of the message. We'll decide where to
+     * include it later.
+     *
+     * @param appendSig If true, append the user's signature to the message.
+     */
     private String buildText(boolean appendSig)
     {
-        /*
-         * Build the Body that will contain the text of the message. We'll decide where to
-         * include it later.
-         */
+        boolean replyAfterQuote = false;
+        String action = getIntent().getAction();
+        if (mAccount.isReplyAfterQuote() &&
+                (ACTION_REPLY.equals(action) || ACTION_REPLY_ALL.equals(action)))
+        {
+            replyAfterQuote = true;
+        }
 
         String text = mMessageContentView.getText().toString();
-        if (appendSig && mAccount.isSignatureBeforeQuotedText())
+        // Placing the signature before the quoted text does not make sense if replyAfterQuote is true.
+        if (!replyAfterQuote && appendSig && mAccount.isSignatureBeforeQuotedText())
         {
             text = appendSignature(text);
         }
 
         if (mQuotedTextBar.getVisibility() == View.VISIBLE)
         {
-            text += "\n" + mQuotedText.getText().toString();
+            if (replyAfterQuote)
+            {
+                text = mQuotedText.getText().toString() + "\n" + text;
+            }
+            else
+            {
+                text += "\n\n" + mQuotedText.getText().toString();
+            }
         }
 
-        if (appendSig && !mAccount.isSignatureBeforeQuotedText())
+        // Note: If user has selected reply after quote AND signature before quote, ignore the
+        // latter setting and append the signature at the end.
+        if (appendSig && (!mAccount.isSignatureBeforeQuotedText() || replyAfterQuote))
         {
             text = appendSignature(text);
         }
