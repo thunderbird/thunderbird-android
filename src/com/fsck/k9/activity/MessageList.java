@@ -750,7 +750,6 @@ public class MessageList
             }
         }
 
-        boolean result;
         int position = mListView.getSelectedItemPosition();
         try
         {
@@ -823,10 +822,9 @@ public class MessageList
         }
         finally
         {
-            result = super.onKeyDown(keyCode, event);
+            return super.onKeyDown(keyCode, event);
         }
 
-        return result;
     }
 
     @Override
