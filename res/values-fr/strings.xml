@@ -240,7 +240,7 @@
   <string name="message_compose_subject_hint">Objet</string>
   <string name="message_compose_content_hint">Texte du message</string>
   <string name="message_compose_fwd_header_fmt">\n\n-------- Message d\'origine --------\nObjet\u00A0: <xliff:g id="subject">%s</xliff:g>\nDe\u00A0: <xliff:g id="sender">%s</xliff:g>\nÀ\u00A0: <xliff:g id="to">%s</xliff:g>\nCc\u00A0: <xliff:g id="cc">%s</xliff:g>\n\n</string>
-  <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> a écrit\u00A0:\n\n</string>
+  <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> a écrit\u00A0:\n\n</string>
   <string name="message_compose_quoted_text_label">Texte cité</string>
   <string name="message_compose_error_no_recipients">Vous devez ajouter au moins un destinataire.</string>
   <string name="message_compose_downloading_attachments_toast">Certaines pièces jointes n\'ont pas été téléchargées. Elles seront téléchargées automatiquement avant l\'envoi de ce message.</string>

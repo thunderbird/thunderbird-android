@@ -253,7 +253,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_compose_subject_hint">Subject</string>
     <string name="message_compose_content_hint">Message text</string>
     <string name="message_compose_fwd_header_fmt">\n-------- Original Message --------\nSubject: <xliff:g id="subject">%s</xliff:g>\nFrom: <xliff:g id="sender">%s</xliff:g>\nTo: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
-    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">Quoted text</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
     <string name="message_compose_downloading_attachments_toast">Some attachments were not downloaded. They will be downloaded automatically before this message is sent.</string>
@@ -515,6 +515,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_show_pictures_always">Always</string>
 
     <string name="account_settings_composition">Writing messages</string>
+
+    <string name="account_settings_reply_after_quote_label">Reply After Quote</string>
+    <string name="account_settings_reply_after_quote_summary">When replying to messages, the original message will be placed above your reply.</string>
+
+
     <string name="account_settings_sync">Syncing folders</string>
     <string name="account_settings_folders">Folders</string>
     <string name="account_settings_message_lists">Listing messages</string>

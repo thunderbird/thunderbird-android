@@ -251,7 +251,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="message_compose_subject_hint">Temat</string>
     <string name="message_compose_content_hint">Treść wiadomości</string>
     <string name="message_compose_fwd_header_fmt">\n-------- Wiadomość oryginalna --------\nTemat: <xliff:g id="subject">%s</xliff:g>\nOd: <xliff:g id="sender">%s</xliff:g>\nDo: <xliff:g id="to">%s</xliff:g>\nDW: <xliff:g id="cc">%s</xliff:g>\n\n</string>
-    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> napisał:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> napisał:\n\n</string>
     <string name="message_compose_quoted_text_label">Cytowany tekst</string>
     <string name="message_compose_error_no_recipients">Musisz dodać co najmniej jednego odbiorcę.</string>
     <string name="message_compose_downloading_attachments_toast">Niektóre załączniki nie zostały pobrane. Zostaną pobrane automatycznie przed wysłaniem tej wiadomości.</string>

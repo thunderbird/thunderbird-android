@@ -248,7 +248,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="message_compose_subject_hint">件名</string>
     <string name="message_compose_content_hint">本文</string>
     <string name="message_compose_fwd_header_fmt">\n-------- 元メール --------\n件名: <xliff:g id="subject">%s</xliff:g>\n送信者: <xliff:g id="sender">%s</xliff:g>\n宛先: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
-    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">テキスト引用</string>
     <string name="message_compose_error_no_recipients">少なくとも1つの受信者を追加する必要があります</string>
     <string name="message_compose_downloading_attachments_toast">一部の添付ファイルをダウンロードしていません．このメールが送信される前に自動的にダウンロードされます．</string>

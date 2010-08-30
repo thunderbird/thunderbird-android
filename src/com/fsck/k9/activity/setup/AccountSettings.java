@@ -71,6 +71,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
+    private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
@@ -107,6 +108,7 @@ public class AccountSettings extends K9PreferenceActivity
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
     private EditTextPreference mAccountQuotePrefix;
+    private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mSyncRemoteDeletions;
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
@@ -172,6 +174,9 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
+
+        mReplyAfterQuote = (CheckBoxPreference) findPreference(PREFERENCE_REPLY_AFTER_QUOTE);
+        mReplyAfterQuote.setChecked(mAccount.isReplyAfterQuote());
 
         mCheckFrequency = (ListPreference) findPreference(PREFERENCE_FREQUENCY);
         mCheckFrequency.setValue(String.valueOf(mAccount.getAutomaticCheckIntervalMinutes()));
@@ -621,6 +626,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
+        mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
 

@@ -128,7 +128,7 @@
   <string name="message_compose_error_no_recipients">Debe agregar al menos un destinatario.</string>
   <string name="message_compose_fwd_header_fmt">\n\n-------- Mensaje original --------\nAsunto: <xliff:g id="subject">%s</xliff:g>\nDe: <xliff:g id="sender">%s</xliff:g>\nPara: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
   <string name="message_compose_quoted_text_label">Texto citado</string>
-  <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> escribió:\n\n</string>
+  <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> escribió:\n\n</string>
   <string name="message_compose_subject_hint">Asunto</string>
   <string name="message_compose_to_hint">Para</string>
   <string name="message_copied_toast">Mensaje copiado.</string>

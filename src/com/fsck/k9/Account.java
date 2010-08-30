@@ -48,6 +48,8 @@ public class Account implements BaseAccount
 
     private static final String DEFAULT_QUOTE_PREFIX = ">";
 
+    private static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
+
     /**
      * <pre>
      * 0 - Never (DELETE_POLICY_NEVER)
@@ -109,6 +111,7 @@ public class Account implements BaseAccount
     // current set of fetched messages
     private boolean mRingNotified;
     private String mQuotePrefix;
+    private boolean mReplyAfterQuote;
     private boolean mSyncRemoteDeletions;
     private String mCryptoApp;
     private boolean mCryptoAutoSignature;
@@ -183,6 +186,7 @@ public class Account implements BaseAccount
         maximumPolledMessageAge = -1;
         maximumAutoDownloadMessageSize = 32768;
         mQuotePrefix = DEFAULT_QUOTE_PREFIX;
+        mReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         mSyncRemoteDeletions = true;
         mCryptoApp = Apg.NAME;
         mCryptoAutoSignature = false;
@@ -266,6 +270,7 @@ public class Account implements BaseAccount
         maximumAutoDownloadMessageSize = prefs.getInt(mUuid
                                          + ".maximumAutoDownloadMessageSize", 32768);
         mQuotePrefix = prefs.getString(mUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
+        mReplyAfterQuote = prefs.getBoolean(mUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
         for (String type : networkTypes)
         {
             Boolean useCompression = prefs.getBoolean(mUuid + ".useCompression." + type,
@@ -1438,6 +1443,16 @@ public class Account implements BaseAccount
     public synchronized void setQuotePrefix(String quotePrefix)
     {
         mQuotePrefix = quotePrefix;
+    }
+
+    public synchronized boolean isReplyAfterQuote()
+    {
+        return mReplyAfterQuote;
+    }
+
+    public synchronized void setReplyAfterQuote(boolean replyAfterQuote)
+    {
+        mReplyAfterQuote = replyAfterQuote;
     }
 
     public boolean getEnableMoveButtons()

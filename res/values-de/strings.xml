@@ -237,7 +237,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_compose_subject_hint">Betreff</string>
     <string name="message_compose_content_hint">Nachrichtentext</string>
     <string name="message_compose_fwd_header_fmt">\n\n-------- Original-Nachricht --------\nBetreff: <xliff:g id="subject">%s</xliff:g>\nVon: <xliff:g id="sender">%s</xliff:g>\nAn: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
-    <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> schrieb:\n\n</string>
+    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> schrieb:\n\n</string>
     <string name="message_compose_quoted_text_label">Zitierter Text</string>
     <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger wählen.</string>
     <string name="message_compose_downloading_attachments_toast">Einige Anlagen wurden nicht heruntergeladen. Sie werden automatisch heruntergeladen, bevor diese Nachricht gesendet wird.</string>
