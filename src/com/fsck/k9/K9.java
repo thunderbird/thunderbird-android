@@ -115,6 +115,7 @@ public class K9 extends Application
     private static boolean mMessageViewReturnToList = false;
 
     private static boolean mGesturesEnabled = true;
+    private static boolean mUseVolumeKeysForNavigation = false;
     private static boolean mManageBack = false;
     private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
@@ -336,6 +337,7 @@ public class K9 extends Application
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
+        editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("manageBack", mManageBack);
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
@@ -368,6 +370,7 @@ public class K9 extends Application
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
+        mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
         mManageBack = sprefs.getBoolean("manageBack", false);
         mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
@@ -516,6 +519,15 @@ public class K9 extends Application
         mGesturesEnabled = gestures;
     }
 
+    public static boolean useVolumeKeysForNavigationEnabled()
+    {
+        return mUseVolumeKeysForNavigation;
+    }
+
+    public static void setUseVolumeKeysForNavigation(boolean volume)
+    {
+        mUseVolumeKeysForNavigation = volume;
+    }
 
     public static boolean manageBack()
     {
