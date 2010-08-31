@@ -217,7 +217,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             case KeyEvent.KEYCODE_VOLUME_UP:
             {
-                if(K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForNavigationEnabled())
                 {
                     onNext(true);
                     return true;
@@ -225,7 +225,7 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             {
-                if(K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForNavigationEnabled())
                 {
                     onPrevious(true);
                     return true;
@@ -356,8 +356,10 @@ public class MessageView extends K9Activity implements OnClickListener
     public boolean onKeyUp(int keyCode, KeyEvent event)
     {
         // Swallow these events too to avoid the audible notification of a volume change
-        if(K9.useVolumeKeysForNavigationEnabled()) {
-            if((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+        if (K9.useVolumeKeysForNavigationEnabled())
+        {
+            if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))
+            {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "Swallowed key up.");
                 return true;
@@ -1137,6 +1139,7 @@ public class MessageView extends K9Activity implements OnClickListener
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
 
         mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+        mTopView.setVisibility(View.GONE);
         mTopView.scrollTo(0, 0);
         mMessageContentView.scrollTo(0, 0);
 
@@ -1150,6 +1153,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mPgpData = null;
         initializeCrypto();
 
+        mTopView.setVisibility(View.VISIBLE);
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
             mMessageReference.folderName,

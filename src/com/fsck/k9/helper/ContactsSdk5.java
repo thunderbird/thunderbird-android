@@ -155,11 +155,11 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
         final String filter = (address == null) ? "" : address;
         final Uri uri = Uri.withAppendedPath(Email.CONTENT_FILTER_URI, Uri.encode(filter));
         final Cursor c = mContentResolver.query(
-                uri,
-                PROJECTION,
-                null,
-                null,
-                SORT_ORDER);
+                             uri,
+                             PROJECTION,
+                             null,
+                             null,
+                             SORT_ORDER);
 
         if (c != null)
         {

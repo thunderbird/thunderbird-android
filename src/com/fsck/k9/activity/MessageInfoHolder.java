@@ -141,7 +141,8 @@ public class MessageInfoHolder implements Comparable<MessageInfoHolder>
             {
                 CharSequence to = Address.toFriendly(message .getRecipients(RecipientType.TO), mContacts);
                 this.compareCounterparty = to.toString();
-                this.sender = new SpannableStringBuilder(context.getString(R.string.message_list_to_fmt)).append(to);            }
+                this.sender = new SpannableStringBuilder(context.getString(R.string.message_list_to_fmt)).append(to);
+            }
             else
             {
                 this.sender = Address.toFriendly(addrs, mContacts);

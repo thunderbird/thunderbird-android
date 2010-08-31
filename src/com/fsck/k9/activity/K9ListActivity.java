@@ -54,10 +54,11 @@ public class K9ListActivity extends ListActivity
             case KeyEvent.KEYCODE_VOLUME_UP:
             {
                 ListView listView = getListView();
-                if(K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForNavigationEnabled())
                 {
 
-                    if (listView.getSelectedItemPosition() > 0) {
+                    if (listView.getSelectedItemPosition() > 0)
+                    {
                         listView.setSelection(listView.getSelectedItemPosition()-1);
                     }
                     return true;
@@ -66,9 +67,10 @@ public class K9ListActivity extends ListActivity
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             {
                 ListView listView = getListView();
-                if(K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForNavigationEnabled())
                 {
-                    if (listView.getSelectedItemPosition() < listView.getCount()) {
+                    if (listView.getSelectedItemPosition() < listView.getCount())
+                    {
                         listView.setSelection(listView.getSelectedItemPosition()+1);
                     }
                     return true;
@@ -82,8 +84,10 @@ public class K9ListActivity extends ListActivity
     public boolean onKeyUp(int keyCode, KeyEvent event)
     {
         // Swallow these events too to avoid the audible notification of a volume change
-        if(K9.useVolumeKeysForNavigationEnabled()) {
-            if((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+        if (K9.useVolumeKeysForNavigationEnabled())
+        {
+            if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))
+            {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "Swallowed key up.");
                 return true;
