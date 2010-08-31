@@ -2058,12 +2058,8 @@ public class MessageList
             addOrUpdateMessages(account, folder, messages, verifyAgainstSearch);
         }
 
-        private void addOrUpdateMessages(final Account account, final String folder, final List<Message> messages, final boolean verifyAgainstSearch)
+        private void addOrUpdateMessages(Account account, String folder, List<Message> messages, boolean verifyAgainstSearch)
         {
-            runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
                     boolean needsSort = false;
                     final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
                     List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
@@ -2137,10 +2133,6 @@ public class MessageList
                         mHandler.sortMessages();
                         mHandler.resetUnreadCount();
                     }
-                }
-            }
-                         );
-
         }
         public MessageInfoHolder getMessage(Message message)
         {
