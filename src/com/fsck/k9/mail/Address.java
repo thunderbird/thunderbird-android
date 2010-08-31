@@ -276,7 +276,6 @@ public class Address
                     }
                     finally
                     {
-                        Log.i(K9.LOG_TAG, "cursor closed");
                         // cursor.close(); // TODO: should close cursor.
                     }
                 }
