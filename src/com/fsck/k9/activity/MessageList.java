@@ -681,15 +681,16 @@ public class MessageList
         switch (keyCode)
         {
 
-        // messagelist is actually a K9Activity, not a K9ListActivity
-        // This saddens me greatly, but to support volume key navigation
-        // in MessageView, we implement this bit of wrapper code
+                // messagelist is actually a K9Activity, not a K9ListActivity
+                // This saddens me greatly, but to support volume key navigation
+                // in MessageView, we implement this bit of wrapper code
             case KeyEvent.KEYCODE_VOLUME_UP:
             {
-                if(K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForNavigationEnabled())
                 {
 
-                    if (mListView.getSelectedItemPosition() > 0) {
+                    if (mListView.getSelectedItemPosition() > 0)
+                    {
                         mListView.setSelection(mListView.getSelectedItemPosition()-1);
                     }
                     return true;
@@ -697,9 +698,10 @@ public class MessageList
             }
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             {
-                if(K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForNavigationEnabled())
                 {
-                    if (mListView.getSelectedItemPosition() < mListView.getCount()) {
+                    if (mListView.getSelectedItemPosition() < mListView.getCount())
+                    {
                         mListView.setSelection(mListView.getSelectedItemPosition()+1);
                     }
                     return true;
@@ -836,8 +838,10 @@ public class MessageList
     public boolean onKeyUp(int keyCode, KeyEvent event)
     {
         // Swallow these events too to avoid the audible notification of a volume change
-        if(K9.useVolumeKeysForNavigationEnabled()) {
-            if((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+        if (K9.useVolumeKeysForNavigationEnabled())
+        {
+            if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))
+            {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "Swallowed key up.");
                 return true;
@@ -2060,83 +2064,83 @@ public class MessageList
             {
                 public void run()
                 {
-            boolean needsSort = false;
-            final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
-            List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
-            List<Message> messagesToSearch = new ArrayList<Message>();
+                    boolean needsSort = false;
+                    final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
+                    List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
+                    List<Message> messagesToSearch = new ArrayList<Message>();
 
-            for (Message message : messages)
-            {
-                MessageInfoHolder m = getMessage(message);
-                if (message.isSet(Flag.DELETED))
-                {
-                    if (m != null)
+                    for (Message message : messages)
                     {
-                        messagesToRemove.add(m);
-                    }
-                }
-                else if (m == null)
-                {
-                    if (updateForMe(account, folder))
-                    {
-                        m = new MessageInfoHolder(context, message);
-                        messagesToAdd.add(m);
-                    }
-                    else
-                    {
-                        if (mQueryString != null)
+                        MessageInfoHolder m = getMessage(message);
+                        if (message.isSet(Flag.DELETED))
                         {
-                            if (verifyAgainstSearch)
+                            if (m != null)
                             {
-                                messagesToSearch.add(message);
+                                messagesToRemove.add(m);
                             }
-                            else
+                        }
+                        else if (m == null)
+                        {
+                            if (updateForMe(account, folder))
                             {
                                 m = new MessageInfoHolder(context, message);
                                 messagesToAdd.add(m);
                             }
+                            else
+                            {
+                                if (mQueryString != null)
+                                {
+                                    if (verifyAgainstSearch)
+                                    {
+                                        messagesToSearch.add(message);
+                                    }
+                                    else
+                                    {
+                                        m = new MessageInfoHolder(context, message);
+                                        messagesToAdd.add(m);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            m.populate(context, message, new FolderInfoHolder(context, message.getFolder(), account), account);
+                            needsSort = true;
                         }
                     }
-                }
-                else
-                {
-                    m.populate(context, message, new FolderInfoHolder(context, message.getFolder(), account), account);
-                    needsSort = true;
-                }
-            }
 
-            if (messagesToSearch.size() > 0)
-            {
-                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
-                                                new MessagingListener()
-                {
-                    @Override
-                    public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
+                    if (messagesToSearch.size() > 0)
                     {
-                        addOrUpdateMessages(account, folder, messages, false);
+                        mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
+                                                        new MessagingListener()
+                        {
+                            @Override
+                            public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
+                            {
+                                addOrUpdateMessages(account, folder, messages, false);
+                            }
+                        });
                     }
-                });
-            }
 
-            if (messagesToRemove.size() > 0)
-            {
-                removeMessages(messagesToRemove);
-            }
+                    if (messagesToRemove.size() > 0)
+                    {
+                        removeMessages(messagesToRemove);
+                    }
 
-            if (messagesToAdd.size() > 0)
-            {
-                mHandler.addMessages(messagesToAdd);
-            }
+                    if (messagesToAdd.size() > 0)
+                    {
+                        mHandler.addMessages(messagesToAdd);
+                    }
 
-            if (needsSort)
-            {
-                mHandler.sortMessages();
-                mHandler.resetUnreadCount();
+                    if (needsSort)
+                    {
+                        mHandler.sortMessages();
+                        mHandler.resetUnreadCount();
+                    }
+                }
             }
-        }
-            }
-            );
-        
+                         );
+
         }
         public MessageInfoHolder getMessage(Message message)
         {
@@ -2434,15 +2438,15 @@ public class MessageList
 
                 // Create our span sections, and assign a format to each.
                 str.setSpan(new StyleSpan(Typeface.BOLD),
-                    0,
-                    message.sender.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                );
+                            0,
+                            message.sender.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                           );
                 str.setSpan(new ForegroundColorSpan(Color.rgb(128,128,128)), // TODO: How do I can specify the android.R.attr.textColorTertiary
-                        message.sender.length(),
-                        str.length(),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                );
+                            message.sender.length(),
+                            str.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                           );
             }
             else
             {

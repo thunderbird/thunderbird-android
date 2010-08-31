@@ -248,26 +248,34 @@ public class Address
 
     public CharSequence toFriendly(Contacts contacts)
     {
-        if (contacts != null) {
+        if (contacts != null)
+        {
             String name = sContactsName.get(mAddress);
-            if (name != null && name != NO_ENTRY) {
+            if (name != null && name != NO_ENTRY)
+            {
                 return Html.fromHtml("<font color=\"Blue\">" + name + "</font>"); // TODO: use setSpan
             }
-            if (name == null) {
+            if (name == null)
+            {
                 Cursor cursor = contacts.searchByAddress(mAddress);
-                if (cursor != null) {
-                    try {
-                        if (cursor.getCount() > 0) {
+                if (cursor != null)
+                {
+                    try
+                    {
+                        if (cursor.getCount() > 0)
+                        {
                             cursor.moveToFirst();
                             name = contacts.getName(cursor);
                             sContactsName.put(mAddress, name);
                             return Html.fromHtml("<font color=\"Blue\">" + name + "</font>"); // TODO: use setSpan
                         }
-                        else {
+                        else
+                        {
                             sContactsName.put(mAddress, NO_ENTRY);
                         }
                     }
-                    finally {
+                    finally
+                    {
                         Log.i(K9.LOG_TAG, "cursor closed");
                         // cursor.close(); // TODO: should close cursor.
                     }

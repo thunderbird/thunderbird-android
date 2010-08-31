@@ -190,11 +190,11 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
         }
 
         final Cursor c = mContentResolver.query(
-                Contacts.ContactMethods.CONTENT_EMAIL_URI,
-                PROJECTION,
-                where,
-                args,
-                SORT_ORDER);
+                             Contacts.ContactMethods.CONTENT_EMAIL_URI,
+                             PROJECTION,
+                             where,
+                             args,
+                             SORT_ORDER);
 
         if (c != null)
         {
