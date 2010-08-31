@@ -1137,6 +1137,7 @@ public class MessageView extends K9Activity implements OnClickListener
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
 
         mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+        mTopView.setVisibility(View.GONE);
         mTopView.scrollTo(0, 0);
         mMessageContentView.scrollTo(0, 0);
 
@@ -1150,6 +1151,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mPgpData = null;
         initializeCrypto();
 
+        mTopView.setVisibility(View.VISIBLE);
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
             mMessageReference.folderName,
