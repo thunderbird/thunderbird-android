@@ -700,26 +700,28 @@ public class MessageList
         switch (keyCode)
         {
 
-        // messagelist is actually a K9Activity, not a K9ListActivity
-        // This saddens me greatly, but to support volume key navigation
-        // in MessageView, we implement this bit of wrapper code
+            // messagelist is actually a K9Activity, not a K9ListActivity
+            // This saddens me greatly, but to support volume key navigation
+            // in MessageView, we implement this bit of wrapper code
             case KeyEvent.KEYCODE_VOLUME_UP:
             {
-                if(K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForNavigationEnabled())
                 {
 
-                    if (mListView.getSelectedItemPosition() > 0) {
-                        mListView.setSelection(mListView.getSelectedItemPosition()-1);
+                    if (mListView.getSelectedItemPosition() > 0)
+                    {
+                        mListView.setSelection(mListView.getSelectedItemPosition() - 1);
                     }
                     return true;
                 }
             }
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             {
-                if(K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForNavigationEnabled())
                 {
-                    if (mListView.getSelectedItemPosition() < mListView.getCount()) {
-                        mListView.setSelection(mListView.getSelectedItemPosition()+1);
+                    if (mListView.getSelectedItemPosition() < mListView.getCount())
+                    {
+                        mListView.setSelection(mListView.getSelectedItemPosition() + 1);
                     }
                     return true;
                 }
@@ -862,8 +864,10 @@ public class MessageList
     public boolean onKeyUp(int keyCode, KeyEvent event)
     {
         // Swallow these events too to avoid the audible notification of a volume change
-        if(K9.useVolumeKeysForNavigationEnabled()) {
-            if((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+        if (K9.useVolumeKeysForNavigationEnabled())
+        {
+            if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))
+            {
                 if (K9.DEBUG)
                     Log.v(K9.LOG_TAG, "Swallowed key up.");
                 return true;
@@ -2910,15 +2914,15 @@ public class MessageList
 
                 // Create our span sections, and assign a format to each.
                 str.setSpan(new StyleSpan(Typeface.BOLD),
-                    0,
-                    message.sender.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                );
+                            0,
+                            message.sender.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            );
                 str.setSpan(new ForegroundColorSpan(Color.rgb(128,128,128)), // TODO: How do I can specify the android.R.attr.textColorTertiary
-                        message.sender.length(),
-                        str.length(),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                );
+                            message.sender.length(),
+                            str.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            );
             }
             else
             {
