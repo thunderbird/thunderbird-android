@@ -2213,7 +2213,7 @@ public class MessageList
             @Override
             public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
             {
-                addOrUpdateMessage(account, folder, message, true);
+                addOrUpdateMessages(account, folder, Collections.singletonList(message), true);
             }
 
             @Override
@@ -2226,7 +2226,7 @@ public class MessageList
                 }
                 else
                 {
-                    removeMessage(holder);
+                    removeMessages(Collections.singletonList(holder));
                 }
             }
 
@@ -2281,7 +2281,7 @@ public class MessageList
                 MessageInfoHolder holder = getMessage(message);
                 if (holder != null)
                 {
-                    removeMessage(holder);
+                    removeMessages(Collections.singletonList(holder));
                 }
             }
 
@@ -2294,7 +2294,7 @@ public class MessageList
             @Override
             public void listLocalMessagesUpdateMessage(Account account, String folder, Message message)
             {
-                addOrUpdateMessage(account, folder, message, false);
+                addOrUpdateMessages(account, folder, Collections.singletonList(message), false);
             }
 
             @Override
@@ -2553,22 +2553,14 @@ public class MessageList
             }
             return result;
         }
+
+        /**
+         * @param holders
+         *            Never <code>null</code>.
+         */
         public void removeMessages(List<MessageInfoHolder> holders)
         {
-            if (holders != null)
-            {
-                mHandler.removeMessage(holders);
-            }
-        }
-
-        public void removeMessage(MessageInfoHolder holder)
-        {
-            removeMessages(Collections.singletonList(holder));
-        }
-
-        private void addOrUpdateMessage(Account account, String folder, Message message, boolean verifyAgainstSearch)
-        {
-            addOrUpdateMessages(account, folder, Collections.singletonList(message), verifyAgainstSearch);
+            mHandler.removeMessage(holders);
         }
 
         private void addOrUpdateMessages(Account account, String folder, List<Message> messages, boolean verifyAgainstSearch)
