@@ -628,7 +628,27 @@
   <string name="sort_by_flag">Étoile</string>
   <string name="sort_by_unread">Lu/Non lu</string>
   <string name="sort_by_attach">Pièces jointes</string>
+  <string name="group_by">Regrouper par...</string>
+  <string name="group_by_none">Pas de regroupement</string>
+  <string name="group_by_thread">Conversation</string>
+  <string name="group_by_date">Date</string>
+  <string name="group_by_sender">Expéditeur</string>
+  <string name="sort_group">Trier/regrouper par...</string>
+  <string name="expand">Développer</string>
+  <string name="collapse">Réduire</string>
+  <string name="expand_all">Tout développer</string>
+  <string name="collapse_all">Tout réduire</string>
   <string name="message_web_view_error">%s</string>
+
+  <string name="group_by_date_today">Aujourd\'hui</string>
+  <string name="group_by_date_yesterday">Hier</string>
+  <string name="group_by_date_this_week">Cette semaine</string>
+  <string name="group_by_date_last_week">La semaine dernière</string>
+  <string name="group_by_date_this_month">Ce mois-ci</string>
+  <string name="group_by_date_last_month">Le mois dernier</string>
+  <string name="group_by_date_this_year">Cette année</string>
+  <string name="group_by_date_earlier">Plus tôt</string>
+
   <string name="account_delete_dlg_title">Supprimer</string>
   <string name="account_delete_dlg_instructions_fmt">Le compte «\u00A0<xliff:g id="account">%s</xliff:g>\u00A0» sera supprimé de K-9 Mail.</string>
   <string name="account_recreate_dlg_title">Recréer compte</string>
