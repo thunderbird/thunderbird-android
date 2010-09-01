@@ -13,6 +13,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -255,6 +256,11 @@ public class Prefs extends K9PreferenceActivity
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
         K9.setK9Language(mLanguage.getValue());
         K9.setK9Theme(mTheme.getValue().equals("dark") ? android.R.style.Theme : android.R.style.Theme_Light);
+
+        if (!K9.DEBUG && mDebugLogging.isChecked())
+        {
+            Toast.makeText(this, R.string.debug_logging_enabled, Toast.LENGTH_LONG).show();
+        }
         K9.DEBUG = mDebugLogging.isChecked();
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());

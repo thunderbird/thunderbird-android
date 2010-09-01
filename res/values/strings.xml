@@ -946,4 +946,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="dialog_confirm_delete_confirm_button">Delete</string>
     <string name="dialog_confirm_delete_cancel_button">Do not delete</string>
 
+    <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>
+
 </resources>
