@@ -319,6 +319,13 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_messageview_return_to_list_label">Return to list after delete</string>
     <string name="global_settings_messageview_return_to_list_summary">Return to message list after message deletion</string>
 
+    <string name="global_settings_confirm_actions_title">Confirm actions</string>
+    <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
+    <string name="global_settings_confirm_action_archive">Archive</string>
+    <string name="global_settings_confirm_action_delete">Delete (message view only)</string>
+    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_send">Send</string>
+
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_instructions">Enter this account\'s email address:</string>
     <string name="account_setup_basics_instructions2_fmt">(You may add <xliff:g id="number_accounts">%d</xliff:g> more accounts.)</string>
@@ -933,4 +940,10 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="charset_not_found">This message can\'t be displayed because the charset \"<xliff:g id="charset">%s</xliff:g>\" wasn\'t found.</string>
 
     <string name="select_text_now">Select text to copy.</string>
+
+    <string name="dialog_confirm_delete_title">Confirm deletion</string>
+    <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
+    <string name="dialog_confirm_delete_confirm_button">Delete</string>
+    <string name="dialog_confirm_delete_cancel_button">Do not delete</string>
+
 </resources>

@@ -70,6 +70,15 @@
             android:title="@string/start_integrated_inbox_title"
             android:summary="@string/start_integrated_inbox_summary" />
 
+        <com.fsck.k9.preferences.CheckboxListPreference
+            android:key="confirm_actions"
+            android:title="@string/global_settings_confirm_actions_title"
+            android:summary="@string/global_settings_confirm_actions_summary"
+            android:dialogTitle="@string/global_settings_confirm_actions_title"
+            android:positiveButtonText="@android:string/ok"
+            android:negativeButtonText="@android:string/cancel"
+        />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/accountlist_preferences" android:key="accountlist_preferences">

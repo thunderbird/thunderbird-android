@@ -20,6 +20,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.DateFormatter;
 import com.fsck.k9.activity.K9PreferenceActivity;
+import com.fsck.k9.preferences.CheckboxListPreference;
 import com.fsck.k9.service.MailService;
 
 public class Prefs extends K9PreferenceActivity
@@ -53,6 +54,9 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
+
+    private static final String PREFERENCE_CONFIRM_ACTIONS = "confirm_actions";
+
     private ListPreference mLanguage;
     private ListPreference mTheme;
     private ListPreference mDateFormat;
@@ -75,6 +79,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mUseGalleryBugWorkaround;
 
+    private CheckboxListPreference mConfirmActions;
 
     private String initBackgroundOps;
 
@@ -233,6 +238,10 @@ public class Prefs extends K9PreferenceActivity
 
         mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
         mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
+
+        mConfirmActions = (CheckboxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
+        mConfirmActions.setItems(new CharSequence[] {getString(R.string.global_settings_confirm_action_delete)});
+        mConfirmActions.setCheckedItems(new boolean[] {K9.confirmDelete()});
     }
 
     @Override
@@ -266,6 +275,8 @@ public class Prefs extends K9PreferenceActivity
         K9.setCountSearchMessages(mCountSearch.isChecked());
 
         K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());
+
+        K9.setConfirmDelete(mConfirmActions.getCheckedItems()[0]);
 
         Editor editor = preferences.edit();
         K9.save(editor);

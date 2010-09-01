@@ -16,8 +16,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
@@ -1291,7 +1294,54 @@ public class MessageView extends K9Activity implements OnClickListener
         super.onResume();
     }
 
+    /**
+     * Called from UI thread when user select Delete
+     */
     private void onDelete()
+    {
+        if (K9.confirmDelete())
+        {
+            showDialog(R.id.dialog_confirm_delete);
+        }
+        else
+        {
+            delete();
+        }
+    }
+
+    /**
+     * @param id
+     * @return Never <code>null</code>
+     */
+    protected Dialog createConfirmDeleteDialog(final int id)
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_confirm_delete_title);
+        builder.setMessage(R.string.dialog_confirm_delete_message);
+        builder.setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
+                new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dismissDialog(id);
+                        delete();
+                    }
+                });
+        builder.setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
+                new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dismissDialog(id);
+                    }
+                });
+        final AlertDialog dialog = builder.create();
+        return dialog;
+    }
+
+    private void delete()
     {
         if (mMessage != null)
         {
@@ -1921,6 +1971,27 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         prepareMenuItems();
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    // XXX when switching to API version 8, override onCreateDialog(int, Bundle)
+    /**
+     * @param id
+     *            The id of the dialog.
+     * @return The dialog. If you return null, the dialog will not be created.
+     * @see android.app.Activity#onCreateDialog(int, Bundle)
+     */
+    @Override
+    protected Dialog onCreateDialog(final int id)
+    {
+        switch (id)
+        {
+            case R.id.dialog_confirm_delete:
+            {
+                final Dialog dialog = createConfirmDeleteDialog(id);
+                return dialog;
+            }
+        }
+        return super.onCreateDialog(id);
     }
 
     private void prepareMenuItems()
