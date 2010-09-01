@@ -21,6 +21,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import android.app.Application;
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -50,6 +51,8 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.FolderType;
+import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -57,8 +60,6 @@ import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.Folder.FolderType;
-import com.fsck.k9.mail.Folder.OpenMode;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
@@ -4565,64 +4566,62 @@ public class MessagingController implements Runnable
     private boolean notifyAccount(Context context, Account account, Message message, int previousUnreadMessageCount, AtomicInteger newMessageCount)
     {
         // If we have a message, set the notification to "<From>: <Subject>"
-        StringBuffer messageNotice = new StringBuffer();
+        StringBuilder messageNotice = new StringBuilder();
         final KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-        if (!K9.keyguardPrivacy() || !keyguardService.inKeyguardRestrictedInputMode())
+        try
         {
-            try
+            if (message != null && message.getFrom() != null)
             {
-                if (message != null && message.getFrom() != null)
+                Address[] fromAddrs = message.getFrom();
+                String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly().toString() : null;
+                String subject = message.getSubject();
+                if (subject == null)
                 {
-                    Address[] fromAddrs = message.getFrom();
-                    String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly().toString() : null;
-                    String subject = message.getSubject();
-                    if (subject == null)
+                    subject = context.getString(R.string.general_no_subject);
+                }
+                
+                if (from != null)
+                {
+                    // Show From: address by default
+                    if (!account.isAnIdentity(fromAddrs))
                     {
-                        subject = context.getString(R.string.general_no_subject);
+                        messageNotice.append(from + ": " + subject);
                     }
-
-                    if (from != null)
+                    // show To: if the message was sent from me
+                    else
                     {
-                        // Show From: address by default
-                        if (!account.isAnIdentity(fromAddrs))
+                        if (!account.isNotifySelfNewMail())
                         {
-                            messageNotice.append(from + ": " + subject);
+                            return false;
                         }
-                        // show To: if the message was sent from me
+                        
+                        Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
+                        String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
+                        if (to != null)
+                        {
+                            messageNotice.append(String.format(context.getString(R.string.message_list_to_fmt), to) +": "+subject);
+                        }
                         else
                         {
-                            if (!account.isNotifySelfNewMail())
-                            {
-                                return false;
-                            }
-
-                            Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
-                            String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
-                            if (to != null)
-                            {
-                                messageNotice.append(String.format(context.getString(R.string.message_list_to_fmt), to) +": "+subject);
-                            }
-                            else
-                            {
-                                messageNotice.append(context.getString(R.string.general_no_sender) + ": "+subject);
-
-                            }
-
+                            messageNotice.append(context.getString(R.string.general_no_sender) + ": "+subject);
+                            
                         }
+                        
                     }
                 }
             }
-            catch (MessagingException e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to get message information for notification.", e);
-            }
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to get message information for notification.", e);
         }
 
-
+        // If privacy mode active and keyguard active
+        // OR
         // If we could not set a per-message notification, revert to a default message
-        if (messageNotice.length() == 0)
+        if ((K9.keyguardPrivacy() && keyguardService.inKeyguardRestrictedInputMode()) || messageNotice.length() == 0)
         {
-            messageNotice.append(context.getString(R.string.notification_new_title));
+            messageNotice = new StringBuilder(context.getString(R.string.notification_new_title));
         }
 
         NotificationManager notifMgr =
