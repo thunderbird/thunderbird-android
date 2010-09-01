@@ -1405,6 +1405,8 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 final Address senderEmail = mMessage.getFrom()[0];
                 mContacts.createContact(this, senderEmail);
+
+                Address.clearContactsNameCache();
             }
             catch (Exception e)
             {
