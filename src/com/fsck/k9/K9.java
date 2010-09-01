@@ -107,6 +107,7 @@ public class K9 extends Application
     private static boolean mAnimations = true;
 
     private static boolean mConfirmDelete = false;
+    private static boolean mKeyguardPrivacy = false;
 
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
@@ -356,6 +357,8 @@ public class K9 extends Application
 
         editor.putBoolean("confirmDelete", mConfirmDelete);
 
+        editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
+
         fontSizes.save(editor);
     }
 
@@ -388,6 +391,8 @@ public class K9 extends Application
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
 
         mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
+
+        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
 
         fontSizes.load(sprefs);
 
@@ -697,6 +702,19 @@ public class K9 extends Application
     public static void setConfirmDelete(final boolean confirm)
     {
         mConfirmDelete = confirm;
+    }
+
+    /**
+     * @return Whether privacy rules should be applied when system is locked
+     */
+    public static boolean keyguardPrivacy()
+    {
+        return mKeyguardPrivacy;
+    }
+
+    public static void setKeyguardPrivacy(final boolean state)
+    {
+        mKeyguardPrivacy = state;
     }
 
     /**

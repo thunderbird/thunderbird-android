@@ -79,6 +79,11 @@
             android:negativeButtonText="@android:string/cancel"
         />
 
+        <CheckBoxPreference
+            android:key="privacy_mode"
+            android:title="@string/global_settings_privacy_mode_title"
+            android:summary="@string/global_settings_privacy_mode_summary"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/accountlist_preferences" android:key="accountlist_preferences">

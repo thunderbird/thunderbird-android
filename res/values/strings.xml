@@ -326,6 +326,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_action_send">Send</string>
 
+    <string name="global_settings_privacy_mode_title">Privacy mode</string>
+    <string name="global_settings_privacy_mode_summary">Don\'t display message subject in notification bar when system is locked</string>
+
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_instructions">Enter this account\'s email address:</string>
     <string name="account_setup_basics_instructions2_fmt">(You may add <xliff:g id="number_accounts">%d</xliff:g> more accounts.)</string>

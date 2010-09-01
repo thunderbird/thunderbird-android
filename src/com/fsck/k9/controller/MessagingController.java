@@ -22,6 +22,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import android.app.Application;
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -4565,52 +4566,56 @@ public class MessagingController implements Runnable
     {
         // If we have a message, set the notification to "<From>: <Subject>"
         StringBuffer messageNotice = new StringBuffer();
-        try
+        final KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        if (!K9.keyguardPrivacy() || !keyguardService.inKeyguardRestrictedInputMode())
         {
-            if (message != null && message.getFrom() != null)
+            try
             {
-                Address[] fromAddrs = message.getFrom();
-                String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly().toString() : null;
-                String subject = message.getSubject();
-                if (subject == null)
+                if (message != null && message.getFrom() != null)
                 {
-                    subject = context.getString(R.string.general_no_subject);
-                }
-
-                if (from != null)
-                {
-                    // Show From: address by default
-                    if (!account.isAnIdentity(fromAddrs))
+                    Address[] fromAddrs = message.getFrom();
+                    String from = fromAddrs.length > 0 ? fromAddrs[0].toFriendly().toString() : null;
+                    String subject = message.getSubject();
+                    if (subject == null)
                     {
-                        messageNotice.append(from + ": " + subject);
+                        subject = context.getString(R.string.general_no_subject);
                     }
-                    // show To: if the message was sent from me
-                    else
-                    {
-                        if (!account.isNotifySelfNewMail())
-                        {
-                            return false;
-                        }
 
-                        Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
-                        String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
-                        if (to != null)
+                    if (from != null)
+                    {
+                        // Show From: address by default
+                        if (!account.isAnIdentity(fromAddrs))
                         {
-                            messageNotice.append(String.format(context.getString(R.string.message_list_to_fmt), to) +": "+subject);
+                            messageNotice.append(from + ": " + subject);
                         }
+                        // show To: if the message was sent from me
                         else
                         {
-                            messageNotice.append(context.getString(R.string.general_no_sender) + ": "+subject);
+                            if (!account.isNotifySelfNewMail())
+                            {
+                                return false;
+                            }
+
+                            Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
+                            String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
+                            if (to != null)
+                            {
+                                messageNotice.append(String.format(context.getString(R.string.message_list_to_fmt), to) +": "+subject);
+                            }
+                            else
+                            {
+                                messageNotice.append(context.getString(R.string.general_no_sender) + ": "+subject);
+
+                            }
 
                         }
-
                     }
                 }
             }
-        }
-        catch (MessagingException e)
-        {
-            Log.e(K9.LOG_TAG, "Unable to get message information for notification.", e);
+            catch (MessagingException e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to get message information for notification.", e);
+            }
         }
 
 
