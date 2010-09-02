@@ -295,6 +295,14 @@
   <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à taille fixe pour les messages en texte brut</string>
   <string name="global_settings_messageview_return_to_list_label">Retour à la liste après suppression</string>
   <string name="global_settings_messageview_return_to_list_summary">Retourne à la liste de messages après la suppression d\'un message</string>
+
+    <string name="global_settings_confirm_actions_title">Confirmer les actions</string>
+    <string name="global_settings_confirm_actions_summary">Demander une confirmation pour chacune des actions sélectionnées</string>
+    <string name="global_settings_confirm_action_archive">Archiver</string>
+    <string name="global_settings_confirm_action_delete">Supprimer (mode lecture)</string>
+    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_send">Envoyer</string>
+
   <string name="account_setup_basics_title">Configurer la messagerie</string>
   <string name="account_setup_basics_instructions">Saisissez l\'adresse de messagerie de votre compte\u00A0:</string>
   <string name="account_setup_basics_instructions2_fmt">(Vous pouvez ajouter %d comptes supplémentaires.)</string>
@@ -798,4 +806,10 @@
 
   <string name="charset_not_found">Ce message ne peut être affiché parce que le jeu de caractères «\u00A0<xliff:g id="charset">%s</xliff:g>\u00A0» n\'a pu être trouvé.</string>
   <string name="select_text_now">Sélectionner le texte à copier.</string>
+
+    <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
+    <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
+    <string name="dialog_confirm_delete_confirm_button">Supprimer</string>
+    <string name="dialog_confirm_delete_cancel_button">Ne pas supprimer</string>
+
 </resources>
