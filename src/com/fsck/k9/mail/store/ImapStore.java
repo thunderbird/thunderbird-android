@@ -936,25 +936,21 @@ public class ImapStore extends Store
                          *
                          * See issue 2078
                          */
+                        boolean invalidResponse = false;
                         for (int i = 1, length = response.size(); i < length; i++)
                         {
-                            Object item = response.get(i);
-                            if (item instanceof String)
+                            if ("0".equals(response.get(i)))
                             {
-                                try
-                                {
-                                    // Message sequence number is an unsigned 32-bit number.
-                                    long msgSeqNum = Long.parseLong((String)item);
-
-                                    // TODO: Make sure the number isn't larger than the number of
-                                    // messages in the folder rather than < 2^32.
-                                    if ((msgSeqNum > 0) && (msgSeqNum < (1L << 32)))
-                                    {
-                                        count++;
-                                    }
-                                }
-                                catch (NumberFormatException e) {}
+                                invalidResponse = true;
                             }
+                            else
+                            {
+                                count++;
+                            }
+                        }
+                        if (K9.DEBUG && invalidResponse)
+                        {
+                            Log.d(K9.LOG_TAG, "Invalid value found in SEARCH response.");
                         }
                     }
                 }
