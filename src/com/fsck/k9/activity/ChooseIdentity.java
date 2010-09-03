@@ -3,7 +3,6 @@ package com.fsck.k9.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -58,6 +57,7 @@ public class ChooseIdentity extends K9ListActivity
 
     protected void refreshView()
     {
+        adapter.setNotifyOnChange(false);
         adapter.clear();
 
         identities = mAccount.getIdentities();
@@ -71,6 +71,7 @@ public class ChooseIdentity extends K9ListActivity
             adapter.add(description);
         }
 
+        adapter.notifyDataSetChanged();
     }
 
     protected void setupClickListeners()
@@ -98,39 +99,4 @@ public class ChooseIdentity extends K9ListActivity
         });
 
     }
-
-    class ChooseIdentityHandler extends Handler
-    {
-
-        private static final int MSG_PROGRESS = 2;
-        private static final int MSG_DATA_CHANGED = 3;
-
-        @Override
-        public void handleMessage(android.os.Message msg)
-        {
-            switch (msg.what)
-            {
-                case MSG_PROGRESS:
-                    setProgressBarIndeterminateVisibility(msg.arg1 != 0);
-                    break;
-                case MSG_DATA_CHANGED:
-                    adapter.notifyDataSetChanged();
-                    break;
-            }
-        }
-
-        public void progress(boolean progress)
-        {
-            android.os.Message msg = new android.os.Message();
-            msg.what = MSG_PROGRESS;
-            msg.arg1 = progress ? 1 : 0;
-            sendMessage(msg);
-        }
-
-        public void dataChanged()
-        {
-            sendEmptyMessage(MSG_DATA_CHANGED);
-        }
-    }
-
 }

@@ -16,7 +16,6 @@
 
 package com.fsck.k9.web;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
@@ -28,34 +27,26 @@ import android.widget.TextView;
 
 public class AccessibleWebView extends TextView
 {
-    private Activity parent;
-
-    private String htmlSource;
-
-    private WebView dummyWebView;
+    private Context mContext;
+    private String mHtmlSource;
+    private WebView mDummyWebView;
 
     public AccessibleWebView(Context context)
     {
         super(context);
-        parent = (Activity) context;
-        dummyWebView = new WebView(context);
-        setFocusable(true);
-        setFocusableInTouchMode(true);
-        setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View arg0)
-            {
-                diveIn();
-            }
-        });
+        init(context);
     }
 
     public AccessibleWebView(Context context, AttributeSet attributes)
     {
         super(context, attributes);
-        parent = (Activity) context;
-        dummyWebView = new WebView(context);
+        init(context);
+    }
+
+    private void init(Context context)
+    {
+        mContext = context;
+        mDummyWebView = new WebView(context);
         setFocusable(true);
         setFocusableInTouchMode(true);
         setOnClickListener(new OnClickListener()
@@ -66,37 +57,24 @@ public class AccessibleWebView extends TextView
                 diveIn();
             }
         });
-
     }
 
     public void loadData(String data, String mimeType, String encoding)
     {
-        htmlSource = data;
-        this.setText(Html.fromHtml(htmlSource, null, null));
+        mHtmlSource = data;
+        this.setText(Html.fromHtml(mHtmlSource, null, null));
     }
 
     public WebSettings getSettings()
     {
-        return dummyWebView.getSettings();
-    }
-
-    public void setVerticalScrollbarOverlay(boolean booleanValue)
-    {
-        // Do nothing here; dummy stub method to maintain compatibility with
-        // standard WebView.
+        return mDummyWebView.getSettings();
     }
 
     public void loadDataWithBaseURL(String baseUrl, String data, String mimeType, String encoding,
                                     String historyUrl)
     {
-        htmlSource = data;
-        this.setText(Html.fromHtml(htmlSource, null, null));
-    }
-
-    public void loadUrl(String url)
-    {
-        // Do nothing here; dummy stub method to maintain compatibility with
-        // standard WebView.
+        mHtmlSource = data;
+        this.setText(Html.fromHtml(mHtmlSource, null, null));
     }
 
     public boolean zoomIn()
@@ -122,8 +100,8 @@ public class AccessibleWebView extends TextView
     private void diveIn()
     {
         Intent i = new Intent();
-        i.setClass(parent, AccessibleEmailContentActivity.class);
-        i.putExtra("content", htmlSource);
-        parent.startActivity(i);
+        i.setClass(mContext, AccessibleEmailContentActivity.class);
+        i.putExtra("content", mHtmlSource);
+        mContext.startActivity(i);
     }
 }

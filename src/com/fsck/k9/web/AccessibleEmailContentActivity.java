@@ -17,7 +17,6 @@
 package com.fsck.k9.web;
 
 import java.util.ArrayList;
-
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -26,41 +25,39 @@ import android.widget.ArrayAdapter;
 
 public class AccessibleEmailContentActivity extends ListActivity
 {
-    String[] listItems =
-    {
-        ""
-    };
+    /**
+     * Immutable empty String array
+     */
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private String htmlSource;
-
-    private ArrayList<String> cleanedList;
-
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        htmlSource = getIntent().getStringExtra("content");
+        String htmlSource = getIntent().getStringExtra("content");
         Spanned parsedHtml = Html.fromHtml(htmlSource, null, null);
         String[] rawListItems = parsedHtml.toString().split("\n");
 
-        cleanedList = new ArrayList<String>();
+        ArrayList<String> cleanedList = new ArrayList<String>();
         for (int i = 0; i < rawListItems.length; i++)
         {
             if (rawListItems[i].trim().length() > 0)
             {
-                addToCleanedList(rawListItems[i]);
+                addToCleanedList(cleanedList, rawListItems[i]);
             }
         }
 
-        listItems = cleanedList.toArray(listItems);
+        String[] listItems = cleanedList.toArray(EMPTY_STRING_ARRAY);
 
         setContentView(com.fsck.k9.R.layout.accessible_email_content);
-        setListAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems));
+        setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems));
     }
 
-    private void addToCleanedList(String line)
+    private void addToCleanedList(ArrayList<String> cleanedList, String line)
     {
         if (line.length() < 80)
         {
