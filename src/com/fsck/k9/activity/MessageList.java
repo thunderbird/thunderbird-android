@@ -308,10 +308,14 @@ public class MessageList
 
             if (mCurrentFolder != null && mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0)
             {
-                level = (Window.PROGRESS_END / mAdapter.mListener.getFolderTotal()) * (mAdapter.mListener.getFolderCompleted()) ;
-                if (level > Window.PROGRESS_END)
+                int divisor = mAdapter.mListener.getFolderTotal();
+                if (divisor != 0)
                 {
-                    level = Window.PROGRESS_END;
+                    level = (Window.PROGRESS_END / divisor) * (mAdapter.mListener.getFolderCompleted()) ;
+                    if (level > Window.PROGRESS_END)
+                    {
+                        level = Window.PROGRESS_END;
+                    }
                 }
             }
 
@@ -2061,7 +2065,7 @@ public class MessageList
         private void addOrUpdateMessages(final Account account, final String folder, final List<Message> providedMessages, final boolean verifyAgainstSearch)
         {
             // we copy the message list because the callback doesn't expect
-            // the callbacks to mutate it. 
+            // the callbacks to mutate it.
             final List<Message> messages = new ArrayList<Message>(providedMessages);
 
             runOnUiThread(new Runnable()
