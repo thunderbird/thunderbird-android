@@ -928,7 +928,34 @@ public class ImapStore extends Store
                 {
                     if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH"))
                     {
-                        count += response.size() - 1;
+                        /*
+                         * At least one server software decided it'd be a nice challenge for
+                         * client implementations to return a message sequence number of 0 when
+                         * no matches were found. So we're doing some sanity checks on the
+                         * returned values before adding them to our message count.
+                         *
+                         * See issue 2078
+                         */
+                        for (int i = 1, length = response.size(); i < length; i++)
+                        {
+                            Object item = response.get(i);
+                            if (item instanceof String)
+                            {
+                                try
+                                {
+                                    // Message sequence number is an unsigned 32-bit number.
+                                    long msgSeqNum = Long.parseLong((String)item);
+
+                                    // TODO: Make sure the number isn't larger than the number of
+                                    // messages in the folder rather than < 2^32.
+                                    if ((msgSeqNum > 0) && (msgSeqNum < (1L << 32)))
+                                    {
+                                        count++;
+                                    }
+                                }
+                                catch (NumberFormatException e) {}
+                            }
+                        }
                     }
                 }
                 return count;
