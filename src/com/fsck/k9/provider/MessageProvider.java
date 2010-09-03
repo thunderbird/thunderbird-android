@@ -69,7 +69,11 @@ public class MessageProvider extends ContentProvider
 
     private static Application mApp;
 
-    private List<MessageInfoHolder> glb_messages;
+    /**
+     * list is synchronized, iterations have to be synchronized on the list
+     * instance in order to prevent concurrency issue
+     */
+    private final List<MessageInfoHolder> glb_messages = Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
     private static MatrixCursor mCursor;
 
     static
@@ -103,7 +107,7 @@ public class MessageProvider extends ContentProvider
             if (inSync == false)
             {
                 inSync = true;
-                glb_messages = new ArrayList<MessageInfoHolder>();
+                glb_messages.clear();
                 SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null,  null);
                 MessagingController msgController = MessagingController.getInstance(mApp);
                 msgController.searchLocalMessages(integratedInboxAccount, null, mListener);
@@ -121,13 +125,30 @@ public class MessageProvider extends ContentProvider
         public void searchStats(AccountStats stats)
         {
             int id = -1;
-            Collections.sort(glb_messages);
-            MatrixCursor tmpCur = new MatrixCursor(messages_projection);
-            for (MessageInfoHolder mi : glb_messages)
+            synchronized (glb_messages)
             {
-                ++id;
-                Message msg = mi.message;
-                tmpCur.addRow(new Object[] {id,mi.fullDate,mi.sender,mi.subject,mi.preview,mi.account,mi.uri,CONTENT_URI+"/delete_message/"+msg.getFolder().getAccount().getAccountNumber()+"/"+msg.getFolder().getName()+"/"+msg.getUid()});
+                Collections.sort(glb_messages);
+            }
+            MatrixCursor tmpCur = new MatrixCursor(messages_projection);
+            synchronized (glb_messages)
+            {
+                for (MessageInfoHolder mi : glb_messages)
+                {
+                    ++id;
+                    Message msg = mi.message;
+                    tmpCur.addRow(new Object[]
+                    {
+                            id,
+                            mi.fullDate,
+                            mi.sender,
+                            mi.subject,
+                            mi.preview,
+                            mi.account,
+                            mi.uri,
+                            CONTENT_URI + "/delete_message/"
+                                    + msg.getFolder().getAccount().getAccountNumber() + "/"
+                                    + msg.getFolder().getName() + "/" + msg.getUid() });
+                }
             }
             mCursor = tmpCur;
             inSync=false;
@@ -331,7 +352,7 @@ public class MessageProvider extends ContentProvider
                 {
                     mCursor = new MatrixCursor(messages_projection);
                     // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
-                    glb_messages = new ArrayList<MessageInfoHolder>();
+                    glb_messages.clear();
                     SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null,  null);
                     MessagingController msgController = MessagingController.getInstance(mApp);
                     msgController.searchLocalMessages(integratedInboxAccount, null, mListener);
