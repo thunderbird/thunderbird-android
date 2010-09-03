@@ -55,10 +55,14 @@
             android:title="@string/gestures_title"
             android:summary="@string/gestures_summary" />
 
-        <CheckBoxPreference
+        <com.fsck.k9.preferences.CheckboxListPreference
             android:key="volumeNavigation"
             android:title="@string/volume_navigation_title"
-            android:summary="@string/volume_navigation_summary" />
+            android:summary="@string/volume_navigation_summary"
+            android:dialogTitle="@string/volume_navigation_title"
+            android:positiveButtonText="@android:string/ok"
+            android:negativeButtonText="@android:string/cancel"
+        />
 
         <CheckBoxPreference
             android:key="manage_back"

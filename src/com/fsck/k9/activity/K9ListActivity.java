@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 import android.app.ListActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.os.Bundle;
 import com.fsck.k9.K9;
@@ -53,25 +54,35 @@ public class K9ListActivity extends ListActivity
         {
             case KeyEvent.KEYCODE_VOLUME_UP:
             {
-                ListView listView = getListView();
-                if (K9.useVolumeKeysForNavigationEnabled())
+                final ListView listView = getListView();
+                if (K9.useVolumeKeysForListNavigationEnabled())
                 {
-
-                    if (listView.getSelectedItemPosition() > 0)
+                    int currentPosition = listView.getSelectedItemPosition();
+                    if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode())
                     {
-                        listView.setSelection(listView.getSelectedItemPosition()-1);
+                        currentPosition = listView.getFirstVisiblePosition();
+                    }
+                    if (currentPosition > 0)
+                    {
+                        listView.setSelection(currentPosition - 1);
                     }
                     return true;
                 }
             }
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             {
-                ListView listView = getListView();
-                if (K9.useVolumeKeysForNavigationEnabled())
+                final ListView listView = getListView();
+                if (K9.useVolumeKeysForListNavigationEnabled())
                 {
-                    if (listView.getSelectedItemPosition() < listView.getCount())
+                    int currentPosition = listView.getSelectedItemPosition();
+                    if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode())
                     {
-                        listView.setSelection(listView.getSelectedItemPosition()+1);
+                        currentPosition = listView.getFirstVisiblePosition();
+                    }
+                    
+                    if (currentPosition < listView.getCount())
+                    {
+                        listView.setSelection(currentPosition + 1);
                     }
                     return true;
                 }
@@ -84,7 +95,7 @@ public class K9ListActivity extends ListActivity
     public boolean onKeyUp(int keyCode, KeyEvent event)
     {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.useVolumeKeysForNavigationEnabled())
+        if (K9.useVolumeKeysForListNavigationEnabled())
         {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))
             {

@@ -118,6 +118,7 @@ public class K9 extends Application
 
     private static boolean mGesturesEnabled = true;
     private static boolean mUseVolumeKeysForNavigation = false;
+    private static boolean mUseVolumeKeysForListNavigation = false;
     private static boolean mManageBack = false;
     private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
@@ -340,6 +341,7 @@ public class K9 extends Application
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
+        editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("manageBack", mManageBack);
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
@@ -377,6 +379,7 @@ public class K9 extends Application
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
         mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
+        mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
         mManageBack = sprefs.getBoolean("manageBack", false);
         mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
@@ -537,6 +540,16 @@ public class K9 extends Application
     public static void setUseVolumeKeysForNavigation(boolean volume)
     {
         mUseVolumeKeysForNavigation = volume;
+    }
+
+    public static boolean useVolumeKeysForListNavigationEnabled()
+    {
+        return mUseVolumeKeysForListNavigation;
+    }
+
+    public static void setUseVolumeKeysForListNavigation(boolean enabled)
+    {
+        mUseVolumeKeysForListNavigation = enabled;
     }
 
     public static boolean manageBack()

@@ -690,26 +690,38 @@ public class MessageList
                 // in MessageView, we implement this bit of wrapper code
             case KeyEvent.KEYCODE_VOLUME_UP:
             {
-                if (K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForListNavigationEnabled())
                 {
-
-                    if (mListView.getSelectedItemPosition() > 0)
+                    int currentPosition = mListView.getSelectedItemPosition();
+                    if (currentPosition == AdapterView.INVALID_POSITION || mListView.isInTouchMode())
                     {
-                        mListView.setSelection(mListView.getSelectedItemPosition()-1);
+                        currentPosition = mListView.getFirstVisiblePosition();
+                    }
+                    if (currentPosition > 0)
+                    {
+                        mListView.setSelection(currentPosition - 1);
                     }
                     return true;
                 }
+                return false;
             }
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             {
-                if (K9.useVolumeKeysForNavigationEnabled())
+                if (K9.useVolumeKeysForListNavigationEnabled())
                 {
-                    if (mListView.getSelectedItemPosition() < mListView.getCount())
+                    int currentPosition = mListView.getSelectedItemPosition();
+                    if (currentPosition == AdapterView.INVALID_POSITION || mListView.isInTouchMode())
                     {
-                        mListView.setSelection(mListView.getSelectedItemPosition()+1);
+                        currentPosition = mListView.getFirstVisiblePosition();
+                    }
+                    
+                    if (currentPosition < mListView.getCount())
+                    {
+                        mListView.setSelection(currentPosition + 1);
                     }
                     return true;
                 }
+                return false;
             }
             case KeyEvent.KEYCODE_DPAD_LEFT:
             {
@@ -842,7 +854,7 @@ public class MessageList
     public boolean onKeyUp(int keyCode, KeyEvent event)
     {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.useVolumeKeysForNavigationEnabled())
+        if (K9.useVolumeKeysForListNavigationEnabled())
         {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))
             {
