@@ -2,8 +2,12 @@
 package com.fsck.k9.mail;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
@@ -33,6 +37,11 @@ public class Address
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
     private static Map<String,String> sContactsName = new ConcurrentHashMap<String, String>();
+
+    public static void clearContactsNameCache() {
+        sContactsName.clear();
+    }
+
     private static final String NO_ENTRY = "";
 
     String mAddress;
@@ -251,9 +260,16 @@ public class Address
         if (contacts != null)
         {
             String name = sContactsName.get(mAddress);
+
             if (name != null && name != NO_ENTRY)
             {
-                return Html.fromHtml("<font color=\"Blue\">" + name + "</font>"); // TODO: use setSpan
+                SpannableString sname = new SpannableString(name);
+                sname.setSpan(new ForegroundColorSpan(Color.BLUE),
+                        0,
+                        sname.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                       );
+                return sname;
             }
             if (name == null)
             {
@@ -267,7 +283,14 @@ public class Address
                             cursor.moveToFirst();
                             name = contacts.getName(cursor);
                             sContactsName.put(mAddress, name);
-                            return Html.fromHtml("<font color=\"Blue\">" + name + "</font>"); // TODO: use setSpan
+
+                            SpannableString sname = new SpannableString(name);
+                            sname.setSpan(new ForegroundColorSpan(Color.BLUE),
+                                    0,
+                                    sname.length(),
+                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                   );
+                            return sname;
                         }
                         else
                         {

@@ -13,6 +13,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -20,6 +21,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.DateFormatter;
 import com.fsck.k9.activity.K9PreferenceActivity;
+import com.fsck.k9.preferences.CheckboxListPreference;
 import com.fsck.k9.service.MailService;
 
 public class Prefs extends K9PreferenceActivity
@@ -53,6 +55,11 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
+
+    private static final String PREFERENCE_CONFIRM_ACTIONS = "confirm_actions";
+
+    private static final String PREFERENCE_PRIVACY_MODE = "privacy_mode";
+
     private ListPreference mLanguage;
     private ListPreference mTheme;
     private ListPreference mDateFormat;
@@ -75,6 +82,9 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mUseGalleryBugWorkaround;
 
+    private CheckboxListPreference mConfirmActions;
+
+    private CheckBoxPreference mPrivacyMode;
 
     private String initBackgroundOps;
 
@@ -233,6 +243,13 @@ public class Prefs extends K9PreferenceActivity
 
         mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
         mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
+
+        mConfirmActions = (CheckboxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
+        mConfirmActions.setItems(new CharSequence[] {getString(R.string.global_settings_confirm_action_delete)});
+        mConfirmActions.setCheckedItems(new boolean[] {K9.confirmDelete()});
+
+        mPrivacyMode = (CheckBoxPreference) findPreference(PREFERENCE_PRIVACY_MODE);
+        mPrivacyMode.setChecked(K9.keyguardPrivacy());
     }
 
     @Override
@@ -246,6 +263,11 @@ public class Prefs extends K9PreferenceActivity
         SharedPreferences preferences = Preferences.getPreferences(this).getPreferences();
         K9.setK9Language(mLanguage.getValue());
         K9.setK9Theme(mTheme.getValue().equals("dark") ? android.R.style.Theme : android.R.style.Theme_Light);
+
+        if (!K9.DEBUG && mDebugLogging.isChecked())
+        {
+            Toast.makeText(this, R.string.debug_logging_enabled, Toast.LENGTH_LONG).show();
+        }
         K9.DEBUG = mDebugLogging.isChecked();
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
@@ -266,6 +288,10 @@ public class Prefs extends K9PreferenceActivity
         K9.setCountSearchMessages(mCountSearch.isChecked());
 
         K9.setUseGalleryBugWorkaround(mUseGalleryBugWorkaround.isChecked());
+
+        K9.setConfirmDelete(mConfirmActions.getCheckedItems()[0]);
+
+        K9.setKeyguardPrivacy(mPrivacyMode.isChecked());
 
         Editor editor = preferences.edit();
         K9.save(editor);
