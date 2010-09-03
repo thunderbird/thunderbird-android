@@ -301,10 +301,14 @@ public class MessageList
 
             if (mCurrentFolder != null && mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0)
             {
-                level = (Window.PROGRESS_END / mAdapter.mListener.getFolderTotal()) * (mAdapter.mListener.getFolderCompleted()) ;
-                if (level > Window.PROGRESS_END)
+                int divisor = mAdapter.mListener.getFolderTotal();
+                if (divisor != 0)
                 {
-                    level = Window.PROGRESS_END;
+                    level = (Window.PROGRESS_END / divisor) * (mAdapter.mListener.getFolderCompleted()) ;
+                    if (level > Window.PROGRESS_END)
+                    {
+                        level = Window.PROGRESS_END;
+                    }
                 }
             }
 
