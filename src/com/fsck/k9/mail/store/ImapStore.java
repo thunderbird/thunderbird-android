@@ -924,7 +924,30 @@ public class ImapStore extends Store
                 {
                     if (ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH"))
                     {
-                        count += response.size() - 1;
+                        /*
+                         * At least one server software decided it'd be a nice challenge for
+                         * client implementations to return a message sequence number of 0 when
+                         * no matches were found. So we're doing some sanity checks on the
+                         * returned values before adding them to our message count.
+                         *
+                         * See issue 2078
+                         */
+                        boolean invalidResponse = false;
+                        for (int i = 1, length = response.size(); i < length; i++)
+                        {
+                            if ("0".equals(response.get(i)))
+                            {
+                                invalidResponse = true;
+                            }
+                            else
+                            {
+                                count++;
+                            }
+                        }
+                        if (K9.DEBUG && invalidResponse)
+                        {
+                            Log.d(K9.LOG_TAG, "Invalid value found in SEARCH response.");
+                        }
                     }
                 }
                 return count;
