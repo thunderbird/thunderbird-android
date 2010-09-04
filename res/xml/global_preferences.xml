@@ -55,6 +55,15 @@
             android:title="@string/gestures_title"
             android:summary="@string/gestures_summary" />
 
+        <com.fsck.k9.preferences.CheckboxListPreference
+            android:key="volumeNavigation"
+            android:title="@string/volume_navigation_title"
+            android:summary="@string/volume_navigation_summary"
+            android:dialogTitle="@string/volume_navigation_title"
+            android:positiveButtonText="@android:string/ok"
+            android:negativeButtonText="@android:string/cancel"
+        />
+
         <CheckBoxPreference
             android:key="manage_back"
             android:title="@string/manage_back_title"
@@ -64,6 +73,20 @@
             android:key="start_integrated_inbox"
             android:title="@string/start_integrated_inbox_title"
             android:summary="@string/start_integrated_inbox_summary" />
+
+        <com.fsck.k9.preferences.CheckboxListPreference
+            android:key="confirm_actions"
+            android:title="@string/global_settings_confirm_actions_title"
+            android:summary="@string/global_settings_confirm_actions_summary"
+            android:dialogTitle="@string/global_settings_confirm_actions_title"
+            android:positiveButtonText="@android:string/ok"
+            android:negativeButtonText="@android:string/cancel"
+        />
+
+        <CheckBoxPreference
+            android:key="privacy_mode"
+            android:title="@string/global_settings_privacy_mode_title"
+            android:summary="@string/global_settings_privacy_mode_summary"/>
 
     </PreferenceCategory>
 

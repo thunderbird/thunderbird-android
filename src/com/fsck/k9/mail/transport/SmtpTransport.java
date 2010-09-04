@@ -247,15 +247,15 @@ public class SmtpTransport extends Transport
             boolean authCramMD5Supported = false;
             for (String result : results)
             {
-                if (result.matches(".*AUTH.*LOGIN.*$") == true)
+                if (result.matches(".*AUTH.*LOGIN.*$"))
                 {
                     authLoginSupported = true;
                 }
-                if (result.matches(".*AUTH.*PLAIN.*$") == true)
+                if (result.matches(".*AUTH.*PLAIN.*$"))
                 {
                     authPlainSupported = true;
                 }
-                if (result.matches(".*AUTH.*CRAM-MD5.*$") == true && mAuthType != null && mAuthType.equals("CRAM_MD5"))
+                if (result.matches(".*AUTH.*CRAM-MD5.*$") && mAuthType != null && mAuthType.equals("CRAM_MD5"))
                 {
                     authCramMD5Supported = true;
                 }

@@ -458,6 +458,17 @@ public class Pop3Store extends Store
             for (int msgNum = start; msgNum <= end; msgNum++)
             {
                 Pop3Message message = mMsgNumToMsgMap.get(msgNum);
+                if (message == null)
+                {
+                    /*
+                     * There could be gaps in the message numbers or malformed
+                     * responses which lead to "gaps" in mMsgNumToMsgMap.
+                     *
+                     * See issue 2252
+                     */
+                    continue;
+                }
+
                 if (listener != null)
                 {
                     listener.messageStarted(message.getUid(), i++, (end - start) + 1);

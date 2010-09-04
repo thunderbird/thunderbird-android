@@ -1,52 +1,33 @@
 package com.fsck.k9.provider;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 import android.app.Application;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.util.Log;
-import android.os.Bundle;
-import android.util.Config;
-import android.text.format.DateFormat;
-import android.provider.Settings;
-import android.content.Intent;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.mail.Flag;
+import com.fsck.k9.SearchAccount;
+import com.fsck.k9.activity.MessageInfoHolder;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingController.SORT_TYPE;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.SearchAccount;
-import com.fsck.k9.Account;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.R;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
-import com.fsck.k9.activity.DateFormatter;
-import com.fsck.k9.activity.MessageInfoHolder;
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
 
 public class MessageProvider extends ContentProvider
 {
@@ -62,14 +43,17 @@ public class MessageProvider extends ContentProvider
     private static final int URI_ACCOUNTS = 2;
     private static final int URI_ACCOUNT_UNREAD = 3;
 
-    private static String mCurrentEmailAccount = "";
     private static Context context = null;
     private static boolean mIsListenerRegister = false;
     private static boolean inSync = false;
 
     private static Application mApp;
 
-    private List<MessageInfoHolder> glb_messages;
+    /**
+     * list is synchronized, iterations have to be synchronized on the list
+     * instance in order to prevent concurrency issue
+     */
+    private final List<MessageInfoHolder> glb_messages = Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
     private static MatrixCursor mCursor;
 
     static
@@ -103,7 +87,7 @@ public class MessageProvider extends ContentProvider
             if (inSync == false)
             {
                 inSync = true;
-                glb_messages = new ArrayList<MessageInfoHolder>();
+                glb_messages.clear();
                 SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null,  null);
                 MessagingController msgController = MessagingController.getInstance(mApp);
                 msgController.searchLocalMessages(integratedInboxAccount, null, mListener);
@@ -121,13 +105,30 @@ public class MessageProvider extends ContentProvider
         public void searchStats(AccountStats stats)
         {
             int id = -1;
-            Collections.sort(glb_messages);
-            MatrixCursor tmpCur = new MatrixCursor(messages_projection);
-            for (MessageInfoHolder mi : glb_messages)
+            synchronized (glb_messages)
             {
-                ++id;
-                Message msg = mi.message;
-                tmpCur.addRow(new Object[] {id,mi.fullDate,mi.sender,mi.subject,mi.preview,mi.account,mi.uri,CONTENT_URI+"/delete_message/"+msg.getFolder().getAccount().getAccountNumber()+"/"+msg.getFolder().getName()+"/"+msg.getUid()});
+                Collections.sort(glb_messages);
+            }
+            MatrixCursor tmpCur = new MatrixCursor(messages_projection);
+            synchronized (glb_messages)
+            {
+                for (MessageInfoHolder mi : glb_messages)
+                {
+                    ++id;
+                    Message msg = mi.message;
+                    tmpCur.addRow(new Object[]
+                    {
+                            id,
+                            mi.fullDate,
+                            mi.sender,
+                            mi.subject,
+                            mi.preview,
+                            mi.account,
+                            mi.uri,
+                            CONTENT_URI + "/delete_message/"
+                                    + msg.getFolder().getAccount().getAccountNumber() + "/"
+                                    + msg.getFolder().getName() + "/" + msg.getUid() });
+                }
             }
             mCursor = tmpCur;
             inSync=false;
@@ -202,10 +203,10 @@ public class MessageProvider extends ContentProvider
 
     public void setApplication(Application app)
     {
-
-    	if (context == null) {
-    		context = app.getApplicationContext();
-    	}
+        if (context == null)
+        {
+            context = app.getApplicationContext();
+        }
         if (app != null)
         {
             mApp = app;
@@ -331,13 +332,11 @@ public class MessageProvider extends ContentProvider
                 {
                     mCursor = new MatrixCursor(messages_projection);
                     // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
-                    glb_messages = new ArrayList<MessageInfoHolder>();
+                    glb_messages.clear();
                     SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null,  null);
                     MessagingController msgController = MessagingController.getInstance(mApp);
                     msgController.searchLocalMessages(integratedInboxAccount, null, mListener);
                 }
-
-                int id = -1;
 
 // Process messages
 

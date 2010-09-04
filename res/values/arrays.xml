@@ -603,6 +603,18 @@
         <item>5</item>
     </string-array>
 
+    <string-array name="account_settings_vibrate_times_label">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
     <string-array name="account_settings_crypto_app_entries">
         <item>@string/account_settings_crypto_app_none</item>
         <item>APG</item>

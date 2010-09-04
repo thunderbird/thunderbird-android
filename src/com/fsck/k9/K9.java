@@ -106,6 +106,8 @@ public class K9 extends Application
 
     private static boolean mAnimations = true;
 
+    private static boolean mConfirmDelete = false;
+    private static boolean mKeyguardPrivacy = false;
 
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
@@ -115,6 +117,8 @@ public class K9 extends Application
     private static boolean mMessageViewReturnToList = false;
 
     private static boolean mGesturesEnabled = true;
+    private static boolean mUseVolumeKeysForNavigation = false;
+    private static boolean mUseVolumeKeysForListNavigation = false;
     private static boolean mManageBack = false;
     private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
@@ -336,6 +340,8 @@ public class K9 extends Application
         editor.putString("backgroundOperations", K9.backgroundOps.toString());
         editor.putBoolean("animations", mAnimations);
         editor.putBoolean("gesturesEnabled", mGesturesEnabled);
+        editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
+        editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("manageBack", mManageBack);
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
@@ -350,6 +356,10 @@ public class K9 extends Application
         editor.putString("language", language);
         editor.putInt("theme", theme);
         editor.putBoolean("useGalleryBugWorkaround", useGalleryBugWorkaround);
+
+        editor.putBoolean("confirmDelete", mConfirmDelete);
+
+        editor.putBoolean("keyguardPrivacy", mKeyguardPrivacy);
 
         fontSizes.save(editor);
     }
@@ -368,6 +378,8 @@ public class K9 extends Application
         DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
         mAnimations = sprefs.getBoolean("animations", true);
         mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", true);
+        mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
+        mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
         mManageBack = sprefs.getBoolean("manageBack", false);
         mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
         mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
@@ -380,6 +392,10 @@ public class K9 extends Application
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
 
         useGalleryBugWorkaround = sprefs.getBoolean("useGalleryBugWorkaround", K9.isGalleryBuggy());
+
+        mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
+
+        mKeyguardPrivacy = sprefs.getBoolean("keyguardPrivacy", false);
 
         fontSizes.load(sprefs);
 
@@ -516,6 +532,25 @@ public class K9 extends Application
         mGesturesEnabled = gestures;
     }
 
+    public static boolean useVolumeKeysForNavigationEnabled()
+    {
+        return mUseVolumeKeysForNavigation;
+    }
+
+    public static void setUseVolumeKeysForNavigation(boolean volume)
+    {
+        mUseVolumeKeysForNavigation = volume;
+    }
+
+    public static boolean useVolumeKeysForListNavigationEnabled()
+    {
+        return mUseVolumeKeysForListNavigation;
+    }
+
+    public static void setUseVolumeKeysForListNavigation(boolean enabled)
+    {
+        mUseVolumeKeysForListNavigation = enabled;
+    }
 
     public static boolean manageBack()
     {
@@ -672,6 +707,29 @@ public class K9 extends Application
         return galleryBuggy;
     }
 
+    public static boolean confirmDelete()
+    {
+        return mConfirmDelete;
+    }
+
+    public static void setConfirmDelete(final boolean confirm)
+    {
+        mConfirmDelete = confirm;
+    }
+
+    /**
+     * @return Whether privacy rules should be applied when system is locked
+     */
+    public static boolean keyguardPrivacy()
+    {
+        return mKeyguardPrivacy;
+    }
+
+    public static void setKeyguardPrivacy(final boolean state)
+    {
+        mKeyguardPrivacy = state;
+    }
+
     /**
      * Check if this system contains a buggy Gallery 3D package.
      *
@@ -694,4 +752,5 @@ public class K9 extends Application
             return false;
         }
     }
+
 }

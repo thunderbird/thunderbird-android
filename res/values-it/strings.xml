@@ -62,7 +62,7 @@
 	<string name="end_of_folder">Non vi sono altri messaggi</string>
 	<string name="message_header_mua">K-9 per Android <xliff:g id="version">%s</xliff:g></string>
 	<string name="message_compose_content_hint">Testo del messaggio</string>
-	<string name="message_list_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
+	<string name="message_list_to_fmt">A:</string>
 	<string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
 	<string name="message_view_cc_label">Cc:</string>
 	<string name="message_delete_failed">Impossibile cancellare il messaggio</string>
@@ -322,7 +322,7 @@
 	<string name="message_compose_error_no_recipients">Aggiungere almeno un destinatario.</string>
 	<string name="message_compose_fwd_header_fmt">\n\n-------- Messaggio originale --------\nOggetto: <xliff:g id="subject">%s</xliff:g>\nDa: <xliff:g id="sender">%s</xliff:g>\nA: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
 	<string name="message_compose_quoted_text_label">Testo tra virgolette</string>
-	<string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> ha scritto:\n\n</string>
+	<string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> ha scritto:\n\n</string>
 	<string name="message_compose_subject_hint">Oggetto</string>
 	<string name="message_compose_to_hint">A</string>
 	<string name="message_copied_toast">Messaggio copiato.</string>

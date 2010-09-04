@@ -224,7 +224,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Weitere Nachrichten abrufen</string>
-    <string name="message_list_to_fmt">An: <xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_to_fmt">An: </string>
     <string name="message_list_delete_action">Löschen</string>
     <string name="message_list_mark_read_action">Gelesen</string>
     <string name="message_list_mark_unread_action">Nicht gelesen</string>
@@ -237,7 +237,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_compose_subject_hint">Betreff</string>
     <string name="message_compose_content_hint">Nachrichtentext</string>
     <string name="message_compose_fwd_header_fmt">\n\n-------- Original-Nachricht --------\nBetreff: <xliff:g id="subject">%s</xliff:g>\nVon: <xliff:g id="sender">%s</xliff:g>\nAn: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
-    <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> schrieb:\n\n</string>
+    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> schrieb:\n\n</string>
     <string name="message_compose_quoted_text_label">Zitierter Text</string>
     <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger wählen.</string>
     <string name="message_compose_downloading_attachments_toast">Einige Anlagen wurden nicht heruntergeladen. Sie werden automatisch heruntergeladen, bevor diese Nachricht gesendet wird.</string>

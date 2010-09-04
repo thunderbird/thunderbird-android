@@ -310,6 +310,13 @@ public class FolderList extends K9ListActivity
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
+        if (mAccount == null)
+        {
+            // This shouldn't normally happen. But apparently it does. See issue 2261.
+            finish();
+            return;
+        }
+
         initialFolder = intent.getStringExtra(EXTRA_INITIAL_FOLDER);
         boolean fromNotification = intent.getBooleanExtra(EXTRA_FROM_NOTIFICATION, false);
         if (fromNotification && mAccount.goToUnreadMessageSearch())
@@ -357,7 +364,7 @@ public class FolderList extends K9ListActivity
 
     @Override public Object onRetainNonConfigurationInstance()
     {
-        return mAdapter.mFolders;
+        return (mAdapter == null) ? null : mAdapter.mFolders;
     }
 
     @Override public void onPause()

@@ -93,7 +93,7 @@ public class Editor implements android.content.SharedPreferences.Editor
                     String key = entry.getKey();
                     String newValue = entry.getValue();
                     String oldValue = snapshot.get(key);
-                    if (removeAll || removals.contains(key) || newValue.equals(oldValue) != true)
+                    if (removeAll || removals.contains(key) || !newValue.equals(oldValue))
                     {
                         storage.put(key, newValue);
                     }

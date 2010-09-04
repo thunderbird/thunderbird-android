@@ -49,7 +49,7 @@ public class SleepService extends CoreService
         try
         {
             boolean countedDown = latch.await(sleepTime, TimeUnit.MILLISECONDS);
-            if (countedDown == false)
+            if (!countedDown)
             {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "SleepService latch timed out for id = " + id + ", thread " + Thread.currentThread().getName());
@@ -66,7 +66,7 @@ public class SleepService extends CoreService
             {
                 if (K9.DEBUG)
                     Log.d(K9.LOG_TAG, "SleepService waiting for reacquireLatch for id = " + id + ", thread " + Thread.currentThread().getName());
-                if (sleepDatum.reacquireLatch.await(5000, TimeUnit.MILLISECONDS) == false)
+                if (!sleepDatum.reacquireLatch.await(5000, TimeUnit.MILLISECONDS))
                 {
                     Log.w(K9.LOG_TAG, "SleepService reacquireLatch timed out for id = " + id + ", thread " + Thread.currentThread().getName());
                 }

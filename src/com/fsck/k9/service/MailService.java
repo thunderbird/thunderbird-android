@@ -247,7 +247,7 @@ public class MailService extends CoreService
         if (true) return;
         NotificationManager notifMgr =
             (NotificationManager)getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
-        if (hasConnectivity == false)
+        if (!hasConnectivity)
         {
             String notice = getApplication().getString(R.string.no_connection_alert);
             String header = getApplication().getString(R.string.alert_header);
@@ -343,7 +343,7 @@ public class MailService extends CoreService
                     else
                     {
                         long delay = (shortestInterval * (60 * 1000));
-                        long base = (previousInterval == -1 || lastCheckEnd == -1 || considerLastCheckEnd == false ? System.currentTimeMillis() : lastCheckEnd);
+                        long base = (previousInterval == -1 || lastCheckEnd == -1 || !considerLastCheckEnd ? System.currentTimeMillis() : lastCheckEnd);
                         long nextTime = base + delay;
                         if (K9.DEBUG)
                             Log.i(K9.LOG_TAG,

@@ -240,7 +240,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Load more messages</string>
-    <string name="message_list_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_to_fmt">To:</string>
     <string name="message_list_delete_action">Delete</string>
     <string name="message_list_mark_read_action">Mark read</string>
     <string name="message_list_mark_unread_action">Mark unread</string>
@@ -253,7 +253,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="message_compose_subject_hint">Subject</string>
     <string name="message_compose_content_hint">Message text</string>
     <string name="message_compose_fwd_header_fmt">\n-------- Original Message --------\nSubject: <xliff:g id="subject">%s</xliff:g>\nFrom: <xliff:g id="sender">%s</xliff:g>\nTo: <xliff:g id="to">%s</xliff:g>\nCC: <xliff:g id="cc">%s</xliff:g>\n\n</string>
-    <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:\n\n</string>
     <string name="message_compose_quoted_text_label">Quoted text</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
     <string name="message_compose_downloading_attachments_toast">Some attachments were not downloaded. They will be downloaded automatically before this message is sent.</string>
@@ -318,6 +318,16 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
     <string name="global_settings_messageview_return_to_list_label">Return to list after delete</string>
     <string name="global_settings_messageview_return_to_list_summary">Return to message list after message deletion</string>
+
+    <string name="global_settings_confirm_actions_title">Confirm actions</string>
+    <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
+    <string name="global_settings_confirm_action_archive">Archive</string>
+    <string name="global_settings_confirm_action_delete">Delete (message view only)</string>
+    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_send">Send</string>
+
+    <string name="global_settings_privacy_mode_title">Privacy mode</string>
+    <string name="global_settings_privacy_mode_summary">Don\'t display message subject in notification bar when system is locked</string>
 
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_instructions">Enter this account\'s email address:</string>
@@ -518,6 +528,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_show_pictures_always">Always</string>
 
     <string name="account_settings_composition">Writing messages</string>
+
+    <string name="account_settings_reply_after_quote_label">Reply After Quote</string>
+    <string name="account_settings_reply_after_quote_summary">When replying to messages, the original message will be placed above your reply.</string>
+
+
     <string name="account_settings_sync">Syncing folders</string>
     <string name="account_settings_folders">Folders</string>
     <string name="account_settings_message_lists">Listing messages</string>
@@ -823,6 +838,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="gestures_title">Gestures</string>
     <string name="gestures_summary">Accept gesture control</string>
 
+    <string name="volume_navigation_title">Volume up/down navigation</string>
+    <string name="volume_navigation_summary">Flip through items using the volume controls</string>
+    <string name="volume_navigation_message">Message view</string>
+    <string name="volume_navigation_list">Various list views</string>
+
     <string name="manage_back_title">Manage \"Back\" button</string>
     <string name="manage_back_summary">Make \"Back\" always go up a level</string>
 
@@ -928,4 +948,12 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="charset_not_found">This message can\'t be displayed because the charset \"<xliff:g id="charset">%s</xliff:g>\" wasn\'t found.</string>
 
     <string name="select_text_now">Select text to copy.</string>
+
+    <string name="dialog_confirm_delete_title">Confirm deletion</string>
+    <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
+    <string name="dialog_confirm_delete_confirm_button">Delete</string>
+    <string name="dialog_confirm_delete_cancel_button">Do not delete</string>
+
+    <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>
+
 </resources>

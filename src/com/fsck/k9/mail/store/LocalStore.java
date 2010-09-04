@@ -46,7 +46,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final int DB_VERSION = 37;
+    private static final int DB_VERSION = 38;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
     private String mPath;
@@ -382,6 +382,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     }
                 }
 
+
+                // Database version 38 is solely to prune cached attachments now that we clear them better
 
             }
 
@@ -806,7 +808,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             for (String queryField : queryFields)
             {
 
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(" OR ");
                 }
@@ -824,7 +826,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             boolean anyAdded = false;
             for (LocalFolder folder : folders)
             {
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(",");
                 }
@@ -840,7 +842,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             boolean anyAdded = false;
             for (Message message : messages)
             {
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(" OR ");
                 }
@@ -857,7 +859,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             boolean anyAdded = false;
             for (Flag flag : forbiddenFlags)
             {
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(" AND ");
                 }
@@ -874,7 +876,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             boolean anyAdded = false;
             for (Flag flag : requiredFlags)
             {
-                if (anyAdded == true)
+                if (anyAdded)
                 {
                     whereClause.append(" OR ");
                 }
@@ -1084,7 +1086,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 if (cursor.moveToFirst())
                 {
                     int folderId = cursor.getInt(0);
-                    return (folderId > 0) ? true : false;
+                    return (folderId > 0);
                 }
                 else
                 {
@@ -1859,11 +1861,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 else
                 {
                     Message oldMessage = getMessage(uid);
-                    if (oldMessage != null && oldMessage.isSet(Flag.SEEN) == false)
+                    if (oldMessage != null && !oldMessage.isSet(Flag.SEEN))
                     {
                         setUnreadMessageCount(getUnreadMessageCount() - 1);
                     }
-                    if (oldMessage != null && oldMessage.isSet(Flag.FLAGGED) == true)
+                    if (oldMessage != null && oldMessage.isSet(Flag.FLAGGED))
                     {
                         setFlaggedMessageCount(getFlaggedMessageCount() - 1);
                     }
@@ -1942,11 +1944,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         saveAttachment(messageUid, attachment, copy);
                     }
                     saveHeaders(messageUid, (MimeMessage)message);
-                    if (message.isSet(Flag.SEEN) == false)
+                    if (!message.isSet(Flag.SEEN))
                     {
                         setUnreadMessageCount(getUnreadMessageCount() + 1);
                     }
-                    if (message.isSet(Flag.FLAGGED) == true)
+                    if (message.isSet(Flag.FLAGGED))
                     {
                         setFlaggedMessageCount(getFlaggedMessageCount() + 1);
                     }
@@ -2300,11 +2302,24 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public void deleteMessagesOlderThan(long cutoff) throws MessagingException
         {
+            final String where = "folder_id = ? and date < ?";
+            final String[] params = new String[]
+            {
+                Long.toString(mFolderId), Long.toString(cutoff)
+            };
+
             open(OpenMode.READ_ONLY);
-            mDb.execSQL("DELETE FROM messages WHERE folder_id = ? and date < ?", new Object[]
-                        {
-                            Long.toString(mFolderId), new Long(cutoff)
-                        });
+            Message[] messages  = LocalStore.this.getMessages(
+                                      null,
+                                      this,
+                                      "SELECT " + GET_MESSAGES_COLS + "FROM messages WHERE " + where,
+                                      params);
+
+            for (Message message : messages)
+            {
+                deleteAttachments(message.getUid());
+            }
+            mDb.execSQL("DELETE FROM messages WHERE " + where, params);
             resetUnreadAndFlaggedCounts();
         }
 
@@ -2317,11 +2332,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 Message[] messages = getMessages(null);
                 for (Message message : messages)
                 {
-                    if (message.isSet(Flag.SEEN) == false)
+                    if (!message.isSet(Flag.SEEN))
                     {
                         newUnread++;
                     }
-                    if (message.isSet(Flag.FLAGGED) == true)
+                    if (message.isSet(Flag.FLAGGED))
                     {
                         newFlagged++;
                     }
@@ -2374,6 +2389,47 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             return PERMANENT_FLAGS;
         }
 
+
+        private void deleteAttachments(long messageId) throws MessagingException
+        {
+            open(OpenMode.READ_WRITE);
+            Cursor attachmentsCursor = null;
+            try
+            {
+                attachmentsCursor = mDb.query(
+                                        "attachments",
+                                        new String[] { "id" },
+                                        "message_id = ?",
+                                        new String[] { Long.toString(messageId) },
+                                        null,
+                                        null,
+                                        null);
+                while (attachmentsCursor.moveToNext())
+                {
+                    long attachmentId = attachmentsCursor.getLong(0);
+                    try
+                    {
+                        File file = new File(mAttachmentsDir, Long.toString(attachmentId));
+                        if (file.exists())
+                        {
+                            file.delete();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+            finally
+            {
+                if (attachmentsCursor != null)
+                {
+                    attachmentsCursor.close();
+                }
+            }
+        }
+
         private void deleteAttachments(String uid) throws MessagingException
         {
             open(OpenMode.READ_WRITE);
@@ -2391,41 +2447,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 while (messagesCursor.moveToNext())
                 {
                     long messageId = messagesCursor.getLong(0);
-                    Cursor attachmentsCursor = null;
-                    try
-                    {
-                        attachmentsCursor = mDb.query(
-                                                "attachments",
-                                                new String[] { "id" },
-                                                "message_id = ?",
-                                                new String[] { Long.toString(messageId) },
-                                                null,
-                                                null,
-                                                null);
-                        while (attachmentsCursor.moveToNext())
-                        {
-                            long attachmentId = attachmentsCursor.getLong(0);
-                            try
-                            {
-                                File file = new File(mAttachmentsDir, Long.toString(attachmentId));
-                                if (file.exists())
-                                {
-                                    file.delete();
-                                }
-                            }
-                            catch (Exception e)
-                            {
+                    deleteAttachments(messageId);
 
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        if (attachmentsCursor != null)
-                        {
-                            attachmentsCursor.close();
-                        }
-                    }
                 }
             }
             finally
@@ -2438,7 +2461,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         /*
-         * calcualteContentPreview
+         * calculateContentPreview
          * Takes a plain text message body as a string.
          * Returns a message summary as a string suitable for showing in a message list
          *
@@ -4698,7 +4721,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
                     catch (Exception e)
                     {
-                        if ("X_BAD_FLAG".equals(flag) == false)
+                        if (!"X_BAD_FLAG".equals(flag))
                         {
                             Log.w(K9.LOG_TAG, "Unable to parse flag " + flag);
                         }
@@ -4756,7 +4779,6 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             if (mMessageId != null) super.setMessageId(mMessageId);
 
             mMessageDirty = false;
-            return;
         }
 
         public String getPreview()
@@ -4878,56 +4900,20 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException
         {
+            /*
+             * If a message is being marked as deleted we want to clear out it's content
+             * and attachments as well. Delete will not actually remove the row since we need
+             * to retain the uid for synchronization purposes.
+             */
+
             if (flag == Flag.DELETED && set)
             {
-                /*
-                 * If a message is being marked as deleted we want to clear out it's content
-                 * and attachments as well. Delete will not actually remove the row since we need
-                 * to retain the uid for synchronization purposes.
-                 */
-
-                /*
-                 * Delete all of the messages' content to save space.
-                 */
-                ((LocalFolder) mFolder).deleteAttachments(getUid());
-
-                mDb.execSQL(
-                    "UPDATE messages SET " +
-                    "deleted = 1," +
-                    "subject = NULL, " +
-                    "sender_list = NULL, " +
-                    "date = NULL, " +
-                    "to_list = NULL, " +
-                    "cc_list = NULL, " +
-                    "bcc_list = NULL, " +
-                    "preview = NULL, " +
-                    "html_content = NULL, " +
-                    "text_content = NULL, " +
-                    "reply_to_list = NULL " +
-                    "WHERE id = ?",
-                    new Object[]
-                    {
-                        mId
-                    });
-
-                /*
-                 * Delete all of the messages' attachments to save space.
-                 */
-                mDb.execSQL("DELETE FROM attachments WHERE message_id = ?",
-                            new Object[]
-                            {
-                                mId
-                            });
-
-                ((LocalFolder)mFolder).deleteHeaders(mId);
-
+                delete();
             }
             else if (flag == Flag.X_DESTROYED && set)
             {
-                ((LocalFolder) mFolder).deleteAttachments(getUid());
-                mDb.execSQL("DELETE FROM messages WHERE id = ?",
-                            new Object[] { mId });
-                ((LocalFolder)mFolder).deleteHeaders(mId);
+                ((LocalFolder) mFolder).deleteAttachments(mId);
+                mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
             }
 
             /*
@@ -4935,10 +4921,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
              */
             try
             {
+                LocalFolder folder = (LocalFolder)mFolder;
                 if (flag == Flag.DELETED || flag == Flag.X_DESTROYED
                         || (flag == Flag.SEEN && !isSet(Flag.DELETED)))
                 {
-                    LocalFolder folder = (LocalFolder)mFolder;
                     if (set && !isSet(Flag.SEEN))
                     {
                         folder.setUnreadMessageCount(folder.getUnreadMessageCount() - 1);
@@ -4950,27 +4936,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 }
                 if ((flag == Flag.DELETED || flag == Flag.X_DESTROYED) && isSet(Flag.FLAGGED))
                 {
-                    LocalFolder folder = (LocalFolder)mFolder;
-                    if (set)
-                    {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() - 1);
-                    }
-                    else
-                    {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + 1);
-                    }
+                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ? -1 : 1));
                 }
                 if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
                 {
-                    LocalFolder folder = (LocalFolder)mFolder;
-                    if (set)
-                    {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + 1);
-                    }
-                    else
-                    {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() - 1);
-                    }
+                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
                 }
             }
             catch (MessagingException me)
@@ -4988,7 +4958,54 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         {
                             Utility.combine(getFlags(), ',').toUpperCase(), mId
                         });
+
+
         }
+
+        private void delete() throws MessagingException
+
+        {
+            /*
+             * Delete all of the message's content to save space.
+             */
+
+            mDb.execSQL(
+                "UPDATE messages SET " +
+                "deleted = 1," +
+                "subject = NULL, " +
+                "sender_list = NULL, " +
+                "date = NULL, " +
+                "to_list = NULL, " +
+                "cc_list = NULL, " +
+                "bcc_list = NULL, " +
+                "preview = NULL, " +
+                "html_content = NULL, " +
+                "text_content = NULL, " +
+                "reply_to_list = NULL " +
+                "WHERE id = ?",
+                new Object[]
+                {
+                    mId
+                });
+
+            /*
+             * Delete all of the message's attachments to save space.
+             * We do this explicit deletion here because we're not deleting the record
+             * in messages, which means our ON DELETE trigger for messages won't cascade
+             */
+            ((LocalFolder)mFolder).deleteAttachments(mId);
+            mDb.execSQL("DELETE FROM attachments WHERE message_id = ?",
+                        new Object[]
+                        {
+                            mId
+                        });
+
+            ((LocalFolder)mFolder).deleteHeaders(mId);
+
+
+        }
+
+
 
 
         private void loadHeaders()

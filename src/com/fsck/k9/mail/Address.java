@@ -1,10 +1,19 @@
 
 package com.fsck.k9.mail;
 
+import android.database.Cursor;
+import android.graphics.Color;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
+
 import com.fsck.k9.K9;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.field.address.AddressList;
@@ -14,7 +23,11 @@ import org.apache.james.mime4j.field.address.NamedMailbox;
 import org.apache.james.mime4j.field.address.parser.ParseException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Address
 {
@@ -23,6 +36,13 @@ public class Address
      * Immutable empty {@link Address} array
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
+    private static Map<String,String> sContactsName = new ConcurrentHashMap<String, String>();
+
+    public static void clearContactsNameCache() {
+        sContactsName.clear();
+    }
+
+    private static final String NO_ENTRY = "";
 
     String mAddress;
 
@@ -230,11 +250,64 @@ public class Address
      * is not available.
      * @return
      */
-    public String toFriendly()
+    public CharSequence toFriendly()
     {
+        return toFriendly((Contacts)null);
+    }
+
+    public CharSequence toFriendly(Contacts contacts)
+    {
+        if (contacts != null)
+        {
+            String name = sContactsName.get(mAddress);
+
+            if (name != null && name != NO_ENTRY)
+            {
+                SpannableString sname = new SpannableString(name);
+                sname.setSpan(new ForegroundColorSpan(Color.BLUE),
+                        0,
+                        sname.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                       );
+                return sname;
+            }
+            if (name == null)
+            {
+                Cursor cursor = contacts.searchByAddress(mAddress);
+                if (cursor != null)
+                {
+                    try
+                    {
+                        if (cursor.getCount() > 0)
+                        {
+                            cursor.moveToFirst();
+                            name = contacts.getName(cursor);
+                            sContactsName.put(mAddress, name);
+
+                            SpannableString sname = new SpannableString(name);
+                            sname.setSpan(new ForegroundColorSpan(Color.BLUE),
+                                    0,
+                                    sname.length(),
+                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                   );
+                            return sname;
+                        }
+                        else
+                        {
+                            sContactsName.put(mAddress, NO_ENTRY);
+                        }
+                    }
+                    finally
+                    {
+                        // cursor.close(); // TODO: should close cursor.
+                    }
+                }
+            }
+        }
+
         if (mPersonal != null && mPersonal.length() > 0)
         {
-            return  mPersonal;
+            return mPersonal;
         }
         else
         {
@@ -242,22 +315,27 @@ public class Address
         }
     }
 
-    public static String toFriendly(Address[] addresses)
+    public static CharSequence toFriendly(Address[] addresses)
+    {
+        return toFriendly(addresses, null);
+    }
+
+    public static CharSequence toFriendly(Address[] addresses, Contacts contacts)
     {
         if (addresses == null)
         {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
+        SpannableStringBuilder sb = new SpannableStringBuilder();
         for (int i = 0; i < addresses.length; i++)
         {
-            sb.append(addresses[i].toFriendly());
+            sb.append(addresses[i].toFriendly(contacts));
             if (i < addresses.length - 1)
             {
                 sb.append(',');
             }
         }
-        return sb.toString();
+        return sb;
     }
 
     /**

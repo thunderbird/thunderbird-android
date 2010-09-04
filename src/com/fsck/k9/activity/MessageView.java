@@ -16,8 +16,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
@@ -67,6 +70,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
+import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -89,7 +93,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private static final String EXTRA_NEXT = "com.fsck.k9.MessageView_next";
 
     private static final String SHOW_PICTURES = "showPictures";
-    private static final String STATE_CRYPTO = "crypto";
+    private static final String STATE_PGP_DATA = "pgpData";
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
@@ -146,7 +150,7 @@ public class MessageView extends K9Activity implements OnClickListener
     private ArrayList<MessageReference> mMessageReferences;
 
     private Message mMessage;
-    private CryptoProvider mCrypto = null;
+    private PgpData mPgpData = null;
 
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
@@ -202,7 +206,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             ret = onKeyDown(event.getKeyCode(), event);
         }
-        if (ret == false)
+        if (!ret)
         {
             ret = super.dispatchKeyEvent(event);
         }
@@ -214,6 +218,22 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         switch (keyCode)
         {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+            {
+                if (K9.useVolumeKeysForNavigationEnabled())
+                {
+                    onNext(true);
+                    return true;
+                }
+            }
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+            {
+                if (K9.useVolumeKeysForNavigationEnabled())
+                {
+                    onPrevious(true);
+                    return true;
+                }
+            }
             case KeyEvent.KEYCODE_SHIFT_LEFT:
             case KeyEvent.KEYCODE_SHIFT_RIGHT:
             {
@@ -335,6 +355,22 @@ public class MessageView extends K9Activity implements OnClickListener
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event)
+    {
+        // Swallow these events too to avoid the audible notification of a volume change
+        if (K9.useVolumeKeysForNavigationEnabled())
+        {
+            if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN))
+            {
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "Swallowed key up.");
+                return true;
+            }
+        }
+        return super.onKeyUp(keyCode,event);
+    }
+
     class MessageViewHandler extends Handler
     {
         public void progress(final boolean progress)
@@ -397,11 +433,11 @@ public class MessageView extends K9Activity implements OnClickListener
 
         public void setHeaders(
             final   String subject,
-            final   String from,
+            final   CharSequence from,
             final   String date,
             final   String time,
-            final   String to,
-            final   String cc,
+            final   CharSequence to,
+            final   CharSequence cc,
             final   int accountColor,
             final   boolean unread,
             final   boolean hasAttachments,
@@ -806,7 +842,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         data = MimeUtility.getTextFromPart(part);
                     }
-                    mCrypto.decrypt(MessageView.this, data);
+                    mAccount.getCryptoProvider().decrypt(MessageView.this, data, mPgpData);
                 }
                 catch (MessagingException me)
                 {
@@ -900,7 +936,7 @@ public class MessageView extends K9Activity implements OnClickListener
             mMessageReference = (MessageReference)icicle.getSerializable(EXTRA_MESSAGE_REFERENCE);
             mMessageReferences = (ArrayList<MessageReference>)icicle.getSerializable(EXTRA_MESSAGE_REFERENCES);
 
-            mCrypto = (CryptoProvider) icicle.getSerializable(STATE_CRYPTO);
+            mPgpData = (PgpData) icicle.getSerializable(STATE_PGP_DATA);
             updateDecryptLayout();
         }
         else
@@ -1081,7 +1117,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         outState.putSerializable(EXTRA_MESSAGE_REFERENCE, mMessageReference);
         outState.putSerializable(EXTRA_MESSAGE_REFERENCES, mMessageReferences);
-        outState.putSerializable(STATE_CRYPTO, mCrypto);
+        outState.putSerializable(STATE_PGP_DATA, mPgpData);
         outState.putBoolean(SHOW_PICTURES, mShowPictures);
     }
 
@@ -1093,7 +1129,7 @@ public class MessageView extends K9Activity implements OnClickListener
         mShowPictures = savedInstanceState.getBoolean(SHOW_PICTURES);
         setLoadPictures(mShowPictures);
 
-        mCrypto = (CryptoProvider) savedInstanceState.getSerializable(STATE_CRYPTO);
+        mPgpData = (PgpData) savedInstanceState.getSerializable(STATE_PGP_DATA);
         initializeCrypto();
 
         updateDecryptLayout();
@@ -1106,6 +1142,7 @@ public class MessageView extends K9Activity implements OnClickListener
             Log.d(K9.LOG_TAG, "MessageView displaying message " + mMessageReference);
 
         mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
+        mTopView.setVisibility(View.GONE);
         mTopView.scrollTo(0, 0);
         mMessageContentView.scrollTo(0, 0);
 
@@ -1115,22 +1152,17 @@ public class MessageView extends K9Activity implements OnClickListener
         mAttachments.removeAllViews();
         findSurroundingMessagesUid();
 
-        // grab a new crypto provider object, as the account may have changed, and currently
-        // the decrypted data and signature are stored in the crypto provider object
-        // TODO: separate that storage from the provider
-        // TODO: then move the provider object directly into the account object
-        mCrypto = null;
+        // start with fresh, empty PGP data
+        mPgpData = null;
         initializeCrypto();
 
-
+        mTopView.setVisibility(View.VISIBLE);
         MessagingController.getInstance(getApplication()).loadMessageForView(
             mAccount,
             mMessageReference.folderName,
             mMessageReference.uid,
             mListener);
         setupDisplayMessageButtons();
-
-
     }
 
     private void setupDisplayMessageButtons()
@@ -1262,7 +1294,54 @@ public class MessageView extends K9Activity implements OnClickListener
         super.onResume();
     }
 
+    /**
+     * Called from UI thread when user select Delete
+     */
     private void onDelete()
+    {
+        if (K9.confirmDelete())
+        {
+            showDialog(R.id.dialog_confirm_delete);
+        }
+        else
+        {
+            delete();
+        }
+    }
+
+    /**
+     * @param id
+     * @return Never <code>null</code>
+     */
+    protected Dialog createConfirmDeleteDialog(final int id)
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_confirm_delete_title);
+        builder.setMessage(R.string.dialog_confirm_delete_message);
+        builder.setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
+                new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dismissDialog(id);
+                        delete();
+                    }
+                });
+        builder.setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
+                new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dismissDialog(id);
+                    }
+                });
+        final AlertDialog dialog = builder.create();
+        return dialog;
+    }
+
+    private void delete()
     {
         if (mMessage != null)
         {
@@ -1271,14 +1350,7 @@ public class MessageView extends K9Activity implements OnClickListener
             disableButtons();
             Message messageToDelete = mMessage;
 
-            if (K9.messageViewReturnToList())
-            {
-                finish();
-            }
-            else
-            {
-                showNextMessage();
-            }
+            showNextMessageOrReturn();
 
             MessagingController.getInstance(getApplication()).deleteMessages(
                 new Message[] { messageToDelete },
@@ -1306,7 +1378,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             return;
         }
-        showNextMessage();
+        showNextMessageOrReturn();
         MessagingController.getInstance(getApplication())
         .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
     }
@@ -1331,9 +1403,21 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             return;
         }
-        showNextMessage();
+        showNextMessageOrReturn();
         MessagingController.getInstance(getApplication())
         .moveMessage(mAccount, srcFolder, messageToMove, dstFolder, null);
+    }
+
+    private void showNextMessageOrReturn()
+    {
+        if (K9.messageViewReturnToList())
+        {
+            finish();
+        }
+        else
+        {
+            showNextMessage();
+        }
     }
 
     private void showNextMessage()
@@ -1371,6 +1455,8 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 final Address senderEmail = mMessage.getFrom()[0];
                 mContacts.createContact(this, senderEmail);
+
+                Address.clearContactsNameCache();
             }
             catch (Exception e)
             {
@@ -1383,7 +1469,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessageCompose.actionReply(this, mAccount, mMessage, false, mCrypto.getDecryptedData());
+            MessageCompose.actionReply(this, mAccount, mMessage, false, mPgpData.getDecryptedData());
             finish();
         }
     }
@@ -1392,7 +1478,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessageCompose.actionReply(this, mAccount, mMessage, true, mCrypto.getDecryptedData());
+            MessageCompose.actionReply(this, mAccount, mMessage, true, mPgpData.getDecryptedData());
             finish();
         }
     }
@@ -1401,7 +1487,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         if (mMessage != null)
         {
-            MessageCompose.actionForward(this, mAccount, mMessage, mCrypto.getDecryptedData());
+            MessageCompose.actionForward(this, mAccount, mMessage, mPgpData.getDecryptedData());
             finish();
         }
     }
@@ -1508,7 +1594,7 @@ public class MessageView extends K9Activity implements OnClickListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (mCrypto.onActivityResult(this, requestCode, resultCode, data))
+        if (mAccount.getCryptoProvider().onActivityResult(this, requestCode, resultCode, data, mPgpData))
         {
             return;
         }
@@ -1535,7 +1621,7 @@ public class MessageView extends K9Activity implements OnClickListener
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
                             Message messageToMove = mMessage;
 
-                            showNextMessage();
+                            showNextMessageOrReturn();
 
                             MessagingController.getInstance(getApplication()).moveMessage(mAccount,
                                     srcFolderName, messageToMove, destFolderName, null);
@@ -1859,11 +1945,11 @@ public class MessageView extends K9Activity implements OnClickListener
         getMenuInflater().inflate(R.menu.message_view_option, menu);
         optionsMenu = menu;
         prepareMenuItems();
-        if (MessagingController.getInstance(getApplication()).isCopyCapable(mAccount) == false)
+        if (!MessagingController.getInstance(getApplication()).isCopyCapable(mAccount))
         {
             menu.findItem(R.id.copy).setVisible(false);
         }
-        if (MessagingController.getInstance(getApplication()).isMoveCapable(mAccount) == false)
+        if (!MessagingController.getInstance(getApplication()).isMoveCapable(mAccount))
         {
             menu.findItem(R.id.move).setVisible(false);
             menu.findItem(R.id.archive).setVisible(false);
@@ -1885,6 +1971,27 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         prepareMenuItems();
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    // XXX when switching to API version 8, override onCreateDialog(int, Bundle)
+    /**
+     * @param id
+     *            The id of the dialog.
+     * @return The dialog. If you return null, the dialog will not be created.
+     * @see android.app.Activity#onCreateDialog(int, Bundle)
+     */
+    @Override
+    protected Dialog onCreateDialog(final int id)
+    {
+        switch (id)
+        {
+            case R.id.dialog_confirm_delete:
+            {
+                final Dialog dialog = createConfirmDeleteDialog(id);
+                return dialog;
+            }
+        }
+        return super.onCreateDialog(id);
     }
 
     private void prepareMenuItems()
@@ -2063,11 +2170,11 @@ public class MessageView extends K9Activity implements OnClickListener
                             final Message message) throws MessagingException
     {
         String subjectText = message.getSubject();
-        String fromText = Address.toFriendly(message.getFrom());
+        CharSequence fromText = Address.toFriendly(message.getFrom(), mContacts);
         String dateText = getDateFormat().format(message.getSentDate());
         String timeText = getTimeFormat().format(message.getSentDate());
-        String toText = Address.toFriendly(message.getRecipients(RecipientType.TO));
-        String ccText = Address.toFriendly(message.getRecipients(RecipientType.CC));
+        CharSequence toText = Address.toFriendly(message.getRecipients(RecipientType.TO), mContacts);
+        CharSequence ccText = Address.toFriendly(message.getRecipients(RecipientType.CC), mContacts);
 
         int color = mAccount.getChipColor();
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
@@ -2159,9 +2266,9 @@ public class MessageView extends K9Activity implements OnClickListener
 
                 String text;
                 String type = "text/html";
-                if (mCrypto.getDecryptedData() != null)
+                if (mPgpData.getDecryptedData() != null)
                 {
-                    text = mCrypto.getDecryptedData();
+                    text = mPgpData.getDecryptedData();
                     type = "text/plain";
                 }
                 else
@@ -2220,7 +2327,7 @@ public class MessageView extends K9Activity implements OnClickListener
                     // If the message contains external pictures and the "Show pictures"
                     // button wasn't already pressed, see if the user's preferences has us
                     // showing them anyway.
-                    if (hasExternalImages(text) && (mShowPictures == false))
+                    if (hasExternalImages(text) && !mShowPictures)
                     {
                         if ((account.getShowPictures() == Account.ShowPictures.ALWAYS) ||
                                 ((account.getShowPictures() == Account.ShowPictures.ONLY_FROM_CONTACTS) &&
@@ -2504,7 +2611,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
     private void initializeCrypto()
     {
-        if (mCrypto != null)
+        if (mPgpData != null)
         {
             return;
         }
@@ -2512,7 +2619,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             mAccount = Preferences.getPreferences(this).getAccount(mMessageReference.accountUuid);
         }
-        mCrypto = CryptoProvider.createInstance(mAccount);
+        mPgpData = new PgpData();
     }
 
     /**
@@ -2521,11 +2628,11 @@ public class MessageView extends K9Activity implements OnClickListener
      */
     public void updateDecryptLayout()
     {
-        if (mCrypto.getSignatureKeyId() != 0)
+        if (mPgpData.getSignatureKeyId() != 0)
         {
             mCryptoSignatureUserIdRest.setText(
-                getString(R.string.key_id, Long.toHexString(mCrypto.getSignatureKeyId() & 0xffffffffL)));
-            String userId = mCrypto.getSignatureUserId();
+                getString(R.string.key_id, Long.toHexString(mPgpData.getSignatureKeyId() & 0xffffffffL)));
+            String userId = mPgpData.getSignatureUserId();
             if (userId == null)
             {
                 userId = getString(R.string.unknown_crypto_signature_user_id);
@@ -2538,11 +2645,11 @@ public class MessageView extends K9Activity implements OnClickListener
             }
             mCryptoSignatureUserId.setText(name);
 
-            if (mCrypto.getSignatureSuccess())
+            if (mPgpData.getSignatureSuccess())
             {
                 mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_ok);
             }
-            else if (mCrypto.getSignatureUnknown())
+            else if (mPgpData.getSignatureUnknown())
             {
                 mCryptoSignatureStatusImage.setImageResource(R.drawable.overlay_error);
             }
@@ -2558,15 +2665,15 @@ public class MessageView extends K9Activity implements OnClickListener
             mCryptoSignatureLayout.setVisibility(View.INVISIBLE);
         }
 
-        if (!true || ((mMessage == null) && (mCrypto.getDecryptedData() == null)))
+        if (false || ((mMessage == null) && (mPgpData.getDecryptedData() == null)))
         {
             mDecryptLayout.setVisibility(View.GONE);
             return;
         }
 
-        if (mCrypto.getDecryptedData() != null)
+        if (mPgpData.getDecryptedData() != null)
         {
-            if (mCrypto.getSignatureKeyId() == 0)
+            if (mPgpData.getSignatureKeyId() == 0)
             {
                 mDecryptLayout.setVisibility(View.GONE);
             }
@@ -2580,12 +2687,13 @@ public class MessageView extends K9Activity implements OnClickListener
 
         mDecryptButton.setVisibility(View.VISIBLE);
 
-        if (mCrypto.isEncrypted(mMessage))
+        CryptoProvider crypto = mAccount.getCryptoProvider();
+        if (crypto.isEncrypted(mMessage))
         {
             mDecryptButton.setText(R.string.btn_decrypt);
             mDecryptLayout.setVisibility(View.VISIBLE);
         }
-        else if (mCrypto.isSigned(mMessage))
+        else if (crypto.isSigned(mMessage))
         {
             mDecryptButton.setText(R.string.btn_verify);
             mDecryptLayout.setVisibility(View.VISIBLE);
@@ -2613,7 +2721,7 @@ public class MessageView extends K9Activity implements OnClickListener
     {
         // TODO: this might not be enough if the orientation was changed while in APG,
         // sometimes shows the original encrypted content
-        mMessageContentView.loadDataWithBaseURL("email://", mCrypto.getDecryptedData(), "text/plain", "utf-8", null);
+        mMessageContentView.loadDataWithBaseURL("email://", mPgpData.getDecryptedData(), "text/plain", "utf-8", null);
         updateDecryptLayout();
     }
 

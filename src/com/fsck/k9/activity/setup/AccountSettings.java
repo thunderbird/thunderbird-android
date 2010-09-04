@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -23,6 +24,7 @@ import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
@@ -69,6 +71,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
+    private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
@@ -90,7 +93,7 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
     private ListPreference mAccountVibratePattern;
-    private EditTextPreference mAccountVibrateTimes;
+    private ListPreference mAccountVibrateTimes;
     private RingtonePreference mAccountRingtone;
     private ListPreference mDisplayMode;
     private ListPreference mSyncMode;
@@ -105,6 +108,7 @@ public class AccountSettings extends K9PreferenceActivity
     private boolean mIncomingChanged = false;
     private CheckBoxPreference mNotificationOpensUnread;
     private EditTextPreference mAccountQuotePrefix;
+    private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mSyncRemoteDeletions;
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
@@ -170,6 +174,9 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
+
+        mReplyAfterQuote = (CheckBoxPreference) findPreference(PREFERENCE_REPLY_AFTER_QUOTE);
+        mReplyAfterQuote.setChecked(mAccount.isReplyAfterQuote());
 
         mCheckFrequency = (ListPreference) findPreference(PREFERENCE_FREQUENCY);
         mCheckFrequency.setValue(String.valueOf(mAccount.getAutomaticCheckIntervalMinutes()));
@@ -430,13 +437,14 @@ public class AccountSettings extends K9PreferenceActivity
                 int index = mAccountVibratePattern.findIndexOfValue(summary);
                 mAccountVibratePattern.setSummary(mAccountVibratePattern.getEntries()[index]);
                 mAccountVibratePattern.setValue(summary);
+                doVibrateTest(preference);
                 return false;
             }
         });
 
-        mAccountVibrateTimes = (EditTextPreference) findPreference(PREFERENCE_VIBRATE_TIMES);
+        mAccountVibrateTimes = (ListPreference) findPreference(PREFERENCE_VIBRATE_TIMES);
+        mAccountVibrateTimes.setValue(String.valueOf(mAccount.getVibrateTimes()));
         mAccountVibrateTimes.setSummary(String.valueOf(mAccount.getVibrateTimes()));
-        mAccountVibrateTimes.setText(String.valueOf(mAccount.getVibrateTimes()));
         mAccountVibrateTimes.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             @Override
@@ -444,7 +452,8 @@ public class AccountSettings extends K9PreferenceActivity
             {
                 final String value = newValue.toString();
                 mAccountVibrateTimes.setSummary(value);
-                mAccountVibrateTimes.setText(value);
+                mAccountVibrateTimes.setValue(value);
+                doVibrateTest(preference);
                 return false;
             }
         });
@@ -609,7 +618,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));
         mAccount.setVibrate(mAccountVibrate.isChecked());
         mAccount.setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
-        mAccount.setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getText()));
+        mAccount.setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
@@ -617,6 +626,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
+        mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
 
@@ -778,4 +788,13 @@ public class AccountSettings extends K9PreferenceActivity
         }
     }
 
+    private void doVibrateTest(Preference preference)
+    {
+        // Do the vibration to show the user what it's like.
+        Vibrator vibrate = (Vibrator)preference.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = MessagingController.getVibratePattern(
+                             Integer.parseInt(mAccountVibratePattern.getValue()),
+                             Integer.parseInt(mAccountVibrateTimes.getValue()));
+        vibrate.vibrate(pattern, -1);
+    }
 }

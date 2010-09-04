@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="2913"
-    android:versionName="2.913" package="com.fsck.k9"
-    android:installLocation="auto">
+    android:versionCode="3107"
+    android:versionName="3.107" package="com.fsck.k9"
+    >
     <uses-sdk
        android:minSdkVersion="3"
        android:targetSdkVersion="4"
@@ -37,6 +37,18 @@
                  android:label="@string/remote_control_label"
                  android:description="@string/remote_control_desc"/>
     <uses-permission android:name="com.fsck.k9.permission.REMOTE_CONTROL"/>
+    <permission android:name="com.fsck.k9.permission.READ_MESSAGES"
+                android:permissionGroup="android.permission-group.MESSAGES"
+                android:protectionLevel="normal"
+                android:label="@string/read_messages_label"
+                android:description="@string/read_messages_desc"/>
+    <uses-permission android:name="com.fsck.k9.permission.READ_MESSAGES"/>
+    <permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"
+                android:permissionGroup="android.permission-group.MESSAGES"
+                android:protectionLevel="normal"
+                android:label="@string/delete_messages_label"
+                android:description="@string/read_messages_desc"/>
+    <uses-permission android:name="com.fsck.k9.permission.DELETE_MESSAGES"/>
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -246,6 +258,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+<!--         <activity
+            android:name="com.fsck.k9.AccessibleEmailContentActivity"
+            >
+        </activity>-->
 
         <receiver android:name="com.fsck.k9.service.BootReceiver"
               android:enabled="true"
@@ -335,6 +351,14 @@
             android:multiprocess="true"
             android:grantUriPermissions="true"
             android:readPermission="com.fsck.k9.permission.READ_ATTACHMENT"
+            />
+        <provider
+            android:name="com.fsck.k9.provider.MessageProvider"
+            android:authorities="com.fsck.k9.messageprovider"
+            android:multiprocess="true"
+            android:grantUriPermissions="true"
+            android:readPermission="com.fsck.k9.permission.READ_MESSAGES"
+            android:writePermission="com.fsck.k9.permission.DELETE_MESSAGES"
             />
     </application>
 </manifest>

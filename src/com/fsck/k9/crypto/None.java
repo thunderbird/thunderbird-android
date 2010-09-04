@@ -15,7 +15,7 @@ public class None extends CryptoProvider
     static final long serialVersionUID = 0x21071230;
     public static final String NAME = "";
 
-    public static None createInstance(Account account)
+    public static None createInstance()
     {
         return new None();
     }
@@ -27,13 +27,13 @@ public class None extends CryptoProvider
     }
 
     @Override
-    public boolean selectSecretKey(Activity activity)
+    public boolean selectSecretKey(Activity activity, PgpData pgpData)
     {
         return false;
     }
 
     @Override
-    public boolean selectEncryptionKeys(Activity activity, String emails)
+    public boolean selectEncryptionKeys(Activity activity, String emails, PgpData pgpData)
     {
         return false;
     }
@@ -52,19 +52,19 @@ public class None extends CryptoProvider
 
     @Override
     public boolean onActivityResult(Activity activity, int requestCode, int resultCode,
-                                    android.content.Intent data)
+                                    android.content.Intent data, PgpData pgpData)
     {
         return false;
     }
 
     @Override
-    public boolean encrypt(Activity activity, String data)
+    public boolean encrypt(Activity activity, String data, PgpData pgpData)
     {
         return false;
     }
 
     @Override
-    public boolean decrypt(Activity activity, String data)
+    public boolean decrypt(Activity activity, String data, PgpData pgpData)
     {
         return false;
     }

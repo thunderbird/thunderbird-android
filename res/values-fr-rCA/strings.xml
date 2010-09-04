@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="notification_new_title">Nouveau courriel</string>
+    <string name="notification_new_scrolling">Nouveau courriel de <xliff:g id="sender">%s</xliff:g></string>
+
+    <string name="accounts_welcome">Bienvenue dans la configuration de K-9 Mail. K-9 Mail est un client de messagerie open source pour Android basé sur le client standard Android Mail.
+  \n
+  \n\nVoici ce que K-9 Mail apporte de plus\u00A0:
+  \n * La technologie PUSH en passant par le protocole IMAP
+  \n * De meilleures performances
+  \n * Signer ses messages
+  \n * S\'envoyer une copie des messages automatiquement
+  \n * Choisir les dossiers à synchroniser
+  \n * Choisir l\'adresse courriel de réponse
+  \n * Des raccourcis clavier
+  \n * Un meilleur support de l\'IMAP
+  \n * Sauver les pièces jointes sur la carte SD
+  \n * Vider la corbeille
+  \n * Trier les messages
+  \n * ...et bien plus encore
+  \n
+  \n Veuillez noter que K-9 Mail ne prend pas en charge les comptes Hotmail et, comme d\'autres clients, a quelques ennuis avec les serveurs Microsoft Exchange.
+  \n
+  \n Si vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0: http//k9mail.googlecode.com/ (en anglais)
+    </string>
+    <string name="account_setup_basics_email_hint">Adresse courriel</string>
+    <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> n\'est pas une adresse courriel valide.</string>
+    <string name="account_settings_notify_label">Nouveaux courriels</string>
+    <string name="account_settings_email_label">Votre adresse courriel</string>
+    <string name="account_settings_notify_summary">Afficher une notification dans la barre d\'état à la réception d\'un courriel</string>
+    <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse courriel du compte pour déduire la clé de signature</string>
+    <string name="account_settings_vibrate_summary">Vibrer à la réception d\'un courriel</string>
+    <string name="edit_identity_email_label">Adresse courriel</string>
+    <string name="identity_has_no_email">Vous ne pouvez pas utiliser une identité sans adresse courriel</string>
+
+    <string name="spam_action">Pourriel</string>
+    <string name="special_mailbox_name_spam">Pourriels</string>
+    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Pourriels)</string>
+    <string name="message_view_spam_action">Pourriel</string>
+    <string name="account_setup_incoming_imap_folder_spam">Nom du dossier des pourriels</string>
+    <string name="account_settings_enable_move_buttons_summary">Montrer les boutons Archiver, Déplacer ou Pourriel</string>
+    <string name="batch_spam_op">Déplacer vers Pourriels</string>
+</resources>
