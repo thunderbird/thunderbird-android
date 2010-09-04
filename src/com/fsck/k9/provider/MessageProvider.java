@@ -1,52 +1,33 @@
 package com.fsck.k9.provider;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 import android.app.Application;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.util.Log;
-import android.os.Bundle;
-import android.util.Config;
-import android.text.format.DateFormat;
-import android.provider.Settings;
-import android.content.Intent;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.mail.Flag;
+import com.fsck.k9.SearchAccount;
+import com.fsck.k9.activity.MessageInfoHolder;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.MessagingController.SORT_TYPE;
+import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.SearchAccount;
-import com.fsck.k9.Account;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.R;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
-import com.fsck.k9.activity.DateFormatter;
-import com.fsck.k9.activity.MessageInfoHolder;
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
 
 public class MessageProvider extends ContentProvider
 {
@@ -62,7 +43,6 @@ public class MessageProvider extends ContentProvider
     private static final int URI_ACCOUNTS = 2;
     private static final int URI_ACCOUNT_UNREAD = 3;
 
-    private static String mCurrentEmailAccount = "";
     private static Context context = null;
     private static boolean mIsListenerRegister = false;
     private static boolean inSync = false;
@@ -357,8 +337,6 @@ public class MessageProvider extends ContentProvider
                     MessagingController msgController = MessagingController.getInstance(mApp);
                     msgController.searchLocalMessages(integratedInboxAccount, null, mListener);
                 }
-
-                int id = -1;
 
 // Process messages
 
