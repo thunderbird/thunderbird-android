@@ -141,6 +141,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         if (!parentDir.exists())
         {
             parentDir.mkdirs();
+            try
+            {
+                new File(parentDir, ".nomedia").createNewFile();
+            }
+            catch (IOException e)
+            {
+                Log.d(K9.LOG_TAG, "Unable to create .nomedia file", e);
+            }
         }
 
         mAttachmentsDir = new File(mPath + "_att");

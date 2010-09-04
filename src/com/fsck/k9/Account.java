@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 import com.fsck.k9.activity.setup.AccountSetupIncoming;
@@ -19,6 +20,7 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.provider.AttachmentProvider;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -46,7 +48,7 @@ public class Account implements BaseAccount
 
     }
 
-    public static final String SDCARD_LOCALSTORE_PREFIX = "/sdcard/k9/";
+    public static final String SDCARD_LOCALSTORE_PREFIX = new File(Environment.getExternalStorageDirectory(), "k9").getAbsolutePath() + '/';
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
@@ -178,8 +180,7 @@ public class Account implements BaseAccount
     protected Account(Context context)
     {
         mUuid = UUID.randomUUID().toString();
-        String path = SDCARD_LOCALSTORE_PREFIX + mUuid + ".db";
-        mLocalStoreUri = "local://localhost//sdcard/k9/" + mUuid + ".db";
+        mLocalStoreUri = "local://localhost/" + SDCARD_LOCALSTORE_PREFIX + mUuid + ".db";
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
         mSaveAllHeaders = false;
@@ -1411,7 +1412,7 @@ public class Account implements BaseAccount
         String path =  mUuid + ".db";
         if (useSDCard) {
             path =  SDCARD_LOCALSTORE_PREFIX + path ;
-            mLocalStoreUri = "local://localhost//sdcard/k9/" + mUuid + ".db";
+            mLocalStoreUri = "local://localhost/" + path;
         } else {
             mLocalStoreUri = "local://localhost/" + context.getDatabasePath(path);
         }
