@@ -67,7 +67,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference mGestures;
-    private CheckBoxPreference mVolumeNavigation;
+    private CheckboxListPreference mVolumeNavigation;
     private CheckBoxPreference mManageBack;
     private CheckBoxPreference mStartIntegratedInbox;
     private CheckBoxPreference mAnimations;
@@ -210,8 +210,9 @@ public class Prefs extends K9PreferenceActivity
         mAnimations.setChecked(K9.showAnimations());
         mGestures = (CheckBoxPreference)findPreference(PREFERENCE_GESTURES);
         mGestures.setChecked(K9.gesturesEnabled());
-        mVolumeNavigation = (CheckBoxPreference)findPreference(PREFERENCE_VOLUME_NAVIGATION);
-        mVolumeNavigation.setChecked(K9.useVolumeKeysForNavigationEnabled());
+        mVolumeNavigation = (CheckboxListPreference)findPreference(PREFERENCE_VOLUME_NAVIGATION);
+        mVolumeNavigation.setItems(new CharSequence[] {getString(R.string.volume_navigation_message), getString(R.string.volume_navigation_list)});
+        mVolumeNavigation.setCheckedItems(new boolean[] {K9.useVolumeKeysForNavigationEnabled(), K9.useVolumeKeysForListNavigationEnabled()});
 
         mManageBack = (CheckBoxPreference)findPreference(PREFERENCE_MANAGE_BACK);
         mManageBack.setChecked(K9.manageBack());
@@ -274,7 +275,8 @@ public class Prefs extends K9PreferenceActivity
 
         K9.setAnimations(mAnimations.isChecked());
         K9.setGesturesEnabled(mGestures.isChecked());
-        K9.setUseVolumeKeysForNavigation(mVolumeNavigation.isChecked());
+        K9.setUseVolumeKeysForNavigation(mVolumeNavigation.getCheckedItems()[0]);
+        K9.setUseVolumeKeysForListNavigation(mVolumeNavigation.getCheckedItems()[1]);
         K9.setManageBack(mManageBack.isChecked());
         K9.setStartIntegratedInbox(mStartIntegratedInbox.isChecked());
         K9.setMessageListStars(mStars.isChecked());
