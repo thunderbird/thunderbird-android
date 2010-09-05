@@ -126,7 +126,7 @@ public class AttachmentProvider extends ContentProvider
             Cursor cursor = null;
             try
             {
-                db = SQLiteDatabase.openDatabase(path, null, 0);
+                db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
                 cursor = db.query(
                              "attachments",
                              new String[] { "mime_type", "name" },
@@ -274,7 +274,7 @@ public class AttachmentProvider extends ContentProvider
         Cursor cursor = null;
         try
         {
-            db = SQLiteDatabase.openDatabase(path, null, 0);
+            db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
             cursor = db.query(
                          "attachments",
                          new String[] { "name", "size" },

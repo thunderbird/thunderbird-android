@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 
 import com.fsck.k9.crypto.Apg;
@@ -19,9 +18,7 @@ import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.StorageManager.StorageProvider;
-import com.fsck.k9.provider.AttachmentProvider;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -49,7 +46,6 @@ public class Account implements BaseAccount
 
     }
 
-    public static final String SDCARD_LOCALSTORE_PREFIX = new File(Environment.getExternalStorageDirectory(), "k9").getAbsolutePath() + '/';
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
