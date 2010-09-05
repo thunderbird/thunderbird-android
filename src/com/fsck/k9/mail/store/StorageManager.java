@@ -304,6 +304,15 @@ public class StorageManager
         return mProviders.get(providerId);
     }
 
+    /**
+     * @param context
+     *            Never <code>null</code>.
+     * @param dbName
+     *            Never <code>null</code>.
+     * @param providerId
+     *            Never <code>null</code>.
+     * @return The resolved database file for the given provider ID.
+     */
     public File getDatabase(final Context context, final String dbName, final String providerId)
     {
         StorageProvider provider = getProvider(providerId);
@@ -311,6 +320,15 @@ public class StorageManager
         return provider.getDatabase(context, dbName);
     }
 
+    /**
+     * @param context
+     *            Never <code>null</code>.
+     * @param dbName
+     *            Never <code>null</code>.
+     * @param providerId
+     *            Never <code>null</code>.
+     * @return The resolved attachement directory for the given provider ID.
+     */
     public File getAttachmentDirectory(final Context context, final String dbName,
             final String providerId)
     {
@@ -319,12 +337,23 @@ public class StorageManager
         return provider.getAttachmentDirectory(context, dbName);
     }
 
+    /**
+     * @param context
+     * @param providerId
+     *            Never <code>null</code>.
+     * @return Whether the specified provider is ready for read/write operations
+     */
     public boolean isReady(final Context context, final String providerId)
     {
         // TODO null handling
         return getProvider(providerId).isReady();
     }
 
+    /**
+     * @param context
+     * @return A map of available providers names, indexed by their ID. Never
+     *         <code>null</code>.
+     */
     public Map<String, String> getAvailableProviders(final Context context)
     {
         final Map<String, String> result = new LinkedHashMap<String, String>();
