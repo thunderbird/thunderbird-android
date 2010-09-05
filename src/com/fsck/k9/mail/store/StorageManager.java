@@ -2,7 +2,6 @@ package com.fsck.k9.mail.store;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -328,7 +327,7 @@ public class StorageManager
 
     public Map<String, String> getAvailableProviders(final Context context)
     {
-        final Map<String, String> result = new HashMap<String, String>();
+        final Map<String, String> result = new LinkedHashMap<String, String>();
         for (final Map.Entry<String, StorageProvider> entry : mProviders.entrySet())
         {
             result.put(entry.getKey(), entry.getValue().getName(context));
