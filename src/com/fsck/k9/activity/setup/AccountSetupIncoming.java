@@ -16,11 +16,14 @@ import com.fsck.k9.*;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.store.StorageManager;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Map;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener
 {
@@ -89,7 +92,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private CheckBox compressionWifi;
     private CheckBox compressionOther;
     private CheckBox saveAllHeaders;
-    private CheckBox useSDCard;
+    private Spinner mLocalStorageProvider;
     private CheckBox pushPollOnConnect;
     private Spinner idleRefreshPeriod;
     private Spinner folderPushLimit;
@@ -139,7 +142,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         compressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
         compressionOther = (CheckBox)findViewById(R.id.compression_other);
         saveAllHeaders = (CheckBox)findViewById(R.id.save_all_headers);
-        useSDCard = (CheckBox)findViewById(R.id.use_sd_card);
+        mLocalStorageProvider = (Spinner) findViewById(R.id.local_storage_provider);
         pushPollOnConnect = (CheckBox)findViewById(R.id.push_poll_on_connect);
 
         subscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
@@ -431,7 +434,23 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             }
 
             saveAllHeaders.setChecked(mAccount.isSaveAllHeaders());
-            useSDCard.setChecked(mAccount.isUsingSDCard());
+
+            {
+                final Map<String, String> providers;
+                providers = StorageManager.getInstance().getAvailableProviders(this);
+                int i = 0;
+                final String[] providerLabels = new String[providers.size()];
+                final String[] providerIds = new String[providers.size()];
+                for (final Map.Entry<String, String> entry : providers.entrySet())
+                {
+                    providerIds[i] = entry.getKey();
+                    providerLabels[i] = entry.getValue();
+                    i++;
+                }
+                SpinnerHelper.initSpinner(this, mLocalStorageProvider, providerLabels, providerIds,
+                        mAccount.getLocalStorageProviderId());
+            }
+
             pushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
             subscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
             SpinnerHelper.initSpinner(this, idleRefreshPeriod, R.array.idle_refresh_period_entries,
@@ -597,16 +616,22 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mAccount.setCompression(Account.TYPE_WIFI, compressionWifi.isChecked());
             mAccount.setCompression(Account.TYPE_OTHER, compressionOther.isChecked());
             mAccount.setSaveAllHeaders(saveAllHeaders.isChecked());
-            if (mAccount.isUsingSDCard() != useSDCard.isChecked()) {
+            if (!mAccount.getLocalStorageProviderId().equals(SpinnerHelper.getSpinnerValue(mLocalStorageProvider)))
+            {
                 boolean successful = false;
-                try {
-                    mAccount.setUsingSDCard(this, useSDCard.isChecked());
+                try
+                {
+                    mAccount.switchLocalStorage(this, SpinnerHelper.getSpinnerValue(mLocalStorageProvider));
                     successful = true;
-                } finally {
+                }
+                finally
+                {
                     // if migration to/from SD-card failed once, it will fail again.
-                    if (!successful) {
-                        useSDCard.setChecked(false);
-                        useSDCard.setEnabled(false);
+                    if (!successful)
+                    {
+                        // assume 0 is the fail safe provider
+                        mLocalStorageProvider.setSelection(0);
+                        mLocalStorageProvider.setEnabled(false);
                     }
                 }
             }

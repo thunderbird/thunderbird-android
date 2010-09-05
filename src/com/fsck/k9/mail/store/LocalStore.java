@@ -25,8 +25,6 @@ import com.fsck.k9.provider.AttachmentProvider;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.lang.reflect.Field;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -49,9 +47,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     private static final int DB_VERSION = 38;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
-    private String mPath;
+    private String mStorageProviderId;
     private SQLiteDatabase mDb;
-    private File mAttachmentsDir;
+
     private Application mApplication;
     private String uUid = null;
 
@@ -84,20 +82,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         super(account);
         mApplication = application;
-        URI uri = null;
-        try
-        {
-            uri = new URI(mAccount.getLocalStoreUri());
-        }
-        catch (Exception e)
-        {
-            throw new MessagingException("Invalid uri for LocalStore");
-        }
-        if (!uri.getScheme().equals("local"))
-        {
-            throw new MessagingException("Invalid scheme");
-        }
-        mPath = uri.getPath();
+        mStorageProviderId = account.getLocalStorageProviderId();
         account.setLocalStoreMigraionListener(this);
         uUid = account.getUuid();
 
@@ -105,65 +90,33 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     }
 
-    public void onLocalStoreMigration(String oldStoreUri,
-            String newStoreUri) throws MessagingException {
-
-        // valiate new Uri
-        URI uri = null;
-        URI oldUri = null;
-        try
-        {
-            oldUri = new URI(oldStoreUri);
-            uri = new URI(newStoreUri);
-        }
-        catch (Exception e)
-        {
-            throw new MessagingException("Invalid new uri for LocalStore");
-        }
-        if (!uri.getScheme().equals("local"))
-        {
-            throw new MessagingException("Invalid scheme");
-        }
-
-        // cache old path + close old DB-instance
-        String oldPath = oldUri.getPath();
+    public void onLocalStoreMigration(final String oldProviderId,
+            final String newProviderId) throws MessagingException {
         try
         {
             mDb.close();
         }
         catch (Exception e)
         {
-
+            Log.i(K9.LOG_TAG, "Unable to close DB on local store migration", e);
         }
+
+        final StorageManager storageManager = StorageManager.getInstance();
+
         // create new path
-        mPath = uri.getPath();
-        File parentDir = new File(mPath).getParentFile();
-        if (!parentDir.exists())
-        {
-            parentDir.mkdirs();
-            try
-            {
-                new File(parentDir, ".nomedia").createNewFile();
-            }
-            catch (IOException e)
-            {
-                Log.d(K9.LOG_TAG, "Unable to create .nomedia file", e);
-            }
-        }
+        prepareStorage(newProviderId);
 
-        mAttachmentsDir = new File(mPath + "_att");
-        if (!mAttachmentsDir.exists())
-        {
-            mAttachmentsDir.mkdirs();
-        }
-       // move all database files
-        moveRecursive(new File(oldPath), new File(mPath));
+        // move all database files
+        moveRecursive(storageManager.getDatabase(mApplication, uUid, oldProviderId), storageManager.getDatabase(mApplication, uUid, newProviderId));
         // move all attachment files
-        moveRecursive(new File(oldPath + "_att"), mAttachmentsDir);
+        moveRecursive(storageManager.getAttachmentDirectory(mApplication, uUid, oldProviderId), storageManager.getAttachmentDirectory(mApplication, uUid, newProviderId));
+
+        mStorageProviderId = newProviderId;
 
         // re-initialize this class with the new Uri
         openOrCreateDataspace(mApplication);
     }
+
     private void moveRecursive(File fromDir, File toDir) {
         if (!fromDir.exists()) {
             return;
@@ -232,22 +185,73 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     private void openOrCreateDataspace(Application application)
     {
-        File parentDir = new File(mPath).getParentFile();
-        if (!parentDir.exists())
-        {
-            parentDir.mkdirs();
-        }
+        final File databaseFile = prepareStorage(mStorageProviderId);
 
-        mAttachmentsDir = new File(mPath + "_att");
-        if (!mAttachmentsDir.exists())
-        {
-            mAttachmentsDir.mkdirs();
-        }
+        mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
 
-        mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
         if (mDb.getVersion() != DB_VERSION)
         {
             doDbUpgrade(mDb, application);
+        }
+    }
+
+    /**
+     * @param providerId TODO
+     * @return
+     */
+    protected File prepareStorage(final String providerId)
+    {
+        final StorageManager storageManager = StorageManager.getInstance();
+
+        final File databaseFile;
+        final File databaseParentDir;
+        databaseFile = storageManager.getDatabase(mApplication, uUid, providerId);
+        databaseParentDir = databaseFile.getParentFile();
+        if (!databaseParentDir.exists())
+        {
+            databaseParentDir.mkdirs();
+            touchFile(databaseParentDir, ".nomedia");
+        }
+
+        final File attachmentDir;
+        final File attachmentParentDir;
+        attachmentDir = storageManager
+                .getAttachmentDirectory(mApplication, uUid, providerId);
+        attachmentParentDir = attachmentDir.getParentFile();
+        if (!attachmentParentDir.exists())
+        {
+            attachmentParentDir.mkdirs();
+            touchFile(attachmentParentDir, ".nomedia");
+        }
+        if (!attachmentDir.exists())
+        {
+            attachmentDir.mkdirs();
+        }
+        return databaseFile;
+    }
+
+    /**
+     * @param parentDir
+     * @param name
+     *            Never <code>null</code>.
+     */
+    protected void touchFile(final File parentDir, String name)
+    {
+        final File file = new File(parentDir, name);
+        try
+        {
+            if (!file.exists())
+            {
+                file.createNewFile();
+            }
+            else
+            {
+                file.setLastModified(System.currentTimeMillis());
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d(K9.LOG_TAG, "Unable to touch file: " + file.getAbsolutePath(), e);
         }
     }
 
@@ -426,7 +430,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         long attachmentLength = 0;
 
-        File[] files = mAttachmentsDir.listFiles();
+        final StorageManager storageManager = StorageManager.getInstance();
+
+        final File attachmentDirectory = storageManager.getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
+        final File[] files = attachmentDirectory.listFiles();
         for (File file : files)
         {
             if (file.exists())
@@ -436,7 +443,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
 
-        File dbFile = new File(mPath);
+        final File dbFile = storageManager.getDatabase(mApplication, uUid, mStorageProviderId);
         return dbFile.length() + attachmentLength;
     }
 
@@ -575,9 +582,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
 
         }
+        final StorageManager storageManager = StorageManager.getInstance();
         try
         {
-            File[] attachments = mAttachmentsDir.listFiles();
+            final File attachmentDirectory = storageManager.getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
+            final File[] attachments = attachmentDirectory.listFiles();
             for (File attachment : attachments)
             {
                 if (attachment.exists())
@@ -585,9 +594,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     attachment.delete();
                 }
             }
-            if (mAttachmentsDir.exists())
+            if (attachmentDirectory.exists())
             {
-                mAttachmentsDir.delete();
+                attachmentDirectory.delete();
             }
         }
         catch (Exception e)
@@ -595,7 +604,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
         try
         {
-            new File(mPath).delete();
+            storageManager.getDatabase(mApplication, uUid, mStorageProviderId).delete();
         }
         catch (Exception e)
         {
@@ -626,7 +635,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             cv.putNull("content_uri");
             mDb.update("attachments", cv, null, null);
         }
-        File[] files = mAttachmentsDir.listFiles();
+        final StorageManager storageManager = StorageManager.getInstance();
+        File[] files = storageManager.getAttachmentDirectory(mApplication, uUid, mStorageProviderId).listFiles();
         for (File file : files)
         {
             if (file.exists())
@@ -2135,6 +2145,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 attachmentId = ((LocalAttachmentBodyPart) attachment).getAttachmentId();
             }
 
+            final File attachmentDirectory = StorageManager.getInstance().getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
             if (attachment.getBody() != null)
             {
                 Body body = attachment.getBody();
@@ -2149,7 +2160,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                      * so we copy the data into a cached attachment file.
                      */
                     InputStream in = attachment.getBody().getInputStream();
-                    tempAttachmentFile = File.createTempFile("att", null, mAttachmentsDir);
+                    tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
                     FileOutputStream out = new FileOutputStream(tempAttachmentFile);
                     size = IOUtils.copy(in, out);
                     in.close();
@@ -2218,7 +2229,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
             if (attachmentId != -1 && tempAttachmentFile != null)
             {
-                File attachmentFile = new File(mAttachmentsDir, Long.toString(attachmentId));
+                File attachmentFile = new File(attachmentDirectory, Long.toString(attachmentId));
                 tempAttachmentFile.renameTo(attachmentFile);
                 contentUri = AttachmentProvider.getAttachmentUri(
                                  mAccount,
@@ -2412,12 +2423,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                         null,
                                         null,
                                         null);
+                final File attachmentDirectory = StorageManager.getInstance()
+                        .getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
                 while (attachmentsCursor.moveToNext())
                 {
                     long attachmentId = attachmentsCursor.getLong(0);
                     try
                     {
-                        File file = new File(mAttachmentsDir, Long.toString(attachmentId));
+                        File file = new File(attachmentDirectory, Long.toString(attachmentId));
                         if (file.exists())
                         {
                             file.delete();

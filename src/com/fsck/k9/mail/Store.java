@@ -88,30 +88,14 @@ public abstract class Store
      */
     public synchronized static LocalStore getLocalInstance(Account account, Application application) throws MessagingException
     {
-        String uri = account.getLocalStoreUri();
-
-        if (!uri.startsWith("local"))
-        {
-            throw new RuntimeException("LocalStore URI doesn't start with 'local'");
-        }
-
         Store store = mLocalStores.get(account.getUuid());
         if (store == null)
         {
             store = new LocalStore(account, application);
-
-            if (store != null)
-            {
-                mLocalStores.put(account.getUuid(), store);
-            }
+            mLocalStores.put(account.getUuid(), store);
         }
 
-        if (store == null)
-        {
-            throw new MessagingException("Unable to locate an applicable Store for " + uri);
-        }
-
-        return (LocalStore)store;
+        return (LocalStore) store;
     }
 
     public abstract Folder getFolder(String name) throws MessagingException;

@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.helper.Utility;
@@ -17,7 +16,9 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
 
 import java.io.File;
@@ -81,11 +82,11 @@ public class Account implements BaseAccount
     private String mStoreUri;
 
     /**
-     * This URL starts with {@link #SDCARD_LOCALSTORE_PREFIX}
-     * if we are storing on the SD-card.<br/>
-     * Warning: {@link AttachmentProvider} makes assumptions about the content of this Uri.
+     * Storage provider ID, used to locate and manage the underlying DB/file
+     * storage
      */
-    private String mLocalStoreUri;
+    private String mLocalStorageProviderId;
+
     /**
      * True if {@link #mLocalStoreUri} may be in use at
      * the moment. 
@@ -180,7 +181,7 @@ public class Account implements BaseAccount
     protected Account(Context context)
     {
         mUuid = UUID.randomUUID().toString();
-        mLocalStoreUri = "local://localhost/" + SDCARD_LOCALSTORE_PREFIX + mUuid + ".db";
+        mLocalStorageProviderId = StorageManager.getInstance().getDefaultProviderId();
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
         mSaveAllHeaders = false;
@@ -246,7 +247,7 @@ public class Account implements BaseAccount
 
         mStoreUri = Utility.base64Decode(prefs.getString(mUuid
                                          + ".storeUri", null));
-        mLocalStoreUri = prefs.getString(mUuid + ".localStoreUri", null);
+        mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance().getDefaultProviderId());
         mTransportUri = Utility.base64Decode(prefs.getString(mUuid
                                              + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
@@ -531,7 +532,7 @@ public class Account implements BaseAccount
         }
 
         editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
-        editor.putString(mUuid + ".localStoreUri", mLocalStoreUri);
+        editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
         editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
@@ -829,14 +830,14 @@ public class Account implements BaseAccount
         mRingtoneUri = ringtoneUri;
     }
 
-    /**
-     * Values may change due to {@link #setUsingSDCard(Context, boolean)}.
-     * @return
-     */
-    public synchronized String getLocalStoreUri()
+    public String getLocalStorageProviderId()
     {
-        mIsInUse = true;
-        return mLocalStoreUri;
+        return mLocalStorageProviderId;
+    }
+
+    public void setLocalStorageProviderId(String id)
+    {
+        mLocalStorageProviderId = id;
     }
 
 //    public synchronized void setLocalStoreUri(String localStoreUri)
@@ -1382,52 +1383,36 @@ public class Account implements BaseAccount
         return mSaveAllHeaders;
     }
 
-    /**
-     * Are we storing out localStore on the SD-card
-     * instead of the local device memory?
-     * @return true if we are using the SD-card
-     */
-    public synchronized boolean isUsingSDCard()
-    {
-        return (mLocalStoreUri.indexOf(SDCARD_LOCALSTORE_PREFIX) > -1);
-    }
-
     public synchronized void setSaveAllHeaders(boolean saveAllHeaders)
     {
         mSaveAllHeaders = saveAllHeaders;
     }
 
     /**
-     * Are we storing out localStore on the SD-card
-     * instead of the local device memory?<br/>
+     * Are we storing out localStore on the SD-card instead of the local device
+     * memory?<br/>
      * Only to be called durin initial account-setup!<br/>
-     * Side-effect: changes {@link #mLocalStoreUri}.
-     * @param context 
-     * @param useSDCard true to use the SD-card
-     * @throws MessagingException 
+     * Side-effect: changes {@link #mLocalStorageProviderId}.
+     * 
+     * @param context
+     * @param newStorageProviderId
+     *            Never <code>null</code>.
+     * @throws MessagingException
      */
-    public synchronized void setUsingSDCard(Context context, boolean useSDCard) throws MessagingException
+    public synchronized void switchLocalStorage(Context context, String newStorageProviderId) throws MessagingException
     {
-        String oldStoreUri = mLocalStoreUri;
-        String path =  mUuid + ".db";
-        if (useSDCard) {
-            path =  SDCARD_LOCALSTORE_PREFIX + path ;
-            mLocalStoreUri = "local://localhost/" + path;
-        } else {
-            mLocalStoreUri = "local://localhost/" + context.getDatabasePath(path);
-        }
-        //= local://localhost//data/data/com.fsck.k9/databases/c9a804ec-46ee-4df2-b1b1-1f64d53c05a5.db
-        //or local://localhost//sdcard/k9/c9a804ec-46ee-4df2-b1b1-1f64d53c05a5.db
-        if ( this.mLocalStoreMigrationListener != null) {
-            boolean success = false;
-            try {
-                this.mLocalStoreMigrationListener.onLocalStoreMigration(oldStoreUri, mLocalStoreUri);
-                success = true;
-            } finally {
-                if (!success) {
-                    mLocalStoreUri = oldStoreUri;
-                }
+        if (this.mLocalStoreMigrationListener != null && !mLocalStorageProviderId.equals(newStorageProviderId))
+        {
+            try
+            {
+                mLocalStoreMigrationListener.onLocalStoreMigration(mLocalStorageProviderId,
+                        newStorageProviderId);
             }
+            catch (MessagingException e)
+            {
+                throw e;
+            }
+            mLocalStorageProviderId = newStorageProviderId;
         }
     }
 
@@ -1588,12 +1573,15 @@ public class Account implements BaseAccount
     }
 
     /**
-     * Set a listener to be informed when the path of the {@link LocalStore} of
-     * this account changes. (e.g. via setUsingSDCard())
+     * Set a listener to be informed when the underlying {@link StorageProvider}
+     * of the {@link LocalStore} of this account changes. (e.g. via
+     * {@link #switchLocalStorage(Context, String)})
+     * 
      * @param listener
-     * @see #setUsingSDCard(Context, boolean)
+     * @see #switchLocalStorage(Context, String)
      */
-    public void setLocalStoreMigraionListener(LocalStoreMigrationListener listener) {
+    public void setLocalStoreMigraionListener(LocalStoreMigrationListener listener)
+    {
         this.mLocalStoreMigrationListener = listener;
     }
 

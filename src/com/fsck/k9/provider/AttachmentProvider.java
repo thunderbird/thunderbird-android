@@ -10,12 +10,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.os.Environment;
 import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.StorageManager;
 
 import java.io.*;
 import java.util.List;
@@ -41,13 +42,13 @@ public class AttachmentProvider extends ContentProvider
 
     public static Uri getAttachmentUri(Account account, long id)
     {
-        return getAttachmentUri((account.isUsingSDCard()?"/mnt" + Account.SDCARD_LOCALSTORE_PREFIX:"") + account.getUuid() + ".db" , id);
+        return getAttachmentUri(account.getUuid(), id);
     }
 
     public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height)
     {
         return CONTENT_URI.buildUpon()
-               .appendPath((account.isUsingSDCard()?"/mnt" + Account.SDCARD_LOCALSTORE_PREFIX:"") + account.getUuid() + ".db")
+               .appendPath(account.getUuid())
                .appendPath(Long.toString(id))
                .appendPath(FORMAT_THUMBNAIL)
                .appendPath(Integer.toString(width))
@@ -115,7 +116,12 @@ public class AttachmentProvider extends ContentProvider
         }
         else
         {
-            String path = getContext().getDatabasePath(dbName).getAbsolutePath();
+            final String path;
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            // TODO null handling
+            path = StorageManager.getInstance()
+                    .getDatabase(getContext(), dbName, account.getLocalStorageProviderId())
+                    .getAbsolutePath();
             SQLiteDatabase db = null;
             Cursor cursor = null;
             try
@@ -161,15 +167,14 @@ public class AttachmentProvider extends ContentProvider
     {
         try
         {
-            File attachmentsDir = getContext().getDatabasePath(dbName + "_att");
-            File file = new File(attachmentsDir, id);
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            final File attachmentsDir;
+            attachmentsDir = StorageManager.getInstance().getAttachmentDirectory(getContext(),
+                    dbName, account.getLocalStorageProviderId());
+            final File file = new File(attachmentsDir, id);
             if (!file.exists())
             {
-                file = new File(Environment.getExternalStorageDirectory()  + attachmentsDir.getCanonicalPath().substring("/data".length()), id);
-                if (!file.exists())
-                {
-                    throw new FileNotFoundException(file.getAbsolutePath() + " and " + file.getAbsolutePath());
-                }
+                throw new FileNotFoundException(file.getAbsolutePath());
             }
             return file;
         }
