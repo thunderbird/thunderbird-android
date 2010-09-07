@@ -1,6 +1,7 @@
 package com.fsck.k9.mail.store;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +10,9 @@ import java.util.Map;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
+
+import com.fsck.k9.K9;
 
 public class StorageManager
 {
@@ -61,6 +65,10 @@ public class StorageManager
 
     public abstract static class FixedStorageProviderBase implements StorageProvider
     {
+        /**
+         * @return The root directory of the denoted storage. Never
+         *         <code>null</code>.
+         */
         protected abstract File getRootDirectory();
 
         /**
@@ -74,14 +82,23 @@ public class StorageManager
         @Override
         public boolean isReady()
         {
-            return getRootDirectory().isDirectory()
-                    && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+            try
+            {
+                final File root = getRootDirectory().getCanonicalFile();
+                return isMountPoint(root)
+                        && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+            }
+            catch (IOException e)
+            {
+                Log.w(K9.LOG_TAG, "Specified root isn't ready: " + getRootDirectory(), e);
+                return false;
+            }
         }
 
         @Override
         public final boolean supports()
         {
-            return isReady() && supportsVendor();
+            return getRootDirectory().isDirectory() && supportsVendor();
         }
 
         protected File getApplicationDir(Context context)
@@ -269,6 +286,24 @@ public class StorageManager
             instance = new StorageManager();
         }
         return instance;
+    }
+
+    /**
+     * @param file
+     *            Canonical file to matach. Never <code>null</code>.
+     * @return Whether the specified file matches a filesystem root;
+     * @throws IOException
+     */
+    public static boolean isMountPoint(final File file) throws IOException
+    {
+        for (final File root : File.listRoots())
+        {
+            if (root.equals(file))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected StorageManager()

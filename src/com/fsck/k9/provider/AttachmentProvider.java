@@ -14,8 +14,10 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.AttachmentInfo;
 import com.fsck.k9.mail.store.StorageManager;
 
 import java.io.*;
@@ -116,48 +118,17 @@ public class AttachmentProvider extends ContentProvider
         }
         else
         {
-            final String path;
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
-            // TODO null handling
-            path = StorageManager.getInstance()
-                    .getDatabase(getContext(), dbName, account.getLocalStorageProviderId())
-                    .getAbsolutePath();
-            SQLiteDatabase db = null;
-            Cursor cursor = null;
+
             try
             {
-                db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
-                cursor = db.query(
-                             "attachments",
-                             new String[] { "mime_type", "name" },
-                             "id = ?",
-                             new String[] { id },
-                             null,
-                             null,
-                             null);
-                cursor.moveToFirst();
-                String type = cursor.getString(0);
-                String name = cursor.getString(1);
-                cursor.close();
-                db.close();
-
-                if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(type))
-                {
-                    type = MimeUtility.getMimeTypeByExtension(name);
-                }
-                return type;
+                final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
+                return localStore.getAttachmentType(id);
             }
-            finally
+            catch (MessagingException e)
             {
-                if (cursor != null)
-                {
-                    cursor.close();
-                }
-                if (db != null)
-                {
-                    db.close();
-                }
-
+                Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
+                return null;
             }
         }
     }
@@ -267,39 +238,16 @@ public class AttachmentProvider extends ContentProvider
         String dbName = segments.get(0);
         String id = segments.get(1);
         //String format = segments.get(2);
-        String path = getContext().getDatabasePath(dbName).getAbsolutePath();
-        String name = null;
-        int size = -1;
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
+        final AttachmentInfo attachmentInfo;
         try
         {
-            db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
-            cursor = db.query(
-                         "attachments",
-                         new String[] { "name", "size" },
-                         "id = ?",
-                         new String[] { id },
-                         null,
-                         null,
-                         null);
-            if (!cursor.moveToFirst())
-            {
-                return null;
-            }
-            name = cursor.getString(0);
-            size = cursor.getInt(1);
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            attachmentInfo = LocalStore.getLocalInstance(account, K9.app).getAttachmentInfo(id);
         }
-        finally
+        catch (MessagingException e)
         {
-            if (cursor != null)
-            {
-                cursor.close();
-            }
-            if (db != null)
-            {
-                db.close();
-            }
+            Log.e(K9.LOG_TAG, "Uname to retrieve attachment info from local store for ID: " + id, e);
+            return null;
         }
 
         MatrixCursor ret = new MatrixCursor(projection);
@@ -317,11 +265,11 @@ public class AttachmentProvider extends ContentProvider
             }
             else if (AttachmentProviderColumns.DISPLAY_NAME.equals(column))
             {
-                values[i] = name;
+                values[i] = attachmentInfo.name;
             }
             else if (AttachmentProviderColumns.SIZE.equals(column))
             {
-                values[i] = size;
+                values[i] = attachmentInfo.size;
             }
         }
         ret.addRow(values);
