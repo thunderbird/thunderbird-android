@@ -73,6 +73,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBody;
+import com.fsck.k9.mail.store.UnavailableStorageException;
 
 public class MessageCompose extends K9Activity implements OnClickListener, OnFocusChangeListener
 {
@@ -2282,11 +2283,22 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
 
-            if (K9.DEBUG)
-                Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
-            message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
+            final MessagingController messagingController = MessagingController.getInstance(getApplication());
 
-            Message draftMessage = MessagingController.getInstance(getApplication()).saveDraft(mAccount, message);
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "Saving identity: " + k9identity);
+            }
+            try
+            {
+                message.addHeader(K9.K9MAIL_IDENTITY, k9identity);
+            }
+            catch (UnavailableStorageException e)
+            {
+                messagingController.addErrorMessage(mAccount, "Unable to save identity", e);
+            }
+
+            Message draftMessage = messagingController.saveDraft(mAccount, message);
             mDraftUid = draftMessage.getUid();
 
             // Don't display the toast if the user is just changing the orientation

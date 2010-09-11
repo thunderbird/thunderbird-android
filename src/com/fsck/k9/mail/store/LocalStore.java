@@ -140,7 +140,19 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     }
 
-    protected void lockRead()
+    /**
+     * Lock the storage for shared operations (concurrent threads are allowed to
+     * run simultaneously).
+     * 
+     * <p>
+     * You <strong>have to</strong> invoke {@link #unlockRead()} when you're
+     * done with the storage.
+     * </p>
+     * 
+     * @throws UnavailableStorageException
+     *             If storage can't be locked because it is not available
+     */
+    protected void lockRead() throws UnavailableStorageException
     {
         mReadLock.lock();
     }
@@ -150,7 +162,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         mReadLock.unlock();
     }
 
-    protected void lockWrite()
+    /**
+     * Lock the storage for exclusive access (other threads aren't allowed to
+     * run simultaneously)
+     * 
+     * @throws UnavailableStorageException
+     */
+    protected void lockWrite() throws UnavailableStorageException
     {
         mWriteLock.lock();
     }
@@ -162,7 +180,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     public void onLocalStoreMigration(final String oldProviderId,
             final String newProviderId) throws MessagingException {
-       lockWrite();
+        lockWrite();
         try
         {
             try
@@ -261,11 +279,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         
     }
 
-    private void openOrCreateDataspace(Application application)
+    private void openOrCreateDataspace(Application application) throws UnavailableStorageException
     {
         final File databaseFile = prepareStorage(mStorageProviderId);
 
-       lockWrite();
+        lockWrite();
         try
         {
             mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
@@ -511,25 +529,34 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public long getSize()
+    public long getSize() throws UnavailableStorageException
     {
         long attachmentLength = 0;
 
         final StorageManager storageManager = StorageManager.getInstance();
 
         final File attachmentDirectory = storageManager.getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
-        final File[] files = attachmentDirectory.listFiles();
-        for (File file : files)
+
+        lockRead();
+        try
         {
-            if (file.exists())
+            final File[] files = attachmentDirectory.listFiles();
+            for (File file : files)
             {
-                attachmentLength += file.length();
+                if (file.exists())
+                {
+                    attachmentLength += file.length();
+                }
             }
+
+
+            final File dbFile = storageManager.getDatabase(mApplication, uUid, mStorageProviderId);
+            return dbFile.length() + attachmentLength;
         }
-
-
-        final File dbFile = storageManager.getDatabase(mApplication, uUid, mStorageProviderId);
-        return dbFile.length() + attachmentLength;
+        finally
+        {
+            unlockRead();
+        }
     }
 
     public void compact() throws MessagingException
@@ -697,10 +724,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     /**
      * Delete the entire Store and it's backing database.
+     * @throws UnavailableStorageException 
      */
-    public void delete()
+    public void delete() throws UnavailableStorageException
     {
-       lockWrite();
+        lockWrite();
         try
         {
             try
@@ -747,9 +775,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public void recreate()
+    public void recreate() throws UnavailableStorageException
     {
-       lockWrite();
+        lockWrite();
         try
         {
             try
@@ -885,12 +913,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public void resetVisibleLimits()
+    public void resetVisibleLimits() throws UnavailableStorageException
     {
         resetVisibleLimits(mAccount.getDisplayCount());
     }
 
-    public void resetVisibleLimits(int visibleLimit)
+    public void resetVisibleLimits(int visibleLimit) throws UnavailableStorageException
     {
         ContentValues cv = new ContentValues();
         cv.put("visible_limit", Integer.toString(visibleLimit));
@@ -905,7 +933,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public ArrayList<PendingCommand> getPendingCommands()
+    public ArrayList<PendingCommand> getPendingCommands() throws UnavailableStorageException
     {
         lockRead();
         try
@@ -950,7 +978,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public void addPendingCommand(PendingCommand command)
+    public void addPendingCommand(PendingCommand command) throws UnavailableStorageException
     {
         try
         {
@@ -977,7 +1005,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public void removePendingCommand(PendingCommand command)
+    public void removePendingCommand(PendingCommand command) throws UnavailableStorageException
     {
         lockRead();
         try
@@ -990,7 +1018,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public void removePendingCommands()
+    public void removePendingCommands() throws UnavailableStorageException
     {
         lockRead();
         try
@@ -1201,7 +1229,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     }
 
-    public String getAttachmentType(final String attachmentId)
+    public String getAttachmentType(final String attachmentId) throws UnavailableStorageException
     {
         lockRead();
         try
@@ -1242,7 +1270,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public AttachmentInfo getAttachmentInfo(final String attachmentId)
+    public AttachmentInfo getAttachmentInfo(final String attachmentId) throws UnavailableStorageException
     {
         lockRead();
         try
@@ -1513,10 +1541,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public int getMessageCount() throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
                 Cursor cursor = null;
                 try
                 {
@@ -1559,11 +1587,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public void setUnreadMessageCount(int unreadMessageCount) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            mUnreadMessageCount = Math.max(0, unreadMessageCount);
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
+                mUnreadMessageCount = Math.max(0, unreadMessageCount);
                 mDb.execSQL("UPDATE folders SET unread_count = ? WHERE id = ?",
                             new Object[] { mUnreadMessageCount, mFolderId });
             }
@@ -1575,11 +1603,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public void setFlaggedMessageCount(int flaggedMessageCount) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
+                mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
                 mDb.execSQL("UPDATE folders SET flagged_count = ? WHERE id = ?", new Object[]
                 { mFlaggedMessageCount, mFolderId });
             }
@@ -1592,11 +1620,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public void setLastChecked(long lastChecked) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            super.setLastChecked(lastChecked);
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
+                super.setLastChecked(lastChecked);
                 mDb.execSQL("UPDATE folders SET last_updated = ? WHERE id = ?", new Object[]
                 { lastChecked, mFolderId });
             }
@@ -1609,11 +1637,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public void setLastPush(long lastChecked) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            super.setLastPush(lastChecked);
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
+                super.setLastPush(lastChecked);
                 mDb.execSQL("UPDATE folders SET last_pushed = ? WHERE id = ?", new Object[]
                 { lastChecked, mFolderId });
             }
@@ -1647,11 +1675,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public void setVisibleLimit(int visibleLimit) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            mVisibleLimit = visibleLimit;
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
+                mVisibleLimit = visibleLimit;
                 mDb.execSQL("UPDATE folders SET visible_limit = ? WHERE id = ?",
                             new Object[] { mVisibleLimit, mFolderId });
             }
@@ -1664,11 +1692,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public void setStatus(String status) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            super.setStatus(status);
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
+                super.setStatus(status);
                 mDb.execSQL("UPDATE folders SET status = ? WHERE id = ?", new Object[]
                 { status, mFolderId });
             }
@@ -1679,11 +1707,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
         public void setPushState(String pushState) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            mPushState = pushState;
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
+                mPushState = pushState;
                 mDb.execSQL("UPDATE folders SET push_state = ? WHERE id = ?", new Object[]
                 { pushState, mFolderId });
             }
@@ -1916,11 +1944,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            if (fp.contains(FetchProfile.Item.BODY))
+            lockRead();
+            try
             {
-                lockRead();
-                try
+                open(OpenMode.READ_WRITE);
+                if (fp.contains(FetchProfile.Item.BODY))
                 {
                     for (Message message : messages)
                     {
@@ -1936,7 +1964,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             cursor.moveToNext();
                             String htmlContent = cursor.getString(0);
                             String textContent = cursor.getString(1);
-
+    
                             if (textContent != null)
                             {
                                 LocalTextBody body = new LocalTextBody(textContent, htmlContent);
@@ -1957,7 +1985,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 cursor.close();
                             }
                         }
-
+    
                         try
                         {
                             cursor = mDb.query(
@@ -1978,7 +2006,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                          null,
                                          null,
                                          null);
-
+    
                             while (cursor.moveToNext())
                             {
                                 long id = cursor.getLong(0);
@@ -1990,12 +2018,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 String contentId = cursor.getString(6);
                                 String contentDisposition = cursor.getString(7);
                                 Body body = null;
-
+    
                                 if (contentDisposition == null)
                                 {
                                     contentDisposition = "attachment";
                                 }
-
+    
                                 if (contentUri != null)
                                 {
                                     body = new LocalAttachmentBody(Uri.parse(contentUri), mApplication);
@@ -2011,14 +2039,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                                            contentDisposition,
                                                            name,
                                                            size));
-
+    
                                 bp.setHeader(MimeHeader.HEADER_CONTENT_ID, contentId);
                                 /*
                                  * HEADER_ANDROID_ATTACHMENT_STORE_DATA is a custom header we add to that
                                  * we can later pull the attachment from the remote store if neccesary.
                                  */
                                 bp.setHeader(MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA, storeData);
-
+    
                                 mp.addBodyPart(bp);
                             }
                         }
@@ -2029,7 +2057,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 cursor.close();
                             }
                         }
-
+    
                         if (mp.getCount() == 1)
                         {
                             BodyPart part = mp.getBodyPart(0);
@@ -2043,10 +2071,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         }
                     }
                 }
-                finally
-                {
-                    unlockRead();
-                }
+            }
+            finally
+            {
+                unlockRead();
             }
         }
 
@@ -2065,8 +2093,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          *
          * @param messages
          *            The messages whose headers should be loaded.
+         * @throws UnavailableStorageException 
          */
-        private void populateHeaders(List<LocalMessage> messages)
+        private void populateHeaders(List<LocalMessage> messages) throws UnavailableStorageException
         {
             lockRead();
             try
@@ -2127,11 +2156,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public Message getMessage(String uid) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            LocalMessage message = new LocalMessage(uid, this);
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
+                LocalMessage message = new LocalMessage(uid, this);
                 Cursor cursor = null;
 
                 try
@@ -2157,12 +2186,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         cursor.close();
                     }
                 }
+                return message;
             }
             finally
             {
                 unlockRead();
             }
-            return message;
         }
 
         @Override
@@ -2174,19 +2203,27 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public Message[] getMessages(MessageRetrievalListener listener, boolean includeDeleted) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            return LocalStore.this.getMessages(
-                       listener,
-                       this,
-                       "SELECT " + GET_MESSAGES_COLS
-                       + "FROM messages WHERE "
-                       + (includeDeleted ? "" : "deleted = 0 AND ")
-                       + " folder_id = ? ORDER BY date DESC"
-                       , new String[]
-                       {
-                           Long.toString(mFolderId)
-                       }
-                   );
+            lockRead();
+            try
+            {
+                open(OpenMode.READ_WRITE);
+                return LocalStore.this.getMessages(
+                           listener,
+                           this,
+                           "SELECT " + GET_MESSAGES_COLS
+                           + "FROM messages WHERE "
+                           + (includeDeleted ? "" : "deleted = 0 AND ")
+                           + " folder_id = ? ORDER BY date DESC"
+                           , new String[]
+                           {
+                               Long.toString(mFolderId)
+                           }
+                       );
+            }
+            finally
+            {
+                unlockRead();
+            }
 
         }
 
@@ -2231,10 +2268,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
 
             LocalFolder lDestFolder = (LocalFolder)destFolder;
-            lDestFolder.open(OpenMode.READ_WRITE);
             lockRead();
             try
             {
+                lDestFolder.open(OpenMode.READ_WRITE);
                 for (Message message : msgs)
                 {
                     LocalMessage lMessage = (LocalMessage)message;
@@ -2309,59 +2346,163 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          */
         private void appendMessages(Message[] messages, boolean copy) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
-            for (Message message : messages)
+            lockRead();
+            try
             {
-                if (!(message instanceof MimeMessage))
+                open(OpenMode.READ_WRITE);
+                for (Message message : messages)
                 {
-                    throw new Error("LocalStore can only store Messages that extend MimeMessage");
-                }
-
-                String uid = message.getUid();
-                if (uid == null || copy)
-                {
-                    uid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
-                    if (!copy)
+                    if (!(message instanceof MimeMessage))
                     {
-                        message.setUid(uid);
+                        throw new Error("LocalStore can only store Messages that extend MimeMessage");
                     }
-                }
-                else
-                {
-                    Message oldMessage = getMessage(uid);
-                    if (oldMessage != null && !oldMessage.isSet(Flag.SEEN))
+    
+                    String uid = message.getUid();
+                    if (uid == null || copy)
                     {
-                        setUnreadMessageCount(getUnreadMessageCount() - 1);
+                        uid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
+                        if (!copy)
+                        {
+                            message.setUid(uid);
+                        }
                     }
-                    if (oldMessage != null && oldMessage.isSet(Flag.FLAGGED))
+                    else
                     {
-                        setFlaggedMessageCount(getFlaggedMessageCount() - 1);
-                    }
-                    /*
-                     * The message may already exist in this Folder, so delete it first.
-                     */
-                    deleteAttachments(message.getUid());
-                    lockRead();
-                    try
-                    {
+                        Message oldMessage = getMessage(uid);
+                        if (oldMessage != null && !oldMessage.isSet(Flag.SEEN))
+                        {
+                            setUnreadMessageCount(getUnreadMessageCount() - 1);
+                        }
+                        if (oldMessage != null && oldMessage.isSet(Flag.FLAGGED))
+                        {
+                            setFlaggedMessageCount(getFlaggedMessageCount() - 1);
+                        }
+                        /*
+                         * The message may already exist in this Folder, so delete it first.
+                         */
+                        deleteAttachments(message.getUid());
                         mDb.execSQL("DELETE FROM messages WHERE folder_id = ? AND uid = ?",
                                 new Object[]
                                 { mFolderId, message.getUid() });
                     }
-                    finally
+    
+                    ArrayList<Part> viewables = new ArrayList<Part>();
+                    ArrayList<Part> attachments = new ArrayList<Part>();
+                    MimeUtility.collectParts(message, viewables, attachments);
+    
+                    StringBuffer sbHtml = new StringBuffer();
+                    StringBuffer sbText = new StringBuffer();
+                    for (Part viewable : viewables)
                     {
-                        unlockRead();
+                        try
+                        {
+                            String text = MimeUtility.getTextFromPart(viewable);
+                            /*
+                             * Anything with MIME type text/html will be stored as such. Anything
+                             * else will be stored as text/plain.
+                             */
+                            if (viewable.getMimeType().equalsIgnoreCase("text/html"))
+                            {
+                                sbHtml.append(text);
+                            }
+                            else
+                            {
+                                sbText.append(text);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            throw new MessagingException("Unable to get text for message part", e);
+                        }
+                    }
+    
+                    String text = sbText.toString();
+                    String html = markupContent(text, sbHtml.toString());
+                    String preview = calculateContentPreview(text);
+    
+                    try
+                    {
+                        ContentValues cv = new ContentValues();
+                        cv.put("uid", uid);
+                        cv.put("subject", message.getSubject());
+                        cv.put("sender_list", Address.pack(message.getFrom()));
+                        cv.put("date", message.getSentDate() == null
+                               ? System.currentTimeMillis() : message.getSentDate().getTime());
+                        cv.put("flags", Utility.combine(message.getFlags(), ',').toUpperCase());
+                        cv.put("deleted", message.isSet(Flag.DELETED) ? 1 : 0);
+                        cv.put("folder_id", mFolderId);
+                        cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
+                        cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
+                        cv.put("bcc_list", Address.pack(message.getRecipients(RecipientType.BCC)));
+                        cv.put("html_content", html.length() > 0 ? html : null);
+                        cv.put("text_content", text.length() > 0 ? text : null);
+                        cv.put("preview", preview.length() > 0 ? preview : null);
+                        cv.put("reply_to_list", Address.pack(message.getReplyTo()));
+                        cv.put("attachment_count", attachments.size());
+                        cv.put("internal_date",  message.getInternalDate() == null
+                               ? System.currentTimeMillis() : message.getInternalDate().getTime());
+    
+                        String messageId = message.getMessageId();
+                        if (messageId != null)
+                        {
+                            cv.put("message_id", messageId);
+                        }
+                        long messageUid;
+                        messageUid = mDb.insert("messages", "uid", cv);
+                        for (Part attachment : attachments)
+                        {
+                            saveAttachment(messageUid, attachment, copy);
+                        }
+                        saveHeaders(messageUid, (MimeMessage)message);
+                        if (!message.isSet(Flag.SEEN))
+                        {
+                            setUnreadMessageCount(getUnreadMessageCount() + 1);
+                        }
+                        if (message.isSet(Flag.FLAGGED))
+                        {
+                            setFlaggedMessageCount(getFlaggedMessageCount() + 1);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new MessagingException("Error appending message", e);
                     }
                 }
+            }
+            finally
+            {
+                unlockRead();
+            }
+        }
 
+        /**
+         * Update the given message in the LocalStore without first deleting the existing
+         * message (contrast with appendMessages). This method is used to store changes
+         * to the given message while updating attachments and not removing existing
+         * attachment data.
+         * TODO In the future this method should be combined with appendMessages since the Message
+         * contains enough data to decide what to do.
+         * @param message
+         * @throws MessagingException
+         */
+        public void updateMessage(LocalMessage message) throws MessagingException
+        {
+            lockRead();
+            try
+            {
+                open(OpenMode.READ_WRITE);
                 ArrayList<Part> viewables = new ArrayList<Part>();
                 ArrayList<Part> attachments = new ArrayList<Part>();
+
+                message.buildMimeRepresentation();
+
                 MimeUtility.collectParts(message, viewables, attachments);
 
                 StringBuffer sbHtml = new StringBuffer();
                 StringBuffer sbText = new StringBuffer();
-                for (Part viewable : viewables)
+                for (int i = 0, count = viewables.size(); i < count; i++)
                 {
+                    Part viewable = viewables.get(i);
                     try
                     {
                         String text = MimeUtility.getTextFromPart(viewable);
@@ -2388,118 +2529,6 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 String html = markupContent(text, sbHtml.toString());
                 String preview = calculateContentPreview(text);
 
-                try
-                {
-                    ContentValues cv = new ContentValues();
-                    cv.put("uid", uid);
-                    cv.put("subject", message.getSubject());
-                    cv.put("sender_list", Address.pack(message.getFrom()));
-                    cv.put("date", message.getSentDate() == null
-                           ? System.currentTimeMillis() : message.getSentDate().getTime());
-                    cv.put("flags", Utility.combine(message.getFlags(), ',').toUpperCase());
-                    cv.put("deleted", message.isSet(Flag.DELETED) ? 1 : 0);
-                    cv.put("folder_id", mFolderId);
-                    cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
-                    cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
-                    cv.put("bcc_list", Address.pack(message.getRecipients(RecipientType.BCC)));
-                    cv.put("html_content", html.length() > 0 ? html : null);
-                    cv.put("text_content", text.length() > 0 ? text : null);
-                    cv.put("preview", preview.length() > 0 ? preview : null);
-                    cv.put("reply_to_list", Address.pack(message.getReplyTo()));
-                    cv.put("attachment_count", attachments.size());
-                    cv.put("internal_date",  message.getInternalDate() == null
-                           ? System.currentTimeMillis() : message.getInternalDate().getTime());
-
-                    String messageId = message.getMessageId();
-                    if (messageId != null)
-                    {
-                        cv.put("message_id", messageId);
-                    }
-                    long messageUid;
-                    lockRead();
-                    try
-                    {
-                        messageUid = mDb.insert("messages", "uid", cv);
-                    }
-                    finally
-                    {
-                        unlockRead();
-                    }
-                    for (Part attachment : attachments)
-                    {
-                        saveAttachment(messageUid, attachment, copy);
-                    }
-                    saveHeaders(messageUid, (MimeMessage)message);
-                    if (!message.isSet(Flag.SEEN))
-                    {
-                        setUnreadMessageCount(getUnreadMessageCount() + 1);
-                    }
-                    if (message.isSet(Flag.FLAGGED))
-                    {
-                        setFlaggedMessageCount(getFlaggedMessageCount() + 1);
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new MessagingException("Error appending message", e);
-                }
-            }
-        }
-
-        /**
-         * Update the given message in the LocalStore without first deleting the existing
-         * message (contrast with appendMessages). This method is used to store changes
-         * to the given message while updating attachments and not removing existing
-         * attachment data.
-         * TODO In the future this method should be combined with appendMessages since the Message
-         * contains enough data to decide what to do.
-         * @param message
-         * @throws MessagingException
-         */
-        public void updateMessage(LocalMessage message) throws MessagingException
-        {
-            open(OpenMode.READ_WRITE);
-            ArrayList<Part> viewables = new ArrayList<Part>();
-            ArrayList<Part> attachments = new ArrayList<Part>();
-
-            message.buildMimeRepresentation();
-
-            MimeUtility.collectParts(message, viewables, attachments);
-
-            StringBuffer sbHtml = new StringBuffer();
-            StringBuffer sbText = new StringBuffer();
-            for (int i = 0, count = viewables.size(); i < count; i++)
-            {
-                Part viewable = viewables.get(i);
-                try
-                {
-                    String text = MimeUtility.getTextFromPart(viewable);
-                    /*
-                     * Anything with MIME type text/html will be stored as such. Anything
-                     * else will be stored as text/plain.
-                     */
-                    if (viewable.getMimeType().equalsIgnoreCase("text/html"))
-                    {
-                        sbHtml.append(text);
-                    }
-                    else
-                    {
-                        sbText.append(text);
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new MessagingException("Unable to get text for message part", e);
-                }
-            }
-
-            String text = sbText.toString();
-            String html = markupContent(text, sbHtml.toString());
-            String preview = calculateContentPreview(text);
-
-            try
-            {
-                lockRead();
                 try
                 {
                     mDb.execSQL("UPDATE messages SET "
@@ -2530,22 +2559,22 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                     attachments.size(),
                                     message.mId
                                 });
-                }
-                finally
-                {
-                    unlockRead();
-                }
 
-                for (int i = 0, count = attachments.size(); i < count; i++)
-                {
-                    Part attachment = attachments.get(i);
-                    saveAttachment(message.mId, attachment, false);
+                    for (int i = 0, count = attachments.size(); i < count; i++)
+                    {
+                        Part attachment = attachments.get(i);
+                        saveAttachment(message.mId, attachment, false);
+                    }
+                    saveHeaders(message.getId(), message);
                 }
-                saveHeaders(message.getId(), message);
+                catch (Exception e)
+                {
+                    throw new MessagingException("Error appending message", e);
+                }
             }
-            catch (Exception e)
+            finally
             {
-                throw new MessagingException("Error appending message", e);
+                unlockRead();
             }
         }
 
@@ -2555,61 +2584,53 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          */
         private void saveHeaders(long id, MimeMessage message) throws MessagingException
         {
-            boolean saveAllHeaders = mAccount.isSaveAllHeaders();
-            boolean gotAdditionalHeaders = false;
-
-            deleteHeaders(id);
-            for (String name : message.getHeaderNames())
+            lockRead();
+            try
             {
-                if (saveAllHeaders || HEADERS_TO_SAVE.contains(name))
+                boolean saveAllHeaders = mAccount.isSaveAllHeaders();
+                boolean gotAdditionalHeaders = false;
+
+                deleteHeaders(id);
+                for (String name : message.getHeaderNames())
                 {
-                    String[] values = message.getHeader(name);
-                    for (String value : values)
+                    if (saveAllHeaders || HEADERS_TO_SAVE.contains(name))
                     {
-                        ContentValues cv = new ContentValues();
-                        cv.put("message_id", id);
-                        cv.put("name", name);
-                        cv.put("value", value);
-                        lockRead();
-                        try
+                        String[] values = message.getHeader(name);
+                        for (String value : values)
                         {
+                            ContentValues cv = new ContentValues();
+                            cv.put("message_id", id);
+                            cv.put("name", name);
+                            cv.put("value", value);
                             mDb.insert("headers", "name", cv);
                         }
-                        finally
-                        {
-                            unlockRead();
-                        }
+                    }
+                    else
+                    {
+                        gotAdditionalHeaders = true;
                     }
                 }
-                else
-                {
-                    gotAdditionalHeaders = true;
-                }
-            }
 
-            if (!gotAdditionalHeaders)
-            {
-                // Remember that all headers for this message have been saved, so it is
-                // not necessary to download them again in case the user wants to see all headers.
-                List<Flag> appendedFlags = new ArrayList<Flag>();
-                appendedFlags.addAll(Arrays.asList(message.getFlags()));
-                appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
-
-                lockRead();
-                try
+                if (!gotAdditionalHeaders)
                 {
+                    // Remember that all headers for this message have been saved, so it is
+                    // not necessary to download them again in case the user wants to see all headers.
+                    List<Flag> appendedFlags = new ArrayList<Flag>();
+                    appendedFlags.addAll(Arrays.asList(message.getFlags()));
+                    appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
+
                     mDb.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
                             new Object[]
-                            { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id });
+                                       { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id });
                 }
-                finally
-                {
-                    unlockRead();
-                }
+            }
+            finally
+            {
+                unlockRead();
             }
         }
 
-        private void deleteHeaders(long id)
+        private void deleteHeaders(long id) throws UnavailableStorageException
         {
             lockRead();
             try
@@ -2633,138 +2654,114 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         private void saveAttachment(long messageId, Part attachment, boolean saveAsNew)
         throws IOException, MessagingException
         {
-            long attachmentId = -1;
-            Uri contentUri = null;
-            int size = -1;
-            File tempAttachmentFile = null;
-
-            if ((!saveAsNew) && (attachment instanceof LocalAttachmentBodyPart))
+            lockRead();
+            try
             {
-                attachmentId = ((LocalAttachmentBodyPart) attachment).getAttachmentId();
-            }
+                long attachmentId = -1;
+                Uri contentUri = null;
+                int size = -1;
+                File tempAttachmentFile = null;
 
-            final File attachmentDirectory = StorageManager.getInstance().getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
-            if (attachment.getBody() != null)
-            {
-                Body body = attachment.getBody();
-                if (body instanceof LocalAttachmentBody)
+                if ((!saveAsNew) && (attachment instanceof LocalAttachmentBodyPart))
                 {
-                    contentUri = ((LocalAttachmentBody) body).getContentUri();
+                    attachmentId = ((LocalAttachmentBodyPart) attachment).getAttachmentId();
+                }
+
+                final File attachmentDirectory = StorageManager.getInstance().getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
+                if (attachment.getBody() != null)
+                {
+                    Body body = attachment.getBody();
+                    if (body instanceof LocalAttachmentBody)
+                    {
+                        contentUri = ((LocalAttachmentBody) body).getContentUri();
+                    }
+                    else
+                    {
+                        /*
+                         * If the attachment has a body we're expected to save it into the local store
+                         * so we copy the data into a cached attachment file.
+                         */
+                        InputStream in = attachment.getBody().getInputStream();
+                        tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
+                        FileOutputStream out = new FileOutputStream(tempAttachmentFile);
+                        size = IOUtils.copy(in, out);
+                        in.close();
+                        out.close();
+                    }
+                }
+
+                if (size == -1)
+                {
+                    /*
+                     * If the attachment is not yet downloaded see if we can pull a size
+                     * off the Content-Disposition.
+                     */
+                    String disposition = attachment.getDisposition();
+                    if (disposition != null)
+                    {
+                        String s = MimeUtility.getHeaderParameter(disposition, "size");
+                        if (s != null)
+                        {
+                            size = Integer.parseInt(s);
+                        }
+                    }
+                }
+                if (size == -1)
+                {
+                    size = 0;
+                }
+
+                String storeData =
+                    Utility.combine(attachment.getHeader(
+                                        MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA), ',');
+
+                String name = MimeUtility.getHeaderParameter(attachment.getContentType(), "name");
+                String contentId = MimeUtility.getHeaderParameter(attachment.getContentId(), null);
+
+                String contentDisposition = MimeUtility.unfoldAndDecode(attachment.getDisposition());
+                if (name == null && contentDisposition != null)
+                {
+                    name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
+                }
+                if (attachmentId == -1)
+                {
+                    ContentValues cv = new ContentValues();
+                    cv.put("message_id", messageId);
+                    cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
+                    cv.put("store_data", storeData);
+                    cv.put("size", size);
+                    cv.put("name", name);
+                    cv.put("mime_type", attachment.getMimeType());
+                    cv.put("content_id", contentId);
+                    cv.put("content_disposition", contentDisposition);
+
+                    attachmentId = mDb.insert("attachments", "message_id", cv);
                 }
                 else
                 {
-                    /*
-                     * If the attachment has a body we're expected to save it into the local store
-                     * so we copy the data into a cached attachment file.
-                     */
-                    InputStream in = attachment.getBody().getInputStream();
-                    tempAttachmentFile = File.createTempFile("att", null, attachmentDirectory);
-                    FileOutputStream out = new FileOutputStream(tempAttachmentFile);
-                    size = IOUtils.copy(in, out);
-                    in.close();
-                    out.close();
-                }
-            }
-
-            if (size == -1)
-            {
-                /*
-                 * If the attachment is not yet downloaded see if we can pull a size
-                 * off the Content-Disposition.
-                 */
-                String disposition = attachment.getDisposition();
-                if (disposition != null)
-                {
-                    String s = MimeUtility.getHeaderParameter(disposition, "size");
-                    if (s != null)
-                    {
-                        size = Integer.parseInt(s);
-                    }
-                }
-            }
-            if (size == -1)
-            {
-                size = 0;
-            }
-
-            String storeData =
-                Utility.combine(attachment.getHeader(
-                                    MimeHeader.HEADER_ANDROID_ATTACHMENT_STORE_DATA), ',');
-
-            String name = MimeUtility.getHeaderParameter(attachment.getContentType(), "name");
-            String contentId = MimeUtility.getHeaderParameter(attachment.getContentId(), null);
-
-            String contentDisposition = MimeUtility.unfoldAndDecode(attachment.getDisposition());
-            if (name == null && contentDisposition != null)
-            {
-                name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
-            }
-            if (attachmentId == -1)
-            {
-                ContentValues cv = new ContentValues();
-                cv.put("message_id", messageId);
-                cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
-                cv.put("store_data", storeData);
-                cv.put("size", size);
-                cv.put("name", name);
-                cv.put("mime_type", attachment.getMimeType());
-                cv.put("content_id", contentId);
-                cv.put("content_disposition", contentDisposition);
-
-                lockRead();
-                try
-                {
-                    attachmentId = mDb.insert("attachments", "message_id", cv);
-                }
-                finally
-                {
-                    unlockRead();
-                }
-            }
-            else
-            {
-                ContentValues cv = new ContentValues();
-                cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
-                cv.put("size", size);
-                lockRead();
-                try
-                {
+                    ContentValues cv = new ContentValues();
+                    cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
+                    cv.put("size", size);
                     mDb.update("attachments", cv, "id = ?", new String[]
-                    { Long.toString(attachmentId) });
+                                                                       { Long.toString(attachmentId) });
                 }
-                finally
-                {
-                    unlockRead();
-                }
-            }
 
-            if (attachmentId != -1 && tempAttachmentFile != null)
-            {
-                File attachmentFile = new File(attachmentDirectory, Long.toString(attachmentId));
-                tempAttachmentFile.renameTo(attachmentFile);
-                contentUri = AttachmentProvider.getAttachmentUri(
-                                 mAccount,
-                                 attachmentId);
-                attachment.setBody(new LocalAttachmentBody(contentUri, mApplication));
-                ContentValues cv = new ContentValues();
-                cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
-                lockRead();
-                try
+                if (attachmentId != -1 && tempAttachmentFile != null)
                 {
+                    File attachmentFile = new File(attachmentDirectory, Long.toString(attachmentId));
+                    tempAttachmentFile.renameTo(attachmentFile);
+                    contentUri = AttachmentProvider.getAttachmentUri(
+                                     mAccount,
+                                     attachmentId);
+                    attachment.setBody(new LocalAttachmentBody(contentUri, mApplication));
+                    ContentValues cv = new ContentValues();
+                    cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
                     mDb.update("attachments", cv, "id = ?", new String[]
-                    { Long.toString(attachmentId) });
+                                                                       { Long.toString(attachmentId) });
                 }
-                finally
-                {
-                    unlockRead();
-                }
-            }
 
-            /* The message has attachment with Content-ID */
-            if (contentId != null && contentUri != null)
-            {
-                lockRead();
-                try
+                /* The message has attachment with Content-ID */
+                if (contentId != null && contentUri != null)
                 {
                     Cursor cursor = null;
                     cursor = mDb.query("messages", new String[]
@@ -2775,15 +2772,15 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         if (cursor.moveToNext())
                         {
                             String new_html;
-
+                            
                             new_html = cursor.getString(0);
                             new_html = new_html.replaceAll("cid:" + contentId,
                                     contentUri.toString());
-
+                            
                             ContentValues cv = new ContentValues();
                             cv.put("html_content", new_html);
                             mDb.update("messages", cv, "id = ?", new String[]
-                            { Long.toString(messageId) });
+                                                                            { Long.toString(messageId) });
                         }
                     }
                     finally
@@ -2794,15 +2791,15 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         }
                     }
                 }
-                finally
+
+                if (attachmentId != -1 && attachment instanceof LocalAttachmentBodyPart)
                 {
-                    unlockRead();
+                    ((LocalAttachmentBodyPart) attachment).setAttachmentId(attachmentId);
                 }
             }
-
-            if (attachmentId != -1 && attachment instanceof LocalAttachmentBodyPart)
+            finally
             {
-                ((LocalAttachmentBodyPart) attachment).setAttachmentId(attachmentId);
+                unlockRead();
             }
         }
 
@@ -2918,16 +2915,16 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         @Override
         public void delete(boolean recurse) throws MessagingException
         {
-            // We need to open the folder first to make sure we've got it's id
-            open(OpenMode.READ_ONLY);
-            Message[] messages = getMessages(null);
-            for (Message message : messages)
-            {
-                deleteAttachments(message.getUid());
-            }
             lockRead();
             try
             {
+                // We need to open the folder first to make sure we've got it's id
+                open(OpenMode.READ_ONLY);
+                Message[] messages = getMessages(null);
+                for (Message message : messages)
+                {
+                    deleteAttachments(message.getUid());
+                }
                 mDb.execSQL("DELETE FROM folders WHERE id = ?", new Object[]
                 { Long.toString(mFolderId), });
             }
@@ -2962,10 +2959,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         private void deleteAttachments(long messageId) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
                 Cursor attachmentsCursor = null;
                 try
                 {
@@ -3007,10 +3004,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         private void deleteAttachments(String uid) throws MessagingException
         {
-            open(OpenMode.READ_WRITE);
             lockRead();
             try
             {
+                open(OpenMode.READ_WRITE);
                 Cursor messagesCursor = null;
                 try
                 {
@@ -5591,7 +5588,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
 
 
-        private void loadHeaders()
+        private void loadHeaders() throws UnavailableStorageException
         {
             ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
             messages.add(this);
@@ -5601,7 +5598,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         @Override
-        public void addHeader(String name, String value)
+        public void addHeader(String name, String value) throws UnavailableStorageException
         {
             if (!mHeadersLoaded)
                 loadHeaders();
@@ -5609,7 +5606,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         @Override
-        public void setHeader(String name, String value)
+        public void setHeader(String name, String value) throws UnavailableStorageException
         {
             if (!mHeadersLoaded)
                 loadHeaders();
@@ -5617,7 +5614,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         @Override
-        public String[] getHeader(String name)
+        public String[] getHeader(String name) throws UnavailableStorageException
         {
             if (!mHeadersLoaded)
                 loadHeaders();
@@ -5625,7 +5622,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         @Override
-        public void removeHeader(String name)
+        public void removeHeader(String name) throws UnavailableStorageException
         {
             if (!mHeadersLoaded)
                 loadHeaders();
@@ -5633,7 +5630,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         @Override
-        public Set<String> getHeaderNames()
+        public Set<String> getHeaderNames() throws UnavailableStorageException
         {
             if (!mHeadersLoaded)
                 loadHeaders();
