@@ -1,8 +1,8 @@
 
 package com.fsck.k9.controller;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -2810,8 +2810,8 @@ public class MessagingController implements Runnable
                 return;
             }
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(baos);
+            CharArrayWriter baos = new CharArrayWriter(t.getStackTrace().length * 10);
+            PrintWriter ps = new PrintWriter(baos);
             t.printStackTrace(ps);
             ps.close();
 
