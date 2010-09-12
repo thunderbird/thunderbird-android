@@ -455,7 +455,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
         String action = intent.getAction();
 
-        if (Intent.ACTION_VIEW.equals(action) || Intent.ACTION_SENDTO.equals(action))
+        if (Intent.ACTION_VIEW.equals(action))
         {
             /*
              * Someone has clicked a mailto: link. The address is in the URI.
