@@ -333,7 +333,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
     <string name="account_setup_basics_email_hint">Sähköpostiosoite</string>
     <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> -osoite on virheellinen.</string>
     <string name="account_setup_basics_email_error_duplicate_fmt"><xliff:g id="email">%s</xliff:g> on jo lisätty.</string>
-    <string name="account_setup_basics_Salasana_hint">Salasana</string>
+    <string name="account_setup_basics_password_hint">Salasana</string>
     <string name="account_setup_basics_default_label">Lähetä viestit oletuksena tältä tililtä</string>
     <string name="account_setup_basics_manual_setup_action">Anna asetukset käsin</string>
 
@@ -358,8 +358,8 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
     <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
 
     <string name="account_setup_incoming_title">Saapuvan palvelimen asetukset</string>
-    <string name="account_setup_incoming_Käyttäjätunnus_label">Käyttäjätunnus</string>
-    <string name="account_setup_incoming_Salasana_label">Salasana</string>
+    <string name="account_setup_incoming_username_label">Käyttäjätunnus</string>
+    <string name="account_setup_incoming_password_label">Salasana</string>
     <string name="account_setup_incoming_pop_server_label">POP3 palvelin</string>
     <string name="account_setup_incoming_imap_server_label">IMAP palvelin</string>
     <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange) palvelin</string>
@@ -421,13 +421,13 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
     <string name="account_setup_outgoing_security_tls_optional_label">TLS (jos käytettävissä)</string>
     <string name="account_setup_outgoing_security_tls_label">TLS (aina)</string>
     <string name="account_setup_outgoing_require_login_label">Vaadi kirjautuminen.</string>
-    <string name="account_setup_outgoing_Käyttäjätunnus_label">Käyttäjätunnus</string>
-    <string name="account_setup_outgoing_Salasana_label">Salasana</string>
+    <string name="account_setup_outgoing_username_label">Käyttäjätunnus</string>
+    <string name="account_setup_outgoing_password_label">Salasana</string>
     <string name="account_setup_outgoing_authentication_label">AAutentikoinniin tyyppi</string>
-    <!-- The authentication strings below are for a planned (hopefully) change to the above Käyttäjätunnus and Salasana options -->
+    <!-- The authentication strings below are for a planned (hopefully) change to the above username and password options -->
     <string name="account_setup_outgoing_authentication_basic_label">Käyttäjätunnus &amp; salasana</string>
-    <string name="account_setup_outgoing_authentication_basic_Käyttäjätunnus_label">Käyttäjätunnus</string>
-    <string name="account_setup_outgoing_authentication_basic_Salasana_label">Salasana</string>
+    <string name="account_setup_outgoing_authentication_basic_username_label">Käyttäjätunnus</string>
+    <string name="account_setup_outgoing_authentication_basic_password_label">Salasana</string>
     <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP ennen SMTP</string>
     <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP ennen SMTP</string>
     <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV (Exchange) ennen SMTP</string>
@@ -487,7 +487,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
     <string name="move_copy_cannot_copy_unsynced_message">Viestiä ei voi kopioida tai siirtää koska se ei ole synkronoitu palvelimelle.</string>
 
     <string name="account_setup_failed_dlg_title">Asennus ei onnistunut</string>
-    <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai Salasana väärin.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Käyttäjätunnus or Salasana incorrect\n(ERR01 Account does not exist) -->
+    <string name="account_setup_failed_dlg_auth_message_fmt">Käyttäjätunnus tai Salasana väärin.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- username or password incorrect\n(ERR01 Account does not exist) -->
     <string name="account_setup_failed_dlg_certificate_message_fmt">Turvallinen yhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot safely connect to server\n(Invalid certificate) -->
     <string name="account_setup_failed_dlg_server_message_fmt">CYhteys palvelimeen ei onnistu.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Cannot connect to server\n(Connection timed out) -->
     <string name="account_setup_failed_dlg_edit_details_action">Muokkaa tietoja</string>
