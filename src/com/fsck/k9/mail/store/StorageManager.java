@@ -13,10 +13,20 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
 
+/**
+ * Manager for different {@link StorageProvider} -classes that
+ * abstract access to sd-cards, additional internal memory and other
+ * storage-locations.
+ */
 public class StorageManager
 {
 
+	/**
+	 * Abstract provider that allows access to sd-cards, additional internal memory and other
+     * storage-locations.
+	 */
     public static interface StorageProvider
     {
 
@@ -27,18 +37,20 @@ public class StorageManager
 
         /**
          * @param context
-         *            Never <code>null</code>.
-         * @return A user friendly name for this provider. Never
+         *            Never <code>null</code>. Used to localize resources.
+         * @return A user displayable, localized name for this provider. Never
          *         <code>null</code>.
          */
         String getName(Context context);
 
         /**
          * @return Whether this provider supports the current device.
+         * @see StorageManager#getAvailableProviders(Context)
          */
-        boolean supports();
+        boolean isSupported();
 
         /**
+         * Return the path to the email-database.
          * @param context
          *            Never <code>null</code>.
          * @param id
@@ -48,6 +60,7 @@ public class StorageManager
         File getDatabase(Context context, String id);
 
         /**
+         * Return the path to the attachment-directory.
          * @param context
          *            Never <code>null</code>.
          * @param id
@@ -96,7 +109,7 @@ public class StorageManager
         }
 
         @Override
-        public final boolean supports()
+        public final boolean isSupported()
         {
             return getRootDirectory().isDirectory() && supportsVendor();
         }
@@ -134,12 +147,11 @@ public class StorageManager
         @Override
         public String getName(Context context)
         {
-            // TODO localization
-            return "Regular internal storage";
+            return context.getString(R.string.local_storage_provider_internal_label);
         }
 
         @Override
-        public boolean supports()
+        public boolean isSupported()
         {
             return true;
         }
@@ -178,12 +190,11 @@ public class StorageManager
         @Override
         public String getName(Context context)
         {
-            // TODO localization
-            return "External storage (SD Card)";
+            return context.getString(R.string.local_storage_provider_external_label);
         }
 
         @Override
-        public boolean supports()
+        public boolean isSupported()
         {
             return true;
         }
@@ -226,8 +237,7 @@ public class StorageManager
         @Override
         public String getName(Context context)
         {
-            // TODO localization
-            return Build.MODEL + " additional internal storage";
+            return context.getString(R.string.local_storage_provider_samsunggalaxy_label, Build.MODEL);
         }
 
         @Override
@@ -256,8 +266,7 @@ public class StorageManager
         @Override
         public String getName(Context context)
         {
-            // TODO localization
-            return Build.MODEL + " additional internal storage";
+            return context.getString(R.string.local_storage_provider_samsunggalaxy_label, Build.MODEL);
         }
 
         @Override
@@ -271,7 +280,7 @@ public class StorageManager
         @Override
         protected File getRootDirectory()
         {
-            return new File("/sdcard");
+            return Environment.getExternalStorageDirectory(); // was: new File("/sdcard")
         }
     }
 
@@ -312,7 +321,7 @@ public class StorageManager
                 new ExternalStorageProvider());
         for (final StorageProvider provider : allProviders)
         {
-            if (provider.supports())
+            if (provider.isSupported())
             {
                 mProviders.put(provider.getId(), provider);
             }
@@ -388,6 +397,8 @@ public class StorageManager
      * @param context
      * @return A map of available providers names, indexed by their ID. Never
      *         <code>null</code>.
+     * @see StorageManager
+     * @see StorageProvider#isSupported()
      */
     public Map<String, String> getAvailableProviders(final Context context)
     {
