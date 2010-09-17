@@ -23,8 +23,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Path;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.PathShape;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -213,7 +216,7 @@ public class MessageList
                                 {
                                     mSelectedCount--;
                                 }
-                                mAdapter.messages.remove(message);
+                                mStore.messages.remove(message);
                             }
                         }
                     }
@@ -227,7 +230,7 @@ public class MessageList
 
         public void addMessages(final List<MessageInfoHolder> messages)
         {
-            final boolean wasEmpty = mAdapter.messages.isEmpty();
+            final boolean wasEmpty = mStore.messages.isEmpty();
             runOnUiThread(new Runnable()
             {
                 public void run()
@@ -237,9 +240,9 @@ public class MessageList
                         if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
                         {
                             int index;
-                            synchronized (mAdapter.messages)
+                            synchronized (mStore.messages)
                             {
-                                index = Collections.binarySearch(mAdapter.messages, message);
+                                index = Collections.binarySearch(mStore.messages, message);
                             }
 
                             if (index < 0)
@@ -247,7 +250,7 @@ public class MessageList
                                 index = (index * -1) - 1;
                             }
 
-                            mAdapter.messages.add(index, message);
+                            mStore.messages.add(index, message);
                         }
                     }
 
@@ -278,9 +281,9 @@ public class MessageList
             if (mQueryString != null)
             {
                 int unreadCount = 0;
-                synchronized (mAdapter.messages)
+                synchronized (mStore.messages)
                 {
-                    for (MessageInfoHolder holder : mAdapter.messages)
+                    for (MessageInfoHolder holder : mStore.messages)
                     {
                         unreadCount += holder.read ? 0 : 1;
                     }
@@ -296,9 +299,9 @@ public class MessageList
             {
                 public void run()
                 {
-                    synchronized (mAdapter.messages)
+                    synchronized (mStore.messages)
                     {
-                        Collections.sort(mAdapter.messages);
+                        Collections.sort(mStore.messages);
                     }
                     mAdapter.notifyDataSetChanged();
                 }
@@ -334,12 +337,12 @@ public class MessageList
         {
             int level = Window.PROGRESS_END;
 
-            if (mCurrentFolder != null && mCurrentFolder.loading && mAdapter.mListener.getFolderTotal() > 0)
+            if (mCurrentFolder != null && mCurrentFolder.loading && mStore.mListener.getFolderTotal() > 0)
             {
-                int divisor = mAdapter.mListener.getFolderTotal();
+                int divisor = mStore.mListener.getFolderTotal();
                 if (divisor != 0)
                 {
-                    level = (Window.PROGRESS_END / divisor) * (mAdapter.mListener.getFolderCompleted()) ;
+                    level = (Window.PROGRESS_END / divisor) * (mStore.mListener.getFolderCompleted()) ;
                     if (level > Window.PROGRESS_END)
                     {
                         level = Window.PROGRESS_END;
@@ -363,14 +366,14 @@ public class MessageList
                     displayName = getString(R.string.special_mailbox_name_inbox);
                 }
 
-                String dispString = mAdapter.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
+                String dispString = mStore.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
                 setTitle(dispString);
             }
             else if (mQueryString != null)
             {
                 if (mTitle != null)
                 {
-                    String dispString = mAdapter.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
+                    String dispString = mStore.mListener.formatHeader(MessageList.this, mTitle, mUnreadMessageCount, getTimeFormat());
                     setTitle(dispString);
                 }
                 else
@@ -521,12 +524,12 @@ public class MessageList
         if (previousData != null)
         {
             //noinspection unchecked
-            mAdapter.messages.addAll((List<MessageInfoHolder>) previousData);
+            mStore.messages.addAll((List<MessageInfoHolder>) previousData);
         }
 
         if (mFolderName != null)
         {
-            mCurrentFolder = mAdapter.getFolder(mFolderName, mAccount);
+            mCurrentFolder = getFolder(mFolderName, mAccount);
         }
 
         mController = MessagingController.getInstance(getApplication());
@@ -537,7 +540,7 @@ public class MessageList
     public void onPause()
     {
         super.onPause();
-        mController.removeListener(mAdapter.mListener);
+        mController.removeListener(mStore.mListener);
 
         // prevent any throttled UI processing (we're stopping!)
         // (don't set it to null since it needed if a processing is
@@ -550,7 +553,8 @@ public class MessageList
     public void saveListState()
     {
         mState = new Bundle();
-        mState.putInt(EXTRA_LIST_POSITION, mListView.getSelectedItemPosition());
+        final int position = mListView.isInTouchMode() ? mListView.getFirstVisiblePosition() : mListView.getSelectedItemPosition();
+        mState.putInt(EXTRA_LIST_POSITION, position);
     }
 
     public void restoreListState()
@@ -600,22 +604,22 @@ public class MessageList
             mAdapter.mThrottler.setScheduledExecutorService(Executors.newScheduledThreadPool(1));
         }
 
-        mController.addListener(mAdapter.mListener);
-        mAdapter.messages.clear();
+        mController.addListener(mStore.mListener);
+        mStore.messages.clear();
         mAdapter.notifyDataSetChanged();
 
         if (mFolderName != null)
         {
-            mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
+            mController.listLocalMessages(mAccount, mFolderName,  mStore.mListener);
             mController.notifyAccountCancel(this, mAccount);
 
             MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
 
-            mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
+            mController.getFolderUnreadMessageCount(mAccount, mFolderName, mStore.mListener);
         }
         else if (mQueryString != null)
         {
-            mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+            mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mStore.mListener);
         }
 
         mHandler.refreshTitle();
@@ -658,7 +662,7 @@ public class MessageList
     @Override
     public Object onRetainNonConfigurationInstance()
     {
-        return mAdapter.messages;
+        return mStore.messages;
     }
 
     @Override
@@ -902,11 +906,11 @@ public class MessageList
         else
         {
             // Need to get the list before the sort starts
-            final List<MessageReference> messageRefs = new ArrayList<MessageReference>(mAdapter.messages.size());
+            final List<MessageReference> messageRefs = new ArrayList<MessageReference>(mStore.messages.size());
 
-            synchronized (mAdapter.mGroups)
+            synchronized (mStore.mGroups)
             {
-                for (final MessageGroup<MessageInfoHolder> group : mAdapter.mGroups)
+                for (final MessageGroup<MessageInfoHolder> group : mStore.mGroups)
                 {
                     for (final MessageInfo<MessageInfoHolder> info : group.getMessages())
                     {
@@ -1042,7 +1046,7 @@ public class MessageList
             final MessageInfoHolder holder = iterator.next();
             messages[i] = holder.message;
         }
-        mAdapter.removeMessages(holders);
+        mStore.removeMessages(holders);
         mController.deleteMessages(messages, null);
     }
 
@@ -1226,9 +1230,9 @@ public class MessageList
                 {
                     mController.markAllMessagesRead(mAccount, mCurrentFolder.name);
 
-                    synchronized (mAdapter.messages)
+                    synchronized (mStore.messages)
                     {
-                        for (MessageInfoHolder holder : mAdapter.messages)
+                        for (MessageInfoHolder holder : mStore.messages)
                         {
                             holder.read = true;
                         }
@@ -1253,13 +1257,13 @@ public class MessageList
 
     private void checkMail(Account account, String folderName)
     {
-        mController.synchronizeMailbox(account, folderName, mAdapter.mListener, null);
+        mController.synchronizeMailbox(account, folderName, mStore.mListener, null);
         sendMail(account);
     }
 
     private void sendMail(Account account)
     {
-        mController.sendPendingMessages(account, mAdapter.mListener);
+        mController.sendPendingMessages(account, mStore.mListener);
     }
 
     @Override
@@ -1310,22 +1314,22 @@ public class MessageList
                 return true;
             }
             case R.id.set_group_by_none:
-                mAdapter.mMessageGrouper = new SingletonMessageGrouper();
+                mStore.mMessageGrouper = new SingletonMessageGrouper();
                 mAdapter.mGroupLessMode = true;
                 reSort();
                 return true;
             case R.id.set_group_by_thread:
-                mAdapter.mMessageGrouper = new ThreadMessageGrouper();
+                mStore.mMessageGrouper = new ThreadMessageGrouper();
                 mAdapter.mGroupLessMode = false;
                 reSort();
                 return true;
             case R.id.set_group_by_sender:
-                mAdapter.mMessageGrouper = new SenderMessageGrouper();
+                mStore.mMessageGrouper = new SenderMessageGrouper();
                 mAdapter.mGroupLessMode = false;
                 reSort();
                 return true;
             case R.id.set_group_by_date:
-                mAdapter.mMessageGrouper = new DateMessageGrouper(this);
+                mStore.mMessageGrouper = new DateMessageGrouper(this);
                 mAdapter.mGroupLessMode = false;
                 reSort();
                 return true;
@@ -1904,7 +1908,7 @@ public class MessageList
 
             if (mCurrentFolder != null && ((groupPosition + 1) == mAdapter.getGroupCount()))
             {
-                mController.loadMoreMessages(mAccount, mFolderName, mAdapter.mListener);
+                mController.loadMoreMessages(mAccount, mFolderName, mStore.mListener);
                 return true;
             }
             return false;
@@ -2127,13 +2131,402 @@ public class MessageList
         menu.findItem(R.id.group_spam).setVisible(
                 !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
     }
+    
+    private static final Path GROUP_CHIP_PATH = new Path();
+    private static final Path LAST_CHIP_PATH = new Path();
 
-    class MessageListAdapter extends BaseExpandableListAdapter implements SectionIndexer
     {
+        GROUP_CHIP_PATH.moveTo(10, 0);
+        GROUP_CHIP_PATH.quadTo(0, 0, 0, 10);
+        GROUP_CHIP_PATH.lineTo(10, 10);
+        GROUP_CHIP_PATH.close();
+
+        LAST_CHIP_PATH.quadTo(0, 10, 10, 10);
+        LAST_CHIP_PATH.lineTo(10, 0);
+        LAST_CHIP_PATH.close();
+    }
+
+    /**
+     * Intermediate backend storage used by MessageList.
+     * 
+     * <p>
+     * Should not include UI API calls.
+     * </p>
+     */
+    public class MessageListStore
+    {
+        
         private final List<MessageInfoHolder> messages = Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
         private final List<MessageGroup<MessageInfoHolder>> mGroups = Collections
                 .synchronizedList(new ArrayList<MessageGroup<MessageInfoHolder>>());
+
+        private final ActivityListener mListener;
+
+        private MessageGrouper mMessageGrouper;
+
+        public MessageListStore(final ActivityListener listener)
+        {
+            this.mListener = listener;
+        }
+        public MessageInfoHolder getMessage(Message message)
+        {
+            return getMessage(message.makeMessageReference());
+        }
+
+        // XXX TODO - make this not use a for loop
+        public MessageInfoHolder getMessage(MessageReference messageReference)
+        {
+            synchronized (messages)
+            {
+                for (MessageInfoHolder holder : messages)
+                {
+                    /*
+                     * 2010-06-21 - cketti
+                     * Added null pointer check. Not sure what's causing 'holder'
+                     * to be null. See log provided in issue 1749, comment #15.
+                     *
+                     * Please remove this comment once the cause was found and the
+                     * bug(?) fixed.
+                     */
+                    if ((holder != null) && holder.message.equalsReference(messageReference))
+                    {
+                        return holder;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /**
+         * @param holders
+         *            Never <code>null</code>.
+         */
+        public void removeMessages(List<MessageInfoHolder> holders)
+        {
+            mHandler.removeMessage(holders);
+        }
+
+        /**
+         * 
+         */
+        public void synchronizeGroups()
+        {
+            final List<MessageInfo<MessageInfoHolder>> toGroup = new ArrayList<MessageInfo<MessageInfoHolder>>(
+                    messages.size());
+            synchronized (messages)
+            {
+                for (final MessageInfoHolder holder : messages)
+                {
+                    final MessageInfo<MessageInfoHolder> messageInfo = new MessageInfo<MessageInfoHolder>();
+                    final Message message = holder.message;
+                    try
+                    {
+                        messageInfo.setId(message.getMessageId());
+                        final String[] references = message.getReferences();
+                        if (references != null)
+                        {
+                            messageInfo.getReferences().addAll(getReferences(references));
+                        }
+                        final String[] inReplyTo = message.getHeader("In-Reply-To");
+                        if (inReplyTo != null && inReplyTo.length > 0)
+                        {
+                            messageInfo.getReferences().add(inReplyTo[0]);
+                        }
+                    }
+                    catch (MessagingException e)
+                    {
+                        // should not happen?
+                        Log.w(K9.LOG_TAG, "Unable to retrieve header from "
+                                + message, e);
+                        continue;
+                    }
+                    messageInfo.setDate(holder.compareDate);
+                    messageInfo.setSubject(holder.subject);
+                    messageInfo.setSender(holder.sender.toString());
+        
+                    messageInfo.setTag(holder);
+        
+                    toGroup.add(messageInfo);
+                }
+            }
+            final List<MessageGroup<MessageInfoHolder>> messageGroups = mMessageGrouper
+                    .group(toGroup);
+        
+            mGroups.clear();
+            mGroups.addAll(messageGroups);
+        
+        }
+        /**
+         * @param references
+         * @return
+         */
+        private List<String> getReferences(final String[] references)
+        {
+            final List<String> result = new ArrayList<String>();
+            for (final String reference : references)
+            {
+                List<String> split = Arrays.asList(splitter.split(reference));
+                result.addAll(split);
+            }
+            for (final Iterator<String> iterator = result.iterator(); iterator.hasNext();)
+            {
+                String string = iterator.next();
+                if (string.length() == 0)
+                {
+                    iterator.remove();
+                }
+            }
+            return result;
+        }
+        private final Pattern splitter = Pattern.compile("\\s");
+
+    }
+
+    private MessageListStore mStore = new MessageListStore(new ActivityListener()
+    {
+        @Override
+        public void synchronizeMailboxStarted(Account account, String folder)
+        {
+            super.synchronizeMailboxStarted(account, folder);
+    
+            if (updateForMe(account, folder))
+            {
+                mHandler.progress(true);
+                mHandler.folderLoading(folder, true);
+            }
+            mHandler.refreshTitle();
+        }
+        @Override
+        public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total)
+        {
+            super.synchronizeMailboxHeadersProgress(account,folder,completed, total);
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void synchronizeMailboxHeadersFinished(Account account, String folder,
+                int total, int completed)
+        {
+            super.synchronizeMailboxHeadersFinished(account,folder, total, completed);
+            mHandler.refreshTitle();
+        }
+    
+    
+    
+    
+        @Override
+        public void synchronizeMailboxFinished(Account account, String folder,
+                                               int totalMessagesInMailbox, int numNewMessages)
+        {
+            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
+    
+            if (updateForMe(account, folder))
+            {
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.sortMessages();
+            }
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void synchronizeMailboxFailed(Account account, String folder, String message)
+        {
+            super.synchronizeMailboxFailed(account, folder, message);
+    
+            if (updateForMe(account, folder))
+            {
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.sortMessages();
+            }
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void sendPendingMessagesStarted(Account account)
+        {
+            super.sendPendingMessagesStarted(account);
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void sendPendingMessagesCompleted(Account account)
+        {
+            super.sendPendingMessagesCompleted(account);
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void sendPendingMessagesFailed(Account account)
+        {
+            super.sendPendingMessagesFailed(account);
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
+        {
+            super.synchronizeMailboxProgress(account, folder, completed, total);
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
+        {
+            addOrUpdateMessages(account, folder, Collections.singletonList(message), true);
+        }
+    
+        @Override
+        public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message)
+        {
+            MessageInfoHolder holder = mStore.getMessage(message);
+            if (holder == null)
+            {
+                Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
+            }
+            else
+            {
+                mStore.removeMessages(Collections.singletonList(holder));
+            }
+        }
+    
+        @Override
+        public void listLocalMessagesStarted(Account account, String folder)
+        {
+            if ((mQueryString != null && folder == null) ||
+                    (account != null && account.equals(mAccount))
+               )
+            {
+                mHandler.progress(true);
+                if (folder != null)
+                {
+                    mHandler.folderLoading(folder, true);
+                }
+            }
+        }
+    
+        @Override
+        public void listLocalMessagesFailed(Account account, String folder, String message)
+        {
+            if ((mQueryString != null && folder == null) ||
+                    (account != null && account.equals(mAccount)))
+            {
+                mHandler.sortMessages();
+                mHandler.progress(false);
+                if (folder != null)
+                {
+                    mHandler.folderLoading(folder, false);
+                }
+            }
+        }
+    
+        @Override
+        public void listLocalMessagesFinished(Account account, String folder)
+        {
+            if ((mQueryString != null && folder == null) ||
+                    (account != null && account.equals(mAccount)))
+            {
+                mHandler.sortMessages();
+                mHandler.progress(false);
+                if (folder != null)
+                {
+                    mHandler.folderLoading(folder, false);
+                }
+            }
+        }
+    
+        @Override
+        public void listLocalMessagesRemoveMessage(Account account, String folder,Message message)
+        {
+            MessageInfoHolder holder = mStore.getMessage(message);
+            if (holder != null)
+            {
+                mStore.removeMessages(Collections.singletonList(holder));
+            }
+        }
+    
+        @Override
+        public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
+        {
+            addOrUpdateMessages(account, folder, messages, false);
+        }
+    
+        @Override
+        public void listLocalMessagesUpdateMessage(Account account, String folder, Message message)
+        {
+            addOrUpdateMessages(account, folder, Collections.singletonList(message), false);
+        }
+    
+        @Override
+        public void searchStats(AccountStats stats)
+        {
+            mUnreadMessageCount = stats.unreadMessageCount;
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void folderStatusChanged(Account account, String folder, int unreadMessageCount)
+        {
+            super.folderStatusChanged(account, folder, unreadMessageCount);
+            if (updateForMe(account, folder))
+            {
+                mUnreadMessageCount = unreadMessageCount;
+                mHandler.refreshTitle();
+            }
+        }
+    
+        @Override
+        public void pendingCommandsProcessing(Account account)
+        {
+            super.pendingCommandsProcessing(account);
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void pendingCommandsFinished(Account account)
+        {
+            super.pendingCommandsFinished(account);
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void pendingCommandStarted(Account account, String commandTitle)
+        {
+            super.pendingCommandStarted(account, commandTitle);
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void pendingCommandCompleted(Account account, String commandTitle)
+        {
+            super.pendingCommandCompleted(account, commandTitle);
+            mHandler.refreshTitle();
+        }
+    
+        @Override
+        public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
+        {
+            MessageReference ref = new MessageReference();
+            ref.accountUuid = account.getUuid();
+            ref.folderName = folder;
+            ref.uid = oldUid;
+    
+            MessageInfoHolder holder = mStore.getMessage(ref);
+            if (holder != null)
+            {
+                holder.uid = newUid;
+                holder.message.setUid(newUid);
+            }
+        }
+    });
+
+    /**
+     * {@inheritDoc}
+     */
+    class MessageListAdapter extends BaseExpandableListAdapter implements SectionIndexer
+    {
 
         /**
          * Track groups expanded at load-time, to prevent from expanding at
@@ -2141,262 +2534,10 @@ public class MessageList
          */
         private Set<Long> mAutoExpanded = new HashSet<Long>();
 
-        private final ActivityListener mListener = new ActivityListener()
-        {
-            @Override
-            public void synchronizeMailboxStarted(Account account, String folder)
-            {
-                super.synchronizeMailboxStarted(account, folder);
-
-                if (updateForMe(account, folder))
-                {
-                    mHandler.progress(true);
-                    mHandler.folderLoading(folder, true);
-                }
-                mHandler.refreshTitle();
-            }
-            @Override
-            public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total)
-            {
-                super.synchronizeMailboxHeadersProgress(account,folder,completed, total);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void synchronizeMailboxHeadersFinished(Account account, String folder,
-                    int total, int completed)
-            {
-                super.synchronizeMailboxHeadersFinished(account,folder, total, completed);
-                mHandler.refreshTitle();
-            }
-
-
-
-
-            @Override
-            public void synchronizeMailboxFinished(Account account, String folder,
-                                                   int totalMessagesInMailbox, int numNewMessages)
-            {
-                super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
-
-                if (updateForMe(account, folder))
-                {
-                    mHandler.progress(false);
-                    mHandler.folderLoading(folder, false);
-                    mHandler.sortMessages();
-                }
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void synchronizeMailboxFailed(Account account, String folder, String message)
-            {
-                super.synchronizeMailboxFailed(account, folder, message);
-
-                if (updateForMe(account, folder))
-                {
-                    mHandler.progress(false);
-                    mHandler.folderLoading(folder, false);
-                    mHandler.sortMessages();
-                }
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void sendPendingMessagesStarted(Account account)
-            {
-                super.sendPendingMessagesStarted(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void sendPendingMessagesCompleted(Account account)
-            {
-                super.sendPendingMessagesCompleted(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void sendPendingMessagesFailed(Account account)
-            {
-                super.sendPendingMessagesFailed(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
-            {
-                super.synchronizeMailboxProgress(account, folder, completed, total);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
-            {
-                addOrUpdateMessages(account, folder, Collections.singletonList(message), true);
-            }
-
-            @Override
-            public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message)
-            {
-                MessageInfoHolder holder = getMessage(message);
-                if (holder == null)
-                {
-                    Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
-                }
-                else
-                {
-                    removeMessages(Collections.singletonList(holder));
-                }
-            }
-
-            @Override
-            public void listLocalMessagesStarted(Account account, String folder)
-            {
-                if ((mQueryString != null && folder == null) ||
-                        (account != null && account.equals(mAccount))
-                   )
-                {
-                    mHandler.progress(true);
-                    if (folder != null)
-                    {
-                        mHandler.folderLoading(folder, true);
-                    }
-                }
-            }
-
-            @Override
-            public void listLocalMessagesFailed(Account account, String folder, String message)
-            {
-                if ((mQueryString != null && folder == null) ||
-                        (account != null && account.equals(mAccount)))
-                {
-                    mHandler.sortMessages();
-                    mHandler.progress(false);
-                    if (folder != null)
-                    {
-                        mHandler.folderLoading(folder, false);
-                    }
-                }
-            }
-
-            @Override
-            public void listLocalMessagesFinished(Account account, String folder)
-            {
-                if ((mQueryString != null && folder == null) ||
-                        (account != null && account.equals(mAccount)))
-                {
-                    mHandler.sortMessages();
-                    mHandler.progress(false);
-                    if (folder != null)
-                    {
-                        mHandler.folderLoading(folder, false);
-                    }
-                }
-            }
-
-            @Override
-            public void listLocalMessagesRemoveMessage(Account account, String folder,Message message)
-            {
-                MessageInfoHolder holder = getMessage(message);
-                if (holder != null)
-                {
-                    removeMessages(Collections.singletonList(holder));
-                }
-            }
-
-            @Override
-            public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
-            {
-                addOrUpdateMessages(account, folder, messages, false);
-            }
-
-            @Override
-            public void listLocalMessagesUpdateMessage(Account account, String folder, Message message)
-            {
-                addOrUpdateMessages(account, folder, Collections.singletonList(message), false);
-            }
-
-            @Override
-            public void searchStats(AccountStats stats)
-            {
-                mUnreadMessageCount = stats.unreadMessageCount;
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void folderStatusChanged(Account account, String folder, int unreadMessageCount)
-            {
-                super.folderStatusChanged(account, folder, unreadMessageCount);
-                if (updateForMe(account, folder))
-                {
-                    mUnreadMessageCount = unreadMessageCount;
-                    mHandler.refreshTitle();
-                }
-            }
-
-            @Override
-            public void pendingCommandsProcessing(Account account)
-            {
-                super.pendingCommandsProcessing(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void pendingCommandsFinished(Account account)
-            {
-                super.pendingCommandsFinished(account);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void pendingCommandStarted(Account account, String commandTitle)
-            {
-                super.pendingCommandStarted(account, commandTitle);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void pendingCommandCompleted(Account account, String commandTitle)
-            {
-                super.pendingCommandCompleted(account, commandTitle);
-                mHandler.refreshTitle();
-            }
-
-            @Override
-            public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
-            {
-                MessageReference ref = new MessageReference();
-                ref.accountUuid = account.getUuid();
-                ref.folderName = folder;
-                ref.uid = oldUid;
-
-                MessageInfoHolder holder = getMessage(ref);
-                if (holder != null)
-                {
-                    holder.uid = newUid;
-                    holder.message.setUid(newUid);
-                }
-            }
-        };
-
-        private boolean updateForMe(Account account, String folder)
-        {
-            if ((account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
         private View footerView = null;
 
-        private MessageGrouper mMessageGrouper;
         private boolean mGroupLessMode = false;
 
         private UiThrottler<Void> mThrottler;
@@ -2409,14 +2550,14 @@ public class MessageList
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
 
             // TODO restore previous active/selected implementation
-            mMessageGrouper = new ThreadMessageGrouper();
+            mStore.mMessageGrouper = new ThreadMessageGrouper();
 
             mThrottler = new UiThrottler<Void>(MessageList.this, new Callable<Void>()
             {
                 @Override
                 public Void call()
                 {
-                    synchronizeGroups();
+                    mStore.synchronizeGroups();
                     return null;
                 }
             }, null); // not setting Executor now as we want to integrate into Activity onResume/onPause
@@ -2492,234 +2633,11 @@ public class MessageList
             super.notifyDataSetChanged();
         }
 
-        /**
-         * 
-         */
-        private void synchronizeGroups()
-        {
-            final List<MessageInfo<MessageInfoHolder>> toGroup = new ArrayList<MessageInfo<MessageInfoHolder>>(
-                    messages.size());
-            synchronized (messages)
-            {
-                for (final MessageInfoHolder holder : messages)
-                {
-                    final MessageInfo<MessageInfoHolder> messageInfo = new MessageInfo<MessageInfoHolder>();
-                    final Message message = holder.message;
-                    try
-                    {
-                        messageInfo.setId(message.getMessageId());
-                        final String[] references = message.getReferences();
-                        if (references != null)
-                        {
-                            messageInfo.getReferences().addAll(getReferences(references));
-                        }
-                        final String[] inReplyTo = message.getHeader("In-Reply-To");
-                        if (inReplyTo != null && inReplyTo.length > 0)
-                        {
-                            messageInfo.getReferences().add(inReplyTo[0]);
-                        }
-                    }
-                    catch (MessagingException e)
-                    {
-                        // should not happen?
-                        Log.w(K9.LOG_TAG, "Unable to retrieve header from "
-                                + message, e);
-                        continue;
-                    }
-                    messageInfo.setDate(holder.compareDate);
-                    messageInfo.setSubject(holder.subject);
-                    messageInfo.setSender(holder.sender.toString());
-
-                    messageInfo.setTag(holder);
-
-                    toGroup.add(messageInfo);
-                }
-            }
-            final List<MessageGroup<MessageInfoHolder>> messageGroups = mMessageGrouper
-                    .group(toGroup);
-
-            mGroups.clear();
-            mGroups.addAll(messageGroups);
-
-        }
-
-        private void synchronizeFastScroll()
+        public void synchronizeFastScroll()
         {
             // only way to make getSections() invoked again: disable/enable back
             mListView.setFastScrollEnabled(false);
             mListView.setFastScrollEnabled(true);
-        }
-
-        private final Pattern splitter = Pattern.compile("\\s");
-        /**
-         * @param references
-         * @return
-         */
-        private List<String> getReferences(final String[] references)
-        {
-            final List<String> result = new ArrayList<String>();
-            for (final String reference : references)
-            {
-                List<String> split = Arrays.asList(splitter.split(reference));
-                result.addAll(split);
-            }
-            for (final Iterator<String> iterator = result.iterator(); iterator.hasNext();)
-            {
-                String string = iterator.next();
-                if (string.length() == 0)
-                {
-                    iterator.remove();
-                }
-            }
-            return result;
-        }
-
-        /**
-         * @param holders
-         *            Never <code>null</code>.
-         */
-        public void removeMessages(List<MessageInfoHolder> holders)
-        {
-            mHandler.removeMessage(holders);
-        }
-
-        private void addOrUpdateMessages(final Account account, final String folder, final List<Message> providedMessages, final boolean verifyAgainstSearch)
-        {
-            // we copy the message list because the callback doesn't expect
-            // the callbacks to mutate it.
-            final List<Message> messages = new ArrayList<Message>(providedMessages);
-
-            runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
-                    boolean needsSort = false;
-                    final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
-                    List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
-                    List<Message> messagesToSearch = new ArrayList<Message>();
-
-                    for (Message message : messages)
-                    {
-                        MessageInfoHolder m = getMessage(message);
-                        if (message.isSet(Flag.DELETED))
-                        {
-                            if (m != null)
-                            {
-                                messagesToRemove.add(m);
-                            }
-                        }
-                        else if (m == null)
-                        {
-                            if (updateForMe(account, folder))
-                            {
-                                m = new MessageInfoHolder(MessageList.this, message);
-                                messagesToAdd.add(m);
-                            }
-                            else
-                            {
-                                if (mQueryString != null)
-                                {
-                                    if (verifyAgainstSearch)
-                                    {
-                                        messagesToSearch.add(message);
-                                    }
-                                    else
-                                    {
-                                        m = new MessageInfoHolder(MessageList.this, message);
-                                        messagesToAdd.add(m);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            m.populate(MessageList.this, message, new FolderInfoHolder(MessageList.this, message.getFolder(), account), account);
-                            needsSort = true;
-                        }
-                    }
-
-                    if (messagesToSearch.size() > 0)
-                    {
-                        mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
-                                                        new MessagingListener()
-                        {
-                            @Override
-                            public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
-                            {
-                                addOrUpdateMessages(account, folder, messages, false);
-                            }
-                        });
-                    }
-
-                    if (messagesToRemove.size() > 0)
-                    {
-                        removeMessages(messagesToRemove);
-                    }
-
-                    if (messagesToAdd.size() > 0)
-                    {
-                        mHandler.addMessages(messagesToAdd);
-                    }
-
-                    if (needsSort)
-                    {
-                        mHandler.sortMessages();
-                        mHandler.resetUnreadCount();
-                    }
-                }
-            });
-        }
-
-        public MessageInfoHolder getMessage(Message message)
-        {
-            return getMessage(message.makeMessageReference());
-        }
-
-        // XXX TODO - make this not use a for loop
-        public MessageInfoHolder getMessage(MessageReference messageReference)
-        {
-            synchronized (mAdapter.messages)
-            {
-                for (MessageInfoHolder holder : mAdapter.messages)
-                {
-                    /*
-                     * 2010-06-21 - cketti
-                     * Added null pointer check. Not sure what's causing 'holder'
-                     * to be null. See log provided in issue 1749, comment #15.
-                     *
-                     * Please remove this comment once the cause was found and the
-                     * bug(?) fixed.
-                     */
-                    if ((holder != null) && holder.message.equalsReference(messageReference))
-                    {
-                        return holder;
-                    }
-                }
-            }
-            return null;
-        }
-
-        public FolderInfoHolder getFolder(String folder, Account account)
-        {
-            LocalFolder local_folder = null;
-            try
-            {
-                LocalStore localStore = account.getLocalStore();
-                local_folder = localStore.getFolder(folder);
-                return new FolderInfoHolder(MessageList.this, (Folder)local_folder, account);
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "getFolder(" + folder + ") goes boom: ",e);
-                return null;
-            }
-            finally
-            {
-                if (local_folder != null)
-                {
-                    local_folder.close();
-                }
-            }
         }
 
         private static final int NON_MESSAGE_ITEMS = 1;
@@ -2755,6 +2673,7 @@ public class MessageList
          * @param position
          *            the position of the child (for which the View is returned)
          *            within the group
+         * @param isLastChild TODO
          * @param convertView
          *            the old view to reuse, if possible. You should check that
          *            this view is non-null and of an appropriate type before
@@ -2767,7 +2686,7 @@ public class MessageList
          *            the parent that this view will eventually be attached to
          * @return the View corresponding to the child at the specified position
          */
-        private View getItemView(int groupPosition, int position, View convertView, ViewGroup parent)
+        private View getItemView(int groupPosition, int position, boolean isLastChild, View convertView, ViewGroup parent)
         {
             MessageInfoHolder message = getChild(groupPosition, position);
             View view;
@@ -2825,7 +2744,7 @@ public class MessageList
 
             if (message != null)
             {
-                bindView(groupPosition, position, view, holder, message);
+                bindView(groupPosition, position, view, holder, message, isLastChild);
             }
             else
             {
@@ -2891,9 +2810,10 @@ public class MessageList
          *            child views. Never <code>null</code>.
          * @param message
          *            Never <code>null</code>.
+         * @param isLastChild TODO
          */
         private void bindView(int groupPosition, final int position, final View view,
-                final MessageViewHolder holder, final MessageInfoHolder message)
+                final MessageViewHolder holder, final MessageInfoHolder message, boolean isLastChild)
         {
             // XXX TODO there has to be some way to walk our view hierarchy and get this
             holder.flagged.setTag((Integer)position);
@@ -2910,8 +2830,18 @@ public class MessageList
                 holder.selected.setVisibility(message.selected ? View.VISIBLE : View.GONE);
             }
 
-            holder.chip.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
-            holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
+            if (isLastChild)
+            {
+                final ShapeDrawable lastChipDrawable = new ShapeDrawable(new PathShape(LAST_CHIP_PATH, 10, 10));
+                lastChipDrawable.getPaint().setColor(message.message.getFolder().getAccount().getChipColor());
+                lastChipDrawable.getPaint().setAlpha(message.read ? 127 : 255);
+                holder.chip.setBackgroundDrawable(lastChipDrawable);
+            }
+            else
+            {
+                holder.chip.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
+                holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
+            }
             view.getBackground().setAlpha(message.downloaded ? 0 : 127);
 
             if ((message.subject == null) || "".equals(message.subject))
@@ -2966,7 +2896,7 @@ public class MessageList
             holder.groupPosition = position;
         }
 
-        public View getFooterView(int position, View convertView, ViewGroup parent)
+        private View getFooterView(int position, View convertView, ViewGroup parent)
         {
             if (footerView == null)
             {
@@ -3034,30 +2964,16 @@ public class MessageList
             return false;
         }
 
-        public boolean isItemSelectable(int position)
-        {
-            if (position < messages.size())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-
         @Override
         public int getGroupCount()
         {
-            return mGroups.size() + NON_MESSAGE_ITEMS;
+            return mStore.mGroups.size() + NON_MESSAGE_ITEMS;
         }
-
 
         @Override
         public int getChildrenCount(int groupPosition)
         {
-            if (groupPosition < mGroups.size())
+            if (groupPosition < mStore.mGroups.size())
             {
                 return getGroup(groupPosition).getMessages().size();
             }
@@ -3065,13 +2981,12 @@ public class MessageList
             return 0;
         }
 
-
         @Override
         public MessageGroup<MessageInfoHolder> getGroup(int groupPosition)
         {
-            if (groupPosition < mGroups.size())
+            if (groupPosition < mStore.mGroups.size())
             {
-                return mGroups.get(groupPosition);
+                return mStore.mGroups.get(groupPosition);
             }
             // (fake) last element isn't a group
             return null;
@@ -3146,7 +3061,7 @@ public class MessageList
         public int getGroupType(int groupPosition)
         {
             // must match the number of type of view returned by the above getGroupView method
-            if (groupPosition < mGroups.size())
+            if (groupPosition < mStore.mGroups.size())
             {
                 return 0;
             }
@@ -3173,6 +3088,8 @@ public class MessageList
                 // create new view
                 view = mInflater.inflate(R.layout.message_list_group_header, parent, false);
                 view.setId(R.layout.message_list_group_header);
+                final Path path = GROUP_CHIP_PATH;
+                view.findViewById(R.id.chip).setBackgroundDrawable(new ShapeDrawable(new PathShape(path, 10, 10)));
             }
             else
             {
@@ -3295,7 +3212,7 @@ public class MessageList
             else
             {
                 chipView.setVisibility(View.VISIBLE);
-                chipView.setBackgroundColor(account.getChipColor());
+                ((ShapeDrawable) chipView.getBackground()).getPaint().setColor(account.getChipColor());
             }
 
             final int count = group.getMessages().size();
@@ -3392,7 +3309,7 @@ public class MessageList
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                 View convertView, ViewGroup parent)
         {
-            return getItemView(groupPosition, childPosition, convertView, parent);
+            return getItemView(groupPosition, childPosition, isLastChild, convertView, parent);
         }
 
 
@@ -3483,6 +3400,134 @@ public class MessageList
         }
     }
 
+    private void addOrUpdateMessages(final Account account, final String folder, final List<Message> providedMessages, final boolean verifyAgainstSearch)
+    {
+        // we copy the message list because the callback doesn't expect
+        // the callbacks to mutate it.
+        final List<Message> messages = new ArrayList<Message>(providedMessages);
+    
+        runOnUiThread(new Runnable()
+        {
+            public void run()
+            {
+                boolean needsSort = false;
+                final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
+                List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
+                List<Message> messagesToSearch = new ArrayList<Message>();
+    
+                for (Message message : messages)
+                {
+                    MessageInfoHolder m = mStore.getMessage(message);
+                    if (message.isSet(Flag.DELETED))
+                    {
+                        if (m != null)
+                        {
+                            messagesToRemove.add(m);
+                        }
+                    }
+                    else if (m == null)
+                    {
+                        if (updateForMe(account, folder))
+                        {
+                            m = new MessageInfoHolder(MessageList.this, message);
+                            messagesToAdd.add(m);
+                        }
+                        else
+                        {
+                            if (mQueryString != null)
+                            {
+                                if (verifyAgainstSearch)
+                                {
+                                    messagesToSearch.add(message);
+                                }
+                                else
+                                {
+                                    m = new MessageInfoHolder(MessageList.this, message);
+                                    messagesToAdd.add(m);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        m.populate(MessageList.this, message, new FolderInfoHolder(MessageList.this, message.getFolder(), account), account);
+                        needsSort = true;
+                    }
+                }
+    
+                if (messagesToSearch.size() > 0)
+                {
+                    mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
+                                                    new MessagingListener()
+                    {
+                        @Override
+                        public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
+                        {
+                            addOrUpdateMessages(account, folder, messages, false);
+                        }
+                    });
+                }
+    
+                if (messagesToRemove.size() > 0)
+                {
+                    mStore.removeMessages(messagesToRemove);
+                }
+    
+                if (messagesToAdd.size() > 0)
+                {
+                    mHandler.addMessages(messagesToAdd);
+                }
+    
+                if (needsSort)
+                {
+                    mHandler.sortMessages();
+                    mHandler.resetUnreadCount();
+                }
+            }
+        });
+    }
+
+    private FolderInfoHolder getFolder(String folder, Account account)
+    {
+        LocalFolder local_folder = null;
+        try
+        {
+            LocalStore localStore = account.getLocalStore();
+            local_folder = localStore.getFolder(folder);
+            return new FolderInfoHolder(this, (Folder)local_folder, account);
+        }
+        catch (Exception e)
+        {
+            Log.e(K9.LOG_TAG, "getFolder(" + folder + ") goes boom: ",e);
+            return null;
+        }
+        finally
+        {
+            if (local_folder != null)
+            {
+                local_folder.close();
+            }
+        }
+    }
+
+    /**
+     * @param account
+     * @param folder
+     * @return Whether the given account/folders match the activity's ones
+     */
+    private boolean updateForMe(Account account, String folder)
+    {
+        if ((account.equals(mAccount) && mFolderName != null && folder.equals(mFolderName)))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
     private void hideBatchButtons()
     {
         //TODO: Fade out animation
@@ -3549,9 +3594,9 @@ public class MessageList
     {
         boolean newState = false;
 
-        synchronized (mAdapter.messages)
+        synchronized (mStore.messages)
         {
-            for (MessageInfoHolder holder : mAdapter.messages)
+            for (MessageInfoHolder holder : mStore.messages)
             {
                 if (holder.selected)
                 {
@@ -3579,9 +3624,9 @@ public class MessageList
 
     private boolean anySelected()
     {
-        synchronized (mAdapter.messages)
+        synchronized (mStore.messages)
         {
-            for (MessageInfoHolder holder : mAdapter.messages)
+            for (MessageInfoHolder holder : mStore.messages)
             {
                 if (holder.selected)
                 {
@@ -3614,9 +3659,9 @@ public class MessageList
             newState = computeBatchDirection(false);
         }
 
-        synchronized (mAdapter.messages)
+        synchronized (mStore.messages)
         {
-            for (MessageInfoHolder holder : mAdapter.messages)
+            for (MessageInfoHolder holder : mStore.messages)
             {
                 if (holder.selected)
                 {
@@ -3636,7 +3681,7 @@ public class MessageList
                 }
             }
         }
-        mAdapter.removeMessages(removeHolderList);
+        mStore.removeMessages(removeHolderList);
 
         if (!messageList.isEmpty())
         {
@@ -3662,9 +3707,9 @@ public class MessageList
     private void setAllSelected(boolean isSelected)
     {
         mSelectedCount = 0;
-        synchronized (mAdapter.messages)
+        synchronized (mStore.messages)
         {
-            for (MessageInfoHolder holder : mAdapter.messages)
+            for (MessageInfoHolder holder : mStore.messages)
             {
                 holder.selected = isSelected;
                 mSelectedCount += (isSelected ? 1 : 0);
@@ -3735,9 +3780,9 @@ public class MessageList
     protected List<MessageInfoHolder> getSelectionFromCheckboxes()
     {
         final List<MessageInfoHolder> selection = new ArrayList<MessageInfoHolder>();
-        synchronized (mAdapter.messages)
+        synchronized (mStore.messages)
         {
-            for (final MessageInfoHolder holder : mAdapter.messages)
+            for (final MessageInfoHolder holder : mStore.messages)
             {
                 if (holder.selected)
                 {
@@ -3781,9 +3826,9 @@ public class MessageList
     protected List<MessageInfoHolder> getSelectionFromAll()
     {
         final List<MessageInfoHolder> selection;
-        synchronized (mAdapter.messages)
+        synchronized (mStore.messages)
         {
-            selection = new ArrayList<MessageInfoHolder>(mAdapter.messages);
+            selection = new ArrayList<MessageInfoHolder>(mStore.messages);
         }
         return selection;
     }
@@ -3848,7 +3893,7 @@ public class MessageList
         {
             mController.moveMessages(account, folderName,
                     messages.toArray(new Message[messages.size()]), destination, null);
-            mAdapter.removeMessages(holders);
+            mStore.removeMessages(holders);
         }
         else
         {
