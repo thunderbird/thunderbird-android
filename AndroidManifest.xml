@@ -308,7 +308,6 @@
                 <action android:name="com.fsck.k9.service.CoreReceiver.wakeLockRelease"/>
             </intent-filter>
         </receiver>
-        <!-- TODO
         <receiver android:name="com.fsck.k9.service.SDCardReceiver"
               android:enabled="true"
               >
@@ -318,7 +317,6 @@
                 <action android:name="android.intent.action.MEDIA_UNMOUNTED"/> stop accounts that use SD-storage
             </intent-filter>
         </receiver>
-         -->
         <service
             android:name="com.fsck.k9.service.MailService"
             android:enabled="true"
