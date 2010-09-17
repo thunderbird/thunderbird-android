@@ -10,6 +10,10 @@
 
     <string name="read_attachment_label">Anlagen der Nachricht lesen</string>
     <string name="read_attachment_desc">Dieser Anwendung erlauben die Anlagen Ihrer Nachrichten zu lesen.</string>
+    <string name="read_messages_label">Nachrichten lesen</string>
+    <string name="read_messages_desc">Der Anwendung erlauben Ihre Nachrichten zu lesen.</string>
+    <string name="delete_messages_label">Nachrichten löschen</string>
+    <string name="delete_messages_desc">Der Anwendung erlauben Ihre Nachrichten zu löschen.</string>
 
     <string name="about_title_fmt">Über <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Ihre Konten</string>
@@ -75,6 +79,8 @@
     <string name="remove_account_action">Konto entfernen</string>
     <string name="clear_pending_action">Ausstehende Aktionen abbrechen (Warnung!)</string>
 
+
+
     <string name="accounts_action">Konten</string>
     <string name="back_to_accounts_action">◀</string>
     <string name="back_to_folder_list_action">◀</string>
@@ -85,6 +91,7 @@
 
     <string name="mark_all_as_read_dlg_title">Alle Nachrichten als gelesen markieren</string>
     <string name="mark_all_as_read_dlg_instructions_fmt">Alle Nachrichten in \'<xliff:g id="folder">%s</xliff:g>\' als gelesen markieren? (inklusive Nachrichten in diesem Ordner, die nicht von K-9 dargestellt werden)</string>
+
 
     <string name="flag_action">Als wichtig markieren</string>
     <string name="unflag_action">Wichtig-Markierung entfernen</string>
@@ -212,11 +219,14 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 \n<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
 </string>
 
+
+
+
     <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
-    <string name="debug_enable_debug_logging_title">Debug-Aufzeichnungen einschalten</string>
+    <string name="debug_enable_debug_logging_title">Debug-Aufzeichnungen</string>
     <string name="debug_enable_debug_logging_summary">Zeichnet zusätzliche Diagnose-Informationen auf</string>
     <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen aufzeichnen</string>
-    <string name="debug_enable_sensitive_logging_summary">Passwörter in die Debug-Aufzeichnungen aufnehmen</string>
+    <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau aufzeichnen</string>
 
     <string name="message_header_mua">K-9 Mail for Android</string>
 
@@ -248,6 +258,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger wählen.</string>
     <string name="message_compose_downloading_attachments_toast">Einige Anlagen wurden nicht heruntergeladen. Sie werden automatisch heruntergeladen, bevor diese Nachricht gesendet wird.</string>
     <string name="message_compose_attachments_skipped_toast">Einige Anlagen können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
+
+
 
     <string name="message_view_from_format">Von: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_view_to_label">An:</string>
@@ -294,6 +306,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="about_header">Über <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
 
+
     <string name="global_settings_flag_label">Wichtige Nachrichten</string>
     <string name="global_settings_flag_summary">Sterne weisen auf wichtige Nachrichten hin.</string>
     <string name="global_settings_checkbox_label">Mehrfachauswahl</string>
@@ -303,8 +316,18 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="global_settings_messageview_fixedwidth_label">Monotype Schriftart</string>
     <string name="global_settings_messageview_fixedwidth_summary">Verwende Schriftart mit gleicher Zeichenbreite für Plain-Text Nachrichten</string>
-    <string name="global_settings_messageview_return_to_list_label">Nach löschen zur Liste zurückkehren</string>
-    <string name="global_settings_messageview_return_to_list_summary">Nach löschen zur Nachrichten-Liste zurückkehren</string>
+    <string name="global_settings_messageview_return_to_list_label">Nach Löschen zurück</string>
+    <string name="global_settings_messageview_return_to_list_summary">Nach Löschen zur Nachrichtenliste zurückkehren</string>
+
+    <string name="global_settings_confirm_actions_title">Bestätigungsdialog</string>
+    <string name="global_settings_confirm_actions_summary">Verlange Bestätigung bei gewissen Aktionen</string>
+    <string name="global_settings_confirm_action_archive">Archivieren</string>
+    <string name="global_settings_confirm_action_delete">Löschen (nur in Nachrichtenansicht)</string>
+    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_send">Senden</string>
+
+    <string name="global_settings_privacy_mode_title">Vertrauliche Benachrichtigung</string>
+    <string name="global_settings_privacy_mode_summary">Der Betreff der Nachricht wird nicht in der Benachrichtigungszeile angezeigt</string>
 
     <string name="account_setup_basics_title">E-Mail-Konto einrichten</string>
     <string name="account_setup_basics_instructions">E-Mail-Adresse Ihres Kontos:</string>
@@ -351,7 +374,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_incoming_security_tls_optional_label">TLS (falls verfügbar)</string>
     <string name="account_setup_incoming_security_tls_label">TLS (immer)</string>
 
-    <string name="account_setup_incoming_delete_policy_label">Aktion bei Löschen von Nachrichten:</string>
+    <string name="account_setup_incoming_delete_policy_label">Bei Löschen von Nachrichten:</string>
     <string name="account_setup_incoming_delete_policy_never_label">Nie von Server löschen</string>
     <string name="account_setup_incoming_delete_policy_7days_label">Nach 7 Tagen löschen</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
@@ -381,7 +404,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_incoming_imap_folder_outbox">Ordner für ausgehende Objekte</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Nur ausgewählte Ordner anzeigen</string>
-    <string name="account_setup_auto_expand_folder">Autom. Startordner</string>
+    <string name="account_setup_auto_expand_folder">Startordner</string>
 
     <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV(Exchange)-Pfad</string>
     <string name="account_setup_incoming_webdav_path_prefix_hint">Optional</string>
@@ -419,7 +442,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
    <string name="clear_action">Alle Daten löschen (Achtung!)</string>
    <string name="recreate_action">Daten wiederherstellen (Letzter Ausweg!)</string>
 
-    <string name="account_setup_options_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
+    <string name="account_setup_options_mail_check_frequency_label">E-Mail-Abfrage</string>
     <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">Nie (nur manuell)</string>
     <string name="account_setup_options_mail_check_frequency_1min">Jede Minute</string>
@@ -462,6 +485,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_options_mail_display_count_500">500 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_1000">1000 Nachrichten</string>
 
+
     <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
 
     <string name="account_setup_failed_dlg_title">Setup konnte nicht abgeschlossen werden</string>
@@ -475,16 +499,16 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_default">Standardkonto</string>
     <string name="account_settings_default_label">Standardkonto</string>
     <string name="account_settings_default_summary">Standardmäßig Nachrichten von diesem Konto aus senden.</string>
-    <string name="account_settings_notify_label">Benachr. bei neuer Nachricht</string>
-    <string name="account_settings_notify_sync_label">Benachr. bei Synchronisation</string>
+    <string name="account_settings_notify_label">Benachrichtigungen</string>
+    <string name="account_settings_notify_sync_label">Bei Synchronisation</string>
     <string name="account_settings_email_label">Ihre E-Mail-Adresse</string>
     <string name="account_settings_notify_summary">Zeigt eine Benachrichtigung in der Statuszeile, wenn eine neue Nachricht empfangen wird.</string>
     <string name="account_settings_notify_sync_summary">Zeigt eine Benachrichtigung in der Statuszeile, während Nachrichten empfangen werden.</string>
     <string name="account_settings_show_combined_label">Globalen Posteingang anzeigen</string>
-    <string name="account_settings_notify_self_label">Benachr. für eigene Nachrichten</string>
-    <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine ihrer eigenen E-Mail-Adressen als Absender tragen.</string>
-    <string name="account_settings_notification_opens_unread_label">Notification öffnet ungelesene Nachrichten</string>
-    <string name="account_settings_notification_opens_unread_summary">Sucht beim Öffnen einer Notification nach ungeöffneten Nachrichten</string>
+    <string name="account_settings_notify_self_label">Bei eigenen Nachrichten</string>
+    <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine Ihrer eigenen E-Mail-Adressen als Absender tragen.</string>
+    <string name="account_settings_notification_opens_unread_label">Benachrichtigung öffnet ungelesene Nachrichten</string>
+    <string name="account_settings_notification_opens_unread_summary">Zeigt beim Öffnen einer Benachrichtigung Liste der ungelesenen Nachrichten an</string>
 
     <string name="account_settings_hide_buttons_label">Navigations-Scrollbuttons</string>
     <string name="account_settings_hide_buttons_never">Nie</string>
@@ -501,6 +525,11 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_show_pictures_always">Immer</string>
 
     <string name="account_settings_composition">Nachricht verfassen</string>
+
+    <string name="account_settings_reply_after_quote_label">Antwort unter Zitat</string>
+    <string name="account_settings_reply_after_quote_summary">Die Antwort auf eine Nachricht unterhalb der Originalnachricht platzieren.</string>
+
+
     <string name="account_settings_sync">Ordner synchronisieren</string>
     <string name="account_settings_folders">Ordner</string>
     <string name="account_settings_message_lists">Liste der Nachrichten</string>
@@ -519,12 +548,12 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_color_label">Farbe des Kontos</string>
     <string name="account_settings_color_summary">Wählen Sie die Farbe, in der das Konto in der Konten- und Ordnerliste dargestellt wird</string>
 
-    <string name="account_settings_led_color_label">Notification LED Farbe</string>
-    <string name="account_settings_led_color_summary">Wählen Sie die Leuchtfarbe der LED ihres Telefones für dieses Konto</string>
+    <string name="account_settings_led_color_label">Farbe LED-Leuchte</string>
+    <string name="account_settings_led_color_summary">Wählen Sie die Farbe der LED-Leuchte bei Benachrichtigungen für dieses Konto</string>
 
     <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
 
-    <string name="account_settings_autodownload_message_size_label">Automatisch Nachrichten bis zu dieser Größe herunterladen</string>
+    <string name="account_settings_autodownload_message_size_label">Nachrichten automatisch laden bis</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>
     <string name="account_settings_autodownload_message_size_2">2Kb</string>
     <string name="account_settings_autodownload_message_size_4">4Kb</string>
@@ -539,7 +568,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
     <string name="account_settings_autodownload_message_size_any">jede Größe (kein Limit)</string>
 
-    <string name="account_settings_message_age_label">Nachrichten dieses Alters synchronisieren</string>
+    <string name="account_settings_message_age_label">Nachrichten synchronisieren</string>
     <string name="account_settings_message_age_any">Alle (kein Limit)</string>
     <string name="account_settings_message_age_0">von heute</string>
     <string name="account_settings_message_age_1">der letzten 2 Tage</string>
@@ -567,12 +596,12 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_folder_sync_mode_not_second_class">Alle außer Nebenordner</string>
     <string name="account_settings_folder_sync_mode_none">Keine</string>
 
-    <string name="account_settings_folder_push_mode_label">Ordner per Push abfragen</string>
-    <string name="account_settings_folder_push_mode_all">Alle</string>
+    <string name="account_settings_folder_push_mode_label">Via Push abfragen</string>
+    <string name="account_settings_folder_push_mode_all">Alle Ordner</string>
     <string name="account_settings_folder_push_mode_first_class">Nur Hauptordner</string>
     <string name="account_settings_folder_push_mode_first_and_second_class">Haupt- und Nebenordner</string>
     <string name="account_settings_folder_push_mode_not_second_class">Alle außer Nebenordner</string>
-    <string name="account_settings_folder_push_mode_none">Keine</string>
+    <string name="account_settings_folder_push_mode_none">Keine Ordner</string>
 
     <string name="account_settings_folder_target_mode_label">Zielordner für Kopieren/Verschieben</string>
     <string name="account_settings_folder_target_mode_all">Alle</string>
@@ -613,9 +642,9 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_description_label">Kontoname</string>
     <string name="account_settings_name_label">Ihr Name</string>
     <string name="account_settings_notifications">Benachrichtigungseinstellungen</string>
-    <string name="account_settings_ring_summary">Klingeln bei eingehender Nachricht</string>
+    <string name="account_settings_ring_summary">Klingeln bei neuer Nachricht</string>
     <string name="account_settings_vibrate_enable">Vibration</string>
-    <string name="account_settings_vibrate_summary">Vibration bei eingehender Nachricht</string>
+    <string name="account_settings_vibrate_summary">Vibration bei neuer Nachricht</string>
     <string name="account_settings_vibrate_pattern_label">Vibrationsrhythmus</string>
     <string name="account_settings_vibrate_pattern_default">Standard</string>
     <string name="account_settings_vibrate_pattern_1">Rhythmus 1</string>
@@ -725,6 +754,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     Antworten\u000AA - Allen Antworten\u000AC - Verfassen\u000AF - Weiterleiten\u000aM - Verschieben\u000AY - Kopieren\u000AG - Markieren\u000AO - Sortierung\u000AI - Sortierungsreihenfolge\u000AQ
     - zurück zu den Konten\u000AS - Auswählen/abwählen</string>
 
+
     <string name="folder_list_help_key">
       1 - Nur Hauptordner anzeigen\u000A
       2 - Haupt- und Nebenordner anzeigen\u000A
@@ -738,6 +768,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="folder_list_display_mode_first_class">Nur Hauptordner anzeigen</string>
     <string name="folder_list_display_mode_first_and_second_class">Haupt- und Nebenordner anzeigen</string>
     <string name="folder_list_display_mode_not_second_class">Alle außer Nebenordner anzeigen</string>
+
+
 
     <string name="account_settings_signature__location_label">Position der Signatur</string>
     <string name="account_settings_signature__location_before_quoted_text">Vor zitierter Nachricht</string>
@@ -800,11 +832,16 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="animations_title">Animationen</string>
     <string name="animations_summary">Aufwändige visuelle Effekte benutzen</string>
-    <string name="gestures_title">Gesten zulassen</string>
+    <string name="gestures_title">Gesten</string>
     <string name="gestures_summary">Gesten für vorherige/nächste Nachricht aktivieren</string>
 
-    <string name="manage_back_title">\"Back\" Button</string>
-    <string name="manage_back_summary">Der \"Back\" Button bringt Sie eine Ebene nach oben.</string>
+    <string name="volume_navigation_title">Lauter/Leiser Scrolling</string>
+    <string name="volume_navigation_summary">Mittels Lauter/Leiser-Tasten durch Listen scrollen</string>
+    <string name="volume_navigation_message">Nachrichtenansicht</string>
+    <string name="volume_navigation_list">Diverse Listenansichten</string>
+
+    <string name="manage_back_title">\"Zurück\"-Taste</string>
+    <string name="manage_back_summary">Die \"Zurück\"-Taste bringt Sie eine Ebene nach oben</string>
 
     <string name="start_integrated_inbox_title">Integrierter Posteingang bei Start</string>
     <string name="start_integrated_inbox_summary">Zeige beim Startup den integrierten Posteingang</string>
@@ -830,7 +867,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="folder_settings_include_in_integrated_inbox_label">Integration in gemeinsamen Posteingang</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Ungelesene Nachrichten im gemeinsamen Posteingang anzeigen</string>
 
-    <string name="account_settings_searchable_label">Zu durchsuchende Ordner</string>
+    <string name="account_settings_searchable_label">Ordner duchsuchen</string>
     <string name="account_settings_searchable_all">Alle</string>
     <string name="account_settings_searchable_displayable">Angezeigte</string>
     <string name="account_settings_searchable_none">Keine</string>
@@ -885,7 +922,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="message_compose_use_workaround">Verwenden Sie \"Anlage hinzufügen (Bild)\" oder \"Anlage hinzufügen (Video)\" um Bilder oder Videos mit der 3D-Galerie hinzuzufügen.</string>
 
     <string name="miscellaneous_preferences">Verschiedenes</string>
-    <string name="misc_preferences_attachment_title">Galerie Work-Around aktivieren</string>
+    <string name="misc_preferences_attachment_title">Galerie Work-Around</string>
     <string name="misc_preferences_attachment_description">Schaltflächen zum Hinzufügen von Bild- und Video-Anhängen anzeigen (um Fehler in 3D-Galerie zu umgehen)</string>
 
     <!-- APG related -->
@@ -908,5 +945,12 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="charset_not_found">Die Nachricht konnte nicht dargestellt werden da das Charset \"<xliff:g id="charset">%s</xliff:g>\" nicht gefunden wurde.</string>
 
     <string name="select_text_now">Selektieren Sie Text um ihn zu kopieren.</string>
-</resources>
 
+	<string name="dialog_confirm_delete_title">Löschen bestätigen</string>
+    <string name="dialog_confirm_delete_message">Wollen Sie diese Nachricht löschen?</string>
+    <string name="dialog_confirm_delete_confirm_button">Löschen</string>
+    <string name="dialog_confirm_delete_cancel_button">Nicht löschen</string>
+
+    <string name="debug_logging_enabled">Debug-Meldungen werden mit Hilfe des Android-Logging-Systems aufgezeichnet.</string>
+
+</resources>
