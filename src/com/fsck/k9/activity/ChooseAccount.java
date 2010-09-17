@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,10 @@ public class ChooseAccount extends K9ExpandableListActivity
                 final Identity identity = (Identity) adapter.getChild(groupPosition, childPosition);
                 final Account account = (Account) adapter.getGroup(groupPosition);
 
+                if (!account.isAvalaible(v.getContext())) {
+                	Log.i(K9.LOG_TAG, "Refusing selection of unavaliable account");
+                	return true;
+                }
                 final Intent intent = new Intent();
                 intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
                 intent.putExtra(EXTRA_IDENTITY, identity);
@@ -192,6 +197,15 @@ public class ChooseAccount extends K9ExpandableListActivity
             final Account account = getAccounts()[groupPosition];
             description.setText(account.getDescription());
             description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
+
+            // display unavaliable accounts translucent
+            if (account.isAvalaible(parent.getContext())) {
+            	description.getBackground().setAlpha(255);
+            	description.getBackground().setAlpha(255);
+            } else {
+            	description.getBackground().setAlpha(127);
+            	description.getBackground().setAlpha(127);
+            }
 
             v.findViewById(R.id.chip).setBackgroundColor(account.getChipColor());
 

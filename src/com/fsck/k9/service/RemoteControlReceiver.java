@@ -35,7 +35,7 @@ public class RemoteControlReceiver extends CoreReceiver
                 String[] uuids = new String[accounts.length];
                 String[] descriptions = new String[accounts.length];
                 for (int i = 0; i < accounts.length; i++)
-                {
+                {   //warning: account may not be isAvaliable()
                     Account account = accounts[i];
 
                     uuids[i] = account.getUuid();

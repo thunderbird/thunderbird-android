@@ -465,6 +465,12 @@ public class MessageList
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);
 
+        if (!mAccount.isAvalaible(MessageList.this)) {
+    		Log.i(K9.LOG_TAG, "not opening MessageList of unavaliable account");
+    		finish();
+    		return;
+    	}
+
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
         if (queryFlags != null)
         {

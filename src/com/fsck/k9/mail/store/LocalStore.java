@@ -48,6 +48,7 @@ import com.fsck.k9.controller.MessageRemovalListener;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Regex;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.AccountUnavaliableException;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -66,6 +67,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 import com.fsck.k9.provider.AttachmentProvider;
 
 /**
@@ -127,6 +129,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * local://localhost/path/to/database/uuid.db
      * This constructor is only used by {@link Store#getLocalInstance(Account, Application)}
+     * @throws UnavailableStorageException if not {@link StorageProvider#isReady()}
      */
     public LocalStore(Account account, Application application) throws MessagingException
     {
@@ -279,6 +282,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         
     }
 
+    /**
+     * 
+     * @param application
+     * @throws UnavailableStorageException
+     */
     private void openOrCreateDataspace(Application application) throws UnavailableStorageException
     {
         final File databaseFile = prepareStorage(mStorageProviderId);

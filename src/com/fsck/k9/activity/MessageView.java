@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -952,7 +953,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 if (segmentList.size() == 3)
                 {
                     String accountId = segmentList.get(0);
-                    Account[] accounts = Preferences.getPreferences(this).getAccounts();
+                    Collection<Account> accounts = Preferences.getPreferences(this).getAvaliableAccounts();
                     boolean found = false;
                     for (Account account : accounts)
                     {

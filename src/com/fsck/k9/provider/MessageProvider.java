@@ -177,7 +177,7 @@ public class MessageProvider extends ContentProvider
 
         Object[] values = new Object[2];
 
-        for (Account account : Preferences.getPreferences(getContext()).getAccounts())
+        for (Account account : Preferences.getPreferences(getContext()).getAvaliableAccounts())
         {
             if (account.getAccountNumber()==accountNumber)
             {
@@ -270,6 +270,10 @@ public class MessageProvider extends ContentProvider
             if (account.getAccountNumber() == accountId)
             {
                 myAccount = account;
+                if (!account.isAvalaible(getContext())) {
+                	Log.w(K9.LOG_TAG, "not deleting messages because account is unavaliable at the moment");
+                	return 0;
+                }
             }
         }
 

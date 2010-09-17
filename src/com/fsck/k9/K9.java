@@ -278,7 +278,7 @@ public class K9 extends Application
      */
     public static void setServicesEnabled(Context context)
     {
-        int acctLength = Preferences.getPreferences(context).getAccounts().length;
+        int acctLength = Preferences.getPreferences(context).getAvaliableAccounts(context).size();
 
         setServicesEnabled(context, acctLength > 0, null);
 
@@ -286,7 +286,7 @@ public class K9 extends Application
 
     public static void setServicesEnabled(Context context, Integer wakeLockId)
     {
-        setServicesEnabled(context, Preferences.getPreferences(context).getAccounts().length > 0, wakeLockId);
+        setServicesEnabled(context, Preferences.getPreferences(context).getAvaliableAccounts(context).size() > 0, wakeLockId);
     }
 
     public static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId)
@@ -410,7 +410,7 @@ public class K9 extends Application
 
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
-        MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
+        MessagingController.getInstance(this).resetVisibleLimits(prefs.getAvaliableAccounts(getApplicationContext()));
         MessageProvider mp = new MessageProvider(); //TODO: is this correct? MessageProvider is a ContentProvider and not a POJO  
         mp.setApplication(this);
 

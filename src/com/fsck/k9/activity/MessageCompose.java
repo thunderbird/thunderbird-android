@@ -1510,7 +1510,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     {
         // keep things simple: trigger account choice only if there are more
         // than 1 account
-        if (Preferences.getPreferences(this).getAccounts().length > 1)
+        if (Preferences.getPreferences(this).getAvaliableAccounts().size() > 1)
         {
             final Intent intent = new Intent(this, ChooseAccount.class);
             intent.putExtra(ChooseAccount.EXTRA_ACCOUNT, mAccount.getUuid());

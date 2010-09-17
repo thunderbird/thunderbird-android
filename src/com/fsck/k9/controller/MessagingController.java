@@ -63,7 +63,9 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.mail.store.AccountUnavaliableException;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.UnavailableStorageException;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.PendingCommand;
@@ -274,7 +276,7 @@ public class MessagingController implements Runnable
             String commandDescription = null;
             try
             {
-                Command command = mCommands.take();
+                final Command command = mCommands.take();
 
                 if (command != null)
                 {
@@ -284,7 +286,23 @@ public class MessagingController implements Runnable
                         Log.i(K9.LOG_TAG, "Running " + (command.isForeground ? "Foreground" : "Background") + " command '" + command.description + "', seq = " + command.sequence);
 
                     mBusy = true;
-                    command.runnable.run();
+                    try {
+                    	command.runnable.run();
+                    } catch (AccountUnavaliableException e) {
+                    	// retry later
+                    	new Thread() {
+							public void run() {
+								try {
+									sleep(30 * 1000);
+									mCommands.put(command);
+								} catch (InterruptedException e) {
+									Log.e(K9.LOG_TAG, "interrupted while putting a pending command for"
+											+ " an unavaliable account back into the queue."
+											+ " THIS SHOULD NEVER HAPPEN.");
+								}
+							}
+						}.start();
+                    }
 
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, (command.isForeground ? "Foreground" : "Background") +
@@ -910,7 +928,7 @@ public class MessagingController implements Runnable
         }
     }
 
-    public void resetVisibleLimits(Account[] accounts)
+    public void resetVisibleLimits(Collection<Account> accounts)
     {
         for (Account account : accounts)
         {
@@ -923,7 +941,11 @@ public class MessagingController implements Runnable
             {
                 addErrorMessage(account, null, e);
 
-                Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
+                if (account == null || account.getIdentities() == null || account.getIdentities().size() == 0) {
+                	Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
+                } else {
+                	Log.e(K9.LOG_TAG, "Unable to reset visible limits of account \"" + account.getName() + "\"", e);
+                }
             }
         }
     }
@@ -2033,7 +2055,11 @@ public class MessagingController implements Runnable
                 {
                     processPendingCommandsSynchronous(account);
                 }
-                catch (MessagingException me)
+                catch (UnavailableStorageException e) {
+                    Log.i(K9.LOG_TAG, "Failed to process pending command because storage is not avaliable - trying again later.");
+            		throw new AccountUnavaliableException();
+            	}
+            	catch (MessagingException me)
                 {
                     Log.e(K9.LOG_TAG, "processPendingCommands", me);
 
@@ -3588,7 +3614,11 @@ public class MessagingController implements Runnable
                 notifMgr.notify(-1000 - account.getAccountNumber(), notif);
             }
         }
-        catch (Exception e)
+        catch (UnavailableStorageException e) {
+            Log.i(K9.LOG_TAG, "Failed to send pending messages because storage is not avaliable - trying again later.");
+    		throw new AccountUnavaliableException();
+    	}
+    	catch (Exception e)
         {
             for (MessagingListener l : getListeners())
             {
@@ -3811,7 +3841,11 @@ public class MessagingController implements Runnable
 
             processPendingCommands(account);
         }
-        catch (MessagingException me)
+        catch (UnavailableStorageException e) {
+            Log.i(K9.LOG_TAG, "Failed to move/copy message because storage is not avaliable - trying again later.");
+    		throw new AccountUnavaliableException();
+    	}
+    	catch (MessagingException me)
         {
             addErrorMessage(account, null, me);
 
@@ -3986,7 +4020,11 @@ public class MessagingController implements Runnable
                 unsuppressMessage(account, folder, uid);
             }
         }
-        catch (MessagingException me)
+        catch (UnavailableStorageException e) {
+            Log.i(K9.LOG_TAG, "Failed to delete message because storage is not avaliable - trying again later.");
+    		throw new AccountUnavaliableException();
+    	}
+    	catch (MessagingException me)
         {
             addErrorMessage(account, null, me);
 
@@ -4067,7 +4105,11 @@ public class MessagingController implements Runnable
                     queuePendingCommand(account, command);
                     processPendingCommands(account);
                 }
-                catch (Exception e)
+                catch (UnavailableStorageException e) {
+                    Log.i(K9.LOG_TAG, "Failed to empty trash because storage is not avaliable - trying again later.");
+            		throw new AccountUnavaliableException();
+            	}
+            	catch (Exception e)
                 {
                     Log.e(K9.LOG_TAG, "emptyTrash failed", e);
 
@@ -4189,6 +4231,11 @@ public class MessagingController implements Runnable
 
                     for (final Account account : accounts)
                     {
+                    	if (!account.isAvalaible(context)) {
+                    		if (K9.DEBUG)
+                                Log.i(K9.LOG_TAG, "Skipping synchronizing unavaliable account " + account.getDescription());
+                    		continue;
+                    	}
                         final long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
                         if (!ignoreLastCheckedTime && accountInterval <= 0)
                         {
@@ -4206,6 +4253,9 @@ public class MessagingController implements Runnable
                         {
                             public void run()
                             {
+                            	if (!account.isAvalaible(context)) {
+                            		throw new AccountUnavaliableException();
+                            	}
                                 if (messagesPendingSend(account))
                                 {
                                     if (account.isShowOngoing())
@@ -4448,7 +4498,11 @@ public class MessagingController implements Runnable
                         l.accountSizeChanged(account, oldSize, newSize);
                     }
                 }
-                catch (Exception e)
+            	catch (UnavailableStorageException e) {
+                    Log.i(K9.LOG_TAG, "Failed to compact account because storage is not avaliable - trying again later.");
+            		throw new AccountUnavaliableException();
+            	}
+            	catch (Exception e)
                 {
                     Log.e(K9.LOG_TAG, "Failed to compact account " + account.getDescription(), e);
                 }
@@ -4462,7 +4516,7 @@ public class MessagingController implements Runnable
         {
             public void run()
             {
-                try
+            	try
                 {
                     LocalStore localStore = account.getLocalStore();
                     long oldSize = localStore.getSize();
@@ -4484,6 +4538,10 @@ public class MessagingController implements Runnable
                         l.accountStatusChanged(account, stats);
                     }
                 }
+            	catch (UnavailableStorageException e) {
+                    Log.i(K9.LOG_TAG, "Failed to clear account because storage is not avaliable - trying again later.");
+            		throw new AccountUnavaliableException();
+            	}
                 catch (Exception e)
                 {
                     Log.e(K9.LOG_TAG, "Failed to clear account " + account.getDescription(), e);
@@ -4520,7 +4578,11 @@ public class MessagingController implements Runnable
                         l.accountStatusChanged(account, stats);
                     }
                 }
-                catch (Exception e)
+                catch (UnavailableStorageException e) {
+                    Log.i(K9.LOG_TAG, "Failed to recreate an account because storage is not avaliable - trying again later.");
+            		throw new AccountUnavaliableException();
+            	}
+            	catch (Exception e)
                 {
                     Log.e(K9.LOG_TAG, "Failed to recreate account " + account.getDescription(), e);
                 }

@@ -1590,4 +1590,15 @@ public class Account implements BaseAccount
         return mCryptoProvider;
     }
 
+    /**
+     * @return true if our {@link StorageProvider} is ready. (e.g. card inserted)
+     */
+	public boolean isAvalaible(Context context) {
+		String localStorageProviderId = getLocalStorageProviderId();
+		if (localStorageProviderId == null) {
+			return true; // defaults to internal memory
+		}
+		return StorageManager.getInstance().isReady(context, localStorageProviderId);
+	}
+
 }

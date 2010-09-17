@@ -8,6 +8,7 @@ import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +86,7 @@ public abstract class Store
 
     /**
      * Get an instance of a local mail store.
+     * @throws UnavailableStorageException if not {@link StorageProvider#isReady()}
      */
     public synchronized static LocalStore getLocalInstance(Account account, Application application) throws MessagingException
     {

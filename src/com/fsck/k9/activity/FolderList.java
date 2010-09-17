@@ -1033,6 +1033,10 @@ public class FolderList extends K9ListActivity
                 {
                     if (account != null && folderName != null)
                     {
+                    	if (!account.isAvalaible(FolderList.this)) {
+                    		Log.i(K9.LOG_TAG, "not refreshing folder of unavaliable account");
+                    		return;
+                    	}
                         localFolder = account.getLocalStore().getFolder(folderName);
                         int unreadMessageCount = localFolder.getUnreadMessageCount();
                         if (localFolder != null)

@@ -514,6 +514,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         else
         {
             Account realAccount = (Account)account;
+            if (!realAccount.isAvalaible(this)) {
+            	Log.i(K9.LOG_TAG, "refusing to open account that is not avaliable");
+            	return;
+            }
             if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName()))
             {
                 FolderList.actionHandleAccount(this, realAccount);
@@ -599,7 +603,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     }
                     catch (Exception e)
                     {
-                        // Ignore
+                        // Ignore, this may lead to localStores on sd-cards that are currently not inserted to be left
                     }
                     MessagingController.getInstance(getApplication()).notifyAccountCancel(Accounts.this, realAccount);
                     Preferences.getPreferences(Accounts.this).deleteAccount(realAccount);
@@ -898,6 +902,21 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 view.setTag(holder);
             }
             AccountStats stats = accountStats.get(account.getUuid());
+
+            // display unavaliable accounts translucent
+            if (account instanceof Account) {
+            	Account realAccount = (Account) account;
+            	if (realAccount.isAvalaible(Accounts.this)) {
+            		holder.email.getBackground().setAlpha(255);
+            		holder.description.getBackground().setAlpha(255);
+            	} else {
+            		holder.email.getBackground().setAlpha(127);
+            		holder.description.getBackground().setAlpha(127);
+            	}
+            } else {
+            	holder.email.getBackground().setAlpha(255);
+            	holder.description.getBackground().setAlpha(255);
+            }
 
             if (stats != null && account instanceof Account && stats.size >= 0)
             {

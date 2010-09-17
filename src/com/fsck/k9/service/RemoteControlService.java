@@ -85,7 +85,7 @@ public class RemoteControlService extends CoreService
                         }
                         Account[] accounts = preferences.getAccounts();
                         for (Account account : accounts)
-                        {
+                        {   //warning: account may not be isAvaliable()
                             if (allAccounts || account.getUuid().equals(uuid))
                             {
 

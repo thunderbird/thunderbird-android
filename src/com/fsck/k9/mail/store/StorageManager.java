@@ -389,8 +389,12 @@ public class StorageManager
      */
     public boolean isReady(final Context context, final String providerId)
     {
-        // TODO null handling
-        return getProvider(providerId).isReady();
+        StorageProvider provider = getProvider(providerId);
+        if (provider == null) {
+        	Log.w(K9.LOG_TAG, "Storage-Provider \"" + providerId + "\" does not exist");
+        	return false;
+        }
+		return provider.isReady();
     }
 
     /**
