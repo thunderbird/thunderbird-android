@@ -161,6 +161,14 @@ public abstract class Message implements Part, Body
         return mFlags.toArray(EMPTY_FLAG_ARRAY);
     }
 
+    /**
+     * @param flag
+     *            Flag to set. Never <code>null</code>.
+     * @param set
+     *            If <code>true</code>, the flag is added. If <code>false</code>
+     *            , the flag is removed.
+     * @throws MessagingException
+     */
     public void setFlag(Flag flag, boolean set) throws MessagingException
     {
         if (set)
