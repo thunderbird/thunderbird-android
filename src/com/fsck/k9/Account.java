@@ -445,15 +445,21 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".expungePolicy");
         editor.remove(mUuid + ".syncRemoteDeletions");
         editor.remove(mUuid + ".maxPushFolders");
-        editor.remove(mUuid  + ".searchableFolders");
-        editor.remove(mUuid  + ".chipColor");
-        editor.remove(mUuid  + ".led");
-        editor.remove(mUuid  + ".ledColor");
+        editor.remove(mUuid + ".searchableFolders");
+        editor.remove(mUuid + ".chipColor");
+        editor.remove(mUuid + ".led");
+        editor.remove(mUuid + ".ledColor");
         editor.remove(mUuid + ".goToUnreadMessageSearch");
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
         editor.remove(mUuid + ".maximumAutoDownloadMessageSize");
         editor.remove(mUuid + ".quotePrefix");
+        editor.remove(mUuid + ".showPicturesEnum");
+        editor.remove(mUuid + ".replyAfterQuote");
+        editor.remove(mUuid + ".cryptoApp");
+        editor.remove(mUuid + ".cryptoAutoSignature");
+        editor.remove(mUuid + ".enableMoveButtons");
+        editor.remove(mUuid + ".hideMoveButtonsEnum");
         for (String type : networkTypes)
         {
             editor.remove(mUuid + ".useCompression." + type);
