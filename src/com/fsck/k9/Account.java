@@ -95,7 +95,6 @@ public class Account implements BaseAccount
     private int mAutomaticCheckIntervalMinutes;
     private int mDisplayCount;
     private int mChipColor;
-    private int mLedColor;
     private long mLastAutomaticCheckTime;
     private boolean mNotifyNewMail;
     private boolean mNotifySelfNewMail;
@@ -111,13 +110,8 @@ public class Account implements BaseAccount
     private FolderMode mFolderPushMode;
     private FolderMode mFolderTargetMode;
     private int mAccountNumber;
-    private boolean mVibrate;
-    private int mVibratePattern;
-    private int mVibrateTimes;
-    private boolean mRing;
     private boolean mSaveAllHeaders;
     private boolean mPushPollOnConnect;
-    private String mRingtoneUri;
     private boolean mNotifySync;
     private HideButtons mHideMessageViewButtons;
     private HideButtons mHideMessageViewMoveButtons;
@@ -154,6 +148,8 @@ public class Account implements BaseAccount
 
     private List<Identity> identities;
 
+    private NotificationSetting mNotificationSetting = new NotificationSetting();
+
     public enum FolderMode
     {
         NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
@@ -186,10 +182,6 @@ public class Account implements BaseAccount
         mAccountNumber = -1;
         mNotifyNewMail = true;
         mNotifySync = true;
-        mVibrate = false;
-        mVibratePattern = 0;
-        mVibrateTimes = 5;
-        mRing = true;
         mNotifySelfNewMail = true;
         mFolderDisplayMode = FolderMode.NOT_SECOND_CLASS;
         mFolderSyncMode = FolderMode.FIRST_CLASS;
@@ -199,13 +191,11 @@ public class Account implements BaseAccount
         mHideMessageViewMoveButtons = HideButtons.NEVER;
         mShowPictures = ShowPictures.NEVER;
         mEnableMoveButtons = false;
-        mRingtoneUri = "content://settings/system/notification_sound";
         mIsSignatureBeforeQuotedText = false;
         mExpungePolicy = EXPUNGE_IMMEDIATELY;
         mAutoExpandFolderName = "INBOX";
         mMaxPushFolders = 10;
         mChipColor = (new Random()).nextInt(0xffffff) + 0xff000000;
-        mLedColor = mChipColor;
         goToUnreadMessageSearch = false;
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = -1;
@@ -225,6 +215,14 @@ public class Account implements BaseAccount
         identity.setSignature(context.getString(R.string.default_signature));
         identity.setDescription(context.getString(R.string.default_identity_description));
         identities.add(identity);
+
+        mNotificationSetting = new NotificationSetting();
+        mNotificationSetting.setVibrate(false);
+        mNotificationSetting.setVibratePattern(0);
+        mNotificationSetting.setVibrateTimes(5);
+        mNotificationSetting.setRing(true);
+        mNotificationSetting.setRingtone("content://settings/system/notification_sound");
+        mNotificationSetting.setLedColor(mChipColor);
     }
 
     protected Account(Preferences preferences, String uuid)
@@ -315,13 +313,6 @@ public class Account implements BaseAccount
                                   (random.nextInt(0x70) * 0xff) +
                                   (random.nextInt(0x70) * 0xffff) +
                                   0xff000000);
-        mLedColor = prefs.getInt(mUuid+".ledColor", mChipColor);
-
-        mVibrate = prefs.getBoolean(mUuid + ".vibrate", false);
-        mVibratePattern = prefs.getInt(mUuid + ".vibratePattern", 0);
-        mVibrateTimes = prefs.getInt(mUuid + ".vibrateTimes", 5);
-
-        mRing = prefs.getBoolean(mUuid + ".ring", true);
 
         try
         {
@@ -355,8 +346,15 @@ public class Account implements BaseAccount
 
         mEnableMoveButtons = prefs.getBoolean(mUuid + ".enableMoveButtons", false);
 
-        mRingtoneUri = prefs.getString(mUuid  + ".ringtone",
-                                       "content://settings/system/notification_sound");
+        mNotificationSetting.setVibrate(prefs.getBoolean(mUuid + ".vibrate", false));
+        mNotificationSetting.setVibratePattern(prefs.getInt(mUuid + ".vibratePattern", 0));
+        mNotificationSetting.setVibrateTimes(prefs.getInt(mUuid + ".vibrateTimes", 5));
+        mNotificationSetting.setRing(prefs.getBoolean(mUuid + ".ring", true));
+        mNotificationSetting.setRingtone(prefs.getString(mUuid  + ".ringtone",
+                                       "content://settings/system/notification_sound"));
+        mNotificationSetting.setLed(prefs.getBoolean(mUuid + ".led", true));
+        mNotificationSetting.setLedColor(prefs.getInt(mUuid+".ledColor", mChipColor));
+
         try
         {
             mFolderDisplayMode = FolderMode.valueOf(prefs.getString(mUuid  + ".folderDisplayMode",
@@ -472,14 +470,21 @@ public class Account implements BaseAccount
         editor.remove(mUuid + ".expungePolicy");
         editor.remove(mUuid + ".syncRemoteDeletions");
         editor.remove(mUuid + ".maxPushFolders");
-        editor.remove(mUuid  + ".searchableFolders");
-        editor.remove(mUuid  + ".chipColor");
-        editor.remove(mUuid  + ".ledColor");
+        editor.remove(mUuid + ".searchableFolders");
+        editor.remove(mUuid + ".chipColor");
+        editor.remove(mUuid + ".led");
+        editor.remove(mUuid + ".ledColor");
         editor.remove(mUuid + ".goToUnreadMessageSearch");
         editor.remove(mUuid + ".subscribedFoldersOnly");
         editor.remove(mUuid + ".maximumPolledMessageAge");
         editor.remove(mUuid + ".maximumAutoDownloadMessageSize");
         editor.remove(mUuid + ".quotePrefix");
+        editor.remove(mUuid + ".showPicturesEnum");
+        editor.remove(mUuid + ".replyAfterQuote");
+        editor.remove(mUuid + ".cryptoApp");
+        editor.remove(mUuid + ".cryptoAutoSignature");
+        editor.remove(mUuid + ".enableMoveButtons");
+        editor.remove(mUuid + ".hideMoveButtonsEnum");
         for (String type : networkTypes)
         {
             editor.remove(mUuid + ".useCompression." + type);
@@ -550,15 +555,10 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".outboxFolderName", mOutboxFolderName);
         editor.putString(mUuid + ".autoExpandFolderName", mAutoExpandFolderName);
         editor.putInt(mUuid + ".accountNumber", mAccountNumber);
-        editor.putBoolean(mUuid + ".vibrate", mVibrate);
-        editor.putInt(mUuid + ".vibratePattern", mVibratePattern);
-        editor.putInt(mUuid + ".vibrateTimes", mVibrateTimes);
-        editor.putBoolean(mUuid + ".ring", mRing);
         editor.putString(mUuid + ".hideButtonsEnum", mHideMessageViewButtons.name());
         editor.putString(mUuid + ".hideMoveButtonsEnum", mHideMessageViewMoveButtons.name());
         editor.putString(mUuid + ".showPicturesEnum", mShowPictures.name());
         editor.putBoolean(mUuid + ".enableMoveButtons", mEnableMoveButtons);
-        editor.putString(mUuid + ".ringtone", mRingtoneUri);
         editor.putString(mUuid + ".folderDisplayMode", mFolderDisplayMode.name());
         editor.putString(mUuid + ".folderSyncMode", mFolderSyncMode.name());
         editor.putString(mUuid + ".folderPushMode", mFolderPushMode.name());
@@ -569,7 +569,6 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".maxPushFolders", mMaxPushFolders);
         editor.putString(mUuid  + ".searchableFolders", searchableFolders.name());
         editor.putInt(mUuid + ".chipColor", mChipColor);
-        editor.putInt(mUuid + ".ledColor", mLedColor);
         editor.putBoolean(mUuid + ".goToUnreadMessageSearch", goToUnreadMessageSearch);
         editor.putBoolean(mUuid + ".subscribedFoldersOnly", subscribedFoldersOnly);
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
@@ -577,6 +576,14 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
+
+        editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.isVibrate());
+        editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
+        editor.putInt(mUuid + ".vibrateTimes", mNotificationSetting.getVibrateTimes());
+        editor.putBoolean(mUuid + ".ring", mNotificationSetting.shouldRing());
+        editor.putString(mUuid + ".ringtone", mNotificationSetting.getRingtone());
+        editor.putBoolean(mUuid + ".led", mNotificationSetting.isLed());
+        editor.putInt(mUuid + ".ledColor", mNotificationSetting.getLedColor());
 
         for (String type : networkTypes)
         {
@@ -673,16 +680,6 @@ public class Account implements BaseAccount
     }
 
 
-    public synchronized void setLedColor(int color)
-    {
-        mLedColor = color;
-    }
-
-    public synchronized int getLedColor()
-    {
-        return mLedColor;
-    }
-
     public String getUuid()
     {
         return mUuid;
@@ -773,38 +770,6 @@ public class Account implements BaseAccount
         this.mAlwaysBcc = alwaysBcc;
     }
 
-    public synchronized boolean isVibrate()
-    {
-        return mVibrate;
-    }
-
-    public synchronized void setVibrate(boolean vibrate)
-    {
-        mVibrate = vibrate;
-    }
-
-    public synchronized int getVibratePattern()
-    {
-        return mVibratePattern;
-    }
-
-    public synchronized void setVibratePattern(int pattern)
-    {
-        mVibratePattern = pattern;
-    }
-
-    public synchronized int getVibrateTimes()
-    {
-        return mVibrateTimes;
-    }
-
-    public synchronized void setVibrateTimes(int times)
-    {
-        mVibrateTimes = times;
-    }
-
-
-
     /* Have we sent a new mail notification on this account */
     public boolean isRingNotified()
     {
@@ -814,16 +779,6 @@ public class Account implements BaseAccount
     public void setRingNotified(boolean ringNotified)
     {
         mRingNotified = ringNotified;
-    }
-
-    public synchronized String getRingtone()
-    {
-        return mRingtoneUri;
-    }
-
-    public synchronized void setRingtone(String ringtoneUri)
-    {
-        mRingtoneUri = ringtoneUri;
     }
 
     public String getLocalStorageProviderId()
@@ -1124,16 +1079,6 @@ public class Account implements BaseAccount
         int oldMaxPushFolders = mMaxPushFolders;
         mMaxPushFolders = maxPushFolders;
         return oldMaxPushFolders != maxPushFolders;
-    }
-
-    public synchronized boolean shouldRing()
-    {
-        return mRing;
-    }
-
-    public synchronized void setRing(boolean ring)
-    {
-        mRing = ring;
     }
 
     public LocalStore getLocalStore() throws MessagingException
@@ -1590,15 +1535,20 @@ public class Account implements BaseAccount
         return mCryptoProvider;
     }
 
+    public synchronized NotificationSetting getNotificationSetting()
+    {
+        return mNotificationSetting;
+    }
+
     /**
      * @return true if our {@link StorageProvider} is ready. (e.g. card inserted)
      */
-	public boolean isAvalaible(Context context) {
-		String localStorageProviderId = getLocalStorageProviderId();
-		if (localStorageProviderId == null) {
-			return true; // defaults to internal memory
-		}
-		return StorageManager.getInstance().isReady(context, localStorageProviderId);
-	}
+    public boolean isAvalaible(Context context) {
+        String localStorageProviderId = getLocalStorageProviderId();
+        if (localStorageProviderId == null) {
+            return true; // defaults to internal memory
+        }
+        return StorageManager.getInstance().isReady(context, localStorageProviderId);
+    }
 
 }

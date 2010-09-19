@@ -105,11 +105,11 @@ public class RemoteControlService extends CoreService
                                 }
                                 if (ringEnabled != null)
                                 {
-                                    account.setRing(Boolean.parseBoolean(ringEnabled));
+                                    account.getNotificationSetting().setRing(Boolean.parseBoolean(ringEnabled));
                                 }
                                 if (vibrateEnabled != null)
                                 {
-                                    account.setVibrate(Boolean.parseBoolean(vibrateEnabled));
+                                    account.getNotificationSetting().setVibrate(Boolean.parseBoolean(vibrateEnabled));
                                 }
                                 if (pushClasses != null)
                                 {
