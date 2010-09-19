@@ -39,6 +39,7 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
+import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.SearchSpecification;
@@ -4221,7 +4222,7 @@ public class MessagingController implements Runnable
                                         if (K9.NOTIFICATION_LED_WHILE_SYNCING)
                                         {
                                             notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                                            notif.ledARGB = account.getLedColor();
+                                            notif.ledARGB = account.getNotificationSetting().getLedColor();
                                             notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
                                             notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
                                         }
@@ -4327,7 +4328,7 @@ public class MessagingController implements Runnable
                                                 if (K9.NOTIFICATION_LED_WHILE_SYNCING)
                                                 {
                                                     notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                                                    notif.ledARGB = account.getLedColor();
+                                                    notif.ledARGB = account.getNotificationSetting().getLedColor();
                                                     notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
                                                     notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
                                                 }
@@ -4637,29 +4638,52 @@ public class MessagingController implements Runnable
 
         // Only ring or vibrate if we have not done so already on this
         // account and fetch
+        boolean ringAndVibrate = false;
         if (!account.isRingNotified())
         {
             account.setRingNotified(true);
-            if (account.shouldRing())
-            {
-                String ringtone = account.getRingtone();
-                notif.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
-            }
-            if (account.isVibrate())
-            {
-                long[] pattern = getVibratePattern(account.getVibratePattern(), account.getVibrateTimes());
-                notif.vibrate = pattern;
-            }
+            ringAndVibrate = true;
         }
 
-        notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-        notif.ledARGB = account.getLedColor();
-        notif.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
-        notif.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
-        notif.audioStreamType = AudioManager.STREAM_NOTIFICATION;
+        configureNotification(account.getNotificationSetting(), notif, ringAndVibrate);
 
         notifMgr.notify(account.getAccountNumber(), notif);
         return true;
+    }
+
+    /**
+     * @param setting
+     *            Configuration template. Never <code>null</code>.
+     * @param notification
+     *            Object to configure. Never <code>null</code>.
+     * @param ringAndVibrate
+     *            <code>true</code> if ringtone/vibration are allowed,
+     *            <code>false</code> otherwise.
+     */
+    private void configureNotification(final NotificationSetting setting, final Notification notification, final boolean ringAndVibrate)
+    {
+        if (ringAndVibrate)
+        {
+            if (setting.shouldRing())
+            {
+                String ringtone = setting.getRingtone();
+                notification.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
+                notification.audioStreamType = AudioManager.STREAM_NOTIFICATION;
+            }
+            if (setting.isVibrate())
+            {
+                long[] pattern = getVibratePattern(setting.getVibratePattern(), setting.getVibrateTimes());
+                notification.vibrate = pattern;
+            }
+        }
+
+        if (setting.isLed())
+        {
+            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+            notification.ledARGB = setting.getLedColor();
+            notification.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
+            notification.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
+        }
     }
 
     /*

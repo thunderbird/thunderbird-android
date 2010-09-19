@@ -55,6 +55,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_VIBRATE_PATTERN = "account_vibrate_pattern";
     private static final String PREFERENCE_VIBRATE_TIMES = "account_vibrate_times";
     private static final String PREFERENCE_RINGTONE = "account_ringtone";
+    private static final String PREFERENCE_NOTIFICATION_LED = "account_led";
     private static final String PREFERENCE_INCOMING = "incoming";
     private static final String PREFERENCE_OUTGOING = "outgoing";
     private static final String PREFERENCE_DISPLAY_MODE = "folder_display_mode";
@@ -92,6 +93,7 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mAccountEnableMoveButtons;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
+    private CheckBoxPreference mAccountLed;
     private ListPreference mAccountVibratePattern;
     private ListPreference mAccountVibrateTimes;
     private RingtonePreference mAccountRingtone;
@@ -420,14 +422,14 @@ public class AccountSettings extends K9PreferenceActivity
         // XXX: The following two lines act as a workaround for the RingtonePreference
         //      which does not let us set/get the value programmatically
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
-        String currentRingtone = (!mAccount.shouldRing() ? null : mAccount.getRingtone());
+        String currentRingtone = (!mAccount.getNotificationSetting().shouldRing() ? null : mAccount.getNotificationSetting().getRingtone());
         prefs.edit().putString(PREFERENCE_RINGTONE, currentRingtone).commit();
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
-        mAccountVibrate.setChecked(mAccount.isVibrate());
+        mAccountVibrate.setChecked(mAccount.getNotificationSetting().isVibrate());
 
         mAccountVibratePattern = (ListPreference) findPreference(PREFERENCE_VIBRATE_PATTERN);
-        mAccountVibratePattern.setValue(String.valueOf(mAccount.getVibratePattern()));
+        mAccountVibratePattern.setValue(String.valueOf(mAccount.getNotificationSetting().getVibratePattern()));
         mAccountVibratePattern.setSummary(mAccountVibratePattern.getEntry());
         mAccountVibratePattern.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
@@ -443,8 +445,8 @@ public class AccountSettings extends K9PreferenceActivity
         });
 
         mAccountVibrateTimes = (ListPreference) findPreference(PREFERENCE_VIBRATE_TIMES);
-        mAccountVibrateTimes.setValue(String.valueOf(mAccount.getVibrateTimes()));
-        mAccountVibrateTimes.setSummary(String.valueOf(mAccount.getVibrateTimes()));
+        mAccountVibrateTimes.setValue(String.valueOf(mAccount.getNotificationSetting().getVibrateTimes()));
+        mAccountVibrateTimes.setSummary(String.valueOf(mAccount.getNotificationSetting().getVibrateTimes()));
         mAccountVibrateTimes.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             @Override
@@ -457,6 +459,9 @@ public class AccountSettings extends K9PreferenceActivity
                 return false;
             }
         });
+
+        mAccountLed = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFICATION_LED);
+        mAccountLed.setChecked(mAccount.getNotificationSetting().isLed());
 
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
@@ -616,9 +621,10 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setMaximumPolledMessageAge(Integer.parseInt(mMessageAge.getValue()));
         mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));
-        mAccount.setVibrate(mAccountVibrate.isChecked());
-        mAccount.setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
-        mAccount.setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
+        mAccount.getNotificationSetting().setVibrate(mAccountVibrate.isChecked());
+        mAccount.getNotificationSetting().setVibratePattern(Integer.parseInt(mAccountVibratePattern.getValue()));
+        mAccount.getNotificationSetting().setVibrateTimes(Integer.parseInt(mAccountVibrateTimes.getValue()));
+        mAccount.getNotificationSetting().setLed(mAccountLed.isChecked());
         mAccount.setGoToUnreadMessageSearch(mNotificationOpensUnread.isChecked());
         mAccount.setFolderTargetMode(Account.FolderMode.valueOf(mTargetMode.getValue()));
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
@@ -646,14 +652,14 @@ public class AccountSettings extends K9PreferenceActivity
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
         if (newRingtone != null)
         {
-            mAccount.setRing(true);
-            mAccount.setRingtone(newRingtone);
+            mAccount.getNotificationSetting().setRing(true);
+            mAccount.getNotificationSetting().setRingtone(newRingtone);
         }
         else
         {
-            if (mAccount.shouldRing())
+            if (mAccount.getNotificationSetting().shouldRing())
             {
-                mAccount.setRingtone(null);
+                mAccount.getNotificationSetting().setRingtone(null);
             }
         }
 
@@ -743,10 +749,10 @@ public class AccountSettings extends K9PreferenceActivity
         {
             public void colorChanged(int color)
             {
-                mAccount.setLedColor(color);
+                mAccount.getNotificationSetting().setLedColor(color);
             }
         },
-        mAccount.getLedColor()).show();
+        mAccount.getNotificationSetting().getLedColor()).show();
     }
 
     public void onChooseAutoExpandFolder()

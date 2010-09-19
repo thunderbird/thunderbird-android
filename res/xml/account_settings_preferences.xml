@@ -281,6 +281,14 @@
             android:dialogTitle="@string/account_settings_vibrate_times" />
 
         <CheckBoxPreference
+            android:key="account_led"
+            android:dependency="account_notify"
+            android:title="@string/account_settings_led_label"
+            android:summary="@string/account_settings_led_summary"
+            android:defaultValue="true"
+            />
+
+        <CheckBoxPreference
             android:key="account_notify_sync"
             android:title="@string/account_settings_notify_sync_label"
             android:defaultValue="true"
