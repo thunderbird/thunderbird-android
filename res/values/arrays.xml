@@ -489,6 +489,7 @@
         <item>ru</item>
         <item>zh</item>
         <item>fi</item>
+        <item>sv</item>
     </string-array>
 
     <string-array name="settings_theme_entries">
