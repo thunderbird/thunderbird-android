@@ -3320,7 +3320,7 @@ public class MessagingController implements Runnable
             Message localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
             localFolder.close();
-            sendPendingMessages(account, null);
+            sendPendingMessages(account, listener);
         }
         catch (Exception e)
         {
