@@ -739,7 +739,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="provider_note_live">Bara vissa \"Plus\"-konton inkluderar POP-tillgång
         vilket krävs för detta program för att ansluta. Om du misslyckas med att logga in
         med din korrekta adress och lösenord så kanske du inte har ett betalt
-        \"Plus\"-konto. Vänligen starta webbläsaren för att få access till dessa konton.</string>
+        \"Plus\"-konto. Vänligen starta webbläsaren för att komma åt dessa konton.</string>
 
     <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt Certifikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
@@ -933,7 +933,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="btn_verify">Verifiera</string>
     <string name="unknown_crypto_signature_user_id">&lt;okänd&gt;</string>
     <string name="key_id">id: %s</string>
-    <string name="insufficient_apg_permissions">K-9 har inte behörighet att till fullo accessa APG, vänligen ominstallera K-9 för att åtgärda detta.</string>
+    <string name="insufficient_apg_permissions">K-9 har inte nödvändig behörighet att komma åt APG, vänligen ominstallera K-9 för att åtgärda detta.</string>
     <string name="pgp_mime_unsupported">Det finns ännu inget stöd för brev med PGP/MIME.</string>
     <string name="attachment_encryption_unsupported">Varning: bilagor är INTE signerade eller krypterade än.</string>
     <string name="send_aborted">Sändningen avbruten.</string>
