@@ -21,8 +21,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.SearchAccount;
 import com.fsck.k9.activity.MessageInfoHolder;
+import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -107,7 +107,8 @@ public class MessageProvider extends ContentProvider
             int id = -1;
             synchronized (glb_messages)
             {
-                Collections.sort(glb_messages);
+                // TODO dynamically retrieve sort order instead of hardcoding
+                Collections.sort(glb_messages, new MessageList.ReverseComparator<MessageInfoHolder>(new MessageList.DateComparator()));
             }
             MatrixCursor tmpCur = new MatrixCursor(messages_projection);
             synchronized (glb_messages)
@@ -137,12 +138,9 @@ public class MessageProvider extends ContentProvider
 
         public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
         {
-// We will by default sort by DATE desc
-            SORT_TYPE t_sort = SORT_TYPE.SORT_DATE;
-
             for (Message m : messages)
             {
-                MessageInfoHolder m1 = new MessageInfoHolder(context,m,t_sort,false);
+                MessageInfoHolder m1 = new MessageInfoHolder(context, m);
                 glb_messages.add(m1);
             }
         }
