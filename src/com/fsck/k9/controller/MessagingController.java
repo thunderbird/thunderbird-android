@@ -4630,7 +4630,7 @@ public class MessagingController implements Runnable
         Notification notif = new Notification(R.drawable.stat_notify_email_generic, messageNotice, System.currentTimeMillis());
         notif.number = previousUnreadMessageCount + newMessageCount.get();
 
-        Intent i = FolderList.actionHandleNotification(context, account, account.getAutoExpandFolderName());
+        Intent i = FolderList.actionHandleNotification(context, account, message.getFolder().getName());
         PendingIntent pi = PendingIntent.getActivity(context, 0, i, 0);
 
         String accountNotice = context.getString(R.string.notification_new_one_account_fmt, notif.number, account.getDescription());
