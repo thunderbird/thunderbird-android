@@ -51,7 +51,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -264,27 +263,6 @@ public class MessageList
     private static final String EXTRA_TITLE = "title";
     private static final String EXTRA_LIST_POSITION = "listPosition";
 
-    /**
-     * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
-     */
-    private static final Map<SORT_TYPE, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
-
-    static
-    {
-        // fill the mapping at class time loading
-
-        final Map<SORT_TYPE, Comparator<MessageInfoHolder>> map = new EnumMap<SORT_TYPE, Comparator<MessageInfoHolder>>(SORT_TYPE.class);
-        map.put(SORT_TYPE.SORT_ATTACHMENT, new AttachmentComparator());
-        map.put(SORT_TYPE.SORT_DATE, new DateComparator());
-        map.put(SORT_TYPE.SORT_FLAGGED, new FlaggedComparator());
-        map.put(SORT_TYPE.SORT_SENDER, new SenderComparator());
-        map.put(SORT_TYPE.SORT_SUBJECT, new SubjectComparator());
-        map.put(SORT_TYPE.SORT_UNREAD, new UnreadComparator());
-
-        // make it immutable to prevent accidental alteration (content is immutable already)
-        SORT_COMPARATORS = Collections.unmodifiableMap(map);
-    }
-
     private ExpandableListView mListView;
 
     private boolean mTouchView = true;
@@ -321,11 +299,6 @@ public class MessageList
 
     private MessageListHandler mHandler = new MessageListHandler();
 
-    private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
-
-    private boolean sortAscending = true;
-    private boolean sortDateAscending = false;
-
     private boolean mStars = true;
     private boolean mCheckboxes = true;
     private int mSelectedCount = 0;
@@ -359,31 +332,94 @@ public class MessageList
      */
     private List<MessageInfoHolder> mActiveMessages;
 
-    class MessageListHandler
+    /**
+     * Manage the backend store and the UI component (ListAdapter) to make sure
+     * they act accordingly.
+     */
+    public class MessageListHandler
     {
-        public void removeMessage(final List<MessageInfoHolder> messages)
+
+        private UiThrottler<Void> mThrottler;
+
+        public MessageListHandler()
         {
+            mThrottler = new UiThrottler<Void>(MessageList.this, new Callable<Void>()
+            {
+                @Override
+                public Void call()
+                {
+                    mStore.synchronizeGroups();
+                    return null;
+                }
+            }, null); // not setting Executor now as we want to integrate into Activity onResume/onPause
+            mThrottler.setCoolDownDuration(200L);
+            mThrottler.setPostExecute(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    // trigger the actual list refresh
+                    mAdapter.notifyDataSetChanged();
+
+                    // auto expand groups at initial display
+                    final int groupCount = mAdapter.getGroupCount()
+                            - MessageListAdapter.NON_MESSAGE_ITEMS;
+                    for (int i = 0; i < groupCount; i++)
+                    {
+                        final long groupId = mAdapter.getGroupId(i);
+                        if (!mListView.isGroupExpanded(i)
+                                && !mAdapter.mAutoExpanded.contains(groupId))
+                        {
+                            mListView.expandGroup(i);
+                        }
+                    }
+                }
+            });
+            mThrottler.setCompleted(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mAdapter.mGroupingInProgress = false;
+                    mAdapter.updateFooterView();
+                    if (mAdapter.mGroupLessMode)
+                    {
+                        // making sure we expand the sole group in groupless mode
+                        expandAll();
+                    }
+                    mAdapter.synchronizeFastScroll();
+                }
+            });
+        }
+
+        public void removeMessages(final List<MessageInfoHolder> messages)
+        {
+            final List<MessageInfoHolder> toRemove = new ArrayList<MessageInfoHolder>();
+
+            for (final MessageInfoHolder message : messages)
+            {
+                if (message != null)
+                {
+                    if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
+                    {
+                        if (message.selected && mSelectedCount > 0)
+                        {
+                            mSelectedCount--;
+                        }
+                        toRemove.add(message);
+                    }
+                }
+            }
+
+            mStore.removeMessages(toRemove);
+
             runOnUiThread(new Runnable()
             {
                 public void run()
                 {
-                    for (MessageInfoHolder message : messages)
-                    {
-                        if (message != null)
-                        {
-                            if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
-                            {
-                                if (message.selected && mSelectedCount > 0)
-                                {
-                                    mSelectedCount--;
-                                }
-                                mStore.messages.remove(message);
-                            }
-                        }
-                    }
                     resetUnreadCountOnThread();
 
-                    mAdapter.notifyDataSetChanged();
+                    synchronizeDisplay();
                     toggleBatchButtons();
                 }
             });
@@ -392,38 +428,37 @@ public class MessageList
         public void addMessages(final List<MessageInfoHolder> messages)
         {
             final boolean wasEmpty = mStore.messages.isEmpty();
+
+            final List<MessageInfoHolder> toAdd = new ArrayList<MessageInfoHolder>();
+            for (final MessageInfoHolder message : messages)
+            {
+                if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
+                {
+                    toAdd.add(message);
+                }
+            }
+
+            mStore.addMessages(toAdd);
+
             runOnUiThread(new Runnable()
             {
                 public void run()
                 {
-                    for (final MessageInfoHolder message : messages)
-                    {
-                        if (mFolderName == null || (message.folder != null && message.folder.name.equals(mFolderName)))
-                        {
-                            int index;
-                            synchronized (mStore.messages)
-                            {
-                                index = Collections.binarySearch(mStore.messages, message, getComparator());
-                            }
-
-                            if (index < 0)
-                            {
-                                index = (index * -1) - 1;
-                            }
-
-                            mStore.messages.add(index, message);
-                        }
-                    }
-
                     if (wasEmpty)
                     {
                         mListView.setSelection(0);
                     }
                     resetUnreadCountOnThread();
 
-                    mAdapter.notifyDataSetChanged();
+                    synchronizeDisplay();
                 }
             });
+        }
+
+        public void sortMessages()
+        {
+            mStore.sortMessages();
+            synchronizeDisplay();
         }
 
         private void resetUnreadCount()
@@ -452,66 +487,6 @@ public class MessageList
                 mUnreadMessageCount = unreadCount;
                 refreshTitleOnThread();
             }
-        }
-
-        private void sortMessages()
-        {
-            final Comparator<MessageInfoHolder> chainComparator = getComparator();
-
-            runOnUiThread(new Runnable()
-            {
-                public void run()
-                {
-                    synchronized (mStore.messages)
-                    {
-                        Collections.sort(mStore.messages, chainComparator);
-                    }
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
-        }
-
-        /**
-         * @return The comparator to use to display messages in an ordered
-         *         fashion. Never <code>null</code>.
-         */
-        protected Comparator<MessageInfoHolder> getComparator()
-        {
-            final List<Comparator<MessageInfoHolder>> chain = new ArrayList<Comparator<MessageInfoHolder>>(2 /* we add 2 comparators at most */ );
-
-            {
-                // add the specified comparator
-                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(sortType);
-                if (sortAscending)
-                {
-                    chain.add(comparator);
-                }
-                else
-                {
-                    chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
-                }
-            }
-
-            {
-                // add the date comparator if not already specified
-                if (sortType != SORT_TYPE.SORT_DATE)
-                {
-                    final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SORT_TYPE.SORT_DATE);
-                    if (sortDateAscending)
-                    {
-                        chain.add(comparator);
-                    }
-                    else
-                    {
-                        chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
-                    }
-                }
-            }
-
-            // build the comparator chain
-            final Comparator<MessageInfoHolder> chainComparator = new ComparatorChain<MessageInfoHolder>(chain);
-
-            return chainComparator;
         }
 
         public void folderLoading(String folder, boolean loading)
@@ -596,6 +571,22 @@ public class MessageList
                 public void run()
                 {
                     showProgressIndicator(progress);
+                }
+            });
+        }
+
+        /**
+         * Refreshes the message list to reflect the backend store content.
+         */
+        public void synchronizeDisplay()
+        {
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mAdapter.mGroupingInProgress = mCurrentFolder != null && mAccount != null && mCurrentFolder.loading;
+                    mThrottler.attempt();
                 }
             });
         }
@@ -751,7 +742,7 @@ public class MessageList
         // prevent any throttled UI processing (we're stopping!)
         // (don't set it to null since it needed if a processing is
         // occuring)
-        mAdapter.mThrottler.getScheduledExecutorService().shutdown();
+        mHandler.mThrottler.getScheduledExecutorService().shutdown();
 
         saveListState();
     }
@@ -800,19 +791,19 @@ public class MessageList
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
 
-        sortType = mController.getSortType();
-        sortAscending = mController.isSortAscending(sortType);
-        sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+        mStore.sortType = mController.getSortType();
+        mStore.sortAscending = mController.isSortAscending(mStore.sortType);
+        mStore.sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
-        if (mAdapter.mThrottler.getScheduledExecutorService() == null
-                || mAdapter.mThrottler.getScheduledExecutorService().isShutdown())
+        if (mHandler.mThrottler.getScheduledExecutorService() == null
+                || mHandler.mThrottler.getScheduledExecutorService().isShutdown())
         {
-            mAdapter.mThrottler.setScheduledExecutorService(Executors.newScheduledThreadPool(1));
+            mHandler.mThrottler.setScheduledExecutorService(Executors.newScheduledThreadPool(1));
         }
 
         mController.addListener(mStore.mListener);
         mStore.messages.clear();
-        mAdapter.notifyDataSetChanged();
+        mHandler.synchronizeDisplay();
 
         if (mFolderName != null)
         {
@@ -1185,23 +1176,23 @@ public class MessageList
 
     private void changeSort(SORT_TYPE newSortType)
     {
-        if (sortType == newSortType)
+        if (mStore.sortType == newSortType)
         {
             onToggleSortAscending();
         }
         else
         {
-            sortType = newSortType;
-            mController.setSortType(sortType);
-            sortAscending = mController.isSortAscending(sortType);
-            sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+            mStore.sortType = newSortType;
+            mController.setSortType(mStore.sortType);
+            mStore.sortAscending = mController.isSortAscending(mStore.sortType);
+            mStore.sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
             reSort();
         }
     }
 
     private void reSort()
     {
-        int toastString = sortType.getToast(sortAscending);
+        int toastString = mStore.sortType.getToast(mStore.sortAscending);
 
         Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
         toast.show();
@@ -1216,7 +1207,7 @@ public class MessageList
 
         for (int i = 0; i < sorts.length; i++)
         {
-            if (sorts[i] == sortType)
+            if (sorts[i] == mStore.sortType)
             {
                 curIndex = i;
                 break;
@@ -1235,10 +1226,10 @@ public class MessageList
 
     private void onToggleSortAscending()
     {
-        mController.setSortAscending(sortType, !sortAscending);
+        mController.setSortAscending(mStore.sortType, !mStore.sortAscending);
 
-        sortAscending = mController.isSortAscending(sortType);
-        sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+        mStore.sortAscending = mController.isSortAscending(mStore.sortType);
+        mStore.sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         reSort();
     }
@@ -1252,7 +1243,7 @@ public class MessageList
             final MessageInfoHolder holder = iterator.next();
             messages[i] = holder.message;
         }
-        mStore.removeMessages(holders);
+        mHandler.removeMessages(holders);
         mController.deleteMessages(messages, null);
     }
 
@@ -2080,7 +2071,7 @@ public class MessageList
                             {
                                 msgInfoHolder.selected = selected;
                                 mSelectedCount += (selected ? 1 : -1);
-                                mAdapter.notifyDataSetChanged();
+                                mHandler.synchronizeDisplay();
                                 toggleBatchButtons();
                                 prevent = true;
                             }
@@ -2337,10 +2328,11 @@ public class MessageList
         menu.findItem(R.id.group_spam).setVisible(
                 !K9.FOLDER_NONE.equalsIgnoreCase(mAccount.getSpamFolderName()));
     }
-    
+
     private static final Path GROUP_CHIP_PATH = new Path();
     private static final Path LAST_CHIP_PATH = new Path();
 
+    static
     {
         GROUP_CHIP_PATH.moveTo(10, 0);
         GROUP_CHIP_PATH.quadTo(0, 0, 0, 10);
@@ -2356,12 +2348,42 @@ public class MessageList
      * Intermediate backend storage used by MessageList.
      * 
      * <p>
-     * Should not include UI API calls.
+     * Takes care of providing messages for the UI components (ListAdapter) and
+     * manage message list data manipulation (add, remove, sort).
+     * </p>
+     * 
+     * <p>
+     * Modification to this backend storage doesn't trigger an UI refresh.
+     * </p>
+     * 
+     * <p>
+     * Should not include UI API calls and should not be used from the UI thread.
      * </p>
      */
-    public class MessageListStore
+    public static class MessageListStore
     {
-        
+
+        /**
+         * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
+         */
+        private static final Map<SORT_TYPE, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
+
+        static
+        {
+            // fill the mapping at class time loading
+
+            final Map<SORT_TYPE, Comparator<MessageInfoHolder>> map = new EnumMap<SORT_TYPE, Comparator<MessageInfoHolder>>(SORT_TYPE.class);
+            map.put(SORT_TYPE.SORT_ATTACHMENT, new AttachmentComparator());
+            map.put(SORT_TYPE.SORT_DATE, new DateComparator());
+            map.put(SORT_TYPE.SORT_FLAGGED, new FlaggedComparator());
+            map.put(SORT_TYPE.SORT_SENDER, new SenderComparator());
+            map.put(SORT_TYPE.SORT_SUBJECT, new SubjectComparator());
+            map.put(SORT_TYPE.SORT_UNREAD, new UnreadComparator());
+
+            // make it immutable to prevent accidental alteration (content is immutable already)
+            SORT_COMPARATORS = Collections.unmodifiableMap(map);
+        }
+
         private final List<MessageInfoHolder> messages = Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
 
         private final List<MessageGroup<MessageInfoHolder>> mGroups = Collections
@@ -2369,7 +2391,7 @@ public class MessageList
 
         private final ActivityListener mListener;
 
-        private MessageGrouper mMessageGrouper;
+        private MessageGrouper mMessageGrouper = new ThreadMessageGrouper();
 
         public MessageListStore(final ActivityListener listener)
         {
@@ -2410,11 +2432,35 @@ public class MessageList
          */
         public void removeMessages(List<MessageInfoHolder> holders)
         {
-            mHandler.removeMessage(holders);
+            messages.removeAll(holders);
+        }
+
+        public void addMessages(final List<MessageInfoHolder> holders)
+        {
+            for (final MessageInfoHolder messageInfoHolder : holders)
+            {
+                addMessage(messageInfoHolder);
+            }
+        }
+
+        public void addMessage(final MessageInfoHolder message)
+        {
+            int index;
+            synchronized (messages)
+            {
+                index = Collections.binarySearch(messages, message, getComparator());
+
+                if (index < 0)
+                {
+                    index = (index * -1) - 1;
+                }
+
+                messages.add(index, message);
+            }
         }
 
         /**
-         * 
+         * Synchronize the group list to match the message list
          */
         public void synchronizeGroups()
         {
@@ -2459,10 +2505,13 @@ public class MessageList
             final List<MessageGroup<MessageInfoHolder>> messageGroups = mMessageGrouper
                     .group(toGroup);
         
-            mGroups.clear();
-            mGroups.addAll(messageGroups);
-        
+            synchronized (mGroups)
+            {
+                mGroups.clear();
+                mGroups.addAll(messageGroups);
+            }
         }
+
         /**
          * @param references
          * @return
@@ -2485,7 +2534,66 @@ public class MessageList
             }
             return result;
         }
-        private final Pattern splitter = Pattern.compile("\\s");
+
+        private static final Pattern splitter = Pattern.compile("\\s");
+
+        private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
+
+        private boolean sortAscending = true;
+
+        private boolean sortDateAscending = false;
+
+        /**
+         * @return The comparator to use to display messages in an ordered
+         *         fashion. Never <code>null</code>.
+         */
+        protected Comparator<MessageInfoHolder> getComparator()
+        {
+            final List<Comparator<MessageInfoHolder>> chain = new ArrayList<Comparator<MessageInfoHolder>>(2 /* we add 2 comparators at most */ );
+        
+            {
+                // add the specified comparator
+                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(sortType);
+                if (sortAscending)
+                {
+                    chain.add(comparator);
+                }
+                else
+                {
+                    chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
+                }
+            }
+        
+            {
+                // add the date comparator if not already specified
+                if (sortType != SORT_TYPE.SORT_DATE)
+                {
+                    final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SORT_TYPE.SORT_DATE);
+                    if (sortDateAscending)
+                    {
+                        chain.add(comparator);
+                    }
+                    else
+                    {
+                        chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
+                    }
+                }
+            }
+        
+            // build the comparator chain
+            final Comparator<MessageInfoHolder> chainComparator = new ComparatorChain<MessageInfoHolder>(chain);
+        
+            return chainComparator;
+        }
+
+        public void sortMessages()
+        {
+            final Comparator<MessageInfoHolder> chainComparator = getComparator();
+            synchronized (messages)
+            {
+                Collections.sort(messages, chainComparator);
+            }
+        }
 
     }
 
@@ -2594,7 +2702,7 @@ public class MessageList
             }
             else
             {
-                mStore.removeMessages(Collections.singletonList(holder));
+                mHandler.removeMessages(Collections.singletonList(holder));
             }
         }
     
@@ -2649,7 +2757,7 @@ public class MessageList
             MessageInfoHolder holder = mStore.getMessage(message);
             if (holder != null)
             {
-                mStore.removeMessages(Collections.singletonList(holder));
+                mHandler.removeMessages(Collections.singletonList(holder));
             }
         }
     
@@ -2746,97 +2854,12 @@ public class MessageList
 
         private boolean mGroupLessMode = false;
 
-        private UiThrottler<Void> mThrottler;
-
         private boolean mGroupingInProgress = false;
 
         private MessageListAdapter()
         {
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_mms_attachment_small);
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
-
-            // TODO restore previous active/selected implementation
-            mStore.mMessageGrouper = new ThreadMessageGrouper();
-
-            mThrottler = new UiThrottler<Void>(MessageList.this, new Callable<Void>()
-            {
-                @Override
-                public Void call()
-                {
-                    mStore.synchronizeGroups();
-                    return null;
-                }
-            }, null); // not setting Executor now as we want to integrate into Activity onResume/onPause
-            mThrottler.setCoolDownDuration(200L);
-            mThrottler.setPostExecute(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    doNotifyDataSetChanged();
-
-                    // auto expand groups at initial display
-                    final int groupCount = mAdapter.getGroupCount() - MessageListAdapter.NON_MESSAGE_ITEMS;
-                    for (int i = 0; i < groupCount; i++)
-                    {
-                        final long groupId = mAdapter.getGroupId(i);
-                        if (!mListView.isGroupExpanded(i) && !mAutoExpanded.contains(groupId))
-                        {
-                            mListView.expandGroup(i);
-                        }
-                    }
-                }
-            });
-            mThrottler.setCompleted(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    mGroupingInProgress = false;
-                    updateFooterView();
-                    if (mGroupLessMode)
-                    {
-                        // making sure we expand the sole group in groupless mode
-                        expandAll();
-                    }
-                    synchronizeFastScroll();
-                }
-            });
-        }
-
-
-        /**
-         * Override the regular notifyDataSetChanged() method so that we can
-         * throttle message list updates, regardless of how fast/repeatly we
-         * call this method.
-         * 
-         * <p>
-         * This prevent any computation from being a CPU-hog.
-         * </p>
-         * 
-         * <p>
-         * If you NEED to trigger immediate UI update, please use
-         * {@link #doNotifyDataSetChanged()}
-         * </p>
-         * 
-         * {@inheritDoc}
-         */
-        @Override
-        public void notifyDataSetChanged()
-        {
-            // buffer dataset update otherwise we might get continous CPU
-            // processing in case of repeated call!
-            mGroupingInProgress = mCurrentFolder != null && mAccount != null && mCurrentFolder.loading;
-            mThrottler.attempt();
-        }
-
-        /**
-         * Actual (non-throttled) call to the regular
-         * {@link BaseAdapter#notifyDataSetChanged()}
-         */
-        public void doNotifyDataSetChanged()
-        {
-            super.notifyDataSetChanged();
         }
 
         public void synchronizeFastScroll()
@@ -3676,7 +3699,7 @@ public class MessageList
     
                 if (messagesToRemove.size() > 0)
                 {
-                    mStore.removeMessages(messagesToRemove);
+                    mHandler.removeMessages(messagesToRemove);
                 }
     
                 if (messagesToAdd.size() > 0)
@@ -3887,7 +3910,7 @@ public class MessageList
                 }
             }
         }
-        mStore.removeMessages(removeHolderList);
+        mHandler.removeMessages(removeHolderList);
 
         if (!messageList.isEmpty())
         {
@@ -3921,7 +3944,7 @@ public class MessageList
                 mSelectedCount += (isSelected ? 1 : 0);
             }
         }
-        mAdapter.notifyDataSetChanged();
+        mHandler.synchronizeDisplay();
         toggleBatchButtons();
     }
 
@@ -3935,7 +3958,7 @@ public class MessageList
                 mSelectedCount += (newState ? 1 : -1);
             }
         }
-        mAdapter.notifyDataSetChanged();
+        mHandler.synchronizeDisplay();
         toggleBatchButtons();
     }
 
@@ -4099,7 +4122,7 @@ public class MessageList
         {
             mController.moveMessages(account, folderName,
                     messages.toArray(new Message[messages.size()]), destination, null);
-            mStore.removeMessages(holders);
+            mHandler.removeMessages(holders);
         }
         else
         {
