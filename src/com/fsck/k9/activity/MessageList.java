@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -333,8 +332,6 @@ public class MessageList
      */
     private List<MessageInfoHolder> mActiveMessages;
 
-    private ProgressDialog mProgressDialog;
-
     /**
      * Manage the backend store and the UI component (ListAdapter) to make sure
      * they act accordingly.
@@ -593,18 +590,6 @@ public class MessageList
                 }
             });
         }
-
-        public void restoreListState()
-        {
-            runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    MessageList.this.restoreListState();
-                }
-            });
-        }
     }
 
     public static void actionHandleFolder(Context context, Account account, String folder)
@@ -731,12 +716,12 @@ public class MessageList
         }
 
         mAdapter = new MessageListAdapter();
-        final List<MessageInfoHolder> previousData = getLastNonConfigurationInstance();
+        final Object previousData = getLastNonConfigurationInstance();
 
         if (previousData != null)
         {
             //noinspection unchecked
-            mStore.messages.addAll(previousData);
+            mStore.messages.addAll((List<MessageInfoHolder>) previousData);
         }
 
         if (mFolderName != null)
@@ -746,10 +731,6 @@ public class MessageList
 
         mController = MessagingController.getInstance(getApplication());
         mListView.setAdapter(mAdapter);
-
-        mState = null;
-        mAdapter.mAutoExpanded.clear();
-        mProgressDialog = null;
     }
 
     @Override
@@ -762,27 +743,15 @@ public class MessageList
         // (don't set it to null since it needed if a processing is
         // occuring)
         mHandler.mThrottler.getScheduledExecutorService().shutdown();
-    }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
         saveListState();
     }
 
     public void saveListState()
     {
         mState = new Bundle();
-        mState.putInt(EXTRA_LIST_POSITION, mListView.isInTouchMode() ? mListView.getFirstVisiblePosition() : mListView.getSelectedItemPosition());
-
-        for (int i = 0; i < mAdapter.getGroupCount(); i++)
-        {
-            if (mListView.isGroupExpanded(i))
-            {
-                mAdapter.mAutoExpanded.remove(mAdapter.getGroupId(i));
-            }
-        }
+        final int position = mListView.isInTouchMode() ? mListView.getFirstVisiblePosition() : mListView.getSelectedItemPosition();
+        mState.putInt(EXTRA_LIST_POSITION, position);
     }
 
     public void restoreListState()
@@ -791,10 +760,22 @@ public class MessageList
         {
             return;
         }
-        mListView.setSelection(mState.getInt(EXTRA_LIST_POSITION, 0));
-        mProgressDialog.dismiss();
-        mProgressDialog = null;
-        mState = null;
+
+        int pos = mState.getInt(EXTRA_LIST_POSITION, AdapterView.INVALID_POSITION);
+
+        if (pos >= mListView.getCount())
+        {
+            pos = mListView.getCount() - 1;
+        }
+
+        if (pos == AdapterView.INVALID_POSITION)
+        {
+            mListView.setSelected(false);
+        }
+        else
+        {
+            mListView.setSelection(pos);
+        }
     }
 
     /**
@@ -822,14 +803,7 @@ public class MessageList
 
         mController.addListener(mStore.mListener);
         mStore.messages.clear();
-        if (mState == null)
-        {
-            mHandler.synchronizeDisplay();
-        }
-        else
-        {
-            mProgressDialog = ProgressDialog.show(this, "", "Loading, please wait...", true);
-        }
+        mHandler.synchronizeDisplay();
 
         if (mFolderName != null)
         {
@@ -846,6 +820,8 @@ public class MessageList
         }
 
         mHandler.refreshTitle();
+
+        restoreListState();
     }
 
     private void initializeLayout()
@@ -881,16 +857,9 @@ public class MessageList
     }
 
     @Override
-    public List<MessageInfoHolder> onRetainNonConfigurationInstance()
+    public Object onRetainNonConfigurationInstance()
     {
-        return new ArrayList<MessageInfoHolder>(mStore.messages);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<MessageInfoHolder> getLastNonConfigurationInstance()
-    {
-        return (List<MessageInfoHolder>) super.getLastNonConfigurationInstance();
+        return mStore.messages;
     }
 
     @Override
@@ -2796,8 +2765,6 @@ public class MessageList
         public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
         {
             addOrUpdateMessages(account, folder, messages, false);
-//          mHandler.synchronizeDisplay();
-            mHandler.restoreListState();
         }
     
         @Override
