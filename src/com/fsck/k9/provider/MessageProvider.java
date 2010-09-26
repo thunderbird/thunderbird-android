@@ -3,6 +3,8 @@ package com.fsck.k9.provider;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 import android.app.Application;
 import android.content.ContentProvider;
@@ -32,6 +34,41 @@ import com.fsck.k9.mail.store.LocalStore;
 public class MessageProvider extends ContentProvider
 {
 
+    protected class MesssageInfoHolderRetrieverListener extends MessagingListener
+    {
+        private final BlockingQueue<List<MessageInfoHolder>> queue;
+
+        private List<MessageInfoHolder> holders = new ArrayList<MessageInfoHolder>();
+
+        private MesssageInfoHolderRetrieverListener(BlockingQueue<List<MessageInfoHolder>> queue)
+        {
+            this.queue = queue;
+        }
+
+        @Override
+        public void listLocalMessagesAddMessages(Account account,
+                String folder, List<Message> messages)
+        {
+            for (final Message message : messages)
+            {
+                holders.add(new MessageInfoHolder(context, message));
+            }
+        }
+
+        @Override
+        public void searchStats(AccountStats stats)
+        {
+            try
+            {
+                queue.put(holders);
+            }
+            catch (InterruptedException e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to return message list back to caller", e);
+            }
+        }
+    }
+
     public static final String AUTHORITY = "com.fsck.k9.messageprovider";
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
@@ -45,16 +82,8 @@ public class MessageProvider extends ContentProvider
 
     private static Context context = null;
     private static boolean mIsListenerRegister = false;
-    private static boolean inSync = false;
 
     private static Application mApp;
-
-    /**
-     * list is synchronized, iterations have to be synchronized on the list
-     * instance in order to prevent concurrency issue
-     */
-    private final List<MessageInfoHolder> glb_messages = Collections.synchronizedList(new ArrayList<MessageInfoHolder>());
-    private static MatrixCursor mCursor;
 
     static
     {
@@ -78,73 +107,10 @@ public class MessageProvider extends ContentProvider
     MessagingListener mListener = new MessagingListener()
     {
 
-        public void messageDeleted(Account account, String folder, Message message)
-        {
-        }
-
-        public void folderStatusChanged(Account account, String folderName, int unreadMessageCount)
-        {
-            if (inSync == false)
-            {
-                inSync = true;
-                glb_messages.clear();
-                SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null,  null);
-                MessagingController msgController = MessagingController.getInstance(mApp);
-                msgController.searchLocalMessages(integratedInboxAccount, null, mListener);
-            }
-        }
-
-        public void listLocalMessagesStarted(Account account, String folder)
-        {
-        }
-
-        public void listLocalMessagesFinished(Account account, String folder)
-        {
-        }
-
         public void searchStats(AccountStats stats)
         {
-            int id = -1;
-            synchronized (glb_messages)
-            {
-                // TODO dynamically retrieve sort order instead of hardcoding
-                Collections.sort(glb_messages, new MessageList.ReverseComparator<MessageInfoHolder>(new MessageList.DateComparator()));
-            }
-            MatrixCursor tmpCur = new MatrixCursor(messages_projection);
-            synchronized (glb_messages)
-            {
-                for (MessageInfoHolder mi : glb_messages)
-                {
-                    ++id;
-                    Message msg = mi.message;
-                    tmpCur.addRow(new Object[]
-                    {
-                            id,
-                            mi.fullDate,
-                            mi.sender,
-                            mi.subject,
-                            mi.preview,
-                            mi.account,
-                            mi.uri,
-                            CONTENT_URI + "/delete_message/"
-                                    + msg.getFolder().getAccount().getAccountNumber() + "/"
-                                    + msg.getFolder().getName() + "/" + msg.getUid() });
-                }
-            }
-            mCursor = tmpCur;
-            inSync=false;
             notifyDatabaseModification();
         }
-
-        public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
-        {
-            for (Message m : messages)
-            {
-                MessageInfoHolder m1 = new MessageInfoHolder(context, m);
-                glb_messages.add(m1);
-            }
-        }
-
     };
 
     public Cursor getAllAccounts()
@@ -324,23 +290,54 @@ public class MessageProvider extends ContentProvider
         switch (URI_MATCHER.match(uri))
         {
             case URI_INBOX_MESSAGES:
+            {
+                final MatrixCursor mCursor = new MatrixCursor(messages_projection);
+                final BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<List<MessageInfoHolder>>();
 
+                // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
+                SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null,  null);
+                MessagingController msgController = MessagingController.getInstance(mApp);
 
-                if (mCursor == null)
+                msgController.searchLocalMessages(integratedInboxAccount, null,
+                        new MesssageInfoHolderRetrieverListener(queue));
+
+                List<MessageInfoHolder> holders;
+
+                try
                 {
-                    mCursor = new MatrixCursor(messages_projection);
-                    // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
-                    glb_messages.clear();
-                    SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null,  null);
-                    MessagingController msgController = MessagingController.getInstance(mApp);
-                    msgController.searchLocalMessages(integratedInboxAccount, null, mListener);
+                    holders = queue.take();
+                }
+                catch (InterruptedException e)
+                {
+                    Log.e(K9.LOG_TAG, "Unable to retrieve message list", e);
+                    return null;
                 }
 
-// Process messages
+                Collections.sort(holders, new MessageList.ReverseComparator<MessageInfoHolder>(new MessageList.DateComparator()));
 
-//cursor = getAllMessages(projection, selection, selectionArgs, sortOrder);
-                cursor = (Cursor)mCursor;
+                int id = -1;
+                for (final MessageInfoHolder holder : holders)
+                {
+                    final Message message = holder.message;
+                    id++;
+
+                    mCursor.addRow(new Object[]
+                                              {
+                            id,
+                            holder.fullDate,
+                            holder.sender,
+                            holder.subject,
+                            holder.preview,
+                            holder.account,
+                            holder.uri,
+                            CONTENT_URI + "/delete_message/"
+                            + message.getFolder().getAccount().getAccountNumber() + "/"
+                            + message.getFolder().getName() + "/" + message.getUid() });
+                }
+
+                cursor = mCursor;
                 break;
+            }
 
             case URI_ACCOUNTS:
                 cursor = getAllAccounts();

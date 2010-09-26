@@ -1987,7 +1987,7 @@ public class LocalStore extends Store implements Serializable
 
         private void deleteHeaders(long id)
         {
-            mDb.execSQL("DELETE FROM headers WHERE id = ?",
+            mDb.execSQL("DELETE FROM headers WHERE message_id = ?",
                         new Object[]
                         {
                             id
