@@ -126,6 +126,11 @@
     <PreferenceCategory android:title="@string/messageview_preferences" android:key="messageview_preferences">
 
         <CheckBoxPreference
+            android:key="change_registered_name_color"
+            android:title="@string/global_settings_registered_name_color_label"
+            android:summary="@string/global_settings_registered_name_color_default" />
+
+        <CheckBoxPreference
             android:key="messageview_fixedwidth_font"
             android:title="@string/global_settings_messageview_fixedwidth_label"
             android:summary="@string/global_settings_messageview_fixedwidth_summary" />
