@@ -16,11 +16,13 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -103,6 +105,241 @@ public class MessageList
  implements OnClickListener,
         ExpandableListView.OnGroupExpandListener, ExpandableListView.OnGroupCollapseListener
 {
+
+    protected static enum StateRestorationStatus
+    {
+        NONE,
+        PLANNED,
+        PENDING,
+        READY;
+    }
+    protected class Listener extends ActivityListener
+    {
+        @Override
+        public void synchronizeMailboxStarted(Account account, String folder)
+        {
+            super.synchronizeMailboxStarted(account, folder);
+    
+            if (updateForMe(account, folder))
+            {
+                mHandler.progress(true);
+                mHandler.folderLoading(folder, true);
+            }
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total)
+        {
+            super.synchronizeMailboxHeadersProgress(account,folder,completed, total);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void synchronizeMailboxHeadersFinished(Account account, String folder,
+                int total, int completed)
+        {
+            super.synchronizeMailboxHeadersFinished(account,folder, total, completed);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void synchronizeMailboxFinished(Account account, String folder,
+                                               int totalMessagesInMailbox, int numNewMessages)
+        {
+            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
+    
+            if (updateForMe(account, folder))
+            {
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.sortMessages();
+            }
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void synchronizeMailboxFailed(Account account, String folder, String message)
+        {
+            super.synchronizeMailboxFailed(account, folder, message);
+    
+            if (updateForMe(account, folder))
+            {
+                mHandler.progress(false);
+                mHandler.folderLoading(folder, false);
+                mHandler.sortMessages();
+            }
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void sendPendingMessagesStarted(Account account)
+        {
+            super.sendPendingMessagesStarted(account);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void sendPendingMessagesCompleted(Account account)
+        {
+            super.sendPendingMessagesCompleted(account);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void sendPendingMessagesFailed(Account account)
+        {
+            super.sendPendingMessagesFailed(account);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
+        {
+            super.synchronizeMailboxProgress(account, folder, completed, total);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
+        {
+            addOrUpdateMessages(account, folder, Collections.singletonList(message), true);
+        }
+
+        @Override
+        public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message)
+        {
+            MessageInfoHolder holder = mStore.getMessage(message);
+            if (holder == null)
+            {
+                Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
+            }
+            else
+            {
+                mHandler.removeMessages(Collections.singletonList(holder));
+            }
+        }
+
+        @Override
+        public void listLocalMessagesStarted(Account account, String folder)
+        {
+            if ((mSearchMode && folder == null) ||
+                    (account != null && account.equals(mAccount))
+               )
+            {
+                mHandler.progress(true);
+                if (folder != null)
+                {
+                    mHandler.folderLoading(folder, true);
+                }
+            }
+        }
+
+        @Override
+        public void listLocalMessagesFailed(Account account, String folder, String message)
+        {
+            listLocalMessagesFinished(account, folder);
+        }
+
+        @Override
+        public void listLocalMessagesFinished(Account account, String folder)
+        {
+            if ((mSearchMode && folder == null) ||
+                    (account != null && account.equals(mAccount)))
+            {
+                mHandler.sortMessages();
+                mHandler.progress(false);
+                if (folder != null)
+                {
+                    mHandler.folderLoading(folder, false);
+                }
+            }
+        }
+
+        @Override
+        public void listLocalMessagesRemoveMessage(Account account, String folder,Message message)
+        {
+            MessageInfoHolder holder = mStore.getMessage(message);
+            if (holder != null)
+            {
+                mHandler.removeMessages(Collections.singletonList(holder));
+            }
+        }
+
+        @Override
+        public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
+        {
+            addOrUpdateMessages(account, folder, messages, false);
+        }
+
+        @Override
+        public void listLocalMessagesUpdateMessage(Account account, String folder, Message message)
+        {
+            addOrUpdateMessages(account, folder, Collections.singletonList(message), false);
+        }
+
+        @Override
+        public void searchStats(AccountStats stats)
+        {
+            mUnreadMessageCount = stats.unreadMessageCount;
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void folderStatusChanged(Account account, String folder, int unreadMessageCount)
+        {
+            super.folderStatusChanged(account, folder, unreadMessageCount);
+            if (updateForMe(account, folder))
+            {
+                mUnreadMessageCount = unreadMessageCount;
+                mHandler.refreshTitle();
+            }
+        }
+
+        @Override
+        public void pendingCommandsProcessing(Account account)
+        {
+            super.pendingCommandsProcessing(account);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void pendingCommandsFinished(Account account)
+        {
+            super.pendingCommandsFinished(account);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void pendingCommandStarted(Account account, String commandTitle)
+        {
+            super.pendingCommandStarted(account, commandTitle);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void pendingCommandCompleted(Account account, String commandTitle)
+        {
+            super.pendingCommandCompleted(account, commandTitle);
+            mHandler.refreshTitle();
+        }
+
+        @Override
+        public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
+        {
+            MessageReference ref = new MessageReference();
+            ref.accountUuid = account.getUuid();
+            ref.folderName = folder;
+            ref.uid = oldUid;
+    
+            MessageInfoHolder holder = mStore.getMessage(ref);
+            if (holder != null)
+            {
+                holder.uid = newUid;
+                holder.message.setUid(newUid);
+            }
+        }
+    }
 
     /**
      * Reverses the result of a {@link Comparator}.
@@ -265,6 +502,8 @@ public class MessageList
 
     private ExpandableListView mListView;
 
+    private View mFooterView;
+
     private boolean mTouchView = true;
 
     private MessageListAdapter mAdapter;
@@ -286,6 +525,7 @@ public class MessageList
      */
     private String mFolderName;
 
+    private boolean mSearchMode;
     /**
      * If we're doing a search, this contains the query string.
      */
@@ -311,6 +551,11 @@ public class MessageList
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
+    /**
+     * <code>true</code> if the activity is in state restoration mode
+     */
+    private AtomicReference<StateRestorationStatus> restore = new AtomicReference<StateRestorationStatus>(StateRestorationStatus.NONE);
+
     private Bundle mState = null;
 
     /**
@@ -331,6 +576,8 @@ public class MessageList
      * move operation)
      */
     private List<MessageInfoHolder> mActiveMessages;
+
+    private ProgressDialog mProgressDialog;
 
     /**
      * Manage the backend store and the UI component (ListAdapter) to make sure
@@ -358,21 +605,18 @@ public class MessageList
                 @Override
                 public void run()
                 {
+                    synchronized (mStore.mGroups)
+                    {
+                        // duplicate the list in order to have a "thread stable" list in the UI thread
+                        // (Android framework doesn't expect it to mutate)
+                        mAdapter.mUiGroups = new ArrayList<MessageGroup<MessageInfoHolder>>(
+                                mStore.mGroups);
+                    }
                     // trigger the actual list refresh
                     mAdapter.notifyDataSetChanged();
 
                     // auto expand groups at initial display
-                    final int groupCount = mAdapter.getGroupCount()
-                            - MessageListAdapter.NON_MESSAGE_ITEMS;
-                    for (int i = 0; i < groupCount; i++)
-                    {
-                        final long groupId = mAdapter.getGroupId(i);
-                        if (!mListView.isGroupExpanded(i)
-                                && !mAdapter.mAutoExpanded.contains(groupId))
-                        {
-                            mListView.expandGroup(i);
-                        }
-                    }
+                    restoreExpandState();
                 }
             });
             mThrottler.setCompleted(new Runnable()
@@ -381,13 +625,18 @@ public class MessageList
                 public void run()
                 {
                     mAdapter.mGroupingInProgress = false;
-                    mAdapter.updateFooterView();
+                    updateFooterView(mFooterView);
                     if (mAdapter.mGroupLessMode)
                     {
                         // making sure we expand the sole group in groupless mode
                         expandAll();
                     }
                     mAdapter.synchronizeFastScroll();
+
+                    if (restore.compareAndSet(StateRestorationStatus.PENDING, StateRestorationStatus.READY))
+                    {
+                        MessageList.this.restoreListState();
+                    }
                 }
             });
         }
@@ -440,19 +689,22 @@ public class MessageList
 
             mStore.addMessages(toAdd);
 
-            runOnUiThread(new Runnable()
+            if (restore.get() == StateRestorationStatus.NONE)
             {
-                public void run()
+                runOnUiThread(new Runnable()
                 {
-                    if (wasEmpty)
+                    public void run()
                     {
-                        mListView.setSelection(0);
-                    }
-                    resetUnreadCountOnThread();
+                        if (wasEmpty)
+                        {
+                            mListView.setSelection(0);
+                        }
+                        resetUnreadCountOnThread();
 
-                    synchronizeDisplay();
-                }
-            });
+                        synchronizeDisplay();
+                    }
+                });
+            }
         }
 
         public void sortMessages()
@@ -474,7 +726,7 @@ public class MessageList
 
         private void resetUnreadCountOnThread()
         {
-            if (mQueryString != null)
+            if (mSearchMode)
             {
                 int unreadCount = 0;
                 synchronized (mStore.messages)
@@ -550,7 +802,7 @@ public class MessageList
                 String dispString = mStore.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
                 setTitle(dispString);
             }
-            else if (mQueryString != null)
+            else if (mSearchMode)
             {
                 if (mTitle != null)
                 {
@@ -587,6 +839,18 @@ public class MessageList
                 {
                     mAdapter.mGroupingInProgress = mCurrentFolder != null && mAccount != null && mCurrentFolder.loading;
                     mThrottler.attempt();
+                }
+            });
+        }
+
+        public void restoreListState()
+        {
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    MessageList.this.restoreListState();
                 }
             });
         }
@@ -666,13 +930,19 @@ public class MessageList
 
         mInflater = getLayoutInflater();
         initializeLayout();
-        onNewIntent(getIntent());
+        initialize();
     }
 
     @Override
     public void onNewIntent(Intent intent)
     {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
+        initialize();
+    }
+
+    protected void initialize()
+    {
+        final Intent intent = getIntent();
 
         // Only set "touchable" when we're first starting up the activity.
         // Otherwise we get force closes when the user toggles it midstream.
@@ -682,6 +952,8 @@ public class MessageList
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);
+
+        mSearchMode = mQueryString != null;
 
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
         if (queryFlags != null)
@@ -710,18 +982,18 @@ public class MessageList
 
         // Take the initial folder into account only if we are *not* restoring
         // the activity already.
-        if (mFolderName == null && mQueryString == null)
+        if (mFolderName == null && !mSearchMode)
         {
             mFolderName = mAccount.getAutoExpandFolderName();
         }
 
         mAdapter = new MessageListAdapter();
-        final Object previousData = getLastNonConfigurationInstance();
+        final List<MessageInfoHolder> previousData = getLastNonConfigurationInstance();
 
         if (previousData != null)
         {
             //noinspection unchecked
-            mStore.messages.addAll((List<MessageInfoHolder>) previousData);
+            mStore.messages.addAll(previousData);
         }
 
         if (mFolderName != null)
@@ -730,7 +1002,28 @@ public class MessageList
         }
 
         mController = MessagingController.getInstance(getApplication());
+
+        final boolean footerViewEnabled = !mSearchMode;
+        if (footerViewEnabled)
+        {
+            mListView.addFooterView(mFooterView, null, true);
+        }
+        else
+        {
+            mListView.removeFooterView(mFooterView);
+        }
+
         mListView.setAdapter(mAdapter);
+
+        if (footerViewEnabled)
+        {
+            updateFooterView(mFooterView);
+        }
+
+        restore.set(StateRestorationStatus.NONE);
+        mState = null;
+        mAdapter.mAutoExpanded.clear();
+        mProgressDialog = null;
     }
 
     @Override
@@ -743,38 +1036,60 @@ public class MessageList
         // (don't set it to null since it needed if a processing is
         // occuring)
         mHandler.mThrottler.getScheduledExecutorService().shutdown();
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
         saveListState();
     }
 
     public void saveListState()
     {
+        // put the activity in restoration mode for future loading
+        restore.set(StateRestorationStatus.PLANNED);
+
         mState = new Bundle();
-        final int position = mListView.isInTouchMode() ? mListView.getFirstVisiblePosition() : mListView.getSelectedItemPosition();
-        mState.putInt(EXTRA_LIST_POSITION, position);
+        mState.putInt(EXTRA_LIST_POSITION, mListView.isInTouchMode() ? mListView.getFirstVisiblePosition() : mListView.getSelectedItemPosition());
+
+        final int groupCount = mAdapter.getGroupCount();
+        for (int i = 0; i < groupCount; i++)
+        {
+            if (mListView.isGroupExpanded(i))
+            {
+                mAdapter.mAutoExpanded.remove(mAdapter.getGroupId(i));
+            }
+        }
     }
 
     public void restoreListState()
     {
-        if (mState == null)
+        if (!restore.compareAndSet(StateRestorationStatus.READY, StateRestorationStatus.NONE))
         {
             return;
         }
+        mListView.setSelection(mState.getInt(EXTRA_LIST_POSITION, 0));
+        mHandler.resetUnreadCountOnThread();
+        mProgressDialog.dismiss();
+        mProgressDialog = null;
+        mState = null;
 
-        int pos = mState.getInt(EXTRA_LIST_POSITION, AdapterView.INVALID_POSITION);
+    }
 
-        if (pos >= mListView.getCount())
+    /**
+     * 
+     */
+    protected void restoreExpandState()
+    {
+        final int groupCount = mAdapter.getGroupCount();
+        for (int i = 0; i < groupCount; i++)
         {
-            pos = mListView.getCount() - 1;
-        }
-
-        if (pos == AdapterView.INVALID_POSITION)
-        {
-            mListView.setSelected(false);
-        }
-        else
-        {
-            mListView.setSelection(pos);
+            if (!mListView.isGroupExpanded(i)
+                    && !mAdapter.mAutoExpanded.contains(mAdapter.getGroupId(i)))
+            {
+                mListView.expandGroup(i);
+            }
         }
     }
 
@@ -803,25 +1118,45 @@ public class MessageList
 
         mController.addListener(mStore.mListener);
         mStore.messages.clear();
-        mHandler.synchronizeDisplay();
+        if (restore.get() != StateRestorationStatus.PLANNED)
+        {
+            restore.set(StateRestorationStatus.NONE);
+            mHandler.synchronizeDisplay();
+        }
+        else
+        {
+            restoreExpandState();
+            // TODO localization
+            mProgressDialog = ProgressDialog.show(this, "", "Loading, please wait...", true);
+        }
 
         if (mFolderName != null)
         {
-            mController.listLocalMessages(mAccount, mFolderName,  mStore.mListener);
+            mController.listLocalMessages(mAccount, mFolderName, new MessagingListener()
+            {
+                @Override
+                public void listLocalMessagesFinished(Account account, String folder)
+                {
+                    restore.compareAndSet(StateRestorationStatus.PLANNED, StateRestorationStatus.PENDING);
+                }
+                @Override
+                public void listLocalMessagesFailed(Account account, String folder, String message)
+                {
+                    listLocalMessagesFinished(account, folder);
+                }
+            });
             mController.notifyAccountCancel(this, mAccount);
 
             MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
 
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mStore.mListener);
         }
-        else if (mQueryString != null)
+        else if (mSearchMode)
         {
             mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mStore.mListener);
         }
 
         mHandler.refreshTitle();
-
-        restoreListState();
     }
 
     private void initializeLayout()
@@ -836,7 +1171,6 @@ public class MessageList
         mListView.setFastScrollEnabled(true);
         mListView.setScrollingCacheEnabled(true);
         mListView.setOnChildClickListener(itemListener);
-        mListView.setOnGroupClickListener(itemListener);
         mListView.setOnTouchListener(itemListener);
         mListView.setOnGroupCollapseListener(this);
         mListView.setOnGroupExpandListener(this);
@@ -854,12 +1188,100 @@ public class MessageList
 
         mBatchDoneButton.setOnClickListener(this);
 
+        mFooterView = createFooterView();
+    }
+
+    protected View createFooterView()
+    {
+        final View view = mInflater.inflate(R.layout.message_list_item_footer, mListView, false);
+
+        view.setId(R.layout.message_list_item_footer);
+
+        final FooterViewHolder holder = new FooterViewHolder();
+
+        holder.progress = (ProgressBar) view.findViewById(R.id.message_list_progress);
+        holder.main = (TextView) view.findViewById(R.id.main_text);
+
+        holder.progress.setIndeterminate(true);
+
+        view.setTag(holder);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id)
+            {
+                if (mCurrentFolder != null)
+                {
+                    // XXX worker thread invocation
+                    mController.loadMoreMessages(mAccount, mFolderName, mStore.mListener);
+                }
+            }
+        });
+
+        return view;
+    }
+
+    private void updateFooterView(final View footerView)
+    {
+        // there's no footer view in search mode
+        if (mSearchMode)
+        {
+            return;
+        }
+
+        if (footerView == null)
+        {
+            // can happen when configration is changed (screen orientation)
+            return;
+        }
+        FooterViewHolder holder = (FooterViewHolder) footerView.getTag();
+
+        if (mCurrentFolder != null && mAccount != null)
+        {
+            if (mCurrentFolder.loading || mAdapter.mGroupingInProgress)
+            {
+                holder.main.setText(getString(R.string.status_loading_more));
+                holder.progress.setVisibility(ProgressBar.VISIBLE);
+            }
+            else
+            {
+                if (!mCurrentFolder.lastCheckFailed)
+                {
+                    holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                }
+                else
+                {
+                    holder.main.setText(getString(R.string.status_loading_more_failed));
+                }
+                holder.progress.setVisibility(ProgressBar.INVISIBLE);
+            }
+        }
+        else
+        {
+            holder.progress.setVisibility(ProgressBar.INVISIBLE);
+        }
     }
 
     @Override
-    public Object onRetainNonConfigurationInstance()
+    protected void onDestroy()
     {
-        return mStore.messages;
+        mFooterView = null;
+
+        super.onDestroy();
+    }
+
+    @Override
+    public List<MessageInfoHolder> onRetainNonConfigurationInstance()
+    {
+        return new ArrayList<MessageInfoHolder>(mStore.messages);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<MessageInfoHolder> getLastNonConfigurationInstance()
+    {
+        return (List<MessageInfoHolder>) super.getLastNonConfigurationInstance();
     }
 
     @Override
@@ -870,7 +1292,7 @@ public class MessageList
         // platform.
         if (K9.manageBack())
         {
-            if (mQueryString == null)
+            if (!mSearchMode)
             {
                 onShowFolderList();
             }
@@ -1105,18 +1527,16 @@ public class MessageList
             // Need to get the list before the sort starts
             final List<MessageReference> messageRefs = new ArrayList<MessageReference>(mStore.messages.size());
 
-            synchronized (mStore.mGroups)
+            for (final MessageGroup<MessageInfoHolder> group : mAdapter.mUiGroups)
             {
-                for (final MessageGroup<MessageInfoHolder> group : mStore.mGroups)
+                for (final MessageInfo<MessageInfoHolder> info : group.getMessages())
                 {
-                    for (final MessageInfo<MessageInfoHolder> info : group.getMessages())
-                    {
-                        final MessageInfoHolder holder = info.getTag();
-                        final MessageReference reference = holder.message.makeMessageReference();
-                        messageRefs.add(reference);
-                    }
+                    final MessageInfoHolder holder = info.getTag();
+                    final MessageReference reference = holder.message.makeMessageReference();
+                    messageRefs.add(reference);
                 }
             }
+
             MessageReference ref = message.message.makeMessageReference();
             Log.i(K9.LOG_TAG, "MessageList sending message " + ref);
 
@@ -1150,7 +1570,7 @@ public class MessageList
 
     private void onCompose()
     {
-        if (mQueryString != null)
+        if (mSearchMode)
         {
             /*
              * If we have a query string, we don't have an account to let
@@ -1576,7 +1996,7 @@ public class MessageList
             }
             case R.id.settings:
             {
-                if (mQueryString == null)
+                if (!mSearchMode)
                 {
                     break;
                 }
@@ -1593,7 +2013,7 @@ public class MessageList
             }
         }
 
-        if (mQueryString != null)
+        if (mSearchMode)
         {
             // None of the options after this point are "safe" for search results
             //TODO: This is not true for "unread" and "starred" searches in regular folders
@@ -1701,7 +2121,7 @@ public class MessageList
 
         setOpsState(menu, true, anySelected);
 
-        if (mQueryString != null)
+        if (mSearchMode)
         {
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
             menu.findItem(R.id.list_folders).setVisible(false);
@@ -1980,7 +2400,7 @@ public class MessageList
 
     private void collapseAll()
     {
-        final int groupCount = mAdapter.getGroupCount() - MessageListAdapter.NON_MESSAGE_ITEMS;
+        final int groupCount = mAdapter.getGroupCount();
         for (int i = 0; i < groupCount; i++)
         {
             if (mListView.isGroupExpanded(i))
@@ -1992,7 +2412,7 @@ public class MessageList
 
     private void expandAll()
     {
-        final int groupCount = mAdapter.getGroupCount() - MessageListAdapter.NON_MESSAGE_ITEMS;
+        final int groupCount = mAdapter.getGroupCount();
         for (int i = 0; i < groupCount; i++)
         {
             if (!mListView.isGroupExpanded(i))
@@ -2031,7 +2451,7 @@ public class MessageList
      * Handle touch/click events on list items
      */
     private class ItemListener implements View.OnTouchListener,
-            ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener
+            ExpandableListView.OnChildClickListener
     {
         /**
          * When switching from ListView to ExpandableListView, the onChildClick
@@ -2088,24 +2508,6 @@ public class MessageList
         {
             if (gestureDetector.onTouchEvent(event))
             {
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
-        {
-            // XXX Android 2.1 dosen't invoke this method for expanded groups: can't prevent collapsing
-            //            if (mAdapter.groupLessMode)
-            //            {
-            //                // ignore collapse attempt in groupless mode
-            //                return true;
-            //            }
-
-            if (mCurrentFolder != null && ((groupPosition + 1) == mAdapter.getGroupCount()))
-            {
-                mController.loadMoreMessages(mAccount, mFolderName, mStore.mListener);
                 return true;
             }
             return false;
@@ -2597,244 +2999,7 @@ public class MessageList
 
     }
 
-    private MessageListStore mStore = new MessageListStore(new ActivityListener()
-    {
-        @Override
-        public void synchronizeMailboxStarted(Account account, String folder)
-        {
-            super.synchronizeMailboxStarted(account, folder);
-    
-            if (updateForMe(account, folder))
-            {
-                mHandler.progress(true);
-                mHandler.folderLoading(folder, true);
-            }
-            mHandler.refreshTitle();
-        }
-        @Override
-        public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total)
-        {
-            super.synchronizeMailboxHeadersProgress(account,folder,completed, total);
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void synchronizeMailboxHeadersFinished(Account account, String folder,
-                int total, int completed)
-        {
-            super.synchronizeMailboxHeadersFinished(account,folder, total, completed);
-            mHandler.refreshTitle();
-        }
-    
-    
-    
-    
-        @Override
-        public void synchronizeMailboxFinished(Account account, String folder,
-                                               int totalMessagesInMailbox, int numNewMessages)
-        {
-            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
-    
-            if (updateForMe(account, folder))
-            {
-                mHandler.progress(false);
-                mHandler.folderLoading(folder, false);
-                mHandler.sortMessages();
-            }
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void synchronizeMailboxFailed(Account account, String folder, String message)
-        {
-            super.synchronizeMailboxFailed(account, folder, message);
-    
-            if (updateForMe(account, folder))
-            {
-                mHandler.progress(false);
-                mHandler.folderLoading(folder, false);
-                mHandler.sortMessages();
-            }
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void sendPendingMessagesStarted(Account account)
-        {
-            super.sendPendingMessagesStarted(account);
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void sendPendingMessagesCompleted(Account account)
-        {
-            super.sendPendingMessagesCompleted(account);
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void sendPendingMessagesFailed(Account account)
-        {
-            super.sendPendingMessagesFailed(account);
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void synchronizeMailboxProgress(Account account, String folder, int completed, int total)
-        {
-            super.synchronizeMailboxProgress(account, folder, completed, total);
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void synchronizeMailboxAddOrUpdateMessage(Account account, String folder, Message message)
-        {
-            addOrUpdateMessages(account, folder, Collections.singletonList(message), true);
-        }
-    
-        @Override
-        public void synchronizeMailboxRemovedMessage(Account account, String folder,Message message)
-        {
-            MessageInfoHolder holder = mStore.getMessage(message);
-            if (holder == null)
-            {
-                Log.w(K9.LOG_TAG, "Got callback to remove non-existent message with UID " + message.getUid());
-            }
-            else
-            {
-                mHandler.removeMessages(Collections.singletonList(holder));
-            }
-        }
-    
-        @Override
-        public void listLocalMessagesStarted(Account account, String folder)
-        {
-            if ((mQueryString != null && folder == null) ||
-                    (account != null && account.equals(mAccount))
-               )
-            {
-                mHandler.progress(true);
-                if (folder != null)
-                {
-                    mHandler.folderLoading(folder, true);
-                }
-            }
-        }
-    
-        @Override
-        public void listLocalMessagesFailed(Account account, String folder, String message)
-        {
-            if ((mQueryString != null && folder == null) ||
-                    (account != null && account.equals(mAccount)))
-            {
-                mHandler.sortMessages();
-                mHandler.progress(false);
-                if (folder != null)
-                {
-                    mHandler.folderLoading(folder, false);
-                }
-            }
-        }
-    
-        @Override
-        public void listLocalMessagesFinished(Account account, String folder)
-        {
-            if ((mQueryString != null && folder == null) ||
-                    (account != null && account.equals(mAccount)))
-            {
-                mHandler.sortMessages();
-                mHandler.progress(false);
-                if (folder != null)
-                {
-                    mHandler.folderLoading(folder, false);
-                }
-            }
-        }
-    
-        @Override
-        public void listLocalMessagesRemoveMessage(Account account, String folder,Message message)
-        {
-            MessageInfoHolder holder = mStore.getMessage(message);
-            if (holder != null)
-            {
-                mHandler.removeMessages(Collections.singletonList(holder));
-            }
-        }
-    
-        @Override
-        public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
-        {
-            addOrUpdateMessages(account, folder, messages, false);
-        }
-    
-        @Override
-        public void listLocalMessagesUpdateMessage(Account account, String folder, Message message)
-        {
-            addOrUpdateMessages(account, folder, Collections.singletonList(message), false);
-        }
-    
-        @Override
-        public void searchStats(AccountStats stats)
-        {
-            mUnreadMessageCount = stats.unreadMessageCount;
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void folderStatusChanged(Account account, String folder, int unreadMessageCount)
-        {
-            super.folderStatusChanged(account, folder, unreadMessageCount);
-            if (updateForMe(account, folder))
-            {
-                mUnreadMessageCount = unreadMessageCount;
-                mHandler.refreshTitle();
-            }
-        }
-    
-        @Override
-        public void pendingCommandsProcessing(Account account)
-        {
-            super.pendingCommandsProcessing(account);
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void pendingCommandsFinished(Account account)
-        {
-            super.pendingCommandsFinished(account);
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void pendingCommandStarted(Account account, String commandTitle)
-        {
-            super.pendingCommandStarted(account, commandTitle);
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void pendingCommandCompleted(Account account, String commandTitle)
-        {
-            super.pendingCommandCompleted(account, commandTitle);
-            mHandler.refreshTitle();
-        }
-    
-        @Override
-        public void messageUidChanged(Account account, String folder, String oldUid, String newUid)
-        {
-            MessageReference ref = new MessageReference();
-            ref.accountUuid = account.getUuid();
-            ref.folderName = folder;
-            ref.uid = oldUid;
-    
-            MessageInfoHolder holder = mStore.getMessage(ref);
-            if (holder != null)
-            {
-                holder.uid = newUid;
-                holder.message.setUid(newUid);
-            }
-        }
-    });
+    private MessageListStore mStore = new MessageListStore(new Listener());
 
     /**
      * {@inheritDoc}
@@ -2850,11 +3015,17 @@ public class MessageList
 
         private Drawable mAttachmentIcon;
         private Drawable mAnsweredIcon;
-        private View footerView = null;
 
         private boolean mGroupLessMode = false;
 
         private boolean mGroupingInProgress = false;
+
+        /**
+         * This differs from the store list as this instance must only be
+         * modified from the UI thread, to prevent concurrency issues with the
+         * Android UI thread which doesn't lock the instance
+         */
+        private List<MessageGroup<MessageInfoHolder>> mUiGroups = Collections.emptyList();
 
         private MessageListAdapter()
         {
@@ -2868,8 +3039,6 @@ public class MessageList
             mListView.setFastScrollEnabled(false);
             mListView.setFastScrollEnabled(true);
         }
-
-        private static final int NON_MESSAGE_ITEMS = 1;
 
         private final View.OnClickListener flaggedClickListener = new View.OnClickListener()
         {
@@ -3125,100 +3294,28 @@ public class MessageList
             holder.groupPosition = position;
         }
 
-        private View getFooterView(int position, View convertView, ViewGroup parent)
-        {
-            if (footerView == null)
-            {
-                footerView = mInflater.inflate(R.layout.message_list_item_footer, parent, false);
-                if (mQueryString != null)
-                {
-                    footerView.setVisibility(View.GONE);
-                }
-                footerView.setId(R.layout.message_list_item_footer);
-                FooterViewHolder holder = new FooterViewHolder();
-                holder.progress = (ProgressBar)footerView.findViewById(R.id.message_list_progress);
-                holder.progress.setIndeterminate(true);
-                holder.main = (TextView)footerView.findViewById(R.id.main_text);
-                footerView.setTag(holder);
-            }
-
-            updateFooterView();
-
-            return footerView;
-        }
-
-
-        /**
-         * 
-         */
-        private void updateFooterView()
-        {
-            if (footerView == null)
-            {
-                // can happen when configration is changed (screen orientation)
-                return;
-            }
-            FooterViewHolder holder = (FooterViewHolder)footerView.getTag();
-
-            if (mCurrentFolder != null && mAccount != null)
-            {
-                if (mCurrentFolder.loading || mGroupingInProgress)
-                {
-                    holder.main.setText(getString(R.string.status_loading_more));
-                    holder.progress.setVisibility(ProgressBar.VISIBLE);
-                }
-                else
-                {
-                    if (!mCurrentFolder.lastCheckFailed)
-                    {
-                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
-                    }
-                    else
-                    {
-                        holder.main.setText(getString(R.string.status_loading_more_failed));
-                    }
-                    holder.progress.setVisibility(ProgressBar.INVISIBLE);
-                }
-            }
-            else
-            {
-                holder.progress.setVisibility(ProgressBar.INVISIBLE);
-            }
-        }
-
         @Override
         public boolean hasStableIds()
         {
-            // remain consistent with underlying data and the UI state
-            return false;
+            return true;
         }
 
         @Override
         public int getGroupCount()
         {
-            return mStore.mGroups.size() + NON_MESSAGE_ITEMS;
+            return mUiGroups.size();
         }
 
         @Override
         public int getChildrenCount(int groupPosition)
         {
-            if (groupPosition < mStore.mGroups.size())
-            {
-                return getGroup(groupPosition).getMessages().size();
-            }
-            // (fake) last element should have no children
-            return 0;
+            return getGroup(groupPosition).getMessages().size();
         }
 
         @Override
         public MessageGroup<MessageInfoHolder> getGroup(int groupPosition)
         {
-            if (groupPosition < mStore.mGroups.size())
-            {
-                return mStore.mGroups.get(groupPosition);
-            }
-            // (fake) last element isn't a group
-            return null;
+            return mUiGroups.get(groupPosition);
         }
 
 
@@ -3275,36 +3372,7 @@ public class MessageList
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
                 ViewGroup parent)
         {
-            // use of the 2.2 API for proper view recycling
-            if (getGroupType(groupPosition) == 0)
-            {
-                return getMessageGroupView(groupPosition, isExpanded, convertView, parent);
-            }
-            else
-            {
-                return getFooterView(groupPosition, convertView, parent);
-            }
-        }
-
-        @Override // automatically called from API level 8 for proper view recycling
-        public int getGroupType(int groupPosition)
-        {
-            // must match the number of type of view returned by the above getGroupView method
-            if (groupPosition < mStore.mGroups.size())
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
-        }
-
-        @Override // automatically called from API level 8 for proper view recycling
-        public int getGroupTypeCount()
-        {
-            // must match the above getGroupType method
-            return 2;
+            return getMessageGroupView(groupPosition, isExpanded, convertView, parent);
         }
 
         private View getMessageGroupView(int groupPosition, boolean isExpanded, View convertView,
@@ -3663,7 +3731,7 @@ public class MessageList
                         }
                         else
                         {
-                            if (mQueryString != null)
+                            if (mSearchMode)
                             {
                                 if (verifyAgainstSearch)
                                 {
