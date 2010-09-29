@@ -314,6 +314,10 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="global_settings_touchable_label">Berührungsfreundliche Ansicht</string>
     <string name="global_settings_touchable_summary">Größere Darstellung mit Nachrichten-Vorschau</string>
 
+    <string name="global_settings_registered_name_color_label">Farbe von bekannten Namen</string>
+    <string name="global_settings_registered_name_color_default">Standardfarbe</string>
+    <string name="global_settings_registered_name_color_changed">Farbe wählen</string>
+		
     <string name="global_settings_messageview_fixedwidth_label">Monotype Schriftart</string>
     <string name="global_settings_messageview_fixedwidth_summary">Verwende Schriftart mit gleicher Zeichenbreite für Plain-Text Nachrichten</string>
     <string name="global_settings_messageview_return_to_list_label">Nach Löschen zurück</string>
@@ -510,14 +514,14 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_notification_opens_unread_label">Benachrichtigung öffnet ungelesene Nachrichten</string>
     <string name="account_settings_notification_opens_unread_summary">Zeigt beim Öffnen einer Benachrichtigung Liste der ungelesenen Nachrichten an</string>
 
-    <string name="account_settings_hide_buttons_label">Navigations-Scrollbuttons</string>
-    <string name="account_settings_hide_buttons_never">Nie</string>
+    <string name="account_settings_hide_buttons_label">Scrolle Navigationsleiste</string>
+    <string name="account_settings_hide_buttons_never">Leiste bleibt eingeblendet</string>
     <string name="account_settings_hide_buttons_keyboard_avail">Nur wenn Tastatur aktiv</string>
     <string name="account_settings_hide_buttons_always">Immer</string>
 
-    <string name="account_settings_enable_move_buttons_label">Verschiebungsbuttons</string>
-    <string name="account_settings_enable_move_buttons_summary">Zeige Sichern, Verschieben und Spam Buttons.</string>
-    <string name="account_settings_hide_move_buttons_label">Verschiebungs-Scrollbuttons</string>
+    <string name="account_settings_enable_move_buttons_label">Spam-Leiste</string>
+    <string name="account_settings_enable_move_buttons_summary">Zeige Sichern-, Verschieben- und Spam-Schaltfläche.</string>
+    <string name="account_settings_hide_move_buttons_label">Scrolle Spam-Leiste</string>
 
     <string name="account_settings_show_pictures_label">Bilder automatisch anzeigen</string>
     <string name="account_settings_show_pictures_never">Niemals</string>
@@ -654,6 +658,10 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_vibrate_pattern_5">Rhythmus 5</string>
     <string name="account_settings_vibrate_times">Anzahl der Vibrationen</string>
     <string name="account_settings_ringtone">Klingelton</string>
+    <string name="account_settings_led_label">LED Blinken</string>
+    <string name="account_settings_led_summary">LED blinkt bei neuer Nachricht</string>	
+	
+	
     <string name="account_settings_servers">Servereinstellungen</string>
 
     <string name="account_settings_composition_title">Optionen für das Verfassen von Nachrichten</string>
