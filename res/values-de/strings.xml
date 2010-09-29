@@ -240,7 +240,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Weitere Nachrichten abrufen</string>
-    <string name="message_list_to_fmt">An: <xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_to_fmt">An:</string>
     <string name="message_list_delete_action">Löschen</string>
     <string name="message_list_mark_read_action">Gelesen</string>
     <string name="message_list_mark_unread_action">Nicht gelesen</string>
