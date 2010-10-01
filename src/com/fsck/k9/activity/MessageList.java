@@ -2,7 +2,10 @@ package com.fsck.k9.activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -75,6 +78,144 @@ public class MessageList
 {
 
     /**
+     * Reverses the result of a {@link Comparator}.
+     * 
+     * @param <T>
+     */
+    public static class ReverseComparator<T> implements Comparator<T>
+    {
+        private Comparator<T> mDelegate;
+
+        /**
+         * @param delegate
+         *            Never <code>null</code>.
+         */
+        public ReverseComparator(final Comparator<T> delegate)
+        {
+            mDelegate = delegate;
+        }
+
+        @Override
+        public int compare(final T object1, final T object2)
+        {
+            // arg1 & 2 are mixed up, this is done on purpose
+            return mDelegate.compare(object2, object1);
+        }
+
+    }
+
+    /**
+     * Chains comparator to find a non-0 result.
+     * 
+     * @param <T>
+     */
+    public static class ComparatorChain<T> implements Comparator<T>
+    {
+
+        private List<Comparator<T>> mChain;
+
+        /**
+         * @param chain
+         *            Comparator chain. Never <code>null</code>.
+         */
+        public ComparatorChain(final List<Comparator<T>> chain)
+        {
+            mChain = chain;
+        }
+
+        @Override
+        public int compare(T object1, T object2)
+        {
+            int result = 0;
+            for (final Comparator<T> comparator : mChain)
+            {
+                result = comparator.compare(object1, object2);
+                if (result != 0)
+                {
+                    break;
+                }
+            }
+            return result;
+        }
+        
+    }
+
+    public static class AttachmentComparator implements Comparator<MessageInfoHolder>
+    {
+
+        @Override
+        public int compare(MessageInfoHolder object1, MessageInfoHolder object2)
+        {
+            return (object1.hasAttachments ? 0 : 1) - (object2.hasAttachments ? 0 : 1);
+        }
+
+    }
+
+    public static class FlaggedComparator implements Comparator<MessageInfoHolder>
+    {
+
+        @Override
+        public int compare(MessageInfoHolder object1, MessageInfoHolder object2)
+        {
+            return (object1.flagged ? 0 : 1) - (object2.flagged ? 0 : 1);
+        }
+
+    }
+
+    public static class UnreadComparator implements Comparator<MessageInfoHolder>
+    {
+
+        @Override
+        public int compare(MessageInfoHolder object1, MessageInfoHolder object2)
+        {
+            return (object1.read ? 1 : 0) - (object2.read ? 1 : 0);
+        }
+
+    }
+
+    public static class SenderComparator implements Comparator<MessageInfoHolder>
+    {
+
+        @Override
+        public int compare(MessageInfoHolder object1, MessageInfoHolder object2)
+        {
+            return object1.compareCounterparty.toLowerCase().compareTo(object2.compareCounterparty.toLowerCase());
+        }
+
+    }
+
+    public static class DateComparator implements Comparator<MessageInfoHolder>
+    {
+
+        @Override
+        public int compare(MessageInfoHolder object1, MessageInfoHolder object2)
+        {
+            return object1.compareDate.compareTo(object2.compareDate);
+        }
+
+    }
+
+    public static class SubjectComparator implements Comparator<MessageInfoHolder>
+    {
+
+        @Override
+        public int compare(MessageInfoHolder arg0, MessageInfoHolder arg1)
+        {
+            // XXX doesn't respect the Comparator contract since it alters the compared object
+            if (arg0.compareSubject == null)
+            {
+                arg0.compareSubject = Utility.stripSubject(arg0.subject);
+            }
+            if (arg1.compareSubject == null)
+            {
+                arg1.compareSubject = Utility.stripSubject(arg1.subject);
+            }
+            return arg0.compareSubject.compareToIgnoreCase(arg1.compareSubject);
+        }
+
+    }
+
+    /**
      * Immutable empty {@link Message} array
      */
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
@@ -96,6 +237,27 @@ public class MessageList
     private static final String EXTRA_FOLDER_NAMES = "folderNames";
     private static final String EXTRA_TITLE = "title";
     private static final String EXTRA_LIST_POSITION = "listPosition";
+
+    /**
+     * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
+     */
+    private static final Map<SORT_TYPE, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
+
+    static
+    {
+        // fill the mapping at class time loading
+
+        final Map<SORT_TYPE, Comparator<MessageInfoHolder>> map = new EnumMap<SORT_TYPE, Comparator<MessageInfoHolder>>(SORT_TYPE.class);
+        map.put(SORT_TYPE.SORT_ATTACHMENT, new AttachmentComparator());
+        map.put(SORT_TYPE.SORT_DATE, new DateComparator());
+        map.put(SORT_TYPE.SORT_FLAGGED, new FlaggedComparator());
+        map.put(SORT_TYPE.SORT_SENDER, new SenderComparator());
+        map.put(SORT_TYPE.SORT_SUBJECT, new SubjectComparator());
+        map.put(SORT_TYPE.SORT_UNREAD, new UnreadComparator());
+
+        // make it immutable to prevent accidental alteration (content is immutable already)
+        SORT_COMPARATORS = Collections.unmodifiableMap(map);
+    }
 
     private ListView mListView;
 
@@ -199,7 +361,7 @@ public class MessageList
                             int index;
                             synchronized (mAdapter.messages)
                             {
-                                index = Collections.binarySearch(mAdapter.messages, message);
+                                index = Collections.binarySearch(mAdapter.messages, message, getComparator());
                             }
 
                             if (index < 0)
@@ -252,17 +414,62 @@ public class MessageList
 
         private void sortMessages()
         {
+            final Comparator<MessageInfoHolder> chainComparator = getComparator();
+
             runOnUiThread(new Runnable()
             {
                 public void run()
                 {
                     synchronized (mAdapter.messages)
                     {
-                        Collections.sort(mAdapter.messages);
+                        Collections.sort(mAdapter.messages, chainComparator);
                     }
                     mAdapter.notifyDataSetChanged();
                 }
             });
+        }
+
+        /**
+         * @return The comparator to use to display messages in an ordered
+         *         fashion. Never <code>null</code>.
+         */
+        protected Comparator<MessageInfoHolder> getComparator()
+        {
+            final List<Comparator<MessageInfoHolder>> chain = new ArrayList<Comparator<MessageInfoHolder>>(2 /* we add 2 comparators at most */ );
+
+            {
+                // add the specified comparator
+                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(sortType);
+                if (sortAscending)
+                {
+                    chain.add(comparator);
+                }
+                else
+                {
+                    chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
+                }
+            }
+
+            {
+                // add the date comparator if not already specified
+                if (sortType != SORT_TYPE.SORT_DATE)
+                {
+                    final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SORT_TYPE.SORT_DATE);
+                    if (sortDateAscending)
+                    {
+                        chain.add(comparator);
+                    }
+                    else
+                    {
+                        chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
+                    }
+                }
+            }
+
+            // build the comparator chain
+            final Comparator<MessageInfoHolder> chainComparator = new ComparatorChain<MessageInfoHolder>(chain);
+
+            return chainComparator;
         }
 
         public void folderLoading(String folder, boolean loading)

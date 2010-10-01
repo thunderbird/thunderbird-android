@@ -11,9 +11,26 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utility
 {
+
+    // \u00A0 (non-breaking space) happens to be used by French MUA
+
+    // Note: no longer using the ^ beginning character combined with (...)+
+    // repetition matching as we might want to strip ML tags. Ex:
+    // Re: [foo] Re: RE : [foo] blah blah blah
+    private static final Pattern RESPONSE_PATTERN = Pattern.compile(
+            "((Re|Fw|Fwd|Aw|R\\u00E9f\\.)(\\[\\d+\\])?[\\u00A0 ]?: *)+", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * Mailing-list tag pattern to match strings like "[foobar] "
+     */
+    private static final Pattern TAG_PATTERN = Pattern.compile("\\[[-_a-z0-9]+\\] ",
+            Pattern.CASE_INSENSITIVE);
+
     public final static String readInputStream(InputStream in, String encoding) throws IOException
     {
         InputStreamReader reader = new InputStreamReader(in, encoding);
@@ -384,4 +401,99 @@ public class Utility
 
         return wrappedLine.toString();
     }
+
+    /**
+     * Extract the 'original' subject value, by ignoring leading
+     * response/forward marker and '[XX]' formatted tags (as many mailing-list
+     * softwares do).
+     * 
+     * <p>
+     * Result is also trimmed.
+     * </p>
+     * 
+     * @param subject
+     *            Never <code>null</code>.
+     * @return Never <code>null</code>.
+     */
+    public static String stripSubject(final String subject)
+    {
+        int lastPrefix = 0;
+
+        final Matcher tagMatcher = TAG_PATTERN.matcher(subject);
+        String tag = null;
+        // whether tag stripping logic should be active
+        boolean tagPresent = false;
+        // whether the last action stripped a tag
+        boolean tagStripped = false;
+        if (tagMatcher.find(0))
+        {
+            tagPresent = true;
+            if (tagMatcher.start() == 0)
+            {
+                // found at beginning of subject, considering it an actual tag
+                tag = tagMatcher.group();
+
+                // now need to find response marker after that tag
+                lastPrefix = tagMatcher.end();
+                tagStripped = true;
+            }
+        }
+
+        final Matcher matcher = RESPONSE_PATTERN.matcher(subject);
+
+        // while:
+        // - lastPrefix is within the bounds
+        // - response marker found at lastPrefix position
+        // (to make sure we don't catch response markers that are part of
+        // the actual subject)
+
+        while (lastPrefix < subject.length() - 1
+                && matcher.find(lastPrefix)
+                && matcher.start() == lastPrefix
+                && (!tagPresent || tag == null || subject.regionMatches(matcher.end(), tag, 0,
+                        tag.length())))
+        {
+            lastPrefix = matcher.end();
+
+            if (tagPresent)
+            {
+                tagStripped = false;
+                if (tag == null)
+                {
+                    // attempt to find tag
+                    if (tagMatcher.start() == lastPrefix)
+                    {
+                        tag = tagMatcher.group();
+                        lastPrefix += tag.length();
+                        tagStripped = true;
+                    }
+                }
+                else if (lastPrefix < subject.length() - 1 && subject.startsWith(tag, lastPrefix))
+                {
+                    // Re: [foo] Re: [foo] blah blah blah
+                    //               ^     ^
+                    //               ^     ^
+                    //               ^    new position
+                    //               ^
+                    //              initial position
+                    lastPrefix += tag.length();
+                    tagStripped = true;
+                }
+            }
+        }
+        if (tagStripped)
+        {
+            // restore the last tag
+            lastPrefix -= tag.length();
+        }
+        if (lastPrefix > -1 && lastPrefix < subject.length() - 1)
+        {
+            return subject.substring(lastPrefix).trim();
+        }
+        else
+        {
+            return subject.trim();
+        }
+    }
+
 }

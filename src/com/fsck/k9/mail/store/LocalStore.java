@@ -2641,7 +2641,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             lockRead();
             try
             {
-                mDb.execSQL("DELETE FROM headers WHERE id = ?", new Object[]
+                mDb.execSQL("DELETE FROM headers WHERE message_id = ?", new Object[]
                 { id });
             }
             finally

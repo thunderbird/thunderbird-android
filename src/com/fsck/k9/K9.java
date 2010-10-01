@@ -1,6 +1,11 @@
 
 package com.fsck.k9;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,18 +25,41 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.provider.MessageProvider;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 
-import java.io.File;
-import java.lang.reflect.Method;
-
 public class K9 extends Application
 {
+    /**
+     * Components that are interested in knowing when the K9 instance is
+     * available and ready (Android invokes Application.onCreate() after other
+     * components') should implement this interface and register using
+     * {@link K9#registerApplicationAware(ApplicationAware)}.
+     */
+    public static interface ApplicationAware
+    {
+        /**
+         * Called when the Application instance is available and ready.
+         * 
+         * @param application
+         *            The application instance. Never <code>null</code>.
+         * @throws Exception
+         */
+        void initializeComponent(K9 application) throws Exception;
+    }
+
     public static Application app = null;
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
+
+    /**
+     * Components that are interested in knowing when the K9 instance is
+     * available and ready.
+     * 
+     * @see ApplicationAware
+     */
+    private static List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
+
 
     public enum BACKGROUND_OPS
     {
@@ -113,6 +141,8 @@ public class K9 extends Application
     private static boolean mMessageListCheckboxes = false;
     private static boolean mMessageListTouchable = false;
 
+    private static boolean mChangeRegisteredNameColor = false;
+    private static int mRegisteredNameColor = 0xff00008f;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
 
@@ -350,6 +380,9 @@ public class K9 extends Application
         editor.putBoolean("messageListCheckboxes",mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
 
+
+        editor.putBoolean("changeRegisteredNameColor",mChangeRegisteredNameColor);
+        editor.putInt("registeredNameColor",mRegisteredNameColor);
         editor.putBoolean("messageViewFixedWidthFont",mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
 
@@ -388,6 +421,8 @@ public class K9 extends Application
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
 
+        mChangeRegisteredNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
+        mRegisteredNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
 
@@ -411,8 +446,6 @@ public class K9 extends Application
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
         MessagingController.getInstance(this).resetVisibleLimits(prefs.getAvaliableAccounts());
-        MessageProvider mp = new MessageProvider(); //TODO: is this correct? MessageProvider is a ContentProvider and not a POJO  
-        mp.setApplication(this);
 
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
@@ -480,9 +513,50 @@ public class K9 extends Application
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folder, message);
             }
 
+            @Override
+            public void searchStats(final AccountStats stats)
+            {
+                // let observers know a fetch occured
+                K9.this.sendBroadcast(new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null));
+            }
 
         });
 
+        notifyObservers();
+    }
+
+    /**
+     * since Android invokes Application.onCreate() only after invoking all
+     * other components' onCreate(), here is a way to notify interested
+     * component that the application is available and ready
+     */
+    protected void notifyObservers()
+    {
+        for (final ApplicationAware aware : observers)
+        {
+            try
+            {
+                aware.initializeComponent(this);
+            }
+            catch (Exception e)
+            {
+                Log.w(K9.LOG_TAG, "Failure when notifying " + aware, e);
+            }
+        }
+    }
+
+    /**
+     * Register a component to be notified when the {@link K9} instance is ready.
+     * 
+     * @param component
+     *            Never <code>null</code>.
+     */
+    public static void registerApplicationAware(final ApplicationAware component)
+    {
+        if (!observers.contains(component))
+        {
+            observers.add(component);
+        }
     }
 
     public static String getK9Language()
@@ -611,6 +685,23 @@ public class K9 extends Application
         mMessageListCheckboxes = checkboxes;
     }
 
+    public static boolean changeRegisteredNameColor()
+    {
+        return mChangeRegisteredNameColor;
+    }
+
+    public static void setChangeRegisteredNameColor(boolean checkboxes)
+    {
+        mChangeRegisteredNameColor = checkboxes;
+    }
+
+    public static int getRegisteredNameColor() {
+        return mRegisteredNameColor;
+    }
+
+    public static void setRegisteredNameColor(int registeredNameColor) {
+        mRegisteredNameColor = registeredNameColor;
+    }
 
     public static boolean messageViewFixedWidthFont()
     {
