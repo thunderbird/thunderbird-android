@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
-import android.app.Application;
 import android.content.ContentProvider;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -34,13 +31,212 @@ import com.fsck.k9.mail.store.LocalStore;
 public class MessageProvider extends ContentProvider
 {
 
+    protected interface QueryHandler
+    {
+        /**
+         * The path this instance is able to respond to.
+         * 
+         * @return Never <code>null</code>.
+         */
+        String getPath();
+
+        /**
+         * @param uri
+         * @param projection
+         * @param selection
+         * @param selectionArgs
+         * @param sortOrder
+         * @return
+         * @throws Exception
+         * @see {@link ContentProvider#query(Uri, String[], String, String[], String)}
+         */
+        Cursor query(Uri uri, String[] projection,
+                String selection, String[] selectionArgs, String sortOrder) throws Exception;
+    }
+
+    /**
+     * Retrieve messages from the integrated inbox.
+     */
+    protected class MessagesQueryHandler implements QueryHandler
+    {
+
+        @Override
+        public String getPath()
+        {
+            return "inbox_messages/";
+        }
+
+        @Override
+        public Cursor query(final Uri uri, final String[] projection, final String selection,
+                final String[] selectionArgs, final String sortOrder) throws Exception
+        {
+            return getMessages(projection);
+        }
+
+        /**
+         * @param projection
+         *            Projection to use. If <code>null</code>, use the default
+         *            projection.
+         * @return Never <code>null</code>.
+         * @throws InterruptedException
+         */
+        protected MatrixCursor getMessages(final String[] projection) throws InterruptedException
+        {
+            // TODO use the given projection if prevent
+            final MatrixCursor cursor = new MatrixCursor(DEFAULT_MESSAGE_PROJECTION);
+            final BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<List<MessageInfoHolder>>();
+
+            // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
+            final SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null, null);
+            final MessagingController msgController = MessagingController.getInstance(K9.app);
+
+            msgController.searchLocalMessages(integratedInboxAccount, null,
+                    new MesssageInfoHolderRetrieverListener(queue));
+
+            final List<MessageInfoHolder> holders = queue.take();
+
+            // TODO add sort order parameter
+            Collections.sort(holders, new MessageList.ReverseComparator<MessageInfoHolder>(
+                    new MessageList.DateComparator()));
+
+            int id = -1;
+            for (final MessageInfoHolder holder : holders)
+            {
+                final Message message = holder.message;
+                id++;
+
+                cursor.addRow(new Object[]
+                {
+                        id,
+                        holder.fullDate,
+                        holder.sender,
+                        holder.subject,
+                        holder.preview,
+                        holder.account,
+                        holder.uri,
+                        CONTENT_URI + "/delete_message/"
+                                + message.getFolder().getAccount().getAccountNumber() + "/"
+                                + message.getFolder().getName() + "/" + message.getUid() });
+            }
+            return cursor;
+        }
+
+    }
+
+    /**
+     * Retrieve the account list.
+     */
+    protected class AccountsQueryHandler implements QueryHandler
+    {
+
+        @Override
+        public String getPath()
+        {
+            return "accounts";
+        }
+
+        @Override
+        public Cursor query(final Uri uri, String[] projection, String selection,
+                String[] selectionArgs, String sortOrder) throws Exception
+        {
+            return getAllAccounts();
+        }
+
+        public Cursor getAllAccounts()
+        {
+            String[] projection = new String[] { "accountNumber", "accountName" };
+
+            MatrixCursor ret = new MatrixCursor(projection);
+
+            for (Account account : Preferences.getPreferences(getContext()).getAccounts())
+            {
+                Object[] values = new Object[2];
+                values[0] = account.getAccountNumber();
+                values[1] = account.getDescription();
+                ret.addRow(values);
+            }
+
+            return ret;
+        }
+
+    }
+
+    /**
+     * Retrieve the unread message count for a given account specified by its
+     * {@link Account#getAccountNumber() number}.
+     */
+    protected class UnreadQueryHandler implements QueryHandler
+    {
+
+        @Override
+        public String getPath()
+        {
+            return "account_unread/#";
+        }
+
+        @Override
+        public Cursor query(final Uri uri, String[] projection, String selection,
+                String[] selectionArgs, String sortOrder) throws Exception
+        {
+            List<String> segments = null;
+            int accountId = -1;
+            segments = uri.getPathSegments();
+            accountId = Integer.parseInt(segments.get(1));
+            return getAccountUnread(accountId);
+        }
+
+        public Cursor getAccountUnread(int accountNumber)
+        {
+            String[] projection = new String[] { "accountName", "unread" };
+
+            MatrixCursor ret = new MatrixCursor(projection);
+
+            Account myAccount;
+            AccountStats myAccountStats = null;
+
+            Object[] values = new Object[2];
+
+            for (Account account : Preferences.getPreferences(getContext()).getAccounts())
+            {
+                if (account.getAccountNumber()==accountNumber)
+                {
+                    myAccount = account;
+                    try
+                    {
+                        myAccountStats = account.getStats(getContext());
+                        values[0] = myAccount.getDescription();
+                        values[1] = myAccountStats.unreadMessageCount;
+                        ret.addRow(values);
+                    }
+                    catch (MessagingException e)
+                    {
+                        Log.e(K9.LOG_TAG, e.getMessage());
+                        values[0] = "Unknown";
+                        values[1] = 0;
+                    }
+                }
+            }
+
+            return ret;
+        }
+    }
+
+    /**
+     * Synchronized listener used to retrieve {@link MessageInfoHolder}s using a
+     * given {@link BlockingQueue}.
+     */
     protected class MesssageInfoHolderRetrieverListener extends MessagingListener
     {
         private final BlockingQueue<List<MessageInfoHolder>> queue;
 
         private List<MessageInfoHolder> holders = new ArrayList<MessageInfoHolder>();
 
-        private MesssageInfoHolderRetrieverListener(BlockingQueue<List<MessageInfoHolder>> queue)
+        /**
+         * @param queue
+         *            Never <code>null</code>. The synchronized channel to use
+         *            to retrieve {@link MessageInfoHolder}s.
+         */
+        public MesssageInfoHolderRetrieverListener(BlockingQueue<List<MessageInfoHolder>> queue)
         {
             this.queue = queue;
         }
@@ -51,7 +247,7 @@ public class MessageProvider extends ContentProvider
         {
             for (final Message message : messages)
             {
-                holders.add(new MessageInfoHolder(context, message));
+                holders.add(new MessageInfoHolder(getContext(), message));
             }
         }
 
@@ -73,27 +269,7 @@ public class MessageProvider extends ContentProvider
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
-    private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-
-    private static final int URI_INBOX_MESSAGES = 0;
-    private static final int URI_DELETE_MESSAGE = 1;
-    private static final int URI_ACCOUNTS = 2;
-    private static final int URI_ACCOUNT_UNREAD = 3;
-
-    private static Context context = null;
-    private static boolean mIsListenerRegister = false;
-
-    private static Application mApp;
-
-    static
-    {
-        URI_MATCHER.addURI(AUTHORITY, "inbox_messages/", URI_INBOX_MESSAGES);
-        URI_MATCHER.addURI(AUTHORITY, "delete_message/", URI_DELETE_MESSAGE);
-        URI_MATCHER.addURI(AUTHORITY, "accounts", URI_ACCOUNTS);
-        URI_MATCHER.addURI(AUTHORITY, "account_unread/#", URI_ACCOUNT_UNREAD);
-    }
-
-    static String[] messages_projection = new String[]
+    private static final String[] DEFAULT_MESSAGE_PROJECTION = new String[]
     {
         "id",
         "date",
@@ -104,115 +280,35 @@ public class MessageProvider extends ContentProvider
         "uri",
         "delUri"
     };
-    MessagingListener mListener = new MessagingListener()
-    {
 
-        public void searchStats(AccountStats stats)
-        {
-            notifyDatabaseModification();
-        }
-    };
+    /**
+     * URI matcher used for
+     * {@link #query(Uri, String[], String, String[], String)}
+     */
+    private UriMatcher mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    public Cursor getAllAccounts()
-    {
-        String[] projection = new String[] { "accountNumber", "accountName" };
-
-        MatrixCursor ret = new MatrixCursor(projection);
-
-        for (Account account : Preferences.getPreferences(getContext()).getAccounts())
-        {
-            Object[] values = new Object[2];
-            values[0] = account.getAccountNumber();
-            values[1] = account.getDescription();
-            ret.addRow(values);
-        }
-
-        return ret;
-    }
-
-    public Cursor getAccountUnread(int accountNumber)
-    {
-        String[] projection = new String[] { "accountName", "unread" };
-
-        MatrixCursor ret = new MatrixCursor(projection);
-
-        Account myAccount;
-        AccountStats myAccountStats = null;
-
-        Object[] values = new Object[2];
-
-        for (Account account : Preferences.getPreferences(getContext()).getAccounts())
-        {
-            if (account.getAccountNumber()==accountNumber)
-            {
-                myAccount = account;
-                try
-                {
-                    myAccountStats = account.getStats(getContext());
-                    values[0] = myAccount.getDescription();
-                    values[1] = myAccountStats.unreadMessageCount;
-                    ret.addRow(values);
-                }
-                catch (MessagingException e)
-                {
-                    Log.e(K9.LOG_TAG, e.getMessage());
-                    values[0] = "Unknown";
-                    values[1] = 0;
-                }
-            }
-        }
-
-        return ret;
-    }
-
-    public void setApplication(Application app)
-    {
-        if (context == null)
-        {
-            context = app.getApplicationContext();
-        }
-        if (app != null)
-        {
-            mApp = app;
-            MessagingController msgController = MessagingController.getInstance(mApp);
-            if ((msgController != null) && (!mIsListenerRegister))
-            {
-                msgController.addListener(mListener);
-                mIsListenerRegister = true;
-            }
-        }
-
-    }
+    /**
+     * Handlers registered to respond to
+     * {@link #query(Uri, String[], String, String[], String)}
+     */
+    private List<QueryHandler> mQueryHandlers = new ArrayList<QueryHandler>();
 
     @Override
     public boolean onCreate()
     {
-        context = getContext();
+        registerQueryHandler(new AccountsQueryHandler());
+        registerQueryHandler(new MessagesQueryHandler());
+        registerQueryHandler(new UnreadQueryHandler());
 
-        if (mApp != null)
-        {
-            MessagingController msgController = MessagingController.getInstance(mApp);
-            if ((msgController != null) && (!mIsListenerRegister))
-            {
-                msgController.addListener(mListener);
-                mIsListenerRegister = true;
-            }
-        }
-
-        return false;
+        return true;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs)
     {
-
         if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "delete");
-
-        if (mApp == null)
         {
-            Log.d(K9.LOG_TAG, "K9 not ready");
-            return 0;
+            Log.v(K9.LOG_TAG, "delete");
         }
 
         // Nota : can only delete a message
@@ -241,21 +337,23 @@ public class MessageProvider extends ContentProvider
         Message msg = null;
         try
         {
-            Folder lf = LocalStore.getLocalInstance(myAccount, mApp).getFolder(folderName);
+            Folder lf = LocalStore.getLocalInstance(myAccount, K9.app).getFolder(folderName);
             int msgCount = lf.getMessageCount();
             if (K9.DEBUG)
+            {
                 Log.d(K9.LOG_TAG, "folder msg count = " + msgCount);
+            }
             msg = lf.getMessage(msgUid);
         }
         catch (MessagingException e)
         {
-            Log.e(K9.LOG_TAG, e.getMessage());
+            Log.e(K9.LOG_TAG, "Unable to retrieve message", e);
         }
 
         // launch command to delete the message
         if ((myAccount != null) && (msg != null))
         {
-            MessagingController.getInstance(mApp).deleteMessages(new Message[] { msg }, mListener);
+            MessagingController.getInstance(K9.app).deleteMessages(new Message[] { msg }, null);
         }
 
         return 0;
@@ -274,86 +372,29 @@ public class MessageProvider extends ContentProvider
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
+    public Cursor query(final Uri uri, final String[] projection, final String selection,
+            final String[] selectionArgs, final String sortOrder)
     {
+        final Cursor cursor;
 
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "query");
+        final int code = mUriMatcher.match(uri);
 
-        if (mApp == null)
+        if (code == -1)
         {
-            Log.d(K9.LOG_TAG, "K9 not ready");
-            return null;
+            throw new IllegalStateException("Unrecognized URI: " + uri);
         }
 
-        Cursor cursor;
-        switch (URI_MATCHER.match(uri))
+        try
         {
-            case URI_INBOX_MESSAGES:
-            {
-                final MatrixCursor mCursor = new MatrixCursor(messages_projection);
-                final BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<List<MessageInfoHolder>>();
-
-                // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
-                SearchAccount integratedInboxAccount = new SearchAccount(getContext(), true, null,  null);
-                MessagingController msgController = MessagingController.getInstance(mApp);
-
-                msgController.searchLocalMessages(integratedInboxAccount, null,
-                        new MesssageInfoHolderRetrieverListener(queue));
-
-                List<MessageInfoHolder> holders;
-
-                try
-                {
-                    holders = queue.take();
-                }
-                catch (InterruptedException e)
-                {
-                    Log.e(K9.LOG_TAG, "Unable to retrieve message list", e);
-                    return null;
-                }
-
-                Collections.sort(holders, new MessageList.ReverseComparator<MessageInfoHolder>(new MessageList.DateComparator()));
-
-                int id = -1;
-                for (final MessageInfoHolder holder : holders)
-                {
-                    final Message message = holder.message;
-                    id++;
-
-                    mCursor.addRow(new Object[]
-                                              {
-                            id,
-                            holder.fullDate,
-                            holder.sender,
-                            holder.subject,
-                            holder.preview,
-                            holder.account,
-                            holder.uri,
-                            CONTENT_URI + "/delete_message/"
-                            + message.getFolder().getAccount().getAccountNumber() + "/"
-                            + message.getFolder().getName() + "/" + message.getUid() });
-                }
-
-                cursor = mCursor;
-                break;
-            }
-
-            case URI_ACCOUNTS:
-                cursor = getAllAccounts();
-                break;
-
-            case URI_ACCOUNT_UNREAD:
-
-                List<String> segments = null;
-                int accountId = -1;
-                segments = uri.getPathSegments();
-                accountId = Integer.parseInt(segments.get(1));
-                cursor = getAccountUnread(accountId);
-                break;
-
-            default:
-                throw new IllegalStateException("Unrecognized URI:" + uri);
+            // since we used the list index as the UriMatcher code, using it
+            // back to retrieve the handler from the list
+            final QueryHandler handler = mQueryHandlers.get(code);
+            cursor = handler.query(uri, projection, selection, selectionArgs, sortOrder);
+        }
+        catch (Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to execute query for URI: " + uri, e);
+            return null;
         }
 
         return cursor;
@@ -364,24 +405,33 @@ public class MessageProvider extends ContentProvider
     {
 
         if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "update");
+        {
+            Log.v(K9.LOG_TAG, "update");
+        }
 
 //TBD
 
         return 0;
     }
 
-    public static void notifyDatabaseModification()
+    /**
+     * Register a {@link QueryHandler} to handle a certain {@link Uri} for
+     * {@link #query(Uri, String[], String, String[], String)}
+     * 
+     * @param handler
+     *            Never <code>null</code>.
+     */
+    protected void registerQueryHandler(final QueryHandler handler)
     {
+        if (mQueryHandlers.contains(handler))
+        {
+            return;
+        }
+        mQueryHandlers.add(handler);
 
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "notifyDatabaseModification -> UPDATE");
-
-        Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);
-        context.sendBroadcast(intent);
-
-        context.getContentResolver().notifyChange(CONTENT_URI, null);
-
+        // use the index inside the list as the UriMatcher code for that handler
+        final int code = mQueryHandlers.indexOf(handler);
+        mUriMatcher.addURI(AUTHORITY, handler.getPath(), code);
     }
 
 }
