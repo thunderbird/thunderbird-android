@@ -223,7 +223,7 @@ public class MessageList
         @Override
         public void listLocalMessagesStarted(Account account, String folder)
         {
-            if ((mSearchMode && folder == null) ||
+            if ((inSearchMode() && folder == null) ||
                     (account != null && account.equals(mAccount))
                )
             {
@@ -244,7 +244,7 @@ public class MessageList
         @Override
         public void listLocalMessagesFinished(Account account, String folder)
         {
-            if ((mSearchMode && folder == null) ||
+            if ((inSearchMode() && folder == null) ||
                     (account != null && account.equals(mAccount)))
             {
                 mHandler.sortMessages();
@@ -525,7 +525,6 @@ public class MessageList
      */
     private String mFolderName;
 
-    private boolean mSearchMode;
     /**
      * If we're doing a search, this contains the query string.
      */
@@ -726,7 +725,7 @@ public class MessageList
 
         private void resetUnreadCountOnThread()
         {
-            if (mSearchMode)
+            if (inSearchMode())
             {
                 int unreadCount = 0;
                 synchronized (mStore.messages)
@@ -802,7 +801,7 @@ public class MessageList
                 String dispString = mStore.mListener.formatHeader(MessageList.this, getString(R.string.message_list_title, mAccount.getDescription(), displayName), mUnreadMessageCount, getTimeFormat());
                 setTitle(dispString);
             }
-            else if (mSearchMode)
+            else if (inSearchMode())
             {
                 if (mTitle != null)
                 {
@@ -953,8 +952,6 @@ public class MessageList
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);
 
-        mSearchMode = mQueryString != null;
-
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
         if (queryFlags != null)
         {
@@ -982,7 +979,7 @@ public class MessageList
 
         // Take the initial folder into account only if we are *not* restoring
         // the activity already.
-        if (mFolderName == null && !mSearchMode)
+        if (mFolderName == null && !inSearchMode())
         {
             mFolderName = mAccount.getAutoExpandFolderName();
         }
@@ -1003,14 +1000,12 @@ public class MessageList
 
         mController = MessagingController.getInstance(getApplication());
 
-        final boolean footerViewEnabled = !mSearchMode;
+        mListView.removeFooterView(mFooterView);
+
+        final boolean footerViewEnabled = !inSearchMode();
         if (footerViewEnabled)
         {
             mListView.addFooterView(mFooterView, null, true);
-        }
-        else
-        {
-            mListView.removeFooterView(mFooterView);
         }
 
         mListView.setAdapter(mAdapter);
@@ -1151,7 +1146,7 @@ public class MessageList
 
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mStore.mListener);
         }
-        else if (mSearchMode)
+        else if (inSearchMode())
         {
             mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mStore.mListener);
         }
@@ -1225,7 +1220,7 @@ public class MessageList
     private void updateFooterView(final View footerView)
     {
         // there's no footer view in search mode
-        if (mSearchMode)
+        if (inSearchMode())
         {
             return;
         }
@@ -1292,7 +1287,7 @@ public class MessageList
         // platform.
         if (K9.manageBack())
         {
-            if (!mSearchMode)
+            if (!inSearchMode())
             {
                 onShowFolderList();
             }
@@ -1570,7 +1565,7 @@ public class MessageList
 
     private void onCompose()
     {
-        if (mSearchMode)
+        if (inSearchMode())
         {
             /*
              * If we have a query string, we don't have an account to let
@@ -1996,7 +1991,7 @@ public class MessageList
             }
             case R.id.settings:
             {
-                if (!mSearchMode)
+                if (!inSearchMode())
                 {
                     break;
                 }
@@ -2013,7 +2008,7 @@ public class MessageList
             }
         }
 
-        if (mSearchMode)
+        if (inSearchMode())
         {
             // None of the options after this point are "safe" for search results
             //TODO: This is not true for "unread" and "starred" searches in regular folders
@@ -2121,7 +2116,7 @@ public class MessageList
 
         setOpsState(menu, true, anySelected);
 
-        if (mSearchMode)
+        if (inSearchMode())
         {
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
             menu.findItem(R.id.list_folders).setVisible(false);
@@ -3731,7 +3726,7 @@ public class MessageList
                         }
                         else
                         {
-                            if (mSearchMode)
+                            if (inSearchMode())
                             {
                                 if (verifyAgainstSearch)
                                 {
@@ -4230,6 +4225,11 @@ public class MessageList
         // remember the selected messages for #onActivityResult
         mActiveMessages = holders;
         startActivityForResult(intent, requestCode);
+    }
+
+    protected boolean inSearchMode()
+    {
+        return mQueryString != null;
     }
 
 }
