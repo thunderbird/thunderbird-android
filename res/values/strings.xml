@@ -311,12 +311,12 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_flag_summary">Stars indicate flagged messages</string>
     <string name="global_settings_checkbox_label">Multi-select checkboxes</string>
     <string name="global_settings_checkbox_summary">Always show multi-select checkboxes</string>
-    <string name="global_settings_touchable_label">Touch-friendly view</string>
+    <string name="global_settings_touchable_label">Message previews</string>
     <string name="global_settings_touchable_summary">Roomier list items with message previews</string>
 
-    <string name="global_settings_registered_name_color_label">Choose registered name color</string>
-    <string name="global_settings_registered_name_color_default">Default theme color</string>
-    <string name="global_settings_registered_name_color_changed">Choosed color</string>
+    <string name="global_settings_registered_name_color_label">Colorize contacts</string>
+    <string name="global_settings_registered_name_color_default">Don\'t colorize names in your contact list</string>
+    <string name="global_settings_registered_name_color_changed">Colorize names in your contact list</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
@@ -330,7 +330,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_action_send">Send</string>
 
-    <string name="global_settings_privacy_mode_title">Privacy mode</string>
+    <string name="global_settings_privacy_mode_title">Lock-screen notifications</string>
     <string name="global_settings_privacy_mode_summary">Don\'t display message subject in notification bar when system is locked</string>
 
     <string name="account_setup_basics_title">Set up a new account</string>
