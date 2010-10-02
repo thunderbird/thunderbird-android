@@ -615,7 +615,7 @@ public class MessageList
                     mAdapter.notifyDataSetChanged();
 
                     // auto expand groups at initial display
-                    restoreExpandState();
+                    expandIfNecessary();
                 }
             });
             mThrottler.setCompleted(new Runnable()
@@ -1075,7 +1075,7 @@ public class MessageList
     /**
      * 
      */
-    protected void restoreExpandState()
+    protected void expandIfNecessary()
     {
         final int groupCount = mAdapter.getGroupCount();
         for (int i = 0; i < groupCount; i++)
@@ -1120,7 +1120,7 @@ public class MessageList
         }
         else
         {
-            restoreExpandState();
+            expandIfNecessary();
             // TODO localization
             mProgressDialog = ProgressDialog.show(this, "", "Loading, please wait...", true);
         }
