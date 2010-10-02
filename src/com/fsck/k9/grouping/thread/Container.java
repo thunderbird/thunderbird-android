@@ -12,64 +12,24 @@ public class Container<T>
     /**
      * Can be <code>null</code>
      */
-    private MessageInfo<T> mRessage;
+    public MessageInfo<T> message;
 
-    private Container<T> mParent;
+    public Container<T> parent;
 
     /**
      * First child
      */
-    private Container<T> mChild;
+    public Container<T> child;
 
     /**
      * Next element in sibling list, or <code>null</code>
      */
-    private Container<T> mNext;
-
-    public MessageInfo<T> getMessage()
-    {
-        return mRessage;
-    }
-
-    public void setMessage(MessageInfo<T> message)
-    {
-        this.mRessage = message;
-    }
-
-    public Container<T> getParent()
-    {
-        return mParent;
-    }
-
-    public void setParent(Container<T> parent)
-    {
-        this.mParent = parent;
-    }
-
-    public Container<T> getChild()
-    {
-        return mChild;
-    }
-
-    public void setChild(Container<T> child)
-    {
-        this.mChild = child;
-    }
-
-    public Container<T> getNext()
-    {
-        return mNext;
-    }
-
-    public void setNext(Container<T> next)
-    {
-        this.mNext = next;
-    }
+    public Container<T> next;
 
     @Override
     public String toString()
     {
-        return getClass().getName() + "[message=" + mRessage + "]";
+        return getClass().getName() + "[message=" + message + "]";
     }
 
 }

@@ -134,7 +134,7 @@ public class Threader
 
         Container<T> last = root;
 
-        main: for (Container<T> current = root.getChild(); current != null;)
+        main: for (Container<T> current = root.child; current != null;)
         {
             action = walk.processNode(current);
 
@@ -148,7 +148,7 @@ public class Threader
                         throw new IllegalStateException(
                                 "Only CONTINUE/HALT are supported for the root node");
                     }
-                    else if (last.getParent() == null)
+                    else if (last.parent == null)
                     {
                         // last has no parent, meaning that it has been removed
                         // from the tree, restarting iteration
@@ -167,23 +167,23 @@ public class Threader
 
             last = current;
 
-            if (current.getChild() != null)
+            if (current.child != null)
             {
                 // there is a child, going deeper
-                current = current.getChild();
+                current = current.child;
             }
-            else if (current != root && current.getNext() != null)
+            else if (current != root && current.next != null)
             {
                 // no child but siblings
-                current = current.getNext();
+                current = current.next;
             }
-            else if (current != root && current.getParent() != null)
+            else if (current != root && current.parent != null)
             {
                 // we're the last descendant in this path, we have to find the
                 // nearest "next" by going up
                 do
                 {
-                    if (consistencyCheck && current.getParent() == null)
+                    if (consistencyCheck && current.parent == null)
                     {
                         // something is wrong with this tree: can't find our parent back!
                         throw new IllegalStateException(
@@ -192,17 +192,17 @@ public class Threader
                     }
 
                     // back to parent
-                    current = current.getParent();
+                    current = current.parent;
 
                     if (current == root)
                     {
                         break main;
                     }
                 }
-                while (current.getNext() == null);
+                while (current.next == null);
 
                 // go to siblings!
-                current = current.getNext();
+                current = current.next;
             }
             else
             {
@@ -313,7 +313,7 @@ public class Threader
         final Map<String, Container<T>> subjectTable = new HashMap<String, Container<T>>();
 
         // B. For each Container in the root set:
-        for (Container<T> root = fakeRoot.getChild(); root != null; root = root.getNext())
+        for (Container<T> root = fakeRoot.child; root != null; root = root.next)
         {
             // Find the subject of that sub-tree:
             final String subject = extractSubject(root, true);
@@ -331,7 +331,7 @@ public class Threader
                 // There is no container in the table with this subject, or
                 subjectTable.put(subject, root);
             }
-            else if (root.getMessage() == null && otherRoot.getMessage() != null)
+            else if (root.message == null && otherRoot.message != null)
             {
                 // This one is an empty container and the old one is not: the
                 // empty one is more interesting as a root, so put it in the
@@ -355,14 +355,14 @@ public class Threader
 
         Container<T> next;
         // For each Container in the root set:
-        for (Container<T> root = fakeRoot.getChild(); root != null; root = next)
+        for (Container<T> root = fakeRoot.child; root != null; root = next)
         {
             // XXX DEBUG VARIABLE
             String action = null;
 
             // saving next now since current root might be removed from
             // siblings!
-            next = root.getNext();
+            next = root.next;
 
             // Find the subject of this Container (as above.)
             final String subject = extractSubject(root, true);
@@ -379,21 +379,21 @@ public class Threader
             if (next == otherRoot)
             {
                 // making sure we don't compare them twice
-                next = otherRoot.getNext();
+                next = otherRoot.next;
             }
 
             // Otherwise, we want to group together this Container and the one
             // in the table. There are a few possibilities:
 
-            final MessageInfo<T> thisMessage = root.getMessage();
-            final MessageInfo<T> thatMessage = otherRoot.getMessage();
+            final MessageInfo<T> thisMessage = root.message;
+            final MessageInfo<T> thatMessage = otherRoot.message;
             final boolean thisEmpty = thisMessage == null;
             final boolean thatEmpty = thatMessage == null;
             if (thisEmpty && thatEmpty)
             {
                 // If both are dummies, append one's children to the other, and
                 // remove the now-empty container.
-                final Container<T> otherChild = otherRoot.getChild();
+                final Container<T> otherChild = otherRoot.child;
                 removeChild(otherChild, true);
                 addChild(root, otherChild);
                 removeChild(otherRoot);
@@ -520,12 +520,12 @@ public class Threader
 
     public static <T> boolean isCircular(final Container<T> node)
     {
-        if (node == null || node.getNext() == null)
+        if (node == null || node.next == null)
         {
             return false;
         }
         final IdentityHashMap<Container<T>, Boolean> index = new IdentityHashMap<Container<T>, Boolean>();
-        for (Container<T> current = node; current != null; current = current.getNext())
+        for (Container<T> current = node; current != null; current = current.next)
         {
             if (index.containsKey(current))
             {
@@ -548,11 +548,11 @@ public class Threader
             throws PatternSyntaxException
     {
         String subject;
-        if (container.getMessage() != null)
+        if (container.message != null)
         {
             // If there is a message in the Container, the subject is the
             // subject of that message.
-            subject = container.getMessage().getSubject();
+            subject = container.message.getSubject();
         }
         else
         {
@@ -591,9 +591,9 @@ public class Threader
         // necessarly contain a message, looping
 
         // siblings first
-        for (Container<T> child = container.getChild(); child != null; child = child.getNext())
+        for (Container<T> child = container.child; child != null; child = child.next)
         {
-            final MessageInfo<T> childMessage = child.getMessage();
+            final MessageInfo<T> childMessage = child.message;
             if (childMessage != null)
             {
                 subject = childMessage.getSubject();
@@ -604,7 +604,7 @@ public class Threader
         if (EMPTY_SUBJECT.equals(subject))
         {
             // if siblings unsuccessful, going deeper
-            for (Container<T> child = container.getChild(); child != null; child = child.getNext())
+            for (Container<T> child = container.child; child != null; child = child.next)
             {
                 subject = findChildSubject(child);
                 if (!EMPTY_SUBJECT.equals(subject))
@@ -640,7 +640,7 @@ public class Threader
         {
             for (final Container<T> container : containers.values())
             {
-                if (container.getMessage() != null)
+                if (container.message != null)
                 {
                     i++;
                 }
@@ -671,17 +671,17 @@ public class Threader
             return 0;
         }
         int i = 0;
-        if (countEmpty || node.getMessage() != null)
+        if (countEmpty || node.message != null)
         {
             i = 1;
         }
-        if (node.getChild() != null)
+        if (node.child != null)
         {
-            i = count(node.getChild(), i, countEmpty);
+            i = count(node.child, i, countEmpty);
         }
-        if (node.getNext() != null)
+        if (node.next != null)
         {
-            i = count(node.getNext(), i, countEmpty);
+            i = count(node.next, i, countEmpty);
         }
         return count + i;
     }
@@ -711,7 +711,7 @@ public class Threader
             @Override
             public WalkAction processNode(final Container<T> node)
             {
-                if (countEmpty || node.getMessage() != null)
+                if (countEmpty || node.message != null)
                 {
                     count++;
                 }
@@ -761,10 +761,10 @@ public class Threader
             // A. If id_table contains an empty Container for this ID:
             String id = message.getId();
             Container<T> container;
-            if ((container = containers.get(id)) != null && container.getMessage() == null)
+            if ((container = containers.get(id)) != null && container.message == null)
             {
                 // Store this message in the Container's message slot.
-                container.setMessage(message);
+                container.message = message;
             }
             else
             {
@@ -789,7 +789,7 @@ public class Threader
                 // Create a new Container object holding this message;
                 // Index the Container by Message-ID in id_table.
                 container = new Container<T>();
-                container.setMessage(message);
+                container.message = message;
                 containers.put(id, container);
             }
 
@@ -825,7 +825,7 @@ public class Threader
                     if (!(reachable(previous, referenceContainer) || reachable(referenceContainer,
                             previous)))
                     {
-                        if (referenceContainer.getParent() != null)
+                        if (referenceContainer.parent != null)
                         {
                             removeChild(referenceContainer);
                         }
@@ -848,7 +848,7 @@ public class Threader
                 // definitive, so throw away the old parent and use this new
                 // one. Find this Container in the parent's children list, and
                 // unlink it.
-                if (container.getParent() != null)
+                if (container.parent != null)
                 {
                     removeChild(container);
                 }
@@ -874,7 +874,7 @@ public class Threader
         Container<T> lastRoot = null;
         for (final Container<T> c : containers.values())
         {
-            if (c.getParent() == null)
+            if (c.parent == null)
             {
                 if (firstRoot == null)
                 {
@@ -882,7 +882,7 @@ public class Threader
                 }
                 if (lastRoot != null)
                 {
-                    lastRoot.setNext(c);
+                    lastRoot.next = c;
                 }
                 lastRoot = c;
             }
@@ -914,10 +914,10 @@ public class Threader
     {
         boolean removed = false;
         boolean promoted = false;
-        final Container<T> child = container.getChild();
-        final Container<T> next = container.getNext();
+        final Container<T> child = container.child;
+        final Container<T> next = container.next;
 
-        if (container != root && container.getMessage() == null)
+        if (container != root && container.message == null)
         {
             if (child == null)
             {
@@ -935,8 +935,8 @@ public class Threader
                 // Do not promote the children if doing so would promote them to
                 // the root set -- unless there is only one child, in which
                 // case, do.
-                if ((container.getParent() != null && container.getParent() != root)
-                        || child.getNext() == null)
+                if ((container.parent != null && container.parent != root)
+                        || child.next == null)
                 {
                     // not a root node OR only 1 child
 
@@ -1002,9 +1002,9 @@ public class Threader
                     return WalkAction.CONTINUE;
                 }
 
-                if (node.getMessage() == null)
+                if (node.message == null)
                 {
-                    final Container<T> child = node.getChild();
+                    final Container<T> child = node.child;
                     if (child == null)
                     {
                         // A. If it is an empty container with no children, nuke it.
@@ -1013,7 +1013,7 @@ public class Threader
                         removeChild(node);
                         return WalkAction.LAST;
                     }
-                    else if (node.getParent() != root || child.getNext() == null)
+                    else if (node.parent != root || child.next == null)
                     {
                         // B. If the Container has no Message, but does have children,
                         // remove this container but promote its children to this level
@@ -1075,24 +1075,24 @@ public class Threader
         }
 
         Container<T> sibling;
-        if ((sibling = parent.getChild()) == null)
+        if ((sibling = parent.child) == null)
         {
             // no children
-            parent.setChild(child);
+            parent.child = child;
         }
         else
         {
             // at least one child, advancing
-            while (sibling.getNext() != null)
+            while (sibling.next != null)
             {
                 if (consistencyCheck)
                 {
                     currentChildren.put(sibling, Boolean.TRUE);
                 }
-                sibling = sibling.getNext();
+                sibling = sibling.next;
             }
             // last child, adding new sibling
-            sibling.setNext(child);
+            sibling.next = child;
         }
 
         // update the parent for the current node and its siblings
@@ -1111,29 +1111,29 @@ public class Threader
             alreadyVerified = Collections.emptyMap();
         }
 
-        for (Container<T> newSibling = child; newSibling != null; newSibling = newSibling.getNext())
+        for (Container<T> newSibling = child; newSibling != null; newSibling = newSibling.next)
         {
             if (consistencyCheck || child == newSibling)
             {
                 // discard old parent (make sure each getParent() is consistent)
-                final Container<T> oldParent = newSibling.getParent();
+                final Container<T> oldParent = newSibling.parent;
                 if (oldParent != null
                         && (consistencyCheck ? !alreadyVerified.containsKey(oldParent)
                                 : oldParent != parent))
                 {
                     Container<T> previousOldSibling = null;
-                    for (Container<T> oldSibling = oldParent.getChild(); oldSibling != null; oldSibling = oldSibling
-                            .getNext())
+                    for (Container<T> oldSibling = oldParent.child; oldSibling != null; oldSibling = oldSibling
+                            .next)
                     {
                         if (newSibling == oldSibling)
                         {
                             if (previousOldSibling == null)
                             {
-                                oldParent.setChild(null);
+                                oldParent.child = null;
                             }
                             else
                             {
-                                previousOldSibling.setNext(null);
+                                previousOldSibling.next = null;
                             }
                             if (!consistencyCheck)
                             {
@@ -1150,21 +1150,21 @@ public class Threader
                 }
             }
             // old parent was verified, replacing
-            newSibling.setParent(parent);
+            newSibling.parent = parent;
 
             if (consistencyCheck)
             {
                 currentChildren.put(newSibling, Boolean.TRUE);
-                if (currentChildren.containsKey(newSibling.getNext()))
+                if (currentChildren.containsKey(newSibling.next))
                 {
                     // circular reference detected!
                     if (K9.DEBUG && Log.isLoggable(K9.LOG_TAG, Log.WARN))
                     {
                         Log.w(K9.LOG_TAG, MessageFormat.format(
                                 "Circular reference detected on {0} / parent: {1} / next: {2}",
-                                newSibling, newSibling.getParent(), newSibling.getNext()));
+                                newSibling, newSibling.parent, newSibling.next));
                     }
-                    newSibling.setNext(null);
+                    newSibling.next = null;
                     break;
                 }
             }
@@ -1206,15 +1206,15 @@ public class Threader
      */
     private <T> void removeChild(final Container<T> child, final boolean withSiblings)
     {
-        final Container<T> parent = child.getParent();
-        child.setParent(null);
-        if (parent.getChild() == null)
+        final Container<T> parent = child.parent;
+        child.parent = null;
+        if (parent.child == null)
         {
             return;
         }
         boolean found = false;
         Container<T> previous = null;
-        for (Container<T> sibling = parent.getChild(); sibling != null; sibling = sibling.getNext())
+        for (Container<T> sibling = parent.child; sibling != null; sibling = sibling.next)
         {
             if (sibling == child)
             {
@@ -1223,30 +1223,30 @@ public class Threader
                 {
                     if (previous == null)
                     {
-                        parent.setChild(null);
+                        parent.child = null;
                     }
                     else
                     {
-                        previous.setNext(null);
+                        previous.next = null;
                     }
                 }
                 else
                 {
                     if (previous == null)
                     {
-                        parent.setChild(sibling.getNext());
+                        parent.child = sibling.next;
                     }
                     else
                     {
-                        previous.setNext(sibling.getNext());
+                        previous.next = sibling.next;
                     }
-                    child.setNext(null);
+                    child.next = null;
                     break;
                 }
             }
             else if (found && withSiblings)
             {
-                sibling.setParent(null);
+                sibling.parent = null;
             }
 
             previous = sibling;
@@ -1271,12 +1271,12 @@ public class Threader
      */
     private <T> void spliceChild(final Container<T> oldChild, final Container<T> newChild)
     {
-        final Container<T> parent = oldChild.getParent();
+        final Container<T> parent = oldChild.parent;
 
-        //        final Container<T> oldNext = oldChild.getNext();
+        //        final Container<T> oldNext = oldChild.next;
         //        removeChild(newChild, true);
         //        removeChild(oldChild, true);
-        //        oldChild.setNext(null);
+        //        oldChild.next = null;
         //        addChild(parent, newChild);
         //        if (oldNext != null)
         //        {
@@ -1285,27 +1285,27 @@ public class Threader
 
         Container<T> previous = null;
         boolean found = false;
-        for (Container<T> sibling = parent.getChild(); sibling != null; sibling = sibling.getNext())
+        for (Container<T> sibling = parent.child; sibling != null; sibling = sibling.next)
         {
             if (!found && sibling == oldChild)
             {
                 if (previous == null)
                 {
-                    parent.setChild(newChild);
+                    parent.child = newChild;
                 }
                 else
                 {
-                    previous.setNext(newChild);
+                    previous.next = newChild;
                 }
                 sibling = newChild;
                 found = true;
             }
             if (found)
             {
-                sibling.setParent(parent);
-                if (sibling.getNext() == null)
+                sibling.parent = parent;
+                if (sibling.next == null)
                 {
-                    sibling.setNext(oldChild.getNext());
+                    sibling.next = oldChild.next;
                     break;
                 }
             }
@@ -1313,8 +1313,8 @@ public class Threader
         }
         if (found)
         {
-            oldChild.setNext(null);
-            oldChild.setParent(null);
+            oldChild.next = null;
+            oldChild.parent = null;
         }
     }
 
@@ -1334,13 +1334,13 @@ public class Threader
         {
             return true;
         }
-        for (Container<T> child = b.getChild(); child != null; child = child.getNext())
+        for (Container<T> child = b.child; child != null; child = child.next)
         {
             if (child == a)
             {
                 return true;
             }
-            if (child.getChild() != null && reachable(a, child.getChild()))
+            if (child.child != null && reachable(a, child.child))
             {
                 return true;
             }

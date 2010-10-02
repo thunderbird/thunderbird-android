@@ -76,7 +76,7 @@ public class ThreadMessageGrouper implements MessageGrouper
             Collection<MessageInfo<T>> originalList)
     {
         final List<MessageGroup<T>> result = new ArrayList<MessageGroup<T>>();
-        for (Container<T> root = fakeRoot.getChild(); root != null; root = root.getNext())
+        for (Container<T> root = fakeRoot.child; root != null; root = root.next)
         {
             final MessageGroup<T> messageGroup = toMessageGroup(root, null);
             if (messageGroup != null)
@@ -147,19 +147,19 @@ public class ThreadMessageGrouper implements MessageGrouper
     {
         final List<MessageInfo<T>> results = new ArrayList<MessageInfo<T>>();
 
-        if (current.getMessage() != null)
+        if (current.message != null)
         {
             // add current node
-            results.add(current.getMessage());
+            results.add(current.message);
         }
 
-        if (current.getChild() != null)
+        if (current.child != null)
         {
-            results.addAll(toList(current.getChild(), true));
+            results.addAll(toList(current.child, true));
         }
-        if (followSiblings && current.getNext() != null)
+        if (followSiblings && current.next != null)
         {
-            results.addAll(toList(current.getNext(), true));
+            results.addAll(toList(current.next, true));
         }
         return results;
     }
@@ -200,7 +200,7 @@ public class ThreadMessageGrouper implements MessageGrouper
 
             private void add(final Container<T> node)
             {
-                final MessageInfo<T> message = node.getMessage();
+                final MessageInfo<T> message = node.message;
                 if (message != null)
                 {
                     list.add(message);
