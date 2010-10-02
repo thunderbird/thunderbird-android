@@ -17,7 +17,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -2918,21 +2917,44 @@ public class MessageList
             final List<String> result = new ArrayList<String>();
             for (final String reference : references)
             {
-                List<String> split = Arrays.asList(splitter.split(reference));
-                result.addAll(split);
-            }
-            for (final Iterator<String> iterator = result.iterator(); iterator.hasNext();)
-            {
-                String string = iterator.next();
-                if (string.length() == 0)
+                if (reference == null)
                 {
-                    iterator.remove();
+                    continue;
+                }
+
+                final int length = reference.length();
+                int lastStart = -1;
+                int i;
+
+                for (i = 0; i < length; i++)
+                {
+                    final char c = reference.charAt(i);
+
+                    if (c == ' ' || c == '\t' || c == '\r' || c == '\n')
+                    {
+                        if (lastStart == -1)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            result.add(reference.substring(lastStart, i));
+                            lastStart = -1;
+                        }
+                    }
+                    else if (lastStart == -1)
+                    {
+                        lastStart = i;
+                    }
+                }
+                if (lastStart != -1)
+                {
+                    result.add(reference.substring(lastStart, i));
                 }
             }
+
             return result;
         }
-
-        private static final Pattern splitter = Pattern.compile("\\s");
 
         private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
 
