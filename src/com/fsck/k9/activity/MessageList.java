@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -578,6 +579,12 @@ public class MessageList
     private ProgressDialog mProgressDialog;
 
     /**
+     * Pool used for non-UI work and to alleviate the application global
+     * messaging controller thread.
+     */
+    private ExecutorService mWorkerPool;
+
+    /**
      * Manage the backend store and the UI component (ListAdapter) to make sure
      * they act accordingly.
      */
@@ -927,6 +934,8 @@ public class MessageList
         super.onCreate(savedInstanceState);
 
         mInflater = getLayoutInflater();
+        mWorkerPool = Executors.newSingleThreadExecutor();
+
         initializeLayout();
         initialize();
     }
@@ -1261,6 +1270,8 @@ public class MessageList
     protected void onDestroy()
     {
         mFooterView = null;
+
+        mWorkerPool.shutdown();
 
         super.onDestroy();
     }
@@ -3720,7 +3731,7 @@ public class MessageList
         // the callbacks to mutate it.
         final List<Message> messages = new ArrayList<Message>(providedMessages);
     
-        runOnUiThread(new Runnable()
+        mWorkerPool.execute(new Runnable()
         {
             public void run()
             {
