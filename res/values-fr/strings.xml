@@ -303,6 +303,9 @@
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_action_send">Envoyer</string>
 
+    <string name="global_settings_privacy_mode_title">Notifications confidentielles</string>
+    <string name="global_settings_privacy_mode_summary">Ne pas afficher les sujets des e-mails dans la barre de notification quand le système est verouillé</string>
+
   <string name="account_setup_basics_title">Configurer la messagerie</string>
   <string name="account_setup_basics_instructions">Saisissez l\'adresse de messagerie de votre compte\u00A0:</string>
   <string name="account_setup_basics_instructions2_fmt">(Vous pouvez ajouter %d comptes supplémentaires.)</string>
@@ -469,6 +472,10 @@
   <string name="account_settings_show_pictures_always">Toujours</string>
 
   <string name="account_settings_composition">Composition de messages</string>
+
+    <string name="account_settings_reply_after_quote_label">Réponse après la citation</string>
+    <string name="account_settings_reply_after_quote_summary">Lors d\'une réponse, le texte d\'origine précèdera votre réponse</string>
+
   <string name="account_settings_sync">Synchronication de dossiers</string>
   <string name="account_settings_folders">Dossiers</string>
   <string name="account_settings_message_lists">Listage de messages</string>
@@ -578,6 +585,10 @@
   <string name="account_settings_vibrate_pattern_5">Type 5</string>
   <string name="account_settings_vibrate_times">Nombre de vibrations</string>
   <string name="account_settings_ringtone">Sonnerie</string>
+
+    <string name="account_settings_led_label">Clignotement DEL</string>
+    <string name="account_settings_led_summary">Clignotement de la DEL quand un message arrive</string>
+    
   <string name="account_settings_servers">Paramètre du serveur</string>
   <string name="account_settings_composition_title">Options de composition</string>
   <string name="account_settings_composition_label">Défauts pour la composition</string>
@@ -724,6 +735,12 @@
   <string name="animations_summary">Utiliser des effets visuels criards</string>
   <string name="gestures_title">Interface gestuelle</string>
   <string name="gestures_summary">Accepter le contrôle par gestuelle</string>
+
+    <string name="volume_navigation_title">Navigation à l\'aide du volume</string>
+    <string name="volume_navigation_summary">Passer d\'un élément à l\'autre grâce aux touches de volume</string>
+    <string name="volume_navigation_message">Visualisation d\'un message</string>
+    <string name="volume_navigation_list">Différents écrans à liste</string>
+
   <string name="manage_back_title">Gérer la touche «\u00A0Retour\u00A0»</string>
   <string name="manage_back_summary">La touche «\u00A0Retour\u00A0» remonte toujours un niveau</string>
   <string name="start_integrated_inbox_title">Boîte de messagerie unifiée au démarrage</string>
@@ -811,5 +828,7 @@
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
     <string name="dialog_confirm_delete_confirm_button">Supprimer</string>
     <string name="dialog_confirm_delete_cancel_button">Ne pas supprimer</string>
+
+    <string name="debug_logging_enabled">Sortie de deboguage «\u00A0logcat\u00A0» activée</string>
 
 </resources>
