@@ -4586,7 +4586,9 @@ public class LocalStore extends Store implements Serializable
         private void populateFromGetMessageCursor(Cursor cursor)
         throws MessagingException
         {
-            this.setSubject(cursor.getString(0) == null ? "" : cursor.getString(0));
+            final String subject = cursor.getString(0);
+            this.setSubject(subject == null ? "" : subject);
+
             Address[] from = Address.unpack(cursor.getString(1));
             if (from.length > 0)
             {
@@ -4624,7 +4626,10 @@ public class LocalStore extends Store implements Serializable
             this.mAttachmentCount = cursor.getInt(10);
             this.setInternalDate(new Date(cursor.getLong(11)));
             this.setMessageId(cursor.getString(12));
-            mPreview = (cursor.getString(14) == null ? "" : cursor.getString(14));
+
+            final String preview = cursor.getString(14);
+            mPreview = (preview == null ? "" : preview);
+
             if (this.mFolder == null)
             {
                 LocalFolder f = new LocalFolder(cursor.getInt(13));

@@ -43,8 +43,6 @@ public class MessageInfoHolder
     public String account;
     public String uri;
 
-    private Contacts mContacts;
-
     // Empty constructor for comparison
     public MessageInfoHolder()
     {
@@ -55,8 +53,6 @@ public class MessageInfoHolder
     {
         this();
 
-        mContacts = Contacts.getInstance(context);
-
         Account account = m.getFolder().getAccount();
         populate(context, m, new FolderInfoHolder(context, m.getFolder(), m.getFolder().getAccount()), account);
     }
@@ -65,13 +61,12 @@ public class MessageInfoHolder
     {
         this();
 
-        mContacts = Contacts.getInstance(context);
-
         populate(context, m, folder, account);
     }
 
     public void populate(Context context, Message m, FolderInfoHolder folder, Account account)
     {
+        final Contacts contactHelper = Contacts.getInstance(context);
         try
         {
             LocalMessage message = (LocalMessage) m;
@@ -105,13 +100,13 @@ public class MessageInfoHolder
 
             if (addrs.length > 0 &&  account.isAnIdentity(addrs[0]))
             {
-                CharSequence to = Address.toFriendly(message .getRecipients(RecipientType.TO), mContacts);
+                CharSequence to = Address.toFriendly(message .getRecipients(RecipientType.TO), contactHelper);
                 this.compareCounterparty = to.toString();
                 this.sender = new SpannableStringBuilder(context.getString(R.string.message_list_to_fmt)).append(to);
             }
             else
             {
-                this.sender = Address.toFriendly(addrs, mContacts);
+                this.sender = Address.toFriendly(addrs, contactHelper);
                 this.compareCounterparty = this.sender.toString();
             }
 
