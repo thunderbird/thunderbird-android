@@ -114,6 +114,7 @@ public class MessageList
         PENDING,
         READY;
     }
+
     protected class Listener extends ActivityListener
     {
         @Override
@@ -255,6 +256,17 @@ public class MessageList
                     mHandler.folderLoading(folder, false);
                 }
             }
+
+            changeRestorationStatus();
+        }
+
+        /**
+         * Change the restoration status so that it is known that a
+         * synchronization has occured
+         */
+        private void changeRestorationStatus()
+        {
+            restore.compareAndSet(StateRestorationStatus.PLANNED, StateRestorationStatus.PENDING);
         }
 
         @Override
@@ -284,6 +296,8 @@ public class MessageList
         {
             mUnreadMessageCount = stats.unreadMessageCount;
             mHandler.refreshTitle();
+
+            changeRestorationStatus();
         }
 
         @Override
@@ -697,22 +711,19 @@ public class MessageList
 
             mStore.addMessages(toAdd);
 
-            if (restore.get() == StateRestorationStatus.NONE)
+            runOnUiThread(new Runnable()
             {
-                runOnUiThread(new Runnable()
+                public void run()
                 {
-                    public void run()
+                    if (wasEmpty)
                     {
-                        if (wasEmpty)
-                        {
-                            mListView.setSelection(0);
-                        }
-                        resetUnreadCountOnThread();
-
-                        synchronizeDisplay();
+                        mListView.setSelection(0);
                     }
-                });
-            }
+                    resetUnreadCountOnThread();
+
+                    synchronizeDisplay();
+                }
+            });
         }
 
         public void sortMessages()
@@ -1112,9 +1123,9 @@ public class MessageList
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
 
-        mStore.sortType = mController.getSortType();
-        mStore.sortAscending = mController.isSortAscending(mStore.sortType);
-        mStore.sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+        mStore.setSortType(mController.getSortType());
+        mStore.setSortAscending(mController.isSortAscending(mStore.getSortType()));
+        mStore.setSortDateAscending(mController.isSortAscending(SORT_TYPE.SORT_DATE));
 
         if (mHandler.mThrottler.getScheduledExecutorService() == null
                 || mHandler.mThrottler.getScheduledExecutorService().isShutdown())
@@ -1138,19 +1149,7 @@ public class MessageList
 
         if (mFolderName != null)
         {
-            mController.listLocalMessages(mAccount, mFolderName, new MessagingListener()
-            {
-                @Override
-                public void listLocalMessagesFinished(Account account, String folder)
-                {
-                    restore.compareAndSet(StateRestorationStatus.PLANNED, StateRestorationStatus.PENDING);
-                }
-                @Override
-                public void listLocalMessagesFailed(Account account, String folder, String message)
-                {
-                    listLocalMessagesFinished(account, folder);
-                }
-            });
+            mController.listLocalMessages(mAccount, mFolderName, mStore.mListener);
             mController.notifyAccountCancel(this, mAccount);
 
             MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
@@ -1604,23 +1603,23 @@ public class MessageList
 
     private void changeSort(SORT_TYPE newSortType)
     {
-        if (mStore.sortType == newSortType)
+        if (mStore.getSortType() == newSortType)
         {
             onToggleSortAscending();
         }
         else
         {
-            mStore.sortType = newSortType;
-            mController.setSortType(mStore.sortType);
-            mStore.sortAscending = mController.isSortAscending(mStore.sortType);
-            mStore.sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+            mStore.setSortType(newSortType);
+            mController.setSortType(newSortType);
+            mStore.setSortAscending(mController.isSortAscending(newSortType));
+            mStore.setSortDateAscending(mController.isSortAscending(SORT_TYPE.SORT_DATE));
             reSort();
         }
     }
 
     private void reSort()
     {
-        int toastString = mStore.sortType.getToast(mStore.sortAscending);
+        int toastString = mStore.getSortType().getToast(mStore.isSortAscending());
 
         Toast toast = Toast.makeText(this, toastString, Toast.LENGTH_SHORT);
         toast.show();
@@ -1635,7 +1634,7 @@ public class MessageList
 
         for (int i = 0; i < sorts.length; i++)
         {
-            if (sorts[i] == mStore.sortType)
+            if (sorts[i] == mStore.getSortType())
             {
                 curIndex = i;
                 break;
@@ -1654,10 +1653,10 @@ public class MessageList
 
     private void onToggleSortAscending()
     {
-        mController.setSortAscending(mStore.sortType, !mStore.sortAscending);
+        mController.setSortAscending(mStore.getSortType(), !mStore.isSortAscending());
 
-        mStore.sortAscending = mController.isSortAscending(mStore.sortType);
-        mStore.sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
+        mStore.setSortAscending(mController.isSortAscending(mStore.getSortType()));
+        mStore.setSortDateAscending(mController.isSortAscending(SORT_TYPE.SORT_DATE));
 
         reSort();
     }
@@ -2858,7 +2857,7 @@ public class MessageList
             int index;
             synchronized (messages)
             {
-                index = Collections.binarySearch(messages, message, getComparator());
+                index = Collections.binarySearch(messages, message, mComparator);
 
                 if (index < 0)
                 {
@@ -2970,24 +2969,56 @@ public class MessageList
             return result;
         }
 
-        private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
+        private SORT_TYPE mSortType = SORT_TYPE.SORT_DATE;
 
-        private boolean sortAscending = true;
+        private boolean mSortAscending = true;
 
-        private boolean sortDateAscending = false;
+        private boolean mSortDateAscending = false;
+
+        public Comparator<MessageInfoHolder> mComparator;
+
+        {
+            updateComparator();
+        }
+
+        public SORT_TYPE getSortType()
+        {
+            return mSortType;
+        }
+
+        public void setSortType(SORT_TYPE sortType)
+        {
+            mSortType = sortType;
+            updateComparator();
+        }
+
+        public boolean isSortAscending()
+        {
+            return mSortAscending;
+        }
+
+        public void setSortAscending(final boolean ascending)
+        {
+            mSortAscending = ascending;
+            updateComparator();
+        }
+
+        public void setSortDateAscending(final boolean ascending)
+        {
+            mSortDateAscending = ascending;
+            updateComparator();
+        }
 
         /**
-         * @return The comparator to use to display messages in an ordered
-         *         fashion. Never <code>null</code>.
          */
-        protected Comparator<MessageInfoHolder> getComparator()
+        private void updateComparator()
         {
             final List<Comparator<MessageInfoHolder>> chain = new ArrayList<Comparator<MessageInfoHolder>>(2 /* we add 2 comparators at most */ );
-        
+
             {
                 // add the specified comparator
-                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(sortType);
-                if (sortAscending)
+                final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(mSortType);
+                if (mSortAscending)
                 {
                     chain.add(comparator);
                 }
@@ -2996,13 +3027,13 @@ public class MessageList
                     chain.add(new ReverseComparator<MessageInfoHolder>(comparator));
                 }
             }
-        
+
             {
                 // add the date comparator if not already specified
-                if (sortType != SORT_TYPE.SORT_DATE)
+                if (mSortType != SORT_TYPE.SORT_DATE)
                 {
                     final Comparator<MessageInfoHolder> comparator = SORT_COMPARATORS.get(SORT_TYPE.SORT_DATE);
-                    if (sortDateAscending)
+                    if (mSortDateAscending)
                     {
                         chain.add(comparator);
                     }
@@ -3012,16 +3043,16 @@ public class MessageList
                     }
                 }
             }
-        
+
             // build the comparator chain
             final Comparator<MessageInfoHolder> chainComparator = new ComparatorChain<MessageInfoHolder>(chain);
-        
-            return chainComparator;
+
+            mComparator = chainComparator;
         }
 
         public void sortMessages()
         {
-            final Comparator<MessageInfoHolder> chainComparator = getComparator();
+            final Comparator<MessageInfoHolder> chainComparator = mComparator;
             synchronized (messages)
             {
                 Collections.sort(messages, chainComparator);
