@@ -84,6 +84,8 @@
     </target>
 
     <target name="set-version">
+        <echo>Setting version to ${version-name}</echo>
+        <fail unless="version-name">You can't set the version without passing -Dversion-name=1.234</fail>
     <exec executable="perl" failonerror="true">
         <arg line="-p -i.bak -e's/(?&lt;=android:versionName=&quot;)(.*?)(?=&quot;)/${version-name}/' AndroidManifest.xml"/>
     </exec>
