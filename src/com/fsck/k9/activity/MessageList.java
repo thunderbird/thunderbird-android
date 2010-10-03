@@ -60,6 +60,7 @@ import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.MessagingController.SORT_TYPE;
+import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -316,6 +317,8 @@ public class MessageList
     private MessageInfoHolder mSelectedMessage = null;
 
     private Context context = null;
+
+    /* package visibility for faster inner class access */ MessageHelper mMessageHelper = MessageHelper.getInstance(this);
 
     class MessageListHandler
     {
@@ -2262,14 +2265,14 @@ public class MessageList
             removeMessages(messages);
         }
 
-        private void addOrUpdateMessage(Account account, String folder, Message message, boolean verifyAgainstSearch)
+        private void addOrUpdateMessage(Account account, String folderName, Message message, boolean verifyAgainstSearch)
         {
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
-            addOrUpdateMessages(account, folder, messages, verifyAgainstSearch);
+            addOrUpdateMessages(account, folderName, messages, verifyAgainstSearch);
         }
 
-        private void addOrUpdateMessages(final Account account, final String folder, final List<Message> providedMessages, final boolean verifyAgainstSearch)
+        private void addOrUpdateMessages(final Account account, final String folderName, final List<Message> providedMessages, final boolean verifyAgainstSearch)
         {
             // we copy the message list because the callback doesn't expect
             // the callbacks to mutate it.
@@ -2284,6 +2287,9 @@ public class MessageList
                     List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
                     List<Message> messagesToSearch = new ArrayList<Message>();
 
+                    // cache field into local variable for faster access for JVM without JIT
+                    final MessageHelper messageHelper = mMessageHelper;
+
                     for (Message message : messages)
                     {
                         MessageInfoHolder m = getMessage(message);
@@ -2294,33 +2300,40 @@ public class MessageList
                                 messagesToRemove.add(m);
                             }
                         }
-                        else if (m == null)
+                        else
                         {
-                            if (updateForMe(account, folder))
+                            final Folder messageFolder = message.getFolder();
+                            final Account messageAccount = messageFolder.getAccount();
+                            if (m == null)
                             {
-                                m = new MessageInfoHolder(context, message);
-                                messagesToAdd.add(m);
-                            }
-                            else
-                            {
-                                if (mQueryString != null)
+                                if (updateForMe(account, folderName))
                                 {
-                                    if (verifyAgainstSearch)
+                                    m = new MessageInfoHolder();
+                                    messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                                    messagesToAdd.add(m);
+                                }
+                                else
+                                {
+                                    if (mQueryString != null)
                                     {
-                                        messagesToSearch.add(message);
-                                    }
-                                    else
-                                    {
-                                        m = new MessageInfoHolder(context, message);
-                                        messagesToAdd.add(m);
+                                        if (verifyAgainstSearch)
+                                        {
+                                            messagesToSearch.add(message);
+                                        }
+                                        else
+                                        {
+                                            m = new MessageInfoHolder();
+                                            messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                                            messagesToAdd.add(m);
+                                        }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            m.populate(context, message, new FolderInfoHolder(context, message.getFolder(), account), account);
-                            needsSort = true;
+                            else
+                            {
+                                messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
+                                needsSort = true;
+                            }
                         }
                     }
 
