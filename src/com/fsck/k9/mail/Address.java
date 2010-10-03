@@ -388,7 +388,7 @@ public class Address
             addresses.add(new Address(address, personal));
             pairStartIndex = pairEndIndex + 2;
         }
-        return addresses.toArray(new Address[] { });
+        return addresses.toArray(new Address[addresses.size()]);
     }
 
     /**
@@ -405,7 +405,7 @@ public class Address
         {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0, count = addresses.length; i < count; i++)
         {
             Address address = addresses[i];
