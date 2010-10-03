@@ -76,8 +76,46 @@
     <echo>Building version number ${version-code}</echo>
     </target>
 
+    <target name="get-version-from-git">
+    <exec executable="git" failonerror="true" outputproperty="version-name" errorproperty="version-error">
+        <arg line="describe --tags"/>
+    </exec>
+    <echo>Building version number ${version-name}</echo>
+    </target>
+
+    <target name="set-version">
+    <exec executable="perl" failonerror="true">
+        <arg line="-p -i.bak -e's/(?&lt;=android:versionName=&quot;)(.*?)(?=&quot;)/${version-name}/' AndroidManifest.xml"/>
+    </exec>
+    <exec executable="perl" failonerror="true">
+        <arg line="-p -i.bak -e's/(?&lt;=android:versionCode=&quot;)(\d+)(?=&quot;)/$1+1/e' AndroidManifest.xml" />
+    </exec>
+    </target>
 
     <!-- rules -->
+    <target name="bump-version" depends="set-version,commit-version,git-tag,git-svn-tag">
+        <echo>Bumping K-9 to ${version-name}</echo>
+    </target>
+
+    <target name="git-tag">
+    <exec executable="git" failonerror="true">
+        <arg line="stag ${version-name}"/>
+    </exec>
+    </target>
+    <target name="git-svn-tag">
+    <exec executable="git" failonerror="true">
+        <arg line="svn frag ${version-name}"/>
+    </exec>
+    </target>
+    <target name="commit-version">
+    <exec executable="git" failonerror="true">
+        <arg line="commit -m'Bumped manifest to ${version.name}'AndroidManifest.xml"/>
+    </exec>
+    <exec executable="git" failonerror="true">
+        <arg line="svn dcommit"/>
+    </exec>
+    </target>
+
 
     <!-- Create the output directories if they don't exist yet. -->
     <target name="rclib" depends="compile">
@@ -91,11 +129,11 @@
         <echo>Uploading to Google Code using Google::Code::Upload</echo>
         <exec executable="mv" failonerror="true">
             <arg value="${out.release.package}" />
-            <arg value="bin/k9-${version-code}-release.apk" />
+            <arg value="bin/k9-${version-name}-release.apk" />
         </exec>
         <exec executable="googlecode_upload.pl" failonerror="true">
             <arg value="--summary" />
-            <arg value="${ant.project.name} ${version-code}"/>
+            <arg value="${ant.project.name} ${version-name}"/>
             <arg value="--project" />
             <arg value="k9mail"/>
             <arg value="--user"/>
@@ -104,7 +142,7 @@
             <arg value="${gcode-pass}" />
             <arg value="--labels"/>
             <arg value="Type-Installer"/>
-            <arg value="bin/k9-${version-code}-release.apk" />
+            <arg value="bin/k9-${version-name}-release.apk" />
         </exec>
     </target>
 
@@ -155,6 +193,9 @@
         <echo>              The signatures must match.</echo>
         <echo>   uninstall: uninstall the application from a running emulator or</echo>
         <echo>              device.</echo>
+        <echo>   bump-version: ant -Dversion-name=3.123</echo>
+        <echo>               Bumps the project version to 3.123,tags and commits it</echo>
+        <echo>               (Only works under git-svn)</echo>
     </target>
 
 </project>
