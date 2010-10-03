@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="3111"
+    android:versionCode="10000"
     android:versionName="3.111" package="com.fsck.k9"
     >
     <uses-sdk
