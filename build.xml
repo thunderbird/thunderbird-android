@@ -69,11 +69,11 @@
 
     <!-- A bloody hack, but a useful and quick one -->
     <target name="get-version">
-    <exec executable="perl" failonerror="true" outputproperty="version-code" errorproperty="version-error">
+    <exec executable="perl" failonerror="true" outputproperty="version-name" errorproperty="version-error">
         <!-- yes, ant needs &quot; for " in doublequoted strings. -->
-        <arg line="-ne'/android:versionCode.*?=.*?&quot;(\d+)&quot;/ ? print $1 : undef ' AndroidManifest.xml" />
+        <arg line="-ne'/android:versionName.*?=.*?&quot;(.*?)&quot;/ ? print $1 : undef ' AndroidManifest.xml" />
     </exec>
-    <echo>Building version number ${version-code}</echo>
+    <echo>Building version number ${version-name}</echo>
     </target>
 
     <target name="get-version-from-git">
@@ -125,7 +125,7 @@
 	<jar destfile="${rclib}" basedir="${out.classes.dir}" includes="${rcdir}" />
     </target>
 
-    <target name="upload" depends="release,get-version">
+    <target name="upload" depends="clean,get-version,release">
         <echo>Uploading to Google Code using Google::Code::Upload</echo>
         <exec executable="mv" failonerror="true">
             <arg value="${out.release.package}" />
