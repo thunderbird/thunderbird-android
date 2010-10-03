@@ -208,8 +208,9 @@ public abstract class Message implements Part, Body
         if (mReference == null)
         {
             mReference = new MessageReference();
-            mReference.accountUuid = getFolder().getAccount().getUuid();
-            mReference.folderName = getFolder().getName();
+            final Folder folder = getFolder();
+            mReference.accountUuid = folder.getAccount().getUuid();
+            mReference.folderName = folder.getName();
             mReference.uid = mUid;
         }
         return mReference;
