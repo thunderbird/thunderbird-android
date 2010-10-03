@@ -8,6 +8,7 @@ import java.util.concurrent.SynchronousQueue;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -19,10 +20,12 @@ import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.SearchAccount;
+import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -229,25 +232,38 @@ public class MessageProvider extends ContentProvider
     {
         private final BlockingQueue<List<MessageInfoHolder>> queue;
 
-        private List<MessageInfoHolder> holders = new ArrayList<MessageInfoHolder>();
+        private List<MessageInfoHolder> mHolders = new ArrayList<MessageInfoHolder>();
 
         /**
          * @param queue
          *            Never <code>null</code>. The synchronized channel to use
          *            to retrieve {@link MessageInfoHolder}s.
          */
-        public MesssageInfoHolderRetrieverListener(BlockingQueue<List<MessageInfoHolder>> queue)
+        public MesssageInfoHolderRetrieverListener(final BlockingQueue<List<MessageInfoHolder>> queue)
         {
             this.queue = queue;
         }
 
         @Override
-        public void listLocalMessagesAddMessages(Account account,
-                String folder, List<Message> messages)
+        public void listLocalMessagesAddMessages(final Account account,
+                final String folderName, final List<Message> messages)
         {
+            // cache fields into local variables for faster access on JVM without JIT
+            final MessageHelper helper = mMessageHelper;
+            final List<MessageInfoHolder> holders = mHolders;
+
+            final Context context = getContext();
+
             for (final Message message : messages)
             {
-                holders.add(new MessageInfoHolder(getContext(), message));
+                final MessageInfoHolder messageInfoHolder = new MessageInfoHolder();
+                final Folder messageFolder = message.getFolder();
+                final Account messageAccount = messageFolder.getAccount();
+
+                helper.populate(messageInfoHolder, message, new FolderInfoHolder(context,
+                        messageFolder, messageAccount), messageAccount);
+
+                holders.add(messageInfoHolder);
             }
         }
 
@@ -256,7 +272,7 @@ public class MessageProvider extends ContentProvider
         {
             try
             {
-                queue.put(holders);
+                queue.put(mHolders);
             }
             catch (InterruptedException e)
             {
@@ -293,9 +309,13 @@ public class MessageProvider extends ContentProvider
      */
     private List<QueryHandler> mQueryHandlers = new ArrayList<QueryHandler>();
 
+    private MessageHelper mMessageHelper;
+
     @Override
     public boolean onCreate()
     {
+        mMessageHelper = MessageHelper.getInstance(getContext());
+
         registerQueryHandler(new AccountsQueryHandler());
         registerQueryHandler(new MessagesQueryHandler());
         registerQueryHandler(new UnreadQueryHandler());

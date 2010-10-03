@@ -1,22 +1,7 @@
 package com.fsck.k9.activity;
 import java.util.Date;
 
-import android.content.Context;
-import android.text.SpannableStringBuilder;
-import android.util.Config;
-import android.util.Log;
-
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
-import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 public class MessageInfoHolder
 {
@@ -47,97 +32,6 @@ public class MessageInfoHolder
     public MessageInfoHolder()
     {
         this.selected = false;
-    }
-
-    public MessageInfoHolder(Context context, Message m)
-    {
-        this();
-
-        Account account = m.getFolder().getAccount();
-        populate(context, m, new FolderInfoHolder(context, m.getFolder(), m.getFolder().getAccount()), account);
-    }
-
-    public MessageInfoHolder(Context context, Message m, FolderInfoHolder folder, Account account)
-    {
-        this();
-
-        populate(context, m, folder, account);
-    }
-
-    public void populate(Context context, Message m, FolderInfoHolder folder, Account account)
-    {
-        final Contacts contactHelper = Contacts.getInstance(context);
-        try
-        {
-            LocalMessage message = (LocalMessage) m;
-            Date date = message.getSentDate();
-            this.compareDate = message.getSentDate();
-            if (this.compareDate == null)
-            {
-                this.compareDate = message.getInternalDate();
-            }
-
-            this.folder = folder;
-
-            if (Utility.isDateToday(date))
-            {
-                this.date = android.text.format.DateFormat.getTimeFormat(context).format(date);
-            }
-            else
-            {
-                this.date = DateFormatter.getDateFormat(context).format(date);
-            }
-
-            this.hasAttachments = message.getAttachmentCount() > 0;
-
-            this.read = message.isSet(Flag.SEEN);
-            this.answered = message.isSet(Flag.ANSWERED);
-            this.flagged = message.isSet(Flag.FLAGGED);
-            this.downloaded = message.isSet(Flag.X_DOWNLOADED_FULL);
-            this.partially_downloaded = message.isSet(Flag.X_DOWNLOADED_PARTIAL);
-
-            Address[] addrs = message.getFrom();
-
-            if (addrs.length > 0 &&  account.isAnIdentity(addrs[0]))
-            {
-                CharSequence to = Address.toFriendly(message .getRecipients(RecipientType.TO), contactHelper);
-                this.compareCounterparty = to.toString();
-                this.sender = new SpannableStringBuilder(context.getString(R.string.message_list_to_fmt)).append(to);
-            }
-            else
-            {
-                this.sender = Address.toFriendly(addrs, contactHelper);
-                this.compareCounterparty = this.sender.toString();
-            }
-
-            if (addrs.length > 0)
-            {
-                this.senderAddress = addrs[0].getAddress();
-            }
-            else
-            {
-                // a reasonable fallback "whomever we were corresponding with
-                this.senderAddress = this.compareCounterparty;
-            }
-
-            this.subject = message.getSubject();
-
-            this.uid = message.getUid();
-            this.message = m;
-            this.preview = message.getPreview();
-
-            this.fullDate = DateFormatter.getDateFormat(context).format(date)+" "+android.text.format.DateFormat.getTimeFormat(context).format(date);
-            this.account = account.getDescription();
-            this.uri = "email://messages/"+account.getAccountNumber()+"/"+m.getFolder().getName()+"/"+m.getUid();
-
-        }
-        catch (MessagingException me)
-        {
-            if (Config.LOGV)
-            {
-                Log.v(K9.LOG_TAG, "Unable to load message info", me);
-            }
-        }
     }
 
     @Override

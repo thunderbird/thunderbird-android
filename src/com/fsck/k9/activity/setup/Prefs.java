@@ -22,7 +22,7 @@ import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.DateFormatter;
 import com.fsck.k9.activity.K9PreferenceActivity;
-import com.fsck.k9.preferences.CheckboxListPreference;
+import com.fsck.k9.preferences.CheckBoxListPreference;
 import com.fsck.k9.service.MailService;
 
 public class Prefs extends K9PreferenceActivity
@@ -69,7 +69,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference mGestures;
-    private CheckboxListPreference mVolumeNavigation;
+    private CheckBoxListPreference mVolumeNavigation;
     private CheckBoxPreference mManageBack;
     private CheckBoxPreference mStartIntegratedInbox;
     private CheckBoxPreference mAnimations;
@@ -85,7 +85,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mUseGalleryBugWorkaround;
 
-    private CheckboxListPreference mConfirmActions;
+    private CheckBoxListPreference mConfirmActions;
 
     private CheckBoxPreference mPrivacyMode;
 
@@ -213,7 +213,7 @@ public class Prefs extends K9PreferenceActivity
         mAnimations.setChecked(K9.showAnimations());
         mGestures = (CheckBoxPreference)findPreference(PREFERENCE_GESTURES);
         mGestures.setChecked(K9.gesturesEnabled());
-        mVolumeNavigation = (CheckboxListPreference)findPreference(PREFERENCE_VOLUME_NAVIGATION);
+        mVolumeNavigation = (CheckBoxListPreference)findPreference(PREFERENCE_VOLUME_NAVIGATION);
         mVolumeNavigation.setItems(new CharSequence[] {getString(R.string.volume_navigation_message), getString(R.string.volume_navigation_list)});
         mVolumeNavigation.setCheckedItems(new boolean[] {K9.useVolumeKeysForNavigationEnabled(), K9.useVolumeKeysForListNavigationEnabled()});
 
@@ -270,7 +270,7 @@ public class Prefs extends K9PreferenceActivity
         mUseGalleryBugWorkaround = (CheckBoxPreference)findPreference(PREFERENCE_GALLERY_BUG_WORKAROUND);
         mUseGalleryBugWorkaround.setChecked(K9.useGalleryBugWorkaround());
 
-        mConfirmActions = (CheckboxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
+        mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
         mConfirmActions.setItems(new CharSequence[] {getString(R.string.global_settings_confirm_action_delete)});
         mConfirmActions.setCheckedItems(new boolean[] {K9.confirmDelete()});
 

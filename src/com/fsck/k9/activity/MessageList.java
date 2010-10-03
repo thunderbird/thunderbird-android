@@ -85,6 +85,7 @@ import com.fsck.k9.grouping.SenderMessageGrouper;
 import com.fsck.k9.grouping.SingletonMessageGrouper;
 import com.fsck.k9.grouping.thread.ThreadMessageGrouper;
 import com.fsck.k9.helper.UiThrottler;
+import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -583,6 +584,8 @@ public class MessageList
      * messaging controller thread.
      */
     private ExecutorService mWorkerPool;
+
+    /* package visibility for faster inner class access */ MessageHelper mMessageHelper = MessageHelper.getInstance(this);
 
     /**
      * Manage the backend store and the UI component (ListAdapter) to make sure
@@ -3725,7 +3728,7 @@ public class MessageList
         }
     }
 
-    private void addOrUpdateMessages(final Account account, final String folder, final List<Message> providedMessages, final boolean verifyAgainstSearch)
+    private void addOrUpdateMessages(final Account account, final String folderName, final List<Message> providedMessages, final boolean verifyAgainstSearch)
     {
         // we copy the message list because the callback doesn't expect
         // the callbacks to mutate it.
@@ -3739,8 +3742,11 @@ public class MessageList
                 final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
                 List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
                 List<Message> messagesToSearch = new ArrayList<Message>();
-    
-                for (Message message : messages)
+
+                // cache field into local variable for faster access for JVM without JIT
+                final MessageHelper messageHelper = mMessageHelper;
+
+                for (final Message message : messages)
                 {
                     MessageInfoHolder m = mStore.getMessage(message);
                     if (message.isSet(Flag.DELETED))
@@ -3750,33 +3756,40 @@ public class MessageList
                             messagesToRemove.add(m);
                         }
                     }
-                    else if (m == null)
+                    else
                     {
-                        if (updateForMe(account, folder))
+                        final Folder messageFolder = message.getFolder();
+                        final Account messageAccount = messageFolder.getAccount();
+                        if (m == null)
                         {
-                            m = new MessageInfoHolder(MessageList.this, message);
-                            messagesToAdd.add(m);
-                        }
-                        else
-                        {
-                            if (inSearchMode())
+                            if (updateForMe(account, folderName))
                             {
-                                if (verifyAgainstSearch)
+                                m = new MessageInfoHolder();
+                                messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                                messagesToAdd.add(m);
+                            }
+                            else
+                            {
+                                if (inSearchMode())
                                 {
-                                    messagesToSearch.add(message);
-                                }
-                                else
-                                {
-                                    m = new MessageInfoHolder(MessageList.this, message);
-                                    messagesToAdd.add(m);
+                                    if (verifyAgainstSearch)
+                                    {
+                                        messagesToSearch.add(message);
+                                    }
+                                    else
+                                    {
+                                        m = new MessageInfoHolder();
+                                        messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                                        messagesToAdd.add(m);
+                                    }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        m.populate(MessageList.this, message, new FolderInfoHolder(MessageList.this, message.getFolder(), account), account);
-                        needsSort = true;
+                        else
+                        {
+                            messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
+                            needsSort = true;
+                        }
                     }
                 }
     

@@ -55,7 +55,7 @@
             android:title="@string/gestures_title"
             android:summary="@string/gestures_summary" />
 
-        <com.fsck.k9.preferences.CheckboxListPreference
+        <com.fsck.k9.preferences.CheckBoxListPreference
             android:key="volumeNavigation"
             android:title="@string/volume_navigation_title"
             android:summary="@string/volume_navigation_summary"
@@ -74,7 +74,7 @@
             android:title="@string/start_integrated_inbox_title"
             android:summary="@string/start_integrated_inbox_summary" />
 
-        <com.fsck.k9.preferences.CheckboxListPreference
+        <com.fsck.k9.preferences.CheckBoxListPreference
             android:key="confirm_actions"
             android:title="@string/global_settings_confirm_actions_title"
             android:summary="@string/global_settings_confirm_actions_summary"
