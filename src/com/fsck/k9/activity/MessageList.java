@@ -80,7 +80,7 @@ public class MessageList
 
     /**
      * Reverses the result of a {@link Comparator}.
-     * 
+     *
      * @param <T>
      */
     public static class ReverseComparator<T> implements Comparator<T>
@@ -107,7 +107,7 @@ public class MessageList
 
     /**
      * Chains comparator to find a non-0 result.
-     * 
+     *
      * @param <T>
      */
     public static class ComparatorChain<T> implements Comparator<T>
@@ -138,7 +138,7 @@ public class MessageList
             }
             return result;
         }
-        
+
     }
 
     public static class AttachmentComparator implements Comparator<MessageInfoHolder>
@@ -912,7 +912,7 @@ public class MessageList
                     {
                         currentPosition = mListView.getFirstVisiblePosition();
                     }
-                    
+
                     if (currentPosition < mListView.getCount())
                     {
                         mListView.setSelection(currentPosition + 1);
@@ -1579,18 +1579,6 @@ public class MessageList
                 flagSelected(Flag.FLAGGED, false);
                 return true;
             }
-            case R.id.settings:
-            {
-                if (mQueryString == null)
-                {
-                    break;
-                }
-
-                /*
-                 * Fall-through in search results view. Otherwise a sub-menu
-                 * with only one option would be opened.
-                 */
-            }
             case R.id.app_settings:
             {
                 onEditPrefs();
@@ -1717,6 +1705,8 @@ public class MessageList
             menu.findItem(R.id.batch_copy_op).setVisible(false);
             menu.findItem(R.id.check_mail).setVisible(false);
             menu.findItem(R.id.send_messages).setVisible(false);
+            menu.findItem(R.id.folder_settings).setVisible(false);
+            menu.findItem(R.id.account_settings).setVisible(false);
         }
         else
         {
