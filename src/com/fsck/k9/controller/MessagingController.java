@@ -4584,7 +4584,7 @@ public class MessagingController implements Runnable
                 {
                     subject = context.getString(R.string.general_no_subject);
                 }
-                
+
                 if (from != null)
                 {
                     // Show From: address by default
@@ -4599,7 +4599,7 @@ public class MessagingController implements Runnable
                         {
                             return false;
                         }
-                        
+
                         Address[] rcpts = message.getRecipients(Message.RecipientType.TO);
                         String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
                         if (to != null)
@@ -4609,9 +4609,9 @@ public class MessagingController implements Runnable
                         else
                         {
                             messageNotice.append(context.getString(R.string.general_no_sender) + ": "+subject);
-                            
+
                         }
-                        
+
                     }
                 }
             }

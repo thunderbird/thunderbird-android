@@ -1319,24 +1319,24 @@ public class MessageView extends K9Activity implements OnClickListener
         builder.setTitle(R.string.dialog_confirm_delete_title);
         builder.setMessage(R.string.dialog_confirm_delete_message);
         builder.setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
-                new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dismissDialog(id);
-                        delete();
-                    }
-                });
+                                  new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dismissDialog(id);
+                delete();
+            }
+        });
         builder.setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
-                new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dismissDialog(id);
-                    }
-                });
+                                  new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dismissDialog(id);
+            }
+        });
         final AlertDialog dialog = builder.create();
         return dialog;
     }

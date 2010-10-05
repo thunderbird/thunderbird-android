@@ -243,11 +243,13 @@ public class Prefs extends K9PreferenceActivity
         {
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
-                if ((boolean)(Boolean)newValue == true) {
+                if ((boolean)(Boolean)newValue == true)
+                {
                     onChooseRegisteredNameColor();
                     mChangeRegisteredNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
                 }
-                else {
+                else
+                {
                     mChangeRegisteredNameColor.setSummary(R.string.global_settings_registered_name_color_default);
                 }
                 mChangeRegisteredNameColor.setChecked((Boolean)newValue);

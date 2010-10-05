@@ -1022,7 +1022,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"",
                              attachment.contentType,
                              EncoderUtil.encodeIfNecessary(attachment.name,
-                                                           EncoderUtil.Usage.WORD_ENTITY, 7)));
+                                     EncoderUtil.Usage.WORD_ENTITY, 7)));
 
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
 
@@ -1874,37 +1874,40 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 if (quotedText == null)
                 {
                     part =  MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                    if (part != null) {
+                    if (part != null)
+                    {
                         quotedText = MimeUtility.getTextFromPart(part);
                     }
                 }
                 if (quotedText == null)
                 {
                     part =  MimeUtility.findFirstPartByMimeType(message, "text/html");
-                    if (part != null) {
+                    if (part != null)
+                    {
                         quotedText = (Html.fromHtml(MimeUtility.getTextFromPart(part))).toString();
-                        }
+                    }
                 }
 
 
+                if (quotedText != null)
+                {
+                    String text = String.format(
+                                      getString(R.string.message_compose_fwd_header_fmt),
+                                      mSourceMessage.getSubject(),
+                                      Address.toString(mSourceMessage.getFrom()),
+                                      Address.toString(
+                                          mSourceMessage.getRecipients(RecipientType.TO)),
+                                      Address.toString(
+                                          mSourceMessage.getRecipients(RecipientType.CC)));
                     if (quotedText != null)
                     {
-                        String text = String.format(
-                                          getString(R.string.message_compose_fwd_header_fmt),
-                                          mSourceMessage.getSubject(),
-                                          Address.toString(mSourceMessage.getFrom()),
-                                          Address.toString(
-                                              mSourceMessage.getRecipients(RecipientType.TO)),
-                                          Address.toString(
-                                              mSourceMessage.getRecipients(RecipientType.CC)));
-                        if (quotedText != null) {
 
                         quotedText = quotedText.replaceAll("\\\r", "");
                         mQuotedText.setText(text);
                         mQuotedText.append(quotedText);
-                        }
-                        mQuotedTextBar.setVisibility(View.VISIBLE);
-                        mQuotedText.setVisibility(View.VISIBLE);
+                    }
+                    mQuotedTextBar.setVisibility(View.VISIBLE);
+                    mQuotedText.setVisibility(View.VISIBLE);
                 }
                 if (!mSourceMessageProcessed)
                 {

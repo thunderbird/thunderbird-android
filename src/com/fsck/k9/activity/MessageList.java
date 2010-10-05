@@ -74,8 +74,8 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
  * From this Activity the user can perform all standard message operations.
  */
 public class MessageList
-        extends K9Activity
-        implements OnClickListener, AdapterView.OnItemClickListener
+    extends K9Activity
+    implements OnClickListener, AdapterView.OnItemClickListener
 {
 
     /**
@@ -318,7 +318,8 @@ public class MessageList
 
     private Context context = null;
 
-    /* package visibility for faster inner class access */ MessageHelper mMessageHelper = MessageHelper.getInstance(this);
+    /* package visibility for faster inner class access */
+    MessageHelper mMessageHelper = MessageHelper.getInstance(this);
 
     class MessageListHandler
     {
@@ -1883,7 +1884,7 @@ public class MessageList
                 return true;
 
             float deltaX = e2.getX() - e1.getX(),
-                           deltaY = e2.getY() - e1.getY();
+                  deltaY = e2.getY() - e1.getY();
 
             boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
             boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
@@ -2746,7 +2747,7 @@ public class MessageList
     }
 
     class MessageViewHolder
-            implements OnCheckedChangeListener
+        implements OnCheckedChangeListener
     {
         public TextView subject;
         public TextView preview;

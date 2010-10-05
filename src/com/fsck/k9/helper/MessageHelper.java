@@ -51,7 +51,7 @@ public class MessageHelper
     }
 
     public void populate(final MessageInfoHolder target, final Message m,
-            final FolderInfoHolder folder, final Account account)
+                         final FolderInfoHolder folder, final Account account)
     {
         final Contacts contactHelper = Contacts.getInstance(mContext);
         try

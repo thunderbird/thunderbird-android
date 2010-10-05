@@ -326,7 +326,7 @@ public class Account implements BaseAccount
         mNotificationSetting.setVibrateTimes(prefs.getInt(mUuid + ".vibrateTimes", 5));
         mNotificationSetting.setRing(prefs.getBoolean(mUuid + ".ring", true));
         mNotificationSetting.setRingtone(prefs.getString(mUuid  + ".ringtone",
-                                       "content://settings/system/notification_sound"));
+                                         "content://settings/system/notification_sound"));
         mNotificationSetting.setLed(prefs.getBoolean(mUuid + ".led", true));
         mNotificationSetting.setLedColor(prefs.getInt(mUuid+".ledColor", mChipColor));
 

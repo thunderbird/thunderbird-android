@@ -180,7 +180,8 @@ public class LocalStore extends Store implements Serializable
                             + "DELETE FROM headers where old.id = message_id; END;");
             }
             else
-            { // in the case that we're starting out at 29 or newer, run all the needed updates
+            {
+                // in the case that we're starting out at 29 or newer, run all the needed updates
 
                 if (mDb.getVersion() < 30)
                 {

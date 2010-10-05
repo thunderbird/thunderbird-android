@@ -38,7 +38,8 @@ public class Address
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
     private static Map<String,String> sContactsName = new ConcurrentHashMap<String, String>();
 
-    public static void clearContactsNameCache() {
+    public static void clearContactsNameCache()
+    {
         sContactsName.clear();
     }
 
@@ -263,16 +264,18 @@ public class Address
 
             if (name != null && name != NO_ENTRY)
             {
-                if (K9.changeRegisteredNameColor()) {
+                if (K9.changeRegisteredNameColor())
+                {
                     SpannableString sname = new SpannableString(name);
                     sname.setSpan(new ForegroundColorSpan(K9.getRegisteredNameColor()),
                                   0,
                                   sname.length(),
                                   Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                  );
+                                 );
                     return sname;
                 }
-                else {
+                else
+                {
                     return name;
                 }
             }
@@ -287,19 +290,22 @@ public class Address
                         {
                             cursor.moveToFirst();
                             name = contacts.getName(cursor); // name might return null
-                            if (name != null) {
+                            if (name != null)
+                            {
                                 sContactsName.put(mAddress, name);
 
-                                if (K9.changeRegisteredNameColor()) {
+                                if (K9.changeRegisteredNameColor())
+                                {
                                     SpannableString sname = new SpannableString(name);
                                     sname.setSpan(new ForegroundColorSpan(K9.getRegisteredNameColor()),
                                                   0,
                                                   sname.length(),
                                                   Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                                  );
+                                                 );
                                     return sname;
                                 }
-                                else {
+                                else
+                                {
                                     return name;
                                 }
                             }

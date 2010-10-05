@@ -38,7 +38,7 @@ public class MessageProvider extends ContentProvider
     {
         /**
          * The path this instance is able to respond to.
-         * 
+         *
          * @return Never <code>null</code>.
          */
         String getPath();
@@ -54,7 +54,7 @@ public class MessageProvider extends ContentProvider
          * @see {@link ContentProvider#query(Uri, String[], String, String[], String)}
          */
         Cursor query(Uri uri, String[] projection,
-                String selection, String[] selectionArgs, String sortOrder) throws Exception;
+                     String selection, String[] selectionArgs, String sortOrder) throws Exception;
     }
 
     /**
@@ -71,7 +71,7 @@ public class MessageProvider extends ContentProvider
 
         @Override
         public Cursor query(final Uri uri, final String[] projection, final String selection,
-                final String[] selectionArgs, final String sortOrder) throws Exception
+                            final String[] selectionArgs, final String sortOrder) throws Exception
         {
             return getMessages(projection);
         }
@@ -94,13 +94,13 @@ public class MessageProvider extends ContentProvider
             final MessagingController msgController = MessagingController.getInstance(K9.app);
 
             msgController.searchLocalMessages(integratedInboxAccount, null,
-                    new MesssageInfoHolderRetrieverListener(queue));
+                                              new MesssageInfoHolderRetrieverListener(queue));
 
             final List<MessageInfoHolder> holders = queue.take();
 
             // TODO add sort order parameter
             Collections.sort(holders, new MessageList.ReverseComparator<MessageInfoHolder>(
-                    new MessageList.DateComparator()));
+                                 new MessageList.DateComparator()));
 
             int id = -1;
             for (final MessageInfoHolder holder : holders)
@@ -109,17 +109,18 @@ public class MessageProvider extends ContentProvider
                 id++;
 
                 cursor.addRow(new Object[]
-                {
-                        id,
-                        holder.fullDate,
-                        holder.sender,
-                        holder.subject,
-                        holder.preview,
-                        holder.account,
-                        holder.uri,
-                        CONTENT_URI + "/delete_message/"
-                                + message.getFolder().getAccount().getAccountNumber() + "/"
-                                + message.getFolder().getName() + "/" + message.getUid() });
+                              {
+                                  id,
+                                  holder.fullDate,
+                                  holder.sender,
+                                  holder.subject,
+                                  holder.preview,
+                                  holder.account,
+                                  holder.uri,
+                                  CONTENT_URI + "/delete_message/"
+                                  + message.getFolder().getAccount().getAccountNumber() + "/"
+                                  + message.getFolder().getName() + "/" + message.getUid()
+                              });
             }
             return cursor;
         }
@@ -140,7 +141,7 @@ public class MessageProvider extends ContentProvider
 
         @Override
         public Cursor query(final Uri uri, String[] projection, String selection,
-                String[] selectionArgs, String sortOrder) throws Exception
+                            String[] selectionArgs, String sortOrder) throws Exception
         {
             return getAllAccounts();
         }
@@ -179,7 +180,7 @@ public class MessageProvider extends ContentProvider
 
         @Override
         public Cursor query(final Uri uri, String[] projection, String selection,
-                String[] selectionArgs, String sortOrder) throws Exception
+                            String[] selectionArgs, String sortOrder) throws Exception
         {
             List<String> segments = null;
             int accountId = -1;
@@ -261,7 +262,7 @@ public class MessageProvider extends ContentProvider
                 final Account messageAccount = messageFolder.getAccount();
 
                 helper.populate(messageInfoHolder, message, new FolderInfoHolder(context,
-                        messageFolder, messageAccount), messageAccount);
+                                messageFolder, messageAccount), messageAccount);
 
                 holders.add(messageInfoHolder);
             }
@@ -419,7 +420,7 @@ public class MessageProvider extends ContentProvider
 
     @Override
     public Cursor query(final Uri uri, final String[] projection, final String selection,
-            final String[] selectionArgs, final String sortOrder)
+                        final String[] selectionArgs, final String sortOrder)
     {
         if (K9.app == null)
         {
@@ -477,7 +478,7 @@ public class MessageProvider extends ContentProvider
     /**
      * Register a {@link QueryHandler} to handle a certain {@link Uri} for
      * {@link #query(Uri, String[], String, String[], String)}
-     * 
+     *
      * @param handler
      *            Never <code>null</code>.
      */

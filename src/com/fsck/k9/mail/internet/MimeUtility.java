@@ -388,7 +388,8 @@ public class MimeUtility
             String extension = filename.substring(filename.lastIndexOf('.')+1).toLowerCase();
             returnedType = android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         }
-        if (returnedType != null) {
+        if (returnedType != null)
+        {
             return returnedType;
         }
         else

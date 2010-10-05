@@ -530,7 +530,7 @@ public class SmtpTransport extends Transport
 //    S: 235 2.0.0 OK Authenticated
 
     private void saslAuthLogin(String username, String password) throws MessagingException,
-                AuthenticationFailedException, IOException
+        AuthenticationFailedException, IOException
     {
         try
         {
@@ -550,7 +550,7 @@ public class SmtpTransport extends Transport
     }
 
     private void saslAuthPlain(String username, String password) throws MessagingException,
-                AuthenticationFailedException, IOException
+        AuthenticationFailedException, IOException
     {
         byte[] data = ("\000" + username + "\000" + password).getBytes();
         data = new Base64().encode(data);
@@ -570,7 +570,7 @@ public class SmtpTransport extends Transport
     }
 
     private void saslAuthCramMD5(String username, String password) throws MessagingException,
-                AuthenticationFailedException, IOException
+        AuthenticationFailedException, IOException
     {
         List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
         if (respList.size() != 1) throw new AuthenticationFailedException("Unable to negotiate CRAM-MD5");

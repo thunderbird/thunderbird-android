@@ -40,7 +40,7 @@ public class K9 extends Application
     {
         /**
          * Called when the Application instance is available and ready.
-         * 
+         *
          * @param application
          *            The application instance. Never <code>null</code>.
          * @throws Exception
@@ -55,7 +55,7 @@ public class K9 extends Application
     /**
      * Components that are interested in knowing when the K9 instance is
      * available and ready.
-     * 
+     *
      * @see ApplicationAware
      */
     private static List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
@@ -547,7 +547,7 @@ public class K9 extends Application
 
     /**
      * Register a component to be notified when the {@link K9} instance is ready.
-     * 
+     *
      * @param component
      *            Never <code>null</code>.
      */
@@ -695,11 +695,13 @@ public class K9 extends Application
         mChangeRegisteredNameColor = checkboxes;
     }
 
-    public static int getRegisteredNameColor() {
+    public static int getRegisteredNameColor()
+    {
         return mRegisteredNameColor;
     }
 
-    public static void setRegisteredNameColor(int registeredNameColor) {
+    public static void setRegisteredNameColor(int registeredNameColor)
+    {
         mRegisteredNameColor = registeredNameColor;
     }
 
