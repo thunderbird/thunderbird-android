@@ -1317,7 +1317,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Log.v(K9.LOG_TAG, "old attachment.size: " + attachment.size);
         }
         Log.v(K9.LOG_TAG, "new attachment.size: " + attachment.size);
+        addAttachmentView(attachment);
 
+    }
+
+    private void addAttachmentView(Attachment attachment)
+    {
         View view = getLayoutInflater().inflate(R.layout.message_compose_attachment, mAttachments, false);
         TextView nameView = (TextView)view.findViewById(R.id.attachment_name);
         ImageButton delete = (ImageButton)view.findViewById(R.id.attachment_delete);
