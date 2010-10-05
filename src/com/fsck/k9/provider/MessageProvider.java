@@ -1,18 +1,31 @@
 package com.fsck.k9.provider;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
+import android.database.CharArrayBuffer;
+import android.database.ContentObserver;
+import android.database.CrossProcessCursor;
 import android.database.Cursor;
+import android.database.CursorWindow;
+import android.database.DataSetObserver;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -225,6 +238,291 @@ public class MessageProvider extends ContentProvider
         }
     }
 
+    protected class ThrottlingQueryHandler implements QueryHandler
+    {
+
+        protected final class MonitoredCursor implements CrossProcessCursor
+        {
+            private CrossProcessCursor mCursor;
+
+            public void close()
+            {
+                mCursor.close();
+                if (mClosed.compareAndSet(false, true))
+                {
+                    Log.d(K9.LOG_TAG, "Cursor closed, releasing semaphore");
+                    mSemaphore.release();
+                }
+            }
+
+            public void fillWindow(int pos, CursorWindow winow)
+            {
+                mCursor.fillWindow(pos, winow);
+            }
+
+            public CursorWindow getWindow()
+            {
+                return mCursor.getWindow();
+            }
+
+            public boolean onMove(int oldPosition, int newPosition)
+            {
+                return mCursor.onMove(oldPosition, newPosition);
+            }
+
+            private AtomicBoolean mClosed = new AtomicBoolean(false);
+
+
+            protected MonitoredCursor(final CrossProcessCursor cursor)
+            {
+                this.mCursor = cursor;
+            }
+
+            public void copyStringToBuffer(int columnIndex, CharArrayBuffer buffer)
+            {
+                mCursor.copyStringToBuffer(columnIndex, buffer);
+            }
+
+            public void deactivate()
+            {
+                mCursor.deactivate();
+            }
+
+            public byte[] getBlob(int columnIndex)
+            {
+                return mCursor.getBlob(columnIndex);
+            }
+
+            public int getColumnCount()
+            {
+                return mCursor.getColumnCount();
+            }
+
+            public int getColumnIndex(String columnName)
+            {
+                return mCursor.getColumnIndex(columnName);
+            }
+
+            public int getColumnIndexOrThrow(String columnName) throws IllegalArgumentException
+            {
+                return mCursor.getColumnIndexOrThrow(columnName);
+            }
+
+            public String getColumnName(int columnIndex)
+            {
+                return mCursor.getColumnName(columnIndex);
+            }
+
+            public String[] getColumnNames()
+            {
+                return mCursor.getColumnNames();
+            }
+
+            public int getCount()
+            {
+                return mCursor.getCount();
+            }
+
+            public double getDouble(int columnIndex)
+            {
+                return mCursor.getDouble(columnIndex);
+            }
+
+            public Bundle getExtras()
+            {
+                return mCursor.getExtras();
+            }
+
+            public float getFloat(int columnIndex)
+            {
+                return mCursor.getFloat(columnIndex);
+            }
+
+            public int getInt(int columnIndex)
+            {
+                return mCursor.getInt(columnIndex);
+            }
+
+            public long getLong(int columnIndex)
+            {
+                return mCursor.getLong(columnIndex);
+            }
+
+            public int getPosition()
+            {
+                return mCursor.getPosition();
+            }
+
+            public short getShort(int columnIndex)
+            {
+                return mCursor.getShort(columnIndex);
+            }
+
+            public String getString(int columnIndex)
+            {
+                return mCursor.getString(columnIndex);
+            }
+
+            public boolean getWantsAllOnMoveCalls()
+            {
+                return mCursor.getWantsAllOnMoveCalls();
+            }
+
+            public boolean isAfterLast()
+            {
+                return mCursor.isAfterLast();
+            }
+
+            public boolean isBeforeFirst()
+            {
+                return mCursor.isBeforeFirst();
+            }
+
+            public boolean isClosed()
+            {
+                return mCursor.isClosed();
+            }
+
+            public boolean isFirst()
+            {
+                return mCursor.isFirst();
+            }
+
+            public boolean isLast()
+            {
+                return mCursor.isLast();
+            }
+
+            public boolean isNull(int columnIndex)
+            {
+                return mCursor.isNull(columnIndex);
+            }
+
+            public boolean move(int offset)
+            {
+                return mCursor.move(offset);
+            }
+
+            public boolean moveToFirst()
+            {
+                return mCursor.moveToFirst();
+            }
+
+            public boolean moveToLast()
+            {
+                return mCursor.moveToLast();
+            }
+
+            public boolean moveToNext()
+            {
+                return mCursor.moveToNext();
+            }
+
+            public boolean moveToPosition(int position)
+            {
+                return mCursor.moveToPosition(position);
+            }
+
+            public boolean moveToPrevious()
+            {
+                return mCursor.moveToPrevious();
+            }
+
+            public void registerContentObserver(ContentObserver observer)
+            {
+                mCursor.registerContentObserver(observer);
+            }
+
+            public void registerDataSetObserver(DataSetObserver observer)
+            {
+                mCursor.registerDataSetObserver(observer);
+            }
+
+            public boolean requery()
+            {
+                return mCursor.requery();
+            }
+
+            public Bundle respond(Bundle extras)
+            {
+                return mCursor.respond(extras);
+            }
+
+            public void setNotificationUri(ContentResolver cr, Uri uri)
+            {
+                mCursor.setNotificationUri(cr, uri);
+            }
+
+            public void unregisterContentObserver(ContentObserver observer)
+            {
+                mCursor.unregisterContentObserver(observer);
+            }
+
+            public void unregisterDataSetObserver(DataSetObserver observer)
+            {
+                mCursor.unregisterDataSetObserver(observer);
+            }
+        }
+
+        private QueryHandler mDelegate;
+
+        public ThrottlingQueryHandler(final QueryHandler delegate)
+        {
+            mDelegate = delegate;
+        }
+
+        @Override
+        public String getPath()
+        {
+            return mDelegate.getPath();
+        }
+
+        @Override
+        public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+                String sortOrder) throws Exception
+        {
+            mSemaphore.acquire();
+
+            final Cursor cursor;
+            cursor = mDelegate.query(uri, projection, selection, selectionArgs, sortOrder);
+
+            /* Android content resolvers can only process CrossProcessCursor instances */
+            if (cursor == null || !(cursor instanceof CrossProcessCursor))
+            {
+                return null;
+            }
+
+            final MonitoredCursor wrapped = new MonitoredCursor((CrossProcessCursor) cursor);
+
+            /* use a weak reference not to actively prevent garbage collection */
+            final WeakReference<MonitoredCursor> weakReference = new WeakReference<MonitoredCursor>(wrapped);
+
+            /* make sure the cursor is closed after 30 seconds */
+            mScheduledPool.schedule(new Runnable() {
+
+                @Override
+                public void run()
+                {
+                    final MonitoredCursor monitored = weakReference.get();
+                    if (monitored != null && monitored.mClosed.compareAndSet(false, true))
+                    {
+                        Log.w(K9.LOG_TAG, "Forcibly closing remotely exposed cursor");
+                        try
+                        {
+                            monitored.close();
+                        }
+                        catch (Exception e)
+                        {
+                            Log.w(K9.LOG_TAG, "Exception while forcibly closing cursor", e);
+                        }
+                    }
+                }}, 30, TimeUnit.SECONDS);
+            
+            return wrapped;
+        }
+        
+    }
+
     /**
      * Synchronized listener used to retrieve {@link MessageInfoHolder}s using a
      * given {@link BlockingQueue}.
@@ -312,14 +610,18 @@ public class MessageProvider extends ContentProvider
 
     private MessageHelper mMessageHelper;
 
+    /* package */ Semaphore mSemaphore = new Semaphore(1);
+
+    /* package */ ScheduledExecutorService mScheduledPool = Executors.newScheduledThreadPool(1);
+
     @Override
     public boolean onCreate()
     {
         mMessageHelper = MessageHelper.getInstance(getContext());
 
-        registerQueryHandler(new AccountsQueryHandler());
-        registerQueryHandler(new MessagesQueryHandler());
-        registerQueryHandler(new UnreadQueryHandler());
+        registerQueryHandler(new ThrottlingQueryHandler(new AccountsQueryHandler()));
+        registerQueryHandler(new ThrottlingQueryHandler(new MessagesQueryHandler()));
+        registerQueryHandler(new ThrottlingQueryHandler(new UnreadQueryHandler()));
 
         return true;
     }
