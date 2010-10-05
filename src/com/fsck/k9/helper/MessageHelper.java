@@ -113,7 +113,6 @@ public class MessageHelper
             target.message = m;
             target.preview = message.getPreview();
 
-            target.fullDate = mDateFormat.format(date) + " " + mTimeFormat.format(date);
             target.account = account.getDescription();
             target.uri = "email://messages/" + account.getAccountNumber() + "/" + m.getFolder().getName() + "/" + m.getUid();
 

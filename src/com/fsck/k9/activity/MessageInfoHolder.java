@@ -7,7 +7,6 @@ public class MessageInfoHolder
 {
     public String subject;
     public String date;
-    public String fullDate;
     public Date compareDate;
     public String compareSubject;
     public CharSequence sender;

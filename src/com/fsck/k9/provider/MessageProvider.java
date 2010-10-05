@@ -124,7 +124,7 @@ public class MessageProvider extends ContentProvider
                 cursor.addRow(new Object[]
                               {
                                   id,
-                                  holder.fullDate,
+                                  message.getSentDate().getTime(),
                                   holder.sender,
                                   holder.subject,
                                   holder.preview,
