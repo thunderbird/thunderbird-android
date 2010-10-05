@@ -326,9 +326,14 @@ public class MessageProvider extends ContentProvider
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs)
     {
+        if (K9.app == null)
+        {
+            return 0;
+        }
+
         if (K9.DEBUG)
         {
-            Log.v(K9.LOG_TAG, "delete");
+            Log.v(K9.LOG_TAG, "MessageProvider/delete: " + uri);
         }
 
         // Nota : can only delete a message
@@ -376,18 +381,39 @@ public class MessageProvider extends ContentProvider
             MessagingController.getInstance(K9.app).deleteMessages(new Message[] { msg }, null);
         }
 
+        // FIXME return the actual number of deleted messages
         return 0;
     }
 
     @Override
     public String getType(Uri uri)
     {
+        if (K9.app == null)
+        {
+            return null;
+        }
+
+        if (K9.DEBUG)
+        {
+            Log.v(K9.LOG_TAG, "MessageProvider/getType: " + uri);
+        }
+
         return null;
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues values)
     {
+        if (K9.app == null)
+        {
+            return null;
+        }
+
+        if (K9.DEBUG)
+        {
+            Log.v(K9.LOG_TAG, "MessageProvider/insert: " + uri);
+        }
+
         return null;
     }
 
@@ -395,6 +421,16 @@ public class MessageProvider extends ContentProvider
     public Cursor query(final Uri uri, final String[] projection, final String selection,
             final String[] selectionArgs, final String sortOrder)
     {
+        if (K9.app == null)
+        {
+            return null;
+        }
+
+        if (K9.DEBUG)
+        {
+            Log.v(K9.LOG_TAG, "MessageProvider/query: " + uri);
+        }
+
         final Cursor cursor;
 
         final int code = mUriMatcher.match(uri);
@@ -423,10 +459,14 @@ public class MessageProvider extends ContentProvider
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
     {
+        if (K9.app == null)
+        {
+            return 0;
+        }
 
         if (K9.DEBUG)
         {
-            Log.v(K9.LOG_TAG, "update");
+            Log.v(K9.LOG_TAG, "MessageProvider/update: " + uri);
         }
 
 //TBD
