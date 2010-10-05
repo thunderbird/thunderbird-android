@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.OpenableColumns;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
@@ -1861,18 +1862,31 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     mSubjectView.setText(message.getSubject());
                 }
-                Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                if (part == null)
+
+                String quotedText = null;
+                Part part = null;
+
+                if ( mSourceMessageBody != null)
                 {
-                    part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+                    quotedText = mSourceMessageBody;
                 }
-                if (part != null || mSourceMessageBody != null)
+
+                if (quotedText == null)
                 {
-                    String quotedText = mSourceMessageBody;
-                    if (quotedText == null)
-                    {
+                    part =  MimeUtility.findFirstPartByMimeType(message, "text/plain");
+                    if (part != null) {
                         quotedText = MimeUtility.getTextFromPart(part);
                     }
+                }
+                if (quotedText == null)
+                {
+                    part =  MimeUtility.findFirstPartByMimeType(message, "text/html");
+                    if (part != null) {
+                        quotedText = (Html.fromHtml(MimeUtility.getTextFromPart(part))).toString();
+                        }
+                }
+
+
                     if (quotedText != null)
                     {
                         String text = String.format(
@@ -1883,12 +1897,14 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                                               mSourceMessage.getRecipients(RecipientType.TO)),
                                           Address.toString(
                                               mSourceMessage.getRecipients(RecipientType.CC)));
+                        if (quotedText != null) {
+
                         quotedText = quotedText.replaceAll("\\\r", "");
-                        text += quotedText;
                         mQuotedText.setText(text);
+                        mQuotedText.append(quotedText);
+                        }
                         mQuotedTextBar.setVisibility(View.VISIBLE);
                         mQuotedText.setVisibility(View.VISIBLE);
-                    }
                 }
                 if (!mSourceMessageProcessed)
                 {
