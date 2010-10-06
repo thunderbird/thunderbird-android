@@ -245,6 +245,7 @@ public class MessageProvider extends ContentProvider
         {
             private CrossProcessCursor mCursor;
 
+            @Override
             public void close()
             {
                 mCursor.close();
@@ -255,16 +256,19 @@ public class MessageProvider extends ContentProvider
                 }
             }
 
+            @Override
             public void fillWindow(int pos, CursorWindow winow)
             {
                 mCursor.fillWindow(pos, winow);
             }
 
+            @Override
             public CursorWindow getWindow()
             {
                 return mCursor.getWindow();
             }
 
+            @Override
             public boolean onMove(int oldPosition, int newPosition)
             {
                 return mCursor.onMove(oldPosition, newPosition);
@@ -278,111 +282,133 @@ public class MessageProvider extends ContentProvider
                 this.mCursor = cursor;
             }
 
+            @Override
             public void copyStringToBuffer(int columnIndex, CharArrayBuffer buffer)
             {
                 mCursor.copyStringToBuffer(columnIndex, buffer);
             }
 
+            @Override
             public void deactivate()
             {
                 mCursor.deactivate();
             }
 
+            @Override
             public byte[] getBlob(int columnIndex)
             {
                 return mCursor.getBlob(columnIndex);
             }
 
+            @Override
             public int getColumnCount()
             {
                 return mCursor.getColumnCount();
             }
 
+            @Override
             public int getColumnIndex(String columnName)
             {
                 return mCursor.getColumnIndex(columnName);
             }
 
+            @Override
             public int getColumnIndexOrThrow(String columnName) throws IllegalArgumentException
             {
                 return mCursor.getColumnIndexOrThrow(columnName);
             }
 
+            @Override
             public String getColumnName(int columnIndex)
             {
                 return mCursor.getColumnName(columnIndex);
             }
 
+            @Override
             public String[] getColumnNames()
             {
                 return mCursor.getColumnNames();
             }
 
+            @Override
             public int getCount()
             {
                 return mCursor.getCount();
             }
 
+            @Override
             public double getDouble(int columnIndex)
             {
                 return mCursor.getDouble(columnIndex);
             }
 
+            @Override
             public Bundle getExtras()
             {
                 return mCursor.getExtras();
             }
 
+            @Override
             public float getFloat(int columnIndex)
             {
                 return mCursor.getFloat(columnIndex);
             }
 
+            @Override
             public int getInt(int columnIndex)
             {
                 return mCursor.getInt(columnIndex);
             }
 
+            @Override
             public long getLong(int columnIndex)
             {
                 return mCursor.getLong(columnIndex);
             }
 
+            @Override
             public int getPosition()
             {
                 return mCursor.getPosition();
             }
 
+            @Override
             public short getShort(int columnIndex)
             {
                 return mCursor.getShort(columnIndex);
             }
 
+            @Override
             public String getString(int columnIndex)
             {
                 return mCursor.getString(columnIndex);
             }
 
+            @Override
             public boolean getWantsAllOnMoveCalls()
             {
                 return mCursor.getWantsAllOnMoveCalls();
             }
 
+            @Override
             public boolean isAfterLast()
             {
                 return mCursor.isAfterLast();
             }
 
+            @Override
             public boolean isBeforeFirst()
             {
                 return mCursor.isBeforeFirst();
             }
 
+            @Override
             public boolean isClosed()
             {
                 return mCursor.isClosed();
             }
 
+            @Override
             public boolean isFirst()
             {
                 return mCursor.isFirst();
@@ -393,71 +419,85 @@ public class MessageProvider extends ContentProvider
                 return mCursor.isLast();
             }
 
+            @Override
             public boolean isNull(int columnIndex)
             {
                 return mCursor.isNull(columnIndex);
             }
 
+            @Override
             public boolean move(int offset)
             {
                 return mCursor.move(offset);
             }
 
+            @Override
             public boolean moveToFirst()
             {
                 return mCursor.moveToFirst();
             }
 
+            @Override
             public boolean moveToLast()
             {
                 return mCursor.moveToLast();
             }
 
+            @Override
             public boolean moveToNext()
             {
                 return mCursor.moveToNext();
             }
 
+            @Override
             public boolean moveToPosition(int position)
             {
                 return mCursor.moveToPosition(position);
             }
 
+            @Override
             public boolean moveToPrevious()
             {
                 return mCursor.moveToPrevious();
             }
 
+            @Override
             public void registerContentObserver(ContentObserver observer)
             {
                 mCursor.registerContentObserver(observer);
             }
 
+            @Override
             public void registerDataSetObserver(DataSetObserver observer)
             {
                 mCursor.registerDataSetObserver(observer);
             }
 
+            @Override
             public boolean requery()
             {
                 return mCursor.requery();
             }
 
+            @Override
             public Bundle respond(Bundle extras)
             {
                 return mCursor.respond(extras);
             }
 
+            @Override
             public void setNotificationUri(ContentResolver cr, Uri uri)
             {
                 mCursor.setNotificationUri(cr, uri);
             }
 
+            @Override
             public void unregisterContentObserver(ContentObserver observer)
             {
                 mCursor.unregisterContentObserver(observer);
             }
 
+            @Override
             public void unregisterDataSetObserver(DataSetObserver observer)
             {
                 mCursor.unregisterDataSetObserver(observer);
