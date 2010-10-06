@@ -1,7 +1,5 @@
 package com.fsck.k9.mail.store;
 
-import android.util.Log;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -64,10 +62,6 @@ public class ImapResponseParser
             {
                 response.mTag = parseTaggedResponse();
                 readTokens(response);
-            }
-            if (K9.DEBUG && K9.DEBUG_PROTOCOL_IMAP)
-            {
-                Log.v(K9.LOG_TAG, "<<< " + response.toString());
             }
 
             if (mException != null)
