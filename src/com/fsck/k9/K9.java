@@ -534,6 +534,10 @@ public class K9 extends Application
     {
         for (final ApplicationAware aware : observers)
         {
+            if (K9.DEBUG)
+            {
+                Log.v(K9.LOG_TAG, "Initializing observer: " + aware);
+            }
             try
             {
                 aware.initializeComponent(this);

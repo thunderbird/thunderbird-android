@@ -26,6 +26,7 @@ import android.database.DataSetObserver;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -46,6 +47,31 @@ import com.fsck.k9.mail.store.LocalStore;
 
 public class MessageProvider extends ContentProvider
 {
+
+    public static interface MessageColumns extends BaseColumns
+    {
+        /**
+         * The number of milliseconds since Jan. 1, 1970, midnight GMT.
+         * 
+         * <P>Type: INTEGER (long)</P>
+         */
+        String SEND_DATE = "date";
+
+        /**
+         * <P>Type: TEXT</P>
+         */
+        String SENDER = "sender";
+
+        /**
+         * <P>Type: TEXT</P>
+         */
+        String SUBJECT = "subject";
+
+        /**
+         * <P>Type: TEXT</P>
+         */
+        String PREVIEW = "preview";
+    }
 
     protected interface QueryHandler
     {
@@ -626,11 +652,11 @@ public class MessageProvider extends ContentProvider
 
     private static final String[] DEFAULT_MESSAGE_PROJECTION = new String[]
     {
-        "id",
-        "date",
-        "sender",
-        "subject",
-        "preview",
+        MessageColumns._ID,
+        MessageColumns.SEND_DATE,
+        MessageColumns.SENDER,
+        MessageColumns.SUBJECT,
+        MessageColumns.PREVIEW,
         "account",
         "uri",
         "delUri"
@@ -662,6 +688,23 @@ public class MessageProvider extends ContentProvider
         registerQueryHandler(new ThrottlingQueryHandler(new AccountsQueryHandler()));
         registerQueryHandler(new ThrottlingQueryHandler(new MessagesQueryHandler()));
         registerQueryHandler(new ThrottlingQueryHandler(new UnreadQueryHandler()));
+
+        K9.registerApplicationAware(new K9.ApplicationAware()
+        {
+            @Override
+            public void initializeComponent(final K9 application) throws Exception
+            {
+                Log.v(K9.LOG_TAG, "Registering content resolver notifier");
+
+                MessagingController.getInstance(application).addListener(new MessagingListener() {
+                    @Override
+                    public void searchStats(final AccountStats stats)
+                    {
+                        application.getContentResolver().notifyChange(CONTENT_URI, null);
+                    }
+                });
+            }
+        });
 
         return true;
     }
