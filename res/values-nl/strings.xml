@@ -82,8 +82,8 @@
 
 
     <string name="accounts_action">Accounts</string>
-    <string name="back_to_accounts_action">???</string>
-    <string name="back_to_folder_list_action">???</string>
+    <string name="back_to_accounts_action">◀</string>
+    <string name="back_to_folder_list_action">◀</string>
     <string name="read_action">Lees</string>
     <string name="mark_as_read_action">Markeer als gelezen</string>
     <string name="send_alternate_action">Doorsturen met een andere app</string>
