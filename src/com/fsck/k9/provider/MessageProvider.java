@@ -52,7 +52,7 @@ public class MessageProvider extends ContentProvider
     {
         /**
          * The number of milliseconds since Jan. 1, 1970, midnight GMT.
-         * 
+         *
          * <P>Type: INTEGER (long)</P>
          */
         String SEND_DATE = "date";
@@ -545,7 +545,7 @@ public class MessageProvider extends ContentProvider
 
         @Override
         public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                String sortOrder) throws Exception
+                            String sortOrder) throws Exception
         {
             mSemaphore.acquire();
 
@@ -564,7 +564,8 @@ public class MessageProvider extends ContentProvider
             final WeakReference<MonitoredCursor> weakReference = new WeakReference<MonitoredCursor>(wrapped);
 
             /* make sure the cursor is closed after 30 seconds */
-            mScheduledPool.schedule(new Runnable() {
+            mScheduledPool.schedule(new Runnable()
+            {
 
                 @Override
                 public void run()
@@ -582,11 +583,12 @@ public class MessageProvider extends ContentProvider
                             Log.w(K9.LOG_TAG, "Exception while forcibly closing cursor", e);
                         }
                     }
-                }}, 30, TimeUnit.SECONDS);
-            
+                }
+            }, 30, TimeUnit.SECONDS);
+
             return wrapped;
         }
-        
+
     }
 
     /**
@@ -676,9 +678,11 @@ public class MessageProvider extends ContentProvider
 
     private MessageHelper mMessageHelper;
 
-    /* package */ Semaphore mSemaphore = new Semaphore(1);
+    /* package */
+    Semaphore mSemaphore = new Semaphore(1);
 
-    /* package */ ScheduledExecutorService mScheduledPool = Executors.newScheduledThreadPool(1);
+    /* package */
+    ScheduledExecutorService mScheduledPool = Executors.newScheduledThreadPool(1);
 
     @Override
     public boolean onCreate()
@@ -696,7 +700,8 @@ public class MessageProvider extends ContentProvider
             {
                 Log.v(K9.LOG_TAG, "Registering content resolver notifier");
 
-                MessagingController.getInstance(application).addListener(new MessagingListener() {
+                MessagingController.getInstance(application).addListener(new MessagingListener()
+                {
                     @Override
                     public void searchStats(final AccountStats stats)
                     {
