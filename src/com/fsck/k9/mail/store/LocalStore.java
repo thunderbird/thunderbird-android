@@ -44,7 +44,7 @@ public class LocalStore extends Store implements Serializable
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final int DB_VERSION = 38;
+    private static final int DB_VERSION = 39;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
     private String mPath;
@@ -272,6 +272,19 @@ public class LocalStore extends Store implements Serializable
 
 
                 // Database version 38 is solely to prune cached attachments now that we clear them better
+                if (mDb.getVersion() < 39)
+                {
+                    try
+                    {
+                        mDb.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
+                    }
+                    catch (SQLiteException e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
+                    }
+                }
+
+
 
             }
 
