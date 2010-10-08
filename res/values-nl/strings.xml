@@ -239,7 +239,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Laad meer berichten</string>
-    <string name="message_list_to_fmt">Aan:</string>
+    <string name="message_list_to_fmt">Aan:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_list_delete_action">Verwijder</string>
     <string name="message_list_mark_read_action">Markeer als gelezen</string>
     <string name="message_list_mark_unread_action">Markeer als ongelezen</string>

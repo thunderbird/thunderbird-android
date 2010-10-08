@@ -89,7 +89,7 @@ public class MessageHelper
             {
                 CharSequence to = Address.toFriendly(message .getRecipients(RecipientType.TO), contactHelper);
                 target.compareCounterparty = to.toString();
-                target.sender = new SpannableStringBuilder(mContext.getString(R.string.message_list_to_fmt)).append(to);
+                target.sender = new SpannableStringBuilder(String.format(mContext.getString(R.string.message_list_to_fmt), to));
             }
             else
             {
