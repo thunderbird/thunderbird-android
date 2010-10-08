@@ -369,7 +369,6 @@ public class MessageList
                                 index = Collections.binarySearch(mAdapter.messages, message, getComparator());
                             }
 
-                            Log.v(K9.LOG_TAG," Index was "+index + "For "+message.subject);
                             if (index < 0)
                             {
                                 index = (index * -1) - 1;
