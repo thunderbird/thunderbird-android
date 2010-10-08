@@ -771,11 +771,11 @@ public class MessageList
 
         mController.addListener(mAdapter.mListener);
         mAdapter.messages.clear();
-        mAdapter.notifyDataSetChanged();
+        mAdapter.markAllMessagesAsDirty();
 
         if (mFolderName != null)
         {
-            mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
+            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
             mController.notifyAccountCancel(this, mAccount);
 
             MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
@@ -788,6 +788,8 @@ public class MessageList
         }
 
         mHandler.refreshTitle();
+        mAdapter.pruneDirtyMessages();
+        mAdapter.notifyDataSetChanged();
 
         restoreListState();
     }
@@ -2239,6 +2241,24 @@ public class MessageList
         {
             mAttachmentIcon = getResources().getDrawable(R.drawable.ic_mms_attachment_small);
             mAnsweredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
+        }
+
+        public void markAllMessagesAsDirty()
+        {
+            for (MessageInfoHolder holder : mAdapter.messages)
+            {
+                holder.dirty = true;
+            }
+        }
+        public void pruneDirtyMessages()
+        {
+            for (MessageInfoHolder holder : mAdapter.messages)
+            {
+                if (holder.dirty)
+                {
+                    removeMessage(holder);
+                }
+            }
         }
 
         public void removeMessages(List<MessageInfoHolder> holders)

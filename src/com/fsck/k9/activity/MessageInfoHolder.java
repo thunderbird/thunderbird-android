@@ -21,6 +21,7 @@ public class MessageInfoHolder
     public boolean flagged;
     public boolean downloaded;
     public boolean partially_downloaded;
+    public boolean dirty;
     public Message message;
     public FolderInfoHolder folder;
     public boolean selected;
