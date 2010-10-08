@@ -2266,6 +2266,11 @@ public class MessageList
                 MessageInfoHolder holder = iter.next();
                 if (holder.dirty)
                 {
+                    if (holder.selected)
+                    {
+                        mSelectedCount--;
+                        toggleBatchButtons();
+                    }
                     iter.remove();
                 }
             }
