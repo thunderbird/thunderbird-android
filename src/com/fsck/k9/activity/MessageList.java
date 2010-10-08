@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -368,6 +369,7 @@ public class MessageList
                                 index = Collections.binarySearch(mAdapter.messages, message, getComparator());
                             }
 
+                            Log.v(K9.LOG_TAG," Index was "+index + "For "+message.subject);
                             if (index < 0)
                             {
                                 index = (index * -1) - 1;
@@ -770,12 +772,18 @@ public class MessageList
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
-        mAdapter.messages.clear();
         mAdapter.markAllMessagesAsDirty();
 
         if (mFolderName != null)
         {
-            mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+            if (mAdapter.messages.isEmpty())
+            {
+                mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
+            }
+            else
+            {
+                mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+            }
             mController.notifyAccountCancel(this, mAccount);
 
             MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
@@ -2252,11 +2260,13 @@ public class MessageList
         }
         public void pruneDirtyMessages()
         {
-            for (MessageInfoHolder holder : mAdapter.messages)
+            Iterator<MessageInfoHolder> iter = mAdapter.messages.iterator();
+            while (iter.hasNext())
             {
+                MessageInfoHolder holder = iter.next();
                 if (holder.dirty)
                 {
-                    removeMessage(holder);
+                    iter.remove();
                 }
             }
         }
@@ -2342,6 +2352,7 @@ public class MessageList
                             }
                             else
                             {
+                                m.dirty = false; // as we reload the message, unset its dirty flag
                                 messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
                                 needsSort = true;
                             }
