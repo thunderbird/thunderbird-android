@@ -141,6 +141,7 @@ public class K9 extends Application
     private static boolean mMessageListCheckboxes = false;
     private static boolean mMessageListTouchable = false;
 
+    private static boolean mShowContactName = false;
     private static boolean mChangeRegisteredNameColor = false;
     private static int mRegisteredNameColor = 0xff00008f;
     private static boolean mMessageViewFixedWidthFont = false;
@@ -380,7 +381,7 @@ public class K9 extends Application
         editor.putBoolean("messageListCheckboxes",mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
 
-
+        editor.putBoolean("showContactName",mShowContactName);
         editor.putBoolean("changeRegisteredNameColor",mChangeRegisteredNameColor);
         editor.putInt("registeredNameColor",mRegisteredNameColor);
         editor.putBoolean("messageViewFixedWidthFont",mMessageViewFixedWidthFont);
@@ -421,6 +422,7 @@ public class K9 extends Application
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
 
+        mShowContactName = sprefs.getBoolean("showContactName", false);
         mChangeRegisteredNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
         mRegisteredNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
@@ -687,6 +689,16 @@ public class K9 extends Application
     public static void setMessageListCheckboxes(boolean checkboxes)
     {
         mMessageListCheckboxes = checkboxes;
+    }
+
+    public static boolean showContactName()
+    {
+        return mShowContactName;
+    }
+
+    public static void setShowContactName(boolean showContactName)
+    {
+        mShowContactName = showContactName;
     }
 
     public static boolean changeRegisteredNameColor()

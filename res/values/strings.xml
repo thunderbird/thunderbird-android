@@ -314,6 +314,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_touchable_label">Message previews</string>
     <string name="global_settings_touchable_summary">Roomier list items with message previews</string>
 
+    <string name="global_settings_show_contact_name_label">Show names from Contacts</string>
+    <string name="global_settings_show_contact_name_summary">Show recipient names from Contacts if available</string>
     <string name="global_settings_registered_name_color_label">Colorize contacts</string>
     <string name="global_settings_registered_name_color_default">Don\'t colorize names in your contact list</string>
     <string name="global_settings_registered_name_color_changed">Colorize names in your contact list</string>
@@ -660,8 +662,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_ringtone">New mail ringtone</string>
     <string name="account_settings_led_label">Blink LED</string>
     <string name="account_settings_led_summary">Blink LED when mail arrives</string>
-    
-    
+
+
     <string name="account_settings_servers">Server settings</string>
 
     <string name="account_settings_composition_title">Message composition options</string>

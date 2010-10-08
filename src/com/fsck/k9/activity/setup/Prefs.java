@@ -49,7 +49,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
     private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
     private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
-
+    private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
     private static final String PREFERENCE_CHANGE_REGISTERED_NAME_COLOR = "change_registered_name_color";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
@@ -76,7 +76,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mStars;
     private CheckBoxPreference mCheckboxes;
     private CheckBoxPreference mTouchable;
-
+    private CheckBoxPreference mShowContactName;
     private CheckBoxPreference mChangeRegisteredNameColor;
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
@@ -232,6 +232,9 @@ public class Prefs extends K9PreferenceActivity
 
         mTouchable = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_TOUCHABLE);
         mTouchable.setChecked(K9.messageListTouchable());
+
+        mShowContactName = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME);
+        mShowContactName.setChecked(K9.showContactName());
 
         mChangeRegisteredNameColor = (CheckBoxPreference)findPreference(PREFERENCE_CHANGE_REGISTERED_NAME_COLOR);
         mChangeRegisteredNameColor.setChecked(K9.changeRegisteredNameColor());
