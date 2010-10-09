@@ -3,6 +3,7 @@ package com.fsck.k9.provider;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -71,6 +72,16 @@ public class MessageProvider extends ContentProvider
          * <P>Type: TEXT</P>
          */
         String PREVIEW = "preview";
+
+        String ACCOUNT = "account";
+        String URI = "uri";
+        String DELETE_URI = "delUri";
+
+        /**
+         * @deprecated the field value is misnamed/misleading - present for compatibility purpose only. To be removed.
+         */
+        @Deprecated
+        String INCREMENT = "id";
     }
 
     protected interface QueryHandler
@@ -94,6 +105,119 @@ public class MessageProvider extends ContentProvider
          */
         Cursor query(Uri uri, String[] projection,
                      String selection, String[] selectionArgs, String sortOrder) throws Exception;
+    }
+
+    /**
+     * Extracts a value from an object.
+     *
+     * @param <T>
+     * @param <K>
+     */
+    public static interface FieldExtractor<T, K>
+    {
+        K getField(T source);
+    }
+
+    /**
+     * Extracts the {@link LocalStore.LocalMessage#getId() ID} from the given
+     * {@link MessageInfoHolder}. The underlying {@link Message} is expected to
+     * be a {@link LocalStore.LocalMessage}.
+     */
+    public static class IdExtractor implements FieldExtractor<MessageInfoHolder, Long>
+    {
+        @Override
+        public Long getField(final MessageInfoHolder source)
+        {
+            return ((LocalStore.LocalMessage) source.message).getId();
+        }
+    }
+    public static class CountExtractor<T> implements FieldExtractor<T, Integer>
+    {
+        private Integer mCount;
+        public CountExtractor(final int count)
+        {
+            mCount = count;
+        }
+        @Override
+        public Integer getField(final T source)
+        {
+            return mCount;
+        }
+    }
+    public static class SubjectExtractor implements FieldExtractor<MessageInfoHolder, String>
+    {
+        @Override
+        public String getField(final MessageInfoHolder source)
+        {
+            return source.subject;
+        }
+    }
+    public static class SendDateExtractor implements FieldExtractor<MessageInfoHolder, Long>
+    {
+        @Override
+        public Long getField(final MessageInfoHolder source)
+        {
+            return source.message.getSentDate().getTime();
+        }
+    }
+    public static class PreviewExtractor implements FieldExtractor<MessageInfoHolder, String>
+    {
+        @Override
+        public String getField(final MessageInfoHolder source)
+        {
+            return source.preview;
+        }
+    }
+    public static class UriExtractor implements FieldExtractor<MessageInfoHolder, String>
+    {
+        @Override
+        public String getField(final MessageInfoHolder source)
+        {
+            return source.uri;
+        }
+    }
+    public static class DeleteUriExtractor implements FieldExtractor<MessageInfoHolder, String>
+    {
+        @Override
+        public String getField(final MessageInfoHolder source)
+        {
+            final Message message = source.message;
+            return CONTENT_URI + "/delete_message/"
+                    + message.getFolder().getAccount().getAccountNumber() + "/"
+                    + message.getFolder().getName() + "/" + message.getUid();
+        }
+    }
+    public static class SenderExtractor implements FieldExtractor<MessageInfoHolder, CharSequence>
+    {
+        @Override
+        public CharSequence getField(final MessageInfoHolder source)
+        {
+            return source.sender;
+        }
+    }
+    public static class AccountExtractor implements FieldExtractor<MessageInfoHolder, String>
+    {
+        @Override
+        public String getField(final MessageInfoHolder source)
+        {
+            return source.message.getFolder().getAccount().getDescription();
+        }
+    }
+
+    /**
+     * @deprecated having an incremential value has no real interest,
+     *             implemented for compatibility only
+     */
+    @Deprecated
+    // TODO remove
+    public static class IncrementExtractor implements FieldExtractor<MessageInfoHolder, Integer>
+    {
+        private int count = 0;
+        @Override
+        public Integer getField(final MessageInfoHolder source)
+        {
+            return count++;
+        }
     }
 
     /**
@@ -124,8 +248,6 @@ public class MessageProvider extends ContentProvider
          */
         protected MatrixCursor getMessages(final String[] projection) throws InterruptedException
         {
-            // TODO use the given projection if prevent
-            final MatrixCursor cursor = new MatrixCursor(DEFAULT_MESSAGE_PROJECTION);
             final BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<List<MessageInfoHolder>>();
 
             // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
@@ -141,27 +263,92 @@ public class MessageProvider extends ContentProvider
             Collections.sort(holders, new MessageList.ReverseComparator<MessageInfoHolder>(
                                  new MessageList.DateComparator()));
 
-            int id = -1;
+            final String[] projectionToUse;
+            if (projection == null)
+            {
+                projectionToUse = DEFAULT_MESSAGE_PROJECTION;
+            }
+            else
+            {
+                projectionToUse = projection;
+            }
+
+            final LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> extractors = resolveMessageExtractors(projectionToUse, holders.size());
+            final int fieldCount = extractors.size();
+
+            final String[] actualProjection = extractors.keySet().toArray(new String[fieldCount]);
+            final MatrixCursor cursor = new MatrixCursor(actualProjection);
+
             for (final MessageInfoHolder holder : holders)
             {
-                final Message message = holder.message;
-                id++;
+                final Object[] o = new Object[fieldCount];
 
-                cursor.addRow(new Object[]
-                              {
-                                  id,
-                                  message.getSentDate().getTime(),
-                                  holder.sender,
-                                  holder.subject,
-                                  holder.preview,
-                                  holder.account,
-                                  holder.uri,
-                                  CONTENT_URI + "/delete_message/"
-                                  + message.getFolder().getAccount().getAccountNumber() + "/"
-                                  + message.getFolder().getName() + "/" + message.getUid()
-                              });
+                int i = 0;
+                for (final FieldExtractor<MessageInfoHolder, ?> extractor : extractors.values())
+                {
+                    o[i] = extractor.getField(holder);
+                    i += 1;
+                }
+
+                cursor.addRow(o);
             }
+
             return cursor;
+        }
+
+        // returns LinkedHashMap (rather than Map) to emphasize the inner element ordering
+        protected LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> resolveMessageExtractors(final String[] projection, int count)
+        {
+            final LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> extractors = new LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>>();
+
+            for (final String field : projection)
+            {
+                if (extractors.containsKey(field))
+                {
+                    continue;
+                }
+                if (MessageColumns._ID.equals(field))
+                {
+                    extractors.put(field, new IdExtractor());
+                }
+                else if (MessageColumns._COUNT.equals(field))
+                {
+                    extractors.put(field, new CountExtractor<MessageInfoHolder>(count));
+                }
+                else if (MessageColumns.SUBJECT.equals(field))
+                {
+                    extractors.put(field, new SubjectExtractor());
+                }
+                else if (MessageColumns.SENDER.equals(field))
+                {
+                    extractors.put(field, new SenderExtractor());
+                }
+                else if (MessageColumns.SEND_DATE.equals(field))
+                {
+                    extractors.put(field, new SendDateExtractor());
+                }
+                else if (MessageColumns.PREVIEW.equals(field))
+                {
+                    extractors.put(field, new PreviewExtractor());
+                }
+                else if (MessageColumns.URI.equals(field))
+                {
+                    extractors.put(field, new UriExtractor());
+                }
+                else if (MessageColumns.DELETE_URI.equals(field))
+                {
+                    extractors.put(field, new DeleteUriExtractor());
+                }
+                else if (MessageColumns.ACCOUNT.equals(field))
+                {
+                    extractors.put(field, new AccountExtractor());
+                }
+                else if (MessageColumns.INCREMENT.equals(field))
+                {
+                    extractors.put(field, new IncrementExtractor());
+                }
+            }
+            return extractors;
         }
 
     }
@@ -659,9 +846,9 @@ public class MessageProvider extends ContentProvider
         MessageColumns.SENDER,
         MessageColumns.SUBJECT,
         MessageColumns.PREVIEW,
-        "account",
-        "uri",
-        "delUri"
+        MessageColumns.ACCOUNT,
+        MessageColumns.URI,
+        MessageColumns.DELETE_URI
     };
 
     /**
