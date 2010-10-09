@@ -313,6 +313,7 @@ public class Prefs extends K9PreferenceActivity
         K9.setMessageListCheckboxes(mCheckboxes.isChecked());
         K9.setMessageListTouchable(mTouchable.isChecked());
 
+        K9.setShowContactName(mShowContactName.isChecked());
         K9.setChangeRegisteredNameColor(mChangeRegisteredNameColor.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
