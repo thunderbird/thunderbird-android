@@ -1455,8 +1455,6 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 final Address senderEmail = mMessage.getFrom()[0];
                 mContacts.createContact(this, senderEmail);
-
-                Address.clearContactsNameCache();
             }
             catch (Exception e)
             {
@@ -2170,11 +2168,12 @@ public class MessageView extends K9Activity implements OnClickListener
                             final Message message) throws MessagingException
     {
         String subjectText = message.getSubject();
-        CharSequence fromText = Address.toFriendly(message.getFrom(), mContacts);
+        final Contacts contacts = K9.showContactName() ? mContacts : null;
+        CharSequence fromText = Address.toFriendly(message.getFrom(), contacts);
         String dateText = getDateFormat().format(message.getSentDate());
         String timeText = getTimeFormat().format(message.getSentDate());
-        CharSequence toText = Address.toFriendly(message.getRecipients(RecipientType.TO), mContacts);
-        CharSequence ccText = Address.toFriendly(message.getRecipients(RecipientType.CC), mContacts);
+        CharSequence toText = Address.toFriendly(message.getRecipients(RecipientType.TO), contacts);
+        CharSequence ccText = Address.toFriendly(message.getRecipients(RecipientType.CC), contacts);
 
         int color = mAccount.getChipColor();
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;

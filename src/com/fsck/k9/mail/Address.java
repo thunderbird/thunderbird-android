@@ -1,9 +1,6 @@
 
 package com.fsck.k9.mail;
 
-import android.database.Cursor;
-import android.graphics.Color;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -23,27 +20,27 @@ import org.apache.james.mime4j.field.address.NamedMailbox;
 import org.apache.james.mime4j.field.address.parser.ParseException;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Address
 {
+    /**
+     * If the number of addresses exceeds this value the addresses aren't
+     * resolved to the names of Android contacts.
+     *
+     * <p>
+     * TODO: This number was chosen arbitrarily and should be determined by
+     * performance tests.
+     * </p>
+     *
+     * @see Address#toFriendly(Address[], Contacts)
+     */
+    private static final int TOO_MANY_ADDRESSES = 50;
 
     /**
      * Immutable empty {@link Address} array
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
-    private static Map<String,String> sContactsName = new ConcurrentHashMap<String, String>();
-
-    public static void clearContactsNameCache()
-    {
-        sContactsName.clear();
-    }
-
-    private static final String NO_ENTRY = "";
 
     String mAddress;
 
@@ -256,81 +253,46 @@ public class Address
         return toFriendly((Contacts)null);
     }
 
-    public CharSequence toFriendly(Contacts contacts)
+    /**
+     * Returns the name of the contact this email address belongs to if
+     * the {@link Contacts contacts} parameter is not {@code null} and a
+     * contact is found. Otherwise the personal portion of the {@link Address}
+     * is returned. If that isn't available either, the email address is
+     * returned.
+     *
+     * @param contacts
+     *         A {@link Contacts} instance or {@code null}.
+     * @return
+     *         A "friendly" name for this {@link Address}.
+     */
+    public CharSequence toFriendly(final Contacts contacts)
     {
         if (contacts != null)
         {
-            String name = sContactsName.get(mAddress);
+            final String name = contacts.getNameForAddress(mAddress);
 
-            if (name != null && name != NO_ENTRY)
+            // TODO: The results should probably be cached for performance reasons.
+
+            if (name != null)
             {
                 if (K9.changeRegisteredNameColor())
                 {
-                    SpannableString sname = new SpannableString(name);
-                    sname.setSpan(new ForegroundColorSpan(K9.getRegisteredNameColor()),
+                    final SpannableString coloredName = new SpannableString(name);
+                    coloredName.setSpan(new ForegroundColorSpan(K9.getRegisteredNameColor()),
                                   0,
-                                  sname.length(),
+                                  coloredName.length(),
                                   Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                 );
-                    return sname;
+                                  );
+                    return coloredName;
                 }
                 else
                 {
                     return name;
                 }
             }
-            if (name == null)
-            {
-                Cursor cursor = contacts.searchByAddress(mAddress);
-                if (cursor != null)
-                {
-                    try
-                    {
-                        if (cursor.getCount() > 0)
-                        {
-                            cursor.moveToFirst();
-                            name = contacts.getName(cursor); // name might return null
-                            if (name != null)
-                            {
-                                sContactsName.put(mAddress, name);
-
-                                if (K9.changeRegisteredNameColor())
-                                {
-                                    SpannableString sname = new SpannableString(name);
-                                    sname.setSpan(new ForegroundColorSpan(K9.getRegisteredNameColor()),
-                                                  0,
-                                                  sname.length(),
-                                                  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                                 );
-                                    return sname;
-                                }
-                                else
-                                {
-                                    return name;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            sContactsName.put(mAddress, NO_ENTRY);
-                        }
-                    }
-                    finally
-                    {
-                        // cursor.close(); // TODO: should close cursor.
-                    }
-                }
-            }
         }
 
-        if (mPersonal != null && mPersonal.length() > 0)
-        {
-            return mPersonal;
-        }
-        else
-        {
-            return mAddress;
-        }
+        return ((mPersonal != null) && (mPersonal.length() > 0)) ? mPersonal : mAddress;
     }
 
     public static CharSequence toFriendly(Address[] addresses)
@@ -344,6 +306,13 @@ public class Address
         {
             return null;
         }
+
+        if (addresses.length >= TOO_MANY_ADDRESSES)
+        {
+            // Don't look up contacts if the number of addresses is very high.
+            contacts = null;
+        }
+
         SpannableStringBuilder sb = new SpannableStringBuilder();
         for (int i = 0; i < addresses.length; i++)
         {

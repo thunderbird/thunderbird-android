@@ -150,10 +150,14 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
     }
 
     @Override
-    public Cursor searchByAddress(String address)
+    public String getNameForAddress(String address)
     {
-        final String filter = (address == null) ? "" : address;
-        final Uri uri = Uri.withAppendedPath(Email.CONTENT_FILTER_URI, Uri.encode(filter));
+        if (address == null)
+        {
+            return null;
+        }
+
+        final Uri uri = Uri.withAppendedPath(Email.CONTENT_LOOKUP_URI, Uri.encode(address));
         final Cursor c = mContentResolver.query(
                              uri,
                              PROJECTION,
@@ -161,20 +165,18 @@ public class ContactsSdk5 extends com.fsck.k9.helper.Contacts
                              null,
                              SORT_ORDER);
 
+        String name = null;
         if (c != null)
         {
-            /*
-             * To prevent expensive execution in the UI thread:
-             * Cursors get lazily executed, so if you don't call anything on
-             * the cursor before returning it from the background thread you'll
-             * have a complied program for the cursor, but it won't have been
-             * executed to generate the data yet. Often the execution is more
-             * expensive than the compilation...
-             */
-            c.getCount();
+            if (c.getCount() > 0)
+            {
+                c.moveToFirst();
+                name = getName(c);
+            }
+            c.close();
         }
 
-        return c;
+        return name;
     }
 
     @Override

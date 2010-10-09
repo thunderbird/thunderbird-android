@@ -53,7 +53,7 @@ public class MessageHelper
     public void populate(final MessageInfoHolder target, final Message m,
                          final FolderInfoHolder folder, final Account account)
     {
-        final Contacts contactHelper = Contacts.getInstance(mContext);
+        final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
         try
         {
             LocalMessage message = (LocalMessage) m;
