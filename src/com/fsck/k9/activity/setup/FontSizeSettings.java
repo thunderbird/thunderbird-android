@@ -74,24 +74,54 @@ public class FontSizeSettings extends K9PreferenceActivity
         FontSizes fontSizes = K9.getFontSizes();
         addPreferencesFromResource(R.xml.font_preferences);
 
-        mAccountName = initializeListPreference(PREFERENCE_ACCOUNT_NAME_FONT, fontSizes.getAccountName());
-        mAccountDescription = initializeListPreference(PREFERENCE_ACCOUNT_DESCRIPTION_FONT, fontSizes.getAccountDescription());
+        mAccountName = setupListPreference(
+                PREFERENCE_ACCOUNT_NAME_FONT,
+                Integer.toString(fontSizes.getAccountName()));
+        mAccountDescription = setupListPreference(
+                PREFERENCE_ACCOUNT_DESCRIPTION_FONT,
+                Integer.toString(fontSizes.getAccountDescription()));
 
-        mFolderName = initializeListPreference(PREFERENCE_FOLDER_NAME_FONT, fontSizes.getFolderName());
-        mFolderStatus = initializeListPreference(PREFERENCE_FOLDER_STATUS_FONT, fontSizes.getFolderStatus());
+        mFolderName = setupListPreference(
+                PREFERENCE_FOLDER_NAME_FONT,
+                Integer.toString(fontSizes.getFolderName()));
+        mFolderStatus = setupListPreference(
+                PREFERENCE_FOLDER_STATUS_FONT,
+                Integer.toString(fontSizes.getFolderStatus()));
 
-        mMessageListSubject = initializeListPreference(PREFERENCE_MESSAGE_LIST_SUBJECT_FONT, fontSizes.getMessageListSubject());
-        mMessageListSender = initializeListPreference(PREFERENCE_MESSAGE_LIST_SENDER_FONT, fontSizes.getMessageListSender());
-        mMessageListDate = initializeListPreference(PREFERENCE_MESSAGE_LIST_DATE_FONT, fontSizes.getMessageListDate());
+        mMessageListSubject = setupListPreference(
+                PREFERENCE_MESSAGE_LIST_SUBJECT_FONT,
+                Integer.toString(fontSizes.getMessageListSubject()));
+        mMessageListSender = setupListPreference(
+                PREFERENCE_MESSAGE_LIST_SENDER_FONT,
+                Integer.toString(fontSizes.getMessageListSender()));
+        mMessageListDate = setupListPreference(
+                PREFERENCE_MESSAGE_LIST_DATE_FONT,
+                Integer.toString(fontSizes.getMessageListDate()));
 
-        mMessageViewSender = initializeListPreference(PREFERENCE_MESSAGE_VIEW_SENDER_FONT, fontSizes.getMessageViewSender());
-        mMessageViewTo = initializeListPreference(PREFERENCE_MESSAGE_VIEW_TO_FONT, fontSizes.getMessageViewTo());
-        mMessageViewCC = initializeListPreference(PREFERENCE_MESSAGE_VIEW_CC_FONT, fontSizes.getMessageViewCC());
-        mMessageViewAdditionalHeaders = initializeListPreference(PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT, fontSizes.getMessageViewAdditionalHeaders());
-        mMessageViewSubject = initializeListPreference(PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT, fontSizes.getMessageViewSubject());
-        mMessageViewTime = initializeListPreference(PREFERENCE_MESSAGE_VIEW_TIME_FONT, fontSizes.getMessageViewTime());
-        mMessageViewDate = initializeListPreference(PREFERENCE_MESSAGE_VIEW_DATE_FONT, fontSizes.getMessageViewDate());
-        mMessageViewContent = initializeListPreference(PREFERENCE_MESSAGE_VIEW_CONTENT_FONT, fontSizes.getMessageViewContentAsInt());
+        mMessageViewSender = setupListPreference(
+                PREFERENCE_MESSAGE_VIEW_SENDER_FONT,
+                Integer.toString(fontSizes.getMessageViewSender()));
+        mMessageViewTo = setupListPreference(
+                PREFERENCE_MESSAGE_VIEW_TO_FONT,
+                Integer.toString(fontSizes.getMessageViewTo()));
+        mMessageViewCC = setupListPreference(
+                PREFERENCE_MESSAGE_VIEW_CC_FONT,
+                Integer.toString(fontSizes.getMessageViewCC()));
+        mMessageViewAdditionalHeaders = setupListPreference(
+                PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT,
+                Integer.toString(fontSizes.getMessageViewAdditionalHeaders()));
+        mMessageViewSubject = setupListPreference(
+                PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT,
+                Integer.toString(fontSizes.getMessageViewSubject()));
+        mMessageViewTime = setupListPreference(
+                PREFERENCE_MESSAGE_VIEW_TIME_FONT,
+                Integer.toString(fontSizes.getMessageViewTime()));
+        mMessageViewDate = setupListPreference(
+                PREFERENCE_MESSAGE_VIEW_DATE_FONT,
+                Integer.toString(fontSizes.getMessageViewDate()));
+        mMessageViewContent = setupListPreference(
+                PREFERENCE_MESSAGE_VIEW_CONTENT_FONT,
+                Integer.toString(fontSizes.getMessageViewContentAsInt()));
     }
 
     /**
@@ -135,47 +165,5 @@ public class FontSizeSettings extends K9PreferenceActivity
             saveSettings();
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * Set up the ListPreference instance identified by <code>key</code>.
-     *
-     * @param key The key of the ListPreference object.
-     * @param value Initial value for the ListPreference object.
-     * @return The ListPreference instance identified by <code>key</code>.
-     */
-    private ListPreference initializeListPreference(String key, int value)
-    {
-        ListPreference prefView = (ListPreference) findPreference(key);
-        prefView.setValue(Integer.toString(value));
-        prefView.setSummary(prefView.getEntry());
-        prefView.setOnPreferenceChangeListener(new PreferenceChangeListener(prefView));
-        return prefView;
-    }
-
-    /**
-     * This class handles value changes of the ListPreference objects.
-     */
-    private class PreferenceChangeListener implements Preference.OnPreferenceChangeListener
-    {
-        private ListPreference mPrefView;
-
-        private PreferenceChangeListener(ListPreference prefView)
-        {
-            this.mPrefView = prefView;
-        }
-
-        /**
-         * Show the preference value in the preference summary field.
-         */
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue)
-        {
-            final String summary = newValue.toString();
-            int index = mPrefView.findIndexOfValue(summary);
-            mPrefView.setSummary(mPrefView.getEntries()[index]);
-            mPrefView.setValue(summary);
-            return false;
-        }
     }
 }
