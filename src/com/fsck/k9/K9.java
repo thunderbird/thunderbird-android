@@ -706,9 +706,9 @@ public class K9 extends Application
         return mChangeContactNameColor;
     }
 
-    public static void setChangeContactNameColor(boolean contactNameColor)
+    public static void setChangeContactNameColor(boolean changeContactNameColor)
     {
-        mChangeContactNameColor = contactNameColor;
+        mChangeContactNameColor = changeContactNameColor;
     }
 
     public static int getContactNameColor()
