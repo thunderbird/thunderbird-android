@@ -50,7 +50,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
     private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
-    private static final String PREFERENCE_CHANGE_REGISTERED_NAME_COLOR = "change_registered_name_color";
+    private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
     private static final String PREFERENCE_MESSAGEVIEW_FIXEDWIDTH = "messageview_fixedwidth_font";
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
 
@@ -77,7 +77,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mCheckboxes;
     private CheckBoxPreference mTouchable;
     private CheckBoxPreference mShowContactName;
-    private CheckBoxPreference mChangeRegisteredNameColor;
+    private CheckBoxPreference mChangeContactNameColor;
     private CheckBoxPreference mFixedWidth;
     private CheckBoxPreference mReturnToList;
 
@@ -236,26 +236,26 @@ public class Prefs extends K9PreferenceActivity
         mShowContactName = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME);
         mShowContactName.setChecked(K9.showContactName());
 
-        mChangeRegisteredNameColor = (CheckBoxPreference)findPreference(PREFERENCE_CHANGE_REGISTERED_NAME_COLOR);
-        mChangeRegisteredNameColor.setChecked(K9.changeRegisteredNameColor());
-        if (K9.changeRegisteredNameColor())
-            mChangeRegisteredNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
+        mChangeContactNameColor = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR);
+        mChangeContactNameColor.setChecked(K9.changeContactNameColor());
+        if (K9.changeContactNameColor())
+            mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
         else
-            mChangeRegisteredNameColor.setSummary(R.string.global_settings_registered_name_color_default);
-        mChangeRegisteredNameColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+            mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_default);
+        mChangeContactNameColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
                 if ((boolean)(Boolean)newValue == true)
                 {
-                    onChooseRegisteredNameColor();
-                    mChangeRegisteredNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
+                    onChooseContactNameColor();
+                    mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
                 }
                 else
                 {
-                    mChangeRegisteredNameColor.setSummary(R.string.global_settings_registered_name_color_default);
+                    mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_default);
                 }
-                mChangeRegisteredNameColor.setChecked((Boolean)newValue);
+                mChangeContactNameColor.setChecked((Boolean)newValue);
                 return false;
             }
         });
@@ -314,7 +314,7 @@ public class Prefs extends K9PreferenceActivity
         K9.setMessageListTouchable(mTouchable.isChecked());
 
         K9.setShowContactName(mShowContactName.isChecked());
-        K9.setChangeRegisteredNameColor(mChangeRegisteredNameColor.isChecked());
+        K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
 
@@ -358,15 +358,15 @@ public class Prefs extends K9PreferenceActivity
         FontSizeSettings.actionEditSettings(this);
     }
 
-    public void onChooseRegisteredNameColor()
+    public void onChooseContactNameColor()
     {
         new ColorPickerDialog(this, new ColorPickerDialog.OnColorChangedListener()
         {
             public void colorChanged(int color)
             {
-                K9.setRegisteredNameColor(color);
+                K9.setContactNameColor(color);
             }
         },
-        K9.getRegisteredNameColor()).show();
+        K9.getContactNameColor()).show();
     }
 }

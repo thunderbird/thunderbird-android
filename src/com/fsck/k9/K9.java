@@ -142,8 +142,8 @@ public class K9 extends Application
     private static boolean mMessageListTouchable = false;
 
     private static boolean mShowContactName = false;
-    private static boolean mChangeRegisteredNameColor = false;
-    private static int mRegisteredNameColor = 0xff00008f;
+    private static boolean mChangeContactNameColor = false;
+    private static int mContactNameColor = 0xff00008f;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
 
@@ -382,8 +382,8 @@ public class K9 extends Application
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
 
         editor.putBoolean("showContactName",mShowContactName);
-        editor.putBoolean("changeRegisteredNameColor",mChangeRegisteredNameColor);
-        editor.putInt("registeredNameColor",mRegisteredNameColor);
+        editor.putBoolean("changeRegisteredNameColor",mChangeContactNameColor);
+        editor.putInt("registeredNameColor",mContactNameColor);
         editor.putBoolean("messageViewFixedWidthFont",mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
 
@@ -423,8 +423,8 @@ public class K9 extends Application
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
 
         mShowContactName = sprefs.getBoolean("showContactName", false);
-        mChangeRegisteredNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
-        mRegisteredNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
+        mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
+        mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
 
@@ -701,24 +701,24 @@ public class K9 extends Application
         mShowContactName = showContactName;
     }
 
-    public static boolean changeRegisteredNameColor()
+    public static boolean changeContactNameColor()
     {
-        return mChangeRegisteredNameColor;
+        return mChangeContactNameColor;
     }
 
-    public static void setChangeRegisteredNameColor(boolean checkboxes)
+    public static void setChangeContactNameColor(boolean contactNameColor)
     {
-        mChangeRegisteredNameColor = checkboxes;
+        mChangeContactNameColor = contactNameColor;
     }
 
-    public static int getRegisteredNameColor()
+    public static int getContactNameColor()
     {
-        return mRegisteredNameColor;
+        return mContactNameColor;
     }
 
-    public static void setRegisteredNameColor(int registeredNameColor)
+    public static void setContactNameColor(int contactNameColor)
     {
-        mRegisteredNameColor = registeredNameColor;
+        mContactNameColor = contactNameColor;
     }
 
     public static boolean messageViewFixedWidthFont()

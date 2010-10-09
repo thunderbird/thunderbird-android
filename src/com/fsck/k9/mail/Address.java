@@ -275,10 +275,10 @@ public class Address
 
             if (name != null)
             {
-                if (K9.changeRegisteredNameColor())
+                if (K9.changeContactNameColor())
                 {
                     final SpannableString coloredName = new SpannableString(name);
-                    coloredName.setSpan(new ForegroundColorSpan(K9.getRegisteredNameColor()),
+                    coloredName.setSpan(new ForegroundColorSpan(K9.getContactNameColor()),
                                   0,
                                   coloredName.length(),
                                   Spannable.SPAN_EXCLUSIVE_EXCLUSIVE

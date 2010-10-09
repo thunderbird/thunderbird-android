@@ -127,7 +127,7 @@
             android:summary="@string/global_settings_show_contact_name_summary" />
 
         <CheckBoxPreference
-            android:key="change_registered_name_color"
+            android:key="messagelist_contact_name_color"
             android:title="@string/global_settings_registered_name_color_label"
             android:summary="@string/global_settings_registered_name_color_default"
             android:dependency="messagelist_show_contact_name" />
