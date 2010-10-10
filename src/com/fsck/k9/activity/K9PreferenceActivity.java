@@ -13,7 +13,10 @@ public class K9PreferenceActivity extends PreferenceActivity
     public void onCreate(Bundle icicle)
     {
         K9Activity.setLanguage(this, K9.getK9Language());
-        setTheme(K9.getK9Theme());
+        // http://code.google.com/p/k9mail/issues/detail?id=2439
+        // Re-enable themeing support in preferences when
+        // http://code.google.com/p/android/issues/detail?id=4611 is resolved
+        // setTheme(K9.getK9Theme());
         super.onCreate(icicle);
     }
 
