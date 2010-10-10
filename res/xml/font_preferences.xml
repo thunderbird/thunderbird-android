@@ -2,7 +2,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/font_size_account_list" android:key="account_list_fonts">
+    <PreferenceScreen android:title="@string/font_size_account_list" android:key="account_list_fonts">
 
         <ListPreference
             android:key="account_name_font"
@@ -18,9 +18,9 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_account_description" />
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory android:title="@string/font_size_folder_list" android:key="folder_list_fonts">
+    <PreferenceScreen android:title="@string/font_size_folder_list" android:key="folder_list_fonts">
 
         <ListPreference
             android:key="folder_name_font"
@@ -36,9 +36,9 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_folder_status" />
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory android:title="@string/font_size_message_list" android:key="message_list_fonts">
+    <PreferenceScreen android:title="@string/font_size_message_list" android:key="message_list_fonts">
 
         <ListPreference
             android:key="message_list_subject_font"
@@ -61,9 +61,9 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_message_list_date" />
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory android:title="@string/font_size_message_view" android:key="message_view_fonts">
+    <PreferenceScreen android:title="@string/font_size_message_view" android:key="message_view_fonts">
 
         <ListPreference
             android:key="message_view_sender_font"
@@ -121,6 +121,6 @@
             android:entryValues="@array/font_values_webview"
             android:dialogTitle="@string/font_size_message_view_content" />
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
 </PreferenceScreen>
