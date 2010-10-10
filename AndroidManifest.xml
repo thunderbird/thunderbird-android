@@ -258,10 +258,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-<!--         <activity
+        <activity
             android:name="com.fsck.k9.AccessibleEmailContentActivity"
             >
-        </activity>-->
+        </activity>
 
         <receiver android:name="com.fsck.k9.service.BootReceiver"
               android:enabled="true"
