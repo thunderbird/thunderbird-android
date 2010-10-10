@@ -857,8 +857,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="manage_back_title">Manage \"Back\" button</string>
     <string name="manage_back_summary">Make \"Back\" always go up a level</string>
 
-    <string name="start_integrated_inbox_title">Start in Integrated Inbox</string>
-    <string name="start_integrated_inbox_summary">Show the Integrated Inbox after startup</string>
+    <string name="start_integrated_inbox_title">Start in Unified Inbox</string>
+    <string name="start_integrated_inbox_summary">Show the Unified Inbox after startup</string>
 
     <string name="measure_accounts_title">Show account size</string>
     <string name="measure_accounts_summary">Turn off for faster display</string>
@@ -873,13 +873,13 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="search_all_messages_title">All messages</string>
     <string name="search_all_messages_detail">All messages in searchable folders</string>
 
-    <string name="integrated_inbox_title">Integrated Inbox</string>
-    <string name="integrated_inbox_detail">All messages in integrated folders</string>
+    <string name="integrated_inbox_title">Unified Inbox</string>
+    <string name="integrated_inbox_detail">All messages in unified folders</string>
 
     <string name="tap_hint">Tap envelope or star for unread or starred messages</string>
 
-    <string name="folder_settings_include_in_integrated_inbox_label">Integrate</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Unread messages are shown in Integrated Inbox</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">All messages are shown in Unified Inbox</string>
 
     <string name="account_settings_searchable_label">Folders to search</string>
     <string name="account_settings_searchable_all">All</string>
