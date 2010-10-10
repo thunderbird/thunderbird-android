@@ -307,15 +307,15 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="about_version">Version: <xliff:g id="version">%s</xliff:g></string>
 
 
-    <string name="global_settings_flag_label">Message stars</string>
+    <string name="global_settings_flag_label">Show stars</string>
     <string name="global_settings_flag_summary">Stars indicate flagged messages</string>
     <string name="global_settings_checkbox_label">Multi-select checkboxes</string>
     <string name="global_settings_checkbox_summary">Always show multi-select checkboxes</string>
     <string name="global_settings_touchable_label">Message previews</string>
     <string name="global_settings_touchable_summary">Roomier list items with message previews</string>
 
-    <string name="global_settings_show_contact_name_label">Show names from Contacts</string>
-    <string name="global_settings_show_contact_name_summary">Show recipient names from Contacts if available</string>
+    <string name="global_settings_show_contact_name_label">Show contact names</string>
+    <string name="global_settings_show_contact_name_summary">Use recipient names from Contacts when available</string>
     <string name="global_settings_registered_name_color_label">Colorize contacts</string>
     <string name="global_settings_registered_name_color_default">Don\'t colorize names in your contact list</string>
     <string name="global_settings_registered_name_color_changed">Colorize names in your contact list</string>
@@ -787,11 +787,14 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_signature__location_after_quoted_text">After quoted text</string>
     <string name="setting_theme_dark">Dark</string>
     <string name="setting_theme_light">Light</string>
-    <string name="display_preferences">Global Preferences</string>
+    <string name="display_preferences">Display</string>
+    <string name="global_preferences">Global</string>
     <string name="debug_preferences">Debugging</string>
-    <string name="operational_preferences">Sync</string>
-    <string name="accountlist_preferences">Account List</string>
-    <string name="messagelist_preferences">Message Lists</string>
+    <string name="privacy_preferences">Privacy</string>
+    <string name="network_preferences">Network</string>
+    <string name="interaction_preferences">Interaction</string>
+    <string name="accountlist_preferences">Account list</string>
+    <string name="messagelist_preferences">Message lists</string>
     <string name="messageview_preferences">Messages</string>
     <string name="settings_theme_label">Theme</string>
     <string name="settings_language_label">Language</string>
@@ -846,7 +849,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="gestures_title">Gestures</string>
     <string name="gestures_summary">Accept gesture control</string>
 
-    <string name="volume_navigation_title">Volume up/down navigation</string>
+    <string name="volume_navigation_title">Volume key navigation</string>
     <string name="volume_navigation_summary">Flip through items using the volume controls</string>
     <string name="volume_navigation_message">Message view</string>
     <string name="volume_navigation_list">Various list views</string>
@@ -854,7 +857,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="manage_back_title">Manage \"Back\" button</string>
     <string name="manage_back_summary">Make \"Back\" always go up a level</string>
 
-    <string name="start_integrated_inbox_title">Integrated Inbox on start</string>
+    <string name="start_integrated_inbox_title">Start in Integrated Inbox</string>
     <string name="start_integrated_inbox_summary">Show the Integrated Inbox after startup</string>
 
     <string name="measure_accounts_title">Show account size</string>
@@ -893,24 +896,24 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="font_size_account_name">Account name</string>
     <string name="font_size_account_description">Account description</string>
 
-    <string name="font_size_folder_list">Folder list</string>
+    <string name="font_size_folder_list">Folder lists</string>
     <string name="font_size_folder_name">Folder name</string>
     <string name="font_size_folder_status">Folder status</string>
 
-    <string name="font_size_message_list">Message list</string>
-    <string name="font_size_message_list_subject">Message subject</string>
-    <string name="font_size_message_list_sender">Message sender</string>
-    <string name="font_size_message_list_date">Message date</string>
+    <string name="font_size_message_list">Message lists</string>
+    <string name="font_size_message_list_subject">Subject</string>
+    <string name="font_size_message_list_sender">Sender</string>
+    <string name="font_size_message_list_date">Date</string>
 
-    <string name="font_size_message_view">Message view</string>
-    <string name="font_size_message_view_sender">Message sender</string>
-    <string name="font_size_message_view_to">Message receiver (To)</string>
-    <string name="font_size_message_view_cc">Message receiver (CC)</string>
+    <string name="font_size_message_view">Messages</string>
+    <string name="font_size_message_view_sender">Sender</string>
+    <string name="font_size_message_view_to">To</string>
+    <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_additional_headers">Additional headers</string>
-    <string name="font_size_message_view_subject">Message subject</string>
-    <string name="font_size_message_view_time">Message time</string>
-    <string name="font_size_message_view_date">Message date</string>
-    <string name="font_size_message_view_content">Message content</string>
+    <string name="font_size_message_view_subject">Subject</string>
+    <string name="font_size_message_view_time">Time</string>
+    <string name="font_size_message_view_date">Date</string>
+    <string name="font_size_message_view_content">Message body</string>
 
     <string name="font_size_tiniest">Tiniest</string>
     <string name="font_size_tiny">Tiny</string>

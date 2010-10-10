@@ -16,8 +16,9 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/display_preferences" android:key="global_preferences">
+    <PreferenceScreen android:title="@string/display_preferences" android:key="display_preferences">
 
+      <PreferenceCategory android:title="@string/global_preferences" android:key="global_preferences">
         <ListPreference
             android:key="language"
             android:title="@string/settings_language_label"
@@ -49,47 +50,7 @@
             android:key="animations"
             android:title="@string/animations_title"
             android:summary="@string/animations_summary" />
-
-        <CheckBoxPreference
-            android:key="gestures"
-            android:title="@string/gestures_title"
-            android:summary="@string/gestures_summary" />
-
-        <com.fsck.k9.preferences.CheckBoxListPreference
-            android:key="volumeNavigation"
-            android:title="@string/volume_navigation_title"
-            android:summary="@string/volume_navigation_summary"
-            android:dialogTitle="@string/volume_navigation_title"
-            android:positiveButtonText="@android:string/ok"
-            android:negativeButtonText="@android:string/cancel"
-        />
-
-        <CheckBoxPreference
-            android:key="manage_back"
-            android:title="@string/manage_back_title"
-            android:summary="@string/manage_back_summary" />
-
-        <CheckBoxPreference
-            android:key="start_integrated_inbox"
-            android:title="@string/start_integrated_inbox_title"
-            android:summary="@string/start_integrated_inbox_summary" />
-
-        <com.fsck.k9.preferences.CheckBoxListPreference
-            android:key="confirm_actions"
-            android:title="@string/global_settings_confirm_actions_title"
-            android:summary="@string/global_settings_confirm_actions_summary"
-            android:dialogTitle="@string/global_settings_confirm_actions_title"
-            android:positiveButtonText="@android:string/ok"
-            android:negativeButtonText="@android:string/cancel"
-        />
-
-        <CheckBoxPreference
-            android:key="privacy_mode"
-            android:title="@string/global_settings_privacy_mode_title"
-            android:summary="@string/global_settings_privacy_mode_summary"/>
-
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/accountlist_preferences" android:key="accountlist_preferences">
 
         <CheckBoxPreference
@@ -148,7 +109,50 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/operational_preferences" android:key="operational_preferences">
+
+
+
+     </PreferenceScreen>
+
+
+        <PreferenceScreen android:title="@string/interaction_preferences" android:key="interaction_preferences">
+        <CheckBoxPreference
+            android:key="gestures"
+            android:title="@string/gestures_title"
+            android:summary="@string/gestures_summary" />
+
+        <com.fsck.k9.preferences.CheckBoxListPreference
+            android:key="volumeNavigation"
+            android:title="@string/volume_navigation_title"
+            android:summary="@string/volume_navigation_summary"
+            android:dialogTitle="@string/volume_navigation_title"
+            android:positiveButtonText="@android:string/ok"
+            android:negativeButtonText="@android:string/cancel"
+        />
+
+        <CheckBoxPreference
+            android:key="manage_back"
+            android:title="@string/manage_back_title"
+            android:summary="@string/manage_back_summary" />
+
+        <CheckBoxPreference
+            android:key="start_integrated_inbox"
+            android:title="@string/start_integrated_inbox_title"
+            android:summary="@string/start_integrated_inbox_summary" />
+
+        <com.fsck.k9.preferences.CheckBoxListPreference
+            android:key="confirm_actions"
+            android:title="@string/global_settings_confirm_actions_title"
+            android:summary="@string/global_settings_confirm_actions_summary"
+            android:dialogTitle="@string/global_settings_confirm_actions_title"
+            android:positiveButtonText="@android:string/ok"
+            android:negativeButtonText="@android:string/cancel"
+        />
+
+
+    </PreferenceScreen>
+
+    <PreferenceScreen android:title="@string/network_preferences" android:key="network_preferences">
 
         <ListPreference
             android:key="background_ops"
@@ -157,18 +161,26 @@
             android:entryValues="@array/background_ops_values"
             android:dialogTitle="@string/background_ops_label" />
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory android:title="@string/miscellaneous_preferences" android:key="misc_preferences">
+    <PreferenceScreen android:title="@string/miscellaneous_preferences" android:key="misc_preferences">
 
         <CheckBoxPreference
             android:key="use_gallery_bug_workaround"
             android:title="@string/misc_preferences_attachment_title"
             android:summary="@string/misc_preferences_attachment_description" />
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
-    <PreferenceCategory android:title="@string/debug_preferences" android:key="debug_preferences">
+
+    <PreferenceScreen android:title="@string/privacy_preferences" android:key="privacy_preferences">
+        <CheckBoxPreference
+            android:key="privacy_mode"
+            android:title="@string/global_settings_privacy_mode_title"
+            android:summary="@string/global_settings_privacy_mode_summary"/>
+    </PreferenceScreen>
+
+    <PreferenceScreen android:title="@string/debug_preferences" android:key="debug_preferences">
 
         <CheckBoxPreference
             android:key="debug_logging"
@@ -180,6 +192,6 @@
             android:title="@string/debug_enable_sensitive_logging_title"
             android:summary="@string/debug_enable_sensitive_logging_summary" />
 
-    </PreferenceCategory>
+    </PreferenceScreen>
 
 </PreferenceScreen>

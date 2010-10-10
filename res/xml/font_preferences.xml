@@ -86,12 +86,6 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_message_view_cc" />
 
-  		<ListPreference
-            android:key="message_view_additional_headers_font"
-            android:title="@string/font_size_message_view_additional_headers"
-            android:entries="@array/font_entries"
-            android:entryValues="@array/font_values"
-            android:dialogTitle="@string/font_size_message_view_additional_headers" />
 
         <ListPreference
             android:key="message_view_subject_font"
@@ -113,7 +107,12 @@
             android:entries="@array/font_entries"
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_message_view_date" />
-
+  		<ListPreference
+            android:key="message_view_additional_headers_font"
+            android:title="@string/font_size_message_view_additional_headers"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_view_additional_headers" />
         <ListPreference
             android:key="message_view_content_font"
             android:title="@string/font_size_message_view_content"
