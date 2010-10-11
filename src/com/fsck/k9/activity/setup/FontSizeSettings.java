@@ -75,53 +75,53 @@ public class FontSizeSettings extends K9PreferenceActivity
         addPreferencesFromResource(R.xml.font_preferences);
 
         mAccountName = setupListPreference(
-                PREFERENCE_ACCOUNT_NAME_FONT,
-                Integer.toString(fontSizes.getAccountName()));
+                           PREFERENCE_ACCOUNT_NAME_FONT,
+                           Integer.toString(fontSizes.getAccountName()));
         mAccountDescription = setupListPreference(
-                PREFERENCE_ACCOUNT_DESCRIPTION_FONT,
-                Integer.toString(fontSizes.getAccountDescription()));
+                                  PREFERENCE_ACCOUNT_DESCRIPTION_FONT,
+                                  Integer.toString(fontSizes.getAccountDescription()));
 
         mFolderName = setupListPreference(
-                PREFERENCE_FOLDER_NAME_FONT,
-                Integer.toString(fontSizes.getFolderName()));
+                          PREFERENCE_FOLDER_NAME_FONT,
+                          Integer.toString(fontSizes.getFolderName()));
         mFolderStatus = setupListPreference(
-                PREFERENCE_FOLDER_STATUS_FONT,
-                Integer.toString(fontSizes.getFolderStatus()));
+                            PREFERENCE_FOLDER_STATUS_FONT,
+                            Integer.toString(fontSizes.getFolderStatus()));
 
         mMessageListSubject = setupListPreference(
-                PREFERENCE_MESSAGE_LIST_SUBJECT_FONT,
-                Integer.toString(fontSizes.getMessageListSubject()));
+                                  PREFERENCE_MESSAGE_LIST_SUBJECT_FONT,
+                                  Integer.toString(fontSizes.getMessageListSubject()));
         mMessageListSender = setupListPreference(
-                PREFERENCE_MESSAGE_LIST_SENDER_FONT,
-                Integer.toString(fontSizes.getMessageListSender()));
+                                 PREFERENCE_MESSAGE_LIST_SENDER_FONT,
+                                 Integer.toString(fontSizes.getMessageListSender()));
         mMessageListDate = setupListPreference(
-                PREFERENCE_MESSAGE_LIST_DATE_FONT,
-                Integer.toString(fontSizes.getMessageListDate()));
+                               PREFERENCE_MESSAGE_LIST_DATE_FONT,
+                               Integer.toString(fontSizes.getMessageListDate()));
 
         mMessageViewSender = setupListPreference(
-                PREFERENCE_MESSAGE_VIEW_SENDER_FONT,
-                Integer.toString(fontSizes.getMessageViewSender()));
+                                 PREFERENCE_MESSAGE_VIEW_SENDER_FONT,
+                                 Integer.toString(fontSizes.getMessageViewSender()));
         mMessageViewTo = setupListPreference(
-                PREFERENCE_MESSAGE_VIEW_TO_FONT,
-                Integer.toString(fontSizes.getMessageViewTo()));
+                             PREFERENCE_MESSAGE_VIEW_TO_FONT,
+                             Integer.toString(fontSizes.getMessageViewTo()));
         mMessageViewCC = setupListPreference(
-                PREFERENCE_MESSAGE_VIEW_CC_FONT,
-                Integer.toString(fontSizes.getMessageViewCC()));
+                             PREFERENCE_MESSAGE_VIEW_CC_FONT,
+                             Integer.toString(fontSizes.getMessageViewCC()));
         mMessageViewAdditionalHeaders = setupListPreference(
-                PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT,
-                Integer.toString(fontSizes.getMessageViewAdditionalHeaders()));
+                                            PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT,
+                                            Integer.toString(fontSizes.getMessageViewAdditionalHeaders()));
         mMessageViewSubject = setupListPreference(
-                PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT,
-                Integer.toString(fontSizes.getMessageViewSubject()));
+                                  PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT,
+                                  Integer.toString(fontSizes.getMessageViewSubject()));
         mMessageViewTime = setupListPreference(
-                PREFERENCE_MESSAGE_VIEW_TIME_FONT,
-                Integer.toString(fontSizes.getMessageViewTime()));
+                               PREFERENCE_MESSAGE_VIEW_TIME_FONT,
+                               Integer.toString(fontSizes.getMessageViewTime()));
         mMessageViewDate = setupListPreference(
-                PREFERENCE_MESSAGE_VIEW_DATE_FONT,
-                Integer.toString(fontSizes.getMessageViewDate()));
+                               PREFERENCE_MESSAGE_VIEW_DATE_FONT,
+                               Integer.toString(fontSizes.getMessageViewDate()));
         mMessageViewContent = setupListPreference(
-                PREFERENCE_MESSAGE_VIEW_CONTENT_FONT,
-                Integer.toString(fontSizes.getMessageViewContentAsInt()));
+                                  PREFERENCE_MESSAGE_VIEW_CONTENT_FONT,
+                                  Integer.toString(fontSizes.getMessageViewContentAsInt()));
     }
 
     /**

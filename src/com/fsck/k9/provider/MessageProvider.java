@@ -183,8 +183,8 @@ public class MessageProvider extends ContentProvider
         {
             final Message message = source.message;
             return CONTENT_URI + "/delete_message/"
-                    + message.getFolder().getAccount().getAccountNumber() + "/"
-                    + message.getFolder().getName() + "/" + message.getUid();
+                   + message.getFolder().getAccount().getAccountNumber() + "/"
+                   + message.getFolder().getName() + "/" + message.getUid();
         }
     }
     public static class SenderExtractor implements FieldExtractor<MessageInfoHolder, CharSequence>

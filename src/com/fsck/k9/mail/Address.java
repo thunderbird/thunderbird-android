@@ -279,10 +279,10 @@ public class Address
                 {
                     final SpannableString coloredName = new SpannableString(name);
                     coloredName.setSpan(new ForegroundColorSpan(K9.getContactNameColor()),
-                                  0,
-                                  coloredName.length(),
-                                  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                  );
+                                        0,
+                                        coloredName.length(),
+                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                       );
                     return coloredName;
                 }
                 else

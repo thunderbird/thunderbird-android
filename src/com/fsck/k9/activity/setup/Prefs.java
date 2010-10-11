@@ -114,8 +114,8 @@ public class Prefs extends K9PreferenceActivity
             }
         }
         initListPreference(mLanguage, K9.getK9Language(),
-                entryVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY),
-                entryValueVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
+                           entryVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY),
+                           entryValueVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
 
         final String theme = (K9.getK9Theme() == android.R.style.Theme) ? "dark" : "light";
         mTheme = setupListPreference(PREFERENCE_THEME, theme);

@@ -53,7 +53,7 @@ public class K9PreferenceActivity extends PreferenceActivity
      *         entry from entries is selected.
      */
     protected void initListPreference(final ListPreference prefView, final String value,
-            final CharSequence[] entries, final CharSequence[] entryValues)
+                                      final CharSequence[] entries, final CharSequence[] entryValues)
     {
         prefView.setEntries(entries);
         prefView.setEntryValues(entryValues);

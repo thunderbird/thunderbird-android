@@ -141,6 +141,8 @@ public class AccountSettings extends K9PreferenceActivity
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
+
+
         boolean isPushCapable = false;
         boolean isExpungeCapable = false;
         try
@@ -620,6 +622,9 @@ public class AccountSettings extends K9PreferenceActivity
                 return true;
             }
         });
+
+
+
 
         mCryptoApp = (ListPreference) findPreference(PREFERENCE_CRYPTO_APP);
         CharSequence cryptoAppEntries[] = mCryptoApp.getEntries();
