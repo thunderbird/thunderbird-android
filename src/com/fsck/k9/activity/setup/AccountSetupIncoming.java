@@ -88,9 +88,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private CheckBox compressionMobile;
     private CheckBox compressionWifi;
     private CheckBox compressionOther;
-    private CheckBox pushPollOnConnect;
-    private Spinner idleRefreshPeriod;
-    private Spinner folderPushLimit;
     private CheckBox subscribedFoldersOnly;
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault)
@@ -136,12 +133,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         compressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
         compressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
         compressionOther = (CheckBox)findViewById(R.id.compression_other);
-        pushPollOnConnect = (CheckBox)findViewById(R.id.push_poll_on_connect);
-
         subscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
-        idleRefreshPeriod = (Spinner)findViewById(R.id.idle_refresh_period);
-
-        folderPushLimit = (Spinner)findViewById(R.id.folder_push_limit);
 
         mImapFolderDrafts.setOnClickListener(this);
         mImapFolderSent.setOnClickListener(this);
@@ -310,11 +302,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
-                findViewById(R.id.push_poll_on_connect_section).setVisibility(View.GONE);
-                findViewById(R.id.idle_refresh_period_label).setVisibility(View.GONE);
-                findViewById(R.id.idle_refresh_period).setVisibility(View.GONE);
-                findViewById(R.id.account_setup_push_limit_label).setVisibility(View.GONE);
-                findViewById(R.id.folder_push_limit).setVisibility(View.GONE);
                 mAccount.setDeletePolicy(Account.DELETE_POLICY_NEVER);
 
 
@@ -351,11 +338,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 findViewById(R.id.account_auth_type).setVisibility(View.GONE);
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
-                findViewById(R.id.push_poll_on_connect_section).setVisibility(View.GONE);
-                findViewById(R.id.idle_refresh_period_label).setVisibility(View.GONE);
-                findViewById(R.id.idle_refresh_period).setVisibility(View.GONE);
-                findViewById(R.id.account_setup_push_limit_label).setVisibility(View.GONE);
-                findViewById(R.id.folder_push_limit).setVisibility(View.GONE);
                 subscribedFoldersOnly.setVisibility(View.GONE);
                 if (uri.getPath() != null && uri.getPath().length() > 0)
                 {
@@ -421,13 +403,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 updatePortFromSecurityType();
             }
 
-            pushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
             subscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
-            SpinnerHelper.initSpinner(this, idleRefreshPeriod, R.array.idle_refresh_period_entries,
-                                      R.array.idle_refresh_period_values, String.valueOf(mAccount.getIdleRefreshMinutes()));
 
-            SpinnerHelper.initSpinner(this, folderPushLimit, R.array.account_settings_push_limit_entries,
-                                      R.array.account_settings_push_limit_values, String.valueOf(mAccount.getMaxPushFolders()));
 
             validateFields();
         }
@@ -585,28 +562,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mAccount.setCompression(Account.TYPE_MOBILE, compressionMobile.isChecked());
             mAccount.setCompression(Account.TYPE_WIFI, compressionWifi.isChecked());
             mAccount.setCompression(Account.TYPE_OTHER, compressionOther.isChecked());
-            mAccount.setPushPollOnConnect(pushPollOnConnect.isChecked());
             mAccount.setSubscribedFoldersOnly(subscribedFoldersOnly.isChecked());
-            String idleRefreshPeriodValue = SpinnerHelper.getSpinnerValue(idleRefreshPeriod);
-            try
-            {
-                mAccount.setIdleRefreshMinutes(Integer.parseInt(idleRefreshPeriodValue));
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to parse idle refresh period value '" + idleRefreshPeriodValue + "'", e);
-                mAccount.setIdleRefreshMinutes(24);
-            }
-            String maxPushFoldersValue = SpinnerHelper.getSpinnerValue(folderPushLimit);
-            try
-            {
-                mAccount.setMaxPushFolders(Integer.parseInt(maxPushFoldersValue));
-            }
-            catch (Exception e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to parse max push folders value '" + maxPushFoldersValue + "'", e);
-                mAccount.setMaxPushFolders(10);
-            }
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);
         }

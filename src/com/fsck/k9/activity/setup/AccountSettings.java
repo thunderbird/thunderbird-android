@@ -61,6 +61,9 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_DISPLAY_MODE = "folder_display_mode";
     private static final String PREFERENCE_SYNC_MODE = "folder_sync_mode";
     private static final String PREFERENCE_PUSH_MODE = "folder_push_mode";
+    private static final String PREFERENCE_PUSH_POLL_ON_CONNECT = "push_poll_on_connect";
+    private static final String PREFERENCE_MAX_PUSH_FOLDERS = "max_push_folders";
+    private static final String PREFERENCE_IDLE_REFRESH_PERIOD = "idle_refresh_period";
     private static final String PREFERENCE_TARGET_MODE = "folder_target_mode";
     private static final String PREFERENCE_DELETE_POLICY = "delete_policy";
     private static final String PREFERENCE_EXPUNGE_POLICY = "expunge_policy";
@@ -114,6 +117,12 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mSaveAllHeaders;
+
+    private CheckBoxPreference mPushPollOnConnect;
+    private ListPreference mIdleRefreshPeriod;
+    private ListPreference mMaxPushFolders;
+
+
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
 
@@ -416,6 +425,58 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
+
+        // IMAP-specific preferences
+
+        mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
+        mIdleRefreshPeriod = (ListPreference) findPreference(PREFERENCE_IDLE_REFRESH_PERIOD);
+        mMaxPushFolders = (ListPreference) findPreference(PREFERENCE_MAX_PUSH_FOLDERS);
+        if (isPushCapable)
+        {
+            mPushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
+
+
+            mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
+            mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());
+            mIdleRefreshPeriod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+            {
+                public boolean onPreferenceChange(Preference preference, Object newValue)
+                {
+                    final String summary = newValue.toString();
+                    int index = mIdleRefreshPeriod.findIndexOfValue(summary);
+                    mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntries()[index]);
+                    mIdleRefreshPeriod.setValue(summary);
+                    return false;
+                }
+            });
+
+
+            mMaxPushFolders.setValue(String.valueOf(mAccount.getMaxPushFolders()));
+            mMaxPushFolders.setSummary(mMaxPushFolders.getEntry());
+            mMaxPushFolders.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+            {
+                public boolean onPreferenceChange(Preference preference, Object newValue)
+                {
+                    final String summary = newValue.toString();
+                    int index = mMaxPushFolders.findIndexOfValue(summary);
+                    mMaxPushFolders.setSummary(mMaxPushFolders.getEntries()[index]);
+                    mMaxPushFolders.setValue(summary);
+                    return false;
+                }
+            });
+
+
+
+
+        }
+        else
+        {
+            mPushPollOnConnect.setEnabled(false);
+            mMaxPushFolders.setEnabled(false);
+            mIdleRefreshPeriod.setEnabled(false);
+
+        }
+
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
         mAccountNotify.setChecked(mAccount.isNotifyNewMail());
 
@@ -644,6 +705,10 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
+
+        mAccount.setPushPollOnConnect(mPushPollOnConnect.isChecked());
+        mAccount.setIdleRefreshMinutes(Integer.parseInt(mIdleRefreshPeriod.getValue()));
+        mAccount.setMaxPushFolders(Integer.parseInt(mMaxPushFolders.getValue()));
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));

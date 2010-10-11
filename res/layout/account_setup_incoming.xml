@@ -245,51 +245,6 @@
                 android:contentDescription="@string/account_setup_incoming_compression_label"
             />
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/push_poll_on_connect_section"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:text="@string/push_poll_on_connect_label"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?android:attr/textColorPrimary" />
-            <CheckBox
-                android:id="@+id/push_poll_on_connect"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:label="foo"
-            />
-        </LinearLayout>
-        <TextView
-                android:id="@+id/idle_refresh_period_label"
-                android:text="@string/idle_refresh_period_label"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?android:attr/textColorPrimary" />
-        <Spinner
-            android:id="@+id/idle_refresh_period"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:contentDescription="@string/idle_refresh_period_label"
-            />
-        <TextView
-                android:id="@+id/account_setup_push_limit_label"
-                android:text="@string/account_setup_push_limit_label"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?android:attr/textColorPrimary" />
-        <Spinner
-            android:id="@+id/folder_push_limit"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:contentDescription="@string/account_setup_push_limit_label"
-            />
-
         <View
             android:layout_width="fill_parent"
             android:layout_height="0dip"

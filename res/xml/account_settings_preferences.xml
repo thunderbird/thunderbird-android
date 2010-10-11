@@ -82,7 +82,7 @@
     </PreferenceCategory>
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="@string/account_settings_sync" android:key="incoming">
+    <PreferenceScreen android:title="@string/account_settings_sync" android:key="incoming_prefs">
 
 
         <ListPreference
@@ -154,6 +154,26 @@
             android:key="incoming"
             android:title="@string/account_settings_incoming_label"
             android:summary="@string/account_settings_incoming_summary" />
+        <PreferenceScreen
+            android:key="push_advanced"
+            android:title="@string/account_settings_push_advanced_title">
+        <CheckBoxPreference
+            android:key="push_poll_on_connect"
+            android:title="@string/push_poll_on_connect_label"
+            />
+        <ListPreference
+            android:key="max_push_folders"
+            android:title="@string/account_setup_push_limit_label"
+            android:entries="@array/account_settings_push_limit_entries"
+            android:entryValues="@array/account_settings_push_limit_values"
+            />
+        <ListPreference
+            android:key="idle_refresh_period"
+            android:title="@string/idle_refresh_period_label"
+            android:entries="@array/idle_refresh_period_entries"
+            android:entryValues="@array/idle_refresh_period_values"
+            />
+    </PreferenceScreen>
     </PreferenceScreen>
 
 
