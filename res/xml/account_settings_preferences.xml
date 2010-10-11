@@ -83,10 +83,6 @@
     </PreferenceScreen>
 
     <PreferenceScreen android:title="@string/account_settings_sync" android:key="incoming">
-        <PreferenceScreen
-            android:key="incoming"
-            android:title="@string/account_settings_incoming_label"
-            android:summary="@string/account_settings_incoming_summary" />
 
 
         <ListPreference
@@ -150,16 +146,19 @@
             android:entries="@array/account_setup_expunge_policy_entries"
             android:entryValues="@array/account_setup_expunge_policy_values"
             android:dialogTitle="@string/account_setup_expunge_policy_label" />
-
+        <CheckBoxPreference
+            android:title="@string/account_setup_incoming_save_all_headers_title"
+            android:key="account_save_all_headers"
+            android:summary="@string/account_setup_incoming_save_all_headers_label" />
+        <PreferenceScreen
+            android:key="incoming"
+            android:title="@string/account_settings_incoming_label"
+            android:summary="@string/account_settings_incoming_summary" />
     </PreferenceScreen>
 
 
     <PreferenceScreen android:title="@string/account_settings_composition" android:key="composing">
 
-        <PreferenceScreen
-            android:key="outgoing"
-            android:title="@string/account_settings_outgoing_label"
-            android:summary="@string/account_settings_outgoing_summary" />
         <PreferenceScreen
             android:key="composition"
             android:summary="@string/account_settings_composition_summary"
@@ -183,6 +182,10 @@
             android:title="@string/account_settings_quote_prefix_label"
             android:summary=""
             android:dialogTitle="@string/account_settings_quote_prefix_label" />
+        <PreferenceScreen
+            android:key="outgoing"
+            android:title="@string/account_settings_outgoing_label"
+            android:summary="@string/account_settings_outgoing_summary" />
 
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/account_settings_folders" android:key="folders">

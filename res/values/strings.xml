@@ -391,8 +391,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
     <string name="account_setup_incoming_other_label">Other</string>
 
-    <string name="account_setup_incoming_save_all_headers_title">Downloading of mail headers</string>
-    <string name="account_setup_incoming_save_all_headers_label">Save all headers locally</string>
+    <string name="account_setup_incoming_save_all_headers_title">Download headers</string>
+    <string name="account_setup_incoming_save_all_headers_label">Save all message headers locally</string>
 
     <string name="account_setup_expunge_policy_label">Expunge deleted messages</string>
     <string name="account_setup_expunge_policy_immediately">Immediately</string>

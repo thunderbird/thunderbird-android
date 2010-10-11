@@ -1962,7 +1962,7 @@ public class LocalStore extends Store implements Serializable
          */
         private void saveHeaders(long id, MimeMessage message) throws MessagingException
         {
-            boolean saveAllHeaders = mAccount.isSaveAllHeaders();
+            boolean saveAllHeaders = mAccount.saveAllHeaders();
             boolean gotAdditionalHeaders = false;
 
             deleteHeaders(id);

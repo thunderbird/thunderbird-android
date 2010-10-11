@@ -71,6 +71,7 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_NOTIFICATION_OPENS_UNREAD = "notification_opens_unread";
     private static final String PREFERENCE_MESSAGE_AGE = "account_message_age";
     private static final String PREFERENCE_MESSAGE_SIZE = "account_autodownload_size";
+    private static final String PREFERENCE_SAVE_ALL_HEADERS = "account_save_all_headers";
     private static final String PREFERENCE_QUOTE_PREFIX = "account_quote_prefix";
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
@@ -112,6 +113,7 @@ public class AccountSettings extends K9PreferenceActivity
     private EditTextPreference mAccountQuotePrefix;
     private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mSyncRemoteDeletions;
+    private CheckBoxPreference mSaveAllHeaders;
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
 
@@ -290,6 +292,12 @@ public class AccountSettings extends K9PreferenceActivity
 
         mSyncRemoteDeletions = (CheckBoxPreference) findPreference(PREFERENCE_SYNC_REMOTE_DELETIONS);
         mSyncRemoteDeletions.setChecked(mAccount.syncRemoteDeletions());
+
+
+        mSaveAllHeaders = (CheckBoxPreference) findPreference(PREFERENCE_SAVE_ALL_HEADERS);
+        mSaveAllHeaders.setChecked(mAccount.saveAllHeaders());
+
+
 
         mSearchableFolders = (ListPreference) findPreference(PREFERENCE_SEARCHABLE_FOLDERS);
         mSearchableFolders.setValue(mAccount.getSearchableFolders().name());
@@ -630,6 +638,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setDeletePolicy(Integer.parseInt(mDeletePolicy.getValue()));
         mAccount.setExpungePolicy(mExpungePolicy.getValue());
         mAccount.setSyncRemoteDeletions(mSyncRemoteDeletions.isChecked());
+        mAccount.setSaveAllHeaders(mSaveAllHeaders.isChecked());
         mAccount.setSearchableFolders(Account.Searchable.valueOf(mSearchableFolders.getValue()));
         mAccount.setQuotePrefix(mAccountQuotePrefix.getText());
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
