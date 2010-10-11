@@ -101,6 +101,10 @@
             android:key="messageview_fixedwidth_font"
             android:title="@string/global_settings_messageview_fixedwidth_label"
             android:summary="@string/global_settings_messageview_fixedwidth_summary" />
+        <CheckBoxPreference
+            android:key="messageview_mobile_layout"
+            android:title="@string/settings_messageview_mobile_layout_label"
+            android:summary="@string/settings_messageview_mobile_layout_summary" />
 
     </PreferenceCategory>
 
@@ -139,6 +143,10 @@
             android:key="messageview_return_to_list"
             android:title="@string/global_settings_messageview_return_to_list_label"
             android:summary="@string/global_settings_messageview_return_to_list_summary" />
+        <CheckBoxPreference
+            android:key="messageview_zoom_controls"
+            android:title="@string/settings_messageview_zoom_controls_label"
+            android:summary="@string/settings_messageview_zoom_controls_summary" />
 
         <com.fsck.k9.preferences.CheckBoxListPreference
             android:key="confirm_actions"

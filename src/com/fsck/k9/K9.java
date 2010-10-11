@@ -154,6 +154,8 @@ public class K9 extends Application
     private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
+    private static boolean mZoomControlsEnabled = false;
+    private static boolean mMobileOptimizedLayout = false;
 
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
@@ -374,6 +376,10 @@ public class K9 extends Application
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("manageBack", mManageBack);
+        editor.putBoolean("zoomControlsEnabled",mZoomControlsEnabled);
+        editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
+
+
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
@@ -421,6 +427,8 @@ public class K9 extends Application
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
+        mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
+        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled",false);
 
         mShowContactName = sprefs.getBoolean("showContactName", false);
         mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
@@ -641,6 +649,31 @@ public class K9 extends Application
     {
         mManageBack = manageBack;
     }
+
+    public static boolean zoomControlsEnabled()
+    {
+        return mZoomControlsEnabled;
+    }
+
+    public static void setZoomControlsEnabled(boolean zoomControlsEnabled)
+    {
+        mZoomControlsEnabled = zoomControlsEnabled;
+    }
+
+
+    public static boolean mobileOptimizedLayout()
+    {
+        return mMobileOptimizedLayout;
+    }
+
+    public static void setMobileOptimizedLayout(boolean mobileOptimizedLayout)
+    {
+        mMobileOptimizedLayout = mobileOptimizedLayout;
+    }
+
+
+
+
 
     public static boolean startIntegratedInbox()
     {
