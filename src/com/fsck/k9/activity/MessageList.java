@@ -771,7 +771,6 @@ public class MessageList
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
-        mAdapter.markAllMessagesAsDirty();
 
         if (mFolderName != null)
         {
@@ -781,7 +780,10 @@ public class MessageList
             }
             else
             {
+                mAdapter.markAllMessagesAsDirty();
                 mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+                mAdapter.pruneDirtyMessages();
+                mAdapter.notifyDataSetChanged();
             }
             mController.notifyAccountCancel(this, mAccount);
 
@@ -795,8 +797,6 @@ public class MessageList
         }
 
         mHandler.refreshTitle();
-        mAdapter.pruneDirtyMessages();
-        mAdapter.notifyDataSetChanged();
 
         restoreListState();
     }
