@@ -116,7 +116,7 @@
     <string name="reverse_sort_action">Reverse sort</string>
     <string name="about_action">About</string>
 
-    <string name="prefs_title">Preferences</string>
+    <string name="prefs_title">Settings</string>
     <string name="accounts_context_menu_title">Account options</string>
     <string name="folder_context_menu_title">Folder options</string>
 
