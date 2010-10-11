@@ -84,7 +84,7 @@ public class MessageProvider extends ContentProvider
         String INCREMENT = "id";
     }
 
-    protected interface QueryHandler
+    protected static interface QueryHandler
     {
         /**
          * The path this instance is able to respond to.
@@ -451,271 +451,358 @@ public class MessageProvider extends ContentProvider
         }
     }
 
-    protected class ThrottlingQueryHandler implements QueryHandler
+    /**
+     * Cursor wrapper that release a semaphore on close. Close is also triggered
+     * on {@link #finalize()}.
+     */
+    protected static class MonitoredCursor implements CrossProcessCursor
     {
+        /**
+         * The underlying cursor implementation that handles regular
+         * requests
+         */
+        private CrossProcessCursor mCursor;
 
-        protected final class MonitoredCursor implements CrossProcessCursor
+        /**
+         * Whether {@link #close()} was invoked
+         */
+        private AtomicBoolean mClosed = new AtomicBoolean(false);
+
+        private Semaphore mSemaphore;
+
+        /**
+         * @param cursor
+         *            Never <code>null</code>.
+         * @param semaphore
+         *            The semaphore to release on close. Never
+         *            <code>null</code>.
+         */
+        protected MonitoredCursor(final CrossProcessCursor cursor, final Semaphore semaphore)
         {
-            private CrossProcessCursor mCursor;
+            this.mCursor = cursor;
+            this.mSemaphore = semaphore;
+        }
 
-            @Override
-            public void close()
+        /* (non-Javadoc)
+         * 
+         * Close the underlying cursor and dereference it.
+         * 
+         * @see android.database.Cursor#close()
+         */
+        @Override
+        public void close()
+        {
+            if (mClosed.compareAndSet(false, true))
             {
                 mCursor.close();
-                if (mClosed.compareAndSet(false, true))
-                {
-                    Log.d(K9.LOG_TAG, "Cursor closed, releasing semaphore");
-                    mSemaphore.release();
-                }
-            }
-
-            @Override
-            public void fillWindow(int pos, CursorWindow winow)
-            {
-                mCursor.fillWindow(pos, winow);
-            }
-
-            @Override
-            public CursorWindow getWindow()
-            {
-                return mCursor.getWindow();
-            }
-
-            @Override
-            public boolean onMove(int oldPosition, int newPosition)
-            {
-                return mCursor.onMove(oldPosition, newPosition);
-            }
-
-            private AtomicBoolean mClosed = new AtomicBoolean(false);
-
-
-            protected MonitoredCursor(final CrossProcessCursor cursor)
-            {
-                this.mCursor = cursor;
-            }
-
-            @Override
-            public void copyStringToBuffer(int columnIndex, CharArrayBuffer buffer)
-            {
-                mCursor.copyStringToBuffer(columnIndex, buffer);
-            }
-
-            @Override
-            public void deactivate()
-            {
-                mCursor.deactivate();
-            }
-
-            @Override
-            public byte[] getBlob(int columnIndex)
-            {
-                return mCursor.getBlob(columnIndex);
-            }
-
-            @Override
-            public int getColumnCount()
-            {
-                return mCursor.getColumnCount();
-            }
-
-            @Override
-            public int getColumnIndex(String columnName)
-            {
-                return mCursor.getColumnIndex(columnName);
-            }
-
-            @Override
-            public int getColumnIndexOrThrow(String columnName) throws IllegalArgumentException
-            {
-                return mCursor.getColumnIndexOrThrow(columnName);
-            }
-
-            @Override
-            public String getColumnName(int columnIndex)
-            {
-                return mCursor.getColumnName(columnIndex);
-            }
-
-            @Override
-            public String[] getColumnNames()
-            {
-                return mCursor.getColumnNames();
-            }
-
-            @Override
-            public int getCount()
-            {
-                return mCursor.getCount();
-            }
-
-            @Override
-            public double getDouble(int columnIndex)
-            {
-                return mCursor.getDouble(columnIndex);
-            }
-
-            @Override
-            public Bundle getExtras()
-            {
-                return mCursor.getExtras();
-            }
-
-            @Override
-            public float getFloat(int columnIndex)
-            {
-                return mCursor.getFloat(columnIndex);
-            }
-
-            @Override
-            public int getInt(int columnIndex)
-            {
-                return mCursor.getInt(columnIndex);
-            }
-
-            @Override
-            public long getLong(int columnIndex)
-            {
-                return mCursor.getLong(columnIndex);
-            }
-
-            @Override
-            public int getPosition()
-            {
-                return mCursor.getPosition();
-            }
-
-            @Override
-            public short getShort(int columnIndex)
-            {
-                return mCursor.getShort(columnIndex);
-            }
-
-            @Override
-            public String getString(int columnIndex)
-            {
-                return mCursor.getString(columnIndex);
-            }
-
-            @Override
-            public boolean getWantsAllOnMoveCalls()
-            {
-                return mCursor.getWantsAllOnMoveCalls();
-            }
-
-            @Override
-            public boolean isAfterLast()
-            {
-                return mCursor.isAfterLast();
-            }
-
-            @Override
-            public boolean isBeforeFirst()
-            {
-                return mCursor.isBeforeFirst();
-            }
-
-            @Override
-            public boolean isClosed()
-            {
-                return mCursor.isClosed();
-            }
-
-            @Override
-            public boolean isFirst()
-            {
-                return mCursor.isFirst();
-            }
-
-            public boolean isLast()
-            {
-                return mCursor.isLast();
-            }
-
-            @Override
-            public boolean isNull(int columnIndex)
-            {
-                return mCursor.isNull(columnIndex);
-            }
-
-            @Override
-            public boolean move(int offset)
-            {
-                return mCursor.move(offset);
-            }
-
-            @Override
-            public boolean moveToFirst()
-            {
-                return mCursor.moveToFirst();
-            }
-
-            @Override
-            public boolean moveToLast()
-            {
-                return mCursor.moveToLast();
-            }
-
-            @Override
-            public boolean moveToNext()
-            {
-                return mCursor.moveToNext();
-            }
-
-            @Override
-            public boolean moveToPosition(int position)
-            {
-                return mCursor.moveToPosition(position);
-            }
-
-            @Override
-            public boolean moveToPrevious()
-            {
-                return mCursor.moveToPrevious();
-            }
-
-            @Override
-            public void registerContentObserver(ContentObserver observer)
-            {
-                mCursor.registerContentObserver(observer);
-            }
-
-            @Override
-            public void registerDataSetObserver(DataSetObserver observer)
-            {
-                mCursor.registerDataSetObserver(observer);
-            }
-
-            @Override
-            public boolean requery()
-            {
-                return mCursor.requery();
-            }
-
-            @Override
-            public Bundle respond(Bundle extras)
-            {
-                return mCursor.respond(extras);
-            }
-
-            @Override
-            public void setNotificationUri(ContentResolver cr, Uri uri)
-            {
-                mCursor.setNotificationUri(cr, uri);
-            }
-
-            @Override
-            public void unregisterContentObserver(ContentObserver observer)
-            {
-                mCursor.unregisterContentObserver(observer);
-            }
-
-            @Override
-            public void unregisterDataSetObserver(DataSetObserver observer)
-            {
-                mCursor.unregisterDataSetObserver(observer);
+                Log.d(K9.LOG_TAG, "Cursor closed, null'ing & releasing semaphore");
+                mCursor = null;
+                mSemaphore.release();
             }
         }
+
+        @Override
+        public boolean isClosed()
+        {
+            return mClosed.get() || mCursor.isClosed();
+        }
+
+        /* (non-Javadoc)
+         * 
+         * Making sure cursor gets closed on garbage collection
+         * 
+         * @see java.lang.Object#finalize()
+         */
+        @Override
+        protected void finalize() throws Throwable
+        {
+            close();
+            super.finalize();
+        }
+
+        protected void checkClosed() throws IllegalStateException
+        {
+            if (mClosed.get())
+            {
+                throw new IllegalStateException("Cursor was closed");
+            }
+        }
+
+        @Override
+        public void fillWindow(int pos, CursorWindow winow)
+        {
+            checkClosed();
+            mCursor.fillWindow(pos, winow);
+        }
+
+        @Override
+        public CursorWindow getWindow()
+        {
+            checkClosed();
+            return mCursor.getWindow();
+        }
+
+        @Override
+        public boolean onMove(int oldPosition, int newPosition)
+        {
+            checkClosed();
+            return mCursor.onMove(oldPosition, newPosition);
+        }
+
+        @Override
+        public void copyStringToBuffer(int columnIndex, CharArrayBuffer buffer)
+        {
+            checkClosed();
+            mCursor.copyStringToBuffer(columnIndex, buffer);
+        }
+
+        @Override
+        public void deactivate()
+        {
+            checkClosed();
+            mCursor.deactivate();
+        }
+
+        @Override
+        public byte[] getBlob(int columnIndex)
+        {
+            checkClosed();
+            return mCursor.getBlob(columnIndex);
+        }
+
+        @Override
+        public int getColumnCount()
+        {
+            checkClosed();
+            return mCursor.getColumnCount();
+        }
+
+        @Override
+        public int getColumnIndex(String columnName)
+        {
+            checkClosed();
+            return mCursor.getColumnIndex(columnName);
+        }
+
+        @Override
+        public int getColumnIndexOrThrow(String columnName) throws IllegalArgumentException
+        {
+            checkClosed();
+            return mCursor.getColumnIndexOrThrow(columnName);
+        }
+
+        @Override
+        public String getColumnName(int columnIndex)
+        {
+            checkClosed();
+            return mCursor.getColumnName(columnIndex);
+        }
+
+        @Override
+        public String[] getColumnNames()
+        {
+            checkClosed();
+            return mCursor.getColumnNames();
+        }
+
+        @Override
+        public int getCount()
+        {
+            checkClosed();
+            return mCursor.getCount();
+        }
+
+        @Override
+        public double getDouble(int columnIndex)
+        {
+            checkClosed();
+            return mCursor.getDouble(columnIndex);
+        }
+
+        @Override
+        public Bundle getExtras()
+        {
+            checkClosed();
+            return mCursor.getExtras();
+        }
+
+        @Override
+        public float getFloat(int columnIndex)
+        {
+            checkClosed();
+            return mCursor.getFloat(columnIndex);
+        }
+
+        @Override
+        public int getInt(int columnIndex)
+        {
+            checkClosed();
+            return mCursor.getInt(columnIndex);
+        }
+
+        @Override
+        public long getLong(int columnIndex)
+        {
+            checkClosed();
+            return mCursor.getLong(columnIndex);
+        }
+
+        @Override
+        public int getPosition()
+        {
+            checkClosed();
+            return mCursor.getPosition();
+        }
+
+        @Override
+        public short getShort(int columnIndex)
+        {
+            checkClosed();
+            return mCursor.getShort(columnIndex);
+        }
+
+        @Override
+        public String getString(int columnIndex)
+        {
+            checkClosed();
+            return mCursor.getString(columnIndex);
+        }
+
+        @Override
+        public boolean getWantsAllOnMoveCalls()
+        {
+            checkClosed();
+            return mCursor.getWantsAllOnMoveCalls();
+        }
+
+        @Override
+        public boolean isAfterLast()
+        {
+            checkClosed();
+            return mCursor.isAfterLast();
+        }
+
+        @Override
+        public boolean isBeforeFirst()
+        {
+            checkClosed();
+            return mCursor.isBeforeFirst();
+        }
+
+        @Override
+        public boolean isFirst()
+        {
+            checkClosed();
+            return mCursor.isFirst();
+        }
+
+        public boolean isLast()
+        {
+            checkClosed();
+            return mCursor.isLast();
+        }
+
+        @Override
+        public boolean isNull(int columnIndex)
+        {
+            checkClosed();
+            return mCursor.isNull(columnIndex);
+        }
+
+        @Override
+        public boolean move(int offset)
+        {
+            checkClosed();
+            return mCursor.move(offset);
+        }
+
+        @Override
+        public boolean moveToFirst()
+        {
+            checkClosed();
+            return mCursor.moveToFirst();
+        }
+
+        @Override
+        public boolean moveToLast()
+        {
+            checkClosed();
+            return mCursor.moveToLast();
+        }
+
+        @Override
+        public boolean moveToNext()
+        {
+            checkClosed();
+            return mCursor.moveToNext();
+        }
+
+        @Override
+        public boolean moveToPosition(int position)
+        {
+            checkClosed();
+            return mCursor.moveToPosition(position);
+        }
+
+        @Override
+        public boolean moveToPrevious()
+        {
+            checkClosed();
+            return mCursor.moveToPrevious();
+        }
+
+        @Override
+        public void registerContentObserver(ContentObserver observer)
+        {
+            checkClosed();
+            mCursor.registerContentObserver(observer);
+        }
+
+        @Override
+        public void registerDataSetObserver(DataSetObserver observer)
+        {
+            checkClosed();
+            mCursor.registerDataSetObserver(observer);
+        }
+
+        @Override
+        public boolean requery()
+        {
+            checkClosed();
+            return mCursor.requery();
+        }
+
+        @Override
+        public Bundle respond(Bundle extras)
+        {
+            checkClosed();
+            return mCursor.respond(extras);
+        }
+
+        @Override
+        public void setNotificationUri(ContentResolver cr, Uri uri)
+        {
+            checkClosed();
+            mCursor.setNotificationUri(cr, uri);
+        }
+
+        @Override
+        public void unregisterContentObserver(ContentObserver observer)
+        {
+            checkClosed();
+            mCursor.unregisterContentObserver(observer);
+        }
+
+        @Override
+        public void unregisterDataSetObserver(DataSetObserver observer)
+        {
+            checkClosed();
+            mCursor.unregisterDataSetObserver(observer);
+        }
+    }
+
+    protected class ThrottlingQueryHandler implements QueryHandler
+    {
 
         private QueryHandler mDelegate;
 
@@ -740,12 +827,13 @@ public class MessageProvider extends ContentProvider
             cursor = mDelegate.query(uri, projection, selection, selectionArgs, sortOrder);
 
             /* Android content resolvers can only process CrossProcessCursor instances */
-            if (cursor == null || !(cursor instanceof CrossProcessCursor))
+            if (!(cursor instanceof CrossProcessCursor))
             {
+                Log.w(K9.LOG_TAG, "Unsupported cursor, returning null: " + cursor);
                 return null;
             }
 
-            final MonitoredCursor wrapped = new MonitoredCursor((CrossProcessCursor) cursor);
+            final MonitoredCursor wrapped = new MonitoredCursor((CrossProcessCursor) cursor, mSemaphore);
 
             /* use a weak reference not to actively prevent garbage collection */
             final WeakReference<MonitoredCursor> weakReference = new WeakReference<MonitoredCursor>(wrapped);
@@ -758,7 +846,7 @@ public class MessageProvider extends ContentProvider
                 public void run()
                 {
                     final MonitoredCursor monitored = weakReference.get();
-                    if (monitored != null && monitored.mClosed.compareAndSet(false, true))
+                    if (monitored != null && !monitored.isClosed())
                     {
                         Log.w(K9.LOG_TAG, "Forcibly closing remotely exposed cursor");
                         try
@@ -865,6 +953,9 @@ public class MessageProvider extends ContentProvider
 
     private MessageHelper mMessageHelper;
 
+    /**
+     * How many simultaneous cursors we can affort to expose at once
+     */
     /* package */
     Semaphore mSemaphore = new Semaphore(1);
 
