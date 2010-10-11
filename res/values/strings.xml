@@ -86,7 +86,7 @@
     <string name="back_to_folder_list_action">◀</string>
     <string name="read_action">Read</string>
     <string name="mark_as_read_action">Mark as read</string>
-    <string name="send_alternate_action">Forward with another app</string>
+    <string name="send_alternate_action">Share</string>
     <string name="send_alternate_chooser_title">Choose sender</string>
 
     <string name="mark_all_as_read_dlg_title">Mark all messages as read</string>
