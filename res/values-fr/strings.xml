@@ -210,7 +210,7 @@
 \n
 \n Veuillez noter que K-9 Mail ne prend pas en charge les comptes Hotmail et, comme d\'autres clients, a quelques ennuis avec les serveurs Microsoft Exchange.
 \n
-\n Si vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0: http//k9mail.googlecode.com/ (en anglais)
+\n Si vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0: http://k9mail.googlecode.com/ (en anglais)
   </string>
   <string name="debug_version_fmt">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
   <string name="debug_enable_debug_logging_title">Activer le journal de déboguage</string>
@@ -291,6 +291,13 @@
   <string name="global_settings_checkbox_summary">Toujours afficher les cases à cocher</string>
   <string name="global_settings_touchable_label">Interface conviviale au toucher</string>
   <string name="global_settings_touchable_summary">Fournit plus d\'espace dans les éléments des listes</string>
+
+    <string name="global_settings_show_contact_name_label">Afficher les noms des contacts connus</string>
+    <string name="global_settings_show_contact_name_summary">Utiliser les noms du carnet d\'adresse</string>
+    <string name="global_settings_registered_name_color_label">Couleur des contacts connus</string>
+    <string name="global_settings_registered_name_color_default">Ne pas mettre en évidence les contacts connus</string>
+    <string name="global_settings_registered_name_color_changed">Mettre en évidence (couleur) les contacts connus</string>
+
   <string name="global_settings_messageview_fixedwidth_label">Polices à taille fixe</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à taille fixe pour les messages en texte brut</string>
   <string name="global_settings_messageview_return_to_list_label">Retour à la liste après suppression</string>
@@ -443,6 +450,8 @@
   <string name="account_setup_failed_dlg_server_message_fmt">Impossible de se connecter au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Modifier les détails</string>
   <string name="account_setup_failed_dlg_continue_action">Continuer</string>
+
+    <string name="account_settings_push_advanced_title">Paramètres Push</string>
   <string name="account_settings_title_fmt">Paramètre généraux</string>
   <string name="account_settings_default">Compte par défaut</string>
   <string name="account_settings_default_label">Compte par défaut</string>
@@ -476,6 +485,7 @@
     <string name="account_settings_reply_after_quote_label">Réponse après la citation</string>
     <string name="account_settings_reply_after_quote_summary">Lors d\'une réponse, le texte d\'origine précèdera votre réponse</string>
 
+    <string name="account_settings_display_prefs_title">Affichage</string>
   <string name="account_settings_sync">Synchronication de dossiers</string>
   <string name="account_settings_folders">Dossiers</string>
   <string name="account_settings_message_lists">Listage de messages</string>
@@ -570,7 +580,7 @@
   <string name="account_settings_outgoing_label">Paramètres sortants</string>
   <string name="account_settings_outgoing_summary">Configurer le serveur de messagerie sortant</string>
   <string name="account_settings_add_account_label">Ajouter un autre compte</string>
-  <string name="account_settings_description_label">Nom de compte</string>
+  <string name="account_settings_description_label">Nom du compte</string>
   <string name="account_settings_name_label">Votre nom</string>
   <string name="account_settings_notifications">Paramètres de notification</string>
   <string name="account_settings_ring_summary">Sonner lorsqu\'un message arrive</string>
@@ -689,12 +699,21 @@
   <string name="setting_theme_light">Clair</string>
   <string name="display_preferences">Préférences globales</string>
   <string name="debug_preferences">Déboguage</string>
+    <string name="privacy_preferences">Confidentialité</string>
+    <string name="network_preferences">Réseau</string>
   <string name="operational_preferences">Synchronisation</string>
   <string name="accountlist_preferences">Liste de comptes</string>
   <string name="messagelist_preferences">Liste de messages</string>
   <string name="messageview_preferences">Messages</string>
   <string name="settings_theme_label">Thème</string>
   <string name="settings_language_label">Langue</string>
+
+    <string name="settings_messageview_mobile_layout_label">Disposition colonne unique</string>
+    <string name="settings_messageview_mobile_layout_summary">Réarranger les messages HTML pour les petits écrans</string>
+    <string name="settings_messageview_zoom_controls_label">Zoom système</string>
+    <string name="settings_messageview_zoom_controls_summary">Activer les widgets zoom ou le pincer-zoomer si supporté par le système</string>
+
+
 
   <string name="setting_language_system">Langue du système</string>
   <string name="background_ops_label">Synchronisation en arrière-plan</string>
@@ -723,7 +742,7 @@
   <string name="batch_plain_mode">Mode normal</string>
   <string name="batch_select_all">Sélectionner tout</string>
   <string name="batch_deselect_all">Désélectionner tout</string>
-  <string name="account_setup_push_limit_label">Maximum de dossiers poussés à vérifier</string>
+  <string name="account_setup_push_limit_label">Maximum de dossiers Push à vérifier</string>
   <string name="account_setup_push_limit_10">10 dossiers</string>
   <string name="account_setup_push_limit_25">25 dossiers</string>
   <string name="account_setup_push_limit_50">50 dossiers</string>
