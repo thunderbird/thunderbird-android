@@ -68,7 +68,7 @@
     <string name="refresh_folders_action">Vernieuw mappen</string>
     <string name="mark_all_as_read_action">Markeer alle berichten als gelezen</string>
     <string name="add_account_action">Voeg account toe</string>
-    <string name="compose_action">Ontwerp</string>
+    <string name="compose_action">Nieuw bericht</string>
     <string name="search_action">Zoeken</string>
     <string name="search_results">Zoek resultaten</string>
     <string name="preferences_action">Instellingen</string>
@@ -132,8 +132,8 @@
 
     <string name="status_loading_more_failed">Opnieuw meer berichten laden</string>
 
-    <string name="load_more_messages_fmt">Laden
-    to <xliff:g id="messages_to_load">%d</xliff:g> meer</string>
+    <string name="load_more_messages_fmt">Meer
+    dan <xliff:g id="messages_to_load">%d</xliff:g> laden</string>
 
     <string name="abbrev_gigabytes">GB</string>
     <string name="abbrev_megabytes">MB</string>
@@ -184,8 +184,8 @@
     <string name="send_failure_subject">Fout bij verzenden van berichten</string>
     <string name="send_failure_body_abbrev">Bekijk je <xliff:g id="errorFolder">%s</xliff:g> map voor details.</string>
     <string name="send_failure_body_fmt">K-9 ondervond een probleem bij het verzenden van sommige berichten.
-    Echter, vanwege de aard van het probleem, kan K-9 niet zeker zeggen of de berichten werden verzonden of niet.
-    De ontvangers kunnen al kopie??n van het bericht hebben ontvangen.
+    Echter, vanwege de aard van het probleem, kan K-9 niet zeker zeggen of de berichten werden verzonden of niet. 
+    De ontvangers kunnen al kopieen van het bericht hebben ontvangen.
     \u000a\u000aDe berichten waarbij dit probleem is geconstateerd, zijn nu gemerkt met een ster in het postvak uit.
     Als je de sterren verwijderd, zal K-9 opnieuw proberen de berichten te verzenden.
     Lang indrukken van Postvak uit om \"Verzonden berichten\" stappen te ondernemen of een ander poging te doen.\u000A\u000a
@@ -197,7 +197,7 @@
     <string name="end_of_folder">Geen berichten meer</string>
 
     <string name="accounts_welcome">
-Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, gebaseerd op de standaard Android Mail cli??nt.
+Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, gebaseerd op de standaard Android Mail cliënt.
 \n
 \n\nK-9\Verbeterde opties inclusief:
 \n * Push mail die IMAP IDLE gebruikt
@@ -214,10 +214,10 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
 \n * Prullenbak legen
 \n * Berichten sorteren
 \n * ...en meer
-\n
+\n             
 \nHoud er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange.
 \n
-\n Gelieve foutrapporten, bijdrage nieuwe functies en vragen stellen op http://k9mail.googlecode.com/
+\n Graag foutrapporten, bijdrage nieuwe functies en vragen stellen op http://k9mail.googlecode.com/
 
 </string>
 
@@ -239,7 +239,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Laad meer berichten</string>
-    <string name="message_list_to_fmt">Aan:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_list_to_fmt">Aan:</string>
     <string name="message_list_delete_action">Verwijder</string>
     <string name="message_list_mark_read_action">Markeer als gelezen</string>
     <string name="message_list_mark_unread_action">Markeer als ongelezen</string>
@@ -442,7 +442,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
 
     <string name="compact_action">Compact</string>
    <string name="clear_action">Clear berichten (gevaar!)</string>
-   <string name="recreate_action">Recre??ren gegevens (Laatste mogelijkheid!)</string>
+   <string name="recreate_action">Recreeren gegevens (Laatste mogelijkheid!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Map poll controleer frequentie</string>
     <!-- Frequency also used in account_settings_* -->
@@ -488,7 +488,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="account_setup_options_mail_display_count_1000">1000 berichten</string>
 
 
-    <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopi??ren of verplaatsen omdat deze niet gesynchroniseerd is met de server</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen omdat deze niet gesynchroniseerd is met de server</string>
 
     <string name="account_setup_failed_dlg_title">Setup kon niet afronden</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.\n(<xliff:g id="error">%s</xliff:g>)</string> <!-- Username or password incorrect\n(ERR01 Account does not exist) -->
@@ -497,7 +497,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="account_setup_failed_dlg_edit_details_action">Aanpassen details</string>
     <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
 
-    <string name="account_settings_title_fmt">Algemene settings</string>
+    <string name="account_settings_title_fmt">Algemene instellingen</string>
     <string name="account_settings_default">Standaard account</string>
     <string name="account_settings_default_label">Standaard account</string>
     <string name="account_settings_default_summary">Standaard mail verzenden vanaf deze account</string>
@@ -543,7 +543,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="account_settings_crypto_app_none">Geen</string>
     <string name="account_settings_crypto_app_not_available">niet beschikbaar</string>
     <string name="account_settings_crypto_auto_signature">Auto-ondertekenen</string>
-    <string name="account_settings_crypto_auto_signature_summary">gebruik het account email adres om de digitale sleutel te raden.</string>
+    <string name="account_settings_crypto_auto_signature_summary">Gebruik het account email adres om de digitale sleutel te raden.</string>
 
     <string name="account_settings_mail_check_frequency_label">Mappen poll controleer frequentie</string>
     <string name="account_settings_second_class_check_frequency_label">2e klasse controleer frequentie</string>
@@ -587,7 +587,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="account_settings_message_age_1_year">afgelopen jaar</string>
 
 
-    <string name="account_settings_folder_display_mode_label">mappen om te laten zien</string>
+    <string name="account_settings_folder_display_mode_label">Mappen om te laten zien</string>
     <string name="account_settings_folder_display_mode_all">Alle</string>
     <string name="account_settings_folder_display_mode_first_class">Alleen 1e klasse mappen</string>
     <string name="account_settings_folder_display_mode_first_and_second_class">1e en 2e klasse mappen</string>
@@ -660,8 +660,8 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="account_settings_ringtone">Nieuwe mail beltoon</string>
     <string name="account_settings_led_label">Knipper LED</string>
     <string name="account_settings_led_summary">Knipper LED wanneer mail binnenkomt</string>
-
-
+    
+    
     <string name="account_settings_servers">Server instellingen</string>
 
     <string name="account_settings_composition_title">Bericht samenstelling opties</string>
@@ -703,7 +703,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="account_settings_signature_summary">Voeg een handtekening toe aan elk bericht dat u verzend</string>
 
     <string name="default_signature">-- \nVerzonden van mijn Android telefoon met K-9 Mail.</string>
-    <string name="default_identity_description">Initi??le identiteit</string>
+    <string name="default_identity_description">Initiële identiteit</string>
     <string name="choose_identity">Kies identiteit</string>
     <string name="choose_identity_title">Kies identiteit</string>
     <string name="choose_account_title">Kies account/identiteit</string>
@@ -738,7 +738,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="account_delete_dlg_title">Verwijder Account</string>
     <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail.</string>
 
-    <string name="account_recreate_dlg_title">Recre??ren Account</string>
+    <string name="account_recreate_dlg_title">Opnieuw maken Account</string>
     <string name="account_recreate_dlg_instructions_fmt">Alle data voor \"<xliff:g id="account">%s</xliff:g>\" wordt verwijderd van K-9 Mail, maar account instellingen blijven behouden.</string>
 
     <string name="account_clear_dlg_title">Clear Account</string>
@@ -810,7 +810,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="date_format_common">dd-MMM-yyyy</string>
     <string name="date_format_iso8601">yyyy-MM-dd</string>
 
-    <string name="batch_ops">Batch Ops</string>
+    <string name="batch_ops">Batch uitvoeren</string>
     <string name="batch_delete_op">Verwijder geselecteerde</string>
     <string name="batch_mark_read_op">Markeer geselecteerde als gelezen</string>
     <string name="batch_mark_unread_op">Markeer geselecteerde als ongelezen</string>
@@ -848,8 +848,8 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="manage_back_title">Beheer \"Terug\" knop</string>
     <string name="manage_back_summary">Laat \"Terug\" altijd 1 niveau omhoog gaan</string>
 
-    <string name="start_integrated_inbox_title">Ge??ntegreerde Inbox bij start</string>
-    <string name="start_integrated_inbox_summary">Laat de ge??ntegreerde Inbox zien na opstarten</string>
+    <string name="start_integrated_inbox_title">Geintegreerde Inbox bij start</string>
+    <string name="start_integrated_inbox_summary">Laat de geïntegreerde Inbox zien na opstarten</string>
 
     <string name="measure_accounts_title">Laat account grootte zien</string>
     <string name="measure_accounts_summary">Zet uit voor sneller beeldscherm</string>
@@ -864,13 +864,13 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="search_all_messages_title">Alle berichten</string>
     <string name="search_all_messages_detail">Alle berichten in doorzoekbare mappen</string>
 
-    <string name="integrated_inbox_title">Ge??ntegreerde Inbox</string>
+    <string name="integrated_inbox_title">Geintegreerde Inbox</string>
     <string name="integrated_inbox_detail">Alle berichten in geintergreerde mappen</string>
 
     <string name="tap_hint">Tik envelop of ster voor ongelezen of berichten met sterren</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">Integreer</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Ongelezen berichten worden weergegeven in de ge??ntegreerde Inbox</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Ongelezen berichten worden weergegeven in de geïntegreerde Inbox</string>
 
     <string name="account_settings_searchable_label">Mappen om te doorzoeken</string>
     <string name="account_settings_searchable_all">Alle</string>
@@ -896,7 +896,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
     <string name="font_size_message_list_sender">bericht afzender</string>
     <string name="font_size_message_list_date">Bericht datum</string>
 
-    <string name="font_size_message_view">Message view</string>
+    <string name="font_size_message_view">Beeld berichten</string>
     <string name="font_size_message_view_sender">bericht afzender</string>
     <string name="font_size_message_view_to">Bericht ontvanger (To)</string>
     <string name="font_size_message_view_cc">Bericht ontvanger (CC)</string>
@@ -932,7 +932,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
 
     <!-- APG related -->
     <string name="error_activity_not_found">Geen geschikte applicatie gevonden voor deze aktie.</string>
-    <string name="error_apg_version_not_supported">De ge??nstalleerde APG versie wordt niet ondersteund.</string>
+    <string name="error_apg_version_not_supported">De geïnstalleerde APG versie wordt niet ondersteund.</string>
     <string name="btn_crypto_sign">Teken</string>
     <string name="btn_encrypt">Versleutelen</string>
     <string name="btn_decrypt">Decoderen</string>
@@ -949,7 +949,7 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cli??nt voor Android, ge
 
     <string name="charset_not_found">Dit bericht kan niet worden weergegeven omdat het karakterset \"<xliff:g id="charset">%s</xliff:g>\" niet gevonden is.</string>
 
-    <string name="select_text_now">Selecteer tekst om te kopi??ren.</string>
+    <string name="select_text_now">Selecteer tekst om te kopieren.</string>
 
     <string name="dialog_confirm_delete_title">Bevestig verwijderen</string>
     <string name="dialog_confirm_delete_message">Wil je dit bericht verwijderen?</string>
