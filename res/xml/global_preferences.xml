@@ -102,11 +102,6 @@
             android:title="@string/global_settings_messageview_fixedwidth_label"
             android:summary="@string/global_settings_messageview_fixedwidth_summary" />
 
-        <CheckBoxPreference
-            android:key="messageview_return_to_list"
-            android:title="@string/global_settings_messageview_return_to_list_label"
-            android:summary="@string/global_settings_messageview_return_to_list_summary" />
-
     </PreferenceCategory>
 
 
@@ -116,6 +111,11 @@
 
 
         <PreferenceScreen android:title="@string/interaction_preferences" android:key="interaction_preferences">
+        <CheckBoxPreference
+            android:key="start_integrated_inbox"
+            android:title="@string/start_integrated_inbox_title"
+            android:summary="@string/start_integrated_inbox_summary" />
+
         <CheckBoxPreference
             android:key="gestures"
             android:title="@string/gestures_title"
@@ -136,9 +136,9 @@
             android:summary="@string/manage_back_summary" />
 
         <CheckBoxPreference
-            android:key="start_integrated_inbox"
-            android:title="@string/start_integrated_inbox_title"
-            android:summary="@string/start_integrated_inbox_summary" />
+            android:key="messageview_return_to_list"
+            android:title="@string/global_settings_messageview_return_to_list_label"
+            android:summary="@string/global_settings_messageview_return_to_list_summary" />
 
         <com.fsck.k9.preferences.CheckBoxListPreference
             android:key="confirm_actions"
