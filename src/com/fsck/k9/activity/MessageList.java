@@ -2396,7 +2396,19 @@ public class MessageList
         }
         public MessageInfoHolder getMessage(Message message)
         {
-            return getMessage(message.makeMessageReference());
+
+            synchronized (mAdapter.messages)
+            {
+                int index = mAdapter.messages.indexOf(message);
+                if (index == -1)
+                {
+                    return null;
+                }
+                else
+                {
+                    return mAdapter.messages.get(index);
+                }
+            }
         }
 
         // XXX TODO - make this not use a for loop
