@@ -1,4 +1,5 @@
 package com.fsck.k9.activity;
+import com.fsck.k9.helper.MessageHelper;
 import java.util.Date;
 
 import com.fsck.k9.mail.Message;
@@ -51,4 +52,10 @@ public class MessageInfoHolder
         return uid.hashCode();
     }
 
+    public String getDate(MessageHelper messageHelper) {
+        if (date == null) {
+            date = messageHelper.formatDate(message.getSentDate());
+        }
+        return date;
+    }
 }

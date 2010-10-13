@@ -66,15 +66,6 @@ public class MessageHelper
 
             target.folder = folder;
 
-            if (Utility.isDateToday(date))
-            {
-                target.date = mTodayDateFormat.format(date);
-            }
-            else
-            {
-                target.date = mDateFormat.format(date);
-            }
-
             target.hasAttachments = message.getAttachmentCount() > 0;
 
             target.read = message.isSet(Flag.SEEN);
@@ -122,4 +113,14 @@ public class MessageHelper
             Log.w(K9.LOG_TAG, "Unable to load message info", me);
         }
     }
+            public String formatDate(Date date) {
+            if (Utility.isDateToday(date))
+            {
+                return mTodayDateFormat.format(date);
+            }
+            else
+            {
+                return mDateFormat.format(date);
+            }
+            } 
 }

@@ -2718,7 +2718,7 @@ public class MessageList
                 holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
             }
 
-            holder.date.setText(message.date);
+            holder.date.setText(message.getDate(mMessageHelper));
             holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                 message.answered ? mAnsweredIcon : null, // left
                 null, // top
