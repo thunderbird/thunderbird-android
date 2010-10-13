@@ -126,6 +126,10 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
 
+    boolean mIsPushCapable = false;
+    boolean mIsExpungeCapable = false;
+
+
     public static void actionSettings(Context context, Account account)
     {
         Intent i = new Intent(context, AccountSettings.class);
@@ -143,13 +147,11 @@ public class AccountSettings extends K9PreferenceActivity
 
 
 
-        boolean isPushCapable = false;
-        boolean isExpungeCapable = false;
         try
         {
             final Store store = mAccount.getRemoteStore();
-            isPushCapable = store.isPushCapable();
-            isExpungeCapable = store.isExpungeCapable();
+            mIsPushCapable = store.isPushCapable();
+            mIsExpungeCapable = store.isExpungeCapable();
         }
         catch (Exception e)
         {
@@ -239,7 +241,7 @@ public class AccountSettings extends K9PreferenceActivity
         });
 
         mPushMode = (ListPreference) findPreference(PREFERENCE_PUSH_MODE);
-        mPushMode.setEnabled(isPushCapable);
+        mPushMode.setEnabled(mIsPushCapable);
         mPushMode.setValue(mAccount.getFolderPushMode().name());
         mPushMode.setSummary(mPushMode.getEntry());
         mPushMode.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
@@ -286,7 +288,7 @@ public class AccountSettings extends K9PreferenceActivity
 
 
         mExpungePolicy = (ListPreference) findPreference(PREFERENCE_EXPUNGE_POLICY);
-        mExpungePolicy.setEnabled(isExpungeCapable);
+        mExpungePolicy.setEnabled(mIsExpungeCapable);
         mExpungePolicy.setValue(mAccount.getExpungePolicy());
         mExpungePolicy.setSummary(mExpungePolicy.getEntry());
         mExpungePolicy.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
@@ -433,7 +435,7 @@ public class AccountSettings extends K9PreferenceActivity
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
         mIdleRefreshPeriod = (ListPreference) findPreference(PREFERENCE_IDLE_REFRESH_PERIOD);
         mMaxPushFolders = (ListPreference) findPreference(PREFERENCE_MAX_PUSH_FOLDERS);
-        if (isPushCapable)
+        if (mIsPushCapable)
         {
             mPushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
 
@@ -711,9 +713,12 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
 
-        mAccount.setPushPollOnConnect(mPushPollOnConnect.isChecked());
-        mAccount.setIdleRefreshMinutes(Integer.parseInt(mIdleRefreshPeriod.getValue()));
-        mAccount.setMaxPushFolders(Integer.parseInt(mMaxPushFolders.getValue()));
+        if (mIsPushCapable)
+        {
+            mAccount.setPushPollOnConnect(mPushPollOnConnect.isChecked());
+            mAccount.setIdleRefreshMinutes(Integer.parseInt(mIdleRefreshPeriod.getValue()));
+            mAccount.setMaxPushFolders(Integer.parseInt(mMaxPushFolders.getValue()));
+        }
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
         needsRefresh |= mAccount.setFolderSyncMode(Account.FolderMode.valueOf(mSyncMode.getValue()));
