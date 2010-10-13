@@ -82,6 +82,8 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
 
     private Account mAccount;
+    private boolean mIsPushCapable = false;
+    private boolean mIsExpungeCapable = false;
 
     private EditTextPreference mAccountDescription;
     private ListPreference mCheckFrequency;
@@ -117,17 +119,11 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mReplyAfterQuote;
     private CheckBoxPreference mSyncRemoteDeletions;
     private CheckBoxPreference mSaveAllHeaders;
-
     private CheckBoxPreference mPushPollOnConnect;
     private ListPreference mIdleRefreshPeriod;
     private ListPreference mMaxPushFolders;
-
-
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
-
-    boolean mIsPushCapable = false;
-    boolean mIsExpungeCapable = false;
 
 
     public static void actionSettings(Context context, Account account)
@@ -144,8 +140,6 @@ public class AccountSettings extends K9PreferenceActivity
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-
-
 
         try
         {
@@ -286,7 +280,6 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
-
         mExpungePolicy = (ListPreference) findPreference(PREFERENCE_EXPUNGE_POLICY);
         mExpungePolicy.setEnabled(mIsExpungeCapable);
         mExpungePolicy.setValue(mAccount.getExpungePolicy());
@@ -306,11 +299,8 @@ public class AccountSettings extends K9PreferenceActivity
         mSyncRemoteDeletions = (CheckBoxPreference) findPreference(PREFERENCE_SYNC_REMOTE_DELETIONS);
         mSyncRemoteDeletions.setChecked(mAccount.syncRemoteDeletions());
 
-
         mSaveAllHeaders = (CheckBoxPreference) findPreference(PREFERENCE_SAVE_ALL_HEADERS);
         mSaveAllHeaders.setChecked(mAccount.saveAllHeaders());
-
-
 
         mSearchableFolders = (ListPreference) findPreference(PREFERENCE_SEARCHABLE_FOLDERS);
         mSearchableFolders.setValue(mAccount.getSearchableFolders().name());
@@ -357,8 +347,6 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
-
-
         mMessageSize = (ListPreference) findPreference(PREFERENCE_MESSAGE_SIZE);
         mMessageSize.setValue(String.valueOf(mAccount.getMaximumAutoDownloadMessageSize()));
         mMessageSize.setSummary(mMessageSize.getEntry());
@@ -374,12 +362,9 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
-
-
         mAccountDefault = (CheckBoxPreference) findPreference(PREFERENCE_DEFAULT);
         mAccountDefault.setChecked(
             mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()));
-
 
         mAccountHideButtons = (ListPreference) findPreference(PREFERENCE_HIDE_BUTTONS);
         mAccountHideButtons.setValue("" + mAccount.getHideMessageViewButtons());
@@ -439,7 +424,6 @@ public class AccountSettings extends K9PreferenceActivity
         {
             mPushPollOnConnect.setChecked(mAccount.isPushPollOnConnect());
 
-
             mIdleRefreshPeriod.setValue(String.valueOf(mAccount.getIdleRefreshMinutes()));
             mIdleRefreshPeriod.setSummary(mIdleRefreshPeriod.getEntry());
             mIdleRefreshPeriod.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
@@ -454,7 +438,6 @@ public class AccountSettings extends K9PreferenceActivity
                 }
             });
 
-
             mMaxPushFolders.setValue(String.valueOf(mAccount.getMaxPushFolders()));
             mMaxPushFolders.setSummary(mMaxPushFolders.getEntry());
             mMaxPushFolders.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
@@ -468,17 +451,12 @@ public class AccountSettings extends K9PreferenceActivity
                     return false;
                 }
             });
-
-
-
-
         }
         else
         {
             mPushPollOnConnect.setEnabled(false);
             mMaxPushFolders.setEnabled(false);
             mIdleRefreshPeriod.setEnabled(false);
-
         }
 
         mAccountNotify = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY);
@@ -539,50 +517,36 @@ public class AccountSettings extends K9PreferenceActivity
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
 
-
         mAutoExpandFolder = (Preference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
-
         mAutoExpandFolder.setSummary(translateFolder(mAccount.getAutoExpandFolderName()));
-
-        mAutoExpandFolder.setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener()
+        mAutoExpandFolder.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
             public boolean onPreferenceClick(Preference preference)
             {
                 onChooseAutoExpandFolder();
                 return false;
             }
-        }
-        );
-
+        });
 
         mChipColor = (Preference)findPreference(PREFERENCE_CHIP_COLOR);
-
-        mChipColor.setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener()
+        mChipColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
             public boolean onPreferenceClick(Preference preference)
             {
                 onChooseChipColor();
                 return false;
             }
-        }
-        );
+        });
 
         mLedColor = (Preference)findPreference(PREFERENCE_LED_COLOR);
-
-        mLedColor.setOnPreferenceClickListener(
-            new Preference.OnPreferenceClickListener()
+        mLedColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
             public boolean onPreferenceClick(Preference preference)
             {
                 onChooseLedColor();
                 return false;
             }
-        }
-        );
-
-
+        });
 
         findPreference(PREFERENCE_COMPOSITION).setOnPreferenceClickListener(
             new Preference.OnPreferenceClickListener()
@@ -624,9 +588,6 @@ public class AccountSettings extends K9PreferenceActivity
                 return true;
             }
         });
-
-
-
 
         mCryptoApp = (ListPreference) findPreference(PREFERENCE_CRYPTO_APP);
         CharSequence cryptoAppEntries[] = mCryptoApp.getEntries();
@@ -680,7 +641,6 @@ public class AccountSettings extends K9PreferenceActivity
     public void onResume()
     {
         super.onResume();
-        //mAccount.refresh(Preferences.getPreferences(this));
     }
 
     private void saveSettings()
@@ -753,6 +713,7 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
         mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
         mAccount.save(Preferences.getPreferences(this));
+
         if (needsRefresh && needsPushRestart)
         {
             MailService.actionReset(this, null);
@@ -849,12 +810,10 @@ public class AccountSettings extends K9PreferenceActivity
         selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_FOLDER_NONE, "yes");
         selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_DISPLAYABLE_ONLY, "yes");
         startActivityForResult(selectIntent, SELECT_AUTO_EXPAND_FOLDER);
-
     }
 
     private String translateFolder(String in)
     {
-
         if (K9.INBOX.equalsIgnoreCase(in))
         {
             return getString(R.string.special_mailbox_name_inbox);
@@ -867,7 +826,6 @@ public class AccountSettings extends K9PreferenceActivity
 
     private String reverseTranslateFolder(String in)
     {
-
         if (getString(R.string.special_mailbox_name_inbox).equals(in))
         {
             return K9.INBOX;
