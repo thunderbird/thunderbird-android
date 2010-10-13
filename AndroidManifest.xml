@@ -259,7 +259,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.fsck.k9.AccessibleEmailContentActivity"
+            android:name="com.fsck.k9.web.AccessibleEmailContentActivity"
             >
         </activity>
 
