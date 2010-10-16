@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -1811,7 +1812,10 @@ public class LocalStore extends Store implements Serializable
                 String text = sbText.toString();
                 String html = markupContent(text, sbHtml.toString());
                 String preview = calculateContentPreview(text);
-
+                if (preview == null || preview.length() == 0)
+                {
+                    preview = calculateContentPreview(Html.fromHtml(html).toString());
+                }
                 try
                 {
                     ContentValues cv = new ContentValues();
