@@ -49,7 +49,7 @@
 	<string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Posta in uscita)</string>
 	<string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Bozze)</string>
 	<string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Cestino)</string>
-	<string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (POsta inviata)</string>
+	<string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Posta inviata)</string>
 	<string name="send_failure_subject">Impossibile inviare alcuni messaggi</string>
 	<string name="send_failure_body_abbrev">Vedi nella cartella <xliff:g id="errorFolder">%s</xliff:g> per i dettagli.</string>
 	<string name="send_failure_body_fmt">K-9 ha incontrato un problema nell\'inviare qualchuno dei tuoi messaggi.
