@@ -816,13 +816,11 @@ public class LocalStore extends Store implements Serializable
     {
         ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
         Cursor cursor = null;
+        int i = 0;
         try
         {
-            // pull out messages most recent first, since that's what the default sort is
-            cursor = mDb.rawQuery(queryString, placeHolders);
+            cursor = mDb.rawQuery(queryString + " LIMIT 10", placeHolders);
 
-
-            int i = 0;
             while (cursor.moveToNext())
             {
                 LocalMessage message = new LocalMessage(null, folder);
@@ -835,10 +833,25 @@ public class LocalStore extends Store implements Serializable
                 }
                 i++;
             }
-            if (listener != null)
+            cursor.close();
+            cursor = mDb.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
+
+            while (cursor.moveToNext())
             {
-                listener.messagesFinished(i);
+                LocalMessage message = new LocalMessage(null, folder);
+                message.populateFromGetMessageCursor(cursor);
+
+                messages.add(message);
+                if (listener != null)
+                {
+                    listener.messageFinished(message, i, -1);
+                }
+                i++;
             }
+        }
+        catch (Exception e)
+        {
+            Log.d(K9.LOG_TAG,"Got an exception "+e);
         }
         finally
         {
@@ -847,6 +860,10 @@ public class LocalStore extends Store implements Serializable
                 cursor.close();
             }
         }
+            if (listener != null)
+            {
+                listener.messagesFinished(i);
+            }
 
         return messages.toArray(EMPTY_MESSAGE_ARRAY);
 
