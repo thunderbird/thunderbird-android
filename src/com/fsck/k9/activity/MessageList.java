@@ -2577,7 +2577,8 @@ public class MessageList
             }
             else
             {
-                // TODO is this branch ever reached/executed?
+                // This branch code is triggered when the local store
+                // hands us an invalid message
 
                 holder.chip.getBackground().setAlpha(0);
                 holder.subject.setText("No subject");
