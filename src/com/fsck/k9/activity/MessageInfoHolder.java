@@ -54,8 +54,10 @@ public class MessageInfoHolder
         return uid.hashCode();
     }
 
-    public String getDate(MessageHelper messageHelper) {
-        if (date == null) {
+    public String getDate(MessageHelper messageHelper)
+    {
+        if (date == null)
+        {
             date = messageHelper.formatDate(message.getSentDate());
         }
         return date;

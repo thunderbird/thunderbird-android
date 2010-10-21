@@ -860,10 +860,10 @@ public class LocalStore extends Store implements Serializable
                 cursor.close();
             }
         }
-            if (listener != null)
-            {
-                listener.messagesFinished(i);
-            }
+        if (listener != null)
+        {
+            listener.messagesFinished(i);
+        }
 
         return messages.toArray(EMPTY_MESSAGE_ARRAY);
 

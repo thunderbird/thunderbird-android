@@ -2303,90 +2303,90 @@ public class MessageList
             // the callbacks to mutate it.
             final List<Message> messages = new ArrayList<Message>(providedMessages);
 
-                    boolean needsSort = false;
-                    final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
-                    List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
-                    List<Message> messagesToSearch = new ArrayList<Message>();
+            boolean needsSort = false;
+            final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
+            List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
+            List<Message> messagesToSearch = new ArrayList<Message>();
 
-                    // cache field into local variable for faster access for JVM without JIT
-                    final MessageHelper messageHelper = mMessageHelper;
+            // cache field into local variable for faster access for JVM without JIT
+            final MessageHelper messageHelper = mMessageHelper;
 
-                    for (Message message : messages)
+            for (Message message : messages)
+            {
+                MessageInfoHolder m = getMessage(message);
+                if (message.isSet(Flag.DELETED))
+                {
+                    if (m != null)
                     {
-                        MessageInfoHolder m = getMessage(message);
-                        if (message.isSet(Flag.DELETED))
+                        messagesToRemove.add(m);
+                    }
+                }
+                else
+                {
+                    final Folder messageFolder = message.getFolder();
+                    final Account messageAccount = messageFolder.getAccount();
+                    if (m == null)
+                    {
+                        if (updateForMe(account, folderName))
                         {
-                            if (m != null)
-                            {
-                                messagesToRemove.add(m);
-                            }
+                            m = new MessageInfoHolder();
+                            messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                            messagesToAdd.add(m);
                         }
                         else
                         {
-                            final Folder messageFolder = message.getFolder();
-                            final Account messageAccount = messageFolder.getAccount();
-                            if (m == null)
+                            if (mQueryString != null)
                             {
-                                if (updateForMe(account, folderName))
+                                if (verifyAgainstSearch)
+                                {
+                                    messagesToSearch.add(message);
+                                }
+                                else
                                 {
                                     m = new MessageInfoHolder();
                                     messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
                                     messagesToAdd.add(m);
                                 }
-                                else
-                                {
-                                    if (mQueryString != null)
-                                    {
-                                        if (verifyAgainstSearch)
-                                        {
-                                            messagesToSearch.add(message);
-                                        }
-                                        else
-                                        {
-                                            m = new MessageInfoHolder();
-                                            messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
-                                            messagesToAdd.add(m);
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                m.dirty = false; // as we reload the message, unset its dirty flag
-                                messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
-                                needsSort = true;
                             }
                         }
                     }
-
-                    if (messagesToSearch.size() > 0)
+                    else
                     {
-                        mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
-                                                        new MessagingListener()
-                        {
-                            @Override
-                            public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
-                            {
-                                addOrUpdateMessages(account, folder, messages, false);
-                            }
-                        });
+                        m.dirty = false; // as we reload the message, unset its dirty flag
+                        messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
+                        needsSort = true;
                     }
+                }
+            }
 
-                    if (messagesToRemove.size() > 0)
+            if (messagesToSearch.size() > 0)
+            {
+                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
+                                                new MessagingListener()
+                {
+                    @Override
+                    public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
                     {
-                        removeMessages(messagesToRemove);
+                        addOrUpdateMessages(account, folder, messages, false);
                     }
+                });
+            }
 
-                    if (messagesToAdd.size() > 0)
-                    {
-                        mHandler.addMessages(messagesToAdd);
-                    }
+            if (messagesToRemove.size() > 0)
+            {
+                removeMessages(messagesToRemove);
+            }
 
-                    if (needsSort)
-                    {
-                        mHandler.sortMessages();
-                        mHandler.resetUnreadCount();
-                    }
+            if (messagesToAdd.size() > 0)
+            {
+                mHandler.addMessages(messagesToAdd);
+            }
+
+            if (needsSort)
+            {
+                mHandler.sortMessages();
+                mHandler.resetUnreadCount();
+            }
         }
         public MessageInfoHolder getMessage(Message message)
         {
@@ -2718,7 +2718,8 @@ public class MessageList
             if (message.toMe)
             {
                 return String.format(getString(R.string.messagelist_sent_to_me_format), message.sender);
-            } else if (message.ccMe)
+            }
+            else if (message.ccMe)
             {
                 return String.format(getString(R.string.messagelist_sent_cc_me_format), message.sender);
             }
