@@ -484,9 +484,9 @@ public class MessageProvider extends ContentProvider
         }
 
         /* (non-Javadoc)
-         * 
+         *
          * Close the underlying cursor and dereference it.
-         * 
+         *
          * @see android.database.Cursor#close()
          */
         @Override
@@ -508,9 +508,9 @@ public class MessageProvider extends ContentProvider
         }
 
         /* (non-Javadoc)
-         * 
+         *
          * Making sure cursor gets closed on garbage collection
-         * 
+         *
          * @see java.lang.Object#finalize()
          */
         @Override

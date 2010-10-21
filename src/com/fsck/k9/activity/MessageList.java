@@ -788,7 +788,13 @@ public class MessageList
                         mAdapter.markAllMessagesAsDirty();
                         mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
                         mAdapter.pruneDirtyMessages();
-                        mAdapter.notifyDataSetChanged();
+                        runOnUiThread(new Runnable()
+                        {
+                            public void run()
+                            {
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
                     }
 
                 }
