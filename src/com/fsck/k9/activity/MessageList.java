@@ -2678,25 +2678,28 @@ public class MessageList
                  * compose a custom view containing the preview and the
                  * from.
                  */
-                holder.preview.setText(new SpannableStringBuilder(message.sender).append(" ").append(message.preview),
+
+                CharSequence sender = formatSender(message);
+                holder.preview.setText(new SpannableStringBuilder(sender).append(" ").append(message.preview),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create our span sections, and assign a format to each.
                 str.setSpan(new StyleSpan(Typeface.BOLD),
                             0,
-                            message.sender.length(),
+                            sender.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                            );
                 str.setSpan(new ForegroundColorSpan(Color.rgb(128,128,128)), // TODO: How do I can specify the android.R.attr.textColorTertiary
-                            message.sender.length(),
+                            sender.length(),
                             str.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                            );
             }
             else
             {
-                holder.from.setText(message.sender);
+                holder.from.setText(formatSender(message));
+
                 holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
             }
 
@@ -2708,6 +2711,22 @@ public class MessageList
                 null); // bottom
             holder.position = position;
         }
+
+        private CharSequence formatSender (MessageInfoHolder message)
+        {
+            if (message.toMe)
+            {
+                return String.format(getString(R.string.messagelist_sent_to_me_format), message.sender);
+            } else if (message.ccMe)
+            {
+                return String.format(getString(R.string.messagelist_sent_cc_me_format), message.sender);
+            }
+            else
+            {
+                return message.sender;
+            }
+        }
+
 
         public View getFooterView(int position, View convertView, ViewGroup parent)
         {
