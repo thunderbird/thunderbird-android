@@ -780,10 +780,19 @@ public class MessageList
             }
             else
             {
-                mAdapter.markAllMessagesAsDirty();
-                mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
-                mAdapter.pruneDirtyMessages();
-                mAdapter.notifyDataSetChanged();
+                new Thread()
+                {
+                    @Override
+                    public void run()
+                    {
+                        mAdapter.markAllMessagesAsDirty();
+                        mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+                        mAdapter.pruneDirtyMessages();
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                }
+                .start();
             }
             mController.notifyAccountCancel(this, mAccount);
 
