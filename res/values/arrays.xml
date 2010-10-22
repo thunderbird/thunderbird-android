@@ -392,7 +392,8 @@
         <item>ಕನ್ನಡ</item>
         <item>ภาษาไทย</item>
         <item>አማርኛ</item>
-        <item>中文</item>
+        <item>中文(繁體)</item>
+        <item>中文(简体)</item>
         <item>日本語</item>
         <item>한국어</item>
     </string-array>
@@ -470,7 +471,8 @@
         <item>kn</item>
         <item>th</item>
         <item>am</item>
-        <item>zh</item>
+        <item>zh_TW</item>
+        <item>zh_CN</item>
         <item>ja</item>
         <item>ko</item>
     </string-array>
@@ -488,7 +490,8 @@
         <item>nl</item>
         <item>pl</item>
         <item>ru</item>
-        <item>zh</item>
+        <item>zh_TW</item>
+        <item>zh_CN</item>
         <item>fi</item>
         <item>sv</item>
     </string-array>
