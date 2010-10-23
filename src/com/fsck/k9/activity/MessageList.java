@@ -771,51 +771,65 @@ public class MessageList
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
-
-        if (mFolderName != null)
+        if (mAccount != null)
         {
-            if (mAdapter.messages.isEmpty())
+            mController.notifyAccountCancel(this, mAccount);
+            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
+        }
+
+        if (mAdapter.messages.isEmpty())
+        {
+            if (mFolderName != null)
             {
                 mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
             }
-            else
+            else if (mQueryString != null)
             {
-                new Thread()
+                mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+            }
+
+        }
+        else
+        {
+            new Thread()
+            {
+                @Override
+                public void run()
                 {
-                    @Override
-                    public void run()
+                    mAdapter.markAllMessagesAsDirty();
+
+                    if (mFolderName != null)
                     {
-                        mAdapter.markAllMessagesAsDirty();
                         mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
-                        mAdapter.pruneDirtyMessages();
-                        runOnUiThread(new Runnable()
-                        {
-                            public void run()
-                            {
-                                mAdapter.notifyDataSetChanged();
-                            }
-                        });
+                    }
+                    else if (mQueryString != null)
+                    {
+                        mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
                     }
 
+
+                    mAdapter.pruneDirtyMessages();
+                    runOnUiThread(new Runnable()
+                    {
+                        public void run()
+                        {
+                            mAdapter.notifyDataSetChanged();
+                            restoreListState();
+                        }
+                    });
                 }
-                .start();
+
             }
-            mController.notifyAccountCancel(this, mAccount);
+            .start();
+        }
 
-            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
-
+        if (mAccount != null && mFolderName != null)
+        {
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
         }
-        else if (mQueryString != null)
-        {
-            mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
-        }
-
         mHandler.refreshTitle();
 
-        restoreListState();
     }
-
     private void initializeLayout()
     {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
