@@ -880,6 +880,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
         webSettings.setSupportZoom(true);
         webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+
         if (K9.zoomControlsEnabled())
         {
             webSettings.setBuiltInZoomControls(true);
