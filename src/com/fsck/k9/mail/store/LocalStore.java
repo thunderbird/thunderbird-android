@@ -48,6 +48,8 @@ public class LocalStore extends Store implements Serializable
     private static final int DB_VERSION = 39;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
+    private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
+
     private String mPath;
     private SQLiteDatabase mDb;
     private File mAttachmentsDir;
@@ -2433,6 +2435,18 @@ public class LocalStore extends Store implements Serializable
 
         public String htmlifyString(String text)
         {
+            // Our HTMLification code is somewhat memory intensive
+            // and was causing lots of OOM errors on the market
+            // if the message is big and plain text, just do
+            // a trivial htmlification
+            if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH)
+            {
+                return "<html><head/><body>" +
+                       htmlifyMessageHeader() +
+                       text +
+                       htmlifyMessageFooter() +
+                       "</body></html>";
+            }
             StringReader reader = new StringReader(text);
             StringBuilder buff = new StringBuilder(text.length() + 512);
             int c = 0;
