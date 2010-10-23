@@ -889,6 +889,8 @@ public class MessageView extends K9Activity implements OnClickListener
         if (K9.mobileOptimizedLayout())
         {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        } else {
+            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         }
 
         webSettings.setTextSize(mFontSizes.getMessageViewContent());
