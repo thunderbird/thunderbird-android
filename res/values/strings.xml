@@ -42,6 +42,7 @@
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">Next</string> <!-- Used as part of a multi-step process -->
+    <string name="previous_action">Previous</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
