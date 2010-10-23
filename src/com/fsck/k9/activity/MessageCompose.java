@@ -2296,7 +2296,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                  * We're saving a previously saved draft, so update the new message's uid
                  * to the old message's uid.
                  */
-                message.setUid(mMessageReference.uid);
+                if (mMessageReference != null)
+                {
+                    message.setUid(mMessageReference.uid);
+                }
             }
 
             String k9identity = Utility.base64Encode("" + mMessageContentView.getText().toString().length());

@@ -707,197 +707,200 @@ public class MessagingController implements Runnable
         {
             public void run()
             {
-
-                final AccountStats stats = new AccountStats();
-                final Set<String> accountUuidsSet = new HashSet<String>();
-                if (accountUuids != null)
-                {
-                    for (String accountUuid : accountUuids)
-                    {
-                        accountUuidsSet.add(accountUuid);
-                    }
-                }
-                final Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
-                Account[] accounts = prefs.getAccounts();
-                List<LocalFolder> foldersToSearch = null;
-                boolean displayableOnly = false;
-                boolean noSpecialFolders = true;
-                for (final Account account : accounts)
-                {
-                    if (accountUuids != null && !accountUuidsSet.contains(account.getUuid()))
-                    {
-                        continue;
-                    }
-
-                    if (accountUuids != null && accountUuidsSet.contains(account.getUuid()))
-                    {
-                        displayableOnly = true;
-                        noSpecialFolders = true;
-                    }
-                    else if (!integrate && folderNames == null)
-                    {
-                        Account.Searchable searchableFolders = account.getSearchableFolders();
-                        switch (searchableFolders)
-                        {
-                            case NONE:
-                                continue;
-                            case DISPLAYABLE:
-                                displayableOnly = true;
-                                break;
-
-                        }
-                    }
-                    List<Message> messagesToSearch = null;
-                    if (messages != null)
-                    {
-                        messagesToSearch = new LinkedList<Message>();
-                        for (Message message : messages)
-                        {
-                            if (message.getFolder().getAccount().getUuid().equals(account.getUuid()))
-                            {
-                                messagesToSearch.add(message);
-                            }
-                        }
-                        if (messagesToSearch.isEmpty())
-                        {
-                            continue;
-                        }
-                    }
-                    if (listener != null)
-                    {
-                        listener.listLocalMessagesStarted(account, null);
-                    }
-
-                    if (integrate || displayableOnly || folderNames != null || noSpecialFolders)
-                    {
-                        List<LocalFolder> tmpFoldersToSearch = new LinkedList<LocalFolder>();
-                        try
-                        {
-                            LocalStore store = account.getLocalStore();
-                            List<? extends Folder> folders = store.getPersonalNamespaces(false);
-                            Set<String> folderNameSet = null;
-                            if (folderNames != null)
-                            {
-                                folderNameSet = new HashSet<String>();
-                                for (String folderName : folderNames)
-                                {
-                                    folderNameSet.add(folderName);
-                                }
-                            }
-                            for (Folder folder : folders)
-                            {
-                                LocalFolder localFolder = (LocalFolder)folder;
-                                boolean include = true;
-                                folder.refresh(prefs);
-                                String localFolderName = localFolder.getName();
-                                if (integrate)
-                                {
-                                    include = localFolder.isIntegrate();
-                                }
-                                else
-                                {
-                                    if (folderNameSet != null)
-                                    {
-                                        if (!folderNameSet.contains(localFolderName))
-
-                                        {
-                                            include = false;
-                                        }
-                                    }
-                                    // Never exclude the INBOX (see issue 1817)
-                                    else if (noSpecialFolders && !localFolderName.equals(K9.INBOX) && (
-                                                 localFolderName.equals(account.getTrashFolderName()) ||
-                                                 localFolderName.equals(account.getOutboxFolderName()) ||
-                                                 localFolderName.equals(account.getDraftsFolderName()) ||
-                                                 localFolderName.equals(account.getSentFolderName()) ||
-                                                 localFolderName.equals(account.getErrorFolderName())))
-                                    {
-                                        include = false;
-                                    }
-                                    else if (displayableOnly && modeMismatch(account.getFolderDisplayMode(), folder.getDisplayClass()))
-                                    {
-                                        include = false;
-                                    }
-                                }
-
-                                if (include)
-                                {
-                                    tmpFoldersToSearch.add(localFolder);
-                                }
-                            }
-                            if (tmpFoldersToSearch.size() < 1)
-                            {
-                                continue;
-                            }
-                            foldersToSearch = tmpFoldersToSearch;
-                        }
-                        catch (MessagingException me)
-                        {
-                            Log.e(K9.LOG_TAG, "Unable to restrict search folders in Account " + account.getDescription() + ", searching all", me);
-                            addErrorMessage(account, null, me);
-                        }
-
-                    }
-
-                    MessageRetrievalListener retrievalListener = new MessageRetrievalListener()
-                    {
-                        public void messageStarted(String message, int number, int ofTotal) {}
-                        public void messageFinished(Message message, int number, int ofTotal)
-                        {
-                            if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message))
-                            {
-                                List<Message> messages = new ArrayList<Message>();
-
-                                messages.add(message);
-                                stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
-                                stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
-                                if (listener != null)
-                                {
-                                    listener.listLocalMessagesAddMessages(account, null, messages);
-                                }
-                            }
-
-                        }
-                        public void messagesFinished(int number)
-                        {
-
-                        }
-                    };
-
-                    try
-                    {
-                        String[] queryFields = {"html_content","subject","sender_list"};
-                        LocalStore localStore = account.getLocalStore();
-                        localStore.searchForMessages(retrievalListener, queryFields
-                                                     , query, foldersToSearch,
-                                                     messagesToSearch == null ? null : messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY),
-                                                     requiredFlags, forbiddenFlags);
-
-                    }
-                    catch (Exception e)
-                    {
-                        if (listener != null)
-                        {
-                            listener.listLocalMessagesFailed(account, null, e.getMessage());
-                        }
-                        addErrorMessage(account, null, e);
-                    }
-                    finally
-                    {
-                        if (listener != null)
-                        {
-                            listener.listLocalMessagesFinished(account, null);
-                        }
-                    }
-                }
-                if (listener != null)
-                {
-                    listener.searchStats(stats);
-                }
+                searchLocalMessagesSynchronous(accountUuids,folderNames, messages,  query, integrate, requiredFlags, forbiddenFlags, listener);
             }
         });
     }
+    public void searchLocalMessagesSynchronous(final String[] accountUuids, final String[] folderNames, final Message[] messages, final String query, final boolean integrate, final Flag[] requiredFlags, final Flag[] forbiddenFlags, final MessagingListener listener)
+    {
 
+        final AccountStats stats = new AccountStats();
+        final Set<String> accountUuidsSet = new HashSet<String>();
+        if (accountUuids != null)
+        {
+            for (String accountUuid : accountUuids)
+            {
+                accountUuidsSet.add(accountUuid);
+            }
+        }
+        final Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
+        Account[] accounts = prefs.getAccounts();
+        List<LocalFolder> foldersToSearch = null;
+        boolean displayableOnly = false;
+        boolean noSpecialFolders = true;
+        for (final Account account : accounts)
+        {
+            if (accountUuids != null && !accountUuidsSet.contains(account.getUuid()))
+            {
+                continue;
+            }
+
+            if (accountUuids != null && accountUuidsSet.contains(account.getUuid()))
+            {
+                displayableOnly = true;
+                noSpecialFolders = true;
+            }
+            else if (!integrate && folderNames == null)
+            {
+                Account.Searchable searchableFolders = account.getSearchableFolders();
+                switch (searchableFolders)
+                {
+                    case NONE:
+                        continue;
+                    case DISPLAYABLE:
+                        displayableOnly = true;
+                        break;
+
+                }
+            }
+            List<Message> messagesToSearch = null;
+            if (messages != null)
+            {
+                messagesToSearch = new LinkedList<Message>();
+                for (Message message : messages)
+                {
+                    if (message.getFolder().getAccount().getUuid().equals(account.getUuid()))
+                    {
+                        messagesToSearch.add(message);
+                    }
+                }
+                if (messagesToSearch.isEmpty())
+                {
+                    continue;
+                }
+            }
+            if (listener != null)
+            {
+                listener.listLocalMessagesStarted(account, null);
+            }
+
+            if (integrate || displayableOnly || folderNames != null || noSpecialFolders)
+            {
+                List<LocalFolder> tmpFoldersToSearch = new LinkedList<LocalFolder>();
+                try
+                {
+                    LocalStore store = account.getLocalStore();
+                    List<? extends Folder> folders = store.getPersonalNamespaces(false);
+                    Set<String> folderNameSet = null;
+                    if (folderNames != null)
+                    {
+                        folderNameSet = new HashSet<String>();
+                        for (String folderName : folderNames)
+                        {
+                            folderNameSet.add(folderName);
+                        }
+                    }
+                    for (Folder folder : folders)
+                    {
+                        LocalFolder localFolder = (LocalFolder)folder;
+                        boolean include = true;
+                        folder.refresh(prefs);
+                        String localFolderName = localFolder.getName();
+                        if (integrate)
+                        {
+                            include = localFolder.isIntegrate();
+                        }
+                        else
+                        {
+                            if (folderNameSet != null)
+                            {
+                                if (!folderNameSet.contains(localFolderName))
+
+                                {
+                                    include = false;
+                                }
+                            }
+                            // Never exclude the INBOX (see issue 1817)
+                            else if (noSpecialFolders && !localFolderName.equals(K9.INBOX) && (
+                                         localFolderName.equals(account.getTrashFolderName()) ||
+                                         localFolderName.equals(account.getOutboxFolderName()) ||
+                                         localFolderName.equals(account.getDraftsFolderName()) ||
+                                         localFolderName.equals(account.getSentFolderName()) ||
+                                         localFolderName.equals(account.getErrorFolderName())))
+                            {
+                                include = false;
+                            }
+                            else if (displayableOnly && modeMismatch(account.getFolderDisplayMode(), folder.getDisplayClass()))
+                            {
+                                include = false;
+                            }
+                        }
+
+                        if (include)
+                        {
+                            tmpFoldersToSearch.add(localFolder);
+                        }
+                    }
+                    if (tmpFoldersToSearch.size() < 1)
+                    {
+                        continue;
+                    }
+                    foldersToSearch = tmpFoldersToSearch;
+                }
+                catch (MessagingException me)
+                {
+                    Log.e(K9.LOG_TAG, "Unable to restrict search folders in Account " + account.getDescription() + ", searching all", me);
+                    addErrorMessage(account, null, me);
+                }
+
+            }
+
+            MessageRetrievalListener retrievalListener = new MessageRetrievalListener()
+            {
+                public void messageStarted(String message, int number, int ofTotal) {}
+                public void messageFinished(Message message, int number, int ofTotal)
+                {
+                    if (!isMessageSuppressed(message.getFolder().getAccount(), message.getFolder().getName(), message))
+                    {
+                        List<Message> messages = new ArrayList<Message>();
+
+                        messages.add(message);
+                        stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
+                        stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
+                        if (listener != null)
+                        {
+                            listener.listLocalMessagesAddMessages(account, null, messages);
+                        }
+                    }
+
+                }
+                public void messagesFinished(int number)
+                {
+
+                }
+            };
+
+            try
+            {
+                String[] queryFields = {"html_content","subject","sender_list"};
+                LocalStore localStore = account.getLocalStore();
+                localStore.searchForMessages(retrievalListener, queryFields
+                                             , query, foldersToSearch,
+                                             messagesToSearch == null ? null : messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY),
+                                             requiredFlags, forbiddenFlags);
+
+            }
+            catch (Exception e)
+            {
+                if (listener != null)
+                {
+                    listener.listLocalMessagesFailed(account, null, e.getMessage());
+                }
+                addErrorMessage(account, null, e);
+            }
+            finally
+            {
+                if (listener != null)
+                {
+                    listener.listLocalMessagesFinished(account, null);
+                }
+            }
+        }
+        if (listener != null)
+        {
+            listener.searchStats(stats);
+        }
+    }
     public void loadMoreMessages(Account account, String folder, MessagingListener listener)
     {
         try

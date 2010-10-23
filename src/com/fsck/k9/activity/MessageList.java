@@ -771,36 +771,65 @@ public class MessageList
         sortDateAscending = mController.isSortAscending(SORT_TYPE.SORT_DATE);
 
         mController.addListener(mAdapter.mListener);
-
-        if (mFolderName != null)
+        if (mAccount != null)
         {
-            if (mAdapter.messages.isEmpty())
+            mController.notifyAccountCancel(this, mAccount);
+            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
+        }
+
+        if (mAdapter.messages.isEmpty())
+        {
+            if (mFolderName != null)
             {
                 mController.listLocalMessages(mAccount, mFolderName,  mAdapter.mListener);
             }
-            else
+            else if (mQueryString != null)
             {
-                mAdapter.markAllMessagesAsDirty();
-                mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
-                mAdapter.pruneDirtyMessages();
-                mAdapter.notifyDataSetChanged();
+                mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
             }
-            mController.notifyAccountCancel(this, mAccount);
 
-            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
+        }
+        else
+        {
+            new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    mAdapter.markAllMessagesAsDirty();
 
+                    if (mFolderName != null)
+                    {
+                        mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mAdapter.mListener);
+                    }
+                    else if (mQueryString != null)
+                    {
+                        mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
+                    }
+
+
+                    mAdapter.pruneDirtyMessages();
+                    runOnUiThread(new Runnable()
+                    {
+                        public void run()
+                        {
+                            mAdapter.notifyDataSetChanged();
+                            restoreListState();
+                        }
+                    });
+                }
+
+            }
+            .start();
+        }
+
+        if (mAccount != null && mFolderName != null)
+        {
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mAdapter.mListener);
         }
-        else if (mQueryString != null)
-        {
-            mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mAdapter.mListener);
-        }
-
         mHandler.refreshTitle();
 
-        restoreListState();
     }
-
     private void initializeLayout()
     {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -2303,96 +2332,90 @@ public class MessageList
             // the callbacks to mutate it.
             final List<Message> messages = new ArrayList<Message>(providedMessages);
 
-            runOnUiThread(new Runnable()
+            boolean needsSort = false;
+            final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
+            List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
+            List<Message> messagesToSearch = new ArrayList<Message>();
+
+            // cache field into local variable for faster access for JVM without JIT
+            final MessageHelper messageHelper = mMessageHelper;
+
+            for (Message message : messages)
             {
-                public void run()
+                MessageInfoHolder m = getMessage(message);
+                if (message.isSet(Flag.DELETED))
                 {
-                    boolean needsSort = false;
-                    final List<MessageInfoHolder> messagesToAdd = new ArrayList<MessageInfoHolder>();
-                    List<MessageInfoHolder> messagesToRemove = new ArrayList<MessageInfoHolder>();
-                    List<Message> messagesToSearch = new ArrayList<Message>();
-
-                    // cache field into local variable for faster access for JVM without JIT
-                    final MessageHelper messageHelper = mMessageHelper;
-
-                    for (Message message : messages)
+                    if (m != null)
                     {
-                        MessageInfoHolder m = getMessage(message);
-                        if (message.isSet(Flag.DELETED))
+                        messagesToRemove.add(m);
+                    }
+                }
+                else
+                {
+                    final Folder messageFolder = message.getFolder();
+                    final Account messageAccount = messageFolder.getAccount();
+                    if (m == null)
+                    {
+                        if (updateForMe(account, folderName))
                         {
-                            if (m != null)
-                            {
-                                messagesToRemove.add(m);
-                            }
+                            m = new MessageInfoHolder();
+                            messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
+                            messagesToAdd.add(m);
                         }
                         else
                         {
-                            final Folder messageFolder = message.getFolder();
-                            final Account messageAccount = messageFolder.getAccount();
-                            if (m == null)
+                            if (mQueryString != null)
                             {
-                                if (updateForMe(account, folderName))
+                                if (verifyAgainstSearch)
+                                {
+                                    messagesToSearch.add(message);
+                                }
+                                else
                                 {
                                     m = new MessageInfoHolder();
                                     messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
                                     messagesToAdd.add(m);
                                 }
-                                else
-                                {
-                                    if (mQueryString != null)
-                                    {
-                                        if (verifyAgainstSearch)
-                                        {
-                                            messagesToSearch.add(message);
-                                        }
-                                        else
-                                        {
-                                            m = new MessageInfoHolder();
-                                            messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, messageAccount), messageAccount);
-                                            messagesToAdd.add(m);
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                m.dirty = false; // as we reload the message, unset its dirty flag
-                                messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
-                                needsSort = true;
                             }
                         }
                     }
-
-                    if (messagesToSearch.size() > 0)
+                    else
                     {
-                        mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
-                                                        new MessagingListener()
-                        {
-                            @Override
-                            public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
-                            {
-                                addOrUpdateMessages(account, folder, messages, false);
-                            }
-                        });
-                    }
-
-                    if (messagesToRemove.size() > 0)
-                    {
-                        removeMessages(messagesToRemove);
-                    }
-
-                    if (messagesToAdd.size() > 0)
-                    {
-                        mHandler.addMessages(messagesToAdd);
-                    }
-
-                    if (needsSort)
-                    {
-                        mHandler.sortMessages();
-                        mHandler.resetUnreadCount();
+                        m.dirty = false; // as we reload the message, unset its dirty flag
+                        messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
+                        needsSort = true;
                     }
                 }
-            });
+            }
+
+            if (messagesToSearch.size() > 0)
+            {
+                mController.searchLocalMessages(mAccountUuids, mFolderNames, messagesToSearch.toArray(EMPTY_MESSAGE_ARRAY), mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags,
+                                                new MessagingListener()
+                {
+                    @Override
+                    public void listLocalMessagesAddMessages(Account account, String folder, List<Message> messages)
+                    {
+                        addOrUpdateMessages(account, folder, messages, false);
+                    }
+                });
+            }
+
+            if (messagesToRemove.size() > 0)
+            {
+                removeMessages(messagesToRemove);
+            }
+
+            if (messagesToAdd.size() > 0)
+            {
+                mHandler.addMessages(messagesToAdd);
+            }
+
+            if (needsSort)
+            {
+                mHandler.sortMessages();
+                mHandler.resetUnreadCount();
+            }
         }
         public MessageInfoHolder getMessage(Message message)
         {
@@ -2583,7 +2606,8 @@ public class MessageList
             }
             else
             {
-                // TODO is this branch ever reached/executed?
+                // This branch code is triggered when the local store
+                // hands us an invalid message
 
                 holder.chip.getBackground().setAlpha(0);
                 holder.subject.setText("No subject");
@@ -2684,29 +2708,32 @@ public class MessageList
                  * compose a custom view containing the preview and the
                  * from.
                  */
-                holder.preview.setText(new SpannableStringBuilder(message.sender).append(" ").append(message.preview),
+
+                CharSequence sender = formatSender(message);
+                holder.preview.setText(new SpannableStringBuilder(sender).append(" ").append(message.preview),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create our span sections, and assign a format to each.
                 str.setSpan(new StyleSpan(Typeface.BOLD),
                             0,
-                            message.sender.length(),
+                            sender.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                            );
                 str.setSpan(new ForegroundColorSpan(Color.rgb(128,128,128)), // TODO: How do I can specify the android.R.attr.textColorTertiary
-                            message.sender.length(),
+                            sender.length(),
                             str.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                            );
             }
             else
             {
-                holder.from.setText(message.sender);
+                holder.from.setText(formatSender(message));
+
                 holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
             }
 
-            holder.date.setText(message.date);
+            holder.date.setText(message.getDate(mMessageHelper));
             holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                 message.answered ? mAnsweredIcon : null, // left
                 null, // top
@@ -2714,6 +2741,23 @@ public class MessageList
                 null); // bottom
             holder.position = position;
         }
+
+        private CharSequence formatSender (MessageInfoHolder message)
+        {
+            if (message.toMe)
+            {
+                return String.format(getString(R.string.messagelist_sent_to_me_format), message.sender);
+            }
+            else if (message.ccMe)
+            {
+                return String.format(getString(R.string.messagelist_sent_cc_me_format), message.sender);
+            }
+            else
+            {
+                return message.sender;
+            }
+        }
+
 
         public View getFooterView(int position, View convertView, ViewGroup parent)
         {

@@ -155,7 +155,7 @@ public class K9 extends Application
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
     private static boolean mZoomControlsEnabled = false;
-    private static boolean mMobileOptimizedLayout = false; 
+    private static boolean mMobileOptimizedLayout = false;
 
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;

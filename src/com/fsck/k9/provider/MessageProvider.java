@@ -484,9 +484,9 @@ public class MessageProvider extends ContentProvider
         }
 
         /* (non-Javadoc)
-         * 
+         *
          * Close the underlying cursor and dereference it.
-         * 
+         *
          * @see android.database.Cursor#close()
          */
         @Override
