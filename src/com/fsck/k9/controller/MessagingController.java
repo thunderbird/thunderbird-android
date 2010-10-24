@@ -409,59 +409,77 @@ public class MessagingController implements Runnable
         {
             public void run()
             {
-                for (MessagingListener l : getListeners(listener))
-                {
-                    l.listFoldersStarted(account);
-                }
-                List<? extends Folder> localFolders = null;
-                try
-                {
-                    Store localStore = account.getLocalStore();
-                    localFolders = localStore.getPersonalNamespaces(false);
-
-                    Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
-
-                    if (refreshRemote || localFolders == null || localFolders.size() == 0)
-                    {
-                        doRefreshRemote(account, listener);
-                        return;
-                    }
-
-                    for (MessagingListener l : getListeners(listener))
-                    {
-                        l.listFolders(account, folderArray);
-                    }
-                }
-                catch (Exception e)
-                {
-                    for (MessagingListener l : getListeners(listener))
-                    {
-                        l.listFoldersFailed(account, e.getMessage());
-                    }
-
-                    addErrorMessage(account, null, e);
-                    return;
-                }
-                finally
-                {
-                    if (localFolders != null)
-                    {
-                        for (Folder localFolder : localFolders)
-                        {
-                            if (localFolder != null)
-                            {
-                                localFolder.close();
-                            }
-                        }
-                    }
-                }
-
-                for (MessagingListener l : getListeners(listener))
-                {
-                    l.listFoldersFinished(account);
-                }
+                listFoldersSynchronous(account, refreshRemote, listener);
             }
         });
+    }
+
+    /**
+     * Lists folders that are available locally and remotely. This method calls
+     * listFoldersCallback for local folders before it returns, and then for
+     * remote folders at some later point. If there are no local folders
+     * includeRemote is forced by this method. This method is called in the
+     * foreground.
+     * TODO this needs to cache the remote folder list
+     *
+     * @param account
+     * @param includeRemote
+     * @param listener
+     * @throws MessagingException
+     */
+    public void listFoldersSynchronous(final Account account, final boolean refreshRemote, final MessagingListener listener)
+    {
+        for (MessagingListener l : getListeners(listener))
+        {
+            l.listFoldersStarted(account);
+        }
+        List<? extends Folder> localFolders = null;
+        try
+        {
+            Store localStore = account.getLocalStore();
+            localFolders = localStore.getPersonalNamespaces(false);
+
+            Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
+
+            if (refreshRemote || localFolders == null || localFolders.size() == 0)
+            {
+                doRefreshRemote(account, listener);
+                return;
+            }
+
+            for (MessagingListener l : getListeners(listener))
+            {
+                l.listFolders(account, folderArray);
+            }
+        }
+        catch (Exception e)
+        {
+            for (MessagingListener l : getListeners(listener))
+            {
+                l.listFoldersFailed(account, e.getMessage());
+            }
+
+            addErrorMessage(account, null, e);
+            return;
+        }
+        finally
+        {
+            if (localFolders != null)
+            {
+                for (Folder localFolder : localFolders)
+                {
+                    if (localFolder != null)
+                    {
+                        localFolder.close();
+                    }
+                }
+            }
+        }
+
+        for (MessagingListener l : getListeners(listener))
+        {
+            l.listFoldersFinished(account);
+        }
     }
 
     private void doRefreshRemote(final Account account, MessagingListener listener)

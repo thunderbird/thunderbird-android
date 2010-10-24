@@ -350,6 +350,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_check_settings_retr_info_msg">Retrieving account information\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">Checking incoming server settings\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">Checking outgoing server settings\u2026</string>
+    <string name="account_setup_check_settings_authenticate">Authenticating\u2026</string>
+    <string name="account_setup_check_settings_fetch">Fetching account settings\u2026</string>
     <string name="account_setup_check_settings_finishing_msg">Finishing\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">Canceling\u2026</string>
 
@@ -364,7 +366,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_account_type_instructions">What type of account is this?</string>
     <string name="account_setup_account_type_pop_action">POP3</string>
     <string name="account_setup_account_type_imap_action">IMAP</string>
-    <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
+    <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
 
     <string name="account_setup_incoming_title">Incoming server settings</string>
     <string name="account_setup_incoming_username_label">Username</string>

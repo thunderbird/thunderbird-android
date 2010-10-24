@@ -889,7 +889,9 @@ public class MessageView extends K9Activity implements OnClickListener
         if (K9.mobileOptimizedLayout())
         {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        } else {
+        }
+        else
+        {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         }
 

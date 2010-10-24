@@ -12,20 +12,19 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.transport.TrustedSocketFactory;
 import org.apache.http.*;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 import org.xml.sax.Attributes;
@@ -34,7 +33,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.net.ssl.SSLException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -65,11 +63,17 @@ import java.util.zip.GZIPInputStream;
  */
 public class WebDavStore extends Store
 {
-    public static final int CONNECTION_SECURITY_NONE = 0;
-    public static final int CONNECTION_SECURITY_TLS_OPTIONAL = 1;
-    public static final int CONNECTION_SECURITY_TLS_REQUIRED = 2;
-    public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
-    public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
+    // Security options
+    private static final short CONNECTION_SECURITY_NONE = 0;
+    private static final short CONNECTION_SECURITY_TLS_OPTIONAL = 1;
+    private static final short CONNECTION_SECURITY_TLS_REQUIRED = 2;
+    private static final short CONNECTION_SECURITY_SSL_OPTIONAL = 3;
+    private static final short CONNECTION_SECURITY_SSL_REQUIRED = 4;
+
+    // Authentication types
+    private static final short AUTH_TYPE_NONE = 0;
+    private static final short AUTH_TYPE_BASIC = 1;
+    private static final short AUTH_TYPE_FORM_BASED = 2;
 
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.SEEN, Flag.ANSWERED };
 
@@ -77,9 +81,12 @@ public class WebDavStore extends Store
 
     private static final Message[] EMPTY_MESSAGE_ARRAY = new Message[0];
 
-    private int mConnectionSecurity;
+    private static final String DAV_MAIL_SEND_FOLDER = "##DavMailSubmissionURI##";
+    private static final String DAV_MAIL_TMP_FOLDER = "drafts";
+
+    private short mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
-    private String alias;
+    private String mAlias;    /* Stores the alias for the user's mailbox */
     private String mPassword; /* Stores the password for authentications */
     private String mUrl;      /* Stores the base URL for the server */
     private String mHost;     /* Stores the host name for the server */
@@ -89,18 +96,16 @@ public class WebDavStore extends Store
     private URI mUri;         /* Stores the Uniform Resource Indicator with all connection info */
     private String mRedirectUrl;
     private String mAuthString;
-    private static String DAV_MAIL_SEND_FOLDER = "##DavMailSubmissionURI##";
-    private static String DAV_MAIL_TMP_FOLDER = "drafts";
 
-
-    private CookieStore mAuthCookies; /* Stores cookies from authentication */
-    private boolean mAuthenticated = false; /* Stores authentication state */
-    private long mLastAuth = -1; /* Stores the timestamp of last auth */
+    private boolean mSecure;
+    private WebDavHttpClient mHttpClient = null;
+    private HttpContext mContext = null;
+    private CookieStore mAuthCookies = null;
+    private short mAuthentication = AUTH_TYPE_NONE;
+    private long mLastAuth = -1;
     private long mAuthTimeout = 5 * 60;
 
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
-    private boolean mSecure;
-    private WebDavHttpClient mHttpClient = null;
 
     /**
      * webdav://user:password@server:port CONNECTION_SECURITY_NONE
@@ -121,6 +126,7 @@ public class WebDavStore extends Store
         {
             throw new MessagingException("Invalid WebDavStore URI", use);
         }
+
         String scheme = mUri.getScheme();
         if (scheme.equals("webdav"))
         {
@@ -154,6 +160,34 @@ public class WebDavStore extends Store
             if (hostParts.length > 1)
             {
                 mHost = hostParts[1];
+            }
+        }
+
+        if (mUri.getUserInfo() != null)
+        {
+            try
+            {
+                String[] userInfoParts = mUri.getUserInfo().split(":");
+                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
+                String userParts[] = mUsername.split("\\\\", 2);
+
+                if (userParts.length > 1)
+                {
+                    mAlias = userParts[1];
+                }
+                else
+                {
+                    mAlias = mUsername;
+                }
+                if (userInfoParts.length > 1)
+                {
+                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
+                }
+            }
+            catch (UnsupportedEncodingException enc)
+            {
+                // This shouldn't happen since the encoding is hardcoded to UTF-8
+                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
             }
         }
 
@@ -202,43 +236,27 @@ public class WebDavStore extends Store
                 }
             }
         }
-        String path = mPath;
-        if (path.length() > 0 && !path.startsWith("/"))
+
+        if (!this.mPath.equals("") &&
+                this.mPath.startsWith("/"))
         {
-            path = "/" + mPath;
+            mPath = "/" + mPath;
         }
 
-        this.mUrl = getRoot() + path;
-
-        if (mUri.getUserInfo() != null)
+        if (this.mMailboxPath == null ||
+                this.mMailboxPath.equals(""))
         {
-            try
-            {
-                String[] userInfoParts = mUri.getUserInfo().split(":");
-                mUsername = URLDecoder.decode(userInfoParts[0], "UTF-8");
-                String userParts[] = mUsername.split("/", 2);
-
-                if (userParts.length > 1)
-                {
-                    alias = userParts[1];
-                }
-                else
-                {
-                    alias = mUsername;
-                }
-                if (userInfoParts.length > 1)
-                {
-                    mPassword = URLDecoder.decode(userInfoParts[1], "UTF-8");
-                }
-            }
-            catch (UnsupportedEncodingException enc)
-            {
-                // This shouldn't happen since the encoding is hardcoded to UTF-8
-                Log.e(K9.LOG_TAG, "Couldn't urldecode username or password.", enc);
-            }
+            this.mMailboxPath = "/Exchange/" + this.mAlias;
         }
-        mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-        mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
+        else if (!this.mMailboxPath.startsWith("/"))
+        {
+            mMailboxPath = "/" + mMailboxPath;
+        }
+
+        this.mUrl = getRoot() + mPath + mMailboxPath;
+
+        this.mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+        this.mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
     }
 
     private String getRoot()
@@ -259,11 +277,10 @@ public class WebDavStore extends Store
         return root;
     }
 
-
     @Override
     public void checkSettings() throws MessagingException
     {
-        Log.e(K9.LOG_TAG, "WebDavStore.checkSettings() not implemented");
+        authenticate();
     }
 
     @Override
@@ -531,16 +548,58 @@ public class WebDavStore extends Store
      */
 
     /**
-     * Performs Form Based authentication regardless of the current
-     * authentication state
+     * Determines which type of authentication Exchange is using and
+     * authenticates appropriately.
      * @throws MessagingException
      */
-    public void authenticate() throws MessagingException
+    public boolean authenticate() throws MessagingException
     {
         try
         {
-            doFBA();
-            //this.mAuthCookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
+            if (mAuthentication == AUTH_TYPE_NONE)
+            {
+                ConnectionInfo info = doInitialConnection();
+
+                if (info.requiredAuthType == AUTH_TYPE_BASIC)
+                {
+                    HttpGeneric request = new HttpGeneric(mUrl);
+                    request.setMethod("GET");
+                    request.setHeader("Authorization", mAuthString);
+
+                    WebDavHttpClient httpClient = new WebDavHttpClient();
+                    HttpResponse response = httpClient.executeOverride(request, mContext);
+
+                    int statusCode = response.getStatusLine().getStatusCode();
+                    if (statusCode >= 200 && statusCode < 300)
+                    {
+                        mAuthentication = AUTH_TYPE_BASIC;
+                        mLastAuth = System.currentTimeMillis() / 1000;
+                    }
+                    else if (statusCode == 401)
+                    {
+                        throw new MessagingException("Invalid username or password for authentication.");
+                    }
+                    else
+                    {
+                        throw new MessagingException("Error with code " + response.getStatusLine().getStatusCode() +
+                                                     " during request processing: " + response.getStatusLine().toString());
+                    }
+                }
+                else if (info.requiredAuthType == AUTH_TYPE_FORM_BASED)
+                {
+                    doFBA(info);
+                }
+            }
+            else if (mAuthentication == AUTH_TYPE_BASIC)
+            {
+                // Nothing to do, we authenticate with every request when
+                // using basic authentication.
+            }
+            else if (mAuthentication == AUTH_TYPE_FORM_BASED)
+            {
+                // Our cookie expired, re-authenticate.
+                doFBA(null);
+            }
         }
         catch (IOException ioe)
         {
@@ -548,143 +607,154 @@ public class WebDavStore extends Store
             throw new MessagingException("Error during authentication", ioe);
         }
 
-        if (this.mAuthCookies == null)
-        {
-            this.mAuthenticated = false;
-        }
-        else
-        {
-            this.mAuthenticated = true;
-            this.mLastAuth = System.currentTimeMillis()/1000;
-        }
+        return mAuthentication != AUTH_TYPE_NONE;
     }
 
     /**
-     * Determines if a new authentication is needed.
-     * Returns true if new authentication is needed.
-     */
-    public boolean needAuth()
-    {
-        boolean status = false;
-        long currentTime = -1;
-        if (!this.mAuthenticated)
-        {
-            status = true;
-        }
-
-        currentTime = System.currentTimeMillis()/1000;
-        if ((currentTime - this.mLastAuth) > (this.mAuthTimeout))
-        {
-            status = true;
-        }
-        return status;
-    }
-
-    public static String getHttpRequestResponse(HttpEntity request, HttpEntity response) throws IllegalStateException, IOException
-    {
-        String responseText = "";
-        String requestText = "";
-        if (response != null)
-        {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(WebDavHttpClient.getUngzippedContent(response)), 8192);
-            String tempText = "";
-
-            while ((tempText = reader.readLine()) != null)
-            {
-                responseText += tempText;
-            }
-        }
-        if (request != null)
-        {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(WebDavHttpClient.getUngzippedContent(response)), 8192);
-            String tempText = "";
-
-            while ((tempText = reader.readLine()) != null)
-            {
-                requestText += tempText;
-            }
-            requestText = requestText.replaceAll("password=.*?&", "password=(omitted)&");
-        }
-        return "Request: " + requestText +
-               "\n\nResponse: " + responseText;
-
-    }
-
-    /**
-     * Performs the Form Based Authentication
-     * Returns the CookieStore object for later use or null
+     * Makes the initial connection to Exchange for authentication.
+     * Determines the type of authentication necessary for the server.
      * @throws MessagingException
      */
-    public void doFBA() throws IOException, MessagingException
+    private ConnectionInfo doInitialConnection() throws MessagingException
     {
-        /*    public CookieStore doAuthentication(String username, String password,
-              String url) throws IOException, MessagingException {*/
-        String authPath;
-        String url = this.mUrl;
-        String username = this.mUsername;
-        String password = this.mPassword;
-        String[] urlParts = url.split("/");
-        String finalUrl = "";
-        String loginUrl = "";
-        String destinationUrl = "";
+        // For our initial connection we are sending an empty GET request to
+        // the configured URL, which should be in the following form:
+        // https://mail.server.com/Exchange/alias
+        //
+        // Possible status codes include:
+        //  401 - the server uses basic authentication
+        //  30x - the server is trying to redirect us to an OWA login
+        //  20x - success
+        //
+        // The latter two indicate form-based authentication.
+        ConnectionInfo info = new ConnectionInfo();
 
-        if (this.mAuthPath != null &&
-                !this.mAuthPath.equals("") &&
-                !this.mAuthPath.equals("/"))
-        {
-            authPath = this.mAuthPath;
-        }
-        else
-        {
-            authPath = "/exchweb/bin/auth/owaauth.dll";
-        }
+        WebDavHttpClient httpClient = getHttpClient();
 
-        for (int i = 0; i <= 2; i++)
-        {
-            if (i != 0)
-            {
-                finalUrl = finalUrl + "/" + urlParts[i];
-            }
-            else
-            {
-                finalUrl = urlParts[i];
-            }
-        }
-
-        if (finalUrl.equals(""))
-        {
-            throw new MessagingException("doFBA failed, unable to construct URL to post login credentials to.");
-        }
-
-        loginUrl = finalUrl + authPath;
+        HttpGeneric request = new HttpGeneric(mUrl);
+        request.setMethod("GET");
 
         try
         {
-            /* Browser Client */
-            WebDavHttpClient httpclient = mHttpClient;
+            HttpResponse response = httpClient.executeOverride(request, mContext);
+            info.statusCode = response.getStatusLine().getStatusCode();
 
-            /**
-             * This is in a separate block because I really don't like how it's done.
-             * This basically scrapes the OWA login page for the form submission URL.
-             * UGLY!WebDavHttpClient
-             * Added an if-check to see if there's a user supplied authentication path for FBA
-             */
-            if (this.mAuthPath == null ||
-                    this.mAuthPath.equals("") ||
-                    this.mAuthPath.equals("/"))
+            if (info.statusCode == 401)
             {
+                // 401 is the "Unauthorized" status code, meaning the server wants
+                // an authentication header for basic authentication.
+                info.requiredAuthType = AUTH_TYPE_BASIC;
+            }
+            else if ((info.statusCode >= 200 && info.statusCode < 300) || // Success
+                     (info.statusCode >= 300 && info.statusCode < 400) || // Redirect
+                     (info.statusCode == 440)) // Unauthorized
 
-                httpclient.addRequestInterceptor(new HttpRequestInterceptor()
+            {
+                // We will handle all 3 situations the same. First we take an educated
+                // guess at where the authorization DLL is located. If this is this
+                // doesn't work, then we'll use the redirection URL for OWA login given
+                // to use by exchange. We can use this to scrape the location of the
+                // authorization URL.
+                info.requiredAuthType = AUTH_TYPE_FORM_BASED;
+
+                if (mAuthPath != null && !mAuthPath.equals(""))
                 {
-                    public void process(HttpRequest request, HttpContext context)
-                    throws HttpException, IOException
-                    {
-                        mRedirectUrl = ((HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST)).toURI() + request.getRequestLine().getUri();
-                    }
-                });
-                HashMap<String, String> headers = new HashMap<String, String>();
-                InputStream istream = sendRequest(finalUrl, "GET", null, headers, false);
+                    // The user specified their own authentication path, use that.
+                    info.guessedAuthUrl = getRoot() + mAuthPath;
+                }
+                else
+                {
+                    // Use the default path to the authentication dll.
+                    info.guessedAuthUrl = getRoot() + "/exchweb/bin/auth/owaauth.dll";
+                }
 
+                // Determine where the server is trying to redirect us.
+                Header location = response.getFirstHeader("Location");
+                if (location != null)
+                {
+                    info.redirectUrl = location.getValue();
+                }
+            }
+            else
+            {
+                throw new IOException("Error with code " + info.statusCode + " during request processing: "+
+                                      response.getStatusLine().toString());
+            }
+        }
+        catch(IOException ioe)
+        {
+            Log.e(K9.LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
+            throw new MessagingException("IOException", ioe);
+        }
+
+        return info;
+    }
+
+    /**
+     * Performs form-based authentication.
+     * @throws MessagingException
+     */
+    public void doFBA(ConnectionInfo info) throws IOException, MessagingException
+    {
+        WebDavHttpClient httpClient = getHttpClient();
+
+        HttpGeneric request = new HttpGeneric(info.guessedAuthUrl);
+        request.setMethod("POST");
+
+        // Build the POST data.
+        ArrayList<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
+        pairs.add(new BasicNameValuePair("destination", mUrl));
+        pairs.add(new BasicNameValuePair("username", mUsername));
+        pairs.add(new BasicNameValuePair("password", mPassword));
+        pairs.add(new BasicNameValuePair("flags", "0"));
+        pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
+        pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
+        pairs.add(new BasicNameValuePair("trusted", "0"));
+
+        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
+        request.setEntity(formEntity);
+
+        HttpResponse response = httpClient.executeOverride(request, mContext);
+        int statusCode = response.getStatusLine().getStatusCode();
+
+        if (statusCode >= 200 && statusCode < 300)
+        {
+            // Success, we're logged on and an authentication cookie should
+            // have already been added to mAuthCookies for us.
+        }
+        else if (statusCode == 404)
+        {
+            // The resource was not found, which means we need to get tricky
+            // about finding the correct login path.
+            // Send a request to our original redirect URL, and scrape the
+            // login path from the returned page.
+            httpClient.addRequestInterceptor(new HttpRequestInterceptor()
+            {
+                public void process(HttpRequest request, HttpContext context)
+                throws HttpException, IOException
+                {
+                    mRedirectUrl = ((HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST)).toURI() +
+                                   request.getRequestLine().getUri();
+                }
+            });
+
+            String loginUrl = "";
+            if (info != null)
+            {
+                loginUrl = info.redirectUrl;
+            }
+            else if (mRedirectUrl != null && !mRedirectUrl.equals(""))
+            {
+                loginUrl = mRedirectUrl;
+            }
+            else
+            {
+                throw new MessagingException("No valid login URL available for form-based authentication.");
+            }
+
+            try
+            {
+                InputStream istream = sendRequest(loginUrl, "GET", null, null, false);
                 if (istream != null)
                 {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
@@ -705,104 +775,36 @@ public class WebDavStore extends Store
                                 mRedirectUrl = mRedirectUrl.substring(0, mRedirectUrl.lastIndexOf('?'));
                                 mRedirectUrl = mRedirectUrl.substring(0, mRedirectUrl.lastIndexOf('/'));
                                 loginUrl = mRedirectUrl + "/" + tagParts[1];
-                                this.mAuthPath = "/" + tagParts[1];
+                                this.mAuthPath = new URI(loginUrl).getPath();
                             }
                             else
                             {
-                                loginUrl = finalUrl + tagParts[1];
-                                this.mAuthPath = "/" + tagParts[1];
-                            }
-                        }
-
-                        if (tempText.indexOf("destination") >= 0)
-                        {
-                            String[] tagParts = tempText.split("value");
-                            if (tagParts[1] != null)
-                            {
-                                String[] valueParts = tagParts[1].split("\"");
-                                destinationUrl = valueParts[1];
-                                matched = true;
+                                loginUrl = getRoot() + tagParts[1];
+                                this.mAuthPath = new URI(loginUrl).getPath();
                             }
                         }
                     }
                     istream.close();
+
+                    // Now retry the login using our scraped login URL.
+                    request = new HttpGeneric(loginUrl);
+                    request.setMethod("POST");
+                    request.setEntity(formEntity);
+
+                    httpClient.executeOverride(request, mContext);
                 }
             }
-
-
-            /** Build the POST data to use */
-            ArrayList<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
-            pairs.add(new BasicNameValuePair("username", username));
-            pairs.add(new BasicNameValuePair("password", password));
-            if (this.mMailboxPath != null &&
-                    !this.mMailboxPath.equals(""))
+            catch(URISyntaxException use)
             {
-                pairs.add(new BasicNameValuePair("destination", finalUrl + this.mMailboxPath));
-            }
-            else if (destinationUrl != null &&
-                     !destinationUrl.equals(""))
-            {
-                pairs.add(new BasicNameValuePair("destination", destinationUrl));
-            }
-            else
-            {
-                pairs.add(new BasicNameValuePair("destination", "/"));
-            }
-            pairs.add(new BasicNameValuePair("flags", "0"));
-            pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
-            pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
-            pairs.add(new BasicNameValuePair("trusted", "0"));
-
-            try
-            {
-                UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
-                HashMap<String, String> headers = new HashMap<String, String>();
-                String tempUrl = "";
-                InputStream istream = sendRequest(loginUrl, "POST", formEntity, headers, false);
-
-                /** Get the URL for the mailbox and set it for the store */
-                if (istream != null)
-                {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 8192);
-                    String tempText = "";
-
-                    while ((tempText = reader.readLine()) != null)
-                    {
-                        if (tempText.indexOf("BASE href") >= 0)
-                        {
-                            String[] tagParts = tempText.split("\"");
-                            tempUrl = tagParts[1];
-                        }
-                    }
-                }
-
-                if (this.mMailboxPath != null &&
-                        !this.mMailboxPath.equals(""))
-                {
-                    this.mUrl = finalUrl + "/" + this.mMailboxPath + "/";
-                }
-                else if (tempUrl.equals(""))
-                {
-                    this.mUrl = finalUrl + "/Exchange/" + this.alias + "/";
-                }
-                else
-                {
-                    this.mUrl = tempUrl;
-                }
-
-            }
-            catch (UnsupportedEncodingException uee)
-            {
-                Log.e(K9.LOG_TAG, "Error encoding POST data for authentication: " + uee + "\nTrace: " + processException(uee));
-                throw new MessagingException("Error encoding POST data for authentication", uee);
+                throw new MessagingException("An invalid login URL was detected: " + loginUrl);
             }
         }
-        catch (SSLException e)
+
+        if (mAuthCookies != null && !mAuthCookies.getCookies().isEmpty())
         {
-            throw new CertificateValidationException(e.getMessage(), e);
+            mAuthentication = AUTH_TYPE_FORM_BASED;
+            mLastAuth = System.currentTimeMillis() / 1000;
         }
-
-        this.mAuthenticated = true;
     }
 
     public CookieStore getAuthCookies()
@@ -812,7 +814,7 @@ public class WebDavStore extends Store
 
     public String getAlias()
     {
-        return alias;
+        return mAlias;
     }
 
     public String getUrl()
@@ -822,100 +824,38 @@ public class WebDavStore extends Store
 
     public WebDavHttpClient getHttpClient() throws MessagingException
     {
-        SchemeRegistry reg;
-        Scheme s;
-        boolean needAuth = false;
-
         if (mHttpClient == null)
         {
             mHttpClient = new WebDavHttpClient();
-            needAuth = true;
-        }
 
-        reg = mHttpClient.getConnectionManager().getSchemeRegistry();
-        try
-        {
-            // Log.i(K9.LOG_TAG, "getHttpClient mHost = " + mHost);
-            s = new Scheme("https", new TrustedSocketFactory(mHost, mSecure), 443);
-        }
-        catch (NoSuchAlgorithmException nsa)
-        {
-            Log.e(K9.LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
-            throw new MessagingException("NoSuchAlgorithmException in getHttpClient: " + nsa);
-        }
-        catch (KeyManagementException kme)
-        {
-            Log.e(K9.LOG_TAG, "KeyManagementException in getHttpClient: " + kme);
-            throw new MessagingException("KeyManagementException in getHttpClient: " + kme);
-        }
-        reg.register(s);
+            // Setup a cookie store for forms-based authentication.
+            mContext = new BasicHttpContext();
+            mAuthCookies = new BasicCookieStore();
+            mContext.setAttribute(ClientContext.COOKIE_STORE, mAuthCookies);
 
-        if (needAuth)
-        {
-            HashMap<String, String> headers = new HashMap<String, String>();
-            processRequest(this.mUrl, "GET", null, headers, false);
-        }
-
-        /*
-        if (needAuth()) {
-            if (!checkAuth()) {
-                try {
-                    CookieStore cookies = mHttpClient.getCookieStore();
-                    cookies.clear();
-                    mHttpClient.setCookieStore(cookies);
-                    cookies = doAuthentication(this.mUsername, this.mPassword, this.mUrl);
-                    if (cookies != null) {
-                        this.mAuthenticated = true;
-                        this.mLastAuth = System.currentTimeMillis()/1000;
-                    }
-                    mHttpClient.setCookieStore(cookies);
-                } catch (IOException ioe) {
-                    Log.e(K9.LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
-                }
-            } else {
-                Credentials creds = new UsernamePasswordCredentials(mUsername, mPassword);
-                CredentialsProvider credsProvider = mHttpClient.getCredentialsProvider();
-                credsProvider.setCredentials(new AuthScope(mHost, 80, AuthScope.ANY_REALM), creds);
-                credsProvider.setCredentials(new AuthScope(mHost, 443, AuthScope.ANY_REALM), creds);
-                credsProvider.setCredentials(new AuthScope(mHost, mUri.getPort(), AuthScope.ANY_REALM), creds);
-                mHttpClient.setCredentialsProvider(credsProvider);
-                // Assume we're authenticated and ok here since the checkAuth() was 401 and we've now set the credentials
-                this.mAuthenticated = true;
-                this.mLastAuth = System.currentTimeMillis()/1000;
+            SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
+            try
+            {
+                Scheme s = new Scheme("https", new TrustedSocketFactory(mHost, mSecure), 443);
+                reg.register(s);
+            }
+            catch (NoSuchAlgorithmException nsa)
+            {
+                Log.e(K9.LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
+                throw new MessagingException("NoSuchAlgorithmException in getHttpClient: " + nsa);
+            }
+            catch (KeyManagementException kme)
+            {
+                Log.e(K9.LOG_TAG, "KeyManagementException in getHttpClient: " + kme);
+                throw new MessagingException("KeyManagementException in getHttpClient: " + kme);
             }
         }
-        */
-        return mHttpClient;
-    }
-
-    public WebDavHttpClient getTrustedHttpClient() throws KeyManagementException, NoSuchAlgorithmException
-    {
-        if (mHttpClient == null)
-        {
-            mHttpClient = new WebDavHttpClient();
-            SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
-            Scheme s = new Scheme("https",new TrustedSocketFactory(mHost,mSecure),443);
-            reg.register(s);
-
-
-            //Add credentials for NTLM/Digest/Basic Auth
-            Credentials creds = new UsernamePasswordCredentials(mUsername, mPassword);
-            CredentialsProvider credsProvider  = mHttpClient.getCredentialsProvider();
-            // setting AuthScope for 80 and 443, in case we end up getting redirected
-            // from 80 to 443.
-            credsProvider.setCredentials(new AuthScope(mHost, 80, AuthScope.ANY_REALM), creds);
-            credsProvider.setCredentials(new AuthScope(mHost, 443, AuthScope.ANY_REALM), creds);
-            credsProvider.setCredentials(new AuthScope(mHost, mUri.getPort(), AuthScope.ANY_REALM), creds);
-            mHttpClient.setCredentialsProvider(credsProvider);
-        }
-
         return mHttpClient;
     }
 
     private InputStream sendRequest(String url, String method, StringEntity messageBody, HashMap<String, String> headers, boolean tryAuth)
     throws MessagingException
     {
-        WebDavHttpClient httpclient;
         InputStream istream = null;
 
         if (url == null ||
@@ -924,7 +864,7 @@ public class WebDavStore extends Store
             return istream;
         }
 
-        httpclient = getHttpClient();
+        WebDavHttpClient httpclient = getHttpClient();
 
         try
         {
@@ -943,55 +883,45 @@ public class WebDavStore extends Store
                 httpmethod.setHeader(headerName, headers.get(headerName));
             }
 
-            if (mAuthString != null && mAuthenticated)
+            if (mAuthentication == AUTH_TYPE_NONE)
+            {
+                if (!tryAuth || !authenticate())
+                {
+                    throw new MessagingException("Unable to authenticate in sendRequest().");
+                }
+            }
+            else if (mAuthentication == AUTH_TYPE_BASIC)
             {
                 httpmethod.setHeader("Authorization", mAuthString);
             }
 
             httpmethod.setMethod(method);
-            response = httpclient.executeOverride(httpmethod);
+            response = httpclient.executeOverride(httpmethod, mContext);
             statusCode = response.getStatusLine().getStatusCode();
 
             entity = response.getEntity();
 
             if (statusCode == 401)
             {
-                if (tryAuth)
-                {
-                    mAuthenticated = true;
-                    sendRequest(url, method, messageBody, headers, false);
-                }
-                else
-                {
-                    throw new MessagingException("Invalid username or password for Basic authentication");
-                }
+                throw new MessagingException("Invalid username or password for Basic authentication.");
             }
             else if (statusCode == 440)
             {
-                if (tryAuth)
+                if (tryAuth && mAuthentication == AUTH_TYPE_FORM_BASED)
                 {
-                    doFBA();
+                    // Our cookie expired, re-authenticate.
+                    doFBA(null);
                     sendRequest(url, method, messageBody, headers, false);
                 }
                 else
                 {
-                    throw new MessagingException("Authentication failure in sendRequest");
+                    throw new MessagingException("Authentication failure in sendRequest().");
                 }
             }
-            else if (statusCode < 200 ||
-                     statusCode >= 300)
+            else if (statusCode < 200 || statusCode >= 300)
             {
-                throw new IOException("Error with code " + statusCode + " during request processing: "+
+                throw new IOException("Error with code " + statusCode + " during request processing: " +
                                       response.getStatusLine().toString());
-            }
-            else
-            {
-                if (tryAuth &&
-                        !mAuthenticated)
-                {
-                    doFBA();
-                    sendRequest(url, method, messageBody, headers, false);
-                }
             }
 
             if (entity != null)
@@ -1284,10 +1214,9 @@ public class WebDavStore extends Store
             Log.i(K9.LOG_TAG, "Moving " + messages.length + " messages to " + destFolder.mFolderUrl);
 
             processRequest(mFolderUrl, action, messageBody, headers, false);
-
         }
 
-        private int getMessageCount(boolean read, CookieStore authCookies) throws MessagingException
+        private int getMessageCount(boolean read) throws MessagingException
         {
             String isRead;
             int messageCount = 0;
@@ -1319,8 +1248,7 @@ public class WebDavStore extends Store
         public int getMessageCount() throws MessagingException
         {
             open(OpenMode.READ_WRITE);
-            this.mMessageCount = getMessageCount(true, WebDavStore.this.mAuthCookies);
-
+            this.mMessageCount = getMessageCount(true);
             return this.mMessageCount;
         }
 
@@ -1328,10 +1256,10 @@ public class WebDavStore extends Store
         public int getUnreadMessageCount() throws MessagingException
         {
             open(OpenMode.READ_WRITE);
-            this.mUnreadMessageCount = getMessageCount(false, WebDavStore.this.mAuthCookies);
-
+            this.mUnreadMessageCount = getMessageCount(false);
             return this.mUnreadMessageCount;
         }
+
         @Override
         public int getFlaggedMessageCount() throws MessagingException
         {
@@ -1586,11 +1514,11 @@ public class WebDavStore extends Store
                     HttpEntity entity;
 
                     httpget.setHeader("translate", "f");
-                    if (mAuthString != null && mAuthenticated)
+                    if (mAuthentication == AUTH_TYPE_BASIC)
                     {
                         httpget.setHeader("Authorization", mAuthString);
                     }
-                    response = httpclient.executeOverride(httpget);
+                    response = httpclient.executeOverride(httpget, mContext);
 
                     statusCode = response.getStatusLine().getStatusCode();
 
@@ -1965,7 +1893,7 @@ public class WebDavStore extends Store
                         httpmethod.setHeader("Authorization", mAuthString);
                     }
 
-                    response = httpclient.executeOverride(httpmethod);
+                    response = httpclient.executeOverride(httpmethod, mContext);
                     statusCode = response.getStatusLine().getStatusCode();
 
                     if (statusCode < 200 ||
@@ -2619,12 +2547,22 @@ public class WebDavStore extends Store
             return responseStream;
         }
 
-
-        public HttpResponse executeOverride(HttpUriRequest request) throws IOException
+        public HttpResponse executeOverride(HttpUriRequest request, HttpContext context)
+        throws IOException
         {
             modifyRequestToAcceptGzipResponse(request);
-            return super.execute(request);
+            return super.execute(request, context);
         }
+    }
 
+    /**
+     * Simple data container for passing connection information.
+     */
+    private class ConnectionInfo
+    {
+        public int statusCode;
+        public short requiredAuthType;
+        public String guessedAuthUrl;
+        public String redirectUrl;
     }
 }
