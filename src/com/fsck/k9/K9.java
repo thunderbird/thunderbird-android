@@ -40,7 +40,7 @@ public class K9 extends Application
     {
         /**
          * Called when the Application instance is available and ready.
-         * 
+         *
          * @param application
          *            The application instance. Never <code>null</code>.
          * @throws Exception
@@ -55,7 +55,7 @@ public class K9 extends Application
     /**
      * Components that are interested in knowing when the K9 instance is
      * available and ready.
-     * 
+     *
      * @see ApplicationAware
      */
     private static List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
@@ -141,8 +141,9 @@ public class K9 extends Application
     private static boolean mMessageListCheckboxes = false;
     private static boolean mMessageListTouchable = false;
 
-    private static boolean mChangeRegisteredNameColor = false;
-    private static int mRegisteredNameColor = 0xff00008f;
+    private static boolean mShowContactName = false;
+    private static boolean mChangeContactNameColor = false;
+    private static int mContactNameColor = 0xff00008f;
     private static boolean mMessageViewFixedWidthFont = false;
     private static boolean mMessageViewReturnToList = false;
 
@@ -153,6 +154,8 @@ public class K9 extends Application
     private static boolean mStartIntegratedInbox = false;
     private static boolean mMeasureAccounts = true;
     private static boolean mCountSearchMessages = true;
+    private static boolean mZoomControlsEnabled = false;
+    private static boolean mMobileOptimizedLayout = false;
 
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
@@ -373,6 +376,10 @@ public class K9 extends Application
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("manageBack", mManageBack);
+        editor.putBoolean("zoomControlsEnabled",mZoomControlsEnabled);
+        editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
+
+
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
         editor.putBoolean("countSearchMessages", mCountSearchMessages);
@@ -380,9 +387,9 @@ public class K9 extends Application
         editor.putBoolean("messageListCheckboxes",mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
 
-
-        editor.putBoolean("changeRegisteredNameColor",mChangeRegisteredNameColor);
-        editor.putInt("registeredNameColor",mRegisteredNameColor);
+        editor.putBoolean("showContactName",mShowContactName);
+        editor.putBoolean("changeRegisteredNameColor",mChangeContactNameColor);
+        editor.putInt("registeredNameColor",mContactNameColor);
         editor.putBoolean("messageViewFixedWidthFont",mMessageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", mMessageViewReturnToList);
 
@@ -420,9 +427,12 @@ public class K9 extends Application
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
+        mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
+        mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled",false);
 
-        mChangeRegisteredNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
-        mRegisteredNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
+        mShowContactName = sprefs.getBoolean("showContactName", false);
+        mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
+        mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
         mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
         mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
 
@@ -534,6 +544,10 @@ public class K9 extends Application
     {
         for (final ApplicationAware aware : observers)
         {
+            if (K9.DEBUG)
+            {
+                Log.v(K9.LOG_TAG, "Initializing observer: " + aware);
+            }
             try
             {
                 aware.initializeComponent(this);
@@ -547,7 +561,7 @@ public class K9 extends Application
 
     /**
      * Register a component to be notified when the {@link K9} instance is ready.
-     * 
+     *
      * @param component
      *            Never <code>null</code>.
      */
@@ -636,6 +650,31 @@ public class K9 extends Application
         mManageBack = manageBack;
     }
 
+    public static boolean zoomControlsEnabled()
+    {
+        return mZoomControlsEnabled;
+    }
+
+    public static void setZoomControlsEnabled(boolean zoomControlsEnabled)
+    {
+        mZoomControlsEnabled = zoomControlsEnabled;
+    }
+
+
+    public static boolean mobileOptimizedLayout()
+    {
+        return mMobileOptimizedLayout;
+    }
+
+    public static void setMobileOptimizedLayout(boolean mobileOptimizedLayout)
+    {
+        mMobileOptimizedLayout = mobileOptimizedLayout;
+    }
+
+
+
+
+
     public static boolean startIntegratedInbox()
     {
         return mStartIntegratedInbox;
@@ -685,22 +724,34 @@ public class K9 extends Application
         mMessageListCheckboxes = checkboxes;
     }
 
-    public static boolean changeRegisteredNameColor()
+    public static boolean showContactName()
     {
-        return mChangeRegisteredNameColor;
+        return mShowContactName;
     }
 
-    public static void setChangeRegisteredNameColor(boolean checkboxes)
+    public static void setShowContactName(boolean showContactName)
     {
-        mChangeRegisteredNameColor = checkboxes;
+        mShowContactName = showContactName;
     }
 
-    public static int getRegisteredNameColor() {
-        return mRegisteredNameColor;
+    public static boolean changeContactNameColor()
+    {
+        return mChangeContactNameColor;
     }
 
-    public static void setRegisteredNameColor(int registeredNameColor) {
-        mRegisteredNameColor = registeredNameColor;
+    public static void setChangeContactNameColor(boolean changeContactNameColor)
+    {
+        mChangeContactNameColor = changeContactNameColor;
+    }
+
+    public static int getContactNameColor()
+    {
+        return mContactNameColor;
+    }
+
+    public static void setContactNameColor(int contactNameColor)
+    {
+        mContactNameColor = contactNameColor;
     }
 
     public static boolean messageViewFixedWidthFont()

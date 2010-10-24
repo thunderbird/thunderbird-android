@@ -593,6 +593,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_REMOVE_ACCOUNT);
+                removeDialog(DIALOG_REMOVE_ACCOUNT);
 
                 if (mSelectedContextAccount instanceof Account)
                 {
@@ -617,6 +618,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_REMOVE_ACCOUNT);
+                removeDialog(DIALOG_REMOVE_ACCOUNT);
             }
         })
                .create();
@@ -632,6 +634,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_CLEAR_ACCOUNT);
+                removeDialog(DIALOG_CLEAR_ACCOUNT);
 
                 if (mSelectedContextAccount instanceof Account)
                 {
@@ -646,6 +649,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_CLEAR_ACCOUNT);
+                removeDialog(DIALOG_CLEAR_ACCOUNT);
             }
         })
                .create();
@@ -661,6 +665,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_RECREATE_ACCOUNT);
+                removeDialog(DIALOG_RECREATE_ACCOUNT);
 
                 if (mSelectedContextAccount instanceof Account)
                 {
@@ -675,6 +680,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_RECREATE_ACCOUNT);
+                removeDialog(DIALOG_RECREATE_ACCOUNT);
             }
         })
                .create();
@@ -903,6 +909,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             AccountStats stats = accountStats.get(account.getUuid());
 
+/*
+            // 20101024/fiouzy: the following code throws NullPointerException because Background is null
+
             // display unavaliable accounts translucent
             if (account instanceof Account) {
             	Account realAccount = (Account) account;
@@ -917,7 +926,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             	holder.email.getBackground().setAlpha(255);
             	holder.description.getBackground().setAlpha(255);
             }
-
+*/
             if (stats != null && account instanceof Account && stats.size >= 0)
             {
                 holder.email.setText(SizeFormatter.formatSize(Accounts.this, stats.size));

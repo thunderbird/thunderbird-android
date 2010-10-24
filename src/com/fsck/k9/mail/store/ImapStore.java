@@ -2660,13 +2660,13 @@ public class ImapStore extends Store
         }
 
         public List<ImapResponse> executeSimpleCommand(String command) throws IOException,
-                    ImapException, MessagingException
+            ImapException, MessagingException
         {
             return executeSimpleCommand(command, false);
         }
 
         public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
-                    ImapException, MessagingException
+            ImapException, MessagingException
         {
             return executeSimpleCommand(command, sensitive, null);
         }

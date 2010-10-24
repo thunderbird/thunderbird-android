@@ -40,7 +40,8 @@
     <item
         android:id="@+id/select_all"
         android:title="@string/batch_select_all"
-        android:icon="@drawable/ic_menu_select_all"/>
+        android:icon="@drawable/ic_menu_select_all"
+    />
     <item
         android:id="@+id/batch_ops"
         android:title="@string/batch_ops"
@@ -121,10 +122,10 @@
         android:icon="@drawable/ic_menu_refresh"
     />
     <item
-                android:id="@+id/accounts"
-                android:title="@string/accounts_action"
-                android:icon="@drawable/ic_menu_account_list"
-        />
+        android:id="@+id/accounts"
+        android:title="@string/accounts_action"
+        android:icon="@drawable/ic_menu_account_list"
+    />
     <item
         android:id="@+id/mark_all_as_read"
         android:title="@string/mark_all_as_read_action"
@@ -135,22 +136,22 @@
         android:title="@string/preferences_action"
         android:icon="@drawable/ic_menu_preferences">
         <menu>
-
-    <item
-        android:id="@+id/folder_settings"
-        android:title="@string/folder_settings_action"
-        android:icon="@drawable/ic_menu_preferences"
-    />
-    <item
-        android:id="@+id/account_settings"
-        android:title="@string/account_settings_action"
-        android:icon="@android:drawable/ic_menu_preferences"
-    />
-    <item android:id="@+id/app_settings"
-        android:title="@string/global_settings_action"
-        android:icon="@android:drawable/ic_menu_preferences"
-    />
-    </menu>
+            <item
+                android:id="@+id/folder_settings"
+                android:title="@string/folder_settings_action"
+                android:icon="@drawable/ic_menu_preferences"
+            />
+            <item
+                android:id="@+id/account_settings"
+                android:title="@string/account_settings_action"
+                android:icon="@android:drawable/ic_menu_preferences"
+            />
+            <item
+                android:id="@+id/app_settings"
+                android:title="@string/global_settings_action"
+                android:icon="@android:drawable/ic_menu_preferences"
+            />
+        </menu>
     </item>
     <item
         android:id="@+id/expunge"

@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 
-public class CheckboxListPreference extends DialogPreference
+public class CheckBoxListPreference extends DialogPreference
 {
 
     private CharSequence[] mItems;
@@ -23,7 +23,7 @@ public class CheckboxListPreference extends DialogPreference
      * @param attrs
      * @param defStyle
      */
-    public CheckboxListPreference(Context context, AttributeSet attrs, int defStyle)
+    public CheckBoxListPreference(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
     }
@@ -32,7 +32,7 @@ public class CheckboxListPreference extends DialogPreference
      * @param context
      * @param attrs
      */
-    public CheckboxListPreference(Context context, AttributeSet attrs)
+    public CheckBoxListPreference(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
@@ -45,15 +45,15 @@ public class CheckboxListPreference extends DialogPreference
         System.arraycopy(mCheckedItems, 0, mPendingItems, 0, mCheckedItems.length);
 
         builder.setMultiChoiceItems(mItems, mPendingItems,
-                new DialogInterface.OnMultiChoiceClickListener()
-                {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which,
-                            final boolean isChecked)
-                    {
-                        mPendingItems[which] = isChecked;
-                    }
-                });
+                                    new DialogInterface.OnMultiChoiceClickListener()
+        {
+            @Override
+            public void onClick(final DialogInterface dialog, final int which,
+                                final boolean isChecked)
+            {
+                mPendingItems[which] = isChecked;
+            }
+        });
     }
 
     @Override

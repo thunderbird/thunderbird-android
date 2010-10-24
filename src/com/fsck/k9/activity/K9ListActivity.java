@@ -79,7 +79,7 @@ public class K9ListActivity extends ListActivity
                     {
                         currentPosition = listView.getFirstVisiblePosition();
                     }
-                    
+
                     if (currentPosition < listView.getCount())
                     {
                         listView.setSelection(currentPosition + 1);

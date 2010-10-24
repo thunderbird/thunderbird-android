@@ -23,7 +23,7 @@ public class Utility
     // repetition matching as we might want to strip ML tags. Ex:
     // Re: [foo] Re: RE : [foo] blah blah blah
     private static final Pattern RESPONSE_PATTERN = Pattern.compile(
-            "((Re|Fw|Fwd|Aw|R\\u00E9f\\.)(\\[\\d+\\])?[\\u00A0 ]?: *)+", Pattern.CASE_INSENSITIVE);
+                "((Re|Fw|Fwd|Aw|R\\u00E9f\\.)(\\[\\d+\\])?[\\u00A0 ]?: *)+", Pattern.CASE_INSENSITIVE);
 
     /**
      * Mailing-list tag pattern to match strings like "[foobar] "
@@ -406,11 +406,11 @@ public class Utility
      * Extract the 'original' subject value, by ignoring leading
      * response/forward marker and '[XX]' formatted tags (as many mailing-list
      * softwares do).
-     * 
+     *
      * <p>
      * Result is also trimmed.
      * </p>
-     * 
+     *
      * @param subject
      *            Never <code>null</code>.
      * @return Never <code>null</code>.

@@ -49,7 +49,7 @@
 	<string name="special_mailbox_name_outbox_fmt"><xliff:g id="folder">%s</xliff:g> (Posta in uscita)</string>
 	<string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Bozze)</string>
 	<string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Cestino)</string>
-	<string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (POsta inviata)</string>
+	<string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Posta inviata)</string>
 	<string name="send_failure_subject">Impossibile inviare alcuni messaggi</string>
 	<string name="send_failure_body_abbrev">Vedi nella cartella <xliff:g id="errorFolder">%s</xliff:g> per i dettagli.</string>
 	<string name="send_failure_body_fmt">K-9 ha incontrato un problema nell\'inviare qualchuno dei tuoi messaggi.
@@ -62,7 +62,7 @@
 	<string name="end_of_folder">Non vi sono altri messaggi</string>
 	<string name="message_header_mua">K-9 per Android <xliff:g id="version">%s</xliff:g></string>
 	<string name="message_compose_content_hint">Testo del messaggio</string>
-	<string name="message_list_to_fmt">A:</string>
+	<string name="message_list_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
 	<string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
 	<string name="message_view_cc_label">Cc:</string>
 	<string name="message_delete_failed">Impossibile cancellare il messaggio</string>

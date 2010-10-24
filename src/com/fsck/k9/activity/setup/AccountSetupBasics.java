@@ -35,7 +35,7 @@ import java.net.URLEncoder;
  * AccountSetupAccountType activity.
  */
 public class AccountSetupBasics extends K9Activity
-        implements OnClickListener, TextWatcher
+    implements OnClickListener, TextWatcher
 {
     private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
     private final static int DIALOG_NOTE = 1;

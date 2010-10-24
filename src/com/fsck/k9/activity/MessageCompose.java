@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.OpenableColumns;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.util.Rfc822Tokenizer;
 import android.util.Log;
@@ -478,9 +479,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 }
             }
         }
+        else if (Intent.ACTION_SENDTO.equals(action))
+        {
+            final Uri uri = intent.getData();
+
+            // look for recipient address
+            if (uri != null && "mailto".equals(uri.getScheme()))
+            {
+                initializeFromMailTo(uri.toString());
+            }
+        }
         //TODO: Use constant Intent.ACTION_SEND_MULTIPLE once we drop Android 1.5 support
         else if (Intent.ACTION_SEND.equals(action)
-                 || Intent.ACTION_SENDTO.equals(action)
                  || "android.intent.action.SEND_MULTIPLE".equals(action))
         {
             /*
@@ -1013,7 +1023,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\n name=\"%s\"",
                              attachment.contentType,
                              EncoderUtil.encodeIfNecessary(attachment.name,
-                                                           EncoderUtil.Usage.WORD_ENTITY, 7)));
+                                     EncoderUtil.Usage.WORD_ENTITY, 7)));
 
                 bp.addHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, "base64");
 
@@ -1309,7 +1319,12 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             Log.v(K9.LOG_TAG, "old attachment.size: " + attachment.size);
         }
         Log.v(K9.LOG_TAG, "new attachment.size: " + attachment.size);
+        addAttachmentView(attachment);
 
+    }
+
+    private void addAttachmentView(Attachment attachment)
+    {
         View view = getLayoutInflater().inflate(R.layout.message_compose_attachment, mAttachments, false);
         TextView nameView = (TextView)view.findViewById(R.id.attachment_name);
         ImageButton delete = (ImageButton)view.findViewById(R.id.attachment_delete);
@@ -1848,34 +1863,52 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 {
                     mSubjectView.setText(message.getSubject());
                 }
-                Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-                if (part == null)
+
+                String quotedText = null;
+                Part part = null;
+
+                if ( mSourceMessageBody != null)
                 {
-                    part = MimeUtility.findFirstPartByMimeType(message, "text/html");
+                    quotedText = mSourceMessageBody;
                 }
-                if (part != null || mSourceMessageBody != null)
+
+                if (quotedText == null)
                 {
-                    String quotedText = mSourceMessageBody;
-                    if (quotedText == null)
+                    part =  MimeUtility.findFirstPartByMimeType(message, "text/plain");
+                    if (part != null)
                     {
                         quotedText = MimeUtility.getTextFromPart(part);
                     }
+                }
+                if (quotedText == null)
+                {
+                    part =  MimeUtility.findFirstPartByMimeType(message, "text/html");
+                    if (part != null)
+                    {
+                        quotedText = (Html.fromHtml(MimeUtility.getTextFromPart(part))).toString();
+                    }
+                }
+
+
+                if (quotedText != null)
+                {
+                    String text = String.format(
+                                      getString(R.string.message_compose_fwd_header_fmt),
+                                      mSourceMessage.getSubject(),
+                                      Address.toString(mSourceMessage.getFrom()),
+                                      Address.toString(
+                                          mSourceMessage.getRecipients(RecipientType.TO)),
+                                      Address.toString(
+                                          mSourceMessage.getRecipients(RecipientType.CC)));
                     if (quotedText != null)
                     {
-                        String text = String.format(
-                                          getString(R.string.message_compose_fwd_header_fmt),
-                                          mSourceMessage.getSubject(),
-                                          Address.toString(mSourceMessage.getFrom()),
-                                          Address.toString(
-                                              mSourceMessage.getRecipients(RecipientType.TO)),
-                                          Address.toString(
-                                              mSourceMessage.getRecipients(RecipientType.CC)));
+
                         quotedText = quotedText.replaceAll("\\\r", "");
-                        text += quotedText;
                         mQuotedText.setText(text);
-                        mQuotedTextBar.setVisibility(View.VISIBLE);
-                        mQuotedText.setVisibility(View.VISIBLE);
+                        mQuotedText.append(quotedText);
                     }
+                    mQuotedTextBar.setVisibility(View.VISIBLE);
+                    mQuotedText.setVisibility(View.VISIBLE);
                 }
                 if (!mSourceMessageProcessed)
                 {
@@ -2264,7 +2297,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                  * We're saving a previously saved draft, so update the new message's uid
                  * to the old message's uid.
                  */
-                message.setUid(mMessageReference.uid);
+                if (mMessageReference != null)
+                {
+                    message.setUid(mMessageReference.uid);
+                }
             }
 
             String k9identity = Utility.base64Encode("" + mMessageContentView.getText().toString().length());

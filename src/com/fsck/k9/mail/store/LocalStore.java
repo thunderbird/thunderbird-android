@@ -37,6 +37,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 
 import com.fsck.k9.Account;
@@ -83,10 +84,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final int DB_VERSION = 38;
+    private static final int DB_VERSION = 39;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
 
+    private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
+
     private String mStorageProviderId;
+
     private SQLiteDatabase mDb;
 
     protected final ReadWriteLock mDbLock = new ReentrantReadWriteLock(true);
@@ -414,7 +418,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             + "DELETE FROM headers where old.id = message_id; END;");
             }
             else
-            { // in the case that we're starting out at 29 or newer, run all the needed updates
+            {
+                // in the case that we're starting out at 29 or newer, run all the needed updates
 
                 if (mDb.getVersion() < 30)
                 {
@@ -505,6 +510,19 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
 
                 // Database version 38 is solely to prune cached attachments now that we clear them better
+                if (mDb.getVersion() < 39)
+                {
+                    try
+                    {
+                        mDb.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
+                    }
+                    catch (SQLiteException e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
+                    }
+                }
+
+
 
             }
 
@@ -1189,46 +1207,57 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         String queryString, String[] placeHolders
     ) throws MessagingException
     {
-        final List<LocalMessage> messages = new ArrayList<LocalMessage>();
+        final ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
         lockRead();
+        Cursor cursor = null;
+        int i = 0;
         try
         {
-            Cursor cursor = null;
-            try
+            cursor = mDb.rawQuery(queryString + " LIMIT 10", placeHolders);
+
+            while (cursor.moveToNext())
             {
-                // pull out messages most recent first, since that's what the default sort is
-                cursor = mDb.rawQuery(queryString, placeHolders);
-
-
-                int i = 0;
-                while (cursor.moveToNext())
-                {
-                    LocalMessage message = new LocalMessage(null, folder);
-                    message.populateFromGetMessageCursor(cursor);
-
-                    messages.add(message);
-                    if (listener != null)
-                    {
-                        listener.messageFinished(message, i, -1);
-                    }
-                    i++;
-                }
+                LocalMessage message = new LocalMessage(null, folder);
+                message.populateFromGetMessageCursor(cursor);
+                
+                messages.add(message);
                 if (listener != null)
                 {
-                    listener.messagesFinished(i);
+                    listener.messageFinished(message, i, -1);
                 }
+                i++;
             }
-            finally
+            cursor.close();
+            cursor = mDb.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
+
+            while (cursor.moveToNext())
             {
-                if (cursor != null)
+                LocalMessage message = new LocalMessage(null, folder);
+                message.populateFromGetMessageCursor(cursor);
+
+                messages.add(message);
+                if (listener != null)
                 {
-                    cursor.close();
+                    listener.messageFinished(message, i, -1);
                 }
+                i++;
             }
+        }
+        catch (Exception e)
+        {
+            Log.d(K9.LOG_TAG,"Got an exception "+e);
         }
         finally
         {
+            if (cursor != null)
+            {
+                cursor.close();
+            }
             unlockRead();
+        }
+        if (listener != null)
+        {
+            listener.messagesFinished(i);
         }
 
         return messages.toArray(EMPTY_MESSAGE_ARRAY);
@@ -2534,7 +2563,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 String text = sbText.toString();
                 String html = markupContent(text, sbHtml.toString());
                 String preview = calculateContentPreview(text);
-
+                if (preview == null || preview.length() == 0)
+                {
+                    preview = calculateContentPreview(Html.fromHtml(html).toString());
+                }
                 try
                 {
                     mDb.execSQL("UPDATE messages SET "
@@ -2593,7 +2625,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             lockRead();
             try
             {
-                boolean saveAllHeaders = mAccount.isSaveAllHeaders();
+                boolean saveAllHeaders = mAccount.saveAllHeaders();
                 boolean gotAdditionalHeaders = false;
 
                 deleteHeaders(id);
@@ -3092,6 +3124,18 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public String htmlifyString(String text)
         {
+            // Our HTMLification code is somewhat memory intensive
+            // and was causing lots of OOM errors on the market
+            // if the message is big and plain text, just do
+            // a trivial htmlification
+            if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH)
+            {
+                return "<html><head/><body>" +
+                       htmlifyMessageHeader() +
+                       text +
+                       htmlifyMessageFooter() +
+                       "</body></html>";
+            }
             StringReader reader = new StringReader(text);
             StringBuilder buff = new StringBuilder(text.length() + 512);
             int c = 0;
@@ -3130,7 +3174,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
             StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><head><meta name=\"viewport\" content=\"width=device-width, height=device-height\"></head><body>");
+            sb.append("<html><head></head><body>");
             sb.append(htmlifyMessageHeader());
             while (m.find())
             {
@@ -5280,7 +5324,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         private void populateFromGetMessageCursor(Cursor cursor)
         throws MessagingException
         {
-            this.setSubject(cursor.getString(0) == null ? "" : cursor.getString(0));
+            final String subject = cursor.getString(0);
+            this.setSubject(subject == null ? "" : subject);
+
             Address[] from = Address.unpack(cursor.getString(1));
             if (from.length > 0)
             {
@@ -5318,7 +5364,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             this.mAttachmentCount = cursor.getInt(10);
             this.setInternalDate(new Date(cursor.getLong(11)));
             this.setMessageId(cursor.getString(12));
-            mPreview = (cursor.getString(14) == null ? "" : cursor.getString(14));
+
+            final String preview = cursor.getString(14);
+            mPreview = (preview == null ? "" : preview);
+
             if (this.mFolder == null)
             {
                 LocalFolder f = new LocalFolder(cursor.getInt(13));

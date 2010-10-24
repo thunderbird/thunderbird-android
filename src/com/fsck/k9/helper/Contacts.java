@@ -147,7 +147,14 @@ public abstract class Contacts
      */
     public abstract Cursor searchContacts(CharSequence filter);
 
-    public abstract Cursor searchByAddress(String address);
+    /**
+     * Get the name of the contact an email address belongs to.
+     *
+     * @param address The email address to search for.
+     * @return The name of the contact the email address belongs to. Or
+     *      <tt>null</tt> if there's no matching contact.
+     */
+    public abstract String getNameForAddress(String address);
 
     /**
      * Extract the name from a {@link Cursor} instance returned by
