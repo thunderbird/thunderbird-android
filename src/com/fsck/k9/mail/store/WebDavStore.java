@@ -57,7 +57,7 @@ import java.util.zip.GZIPInputStream;
 
 /**
  * <pre>
- * Uses WebDAV formatted HTTP calls to an MS Exchange server to fetch emails
+ * Uses WebDAV formatted HTTP calls to an MS Exchange server to fetch email
  * and email information.  This has only been tested on an MS Exchange
  * Server 2003.  It uses Form-Based authentication and requires that
  * Outlook Web Access be enabled on the server.
@@ -289,9 +289,7 @@ public class WebDavStore extends Store
 
         for (int i = 0; i < urlLength; i++)
         {
-//            Log.i(K9.LOG_TAG, "folderUrls[" + i + "] = '" + folderUrls[i]);
             String[] urlParts = folderUrls[i].split("/");
-//            Log.i(K9.LOG_TAG, "urlParts = " + urlParts);
             String folderName = urlParts[urlParts.length - 1];
             String fullPathName = "";
             WebDavFolder wdFolder;
@@ -366,7 +364,6 @@ public class WebDavStore extends Store
     /***************************************************************
      * WebDAV XML Request body retrieval functions
      */
-
     private String getFolderListXml()
     {
         StringBuffer buffer = new StringBuffer(200);
@@ -508,8 +505,8 @@ public class WebDavStore extends Store
     }
 
     // For flag:
-//    http://www.devnewsgroups.net/group/microsoft.public.exchange.development/topic27175.aspx
-    //"<m:0x10900003>1</m:0x10900003>" & _
+    //    http://www.devnewsgroups.net/group/microsoft.public.exchange.development/topic27175.aspx
+    // "<m:0x10900003>1</m:0x10900003>" & _
 
     private String getMoveOrCopyMessagesReadXml(String[] urls, boolean isMove)
     {
@@ -1056,7 +1053,6 @@ public class WebDavStore extends Store
             {
                 messageEntity = new StringEntity(messageBody);
                 messageEntity.setContentType("text/xml");
-                //                httpmethod.setEntity(messageEntity);
             }
             InputStream istream = sendRequest(url, method, messageEntity, headers, true);
             if (istream != null &&
@@ -1164,13 +1160,11 @@ public class WebDavStore extends Store
             return store;
         }
 
-
         public WebDavFolder(WebDavStore nStore, String name)
         {
             super(nStore.getAccount());
             store = nStore;
             this.mName = name;
-
 
             if (DAV_MAIL_SEND_FOLDER.equals(name))
             {
@@ -1318,7 +1312,6 @@ public class WebDavStore extends Store
                 messageCount = dataset.getMessageCount();
             }
 
-
             return messageCount;
         }
 
@@ -1374,7 +1367,6 @@ public class WebDavStore extends Store
         {
             this.mMessageCount = 0;
             this.mUnreadMessageCount = 0;
-
             this.mIsOpen = false;
         }
 
@@ -1412,8 +1404,6 @@ public class WebDavStore extends Store
             /** Reverse the message range since 0 index is newest */
             start = this.mMessageCount - end;
             end = start + (end - prevStart);
-
-            //end = this.mMessageCount - prevStart;
 
             if (start < 0 || end < 0 || end < start)
             {
@@ -1454,7 +1444,6 @@ public class WebDavStore extends Store
 
             return messages.toArray(EMPTY_MESSAGE_ARRAY);
         }
-
 
         @Override
         public Message[] getMessages(MessageRetrievalListener listener) throws MessagingException
@@ -1515,7 +1504,6 @@ public class WebDavStore extends Store
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
         throws MessagingException
         {
-
             if (messages == null ||
                     messages.length == 0)
             {
@@ -1538,7 +1526,6 @@ public class WebDavStore extends Store
             }
 
 
-
             if (fp.contains(FetchProfile.Item.BODY_SANE))
             {
                 fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
@@ -1547,25 +1534,6 @@ public class WebDavStore extends Store
             {
                 fetchMessages(messages, listener, -1);
             }
-
-//            if (fp.contains(FetchProfile.Item.STRUCTURE)) {
-//                for (int i = 0, count = messages.length; i < count; i++) {
-//                    if (!(messages[i] instanceof WebDavMessage)) {
-//                        throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
-//                    }
-//                    WebDavMessage wdMessage = (WebDavMessage) messages[i];
-//
-//                    if (listener != null) {
-//                        listener.messageStarted(wdMessage.getUid(), i, count);
-//                    }
-//
-//                    wdMessage.setBody(null);
-//
-//                    if (listener != null) {
-//                        listener.messageFinished(wdMessage, i, count);
-//                    }
-//                }
-//            }
         }
 
         /**
@@ -1702,7 +1670,6 @@ public class WebDavStore extends Store
             String messageBody = "";
             Message[] messages = new Message[20];
             String[] uids;
-
 
             if (startMessages == null ||
                     startMessages.length == 0)
@@ -1945,7 +1912,6 @@ public class WebDavStore extends Store
 
         public Message[] appendWebDavMessages(Message[] messages) throws MessagingException
         {
-
             Message[] retMessages = new Message[messages.length];
             int ind = 0;
 
@@ -1960,20 +1926,6 @@ public class WebDavStore extends Store
 
                 try
                 {
-                    /*
-                    String subject;
-
-                    try
-                    {
-                        subject = message.getSubject();
-                    }
-                    catch (MessagingException e)
-                    {
-                        Log.e(K9.LOG_TAG, "MessagingException while retrieving Subject: " + e);
-                        subject = "";
-                    }
-                    */
-
                     ByteArrayOutputStream out;
                     try
                     {
@@ -2032,7 +1984,6 @@ public class WebDavStore extends Store
                 {
                     throw new MessagingException("Unable to append", e);
                 }
-
             }
             return retMessages;
         }
@@ -2178,14 +2129,12 @@ public class WebDavStore extends Store
             }
         }
 
-
         @Override
         public void delete(String trashFolderName) throws MessagingException
         {
             WebDavFolder wdFolder = (WebDavFolder)getFolder();
             Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
             wdFolder.moveMessages(new Message[] { this }, wdFolder.getStore().getFolder(trashFolderName));
-
         }
 
         @Override
@@ -2285,7 +2234,6 @@ public class WebDavStore extends Store
         public void addHeader(String field, String value)
         {
             String headerName = mHeaderMappings.get(field);
-            //Log.i(K9.LOG_TAG, "header " + headerName + " = '" + value + "'");
 
             if (headerName != null)
             {
@@ -2368,8 +2316,6 @@ public class WebDavStore extends Store
                 /* Lost Data are for requests that don't include a message UID.
                  * These requests should only have a depth of one for the response so it will never get stomped over.
                  */
-                //mLostData = mTempData;
-                //String visibleCount = mLostData.get("visiblecount");
             }
 
             mUid = "";
@@ -2632,6 +2578,7 @@ public class WebDavStore extends Store
             }
         }
     }
+
     public static class WebDavHttpClient extends DefaultHttpClient
     {
         /*
@@ -2654,6 +2601,7 @@ public class WebDavStore extends Store
             Log.i(K9.LOG_TAG, "Requesting gzipped data");
             request.addHeader("Accept-Encoding", "gzip");
         }
+
         public static InputStream getUngzippedContent(HttpEntity entity)
         throws IOException
         {
