@@ -21,7 +21,7 @@
   \n
   \n Veuillez noter que K-9 Mail ne prend pas en charge les comptes Hotmail et, comme d\'autres clients, a quelques ennuis avec les serveurs Microsoft Exchange.
   \n
-  \n Si vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0: http//k9mail.googlecode.com/ (en anglais)
+  \n Si vous avez des suggestions, découvert des bugs ou simplement une idée de fonctionnalité, n\'hésitez pas à vous rendre ici\u00A0: http://k9mail.googlecode.com/ (en anglais)
     </string>
     <string name="account_setup_basics_email_hint">Adresse courriel</string>
     <string name="account_setup_basics_email_error_invalid_fmt"><xliff:g id="email">%s</xliff:g> n\'est pas une adresse courriel valide.</string>
@@ -40,4 +40,5 @@
     <string name="account_setup_incoming_imap_folder_spam">Nom du dossier des pourriels</string>
     <string name="account_settings_enable_move_buttons_summary">Montrer les boutons Archiver, Déplacer ou Pourriel</string>
     <string name="batch_spam_op">Déplacer vers Pourriels</string>
+    <string name="account_setup_push_limit_label">Maximum de dossiers poussés à vérifier</string>
 </resources>

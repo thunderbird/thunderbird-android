@@ -1,4 +1,5 @@
 package com.fsck.k9.activity;
+import com.fsck.k9.helper.MessageHelper;
 import java.util.Date;
 
 import com.fsck.k9.mail.Message;
@@ -7,7 +8,6 @@ public class MessageInfoHolder
 {
     public String subject;
     public String date;
-    public String fullDate;
     public Date compareDate;
     public String compareSubject;
     public CharSequence sender;
@@ -22,6 +22,9 @@ public class MessageInfoHolder
     public boolean flagged;
     public boolean downloaded;
     public boolean partially_downloaded;
+    public boolean dirty;
+    public boolean toMe;
+    public boolean ccMe;
     public Message message;
     public FolderInfoHolder folder;
     public boolean selected;
@@ -51,4 +54,12 @@ public class MessageInfoHolder
         return uid.hashCode();
     }
 
+    public String getDate(MessageHelper messageHelper)
+    {
+        if (date == null)
+        {
+            date = messageHelper.formatDate(message.getSentDate());
+        }
+        return date;
+    }
 }

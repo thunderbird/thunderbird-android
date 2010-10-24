@@ -51,9 +51,9 @@ public class MessageHelper
     }
 
     public void populate(final MessageInfoHolder target, final Message m,
-            final FolderInfoHolder folder, final Account account)
+                         final FolderInfoHolder folder, final Account account)
     {
-        final Contacts contactHelper = Contacts.getInstance(mContext);
+        final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
         try
         {
             LocalMessage message = (LocalMessage) m;
@@ -65,15 +65,6 @@ public class MessageHelper
             }
 
             target.folder = folder;
-
-            if (Utility.isDateToday(date))
-            {
-                target.date = mTodayDateFormat.format(date);
-            }
-            else
-            {
-                target.date = mDateFormat.format(date);
-            }
 
             target.hasAttachments = message.getAttachmentCount() > 0;
 
@@ -89,7 +80,7 @@ public class MessageHelper
             {
                 CharSequence to = Address.toFriendly(message .getRecipients(RecipientType.TO), contactHelper);
                 target.compareCounterparty = to.toString();
-                target.sender = new SpannableStringBuilder(mContext.getString(R.string.message_list_to_fmt)).append(to);
+                target.sender = new SpannableStringBuilder(String.format(mContext.getString(R.string.message_list_to_fmt), to));
             }
             else
             {
@@ -107,13 +98,33 @@ public class MessageHelper
                 target.senderAddress = target.compareCounterparty;
             }
 
+
+
+            for (Address address : message.getRecipients(RecipientType.TO))
+            {
+                if (account.isAnIdentity(address))
+                {
+                    target.toMe = true;
+                }
+            }
+
+            if (target.toMe == false )
+            {
+                for(Address address : message.getRecipients(RecipientType.CC))
+                {
+                    if (account.isAnIdentity(address))
+                    {
+                        target.ccMe = true;
+                    }
+                }
+            }
+
             target.subject = message.getSubject();
 
             target.uid = message.getUid();
             target.message = m;
             target.preview = message.getPreview();
 
-            target.fullDate = mDateFormat.format(date) + " " + mTimeFormat.format(date);
             target.account = account.getDescription();
             target.uri = "email://messages/" + account.getAccountNumber() + "/" + m.getFolder().getName() + "/" + m.getUid();
 
@@ -121,6 +132,17 @@ public class MessageHelper
         catch (MessagingException me)
         {
             Log.w(K9.LOG_TAG, "Unable to load message info", me);
+        }
+    }
+    public String formatDate(Date date)
+    {
+        if (Utility.isDateToday(date))
+        {
+            return mTodayDateFormat.format(date);
+        }
+        else
+        {
+            return mDateFormat.format(date);
         }
     }
 }

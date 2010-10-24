@@ -151,7 +151,7 @@ public class Account implements BaseAccount
         mLocalStoreUri = "local://localhost/" + context.getDatabasePath(mUuid + ".db");
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
-        mSaveAllHeaders = false;
+        mSaveAllHeaders = true;
         mPushPollOnConnect = true;
         mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         mAccountNumber = -1;
@@ -226,7 +226,7 @@ public class Account implements BaseAccount
         mIdleRefreshMinutes = prefs.getInt(mUuid
                                            + ".idleRefreshMinutes", 24);
         mSaveAllHeaders = prefs.getBoolean(mUuid
-                                           + ".saveAllHeaders", false);
+                                           + ".saveAllHeaders", true);
         mPushPollOnConnect = prefs.getBoolean(mUuid
                                               + ".pushPollOnConnect", true);
         mDisplayCount = prefs.getInt(mUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
@@ -326,7 +326,7 @@ public class Account implements BaseAccount
         mNotificationSetting.setVibrateTimes(prefs.getInt(mUuid + ".vibrateTimes", 5));
         mNotificationSetting.setRing(prefs.getBoolean(mUuid + ".ring", true));
         mNotificationSetting.setRingtone(prefs.getString(mUuid  + ".ringtone",
-                                       "content://settings/system/notification_sound"));
+                                         "content://settings/system/notification_sound"));
         mNotificationSetting.setLed(prefs.getBoolean(mUuid + ".led", true));
         mNotificationSetting.setLedColor(prefs.getInt(mUuid+".ledColor", mChipColor));
 
@@ -549,6 +549,7 @@ public class Account implements BaseAccount
         editor.putInt(mUuid + ".maximumPolledMessageAge", maximumPolledMessageAge);
         editor.putInt(mUuid + ".maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize);
         editor.putString(mUuid + ".quotePrefix", mQuotePrefix);
+        editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
 
@@ -1289,7 +1290,7 @@ public class Account implements BaseAccount
         mPushPollOnConnect = pushPollOnConnect;
     }
 
-    public synchronized boolean isSaveAllHeaders()
+    public synchronized boolean saveAllHeaders()
     {
         return mSaveAllHeaders;
     }

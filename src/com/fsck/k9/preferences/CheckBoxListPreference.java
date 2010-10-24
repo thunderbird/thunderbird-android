@@ -45,15 +45,15 @@ public class CheckBoxListPreference extends DialogPreference
         System.arraycopy(mCheckedItems, 0, mPendingItems, 0, mCheckedItems.length);
 
         builder.setMultiChoiceItems(mItems, mPendingItems,
-                new DialogInterface.OnMultiChoiceClickListener()
-                {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which,
-                            final boolean isChecked)
-                    {
-                        mPendingItems[which] = isChecked;
-                    }
-                });
+                                    new DialogInterface.OnMultiChoiceClickListener()
+        {
+            @Override
+            public void onClick(final DialogInterface dialog, final int which,
+                                final boolean isChecked)
+            {
+                mPendingItems[which] = isChecked;
+            }
+        });
     }
 
     @Override

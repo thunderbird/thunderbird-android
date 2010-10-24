@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="3111"
-    android:versionName="3.111" package="com.fsck.k9"
+    android:versionCode="11012"
+    android:versionName="3.303" package="com.fsck.k9"
     >
     <uses-sdk
        android:minSdkVersion="3"
@@ -258,10 +258,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-<!--         <activity
-            android:name="com.fsck.k9.AccessibleEmailContentActivity"
+        <activity
+            android:name="com.fsck.k9.web.AccessibleEmailContentActivity"
             >
-        </activity>-->
+        </activity>
 
         <receiver android:name="com.fsck.k9.service.BootReceiver"
               android:enabled="true"

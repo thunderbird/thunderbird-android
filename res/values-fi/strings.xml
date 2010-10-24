@@ -238,7 +238,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Hae lisää viestejä</string>
-    <string name="message_list_to_fmt">Vast.ottaja:</string>
+    <string name="message_list_to_fmt">Vast.ottaja:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_list_delete_action">Poista</string>
     <string name="message_list_mark_read_action">Merkitse luetuksi</string>
     <string name="message_list_mark_unread_action">Merkitse lukemattomaksi</string>

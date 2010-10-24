@@ -107,14 +107,6 @@ public class MessageList
         ExpandableListView.OnGroupExpandListener, ExpandableListView.OnGroupCollapseListener
 {
 
-    protected static enum StateRestorationStatus
-    {
-        NONE,
-        PLANNED,
-        PENDING,
-        READY;
-    }
-
     protected class Listener extends ActivityListener
     {
         @Override
@@ -256,17 +248,6 @@ public class MessageList
                     mHandler.folderLoading(folder, false);
                 }
             }
-
-            changeRestorationStatus();
-        }
-
-        /**
-         * Change the restoration status so that it is known that a
-         * synchronization has occured
-         */
-        private void changeRestorationStatus()
-        {
-            restore.compareAndSet(StateRestorationStatus.PLANNED, StateRestorationStatus.PENDING);
         }
 
         @Override
@@ -296,8 +277,6 @@ public class MessageList
         {
             mUnreadMessageCount = stats.unreadMessageCount;
             mHandler.refreshTitle();
-
-            changeRestorationStatus();
         }
 
         @Override
@@ -358,7 +337,7 @@ public class MessageList
 
     /**
      * Reverses the result of a {@link Comparator}.
-     * 
+     *
      * @param <T>
      */
     public static class ReverseComparator<T> implements Comparator<T>
@@ -385,7 +364,7 @@ public class MessageList
 
     /**
      * Chains comparator to find a non-0 result.
-     * 
+     *
      * @param <T>
      */
     public static class ComparatorChain<T> implements Comparator<T>
@@ -416,7 +395,7 @@ public class MessageList
             }
             return result;
         }
-        
+
     }
 
     public static class AttachmentComparator implements Comparator<MessageInfoHolder>
@@ -555,7 +534,7 @@ public class MessageList
 
     private boolean mStars = true;
     private boolean mCheckboxes = true;
-    private int mSelectedCount = 0;
+    private volatile int mSelectedCount = 0;
 
     private View mBatchButtonArea;
     private ImageButton mBatchReadButton;
@@ -564,11 +543,6 @@ public class MessageList
     private ImageButton mBatchDoneButton;
 
     private FontSizes mFontSizes = K9.getFontSizes();
-
-    /**
-     * <code>true</code> if the activity is in state restoration mode
-     */
-    private AtomicReference<StateRestorationStatus> restore = new AtomicReference<StateRestorationStatus>(StateRestorationStatus.NONE);
 
     private Bundle mState = null;
 
@@ -591,15 +565,14 @@ public class MessageList
      */
     private List<MessageInfoHolder> mActiveMessages;
 
-    private ProgressDialog mProgressDialog;
-
     /**
      * Pool used for non-UI work and to alleviate the application global
      * messaging controller thread.
      */
     private ExecutorService mWorkerPool;
 
-    /* package visibility for faster inner class access */ MessageHelper mMessageHelper = MessageHelper.getInstance(this);
+    /* package visibility for faster inner class access */
+    MessageHelper mMessageHelper = MessageHelper.getInstance(this);
 
     /**
      * Manage the backend store and the UI component (ListAdapter) to make sure
@@ -654,11 +627,6 @@ public class MessageList
                         expandAll();
                     }
                     mAdapter.synchronizeFastScroll();
-
-                    if (restore.compareAndSet(StateRestorationStatus.PENDING, StateRestorationStatus.READY))
-                    {
-                        MessageList.this.restoreListState();
-                    }
                 }
             });
         }
@@ -1037,10 +1005,8 @@ public class MessageList
             updateFooterView(mFooterView);
         }
 
-        restore.set(StateRestorationStatus.NONE);
         mState = null;
         mAdapter.mAutoExpanded.clear();
-        mProgressDialog = null;
     }
 
     @Override
@@ -1064,38 +1030,36 @@ public class MessageList
 
     public void saveListState()
     {
-        // put the activity in restoration mode for future loading
-        restore.set(StateRestorationStatus.PLANNED);
-
         mState = new Bundle();
         mState.putInt(EXTRA_LIST_POSITION, mListView.isInTouchMode() ? mListView.getFirstVisiblePosition() : mListView.getSelectedItemPosition());
-
-        final int groupCount = mAdapter.getGroupCount();
-        for (int i = 0; i < groupCount; i++)
-        {
-            if (mListView.isGroupExpanded(i))
-            {
-                mAdapter.mAutoExpanded.remove(mAdapter.getGroupId(i));
-            }
-        }
     }
 
     public void restoreListState()
     {
-        if (!restore.compareAndSet(StateRestorationStatus.READY, StateRestorationStatus.NONE))
+        if (mState == null)
         {
             return;
         }
-        mListView.setSelection(mState.getInt(EXTRA_LIST_POSITION, 0));
-        mHandler.resetUnreadCountOnThread();
-        mProgressDialog.dismiss();
-        mProgressDialog = null;
-        mState = null;
 
+        int pos = mState.getInt(EXTRA_LIST_POSITION, AdapterView.INVALID_POSITION);
+
+        if (pos >= mListView.getCount())
+        {
+            pos = mListView.getCount() - 1;
+        }
+
+        if (pos == AdapterView.INVALID_POSITION)
+        {
+            mListView.setSelected(false);
+        }
+        else
+        {
+            mListView.setSelection(pos);
+        }
     }
 
     /**
-     * 
+     * Must be called from UI thread
      */
     protected void expandIfNecessary()
     {
@@ -1134,33 +1098,61 @@ public class MessageList
         }
 
         mController.addListener(mStore.mListener);
-        mStore.messages.clear();
-        if (restore.get() != StateRestorationStatus.PLANNED)
+        if (mAccount != null)
         {
-            restore.set(StateRestorationStatus.NONE);
-            mHandler.synchronizeDisplay();
+            mController.notifyAccountCancel(this, mAccount);
+            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
+        }
+
+        if (mStore.messages.isEmpty())
+        {
+            if (mFolderName != null)
+            {
+                mController.listLocalMessages(mAccount, mFolderName,  mStore.mListener);
+            }
+            else if (mQueryString != null)
+            {
+                mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mStore.mListener);
+            }
+
         }
         else
         {
-            expandIfNecessary();
-            // TODO localization
-            mProgressDialog = ProgressDialog.show(this, "", "Loading, please wait...", true);
+            mWorkerPool.execute(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mStore.markAllMessagesAsDirty();
+
+                    if (mFolderName != null)
+                    {
+                        mController.listLocalMessagesSynchronous(mAccount, mFolderName,  mStore.mListener);
+                    }
+                    else if (mQueryString != null)
+                    {
+                        mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mStore.mListener);
+                    }
+
+
+                    mStore.pruneDirtyMessages();
+                    runOnUiThread(new Runnable()
+                    {
+                        public void run()
+                        {
+                            mAdapter.notifyDataSetChanged();
+                            restoreListState();
+                        }
+                    });
+                }
+
+            });
         }
 
-        if (mFolderName != null)
+        if (mAccount != null && mFolderName != null)
         {
-            mController.listLocalMessages(mAccount, mFolderName, mStore.mListener);
-            mController.notifyAccountCancel(this, mAccount);
-
-            MessagingController.getInstance(getApplication()).notifyAccountCancel(this, mAccount);
-
             mController.getFolderUnreadMessageCount(mAccount, mFolderName, mStore.mListener);
         }
-        else if (inSearchMode())
-        {
-            mController.searchLocalMessages(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mStore.mListener);
-        }
-
         mHandler.refreshTitle();
     }
 
@@ -1363,7 +1355,7 @@ public class MessageList
                     {
                         currentPosition = mListView.getFirstVisiblePosition();
                     }
-                    
+
                     if (currentPosition < mListView.getCount())
                     {
                         mListView.setSelection(currentPosition + 1);
@@ -2001,18 +1993,6 @@ public class MessageList
                 setFlag(selection, Flag.FLAGGED, false);
                 return true;
             }
-            case R.id.settings:
-            {
-                if (!inSearchMode())
-                {
-                    break;
-                }
-
-                /*
-                 * Fall-through in search results view. Otherwise a sub-menu
-                 * with only one option would be opened.
-                 */
-            }
             case R.id.app_settings:
             {
                 onEditPrefs();
@@ -2477,7 +2457,8 @@ public class MessageList
                     return true;
                 }
 
-                float deltaX = e2.getX() - e1.getX(), deltaY = e2.getY() - e1.getY();
+	            float deltaX = e2.getX() - e1.getX(),
+	                  deltaY = e2.getY() - e1.getY();
 
                 boolean movedAcross = (Math.abs(deltaX) > Math.abs(deltaY * 4));
                 boolean steadyHand = (Math.abs(deltaX / deltaY) > 2);
@@ -2769,15 +2750,14 @@ public class MessageList
      * Should not include UI API calls and should not be used from the UI thread.
      * </p>
      */
-    public static class MessageListStore
+    public class MessageListStore
     {
 
         /**
          * Maps a {@link SORT_TYPE} to a {@link Comparator} implementation.
          */
-        private static final Map<SORT_TYPE, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
+        private final Map<SORT_TYPE, Comparator<MessageInfoHolder>> SORT_COMPARATORS;
 
-        static
         {
             // fill the mapping at class time loading
 
@@ -3059,6 +3039,37 @@ public class MessageList
             }
         }
 
+        public void markAllMessagesAsDirty()
+        {
+            synchronized (messages)
+            {
+                for (final MessageInfoHolder holder : messages)
+                {
+                    holder.dirty = true;
+                }
+            }
+        }
+
+        public void pruneDirtyMessages()
+        {
+            synchronized (messages)
+            {
+                for (final Iterator<MessageInfoHolder> iter = messages.iterator(); iter.hasNext(); )
+                {
+                    final MessageInfoHolder holder = iter.next();
+                    if (holder.dirty)
+                    {
+                        if (holder.selected)
+                        {
+                            mSelectedCount--;
+                            toggleBatchButtons();
+                        }
+                        iter.remove();
+                    }
+                }
+            }
+        }
+
     }
 
     private MessageListStore mStore = new MessageListStore(new Listener());
@@ -3208,7 +3219,8 @@ public class MessageList
             }
             else
             {
-                // TODO is this branch ever reached/executed?
+                // This branch code is triggered when the local store
+                // hands us an invalid message
 
                 holder.chip.getBackground().setAlpha(0);
                 holder.subject.setText("No subject");
@@ -3324,29 +3336,32 @@ public class MessageList
                  * compose a custom view containing the preview and the
                  * from.
                  */
-                holder.preview.setText(new SpannableStringBuilder(message.sender).append(" ").append(message.preview),
+
+                CharSequence sender = formatSender(message);
+                holder.preview.setText(new SpannableStringBuilder(sender).append(" ").append(message.preview),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create our span sections, and assign a format to each.
                 str.setSpan(new StyleSpan(Typeface.BOLD),
                             0,
-                            message.sender.length(),
+                            sender.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                             );
                 str.setSpan(new ForegroundColorSpan(Color.rgb(128,128,128)), // TODO: How do I can specify the android.R.attr.textColorTertiary
-                            message.sender.length(),
+                            sender.length(),
                             str.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                             );
             }
             else
             {
-                holder.from.setText(message.sender);
+                holder.from.setText(formatSender(message));
+
                 holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
             }
 
-            holder.date.setText(message.date);
+            holder.date.setText(message.getDate(mMessageHelper));
             holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                 message.answered ? mAnsweredIcon : null, // left
                 null, // top
@@ -3355,6 +3370,23 @@ public class MessageList
             holder.position = position;
             holder.groupPosition = position;
         }
+
+        private CharSequence formatSender(MessageInfoHolder message)
+        {
+            if (message.toMe)
+            {
+                return String.format(getString(R.string.messagelist_sent_to_me_format), message.sender);
+            }
+            else if (message.ccMe)
+            {
+                return String.format(getString(R.string.messagelist_sent_cc_me_format), message.sender);
+            }
+            else
+            {
+                return message.sender;
+            }
+        }
+
 
         @Override
         public boolean hasStableIds()
@@ -3709,7 +3741,7 @@ public class MessageList
     }
 
     class MessageViewHolder
-            implements OnCheckedChangeListener
+        implements OnCheckedChangeListener
     {
         public TextView subject;
         public TextView preview;
@@ -3818,6 +3850,7 @@ public class MessageList
                         }
                         else
                         {
+                            m.dirty = false; // as we reload the message, unset its dirty flag
                             messageHelper.populate(m, message, new FolderInfoHolder(MessageList.this, messageFolder, account), account);
                             needsSort = true;
                         }

@@ -880,8 +880,20 @@ public class MessageView extends K9Activity implements OnClickListener
 
         webSettings.setSupportZoom(true);
         webSettings.setLoadsImagesAutomatically(true);
-        //webSettings.setBuiltInZoomControls(true);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+
+        if (K9.zoomControlsEnabled())
+        {
+            webSettings.setBuiltInZoomControls(true);
+        }
+        if (K9.mobileOptimizedLayout())
+        {
+            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        }
+        else
+        {
+            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        }
 
         webSettings.setTextSize(mFontSizes.getMessageViewContent());
 
@@ -1319,24 +1331,24 @@ public class MessageView extends K9Activity implements OnClickListener
         builder.setTitle(R.string.dialog_confirm_delete_title);
         builder.setMessage(R.string.dialog_confirm_delete_message);
         builder.setPositiveButton(R.string.dialog_confirm_delete_confirm_button,
-                new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dismissDialog(id);
-                        delete();
-                    }
-                });
+                                  new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dismissDialog(id);
+                delete();
+            }
+        });
         builder.setNegativeButton(R.string.dialog_confirm_delete_cancel_button,
-                new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        dismissDialog(id);
-                    }
-                });
+                                  new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dismissDialog(id);
+            }
+        });
         final AlertDialog dialog = builder.create();
         return dialog;
     }
@@ -1455,8 +1467,6 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 final Address senderEmail = mMessage.getFrom()[0];
                 mContacts.createContact(this, senderEmail);
-
-                Address.clearContactsNameCache();
             }
             catch (Exception e)
             {
@@ -2170,11 +2180,12 @@ public class MessageView extends K9Activity implements OnClickListener
                             final Message message) throws MessagingException
     {
         String subjectText = message.getSubject();
-        CharSequence fromText = Address.toFriendly(message.getFrom(), mContacts);
+        final Contacts contacts = K9.showContactName() ? mContacts : null;
+        CharSequence fromText = Address.toFriendly(message.getFrom(), contacts);
         String dateText = getDateFormat().format(message.getSentDate());
         String timeText = getTimeFormat().format(message.getSentDate());
-        CharSequence toText = Address.toFriendly(message.getRecipients(RecipientType.TO), mContacts);
-        CharSequence ccText = Address.toFriendly(message.getRecipients(RecipientType.CC), mContacts);
+        CharSequence toText = Address.toFriendly(message.getRecipients(RecipientType.TO), contacts);
+        CharSequence ccText = Address.toFriendly(message.getRecipients(RecipientType.CC), contacts);
 
         int color = mAccount.getChipColor();
         boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;

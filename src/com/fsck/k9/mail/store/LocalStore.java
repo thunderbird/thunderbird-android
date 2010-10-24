@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -44,8 +45,10 @@ public class LocalStore extends Store implements Serializable
      */
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    private static final int DB_VERSION = 38;
+    private static final int DB_VERSION = 39;
     private static final Flag[] PERMANENT_FLAGS = { Flag.DELETED, Flag.X_DESTROYED, Flag.SEEN, Flag.FLAGGED };
+
+    private static final int MAX_SMART_HTMLIFY_MESSAGE_LENGTH = 1024 * 256 ;
 
     private String mPath;
     private SQLiteDatabase mDb;
@@ -180,7 +183,8 @@ public class LocalStore extends Store implements Serializable
                             + "DELETE FROM headers where old.id = message_id; END;");
             }
             else
-            { // in the case that we're starting out at 29 or newer, run all the needed updates
+            {
+                // in the case that we're starting out at 29 or newer, run all the needed updates
 
                 if (mDb.getVersion() < 30)
                 {
@@ -271,6 +275,19 @@ public class LocalStore extends Store implements Serializable
 
 
                 // Database version 38 is solely to prune cached attachments now that we clear them better
+                if (mDb.getVersion() < 39)
+                {
+                    try
+                    {
+                        mDb.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
+                    }
+                    catch (SQLiteException e)
+                    {
+                        Log.e(K9.LOG_TAG, "Unable to remove extra header data from the database");
+                    }
+                }
+
+
 
             }
 
@@ -801,13 +818,11 @@ public class LocalStore extends Store implements Serializable
     {
         ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
         Cursor cursor = null;
+        int i = 0;
         try
         {
-            // pull out messages most recent first, since that's what the default sort is
-            cursor = mDb.rawQuery(queryString, placeHolders);
+            cursor = mDb.rawQuery(queryString + " LIMIT 10", placeHolders);
 
-
-            int i = 0;
             while (cursor.moveToNext())
             {
                 LocalMessage message = new LocalMessage(null, folder);
@@ -820,10 +835,25 @@ public class LocalStore extends Store implements Serializable
                 }
                 i++;
             }
-            if (listener != null)
+            cursor.close();
+            cursor = mDb.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
+
+            while (cursor.moveToNext())
             {
-                listener.messagesFinished(i);
+                LocalMessage message = new LocalMessage(null, folder);
+                message.populateFromGetMessageCursor(cursor);
+
+                messages.add(message);
+                if (listener != null)
+                {
+                    listener.messageFinished(message, i, -1);
+                }
+                i++;
             }
+        }
+        catch (Exception e)
+        {
+            Log.d(K9.LOG_TAG,"Got an exception "+e);
         }
         finally
         {
@@ -831,6 +861,10 @@ public class LocalStore extends Store implements Serializable
             {
                 cursor.close();
             }
+        }
+        if (listener != null)
+        {
+            listener.messagesFinished(i);
         }
 
         return messages.toArray(EMPTY_MESSAGE_ARRAY);
@@ -1797,7 +1831,10 @@ public class LocalStore extends Store implements Serializable
                 String text = sbText.toString();
                 String html = markupContent(text, sbHtml.toString());
                 String preview = calculateContentPreview(text);
-
+                if (preview == null || preview.length() == 0)
+                {
+                    preview = calculateContentPreview(Html.fromHtml(html).toString());
+                }
                 try
                 {
                     ContentValues cv = new ContentValues();
@@ -1948,7 +1985,7 @@ public class LocalStore extends Store implements Serializable
          */
         private void saveHeaders(long id, MimeMessage message) throws MessagingException
         {
-            boolean saveAllHeaders = mAccount.isSaveAllHeaders();
+            boolean saveAllHeaders = mAccount.saveAllHeaders();
             boolean gotAdditionalHeaders = false;
 
             deleteHeaders(id);
@@ -2398,6 +2435,18 @@ public class LocalStore extends Store implements Serializable
 
         public String htmlifyString(String text)
         {
+            // Our HTMLification code is somewhat memory intensive
+            // and was causing lots of OOM errors on the market
+            // if the message is big and plain text, just do
+            // a trivial htmlification
+            if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH)
+            {
+                return "<html><head/><body>" +
+                       htmlifyMessageHeader() +
+                       text +
+                       htmlifyMessageFooter() +
+                       "</body></html>";
+            }
             StringReader reader = new StringReader(text);
             StringBuilder buff = new StringBuilder(text.length() + 512);
             int c = 0;
@@ -2436,7 +2485,7 @@ public class LocalStore extends Store implements Serializable
 
             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
             StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><head><meta name=\"viewport\" content=\"width=device-width, height=device-height\"></head><body>");
+            sb.append("<html><head></head><body>");
             sb.append(htmlifyMessageHeader());
             while (m.find())
             {

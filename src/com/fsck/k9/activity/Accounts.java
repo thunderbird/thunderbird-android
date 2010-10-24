@@ -589,6 +589,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_REMOVE_ACCOUNT);
+                removeDialog(DIALOG_REMOVE_ACCOUNT);
 
                 if (mSelectedContextAccount instanceof Account)
                 {
@@ -613,6 +614,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_REMOVE_ACCOUNT);
+                removeDialog(DIALOG_REMOVE_ACCOUNT);
             }
         })
                .create();
@@ -628,6 +630,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_CLEAR_ACCOUNT);
+                removeDialog(DIALOG_CLEAR_ACCOUNT);
 
                 if (mSelectedContextAccount instanceof Account)
                 {
@@ -642,6 +645,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_CLEAR_ACCOUNT);
+                removeDialog(DIALOG_CLEAR_ACCOUNT);
             }
         })
                .create();
@@ -657,6 +661,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_RECREATE_ACCOUNT);
+                removeDialog(DIALOG_RECREATE_ACCOUNT);
 
                 if (mSelectedContextAccount instanceof Account)
                 {
@@ -671,6 +676,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             public void onClick(DialogInterface dialog, int whichButton)
             {
                 dismissDialog(DIALOG_RECREATE_ACCOUNT);
+                removeDialog(DIALOG_RECREATE_ACCOUNT);
             }
         })
                .create();

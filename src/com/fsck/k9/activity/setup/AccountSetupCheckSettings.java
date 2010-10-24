@@ -22,6 +22,8 @@ import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.TrustManagerFactory;
+import com.fsck.k9.mail.store.WebDavStore;
+
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -106,13 +108,24 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     }
                     if (mCheckIncoming)
                     {
-                        setMessage(R.string.account_setup_check_settings_check_incoming_msg);
                         store = mAccount.getRemoteStore();
+
+                        if (store instanceof WebDavStore)
+                        {
+                            setMessage(R.string.account_setup_check_settings_authenticate);
+                        }
+                        else
+                        {
+                            setMessage(R.string.account_setup_check_settings_check_incoming_msg);
+                        }
                         store.checkSettings();
 
-                        MessagingController.getInstance(getApplication()).listFolders(mAccount, true, null);
+                        if (store instanceof WebDavStore)
+                        {
+                            setMessage(R.string.account_setup_check_settings_fetch);
+                        }
+                        MessagingController.getInstance(getApplication()).listFoldersSynchronous(mAccount, true, null);
                         MessagingController.getInstance(getApplication()).synchronizeMailbox(mAccount, K9.INBOX , null, null);
-
                     }
                     if (mDestroyed)
                     {
@@ -125,7 +138,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     }
                     if (mCheckOutgoing)
                     {
-                        setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
+                        if (!(mAccount.getRemoteStore() instanceof WebDavStore))
+                        {
+                            setMessage(R.string.account_setup_check_settings_check_outgoing_msg);
+                        }
                         Transport transport = Transport.getInstance(mAccount);
                         transport.close();
                         transport.open();

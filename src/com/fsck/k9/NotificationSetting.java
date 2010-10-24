@@ -33,7 +33,7 @@ public class NotificationSetting
     /**
      * Set the ringtone kill switch. Allow to disable ringtone without losing
      * ringtone selection.
-     * 
+     *
      * @param ring
      *            <code>true</code> to allow ringtones, <code>false</code>
      *            otherwise.
