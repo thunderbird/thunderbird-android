@@ -415,7 +415,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
             {
                 final Map<String, String> providers;
-                providers = StorageManager.getInstance().getAvailableProviders(this);
+                providers = StorageManager.getInstance(K9.app).getAvailableProviders();
                 int i = 0;
                 final String[] providerLabels = new String[providers.size()];
                 final String[] providerIds = new String[providers.size()];

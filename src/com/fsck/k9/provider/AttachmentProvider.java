@@ -140,8 +140,8 @@ public class AttachmentProvider extends ContentProvider
         {
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
             final File attachmentsDir;
-            attachmentsDir = StorageManager.getInstance().getAttachmentDirectory(getContext(),
-                    dbName, account.getLocalStorageProviderId());
+            attachmentsDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(dbName,
+                    account.getLocalStorageProviderId());
             final File file = new File(attachmentsDir, id);
             if (!file.exists())
             {

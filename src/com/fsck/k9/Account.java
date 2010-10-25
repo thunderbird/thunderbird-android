@@ -173,7 +173,7 @@ public class Account implements BaseAccount
     protected Account(Context context)
     {
         mUuid = UUID.randomUUID().toString();
-        mLocalStorageProviderId = StorageManager.getInstance().getDefaultProviderId();
+        mLocalStorageProviderId = StorageManager.getInstance(K9.app).getDefaultProviderId();
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
         mSaveAllHeaders = true;
@@ -241,7 +241,7 @@ public class Account implements BaseAccount
 
         mStoreUri = Utility.base64Decode(prefs.getString(mUuid
                                          + ".storeUri", null));
-        mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance().getDefaultProviderId());
+        mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
         mTransportUri = Utility.base64Decode(prefs.getString(mUuid
                                              + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
@@ -1549,7 +1549,7 @@ public class Account implements BaseAccount
         if (localStorageProviderId == null) {
             return true; // defaults to internal memory
         }
-        return StorageManager.getInstance().isReady(context, localStorageProviderId);
+        return StorageManager.getInstance(K9.app).isReady(localStorageProviderId);
     }
 
 }

@@ -32,6 +32,7 @@ import org.apache.commons.io.IOUtils;
 
 import android.app.Application;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -93,16 +94,22 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     private SQLiteDatabase mDb;
 
-    protected final ReadWriteLock mDbLock = new ReentrantReadWriteLock(true);
+    {
+        final ReadWriteLock lock = new ReentrantReadWriteLock(true);
+        mReadLock = lock.readLock();
+        mWriteLock = lock.writeLock();
+    }
+
     /**
      * Reentrant read lock
      */
-    protected final Lock mReadLock = mDbLock.readLock();
+    protected final Lock mReadLock;
+
     /**
      * Reentrant write lock (if you lock it 2x from the same thread, you have to
      * unlock it 2x to release it)
      */
-    protected final Lock mWriteLock = mDbLock.writeLock();
+    protected final Lock mWriteLock;
 
     private Application mApplication;
     private String uUid = null;
@@ -131,7 +138,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * local://localhost/path/to/database/uuid.db
      * This constructor is only used by {@link Store#getLocalInstance(Account, Application)}
-     * @throws UnavailableStorageException if not {@link StorageProvider#isReady()}
+     * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
     public LocalStore(Account account, Application application) throws MessagingException
     {
@@ -171,7 +178,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      * Lock the storage for exclusive access (other threads aren't allowed to
      * run simultaneously)
      * 
+     * <p>
+     * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
+     * done with the storage.
+     * </p>
+     * 
      * @throws UnavailableStorageException
+     *             If storage can't be locked because it is not available
      */
     protected void lockWrite() throws UnavailableStorageException
     {
@@ -197,15 +210,15 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 Log.i(K9.LOG_TAG, "Unable to close DB on local store migration", e);
             }
 
-            final StorageManager storageManager = StorageManager.getInstance();
+            final StorageManager storageManager = StorageManager.getInstance(mApplication);
 
             // create new path
             prepareStorage(newProviderId);
 
             // move all database files
-            moveRecursive(storageManager.getDatabase(mApplication, uUid, oldProviderId), storageManager.getDatabase(mApplication, uUid, newProviderId));
+            moveRecursive(storageManager.getDatabase(uUid, oldProviderId), storageManager.getDatabase(uUid, newProviderId));
             // move all attachment files
-            moveRecursive(storageManager.getAttachmentDirectory(mApplication, uUid, oldProviderId), storageManager.getAttachmentDirectory(mApplication, uUid, newProviderId));
+            moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId), storageManager.getAttachmentDirectory(uUid, newProviderId));
 
             mStorageProviderId = newProviderId;
 
@@ -314,11 +327,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      */
     protected File prepareStorage(final String providerId)
     {
-        final StorageManager storageManager = StorageManager.getInstance();
+        final StorageManager storageManager = StorageManager.getInstance(mApplication);
 
         final File databaseFile;
         final File databaseParentDir;
-        databaseFile = storageManager.getDatabase(mApplication, uUid, providerId);
+        databaseFile = storageManager.getDatabase(uUid, providerId);
         databaseParentDir = databaseFile.getParentFile();
         if (!databaseParentDir.exists())
         {
@@ -329,7 +342,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         final File attachmentDir;
         final File attachmentParentDir;
         attachmentDir = storageManager
-                .getAttachmentDirectory(mApplication, uUid, providerId);
+                .getAttachmentDirectory(uUid, providerId);
         attachmentParentDir = attachmentDir.getParentFile();
         if (!attachmentParentDir.exists())
         {
@@ -557,9 +570,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         long attachmentLength = 0;
 
-        final StorageManager storageManager = StorageManager.getInstance();
+        final StorageManager storageManager = StorageManager.getInstance(mApplication);
 
-        final File attachmentDirectory = storageManager.getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
+        final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, mStorageProviderId);
 
         lockRead();
         try
@@ -574,7 +587,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
 
 
-            final File dbFile = storageManager.getDatabase(mApplication, uUid, mStorageProviderId);
+            final File dbFile = storageManager.getDatabase(uUid, mStorageProviderId);
             return dbFile.length() + attachmentLength;
         }
         finally
@@ -763,10 +776,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
             
             }
-            final StorageManager storageManager = StorageManager.getInstance();
+            final StorageManager storageManager = StorageManager.getInstance(mApplication);
             try
             {
-                final File attachmentDirectory = storageManager.getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
+                final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, mStorageProviderId);
                 final File[] attachments = attachmentDirectory.listFiles();
                 for (File attachment : attachments)
                 {
@@ -785,7 +798,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             try
             {
-                storageManager.getDatabase(mApplication, uUid, mStorageProviderId).delete();
+                storageManager.getDatabase(uUid, mStorageProviderId).delete();
             }
             catch (Exception e)
             {
@@ -812,10 +825,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
             
             }
-            final StorageManager storageManager = StorageManager.getInstance();
+            final StorageManager storageManager = StorageManager.getInstance(mApplication);
             try
             {
-                final File attachmentDirectory = storageManager.getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
+                final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, mStorageProviderId);
                 final File[] attachments = attachmentDirectory.listFiles();
                 for (File attachment : attachments)
                 {
@@ -834,7 +847,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             try
             {
-                storageManager.getDatabase(mApplication, uUid, mStorageProviderId).delete();
+                storageManager.getDatabase(uUid, mStorageProviderId).delete();
             }
             catch (Exception e)
             {
@@ -867,8 +880,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 cv.putNull("content_uri");
                 mDb.update("attachments", cv, null, null);
             }
-            final StorageManager storageManager = StorageManager.getInstance();
-            File[] files = storageManager.getAttachmentDirectory(mApplication, uUid, mStorageProviderId).listFiles();
+            final StorageManager storageManager = StorageManager.getInstance(mApplication);
+            File[] files = storageManager.getAttachmentDirectory(uUid, mStorageProviderId).listFiles();
             for (File file : files)
             {
                 if (file.exists())
@@ -2705,7 +2718,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     attachmentId = ((LocalAttachmentBodyPart) attachment).getAttachmentId();
                 }
 
-                final File attachmentDirectory = StorageManager.getInstance().getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
+                final File attachmentDirectory = StorageManager.getInstance(mApplication).getAttachmentDirectory(uUid, mStorageProviderId);
                 if (attachment.getBody() != null)
                 {
                     Body body = attachment.getBody();
@@ -3007,8 +3020,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     attachmentsCursor = mDb.query("attachments", new String[]
                     { "id" }, "message_id = ?", new String[]
                     { Long.toString(messageId) }, null, null, null);
-                    final File attachmentDirectory = StorageManager.getInstance()
-                            .getAttachmentDirectory(mApplication, uUid, mStorageProviderId);
+                    final File attachmentDirectory = StorageManager.getInstance(mApplication)
+                            .getAttachmentDirectory(uUid, mStorageProviderId);
                     while (attachmentsCursor.moveToNext())
                     {
                         long attachmentId = attachmentsCursor.getLong(0);
