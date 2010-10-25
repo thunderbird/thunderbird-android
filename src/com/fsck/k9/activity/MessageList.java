@@ -2709,26 +2709,25 @@ public class MessageList
                  * from.
                  */
 
-                CharSequence sender = formatSender(message);
-                holder.preview.setText(new SpannableStringBuilder(sender).append(" ").append(message.preview),
+                holder.preview.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender).append(" ").append(message.preview),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create our span sections, and assign a format to each.
                 str.setSpan(new StyleSpan(Typeface.BOLD),
                             0,
-                            sender.length(),
+                            (message.sender.length()+1),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                            );
                 str.setSpan(new ForegroundColorSpan(Color.rgb(128,128,128)), // TODO: How do I can specify the android.R.attr.textColorTertiary
-                            sender.length(),
+                            (message.sender.length()+1),
                             str.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                            );
             }
             else
             {
-                holder.from.setText(formatSender(message));
+                holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append( message.sender));
 
                 holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
             }
@@ -2742,19 +2741,19 @@ public class MessageList
             holder.position = position;
         }
 
-        private CharSequence formatSender (MessageInfoHolder message)
+        private String recipientSigil (MessageInfoHolder message)
         {
             if (message.toMe)
             {
-                return String.format(getString(R.string.messagelist_sent_to_me_format), message.sender);
+                return getString(R.string.messagelist_sent_to_me_sigil);
             }
             else if (message.ccMe)
             {
-                return String.format(getString(R.string.messagelist_sent_cc_me_format), message.sender);
+                return getString(R.string.messagelist_sent_cc_me_sigil);
             }
             else
             {
-                return message.sender;
+                return "";
             }
         }
 
