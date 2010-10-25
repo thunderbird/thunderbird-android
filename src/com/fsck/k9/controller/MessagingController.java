@@ -4602,7 +4602,8 @@ public class MessagingController implements Runnable
         // If we don't even have an account name, don't show the notification
         // (This happens during initial account setup)
         //
-        if (account.getName() == null) {
+        if (account.getName() == null)
+        {
             return false;
         }
 
