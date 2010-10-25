@@ -3360,6 +3360,18 @@ public class MessagingController implements Runnable
         }
     }
 
+
+    public void sendPendingMessages(MessagingListener listener)
+    {
+        final Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
+        Account[] accounts = prefs.getAccounts();
+        for (Account account : accounts)
+        {
+            sendPendingMessages(account, listener);
+        }
+    }
+
+
     /**
      * Attempt to send any messages that are sitting in the Outbox.
      * @param account
