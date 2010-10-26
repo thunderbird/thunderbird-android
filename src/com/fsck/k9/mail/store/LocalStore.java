@@ -242,7 +242,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 }
             }
             if (!fromDir.renameTo(toDir)) {
-                Log.w(K9.LOG_TAG, "cannot rename " + fromDir.getAbsolutePath() + " to " + toDir.getAbsolutePath());
+                Log.w(K9.LOG_TAG, "cannot rename " + fromDir.getAbsolutePath() + " to " + toDir.getAbsolutePath() + " - moving instead");
                 move(fromDir, toDir);
             }
             return;
@@ -263,7 +263,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             } else {
                 File target = new File(toDir, file.getName());
                 if (!file.renameTo(target)) {
-                    Log.w(K9.LOG_TAG, "cannot rename " + file.getAbsolutePath() + " to " + target.getAbsolutePath());
+                    Log.w(K9.LOG_TAG, "cannot rename " + file.getAbsolutePath() + " to " + target.getAbsolutePath() + " - moving instead");
                     move(file, target);
                 }
             }

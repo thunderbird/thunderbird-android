@@ -435,7 +435,12 @@ public class MessageProvider extends ContentProvider
                     {
                         myAccountStats = account.getStats(getContext());
                         values[0] = myAccount.getDescription();
-                        values[1] = myAccountStats.unreadMessageCount;
+                        if (myAccountStats == null) {
+                        	values[1] = 0;
+                        } else {
+                        	values[1] = myAccountStats.unreadMessageCount;
+                        }
+                        
                         ret.addRow(values);
                     }
                     catch (MessagingException e)

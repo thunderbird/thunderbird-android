@@ -667,6 +667,7 @@ public class MessageList
 
         if (!mAccount.isAvalaible(MessageList.this)) {
     		Log.i(K9.LOG_TAG, "not opening MessageList of unavaliable account");
+    		startActivity(new Intent(this, Accounts.class));
     		finish();
     		return;
     	}

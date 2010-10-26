@@ -504,6 +504,7 @@ public class StorageManager
      */
     public void onUnmount(final String path)
     {
+    	Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounted");
         final String providerId = resolveProvider(path);
         if (providerId == null)
         {
@@ -528,6 +529,7 @@ public class StorageManager
      */
     public void onMount(final String path, final boolean readOnly)
     {
+    	Log.i(K9.LOG_TAG, "storage path \"" + path + "\" mounted readOnly=" + readOnly);
         if (readOnly)
         {
             return;

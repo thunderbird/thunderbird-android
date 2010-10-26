@@ -452,6 +452,9 @@ public class MessagingController implements Runnable
             l.listFoldersStarted(account);
         }
         List<? extends Folder> localFolders = null;
+    	if (!account.isAvalaible(mApplication)) {
+    		Log.i(K9.LOG_TAG, "not listing folders of unavaliable account");
+    	} else {
         try
         {
             Store localStore = account.getLocalStore();
@@ -493,6 +496,7 @@ public class MessagingController implements Runnable
                 }
             }
         }
+    	}
 
         for (MessagingListener l : getListeners(listener))
         {
@@ -766,6 +770,10 @@ public class MessagingController implements Runnable
         boolean noSpecialFolders = true;
         for (final Account account : accounts)
         {
+        	if (!account.isAvalaible(mApplication)) {
+        		Log.d(K9.LOG_TAG, "searchLocalMessagesSynchronous() ignores account that is not avaliable");
+        		continue;
+        	}
             if (accountUuids != null && !accountUuidsSet.contains(account.getUuid()))
             {
                 continue;
@@ -4466,7 +4474,8 @@ public class MessagingController implements Runnable
                                     account.setRingNotified(false);
                                     try
                                     {
-                                        if (account.getStats(context).unreadMessageCount == 0)
+                                        AccountStats stats = account.getStats(context);
+										if (stats == null || stats.unreadMessageCount == 0)
                                         {
                                             notifyAccountCancel(context, account);
                                         }

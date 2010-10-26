@@ -164,7 +164,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             try
             {
                 AccountStats stats = account.getStats(Accounts.this);
-                accountStatusChanged(account, stats);
+                if (stats == null) {
+                    Log.w(K9.LOG_TAG, "Unable to get account stats");
+                } else {
+                	accountStatusChanged(account, stats);
+                }
             }
             catch (Exception e)
             {
@@ -179,6 +183,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             if (oldStats != null)
             {
                 oldUnreadMessageCount = oldStats.unreadMessageCount;
+            }
+            if (stats == null) {
+            	stats = new AccountStats(); // empty stats for unavaliable accounts
             }
             accountStats.put(account.getUuid(), stats);
             if (account instanceof Account)
@@ -343,8 +350,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
         else if (startup && accounts.length == 1)
         {
-            onOpenAccount(accounts[0]);
-            finish();
+            if (onOpenAccount(accounts[0])) {
+            	finish();
+            }
         }
         else
         {
@@ -504,7 +512,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
     }
 
-    private void onOpenAccount(BaseAccount account)
+    /**
+     * Show that account's inbox or folder-list
+     * or return false if the account is not avaliable.
+     * @param account the account to open ({@link SearchAccount} or {@link Account})
+     * @return false if unsuccessfull
+     */
+    private boolean onOpenAccount(BaseAccount account)
     {
         if (account instanceof SearchAccount)
         {
@@ -516,7 +530,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             Account realAccount = (Account)account;
             if (!realAccount.isAvalaible(this)) {
             	Log.i(K9.LOG_TAG, "refusing to open account that is not avaliable");
-            	return;
+            	return false;
             }
             if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName()))
             {
@@ -527,6 +541,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 MessageList.actionHandleFolder(this, realAccount, realAccount.getAutoExpandFolderName());
             }
         }
+        return true;
     }
 
     public void onClick(View view)

@@ -600,8 +600,17 @@ public class Account implements BaseAccount
 
     }
 
+    /**
+     * @param context
+     * @return null if not avalaible
+     * @throws MessagingException
+     * @see {@link #isAvalaible(Context)}
+     */
     public AccountStats getStats(Context context) throws MessagingException
     {
+    	if (!isAvalaible(context)) {
+    		return null;
+    	}
         long startTime = System.currentTimeMillis();
         AccountStats stats = new AccountStats();
         int unreadMessageCount = 0;
@@ -1345,17 +1354,10 @@ public class Account implements BaseAccount
     {
         if (this.mLocalStoreMigrationListener != null && !mLocalStorageProviderId.equals(newStorageProviderId))
         {
-            try
-            {
-                mLocalStoreMigrationListener.onLocalStoreMigration(mLocalStorageProviderId,
-                        newStorageProviderId);
-            }
-            catch (MessagingException e)
-            {
-                throw e;
-            }
-            mLocalStorageProviderId = newStorageProviderId;
+        	mLocalStoreMigrationListener.onLocalStoreMigration(mLocalStorageProviderId,
+        			newStorageProviderId);
         }
+        setLocalStorageProviderId(newStorageProviderId);
     }
 
     public synchronized boolean goToUnreadMessageSearch()
