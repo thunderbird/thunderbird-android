@@ -339,6 +339,13 @@ android.intent.action.MEDIA_UNMOUNTED
      * The path to the mount point for the removed media is contained in the Intent.mData field.
  -->
                 <action android:name="android.intent.action.MEDIA_UNMOUNTED"/>
+                <action android:name="android.intent.action.MEDIA_REMOVED"/>
+                <action android:name="android.intent.action.MEDIA_CHECKING"/>
+                <action android:name="android.intent.action.MEDIA_NOFS"/>
+                <action android:name="android.intent.action.MEDIA_SHARED"/>
+                <action android:name="android.intent.action.MEDIA_UNSHARED"/>
+                <action android:name="android.intent.action.MEDIA_BAD_REMOVAL"/>
+                <action android:name="android.intent.action.MEDIA_UNMOUNTABLE"/>
                 <data android:scheme="file"/>
             </intent-filter>
         </receiver>

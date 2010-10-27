@@ -1350,7 +1350,7 @@ public class Account implements BaseAccount
      *            Never <code>null</code>.
      * @throws MessagingException
      */
-    public synchronized void switchLocalStorage(Context context, String newStorageProviderId) throws MessagingException
+    public void switchLocalStorage(Context context, String newStorageProviderId) throws MessagingException
     {
         if (this.mLocalStoreMigrationListener != null && !mLocalStorageProviderId.equals(newStorageProviderId))
         {

@@ -167,10 +167,25 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     protected void lockRead() throws UnavailableStorageException
     {
         mReadLock.lock();
+        try
+        {
+            StorageManager.getInstance(mApplication).lockProvider(mStorageProviderId);
+        }
+        catch (UnavailableStorageException e)
+        {
+            mReadLock.unlock();
+            throw e;
+        }
+        catch (RuntimeException e)
+        {
+            mReadLock.unlock();
+            throw e;
+        }
     }
 
     protected void unlockRead()
     {
+        StorageManager.getInstance(mApplication).unlockProvider(mStorageProviderId);
         mReadLock.unlock();
     }
 
@@ -184,50 +199,96 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      * </p>
      * 
      * @throws UnavailableStorageException
-     *             If storage can't be locked because it is not available
+     *             If storage can't be locked because it is not available.
      */
     protected void lockWrite() throws UnavailableStorageException
     {
+        lockWrite(mStorageProviderId);
+    }
+
+    /**
+     * Lock the storage for exclusive access (other threads aren't allowed to
+     * run simultaneously)
+     * 
+     * <p>
+     * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
+     * done with the storage.
+     * </p>
+     * @param providerId TODO
+     * 
+     * @throws UnavailableStorageException
+     *             If storage can't be locked because it is not available.
+     */
+    protected void lockWrite(final String providerId) throws UnavailableStorageException
+    {
         mWriteLock.lock();
+        try
+        {
+            StorageManager.getInstance(mApplication).lockProvider(providerId);
+        }
+        catch (UnavailableStorageException e)
+        {
+            mWriteLock.unlock();
+            throw e;
+        }
+        catch (RuntimeException e)
+        {
+            mWriteLock.unlock();
+            throw e;
+        }
     }
 
     protected void unlockWrite()
     {
+        unlockWrite(mStorageProviderId);
+    }
+
+    protected void unlockWrite(final String providerId)
+    {
+        StorageManager.getInstance(mApplication).unlockProvider(providerId);
         mWriteLock.unlock();
     }
 
     public void onLocalStoreMigration(final String oldProviderId,
             final String newProviderId) throws MessagingException {
-        lockWrite();
+        lockWrite(oldProviderId);
         try
         {
+            lockWrite(newProviderId);
             try
             {
-                mDb.close();
+                try
+                {
+                    mDb.close();
+                }
+                catch (Exception e)
+                {
+                    Log.i(K9.LOG_TAG, "Unable to close DB on local store migration", e);
+                }
+
+                final StorageManager storageManager = StorageManager.getInstance(mApplication);
+
+                // create new path
+                prepareStorage(newProviderId);
+
+                // move all database files
+                moveRecursive(storageManager.getDatabase(uUid, oldProviderId), storageManager.getDatabase(uUid, newProviderId));
+                // move all attachment files
+                moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId), storageManager.getAttachmentDirectory(uUid, newProviderId));
+
+                mStorageProviderId = newProviderId;
+
+                // re-initialize this class with the new Uri
+                openOrCreateDataspace(mApplication);
             }
-            catch (Exception e)
+            finally
             {
-                Log.i(K9.LOG_TAG, "Unable to close DB on local store migration", e);
+                unlockWrite(newProviderId);
             }
-
-            final StorageManager storageManager = StorageManager.getInstance(mApplication);
-
-            // create new path
-            prepareStorage(newProviderId);
-
-            // move all database files
-            moveRecursive(storageManager.getDatabase(uUid, oldProviderId), storageManager.getDatabase(uUid, newProviderId));
-            // move all attachment files
-            moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId), storageManager.getAttachmentDirectory(uUid, newProviderId));
-
-            mStorageProviderId = newProviderId;
-
-            // re-initialize this class with the new Uri
-            openOrCreateDataspace(mApplication);
         }
         finally
         {
-           unlockWrite();
+           unlockWrite(oldProviderId);
         }
     }
 

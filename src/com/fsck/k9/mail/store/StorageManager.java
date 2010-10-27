@@ -4,9 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import android.app.Application;
 import android.content.Context;
@@ -357,7 +362,27 @@ public class StorageManager
         }
     }
 
+    public static class SynchronizationAid
+    {
+        /**
+         * {@link Lock} has a thread semantic so it can't be released from
+         * another thread - this flags act as a holder for the unmount state
+         */
+        public boolean unmounting = false;
+
+        public final Lock readLock;
+
+        public final Lock writeLock;
+        {
+            final ReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
+            readLock = readWriteLock.readLock();
+            writeLock = readWriteLock.writeLock();
+        }
+    }
+
     private final Map<String, StorageProvider> mProviders = new LinkedHashMap<String, StorageProvider>();
+
+    private final Map<StorageProvider, SynchronizationAid> mProviderLocks = new IdentityHashMap<StorageProvider, SynchronizationAid>();
 
     protected final Application mApplication;
 
@@ -415,6 +440,7 @@ public class StorageManager
             {
                 provider.init(application);
                 mProviders.put(provider.getId(), provider);
+                mProviderLocks.put(provider, new SynchronizationAid());
             }
         }
 
@@ -502,11 +528,11 @@ public class StorageManager
     /**
      * @param path
      */
-    public void onUnmount(final String path)
+    public void onBeforeUnmount(final String path)
     {
-    	Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounted");
-        final String providerId = resolveProvider(path);
-        if (providerId == null)
+        Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounting");
+        final StorageProvider provider = resolveProvider(path);
+        if (provider == null)
         {
             return;
         }
@@ -514,13 +540,31 @@ public class StorageManager
         {
             try
             {
-                listener.onUnmount(providerId);
+                listener.onUnmount(provider.getId());
             }
             catch (Exception e)
             {
                 Log.w(K9.LOG_TAG, "Error while notifying StorageListener", e);
             }
         }
+        final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
+        sync.writeLock.lock();
+        sync.unmounting = true;
+        sync.writeLock.unlock();
+    }
+
+    public void onAfterUnmount(final String path)
+    {
+        Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounted");
+        final StorageProvider provider = resolveProvider(path);
+        if (provider == null)
+        {
+            return;
+        }
+        final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
+        sync.writeLock.lock();
+        sync.unmounting = false;
+        sync.writeLock.unlock();
     }
 
     /**
@@ -529,14 +573,14 @@ public class StorageManager
      */
     public void onMount(final String path, final boolean readOnly)
     {
-    	Log.i(K9.LOG_TAG, "storage path \"" + path + "\" mounted readOnly=" + readOnly);
+        Log.i(K9.LOG_TAG, "storage path \"" + path + "\" mounted readOnly=" + readOnly);
         if (readOnly)
         {
             return;
         }
 
-        final String providerId = resolveProvider(path);
-        if (providerId == null)
+        final StorageProvider provider = resolveProvider(path);
+        if (provider == null)
         {
             return;
         }
@@ -544,7 +588,7 @@ public class StorageManager
         {
             try
             {
-                listener.onMount(providerId);
+                listener.onMount(provider.getId());
             }
             catch (Exception e)
             {
@@ -556,15 +600,15 @@ public class StorageManager
     /**
      * @param path
      *            Never <code>null</code>.
-     * @return ID of the corresponding provider. <code>null</code> if no match.
+     * @return The corresponding provider. <code>null</code> if no match.
      */
-    protected String resolveProvider(final String path)
+    protected StorageProvider resolveProvider(final String path)
     {
         for (final StorageProvider provider : mProviders.values())
         {
             if (path.equals(provider.getRoot(mApplication).getAbsolutePath()))
             {
-                return provider.getId();
+                return provider;
             }
         }
         return null;
@@ -580,4 +624,47 @@ public class StorageManager
         mListeners.remove(listener);
     }
 
+    /**
+     * Try to lock the underlying storage to prevent concurrent unmount.
+     * 
+     * <p>
+     * You must invoke {@link #unlockProvider(String)} when you're done with the
+     * storage.
+     * </p>
+     * 
+     * @param providerId
+     * @throws UnavailableStorageException
+     *             If the storage can't be locked.
+     */
+    public void lockProvider(final String providerId) throws UnavailableStorageException
+    {
+        final StorageProvider provider = getProvider(providerId);
+        if (provider == null)
+        {
+            throw new UnavailableStorageException("StorageProvider not found: " + providerId);
+        }
+        // lock provider
+        final SynchronizationAid sync = mProviderLocks.get(provider);
+        final boolean locked = sync.readLock.tryLock();
+        if (!locked || (locked && sync.unmounting))
+        {
+            if (locked)
+            {
+                sync.readLock.unlock();
+            }
+            throw new UnavailableStorageException("StorageProvider is unmounting");
+        }
+        else if (locked && !provider.isReady(mApplication))
+        {
+            sync.readLock.unlock();
+            throw new UnavailableStorageException("StorageProvider not ready");
+        }
+    }
+
+    public void unlockProvider(final String providerId)
+    {
+        final StorageProvider provider = getProvider(providerId);
+        final SynchronizationAid sync = mProviderLocks.get(provider);
+        sync.readLock.unlock();
+    }
 }
