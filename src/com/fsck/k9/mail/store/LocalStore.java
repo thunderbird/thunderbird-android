@@ -373,7 +373,17 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         lockWrite();
         try
         {
-            mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
+            try
+            {
+                mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
+            }
+            catch (SQLiteException e)
+            {
+                // try to gracefully handle DB corruption - see issue 2537
+                Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
+                databaseFile.delete();
+                mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
+            }
             if (mDb.getVersion() != DB_VERSION)
             {
                 doDbUpgrade(mDb, application);
