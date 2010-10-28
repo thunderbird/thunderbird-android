@@ -135,6 +135,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         "subject, sender_list, date, uid, flags, id, to_list, cc_list, "
         + "bcc_list, reply_to_list, attachment_count, internal_date, message_id, folder_id, preview ";
 
+    private final StorageListener mStorageListener = new StorageListener();
+
     /**
      * local://localhost/path/to/database/uuid.db
      * This constructor is only used by {@link Store#getLocalInstance(Account, Application)}
@@ -150,6 +152,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         openOrCreateDataspace(application);
 
+        StorageManager.getInstance(application).addListener(mStorageListener);
     }
 
     /**
@@ -363,7 +366,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      * @param application
      * @throws UnavailableStorageException
      */
-    private void openOrCreateDataspace(Application application) throws UnavailableStorageException
+    void openOrCreateDataspace(final Application application) throws UnavailableStorageException
     {
         final File databaseFile = prepareStorage(mStorageProviderId);
 
@@ -863,12 +866,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             catch (Exception e)
             {
-            
+                Log.i(K9.LOG_TAG, "LocalStore: delete(): Unable to delete backing DB file", e);
             }
+
+            // stop waiting for mount/unmount events
+            StorageManager.getInstance(mApplication).removeListener(mStorageListener);
         }
         finally
         {
-            // FIXME one shouldn't release write lock since mDb is still closed at that point!
            unlockWrite();
         }
     }
@@ -1126,6 +1131,66 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         finally
         {
             unlockRead();
+        }
+    }
+
+    /**
+     * Open the DB on mount and close the DB on unmount
+     */
+    private class StorageListener implements StorageManager.StorageListener
+    {
+        @Override
+        public void onUnmount(final String providerId)
+        {
+            if (!providerId.equals(mStorageProviderId))
+            {
+                return;
+            }
+
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "LocalStore: Closing DB " + uUid + " due to unmount event on StorageProvider: " + providerId);
+            }
+
+            try
+            {
+                lockWrite();
+                try
+                {
+                    mDb.close();
+                }
+                finally
+                {
+                    unlockWrite();
+                }
+            }
+            catch (UnavailableStorageException e)
+            {
+                Log.w(K9.LOG_TAG, "Unable to writelock on unmount", e);
+            }
+        }
+
+        @Override
+        public void onMount(String providerId)
+        {
+            if (!providerId.equals(mStorageProviderId))
+            {
+                return;
+            }
+
+            if (K9.DEBUG)
+            {
+                Log.d(K9.LOG_TAG, "LocalStore: Opening DB " + uUid + " due to mount event on StorageProvider: " + providerId);
+            }
+
+            try
+            {
+                openOrCreateDataspace(mApplication);
+            }
+            catch (UnavailableStorageException e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to open DB on mount", e);
+            }
         }
     }
 
