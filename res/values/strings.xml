@@ -505,7 +505,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_failed_dlg_continue_action">Continue</string>
 
     <string name="account_settings_push_advanced_title">Advanced</string>
-    <string name="account_settings_title_fmt">General settings</string>
+    <string name="account_settings_title_fmt">Account settings</string>
     <string name="account_settings_default">Default account</string>
     <string name="account_settings_default_label">Default account</string>
     <string name="account_settings_default_summary">Send mail from this account by default</string>
@@ -539,7 +539,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_reply_after_quote_label">Reply after quoted text</string>
     <string name="account_settings_reply_after_quote_summary">When replying to messages, the original message will appear above your reply.</string>
 
-
+    <string name="account_settings_general_title">General settings</string>
     <string name="account_settings_display_prefs_title">Display</string>
     <string name="account_settings_sync">Fetching mail</string>
     <string name="account_settings_folders">Folders</string>

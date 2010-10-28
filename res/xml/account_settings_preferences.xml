@@ -17,7 +17,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceScreen
-        android:title="@string/account_settings_title_fmt"
+        android:title="@string/account_settings_general_title"
         android:key="account_settings">
 
         <EditTextPreference

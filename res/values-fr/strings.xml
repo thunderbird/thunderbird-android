@@ -453,7 +453,7 @@
   <string name="account_setup_failed_dlg_continue_action">Continuer</string>
 
     <string name="account_settings_push_advanced_title">Paramètres Push</string>
-  <string name="account_settings_title_fmt">Paramètres généraux</string>
+  <string name="account_settings_title_fmt">Paramètres du compte</string>
   <string name="account_settings_default">Compte par défaut</string>
   <string name="account_settings_default_label">Compte par défaut</string>
   <string name="account_settings_default_summary">Envoyer les messages de ce compte par défaut</string>
@@ -486,6 +486,7 @@
     <string name="account_settings_reply_after_quote_label">Réponse après la citation</string>
     <string name="account_settings_reply_after_quote_summary">Lors d\'une réponse, le texte d\'origine précèdera votre réponse</string>
 
+    <string name="account_settings_general_title">Paramètres généraux</string>
     <string name="account_settings_display_prefs_title">Affichage</string>
   <string name="account_settings_sync">Synchronication de dossiers</string>
   <string name="account_settings_folders">Dossiers</string>
