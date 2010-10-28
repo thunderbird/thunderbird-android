@@ -126,7 +126,17 @@ public class LocalStore extends Store implements Serializable
             mAttachmentsDir.mkdirs();
         }
 
-        mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
+        try
+        {
+            mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
+        }
+        catch (SQLiteException e)
+        {
+            // try to gracefully handle DB corruption - see issue 2537
+            Log.w(K9.LOG_TAG, "Unable to open DB " + mPath + " - removing file and retrying", e);
+            new File(mPath).delete();
+            mDb = SQLiteDatabase.openOrCreateDatabase(mPath, null);
+        }
         if (mDb.getVersion() != DB_VERSION)
         {
             doDbUpgrade(mDb, application);
