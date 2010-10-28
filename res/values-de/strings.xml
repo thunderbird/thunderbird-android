@@ -961,4 +961,5 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
     <string name="debug_logging_enabled">Debug-Meldungen werden mit Hilfe des Android-Logging-Systems aufgezeichnet.</string>
 
+    <string name="error_unable_to_connect">Verbindungsfehler.</string>
 </resources>

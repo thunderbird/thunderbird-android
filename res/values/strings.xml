@@ -980,4 +980,5 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
+    <string name="error_unable_to_connect">Unable to connect.</string>
 </resources>
