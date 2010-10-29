@@ -3366,7 +3366,42 @@ public class MessagingController implements Runnable
         {
             public void run()
             {
-                sendPendingMessagesSynchronous(account);
+                if (messagesPendingSend(account))
+                {
+                    NotificationManager notifMgr =
+                        (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+                    if (account.isShowOngoing())
+                    {
+                        Notification notif = new Notification(R.drawable.ic_menu_refresh,
+                                                              mApplication.getString(R.string.notification_bg_send_ticker, account.getDescription()), System.currentTimeMillis());
+                        Intent intent = MessageList.actionHandleFolderIntent(mApplication, account, K9.INBOX);
+                        PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
+                        notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.notification_bg_send_title),
+                                                 account.getDescription() , pi);
+                        notif.flags = Notification.FLAG_ONGOING_EVENT;
+
+                        if (K9.NOTIFICATION_LED_WHILE_SYNCING)
+                        {
+                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+                            notif.ledARGB = account.getNotificationSetting().getLedColor();
+                            notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
+                            notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
+                        }
+
+                        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
+                    }
+                    try
+                    {
+                        sendPendingMessagesSynchronous(account);
+                    }
+                    finally
+                    {
+                        if (account.isShowOngoing())
+                        {
+                            notifMgr.cancel(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
+                        }
+                    }
+                }
             }
         });
     }
@@ -4222,47 +4257,8 @@ public class MessagingController implements Runnable
 
                         account.setRingNotified(false);
 
-                        putBackground("sendPending " + account.getDescription(), null, new Runnable()
-                        {
-                            public void run()
-                            {
-                                if (messagesPendingSend(account))
-                                {
-                                    if (account.isShowOngoing())
-                                    {
-                                        Notification notif = new Notification(R.drawable.ic_menu_refresh,
-                                                                              context.getString(R.string.notification_bg_send_ticker, account.getDescription()), System.currentTimeMillis());
-                                        Intent intent = MessageList.actionHandleFolderIntent(context, account, K9.INBOX);
-                                        PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
-                                        notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_send_title),
-                                                                 account.getDescription() , pi);
-                                        notif.flags = Notification.FLAG_ONGOING_EVENT;
+                        sendPendingMessages(account, listener);
 
-                                        if (K9.NOTIFICATION_LED_WHILE_SYNCING)
-                                        {
-                                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                                            notif.ledARGB = account.getNotificationSetting().getLedColor();
-                                            notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
-                                            notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
-                                        }
-
-                                        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
-                                    }
-                                    try
-                                    {
-                                        sendPendingMessagesSynchronous(account);
-                                    }
-                                    finally
-                                    {
-                                        if (account.isShowOngoing())
-                                        {
-                                            notifMgr.cancel(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                                     );
                         try
                         {
                             Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
