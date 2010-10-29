@@ -32,6 +32,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -886,7 +887,12 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             webSettings.setBuiltInZoomControls(true);
         }
-        if (K9.mobileOptimizedLayout())
+
+        // SINGLE_COLUMN layout was broken on Android < 2.2, so we
+        // administratively disable it
+        if (
+            ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+            &&  K9.mobileOptimizedLayout())
         {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         }
