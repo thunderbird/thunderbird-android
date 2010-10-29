@@ -2485,7 +2485,7 @@ public class LocalStore extends Store implements Serializable
 
             Matcher m = Regex.WEB_URL_PATTERN.matcher(text);
             StringBuffer sb = new StringBuffer(text.length() + 512);
-            sb.append("<html><head><meta name=\"viewport\" content=\"width=device-width, height=device-height\"></head><body>");
+            sb.append("<html><head></head><body>");
             sb.append(htmlifyMessageHeader());
             while (m.find())
             {
