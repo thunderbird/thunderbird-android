@@ -1332,7 +1332,7 @@ public class MessageView extends K9Activity implements OnClickListener
     public void onResume()
     {
         super.onResume();
-        if (!mAccount.isAvalaible(this))
+        if (!mAccount.isAvailable(this))
         {
             onAccountUnavailable();
             return;

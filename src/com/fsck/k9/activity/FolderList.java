@@ -382,11 +382,12 @@ public class FolderList extends K9ListActivity
     {
         super.onResume();
 
-        if (!mAccount.isAvalaible(this)) {
-        	Log.i(K9.LOG_TAG, "account unavaliabale, not showing folder-list but account-list");
-        	startActivity(new Intent(this, Accounts.class));
-        	finish();
-        	return;
+        if (!mAccount.isAvailable(this))
+        {
+            Log.i(K9.LOG_TAG, "account unavaliabale, not showing folder-list but account-list");
+            startActivity(new Intent(this, Accounts.class));
+            finish();
+            return;
         }
         if (mAdapter == null)
             initializeActivityView();
@@ -839,8 +840,9 @@ public class FolderList extends K9ListActivity
                 {
                     return;
                 }
-                if (stats == null) {
-                	return;
+                if (stats == null)
+                {
+                    return;
                 }
                 mUnreadMessageCount = stats.unreadMessageCount;
                 mHandler.refreshTitle();
@@ -1042,10 +1044,11 @@ public class FolderList extends K9ListActivity
                 {
                     if (account != null && folderName != null)
                     {
-                    	if (!account.isAvalaible(FolderList.this)) {
-                    		Log.i(K9.LOG_TAG, "not refreshing folder of unavaliable account");
-                    		return;
-                    	}
+                        if (!account.isAvailable(FolderList.this))
+                        {
+                            Log.i(K9.LOG_TAG, "not refreshing folder of unavailable account");
+                            return;
+                        }
                         localFolder = account.getLocalStore().getFolder(folderName);
                         int unreadMessageCount = localFolder.getUnreadMessageCount();
                         if (localFolder != null)

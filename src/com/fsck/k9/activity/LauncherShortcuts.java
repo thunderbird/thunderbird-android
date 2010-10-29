@@ -145,13 +145,16 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
                 holder.chip.setBackgroundColor(realAccount.getChipColor());
                 holder.chip.getBackground().setAlpha(255);
 
-                // show unavaliable accounts as translucent
-                if (realAccount.isAvalaible(getContext())) {
-                	holder.email.getBackground().setAlpha(255);
-                	holder.description.getBackground().setAlpha(255);
-                } else {
-                	holder.email.getBackground().setAlpha(127);
-                	holder.description.getBackground().setAlpha(127);
+                // show unavailable accounts as translucent
+                if (realAccount.isAvailable(getContext()))
+                {
+                    holder.email.getBackground().setAlpha(255);
+                    holder.description.getBackground().setAlpha(255);
+                }
+                else
+                {
+                    holder.email.getBackground().setAlpha(127);
+                    holder.description.getBackground().setAlpha(127);
                 }
             }
             else
@@ -169,11 +172,12 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
                 public void onClick(View v)
                 {
                     Account account2 = (Account)account;
-                    if (!account2.isAvalaible(getContext())) {
-                    	Log.i(K9.LOG_TAG, "refusing selection of unavaliable account");
-                    	return ;
+                    if (!account2.isAvailable(getContext()))
+                    {
+                        Log.i(K9.LOG_TAG, "refusing selection of unavailable account");
+                        return ;
                     }
-					FolderList.actionHandleAccount(LauncherShortcuts.this, account2);
+                    FolderList.actionHandleAccount(LauncherShortcuts.this, account2);
 
                 }
             });

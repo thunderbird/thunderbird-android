@@ -93,7 +93,7 @@ public class Preferences
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
      * @param context 
-     * @return all accounts with {@link Account#isAvalaible(Context)}
+     * @return all accounts with {@link Account#isAvailable(Context)}
      */
     public synchronized Collection<Account> getAvaliableAccounts()
     {
@@ -108,11 +108,13 @@ public class Preferences
             newAccount = null;
         }
         Collection<Account> retval = new ArrayList<Account>(accounts.size());
-        for (Account account : accounts) {
-			if (account.isAvalaible(mContext)) {
-				retval.add(account);
-			}
-		}
+        for (Account account : accounts)
+        {
+            if (account.isAvailable(mContext))
+            {
+                retval.add(account);
+            }
+        }
 
         return retval;
     }

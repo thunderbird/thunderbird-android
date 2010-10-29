@@ -164,10 +164,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             try
             {
                 AccountStats stats = account.getStats(Accounts.this);
-                if (stats == null) {
+                if (stats == null)
+                {
                     Log.w(K9.LOG_TAG, "Unable to get account stats");
-                } else {
-                	accountStatusChanged(account, stats);
+                }
+                else
+                {
+                    accountStatusChanged(account, stats);
                 }
             }
             catch (Exception e)
@@ -184,8 +187,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             {
                 oldUnreadMessageCount = oldStats.unreadMessageCount;
             }
-            if (stats == null) {
-            	stats = new AccountStats(); // empty stats for unavaliable accounts
+            if (stats == null)
+            {
+                stats = new AccountStats(); // empty stats for unavailable accounts
             }
             accountStats.put(account.getUuid(), stats);
             if (account instanceof Account)
@@ -350,8 +354,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
         else if (startup && accounts.length == 1)
         {
-            if (onOpenAccount(accounts[0])) {
-            	finish();
+            if (onOpenAccount(accounts[0]))
+            {
+                finish();
             }
         }
         else
@@ -514,7 +519,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
     /**
      * Show that account's inbox or folder-list
-     * or return false if the account is not avaliable.
+     * or return false if the account is not available.
      * @param account the account to open ({@link SearchAccount} or {@link Account})
      * @return false if unsuccessfull
      */
@@ -528,9 +533,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         else
         {
             Account realAccount = (Account)account;
-            if (!realAccount.isAvalaible(this)) {
-            	Log.i(K9.LOG_TAG, "refusing to open account that is not avaliable");
-            	return false;
+            if (!realAccount.isAvailable(this))
+            {
+                Log.i(K9.LOG_TAG, "refusing to open account that is not available");
+                return false;
             }
             if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName()))
             {
@@ -927,19 +933,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 /*
             // 20101024/fiouzy: the following code throws NullPointerException because Background is null
 
-            // display unavaliable accounts translucent
+            // display unavailable accounts translucent
             if (account instanceof Account) {
-            	Account realAccount = (Account) account;
-            	if (realAccount.isAvalaible(Accounts.this)) {
-            		holder.email.getBackground().setAlpha(255);
-            		holder.description.getBackground().setAlpha(255);
-            	} else {
-            		holder.email.getBackground().setAlpha(127);
-            		holder.description.getBackground().setAlpha(127);
-            	}
+                Account realAccount = (Account) account;
+                if (realAccount.isAvalaible(Accounts.this)) {
+                    holder.email.getBackground().setAlpha(255);
+                    holder.description.getBackground().setAlpha(255);
+                } else {
+                    holder.email.getBackground().setAlpha(127);
+                    holder.description.getBackground().setAlpha(127);
+                }
             } else {
-            	holder.email.getBackground().setAlpha(255);
-            	holder.description.getBackground().setAlpha(255);
+                holder.email.getBackground().setAlpha(255);
+                holder.description.getBackground().setAlpha(255);
             }
 */
             if (stats != null && account instanceof Account && stats.size >= 0)

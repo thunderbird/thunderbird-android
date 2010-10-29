@@ -604,13 +604,14 @@ public class Account implements BaseAccount
      * @param context
      * @return null if not avalaible
      * @throws MessagingException
-     * @see {@link #isAvalaible(Context)}
+     * @see {@link #isAvailable(Context)}
      */
     public AccountStats getStats(Context context) throws MessagingException
     {
-    	if (!isAvalaible(context)) {
-    		return null;
-    	}
+        if (!isAvailable(context))
+        {
+            return null;
+        }
         long startTime = System.currentTimeMillis();
         AccountStats stats = new AccountStats();
         int unreadMessageCount = 0;
@@ -1354,8 +1355,8 @@ public class Account implements BaseAccount
     {
         if (this.mLocalStoreMigrationListener != null && !mLocalStorageProviderId.equals(newStorageProviderId))
         {
-        	mLocalStoreMigrationListener.onLocalStoreMigration(mLocalStorageProviderId,
-        			newStorageProviderId);
+            mLocalStoreMigrationListener.onLocalStoreMigration(mLocalStorageProviderId,
+                    newStorageProviderId);
         }
         setLocalStorageProviderId(newStorageProviderId);
     }
@@ -1544,11 +1545,14 @@ public class Account implements BaseAccount
     }
 
     /**
-     * @return true if our {@link StorageProvider} is ready. (e.g. card inserted)
+     * @return <code>true</code> if our {@link StorageProvider} is ready. (e.g.
+     *         card inserted)
      */
-    public boolean isAvalaible(Context context) {
+    public boolean isAvailable(Context context)
+    {
         String localStorageProviderId = getLocalStorageProviderId();
-        if (localStorageProviderId == null) {
+        if (localStorageProviderId == null)
+        {
             return true; // defaults to internal memory
         }
         return StorageManager.getInstance(K9.app).isReady(localStorageProviderId);

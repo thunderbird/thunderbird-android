@@ -692,8 +692,9 @@ public class MessageList
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);
 
-        if (mAccount != null && !mAccount.isAvalaible(this)) {
-            Log.i(K9.LOG_TAG, "not opening MessageList of unavaliable account");
+        if (mAccount != null && !mAccount.isAvailable(this))
+        {
+            Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
             onAccountUnavailable();
             return;
         }
@@ -798,7 +799,7 @@ public class MessageList
     {
         super.onResume();
 
-        if (mAccount != null && !mAccount.isAvalaible(this))
+        if (mAccount != null && !mAccount.isAvailable(this))
         {
             onAccountUnavailable();
             return;

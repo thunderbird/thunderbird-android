@@ -64,9 +64,10 @@ public class ChooseAccount extends K9ExpandableListActivity
                 final Identity identity = (Identity) adapter.getChild(groupPosition, childPosition);
                 final Account account = (Account) adapter.getGroup(groupPosition);
 
-                if (!account.isAvalaible(v.getContext())) {
-                	Log.i(K9.LOG_TAG, "Refusing selection of unavaliable account");
-                	return true;
+                if (!account.isAvailable(v.getContext()))
+                {
+                    Log.i(K9.LOG_TAG, "Refusing selection of unavailable account");
+                    return true;
                 }
                 final Intent intent = new Intent();
                 intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -198,13 +199,16 @@ public class ChooseAccount extends K9ExpandableListActivity
             description.setText(account.getDescription());
             description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
 
-            // display unavaliable accounts translucent
-            if (account.isAvalaible(parent.getContext())) {
-            	description.getBackground().setAlpha(255);
-            	description.getBackground().setAlpha(255);
-            } else {
-            	description.getBackground().setAlpha(127);
-            	description.getBackground().setAlpha(127);
+            // display unavailable accounts translucent
+            if (account.isAvailable(parent.getContext()))
+            {
+                description.getBackground().setAlpha(255);
+                description.getBackground().setAlpha(255);
+            }
+            else
+            {
+                description.getBackground().setAlpha(127);
+                description.getBackground().setAlpha(127);
             }
 
             v.findViewById(R.id.chip).setBackgroundColor(account.getChipColor());
