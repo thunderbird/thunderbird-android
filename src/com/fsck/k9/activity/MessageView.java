@@ -889,7 +889,7 @@ public class MessageView extends K9Activity implements OnClickListener
         // SINGLE_COLUMN layout was broken on Android < 2.2, so we
         // administratively disable it
         if (
-            ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO)
+            ( Integer.parseInt(Build.VERSION.SDK)  > Build.VERSION_CODES.ECLAIR)
             &&  K9.mobileOptimizedLayout())
         {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
