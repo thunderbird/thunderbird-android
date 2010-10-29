@@ -482,6 +482,14 @@ public class MailService extends CoreService
                             }
                         }
                     }
+                    // Whenever we refresh our pushers, send any unsent messages
+                    if (K9.DEBUG)
+                    {
+                        Log.d(K9.LOG_TAG, "PUSHREFRESH:  trying to send mail in all folders!");
+                    }
+
+                    MessagingController.getInstance(getApplication()).sendPendingMessages(null);
+
                 }
                 catch (Exception e)
                 {
