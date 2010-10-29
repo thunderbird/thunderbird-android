@@ -4573,6 +4573,13 @@ public class MessagingController implements Runnable
     */
     private boolean notifyAccount(Context context, Account account, Message message, int previousUnreadMessageCount, AtomicInteger newMessageCount)
     {
+        // If we don't even have an account name, don't show the notification
+        // (This happens during initial account setup)
+        //
+        if (account.getName() == null) {
+            return false;
+        }
+
         // If we have a message, set the notification to "<From>: <Subject>"
         StringBuilder messageNotice = new StringBuilder();
         final KeyguardManager keyguardService = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
