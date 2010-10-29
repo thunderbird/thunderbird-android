@@ -2108,7 +2108,7 @@ public class MessagingController implements Runnable
                 catch (UnavailableStorageException e)
                 {
                     Log.i(K9.LOG_TAG, "Failed to process pending command because storage is not available - trying again later.");
-                    throw new UnavailableAccountException();
+                    throw new UnavailableAccountException(e);
                 }
                 catch (MessagingException me)
                 {
@@ -3719,7 +3719,7 @@ public class MessagingController implements Runnable
         catch (UnavailableStorageException e)
         {
             Log.i(K9.LOG_TAG, "Failed to send pending messages because storage is not available - trying again later.");
-            throw new UnavailableAccountException();
+            throw new UnavailableAccountException(e);
         }
         catch (Exception e)
         {
@@ -3947,7 +3947,7 @@ public class MessagingController implements Runnable
         catch (UnavailableStorageException e)
         {
             Log.i(K9.LOG_TAG, "Failed to move/copy message because storage is not available - trying again later.");
-            throw new UnavailableAccountException();
+            throw new UnavailableAccountException(e);
         }
         catch (MessagingException me)
         {
@@ -4127,7 +4127,7 @@ public class MessagingController implements Runnable
         catch (UnavailableStorageException e)
         {
             Log.i(K9.LOG_TAG, "Failed to delete message because storage is not available - trying again later.");
-            throw new UnavailableAccountException();
+            throw new UnavailableAccountException(e);
         }
         catch (MessagingException me)
         {
@@ -4213,7 +4213,7 @@ public class MessagingController implements Runnable
                 catch (UnavailableStorageException e)
                 {
                     Log.i(K9.LOG_TAG, "Failed to empty trash because storage is not available - trying again later.");
-                    throw new UnavailableAccountException();
+                    throw new UnavailableAccountException(e);
                 }
                 catch (Exception e)
                 {
@@ -4569,7 +4569,7 @@ public class MessagingController implements Runnable
                 catch (UnavailableStorageException e)
                 {
                     Log.i(K9.LOG_TAG, "Failed to compact account because storage is not available - trying again later.");
-                    throw new UnavailableAccountException();
+                    throw new UnavailableAccountException(e);
                 }
                 catch (Exception e)
                 {
@@ -4610,7 +4610,7 @@ public class MessagingController implements Runnable
                 catch (UnavailableStorageException e)
                 {
                     Log.i(K9.LOG_TAG, "Failed to clear account because storage is not available - trying again later.");
-                    throw new UnavailableAccountException();
+                    throw new UnavailableAccountException(e);
                 }
                 catch (Exception e)
                 {
@@ -4651,7 +4651,7 @@ public class MessagingController implements Runnable
                 catch (UnavailableStorageException e)
                 {
                     Log.i(K9.LOG_TAG, "Failed to recreate an account because storage is not available - trying again later.");
-                    throw new UnavailableAccountException();
+                    throw new UnavailableAccountException(e);
                 }
                 catch (Exception e)
                 {
