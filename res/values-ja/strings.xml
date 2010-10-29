@@ -10,6 +10,10 @@
 
     <string name="read_attachment_label">添付ファイルを開く</string>
     <string name="read_attachment_desc">このアプリケーションでは電子メールの添付ファイルを読むことができます</string>
+    <string name="read_messages_label">メールを読む</string>
+    <string name="read_messages_desc">このアプリケーションがメールを読むことを許可する</string>
+    <string name="delete_messages_label">メールを削除</string>
+    <string name="delete_messages_desc">このアプリケーションがメールを削除することを許可する</string>
 
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">アカウント一覧</string>
@@ -38,6 +42,7 @@
 
     <!-- Actions will be used as buttons and in menu items -->
     <string name="next_action">次へ</string>
+    <string name="previous_action">前へ</string> <!-- Used as part of a multi-step process -->
     <string name="okay_action">OK</string>
     <string name="cancel_action">キャンセル</string>
     <string name="send_action">送信</string>
@@ -82,7 +87,7 @@
     <string name="back_to_folder_list_action">\u25c0</string>
     <string name="read_action">既読</string>
     <string name="mark_as_read_action">既読にする</string>
-    <string name="send_alternate_action">転送 (他のアプリケーションで)</string>
+    <string name="send_alternate_action">共有</string>
     <string name="send_alternate_chooser_title">アプリケーションを選択</string>
 
     <string name="mark_all_as_read_dlg_title">すべてのメールを既読にする</string>
@@ -192,25 +197,25 @@
     <string name="end_of_folder">これ以上メールはありません</string>
 
     <string name="accounts_welcome">
-K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで開発されているAndroid用の標準的な電子メールクライアントです。
+K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメールクライアントを元に作成したAndroid用のオープンソースのメールクライアントです。
 \n
 \nK-9での改良された機能:
-\n * IMAP IDLE利用でのプッシュメール
+\n * IMAP IDLE利用したプッシュメール
 \n * パフォーマンス改善
-\n * メッセージフィルタ
+\n * メッセージ整理
 \n * 電子メール署名
 \n * Bcc-to-self
-\n * フォルダ署名機能
-\n * 全フォルダ同期機能
-\n * 返信先の設定機能
-\n * キーボードショートカット機能
-\n * IMAPサポート
-\n * SDカードへの保存
-\n * ゴミ箱機能
-\n * 各種ソート機能
+\n * フォルダ購読
+\n * 全フォルダ同期
+\n * 返信先の設定
+\n * キーボードショートカット
+\n * より良いIMAPサポート
+\n * 添付ファイルのSDカードへの保存
+\n * ゴミ箱を空にする機能
+\n * メッセージのソート
 \n * ...他にもたくさんあります
 \n
-\nK-9 では無料の hotmail アカウントの未サポートですが、多くのメールアプリと同じように Microsoft Exchange の互換性も持っています。
+\nK-9 は hotmail アカウントと、多くのメールクライアントと同様 Microsoft Exchange のいくつかの気まぐれをサポートしません。
 \n
 \nバグレポートや新機能の貢献や質問がある場合 http://code.google.com/p/k9mail
 \n日本語版についての貢献や質問がある場合 http://groups.google.co.jp/group/k9mail_ja/
@@ -221,13 +226,13 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="debug_enable_debug_logging_title">拡張デバッグログ</string>
     <string name="debug_enable_debug_logging_summary">追加診断情報ログ</string>
     <string name="debug_enable_sensitive_logging_title">詳細情報ログ</string>
-    <string name="debug_enable_sensitive_logging_summary">ログにパスワードを表示できます</string>
+    <string name="debug_enable_sensitive_logging_summary">ログにパスワードが表示されるかもしれません</string>
 
     <string name="message_header_mua">K-9 for Android </string>
 
     <string name="combined_inbox_title">すべてのメール</string>
     <string name="combined_inbox_label">全アカウントの最新メール</string>
-    <string name="combined_inbox_list_title">受信トレイすべてのメール</string>
+    <string name="combined_inbox_list_title">受信トレイのすべてのメール</string>
 
     <string name="message_list_title_fmt"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g>
                        <xliff:g id="unread_count">%s</xliff:g>
@@ -301,17 +306,33 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="about_version">バージョン: <xliff:g id="version">%s</xliff:g></string>
 
 
-    <string name="global_settings_flag_label">スター付き</string>
-    <string name="global_settings_flag_summary">スターのメッセージフラグ表示</string>
+    <string name="global_settings_flag_label">スターを表示</string>
+    <string name="global_settings_flag_summary">スターは印を付けたメッセージを示します</string>
     <string name="global_settings_checkbox_label">複数選択チェックボックス</string>
     <string name="global_settings_checkbox_summary">複数選択チェックボックス常時表示</string>
-    <string name="global_settings_touchable_label">タッチビュー</string>
+    <string name="global_settings_touchable_label">メッセージプレビュー</string>
     <string name="global_settings_touchable_summary">メッセージ一覧にプレビューを追加</string>
+
+    <string name="global_settings_show_contact_name_label">連絡先の名前を表示</string>
+    <string name="global_settings_show_contact_name_summary">可能なら宛先に連絡先の名前を利用する</string>
+    <string name="global_settings_registered_name_color_label">連絡先の名前に色を付ける</string>
+    <string name="global_settings_registered_name_color_default">連絡先の名前の場合も色を付けない</string>
+    <string name="global_settings_registered_name_color_changed">連絡先の名前の場合は色を付ける</string>
 
     <string name="global_settings_messageview_fixedwidth_label">固定幅フォント</string>
     <string name="global_settings_messageview_fixedwidth_summary">プレーンテキストメッセージを表示する際、固定幅フォントを利用します．</string>
     <string name="global_settings_messageview_return_to_list_label">削除後メッセージ一覧へ戻る</string>
     <string name="global_settings_messageview_return_to_list_summary">メッセージの削除後、メッセージ一覧に戻る</string>
+
+    <string name="global_settings_confirm_actions_title">確認</string>
+    <string name="global_settings_confirm_actions_summary">選択した動作を実行するときに常にダイアログを表示する</string>
+    <string name="global_settings_confirm_action_archive">アーカイブ</string>
+    <string name="global_settings_confirm_action_delete">削除(メッセージ表示画面のみ)</string>
+    <string name="global_settings_confirm_action_spam">迷惑メール</string>
+    <string name="global_settings_confirm_action_send">送信</string>
+
+    <string name="global_settings_privacy_mode_title">スクリーンロック時の通知</string>
+    <string name="global_settings_privacy_mode_summary">システムがロックされているときは通知バーにメッセージの表題を表示しない</string>
 
     <string name="account_setup_basics_title">電子メールセットアップ</string>
     <string name="account_setup_basics_instructions">このアカウントで使用するメールアドレスを入力して下さい</string>
@@ -327,6 +348,8 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_check_settings_retr_info_msg">アカウント情報を訂正してください\u2026</string>
     <string name="account_setup_check_settings_check_incoming_msg">受信メールサーバを確認中\u2026</string>
     <string name="account_setup_check_settings_check_outgoing_msg">送信メールサーバを確認中\u2026</string>
+    <string name="account_setup_check_settings_authenticate">認証中\u2026</string>
+    <string name="account_setup_check_settings_fetch">アカウント設定を取得中\u2026</string>
     <string name="account_setup_check_settings_finishing_msg">終了\u2026</string>
     <string name="account_setup_check_settings_canceling_msg">中断\u2026</string>
 
@@ -341,7 +364,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_account_type_instructions">受信メールサーバの種類を選択して下さい</string>
     <string name="account_setup_account_type_pop_action">POP3 サーバ</string>
     <string name="account_setup_account_type_imap_action">IMAP サーバ</string>
-    <string name="account_setup_account_type_webdav_action">WebDav(Exchange) サーバ</string>
+    <string name="account_setup_account_type_webdav_action">Exchange サーバ(WebDAV)</string>
 
     <string name="account_setup_incoming_title">受信メールサーバ設定</string>
     <string name="account_setup_incoming_username_label">アカウント名</string>
@@ -369,8 +392,8 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_incoming_wifi_label">WiFi</string>
     <string name="account_setup_incoming_other_label">その他</string>
 
-    <string name="account_setup_incoming_save_all_headers_title">メールヘッダのダウンロード</string>
-    <string name="account_setup_incoming_save_all_headers_label">すべてのヘッダを端末に保存</string>
+    <string name="account_setup_incoming_save_all_headers_title">ヘッダのダウンロード</string>
+    <string name="account_setup_incoming_save_all_headers_label">すべてのメールヘッダを端末に保存</string>
 
     <string name="account_setup_expunge_policy_label">メッセージ完全削除(Expunge)</string>
     <string name="account_setup_expunge_policy_immediately">削除または移動後即時</string>
@@ -416,7 +439,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_outgoing_authentication_basic_password_label">パスワード</string>
     <string name="account_setup_outgoing_authentication_pop_before_smtp_label">POP before SMTP</string>
     <string name="account_setup_outgoing_authentication_imap_before_smtp_label">IMAP before SMTP</string>
-    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDav(Exchange) before SMTP</string>
+    <string name="account_setup_outgoing_authentication_webdav_before_smtp_label">WebDAV(Exchange) before SMTP</string>
 
     <string name="account_setup_bad_uri">無効な設定: <xliff:g id="err_mess">%s</xliff:g></string>
 
@@ -426,7 +449,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="clear_action">アカウントクリア (危険！)</string>
     <string name="recreate_action">アカウント再作成(最終手段！)</string>
 
-    <string name="account_setup_options_mail_check_frequency_label">電子メールの自動受信間隔</string>
+    <string name="account_setup_options_mail_check_frequency_label">同期フォルダの同期間隔</string>
     <!-- Frequency also used in account_settings_* -->
     <string name="account_setup_options_mail_check_frequency_never">しない</string>
     <string name="account_setup_options_mail_check_frequency_1min">１分毎</string>
@@ -478,6 +501,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_setup_failed_dlg_edit_details_action">詳細再編集</string>
     <string name="account_setup_failed_dlg_continue_action">続行</string>
 
+    <string name="account_settings_push_advanced_title">プッシュ接続の拡張設定</string>
     <string name="account_settings_title_fmt">アカウント設定</string>
     <string name="account_settings_default">標準アカウント</string>
     <string name="account_settings_default_label">標準アカウント</string>
@@ -498,17 +522,23 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_hide_buttons_keyboard_avail">キーボード利用時</string>
     <string name="account_settings_hide_buttons_always">常に</string>
 
-    <string name="account_settings_enable_move_buttons_label">メッセージ移動ボタンを有効にする</string>
+    <string name="account_settings_enable_move_buttons_label">メール整理ボタンを有効にする</string>
     <string name="account_settings_enable_move_buttons_summary">アーカイブ、移動、迷惑メールボタンを表示</string>
-    <string name="account_settings_hide_move_buttons_label">メッセージ移動ボタンをスクロール</string>
+    <string name="account_settings_hide_move_buttons_label">メール整理ボタンをスクロール</string>
 
     <string name="account_settings_show_pictures_label">画像を自動で表示</string>
     <string name="account_settings_show_pictures_never">しない</string>
     <string name="account_settings_show_pictures_only_from_contacts">連絡先に登録しているユーザからのメールのみ</string>
     <string name="account_settings_show_pictures_always">常に</string>
 
-    <string name="account_settings_composition">メッセージ作成</string>
-    <string name="account_settings_sync">フォルダ同期</string>
+    <string name="account_settings_composition">メール送信</string>
+
+    <string name="account_settings_reply_after_quote_label">引用テキストの後に返信を書く</string>
+    <string name="account_settings_reply_after_quote_summary">返信するときに元のメッセージを返信の上に表示</string>
+
+    <string name="account_settings_general_title">一般設定</string>
+    <string name="account_settings_display_prefs_title">表示</string>
+    <string name="account_settings_sync">メール受信</string>
     <string name="account_settings_folders">フォルダ</string>
     <string name="account_settings_message_lists">メッセージ一覧</string>
     <string name="account_settings_message_view">メッセージ表示</string>
@@ -520,18 +550,18 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_crypto_auto_signature">自動署名</string>
     <string name="account_settings_crypto_auto_signature_summary">このアカウントのE-Mailアドレスから署名の鍵を自動的に決定する．</string>
 
-    <string name="account_settings_mail_check_frequency_label">電子メールの自動受信間隔</string>
+    <string name="account_settings_mail_check_frequency_label">同期フォルダの同期間隔</string>
     <string name="account_settings_second_class_check_frequency_label">2nd クラス自動受信間隔</string>
 
     <string name="account_settings_color_label">アカウントの色</string>
     <string name="account_settings_color_summary">アカウント一覧とフォルダで使用する色を選択</string>
 
     <string name="account_settings_led_color_label">LEDの色</string>
-    <string name="account_settings_led_color_summary">このアカウントの通知時に点滅するLEDの色を選択</string>
+    <string name="account_settings_led_color_summary">このアカウントへの通知時に点滅するLEDの色を選択</string>
 
     <string name="account_settings_mail_display_count_label">一度に表示するメール数</string>
 
-    <string name="account_settings_autodownload_message_size_label">自動でメッセージをダウンロードする上限</string>
+    <string name="account_settings_autodownload_message_size_label">メッセージをダウンロードする上限</string>
     <string name="account_settings_autodownload_message_size_1">1Kb</string>
     <string name="account_settings_autodownload_message_size_2">2Kb</string>
     <string name="account_settings_autodownload_message_size_4">4Kb</string>
@@ -546,7 +576,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_autodownload_message_size_2048">2Mb</string>
     <string name="account_settings_autodownload_message_size_any">上限なし</string>
 
-    <string name="account_settings_message_age_label">いつまでに受信したメッセージをダウンロードするか</string>
+    <string name="account_settings_message_age_label">いつから同期するか</string>
     <string name="account_settings_message_age_any">すべて</string>
     <string name="account_settings_message_age_0">今日</string>
     <string name="account_settings_message_age_1">2日前</string>
@@ -561,20 +591,20 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_message_age_1_year">１年前</string>
 
 
-    <string name="account_settings_folder_display_mode_label">フォルダ表示モード</string>
+    <string name="account_settings_folder_display_mode_label">表示するフォルダ</string>
     <string name="account_settings_folder_display_mode_all">すべて</string>
     <string name="account_settings_folder_display_mode_first_class">1st クラスフォルダのみ</string>
     <string name="account_settings_folder_display_mode_first_and_second_class">1st および 2nd クラスフォルダ</string>
     <string name="account_settings_folder_display_mode_not_second_class">2nd クラスフォルダを除くすべて</string>
 
-    <string name="account_settings_folder_sync_mode_label">フォルダ同期モード</string>
+    <string name="account_settings_folder_sync_mode_label">同期フォルダ</string>
     <string name="account_settings_folder_sync_mode_all">すべて</string>
     <string name="account_settings_folder_sync_mode_first_class">1st クラスフォルダのみ</string>
     <string name="account_settings_folder_sync_mode_first_and_second_class">1st および 2nd クラスフォルダ</string>
     <string name="account_settings_folder_sync_mode_not_second_class">2nd クラスフォルダを除くすべて</string>
     <string name="account_settings_folder_sync_mode_none">何もしない</string>
 
-    <string name="account_settings_folder_push_mode_label">プッシュ受信するフォルダ</string>
+    <string name="account_settings_folder_push_mode_label">プッシュフォルダ</string>
     <string name="account_settings_folder_push_mode_all">すべて</string>
     <string name="account_settings_folder_push_mode_first_class">1st クラスフォルダのみ</string>
     <string name="account_settings_folder_push_mode_first_and_second_class">1st および 2nd クラスフォルダ</string>
@@ -587,7 +617,7 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_folder_target_mode_first_and_second_class">1st および 2nd クラスフォルダ</string>
     <string name="account_settings_folder_target_mode_not_second_class">2nd クラスフォルダを除くすべて</string>
 
-    <string name="account_settings_sync_remote_deletetions_label">メッセージ削除の同期</string>
+    <string name="account_settings_sync_remote_deletetions_label">サーバのメッセージ削除を同期</string>
     <string name="account_settings_sync_remote_deletetions_summary">サーバでメッセージを削除したときにローカルも削除する</string>
 
     <string name="folder_settings_title">フォルダ設定</string>
@@ -632,6 +662,10 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="account_settings_vibrate_pattern_5">パターン 5</string>
     <string name="account_settings_vibrate_times">バイブレーションの繰り返し回数</string>
     <string name="account_settings_ringtone">通知音</string>
+    <string name="account_settings_led_label">LEDを点滅</string>
+    <string name="account_settings_led_summary">メール着信時にLEDを点滅</string>
+
+
     <string name="account_settings_servers">サーバ設定</string>
 
     <string name="account_settings_composition_title">メール本文構成管理</string>
@@ -745,18 +779,26 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
 
 
     <string name="account_settings_signature__location_label">署名挿入場所</string>
-    <string name="account_settings_signature__location_before_quoted_text">テキスト引用の前に挿入</string>
-    <string name="account_settings_signature__location_after_quoted_text">テキスト引用の後に挿入</string>
+    <string name="account_settings_signature__location_before_quoted_text">引用テキストの前に挿入</string>
+    <string name="account_settings_signature__location_after_quoted_text">引用テキストの後に挿入</string>
     <string name="setting_theme_dark">白字／黒背景</string>
     <string name="setting_theme_light">黒字／白背景</string>
     <string name="display_preferences">表示設定</string>
+    <string name="global_preferences">グローバル設定</string>
     <string name="debug_preferences">デバッグ</string>
-    <string name="operational_preferences">同期設定</string>
+    <string name="privacy_preferences">プライバシー</string>
+    <string name="network_preferences">ネットワーク</string>
+    <string name="interaction_preferences">インタラクション</string>
     <string name="accountlist_preferences">アカウント一覧</string>
     <string name="messagelist_preferences">メッセージ一覧</string>
     <string name="messageview_preferences">メッセージ表示</string>
     <string name="settings_theme_label">テーマ</string>
     <string name="settings_language_label">言語</string>
+
+    <string name="settings_messageview_mobile_layout_label">１列レイアウト</string>
+    <string name="settings_messageview_mobile_layout_summary">小さい画面用にHTMLメッセージを再構成</string>
+    <string name="settings_messageview_zoom_controls_label">System zoom controls</string>
+    <string name="settings_messageview_zoom_controls_summary">Enable zoom widgets or pinch-zoom if your device supports it</string>
 
     <string name="setting_language_system">システム設定</string>
 
@@ -808,11 +850,16 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="gestures_title">ジェスチャー</string>
     <string name="gestures_summary">ジェスチャー制御の許可</string>
 
+    <string name="volume_navigation_title">ボリュームキー操作</string>
+    <string name="volume_navigation_summary">ボリュームキーを使ってメッセージを切り替え</string>
+    <string name="volume_navigation_message">メッセージ表示</string>
+    <string name="volume_navigation_list">各種一覧表示</string>
+
     <string name="manage_back_title">\"戻る\" ボタンの制御</string>
     <string name="manage_back_summary">\"戻る\" ボタンで常に一つ前に戻る</string>
 
-    <string name="start_integrated_inbox_title">起動時の統合フォルダ表示</string>
-    <string name="start_integrated_inbox_summary">起動時に統合フォルダを表示する</string>
+    <string name="start_integrated_inbox_title">統合フォルダで始める</string>
+    <string name="start_integrated_inbox_summary">起動後に統合フォルダを表示する</string>
 
     <string name="measure_accounts_title">アカウントのサイズ表示</string>
     <string name="measure_accounts_summary">表示を早くしたい場合はチェックをはずしてください</string>
@@ -825,15 +872,15 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="unread_modifier"> - 未読</string>
 
     <string name="search_all_messages_title">全メッセージ</string>
-    <string name="search_all_messages_detail">検索可能フォルダの全メッセージを表示</string>
+    <string name="search_all_messages_detail">検索可能フォルダの全メッセージ</string>
 
     <string name="integrated_inbox_title">統合フォルダ</string>
-    <string name="integrated_inbox_detail">統合フォルダの全メッセージを表示</string>
+    <string name="integrated_inbox_detail">統合フォルダの全メッセージ</string>
 
-    <string name="tap_hint">未読またはスターのメッセージをタップすることができます</string>
+    <string name="tap_hint">未読またはスター付きメッセージを見るにはメールまたはスターをタップします</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">統合化</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">未読メッセージを統合フォルダで表示</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">すべてのメッセージを統合フォルダで表示</string>
 
     <string name="account_settings_searchable_label">フォルダ検索</string>
     <string name="account_settings_searchable_all">すべて</string>
@@ -861,8 +908,8 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
 
     <string name="font_size_message_view">メッセージ表示</string>
     <string name="font_size_message_view_sender">送信者</string>
-    <string name="font_size_message_view_to">宛先 (To)</string>
-    <string name="font_size_message_view_cc">宛先 (CC)</string>
+    <string name="font_size_message_view_to">To</string>
+    <string name="font_size_message_view_cc">CC</string>
     <string name="font_size_message_view_additional_headers">追加ヘッダ</string>
     <string name="font_size_message_view_subject">件名</string>
     <string name="font_size_message_view_time">時刻</string>
@@ -912,4 +959,15 @@ K-9 Mail セットアップにようこそ。\nK-9 はオープンソースで�
     <string name="charset_not_found">このメッセージに使われている文字セット \"<xliff:g id="charset">%s</xliff:g>\" は存在していません</string>
 
     <string name="select_text_now">選択したテキストをコピーします</string>
+
+    <string name="dialog_confirm_delete_title">削除の確認</string>
+    <string name="dialog_confirm_delete_message">このメッセージを削除しますか？</string>
+    <string name="dialog_confirm_delete_confirm_button">削除する</string>
+    <string name="dialog_confirm_delete_cancel_button">削除しない</string>
+
+    <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>
+
+    <string name="messagelist_sent_to_me_sigil">\u00bb</string>
+    <string name="messagelist_sent_cc_me_sigil">\u203a</string>
+    <string name="error_unable_to_connect">接続できません</string>
 </resources>
