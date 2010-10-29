@@ -36,7 +36,7 @@
   <string name="read_attachment_desc">Permet à cette application de lire vos pièces jointes.</string>
 
   <string name="about_title_fmt">À propos de <xliff:g id="app_name">%s</xliff:g></string>
-  <string name="accounts_title">Vos comptes</string>
+  <string name="accounts_title">Comptes</string>
   <string name="advanced">Avancé</string>
   <string name="folder_list_title"><xliff:g id="account">%s</xliff:g></string>
   <string name="shortcuts_title">Comptes K-9</string>
@@ -284,8 +284,7 @@
   <string name="message_delete_failed">Le message n\'a pû être supprimé</string>
   <string name="about_header">À propos de <xliff:g id="app_name">%s</xliff:g></string>
   <string name="about_version">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
-  <string name="global_settings_flag_label">Étoiles des messages
-</string>
+  <string name="global_settings_flag_label">Étoiles des messages</string>
   <string name="global_settings_flag_summary">Les étoiles indiquent des messages suivis</string>
   <string name="global_settings_checkbox_label">Cases à cocher</string>
   <string name="global_settings_checkbox_summary">Toujours afficher les cases à cocher</string>
@@ -293,7 +292,7 @@
   <string name="global_settings_touchable_summary">Fournit plus d\'espace dans les éléments des listes</string>
 
     <string name="global_settings_show_contact_name_label">Afficher les noms des contacts connus</string>
-    <string name="global_settings_show_contact_name_summary">Utiliser les noms du carnet d\'adresse</string>
+    <string name="global_settings_show_contact_name_summary">Utiliser les noms du carnet d\'adresses</string>
     <string name="global_settings_registered_name_color_label">Couleur des contacts connus</string>
     <string name="global_settings_registered_name_color_default">Ne pas mettre en évidence les contacts connus</string>
     <string name="global_settings_registered_name_color_changed">Mettre en évidence (couleur) les contacts connus</string>
@@ -311,7 +310,7 @@
     <string name="global_settings_confirm_action_send">Envoyer</string>
 
     <string name="global_settings_privacy_mode_title">Notifications confidentielles</string>
-    <string name="global_settings_privacy_mode_summary">Ne pas afficher les sujets des e-mails dans la barre de notification quand le système est verouillé</string>
+    <string name="global_settings_privacy_mode_summary">Ne pas afficher les sujets des e-mails dans la barre de notification quand le système est verrouillé</string>
 
   <string name="account_setup_basics_title">Configurer la messagerie</string>
   <string name="account_setup_basics_instructions">Saisissez l\'adresse de messagerie de votre compte\u00A0:</string>
@@ -326,6 +325,8 @@
   <string name="account_setup_check_settings_retr_info_msg">Récupération des informations de compte\u2026</string>
   <string name="account_setup_check_settings_check_incoming_msg">Vérification des paramètres de serveur entrant\u2026</string>
   <string name="account_setup_check_settings_check_outgoing_msg">Vérification des paramètres de serveur sortant\u2026</string>
+    <string name="account_setup_check_settings_authenticate">Authentification\u2026</string>
+    <string name="account_setup_check_settings_fetch">Récupération des paramètres du compte\u2026</string>
   <string name="account_setup_check_settings_finishing_msg">Finition\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Annulation\u2026</string>
   <string name="account_setup_names_title">Presque terminé\u00A0!</string>
@@ -337,13 +338,13 @@
   <string name="account_setup_account_type_instructions">Quel type de compte est-ce\u00A0?</string>
   <string name="account_setup_account_type_pop_action">Compte POP3</string>
   <string name="account_setup_account_type_imap_action">Compte IMAP</string>
-  <string name="account_setup_account_type_webdav_action">WebDAV (Exchange)</string>
+  <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
   <string name="account_setup_incoming_title">Paramètres de serveur entrant</string>
   <string name="account_setup_incoming_username_label">Nom d\'utilisateur</string>
   <string name="account_setup_incoming_password_label">Mot de passe</string>
   <string name="account_setup_incoming_pop_server_label">Serveur POP3</string>
   <string name="account_setup_incoming_imap_server_label">Serveur IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Serveur WebDAV (Exchange)</string>
+  <string name="account_setup_incoming_webdav_server_label">Serveur Exchange (WebDAV)</string>
   <string name="account_setup_incoming_port_label">Port</string>
   <string name="account_setup_incoming_security_label">Type de sécurité</string>
   <string name="account_setup_incoming_auth_type_label">Type d\'authentification</string>
@@ -391,7 +392,7 @@
   <string name="account_setup_outgoing_security_ssl_label">SSL</string>
   <string name="account_setup_outgoing_security_tls_optional_label">TLS (si disponible)</string>
   <string name="account_setup_outgoing_security_tls_label">TLS (toujours)</string>
-  <string name="account_setup_outgoing_require_login_label">Connexion requise.</string>
+  <string name="account_setup_outgoing_require_login_label">Authentification requise</string>
   <string name="account_setup_outgoing_username_label">Nom d\'utilisateur</string>
   <string name="account_setup_outgoing_password_label">Mot de passe</string>
   <string name="account_setup_outgoing_authentication_label">Type d\'authentification</string>
@@ -421,7 +422,7 @@
   <string name="account_setup_options_mail_check_frequency_24hour">Toutes les 24 heures</string>
   <string name="push_poll_on_connect_label">Effectuer une récupération lors d\'une connexion Push</string>
   <string name="account_setup_options_enable_push_label">Activer le Push sur ce compte</string>
-  <string name="account_setup_options_enable_push_summary">Si supporté par le serveur, les messages apparaîtront instantanément. Cette option peut considérablement améliorer ou dégrader les performances.</string>
+  <string name="account_setup_options_enable_push_summary">Si supporté par le serveur, les messages apparaîtront instantanément. Cette option peut considérablement améliorer ou dégrader les performances</string>
   <string name="idle_refresh_period_label">Rafraîchir la connexion IDLE</string>
   <string name="idle_refresh_period_1min">Toutes les minutes</string>
   <string name="idle_refresh_period_2min">Toutes les 2 minutes</string>
@@ -452,7 +453,7 @@
   <string name="account_setup_failed_dlg_continue_action">Continuer</string>
 
     <string name="account_settings_push_advanced_title">Paramètres Push</string>
-  <string name="account_settings_title_fmt">Paramètre généraux</string>
+  <string name="account_settings_title_fmt">Paramètres généraux</string>
   <string name="account_settings_default">Compte par défaut</string>
   <string name="account_settings_default_label">Compte par défaut</string>
   <string name="account_settings_default_summary">Envoyer les messages de ce compte par défaut</string>
@@ -499,12 +500,12 @@
   <string name="account_settings_crypto_auto_signature_summary">Utiliser l\'adresse e-mail du compte pour déduire la clé de signature</string>
   
   <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
-  <string name="account_settings_second_class_check_frequency_label">Fréquence de vérification pour 2e classe</string>
+  <string name="account_settings_second_class_check_frequency_label">Fréquence de vérification pour 2ème classe</string>
   <string name="account_settings_color_label">Couleur du compte</string>
   <string name="account_settings_color_summary">Choisir la couleur du compte tel qu\'affichée dans les listes de dossiers ou de comptes</string>
   <string name="account_settings_led_color_label">Couleur de la DEL de notification</string>
   <string name="account_settings_led_color_summary">Choisissez la couleur de clignotement de la DEL de votre téléphone</string>
-  <string name="account_settings_mail_display_count_label">Nombres de messages à afficher</string>
+  <string name="account_settings_mail_display_count_label">Nombre de messages à afficher</string>
 
   <string name="account_settings_autodownload_message_size_label">Télécharger automatiquement le contenu des messages jusqu\'à</string>
   <string name="account_settings_autodownload_message_size_1">1\u00A0ko</string>
@@ -521,7 +522,7 @@
   <string name="account_settings_autodownload_message_size_2048">2\u00A0Mo</string>
   <string name="account_settings_autodownload_message_size_any">Aucune limite</string>
 
-  <string name="account_settings_message_age_label">Synchroniser les messages plus récents que</string>
+  <string name="account_settings_message_age_label">Âge maximal des messages</string>
   <string name="account_settings_message_age_any">Toutes dates</string>
   <string name="account_settings_message_age_0">Aujourd\'hui</string>
   <string name="account_settings_message_age_1">2 jours</string>
@@ -536,26 +537,26 @@
   <string name="account_settings_message_age_1_year">la dernière année</string>
   <string name="account_settings_folder_display_mode_label">Dossiers à afficher</string>
   <string name="account_settings_folder_display_mode_all">Tous</string>
-  <string name="account_settings_folder_display_mode_first_class">Seulement dossiers de 1ere classe</string>
-  <string name="account_settings_folder_display_mode_first_and_second_class">Dossiers de 1ere et 2e classes</string>
-  <string name="account_settings_folder_display_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+  <string name="account_settings_folder_display_mode_first_class">Seulement dossiers de 1ère classe</string>
+  <string name="account_settings_folder_display_mode_first_and_second_class">Dossiers de 1ère et 2ème classes</string>
+  <string name="account_settings_folder_display_mode_not_second_class">Tous sauf les dossiers de 2ème classe</string>
   <string name="account_settings_folder_sync_mode_label">Dossiers à vérifier en récupération</string>
   <string name="account_settings_folder_sync_mode_all">Tous</string>
-  <string name="account_settings_folder_sync_mode_first_class">Seulement dossiers de 1ere classe</string>
-  <string name="account_settings_folder_sync_mode_first_and_second_class">Dossiers de 1ere et 2e classes</string>
-  <string name="account_settings_folder_sync_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+  <string name="account_settings_folder_sync_mode_first_class">Seulement dossiers de 1ère classe</string>
+  <string name="account_settings_folder_sync_mode_first_and_second_class">Dossiers de 1ère et 2ème classes</string>
+  <string name="account_settings_folder_sync_mode_not_second_class">Tous sauf les dossiers de 2ème classe</string>
   <string name="account_settings_folder_sync_mode_none">Aucun</string>
   <string name="account_settings_folder_push_mode_label">Dossiers à vérifier avec Push</string>
   <string name="account_settings_folder_push_mode_all">Tous</string>
-  <string name="account_settings_folder_push_mode_first_class">Seulement dossiers de 1ere classe</string>
-  <string name="account_settings_folder_push_mode_first_and_second_class">Dossiers de 1ere et 2e classes</string>
-  <string name="account_settings_folder_push_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+  <string name="account_settings_folder_push_mode_first_class">Seulement dossiers de 1ère classe</string>
+  <string name="account_settings_folder_push_mode_first_and_second_class">Dossiers de 1ère et 2ème classes</string>
+  <string name="account_settings_folder_push_mode_not_second_class">Tous sauf les dossiers de 2ème classe</string>
   <string name="account_settings_folder_push_mode_none">Aucun</string>
   <string name="account_settings_folder_target_mode_label">Dossiers de destination déplacer/copier</string>
   <string name="account_settings_folder_target_mode_all">Tous</string>
-  <string name="account_settings_folder_target_mode_first_class">Seulement dossiers de 1ere classe</string>
-  <string name="account_settings_folder_target_mode_first_and_second_class">Dossiers de 1ere et 2e classes</string>
-  <string name="account_settings_folder_target_mode_not_second_class">Tous sauf les dossiers de 2e classe</string>
+  <string name="account_settings_folder_target_mode_first_class">Seulement dossiers de 1ère classe</string>
+  <string name="account_settings_folder_target_mode_first_and_second_class">Dossiers de 1ère et 2ème classes</string>
+  <string name="account_settings_folder_target_mode_not_second_class">Tous sauf les dossiers de 2ème classe</string>
   <string name="account_settings_sync_remote_deletetions_label">Synchroniser les suppression à distance</string>
   <string name="account_settings_sync_remote_deletetions_summary">Supprimer les messages lorsqu\'effacés du serveur</string>
   <string name="folder_settings_title">Paramètres du dossier</string>
@@ -563,17 +564,17 @@
   <string name="folder_settings_in_top_group_summary">Afficher dans le haut de la liste de dossiers</string>
   <string name="folder_settings_folder_display_mode_label">Classe d\'affichage du dossier</string>
   <string name="folder_settings_folder_display_mode_normal">Aucune</string>
-  <string name="folder_settings_folder_display_mode_first_class">1ere classe</string>
-  <string name="folder_settings_folder_display_mode_second_class">2e classe</string>
+  <string name="folder_settings_folder_display_mode_first_class">1ère classe</string>
+  <string name="folder_settings_folder_display_mode_second_class">2ème classe</string>
   <string name="folder_settings_folder_sync_mode_label">Classe de synchronisation du dossier</string>
   <string name="folder_settings_folder_sync_mode_normal">Aucune</string>
-  <string name="folder_settings_folder_sync_mode_first_class">1ere classe</string>
-  <string name="folder_settings_folder_sync_mode_second_class">2e classe</string>
+  <string name="folder_settings_folder_sync_mode_first_class">1ère classe</string>
+  <string name="folder_settings_folder_sync_mode_second_class">2ème classe</string>
   <string name="folder_settings_folder_sync_mode_inherited">Pareille à la classe d\'affichage</string>
   <string name="folder_settings_folder_push_mode_label">Classe Push du dossier</string>
   <string name="folder_settings_folder_push_mode_normal">Aucune</string>
-  <string name="folder_settings_folder_push_mode_first_class">1ere classe</string>
-  <string name="folder_settings_folder_push_mode_second_class">2e classe</string>
+  <string name="folder_settings_folder_push_mode_first_class">1ère classe</string>
+  <string name="folder_settings_folder_push_mode_second_class">2ème classe</string>
   <string name="folder_settings_folder_push_mode_inherited">Pareille à la classe de synchronisation</string>
   <string name="account_settings_incoming_label">Paramètres entrants</string>
   <string name="account_settings_incoming_summary">Configurer le serveur de messagerie entrant</string>
@@ -599,7 +600,7 @@
     <string name="account_settings_led_label">Clignotement DEL</string>
     <string name="account_settings_led_summary">Clignotement de la DEL quand un message arrive</string>
     
-  <string name="account_settings_servers">Paramètre du serveur</string>
+  <string name="account_settings_servers">Paramètres du serveur</string>
   <string name="account_settings_composition_title">Options de composition</string>
   <string name="account_settings_composition_label">Défauts pour la composition</string>
   <string name="account_settings_composition_summary">Choisir vos champs De, Cci et signature par défaut</string>
@@ -609,7 +610,7 @@
   <string name="manage_identities_context_menu_title">Gérer l\'identité</string>
   <string name="edit_identity_title">Éditer l\'identité</string>
   <string name="new_identity_action">Nouvelle identité</string>
-  <string name="account_settings_always_bcc_label">Evoyer une copie de tous les messages à</string>
+  <string name="account_settings_always_bcc_label">Envoyer une copie de tous les messages à</string>
   <string name="account_settings_always_bcc_summary">Envoyer une copie de tous les messages envoyés à cette adresse</string>
   <string name="manage_identities_edit_action">Éditer</string>
   <string name="manage_identities_move_up_action">Monter</string>
@@ -681,20 +682,20 @@
     Déplacer\u000AY - Copier\u000AG - Étoile\u000AO - Trier\u000AI - Ordre de tri\u000AQ
     - Retourner aux dossiers\u000AS - Sélectionner/Désélectionner</string>
   <string name="folder_list_help_key">
-      1 - Afficher seulement les dossiers de 1ere classe \u000A
-      2 - Afficher les dossiers de 1ere et 2e classes\u000A
-      3 - Afficher tous les dossiers sauf 2e classe\u000A
+      1 - Afficher seulement les dossiers de 1ère classe \u000A
+      2 - Afficher les dossiers de 1ère et 2ème classes\u000A
+      3 - Afficher tous les dossiers sauf 2ème classe\u000A
       4 - Afficher tous les dossiers\u000A
       Q - Retourner au comptes\u000A
       S - Éditer les paramètres du compte</string>
   <string name="folder_list_display_mode_label">Dossiers</string>
   <string name="folder_list_display_mode_all">Afficher tous les dossiers</string>
-  <string name="folder_list_display_mode_first_class">Afficher seulement les dossiers de 1ere classe</string>
-  <string name="folder_list_display_mode_first_and_second_class">Afficher les dossiers de 1ere et 2e classes</string>
-  <string name="folder_list_display_mode_not_second_class">Afficher tous sauf les dossiers de 2e classe</string>
+  <string name="folder_list_display_mode_first_class">Afficher seulement les dossiers de 1ère classe</string>
+  <string name="folder_list_display_mode_first_and_second_class">Afficher les dossiers de 1ère et 2ème classes</string>
+  <string name="folder_list_display_mode_not_second_class">Afficher tous sauf les dossiers de 2ème classe</string>
   <string name="account_settings_signature__location_label">Emplacement de la signature</string>
-  <string name="account_settings_signature__location_before_quoted_text">Avant les messages cités</string>
-  <string name="account_settings_signature__location_after_quoted_text">Après les messages cités</string>
+  <string name="account_settings_signature__location_before_quoted_text">Avant la citation</string>
+  <string name="account_settings_signature__location_after_quoted_text">Après la citation</string>
   <string name="setting_theme_dark">Foncé</string>
   <string name="setting_theme_light">Clair</string>
   <string name="display_preferences">Préférences globales</string>
@@ -841,7 +842,7 @@
   <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce message\u00A0?</string>
 
   <string name="charset_not_found">Ce message ne peut être affiché parce que le jeu de caractères «\u00A0<xliff:g id="charset">%s</xliff:g>\u00A0» n\'a pu être trouvé.</string>
-  <string name="select_text_now">Sélectionner le texte à copier.</string>
+  <string name="select_text_now">Sélectionnez le texte à copier</string>
 
     <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce message\u00A0?</string>
