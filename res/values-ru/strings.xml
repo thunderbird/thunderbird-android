@@ -217,7 +217,7 @@
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Загрузить болюше сообщений</string>
-    <string name="message_list_to_fmt">Для:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_to_fmt">Для:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_list_delete_action">Удалить</string>
     <string name="message_list_mark_read_action">Отметить как прочитанное</string>
     <string name="message_list_mark_unread_action">Отметить как непрочитанное</string>
@@ -237,7 +237,7 @@
     <string name="message_compose_attachments_skipped_toast">Некоторые вложения не могут быть пересланы, поскольку они не загрузились.</string>
 
     <string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
-    <string name="message_view_to_label">Для:</string>
+    <string name="message_to_label">Для:</string>
     <string name="message_view_cc_label">Копия:</string>
     <string name="message_view_attachment_view_action">Открыть</string>
     <string name="message_view_attachment_download_action">Сохранить</string>

@@ -4641,7 +4641,7 @@ public class MessagingController implements Runnable
                         String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
                         if (to != null)
                         {
-                            messageNotice.append(String.format(context.getString(R.string.message_list_to_fmt), to) +": "+subject);
+                            messageNotice.append(String.format(context.getString(R.string.message_to_fmt), to) +": "+subject);
                         }
                         else
                         {

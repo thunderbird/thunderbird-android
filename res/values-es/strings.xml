@@ -148,7 +148,7 @@
   <string name="message_view_show_pictures_instructions">Seleccione \"Mostrar imágenes\" para visualizar las imágenes integradas.</string>
   <string name="message_view_status_attachment_not_saved">No se pueden guardar los datos adjuntos en una tarjeta SD.</string>
   <string name="message_view_status_attachment_saved">Datos adjuntos guardados en tarjeta SD como <xliff:g id="filename">%s</xliff:g>.</string>
-  <string name="message_view_to_label">Para:</string>
+  <string name="message_to_label">Para:</string>
   <string name="move_to_action">Mover a</string>
   <string name="new_mailbox_dlg_title">Nuevo nombre de carpeta</string>
   <string name="next_action">Siguiente</string>

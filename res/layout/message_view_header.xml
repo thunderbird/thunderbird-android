@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="4dip"
-                    android:text="@string/message_view_to_label"
+                    android:text="@string/message_to_label"
                     android:textSize="10sp"
                     android:textStyle="bold"
                     android:textColor="?android:attr/textColorSecondary" />
