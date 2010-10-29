@@ -976,6 +976,6 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>
 
-    <string name="messagelist_sent_to_me_format">» <xliff:g id="sender">%s</xliff:g></string>
-    <string name="messagelist_sent_cc_me_format">› <xliff:g id="sender">%s</xliff:g></string>
+    <string name="messagelist_sent_to_me_sigil">»</string>
+    <string name="messagelist_sent_cc_me_sigil">›</string>
 </resources>
