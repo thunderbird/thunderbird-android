@@ -150,7 +150,15 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         account.setLocalStoreMigraionListener(this);
         uUid = account.getUuid();
 
-        openOrCreateDataspace(application);
+        lockWrite();
+        try
+        {
+            openOrCreateDataspace(application);
+        }
+        finally
+        {
+            unlockWrite();
+        }
 
         StorageManager.getInstance(application).addListener(mStorageListener);
     }
@@ -368,11 +376,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      */
     void openOrCreateDataspace(final Application application) throws UnavailableStorageException
     {
-        final File databaseFile = prepareStorage(mStorageProviderId);
 
         lockWrite();
         try
         {
+            final File databaseFile = prepareStorage(mStorageProviderId);
             try
             {
                 mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
@@ -396,10 +404,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     }
 
     /**
-     * @param providerId TODO
-     * @return
+     * @param providerId
+     *            Never <code>null</code>.
+     * @return DB file.
+     * @throws UnavailableStorageException
      */
-    protected File prepareStorage(final String providerId)
+    protected File prepareStorage(final String providerId) throws UnavailableStorageException
     {
         final StorageManager storageManager = StorageManager.getInstance(mApplication);
 
@@ -407,9 +417,18 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         final File databaseParentDir;
         databaseFile = storageManager.getDatabase(uUid, providerId);
         databaseParentDir = databaseFile.getParentFile();
+        if (databaseParentDir.isFile())
+        {
+            // should be safe to inconditionally delete clashing file: user is not supposed to mess with our directory
+            databaseParentDir.delete();
+        }
         if (!databaseParentDir.exists())
         {
-            databaseParentDir.mkdirs();
+            if (!databaseParentDir.mkdirs())
+            {
+                // Android seems to be unmounting the storage...
+                throw new UnavailableStorageException("Unable to access: " + databaseParentDir);
+            }
             touchFile(databaseParentDir, ".nomedia");
         }
 
