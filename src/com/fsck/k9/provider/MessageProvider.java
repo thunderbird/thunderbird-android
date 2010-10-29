@@ -426,7 +426,7 @@ public class MessageProvider extends ContentProvider
 
             Object[] values = new Object[2];
 
-            for (Account account : Preferences.getPreferences(getContext()).getAvaliableAccounts())
+            for (Account account : Preferences.getPreferences(getContext()).getAvailableAccounts())
             {
                 if (account.getAccountNumber()==accountNumber)
                 {

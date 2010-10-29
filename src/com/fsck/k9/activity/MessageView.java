@@ -992,7 +992,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 if (segmentList.size() == 3)
                 {
                     String accountId = segmentList.get(0);
-                    Collection<Account> accounts = Preferences.getPreferences(this).getAvaliableAccounts();
+                    Collection<Account> accounts = Preferences.getPreferences(this).getAvailableAccounts();
                     boolean found = false;
                     for (Account account : accounts)
                     {

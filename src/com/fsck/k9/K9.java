@@ -311,7 +311,7 @@ public class K9 extends Application
      */
     public static void setServicesEnabled(Context context)
     {
-        int acctLength = Preferences.getPreferences(context).getAvaliableAccounts().size();
+        int acctLength = Preferences.getPreferences(context).getAvailableAccounts().size();
 
         setServicesEnabled(context, acctLength > 0, null);
 
@@ -319,7 +319,7 @@ public class K9 extends Application
 
     public static void setServicesEnabled(Context context, Integer wakeLockId)
     {
-        setServicesEnabled(context, Preferences.getPreferences(context).getAvaliableAccounts().size() > 0, wakeLockId);
+        setServicesEnabled(context, Preferences.getPreferences(context).getAvailableAccounts().size() > 0, wakeLockId);
     }
 
     public static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId)
@@ -455,7 +455,7 @@ public class K9 extends Application
 
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
-        MessagingController.getInstance(this).resetVisibleLimits(prefs.getAvaliableAccounts());
+        MessagingController.getInstance(this).resetVisibleLimits(prefs.getAvailableAccounts());
 
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)

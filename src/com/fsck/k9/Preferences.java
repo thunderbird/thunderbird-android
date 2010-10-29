@@ -95,7 +95,7 @@ public class Preferences
      * @param context 
      * @return all accounts with {@link Account#isAvailable(Context)}
      */
-    public synchronized Collection<Account> getAvaliableAccounts()
+    public synchronized Collection<Account> getAvailableAccounts()
     {
         if (accounts == null)
         {
@@ -172,7 +172,7 @@ public class Preferences
 
         if (defaultAccount == null)
         {
-            Collection<Account> accounts = getAvaliableAccounts();
+            Collection<Account> accounts = getAvailableAccounts();
             if (accounts.size() > 0)
             {
                 defaultAccount = accounts.iterator().next();

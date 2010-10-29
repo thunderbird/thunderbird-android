@@ -936,7 +936,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             // display unavailable accounts translucent
             if (account instanceof Account) {
                 Account realAccount = (Account) account;
-                if (realAccount.isAvalaible(Accounts.this)) {
+                if (realAccount.isAvailable(Accounts.this)) {
                     holder.email.getBackground().setAlpha(255);
                     holder.description.getBackground().setAlpha(255);
                 } else {

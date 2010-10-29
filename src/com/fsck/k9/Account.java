@@ -602,7 +602,7 @@ public class Account implements BaseAccount
 
     /**
      * @param context
-     * @return null if not avalaible
+     * @return <code>null</code> if not available
      * @throws MessagingException
      * @see {@link #isAvailable(Context)}
      */
