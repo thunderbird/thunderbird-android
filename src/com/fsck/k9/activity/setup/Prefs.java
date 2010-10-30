@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -227,6 +228,12 @@ public class Prefs extends K9PreferenceActivity
         mZoomControlsEnabled.setChecked(K9.zoomControlsEnabled());
 
         mMobileOptimizedLayout = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT);
+        if (Integer.parseInt(Build.VERSION.SDK)  <= Build.VERSION_CODES.ECLAIR)
+        {
+            mMobileOptimizedLayout.setEnabled(false);
+        }
+
+
         mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
 
 

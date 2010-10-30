@@ -3,6 +3,7 @@ package com.fsck.k9.service;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Service;
@@ -23,6 +24,7 @@ public abstract class CoreService extends Service
     private static AtomicInteger wakeLockSeq = new AtomicInteger(0);
     private ExecutorService threadPool = null;
     private final String className = getClass().getName();
+    private volatile boolean mShutdown = false;
 
     @Override
     public void onCreate()
@@ -146,7 +148,18 @@ public abstract class CoreService extends Service
         {
             if (K9.DEBUG)
                 Log.d(K9.LOG_TAG, "CoreService (" + className + ") queueing Runnable " + runner.hashCode() + " with startId " + startId);
-            threadPool.execute(myRunner);
+            try
+            {
+                threadPool.execute(myRunner);
+            }
+            catch (RejectedExecutionException e)
+            {
+                if (!mShutdown)
+                {
+                    throw e;
+                }
+                Log.i(K9.LOG_TAG, "CoreService: " + className + " is shutting down, ignoring rejected execution exception: " + e.getMessage());
+            }
         }
     }
 
@@ -160,10 +173,17 @@ public abstract class CoreService extends Service
     }
 
     @Override
+    public void onLowMemory()
+    {
+        Log.w(K9.LOG_TAG, "CoreService: " + className + ".onLowMemory() - Running low on memory");
+    }
+
+    @Override
     public void onDestroy()
     {
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "CoreService: " + className + ".onDestroy()");
+        mShutdown = true;
         threadPool.shutdown();
         super.onDestroy();
         //     MessagingController.getInstance(getApplication()).removeListener(mListener);

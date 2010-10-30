@@ -240,7 +240,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Hämta fler brev</string>
-    <string name="message_list_to_fmt">Till:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_to_fmt">Till:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_list_delete_action">Radera</string>
     <string name="message_list_mark_read_action">Markera som läst</string>
     <string name="message_list_mark_unread_action">Markera som oläst</string>
@@ -262,7 +262,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
 
 
     <string name="message_view_from_format">Från: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
-    <string name="message_view_to_label">Till:</string>
+    <string name="message_to_label">Till:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_attachment_view_action">Öppna</string>
     <string name="message_view_attachment_download_action">Spara</string>

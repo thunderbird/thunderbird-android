@@ -62,7 +62,7 @@
 	<string name="end_of_folder">Non vi sono altri messaggi</string>
 	<string name="message_header_mua">K-9 per Android <xliff:g id="version">%s</xliff:g></string>
 	<string name="message_compose_content_hint">Testo del messaggio</string>
-	<string name="message_list_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
+	<string name="message_to_fmt">A:<xliff:g id="counterParty">%s</xliff:g></string>
 	<string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
 	<string name="message_view_cc_label">Cc:</string>
 	<string name="message_delete_failed">Impossibile cancellare il messaggio</string>
@@ -342,7 +342,7 @@
 	<string name="message_view_show_pictures_instructions">Selezionare \"Mostra immagini\" per visualizzare le immagini incorporate.</string>
 	<string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato sulla scheda SD.</string>
 	<string name="message_view_status_attachment_saved">Allegato salvato sulla scheda SD come <xliff:g id="filename">%s</xliff:g>.</string>
-	<string name="message_view_to_label">A:</string>
+	<string name="message_to_label">A:</string>
 	<string name="move_to_action">Sposta in</string>
 	<string name="new_mailbox_dlg_title">Nome della nuova cartella</string>
 	<string name="next_action">Avanti</string>

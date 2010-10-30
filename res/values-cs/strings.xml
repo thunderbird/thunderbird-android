@@ -230,7 +230,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
         <xliff:g id="sending">%s</xliff:g>
         <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">Načti více zpráv</string>
-    <string name="message_list_to_fmt">Komu:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_to_fmt">Komu:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_list_delete_action">Smazat</string>
     <string name="message_list_mark_read_action">Označit jako přečtené</string>
     <string name="message_list_mark_unread_action">Označit jako nepřečtené</string>
@@ -250,7 +250,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="message_compose_attachments_skipped_toast">Některé přílohy nelze přeposlat, protože ještě nebyly staženy.</string>
 
     <string name="message_view_from_format">Odesílatel: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
-    <string name="message_view_to_label">Komu:</string>
+    <string name="message_to_label">Komu:</string>
     <string name="message_view_cc_label">Kopie:</string>
     <string name="message_view_attachment_view_action">Otevřít</string>
     <string name="message_view_attachment_download_action">Uložit</string>
