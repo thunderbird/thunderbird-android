@@ -154,9 +154,6 @@ public class AccountSettings extends K9PreferenceActivity
 
         addPreferencesFromResource(R.xml.account_settings_preferences);
 
-        Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
-        category.setTitle(getString(R.string.account_settings_title_fmt));
-
         mAccountDescription = (EditTextPreference) findPreference(PREFERENCE_DESCRIPTION);
         mAccountDescription.setSummary(mAccount.getDescription());
         mAccountDescription.setText(mAccount.getDescription());

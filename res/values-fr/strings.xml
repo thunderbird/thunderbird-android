@@ -227,7 +227,7 @@
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
   <string name="message_list_load_more_messages_action">Charger plus de messages</string>
-  <string name="message_list_to_fmt">Pour\u00A0: <xliff:g id="counterParty">%s</xliff:g></string>
+  <string name="message_to_fmt">Pour\u00A0: <xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_list_delete_action">Supprimer</string>
   <string name="message_list_mark_read_action">Marquer comme lu</string>
   <string name="message_list_mark_unread_action">Marquer comme non lu</string>
@@ -249,7 +249,7 @@
 
 
   <string name="message_view_from_format">De\u00A0: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
-  <string name="message_view_to_label">Pour\u00A0:</string>
+  <string name="message_to_label">Pour\u00A0:</string>
   <string name="message_view_cc_label">Cc\u00A0:</string>
   <string name="message_view_attachment_view_action">Ouvrir</string>
   <string name="message_view_attachment_download_action">Enregistrer</string>
@@ -453,7 +453,7 @@
   <string name="account_setup_failed_dlg_continue_action">Continuer</string>
 
     <string name="account_settings_push_advanced_title">Paramètres Push</string>
-  <string name="account_settings_title_fmt">Paramètres généraux</string>
+  <string name="account_settings_title_fmt">Paramètres du compte</string>
   <string name="account_settings_default">Compte par défaut</string>
   <string name="account_settings_default_label">Compte par défaut</string>
   <string name="account_settings_default_summary">Envoyer les messages de ce compte par défaut</string>
@@ -486,6 +486,7 @@
     <string name="account_settings_reply_after_quote_label">Réponse après la citation</string>
     <string name="account_settings_reply_after_quote_summary">Lors d\'une réponse, le texte d\'origine précèdera votre réponse</string>
 
+    <string name="account_settings_general_title">Paramètres généraux</string>
     <string name="account_settings_display_prefs_title">Affichage</string>
   <string name="account_settings_sync">Synchronication de dossiers</string>
   <string name="account_settings_folders">Dossiers</string>

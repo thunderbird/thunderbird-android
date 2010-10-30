@@ -148,7 +148,7 @@
   <string name="message_view_show_pictures_instructions">選取 \"顯示圖片\" 即可顯示內嵌的圖片。</string>
   <string name="message_view_status_attachment_not_saved">無法將附件儲存到 SD 卡。</string>
   <string name="message_view_status_attachment_saved">將儲存到 SD 卡的附件做為 <xliff:g id="filename">%s</xliff:g>。</string>
-  <string name="message_view_to_label">收件者：</string>
+  <string name="message_to_label">收件者：</string>
   <string name="move_to_action">移到</string>
   <string name="new_mailbox_dlg_title">新資料夾名稱</string>
   <string name="next_action">下一步</string>

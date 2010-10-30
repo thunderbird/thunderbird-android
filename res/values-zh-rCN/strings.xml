@@ -227,7 +227,7 @@
                        <xliff:g id="sending">%s</xliff:g>
                        <xliff:g id="push">%s</xliff:g></string>
     <string name="message_list_load_more_messages_action">加载更多邮件</string>
-    <string name="message_list_to_fmt">收件人：<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_to_fmt">收件人：<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_list_delete_action">删除</string>
     <string name="message_list_mark_read_action">标记为已读</string>
     <string name="message_list_mark_unread_action">标记为未读</string>
@@ -249,7 +249,7 @@
 
 
     <string name="message_view_from_format">发件人：<xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
-    <string name="message_view_to_label">收件人：</string>
+    <string name="message_to_label">收件人：</string>
     <string name="message_view_cc_label">抄送：</string>
     <string name="message_view_attachment_view_action">打开</string>
     <string name="message_view_attachment_download_action">保存</string>

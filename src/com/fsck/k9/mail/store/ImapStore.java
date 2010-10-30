@@ -8,6 +8,7 @@ import android.os.PowerManager;
 import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
 import com.fsck.k9.controller.MessageRetrievalListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.helper.power.TracingPowerManager;
@@ -380,7 +381,7 @@ public class ImapStore extends Store
         }
         catch (IOException ioe)
         {
-            throw new MessagingException("Unable to connect.", ioe);
+            throw new MessagingException(K9.app.getString(R.string.error_unable_to_connect), ioe);
         }
     }
 
