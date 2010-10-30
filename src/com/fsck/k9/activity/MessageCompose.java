@@ -57,6 +57,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -2250,6 +2251,18 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             {
                 Log.e(K9.LOG_TAG, "Failed to create new message for send or save.", me);
                 throw new RuntimeException("Failed to create a new message for send or save.", me);
+            }
+
+            try
+            {
+                final Contacts contacts = Contacts.getInstance(MessageCompose.this);
+                contacts.markAsContacted(message.getRecipients(RecipientType.TO));
+                contacts.markAsContacted(message.getRecipients(RecipientType.CC));
+                contacts.markAsContacted(message.getRecipients(RecipientType.BCC));
+            }
+            catch (Exception e)
+            {
+                Log.e(K9.LOG_TAG, "Failed to mark contact as contacted.", e);
             }
 
             MessagingController.getInstance(getApplication()).sendMessage(mAccount, message, null);

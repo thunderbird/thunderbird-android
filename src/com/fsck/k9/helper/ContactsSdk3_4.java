@@ -21,8 +21,9 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
      * {@link #searchContacts(CharSequence)}.
      */
     private static final String SORT_ORDER =
-        Contacts.People.TIMES_CONTACTED + " DESC, " +
-        Contacts.People.NAME;
+        Contacts.ContactMethods.TIMES_CONTACTED + " DESC, " +
+        Contacts.ContactMethods.DISPLAY_NAME + ", " +
+        Contacts.ContactMethods._ID;
 
     /**
      * Array of columns to load from the database.
@@ -33,9 +34,10 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
      */
     private static final String PROJECTION[] =
     {
-        Contacts.People.ContactMethods._ID,
-        Contacts.People.ContactMethods.NAME,
-        Contacts.People.ContactMethods.DATA
+        Contacts.ContactMethods._ID,
+        Contacts.ContactMethods.DISPLAY_NAME,
+        Contacts.ContactMethods.DATA,
+        Contacts.ContactMethods.PERSON_ID
     };
 
     /**
@@ -49,6 +51,12 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
      * order in {@link #PROJECTION}.
      */
     private static final int EMAIL_INDEX = 2;
+
+    /**
+     * Index of the contact id field in the projection. This must match the order in
+     * {@link #PROJECTION}.
+     */
+    private static final int CONTACT_ID_INDEX = 3;
 
 
     public ContactsSdk3_4(final Context context)
@@ -94,7 +102,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
             if (c.getCount() > 0)
             {
                 c.moveToFirst();
-                name = c.getString(NAME_INDEX);
+                name = getName(c);
             }
             c.close();
         }
@@ -107,15 +115,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     {
         boolean result = false;
 
-        final String where = Contacts.ContactMethods.DATA + "=?";
-        final String[] args = new String[] {emailAddress};
-
-        final Cursor c = mContentResolver.query(
-                             Contacts.ContactMethods.CONTENT_EMAIL_URI,
-                             PROJECTION,
-                             where,
-                             args,
-                             null);
+        final Cursor c = getContactByAddress(emailAddress);
 
         if (c != null)
         {
@@ -141,7 +141,8 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
         }
         else
         {
-            where = "(" +
+            where = Contacts.ContactMethods.KIND + " = " + Contacts.KIND_EMAIL +
+                    " AND" + "(" +
                     Contacts.People.NAME + " LIKE ?" +
                     ") OR (" +
                     Contacts.ContactMethods.DATA + " LIKE ?" +
@@ -151,7 +152,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
         }
 
         final Cursor c = mContentResolver.query(
-                             Contacts.ContactMethods.CONTENT_EMAIL_URI,
+                             Contacts.ContactMethods.CONTENT_URI,
                              PROJECTION,
                              where,
                              args,
@@ -181,15 +182,7 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
             return null;
         }
 
-        final String where = Contacts.ContactMethods.DATA + " = ?";
-        final String[] args = new String[] {address};
-
-        final Cursor c = mContentResolver.query(
-                             Contacts.ContactMethods.CONTENT_EMAIL_URI,
-                             PROJECTION,
-                             where,
-                             args,
-                             SORT_ORDER);
+        final Cursor c = getContactByAddress(address);
 
         String name = null;
         if (c != null)
@@ -215,5 +208,50 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
     public String getEmail(Cursor c)
     {
         return c.getString(EMAIL_INDEX);
+    }
+
+    @Override
+    public void markAsContacted(final Address[] addresses)
+    {
+        //TODO: Optimize! Potentially a lot of database queries
+        for (final Address address : addresses)
+        {
+            final Cursor c = getContactByAddress(address.getAddress());
+
+            if (c != null)
+            {
+                if (c.getCount() > 0)
+                {
+                    c.moveToFirst();
+                    final long personId = c.getLong(CONTACT_ID_INDEX);
+                    Contacts.People.markAsContacted(mContentResolver, personId);
+                }
+                c.close();
+            }
+        }
+    }
+
+    /**
+     * Return a {@link Cursor} instance that can be used to fetch information
+     * about the contact with the given email address.
+     *
+     * @param address The email address to search for.
+     * @return A {@link Cursor} instance that can be used to fetch information
+     *         about the contact with the given email address
+     */
+    private Cursor getContactByAddress(String address)
+    {
+        final String where = Contacts.ContactMethods.KIND + " = " + Contacts.KIND_EMAIL +
+                             " AND " +
+                             Contacts.ContactMethods.DATA + " = ?";
+        final String[] args = new String[] {address};
+
+        final Cursor c = mContentResolver.query(
+                             Contacts.ContactMethods.CONTENT_URI,
+                             PROJECTION,
+                             where,
+                             args,
+                             SORT_ORDER);
+        return c;
     }
 }
