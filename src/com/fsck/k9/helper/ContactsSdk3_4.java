@@ -145,10 +145,13 @@ public class ContactsSdk3_4 extends com.fsck.k9.helper.Contacts
                     " AND" + "(" +
                     Contacts.People.NAME + " LIKE ?" +
                     ") OR (" +
+                    Contacts.People.NAME + " LIKE ?" +
+                    ") OR (" +
                     Contacts.ContactMethods.DATA + " LIKE ?" +
                     ")";
             final String filter = constraint.toString() + "%";
-            args = new String[] {filter, filter};
+            final String filter2 = "% " + filter;
+            args = new String[] {filter, filter2, filter};
         }
 
         final Cursor c = mContentResolver.query(
