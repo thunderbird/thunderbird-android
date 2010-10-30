@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="50dip"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:minHeight="50dip"
+    android:layout_centerVertical="true"
+    android:orientation="vertical">
     <TextView android:id="@+id/text1"
         android:textColor="@android:color/primary_text_light"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
         android:paddingLeft="6dip"
         android:singleLine="true"
         android:ellipsize="end"
@@ -19,10 +20,9 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/text1"
-        android:layout_centerVertical="true"
-        android:paddingLeft="6dip"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="12dip"
         android:singleLine="true"
         android:ellipsize="end"
         />
- </RelativeLayout>
+</LinearLayout>
