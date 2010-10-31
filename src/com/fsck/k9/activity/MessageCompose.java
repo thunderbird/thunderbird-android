@@ -1885,7 +1885,10 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                     part =  MimeUtility.findFirstPartByMimeType(message, "text/html");
                     if (part != null)
                     {
-                        quotedText = (Html.fromHtml(MimeUtility.getTextFromPart(part))).toString();
+                        quotedText = MimeUtility.getTextFromPart(part);
+                        if (quotedText != null) {
+                            quotedText = (Html.fromHtml(quotedText)).toString();
+                        }
                     }
                 }
 
