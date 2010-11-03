@@ -322,30 +322,12 @@ android.intent.action.MEDIA_MOUNTED
 
  -->
                 <action android:name="android.intent.action.MEDIA_MOUNTED"/>
-
 <!-- 
-android.intent.action.MEDIA_EJECT
 
-     * Broadcast Action:  User has expressed the desire to remove the external storage media.
-     * Applications should close all files they have open within the mount point when they receive this intent.
-     * The path to the mount point for the media to be ejected is contained in the Intent.mData field.
+MEDIA_EJECT and MEDIA_UNMOUNTED are not defined here: they have to be dynamically registered 
+otherwise it would make K-9 start at the wrong time
+
  -->
-                <action android:name="android.intent.action.MEDIA_EJECT"/>
-
-<!-- 
-android.intent.action.MEDIA_UNMOUNTED
-
-     * Broadcast Action:  External media is present, but not mounted at its mount point.
-     * The path to the mount point for the removed media is contained in the Intent.mData field.
- -->
-                <action android:name="android.intent.action.MEDIA_UNMOUNTED"/>
-                <action android:name="android.intent.action.MEDIA_REMOVED"/>
-                <action android:name="android.intent.action.MEDIA_CHECKING"/>
-                <action android:name="android.intent.action.MEDIA_NOFS"/>
-                <action android:name="android.intent.action.MEDIA_SHARED"/>
-                <action android:name="android.intent.action.MEDIA_UNSHARED"/>
-                <action android:name="android.intent.action.MEDIA_BAD_REMOVAL"/>
-                <action android:name="android.intent.action.MEDIA_UNMOUNTABLE"/>
                 <data android:scheme="file"/>
             </intent-filter>
         </receiver>

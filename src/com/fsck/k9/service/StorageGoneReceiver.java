@@ -10,9 +10,14 @@ import com.fsck.k9.K9;
 import com.fsck.k9.mail.store.StorageManager;
 
 /**
- * That BroadcastReceiver is only interested in MOUNT events.
+ * That BroadcastReceiver is only interested in UNMOUNT events.
+ * 
+ * <p>
+ * Code was separated from {@link StorageReceiver} because we don't want that
+ * receiver to be statically defined in manifest.
+ * </p>
  */
-public class StorageReceiver extends BroadcastReceiver
+public class StorageGoneReceiver extends BroadcastReceiver
 {
 
     @Override
@@ -28,15 +33,18 @@ public class StorageReceiver extends BroadcastReceiver
 
         if (K9.DEBUG)
         {
-            Log.v(K9.LOG_TAG, "StorageReceiver: " + intent.toString());
+            Log.v(K9.LOG_TAG, "StorageGoneReceiver: " + intent.toString());
         }
 
         final String path = uri.getPath();
 
-        if (Intent.ACTION_MEDIA_MOUNTED.equals(action))
+        if (Intent.ACTION_MEDIA_EJECT.equals(action))
         {
-            StorageManager.getInstance(K9.app).onMount(path,
-                    intent.getBooleanExtra("read-only", true));
+            StorageManager.getInstance(K9.app).onBeforeUnmount(path);
+        }
+        else if (Intent.ACTION_MEDIA_UNMOUNTED.equals(action))
+        {
+            StorageManager.getInstance(K9.app).onAfterUnmount(path);
         }
     }
 
