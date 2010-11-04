@@ -4295,9 +4295,11 @@ public class MessagingController implements Runnable
                                 if (modeMismatch(aDisplayMode, fDisplayClass))
                                 {
                                     // Never sync a folder that isn't displayed
-                                    if (K9.DEBUG && false)
+                                    /*
+                                    if (K9.DEBUG)
                                         Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
                                               " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
+                                    */
 
                                     continue;
                                 }
@@ -4305,9 +4307,11 @@ public class MessagingController implements Runnable
                                 if (modeMismatch(aSyncMode, fSyncClass))
                                 {
                                     // Do not sync folders in the wrong class
-                                    if (K9.DEBUG && false)
+                                    /*
+                                    if (K9.DEBUG)
                                         Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName() +
                                               " which is in sync mode " + fSyncClass + " while account is in sync mode " + aSyncMode);
+                                    */
 
                                     continue;
                                 }
@@ -4939,9 +4943,11 @@ public class MessagingController implements Runnable
                 if (folder.getName().equals(account.getErrorFolderName())
                         || folder.getName().equals(account.getOutboxFolderName()))
                 {
-                    if (K9.DEBUG && false)
+                    /*
+                    if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
                               " which should never be pushed");
+                    */
 
                     continue;
                 }
@@ -4954,9 +4960,11 @@ public class MessagingController implements Runnable
                 if (modeMismatch(aDisplayMode, fDisplayClass))
                 {
                     // Never push a folder that isn't displayed
-                    if (K9.DEBUG && false)
+                    /*
+                    if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
                               " which is in display class " + fDisplayClass + " while account is in display mode " + aDisplayMode);
+                    */
 
                     continue;
                 }
@@ -4964,9 +4972,11 @@ public class MessagingController implements Runnable
                 if (modeMismatch(aPushMode, fPushClass))
                 {
                     // Do not push folders in the wrong class
-                    if (K9.DEBUG && false)
+                    /*
+                    if (K9.DEBUG)
                         Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
                               " which is in push mode " + fPushClass + " while account is in push mode " + aPushMode);
+                    */
 
                     continue;
                 }

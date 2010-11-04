@@ -37,7 +37,6 @@ public class AccountSettings extends K9PreferenceActivity
 
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
 
-    private static final String PREFERENCE_TOP_CATERGORY = "account_settings";
     private static final String PREFERENCE_DESCRIPTION = "account_description";
     private static final String PREFERENCE_COMPOSITION = "composition";
     private static final String PREFERENCE_MANAGE_IDENTITIES = "manage_identities";

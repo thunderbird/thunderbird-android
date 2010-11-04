@@ -2320,7 +2320,6 @@ public class MessageView extends K9Activity implements OnClickListener
                 if (text != null)
                 {
                     final String emailText = text;
-                    final String mimeType = type;
                     mHandler.post(new Runnable()
                     {
                         public void run()

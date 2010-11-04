@@ -1,75 +1,13 @@
 package com.fsck.k9.activity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.Spannable;
-import android.text.style.TextAppearanceSpan;
-import android.util.Config;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.text.format.DateFormat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.SearchSpecification;
-import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.activity.setup.FolderSettings;
-import com.fsck.k9.activity.setup.Prefs;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingController.SORT_TYPE;
-import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.LocalStore;
-import com.fsck.k9.mail.store.LocalStore.LocalFolder;
-import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 public class FolderInfoHolder implements Comparable<FolderInfoHolder>
 {
