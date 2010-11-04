@@ -2553,6 +2553,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             try
             {
                 open(OpenMode.READ_WRITE);
+                mDb.beginTransaction();
                 for (Message message : messages)
                 {
                     if (!(message instanceof MimeMessage))
@@ -2671,9 +2672,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         throw new MessagingException("Error appending message", e);
                     }
                 }
+                mDb.setTransactionSuccessful();
             }
             finally
             {
+                mDb.endTransaction();
                 unlockRead();
             }
         }
@@ -2791,6 +2794,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         private void saveHeaders(long id, MimeMessage message) throws MessagingException
         {
             lockRead();
+            mDb.beginTransaction();
             try
             {
                 boolean saveAllHeaders = mAccount.saveAllHeaders();
@@ -2829,9 +2833,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             new Object[]
                                        { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id });
                 }
+                mDb.setTransactionSuccessful();
             }
             finally
             {
+                mDb.endTransaction();
                 unlockRead();
             }
         }
@@ -2861,6 +2867,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         throws IOException, MessagingException
         {
             lockRead();
+            mDb.beginTransaction();
             try
             {
                 long attachmentId = -1;
@@ -3002,9 +3009,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 {
                     ((LocalAttachmentBodyPart) attachment).setAttachmentId(attachmentId);
                 }
+                mDb.setTransactionSuccessful();
             }
             finally
             {
+                mDb.endTransaction();
                 unlockRead();
             }
         }
@@ -5708,71 +5717,66 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
              * to retain the uid for synchronization purposes.
              */
 
-            if (flag == Flag.DELETED && set)
+            lockRead();
+            mDb.beginTransaction();
+            try
             {
-                delete();
-            }
-            else if (flag == Flag.X_DESTROYED && set)
-            {
-                ((LocalFolder) mFolder).deleteAttachments(mId);
-                lockRead();
+                if (flag == Flag.DELETED && set)
+                {
+                    delete();
+                }
+                else if (flag == Flag.X_DESTROYED && set)
+                {
+                    ((LocalFolder) mFolder).deleteAttachments(mId);
+                        mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[]
+                        { mId });
+                }
+
+                /*
+                 * Update the unread count on the folder.
+                 */
                 try
                 {
-                    mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[]
-                    { mId });
-                }
-                finally
-                {
-                    unlockRead();
-                }
-            }
-
-            /*
-             * Update the unread count on the folder.
-             */
-            try
-            {
-                LocalFolder folder = (LocalFolder)mFolder;
-                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED
-                        || (flag == Flag.SEEN && !isSet(Flag.DELETED)))
-                {
-                    if (set && !isSet(Flag.SEEN))
+                    LocalFolder folder = (LocalFolder)mFolder;
+                    if (flag == Flag.DELETED || flag == Flag.X_DESTROYED
+                            || (flag == Flag.SEEN && !isSet(Flag.DELETED)))
                     {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() - 1);
+                        if (set && !isSet(Flag.SEEN))
+                        {
+                            folder.setUnreadMessageCount(folder.getUnreadMessageCount() - 1);
+                        }
+                        else if (!set && isSet(Flag.SEEN))
+                        {
+                            folder.setUnreadMessageCount(folder.getUnreadMessageCount() + 1);
+                        }
                     }
-                    else if (!set && isSet(Flag.SEEN))
+                    if ((flag == Flag.DELETED || flag == Flag.X_DESTROYED) && isSet(Flag.FLAGGED))
                     {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + 1);
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ? -1 : 1));
+                    }
+                    if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
+                    {
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
                     }
                 }
-                if ((flag == Flag.DELETED || flag == Flag.X_DESTROYED) && isSet(Flag.FLAGGED))
+                catch (MessagingException me)
                 {
-                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ? -1 : 1));
+                    Log.e(K9.LOG_TAG, "Unable to update LocalStore unread message count",
+                          me);
+                    throw new RuntimeException(me);
                 }
-                if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
-                {
-                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
-                }
-            }
-            catch (MessagingException me)
-            {
-                Log.e(K9.LOG_TAG, "Unable to update LocalStore unread message count",
-                      me);
-                throw new RuntimeException(me);
-            }
 
-            super.setFlag(flag, set);
-            lockRead();
-            try
-            {
+                super.setFlag(flag, set);
                 /*
                  * Set the flags on the message.
                  */
                 mDb.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
                 { Utility.combine(getFlags(), ',').toUpperCase(), mId });
+                mDb.setTransactionSuccessful();
             }
             finally
             {
+                mDb.endTransaction();
                 unlockRead();
             }
 
@@ -5786,6 +5790,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
              * Delete all of the message's content to save space.
              */
             lockRead();
+            mDb.beginTransaction();
             try
             {
                 mDb.execSQL("UPDATE messages SET " + "deleted = 1," + "subject = NULL, "
@@ -5802,9 +5807,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 ((LocalFolder) mFolder).deleteAttachments(mId);
                 mDb.execSQL("DELETE FROM attachments WHERE message_id = ?", new Object[]
                 { mId });
+                mDb.setTransactionSuccessful();
             }
             finally
             {
+                mDb.endTransaction();
                 unlockRead();
             }
             ((LocalFolder)mFolder).deleteHeaders(mId);
