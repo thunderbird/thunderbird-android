@@ -4,9 +4,6 @@ package com.fsck.k9.service;
 import java.util.Collection;
 import java.util.Date;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,7 +16,6 @@ import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.AutoSyncHelper;
@@ -244,7 +240,7 @@ public class MailService extends CoreService
 
     private void notifyConnectionStatus(boolean hasConnectivity)
     {
-        if (true) return;
+        /*
         NotificationManager notifMgr =
             (NotificationManager)getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
         if (!hasConnectivity)
@@ -271,6 +267,7 @@ public class MailService extends CoreService
         {
             notifMgr.cancel(K9.CONNECTIVITY_ID);
         }
+        */
     }
 
     @Override

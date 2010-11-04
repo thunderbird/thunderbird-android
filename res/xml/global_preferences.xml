@@ -14,155 +14,196 @@
      limitations under the License.
 -->
 
+<!--
+  Make sure to add android:persistent="false" to all preferences to disable saving
+  the preference values to SharedPreferences. We use our own storage mechanism for
+  the preferences. See com.fsck.k9.preferences.Storage.
+-->
+
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceScreen android:title="@string/display_preferences" android:key="display_preferences">
+    <PreferenceScreen
+        android:title="@string/display_preferences"
+        android:key="display_preferences">
 
-      <PreferenceCategory android:title="@string/global_preferences" android:key="global_preferences">
-        <ListPreference
-            android:key="language"
-            android:title="@string/settings_language_label"
-            android:entries="@array/settings_language_entries"
-            android:entryValues="@array/settings_language_values"
-            android:dialogTitle="@string/settings_language_label" />
+        <PreferenceCategory
+            android:title="@string/global_preferences"
+            android:key="global_preferences">
 
-        <ListPreference
-            android:key="theme"
-            android:title="@string/settings_theme_label"
-            android:entries="@array/settings_theme_entries"
-            android:entryValues="@array/settings_theme_values"
-            android:dialogTitle="@string/settings_theme_label" />
+            <ListPreference
+                android:persistent="false"
+                android:key="language"
+                android:title="@string/settings_language_label"
+                android:entries="@array/settings_language_entries"
+                android:entryValues="@array/settings_language_values"
+                android:dialogTitle="@string/settings_language_label" />
 
-        <Preference
-            android:key="font_size"
-            android:singleLine="true"
-            android:title="@string/font_size_settings_title"
-            android:summary="@string/font_size_settings_description" />
+            <ListPreference
+                android:persistent="false"
+                android:key="theme"
+                android:title="@string/settings_theme_label"
+                android:entries="@array/settings_theme_entries"
+                android:entryValues="@array/settings_theme_values"
+                android:dialogTitle="@string/settings_theme_label" />
 
-        <ListPreference
-            android:key="dateFormat"
-            android:title="@string/date_format_label"
-            android:entries="@array/date_formats"
-            android:entryValues="@array/date_formats"
-            android:dialogTitle="@string/date_format_label" />
+            <Preference
+                android:persistent="false"
+                android:key="font_size"
+                android:singleLine="true"
+                android:title="@string/font_size_settings_title"
+                android:summary="@string/font_size_settings_description" />
+
+            <ListPreference
+                android:persistent="false"
+                android:key="dateFormat"
+                android:title="@string/date_format_label"
+                android:entries="@array/date_formats"
+                android:entryValues="@array/date_formats"
+                android:dialogTitle="@string/date_format_label" />
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="animations"
+                android:title="@string/animations_title"
+                android:summary="@string/animations_summary" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/accountlist_preferences"
+            android:key="accountlist_preferences">
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="measure_accounts"
+                android:title="@string/measure_accounts_title"
+                android:summary="@string/measure_accounts_summary" />
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="count_search"
+                android:title="@string/count_search_title"
+                android:summary="@string/count_search_summary" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/messagelist_preferences"
+            android:key="messagelist_preferences">
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messagelist_touchable"
+                android:title="@string/global_settings_touchable_label"
+                android:summary="@string/global_settings_touchable_summary" />
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messagelist_stars"
+                android:title="@string/global_settings_flag_label"
+                android:summary="@string/global_settings_flag_summary" />
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messagelist_checkboxes"
+                android:title="@string/global_settings_checkbox_label"
+                android:summary="@string/global_settings_checkbox_summary" />
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messagelist_show_contact_name"
+                android:title="@string/global_settings_show_contact_name_label"
+                android:summary="@string/global_settings_show_contact_name_summary" />
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messagelist_contact_name_color"
+                android:title="@string/global_settings_registered_name_color_label"
+                android:summary="@string/global_settings_registered_name_color_default"
+                android:dependency="messagelist_show_contact_name" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/messageview_preferences"
+            android:key="messageview_preferences">
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messageview_fixedwidth_font"
+                android:title="@string/global_settings_messageview_fixedwidth_label"
+                android:summary="@string/global_settings_messageview_fixedwidth_summary" />
+
+            <CheckBoxPreference
+                android:persistent="false"
+                android:key="messageview_mobile_layout"
+                android:title="@string/settings_messageview_mobile_layout_label"
+                android:summary="@string/settings_messageview_mobile_layout_summary" />
+
+        </PreferenceCategory>
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="@string/interaction_preferences"
+        android:key="interaction_preferences">
 
         <CheckBoxPreference
-            android:key="animations"
-            android:title="@string/animations_title"
-            android:summary="@string/animations_summary" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/accountlist_preferences" android:key="accountlist_preferences">
-
-        <CheckBoxPreference
-            android:key="measure_accounts"
-            android:title="@string/measure_accounts_title"
-            android:summary="@string/measure_accounts_summary" />
-
-        <CheckBoxPreference
-            android:key="count_search"
-            android:title="@string/count_search_title"
-            android:summary="@string/count_search_summary" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/messagelist_preferences" android:key="messagelist_preferences">
-
-        <CheckBoxPreference
-            android:key="messagelist_touchable"
-            android:title="@string/global_settings_touchable_label"
-            android:summary="@string/global_settings_touchable_summary" />
-
-        <CheckBoxPreference
-            android:key="messagelist_stars"
-            android:title="@string/global_settings_flag_label"
-            android:summary="@string/global_settings_flag_summary" />
-
-        <CheckBoxPreference
-            android:key="messagelist_checkboxes"
-            android:title="@string/global_settings_checkbox_label"
-            android:summary="@string/global_settings_checkbox_summary" />
-
-        <CheckBoxPreference
-            android:key="messagelist_show_contact_name"
-            android:title="@string/global_settings_show_contact_name_label"
-            android:summary="@string/global_settings_show_contact_name_summary" />
-
-        <CheckBoxPreference
-            android:key="messagelist_contact_name_color"
-            android:title="@string/global_settings_registered_name_color_label"
-            android:summary="@string/global_settings_registered_name_color_default"
-            android:dependency="messagelist_show_contact_name" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/messageview_preferences" android:key="messageview_preferences">
-
-        <CheckBoxPreference
-            android:key="messageview_fixedwidth_font"
-            android:title="@string/global_settings_messageview_fixedwidth_label"
-            android:summary="@string/global_settings_messageview_fixedwidth_summary" />
-        <CheckBoxPreference
-            android:key="messageview_mobile_layout"
-            android:title="@string/settings_messageview_mobile_layout_label"
-            android:summary="@string/settings_messageview_mobile_layout_summary" />
-
-    </PreferenceCategory>
-
-
-
-
-     </PreferenceScreen>
-
-
-        <PreferenceScreen android:title="@string/interaction_preferences" android:key="interaction_preferences">
-        <CheckBoxPreference
+            android:persistent="false"
             android:key="start_integrated_inbox"
             android:title="@string/start_integrated_inbox_title"
             android:summary="@string/start_integrated_inbox_summary" />
 
         <CheckBoxPreference
+            android:persistent="false"
             android:key="gestures"
             android:title="@string/gestures_title"
             android:summary="@string/gestures_summary" />
 
         <com.fsck.k9.preferences.CheckBoxListPreference
+            android:persistent="false"
             android:key="volumeNavigation"
             android:title="@string/volume_navigation_title"
             android:summary="@string/volume_navigation_summary"
             android:dialogTitle="@string/volume_navigation_title"
             android:positiveButtonText="@android:string/ok"
-            android:negativeButtonText="@android:string/cancel"
-        />
+            android:negativeButtonText="@android:string/cancel" />
 
         <CheckBoxPreference
+            android:persistent="false"
             android:key="manage_back"
             android:title="@string/manage_back_title"
             android:summary="@string/manage_back_summary" />
 
         <CheckBoxPreference
+            android:persistent="false"
             android:key="messageview_return_to_list"
             android:title="@string/global_settings_messageview_return_to_list_label"
             android:summary="@string/global_settings_messageview_return_to_list_summary" />
+
         <CheckBoxPreference
+            android:persistent="false"
             android:key="messageview_zoom_controls"
             android:title="@string/settings_messageview_zoom_controls_label"
             android:summary="@string/settings_messageview_zoom_controls_summary" />
 
         <com.fsck.k9.preferences.CheckBoxListPreference
+            android:persistent="false"
             android:key="confirm_actions"
             android:title="@string/global_settings_confirm_actions_title"
             android:summary="@string/global_settings_confirm_actions_summary"
             android:dialogTitle="@string/global_settings_confirm_actions_title"
             android:positiveButtonText="@android:string/ok"
-            android:negativeButtonText="@android:string/cancel"
-        />
-
+            android:negativeButtonText="@android:string/cancel" />
 
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="@string/network_preferences" android:key="network_preferences">
+    <PreferenceScreen
+        android:title="@string/network_preferences"
+        android:key="network_preferences">
 
         <ListPreference
+            android:persistent="false"
             android:key="background_ops"
             android:title="@string/background_ops_label"
             android:entries="@array/background_ops_entries"
@@ -171,31 +212,42 @@
 
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="@string/miscellaneous_preferences" android:key="misc_preferences">
+    <PreferenceScreen
+        android:title="@string/miscellaneous_preferences"
+        android:key="misc_preferences">
 
         <CheckBoxPreference
+            android:persistent="false"
             android:key="use_gallery_bug_workaround"
             android:title="@string/misc_preferences_attachment_title"
             android:summary="@string/misc_preferences_attachment_description" />
 
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:title="@string/privacy_preferences"
+        android:key="privacy_preferences">
 
-    <PreferenceScreen android:title="@string/privacy_preferences" android:key="privacy_preferences">
         <CheckBoxPreference
+            android:persistent="false"
             android:key="privacy_mode"
             android:title="@string/global_settings_privacy_mode_title"
             android:summary="@string/global_settings_privacy_mode_summary"/>
+
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="@string/debug_preferences" android:key="debug_preferences">
+    <PreferenceScreen
+        android:title="@string/debug_preferences"
+        android:key="debug_preferences">
 
         <CheckBoxPreference
+            android:persistent="false"
             android:key="debug_logging"
             android:title="@string/debug_enable_debug_logging_title"
             android:summary="@string/debug_enable_debug_logging_summary" />
 
         <CheckBoxPreference
+            android:persistent="false"
             android:key="sensitive_logging"
             android:title="@string/debug_enable_sensitive_logging_title"
             android:summary="@string/debug_enable_sensitive_logging_summary" />

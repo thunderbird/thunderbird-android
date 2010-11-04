@@ -174,4 +174,12 @@ public abstract class Contacts
      *         row.
      */
     public abstract String getEmail(Cursor cursor);
+
+    /**
+     * Mark contacts with the provided email addresses as contacted.
+     *
+     * @param addresses Array of {@link Address} objects describing the
+     *        contacts to be marked as contacted.
+     */
+    public abstract void markAsContacted(final Address[] addresses);
 }
