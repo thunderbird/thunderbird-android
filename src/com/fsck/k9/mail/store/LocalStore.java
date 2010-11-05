@@ -2411,12 +2411,11 @@ public class LocalStore extends Store implements Serializable
             {
                 return null;
             }
-
-            text = text.replaceAll("(?ms)^-----BEGIN PGP SIGNED MESSAGE-----.(Hash:\\s*?.*?$)?","");
+            text = text.replaceAll("(?m)^----.*?$","");
+            text = text.replaceAll("(?m)^[#>].*$","");
+            text = text.replaceAll("(?m)^On .*wrote.?$","");
+            text = text.replaceAll("(?m)^.*\\w+:$","");
             text = text.replaceAll("https?://\\S+","...");
-            text = text.replaceAll("^.*\\w.*:","");
-            text = text.replaceAll("(?m)^>.*$","");
-            text = text.replaceAll("^On .*wrote.?$","");
             text = text.replaceAll("(\\r|\\n)+"," ");
             text = text.replaceAll("\\s+"," ");
             if (text.length() <= 250)
