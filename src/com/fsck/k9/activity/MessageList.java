@@ -264,6 +264,8 @@ public class MessageList
     private ListView mListView;
 
     private boolean mTouchView = true;
+    private int mPreviewLines = 0;
+
 
     private MessageListAdapter mAdapter;
 
@@ -659,6 +661,7 @@ public class MessageList
         // Only set "touchable" when we're first starting up the activity.
         // Otherwise we get force closes when the user toggles it midstream.
         mTouchView = K9.messageListTouchable();
+        mPreviewLines = K9.messageListPreviewLines();
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -2647,6 +2650,7 @@ public class MessageList
             if (mTouchView)
             {
                 holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+                holder.preview.setLines(mPreviewLines);
             }
             else
             {

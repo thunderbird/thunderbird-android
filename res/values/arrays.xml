@@ -631,4 +631,23 @@
         <item>apg</item>
     </string-array>
 
+    <string-array name="settings_preview_lines_values">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="settings_preview_lines_entries">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+
+
+
 </resources>
