@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="11014"
-    android:versionName="3.305" package="com.fsck.k9"
+    android:versionCode="11015"
+    android:versionName="3.306" package="com.fsck.k9"
     >
     <uses-sdk
        android:minSdkVersion="3"
