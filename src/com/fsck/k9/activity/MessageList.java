@@ -2288,20 +2288,23 @@ public class MessageList
         }
         public void pruneDirtyMessages()
         {
-            Iterator<MessageInfoHolder> iter = mAdapter.messages.iterator();
-            while (iter.hasNext())
+            synchronized (mAdapter.messages)
             {
-                MessageInfoHolder holder = iter.next();
-                if (holder.dirty)
+                Iterator<MessageInfoHolder> iter = mAdapter.messages.iterator();
+                while (iter.hasNext())
                 {
-                    if (holder.selected)
+                    MessageInfoHolder holder = iter.next();
+                    if (holder.dirty)
                     {
-                        mSelectedCount--;
-                        toggleBatchButtons();
+                        if (holder.selected)
+                        {
+                            mSelectedCount--;
+                            toggleBatchButtons();
+                        }
+                        mAdapter.removeMessage(holder);
                     }
-                    iter.remove();
                 }
-            }
+                }
         }
 
         public void removeMessages(List<MessageInfoHolder> holders)
