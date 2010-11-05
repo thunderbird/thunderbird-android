@@ -2304,7 +2304,7 @@ public class MessageList
                         mAdapter.removeMessage(holder);
                     }
                 }
-                }
+            }
         }
 
         public void removeMessages(List<MessageInfoHolder> holders)

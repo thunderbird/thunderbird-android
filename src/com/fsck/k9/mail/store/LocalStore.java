@@ -2502,10 +2502,13 @@ public class LocalStore extends Store implements Serializable
                 int start = m.start();
                 if (start == 0 || (start != 0 && text.charAt(start - 1) != '@'))
                 {
-                    if (m.group().indexOf(':') > 0) { // With no URI-schema we may get "http:/" links with the second / missing
+                    if (m.group().indexOf(':') > 0)   // With no URI-schema we may get "http:/" links with the second / missing
+                    {
                         m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
-                    } else {
-                        m.appendReplacement(sb, "<a href=\"http://$0\">$0</a>");                    	
+                    }
+                    else
+                    {
+                        m.appendReplacement(sb, "<a href=\"http://$0\">$0</a>");
                     }
                 }
                 else
