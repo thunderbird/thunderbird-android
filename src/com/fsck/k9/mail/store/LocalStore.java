@@ -2412,7 +2412,7 @@ public class LocalStore extends Store implements Serializable
                 return null;
             }
 
-            // Only look at the first 8k of a message when calculating
+            // Only look at the first 8k of a message when calculating 
             // the preview.  This should avoid unnecessary
             // memory usage on large messages
             if (text.length() > 8192)
@@ -2428,13 +2428,13 @@ public class LocalStore extends Store implements Serializable
             text = text.replaceAll("https?://\\S+","...");
             text = text.replaceAll("(\\r|\\n)+"," ");
             text = text.replaceAll("\\s+"," ");
-            if (text.length() <= 250)
+            if (text.length() <= 512)
             {
                 return text;
             }
             else
             {
-                text = text.substring(0,250);
+                text = text.substring(0,512);
                 return text;
             }
 
