@@ -2411,6 +2411,16 @@ public class LocalStore extends Store implements Serializable
             {
                 return null;
             }
+
+            // Only look at the first 8k of a message when calculating
+            // the preview.  This should avoid unnecessary
+            // memory usage on large messages
+            if (text.length() > 8192)
+            {
+                text = text.substring(0,8192);
+            }
+
+
             text = text.replaceAll("(?m)^----.*?$","");
             text = text.replaceAll("(?m)^[#>].*$","");
             text = text.replaceAll("(?m)^On .*wrote.?$","");
