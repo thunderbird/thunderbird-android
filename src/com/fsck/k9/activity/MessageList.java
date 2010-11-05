@@ -265,6 +265,8 @@ public class MessageList
     private ListView mListView;
 
     private boolean mTouchView = true;
+    private int mPreviewLines = 0;
+
 
     private MessageListAdapter mAdapter;
 
@@ -686,6 +688,7 @@ public class MessageList
         // Only set "touchable" when we're first starting up the activity.
         // Otherwise we get force closes when the user toggles it midstream.
         mTouchView = K9.messageListTouchable();
+        mPreviewLines = K9.messageListPreviewLines();
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -2331,18 +2334,21 @@ public class MessageList
         }
         public void pruneDirtyMessages()
         {
-            Iterator<MessageInfoHolder> iter = mAdapter.messages.iterator();
-            while (iter.hasNext())
+            synchronized (mAdapter.messages)
             {
-                MessageInfoHolder holder = iter.next();
-                if (holder.dirty)
+                Iterator<MessageInfoHolder> iter = mAdapter.messages.iterator();
+                while (iter.hasNext())
                 {
-                    if (holder.selected)
+                    MessageInfoHolder holder = iter.next();
+                    if (holder.dirty)
                     {
-                        mSelectedCount--;
-                        toggleBatchButtons();
+                        if (holder.selected)
+                        {
+                            mSelectedCount--;
+                            toggleBatchButtons();
+                        }
+                        mAdapter.removeMessage(holder);
                     }
-                    iter.remove();
                 }
             }
         }
@@ -2687,6 +2693,7 @@ public class MessageList
             if (mTouchView)
             {
                 holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+                holder.preview.setLines(mPreviewLines);
             }
             else
             {

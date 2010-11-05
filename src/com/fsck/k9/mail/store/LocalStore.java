@@ -3268,20 +3268,29 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 return null;
             }
 
-            text = text.replaceAll("(?ms)^-----BEGIN PGP SIGNED MESSAGE-----.(Hash:\\s*?.*?$)?","");
+            // Only look at the first 8k of a message when calculating 
+            // the preview.  This should avoid unnecessary
+            // memory usage on large messages
+            if (text.length() > 8192)
+            {
+                text = text.substring(0,8192);
+            }
+
+
+            text = text.replaceAll("(?m)^----.*?$","");
+            text = text.replaceAll("(?m)^[#>].*$","");
+            text = text.replaceAll("(?m)^On .*wrote.?$","");
+            text = text.replaceAll("(?m)^.*\\w+:$","");
             text = text.replaceAll("https?://\\S+","...");
-            text = text.replaceAll("^.*\\w.*:","");
-            text = text.replaceAll("(?m)^>.*$","");
-            text = text.replaceAll("^On .*wrote.?$","");
             text = text.replaceAll("(\\r|\\n)+"," ");
             text = text.replaceAll("\\s+"," ");
-            if (text.length() <= 250)
+            if (text.length() <= 512)
             {
                 return text;
             }
             else
             {
-                text = text.substring(0,250);
+                text = text.substring(0,512);
                 return text;
             }
 
@@ -3358,10 +3367,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 int start = m.start();
                 if (start == 0 || (start != 0 && text.charAt(start - 1) != '@'))
                 {
-                    if (m.group().indexOf(':') > 0) { // With no URI-schema we may get "http:/" links with the second / missing
+                    if (m.group().indexOf(':') > 0)   // With no URI-schema we may get "http:/" links with the second / missing
+                    {
                         m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
-                    } else {
-                        m.appendReplacement(sb, "<a href=\"http://$0\">$0</a>");                    	
+                    }
+                    else
+                    {
+                        m.appendReplacement(sb, "<a href=\"http://$0\">$0</a>");
                     }
                 }
                 else

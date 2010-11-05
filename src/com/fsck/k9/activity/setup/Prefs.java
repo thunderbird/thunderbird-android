@@ -51,6 +51,7 @@ public class Prefs extends K9PreferenceActivity
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private static final String PREFERENCE_MESSAGELIST_TOUCHABLE = "messagelist_touchable";
+    private static final String PREFERENCE_MESSAGELIST_PREVIEW_LINES = "messagelist_preview_lines";
     private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
     private static final String PREFERENCE_MESSAGELIST_CHECKBOXES = "messagelist_checkboxes";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
@@ -79,6 +80,7 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mMeasureAccounts;
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mTouchable;
+    private ListPreference mPreviewLines;
     private CheckBoxPreference mStars;
     private CheckBoxPreference mCheckboxes;
     private CheckBoxPreference mShowContactName;
@@ -180,6 +182,9 @@ public class Prefs extends K9PreferenceActivity
         mTouchable = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_TOUCHABLE);
         mTouchable.setChecked(K9.messageListTouchable());
 
+        mPreviewLines = setupListPreference(PREFERENCE_MESSAGELIST_PREVIEW_LINES,
+                                            Integer.toString(K9.messageListPreviewLines()));
+
         mStars = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_STARS);
         mStars.setChecked(K9.messageListStars());
 
@@ -266,6 +271,7 @@ public class Prefs extends K9PreferenceActivity
         K9.setMeasureAccounts(mMeasureAccounts.isChecked());
         K9.setCountSearchMessages(mCountSearch.isChecked());
         K9.setMessageListTouchable(mTouchable.isChecked());
+        K9.setMessageListPreviewLines(Integer.parseInt(mPreviewLines.getValue()));
         K9.setMessageListStars(mStars.isChecked());
         K9.setMessageListCheckboxes(mCheckboxes.isChecked());
         K9.setShowContactName(mShowContactName.isChecked());
