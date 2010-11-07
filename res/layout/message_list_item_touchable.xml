@@ -10,15 +10,16 @@
     <RelativeLayout
         android:id="@+id/chip"
         android:layout_width="wrap_content"
+        android:minWidth="6dip"
         android:layout_height="fill_parent"
+        android:layout_alignTop="@+id/subject"
+        android:layout_alignBottom="@+id/preview"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="2dip"
+        android:paddingLeft="6dip"
         android:background="@android:color/transparent" >
 
-        <View
-            android:layout_width="4dip"
-            android:layout_height="fill_parent" />
 
         <CheckBox
             android:id="@+id/selected_checkbox"
@@ -31,17 +32,6 @@
             android:visibility="gone" />
 
     </RelativeLayout>
-
-    <CheckBox
-        android:id="@+id/flagged"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        style="?android:attr/starStyle"
-        android:focusable="false" />
-
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
@@ -52,6 +42,17 @@
         android:singleLine="true"
         android:textColor="?android:attr/textColorSecondary"
         android:textAppearance="?android:attr/textAppearanceSmall"  />
+
+    <CheckBox
+        android:id="@+id/flagged"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/date"
+        android:paddingTop="3dip"
+        style="?android:attr/starStyle"
+        android:focusable="false" />
+
 
     <TextView
         android:id="@+id/subject"
@@ -69,7 +70,7 @@
     <TextView
         android:id="@+id/preview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/subject"
         android:layout_toLeftOf="@+id/flagged"
         android:layout_toRightOf="@+id/chip"
