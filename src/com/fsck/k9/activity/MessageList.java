@@ -2602,6 +2602,19 @@ public class MessageList
                 {
                     holder.selected.setOnCheckedChangeListener(holder);
                 }
+                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
+                holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
+
+                if (mTouchView)
+                {
+                    holder.preview.setLines(mPreviewLines);
+                    holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+
+                }
+                else
+                {
+                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+                }
 
                 view.setTag(holder);
             }
@@ -2644,18 +2657,6 @@ public class MessageList
                 holder.flagged.setChecked(false);
             }
 
-            holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
-            holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
-
-            if (mTouchView)
-            {
-                holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
-                holder.preview.setLines(mPreviewLines);
-            }
-            else
-            {
-                holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
-            }
 
             return view;
         }
