@@ -23,6 +23,9 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -76,7 +79,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
  */
 public class MessageList
     extends K9Activity
-    implements OnClickListener, AdapterView.OnItemClickListener
+    implements OnClickListener, AdapterView.OnItemClickListener, AnimationListener
 {
 
     /**
@@ -2884,14 +2887,23 @@ public class MessageList
 
     private void hideBatchButtons()
     {
-        //TODO: Fade out animation
-        mBatchButtonArea.setVisibility(View.GONE);
+        if (mBatchButtonArea.getVisibility() != View.GONE)
+        {
+            mBatchButtonArea.setVisibility(View.GONE);
+            mBatchButtonArea.startAnimation(
+                AnimationUtils.loadAnimation(this, R.anim.footer_disappear));
+        }
     }
 
     private void showBatchButtons()
     {
-        //TODO: Fade in animation
-        mBatchButtonArea.setVisibility(View.VISIBLE);
+        if (mBatchButtonArea.getVisibility() != View.VISIBLE)
+        {
+            mBatchButtonArea.setVisibility(View.VISIBLE);
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
+            animation.setAnimationListener(this);
+            mBatchButtonArea.startAnimation(animation);
+        }
     }
 
     private void toggleBatchButtons()
@@ -3057,6 +3069,20 @@ public class MessageList
         }
         mHandler.sortMessages();
     }
+
+    public void onAnimationEnd(Animation animation)
+    {
+    }
+
+    public void onAnimationRepeat(Animation animation)
+    {
+    }
+
+    public void onAnimationStart(Animation animation)
+    {
+    }
+
+
 
     private void setAllSelected(boolean isSelected)
     {
