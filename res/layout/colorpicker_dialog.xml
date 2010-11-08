@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="center_horizontal"
+	>
+
+	<include
+		android:layout_width="296dp"
+		android:layout_height="256dp"
+		android:id="@+id/colorpicker_includeChooser"
+		layout="@layout/colorpicker_chooser" />
+
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		android:paddingTop="8dp"
+		android:paddingBottom="8dp"
+		>
+	
+		<AbsoluteLayout
+			android:layout_width="200dp"
+			android:layout_height="40dp"
+		>
+		
+			<View
+				android:layout_width="80dp"
+				android:layout_height="40dp"
+				android:layout_x="0dp"
+				android:layout_y="0dp"
+				android:id="@+id/colorpicker_colorOld"
+				android:background="#faa"
+			/>
+			
+			<ImageView
+				android:layout_width="40dp"
+				android:layout_height="40dp"
+				android:layout_x="80dp"
+				android:layout_y="0dp"
+				android:src="@drawable/colorpicker_menjadi"
+			/>
+			
+			
+			<View
+				android:layout_width="80dp"
+				android:layout_height="40dp"
+				android:layout_x="120dp"
+				android:layout_y="0dp"
+				android:id="@+id/colorpicker_colorNew"
+				android:background="#aaf"
+			/>
+			
+		</AbsoluteLayout>
+			
+	</LinearLayout>
+</LinearLayout>

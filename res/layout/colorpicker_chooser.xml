@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="296dp"
+	android:layout_height="256dp"
+	>
+
+	<!-- 
+	
+                    8 dp padding
+	8dp padding  | 240 dp box  | 14dp empty |  26dp hue | 8dp padding -> total 296
+                    8 dp padding
+					    v
+					  total 256
+	 -->
+	 
+	 
+	<com.fsck.k9.activity.ColorPickerBox
+		android:id="@+id/colorpicker_viewBox"
+		android:layout_x="8dp"
+		android:layout_y="8dp"
+		android:layout_width="240dp"
+		android:layout_height="240dp" />
+
+	<ImageView
+		android:id="@+id/colorpicker_viewHue"
+		android:layout_x="262dp"
+		android:layout_y="8dp"
+		android:layout_width="26dp"
+		android:layout_height="240dp"
+		android:src="@drawable/colorpicker_hue"
+		android:scaleType="fitXY" />
+
+	<ImageView
+		android:id="@+id/colorpicker_arrow"
+		android:layout_x="252dp"
+		android:layout_y="4dp"
+		android:layout_width="8dp"
+		android:layout_height="9dp"
+		android:src="@drawable/colorpicker_arrow"
+		android:scaleType="matrix" />
+
+	<ImageView
+		android:id="@+id/colorpicker_spyglass"
+		android:layout_x="3dp"
+		android:layout_y="3dp"
+		android:layout_width="11dp"
+		android:layout_height="11dp"
+		android:src="@drawable/colorpicker_spyglass"
+		android:scaleType="matrix" />
+
+</AbsoluteLayout>

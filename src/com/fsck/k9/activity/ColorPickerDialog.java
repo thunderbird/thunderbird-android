@@ -1,273 +1,197 @@
-/*
- * Copyright (C) 2007 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* Sourced from http://code.google.com/p/android-color-picker/source/browse/trunk/AmbilWarna/src/yuku/ambilwarna/AmbilWarnaDialog.java?r=1
+ * On 2010-11-07 
+ * Translated to English, Ported to use the same (inferior) API as the more standard "ColorPickerDialog" and imported into the K-9 namespace by Jesse Vincent
+ * In an ideal world, we should move to using AmbilWarna as an Android Library Project in the future
+ * License: Apache 2.0 
+ * Author: yukuku@code.google.com
  */
 
+
 package com.fsck.k9.activity;
-
 import com.fsck.k9.R;
-import android.os.Bundle;
-import android.app.Dialog;
+import android.app.AlertDialog;
+import android.content.*;
+import android.graphics.Color;
+import android.util.Log;
+import android.view.*;
+import android.widget.*;
 
-import android.content.Context;
-import android.graphics.*;
-import android.view.MotionEvent;
-import android.view.View;
-
-
-public class ColorPickerDialog extends Dialog
+public class ColorPickerDialog
 {
+    private static final String TAG = ColorPickerDialog.class.getSimpleName();
 
     public interface OnColorChangedListener
     {
         void colorChanged(int color);
     }
 
-    private OnColorChangedListener mListener;
-    private int mInitialColor;
+    AlertDialog dialog;
+    OnColorChangedListener listener;
+    View viewHue;
+    ColorPickerBox viewBox;
+    ImageView arrow;
+    View viewColorOld;
+    View viewColorNew;
+    ImageView viewSpyglass;
 
-    private static class ColorPickerView extends View
+    float onedp;
+    int colorOld;
+    int colorNew;
+    float hue;
+    float sat;
+    float val;
+    float sizeUiDp = 240.f;
+    float sizeUiPx; // diset di constructor
+
+    public ColorPickerDialog(Context context, OnColorChangedListener listener, int color )
     {
-        private Paint mPaint;
-        private Paint mCenterPaint;
-        private final int[] mColors;
-        private OnColorChangedListener mListener;
+        this.listener = listener;
+        this.colorOld = color;
+        this.colorNew = color;
+        Color.colorToHSV(color, tmp01);
+        hue = tmp01[0];
+        sat = tmp01[1];
+        val = tmp01[2];
 
-        ColorPickerView(Context c, OnColorChangedListener l, int color)
+        onedp = context.getResources().getDimension(R.dimen.colorpicker_onedp);
+        sizeUiPx = sizeUiDp * onedp;
+        Log.d(TAG, "onedp = " + onedp + ", sizeUiPx=" + sizeUiPx);  //$NON-NLS-1$//$NON-NLS-2$
+
+        View view = LayoutInflater.from(context).inflate(R.layout.colorpicker_dialog, null);
+        viewHue = view.findViewById(R.id.colorpicker_viewHue);
+        viewBox = (ColorPickerBox) view.findViewById(R.id.colorpicker_viewBox);
+        arrow = (ImageView) view.findViewById(R.id.colorpicker_arrow);
+        viewColorOld = view.findViewById(R.id.colorpicker_colorOld);
+        viewColorNew = view.findViewById(R.id.colorpicker_colorNew);
+        viewSpyglass = (ImageView) view.findViewById(R.id.colorpicker_spyglass);
+
+        placeArrow();
+        placeSpyglass();
+        viewBox.setHue(hue);
+        viewColorOld.setBackgroundColor(color);
+        viewColorNew.setBackgroundColor(color);
+
+        viewHue.setOnTouchListener(new View.OnTouchListener()
         {
-            super(c);
-            mListener = l;
-            mColors = new int[]
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
             {
-                0xFF800000, 0xFF800080, 0xFF000080, 0xFF008080, 0xFF008000,
-                0xFF808000, 0xFF800000
-            };
-            Shader s = new SweepGradient(0, 0, mColors, null);
-
-            mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            mPaint.setShader(s);
-            mPaint.setStyle(Paint.Style.STROKE);
-            mPaint.setStrokeWidth(32);
-
-            mCenterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            mCenterPaint.setColor(color);
-            mCenterPaint.setStrokeWidth(5);
-        }
-
-        private boolean mTrackingCenter;
-        private boolean mHighlightCenter;
-
-        @Override
-        protected void onDraw(Canvas canvas)
-        {
-            float r = CENTER_X - mPaint.getStrokeWidth()*0.5f;
-
-            canvas.translate(CENTER_X, CENTER_X);
-
-            canvas.drawOval(new RectF(-r, -r, r, r), mPaint);
-            canvas.drawCircle(0, 0, CENTER_RADIUS, mCenterPaint);
-
-            if (mTrackingCenter)
-            {
-                int c = mCenterPaint.getColor();
-                mCenterPaint.setStyle(Paint.Style.STROKE);
-
-                if (mHighlightCenter)
+                if (event.getAction() == MotionEvent.ACTION_MOVE
+                        || event.getAction() == MotionEvent.ACTION_DOWN
+                        || event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    mCenterPaint.setAlpha(0xFF);
+
+                    float y = event.getY(); // dalam px, bukan dp
+                    if (y < 0.f) y = 0.f;
+                    if (y > sizeUiPx) y = sizeUiPx - 0.001f;
+
+                    hue = 360.f - 360.f / sizeUiPx * y;
+                    if (hue == 360.f) hue = 0.f;
+
+                    colorNew = calculateColor();
+                    // update view
+                    viewBox.setHue(hue);
+                    placeArrow();
+                    viewColorNew.setBackgroundColor(colorNew);
+
+                    return true;
                 }
-                else
+                return false;
+            }
+        });
+        viewBox.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (event.getAction() == MotionEvent.ACTION_MOVE
+                        || event.getAction() == MotionEvent.ACTION_DOWN
+                        || event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    mCenterPaint.setAlpha(0x80);
+
+                    float x = event.getX(); // dalam px, bukan dp
+                    float y = event.getY(); // dalam px, bukan dp
+
+                    if (x < 0.f) x = 0.f;
+                    if (x > sizeUiPx) x = sizeUiPx;
+                    if (y < 0.f) y = 0.f;
+                    if (y > sizeUiPx) y = sizeUiPx;
+
+                    sat = (1.f / sizeUiPx * x);
+                    val = 1.f - (1.f / sizeUiPx * y);
+
+                    colorNew = calculateColor();
+                    // update view
+                    placeSpyglass();
+                    viewColorNew.setBackgroundColor(colorNew);
+
+                    return true;
                 }
-                canvas.drawCircle(0, 0,
-                                  CENTER_RADIUS + mCenterPaint.getStrokeWidth(),
-                                  mCenterPaint);
-
-                mCenterPaint.setStyle(Paint.Style.FILL);
-                mCenterPaint.setColor(c);
+                return false;
             }
-        }
+        });
 
-        @Override
-        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+        dialog = new AlertDialog.Builder(context)
+        .setView(view)
+        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener()
         {
-            setMeasuredDimension(CENTER_X*2, CENTER_Y*2);
-        }
-
-        private static final int CENTER_X = 100;
-        private static final int CENTER_Y = 100;
-        private static final int CENTER_RADIUS = 32;
-
-        private int floatToByte(float x)
-        {
-            int n = java.lang.Math.round(x);
-            return n;
-        }
-        private int pinToByte(int n)
-        {
-            if (n < 0)
+            @Override
+            public void onClick(DialogInterface dialog, int which)
             {
-                n = 0;
+                if (ColorPickerDialog.this.listener != null)
+                {
+                    ColorPickerDialog.this.listener.colorChanged(colorNew);
+                }
             }
-            else if (n > 255)
-            {
-                n = 255;
-            }
-            return n;
-        }
-
-        private int ave(int s, int d, float p)
+        })
+        .setNegativeButton(R.string.cancel_action, new DialogInterface.OnClickListener()
         {
-            return s + java.lang.Math.round(p *(d - s));
-        }
-
-        private int interpColor(int colors[], float unit)
-        {
-            if (unit <= 0)
+            @Override
+            public void onClick(DialogInterface dialog, int which)
             {
-                return colors[0];
+                if (ColorPickerDialog.this.listener != null)
+                {
+                }
             }
-            if (unit >= 1)
-            {
-                return colors[colors.length - 1];
-            }
+        })
+        .create();
 
-            float p = unit * (colors.length - 1);
-            int i = (int)p;
-            p -= i;
-
-            // now p is just the fractional part [0...1) and i is the index
-            int c0 = colors[i];
-            int c1 = colors[i+1];
-            int a = ave(Color.alpha(c0), Color.alpha(c1), p);
-            int r = ave(Color.red(c0), Color.red(c1), p);
-            int g = ave(Color.green(c0), Color.green(c1), p);
-            int b = ave(Color.blue(c0), Color.blue(c1), p);
-
-            return Color.argb(a, r, g, b);
-        }
-
-        private int rotateColor(int color, float rad)
-        {
-            float deg = rad * 180 / 3.1415927f;
-            int r = Color.red(color);
-            int g = Color.green(color);
-            int b = Color.blue(color);
-
-            ColorMatrix cm = new ColorMatrix();
-            ColorMatrix tmp = new ColorMatrix();
-
-            cm.setRGB2YUV();
-            tmp.setRotate(0, deg);
-            cm.postConcat(tmp);
-            tmp.setYUV2RGB();
-            cm.postConcat(tmp);
-
-            final float[] a = cm.getArray();
-
-            int ir = floatToByte(a[0] * r +  a[1] * g +  a[2] * b);
-            int ig = floatToByte(a[5] * r +  a[6] * g +  a[7] * b);
-            int ib = floatToByte(a[10] * r + a[11] * g + a[12] * b);
-
-            return Color.argb(Color.alpha(color), pinToByte(ir),
-                              pinToByte(ig), pinToByte(ib));
-        }
-
-        private static final float PI = 3.1415926f;
-
-        @Override
-        public boolean onTouchEvent(MotionEvent event)
-        {
-            float x = event.getX() - CENTER_X;
-            float y = event.getY() - CENTER_Y;
-            boolean inCenter = java.lang.Math.sqrt(x*x + y*y) <= CENTER_RADIUS;
-
-            switch (event.getAction())
-            {
-                case MotionEvent.ACTION_DOWN:
-                    mTrackingCenter = inCenter;
-                    if (inCenter)
-                    {
-                        mHighlightCenter = true;
-                        invalidate();
-                        break;
-                    }
-                case MotionEvent.ACTION_MOVE:
-                    if (mTrackingCenter)
-                    {
-                        if (mHighlightCenter != inCenter)
-                        {
-                            mHighlightCenter = inCenter;
-                            invalidate();
-                        }
-                    }
-                    else
-                    {
-                        float angle = (float)java.lang.Math.atan2(y, x);
-                        // need to turn angle [-PI ... PI] into unit [0....1]
-                        float unit = angle/(2*PI);
-                        if (unit < 0)
-                        {
-                            unit += 1;
-                        }
-                        mCenterPaint.setColor(interpColor(mColors, unit));
-                        invalidate();
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if (mTrackingCenter)
-                    {
-                        if (inCenter)
-                        {
-                            mListener.colorChanged(mCenterPaint.getColor());
-                        }
-                        mTrackingCenter = false;    // so we draw w/o halo
-                        invalidate();
-                    }
-                    // Hack to _Always change the center color for now
-                    mListener.colorChanged(mCenterPaint.getColor());
-                    break;
-            }
-            return true;
-        }
     }
 
-    public ColorPickerDialog(Context context,
-                             OnColorChangedListener listener,
-                             int initialColor)
+    @SuppressWarnings("deprecation")
+    protected void placeArrow()
     {
-        super(context);
+        float y = sizeUiPx - (hue * sizeUiPx / 360.f);
+        if (y == sizeUiPx) y = 0.f;
 
-        mListener = listener;
-        mInitialColor = initialColor;
+        AbsoluteLayout.LayoutParams layoutParams = (AbsoluteLayout.LayoutParams) arrow.getLayoutParams();
+        layoutParams.y = (int) (y + 4);
+        arrow.setLayoutParams(layoutParams);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
+    @SuppressWarnings("deprecation")
+    protected void placeSpyglass()
     {
-        super.onCreate(savedInstanceState);
-        OnColorChangedListener l = new OnColorChangedListener()
-        {
-            public void colorChanged(int color)
-            {
-                mListener.colorChanged(color);
-                dismiss();
-            }
-        };
+        float x = sat * sizeUiPx;
+        float y = (1.f - val) * sizeUiPx;
 
-        setContentView(new ColorPickerView(getContext(), l, mInitialColor));
-        setTitle(getContext().getString(R.string.choose_color_title));
+        AbsoluteLayout.LayoutParams layoutParams = (AbsoluteLayout.LayoutParams) viewSpyglass.getLayoutParams();
+        layoutParams.x = (int) (x + 3);
+        layoutParams.y = (int) (y + 3);
+        viewSpyglass.setLayoutParams(layoutParams);
+    }
+
+    float[] tmp01 = new float[3];
+    private int calculateColor()
+    {
+        tmp01[0] = hue;
+        tmp01[1] = sat;
+        tmp01[2] = val;
+        return Color.HSVToColor(tmp01);
+    }
+
+    public void show()
+    {
+        dialog.show();
     }
 }

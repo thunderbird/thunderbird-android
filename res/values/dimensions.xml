@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="button_minWidth">100sp</dimen>
+	<dimen name="colorpicker_onedp">1dp</dimen>
 </resources>
