@@ -351,7 +351,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_check_settings_canceling_msg">Breche ab\u2026</string>
 
     <string name="account_setup_names_title">Fast fertig!</string>
-    <string name="account_setup_names_instructions">Ihr Konto ist eingerichtet, eine Test-E-Mail wurde versandt!</string>
+    <string name="account_setup_names_instructions">Ihr Konto ist eingerichtet, E-Mail ist auf dem Weg!</string>
     <string name="account_setup_names_account_name_label">Kontoname (optional):</string>
     <string name="account_setup_names_user_name_label">Ihr Name (Anzeige bei ausgehenden Nachrichten):</string>
 
