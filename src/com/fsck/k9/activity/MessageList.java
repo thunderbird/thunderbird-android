@@ -23,6 +23,9 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -77,7 +80,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalFolder;
  */
 public class MessageList
     extends K9Activity
-    implements OnClickListener, AdapterView.OnItemClickListener
+    implements OnClickListener, AdapterView.OnItemClickListener, AnimationListener
 {
 
     /**
@@ -2645,6 +2648,19 @@ public class MessageList
                 {
                     holder.selected.setOnCheckedChangeListener(holder);
                 }
+                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
+                holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
+
+                if (mTouchView)
+                {
+                    holder.preview.setLines(mPreviewLines);
+                    holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+
+                }
+                else
+                {
+                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+                }
 
                 view.setTag(holder);
             }
@@ -2687,18 +2703,6 @@ public class MessageList
                 holder.flagged.setChecked(false);
             }
 
-            holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
-            holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
-
-            if (mTouchView)
-            {
-                holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
-                holder.preview.setLines(mPreviewLines);
-            }
-            else
-            {
-                holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
-            }
 
             return view;
         }
@@ -2926,14 +2930,23 @@ public class MessageList
 
     private void hideBatchButtons()
     {
-        //TODO: Fade out animation
-        mBatchButtonArea.setVisibility(View.GONE);
+        if (mBatchButtonArea.getVisibility() != View.GONE)
+        {
+            mBatchButtonArea.setVisibility(View.GONE);
+            mBatchButtonArea.startAnimation(
+                AnimationUtils.loadAnimation(this, R.anim.footer_disappear));
+        }
     }
 
     private void showBatchButtons()
     {
-        //TODO: Fade in animation
-        mBatchButtonArea.setVisibility(View.VISIBLE);
+        if (mBatchButtonArea.getVisibility() != View.VISIBLE)
+        {
+            mBatchButtonArea.setVisibility(View.VISIBLE);
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
+            animation.setAnimationListener(this);
+            mBatchButtonArea.startAnimation(animation);
+        }
     }
 
     private void toggleBatchButtons()
@@ -3099,6 +3112,20 @@ public class MessageList
         }
         mHandler.sortMessages();
     }
+
+    public void onAnimationEnd(Animation animation)
+    {
+    }
+
+    public void onAnimationRepeat(Animation animation)
+    {
+    }
+
+    public void onAnimationStart(Animation animation)
+    {
+    }
+
+
 
     private void setAllSelected(boolean isSelected)
     {
