@@ -32,6 +32,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 
 public class K9 extends Application
@@ -410,13 +411,17 @@ public class K9 extends Application
 
         try
         {
-            registerReceiver(receiver, filter, null, queue.take());
-            Log.i(K9.LOG_TAG, "Registered unmount receiver");
+            final Handler storageGoneHandler = queue.take();
+            registerReceiver(receiver, filter, null, storageGoneHandler);
+            Log.i(K9.LOG_TAG, "Registered: unmount receiver");
         }
         catch (InterruptedException e)
         {
-            Log.e(K9.LOG_TAG, "Unable to register", e);
+            Log.e(K9.LOG_TAG, "Unable to register unmount receiver", e);
         }
+
+        registerReceiver(new ShutdownReceiver(), new IntentFilter(Intent.ACTION_SHUTDOWN));
+        Log.i(K9.LOG_TAG, "Registered: shutdown receiver");
     }
 
     public static void save(SharedPreferences.Editor editor)
