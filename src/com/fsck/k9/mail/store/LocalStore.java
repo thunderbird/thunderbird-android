@@ -88,7 +88,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         /**
          * @param db
-         *            The locked DB. Never <code>null</code>.
+         *            The locked database on which the work should occur. Never
+         *            <code>null</code>.
          * @return Any relevant data. Can be <code>null</code>.
          * @throws WrappedException
          * @throws UnavailableStorageException
@@ -591,10 +592,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    private void doDbUpgrade(SQLiteDatabase mDb, Application application)
+    private void doDbUpgrade(SQLiteDatabase db, Application application)
     {
         Log.i(K9.LOG_TAG, String.format("Upgrading database from version %d to version %d",
-                                        mDb.getVersion(), DB_VERSION));
+                                        db.getVersion(), DB_VERSION));
 
 
         AttachmentProvider.clear(application);
@@ -603,52 +604,52 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             // schema version 29 was when we moved to incremental updates
             // in the case of a new db or a < v29 db, we blow away and start from scratch
-            if (mDb.getVersion() < 29)
+            if (db.getVersion() < 29)
             {
 
-                mDb.execSQL("DROP TABLE IF EXISTS folders");
-                mDb.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
+                db.execSQL("DROP TABLE IF EXISTS folders");
+                db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
                             + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0)");
 
-                mDb.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
-                mDb.execSQL("DROP TABLE IF EXISTS messages");
-                mDb.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
+                db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
+                db.execSQL("DROP TABLE IF EXISTS messages");
+                db.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
                             + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
                             + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
 
-                mDb.execSQL("DROP TABLE IF EXISTS headers");
-                mDb.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
-                mDb.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
+                db.execSQL("DROP TABLE IF EXISTS headers");
+                db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
+                db.execSQL("CREATE INDEX IF NOT EXISTS header_folder ON headers (message_id)");
 
-                mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
-                mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id");
-                mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
-                mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
-                mDb.execSQL("DROP TABLE IF EXISTS attachments");
-                mDb.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
+                db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
+                db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
+                db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+                db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+                db.execSQL("DROP TABLE IF EXISTS attachments");
+                db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
                             + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
                             + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
 
-                mDb.execSQL("DROP TABLE IF EXISTS pending_commands");
-                mDb.execSQL("CREATE TABLE pending_commands " +
+                db.execSQL("DROP TABLE IF EXISTS pending_commands");
+                db.execSQL("CREATE TABLE pending_commands " +
                             "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
 
-                mDb.execSQL("DROP TRIGGER IF EXISTS delete_folder");
-                mDb.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
+                db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
+                db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
 
-                mDb.execSQL("DROP TRIGGER IF EXISTS delete_message");
-                mDb.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
+                db.execSQL("DROP TRIGGER IF EXISTS delete_message");
+                db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
                             + "DELETE FROM headers where old.id = message_id; END;");
             }
             else
             {
                 // in the case that we're starting out at 29 or newer, run all the needed updates
 
-                if (mDb.getVersion() < 30)
+                if (db.getVersion() < 30)
                 {
                     try
                     {
-                        mDb.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
+                        db.execSQL("ALTER TABLE messages ADD deleted INTEGER default 0");
                     }
                     catch (SQLiteException e)
                     {
@@ -658,21 +659,21 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         }
                     }
                 }
-                if (mDb.getVersion() < 31)
+                if (db.getVersion() < 31)
                 {
-                    mDb.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
-                    mDb.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+                    db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+                    db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
                 }
-                if (mDb.getVersion() < 32)
+                if (db.getVersion() < 32)
                 {
-                    mDb.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
+                    db.execSQL("UPDATE messages SET deleted = 1 WHERE flags LIKE '%DELETED%'");
                 }
-                if (mDb.getVersion() < 33)
+                if (db.getVersion() < 33)
                 {
 
                     try
                     {
-                        mDb.execSQL("ALTER TABLE messages ADD preview TEXT");
+                        db.execSQL("ALTER TABLE messages ADD preview TEXT");
                     }
                     catch (SQLiteException e)
                     {
@@ -683,11 +684,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     }
 
                 }
-                if (mDb.getVersion() < 34)
+                if (db.getVersion() < 34)
                 {
                     try
                     {
-                        mDb.execSQL("ALTER TABLE folders ADD flagged_count INTEGER default 0");
+                        db.execSQL("ALTER TABLE folders ADD flagged_count INTEGER default 0");
                     }
                     catch (SQLiteException e)
                     {
@@ -697,33 +698,33 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         }
                     }
                 }
-                if (mDb.getVersion() < 35)
+                if (db.getVersion() < 35)
                 {
                     try
                     {
-                        mDb.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
+                        db.execSQL("update messages set flags = replace(flags, 'X_NO_SEEN_INFO', 'X_BAD_FLAG')");
                     }
                     catch (SQLiteException e)
                     {
                         Log.e(K9.LOG_TAG, "Unable to get rid of obsolete flag X_NO_SEEN_INFO", e);
                     }
                 }
-                if (mDb.getVersion() < 36)
+                if (db.getVersion() < 36)
                 {
                     try
                     {
-                        mDb.execSQL("ALTER TABLE attachments ADD content_id TEXT");
+                        db.execSQL("ALTER TABLE attachments ADD content_id TEXT");
                     }
                     catch (SQLiteException e)
                     {
                         Log.e(K9.LOG_TAG, "Unable to add content_id column to attachments");
                     }
                 }
-                if (mDb.getVersion() < 37)
+                if (db.getVersion() < 37)
                 {
                     try
                     {
-                        mDb.execSQL("ALTER TABLE attachments ADD content_disposition TEXT");
+                        db.execSQL("ALTER TABLE attachments ADD content_disposition TEXT");
                     }
                     catch (SQLiteException e)
                     {
@@ -733,11 +734,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
 
                 // Database version 38 is solely to prune cached attachments now that we clear them better
-                if (mDb.getVersion() < 39)
+                if (db.getVersion() < 39)
                 {
                     try
                     {
-                        mDb.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
+                        db.execSQL("DELETE FROM headers WHERE id in (SELECT headers.id FROM headers LEFT JOIN messages ON headers.message_id = messages.id WHERE messages.id IS NULL)");
                     }
                     catch (SQLiteException e)
                     {
@@ -753,15 +754,15 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         catch (SQLiteException e)
         {
             Log.e(K9.LOG_TAG, "Exception while upgrading database. Resetting the DB to v0");
-            mDb.setVersion(0);
+            db.setVersion(0);
             throw new Error("Database upgrade failed! Resetting your DB version to 0 to force a full schema recreation.");
         }
 
 
 
-        mDb.setVersion(DB_VERSION);
+        db.setVersion(DB_VERSION);
 
-        if (mDb.getVersion() != DB_VERSION)
+        if (db.getVersion() != DB_VERSION)
         {
             throw new Error("Database upgrade failed!");
         }
@@ -818,7 +819,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
             {
-                mDb.execSQL("VACUUM");
+                db.execSQL("VACUUM");
                 return null;
             }
         });
@@ -850,8 +851,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             @Override
             public Void doDbWork(final SQLiteDatabase db)
             {
-                mDb.execSQL("DELETE FROM messages WHERE deleted = 0 and uid not like 'Local%'");
-                mDb.execSQL("update folders set flagged_count = 0, unread_count = 0");
+                db.execSQL("DELETE FROM messages WHERE deleted = 0 and uid not like 'Local%'");
+                db.execSQL("update folders set flagged_count = 0, unread_count = 0");
                 return null;
             }
         });
@@ -876,7 +877,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 Cursor cursor = null;
                 try
                 {
-                    cursor = mDb.rawQuery("SELECT COUNT(*) FROM messages", null);
+                    cursor = db.rawQuery("SELECT COUNT(*) FROM messages", null);
                     cursor.moveToFirst();
                     int messageCount = cursor.getInt(0);
                     return messageCount;
@@ -902,7 +903,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 Cursor cursor = null;
                 try
                 {
-                    cursor = mDb.rawQuery("SELECT COUNT(*) FROM folders", null);
+                    cursor = db.rawQuery("SELECT COUNT(*) FROM folders", null);
                     cursor.moveToFirst();
                     int messageCount = cursor.getInt(0);
                     return messageCount;
@@ -939,7 +940,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
                     try
                     {
-                        cursor = mDb.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders", null);
+                        cursor = db.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders", null);
                         while (cursor.moveToNext())
                         {
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
@@ -1097,7 +1098,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 {
                     ContentValues cv = new ContentValues();
                     cv.putNull("content_uri");
-                    mDb.update("attachments", cv, null, null);
+                    db.update("attachments", cv, null, null);
                 }
                 final StorageManager storageManager = StorageManager.getInstance(mApplication);
                 File[] files = storageManager.getAttachmentDirectory(uUid, mStorageProviderId).listFiles();
@@ -1110,7 +1111,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             Cursor cursor = null;
                             try
                             {
-                                cursor = mDb.query(
+                                cursor = db.query(
                                              "attachments",
                                              new String[] { "store_data" },
                                              "id = ?",
@@ -1146,7 +1147,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             {
                                 ContentValues cv = new ContentValues();
                                 cv.putNull("content_uri");
-                                mDb.update("attachments", cv, "id = ?", new String[] { file.getName() });
+                                db.update("attachments", cv, "id = ?", new String[] { file.getName() });
                             }
                             catch (Exception e)
                             {
@@ -1180,7 +1181,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
             {
-                mDb.update("folders", cv, null, null);
+                db.update("folders", cv, null, null);
                 return null;
             }
         });
@@ -1195,7 +1196,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 Cursor cursor = null;
                 try
                 {
-                    cursor = mDb.query("pending_commands",
+                    cursor = db.query("pending_commands",
                                        new String[] { "id", "command", "arguments" },
                                        null,
                                        null,
@@ -1244,7 +1245,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
-                    mDb.insert("pending_commands", "command", cv);
+                    db.insert("pending_commands", "command", cv);
                     return null;
                 }
             });
@@ -1261,7 +1262,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
             {
-                mDb.delete("pending_commands", "id = ?", new String[] { Long.toString(command.mId) });
+                db.delete("pending_commands", "id = ?", new String[] { Long.toString(command.mId) });
                 return null;
             }
         });
@@ -1273,7 +1274,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
             {
-                mDb.delete("pending_commands", null, null);
+                db.delete("pending_commands", null, null);
                 return null;
             }
         });
@@ -1500,7 +1501,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 int i = 0;
                 try
                 {
-                    cursor = mDb.rawQuery(queryString + " LIMIT 10", placeHolders);
+                    cursor = db.rawQuery(queryString + " LIMIT 10", placeHolders);
 
                     while (cursor.moveToNext())
                     {
@@ -1515,7 +1516,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         i++;
                     }
                     cursor.close();
-                    cursor = mDb.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
+                    cursor = db.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
 
                     while (cursor.moveToNext())
                     {
@@ -1562,7 +1563,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 Cursor cursor = null;
                 try
                 {
-                    cursor = mDb.query(
+                    cursor = db.query(
                             "attachments",
                             new String[] { "mime_type", "name" },
                             "id = ?",
@@ -1603,7 +1604,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 Cursor cursor = null;
                 try
                 {
-                    cursor = mDb.query(
+                    cursor = db.query(
                                  "attachments",
                                  new String[] { "name", "size" },
                                  "id = ?",
@@ -1701,11 +1702,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 "SELECT id, name,unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders ";
                             if (mName != null)
                             {
-                                cursor = mDb.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });
+                                cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { mName });
                             }
                             else
                             {
-                                cursor = mDb.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(mFolderId) });
+                                cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(mFolderId) });
                             }
 
                             if (cursor.moveToFirst())
@@ -1787,7 +1788,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     Cursor cursor = null;
                     try
                     {
-                        cursor = mDb.rawQuery("SELECT id FROM folders "
+                        cursor = db.rawQuery("SELECT id FROM folders "
                                               + "where folders.name = ?", new String[] { LocalFolder.this
                                                       .getName()
                                                                                        });
@@ -1823,7 +1824,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
-                    mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
+                    db.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
                                 {
                                     mName,
                                     mAccount.getDisplayCount()
@@ -1845,7 +1846,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
-                    mDb.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
+                    db.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
                                 {
                                     mName,
                                     visibleLimit
@@ -1882,7 +1883,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         Cursor cursor = null;
                         try
                         {
-                            cursor = mDb.rawQuery("SELECT COUNT(*) FROM messages WHERE messages.folder_id = ?",
+                            cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE messages.folder_id = ?",
                                                   new String[]
                                                   {
                                                       Long.toString(mFolderId)
@@ -1938,7 +1939,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             throw new WrappedException(e);
                         }
                         mUnreadMessageCount = Math.max(0, unreadMessageCount);
-                        mDb.execSQL("UPDATE folders SET unread_count = ? WHERE id = ?",
+                        db.execSQL("UPDATE folders SET unread_count = ? WHERE id = ?",
                                     new Object[] { mUnreadMessageCount, mFolderId });
                         return null;
                     }
@@ -1967,7 +1968,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             throw new WrappedException(e);
                         }
                         mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
-                        mDb.execSQL("UPDATE folders SET flagged_count = ? WHERE id = ?", new Object[]
+                        db.execSQL("UPDATE folders SET flagged_count = ? WHERE id = ?", new Object[]
                         { mFlaggedMessageCount, mFolderId });
                         return null;
                     }
@@ -1997,7 +1998,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         {
                             throw new WrappedException(e);
                         }
-                        mDb.execSQL("UPDATE folders SET last_updated = ? WHERE id = ?", new Object[]
+                        db.execSQL("UPDATE folders SET last_updated = ? WHERE id = ?", new Object[]
                         { lastChecked, mFolderId });
                         return null;
                     }
@@ -2027,7 +2028,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         {
                             throw new WrappedException(e);
                         }
-                        mDb.execSQL("UPDATE folders SET last_pushed = ? WHERE id = ?", new Object[]
+                        db.execSQL("UPDATE folders SET last_pushed = ? WHERE id = ?", new Object[]
                         { lastChecked, mFolderId });
                         return null;
                     }
@@ -2076,7 +2077,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         throw new WrappedException(e);
                     }
                     mVisibleLimit = visibleLimit;
-                    mDb.execSQL("UPDATE folders SET visible_limit = ? WHERE id = ?",
+                    db.execSQL("UPDATE folders SET visible_limit = ? WHERE id = ?",
                                 new Object[] { mVisibleLimit, mFolderId });
                     return null;
                 }
@@ -2101,7 +2102,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         {
                             throw new WrappedException(e);
                         }
-                        mDb.execSQL("UPDATE folders SET status = ? WHERE id = ?", new Object[]
+                        db.execSQL("UPDATE folders SET status = ? WHERE id = ?", new Object[]
                         { status, mFolderId });
                         return null;
                     }
@@ -2129,7 +2130,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             throw new WrappedException(e);
                         }
                         mPushState = pushState;
-                        mDb.execSQL("UPDATE folders SET push_state = ? WHERE id = ?", new Object[]
+                        db.execSQL("UPDATE folders SET push_state = ? WHERE id = ?", new Object[]
                         { pushState, mFolderId });
                         return null;
                     }
@@ -2383,7 +2384,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                     mp.setSubType("mixed");
                                     try
                                     {
-                                        cursor = mDb.rawQuery("SELECT html_content, text_content FROM messages "
+                                        cursor = db.rawQuery("SELECT html_content, text_content FROM messages "
                                                               + "WHERE id = ?",
                                                               new String[] { Long.toString(localMessage.mId) });
                                         cursor.moveToNext();
@@ -2413,7 +2414,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
                                     try
                                     {
-                                        cursor = mDb.query(
+                                        cursor = db.query(
                                                      "attachments",
                                                      new String[]
                                                      {
@@ -2559,7 +2560,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     
                         }
     
-                        cursor = mDb.rawQuery(
+                        cursor = db.rawQuery(
                                      "SELECT message_id, name, value FROM headers " + "WHERE message_id in ( " + questions + ") ",
                                      ids.toArray(EMPTY_STRING_ARRAY));
     
@@ -2602,7 +2603,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
                             try
                             {
-                                cursor = mDb.rawQuery(
+                                cursor = db.rawQuery(
                                              "SELECT "
                                              + GET_MESSAGES_COLS
                                              + "FROM messages WHERE uid = ? AND folder_id = ?",
@@ -2757,7 +2758,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
                                 message.setUid(K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
 
-                                mDb.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[]
+                                db.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[]
                                             {
                                                 lDestFolder.getId(),
                                                 message.getUid(),
@@ -2855,7 +2856,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                      * The message may already exist in this Folder, so delete it first.
                                      */
                                     deleteAttachments(message.getUid());
-                                    mDb.execSQL("DELETE FROM messages WHERE folder_id = ? AND uid = ?",
+                                    db.execSQL("DELETE FROM messages WHERE folder_id = ? AND uid = ?",
                                             new Object[]
                                             { mFolderId, message.getUid() });
                                 }
@@ -2922,7 +2923,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                         cv.put("message_id", messageId);
                                     }
                                     long messageUid;
-                                    messageUid = mDb.insert("messages", "uid", cv);
+                                    messageUid = db.insert("messages", "uid", cv);
                                     for (Part attachment : attachments)
                                     {
                                         saveAttachment(messageUid, attachment, copy);
@@ -3021,7 +3022,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             }
                             try
                             {
-                                mDb.execSQL("UPDATE messages SET "
+                                db.execSQL("UPDATE messages SET "
                                             + "uid = ?, subject = ?, sender_list = ?, date = ?, flags = ?, "
                                             + "folder_id = ?, to_list = ?, cc_list = ?, bcc_list = ?, "
                                             + "html_content = ?, text_content = ?, preview = ?, reply_to_list = ?, "
@@ -3101,7 +3102,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 cv.put("message_id", id);
                                 cv.put("name", name);
                                 cv.put("value", value);
-                                mDb.insert("headers", "name", cv);
+                                db.insert("headers", "name", cv);
                             }
                         }
                         else
@@ -3118,7 +3119,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         appendedFlags.addAll(Arrays.asList(message.getFlags()));
                         appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
 
-                        mDb.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
+                        db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
                                 new Object[]
                                            { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id });
                     }
@@ -3133,7 +3134,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
-                    mDb.execSQL("DELETE FROM headers WHERE message_id = ?", new Object[]
+                    db.execSQL("DELETE FROM headers WHERE message_id = ?", new Object[]
                     { id });
                     return null;
                 }
@@ -3236,14 +3237,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 cv.put("content_id", contentId);
                                 cv.put("content_disposition", contentDisposition);
 
-                                attachmentId = mDb.insert("attachments", "message_id", cv);
+                                attachmentId = db.insert("attachments", "message_id", cv);
                             }
                             else
                             {
                                 ContentValues cv = new ContentValues();
                                 cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
                                 cv.put("size", size);
-                                mDb.update("attachments", cv, "id = ?", new String[]
+                                db.update("attachments", cv, "id = ?", new String[]
                                                                                    { Long.toString(attachmentId) });
                             }
 
@@ -3257,7 +3258,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 attachment.setBody(new LocalAttachmentBody(contentUri, mApplication));
                                 ContentValues cv = new ContentValues();
                                 cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
-                                mDb.update("attachments", cv, "id = ?", new String[]
+                                db.update("attachments", cv, "id = ?", new String[]
                                                                                    { Long.toString(attachmentId) });
                             }
 
@@ -3265,7 +3266,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             if (contentId != null && contentUri != null)
                             {
                                 Cursor cursor = null;
-                                cursor = mDb.query("messages", new String[]
+                                cursor = db.query("messages", new String[]
                                 { "html_content" }, "id = ?", new String[]
                                 { Long.toString(messageId) }, null, null, null);
                                 try
@@ -3280,7 +3281,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                         
                                         ContentValues cv = new ContentValues();
                                         cv.put("html_content", new_html);
-                                        mDb.update("messages", cv, "id = ?", new String[]
+                                        db.update("messages", cv, "id = ?", new String[]
                                                                                         { Long.toString(messageId) });
                                     }
                                 }
@@ -3338,7 +3339,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
-                    mDb.update("messages", cv, "id = ?", new String[]
+                    db.update("messages", cv, "id = ?", new String[]
                     { Long.toString(message.mId) });
                     return null;
                 }
@@ -3396,7 +3397,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
-                    mDb.execSQL("DELETE FROM messages WHERE " + where, params);
+                    db.execSQL("DELETE FROM messages WHERE " + where, params);
                     return null;
                 }
             });
@@ -3454,7 +3455,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         {
                             throw new WrappedException(e);
                         }
-                        mDb.execSQL("DELETE FROM folders WHERE id = ?", new Object[]
+                        db.execSQL("DELETE FROM folders WHERE id = ?", new Object[]
                         { Long.toString(mFolderId), });
                         return null;
                     }
@@ -3499,7 +3500,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     Cursor attachmentsCursor = null;
                     try
                     {
-                        attachmentsCursor = mDb.query("attachments", new String[]
+                        attachmentsCursor = db.query("attachments", new String[]
                         { "id" }, "message_id = ?", new String[]
                         { Long.toString(messageId) }, null, null, null);
                         final File attachmentDirectory = StorageManager.getInstance(mApplication)
@@ -3545,7 +3546,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         Cursor messagesCursor = null;
                         try
                         {
-                            messagesCursor = mDb.query("messages", new String[]
+                            messagesCursor = db.query("messages", new String[]
                             { "id" }, "folder_id = ? AND uid = ?", new String[]
                             { Long.toString(mFolderId), uid }, null, null, null);
                             while (messagesCursor.moveToNext())
@@ -6070,7 +6071,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             else if (flag == Flag.X_DESTROYED && set)
                             {
                                 ((LocalFolder) mFolder).deleteAttachments(mId);
-                                    mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[]
+                                    db.execSQL("DELETE FROM messages WHERE id = ?", new Object[]
                                     { mId });
                             }
    
@@ -6117,7 +6118,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         /*
                          * Set the flags on the message.
                          */
-                        mDb.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
+                        db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
                         { Utility.combine(getFlags(), ',').toUpperCase(), mId });
                         return null;
                     }
@@ -6143,7 +6144,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 {
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
-                        mDb.execSQL("UPDATE messages SET " + "deleted = 1," + "subject = NULL, "
+                        db.execSQL("UPDATE messages SET " + "deleted = 1," + "subject = NULL, "
                                 + "sender_list = NULL, " + "date = NULL, " + "to_list = NULL, "
                                 + "cc_list = NULL, " + "bcc_list = NULL, " + "preview = NULL, "
                                 + "html_content = NULL, " + "text_content = NULL, "
@@ -6162,7 +6163,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         {
                             throw new WrappedException(e);
                         }
-                        mDb.execSQL("DELETE FROM attachments WHERE message_id = ?", new Object[]
+                        db.execSQL("DELETE FROM attachments WHERE message_id = ?", new Object[]
                         { mId });
                         return null;
                     }
