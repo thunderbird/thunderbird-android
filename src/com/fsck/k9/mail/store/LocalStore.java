@@ -322,8 +322,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         try
         {
 
+            final boolean debug = K9.DEBUG;
             if (doTransaction)
             {
+                if (debug)
+                {
+                    Log.v(K9.LOG_TAG, "LocalStore: Starting transaction");
+                }
                 inTransaction.set(Boolean.TRUE);
                 mDb.beginTransaction();
             }
@@ -332,6 +337,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 final T result = work.doDbWork(mDb);
                 if (doTransaction)
                 {
+                    if (debug)
+                    {
+                        Log.v(K9.LOG_TAG, "LocalStore: Transaction successful");
+                    }
                     mDb.setTransactionSuccessful();
                 }
                 return result;
@@ -340,7 +349,21 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 if (doTransaction)
                 {
+                    final long begin;
+                    if (debug)
+                    {
+                        Log.v(K9.LOG_TAG, "LocalStore: Ending transaction...");
+                        begin = System.currentTimeMillis();
+                    }
+                    else
+                    {
+                        begin = 0l;
+                    }
                     mDb.endTransaction();
+                    if (debug)
+                    {
+                        Log.v(K9.LOG_TAG, "LocalStore: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms");
+                    }
                 }
             }
         }
