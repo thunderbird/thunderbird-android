@@ -309,14 +309,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      * @param transactional
      *            <code>true</code> if a transaction must be started if none is
      *            present
-     * @param work
+     * @param callback
      *            Never <code>null</code>.
      * 
      * @param <T>
-     * @return Whatever <tt>work.execute();</tt> returns.
+     * @return Whatever {@link DbCallback#doDbWork(SQLiteDatabase)} returns.
      * @throws UnavailableStorageException
      */
-    protected <T> T execute(final boolean transactional, final DbCallback<T> work) throws UnavailableStorageException
+    protected <T> T execute(final boolean transactional, final DbCallback<T> callback) throws UnavailableStorageException
     {
         lockRead();
         final boolean doTransaction = transactional && inTransaction.get() == null;
@@ -326,22 +326,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             final boolean debug = K9.DEBUG;
             if (doTransaction)
             {
-                if (debug)
-                {
-                    Log.v(K9.LOG_TAG, "LocalStore: Starting transaction");
-                }
                 inTransaction.set(Boolean.TRUE);
                 mDb.beginTransaction();
             }
             try
             {
-                final T result = work.doDbWork(mDb);
+                final T result = callback.doDbWork(mDb);
                 if (doTransaction)
                 {
-                    if (debug)
-                    {
-                        Log.v(K9.LOG_TAG, "LocalStore: Transaction successful");
-                    }
                     mDb.setTransactionSuccessful();
                 }
                 return result;
@@ -353,7 +345,6 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     final long begin;
                     if (debug)
                     {
-                        Log.v(K9.LOG_TAG, "LocalStore: Ending transaction...");
                         begin = System.currentTimeMillis();
                     }
                     else
@@ -592,7 +583,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    private void doDbUpgrade(SQLiteDatabase db, Application application)
+    private void doDbUpgrade(final SQLiteDatabase db, final Application application)
     {
         Log.i(K9.LOG_TAG, String.format("Upgrading database from version %d to version %d",
                                         db.getVersion(), DB_VERSION));
@@ -787,6 +778,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         return execute(false, new DbCallback<Long>()
         {
+            @Override
             public Long doDbWork(final SQLiteDatabase db)
             {
                 final File[] files = attachmentDirectory.listFiles();
@@ -934,6 +926,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             execute(false, new DbCallback<List<? extends Folder>>()
             {
+                @Override
                 public List<? extends Folder> doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
                     Cursor cursor = null;
@@ -1092,6 +1085,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         execute(false, new DbCallback<Void>()
         {
+            @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
             {
                 if (force)
@@ -1179,6 +1173,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         cv.put("visible_limit", Integer.toString(visibleLimit));
         execute(false, new DbCallback<Void>()
         {
+            @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
             {
                 db.update("folders", cv, null, null);
@@ -1191,6 +1186,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         return execute(false, new DbCallback<ArrayList<PendingCommand>>()
         {
+            @Override
             public ArrayList<PendingCommand> doDbWork(final SQLiteDatabase db) throws WrappedException
             {
                 Cursor cursor = null;
@@ -1243,6 +1239,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             cv.put("arguments", Utility.combine(command.arguments, ','));
             execute(false, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
                     db.insert("pending_commands", "command", cv);
@@ -1260,6 +1257,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         execute(false, new DbCallback<Void>()
         {
+            @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
             {
                 db.delete("pending_commands", "id = ?", new String[] { Long.toString(command.mId) });
@@ -1272,6 +1270,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         execute(false, new DbCallback<Void>()
         {
+            @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException
             {
                 db.delete("pending_commands", null, null);
@@ -1495,6 +1494,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         final ArrayList<LocalMessage> messages = new ArrayList<LocalMessage>();
         final int j = execute(false, new DbCallback<Integer>()
         {
+            @Override
             public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
             {
                 Cursor cursor = null;
@@ -1558,6 +1558,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         return execute(false, new DbCallback<String>()
         {
+            @Override
             public String doDbWork(final SQLiteDatabase db) throws WrappedException
             {
                 Cursor cursor = null;
@@ -1597,6 +1598,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     {
         return execute(false, new DbCallback<AttachmentInfo>()
         {
+            @Override
             public AttachmentInfo doDbWork(final SQLiteDatabase db) throws WrappedException
             {
                 String name = null;
@@ -1693,6 +1695,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                     {
                         Cursor cursor = null;
@@ -1783,6 +1786,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             return execute(false, new DbCallback<Boolean>()
             {
+                @Override
                 public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
                     Cursor cursor = null;
@@ -1822,6 +1826,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             execute(false, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
                     db.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
@@ -1844,6 +1849,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             execute(false, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
                     db.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
@@ -1870,6 +1876,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 return execute(false, new DbCallback<Integer>()
                 {
+                    @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
                     {
                         try
@@ -1928,6 +1935,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                     {
                         try
@@ -1957,6 +1965,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Integer>()
                 {
+                    @Override
                     public Integer doDbWork(final SQLiteDatabase db) throws WrappedException
                     {
                         try
@@ -1987,6 +1996,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                     {
                         try
@@ -2017,6 +2027,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                     {
                         try
@@ -2066,6 +2077,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             execute(false, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
                     try
@@ -2091,6 +2103,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                     {
                         try
@@ -2119,6 +2132,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                     {
                         try
@@ -2369,6 +2383,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                     {
                         try
@@ -2533,6 +2548,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             execute(false, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
                     Cursor cursor = null;
@@ -2593,6 +2609,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 return execute(false, new DbCallback<Message>()
                 {
+                    @Override
                     public Message doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         try
@@ -2652,6 +2669,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 return execute(false, new DbCallback<Message[]>()
                 {
+                    @Override
                     public Message[] doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         try
@@ -2729,6 +2747,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         try
@@ -2821,6 +2840,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(true, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         try
@@ -2975,6 +2995,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         try
@@ -3085,6 +3106,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             execute(true, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
                     boolean saveAllHeaders = mAccount.saveAllHeaders();
@@ -3132,6 +3154,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             execute(false, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
                     db.execSQL("DELETE FROM headers WHERE message_id = ?", new Object[]
@@ -3155,6 +3178,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(true, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         try
@@ -3337,6 +3361,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             cv.put("uid", message.getUid());
             execute(false, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
                     db.update("messages", cv, "id = ?", new String[]
@@ -3395,6 +3420,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             execute(false, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
                     db.execSQL("DELETE FROM messages WHERE " + where, params);
@@ -3439,6 +3465,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         try
@@ -3495,6 +3522,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             open(OpenMode.READ_WRITE);
             execute(false, new DbCallback<Void>()
             {
+                @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
                     Cursor attachmentsCursor = null;
@@ -3541,6 +3569,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(false, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         Cursor messagesCursor = null;
@@ -6060,6 +6089,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(true, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         try
@@ -6142,6 +6172,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             {
                 execute(true, new DbCallback<Void>()
                 {
+                    @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         db.execSQL("UPDATE messages SET " + "deleted = 1," + "subject = NULL, "
