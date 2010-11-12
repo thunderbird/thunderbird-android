@@ -800,24 +800,26 @@ public class Account implements BaseAccount
     public void setLocalStorageProviderId(String id)
     {
 
-        if (!mLocalStorageProviderId.equals(id)) {
+        if (!mLocalStorageProviderId.equals(id))
+        {
 
-                boolean successful = false;
-                try
+            boolean successful = false;
+            try
+            {
+                switchLocalStorage(id);
+                successful = true;
+            }
+            catch (MessagingException e)
+            {
+            }
+            finally
+            {
+                // if migration to/from SD-card failed once, it will fail again.
+                if (!successful)
                 {
-                    switchLocalStorage(id);
-                    successful = true;
-                } catch (MessagingException e)
-                {
+                    return;
                 }
-                finally
-                {
-                    // if migration to/from SD-card failed once, it will fail again.
-                    if (!successful)
-                    {
-                        return;
-                    }
-                }
+            }
 
             mLocalStorageProviderId = id;
         }

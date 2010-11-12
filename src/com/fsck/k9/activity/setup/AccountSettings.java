@@ -424,32 +424,32 @@ public class AccountSettings extends K9PreferenceActivity
 
 
         mLocalStorageProvider = (ListPreference) findPreference(PREFERENCE_LOCAL_STORAGE_PROVIDER);
-            {
-                final Map<String, String> providers;
-                providers = StorageManager.getInstance(K9.app).getAvailableProviders();
-                int i = 0;
-                final String[] providerLabels = new String[providers.size()];
-                final String[] providerIds = new String[providers.size()];
-                for (final Map.Entry<String, String> entry : providers.entrySet())
-                {
-                    providerIds[i] = entry.getKey();
-                    providerLabels[i] = entry.getValue();
-                    i++;
-                }
-                mLocalStorageProvider.setEntryValues(providerIds);
-                mLocalStorageProvider.setEntries(providerLabels);
-        mLocalStorageProvider.setValue(mAccount.getLocalStorageProviderId()); 
-        mLocalStorageProvider.setSummary(providers.get((Object)mAccount.getLocalStorageProviderId())); 
-
-        mLocalStorageProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
         {
-            public boolean onPreferenceChange(Preference preference, Object newValue)
+            final Map<String, String> providers;
+            providers = StorageManager.getInstance(K9.app).getAvailableProviders();
+            int i = 0;
+            final String[] providerLabels = new String[providers.size()];
+            final String[] providerIds = new String[providers.size()];
+            for (final Map.Entry<String, String> entry : providers.entrySet())
             {
-                mLocalStorageProvider.setSummary(providers.get(newValue));
-                return true;
+                providerIds[i] = entry.getKey();
+                providerLabels[i] = entry.getValue();
+                i++;
             }
-        });
-            }
+            mLocalStorageProvider.setEntryValues(providerIds);
+            mLocalStorageProvider.setEntries(providerLabels);
+            mLocalStorageProvider.setValue(mAccount.getLocalStorageProviderId());
+            mLocalStorageProvider.setSummary(providers.get((Object)mAccount.getLocalStorageProviderId()));
+
+            mLocalStorageProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+            {
+                public boolean onPreferenceChange(Preference preference, Object newValue)
+                {
+                    mLocalStorageProvider.setSummary(providers.get(newValue));
+                    return true;
+                }
+            });
+        }
         // IMAP-specific preferences
 
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
