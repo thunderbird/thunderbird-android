@@ -1158,7 +1158,7 @@ public class LocalStore extends Store implements Serializable
                 {
                     listener.messageRemoved(messages[i]);
                 }
-                messages[i].setFlag(Flag.X_DESTROYED, true);
+                messages[i].destroy();
 
             }
         }
@@ -4879,8 +4879,6 @@ public class LocalStore extends Store implements Serializable
             }
             else if (flag == Flag.X_DESTROYED && set)
             {
-                ((LocalFolder) mFolder).deleteAttachments(mId);
-                mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
             }
 
             /*
@@ -4978,7 +4976,16 @@ public class LocalStore extends Store implements Serializable
 
         }
 
-
+        /*
+         * Completely remove a message from the local database
+         */
+        @Override
+        public void destroy() throws MessagingException
+        {
+            ((LocalFolder) mFolder).deleteAttachments(mId);
+            mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
+            setFlag(Flag.X_DESTROYED, true);
+        }
 
 
         private void loadHeaders()
