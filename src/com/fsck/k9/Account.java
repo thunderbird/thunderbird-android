@@ -817,6 +817,7 @@ public class Account implements BaseAccount
         {
             this.mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         }
+        resetVisibleLimits();
     }
 
     public synchronized long getLastAutomaticCheckTime()
