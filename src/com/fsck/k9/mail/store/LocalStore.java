@@ -4754,7 +4754,7 @@ public class LocalStore extends Store implements Serializable
         }
 
         @Override
-        public String getSubject() throws MessagingException
+        public String getSubject() 
         {
             return mSubject;
         }
