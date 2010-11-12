@@ -4917,6 +4917,12 @@ public class LocalStore extends Store implements Serializable
                 throw new RuntimeException(me);
             }
 
+            if (flag == Flag.X_DESTROYED && set) 
+            {
+                return;
+            }
+
+
             super.setFlag(flag, set);
             /*
              * Set the flags on the message.
