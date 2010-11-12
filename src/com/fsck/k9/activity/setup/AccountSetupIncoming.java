@@ -91,7 +91,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
     private CheckBox compressionMobile;
     private CheckBox compressionWifi;
     private CheckBox compressionOther;
-    private Spinner mLocalStorageProvider;
     private CheckBox subscribedFoldersOnly;
 
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault)
@@ -137,7 +136,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
         compressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
         compressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
         compressionOther = (CheckBox)findViewById(R.id.compression_other);
-        mLocalStorageProvider = (Spinner) findViewById(R.id.local_storage_provider);
         subscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
 
         mImapFolderDrafts.setOnClickListener(this);
@@ -223,11 +221,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-//        if (mAccount.isInUse()) {
-//            // not enabled unless in initial account-setup until
-//            // migration to/from SD-card in LocalStore#onLocalStoreMigration is implemented
-//            useSDCard.setEnabled(false);
-//        }
         mMakeDefault = (boolean)getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
         /*
@@ -413,21 +406,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
                 updatePortFromSecurityType();
             }
 
-            {
-                final Map<String, String> providers;
-                providers = StorageManager.getInstance(K9.app).getAvailableProviders();
-                int i = 0;
-                final String[] providerLabels = new String[providers.size()];
-                final String[] providerIds = new String[providers.size()];
-                for (final Map.Entry<String, String> entry : providers.entrySet())
-                {
-                    providerIds[i] = entry.getKey();
-                    providerLabels[i] = entry.getValue();
-                    i++;
-                }
-                SpinnerHelper.initSpinner(this, mLocalStorageProvider, providerLabels, providerIds,
-                        mAccount.getLocalStorageProviderId());
-            }
             subscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
 
 
@@ -587,25 +565,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener
             mAccount.setCompression(Account.TYPE_MOBILE, compressionMobile.isChecked());
             mAccount.setCompression(Account.TYPE_WIFI, compressionWifi.isChecked());
             mAccount.setCompression(Account.TYPE_OTHER, compressionOther.isChecked());
-            if (!mAccount.getLocalStorageProviderId().equals(SpinnerHelper.getSpinnerValue(mLocalStorageProvider)))
-            {
-                boolean successful = false;
-                try
-                {
-                    mAccount.switchLocalStorage(this, SpinnerHelper.getSpinnerValue(mLocalStorageProvider));
-                    successful = true;
-                }
-                finally
-                {
-                    // if migration to/from SD-card failed once, it will fail again.
-                    if (!successful)
-                    {
-                        // assume 0 is the fail safe provider
-                        mLocalStorageProvider.setSelection(0);
-                        mLocalStorageProvider.setEnabled(false);
-                    }
-                }
-            }
             mAccount.setSubscribedFoldersOnly(subscribedFoldersOnly.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, true, false);

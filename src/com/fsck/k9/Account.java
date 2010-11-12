@@ -799,7 +799,29 @@ public class Account implements BaseAccount
 
     public void setLocalStorageProviderId(String id)
     {
-        mLocalStorageProviderId = id;
+
+        if (!mLocalStorageProviderId.equals(id)) {
+
+                boolean successful = false;
+                try
+                {
+                    switchLocalStorage(id);
+                    successful = true;
+                } catch (MessagingException e)
+                {
+                }
+                finally
+                {
+                    // if migration to/from SD-card failed once, it will fail again.
+                    if (!successful)
+                    {
+                        return;
+                    }
+                }
+
+            mLocalStorageProviderId = id;
+        }
+
     }
 
 //    public synchronized void setLocalStoreUri(String localStoreUri)
@@ -1351,14 +1373,13 @@ public class Account implements BaseAccount
      *            Never <code>null</code>.
      * @throws MessagingException
      */
-    public void switchLocalStorage(Context context, String newStorageProviderId) throws MessagingException
+    public void switchLocalStorage(String newStorageProviderId) throws MessagingException
     {
         if (this.mLocalStoreMigrationListener != null && !mLocalStorageProviderId.equals(newStorageProviderId))
         {
             mLocalStoreMigrationListener.onLocalStoreMigration(mLocalStorageProviderId,
                     newStorageProviderId);
         }
-        setLocalStorageProviderId(newStorageProviderId);
     }
 
     public synchronized boolean goToUnreadMessageSearch()

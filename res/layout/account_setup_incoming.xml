@@ -245,18 +245,6 @@
                 android:contentDescription="@string/account_setup_incoming_compression_label"
             />
         </LinearLayout>
-        <TextView
-            android:text="@string/local_storage_provider_label"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" />
-        <Spinner
-            android:id="@+id/local_storage_provider"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/local_storage_provider_label"
-            />
         <View
             android:layout_width="fill_parent"
             android:layout_height="0dip"
