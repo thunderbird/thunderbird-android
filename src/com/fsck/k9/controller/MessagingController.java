@@ -1227,9 +1227,9 @@ public class MessagingController implements Runnable
             {
                 for (Message localMessage : localMessages)
                 {
-                    if (remoteUidMap.get(localMessage.getUid()) == null && !localMessage.isSet(Flag.DELETED))
+                    if (remoteUidMap.get(localMessage.getUid()) == null)
                     {
-                        localMessage.setFlag(Flag.X_DESTROYED, true);
+                        localMessage.destroy();
 
                         for (MessagingListener l : getListeners(listener))
                         {
@@ -2367,7 +2367,7 @@ public class MessagingController implements Runnable
                      * delete ours and move on. A sync will get the server message
                      * if we need to be able to see it.
                      */
-                    localMessage.setFlag(Flag.X_DESTROYED, true);
+                    localMessage.destroy();
                 }
                 else
                 {
@@ -3562,7 +3562,7 @@ public class MessagingController implements Runnable
             {
                 if (message.isSet(Flag.DELETED))
                 {
-                    message.setFlag(Flag.X_DESTROYED, true);
+                    message.destroy();
                     continue;
                 }
                 if (message.isSet(Flag.FLAGGED))
