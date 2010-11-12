@@ -940,17 +940,7 @@ public class MessagingController implements Runnable
     {
         for (Account account : accounts)
         {
-            try
-            {
-                LocalStore localStore = account.getLocalStore();
-                localStore.resetVisibleLimits(account.getDisplayCount());
-            }
-            catch (MessagingException e)
-            {
-                addErrorMessage(account, null, e);
-
-                Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
-            }
+            account.resetVisibleLimits();
         }
     }
 
