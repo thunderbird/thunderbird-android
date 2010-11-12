@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Account implements BaseAccount
 {
     /**
-     * @see Account#setLocalStoreMigraionListener(LocalStoreMigrationListener)
+     * @see Account#setLocalStoreMigrationListener(LocalStoreMigrationListener)
      *
      */
     public interface LocalStoreMigrationListener {
@@ -1546,7 +1546,7 @@ public class Account implements BaseAccount
      * @param listener
      * @see #switchLocalStorage(Context, String)
      */
-    public void setLocalStoreMigraionListener(LocalStoreMigrationListener listener)
+    public void setLocalStoreMigrationListener(LocalStoreMigrationListener listener)
     {
         this.mLocalStoreMigrationListener = listener;
     }

@@ -181,7 +181,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         super(account);
         mApplication = application;
         mStorageProviderId = account.getLocalStorageProviderId();
-        account.setLocalStoreMigraionListener(this);
+        account.setLocalStoreMigrationListener(this);
         uUid = account.getUuid();
 
         lockWrite();
