@@ -4867,63 +4867,13 @@ public class LocalStore extends Store implements Serializable
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException
         {
-            /*
-             * If a message is being marked as deleted we want to clear out it's content
-             * and attachments as well. Delete will not actually remove the row since we need
-             * to retain the uid for synchronization purposes.
-             */
 
             if (flag == Flag.DELETED && set)
             {
                 delete();
             }
-            else if (flag == Flag.X_DESTROYED && set)
-            {
-            }
 
-            /*
-             * Update the unread count on the folder.
-             */
-            try
-            {
-                LocalFolder folder = (LocalFolder)mFolder;
-                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED)
-                {
-                    if (set != isSet(Flag.SEEN))
-                    {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
-                    }
-                    if (isSet(Flag.FLAGGED))
-                    {
-                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ? -1 : 1));
-                    }
-                }
-
-
-                if ( flag == Flag.SEEN && !isSet(Flag.DELETED))
-                {
-                    if (set != isSet(Flag.SEEN))
-                    {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
-                    }
-                }
-
-                if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
-                {
-                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
-                }
-            }
-            catch (MessagingException me)
-            {
-                Log.e(K9.LOG_TAG, "Unable to update LocalStore unread message count",
-                      me);
-                throw new RuntimeException(me);
-            }
-
-            if (flag == Flag.X_DESTROYED && set) 
-            {
-                return;
-            }
+            updateFolderCountsOnFlag(flag, set);
 
 
             super.setFlag(flag, set);
@@ -4938,6 +4888,11 @@ public class LocalStore extends Store implements Serializable
 
         }
 
+            /*
+             * If a message is being marked as deleted we want to clear out it's content
+             * and attachments as well. Delete will not actually remove the row since we need
+             * to retain the uid for synchronization purposes.
+             */
         private void delete() throws MessagingException
 
         {
@@ -4989,9 +4944,50 @@ public class LocalStore extends Store implements Serializable
         {
             ((LocalFolder) mFolder).deleteAttachments(mId);
             mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
-            setFlag(Flag.X_DESTROYED, true);
+            updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
         }
 
+        private void updateFolderCountsOnFlag(Flag flag, boolean set) throws MessagingException
+        {
+            /*
+             * Update the unread count on the folder.
+             */
+            try
+            {
+                LocalFolder folder = (LocalFolder)mFolder;
+                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED)
+                {
+                    if (set != isSet(Flag.SEEN))
+                    {
+                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
+                    }
+                    if (isSet(Flag.FLAGGED))
+                    {
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ? -1 : 1));
+                    }
+                }
+
+
+                if ( flag == Flag.SEEN && !isSet(Flag.DELETED))
+                {
+                    if (set != isSet(Flag.SEEN))
+                    {
+                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
+                    }
+                }
+
+                if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
+                {
+                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
+                }
+            }
+            catch (MessagingException me)
+            {
+                Log.e(K9.LOG_TAG, "Unable to update LocalStore unread message count",
+                      me);
+                throw new RuntimeException(me);
+            }
+        }
 
         private void loadHeaders()
         {
