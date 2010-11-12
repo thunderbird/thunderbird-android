@@ -1181,7 +1181,7 @@ public class MessagingController implements Runnable
             {
                 for (Message localMessage : localMessages)
                 {
-                    if (remoteUidMap.get(localMessage.getUid()) == null && !localMessage.isSet(Flag.DELETED))
+                    if (remoteUidMap.get(localMessage.getUid()) == null)
                     {
                         localMessage.setFlag(Flag.X_DESTROYED, true);
 
