@@ -2799,7 +2799,14 @@ public class MessageList
                 {
                     if (!mCurrentFolder.lastCheckFailed)
                     {
-                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                       if (mAccount.getDisplayCount() == 0 )
+                       {
+                            holder.main.setText(getString(R.string.message_list_load_more_messages_action));
+                       } 
+                       else
+                       {
+                            holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                       }
                     }
                     else
                     {

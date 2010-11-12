@@ -54,6 +54,7 @@
         <item>@string/account_setup_options_mail_display_count_250</item>
         <item>@string/account_setup_options_mail_display_count_500</item>
         <item>@string/account_setup_options_mail_display_count_1000</item>
+        <item>@string/account_setup_options_mail_display_count_all</item>
     </string-array>
 
     <string-array name="account_settings_display_count_values">
@@ -64,6 +65,7 @@
         <item>250</item>
         <item>500</item>
         <item>1000</item>
+        <item>0</item>
     </string-array>
 
     <string-array name="account_settings_message_age_entries">

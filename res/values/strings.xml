@@ -493,6 +493,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_options_mail_display_count_250">250 messages</string>
     <string name="account_setup_options_mail_display_count_500">500 messages</string>
     <string name="account_setup_options_mail_display_count_1000">1000 messages</string>
+    <string name="account_setup_options_mail_display_count_all">all messages</string>
 
 
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronized with the server</string>

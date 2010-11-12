@@ -1150,6 +1150,10 @@ public class LocalStore extends Store implements Serializable
 
         public void purgeToVisibleLimit(MessageRemovalListener listener) throws MessagingException
         {
+            if ( mVisibleLimit == 0) 
+            {
+                    return ;
+            }
             open(OpenMode.READ_WRITE);
             Message[] messages = getMessages(null, false);
             for (int i = mVisibleLimit; i < messages.length; i++)

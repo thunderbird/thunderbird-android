@@ -576,7 +576,7 @@ public class Account implements BaseAccount
     }
 
 
-    public void resetVisibleLimits()
+    public void resetVisibleLimits() 
     {
             try
             {

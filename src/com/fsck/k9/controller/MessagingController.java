@@ -925,7 +925,9 @@ public class MessagingController implements Runnable
         {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(folder);
-            localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
+            if (localFolder.getVisibleLimit() > 0 )  {
+                localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
+            }
             synchronizeMailbox(account, folder, listener, null);
         }
         catch (MessagingException me)
@@ -1100,7 +1102,7 @@ public class MessagingController implements Runnable
 
             int visibleLimit = localFolder.getVisibleLimit();
 
-            if (visibleLimit < 1)
+            if (visibleLimit < 0)
             {
                 visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
             }
@@ -1118,7 +1120,14 @@ public class MessagingController implements Runnable
                 /*
                  * Message numbers start at 1.
                  */
-                int remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
+                int remoteStart;
+                if (visibleLimit > 0 ) 
+                {
+                    remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
+                }
+                else {
+                    remoteStart = 1;
+                }
                 int remoteEnd = remoteMessageCount;
 
                 if (K9.DEBUG)
@@ -1479,7 +1488,7 @@ public class MessagingController implements Runnable
             int visibleLimit = localFolder.getVisibleLimit();
             int listSize = unsyncedMessages.size();
 
-            if (listSize > visibleLimit)
+            if ((visibleLimit > 0) && (listSize > visibleLimit))
             {
                 unsyncedMessages = unsyncedMessages.subList(listSize - visibleLimit, listSize);
             }
