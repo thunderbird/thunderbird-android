@@ -1532,11 +1532,6 @@ public class MessageList
     private void checkMail(Account account, String folderName)
     {
         mController.synchronizeMailbox(account, folderName, mAdapter.mListener, null);
-        sendMail(account);
-    }
-
-    private void sendMail(Account account)
-    {
         mController.sendPendingMessages(account, mAdapter.mListener);
     }
 
@@ -1650,7 +1645,7 @@ public class MessageList
             }
             case R.id.send_messages:
             {
-                sendMail(mAccount);
+                mController.sendPendingMessages(mAccount, mAdapter.mListener);
                 return true;
             }
             case R.id.list_folders:
