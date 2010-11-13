@@ -235,8 +235,6 @@ public class K9 extends Application
      */
     public static int DEFAULT_VISIBLE_LIMIT = 25;
 
-    public static int MAX_SEND_ATTEMPTS = 1;
-
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)
      * Attachments that are base64 encoded (most) will be about 1.375x their actual size
