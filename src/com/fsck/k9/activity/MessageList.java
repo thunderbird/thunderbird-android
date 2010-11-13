@@ -39,6 +39,9 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -104,7 +107,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 public class MessageList
         extends K9Activity
  implements OnClickListener,
-        ExpandableListView.OnGroupExpandListener, ExpandableListView.OnGroupCollapseListener
+        ExpandableListView.OnGroupExpandListener, ExpandableListView.OnGroupCollapseListener, AnimationListener
 {
 
     protected class Listener extends ActivityListener
@@ -499,6 +502,8 @@ public class MessageList
     private View mFooterView;
 
     private boolean mTouchView = true;
+    private int mPreviewLines = 0;
+
 
     private MessageListAdapter mAdapter;
 
@@ -936,6 +941,7 @@ public class MessageList
         // Only set "touchable" when we're first starting up the activity.
         // Otherwise we get force closes when the user toggles it midstream.
         mTouchView = K9.messageListTouchable();
+        mPreviewLines = K9.messageListPreviewLines();
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -1245,7 +1251,14 @@ public class MessageList
             {
                 if (!mCurrentFolder.lastCheckFailed)
                 {
-                    holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                    if (mAccount.getDisplayCount() == 0 )
+                    {
+                        holder.main.setText(getString(R.string.message_list_load_more_messages_action));
+                    }
+                    else
+                    {
+                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                    }
                 }
                 else
                 {
@@ -1514,6 +1527,11 @@ public class MessageList
         return super.onKeyUp(keyCode,event);
     }
 
+
+    private void onResendMessage(MessageInfoHolder message)
+    {
+        MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
+    }
 
     private void onOpenMessage(MessageInfoHolder message)
     {
@@ -1874,11 +1892,6 @@ public class MessageList
     private void checkMail(Account account, String folderName)
     {
         mController.synchronizeMailbox(account, folderName, mStore.mListener, null);
-        sendMail(account);
-    }
-
-    private void sendMail(Account account)
-    {
         mController.sendPendingMessages(account, mStore.mListener);
     }
 
@@ -2019,7 +2032,7 @@ public class MessageList
             }
             case R.id.send_messages:
             {
-                sendMail(mAccount);
+                mController.sendPendingMessages(mAccount, mStore.mListener);
                 return true;
             }
             case R.id.list_folders:
@@ -2122,7 +2135,7 @@ public class MessageList
         }
         else
         {
-            if (mCurrentFolder != null && mCurrentFolder.outbox)
+            if (mCurrentFolder != null && mCurrentFolder.name.equals(mAccount.getOutboxFolderName()))
             {
                 menu.findItem(R.id.check_mail).setVisible(false);
             }
@@ -2237,6 +2250,12 @@ public class MessageList
             {
                 onForward(holder);
                 break;
+            }
+            case R.id.send_again:
+            {
+                onResendMessage(holder);
+                break;
+
             }
             case R.id.mark_as_read:
             {
@@ -3054,9 +3073,10 @@ public class MessageList
         {
             synchronized (messages)
             {
-                for (final Iterator<MessageInfoHolder> iter = messages.iterator(); iter.hasNext(); )
+                Iterator<MessageInfoHolder> iter = messages.iterator();
+                while (iter.hasNext())
                 {
-                    final MessageInfoHolder holder = iter.next();
+                    MessageInfoHolder holder = iter.next();
                     if (holder.dirty)
                     {
                         if (holder.selected)
@@ -3064,7 +3084,7 @@ public class MessageList
                             mSelectedCount--;
                             toggleBatchButtons();
                         }
-                        iter.remove();
+                        removeMessages(Collections.singletonList(holder));
                     }
                 }
             }
@@ -3209,6 +3229,19 @@ public class MessageList
                 {
                     holder.selected.setOnCheckedChangeListener(holder);
                 }
+                holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
+                holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
+
+                if (mTouchView)
+                {
+                    holder.preview.setLines(mPreviewLines);
+                    holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+
+                }
+                else
+                {
+                    holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
+                }
 
                 view.setTag(holder);
             }
@@ -3252,17 +3285,6 @@ public class MessageList
                 holder.flagged.setChecked(false);
             }
 
-            holder.subject.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSubject());
-            holder.date.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListDate());
-
-            if (mTouchView)
-            {
-                holder.preview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
-            }
-            else
-            {
-                holder.from.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getMessageListSender());
-            }
 
             return view;
         }
@@ -3931,14 +3953,23 @@ public class MessageList
 
     private void hideBatchButtons()
     {
-        //TODO: Fade out animation
-        mBatchButtonArea.setVisibility(View.GONE);
+        if (mBatchButtonArea.getVisibility() != View.GONE)
+        {
+            mBatchButtonArea.setVisibility(View.GONE);
+            mBatchButtonArea.startAnimation(
+                AnimationUtils.loadAnimation(this, R.anim.footer_disappear));
+        }
     }
 
     private void showBatchButtons()
     {
-        //TODO: Fade in animation
-        mBatchButtonArea.setVisibility(View.VISIBLE);
+        if (mBatchButtonArea.getVisibility() != View.VISIBLE)
+        {
+            mBatchButtonArea.setVisibility(View.VISIBLE);
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
+            animation.setAnimationListener(this);
+            mBatchButtonArea.startAnimation(animation);
+        }
     }
 
     private void toggleBatchButtons()
@@ -4104,6 +4135,20 @@ public class MessageList
         }
         mHandler.sortMessages();
     }
+
+    public void onAnimationEnd(Animation animation)
+    {
+    }
+
+    public void onAnimationRepeat(Animation animation)
+    {
+    }
+
+    public void onAnimationStart(Animation animation)
+    {
+    }
+
+
 
     private void setAllSelected(boolean isSelected)
     {

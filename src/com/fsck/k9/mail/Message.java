@@ -199,6 +199,9 @@ public abstract class Message implements Part, Body
         return mFlags.contains(flag);
     }
 
+
+    public void destroy() throws MessagingException {}
+
     public abstract void saveChanges() throws MessagingException;
 
     public abstract void setEncoding(String encoding);

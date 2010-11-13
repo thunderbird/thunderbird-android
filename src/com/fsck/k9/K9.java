@@ -140,6 +140,7 @@ public class K9 extends Application
     private static boolean mMessageListStars = true;
     private static boolean mMessageListCheckboxes = false;
     private static boolean mMessageListTouchable = false;
+    private static int mMessageListPreviewLines = 2;
 
     private static boolean mShowContactName = false;
     private static boolean mChangeContactNameColor = false;
@@ -233,13 +234,6 @@ public class K9 extends Application
      * VISIBLE_LIMIT_INCREMENT
      */
     public static int DEFAULT_VISIBLE_LIMIT = 25;
-
-    /**
-     * Number of additioanl messages to load when a user selectes "Load more messages..."
-     */
-    public static int VISIBLE_LIMIT_INCREMENT = 25;
-
-    public static int MAX_SEND_ATTEMPTS = 5;
 
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)
@@ -386,6 +380,7 @@ public class K9 extends Application
         editor.putBoolean("messageListStars",mMessageListStars);
         editor.putBoolean("messageListCheckboxes",mMessageListCheckboxes);
         editor.putBoolean("messageListTouchable",mMessageListTouchable);
+        editor.putInt("messageListPreviewLines",mMessageListPreviewLines);
 
         editor.putBoolean("showContactName",mShowContactName);
         editor.putBoolean("changeRegisteredNameColor",mChangeContactNameColor);
@@ -427,6 +422,8 @@ public class K9 extends Application
         mMessageListStars = sprefs.getBoolean("messageListStars",true);
         mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes",false);
         mMessageListTouchable = sprefs.getBoolean("messageListTouchable",false);
+        mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
+
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
         mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled",false);
 
@@ -703,6 +700,16 @@ public class K9 extends Application
     public static void setMessageListTouchable(boolean touchy)
     {
         mMessageListTouchable = touchy;
+    }
+
+    public static int messageListPreviewLines()
+    {
+        return mMessageListPreviewLines;
+    }
+
+    public static void setMessageListPreviewLines(int lines)
+    {
+        mMessageListPreviewLines = lines;
     }
 
     public static boolean messageListStars()

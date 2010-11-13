@@ -46,6 +46,7 @@
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
+    <string name="send_again_action">Send Again</string>
     <string name="select_action">Select</string>
     <string name="deselect_action">Deselect</string>
     <string name="reply_action">Reply</string>
@@ -314,7 +315,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="global_settings_checkbox_summary">Always show multi-select checkboxes</string>
     <string name="global_settings_touchable_label">Message previews</string>
     <string name="global_settings_touchable_summary">Roomier list items with message previews</string>
-
+    <string name="global_settings_preview_lines_label">Preview lines</string>
     <string name="global_settings_show_contact_name_label">Show contact names</string>
     <string name="global_settings_show_contact_name_summary">Use recipient names from Contacts when available</string>
     <string name="global_settings_registered_name_color_label">Colorize contacts</string>
@@ -493,6 +494,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_options_mail_display_count_250">250 messages</string>
     <string name="account_setup_options_mail_display_count_500">500 messages</string>
     <string name="account_setup_options_mail_display_count_1000">1000 messages</string>
+    <string name="account_setup_options_mail_display_count_all">all messages</string>
 
 
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronized with the server</string>

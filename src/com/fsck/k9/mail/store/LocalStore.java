@@ -1150,6 +1150,10 @@ public class LocalStore extends Store implements Serializable
 
         public void purgeToVisibleLimit(MessageRemovalListener listener) throws MessagingException
         {
+            if ( mVisibleLimit == 0)
+            {
+                return ;
+            }
             open(OpenMode.READ_WRITE);
             Message[] messages = getMessages(null, false);
             for (int i = mVisibleLimit; i < messages.length; i++)
@@ -1158,7 +1162,7 @@ public class LocalStore extends Store implements Serializable
                 {
                     listener.messageRemoved(messages[i]);
                 }
-                messages[i].setFlag(Flag.X_DESTROYED, true);
+                messages[i].destroy();
 
             }
         }
@@ -2412,20 +2416,29 @@ public class LocalStore extends Store implements Serializable
                 return null;
             }
 
-            text = text.replaceAll("(?ms)^-----BEGIN PGP SIGNED MESSAGE-----.(Hash:\\s*?.*?$)?","");
+            // Only look at the first 8k of a message when calculating
+            // the preview.  This should avoid unnecessary
+            // memory usage on large messages
+            if (text.length() > 8192)
+            {
+                text = text.substring(0,8192);
+            }
+
+
+            text = text.replaceAll("(?m)^----.*?$","");
+            text = text.replaceAll("(?m)^[#>].*$","");
+            text = text.replaceAll("(?m)^On .*wrote.?$","");
+            text = text.replaceAll("(?m)^.*\\w+:$","");
             text = text.replaceAll("https?://\\S+","...");
-            text = text.replaceAll("^.*\\w.*:","");
-            text = text.replaceAll("(?m)^>.*$","");
-            text = text.replaceAll("^On .*wrote.?$","");
             text = text.replaceAll("(\\r|\\n)+"," ");
             text = text.replaceAll("\\s+"," ");
-            if (text.length() <= 250)
+            if (text.length() <= 512)
             {
                 return text;
             }
             else
             {
-                text = text.substring(0,250);
+                text = text.substring(0,512);
                 return text;
             }
 
@@ -2502,10 +2515,13 @@ public class LocalStore extends Store implements Serializable
                 int start = m.start();
                 if (start == 0 || (start != 0 && text.charAt(start - 1) != '@'))
                 {
-                    if (m.group().indexOf(':') > 0) { // With no URI-schema we may get "http:/" links with the second / missing
+                    if (m.group().indexOf(':') > 0)   // With no URI-schema we may get "http:/" links with the second / missing
+                    {
                         m.appendReplacement(sb, "<a href=\"$0\">$0</a>");
-                    } else {
-                        m.appendReplacement(sb, "<a href=\"http://$0\">$0</a>");                    	
+                    }
+                    else
+                    {
+                        m.appendReplacement(sb, "<a href=\"http://$0\">$0</a>");
                     }
                 }
                 else
@@ -4742,7 +4758,7 @@ public class LocalStore extends Store implements Serializable
         }
 
         @Override
-        public String getSubject() throws MessagingException
+        public String getSubject()
         {
             return mSubject;
         }
@@ -4855,55 +4871,14 @@ public class LocalStore extends Store implements Serializable
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException
         {
-            /*
-             * If a message is being marked as deleted we want to clear out it's content
-             * and attachments as well. Delete will not actually remove the row since we need
-             * to retain the uid for synchronization purposes.
-             */
 
             if (flag == Flag.DELETED && set)
             {
                 delete();
             }
-            else if (flag == Flag.X_DESTROYED && set)
-            {
-                ((LocalFolder) mFolder).deleteAttachments(mId);
-                mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
-            }
 
-            /*
-             * Update the unread count on the folder.
-             */
-            try
-            {
-                LocalFolder folder = (LocalFolder)mFolder;
-                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED
-                        || (flag == Flag.SEEN && !isSet(Flag.DELETED)))
-                {
-                    if (set && !isSet(Flag.SEEN))
-                    {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() - 1);
-                    }
-                    else if (!set && isSet(Flag.SEEN))
-                    {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + 1);
-                    }
-                }
-                if ((flag == Flag.DELETED || flag == Flag.X_DESTROYED) && isSet(Flag.FLAGGED))
-                {
-                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ? -1 : 1));
-                }
-                if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
-                {
-                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
-                }
-            }
-            catch (MessagingException me)
-            {
-                Log.e(K9.LOG_TAG, "Unable to update LocalStore unread message count",
-                      me);
-                throw new RuntimeException(me);
-            }
+            updateFolderCountsOnFlag(flag, set);
+
 
             super.setFlag(flag, set);
             /*
@@ -4917,6 +4892,11 @@ public class LocalStore extends Store implements Serializable
 
         }
 
+        /*
+         * If a message is being marked as deleted we want to clear out it's content
+         * and attachments as well. Delete will not actually remove the row since we need
+         * to retain the uid for synchronization purposes.
+         */
         private void delete() throws MessagingException
 
         {
@@ -4960,8 +4940,58 @@ public class LocalStore extends Store implements Serializable
 
         }
 
+        /*
+         * Completely remove a message from the local database
+         */
+        @Override
+        public void destroy() throws MessagingException
+        {
+            ((LocalFolder) mFolder).deleteAttachments(mId);
+            mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
+            updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
+        }
+
+        private void updateFolderCountsOnFlag(Flag flag, boolean set) throws MessagingException
+        {
+            /*
+             * Update the unread count on the folder.
+             */
+            try
+            {
+                LocalFolder folder = (LocalFolder)mFolder;
+                if (flag == Flag.DELETED || flag == Flag.X_DESTROYED)
+                {
+                    if (set != isSet(Flag.SEEN))
+                    {
+                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
+                    }
+                    if (isSet(Flag.FLAGGED))
+                    {
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ? -1 : 1));
+                    }
+                }
 
 
+                if ( flag == Flag.SEEN && !isSet(Flag.DELETED))
+                {
+                    if (set != isSet(Flag.SEEN))
+                    {
+                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
+                    }
+                }
+
+                if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
+                {
+                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
+                }
+            }
+            catch (MessagingException me)
+            {
+                Log.e(K9.LOG_TAG, "Unable to update LocalStore unread message count",
+                      me);
+                throw new RuntimeException(me);
+            }
+        }
 
         private void loadHeaders()
         {

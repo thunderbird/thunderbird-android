@@ -312,7 +312,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_checkbox_summary">複数選択チェックボックス常時表示</string>
     <string name="global_settings_touchable_label">メッセージプレビュー</string>
     <string name="global_settings_touchable_summary">メッセージ一覧にプレビューを追加</string>
-
+    <string name="global_settings_preview_lines_label">メッセージプレビューの行数</string>
     <string name="global_settings_show_contact_name_label">連絡先の名前を表示</string>
     <string name="global_settings_show_contact_name_summary">可能なら宛先に連絡先の名前を利用する</string>
     <string name="global_settings_registered_name_color_label">連絡先の名前に色を付ける</string>
