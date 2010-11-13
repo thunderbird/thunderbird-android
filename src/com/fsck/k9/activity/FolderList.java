@@ -531,11 +531,6 @@ public class FolderList extends K9ListActivity
         MessagingController.getInstance(getApplication()).expunge(account, folderName, null);
     }
 
-    private void checkMail(final Account account)
-    {
-        MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, mAdapter.mListener);
-    }
-
     private void sendMail(Account account)
     {
         MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
@@ -551,7 +546,7 @@ public class FolderList extends K9ListActivity
                 return true;
 
             case R.id.check_mail:
-                checkMail(mAccount);
+                MessagingController.getInstance(getApplication()).checkMail(this, mAccount, true, true, mAdapter.mListener);
 
                 return true;
 
