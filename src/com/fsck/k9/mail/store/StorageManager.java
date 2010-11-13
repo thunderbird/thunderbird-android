@@ -191,7 +191,7 @@ public class StorageManager
         @Override
         public void init(final Context context)
         {
-            mRoot = getRoot(context);
+            mRoot = computeRoot(context);
             // use <STORAGE_ROOT>/k9
             mApplicationDir = new File(mRoot, "k9");
         }
