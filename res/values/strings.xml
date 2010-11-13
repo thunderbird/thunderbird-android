@@ -46,6 +46,7 @@
     <string name="okay_action">OK</string> <!--  User to confirm acceptance of dialog boxes, warnings, errors, etc. -->
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
+    <string name="send_again_action">Send Again</string>
     <string name="select_action">Select</string>
     <string name="deselect_action">Deselect</string>
     <string name="reply_action">Reply</string>

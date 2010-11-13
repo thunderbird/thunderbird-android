@@ -1110,6 +1110,11 @@ public class MessageList
     }
 
 
+    private void onResendMessage(MessageInfoHolder message)
+    {
+        MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
+    }
+
     private void onOpenMessage(MessageInfoHolder message)
     {
         if (message.folder.name.equals(message.message.getFolder().getAccount().getDraftsFolderName()))
@@ -1842,6 +1847,12 @@ public class MessageList
             {
                 onForward(holder);
                 break;
+            }
+            case R.id.send_again:
+            {
+                onResendMessage(holder);
+                break;
+
             }
             case R.id.mark_as_read:
             {
