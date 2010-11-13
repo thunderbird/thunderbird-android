@@ -1150,9 +1150,9 @@ public class LocalStore extends Store implements Serializable
 
         public void purgeToVisibleLimit(MessageRemovalListener listener) throws MessagingException
         {
-            if ( mVisibleLimit == 0) 
+            if ( mVisibleLimit == 0)
             {
-                    return ;
+                return ;
             }
             open(OpenMode.READ_WRITE);
             Message[] messages = getMessages(null, false);
@@ -2416,7 +2416,7 @@ public class LocalStore extends Store implements Serializable
                 return null;
             }
 
-            // Only look at the first 8k of a message when calculating 
+            // Only look at the first 8k of a message when calculating
             // the preview.  This should avoid unnecessary
             // memory usage on large messages
             if (text.length() > 8192)
@@ -4758,7 +4758,7 @@ public class LocalStore extends Store implements Serializable
         }
 
         @Override
-        public String getSubject() 
+        public String getSubject()
         {
             return mSubject;
         }
@@ -4892,11 +4892,11 @@ public class LocalStore extends Store implements Serializable
 
         }
 
-            /*
-             * If a message is being marked as deleted we want to clear out it's content
-             * and attachments as well. Delete will not actually remove the row since we need
-             * to retain the uid for synchronization purposes.
-             */
+        /*
+         * If a message is being marked as deleted we want to clear out it's content
+         * and attachments as well. Delete will not actually remove the row since we need
+         * to retain the uid for synchronization purposes.
+         */
         private void delete() throws MessagingException
 
         {

@@ -925,7 +925,8 @@ public class MessagingController implements Runnable
         {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(folder);
-            if (localFolder.getVisibleLimit() > 0 )  {
+            if (localFolder.getVisibleLimit() > 0 )
+            {
                 localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
             }
             synchronizeMailbox(account, folder, listener, null);
@@ -1121,11 +1122,12 @@ public class MessagingController implements Runnable
                  * Message numbers start at 1.
                  */
                 int remoteStart;
-                if (visibleLimit > 0 ) 
+                if (visibleLimit > 0 )
                 {
                     remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
                 }
-                else {
+                else
+                {
                     remoteStart = 1;
                 }
                 int remoteEnd = remoteMessageCount;

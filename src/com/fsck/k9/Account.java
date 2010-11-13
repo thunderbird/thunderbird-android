@@ -576,17 +576,17 @@ public class Account implements BaseAccount
     }
 
 
-    public void resetVisibleLimits() 
+    public void resetVisibleLimits()
     {
-            try
-            {
-                LocalStore localStore = getLocalStore();
-                localStore.resetVisibleLimits(getDisplayCount());
-            }
-            catch (MessagingException e)
-            {
-                Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
-            }
+        try
+        {
+            LocalStore localStore = getLocalStore();
+            localStore.resetVisibleLimits(getDisplayCount());
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
+        }
 
     }
 

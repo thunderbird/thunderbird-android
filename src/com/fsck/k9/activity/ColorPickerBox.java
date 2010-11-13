@@ -1,8 +1,8 @@
 /* Sourced from http://code.google.com/p/android-color-picker/source/browse/trunk/AmbilWarna/src/yuku/ambilwarna/AmbilWarnaBox.java?r=1
- * On 2010-11-07 
+ * On 2010-11-07
  * Translated to English, Ported to use the same (inferior) API as the more standard "ColorPickerDialog" and imported into the K-9 namespace by Jesse Vincent
  * In an ideal world, we should move to using AmbilWarna as an Android Library Project in the future
- * License: Apache 2.0 
+ * License: Apache 2.0
  * Author: yukuku@code.google.com
  */
 
