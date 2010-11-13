@@ -3509,12 +3509,6 @@ public class MessagingController implements Runnable
                     message.destroy();
                     continue;
                 }
-                if (message.isSet(Flag.FLAGGED))
-                {
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "Skipping sending FLAGGED message " + message.getUid());
-                    continue;
-                }
                 try
                 {
                     AtomicInteger count = new AtomicInteger(0);
