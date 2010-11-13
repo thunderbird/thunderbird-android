@@ -84,6 +84,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
      * HibernateCallback.
      *
      * @param <T>
+     *            Return value type for {@link #doDbWork(SQLiteDatabase)}
      */
     public static interface DbCallback<T>
     {
@@ -95,9 +96,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          * @throws WrappedException
          * @throws UnavailableStorageException
          */
-        T doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException;
+        T doDbWork(SQLiteDatabase db) throws WrappedException, UnavailableStorageException;
     }
 
+    /**
+     * Workaround exception wrapper used to keep the inner exception generated
+     * in a {@link DbCallback}.
+     */
     protected static class WrappedException extends RuntimeException
     {
         /**
@@ -170,6 +175,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     private final StorageListener mStorageListener = new StorageListener();
 
+    /**
+     * {@link ThreadLocal} to check whether a DB transaction is occuring in the
+     * current {@link Thread}.
+     * 
+     * @see #execute(boolean, DbCallback)
+     */
     private ThreadLocal<Boolean> inTransaction = new ThreadLocal<Boolean>();
 
     /**
@@ -298,18 +309,18 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     }
 
     /**
-     * Execute a DB work in a shared context (doesn't prevent concurrent shared
-     * executions), taking care of locking the DB storage.
-     *
+     * Execute a DB callback in a shared context (doesn't prevent concurrent
+     * shared executions), taking care of locking the DB storage.
+     * 
      * <p>
      * Can be instructed to start a transaction if none is currently active in
-     * the current thread. Work will participe in any active transaction (no
+     * the current thread. Callback will participe in any active transaction (no
      * inner transaction created).
      * </p>
      *
      * @param transactional
-     *            <code>true</code> if a transaction must be started if none is
-     *            present
+     *            <code>true</code> the callback must be executed in a
+     *            transactional context.
      * @param callback
      *            Never <code>null</code>.
      *
@@ -352,6 +363,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     {
                         begin = 0l;
                     }
+                    // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
                     mDb.endTransaction();
                     if (debug)
                     {
