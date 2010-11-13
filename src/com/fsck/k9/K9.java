@@ -235,11 +235,6 @@ public class K9 extends Application
      */
     public static int DEFAULT_VISIBLE_LIMIT = 25;
 
-    /**
-     * Number of additioanl messages to load when a user selectes "Load more messages..."
-     */
-    public static int VISIBLE_LIMIT_INCREMENT = 25;
-
     public static int MAX_SEND_ATTEMPTS = 5;
 
     /**
