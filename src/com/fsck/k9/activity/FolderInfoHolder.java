@@ -75,12 +75,12 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder>
         populate(context, folder, account);
     }
 
-    public FolderInfoHolder(Context context, Folder folder, Account mAccount, int unreadCount)
+    public FolderInfoHolder(Context context, Folder folder, Account account, int unreadCount)
     {
-        populate(context, folder, mAccount, unreadCount);
+        populate(context, folder, account, unreadCount);
     }
 
-    public void populate(Context context, Folder folder, Account mAccount, int unreadCount)
+    public void populate(Context context, Folder folder, Account account, int unreadCount)
     {
 
         try
@@ -93,53 +93,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder>
             Log.e(K9.LOG_TAG, "Folder.getUnreadMessageCount() failed", me);
         }
 
-        this.name = folder.getName();
-
-        if (this.name.equalsIgnoreCase(K9.INBOX))
-        {
-            this.displayName = context.getString(R.string.special_mailbox_name_inbox);
-        }
-        else
-        {
-            this.displayName = folder.getName();
-        }
-
-        if (this.name.equals(mAccount.getOutboxFolderName()))
-        {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_outbox_fmt), this.name);
-            this.outbox = true;
-        }
-
-        if (this.name.equals(mAccount.getDraftsFolderName()))
-        {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_drafts_fmt), this.name);
-        }
-
-        if (this.name.equals(mAccount.getTrashFolderName()))
-        {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_trash_fmt), this.name);
-        }
-
-        if (this.name.equals(mAccount.getSentFolderName()))
-        {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_sent_fmt), this.name);
-        }
-
-        if (this.name.equals(mAccount.getArchiveFolderName()))
-        {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_archive_fmt), this.name);
-        }
-
-        if (this.name.equals(mAccount.getSpamFolderName()))
-        {
-            this.displayName = String.format(context.getString(R.string.special_mailbox_name_spam_fmt), this.name);
-        }
-
-        this.lastChecked = folder.getLastUpdate();
-
-        String mess = truncateStatus(folder.getStatus());
-
-        this.status = mess;
+        populate(context,folder,account);
 
         this.unreadMessageCount = unreadCount;
 
@@ -161,6 +115,11 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder>
     {
         this.folder = folder;
         this.name = folder.getName();
+        this.lastChecked = folder.getLastUpdate();
+
+        String mess = truncateStatus(folder.getStatus());
+
+        this.status = mess;
 
         if (this.name.equalsIgnoreCase(K9.INBOX))
         {
@@ -168,7 +127,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder>
         }
         else
         {
-            this.displayName = this.name;
+            this.displayName = folder.getName();
         }
 
         if (this.name.equals(account.getOutboxFolderName()))
