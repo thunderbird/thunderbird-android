@@ -283,6 +283,17 @@
             android:dialogTitle="@string/account_settings_searchable_label" />
 
     </PreferenceScreen>
+    <PreferenceScreen
+        android:title="@string/account_settings_storage_title"
+        android:key="folders">
+
+        <ListPreference
+            android:persistent="false"
+            android:key="local_storage_provider"
+            android:title="@string/local_storage_provider_label"
+            android:dialogTitle="@string/local_storage_provider_label"
+            />
+    </PreferenceScreen>
 
     <PreferenceScreen
         android:title="@string/account_settings_notifications"

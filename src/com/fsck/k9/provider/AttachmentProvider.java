@@ -10,17 +10,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.os.Environment;
 import android.util.Log;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.AttachmentInfo;
+import com.fsck.k9.mail.store.StorageManager;
 
 import java.io.*;
 import java.util.List;
 
-/*
- * A simple ContentProvider that allows file access to Email's attachments.
+/**
+ * A simple ContentProvider that allows file access to Email's attachments.<br/>
+ * Warning! We make heavy assumptions about the Uris used by the {@link LocalStore} for an {@link Account} here.
  */
 public class AttachmentProvider extends ContentProvider
 {
@@ -39,13 +44,13 @@ public class AttachmentProvider extends ContentProvider
 
     public static Uri getAttachmentUri(Account account, long id)
     {
-        return getAttachmentUri(account.getUuid() + ".db" , id);
+        return getAttachmentUri(account.getUuid(), id);
     }
 
     public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height)
     {
         return CONTENT_URI.buildUpon()
-               .appendPath(account.getUuid() + ".db")
+               .appendPath(account.getUuid())
                .appendPath(Long.toString(id))
                .appendPath(FORMAT_THUMBNAIL)
                .appendPath(Integer.toString(width))
@@ -53,7 +58,7 @@ public class AttachmentProvider extends ContentProvider
                .build();
     }
 
-    public static Uri getAttachmentUri(String db, long id)
+    private static Uri getAttachmentUri(String db, long id)
     {
         return CONTENT_URI.buildUpon()
                .appendPath(db)
@@ -113,43 +118,17 @@ public class AttachmentProvider extends ContentProvider
         }
         else
         {
-            String path = getContext().getDatabasePath(dbName).getAbsolutePath();
-            SQLiteDatabase db = null;
-            Cursor cursor = null;
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+
             try
             {
-                db = SQLiteDatabase.openDatabase(path, null, 0);
-                cursor = db.query(
-                             "attachments",
-                             new String[] { "mime_type", "name" },
-                             "id = ?",
-                             new String[] { id },
-                             null,
-                             null,
-                             null);
-                cursor.moveToFirst();
-                String type = cursor.getString(0);
-                String name = cursor.getString(1);
-                cursor.close();
-                db.close();
-
-                if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(type))
-                {
-                    type = MimeUtility.getMimeTypeByExtension(name);
-                }
-                return type;
+                final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
+                return localStore.getAttachmentType(id);
             }
-            finally
+            catch (MessagingException e)
             {
-                if (cursor != null)
-                {
-                    cursor.close();
-                }
-                if (db != null)
-                {
-                    db.close();
-                }
-
+                Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
+                return null;
             }
         }
     }
@@ -159,15 +138,14 @@ public class AttachmentProvider extends ContentProvider
     {
         try
         {
-            File attachmentsDir = getContext().getDatabasePath(dbName + "_att");
-            File file = new File(attachmentsDir, id);
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            final File attachmentsDir;
+            attachmentsDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(dbName,
+                             account.getLocalStorageProviderId());
+            final File file = new File(attachmentsDir, id);
             if (!file.exists())
             {
-                file = new File(Environment.getExternalStorageDirectory()  + attachmentsDir.getCanonicalPath().substring("/data".length()), id);
-                if (!file.exists())
-                {
-                    throw new FileNotFoundException();
-                }
+                throw new FileNotFoundException(file.getAbsolutePath());
             }
             return file;
         }
@@ -182,7 +160,7 @@ public class AttachmentProvider extends ContentProvider
     public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException
     {
         List<String> segments = uri.getPathSegments();
-        String dbName = segments.get(0);
+        String dbName = segments.get(0); // "/sdcard/..." is URL-encoded and makes up only 1 segment
         String id = segments.get(1);
         String format = segments.get(2);
         if (FORMAT_THUMBNAIL.equals(format))
@@ -190,6 +168,11 @@ public class AttachmentProvider extends ContentProvider
             int width = Integer.parseInt(segments.get(3));
             int height = Integer.parseInt(segments.get(4));
             String filename = "thmb_" + dbName + "_" + id + ".tmp";
+            int index = dbName.lastIndexOf('/');
+            if (index >= 0)
+            {
+                filename = /*dbName.substring(0, index + 1) + */"thmb_" + dbName.substring(index + 1) + "_" + id + ".tmp";
+            }
             File dir = getContext().getCacheDir();
             File file = new File(dir, filename);
             if (!file.exists())
@@ -199,12 +182,21 @@ public class AttachmentProvider extends ContentProvider
                 try
                 {
                     FileInputStream in = new FileInputStream(getFile(dbName, id));
-                    Bitmap thumbnail = createThumbnail(type, in);
-                    thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
-                    FileOutputStream out = new FileOutputStream(file);
-                    thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
-                    out.close();
-                    in.close();
+                    try
+                    {
+                        Bitmap thumbnail = createThumbnail(type, in);
+                        if (thumbnail != null)
+                        {
+                            thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
+                            FileOutputStream out = new FileOutputStream(file);
+                            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
+                            out.close();
+                        }
+                    }
+                    finally
+                    {
+                        in.close();
+                    }
                 }
                 catch (IOException ioe)
                 {
@@ -251,39 +243,16 @@ public class AttachmentProvider extends ContentProvider
         String dbName = segments.get(0);
         String id = segments.get(1);
         //String format = segments.get(2);
-        String path = getContext().getDatabasePath(dbName).getAbsolutePath();
-        String name = null;
-        int size = -1;
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
+        final AttachmentInfo attachmentInfo;
         try
         {
-            db = SQLiteDatabase.openDatabase(path, null, 0);
-            cursor = db.query(
-                         "attachments",
-                         new String[] { "name", "size" },
-                         "id = ?",
-                         new String[] { id },
-                         null,
-                         null,
-                         null);
-            if (!cursor.moveToFirst())
-            {
-                return null;
-            }
-            name = cursor.getString(0);
-            size = cursor.getInt(1);
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            attachmentInfo = LocalStore.getLocalInstance(account, K9.app).getAttachmentInfo(id);
         }
-        finally
+        catch (MessagingException e)
         {
-            if (cursor != null)
-            {
-                cursor.close();
-            }
-            if (db != null)
-            {
-                db.close();
-            }
+            Log.e(K9.LOG_TAG, "Uname to retrieve attachment info from local store for ID: " + id, e);
+            return null;
         }
 
         MatrixCursor ret = new MatrixCursor(projection);
@@ -301,11 +270,11 @@ public class AttachmentProvider extends ContentProvider
             }
             else if (AttachmentProviderColumns.DISPLAY_NAME.equals(column))
             {
-                values[i] = name;
+                values[i] = attachmentInfo.name;
             }
             else if (AttachmentProviderColumns.SIZE.equals(column))
             {
-                values[i] = size;
+                values[i] = attachmentInfo.size;
             }
         }
         ret.addRow(values);

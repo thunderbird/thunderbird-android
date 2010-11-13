@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,6 +82,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
@@ -169,6 +171,33 @@ public class MessageView extends K9Activity implements OnClickListener
     private FontSizes mFontSizes = K9.getFontSizes();
 
     private Contacts mContacts;
+
+    private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
+
+    private final class StorageListenerImplementation implements StorageManager.StorageListener
+    {
+        @Override
+        public void onUnmount(String providerId)
+        {
+            if (providerId.equals(mAccount.getLocalStorageProviderId()))
+            {
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        onAccountUnavailable();
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onMount(String providerId)
+        {
+            // no-op
+        }
+    }
 
     /**
      * Pair class is only available since API Level 5, so we need
@@ -970,7 +999,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 if (segmentList.size() == 3)
                 {
                     String accountId = segmentList.get(0);
-                    Account[] accounts = Preferences.getPreferences(this).getAccounts();
+                    Collection<Account> accounts = Preferences.getPreferences(this).getAvailableAccounts();
                     boolean found = false;
                     for (Account account : accounts)
                     {
@@ -1310,6 +1339,26 @@ public class MessageView extends K9Activity implements OnClickListener
     public void onResume()
     {
         super.onResume();
+        if (!mAccount.isAvailable(this))
+        {
+            onAccountUnavailable();
+            return;
+        }
+        StorageManager.getInstance(getApplication()).addListener(mStorageListener);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        StorageManager.getInstance(getApplication()).removeListener(mStorageListener);
+        super.onPause();
+    }
+
+    protected void onAccountUnavailable()
+    {
+        finish();
+        // TODO inform user about account unavailability using Toast
+        Accounts.listAccounts(this);
     }
 
     /**

@@ -16,11 +16,14 @@ import com.fsck.k9.*;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.store.StorageManager;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Map;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener
 {

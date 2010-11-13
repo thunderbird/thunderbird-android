@@ -5,16 +5,21 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.webkit.WebSettings;
 
@@ -27,6 +32,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.service.ShutdownReceiver;
+import com.fsck.k9.service.StorageGoneReceiver;
 
 public class K9 extends Application
 {
@@ -305,7 +312,7 @@ public class K9 extends Application
      */
     public static void setServicesEnabled(Context context)
     {
-        int acctLength = Preferences.getPreferences(context).getAccounts().length;
+        int acctLength = Preferences.getPreferences(context).getAvailableAccounts().size();
 
         setServicesEnabled(context, acctLength > 0, null);
 
@@ -313,7 +320,7 @@ public class K9 extends Application
 
     public static void setServicesEnabled(Context context, Integer wakeLockId)
     {
-        setServicesEnabled(context, Preferences.getPreferences(context).getAccounts().length > 0, wakeLockId);
+        setServicesEnabled(context, Preferences.getPreferences(context).getAvailableAccounts().size() > 0, wakeLockId);
     }
 
     public static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId)
@@ -358,6 +365,56 @@ public class K9 extends Application
             MailService.actionReset(context, wakeLockId);
         }
 
+    }
+
+    /**
+     * Register BroadcastReceivers programmaticaly because doing it from manifest
+     * would make K-9 auto-start. We don't want auto-start because the initialization
+     * sequence isn't safe while some events occur (SD card unmount).
+     */
+    protected void registerReceivers()
+    {
+        final StorageGoneReceiver receiver = new StorageGoneReceiver();
+        final IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_MEDIA_EJECT);
+        filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+        filter.addDataScheme("file");
+
+        final BlockingQueue<Handler> queue = new SynchronousQueue<Handler>();
+
+        // starting a new thread to handle unmount events
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Looper.prepare();
+                try
+                {
+                    queue.put(new Handler());
+                }
+                catch (InterruptedException e)
+                {
+                    Log.e(K9.LOG_TAG, "", e);
+                }
+                Looper.loop();
+            }
+
+        }, "Unmount-thread").start();
+
+        try
+        {
+            final Handler storageGoneHandler = queue.take();
+            registerReceiver(receiver, filter, null, storageGoneHandler);
+            Log.i(K9.LOG_TAG, "Registered: unmount receiver");
+        }
+        catch (InterruptedException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to register unmount receiver", e);
+        }
+
+        registerReceiver(new ShutdownReceiver(), new IntentFilter(Intent.ACTION_SHUTDOWN));
+        Log.i(K9.LOG_TAG, "Registered: shutdown receiver");
     }
 
     public static void save(SharedPreferences.Editor editor)
@@ -452,7 +509,7 @@ public class K9 extends Application
 
         K9.setK9Language(sprefs.getString("language", ""));
         K9.setK9Theme(sprefs.getInt("theme", android.R.style.Theme_Light));
-        MessagingController.getInstance(this).resetVisibleLimits(prefs.getAccounts());
+        MessagingController.getInstance(this).resetVisibleLimits(prefs.getAvailableAccounts());
 
         /*
          * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
@@ -465,6 +522,7 @@ public class K9 extends Application
          */
 
         setServicesEnabled(this);
+        registerReceivers();
 
         MessagingController.getInstance(this).addListener(new MessagingListener()
         {

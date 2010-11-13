@@ -70,6 +70,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 
 /**
@@ -326,6 +327,33 @@ public class MessageList
 
     /* package visibility for faster inner class access */
     MessageHelper mMessageHelper = MessageHelper.getInstance(this);
+
+    private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
+
+    private final class StorageListenerImplementation implements StorageManager.StorageListener
+    {
+        @Override
+        public void onUnmount(String providerId)
+        {
+            if (mAccount != null && providerId.equals(mAccount.getLocalStorageProviderId()))
+            {
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        onAccountUnavailable();
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onMount(String providerId)
+        {
+            // no-op
+        }
+    }
 
     class MessageListHandler
     {
@@ -671,6 +699,13 @@ public class MessageList
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);
 
+        if (mAccount != null && !mAccount.isAvailable(this))
+        {
+            Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
+            onAccountUnavailable();
+            return;
+        }
+
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
         if (queryFlags != null)
         {
@@ -727,6 +762,8 @@ public class MessageList
         super.onPause();
         mController.removeListener(mAdapter.mListener);
         saveListState();
+
+        StorageManager.getInstance(getApplication()).removeListener(mStorageListener);
     }
 
     public void saveListState()
@@ -768,6 +805,13 @@ public class MessageList
     public void onResume()
     {
         super.onResume();
+
+        if (mAccount != null && !mAccount.isAvailable(this))
+        {
+            onAccountUnavailable();
+            return;
+        }
+        StorageManager.getInstance(getApplication()).addListener(mStorageListener);
 
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
@@ -3363,4 +3407,12 @@ public class MessageList
         }
         mController.copyMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
     }
+
+    protected void onAccountUnavailable()
+    {
+        finish();
+        // TODO inform user about account unavailability using Toast
+        Accounts.listAccounts(getApplicationContext());
+    }
+
 }

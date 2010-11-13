@@ -315,6 +315,29 @@
                 <action android:name="com.fsck.k9.service.CoreReceiver.wakeLockRelease"/>
             </intent-filter>
         </receiver>
+        <receiver android:name="com.fsck.k9.service.StorageReceiver"
+              android:enabled="true"
+              >
+            <intent-filter>
+<!-- 
+android.intent.action.MEDIA_MOUNTED
+
+     * Broadcast Action:  External media is present and mounted at its mount point.
+     * The path to the mount point for the removed media is contained in the Intent.mData field.
+     * The Intent contains an extra with name "read-only" and Boolean value to indicate if the
+     * media was mounted read only.
+
+ -->
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+<!-- 
+
+MEDIA_EJECT and MEDIA_UNMOUNTED are not defined here: they have to be dynamically registered 
+otherwise it would make K-9 start at the wrong time
+
+ -->
+                <data android:scheme="file"/>
+            </intent-filter>
+        </receiver>
         <service
             android:name="com.fsck.k9.service.MailService"
             android:enabled="true"

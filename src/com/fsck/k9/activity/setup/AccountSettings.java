@@ -14,6 +14,8 @@ import android.preference.RingtonePreference;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import java.util.Map;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9;
@@ -28,6 +30,12 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
+
+import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.StorageManager;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+
 
 public class AccountSettings extends K9PreferenceActivity
 {
@@ -80,6 +88,9 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_AUTO_SIGNATURE = "crypto_auto_signature";
 
+    private static final String PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider";
+
+
     private Account mAccount;
     private boolean mIsPushCapable = false;
     private boolean mIsExpungeCapable = false;
@@ -124,6 +135,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mCryptoApp;
     private CheckBoxPreference mCryptoAutoSignature;
 
+    private ListPreference mLocalStorageProvider;
 
     public static void actionSettings(Context context, Account account)
     {
@@ -411,6 +423,33 @@ public class AccountSettings extends K9PreferenceActivity
         });
 
 
+        mLocalStorageProvider = (ListPreference) findPreference(PREFERENCE_LOCAL_STORAGE_PROVIDER);
+        {
+            final Map<String, String> providers;
+            providers = StorageManager.getInstance(K9.app).getAvailableProviders();
+            int i = 0;
+            final String[] providerLabels = new String[providers.size()];
+            final String[] providerIds = new String[providers.size()];
+            for (final Map.Entry<String, String> entry : providers.entrySet())
+            {
+                providerIds[i] = entry.getKey();
+                providerLabels[i] = entry.getValue();
+                i++;
+            }
+            mLocalStorageProvider.setEntryValues(providerIds);
+            mLocalStorageProvider.setEntries(providerLabels);
+            mLocalStorageProvider.setValue(mAccount.getLocalStorageProviderId());
+            mLocalStorageProvider.setSummary(providers.get((Object)mAccount.getLocalStorageProviderId()));
+
+            mLocalStorageProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+            {
+                public boolean onPreferenceChange(Preference preference, Object newValue)
+                {
+                    mLocalStorageProvider.setSummary(providers.get(newValue));
+                    return true;
+                }
+            });
+        }
         // IMAP-specific preferences
 
         mPushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
@@ -668,6 +707,8 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setReplyAfterQuote(mReplyAfterQuote.isChecked());
         mAccount.setCryptoApp(mCryptoApp.getValue());
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
+        mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
+
 
         if (mIsPushCapable)
         {

@@ -2,12 +2,14 @@
 package com.fsck.k9.mail;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.store.ImapStore;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.Pop3Store;
 import com.fsck.k9.mail.store.WebDavStore;
+import com.fsck.k9.mail.store.StorageManager.StorageProvider;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +27,14 @@ public abstract class Store
     protected static final int SOCKET_CONNECT_TIMEOUT = 30000;
     protected static final int SOCKET_READ_TIMEOUT = 60000;
 
+    /**
+     * Remote stores indexed by Uri.
+     */
     private static HashMap<String, Store> mStores = new HashMap<String, Store>();
+    /**
+     * Local stores indexed by UUid because the Uri may change due to migration to/from SD-card.
+     */
+    private static HashMap<String, Store> mLocalStores = new HashMap<String, Store>();
 
     protected final Account mAccount;
 
@@ -78,33 +87,18 @@ public abstract class Store
 
     /**
      * Get an instance of a local mail store.
+     * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
     public synchronized static LocalStore getLocalInstance(Account account, Application application) throws MessagingException
     {
-        String uri = account.getLocalStoreUri();
-
-        if (!uri.startsWith("local"))
-        {
-            throw new RuntimeException("LocalStore URI doesn't start with 'local'");
-        }
-
-        Store store = mStores.get(uri);
+        Store store = mLocalStores.get(account.getUuid());
         if (store == null)
         {
             store = new LocalStore(account, application);
-
-            if (store != null)
-            {
-                mStores.put(uri, store);
-            }
+            mLocalStores.put(account.getUuid(), store);
         }
 
-        if (store == null)
-        {
-            throw new MessagingException("Unable to locate an applicable Store for " + uri);
-        }
-
-        return (LocalStore)store;
+        return (LocalStore) store;
     }
 
     public abstract Folder getFolder(String name) throws MessagingException;

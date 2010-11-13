@@ -2,6 +2,8 @@
 package com.fsck.k9;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -33,10 +35,12 @@ public class Preferences
     private Storage mStorage;
     private List<Account> accounts;
     private Account newAccount;
+    private Context mContext;
 
     private Preferences(Context context)
     {
         mStorage = Storage.getStorage(context);
+        mContext = context;
         if (mStorage.size() == 0)
         {
             Log.i(K9.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
@@ -67,6 +71,7 @@ public class Preferences
     /**
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
+     * @return all accounts
      */
     public synchronized Account[] getAccounts()
     {
@@ -82,6 +87,36 @@ public class Preferences
         }
 
         return accounts.toArray(EMPTY_ACCOUNT_ARRAY);
+    }
+
+    /**
+     * Returns an array of the accounts on the system. If no accounts are
+     * registered the method returns an empty array.
+     * @param context
+     * @return all accounts with {@link Account#isAvailable(Context)}
+     */
+    public synchronized Collection<Account> getAvailableAccounts()
+    {
+        if (accounts == null)
+        {
+            loadAccounts();
+        }
+
+        if ((newAccount != null) && newAccount.getAccountNumber() != -1)
+        {
+            accounts.add(newAccount);
+            newAccount = null;
+        }
+        Collection<Account> retval = new ArrayList<Account>(accounts.size());
+        for (Account account : accounts)
+        {
+            if (account.isAvailable(mContext))
+            {
+                retval.add(account);
+            }
+        }
+
+        return retval;
     }
 
     public synchronized Account getAccount(String uuid)
@@ -137,10 +172,10 @@ public class Preferences
 
         if (defaultAccount == null)
         {
-            Account[] accounts = getAccounts();
-            if (accounts.length > 0)
+            Collection<Account> accounts = getAvailableAccounts();
+            if (accounts.size() > 0)
             {
-                defaultAccount = accounts[0];
+                defaultAccount = accounts.iterator().next();
                 setDefaultAccount(defaultAccount);
             }
         }
