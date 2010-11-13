@@ -432,7 +432,14 @@ public class MailService extends CoreService
                 {
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Setting up pushers for account " + account.getDescription());
-                    pushing |= MessagingController.getInstance(getApplication()).setupPushing(account);
+                    if (account.isAvailable(getApplicationContext()))
+                    {
+                        pushing |= MessagingController.getInstance(getApplication()).setupPushing(account);
+                    }
+                    else
+                    {
+                        //TODO: setupPushing of unavailable accounts when they become available (sd-card inserted)
+                    }
                 }
                 if (pushing)
                 {

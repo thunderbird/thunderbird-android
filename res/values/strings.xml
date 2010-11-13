@@ -398,6 +398,11 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_incoming_save_all_headers_title">Download headers</string>
     <string name="account_setup_incoming_save_all_headers_label">Save all message headers locally</string>
 
+    <string name="local_storage_provider_external_label">External storage (SD card)</string>
+    <string name="local_storage_provider_internal_label">Regular internal storage</string>
+    <string name="local_storage_provider_samsunggalaxy_label">%1$s additional internal storage</string>
+    <string name="local_storage_provider_label">Storage location</string>
+
     <string name="account_setup_expunge_policy_label">Expunge deleted messages</string>
     <string name="account_setup_expunge_policy_immediately">Immediately</string>
     <string name="account_setup_expunge_policy_on_poll">When polling</string>
@@ -557,6 +562,9 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
     <string name="account_settings_second_class_check_frequency_label">2nd class check frequency</string>
+
+    <string name="account_settings_storage_title">Storage</string>
+
 
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">Choose the color of the account used in folder and account list</string>

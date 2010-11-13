@@ -30,27 +30,28 @@ public class BootReceiver extends CoreReceiver
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "BootReceiver.onReceive" + intent);
 
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()))
+        final String action = intent.getAction();
+        if (Intent.ACTION_BOOT_COMPLETED.equals(action))
         {
             //K9.setServicesEnabled(context, tmpWakeLockId);
             //tmpWakeLockId = null;
         }
-        else if (Intent.ACTION_DEVICE_STORAGE_LOW.equals(intent.getAction()))
+        else if (Intent.ACTION_DEVICE_STORAGE_LOW.equals(action))
         {
             MailService.actionCancel(context, tmpWakeLockId);
             tmpWakeLockId = null;
         }
-        else if (Intent.ACTION_DEVICE_STORAGE_OK.equals(intent.getAction()))
+        else if (Intent.ACTION_DEVICE_STORAGE_OK.equals(action))
         {
             MailService.actionReset(context, tmpWakeLockId);
             tmpWakeLockId = null;
         }
-        else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction()))
+        else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action))
         {
             MailService.connectivityChange(context, tmpWakeLockId);
             tmpWakeLockId = null;
         }
-        else if (AutoSyncHelper.SYNC_CONN_STATUS_CHANGE.equals(intent.getAction()))
+        else if (AutoSyncHelper.SYNC_CONN_STATUS_CHANGE.equals(action))
         {
             K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
             if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)
@@ -59,7 +60,7 @@ public class BootReceiver extends CoreReceiver
                 tmpWakeLockId = null;
             }
         }
-        else if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(intent.getAction()))
+        else if (ConnectivityManager.ACTION_BACKGROUND_DATA_SETTING_CHANGED.equals(action))
         {
             K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
             if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED || bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)
@@ -68,7 +69,7 @@ public class BootReceiver extends CoreReceiver
                 tmpWakeLockId = null;
             }
         }
-        else if (FIRE_INTENT.equals(intent.getAction()))
+        else if (FIRE_INTENT.equals(action))
         {
             Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
             String alarmedAction = alarmedIntent.getAction();
@@ -81,7 +82,7 @@ public class BootReceiver extends CoreReceiver
                 context.startService(alarmedIntent);
             }
         }
-        else if (SCHEDULE_INTENT.equals(intent.getAction()))
+        else if (SCHEDULE_INTENT.equals(action))
         {
             long atTime = intent.getLongExtra(AT_TIME, -1);
             Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
@@ -93,7 +94,7 @@ public class BootReceiver extends CoreReceiver
 
             alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi);
         }
-        else if (CANCEL_INTENT.equals(intent.getAction()))
+        else if (CANCEL_INTENT.equals(action))
         {
             Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
             if (K9.DEBUG)
@@ -144,6 +145,26 @@ public class BootReceiver extends CoreReceiver
         i.setAction(CANCEL_INTENT);
         i.putExtra(ALARMED_INTENT, alarmedIntent);
         context.sendBroadcast(i);
+    }
+
+    /**
+     * Cancel any scheduled alarm.
+     *
+     * @param context
+     */
+    public static void purgeSchedule(final Context context)
+    {
+        final AlarmManager alarmService = (AlarmManager) context
+                                          .getSystemService(Context.ALARM_SERVICE);
+        alarmService.cancel(PendingIntent.getBroadcast(context, 0, new Intent()
+        {
+            @Override
+            public boolean filterEquals(final Intent other)
+            {
+                // we want to match all intents
+                return true;
+            }
+        }, 0));
     }
 
 }

@@ -164,7 +164,14 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             try
             {
                 AccountStats stats = account.getStats(Accounts.this);
-                accountStatusChanged(account, stats);
+                if (stats == null)
+                {
+                    Log.w(K9.LOG_TAG, "Unable to get account stats");
+                }
+                else
+                {
+                    accountStatusChanged(account, stats);
+                }
             }
             catch (Exception e)
             {
@@ -179,6 +186,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             if (oldStats != null)
             {
                 oldUnreadMessageCount = oldStats.unreadMessageCount;
+            }
+            if (stats == null)
+            {
+                stats = new AccountStats(); // empty stats for unavailable accounts
             }
             accountStats.put(account.getUuid(), stats);
             if (account instanceof Account)
@@ -343,8 +354,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
         else if (startup && accounts.length == 1)
         {
-            onOpenAccount(accounts[0]);
-            finish();
+            if (onOpenAccount(accounts[0]))
+            {
+                finish();
+            }
         }
         else
         {
@@ -513,7 +526,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         }
     }
 
-    private void onOpenAccount(BaseAccount account)
+    /**
+     * Show that account's inbox or folder-list
+     * or return false if the account is not available.
+     * @param account the account to open ({@link SearchAccount} or {@link Account})
+     * @return false if unsuccessfull
+     */
+    private boolean onOpenAccount(BaseAccount account)
     {
         if (account instanceof SearchAccount)
         {
@@ -523,6 +542,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         else
         {
             Account realAccount = (Account)account;
+            if (!realAccount.isAvailable(this))
+            {
+                Log.i(K9.LOG_TAG, "refusing to open account that is not available");
+                return false;
+            }
             if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName()))
             {
                 FolderList.actionHandleAccount(this, realAccount);
@@ -532,6 +556,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                 MessageList.actionHandleFolder(this, realAccount, realAccount.getAutoExpandFolderName());
             }
         }
+        return true;
     }
 
     public void onClick(View view)
@@ -609,7 +634,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                     }
                     catch (Exception e)
                     {
-                        // Ignore
+                        // Ignore, this may lead to localStores on sd-cards that are currently not inserted to be left
                     }
                     MessagingController.getInstance(getApplication()).notifyAccountCancel(Accounts.this, realAccount);
                     Preferences.getPreferences(Accounts.this).deleteAccount(realAccount);
@@ -914,6 +939,24 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             AccountStats stats = accountStats.get(account.getUuid());
 
+            /*
+                        // 20101024/fiouzy: the following code throws NullPointerException because Background is null
+
+                        // display unavailable accounts translucent
+                        if (account instanceof Account) {
+                            Account realAccount = (Account) account;
+                            if (realAccount.isAvailable(Accounts.this)) {
+                                holder.email.getBackground().setAlpha(255);
+                                holder.description.getBackground().setAlpha(255);
+                            } else {
+                                holder.email.getBackground().setAlpha(127);
+                                holder.description.getBackground().setAlpha(127);
+                            }
+                        } else {
+                            holder.email.getBackground().setAlpha(255);
+                            holder.description.getBackground().setAlpha(255);
+                        }
+            */
             if (stats != null && account instanceof Account && stats.size >= 0)
             {
                 holder.email.setText(SizeFormatter.formatSize(Accounts.this, stats.size));

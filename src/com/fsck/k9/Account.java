@@ -15,7 +15,10 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.StorageManager.StorageProvider;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -32,6 +35,18 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Account implements BaseAccount
 {
+    /**
+     * @see Account#setLocalStoreMigrationListener(LocalStoreMigrationListener)
+     *
+     */
+    public interface LocalStoreMigrationListener
+    {
+
+        void onLocalStoreMigration(String oldStoreUri,
+                                   String newStoreUri) throws MessagingException;
+
+    }
+
     public static final String EXPUNGE_IMMEDIATELY = "EXPUNGE_IMMEDIATELY";
     public static final String EXPUNGE_MANUALLY = "EXPUNGE_MANUALLY";
     public static final String EXPUNGE_ON_POLL = "EXPUNGE_ON_POLL";
@@ -62,7 +77,19 @@ public class Account implements BaseAccount
 
     private String mUuid;
     private String mStoreUri;
-    private String mLocalStoreUri;
+
+    /**
+     * Storage provider ID, used to locate and manage the underlying DB/file
+     * storage
+     */
+    private String mLocalStorageProviderId;
+
+    /**
+     * True if {@link #mLocalStoreUri} may be in use at
+     * the moment.
+     */
+    private boolean mIsInUse = false;
+    private LocalStoreMigrationListener mLocalStoreMigrationListener;
     private String mTransportUri;
     private String mDescription;
     private String mAlwaysBcc;
@@ -146,9 +173,8 @@ public class Account implements BaseAccount
 
     protected Account(Context context)
     {
-        // TODO Change local store path to something readable / recognizable
         mUuid = UUID.randomUUID().toString();
-        mLocalStoreUri = "local://localhost/" + context.getDatabasePath(mUuid + ".db");
+        mLocalStorageProviderId = StorageManager.getInstance(K9.app).getDefaultProviderId();
         mAutomaticCheckIntervalMinutes = -1;
         mIdleRefreshMinutes = 24;
         mSaveAllHeaders = true;
@@ -216,7 +242,7 @@ public class Account implements BaseAccount
 
         mStoreUri = Utility.base64Decode(prefs.getString(mUuid
                                          + ".storeUri", null));
-        mLocalStoreUri = prefs.getString(mUuid + ".localStoreUri", null);
+        mLocalStorageProviderId = prefs.getString(mUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
         mTransportUri = Utility.base64Decode(prefs.getString(mUuid
                                              + ".transportUri", null));
         mDescription = prefs.getString(mUuid + ".description", null);
@@ -508,7 +534,7 @@ public class Account implements BaseAccount
         }
 
         editor.putString(mUuid + ".storeUri", Utility.base64Encode(mStoreUri));
-        editor.putString(mUuid + ".localStoreUri", mLocalStoreUri);
+        editor.putString(mUuid + ".localStorageProvider", mLocalStorageProviderId);
         editor.putString(mUuid + ".transportUri", Utility.base64Encode(mTransportUri));
         editor.putString(mUuid + ".description", mDescription);
         editor.putString(mUuid + ".alwaysBcc", mAlwaysBcc);
@@ -575,7 +601,6 @@ public class Account implements BaseAccount
 
     }
 
-
     public void resetVisibleLimits()
     {
         try
@@ -590,8 +615,18 @@ public class Account implements BaseAccount
 
     }
 
+    /**
+     * @param context
+     * @return <code>null</code> if not available
+     * @throws MessagingException
+     * @see {@link #isAvailable(Context)}
+     */
     public AccountStats getStats(Context context) throws MessagingException
     {
+        if (!isAvailable(context))
+        {
+            return null;
+        }
         long startTime = System.currentTimeMillis();
         AccountStats stats = new AccountStats();
         int unreadMessageCount = 0;
@@ -772,15 +807,44 @@ public class Account implements BaseAccount
         mRingNotified = ringNotified;
     }
 
-    public synchronized String getLocalStoreUri()
+    public String getLocalStorageProviderId()
     {
-        return mLocalStoreUri;
+        return mLocalStorageProviderId;
     }
 
-    public synchronized void setLocalStoreUri(String localStoreUri)
+    public void setLocalStorageProviderId(String id)
     {
-        this.mLocalStoreUri = localStoreUri;
+
+        if (!mLocalStorageProviderId.equals(id))
+        {
+
+            boolean successful = false;
+            try
+            {
+                switchLocalStorage(id);
+                successful = true;
+            }
+            catch (MessagingException e)
+            {
+            }
+            finally
+            {
+                // if migration to/from SD-card failed once, it will fail again.
+                if (!successful)
+                {
+                    return;
+                }
+            }
+
+            mLocalStorageProviderId = id;
+        }
+
     }
+
+//    public synchronized void setLocalStoreUri(String localStoreUri)
+//    {
+//        this.mLocalStoreUri = localStoreUri;
+//    }
 
     /**
      * Returns -1 for never.
@@ -1316,6 +1380,26 @@ public class Account implements BaseAccount
         mSaveAllHeaders = saveAllHeaders;
     }
 
+    /**
+     * Are we storing out localStore on the SD-card instead of the local device
+     * memory?<br/>
+     * Only to be called durin initial account-setup!<br/>
+     * Side-effect: changes {@link #mLocalStorageProviderId}.
+     *
+     * @param context
+     * @param newStorageProviderId
+     *            Never <code>null</code>.
+     * @throws MessagingException
+     */
+    public void switchLocalStorage(String newStorageProviderId) throws MessagingException
+    {
+        if (this.mLocalStoreMigrationListener != null && !mLocalStorageProviderId.equals(newStorageProviderId))
+        {
+            mLocalStoreMigrationListener.onLocalStoreMigration(mLocalStorageProviderId,
+                    newStorageProviderId);
+        }
+    }
+
     public synchronized boolean goToUnreadMessageSearch()
     {
         return goToUnreadMessageSearch;
@@ -1468,6 +1552,24 @@ public class Account implements BaseAccount
         lastSelectedFolderName = folderName;
     }
 
+    public boolean isInUse()
+    {
+        return mIsInUse;
+    }
+
+    /**
+     * Set a listener to be informed when the underlying {@link StorageProvider}
+     * of the {@link LocalStore} of this account changes. (e.g. via
+     * {@link #switchLocalStorage(Context, String)})
+     *
+     * @param listener
+     * @see #switchLocalStorage(Context, String)
+     */
+    public void setLocalStoreMigrationListener(LocalStoreMigrationListener listener)
+    {
+        this.mLocalStoreMigrationListener = listener;
+    }
+
     public synchronized CryptoProvider getCryptoProvider()
     {
         if (mCryptoProvider == null)
@@ -1480,6 +1582,20 @@ public class Account implements BaseAccount
     public synchronized NotificationSetting getNotificationSetting()
     {
         return mNotificationSetting;
+    }
+
+    /**
+     * @return <code>true</code> if our {@link StorageProvider} is ready. (e.g.
+     *         card inserted)
+     */
+    public boolean isAvailable(Context context)
+    {
+        String localStorageProviderId = getLocalStorageProviderId();
+        if (localStorageProviderId == null)
+        {
+            return true; // defaults to internal memory
+        }
+        return StorageManager.getInstance(K9.app).isReady(localStorageProviderId);
     }
 
 }

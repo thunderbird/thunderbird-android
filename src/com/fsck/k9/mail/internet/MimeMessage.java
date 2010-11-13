@@ -2,6 +2,8 @@
 package com.fsck.k9.mail.internet;
 
 import com.fsck.k9.mail.*;
+import com.fsck.k9.mail.store.UnavailableStorageException;
+
 import org.apache.james.mime4j.BodyDescriptor;
 import org.apache.james.mime4j.ContentHandler;
 import org.apache.james.mime4j.EOLConvertingInputStream;
@@ -340,7 +342,7 @@ public class MimeMessage extends Message
         return "<"+UUID.randomUUID().toString()+"@email.android.com>";
     }
 
-    public void setMessageId(String messageId)
+    public void setMessageId(String messageId) throws UnavailableStorageException
     {
         setHeader("Message-ID", messageId);
         mMessageId = messageId;
@@ -438,31 +440,31 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public void addHeader(String name, String value)
+    public void addHeader(String name, String value) throws UnavailableStorageException
     {
         mHeader.addHeader(name, value);
     }
 
     @Override
-    public void setHeader(String name, String value)
+    public void setHeader(String name, String value) throws UnavailableStorageException
     {
         mHeader.setHeader(name, value);
     }
 
     @Override
-    public String[] getHeader(String name)
+    public String[] getHeader(String name) throws UnavailableStorageException
     {
         return mHeader.getHeader(name);
     }
 
     @Override
-    public void removeHeader(String name)
+    public void removeHeader(String name) throws UnavailableStorageException
     {
         mHeader.removeHeader(name);
     }
 
     @Override
-    public Set<String> getHeaderNames()
+    public Set<String> getHeaderNames() throws UnavailableStorageException
     {
         return mHeader.getHeaderNames();
     }
@@ -486,7 +488,7 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public void setEncoding(String encoding)
+    public void setEncoding(String encoding) throws UnavailableStorageException
     {
         if (mBody instanceof Multipart)
         {

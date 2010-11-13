@@ -392,6 +392,13 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_incoming_save_all_headers_title">Alle Mail-Header herunterladen</string>
     <string name="account_setup_incoming_save_all_headers_label">Alle Header lokal speichern</string>
 
+    <string name="account_setup_incoming_use_sd_card_title">Nutze SD-Karte</string>
+    <string name="account_setup_incoming_use_sd_card_label">Speichere die Mails auf der SD-Karte</string>
+    <string name="local_storage_provider_external_label">Externes Medium (SD-Karte)</string>
+    <string name="local_storage_provider_internal_label">Interner Speicher</string>
+    <string name="local_storage_provider_samsunggalaxy_label">%1$s zusätzlicher interner Speicher</string>
+    <string name="local_storage_provider_label">Speicherort</string>
+
     <string name="account_setup_expunge_policy_label">Ordner bereinigen (Expunge)</string>
     <string name="account_setup_expunge_policy_immediately">Sofort nach Verschieben oder Kopieren</string>
     <string name="account_setup_expunge_policy_on_poll">Bei jedem Abrufen</string>

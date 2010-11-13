@@ -426,7 +426,7 @@ public class MessageProvider extends ContentProvider
 
             Object[] values = new Object[2];
 
-            for (Account account : Preferences.getPreferences(getContext()).getAccounts())
+            for (Account account : Preferences.getPreferences(getContext()).getAvailableAccounts())
             {
                 if (account.getAccountNumber()==accountNumber)
                 {
@@ -435,7 +435,15 @@ public class MessageProvider extends ContentProvider
                     {
                         myAccountStats = account.getStats(getContext());
                         values[0] = myAccount.getDescription();
-                        values[1] = myAccountStats.unreadMessageCount;
+                        if (myAccountStats == null)
+                        {
+                            values[1] = 0;
+                        }
+                        else
+                        {
+                            values[1] = myAccountStats.unreadMessageCount;
+                        }
+
                         ret.addRow(values);
                     }
                     catch (MessagingException e)
@@ -1024,6 +1032,11 @@ public class MessageProvider extends ContentProvider
             if (account.getAccountNumber() == accountId)
             {
                 myAccount = account;
+                if (!account.isAvailable(getContext()))
+                {
+                    Log.w(K9.LOG_TAG, "not deleting messages because account is unavailable at the moment");
+                    return 0;
+                }
             }
         }
 

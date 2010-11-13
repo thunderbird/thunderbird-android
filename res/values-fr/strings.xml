@@ -364,6 +364,12 @@
   <string name="account_setup_incoming_other_label">Autre</string>
   <string name="account_setup_incoming_save_all_headers_title">Téléchargement des entêtes de messages</string>
   <string name="account_setup_incoming_save_all_headers_label">Enregistrer toutes les entêtes localement</string>
+
+    <string name="local_storage_provider_external_label">Stockage externe (carte SD)</string>
+    <string name="local_storage_provider_internal_label">Stockage interne</string>
+    <string name="local_storage_provider_samsunggalaxy_label">Stockage additionnel %1$s</string>
+    <string name="local_storage_provider_label">Emplacement du stockage</string>
+
   <string name="account_setup_expunge_policy_label">Élimination des messages</string>
   <string name="account_setup_expunge_policy_immediately">Immédiatement après avoir supprimé ou déplacé</string>
   <string name="account_setup_expunge_policy_on_poll">Pendant chaque récupération</string>
@@ -502,6 +508,10 @@
   
   <string name="account_settings_mail_check_frequency_label">Fréquence de vérification du dossier</string>
   <string name="account_settings_second_class_check_frequency_label">Fréquence de vérification pour 2ème classe</string>
+
+    <string name="account_settings_storage_title">Stockage</string>
+
+
   <string name="account_settings_color_label">Couleur du compte</string>
   <string name="account_settings_color_summary">Choisir la couleur du compte tel qu\'affichée dans les listes de dossiers ou de comptes</string>
   <string name="account_settings_led_color_label">Couleur de la DEL de notification</string>

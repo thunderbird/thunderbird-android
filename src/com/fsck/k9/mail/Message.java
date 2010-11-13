@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.mail.store.UnavailableStorageException;
 
 public abstract class Message implements Part, Body
 {
@@ -140,7 +141,7 @@ public abstract class Message implements Part, Body
 
     public abstract String[] getHeader(String name) throws MessagingException;
 
-    public abstract Set<String> getHeaderNames();
+    public abstract Set<String> getHeaderNames() throws UnavailableStorageException;
 
     public abstract void removeHeader(String name) throws MessagingException;
 
@@ -204,7 +205,7 @@ public abstract class Message implements Part, Body
 
     public abstract void saveChanges() throws MessagingException;
 
-    public abstract void setEncoding(String encoding);
+    public abstract void setEncoding(String encoding) throws UnavailableStorageException;
 
     public MessageReference makeMessageReference()
     {

@@ -98,6 +98,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
+import com.fsck.k9.mail.store.StorageManager;
 
 /**
  * MessageList is the primary user interface for the program. This Activity
@@ -579,6 +580,33 @@ public class MessageList
     /* package visibility for faster inner class access */
     MessageHelper mMessageHelper = MessageHelper.getInstance(this);
 
+    private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
+
+    private final class StorageListenerImplementation implements StorageManager.StorageListener
+    {
+        @Override
+        public void onUnmount(String providerId)
+        {
+            if (mAccount != null && providerId.equals(mAccount.getLocalStorageProviderId()))
+            {
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        onAccountUnavailable();
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onMount(String providerId)
+        {
+            // no-op
+        }
+    }
+
     /**
      * Manage the backend store and the UI component (ListAdapter) to make sure
      * they act accordingly.
@@ -948,6 +976,13 @@ public class MessageList
         mFolderName = intent.getStringExtra(EXTRA_FOLDER);
         mQueryString = intent.getStringExtra(EXTRA_QUERY);
 
+        if (mAccount != null && !mAccount.isAvailable(this))
+        {
+            Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
+            onAccountUnavailable();
+            return;
+        }
+
         String queryFlags = intent.getStringExtra(EXTRA_QUERY_FLAGS);
         if (queryFlags != null)
         {
@@ -1032,6 +1067,8 @@ public class MessageList
     {
         super.onSaveInstanceState(outState);
         saveListState();
+
+        StorageManager.getInstance(getApplication()).removeListener(mStorageListener);
     }
 
     public void saveListState()
@@ -1089,6 +1126,13 @@ public class MessageList
     public void onResume()
     {
         super.onResume();
+
+        if (mAccount != null && !mAccount.isAvailable(this))
+        {
+            onAccountUnavailable();
+            return;
+        }
+        StorageManager.getInstance(getApplication()).addListener(mStorageListener);
 
         mStars = K9.messageListStars();
         mCheckboxes = K9.messageListCheckboxes();
@@ -4384,6 +4428,14 @@ public class MessageList
     protected boolean inSearchMode()
     {
         return mQueryString != null;
+    }
+
+
+    protected void onAccountUnavailable()
+    {
+        finish();
+        // TODO inform user about account unavailability using Toast
+        Accounts.listAccounts(getApplicationContext());
     }
 
 }

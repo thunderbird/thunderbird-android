@@ -4,6 +4,7 @@ package com.fsck.k9.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -143,6 +144,18 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
 
                 holder.chip.setBackgroundColor(realAccount.getChipColor());
                 holder.chip.getBackground().setAlpha(255);
+
+                // show unavailable accounts as translucent
+                if (realAccount.isAvailable(getContext()))
+                {
+                    holder.email.getBackground().setAlpha(255);
+                    holder.description.getBackground().setAlpha(255);
+                }
+                else
+                {
+                    holder.email.getBackground().setAlpha(127);
+                    holder.description.getBackground().setAlpha(127);
+                }
             }
             else
             {
@@ -158,7 +171,13 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
             {
                 public void onClick(View v)
                 {
-                    FolderList.actionHandleAccount(LauncherShortcuts.this, (Account)account);
+                    Account account2 = (Account)account;
+                    if (!account2.isAvailable(getContext()))
+                    {
+                        Log.i(K9.LOG_TAG, "refusing selection of unavailable account");
+                        return ;
+                    }
+                    FolderList.actionHandleAccount(LauncherShortcuts.this, account2);
 
                 }
             });
