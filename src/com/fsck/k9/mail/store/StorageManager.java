@@ -30,18 +30,38 @@ public class StorageManager
 {
 
     /**
-     * Abstract provider that allows access to sd-cards, additional internal
-     * memory and other storage-locations.
+     * Provides entry points (File objects) to an underlying storage,
+     * alleviating the caller from having to know where that storage is located.
+     * 
+     * <p>
+     * Allow checking for the denoted storage availability since its lifecycle
+     * can evolving (a storage might become unavailable at some time and be back
+     * online later).
+     * </p>
      */
     public static interface StorageProvider
     {
 
         /**
+         * Retrieve the uniquely identifier for the current implementation.
+         * 
+         * <p>
+         * It is expected that the identifier doesn't change over reboots since
+         * it'll be used to save settings and retrieve the provider at a later
+         * time.
+         * </p>
+         * 
+         * <p>
+         * The returned identifier doesn't have to be user friendly.
+         * </p>
+         * 
          * @return Never <code>null</code>.
          */
         String getId();
 
         /**
+         * Hook point for provider initialization.
+         * 
          * @param context
          *            Never <code>null</code>.
          */
@@ -49,13 +69,18 @@ public class StorageManager
 
         /**
          * @param context
-         *            Never <code>null</code>. Used to localize resources.
+         *            Never <code>null</code>.
          * @return A user displayable, localized name for this provider. Never
          *         <code>null</code>.
          */
         String getName(Context context);
 
         /**
+         * Some implementations may not be able to return valid File handles
+         * because the device doesn't provide the denoted storage. You can check
+         * the provider compatibility with this method to prevent from having to
+         * invoke this provider ever again.
+         * 
          * @param context
          *            TODO
          * @return Whether this provider supports the current device.
@@ -64,8 +89,10 @@ public class StorageManager
         boolean isSupported(Context context);
 
         /**
-         * Return the path to the email-database.
-         *
+         * Return the {@link File} to the choosen email database file. The
+         * resulting {@link File} doesn't necessarily match an existing file on
+         * the filesystem.
+         * 
          * @param context
          *            Never <code>null</code>.
          * @param id
@@ -75,8 +102,10 @@ public class StorageManager
         File getDatabase(Context context, String id);
 
         /**
-         * Return the path to the attachment-directory.
-         *
+         * Return the {@link File} to the choosen attachment directory. The
+         * resulting {@link File} doesn't necessarily match an existing
+         * directory on the filesystem.
+         * 
          * @param context
          *            Never <code>null</code>.
          * @param id
@@ -86,6 +115,8 @@ public class StorageManager
         File getAttachmentDirectory(Context context, String id);
 
         /**
+         * Check for the underlying storage availability.
+         * 
          * @param context
          *            Never <code>null</code>.
          * @return Whether the underlying storage returned by this provider is
@@ -94,6 +125,8 @@ public class StorageManager
         boolean isReady(Context context);
 
         /**
+         * Retrieve the root of the underlying storage.
+         * 
          * @param context
          *            Never <code>null</code>.
          * @return The root directory of the denoted storage. Never
@@ -102,33 +135,65 @@ public class StorageManager
         File getRoot(Context context);
     }
 
+    /**
+     * Interface for components wanting to be notified of storage availability
+     * events.
+     */
     public static interface StorageListener
     {
         /**
+         * Invoked on storage mount (with read/write access).
+         * 
          * @param providerId
-         *            Never <code>null</code>.
+         *            Identifier (as returned by {@link StorageProvider#getId()}
+         *            of the newly mounted storage. Never <code>null</code>.
          */
         void onMount(String providerId);
 
         /**
+         * Invoked when a storage is about to be unmounted.
+         * 
          * @param providerId
-         *            Never <code>null</code>.
+         *            Identifier (as returned by {@link StorageProvider#getId()}
+         *            of the to-be-unmounted storage. Never <code>null</code>.
          */
         void onUnmount(String providerId);
     }
 
+    /**
+     * Base provider class for providers that rely on well-known path to check
+     * for storage availability.
+     * 
+     * <p>
+     * Since solely checking for paths can be unsafe, this class allows to check
+     * for device compatibility using {@link #supportsVendor()}. If the vendor
+     * specific check fails, the provider won't be able to provide any valid
+     * File handle, regardless of the path existence.
+     * </p>
+     * 
+     * <p>
+     * Moreover, this class validates the denoted storage path matches against
+     * mount points using {@link StorageManager#isMountPoint(File)}.
+     * </p>
+     */
     public abstract static class FixedStorageProviderBase implements StorageProvider
     {
+        /**
+         * The root of the denoted storage. Used for mount points checking.
+         */
         protected File mRoot;
 
+        /**
+         * Choosen base directory
+         */
         protected File mApplicationDir;
 
         @Override
         public void init(final Context context)
         {
             mRoot = getRoot(context);
+            // use <STORAGE_ROOT>/k9
             mApplicationDir = new File(mRoot, "k9");
-
         }
 
         /**
@@ -179,9 +244,30 @@ public class StorageManager
             return mRoot;
         }
 
+        /**
+         * Retrieve the well-known storage root directory from the actual
+         * implementation.
+         * 
+         * @param context
+         *            Never <code>null</code>.
+         * @return Never <code>null</code>.
+         */
         protected abstract File computeRoot(Context context);
     }
 
+    /**
+     * Strategy to access the always available internal storage.
+     * 
+     * <p>
+     * This implementation is expected to work on every device since it's based
+     * on the regular Android API {@link Context#getDatabasePath(String)} and
+     * uses the resul to retrieve the DB path and the attachment directory path.
+     * </p>
+     * 
+     * <p>
+     * The underlying storage has always been used by K-9.
+     * </p>
+     */
     public static class InternalStorageProvider implements StorageProvider
     {
 
@@ -240,13 +326,37 @@ public class StorageManager
         }
     }
 
+    /**
+     * Strategy for accessing the storage as returned by
+     * {@link Environment#getExternalStorageDirectory()}. In order to be
+     * compliant with Android recommendation regarding application uninstalling
+     * and to prevent from cluttering the storage root, the choosen directory
+     * will be
+     * <code>&lt;STORAGE_ROOT&gt;/Android/data/&lt;APPLICATION_PACKAGE_NAME&gt;/files/</code>
+     * 
+     * <p>
+     * The denoted storage is usually a SD card.
+     * </p>
+     * 
+     * <p>
+     * This provider is expected to work on all devices but the returned
+     * underlying storage might not be always available, due to
+     * mount/unmount/USB share events.
+     * </p>
+     */
     public static class ExternalStorageProvider implements StorageProvider
     {
 
         public static final String ID = "ExternalStorage";
 
+        /**
+         * Root of the denoted storage.
+         */
         protected File mRoot;
 
+        /**
+         * Choosen base directory.
+         */
         protected File mApplicationDirectory;
 
         public String getId()
@@ -299,6 +409,17 @@ public class StorageManager
         }
     }
 
+    /**
+     * Storage provider to allow access the /emmc directory on a HTC Incredible.
+     * 
+     * <p>
+     * This implementation is experimental and untested.
+     * </p>
+     * 
+     * See http://groups.google.com/group/android-developers/browse_frm/thread/96f15e57150ed173
+     * 
+     * @see FixedStorageProviderBase
+     */
     public static class HtcIncredibleStorageProvider extends FixedStorageProviderBase
     {
 
@@ -329,6 +450,17 @@ public class StorageManager
         }
     }
 
+    /**
+     * Storage provider to allow access the /emmc directory on a Samsung Galaxy S.
+     * 
+     * <p>
+     * This implementation is experimental and untested.
+     * </p>
+     * 
+     * See http://groups.google.com/group/android-developers/browse_frm/thread/a1adf7122a75a657
+     * 
+     * @see FixedStorageProviderBase
+     */
     public static class SamsungGalaxySStorageProvider extends FixedStorageProviderBase
     {
 
@@ -362,6 +494,9 @@ public class StorageManager
         }
     }
 
+    /**
+     * Stores storage provider locking informations
+     */
     public static class SynchronizationAid
     {
         /**
@@ -373,6 +508,7 @@ public class StorageManager
         public final Lock readLock;
 
         public final Lock writeLock;
+
         {
             final ReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
             readLock = readWriteLock.readLock();
@@ -380,12 +516,21 @@ public class StorageManager
         }
     }
 
+    /**
+     * The active storage providers.
+     */
     private final Map<String, StorageProvider> mProviders = new LinkedHashMap<String, StorageProvider>();
 
+    /**
+     * Locking data for the active storage providers.
+     */
     private final Map<StorageProvider, SynchronizationAid> mProviderLocks = new IdentityHashMap<StorageProvider, SynchronizationAid>();
 
     protected final Application mApplication;
 
+    /**
+     * Listener to be notified for storage related events.
+     */
     private List<StorageListener> mListeners = new ArrayList<StorageListener>();
 
     private static transient StorageManager instance;
@@ -432,12 +577,24 @@ public class StorageManager
 
         mApplication = application;
 
+        /*
+         * 20101113/fiouzy:
+         * 
+         * Here is where we define which providers are used, currently we only
+         * allow the internal storage and the regular external storage.
+         * 
+         * HTC Incredible storage and Samsung Galaxy S are omitted on purpose
+         * (they're experimental and I don't have those devices to test).
+         */
         final List<StorageProvider> allProviders = Arrays.asList(new InternalStorageProvider(),
                 new ExternalStorageProvider());
         for (final StorageProvider provider : allProviders)
         {
+            // check for provider compatibility
             if (provider.isSupported(mApplication))
             {
+                // provider is compatible! proceeding
+
                 provider.init(application);
                 mProviders.put(provider.getId(), provider);
                 mProviderLocks.put(provider, new SynchronizationAid());
