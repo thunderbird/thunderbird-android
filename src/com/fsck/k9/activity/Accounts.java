@@ -478,6 +478,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
     private void onCheckMail(Account account)
     {
         MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, null);
+        if (account == null)
+        {
+            MessagingController.getInstance(getApplication()).sendPendingMessages(null);
+        }
+        else
+        {
+            MessagingController.getInstance(getApplication()).sendPendingMessages(account, null);
+        }
+
     }
 
     private void onClearCommands(Account account)
