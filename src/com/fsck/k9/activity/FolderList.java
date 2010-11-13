@@ -766,7 +766,7 @@ public class FolderList extends K9ListActivity
         if (!folder.name.equals(mAccount.getTrashFolderName()))
             menu.findItem(R.id.empty_trash).setVisible(false);
 
-        if (folder.outbox)
+        if (folder.name.equals(mAccount.getOutboxFolderName()))
         {
             menu.findItem(R.id.check_mail).setVisible(false);
         }

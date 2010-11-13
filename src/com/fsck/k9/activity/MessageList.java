@@ -1750,7 +1750,7 @@ public class MessageList
         }
         else
         {
-            if (mCurrentFolder != null && mCurrentFolder.outbox)
+            if (mCurrentFolder != null && mCurrentFolder.name.equals(mAccount.getOutboxFolderName()))
             {
                 menu.findItem(R.id.check_mail).setVisible(false);
             }

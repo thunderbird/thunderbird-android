@@ -22,11 +22,6 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder>
     public Folder folder;
     public boolean pushActive;
 
-    /**
-     * Outbox is handled differently from any other folder.
-     */
-    public boolean outbox;
-
     @Override
     public boolean equals(Object o)
     {
@@ -133,7 +128,6 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder>
         if (this.name.equals(account.getOutboxFolderName()))
         {
             this.displayName = String.format(context.getString(R.string.special_mailbox_name_outbox_fmt), this.name);
-            this.outbox = true;
         }
 
         if (this.name.equals(account.getDraftsFolderName()))
