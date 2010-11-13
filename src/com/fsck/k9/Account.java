@@ -600,6 +600,20 @@ public class Account implements BaseAccount
 
     }
 
+    public void resetVisibleLimits()
+    {
+        try
+        {
+            LocalStore localStore = getLocalStore();
+            localStore.resetVisibleLimits(getDisplayCount());
+        }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
+        }
+
+    }
+
     /**
      * @param context
      * @return <code>null</code> if not available
@@ -866,6 +880,7 @@ public class Account implements BaseAccount
         {
             this.mDisplayCount = K9.DEFAULT_VISIBLE_LIMIT;
         }
+        resetVisibleLimits();
     }
 
     public synchronized long getLastAutomaticCheckTime()

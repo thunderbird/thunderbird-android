@@ -1153,6 +1153,11 @@ public class MessageList
     }
 
 
+    private void onResendMessage(MessageInfoHolder message)
+    {
+        MessageCompose.actionEditDraft(this, message.message.getFolder().getAccount(), message.message);
+    }
+
     private void onOpenMessage(MessageInfoHolder message)
     {
         if (message.folder.name.equals(message.message.getFolder().getAccount().getDraftsFolderName()))
@@ -1575,11 +1580,6 @@ public class MessageList
     private void checkMail(Account account, String folderName)
     {
         mController.synchronizeMailbox(account, folderName, mAdapter.mListener, null);
-        sendMail(account);
-    }
-
-    private void sendMail(Account account)
-    {
         mController.sendPendingMessages(account, mAdapter.mListener);
     }
 
@@ -1693,7 +1693,7 @@ public class MessageList
             }
             case R.id.send_messages:
             {
-                sendMail(mAccount);
+                mController.sendPendingMessages(mAccount, mAdapter.mListener);
                 return true;
             }
             case R.id.list_folders:
@@ -1798,7 +1798,7 @@ public class MessageList
         }
         else
         {
-            if (mCurrentFolder != null && mCurrentFolder.outbox)
+            if (mCurrentFolder != null && mCurrentFolder.name.equals(mAccount.getOutboxFolderName()))
             {
                 menu.findItem(R.id.check_mail).setVisible(false);
             }
@@ -1890,6 +1890,12 @@ public class MessageList
             {
                 onForward(holder);
                 break;
+            }
+            case R.id.send_again:
+            {
+                onResendMessage(holder);
+                break;
+
             }
             case R.id.mark_as_read:
             {
@@ -2842,7 +2848,14 @@ public class MessageList
                 {
                     if (!mCurrentFolder.lastCheckFailed)
                     {
-                        holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                        if (mAccount.getDisplayCount() == 0 )
+                        {
+                            holder.main.setText(getString(R.string.message_list_load_more_messages_action));
+                        }
+                        else
+                        {
+                            holder.main.setText(String.format(getString(R.string.load_more_messages_fmt), mAccount.getDisplayCount()));
+                        }
                     }
                     else
                     {

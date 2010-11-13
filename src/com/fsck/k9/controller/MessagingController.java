@@ -964,7 +964,10 @@ public class MessagingController implements Runnable
         {
             LocalStore localStore = account.getLocalStore();
             LocalFolder localFolder = localStore.getFolder(folder);
-            localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
+            if (localFolder.getVisibleLimit() > 0 )
+            {
+                localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
+            }
             synchronizeMailbox(account, folder, listener, null);
         }
         catch (MessagingException me)
@@ -979,24 +982,7 @@ public class MessagingController implements Runnable
     {
         for (Account account : accounts)
         {
-            try
-            {
-                LocalStore localStore = account.getLocalStore();
-                localStore.resetVisibleLimits(account.getDisplayCount());
-            }
-            catch (MessagingException e)
-            {
-                addErrorMessage(account, null, e);
-
-                if (account == null || account.getIdentities() == null || account.getIdentities().size() == 0)
-                {
-                    Log.e(K9.LOG_TAG, "Unable to reset visible limits", e);
-                }
-                else
-                {
-                    Log.e(K9.LOG_TAG, "Unable to reset visible limits of account \"" + account.getName() + "\"", e);
-                }
-            }
+            account.resetVisibleLimits();
         }
     }
 
@@ -1156,7 +1142,7 @@ public class MessagingController implements Runnable
 
             int visibleLimit = localFolder.getVisibleLimit();
 
-            if (visibleLimit < 1)
+            if (visibleLimit < 0)
             {
                 visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
             }
@@ -1174,7 +1160,15 @@ public class MessagingController implements Runnable
                 /*
                  * Message numbers start at 1.
                  */
-                int remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
+                int remoteStart;
+                if (visibleLimit > 0 )
+                {
+                    remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
+                }
+                else
+                {
+                    remoteStart = 1;
+                }
                 int remoteEnd = remoteMessageCount;
 
                 if (K9.DEBUG)
@@ -1535,7 +1529,7 @@ public class MessagingController implements Runnable
             int visibleLimit = localFolder.getVisibleLimit();
             int listSize = unsyncedMessages.size();
 
-            if (listSize > visibleLimit)
+            if ((visibleLimit > 0) && (listSize > visibleLimit))
             {
                 unsyncedMessages = unsyncedMessages.subList(listSize - visibleLimit, listSize);
             }
@@ -3539,7 +3533,7 @@ public class MessagingController implements Runnable
             localFolder.open(OpenMode.READ_WRITE);
 
             Message[] localMessages = localFolder.getMessages(null);
-            boolean anyFlagged = false;
+            Exception lastFailure = null;
             int progress = 0;
             int todo = localMessages.length;
             for (MessagingListener l : getListeners())
@@ -3565,12 +3559,6 @@ public class MessagingController implements Runnable
                     message.destroy();
                     continue;
                 }
-                if (message.isSet(Flag.FLAGGED))
-                {
-                    if (K9.DEBUG)
-                        Log.i(K9.LOG_TAG, "Skipping sending FLAGGED message " + message.getUid());
-                    continue;
-                }
                 try
                 {
                     AtomicInteger count = new AtomicInteger(0);
@@ -3582,13 +3570,6 @@ public class MessagingController implements Runnable
 
                     if (K9.DEBUG)
                         Log.i(K9.LOG_TAG, "Send count for message " + message.getUid() + " is " + count.get());
-                    if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS)
-                    {
-                        Log.e(K9.LOG_TAG, "Send count for message " + message.getUid() + " has exceeded maximum attempt threshold, flagging");
-                        message.setFlag(Flag.FLAGGED, true);
-                        anyFlagged = true;
-                        continue;
-                    }
 
                     localFolder.fetch(new Message[] { message }, fp, null);
                     try
@@ -3612,27 +3593,18 @@ public class MessagingController implements Runnable
                         }
                         else
                         {
-                            LocalFolder localSentFolder =
-                                (LocalFolder) localStore.getFolder(
-                                    account.getSentFolderName());
+                            LocalFolder localSentFolder = (LocalFolder) localStore.getFolder( account.getSentFolderName());
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Moving sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
 
-                            localFolder.moveMessages(
-                                new Message[] { message },
-                                localSentFolder);
+                            localFolder.moveMessages( new Message[] { message }, localSentFolder);
 
                             if (K9.DEBUG)
                                 Log.i(K9.LOG_TAG, "Moved sent message to folder '" + account.getSentFolderName() + "' (" + localSentFolder.getId() + ") ");
 
                             PendingCommand command = new PendingCommand();
                             command.command = PENDING_COMMAND_APPEND;
-                            command.arguments =
-                                new String[]
-                            {
-                                localSentFolder.getName(),
-                                message.getUid()
-                            };
+                            command.arguments = new String[] { localSentFolder.getName(), message.getUid() };
                             queuePendingCommand(account, command);
                             processPendingCommands(account);
                         }
@@ -3640,29 +3612,13 @@ public class MessagingController implements Runnable
                     }
                     catch (Exception e)
                     {
-                        if (e instanceof MessagingException)
-                        {
-                            MessagingException me = (MessagingException)e;
-                            if (!me.isPermanentFailure())
-                            {
-                                // Decrement the counter if the message could not possibly have been sent
-                                int newVal = count.decrementAndGet();
-                                if (K9.DEBUG)
-                                    Log.i(K9.LOG_TAG, "Decremented send count for message " + message.getUid() + " to " + newVal
-                                          + "; no possible send");
-                            }
-                        }
                         message.setFlag(Flag.X_SEND_FAILED, true);
                         Log.e(K9.LOG_TAG, "Failed to send message", e);
                         for (MessagingListener l : getListeners())
                         {
-                            l.synchronizeMailboxFailed(
-                                account,
-                                localFolder.getName(),
-                                getRootCauseMessage(e));
+                            l.synchronizeMailboxFailed( account, localFolder.getName(), getRootCauseMessage(e));
                         }
-                        addErrorMessage(account, null, e);
-
+                        lastFailure = e;
                     }
                 }
                 catch (Exception e)
@@ -3670,17 +3626,9 @@ public class MessagingController implements Runnable
                     Log.e(K9.LOG_TAG, "Failed to fetch message for sending", e);
                     for (MessagingListener l : getListeners())
                     {
-                        l.synchronizeMailboxFailed(
-                            account,
-                            localFolder.getName(),
-                            getRootCauseMessage(e));
+                        l.synchronizeMailboxFailed( account, localFolder.getName(), getRootCauseMessage(e));
                     }
-                    addErrorMessage(account, null, e);
-
-                    /*
-                     * We ignore this exception because a future refresh will retry this
-                     * message.
-                     */
+                    lastFailure = e;
                 }
             }
             if (localFolder.getMessageCount() == 0)
@@ -3691,29 +3639,24 @@ public class MessagingController implements Runnable
             {
                 l.sendPendingMessagesCompleted(account);
             }
-            if (anyFlagged)
+            if (lastFailure != null)
             {
-                addErrorMessage(account, mApplication.getString(R.string.send_failure_subject),
-                                mApplication.getString(R.string.send_failure_body_fmt, K9.ERROR_FOLDER_NAME));
 
-                NotificationManager notifMgr =
-                    (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManager notifMgr = (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification notif = new Notification(R.drawable.stat_notify_email_generic, mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
 
-                Notification notif = new Notification(R.drawable.stat_notify_email_generic,
-                                                      mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
-
-                Intent i = MessageList.actionHandleFolderIntent(mApplication, account, account.getErrorFolderName());
+                Intent i = FolderList.actionHandleNotification(mApplication, account, account.getOutboxFolderName());
 
                 PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
 
-                notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject),
-                                         mApplication.getString(R.string.send_failure_body_abbrev, K9.ERROR_FOLDER_NAME), pi);
+                notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject), lastFailure.getMessage(), pi);
 
                 notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+                notif.flags |= Notification.FLAG_AUTO_CANCEL;
                 notif.ledARGB = K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR;
                 notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
                 notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
-                notifMgr.notify(-1000 - account.getAccountNumber(), notif);
+                notifMgr.notify(-1500 - account.getAccountNumber(), notif);
             }
         }
         catch (UnavailableStorageException e)

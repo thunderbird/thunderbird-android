@@ -30,6 +30,10 @@
         android:title="@string/reply_action"
     />
     <item
+        android:id="@+id/send_again"
+        android:title="@string/send_again_action"
+    />
+    <item
         android:id="@+id/mark_as_read"
         android:title="@string/mark_as_read_action"
     />

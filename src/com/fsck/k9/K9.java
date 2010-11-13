@@ -243,13 +243,6 @@ public class K9 extends Application
     public static int DEFAULT_VISIBLE_LIMIT = 25;
 
     /**
-     * Number of additioanl messages to load when a user selectes "Load more messages..."
-     */
-    public static int VISIBLE_LIMIT_INCREMENT = 25;
-
-    public static int MAX_SEND_ATTEMPTS = 5;
-
-    /**
      * The maximum size of an attachment we're willing to download (either View or Save)
      * Attachments that are base64 encoded (most) will be about 1.375x their actual size
      * so we should probably factor that in. A 5MB attachment will generally be around
