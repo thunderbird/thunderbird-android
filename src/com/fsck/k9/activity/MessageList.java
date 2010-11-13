@@ -340,7 +340,8 @@ public class MessageList
                 runOnUiThread(new Runnable()
                 {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         onAccountUnavailable();
                     }
                 });

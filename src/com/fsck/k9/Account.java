@@ -39,10 +39,11 @@ public class Account implements BaseAccount
      * @see Account#setLocalStoreMigrationListener(LocalStoreMigrationListener)
      *
      */
-    public interface LocalStoreMigrationListener {
+    public interface LocalStoreMigrationListener
+    {
 
         void onLocalStoreMigration(String oldStoreUri,
-                String newStoreUri) throws MessagingException;
+                                   String newStoreUri) throws MessagingException;
 
     }
 
@@ -85,7 +86,7 @@ public class Account implements BaseAccount
 
     /**
      * True if {@link #mLocalStoreUri} may be in use at
-     * the moment. 
+     * the moment.
      */
     private boolean mIsInUse = false;
     private LocalStoreMigrationListener mLocalStoreMigrationListener;
@@ -1384,7 +1385,7 @@ public class Account implements BaseAccount
      * memory?<br/>
      * Only to be called durin initial account-setup!<br/>
      * Side-effect: changes {@link #mLocalStorageProviderId}.
-     * 
+     *
      * @param context
      * @param newStorageProviderId
      *            Never <code>null</code>.
@@ -1551,7 +1552,8 @@ public class Account implements BaseAccount
         lastSelectedFolderName = folderName;
     }
 
-    public boolean isInUse() {
+    public boolean isInUse()
+    {
         return mIsInUse;
     }
 
@@ -1559,7 +1561,7 @@ public class Account implements BaseAccount
      * Set a listener to be informed when the underlying {@link StorageProvider}
      * of the {@link LocalStore} of this account changes. (e.g. via
      * {@link #switchLocalStorage(Context, String)})
-     * 
+     *
      * @param listener
      * @see #switchLocalStorage(Context, String)
      */

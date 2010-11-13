@@ -82,7 +82,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * Callback interface for DB operations. Concept is similar to Spring
      * HibernateCallback.
-     * 
+     *
      * @param <T>
      */
     public static interface DbCallback<T>
@@ -101,7 +101,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     protected static class WrappedException extends RuntimeException
     {
         /**
-         * 
+         *
          */
         private static final long serialVersionUID = 8184421232587399369L;
 
@@ -201,12 +201,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * Lock the storage for shared operations (concurrent threads are allowed to
      * run simultaneously).
-     * 
+     *
      * <p>
      * You <strong>have to</strong> invoke {@link #unlockRead()} when you're
      * done with the storage.
      * </p>
-     * 
+     *
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available
      */
@@ -238,12 +238,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * Lock the storage for exclusive access (other threads aren't allowed to
      * run simultaneously)
-     * 
+     *
      * <p>
      * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
      * done with the storage.
      * </p>
-     * 
+     *
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
@@ -255,15 +255,15 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * Lock the storage for exclusive access (other threads aren't allowed to
      * run simultaneously)
-     * 
+     *
      * <p>
      * You <strong>have to</strong> invoke {@link #unlockWrite()} when you're
      * done with the storage.
      * </p>
-     * 
+     *
      * @param providerId
      *            Never <code>null</code>.
-     * 
+     *
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
@@ -300,19 +300,19 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * Execute a DB work in a shared context (doesn't prevent concurrent shared
      * executions), taking care of locking the DB storage.
-     * 
+     *
      * <p>
      * Can be instructed to start a transaction if none is currently active in
      * the current thread. Work will participe in any active transaction (no
      * inner transaction created).
      * </p>
-     * 
+     *
      * @param transactional
      *            <code>true</code> if a transaction must be started if none is
      *            present
      * @param callback
      *            Never <code>null</code>.
-     * 
+     *
      * @param <T>
      * @return Whatever {@link DbCallback#doDbWork(SQLiteDatabase)} returns.
      * @throws UnavailableStorageException
@@ -371,7 +371,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     }
 
     public void onLocalStoreMigration(final String oldProviderId,
-            final String newProviderId) throws MessagingException {
+                                      final String newProviderId) throws MessagingException
+    {
         lockWrite(oldProviderId);
         try
         {
@@ -409,78 +410,99 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
         finally
         {
-           unlockWrite(oldProviderId);
+            unlockWrite(oldProviderId);
         }
     }
 
-    private void moveRecursive(File fromDir, File toDir) {
-        if (!fromDir.exists()) {
+    private void moveRecursive(File fromDir, File toDir)
+    {
+        if (!fromDir.exists())
+        {
             return;
         }
-        if (!fromDir.isDirectory()) {
-            if (toDir.exists()) {
-                if (!toDir.delete()) {
+        if (!fromDir.isDirectory())
+        {
+            if (toDir.exists())
+            {
+                if (!toDir.delete())
+                {
                     Log.w(K9.LOG_TAG, "cannot delete already existing file/directory " + toDir.getAbsolutePath() + " during migration to/from SD-card");
                 }
             }
-            if (!fromDir.renameTo(toDir)) {
+            if (!fromDir.renameTo(toDir))
+            {
                 Log.w(K9.LOG_TAG, "cannot rename " + fromDir.getAbsolutePath() + " to " + toDir.getAbsolutePath() + " - moving instead");
                 move(fromDir, toDir);
             }
             return;
         }
-        if (!toDir.exists() || !toDir.isDirectory()) {
-            if (toDir.exists() ) {
+        if (!toDir.exists() || !toDir.isDirectory())
+        {
+            if (toDir.exists() )
+            {
                 toDir.delete();
             }
-            if (!toDir.mkdirs()) {
+            if (!toDir.mkdirs())
+            {
                 Log.w(K9.LOG_TAG, "cannot create directory " + toDir.getAbsolutePath() + " during migration to/from SD-card");
             }
         }
         File[] files = fromDir.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
+        for (File file : files)
+        {
+            if (file.isDirectory())
+            {
                 moveRecursive(file, new File(toDir, file.getName()));
                 file.delete();
-            } else {
+            }
+            else
+            {
                 File target = new File(toDir, file.getName());
-                if (!file.renameTo(target)) {
+                if (!file.renameTo(target))
+                {
                     Log.w(K9.LOG_TAG, "cannot rename " + file.getAbsolutePath() + " to " + target.getAbsolutePath() + " - moving instead");
                     move(file, target);
                 }
             }
         }
-        if (!fromDir.delete()) {
+        if (!fromDir.delete())
+        {
             Log.w(K9.LOG_TAG, "cannot delete " + fromDir.getAbsolutePath() + " after migration to/from SD-card");
         }
     }
-    private boolean move(File from, File to) {
-        if (to.exists()) {
+    private boolean move(File from, File to)
+    {
+        if (to.exists())
+        {
             to.delete();
         }
         to.getParentFile().mkdirs();
-        
-        try {
+
+        try
+        {
             FileInputStream in = new FileInputStream(from);
             FileOutputStream out = new FileOutputStream(to);
             byte[] buffer = new byte[1024];
             int count = -1;
-            while ((count = in.read(buffer)) > 0) {
+            while ((count = in.read(buffer)) > 0)
+            {
                 out.write(buffer, 0, count);
             }
             out.close();
             in.close();
             from.delete();
             return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
             return false;
         }
-        
+
     }
 
     /**
-     * 
+     *
      * @param application
      * @throws UnavailableStorageException
      */
@@ -509,7 +531,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
         finally
         {
-           unlockWrite();
+            unlockWrite();
         }
     }
 
@@ -545,7 +567,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         final File attachmentDir;
         final File attachmentParentDir;
         attachmentDir = storageManager
-                .getAttachmentDirectory(uUid, providerId);
+                        .getAttachmentDirectory(uUid, providerId);
         attachmentParentDir = attachmentDir.getParentFile();
         if (!attachmentParentDir.exists())
         {
@@ -601,13 +623,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
                 db.execSQL("DROP TABLE IF EXISTS folders");
                 db.execSQL("CREATE TABLE folders (id INTEGER PRIMARY KEY, name TEXT, "
-                            + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0)");
+                           + "last_updated INTEGER, unread_count INTEGER, visible_limit INTEGER, status TEXT, push_state TEXT, last_pushed INTEGER, flagged_count INTEGER default 0)");
 
                 db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
                 db.execSQL("DROP TABLE IF EXISTS messages");
                 db.execSQL("CREATE TABLE messages (id INTEGER PRIMARY KEY, deleted INTEGER default 0, folder_id INTEGER, uid TEXT, subject TEXT, "
-                            + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
-                            + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
+                           + "date INTEGER, flags TEXT, sender_list TEXT, to_list TEXT, cc_list TEXT, bcc_list TEXT, reply_to_list TEXT, "
+                           + "html_content TEXT, text_content TEXT, attachment_count INTEGER, internal_date INTEGER, message_id TEXT, preview TEXT)");
 
                 db.execSQL("DROP TABLE IF EXISTS headers");
                 db.execSQL("CREATE TABLE headers (id INTEGER PRIMARY KEY, message_id INTEGER, name TEXT, value TEXT)");
@@ -619,19 +641,19 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
                 db.execSQL("DROP TABLE IF EXISTS attachments");
                 db.execSQL("CREATE TABLE attachments (id INTEGER PRIMARY KEY, message_id INTEGER,"
-                            + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
-                            + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
+                           + "store_data TEXT, content_uri TEXT, size INTEGER, name TEXT,"
+                           + "mime_type TEXT, content_id TEXT, content_disposition TEXT)");
 
                 db.execSQL("DROP TABLE IF EXISTS pending_commands");
                 db.execSQL("CREATE TABLE pending_commands " +
-                            "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
+                           "(id INTEGER PRIMARY KEY, command TEXT, arguments TEXT)");
 
                 db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
                 db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
 
                 db.execSQL("DROP TRIGGER IF EXISTS delete_message");
                 db.execSQL("CREATE TRIGGER delete_message BEFORE DELETE ON messages BEGIN DELETE FROM attachments WHERE old.id = message_id; "
-                            + "DELETE FROM headers where old.id = message_id; END;");
+                           + "DELETE FROM headers where old.id = message_id; END;");
             }
             else
             {
@@ -775,7 +797,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         final StorageManager storageManager = StorageManager.getInstance(mApplication);
 
         final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid,
-                mStorageProviderId);
+                                         mStorageProviderId);
 
         return execute(false, new DbCallback<Long>()
         {
@@ -972,7 +994,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
     /**
      * Delete the entire Store and it's backing database.
-     * @throws UnavailableStorageException 
+     * @throws UnavailableStorageException
      */
     public void delete() throws UnavailableStorageException
     {
@@ -985,7 +1007,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             catch (Exception e)
             {
-            
+
             }
             final StorageManager storageManager = StorageManager.getInstance(mApplication);
             try
@@ -1021,7 +1043,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
         finally
         {
-           unlockWrite();
+            unlockWrite();
         }
     }
 
@@ -1036,7 +1058,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             catch (Exception e)
             {
-            
+
             }
             final StorageManager storageManager = StorageManager.getInstance(mApplication);
             try
@@ -1064,13 +1086,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             catch (Exception e)
             {
-            
+
             }
             openOrCreateDataspace(mApplication);
         }
         finally
         {
-           unlockWrite();
+            unlockWrite();
         }
     }
 
@@ -1194,12 +1216,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 try
                 {
                     cursor = db.query("pending_commands",
-                                       new String[] { "id", "command", "arguments" },
-                                       null,
-                                       null,
-                                       null,
-                                       null,
-                                       "id ASC");
+                                      new String[] { "id", "command", "arguments" },
+                                      null,
+                                      null,
+                                      null,
+                                      null,
+                                      "id ASC");
                     ArrayList<PendingCommand> commands = new ArrayList<PendingCommand>();
                     while (cursor.moveToNext())
                     {
@@ -1508,7 +1530,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     {
                         LocalMessage message = new LocalMessage(null, folder);
                         message.populateFromGetMessageCursor(cursor);
-                        
+
                         messages.add(message);
                         if (listener != null)
                         {
@@ -1566,18 +1588,18 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 try
                 {
                     cursor = db.query(
-                            "attachments",
-                            new String[] { "mime_type", "name" },
-                            "id = ?",
-                            new String[] { attachmentId },
-                            null,
-                            null,
-                            null);
+                                 "attachments",
+                                 new String[] { "mime_type", "name" },
+                                 "id = ?",
+                                 new String[] { attachmentId },
+                                 null,
+                                 null,
+                                 null);
                     cursor.moveToFirst();
                     String type = cursor.getString(0);
                     String name = cursor.getString(1);
                     cursor.close();
-                    
+
                     if (MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE.equals(type))
                     {
                         type = MimeUtility.getMimeTypeByExtension(name);
@@ -1794,9 +1816,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     try
                     {
                         cursor = db.rawQuery("SELECT id FROM folders "
-                                              + "where folders.name = ?", new String[] { LocalFolder.this
-                                                      .getName()
-                                                                                       });
+                                             + "where folders.name = ?", new String[] { LocalFolder.this
+                                                     .getName()
+                                                                                      });
                         if (cursor.moveToFirst())
                         {
                             int folderId = cursor.getInt(0);
@@ -1831,10 +1853,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
                     db.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
-                                {
-                                    mName,
-                                    mAccount.getDisplayCount()
-                                });
+                               {
+                                   mName,
+                                   mAccount.getDisplayCount()
+                               });
                     return null;
                 }
             });
@@ -1854,10 +1876,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException
                 {
                     db.execSQL("INSERT INTO folders (name, visible_limit) VALUES (?, ?)", new Object[]
-                                {
-                                    mName,
-                                    visibleLimit
-                                });
+                               {
+                                   mName,
+                                   visibleLimit
+                               });
                     return null;
                 }
             });
@@ -1892,10 +1914,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         try
                         {
                             cursor = db.rawQuery("SELECT COUNT(*) FROM messages WHERE messages.folder_id = ?",
-                                                  new String[]
-                                                  {
-                                                      Long.toString(mFolderId)
-                                                  });
+                                                 new String[]
+                                                 {
+                                                     Long.toString(mFolderId)
+                                                 });
                             cursor.moveToFirst();
                             int messageCount = cursor.getInt(0);
                             return messageCount;
@@ -1949,7 +1971,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         }
                         mUnreadMessageCount = Math.max(0, unreadMessageCount);
                         db.execSQL("UPDATE folders SET unread_count = ? WHERE id = ?",
-                                    new Object[] { mUnreadMessageCount, mFolderId });
+                                   new Object[] { mUnreadMessageCount, mFolderId });
                         return null;
                     }
                 });
@@ -1979,7 +2001,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         }
                         mFlaggedMessageCount = Math.max(0, flaggedMessageCount);
                         db.execSQL("UPDATE folders SET flagged_count = ? WHERE id = ?", new Object[]
-                        { mFlaggedMessageCount, mFolderId });
+                                   { mFlaggedMessageCount, mFolderId });
                         return null;
                     }
                 });
@@ -2010,7 +2032,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             throw new WrappedException(e);
                         }
                         db.execSQL("UPDATE folders SET last_updated = ? WHERE id = ?", new Object[]
-                        { lastChecked, mFolderId });
+                                   { lastChecked, mFolderId });
                         return null;
                     }
                 });
@@ -2041,7 +2063,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             throw new WrappedException(e);
                         }
                         db.execSQL("UPDATE folders SET last_pushed = ? WHERE id = ?", new Object[]
-                        { lastChecked, mFolderId });
+                                   { lastChecked, mFolderId });
                         return null;
                     }
                 });
@@ -2095,7 +2117,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     }
                     mVisibleLimit = visibleLimit;
                     db.execSQL("UPDATE folders SET visible_limit = ? WHERE id = ?",
-                                new Object[] { mVisibleLimit, mFolderId });
+                               new Object[] { mVisibleLimit, mFolderId });
                     return null;
                 }
             });
@@ -2121,7 +2143,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             throw new WrappedException(e);
                         }
                         db.execSQL("UPDATE folders SET status = ? WHERE id = ?", new Object[]
-                        { status, mFolderId });
+                                   { status, mFolderId });
                         return null;
                     }
                 });
@@ -2150,7 +2172,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         }
                         mPushState = pushState;
                         db.execSQL("UPDATE folders SET push_state = ? WHERE id = ?", new Object[]
-                        { pushState, mFolderId });
+                                   { pushState, mFolderId });
                         return null;
                     }
                 });
@@ -2405,8 +2427,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                     try
                                     {
                                         cursor = db.rawQuery("SELECT html_content, text_content FROM messages "
-                                                              + "WHERE id = ?",
-                                                              new String[] { Long.toString(localMessage.mId) });
+                                                             + "WHERE id = ?",
+                                                             new String[] { Long.toString(localMessage.mId) });
                                         cursor.moveToNext();
                                         String htmlContent = cursor.getString(0);
                                         String textContent = cursor.getString(1);
@@ -2547,7 +2569,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
          *
          * @param messages
          *            The messages whose headers should be loaded.
-         * @throws UnavailableStorageException 
+         * @throws UnavailableStorageException
          */
         private void populateHeaders(final List<LocalMessage> messages) throws UnavailableStorageException
         {
@@ -2566,7 +2588,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         Map<Long, LocalMessage> popMessages = new HashMap<Long, LocalMessage>();
                         List<String> ids = new ArrayList<String>();
                         StringBuffer questions = new StringBuffer();
-    
+
                         for (int i = 0; i < messages.size(); i++)
                         {
                             if (i != 0)
@@ -2578,14 +2600,14 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             Long id = message.getId();
                             ids.add(Long.toString(id));
                             popMessages.put(id, message);
-    
+
                         }
-    
+
                         cursor = db.rawQuery(
                                      "SELECT message_id, name, value FROM headers " + "WHERE message_id in ( " + questions + ") ",
                                      ids.toArray(EMPTY_STRING_ARRAY));
-    
-    
+
+
                         while (cursor.moveToNext())
                         {
                             Long id = cursor.getLong(0);
@@ -2783,11 +2805,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 message.setUid(K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString());
 
                                 db.execSQL("UPDATE messages " + "SET folder_id = ?, uid = ? " + "WHERE id = ?", new Object[]
-                                            {
-                                                lDestFolder.getId(),
-                                                message.getUid(),
-                                                lMessage.getId()
-                                            });
+                                           {
+                                               lDestFolder.getId(),
+                                               message.getUid(),
+                                               lMessage.getId()
+                                           });
 
                                 LocalMessage placeHolder = new LocalMessage(oldUID, LocalFolder.this);
                                 placeHolder.setFlagInternal(Flag.DELETED, true);
@@ -2882,8 +2904,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                      */
                                     deleteAttachments(message.getUid());
                                     db.execSQL("DELETE FROM messages WHERE folder_id = ? AND uid = ?",
-                                            new Object[]
-                                            { mFolderId, message.getUid() });
+                                               new Object[]
+                                               { mFolderId, message.getUid() });
                                 }
 
                                 ArrayList<Part> viewables = new ArrayList<Part>();
@@ -3049,33 +3071,33 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             try
                             {
                                 db.execSQL("UPDATE messages SET "
-                                            + "uid = ?, subject = ?, sender_list = ?, date = ?, flags = ?, "
-                                            + "folder_id = ?, to_list = ?, cc_list = ?, bcc_list = ?, "
-                                            + "html_content = ?, text_content = ?, preview = ?, reply_to_list = ?, "
-                                            + "attachment_count = ? WHERE id = ?",
-                                            new Object[]
-                                            {
-                                                message.getUid(),
-                                                message.getSubject(),
-                                                Address.pack(message.getFrom()),
-                                                message.getSentDate() == null ? System
-                                                .currentTimeMillis() : message.getSentDate()
-                                                .getTime(),
-                                                Utility.combine(message.getFlags(), ',').toUpperCase(),
-                                                mFolderId,
-                                                Address.pack(message
-                                                             .getRecipients(RecipientType.TO)),
-                                                Address.pack(message
-                                                             .getRecipients(RecipientType.CC)),
-                                                Address.pack(message
-                                                             .getRecipients(RecipientType.BCC)),
-                                                html.length() > 0 ? html : null,
-                                                text.length() > 0 ? text : null,
-                                                preview.length() > 0 ? preview : null,
-                                                Address.pack(message.getReplyTo()),
-                                                attachments.size(),
-                                                message.mId
-                                            });
+                                           + "uid = ?, subject = ?, sender_list = ?, date = ?, flags = ?, "
+                                           + "folder_id = ?, to_list = ?, cc_list = ?, bcc_list = ?, "
+                                           + "html_content = ?, text_content = ?, preview = ?, reply_to_list = ?, "
+                                           + "attachment_count = ? WHERE id = ?",
+                                           new Object[]
+                                           {
+                                               message.getUid(),
+                                               message.getSubject(),
+                                               Address.pack(message.getFrom()),
+                                               message.getSentDate() == null ? System
+                                               .currentTimeMillis() : message.getSentDate()
+                                               .getTime(),
+                                               Utility.combine(message.getFlags(), ',').toUpperCase(),
+                                               mFolderId,
+                                               Address.pack(message
+                                                            .getRecipients(RecipientType.TO)),
+                                               Address.pack(message
+                                                            .getRecipients(RecipientType.CC)),
+                                               Address.pack(message
+                                                            .getRecipients(RecipientType.BCC)),
+                                               html.length() > 0 ? html : null,
+                                               text.length() > 0 ? text : null,
+                                               preview.length() > 0 ? preview : null,
+                                               Address.pack(message.getReplyTo()),
+                                               attachments.size(),
+                                               message.mId
+                                           });
 
                                 for (int i = 0, count = attachments.size(); i < count; i++)
                                 {
@@ -3147,8 +3169,8 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         appendedFlags.add(Flag.X_GOT_ALL_HEADERS);
 
                         db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?",
-                                new Object[]
-                                           { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id });
+                                   new Object[]
+                                   { Utility.combine(appendedFlags.toArray(), ',').toUpperCase(), id });
                     }
                     return null;
                 }
@@ -3163,7 +3185,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
                     db.execSQL("DELETE FROM headers WHERE message_id = ?", new Object[]
-                    { id });
+                               { id });
                     return null;
                 }
             });
@@ -3274,7 +3296,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
                                 cv.put("size", size);
                                 db.update("attachments", cv, "id = ?", new String[]
-                                                                                   { Long.toString(attachmentId) });
+                                          { Long.toString(attachmentId) });
                             }
 
                             if (attachmentId != -1 && tempAttachmentFile != null)
@@ -3288,7 +3310,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 ContentValues cv = new ContentValues();
                                 cv.put("content_uri", contentUri != null ? contentUri.toString() : null);
                                 db.update("attachments", cv, "id = ?", new String[]
-                                                                                   { Long.toString(attachmentId) });
+                                          { Long.toString(attachmentId) });
                             }
 
                             /* The message has attachment with Content-ID */
@@ -3296,22 +3318,22 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             {
                                 Cursor cursor = null;
                                 cursor = db.query("messages", new String[]
-                                { "html_content" }, "id = ?", new String[]
-                                { Long.toString(messageId) }, null, null, null);
+                                                  { "html_content" }, "id = ?", new String[]
+                                                  { Long.toString(messageId) }, null, null, null);
                                 try
                                 {
                                     if (cursor.moveToNext())
                                     {
                                         String new_html;
-                                        
+
                                         new_html = cursor.getString(0);
                                         new_html = new_html.replaceAll("cid:" + contentId,
-                                                contentUri.toString());
-                                        
+                                                                       contentUri.toString());
+
                                         ContentValues cv = new ContentValues();
                                         cv.put("html_content", new_html);
                                         db.update("messages", cv, "id = ?", new String[]
-                                                                                        { Long.toString(messageId) });
+                                                  { Long.toString(messageId) });
                                     }
                                 }
                                 finally
@@ -3370,7 +3392,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
                     db.update("messages", cv, "id = ?", new String[]
-                    { Long.toString(message.mId) });
+                              { Long.toString(message.mId) });
                     return null;
                 }
             });
@@ -3488,7 +3510,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             throw new WrappedException(e);
                         }
                         db.execSQL("DELETE FROM folders WHERE id = ?", new Object[]
-                        { Long.toString(mFolderId), });
+                                   { Long.toString(mFolderId), });
                         return null;
                     }
                 });
@@ -3534,10 +3556,10 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     try
                     {
                         attachmentsCursor = db.query("attachments", new String[]
-                        { "id" }, "message_id = ?", new String[]
-                        { Long.toString(messageId) }, null, null, null);
+                                                     { "id" }, "message_id = ?", new String[]
+                                                     { Long.toString(messageId) }, null, null, null);
                         final File attachmentDirectory = StorageManager.getInstance(mApplication)
-                                .getAttachmentDirectory(uUid, mStorageProviderId);
+                                                         .getAttachmentDirectory(uUid, mStorageProviderId);
                         while (attachmentsCursor.moveToNext())
                         {
                             long attachmentId = attachmentsCursor.getLong(0);
@@ -3551,7 +3573,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             }
                             catch (Exception e)
                             {
-    
+
                             }
                         }
                     }
@@ -3581,13 +3603,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                         try
                         {
                             messagesCursor = db.query("messages", new String[]
-                            { "id" }, "folder_id = ? AND uid = ?", new String[]
-                            { Long.toString(mFolderId), uid }, null, null, null);
+                                                      { "id" }, "folder_id = ? AND uid = ?", new String[]
+                                                      { Long.toString(mFolderId), uid }, null, null, null);
                             while (messagesCursor.moveToNext())
                             {
                                 long messageId = messagesCursor.getLong(0);
                                 deleteAttachments(messageId);
-   
+
                             }
                         }
                         catch (MessagingException e)
@@ -6112,7 +6134,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                          * Set the flags on the message.
                          */
                         db.execSQL("UPDATE messages " + "SET flags = ? " + " WHERE id = ?", new Object[]
-                        { Utility.combine(getFlags(), ',').toUpperCase(), mId });
+                                   { Utility.combine(getFlags(), ',').toUpperCase(), mId });
                         return null;
                     }
                 });
@@ -6144,11 +6166,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                     {
                         db.execSQL("UPDATE messages SET " + "deleted = 1," + "subject = NULL, "
-                                + "sender_list = NULL, " + "date = NULL, " + "to_list = NULL, "
-                                + "cc_list = NULL, " + "bcc_list = NULL, " + "preview = NULL, "
-                                + "html_content = NULL, " + "text_content = NULL, "
-                                + "reply_to_list = NULL " + "WHERE id = ?", new Object[]
-                        { mId });
+                                   + "sender_list = NULL, " + "date = NULL, " + "to_list = NULL, "
+                                   + "cc_list = NULL, " + "bcc_list = NULL, " + "preview = NULL, "
+                                   + "html_content = NULL, " + "text_content = NULL, "
+                                   + "reply_to_list = NULL " + "WHERE id = ?", new Object[]
+                                   { mId });
                         /*
                          * Delete all of the message's attachments to save space.
                          * We do this explicit deletion here because we're not deleting the record
@@ -6163,7 +6185,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             throw new WrappedException(e);
                         }
                         db.execSQL("DELETE FROM attachments WHERE message_id = ?", new Object[]
-                        { mId });
+                                   { mId });
                         return null;
                     }
                 });
@@ -6189,7 +6211,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                            UnavailableStorageException
+                        UnavailableStorageException
                     {
                         try
                         {

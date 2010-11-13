@@ -11,7 +11,7 @@ public class UnavailableAccountException extends RuntimeException
 {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -1827283277120501465L;
 

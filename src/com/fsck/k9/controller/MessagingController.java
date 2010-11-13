@@ -311,11 +311,11 @@ public class MessagingController implements Runnable
                                 catch (InterruptedException e)
                                 {
                                     Log.e(K9.LOG_TAG, "interrupted while putting a pending command for"
-                                            + " an unavailable account back into the queue."
-                                            + " THIS SHOULD NEVER HAPPEN.");
+                                          + " an unavailable account back into the queue."
+                                          + " THIS SHOULD NEVER HAPPEN.");
                                 }
                             }
-                        }.start();
+                        } .start();
                     }
 
                     if (K9.DEBUG)
@@ -467,47 +467,47 @@ public class MessagingController implements Runnable
         }
         else
         {
-        try
-        {
-            Store localStore = account.getLocalStore();
-            localFolders = localStore.getPersonalNamespaces(false);
-
-            Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
-
-            if (refreshRemote || localFolders == null || localFolders.size() == 0)
+            try
             {
-                doRefreshRemote(account, listener);
+                Store localStore = account.getLocalStore();
+                localFolders = localStore.getPersonalNamespaces(false);
+
+                Folder[] folderArray = localFolders.toArray(EMPTY_FOLDER_ARRAY);
+
+                if (refreshRemote || localFolders == null || localFolders.size() == 0)
+                {
+                    doRefreshRemote(account, listener);
+                    return;
+                }
+
+                for (MessagingListener l : getListeners(listener))
+                {
+                    l.listFolders(account, folderArray);
+                }
+            }
+            catch (Exception e)
+            {
+                for (MessagingListener l : getListeners(listener))
+                {
+                    l.listFoldersFailed(account, e.getMessage());
+                }
+
+                addErrorMessage(account, null, e);
                 return;
             }
-
-            for (MessagingListener l : getListeners(listener))
+            finally
             {
-                l.listFolders(account, folderArray);
-            }
-        }
-        catch (Exception e)
-        {
-            for (MessagingListener l : getListeners(listener))
-            {
-                l.listFoldersFailed(account, e.getMessage());
-            }
-
-            addErrorMessage(account, null, e);
-            return;
-        }
-        finally
-        {
-            if (localFolders != null)
-            {
-                for (Folder localFolder : localFolders)
+                if (localFolders != null)
                 {
-                    if (localFolder != null)
+                    for (Folder localFolder : localFolders)
                     {
-                        localFolder.close();
+                        if (localFolder != null)
+                        {
+                            localFolder.close();
+                        }
                     }
                 }
             }
-        }
         }
 
         for (MessagingListener l : getListeners(listener))

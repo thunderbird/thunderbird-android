@@ -184,7 +184,8 @@ public class MessageView extends K9Activity implements OnClickListener
                 runOnUiThread(new Runnable()
                 {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         onAccountUnavailable();
                     }
                 });

@@ -11,7 +11,7 @@ import com.fsck.k9.mail.store.StorageManager;
 
 /**
  * That BroadcastReceiver is only interested in UNMOUNT events.
- * 
+ *
  * <p>
  * Code was separated from {@link StorageReceiver} because we don't want that
  * receiver to be statically defined in manifest.

@@ -199,20 +199,20 @@ public class ChooseAccount extends K9ExpandableListActivity
             description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, K9.getFontSizes().getAccountName());
 
             // display unavailable accounts translucent
-/*
- * 20101030/fiouzy: NullPointerException on null getBackground()
- * 
-            if (account.isAvailable(parent.getContext()))
-            {
-                description.getBackground().setAlpha(255);
-                description.getBackground().setAlpha(255);
-            }
-            else
-            {
-                description.getBackground().setAlpha(127);
-                description.getBackground().setAlpha(127);
-            }
-*/
+            /*
+             * 20101030/fiouzy: NullPointerException on null getBackground()
+             *
+                        if (account.isAvailable(parent.getContext()))
+                        {
+                            description.getBackground().setAlpha(255);
+                            description.getBackground().setAlpha(255);
+                        }
+                        else
+                        {
+                            description.getBackground().setAlpha(127);
+                            description.getBackground().setAlpha(127);
+                        }
+            */
 
             v.findViewById(R.id.chip).setBackgroundColor(account.getChipColor());
 

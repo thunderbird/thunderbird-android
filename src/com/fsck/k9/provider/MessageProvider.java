@@ -443,7 +443,7 @@ public class MessageProvider extends ContentProvider
                         {
                             values[1] = myAccountStats.unreadMessageCount;
                         }
-                        
+
                         ret.addRow(values);
                     }
                     catch (MessagingException e)

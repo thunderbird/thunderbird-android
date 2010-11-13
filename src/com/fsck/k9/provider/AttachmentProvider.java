@@ -141,7 +141,7 @@ public class AttachmentProvider extends ContentProvider
             final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
             final File attachmentsDir;
             attachmentsDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(dbName,
-                    account.getLocalStorageProviderId());
+                             account.getLocalStorageProviderId());
             final File file = new File(attachmentsDir, id);
             if (!file.exists())
             {
@@ -169,7 +169,8 @@ public class AttachmentProvider extends ContentProvider
             int height = Integer.parseInt(segments.get(4));
             String filename = "thmb_" + dbName + "_" + id + ".tmp";
             int index = dbName.lastIndexOf('/');
-            if (index >= 0) {
+            if (index >= 0)
+            {
                 filename = /*dbName.substring(0, index + 1) + */"thmb_" + dbName.substring(index + 1) + "_" + id + ".tmp";
             }
             File dir = getContext().getCacheDir();
@@ -181,15 +182,19 @@ public class AttachmentProvider extends ContentProvider
                 try
                 {
                     FileInputStream in = new FileInputStream(getFile(dbName, id));
-                    try {
+                    try
+                    {
                         Bitmap thumbnail = createThumbnail(type, in);
-                        if (thumbnail != null) {
+                        if (thumbnail != null)
+                        {
                             thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
                             FileOutputStream out = new FileOutputStream(file);
                             thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
                             out.close();
                         }
-                    } finally {
+                    }
+                    finally
+                    {
                         in.close();
                     }
                 }

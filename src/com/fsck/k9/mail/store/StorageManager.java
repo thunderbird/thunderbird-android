@@ -65,7 +65,7 @@ public class StorageManager
 
         /**
          * Return the path to the email-database.
-         * 
+         *
          * @param context
          *            Never <code>null</code>.
          * @param id
@@ -76,7 +76,7 @@ public class StorageManager
 
         /**
          * Return the path to the attachment-directory.
-         * 
+         *
          * @param context
          *            Never <code>null</code>.
          * @param id
@@ -133,7 +133,7 @@ public class StorageManager
 
         /**
          * Vendor specific checks
-         * 
+         *
          * @return Whether this provider supports the underlying vendor specific
          *         storage
          */
@@ -146,7 +146,7 @@ public class StorageManager
             {
                 final File root = mRoot.getCanonicalFile();
                 return isMountPoint(root)
-                        && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+                       && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
             }
             catch (IOException e)
             {
@@ -259,7 +259,7 @@ public class StorageManager
         {
             mRoot = Environment.getExternalStorageDirectory();
             mApplicationDirectory = new File(new File(new File(new File(mRoot, "Android"), "data"),
-                    context.getPackageName()), "files");
+                                             context.getPackageName()), "files");
         }
 
         @Override
@@ -313,7 +313,7 @@ public class StorageManager
         public String getName(Context context)
         {
             return context.getString(R.string.local_storage_provider_samsunggalaxy_label,
-                    Build.MODEL);
+                                     Build.MODEL);
         }
 
         @Override
@@ -343,7 +343,7 @@ public class StorageManager
         public String getName(Context context)
         {
             return context.getString(R.string.local_storage_provider_samsunggalaxy_label,
-                    Build.MODEL);
+                                     Build.MODEL);
         }
 
         @Override
@@ -351,7 +351,7 @@ public class StorageManager
         {
             // FIXME
             return "GT-I5800".equals(Build.DEVICE) || "GT-I9000".equals(Build.DEVICE)
-                    || "SGH-T959".equals(Build.DEVICE) || "SGH-I897".equals(Build.DEVICE);
+                   || "SGH-T959".equals(Build.DEVICE) || "SGH-I897".equals(Build.DEVICE);
         }
 
         @Override
@@ -629,12 +629,12 @@ public class StorageManager
 
     /**
      * Try to lock the underlying storage to prevent concurrent unmount.
-     * 
+     *
      * <p>
      * You must invoke {@link #unlockProvider(String)} when you're done with the
      * storage.
      * </p>
-     * 
+     *
      * @param providerId
      * @throws UnavailableStorageException
      *             If the storage can't be locked.

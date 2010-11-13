@@ -9,7 +9,7 @@ import com.fsck.k9.K9;
 
 /**
  * Capture the system shutdown event in order to properly free resources.
- * 
+ *
  * <p>
  * It is advised not to statically register (from AndroidManifest.xml) this
  * receiver in order to avoid unecessary K-9 launch (which would defeat the
@@ -34,7 +34,7 @@ public class ShutdownReceiver extends BroadcastReceiver
 
             /*
              * TODO invoke proper shutdown methods (stop any running thread)
-             * 
+             *
              * 20101111: this can't be done now as we don't have proper
              * startup/shutdown sequences
              */

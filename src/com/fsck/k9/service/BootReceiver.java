@@ -149,13 +149,13 @@ public class BootReceiver extends CoreReceiver
 
     /**
      * Cancel any scheduled alarm.
-     * 
+     *
      * @param context
      */
     public static void purgeSchedule(final Context context)
     {
         final AlarmManager alarmService = (AlarmManager) context
-                .getSystemService(Context.ALARM_SERVICE);
+                                          .getSystemService(Context.ALARM_SERVICE);
         alarmService.cancel(PendingIntent.getBroadcast(context, 0, new Intent()
         {
             @Override

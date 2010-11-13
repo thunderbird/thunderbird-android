@@ -939,24 +939,24 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             }
             AccountStats stats = accountStats.get(account.getUuid());
 
-/*
-            // 20101024/fiouzy: the following code throws NullPointerException because Background is null
+            /*
+                        // 20101024/fiouzy: the following code throws NullPointerException because Background is null
 
-            // display unavailable accounts translucent
-            if (account instanceof Account) {
-                Account realAccount = (Account) account;
-                if (realAccount.isAvailable(Accounts.this)) {
-                    holder.email.getBackground().setAlpha(255);
-                    holder.description.getBackground().setAlpha(255);
-                } else {
-                    holder.email.getBackground().setAlpha(127);
-                    holder.description.getBackground().setAlpha(127);
-                }
-            } else {
-                holder.email.getBackground().setAlpha(255);
-                holder.description.getBackground().setAlpha(255);
-            }
-*/
+                        // display unavailable accounts translucent
+                        if (account instanceof Account) {
+                            Account realAccount = (Account) account;
+                            if (realAccount.isAvailable(Accounts.this)) {
+                                holder.email.getBackground().setAlpha(255);
+                                holder.description.getBackground().setAlpha(255);
+                            } else {
+                                holder.email.getBackground().setAlpha(127);
+                                holder.description.getBackground().setAlpha(127);
+                            }
+                        } else {
+                            holder.email.getBackground().setAlpha(255);
+                            holder.description.getBackground().setAlpha(255);
+                        }
+            */
             if (stats != null && account instanceof Account && stats.size >= 0)
             {
                 holder.email.setText(SizeFormatter.formatSize(Accounts.this, stats.size));
