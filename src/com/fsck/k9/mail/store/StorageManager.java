@@ -172,8 +172,8 @@ public class StorageManager
      * </p>
      * 
      * <p>
-     * Moreover, this class validates the denoted storage path matches against
-     * mount points using {@link StorageManager#isMountPoint(File)}.
+     * Moreover, this class validates the denoted storage path against mount
+     * points using {@link StorageManager#isMountPoint(File)}.
      * </p>
      */
     public abstract static class FixedStorageProviderBase implements StorageProvider
@@ -413,7 +413,7 @@ public class StorageManager
      * Storage provider to allow access the /emmc directory on a HTC Incredible.
      * 
      * <p>
-     * This implementation is experimental and untested.
+     * This implementation is experimental and _untested_.
      * </p>
      * 
      * See http://groups.google.com/group/android-developers/browse_frm/thread/96f15e57150ed173
@@ -451,10 +451,10 @@ public class StorageManager
     }
 
     /**
-     * Storage provider to allow access the /emmc directory on a Samsung Galaxy S.
+     * Storage provider to allow access the Samsung Galaxy S 'internal SD card'.
      * 
      * <p>
-     * This implementation is experimental and untested.
+     * This implementation is experimental and _untested_.
      * </p>
      * 
      * See http://groups.google.com/group/android-developers/browse_frm/thread/a1adf7122a75a657
@@ -585,6 +585,10 @@ public class StorageManager
          * 
          * HTC Incredible storage and Samsung Galaxy S are omitted on purpose
          * (they're experimental and I don't have those devices to test).
+         * 
+         * 
+         * !!! Make sure InternalStorageProvider is the first provider as it'll
+         * be considered as the default provider !!!
          */
         final List<StorageProvider> allProviders = Arrays.asList(new InternalStorageProvider(),
                 new ExternalStorageProvider());
