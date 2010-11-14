@@ -3479,8 +3479,7 @@ public class MessagingController implements Runnable
         Folder localFolder = null;
         try
         {
-            Store localStore = account.getLocalStore();
-            localFolder = localStore.getFolder(
+            localFolder = account.getLocalStore().getFolder(
                               account.getOutboxFolderName());
             if (!localFolder.exists())
             {
