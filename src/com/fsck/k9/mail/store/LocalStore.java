@@ -3475,6 +3475,22 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
 
+
+        public void clearAllMessages() throws MessagingException
+        {
+            final String where = "folder_id = ?";
+            final String[] params = new String[]
+            {
+                Long.toString(mFolderId)
+            };
+
+
+            clearMessagesWhere(where, params);
+            setPushState(null);
+            setLastPush(0);
+            setLastChecked(0);
+        }
+
         private void resetUnreadAndFlaggedCounts()
         {
             try
