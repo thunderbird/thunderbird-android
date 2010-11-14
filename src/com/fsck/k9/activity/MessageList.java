@@ -1168,12 +1168,12 @@ public class MessageList
         }
         else
         {
+            markAllMessagesAsDirty();
             mWorkerPool.execute(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    mStore.markAllMessagesAsDirty();
 
                     if (mFolderName != null)
                     {
@@ -1185,11 +1185,11 @@ public class MessageList
                     }
 
 
-                    mStore.pruneDirtyMessages();
                     runOnUiThread(new Runnable()
                     {
                         public void run()
                         {
+                            pruneDirtyMessages();
                             mAdapter.notifyDataSetChanged();
                             restoreListState();
                         }
@@ -2813,7 +2813,7 @@ public class MessageList
      * Should not include UI API calls and should not be used from the UI thread.
      * </p>
      */
-    public class MessageListStore
+    public static class MessageListStore
     {
 
         /**
@@ -3099,38 +3099,6 @@ public class MessageList
             synchronized (messages)
             {
                 Collections.sort(messages, chainComparator);
-            }
-        }
-
-        public void markAllMessagesAsDirty()
-        {
-            synchronized (messages)
-            {
-                for (final MessageInfoHolder holder : messages)
-                {
-                    holder.dirty = true;
-                }
-            }
-        }
-
-        public void pruneDirtyMessages()
-        {
-            synchronized (messages)
-            {
-                Iterator<MessageInfoHolder> iter = messages.iterator();
-                while (iter.hasNext())
-                {
-                    MessageInfoHolder holder = iter.next();
-                    if (holder.dirty)
-                    {
-                        if (holder.selected)
-                        {
-                            mSelectedCount--;
-                            toggleBatchButtons();
-                        }
-                        removeMessages(Collections.singletonList(holder));
-                    }
-                }
             }
         }
 
@@ -4436,6 +4404,42 @@ public class MessageList
         finish();
         // TODO inform user about account unavailability using Toast
         Accounts.listAccounts(getApplicationContext());
+    }
+
+    public void pruneDirtyMessages()
+    {
+        boolean removed = false;
+        for (final MessageGroup<MessageInfoHolder> group : mAdapter.mUiGroups)
+        {
+            for (final Iterator<MessageInfo<MessageInfoHolder>> iterator = group.getMessages().iterator(); iterator.hasNext(); )
+            {
+                final MessageInfoHolder holder = iterator.next().getTag();
+                if (holder.dirty)
+                {
+                    iterator.remove();
+                    removed = true;
+                    if (holder.selected)
+                    {
+                        mSelectedCount--;
+                    }
+                }
+            }
+        }
+        if (removed)
+        {
+            toggleBatchButtons();
+        }
+    }
+
+    public void markAllMessagesAsDirty()
+    {
+        for (final MessageGroup<MessageInfoHolder> group : mAdapter.mUiGroups)
+        {
+            for (final MessageInfo<MessageInfoHolder> info : group.getMessages())
+            {
+                info.getTag().dirty = true;
+            }
+        }
     }
 
 }
