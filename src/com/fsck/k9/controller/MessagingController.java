@@ -3489,8 +3489,7 @@ public class MessagingController implements Runnable
 
             localFolder.open(OpenMode.READ_WRITE);
 
-            int localMessages = localFolder.getMessageCount();
-            if (localMessages > 0)
+            if (localFolder.getMessageCount() > 0)
             {
                 return true;
             }
