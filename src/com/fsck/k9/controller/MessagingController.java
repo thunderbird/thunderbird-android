@@ -4042,15 +4042,17 @@ public class MessagingController implements Runnable
                 }
                 processPendingCommands(account);
             }
-            else if (folder.equals(account.getTrashFolderName()) && account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE)
+            else if ( account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE)
             {
-                queueSetFlag(account, folder, Boolean.toString(true), Flag.DELETED.toString(), uids);
-                processPendingCommands(account);
-            }
-            else if (account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE)
-            {
-                queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids);
-                processPendingCommands(account);
+                if (folder.equals(account.getTrashFolderName()))
+                {
+                    queueSetFlag(account, folder, Boolean.toString(true), Flag.DELETED.toString(), uids);
+                }
+                else
+                {
+                    queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids);
+                }
+                    processPendingCommands(account);
             }
             else if (account.getDeletePolicy() == Account.DELETE_POLICY_MARK_AS_READ)
             {
