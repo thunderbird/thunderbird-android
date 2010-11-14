@@ -2939,7 +2939,7 @@ public class MessagingController implements Runnable
 
             localFolder.appendMessages(messages);
 
-            localFolder.deleteMessagesOlderThan(nowTime - (15 * 60 * 1000));
+            localFolder.clearMessagesOlderThan(nowTime - (15 * 60 * 1000));
 
         }
         catch (Throwable it)

@@ -3438,7 +3438,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             throw new MessagingException("Cannot call getUidFromMessageId on LocalFolder");
         }
 
-        private void deleteMessagesWhere(final String whereClause, final String[] params)  throws MessagingException
+        private void clearMessagesWhere(final String whereClause, final String[] params)  throws MessagingException
         {
             open(OpenMode.READ_ONLY);
             Message[] messages  = LocalStore.this.getMessages(
@@ -3463,7 +3463,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             resetUnreadAndFlaggedCounts();
         }
 
-        public void deleteMessagesOlderThan(long cutoff) throws MessagingException
+        public void clearMessagesOlderThan(long cutoff) throws MessagingException
         {
             final String where = "folder_id = ? and date < ?";
             final String[] params = new String[]
@@ -3471,7 +3471,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 Long.toString(mFolderId), Long.toString(cutoff)
             };
 
-            deleteMessagesWhere(where, params);
+            clearMessagesWhere(where, params);
         }
 
 
