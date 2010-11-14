@@ -3,9 +3,8 @@ package com.fsck.k9.activity;
 
 import java.io.File;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -456,145 +455,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
 
-        String action = intent.getAction();
-
-        if (Intent.ACTION_VIEW.equals(action))
-        {
-            /*
-             * Someone has clicked a mailto: link. The address is in the URI.
-             */
-            if (intent.getData() != null)
-            {
-                Uri uri = intent.getData();
-                if ("mailto".equals(uri.getScheme()))
-                {
-                    initializeFromMailTo(uri.toString());
-                }
-                else
-                {
-                    String toText = uri.getSchemeSpecificPart();
-                    if (toText != null)
-                    {
-                        mToView.setText(toText);
-                    }
-                }
-            }
-        }
-        else if (Intent.ACTION_SENDTO.equals(action))
-        {
-            final Uri uri = intent.getData();
-
-            // look for recipient address
-            if (uri != null && "mailto".equals(uri.getScheme()))
-            {
-                initializeFromMailTo(uri.toString());
-            }
-        }
-        //TODO: Use constant Intent.ACTION_SEND_MULTIPLE once we drop Android 1.5 support
-        else if (Intent.ACTION_SEND.equals(action)
-                 || "android.intent.action.SEND_MULTIPLE".equals(action))
-        {
-            /*
-             * Someone is trying to compose an email with an attachment, probably Pictures.
-             * The Intent should contain an EXTRA_STREAM with the data to attach.
-             */
-
-            String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-            if (text != null)
-            {
-                mMessageContentView.setText(text);
-            }
-            String subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
-            if (subject != null)
-            {
-                mSubjectView.setText(subject);
-            }
-
-            String type = intent.getType();
-            //TODO: Use constant Intent.ACTION_SEND_MULTIPLE once we drop Android 1.5 support
-            if ("android.intent.action.SEND_MULTIPLE".equals(action))
-            {
-                ArrayList<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-                if (list != null)
-                {
-                    for (Parcelable parcelable : list)
-                    {
-                        Uri stream = (Uri) parcelable;
-                        if (stream != null && type != null)
-                        {
-                            if (MimeUtility.mimeTypeMatches(type, K9.ACCEPTABLE_ATTACHMENT_SEND_TYPES))
-                            {
-                                addAttachment(stream);
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                if (stream != null && type != null)
-                {
-                    if (MimeUtility.mimeTypeMatches(type, K9.ACCEPTABLE_ATTACHMENT_SEND_TYPES))
-                    {
-                        addAttachment(stream);
-                    }
-                }
-            }
-
-            /*
-             * There might be an EXTRA_SUBJECT, EXTRA_TEXT, EXTRA_EMAIL, EXTRA_BCC or EXTRA_CC
-             */
-
-            String extraSubject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
-            String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
-
-            mSubjectView.setText(extraSubject);
-            mMessageContentView.setText(extraText);
-
-            String[] extraEmail = intent.getStringArrayExtra(Intent.EXTRA_EMAIL);
-            String[] extraCc = intent.getStringArrayExtra(Intent.EXTRA_CC);
-            String[] extraBcc = intent.getStringArrayExtra(Intent.EXTRA_BCC);
-
-            String addressList;
-            // Cache array size, as per Google's recommendations.
-            int arraySize;
-            int i;
-
-            addressList = "";
-            if (extraEmail != null)
-            {
-                arraySize = extraEmail.length;
-                for (i=0; i < arraySize; i++)
-                {
-                    addressList += extraEmail[i]+", ";
-                }
-            }
-            mToView.setText(addressList);
-
-            addressList = "";
-            if (extraCc != null)
-            {
-                arraySize = extraCc.length;
-                for (i=0; i < arraySize; i++)
-                {
-                    addressList += extraCc[i]+", ";
-                }
-            }
-            mCcView.setText(addressList);
-
-            addressList = "";
-            if (extraBcc != null)
-            {
-                arraySize = extraBcc.length;
-                for (i=0; i < arraySize; i++)
-                {
-                    addressList += extraBcc[i]+", ";
-                }
-            }
-            mBccView.setText(addressList);
-
-        }
+        final String action = intent.getAction();
+        initFromIntent(intent);
 
         if (mIdentity == null)
         {
@@ -738,6 +600,130 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
 
         mDraftNeedsSaving = false;
+    }
+
+    /**
+     * Handle external intents that trigger the message compose activity.
+     *
+     * @param intent The (external) intent that started the activity.
+     */
+    private void initFromIntent(final Intent intent)
+    {
+        final String action = intent.getAction();
+
+        if (Intent.ACTION_VIEW.equals(action) || Intent.ACTION_SENDTO.equals(action))
+        {
+            /*
+             * Someone has clicked a mailto: link. The address is in the URI.
+             */
+            if (intent.getData() != null)
+            {
+                Uri uri = intent.getData();
+                if ("mailto".equals(uri.getScheme()))
+                {
+                    initializeFromMailto(uri);
+                }
+            }
+
+            /*
+             * Note: According to the documenation ACTION_VIEW and ACTION_SENDTO
+             * don't accept EXTRA_* parameters. Contrary to the AOSP Email application
+             * we don't accept those EXTRAs.
+             * Dear developer, if your application is using those EXTRAs you're doing
+             * it wrong! So go fix your program or get AOSP to change the documentation.
+             */
+        }
+        //TODO: Use constant Intent.ACTION_SEND_MULTIPLE once we drop Android 1.5 support
+        else if (Intent.ACTION_SEND.equals(action) ||
+                 "android.intent.action.SEND_MULTIPLE".equals(action))
+        {
+            /*
+             * Note: Here we allow a slight deviation from the documentated behavior.
+             * EXTRA_TEXT is used as message body (if available) regardless of the MIME
+             * type of the intent. In addition one or multiple attachments can be added
+             * using EXTRA_STREAM.
+             */
+            CharSequence text = intent.getCharSequenceExtra(Intent.EXTRA_TEXT);
+            if (text != null)
+            {
+                mMessageContentView.setText(text);
+            }
+
+            String type = intent.getType();
+            if (Intent.ACTION_SEND.equals(action))
+            {
+                Uri stream = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                if (stream != null)
+                {
+                    addAttachment(stream, type);
+                }
+            }
+            else
+            {
+                ArrayList<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+                if (list != null)
+                {
+                    for (Parcelable parcelable : list)
+                    {
+                        Uri stream = (Uri) parcelable;
+                        if (stream != null)
+                        {
+                            addAttachment(stream, type);
+                        }
+                    }
+                }
+            }
+
+            String subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+            if (subject != null)
+            {
+                mSubjectView.setText(subject);
+            }
+
+            String[] extraEmail = intent.getStringArrayExtra(Intent.EXTRA_EMAIL);
+            String[] extraCc = intent.getStringArrayExtra(Intent.EXTRA_CC);
+            String[] extraBcc = intent.getStringArrayExtra(Intent.EXTRA_BCC);
+
+            if (extraEmail != null)
+            {
+                setRecipients(mToView, Arrays.asList(extraEmail));
+            }
+
+            boolean ccOrBcc = false;
+            if (extraCc != null)
+            {
+                ccOrBcc |= setRecipients(mCcView, Arrays.asList(extraCc));
+            }
+
+            if (extraBcc != null)
+            {
+                ccOrBcc |= setRecipients(mBccView, Arrays.asList(extraBcc));
+            }
+
+            if (ccOrBcc)
+            {
+                // Display CC and BCC text fields if CC or BCC recipients were set by the intent.
+                onAddCcBcc();
+            }
+        }
+    }
+
+    private boolean setRecipients(TextView view, List<String> recipients)
+    {
+        boolean recipientAdded = false;
+        if (recipients != null)
+        {
+            StringBuffer addressList = new StringBuffer();
+            for (String recipient : recipients)
+            {
+                addressList.append(recipient);
+                addressList.append(", ");
+                recipientAdded = true;
+            }
+            view.setText(addressList);
+        }
+
+        return recipientAdded;
     }
 
     private void initializeCrypto()
@@ -1228,7 +1214,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
             }
         }
 
-        onAddAttachment2(K9.ACCEPTABLE_ATTACHMENT_SEND_TYPES[0]);
+        onAddAttachment2("*/*");
     }
 
     /**
@@ -1248,67 +1234,61 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void addAttachment(Uri uri)
     {
-        addAttachment(uri, -1, null);
+        addAttachment(uri, null);
     }
 
-    private void addAttachment(Uri uri, int size, String name)
+    private void addAttachment(Uri uri, String contentType)
     {
+        long size = -1;
+        String name = null;
+
         ContentResolver contentResolver = getContentResolver();
 
-        Attachment attachment = new Attachment();
-        attachment.name = name;
-        attachment.size = size;
-        attachment.uri = uri;
+        Cursor metadataCursor = contentResolver.query(
+                                    uri,
+                                    new String[] { OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE },
+                                    null,
+                                    null,
+                                    null);
 
-        if (attachment.size == -1 || attachment.name == null)
+        if (metadataCursor != null)
         {
-            Cursor metadataCursor = contentResolver.query(uri, new String[] { OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE }, null, null, null);
-            if (metadataCursor != null)
+            try
             {
-                try
+                if (metadataCursor.moveToFirst())
                 {
-                    if (metadataCursor.moveToFirst())
-                    {
-                        if (attachment.name == null)
-                        {
-                            attachment.name = metadataCursor.getString(0);
-                        }
-                        if (attachment.size == -1)
-                        {
-                            attachment.size = metadataCursor.getInt(1);
-                            Log.v(K9.LOG_TAG, "size: " + attachment.size);
-                        }
-                    }
+                    name = metadataCursor.getString(0);
+                    size = metadataCursor.getInt(1);
                 }
-                finally
-                {
-                    metadataCursor.close();
-                }
+            }
+            finally
+            {
+                metadataCursor.close();
             }
         }
 
-        if (attachment.name == null)
+        if (name == null)
         {
-            attachment.name = uri.getLastPathSegment();
+            name = uri.getLastPathSegment();
         }
 
-        String contentType = contentResolver.getType(uri);
-
+        if ((contentType == null) || (contentType.indexOf('*') != -1))
+        {
+            contentType = contentResolver.getType(uri);
+        }
         if (contentType == null)
         {
-            contentType = MimeUtility.getMimeTypeByExtension(attachment.name);
+            contentType = MimeUtility.getMimeTypeByExtension(name);
         }
 
-        attachment.contentType = contentType;
-
-        if (attachment.size<=0)
+        if (size <= 0)
         {
             String uriString = uri.toString();
             if (uriString.startsWith("file://"))
             {
                 Log.v(K9.LOG_TAG, uriString.substring("file://".length()));
                 File f = new File(uriString.substring("file://".length()));
-                attachment.size = f.length();
+                size = f.length();
             }
             else
             {
@@ -1317,15 +1297,16 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
         else
         {
-            Log.v(K9.LOG_TAG, "old attachment.size: " + attachment.size);
+            Log.v(K9.LOG_TAG, "old attachment.size: " + size);
         }
-        Log.v(K9.LOG_TAG, "new attachment.size: " + attachment.size);
-        addAttachmentView(attachment);
+        Log.v(K9.LOG_TAG, "new attachment.size: " + size);
 
-    }
+        Attachment attachment = new Attachment();
+        attachment.uri = uri;
+        attachment.contentType = contentType;
+        attachment.name = name;
+        attachment.size = size;
 
-    private void addAttachmentView(Attachment attachment)
-    {
         View view = getLayoutInflater().inflate(R.layout.message_compose_attachment, mAttachments, false);
         TextView nameView = (TextView)view.findViewById(R.id.attachment_name);
         ImageButton delete = (ImageButton)view.findViewById(R.id.attachment_delete);
@@ -2166,72 +2147,59 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
         }
     }
 
-    private String decode(String s)
-    throws UnsupportedEncodingException
-    {
-        return URLDecoder.decode(s, "UTF-8");
-    }
-
     /**
      * When we are launched with an intent that includes a mailto: URI, we can actually
      * gather quite a few of our message fields from it.
-     *
-     * @mailToString the href (which must start with "mailto:").
      */
-    private void initializeFromMailTo(String mailToString)
+    private void initializeFromMailto(Uri mailtoUri)
     {
-
-        // Chop up everything between mailto: and ? to find recipients
-        int index = mailToString.indexOf("?");
-        int length = "mailto".length() + 1;
-        String to;
-        try
+        String schemaSpecific = mailtoUri.getSchemeSpecificPart();
+        int end = schemaSpecific.indexOf('?');
+        if (end == -1)
         {
-            // Extract the recipient after mailto:
-            if (index == -1)
-            {
-                to = decode(mailToString.substring(length));
-            }
-            else
-            {
-                to = decode(mailToString.substring(length, index));
-            }
-            mToView.setText(to);
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            Log.e(K9.LOG_TAG, e.getMessage() + " while decoding '" + mailToString + "'");
+            end = schemaSpecific.length();
         }
 
-        // Extract the other parameters
+        // Extract the recipient's email address from the mailto URI if there's one.
+        String recipient = Uri.decode(schemaSpecific.substring(0, end));
 
-        // We need to disguise this string as a URI in order to parse it
-        Uri uri = Uri.parse("foo://" + mailToString);
+        /*
+         * mailto URIs are not hierarchical. So calling getQueryParameters()
+         * will throw an UnsupportedOperationException. We avoid this by
+         * creating a new hierarchical dummy Uri object with the query
+         * parameters of the original URI.
+         */
+        Uri uri = Uri.parse("foo://bar?" + mailtoUri.getEncodedQuery());
 
-        String addressList;
-
-        addressList = "";
-        List<String> cc = uri.getQueryParameters("cc");
-        for (String address : cc)
+        // Read additional recipients from the "to" parameter.
+        List<String> to = uri.getQueryParameters("to");
+        if (recipient.length() != 0)
         {
-            addressList += address + ",";
+            to = new ArrayList<String>(to);
+            to.add(0, recipient);
         }
-        mCcView.setText(addressList);
+        setRecipients(mToView, to);
 
-        addressList = "";
-        List<String> bcc = uri.getQueryParameters("bcc");
-        for (String address : bcc)
+        // Read carbon copy recipients from the "cc" parameter.
+        boolean ccOrBcc = setRecipients(mCcView, uri.getQueryParameters("cc"));
+
+        // Read blind carbon copy recipients from the "bcc" parameter.
+        ccOrBcc |= setRecipients(mBccView, uri.getQueryParameters("bcc"));
+
+        if (ccOrBcc)
         {
-            addressList += address + ",";
+            // Display CC and BCC text fields if CC or BCC recipients were set by the intent.
+            onAddCcBcc();
         }
-        mBccView.setText(addressList);
 
+        // Read subject from the "subject" parameter.
         List<String> subject = uri.getQueryParameters("subject");
         if (subject.size() > 0)
         {
             mSubjectView.setText(subject.get(0));
         }
 
+        // Read message body from the "body" parameter.
         List<String> body = uri.getQueryParameters("body");
         if (body.size() > 0)
         {

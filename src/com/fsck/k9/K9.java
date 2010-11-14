@@ -176,18 +176,6 @@ public class K9 extends Application
      */
     private static final Method mGetBlockNetworkLoads = getMethod(WebSettings.class, "setBlockNetworkLoads");
 
-
-    /**
-     * The MIME type(s) of attachments we're willing to send. At the moment it is not possible
-     * to open a chooser with a list of filter types, so the chooser is only opened with the first
-     * item in the list. The entire list will be used to filter down attachments that are added
-     * with Intent.ACTION_SEND.
-     */
-    public static final String[] ACCEPTABLE_ATTACHMENT_SEND_TYPES = new String[]
-    {
-        "*/*"
-    };
-
     /**
      * The MIME type(s) of attachments we're willing to view.
      */
