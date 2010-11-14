@@ -33,8 +33,8 @@
 	<item
 		android:id="@+id/choose_identity"
         android:alphabeticShortcut="i"
-		android:title="@string/choose_identity"
-		android:icon="@drawable/ic_menu_cc"
+		android:title="@string/send_as"
+		android:icon="@drawable/ic_menu_identity"
 	/>
 	<item
 		android:id="@+id/add_attachment_image"

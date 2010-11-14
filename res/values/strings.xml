@@ -725,6 +725,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="choose_identity">Choose identity</string>
     <string name="choose_identity_title">Choose identity</string>
     <string name="choose_account_title">Choose account/identity</string>
+    <string name="send_as">Send as</string>
+
 
     <string name="no_identities">Go to Account Settings -&gt; Manage Identities to create identities</string>
     <string name="no_removable_identity">You can\'t remove your only identity</string>
