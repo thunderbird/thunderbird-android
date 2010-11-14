@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2008 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
     <!--
         This file is used to specify providers that we know default settings for
         so that the user can set up their account by simply entering their email
@@ -7,6 +22,11 @@
         When a user starts this process, the email address is parsed, the domain
         broken out and used to search this file for a provider. If one is found the
         provider's settings are used to attempt to connect to the account.
+        
+        At this time, the id and label attributes are not used.  However, please include them
+        if you make edits to this file.  id must also be completely unique.  label will be shown
+        to the user when there are multiple options provided for a single domain (not currently
+        supported).
 
         A provider contains the settings for setting up an email account
         that ends with the given domain. Domains should be unique within
@@ -41,7 +61,10 @@
                             If SSL is not available the connection fails.
 
         The URIs should be full templates for connection, including a port if
-        the service uses a non-default port.
+        the service uses a non-default port.  The default ports are as follows:
+            imap        143     pop3        110     smtp        587
+            imap+tls+   143     pop3+tls+   110     smtp+tls+   587
+            imap+ssl+   993     pop3+ssl+   995     smtp+ssl+   465
 
         The username attribute is used to supply a template for the username
         that will be presented to the server. This username is built from a
@@ -52,70 +75,68 @@
             $email - the email address the user entered
             $user - the value before the @ sign in the email address the user entered
             $domain - the value after the @ signin the email address the user entered
+            
+        The username attribute MUST be specified for the incoming element, so the POP3 or IMAP
+        server can identify the mailbox to be opened.
+        
+        The username attribute MAY be the empty string for the outgoing element, but only if the 
+        SMTP server supports anonymous transmission (most don't).
     -->
+
 <providers>
+
+    <!-- Gmail variants -->
     <provider id="gmail" label="Gmail" domain="gmail.com">
-        <incoming uri="imap+ssl+://imap.googlemail.com" username="$email" />
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
+    </provider>
+    <provider id="googlemail" label="Google Mail" domain="googlemail.com">
+        <incoming uri="imap+ssl+://imap.googlemail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.googlemail.com" username="$email" />
     </provider>
     <provider id="google" label="Google" domain="google.com">
-        <incoming uri="imap+ssl+://imap.googlemail.com" username="$email" />
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
     </provider>
-    <provider id="aol" label="AOL" domain="aol.com">
-        <incoming uri="imap://imap.aol.com" label="IMAP"
-            username="$email" />
-        <outgoing uri="smtp://smtp.aol.com:587" username="$email" />
+    <provider id="android" label="Android" domain="android.com">
+        <incoming uri="imap+ssl+://imap.gmail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.gmail.com" username="$email" />
     </provider>
+
+    <!-- USA -->
+    <!-- Note, AOL appears to support SSL on both sides, as well -->
     <provider id="aim" label="AIM" domain="aim.com">
-        <incoming uri="imap://imap.aim.com" label="IMAP"
-            username="$email" />
-        <outgoing uri="smtp://smtp.aim.com:587" username="$email" />
+        <incoming uri="imap://imap.aim.com" label="IMAP" username="$email" />
+        <outgoing uri="smtp://smtp.aim.com" username="$email" />
     </provider>
-    <provider id="yahoo" label="Yahoo" domain="yahoo.com">
-        <incoming uri="imap+tls://imap.mail.yahoo.com"
-            username="$user" />
-        <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com"
-            username="$user" />
-    </provider>
-    <provider id="mobileme" label="MobileMe" domain="me.com">
-        <incoming uri="imap+tls://mail.me.com" username="$email" />
-        <outgoing uri="smtp+tls://smtp.me.com" username="$email" />
-    </provider>
-    <provider id="dotmac" label=".Mac" domain="mac.com">
-        <incoming uri="imap+tls://mail.mac.com" username="$email" />
-        <outgoing uri="smtp+tls://smtp.mac.com" username="$email" />
+    <!-- Note, AOL appears to support SSL on both sides, as well -->
+    <provider id="aol" label="AOL" domain="aol.com">
+        <incoming uri="imap://imap.aol.com" label="IMAP" username="$email" />
+        <outgoing uri="smtp://smtp.aol.com" username="$email" />
     </provider>
     <provider id="comcast" label="Comcast" domain="comcast.net">
         <incoming uri="pop3+ssl+://mail.comcast.net" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.comcast.net" username="$user" />
     </provider>
-    <provider id="verizon" label="Verizon" domain="verizon.net">
-        <incoming uri="pop3://incoming.verizon.net" username="$user" />
-        <outgoing uri="smtp://outgoing.verizon.net" username="$user" />
-    </provider>
-    <provider id="sbcglobal" label="SBC Global" domain="sbcglobal.net">
-        <incoming uri="pop3://pop.sbcglobal.yahoo.com"
-            username="$email" />
-        <outgoing uri="smtp://smtp.sbcglobal.yahoo.com"
-            username="$email" />
-    </provider>
     <provider id="compuserve" label="CompuServe" domain="cs.com">
         <incoming uri="imap://imap.cs.com" username="$user" />
         <outgoing uri="smtp://smtp.cs.com" username="$user" />
     </provider>
+    <provider id="cox" label="Cox" domain="cox.net">
+        <incoming uri="pop3+ssl+://pop.east.cox.net" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.east.cox.net" username="$user" />
+    </provider> 
+    <provider id="dotmac" label=".Mac" domain="mac.com">
+        <incoming uri="imap+tls//mail.mac.com" username="$email" />
+        <outgoing uri="smtp+tls://smtp.mac.com" username="$email" />
+    </provider>
     <provider id="earthlink" label="Earthlink" domain="earthlink.net">
         <incoming uri="pop3://pop.earthlink.net" username="$email" />
-        <outgoing uri="smtp://smtpauth.earthlink.net:587"
-            username="$email" />
+        <outgoing uri="smtp://smtpauth.earthlink.net:587" username="$email" />
     </provider>
     <provider id="juno" label="Juno" domain="juno.com">
         <incoming uri="pop3://pop.juno.com" username="$user" />
         <outgoing uri="smtp://smtp.juno.com" username="$user" />
-    </provider>
-    <provider id="netzero" label="NetZero" domain="netzero.com">
-        <incoming uri="pop3://pop.netzero.com" username="$user" />
-        <outgoing uri="smtp://smtp.netzero.com" username="$user" />
     </provider>
     <provider id="live" label="Windows Live Hotmail Plus" domain="live.com"
             note="@string/provider_note_live">
@@ -132,9 +153,115 @@
         <incoming uri="pop3+ssl+://pop3.live.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp.live.com" username="$email" />
     </provider>
-    <provider id="fsck" label="Jesse's personal mail" domain="fsck.com" >
-        <incoming uri="imap+ssl+://fsck.com"  username="$user" />
-        <outgoing uri="smtp+tls+://fsck.com:2525" username="$user"/>
+    <!-- Note: Mac Mail.app sets IMAP to mail.mac.com, but it's the same server -->
+    <provider id="mobileme" label="MobileMe" domain="me.com">
+        <incoming uri="imap+tls://mail.me.com" username="$email" />
+        <outgoing uri="smtp+tls://smtp.me.com" username="$email" />
+    </provider>
+    <provider id="netzero" label="NetZero" domain="netzero.com">
+        <incoming uri="pop3://pop.netzero.com" username="$user" />
+        <outgoing uri="smtp://smtp.netzero.com" username="$user" />
+    </provider>
+    <provider id="sbcglobal" label="SBC Global" domain="sbcglobal.net">
+        <incoming uri="pop3://pop.sbcglobal.yahoo.com" username="$email" />
+        <outgoing uri="smtp://smtp.sbcglobal.yahoo.com" username="$email" />
+    </provider>
+    <provider id="verizon" label="Verizon" domain="verizon.net">
+        <incoming uri="pop3://incoming.verizon.net" username="$user" />
+        <outgoing uri="smtp://outgoing.verizon.net" username="$user" />
+    </provider>
+    <provider id="yahoo" label="Yahoo" domain="yahoo.com">
+        <incoming uri="imap+tls://imap.mail.yahoo.com" username="$user" />
+        <outgoing uri="smtp+tls://smtp.mobile.mail.yahoo.com" username="$user" />
+    </provider>
+
+
+   <!-- UK -->
+    <provider id="aol-uk" label="AOL" domain="aol.co.uk">
+        <incoming uri="imap+ssl+://imap.uk.aol.com" label="IMAP" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.uk.aol.com" username="$user" />
+    </provider>
+    <provider id="bt" label="BT Internet" domain="btinternet.com">
+        <incoming uri="pop3://mail.btinternet.com" username="$email" />
+        <outgoing uri="smtp://mail.btinternet.com" username="" />
+    </provider>
+    <provider id="yahoo-uk" label="Yahoo" domain="yahoo.co.uk">
+        <incoming uri="pop3+ssl+://pop.mail.yahoo.co.uk" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.mail.yahoo.co.uk" username="$user" />
     </provider>
     
+    <!-- Germany -->
+    <provider id="freenet" label="Freenet" domain="freenet.de">
+        <incoming uri="pop3://mx.freenet.de" username="$user" />
+        <outgoing uri="smtp+ssl://mx.freenet.de" username="$email" />
+    </provider>
+    <provider id="gmx" label="GMX" domain="gmx.de">
+        <incoming uri="pop3://pop.gmx.net" username="$email" />
+        <outgoing uri="smtp://mail.gmx.net" username="$email" />
+    </provider>
+    <provider id="T-Online" label="T-Online" domain="t-online.de">
+        <incoming uri="pop3://popmail.t-online.de" username="$email" />
+        <outgoing uri="smtp://smtpmail.t-online.de" username="$email" />
+    </provider>
+    <provider id="web.de" label="Web.de" domain="web.de">
+        <incoming uri="imap+ssl://imap.web.de" username="$user" />
+        <outgoing uri="smtp://smtp.web.de" username="$user" />
+    </provider>
+
+    <!-- Netherlands -->
+    <!-- TODO:  For all of these, please confirm POP3, and switch to IMAP if supported -->
+    <!-- TODO:  username="" in incoming element is broken - will not work -->
+    <!-- Disabled until username="" is resolved
+    <provider id="hetnet" label="Het Net" domain="hetnet.nl">
+        <incoming uri="pop3://pop.hetnet.nl" username="" />
+        <outgoing uri="smtp://mailhost.hetnet.nl" username="" />
+    </provider>
+    -->
+    <!-- Disabled until test accounts provided
+    <provider id="planet inet" label="Planet Internet" domain="planet.nl">
+        <incoming uri="pop3://pop.planet.nl" username="$user" />
+        <outgoing uri="smtp://mail.planet.nl" username="" />
+    </provider>
+    -->
+    <!-- TODO:  username="" in incoming element is broken - will not work -->
+    <!-- Disabled until username="" is resolved
+    <provider id="tiscali" label="Tiscali" domain="tiscali.nl">
+        <incoming uri="pop3://pop3.tiscali.nl" username="" />
+        <outgoing uri="smtp://smtp.tiscali.nl" username="" />
+    </provider>
+    -->
+    <!-- Disabled until test accounts provided
+    <provider id="wanadoo" label="Wanadoo" domain="wanadoo.nl">
+        <incoming uri="pop3://pop.wanadoo.nl" username="$user" />
+        <outgoing uri="smtp://smtp.wanadoo.nl" username="$user" />
+    </provider>
+     -->
+
+    <!-- Poland -->
+    <provider id="onet" label="Onet.pl" domain="poczta.onet.pl">
+        <incoming uri="pop3://pop3.poczta.onet.pl" username="$email" />
+        <outgoing uri="smtp://smtp.poczta.onet.pl" username="$email" />
+    </provider>
+    <provider id="wirtualna" label="Wirtualna Polska" domain="wp.pl">
+        <incoming uri="pop3://pop3.wp.pl" username="$user" />
+        <outgoing uri="smtp://smtp.wp.pl" username="$user" />
+    </provider>
+    <provider id="interia" label="Interia" domain="interia.pl">
+        <incoming uri="pop3+ssl://poczta.interia.pl" username="$user" />
+        <outgoing uri="smtp+ssl://poczta.interia.pl" username="$user" />
+    </provider>
+    <provider id="o2" label="O2" domain="o2.pl">
+        <incoming uri="pop3+ssl://poczta.o2.pl" username="$user" />
+        <outgoing uri="smtp+ssl://poczta.o2.pl" username="$user" />
+    </provider>
+
+    <!-- Developers' vanity providers -->
+    <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
+        <incoming uri="imap+ssl://fsck.com"  username="$user" />
+        <outgoing uri="smtp+tls://mail.bestpractical.com:2525" username="$user"/>
+    </provider>
+    <provider id="bestpractical.com" label="Best Practical Solutions" domain="bestpractical.com" >
+        <incoming uri="imap+ssl://imap.bestpractical.com"  username="$user" />
+        <outgoing uri="smtp+tls://smtp.bestpractical.com:2525" username="$user"/>
+    </provider>
 </providers>
