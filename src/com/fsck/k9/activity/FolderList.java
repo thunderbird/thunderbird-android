@@ -31,6 +31,7 @@ import com.fsck.k9.helper.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.store.LocalStore.LocalFolder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.service.MailService;
 import java.util.ArrayList;
@@ -538,6 +539,43 @@ public class FolderList extends K9ListActivity
         MessagingController.getInstance(getApplication()).expunge(account, folderName, null);
     }
 
+
+    private void onClearFolder(Account account, String folderName)
+    {
+        // There has to be a cheaper way to get at the localFolder object than this
+        LocalFolder localFolder = null;
+        try
+        {
+            if (account == null || folderName == null || !account.isAvailable(FolderList.this))
+            {
+                Log.i(K9.LOG_TAG, "not clear folder of unavailable account");
+                return;
+            }
+            localFolder = account.getLocalStore().getFolder(folderName);
+            localFolder.open(Folder.OpenMode.READ_WRITE);
+            if (localFolder != null)
+            {
+                localFolder.clearAllMessages();
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e(K9.LOG_TAG, "Exception while clearing folder", e);
+        }
+        finally
+        {
+            if (localFolder != null)
+            {
+                localFolder.close();
+            }
+        }
+
+    }
+
+
+
+
+
     private void sendMail(Account account)
     {
         MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
@@ -674,6 +712,10 @@ public class FolderList extends K9ListActivity
             case R.id.expunge:
                 onExpunge(mAccount, folder.name);
 
+                break;
+
+            case R.id.clear_local_folder:
+                onClearFolder(mAccount,folder.name);
                 break;
         }
 

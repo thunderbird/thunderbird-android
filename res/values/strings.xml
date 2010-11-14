@@ -114,6 +114,7 @@
     <string name="dump_settings_action">Dump settings</string>
     <string name="empty_trash_action">Empty Trash</string>
     <string name="expunge_action">Expunge</string>
+    <string name="clear_local_folder_action">Clear local messages</string>
     <string name="set_sort_action">Choose sort</string>
     <string name="reverse_sort_action">Reverse sort</string>
     <string name="about_action">About</string>

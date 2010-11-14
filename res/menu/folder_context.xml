@@ -25,6 +25,10 @@
 		android:title="@string/folder_settings_action"
     />
     <item
+        android:id="@+id/clear_local_folder"
+        android:title="@string/clear_local_folder_action"
+    />
+    <item
         android:id="@+id/expunge"
         android:title="@string/expunge_action"
     />

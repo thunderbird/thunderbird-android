@@ -2939,7 +2939,7 @@ public class MessagingController implements Runnable
 
             localFolder.appendMessages(messages);
 
-            localFolder.deleteMessagesOlderThan(nowTime - (15 * 60 * 1000));
+            localFolder.clearMessagesOlderThan(nowTime - (15 * 60 * 1000));
 
         }
         catch (Throwable it)
@@ -3479,8 +3479,7 @@ public class MessagingController implements Runnable
         Folder localFolder = null;
         try
         {
-            Store localStore = account.getLocalStore();
-            localFolder = localStore.getFolder(
+            localFolder = account.getLocalStore().getFolder(
                               account.getOutboxFolderName());
             if (!localFolder.exists())
             {
@@ -3489,8 +3488,7 @@ public class MessagingController implements Runnable
 
             localFolder.open(OpenMode.READ_WRITE);
 
-            int localMessages = localFolder.getMessageCount();
-            if (localMessages > 0)
+            if (localFolder.getMessageCount() > 0)
             {
                 return true;
             }
@@ -4042,15 +4040,17 @@ public class MessagingController implements Runnable
                 }
                 processPendingCommands(account);
             }
-            else if (folder.equals(account.getTrashFolderName()) && account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE)
+            else if ( account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE)
             {
-                queueSetFlag(account, folder, Boolean.toString(true), Flag.DELETED.toString(), uids);
-                processPendingCommands(account);
-            }
-            else if (account.getDeletePolicy() == Account.DELETE_POLICY_ON_DELETE)
-            {
-                queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids);
-                processPendingCommands(account);
+                if (folder.equals(account.getTrashFolderName()))
+                {
+                    queueSetFlag(account, folder, Boolean.toString(true), Flag.DELETED.toString(), uids);
+                }
+                else
+                {
+                    queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids);
+                }
+                    processPendingCommands(account);
             }
             else if (account.getDeletePolicy() == Account.DELETE_POLICY_MARK_AS_READ)
             {

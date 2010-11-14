@@ -3438,19 +3438,13 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             throw new MessagingException("Cannot call getUidFromMessageId on LocalFolder");
         }
 
-        public void deleteMessagesOlderThan(long cutoff) throws MessagingException
+        private void clearMessagesWhere(final String whereClause, final String[] params)  throws MessagingException
         {
-            final String where = "folder_id = ? and date < ?";
-            final String[] params = new String[]
-            {
-                Long.toString(mFolderId), Long.toString(cutoff)
-            };
-
             open(OpenMode.READ_ONLY);
             Message[] messages  = LocalStore.this.getMessages(
                                       null,
                                       this,
-                                      "SELECT " + GET_MESSAGES_COLS + "FROM messages WHERE " + where,
+                                      "SELECT " + GET_MESSAGES_COLS + "FROM messages WHERE " + whereClause,
                                       params);
 
             for (Message message : messages)
@@ -3462,11 +3456,39 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException
                 {
-                    db.execSQL("DELETE FROM messages WHERE " + where, params);
+                    db.execSQL("DELETE FROM messages WHERE " + whereClause, params);
                     return null;
                 }
             });
             resetUnreadAndFlaggedCounts();
+        }
+
+        public void clearMessagesOlderThan(long cutoff) throws MessagingException
+        {
+            final String where = "folder_id = ? and date < ?";
+            final String[] params = new String[]
+            {
+                Long.toString(mFolderId), Long.toString(cutoff)
+            };
+
+            clearMessagesWhere(where, params);
+        }
+
+
+
+        public void clearAllMessages() throws MessagingException
+        {
+            final String where = "folder_id = ?";
+            final String[] params = new String[]
+            {
+                Long.toString(mFolderId)
+            };
+
+
+            clearMessagesWhere(where, params);
+            setPushState(null);
+            setLastPush(0);
+            setLastChecked(0);
         }
 
         private void resetUnreadAndFlaggedCounts()
