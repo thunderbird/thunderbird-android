@@ -548,7 +548,13 @@ public class MessageList
 
     private FontSizes mFontSizes = K9.getFontSizes();
 
-    private Bundle mState = null;
+    /**
+     * When we're in the step of resuming back from MessageView, we have to make
+     * sure we don't do any partial update of the list which would reset the
+     * scroll. Setting this flag to <code>true</code> prevent any update of the
+     * UI list.
+     */
+    private boolean mResuming = false;
 
     /**
      * Remember the selection to be consistent between menu display and menu item
@@ -638,9 +644,9 @@ public class MessageList
                         mAdapter.mUiGroups = new ArrayList<MessageGroup<MessageInfoHolder>>(
                                 mStore.mGroups);
                     }
+
                     // trigger the actual list refresh
                     mAdapter.notifyDataSetChanged();
-
                     // auto expand groups at initial display
                     expandIfNecessary();
                 }
@@ -855,23 +861,16 @@ public class MessageList
                 @Override
                 public void run()
                 {
-                    mAdapter.mGroupingInProgress = mCurrentFolder != null && mAccount != null && mCurrentFolder.loading;
-                    mThrottler.attempt();
+                    // if we're resuming, don't proceed to UI update (have to be invoked later with this flag off to do the actual UI update)
+                    if (!mResuming)
+                    {
+                        mAdapter.mGroupingInProgress = mCurrentFolder != null && mAccount != null && mCurrentFolder.loading;
+                        mThrottler.attempt();
+                    }
                 }
             });
         }
 
-        public void restoreListState()
-        {
-            runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    MessageList.this.restoreListState();
-                }
-            });
-        }
     }
 
     public static void actionHandleFolder(Context context, Account account, String folder)
@@ -1044,7 +1043,7 @@ public class MessageList
             updateFooterView(mFooterView);
         }
 
-        mState = null;
+        mResuming = false;
         mAdapter.mAutoExpanded.clear();
     }
 
@@ -1058,45 +1057,6 @@ public class MessageList
         // (don't set it to null since it needed if a processing is
         // occuring)
         mHandler.mThrottler.getScheduledExecutorService().shutdown();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        saveListState();
-
-        StorageManager.getInstance(getApplication()).removeListener(mStorageListener);
-    }
-
-    public void saveListState()
-    {
-        mState = new Bundle();
-        mState.putInt(EXTRA_LIST_POSITION, mListView.isInTouchMode() ? mListView.getFirstVisiblePosition() : mListView.getSelectedItemPosition());
-    }
-
-    public void restoreListState()
-    {
-        if (mState == null)
-        {
-            return;
-        }
-
-        int pos = mState.getInt(EXTRA_LIST_POSITION, AdapterView.INVALID_POSITION);
-
-        if (pos >= mListView.getCount())
-        {
-            pos = mListView.getCount() - 1;
-        }
-
-        if (pos == AdapterView.INVALID_POSITION)
-        {
-            mListView.setSelected(false);
-        }
-        else
-        {
-            mListView.setSelection(pos);
-        }
     }
 
     /**
@@ -1154,6 +1114,7 @@ public class MessageList
 
         if (mStore.messages.isEmpty())
         {
+            mResuming = false;
             if (mFolderName != null)
             {
                 mController.listLocalMessages(mAccount, mFolderName,  mStore.mListener);
@@ -1166,6 +1127,8 @@ public class MessageList
         }
         else
         {
+            // we're resuming, prevent UI update untill we have a full message list
+            mResuming = true;
             markAllMessagesAsDirty();
             mWorkerPool.execute(new Runnable()
             {
@@ -1182,14 +1145,13 @@ public class MessageList
                         mController.searchLocalMessagesSynchronous(mAccountUuids, mFolderNames, null, mQueryString, mIntegrate, mQueryFlags, mForbiddenFlags, mStore.mListener);
                     }
 
-
                     runOnUiThread(new Runnable()
                     {
                         public void run()
                         {
                             pruneDirtyMessages();
-                            mAdapter.notifyDataSetChanged();
-                            restoreListState();
+                            mResuming = false;
+                            mHandler.synchronizeDisplay();
                         }
                     });
                 }
@@ -4404,6 +4366,9 @@ public class MessageList
         Accounts.listAccounts(getApplicationContext());
     }
 
+    /**
+     * To be called from the UI thread
+     */
     public void pruneDirtyMessages()
     {
         boolean removed = false;
@@ -4429,6 +4394,9 @@ public class MessageList
         }
     }
 
+    /**
+     * To be called from the UI thread
+     */
     public void markAllMessagesAsDirty()
     {
         for (final MessageGroup<MessageInfoHolder> group : mAdapter.mUiGroups)
