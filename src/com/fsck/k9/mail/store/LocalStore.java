@@ -178,7 +178,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * {@link ThreadLocal} to check whether a DB transaction is occuring in the
      * current {@link Thread}.
-     * 
+     *
      * @see #execute(boolean, DbCallback)
      */
     private ThreadLocal<Boolean> inTransaction = new ThreadLocal<Boolean>();
@@ -311,7 +311,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * Execute a DB callback in a shared context (doesn't prevent concurrent
      * shared executions), taking care of locking the DB storage.
-     * 
+     *
      * <p>
      * Can be instructed to start a transaction if none is currently active in
      * the current thread. Callback will participe in any active transaction (no

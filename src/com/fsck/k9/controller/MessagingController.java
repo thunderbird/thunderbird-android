@@ -4050,7 +4050,7 @@ public class MessagingController implements Runnable
                 {
                     queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids);
                 }
-                    processPendingCommands(account);
+                processPendingCommands(account);
             }
             else if (account.getDeletePolicy() == Account.DELETE_POLICY_MARK_AS_READ)
             {
