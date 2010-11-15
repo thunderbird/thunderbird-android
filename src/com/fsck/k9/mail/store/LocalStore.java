@@ -6288,17 +6288,21 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 }
 
 
-                if ( flag == Flag.SEEN && !isSet(Flag.DELETED))
+                if ( !isSet(Flag.DELETED) )
                 {
-                    if (set != isSet(Flag.SEEN))
-                    {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
-                    }
-                }
 
-                if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
-                {
-                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
+                    if ( flag == Flag.SEEN )
+                    {
+                        if (set != isSet(Flag.SEEN))
+                        {
+                            folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
+                        }
+                    }
+
+                    if ( flag == Flag.FLAGGED )
+                    {
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
+                    }
                 }
             }
             catch (MessagingException me)
