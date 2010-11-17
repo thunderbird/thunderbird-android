@@ -394,12 +394,12 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP -polun etuliite</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(Automaattinen, käytä NAMESPACE jos käytettävissä)</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">Vedosten -kansion nimi</string>
-    <string name="account_setup_incoming_imap_folder_sent">Lähetttyjen -kansion nimi</string>
-    <string name="account_setup_incoming_imap_folder_trash">Roskakori -kansion nimi</string>
-    <string name="account_setup_incoming_imap_folder_archive">Arkisto -kansion nimi</string>
-    <string name="account_setup_incoming_imap_folder_spam">Spam -kansion nimi</string>
-    <string name="account_setup_incoming_imap_folder_outbox">Lähtevät -kansion nimi</string>
+    <string name="drafts_folder_label">Vedosten -kansion nimi</string>
+    <string name="sent_folder_label">Lähetttyjen -kansion nimi</string>
+    <string name="trash_folder_label">Roskakori -kansion nimi</string>
+    <string name="archive_folder_label">Arkisto -kansion nimi</string>
+    <string name="spam_folder_label">Spam -kansion nimi</string>
+    <string name="outbox_folder_label">Lähtevät -kansion nimi</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain valitut(subscribed) kansiot</string>
     <string name="account_setup_auto_expand_folder">Aukaise kansio automaattisesti</string>
