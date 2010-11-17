@@ -6241,7 +6241,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
