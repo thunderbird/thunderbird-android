@@ -407,12 +407,12 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP-Verzeichnispräfix</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(Automatisch mit Hilfe von NAMESPACE falls verfügbar)</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">Ordner für Entwürfe</string>
-    <string name="account_setup_incoming_imap_folder_sent">Ordner für gesendete Objekte</string>
-    <string name="account_setup_incoming_imap_folder_trash">Ordner für gelöschte Objekte</string>
-    <string name="account_setup_incoming_imap_folder_archive">Ordner für archivierte Objekte</string>
-    <string name="account_setup_incoming_imap_folder_spam">Ordner für Spam</string>
-    <string name="account_setup_incoming_imap_folder_outbox">Ordner für ausgehende Objekte</string>
+    <string name="drafts_folder_label">Ordner für Entwürfe</string>
+    <string name="sent_folder_label">Ordner für gesendete Objekte</string>
+    <string name="trash_folder_label">Ordner für gelöschte Objekte</string>
+    <string name="archive_folder_label">Ordner für archivierte Objekte</string>
+    <string name="spam_folder_label">Ordner für Spam</string>
+    <string name="outbox_folder_label">Ordner für ausgehende Objekte</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Nur ausgewählte Ordner anzeigen</string>
     <string name="account_setup_auto_expand_folder">Startordner</string>
