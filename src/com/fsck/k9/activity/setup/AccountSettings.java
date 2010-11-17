@@ -15,12 +15,15 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.mail.Folder;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
@@ -91,6 +94,15 @@ public class AccountSettings extends K9PreferenceActivity
     private static final String PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider";
 
 
+    private static final String PREFERENCE_ARCHIVE_FOLDER = "archive_folder";
+    private static final String PREFERENCE_DRAFTS_FOLDER = "drafts_folder";
+    private static final String PREFERENCE_OUTBOX_FOLDER = "outbox_folder";
+    private static final String PREFERENCE_SENT_FOLDER = "sent_folder";
+    private static final String PREFERENCE_SPAM_FOLDER = "spam_folder";
+    private static final String PREFERENCE_TRASH_FOLDER = "trash_folder";
+
+
+
     private Account mAccount;
     private boolean mIsPushCapable = false;
     private boolean mIsExpungeCapable = false;
@@ -120,7 +132,7 @@ public class AccountSettings extends K9PreferenceActivity
     private ListPreference mDeletePolicy;
     private ListPreference mExpungePolicy;
     private ListPreference mSearchableFolders;
-    private Preference mAutoExpandFolder;
+    private ListPreference mAutoExpandFolder;
     private Preference mChipColor;
     private Preference mLedColor;
     private boolean mIncomingChanged = false;
@@ -136,6 +148,15 @@ public class AccountSettings extends K9PreferenceActivity
     private CheckBoxPreference mCryptoAutoSignature;
 
     private ListPreference mLocalStorageProvider;
+
+
+    private ListPreference mArchiveFolder;
+    private ListPreference mDraftsFolder;
+    private ListPreference mOutboxFolder;
+    private ListPreference mSentFolder;
+    private ListPreference mSpamFolder;
+    private ListPreference mTrashFolder;
+
 
     public static void actionSettings(Context context, Account account)
     {
@@ -552,16 +573,57 @@ public class AccountSettings extends K9PreferenceActivity
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
 
-        mAutoExpandFolder = (Preference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
-        mAutoExpandFolder.setSummary(translateFolder(mAccount.getAutoExpandFolderName()));
-        mAutoExpandFolder.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+
+
+        List<? extends Folder> folders = new LinkedList<LocalFolder>();;
+        try
         {
-            public boolean onPreferenceClick(Preference preference)
-            {
-                onChooseAutoExpandFolder();
-                return false;
-            }
-        });
+            folders = mAccount.getLocalStore().getPersonalNamespaces(false);
+        }
+        catch (Exception e)
+        {
+            /// this can't be checked in
+        }
+        final String[] allFolderValues = new String[folders.size()+2];
+        final String[] allFolderLabels = new String[folders.size()+2];
+        allFolderValues[0] = "";
+        allFolderLabels[0] = K9.FOLDER_NONE;
+
+        // There's a non-zero chance that "outbox" won't actually exist, so we force it into the list
+        allFolderValues[1] = mAccount.getOutboxFolderName();
+        allFolderLabels[1] = mAccount.getOutboxFolderName();
+
+
+        int i =2;
+        for (Folder folder : folders)
+        {
+            allFolderLabels[i] = folder.getName();
+            allFolderValues[i] = folder.getName();
+            i++;
+        }
+
+        mAutoExpandFolder = (ListPreference)findPreference(PREFERENCE_AUTO_EXPAND_FOLDER);
+        initListPreference(mAutoExpandFolder, mAccount.getAutoExpandFolderName(), allFolderLabels,allFolderValues);
+
+        mArchiveFolder = (ListPreference)findPreference(PREFERENCE_ARCHIVE_FOLDER);
+        initListPreference(mArchiveFolder, mAccount.getArchiveFolderName(), allFolderLabels,allFolderValues);
+
+        mDraftsFolder = (ListPreference)findPreference(PREFERENCE_DRAFTS_FOLDER);
+        initListPreference(mDraftsFolder, mAccount.getDraftsFolderName(), allFolderLabels,allFolderValues);
+
+        mOutboxFolder = (ListPreference)findPreference(PREFERENCE_OUTBOX_FOLDER);
+        initListPreference(mOutboxFolder, mAccount.getOutboxFolderName(), allFolderLabels,allFolderValues);
+
+        mSentFolder = (ListPreference)findPreference(PREFERENCE_SENT_FOLDER);
+        initListPreference(mSentFolder, mAccount.getSentFolderName(), allFolderLabels,allFolderValues);
+
+        mSpamFolder = (ListPreference)findPreference(PREFERENCE_SPAM_FOLDER);
+        initListPreference(mSpamFolder, mAccount.getSpamFolderName(), allFolderLabels,allFolderValues);
+
+        mTrashFolder = (ListPreference)findPreference(PREFERENCE_TRASH_FOLDER);
+        initListPreference(mTrashFolder, mAccount.getTrashFolderName(), allFolderLabels,allFolderValues);
+
+
 
         mChipColor = (Preference)findPreference(PREFERENCE_CHIP_COLOR);
         mChipColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
@@ -709,6 +771,14 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
 
+        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue().toString()));
+        mAccount.setArchiveFolderName(mArchiveFolder.getValue().toString());
+        mAccount.setDraftsFolderName(mDraftsFolder.getValue().toString());
+        mAccount.setOutboxFolderName(mOutboxFolder.getValue().toString());
+        mAccount.setSentFolderName(mSentFolder.getValue().toString());
+        mAccount.setSpamFolderName(mSpamFolder.getValue().toString());
+        mAccount.setTrashFolderName(mTrashFolder.getValue().toString());
+
 
         if (mIsPushCapable)
         {
@@ -748,7 +818,6 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setHideMessageViewMoveButtons(Account.HideButtons.valueOf(mAccountHideMoveButtons.getValue()));
         mAccount.setShowPictures(Account.ShowPictures.valueOf(mAccountShowPictures.getValue()));
         mAccount.setEnableMoveButtons(mAccountEnableMoveButtons.isChecked());
-        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getSummary().toString()));
         mAccount.save(Preferences.getPreferences(this));
 
         if (needsRefresh && needsPushRestart)

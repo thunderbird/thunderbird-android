@@ -251,10 +251,9 @@
         android:title="@string/account_settings_folders"
         android:key="folders">
 
-        <Preference
+        <ListPreference
             android:persistent="false"
             android:key="account_setup_auto_expand_folder"
-            android:singleLine="true"
             android:title="@string/account_setup_auto_expand_folder"
             android:summary="" />
 
@@ -281,6 +280,40 @@
             android:entries="@array/account_settings_searchable_entries"
             android:entryValues="@array/account_settings_searchable_values"
             android:dialogTitle="@string/account_settings_searchable_label" />
+
+        <ListPreference
+            android:persistent="false"
+            android:key="archive_folder"
+            android:title="@string/archive_folder_label"
+            android:dialogTitle="@string/archive_folder_label" />
+        <ListPreference
+            android:persistent="false"
+            android:key="drafts_folder"
+            android:title="@string/drafts_folder_label"
+            android:dialogTitle="@string/drafts_folder_label" />
+        <ListPreference
+            android:persistent="false"
+            android:key="outbox_folder"
+            android:title="@string/outbox_folder_label"
+            android:dialogTitle="@string/outbox_folder_label" />
+
+
+        <ListPreference
+            android:persistent="false"
+            android:key="sent_folder"
+            android:title="@string/sent_folder_label"
+            android:dialogTitle="@string/sent_folder_label" />
+
+        <ListPreference
+            android:persistent="false"
+            android:key="spam_folder"
+            android:title="@string/spam_folder_label"
+            android:dialogTitle="@string/spam_folder_label" />
+        <ListPreference
+            android:persistent="false"
+            android:key="trash_folder"
+            android:title="@string/trash_folder_label"
+            android:dialogTitle="@string/trash_folder_label" />
 
     </PreferenceScreen>
     <PreferenceScreen

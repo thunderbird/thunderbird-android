@@ -412,12 +412,12 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP path prefix</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(Automatic using NAMESPACE if available)</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">Drafts folder name</string>
-    <string name="account_setup_incoming_imap_folder_sent">Sent folder name</string>
-    <string name="account_setup_incoming_imap_folder_trash">Trash folder name</string>
-    <string name="account_setup_incoming_imap_folder_archive">Archive folder name</string>
-    <string name="account_setup_incoming_imap_folder_spam">Spam folder name</string>
-    <string name="account_setup_incoming_imap_folder_outbox">Outbox folder name</string>
+    <string name="drafts_folder_label">Drafts folder</string>
+    <string name="sent_folder_label">Sent folder</string>
+    <string name="trash_folder_label">Trash folder</string>
+    <string name="archive_folder_label">Archive folder</string>
+    <string name="spam_folder_label">Spam folder</string>
+    <string name="outbox_folder_label">Outbox folder</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
     <string name="account_setup_auto_expand_folder">Auto-expand folder</string>
