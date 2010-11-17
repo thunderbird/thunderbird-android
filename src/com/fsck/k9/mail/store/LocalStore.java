@@ -968,7 +968,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
                     try
                     {
-                        cursor = db.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders", null);
+                        cursor = db.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders ORDER BY name ASC", null);
                         while (cursor.moveToNext())
                         {
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
