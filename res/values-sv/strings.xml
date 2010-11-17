@@ -396,12 +396,12 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="account_setup_incoming_imap_path_prefix_label">Sökvägsprefix för IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(Automatiskt, använder NAMESPACE om tillgängligt)</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">Namn på utkastmapp</string>
-    <string name="account_setup_incoming_imap_folder_sent">Namn på skickatmapp</string>
-    <string name="account_setup_incoming_imap_folder_trash">Namn på papperskorgen</string>
-    <string name="account_setup_incoming_imap_folder_archive">Namn på arkivmapp</string>
-    <string name="account_setup_incoming_imap_folder_spam">Namn på skräpmapp</string>
-    <string name="account_setup_incoming_imap_folder_outbox">Namn på utkorg</string>
+    <string name="drafts_folder_label">Namn på utkastmapp</string>
+    <string name="sent_folder_label">Namn på skickatmapp</string>
+    <string name="trash_folder_label">Namn på papperskorgen</string>
+    <string name="archive_folder_label">Namn på arkivmapp</string>
+    <string name="spam_folder_label">Namn på skräpmapp</string>
+    <string name="outbox_folder_label">Namn på utkorg</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Visa endast prenumererade mappar</string>
     <string name="account_setup_auto_expand_folder">Auto-expandera mapp</string>
