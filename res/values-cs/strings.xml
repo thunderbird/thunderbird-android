@@ -366,10 +366,10 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="account_setup_incoming_imap_path_prefix_label">Předpona cesty IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(Automaticky používat jmenný prostor, pokud je dostupný)</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">Název složky Koncepty</string>
-    <string name="account_setup_incoming_imap_folder_sent">Název složky Odeslaná</string>
-    <string name="account_setup_incoming_imap_folder_trash">Název složky Koš</string>
-    <string name="account_setup_incoming_imap_folder_outbox">Název složky K odeslání</string>
+    <string name="drafts_folder_label">Název složky Koncepty</string>
+    <string name="sent_folder_label">Název složky Odeslaná</string>
+    <string name="trash_folder_label">Název složky Koš</string>
+    <string name="outbox_folder_label">Název složky K odeslání</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Zobrazit jen odebírané složky</string>
     <string name="account_setup_auto_expand_folder">Aut. rozbalená složka</string>
