@@ -72,10 +72,10 @@
 	<string name="account_setup_account_type_webdav_action">WebDav(Exchange) account</string>
 	<string name="account_setup_incoming_webdav_server_label">WebDav(Exchange) server</string>
 	<string name="account_setup_incoming_delete_policy_markread_label">Segna come letto sul server</string>
-	<string name="account_setup_incoming_imap_folder_drafts">Nome cartella bozze</string>
-	<string name="account_setup_incoming_imap_folder_sent">Nome cartella Posta inviata</string>
-	<string name="account_setup_incoming_imap_folder_trash">Nome cartella Cestino</string>
-	<string name="account_setup_incoming_imap_folder_outbox">Nome cartella Posta in uscita</string>
+	<string name="drafts_folder_label">Nome cartella bozze</string>
+	<string name="sent_folder_label">Nome cartella Posta inviata</string>
+	<string name="trash_folder_label">Nome cartella Cestino</string>
+	<string name="outbox_folder_label">Nome cartella Posta in uscita</string>
 	<string name="account_setup_auto_expand_folder">Auto-espandi cartella</string>
 	<string name="account_setup_incoming_webdav_path_prefix_label">Percorso WebDav(Exchange)</string>
 	<string name="account_setup_incoming_webdav_path_prefix_hint">Opzionale</string>
