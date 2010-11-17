@@ -403,12 +403,12 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP ルートフォルダパス</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(可能であれば名前空間を自動的に使用)</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">下書きフォルダ名</string>
-    <string name="account_setup_incoming_imap_folder_sent">送信済みフォルダ名</string>
-    <string name="account_setup_incoming_imap_folder_trash">ゴミ箱フォルダ名</string>
-    <string name="account_setup_incoming_imap_folder_archive">アーカイブフォルダ名</string>
-    <string name="account_setup_incoming_imap_folder_spam">迷惑メールフォルダ名</string>
-    <string name="account_setup_incoming_imap_folder_outbox">送信トレイフォルダ名</string>
+    <string name="drafts_folder_label">下書きフォルダ名</string>
+    <string name="sent_folder_label">送信済みフォルダ名</string>
+    <string name="trash_folder_label">ゴミ箱フォルダ名</string>
+    <string name="archive_folder_label">アーカイブフォルダ名</string>
+    <string name="spam_folder_label">迷惑メールフォルダ名</string>
+    <string name="outbox_folder_label">送信トレイフォルダ名</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">購読フォルダのみ表示</string>
     <string name="account_setup_auto_expand_folder">自動表示フォルダ</string>
