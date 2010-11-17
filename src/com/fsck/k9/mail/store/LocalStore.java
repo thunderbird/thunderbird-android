@@ -367,7 +367,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     mDb.endTransaction();
                     if (debug)
                     {
-                        Log.v(K9.LOG_TAG, "LocalStore: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms");
+                        Log.v(K9.LOG_TAG, "LocalStore: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms / " + new Exception().getStackTrace()[1].toString());
                     }
                 }
             }
