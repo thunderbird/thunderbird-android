@@ -375,10 +375,10 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_setup_incoming_imap_path_prefix_label">Prefiks ścieżki IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(K-9 użyje NAMESPACE, jeśli funkcjonalność jest dostępna)</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">Drafts folder name</string>
-    <string name="account_setup_incoming_imap_folder_sent">Sent folder name</string>
-    <string name="account_setup_incoming_imap_folder_trash">Trash folder name</string>
-    <string name="account_setup_incoming_imap_folder_outbox">Outbox folder name</string>
+    <string name="drafts_folder_label">Drafts folder name</string>
+    <string name="sent_folder_label">Sent folder name</string>
+    <string name="trash_folder_label">Trash folder name</string>
+    <string name="outbox_folder_label">Outbox folder name</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Pokaż tylko subskrybowane foldery</string>
     <string name="account_setup_auto_expand_folder">Zawsze rozwijaj folder</string>
