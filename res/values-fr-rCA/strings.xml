@@ -37,7 +37,7 @@
     <string name="special_mailbox_name_spam">Pourriels</string>
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Pourriels)</string>
     <string name="message_view_spam_action">Pourriel</string>
-    <string name="account_setup_incoming_imap_folder_spam">Nom du dossier des pourriels</string>
+    <string name="spam_folder_label">Nom du dossier des pourriels</string>
     <string name="account_settings_enable_move_buttons_summary">Montrer les boutons Archiver, Déplacer ou Pourriel</string>
     <string name="batch_spam_op">Déplacer vers Pourriels</string>
     <string name="account_setup_push_limit_label">Maximum de dossiers poussés à vérifier</string>
