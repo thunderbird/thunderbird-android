@@ -3412,7 +3412,7 @@ public class MessageList
     {
         finish();
         // TODO inform user about account unavailability using Toast
-        Accounts.listAccounts(getApplicationContext());
+        Accounts.listAccounts(this);
     }
 
 }
