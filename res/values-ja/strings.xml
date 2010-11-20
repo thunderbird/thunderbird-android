@@ -750,6 +750,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="provider_note_live">このプログラムでPOPアクセスが許可されているのは一部の「Plus」アカウントだけです。有料の「Plus」アカウントがなければ、正しいメールアドレスとパスワードを入力してもログインできません。これらのアカウントにはブラウザからアクセスしてください。</string>
 
+    <string name="provider_note_yahoojp">Yahoo! JapanでPOP3アクセスを使う場合は、Yahoo!メールサイトの「メールの設定」にてPOPアクセスが許可されていることを確認してください。</string>
+
     <string name="account_setup_failed_dlg_invalid_certificate_title">証明書が無効です</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">許可</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">拒否</string>

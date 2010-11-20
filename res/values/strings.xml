@@ -770,6 +770,8 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
         \"Plus\" account. Please launch the Web browser to gain access to
         these mail accounts.</string>
 
+    <string name="provider_note_yahoojp">If you would like to use POP3 for this provider, You should permit to use POP3 on Yahoo mail settings page.</string>
+
     <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
