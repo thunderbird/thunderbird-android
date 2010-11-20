@@ -46,6 +46,7 @@
     <string name="okay_action">OK</string>
     <string name="cancel_action">キャンセル</string>
     <string name="send_action">送信</string>
+    <string name="send_again_action">再編集</string>
     <string name="select_action">選択</string>
     <string name="deselect_action">選択解除</string>
     <string name="reply_action">返信</string>
@@ -112,6 +113,7 @@
     <string name="dump_settings_action">ダンプ設定</string>
     <string name="empty_trash_action">ゴミ箱を空に</string>
     <string name="expunge_action">完全削除(Expunge)</string>
+    <string name="clear_local_folder_action">ローカルのメッセージをクリア</string>
     <string name="set_sort_action">並び替えの選択</string>
     <string name="reverse_sort_action">並び替えの反転</string>
     <string name="about_action">k9mailについて</string>
@@ -395,6 +397,11 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_setup_incoming_save_all_headers_title">ヘッダのダウンロード</string>
     <string name="account_setup_incoming_save_all_headers_label">すべてのメールヘッダを端末に保存</string>
 
+    <string name="local_storage_provider_external_label">外部ストレージ (SDカード)</string>
+    <string name="local_storage_provider_internal_label">内部ストレージ</string>
+    <string name="local_storage_provider_samsunggalaxy_label">%1$s 追加の内部ストレージ</string>
+    <string name="local_storage_provider_label">ストレージの場所</string>
+
     <string name="account_setup_expunge_policy_label">メッセージ完全削除(Expunge)</string>
     <string name="account_setup_expunge_policy_immediately">削除または移動後即時</string>
     <string name="account_setup_expunge_policy_on_poll">同期のタイミングで</string>
@@ -491,6 +498,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_setup_options_mail_display_count_250">２５０件</string>
     <string name="account_setup_options_mail_display_count_500">５００件</string>
     <string name="account_setup_options_mail_display_count_1000">１０００件</string>
+    <string name="account_setup_options_mail_display_count_all">すべて</string>
 
     <string name="move_copy_cannot_copy_unsynced_message">サーバーと同期されていないメールをコピーまたは移動できません</string>
 
@@ -552,6 +560,9 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="account_settings_mail_check_frequency_label">同期フォルダの同期間隔</string>
     <string name="account_settings_second_class_check_frequency_label">2nd クラス自動受信間隔</string>
+
+    <string name="account_settings_storage_title">ストレージ</string>
+
 
     <string name="account_settings_color_label">アカウントの色</string>
     <string name="account_settings_color_summary">アカウント一覧とフォルダで使用する色を選択</string>
@@ -711,6 +722,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="choose_identity">差出人情報選択</string>
     <string name="choose_identity_title">差出人情報選択</string>
     <string name="choose_account_title">アカウント選択</string>
+    <string name="send_as">Send as</string>
+
 
     <string name="no_identities">アカウント設定 -&gt; 差出人情報管理 で差出人情報を作成してください</string>
     <string name="no_removable_identity">最後の差出人情報は削除できません</string>
@@ -799,8 +812,8 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
 
     <string name="settings_messageview_mobile_layout_label">１列レイアウト</string>
     <string name="settings_messageview_mobile_layout_summary">小さい画面用にHTMLメッセージを再構成</string>
-    <string name="settings_messageview_zoom_controls_label">System zoom controls</string>
-    <string name="settings_messageview_zoom_controls_summary">Enable zoom widgets or pinch-zoom if your device supports it</string>
+    <string name="settings_messageview_zoom_controls_label">ズーム制御</string>
+    <string name="settings_messageview_zoom_controls_summary">デバイスが対応するならば、ズームウィジェットやピンチズームを有効にします</string>
 
     <string name="setting_language_system">システム設定</string>
 
@@ -967,7 +980,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="dialog_confirm_delete_confirm_button">削除する</string>
     <string name="dialog_confirm_delete_cancel_button">削除しない</string>
 
-    <string name="debug_logging_enabled">Debug logging to Android logging system enabled</string>
+    <string name="debug_logging_enabled">Android のログにデバッグ用のログを出力するように設定しました。</string>
 
     <string name="messagelist_sent_to_me_sigil">\u00bb</string>
     <string name="messagelist_sent_cc_me_sigil">\u203a</string>
