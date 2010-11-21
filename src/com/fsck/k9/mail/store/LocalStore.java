@@ -6295,7 +6295,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     {
                         if (set != isSet(Flag.SEEN))
                         {
-                            folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
+                            folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? -1: 1) );
                         }
                     }
 
