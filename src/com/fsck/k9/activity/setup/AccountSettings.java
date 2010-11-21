@@ -586,7 +586,7 @@ public class AccountSettings extends K9PreferenceActivity
         }
         final String[] allFolderValues = new String[folders.size()+2];
         final String[] allFolderLabels = new String[folders.size()+2];
-        allFolderValues[0] = "";
+        allFolderValues[0] = K9.FOLDER_NONE;
         allFolderLabels[0] = K9.FOLDER_NONE;
 
         // There's a non-zero chance that "outbox" won't actually exist, so we force it into the list
