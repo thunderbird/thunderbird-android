@@ -6277,7 +6277,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 LocalFolder folder = (LocalFolder)mFolder;
                 if (flag == Flag.DELETED || flag == Flag.X_DESTROYED)
                 {
-                    if (set != isSet(Flag.SEEN))
+                    if (!isSet(Flag.SEEN))
                     {
                         folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? -1:1) );
                     }
