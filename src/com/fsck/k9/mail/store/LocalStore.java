@@ -6249,9 +6249,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     {
                         try
                         {
+                            updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
                             ((LocalFolder) mFolder).deleteAttachments(mId);
                             mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
-                            updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
                         }
                         catch (MessagingException e)
                         {
