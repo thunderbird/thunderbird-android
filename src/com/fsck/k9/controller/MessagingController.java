@@ -3631,7 +3631,10 @@ public class MessagingController implements Runnable
             }
             if (localFolder.getMessageCount() == 0)
             {
-                localFolder.delete(false);
+                // No longer delete the empty local outbox every time we finish sending mail
+                // There's no real win to it and it makes the folder selection UI extra stupid
+                // (We'd need a textentry widget to set the Outbox folder rather than a folder select widget)
+                // localFolder.delete(false);
             }
             for (MessagingListener l : getListeners())
             {
@@ -4050,7 +4053,7 @@ public class MessagingController implements Runnable
                 {
                     queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids);
                 }
-                    processPendingCommands(account);
+                processPendingCommands(account);
             }
             else if (account.getDeletePolicy() == Account.DELETE_POLICY_MARK_AS_READ)
             {

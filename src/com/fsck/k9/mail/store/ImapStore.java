@@ -2147,6 +2147,18 @@ public class ImapStore extends Store
                 Log.w(K9.LOG_TAG, "Could not set DNS ttl to 0 for " + getLogId(), e);
             }
 
+
+            try
+            {
+                Security.setProperty("networkaddress.cache.negative.ttl", "0");
+            }
+            catch (Exception e)
+            {
+                Log.w(K9.LOG_TAG, "Could not set DNS negative ttl to 0 for " + getLogId(), e);
+            }
+
+
+
             try
             {
 

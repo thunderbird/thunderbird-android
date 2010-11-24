@@ -338,10 +338,10 @@
     <string name="account_setup_incoming_imap_path_prefix_label">Префикс пути IMAP</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(Автоматически использовать NAMESPACE если доступно)</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">Имя папки Черновиков</string>
-    <string name="account_setup_incoming_imap_folder_sent">Имя папки Отправленныx</string>
-    <string name="account_setup_incoming_imap_folder_trash">Имя папки Мусора</string>
-    <string name="account_setup_incoming_imap_folder_outbox">Имя папки Исходящиx</string>
+    <string name="drafts_folder_label">Имя папки Черновиков</string>
+    <string name="sent_folder_label">Имя папки Отправленныx</string>
+    <string name="trash_folder_label">Имя папки Мусора</string>
+    <string name="outbox_folder_label">Имя папки Исходящиx</string>
 
     <string name="account_setup_auto_expand_folder">Автоматически открывать папку</string>
 

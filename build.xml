@@ -111,7 +111,7 @@
     </target>
     <target name="commit-version">
     <exec executable="git" failonerror="true">
-        <arg line="commit -m'Bumped manifest to ${version.name}' AndroidManifest.xml"/>
+        <arg line="commit -m'Bumped manifest to ${version-name}' AndroidManifest.xml"/>
     </exec>
     <exec executable="git" failonerror="true">
         <arg line="svn dcommit"/>

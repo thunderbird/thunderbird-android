@@ -1,24 +1,18 @@
-
 package com.fsck.k9.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.BaseAccount;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -92,8 +86,9 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
-            final BaseAccount account = getItem(position);
-            View view;
+            final Account account = getItem(position);
+
+            final View view;
             if (convertView != null)
             {
                 view = convertView;
@@ -101,24 +96,22 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
             else
             {
                 view = getLayoutInflater().inflate(R.layout.accounts_item, parent, false);
+                view.findViewById(R.id.active_icons).setVisibility(View.GONE);
             }
+
             AccountViewHolder holder = (AccountViewHolder) view.getTag();
             if (holder == null)
             {
                 holder = new AccountViewHolder();
                 holder.description = (TextView) view.findViewById(R.id.description);
                 holder.email = (TextView) view.findViewById(R.id.email);
-                holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
-                holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
-                holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
-
                 holder.chip = view.findViewById(R.id.chip);
-                holder.folders = (ImageButton) view.findViewById(R.id.folders);
 
                 view.setTag(holder);
             }
 
-            if (account.getEmail().equals(account.getDescription()))
+            String description = account.getDescription();
+            if (account.getEmail().equals(description))
             {
                 holder.email.setVisibility(View.GONE);
             }
@@ -128,7 +121,6 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
                 holder.email.setText(account.getEmail());
             }
 
-            String description = account.getDescription();
             if (description == null || description.length() == 0)
             {
                 description = account.getEmail();
@@ -136,51 +128,11 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
 
             holder.description.setText(description);
 
-            holder.newMessageCount.setVisibility(View.GONE);
-            holder.flaggedMessageCount.setVisibility(View.GONE);
-            if (account instanceof Account)
-            {
-                Account realAccount = (Account)account;
-
-                holder.chip.setBackgroundColor(realAccount.getChipColor());
-                holder.chip.getBackground().setAlpha(255);
-
-                // show unavailable accounts as translucent
-                if (realAccount.isAvailable(getContext()))
-                {
-                    holder.email.getBackground().setAlpha(255);
-                    holder.description.getBackground().setAlpha(255);
-                }
-                else
-                {
-                    holder.email.getBackground().setAlpha(127);
-                    holder.description.getBackground().setAlpha(127);
-                }
-            }
-            else
-            {
-                holder.chip.setBackgroundColor(0x00000000);
-            }
+            holder.chip.setBackgroundColor(account.getChipColor());
+            holder.chip.getBackground().setAlpha(255);
 
             holder.description.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountName());
             holder.email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mFontSizes.getAccountDescription());
-
-
-            holder.folders.setVisibility(View.VISIBLE);
-            holder.folders.setOnClickListener(new OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    Account account2 = (Account)account;
-                    if (!account2.isAvailable(getContext()))
-                    {
-                        Log.i(K9.LOG_TAG, "refusing selection of unavailable account");
-                        return ;
-                    }
-                    FolderList.actionHandleAccount(LauncherShortcuts.this, account2);
-
-                }
-            });
 
             return view;
         }
@@ -189,11 +141,7 @@ public class LauncherShortcuts extends K9ListActivity implements OnItemClickList
         {
             public TextView description;
             public TextView email;
-            public TextView newMessageCount;
-            public TextView flaggedMessageCount;
-            public RelativeLayout activeIcons;
             public View chip;
-            public ImageButton folders;
         }
     }
 }

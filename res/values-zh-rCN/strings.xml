@@ -389,12 +389,12 @@
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP路径前缀</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">（如果可能则自动使用NAMESPACE）</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">草稿箱名称</string>
-    <string name="account_setup_incoming_imap_folder_sent">发件箱名称</string>
-    <string name="account_setup_incoming_imap_folder_trash">垃圾箱名称</string>
-    <string name="account_setup_incoming_imap_folder_archive">归档文件夹名称</string>
-    <string name="account_setup_incoming_imap_folder_spam">垃圾邮件箱名称</string>
-    <string name="account_setup_incoming_imap_folder_outbox">已发送文件夹名称</string>
+    <string name="drafts_folder_label">草稿箱名称</string>
+    <string name="sent_folder_label">发件箱名称</string>
+    <string name="trash_folder_label">垃圾箱名称</string>
+    <string name="archive_folder_label">归档文件夹名称</string>
+    <string name="spam_folder_label">垃圾邮件箱名称</string>
+    <string name="outbox_folder_label">已发送文件夹名称</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">只显示订阅的文件夹</string>
     <string name="account_setup_auto_expand_folder">自动展开文件夹</string>

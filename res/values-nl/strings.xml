@@ -398,12 +398,12 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="account_setup_incoming_imap_path_prefix_label">IMAP pad voorvoegsel</string>
     <string name="account_setup_incoming_imap_path_prefix_hint">(Automatisch gebruiken van NAMESPACE wanneer deze beschikbaar is)</string>
 
-    <string name="account_setup_incoming_imap_folder_drafts">Ontwerpen map naam</string>
-    <string name="account_setup_incoming_imap_folder_sent">Verzonden map naam</string>
-    <string name="account_setup_incoming_imap_folder_trash">Prullenbak map naam</string>
-    <string name="account_setup_incoming_imap_folder_archive">Archief map naam</string>
-    <string name="account_setup_incoming_imap_folder_spam">Spam map naam</string>
-    <string name="account_setup_incoming_imap_folder_outbox">Postvak uit map naam</string>
+    <string name="drafts_folder_label">Ontwerpen map naam</string>
+    <string name="sent_folder_label">Verzonden map naam</string>
+    <string name="trash_folder_label">Prullenbak map naam</string>
+    <string name="archive_folder_label">Archief map naam</string>
+    <string name="spam_folder_label">Spam map naam</string>
+    <string name="outbox_folder_label">Postvak uit map naam</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Laat alleen geabonneerde mappen zien</string>
     <string name="account_setup_auto_expand_folder">Auto-uitbreiden mappen</string>

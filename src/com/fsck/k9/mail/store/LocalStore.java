@@ -178,7 +178,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * {@link ThreadLocal} to check whether a DB transaction is occuring in the
      * current {@link Thread}.
-     * 
+     *
      * @see #execute(boolean, DbCallback)
      */
     private ThreadLocal<Boolean> inTransaction = new ThreadLocal<Boolean>();
@@ -311,7 +311,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     /**
      * Execute a DB callback in a shared context (doesn't prevent concurrent
      * shared executions), taking care of locking the DB storage.
-     * 
+     *
      * <p>
      * Can be instructed to start a transaction if none is currently active in
      * the current thread. Callback will participe in any active transaction (no
@@ -367,7 +367,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     mDb.endTransaction();
                     if (debug)
                     {
-                        Log.v(K9.LOG_TAG, "LocalStore: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms");
+                        Log.v(K9.LOG_TAG, "LocalStore: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms / " + new Exception().getStackTrace()[1].toString());
                     }
                 }
             }
@@ -968,7 +968,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
                     try
                     {
-                        cursor = db.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders", null);
+                        cursor = db.rawQuery("SELECT id, name, unread_count, visible_limit, last_updated, status, push_state, last_pushed, flagged_count FROM folders ORDER BY name ASC", null);
                         while (cursor.moveToNext())
                         {
                             LocalFolder folder = new LocalFolder(cursor.getString(1));
@@ -6241,7 +6241,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                execute(false, new DbCallback<Void>()
+                execute(true, new DbCallback<Void>()
                 {
                     @Override
                     public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
@@ -6249,9 +6249,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                     {
                         try
                         {
+                            updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
                             ((LocalFolder) mFolder).deleteAttachments(mId);
                             mDb.execSQL("DELETE FROM messages WHERE id = ?", new Object[] { mId });
-                            updateFolderCountsOnFlag(Flag.X_DESTROYED, true);
                         }
                         catch (MessagingException e)
                         {
@@ -6277,9 +6277,9 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 LocalFolder folder = (LocalFolder)mFolder;
                 if (flag == Flag.DELETED || flag == Flag.X_DESTROYED)
                 {
-                    if (set != isSet(Flag.SEEN))
+                    if (!isSet(Flag.SEEN))
                     {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
+                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? -1:1) );
                     }
                     if (isSet(Flag.FLAGGED))
                     {
@@ -6288,17 +6288,21 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 }
 
 
-                if ( flag == Flag.SEEN && !isSet(Flag.DELETED))
+                if ( !isSet(Flag.DELETED) )
                 {
-                    if (set != isSet(Flag.SEEN))
-                    {
-                        folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? 1: -1) );
-                    }
-                }
 
-                if (flag == Flag.FLAGGED && !isSet(Flag.DELETED))
-                {
-                    folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
+                    if ( flag == Flag.SEEN )
+                    {
+                        if (set != isSet(Flag.SEEN))
+                        {
+                            folder.setUnreadMessageCount(folder.getUnreadMessageCount() + ( set ? -1: 1) );
+                        }
+                    }
+
+                    if ( flag == Flag.FLAGGED )
+                    {
+                        folder.setFlaggedMessageCount(folder.getFlaggedMessageCount() + (set ?  1 : -1));
+                    }
                 }
             }
             catch (MessagingException me)
