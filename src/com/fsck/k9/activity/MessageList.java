@@ -1154,6 +1154,8 @@ public class MessageList
                     {
                         public void run()
                         {
+                            // have to be invoked in the UI thread to avoid IllegalStateException
+                            // see http://code.google.com/p/k9mail/issues/detail?id=2479
                             pruneDirtyMessages();
                             mResuming = false;
                             mHandler.synchronizeDisplay();
@@ -4402,6 +4404,9 @@ public class MessageList
 
     /**
      * To be called from the UI thread
+     * 
+     * <br>
+     * See http://code.google.com/p/k9mail/issues/detail?id=2479
      */
     public void pruneDirtyMessages()
     {
