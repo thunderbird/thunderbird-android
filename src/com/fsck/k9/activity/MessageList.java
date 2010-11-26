@@ -2983,45 +2983,58 @@ public class MessageList
 
     private void toggleBatchButtons()
     {
-        if (mSelectedCount < 0)
-        {
-            mSelectedCount = 0;
-        }
 
-        int readButtonIconId;
-        int flagButtonIconId;
+	runOnUiThread(new Runnable()
+	{
+		@Override
+		public void run()
+		{
 
-        if (mSelectedCount==0)
-        {
-            readButtonIconId = R.drawable.ic_button_mark_read;
-            flagButtonIconId = R.drawable.ic_button_flag;
-            hideBatchButtons();
-        }
-        else
-        {
-            boolean newReadState = computeBatchDirection(false);
-            if (newReadState)
-            {
-                readButtonIconId = R.drawable.ic_button_mark_read;
-            }
-            else
-            {
-                readButtonIconId = R.drawable.ic_button_mark_unread;
-            }
-            boolean newFlagState = computeBatchDirection(true);
-            if (newFlagState)
-            {
-                flagButtonIconId = R.drawable.ic_button_flag;
-            }
-            else
-            {
-                flagButtonIconId = R.drawable.ic_button_unflag;
-            }
-            showBatchButtons();
-        }
+			if (mSelectedCount < 0)
+			{
+				mSelectedCount = 0;
+			}
 
-        mBatchReadButton.setImageResource(readButtonIconId);
-        mBatchFlagButton.setImageResource(flagButtonIconId);
+			int readButtonIconId;
+			int flagButtonIconId;
+
+			if (mSelectedCount==0)
+			{
+				readButtonIconId = R.drawable.ic_button_mark_read;
+				flagButtonIconId = R.drawable.ic_button_flag;
+				hideBatchButtons();
+			}
+			else
+			{
+				boolean newReadState = computeBatchDirection(false);
+				if (newReadState)
+				{
+					readButtonIconId = R.drawable.ic_button_mark_read;
+				}
+				else
+				{
+					readButtonIconId = R.drawable.ic_button_mark_unread;
+				}
+				boolean newFlagState = computeBatchDirection(true);
+				if (newFlagState)
+				{
+					flagButtonIconId = R.drawable.ic_button_flag;
+				}
+				else
+				{
+					flagButtonIconId = R.drawable.ic_button_unflag;
+				}
+				showBatchButtons();
+			}
+
+			mBatchReadButton.setImageResource(readButtonIconId);
+			mBatchFlagButton.setImageResource(flagButtonIconId);
+
+
+		}
+	});
+
+
     }
 
     class FooterViewHolder
