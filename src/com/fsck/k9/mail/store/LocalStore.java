@@ -6048,7 +6048,15 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             mMessageDirty = true;
         }
 
-
+        public boolean hasAttachments()
+        {
+        	if (mAttachmentCount > 0) {
+        		return true;
+        	} else{
+        		return false;
+        	}
+        	
+        }
 
         public int getAttachmentCount()
         {

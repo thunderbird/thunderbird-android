@@ -152,7 +152,7 @@ public class MessageList
         @Override
         public int compare(MessageInfoHolder object1, MessageInfoHolder object2)
         {
-            return (object1.hasAttachments ? 0 : 1) - (object2.hasAttachments ? 0 : 1);
+            return (object1.message.hasAttachments() ? 0 : 1) - (object2.message.hasAttachments() ? 0 : 1);
         }
 
     }
@@ -2805,7 +2805,7 @@ public class MessageList
             holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                 message.answered ? mAnsweredIcon : null, // left
                 null, // top
-                message.hasAttachments ? mAttachmentIcon : null, // right
+                message.message.hasAttachments() ? mAttachmentIcon : null, // right
                 null); // bottom
             holder.position = position;
         }

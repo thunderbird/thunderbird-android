@@ -2243,7 +2243,7 @@ public class MessageView extends K9Activity implements OnClickListener
         CharSequence ccText = Address.toFriendly(message.getRecipients(RecipientType.CC), contacts);
 
         int color = mAccount.getChipColor();
-        boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
+        boolean hasAttachments = ((LocalMessage) message).hasAttachments();
         boolean unread = !message.isSet(Flag.SEEN);
 
         mHandler.setHeaders(subjectText,
