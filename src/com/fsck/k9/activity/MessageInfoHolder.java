@@ -14,7 +14,6 @@ public class MessageInfoHolder
     public CharSequence sender;
     public String senderAddress;
     public String compareCounterparty;
-    public String preview;
     public String[] recipients;
     public String uid;
     public boolean read;

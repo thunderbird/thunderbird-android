@@ -165,7 +165,7 @@ public class MessageProvider extends ContentProvider
         @Override
         public String getField(final MessageInfoHolder source)
         {
-            return source.preview;
+            return source.message.getPreview();
         }
     }
     public static class UriExtractor implements FieldExtractor<MessageInfoHolder, String>

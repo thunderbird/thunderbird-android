@@ -121,7 +121,6 @@ public class MessageHelper
             target.subject = message.getSubject();
 
             target.uid = message.getUid();
-            target.preview = message.getPreview();
 
             target.account = account.getDescription();
             target.uri = "email://messages/" + account.getAccountNumber() + "/" + m.getFolder().getName() + "/" + m.getUid();

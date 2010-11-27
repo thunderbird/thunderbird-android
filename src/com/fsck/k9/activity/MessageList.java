@@ -69,9 +69,11 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.LocalStore;
 import com.fsck.k9.mail.store.StorageManager;
 import com.fsck.k9.mail.store.LocalStore.LocalFolder;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 /**
  * MessageList is the primary user interface for the program. This Activity
@@ -2778,7 +2780,7 @@ public class MessageList
                  * from.
                  */
 
-                holder.preview.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender).append(" ").append(message.preview),
+                holder.preview.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender).append(" ").append(message.message.getPreview()),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
