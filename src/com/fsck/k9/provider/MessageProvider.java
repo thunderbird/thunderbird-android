@@ -149,7 +149,7 @@ public class MessageProvider extends ContentProvider
         @Override
         public String getField(final MessageInfoHolder source)
         {
-            return source.subject;
+            return source.message.getSubject();
         }
     }
     public static class SendDateExtractor implements FieldExtractor<MessageInfoHolder, Long>

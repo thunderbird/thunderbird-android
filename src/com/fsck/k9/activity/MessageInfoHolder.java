@@ -7,7 +7,6 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 public class MessageInfoHolder
 {
-    public String subject;
     public String date;
     public Date compareDate;
     public String compareSubject;

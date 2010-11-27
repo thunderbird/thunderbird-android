@@ -212,11 +212,11 @@ public class MessageList
             // XXX doesn't respect the Comparator contract since it alters the compared object
             if (arg0.compareSubject == null)
             {
-                arg0.compareSubject = Utility.stripSubject(arg0.subject);
+                arg0.compareSubject = Utility.stripSubject(arg0.message.getSubject());
             }
             if (arg1.compareSubject == null)
             {
-                arg1.compareSubject = Utility.stripSubject(arg1.subject);
+                arg1.compareSubject = Utility.stripSubject(arg1.message.getSubject());
             }
             return arg0.compareSubject.compareToIgnoreCase(arg1.compareSubject);
         }
@@ -2034,7 +2034,7 @@ public class MessageList
 
         getMenuInflater().inflate(R.menu.message_list_context, menu);
 
-        menu.setHeaderTitle((CharSequence) message.subject);
+        menu.setHeaderTitle((CharSequence) message.message.getSubject());
 
         if (message.read)
         {
@@ -2761,13 +2761,13 @@ public class MessageList
             holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
             view.getBackground().setAlpha(message.downloaded ? 0 : 127);
 
-            if ((message.subject == null) || message.subject.equals(""))
+            if ((message.message.getSubject() == null) || message.message.getSubject().equals(""))
             {
                 holder.subject.setText(getText(R.string.general_no_subject));
             }
             else
             {
-                holder.subject.setText(message.subject);
+                holder.subject.setText(message.message.getSubject());
             }
 
             if (holder.preview != null)

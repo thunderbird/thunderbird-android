@@ -118,7 +118,6 @@ public class MessageHelper
                 }
             }
 
-            target.subject = message.getSubject();
 
             target.uid = message.getUid();
 
