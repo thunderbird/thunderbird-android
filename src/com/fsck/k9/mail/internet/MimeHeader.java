@@ -83,7 +83,14 @@ public class MimeHeader
 
     public String[] getHeader(String name)
     {
-        ArrayList<String> values = findHeaders(name);
+        ArrayList<String> values = new ArrayList<String>();
+        for (Field field : mFields)
+        {
+            if (field.name.equalsIgnoreCase(name))
+            {
+                values.add(field.value);
+            }
+        }
         if (values.size() == 0)
         {
             return null;
@@ -93,26 +100,16 @@ public class MimeHeader
 
     public void removeHeader(String name)
     {
-
-        ArrayList<String> removeFields = findHeaders(name);
+        ArrayList<Field> removeFields = new ArrayList<Field>();
+        for (Field field : mFields)
+        {
+            if (field.name.equalsIgnoreCase(name))
+            {
+                removeFields.add(field);
+            }
+        }
         mFields.removeAll(removeFields);
     }
-
-    private ArrayList findHeaders(String name) {
-	ArrayList<String> values = new ArrayList<String>();
-        Iterator<Field> iter = mFields.iterator();
-        while (iter.hasNext())
-        {
-		Field field = iter.next();
-		if (field.name.equalsIgnoreCase(name) )
-		{
-			values.add(field.value);
-		}
-        }
-
-        return values;
-    }
-
 
     public void writeTo(OutputStream out) throws IOException, MessagingException
     {
