@@ -5918,6 +5918,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         private String mPreview = "";
 
+        private boolean mToMeCalculated = false;
+        private boolean mCcMeCalculated = false;
+        private boolean mToMe = false;
+        private boolean mCcMe = false;
+
+
         private boolean mHeadersLoaded = false;
         private boolean mMessageDirty = false;
 
@@ -6132,6 +6138,58 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             mMessageDirty = true;
         }
+
+
+
+        public boolean toMe()
+        {
+       try
+       { if (mToMeCalculated == false) {
+            for (Address address : getRecipients(RecipientType.TO))
+            {
+                if (mAccount.isAnIdentity(address))
+                {
+                    mToMe = true;
+                    mToMeCalculated = true;
+                }
+            }
+        }
+        } catch (MessagingException e) {
+            // do something better than ignore this
+            // getRecipients can throw a messagingexception
+        }
+            return mToMe;
+        }
+
+
+
+
+
+        public boolean ccMe()
+        {
+        try {
+
+        if (mCcMeCalculated == false) {
+                for(Address address : getRecipients(RecipientType.CC))
+                {
+                    if (mAccount.isAnIdentity(address))
+                    {
+                        mCcMe = true;
+                        mCcMeCalculated = true;
+                    }
+                }
+
+        }
+        } catch (MessagingException e) {
+            // do something better than ignore this
+            // getRecipients can throw a messagingexception
+        }
+
+            return mCcMe;
+    }
+
+
+
 
 
 

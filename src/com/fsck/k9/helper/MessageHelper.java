@@ -99,25 +99,6 @@ public class MessageHelper
 
 
 
-            for (Address address : message.getRecipients(RecipientType.TO))
-            {
-                if (account.isAnIdentity(address))
-                {
-                    target.toMe = true;
-                }
-            }
-
-            if (target.toMe == false )
-            {
-                for(Address address : message.getRecipients(RecipientType.CC))
-                {
-                    if (account.isAnIdentity(address))
-                    {
-                        target.ccMe = true;
-                    }
-                }
-            }
-
 
             target.uid = message.getUid();
 

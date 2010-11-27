@@ -2814,11 +2814,11 @@ public class MessageList
 
         private String recipientSigil (MessageInfoHolder message)
         {
-            if (message.toMe)
+            if (message.message.toMe())
             {
                 return getString(R.string.messagelist_sent_to_me_sigil);
             }
-            else if (message.ccMe)
+            else if (message.message.ccMe())
             {
                 return getString(R.string.messagelist_sent_cc_me_sigil);
             }

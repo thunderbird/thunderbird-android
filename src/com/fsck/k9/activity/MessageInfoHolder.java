@@ -21,8 +21,6 @@ public class MessageInfoHolder
     public boolean downloaded;
     public boolean partially_downloaded;
     public boolean dirty;
-    public boolean toMe;
-    public boolean ccMe;
     public LocalMessage message;
     public FolderInfoHolder folder;
     public boolean selected;
