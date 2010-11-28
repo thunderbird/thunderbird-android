@@ -3442,6 +3442,59 @@ public class MessagingController implements Runnable
         notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
     }
 
+    private void notifySendFailed(Account account, Exception lastFailure)
+    {
+        NotificationManager notifMgr = (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notif = new Notification(R.drawable.stat_notify_email_generic, mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
+
+        Intent i = FolderList.actionHandleNotification(mApplication, account, account.getOutboxFolderName());
+
+        PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
+
+        notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject), lastFailure.getMessage(), pi);
+
+        notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+        notif.flags |= Notification.FLAG_AUTO_CANCEL;
+        notif.ledARGB = K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR;
+        notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
+        notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
+        notifMgr.notify(-1500 - account.getAccountNumber(), notif);
+    }
+
+
+    private void notifyFetchingMail(final Account account, final Folder folder)
+    {
+        if (account.isShowOngoing())
+        {
+            final NotificationManager notifMgr = (NotificationManager)mApplication
+                                                 .getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notif = new Notification(R.drawable.ic_menu_refresh,
+                                                  mApplication.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()),
+                                                  System.currentTimeMillis());
+            Intent intent = MessageList.actionHandleFolderIntent(mApplication, account, K9.INBOX);
+            PendingIntent pi = PendingIntent.getActivity(mApplication, 0, intent, 0);
+            notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.notification_bg_sync_title), account.getDescription()
+                                     + mApplication.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
+            notif.flags = Notification.FLAG_ONGOING_EVENT;
+            if (K9.NOTIFICATION_LED_WHILE_SYNCING)
+            {
+                notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+                notif.ledARGB = account.getNotificationSetting().getLedColor();
+                notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
+                notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
+            }
+
+            notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
+        }
+    }
+    private void notifyFetchingMailCancel (final Account account)
+    {
+        if (account.isShowOngoing())
+        {
+            cancelNotification(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
+        }
+    }
+
     public boolean messagesPendingSend(final Account account)
     {
         Folder localFolder = null;
@@ -3607,22 +3660,7 @@ public class MessagingController implements Runnable
             }
             if (lastFailure != null)
             {
-
-                NotificationManager notifMgr = (NotificationManager)mApplication.getSystemService(Context.NOTIFICATION_SERVICE);
-                Notification notif = new Notification(R.drawable.stat_notify_email_generic, mApplication.getString(R.string.send_failure_subject), System.currentTimeMillis());
-
-                Intent i = FolderList.actionHandleNotification(mApplication, account, account.getOutboxFolderName());
-
-                PendingIntent pi = PendingIntent.getActivity(mApplication, 0, i, 0);
-
-                notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject), lastFailure.getMessage(), pi);
-
-                notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                notif.flags |= Notification.FLAG_AUTO_CANCEL;
-                notif.ledARGB = K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR;
-                notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
-                notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
-                notifMgr.notify(-1500 - account.getAccountNumber(), notif);
+                notifySendFailed(account, lastFailure);
             }
         }
         catch (UnavailableStorageException e)
@@ -4199,8 +4237,6 @@ public class MessagingController implements Runnable
             public void run()
             {
 
-                final NotificationManager notifMgr = (NotificationManager)context
-                                                     .getSystemService(Context.NOTIFICATION_SERVICE);
                 try
                 {
                     if (K9.DEBUG)
@@ -4222,7 +4258,7 @@ public class MessagingController implements Runnable
 
                     for (final Account account : accounts)
                     {
-                        checkMailForAccount(context, account,ignoreLastCheckedTime, notifMgr, prefs, listener);
+                        checkMailForAccount(context, account,ignoreLastCheckedTime, prefs, listener);
                     }
 
                 }
@@ -4259,7 +4295,6 @@ public class MessagingController implements Runnable
 
     private void checkMailForAccount(final Context context, final Account account,
                                      final boolean ignoreLastCheckedTime,
-                                     final NotificationManager notifMgr,
                                      final Preferences prefs,
                                      final MessagingListener listener)
     {
@@ -4323,7 +4358,7 @@ public class MessagingController implements Runnable
 
                     continue;
                 }
-                synchronizeFolder(context, account, folder, ignoreLastCheckedTime, accountInterval, notifMgr, listener);
+                synchronizeFolder(context, account, folder, ignoreLastCheckedTime, accountInterval, listener);
             }
         }
         catch (MessagingException e)
@@ -4366,7 +4401,6 @@ public class MessagingController implements Runnable
         final Folder folder,
         final boolean ignoreLastCheckedTime,
         final long accountInterval,
-        final NotificationManager notifMgr,
         final MessagingListener listener
 
 
@@ -4410,36 +4444,14 @@ public class MessagingController implements Runnable
                                   + " which would be too recent for the account period");
                         return;
                     }
-                    if (account.isShowOngoing())
-                    {
-                        Notification notif = new Notification(R.drawable.ic_menu_refresh,
-                                                              context.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()),
-                                                              System.currentTimeMillis());
-                        Intent intent = MessageList.actionHandleFolderIntent(context, account, K9.INBOX);
-                        PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
-                        notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_sync_title), account.getDescription()
-                                                 + context.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
-                        notif.flags = Notification.FLAG_ONGOING_EVENT;
-                        if (K9.NOTIFICATION_LED_WHILE_SYNCING)
-                        {
-                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                            notif.ledARGB = account.getNotificationSetting().getLedColor();
-                            notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
-                            notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
-                        }
-
-                        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
-                    }
+                    notifyFetchingMail(account, folder);
                     try
                     {
                         synchronizeMailboxSynchronous(account, folder.getName(), listener, null);
                     }
                     finally
                     {
-                        if (account.isShowOngoing())
-                        {
-                            notifMgr.cancel(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
-                        }
+                        notifyFetchingMailCancel(account);
                     }
                 }
                 catch (Exception e)
