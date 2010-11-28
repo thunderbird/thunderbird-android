@@ -501,10 +501,7 @@ public class MessagingController implements Runnable
                 {
                     for (Folder localFolder : localFolders)
                     {
-                        if (localFolder != null)
-                        {
-                            localFolder.close();
-                        }
+                        closeFolder(localFolder);
                     }
                 }
             }
@@ -590,10 +587,7 @@ public class MessagingController implements Runnable
                     {
                         for (Folder localFolder : localFolders)
                         {
-                            if (localFolder != null)
-                            {
-                                localFolder.close();
-                            }
+                            closeFolder(localFolder);
                         }
                     }
                 }
@@ -715,10 +709,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (localFolder != null)
-            {
-                localFolder.close();
-            }
+            closeFolder(localFolder);
         }
     }
 
@@ -1316,17 +1307,25 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (providedRemoteFolder == null && remoteFolder != null)
+            if (providedRemoteFolder == null)
             {
-                remoteFolder.close();
+                closeFolder(remoteFolder);
             }
-            if (tLocalFolder != null)
-            {
-                tLocalFolder.close();
-            }
+
+            closeFolder(tLocalFolder);
         }
 
     }
+
+
+    private void closeFolder(Folder f)
+    {
+        if (f != null)
+        {
+            f.close();
+        }
+    }
+
 
     /*
      * If the folder is a "special" folder we need to see if it exists
@@ -1518,8 +1517,6 @@ public class MessagingController implements Runnable
         //        fp.add(FetchProfile.Item.ENVELOPE);
 
         downloadSmallMessages(account, remoteFolder, localFolder, smallMessages, progress, unreadBeforeStart, newMessages, todo, fp);
-
-
         smallMessages.clear();
 
         /*
@@ -1527,9 +1524,6 @@ public class MessagingController implements Runnable
          */
         fp.clear();
         fp.add(FetchProfile.Item.STRUCTURE);
-
-
-
         downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress, unreadBeforeStart,  newMessages, todo, fp);
         largeMessages.clear();
 
@@ -1695,8 +1689,7 @@ public class MessagingController implements Runnable
                     }
 
                     // And include it in the view
-                    if (message.getSubject() != null &&
-                            message.getFrom() != null)
+                    if (message.getSubject() != null && message.getFrom() != null)
                     {
                         /*
                          * We check to make sure that we got something worth
@@ -1707,10 +1700,7 @@ public class MessagingController implements Runnable
                         if (!isMessageSuppressed(account, folder, message))
                         {
                             // Store the new message locally
-                            localFolder.appendMessages(new Message[]
-                                                       {
-                                                           message
-                                                       });
+                            localFolder.appendMessages(new Message[] { message });
 
                             Message localMessage = localFolder.getMessage(message.getUid());
                             syncFlags(localMessage, message);
@@ -1736,10 +1726,7 @@ public class MessagingController implements Runnable
                 }
             }
 
-            public void messageStarted(String uid, int number, int ofTotal)
-            {
-            }
-
+            public void messageStarted(String uid, int number, int ofTotal) {}
             public void messagesFinished(int total) {}
         });
     }
@@ -1836,14 +1823,11 @@ public class MessagingController implements Runnable
                 catch (MessagingException me)
                 {
                     addErrorMessage(account, null, me);
-
                     Log.e(K9.LOG_TAG, "SYNC: fetch small messages", me);
                 }
             }
 
-            public void messageStarted(String uid, int number, int ofTotal)
-            {
-            }
+            public void messageStarted(String uid, int number, int ofTotal) {}
 
             public void messagesFinished(int total) {}
         });
@@ -2339,11 +2323,7 @@ public class MessagingController implements Runnable
                  */
                 FetchProfile fp = new FetchProfile();
                 fp.add(FetchProfile.Item.BODY);
-                localFolder.fetch(new Message[]
-                                  {
-                                      localMessage
-                                  }
-                                  , fp, null);
+                localFolder.fetch(new Message[] { localMessage } , fp, null);
                 String oldUid = localMessage.getUid();
                 localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
                 remoteFolder.appendMessages(new Message[] { localMessage });
@@ -2408,14 +2388,8 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (remoteFolder != null)
-            {
-                remoteFolder.close();
-            }
-            if (localFolder != null)
-            {
-                localFolder.close();
-            }
+            closeFolder(remoteFolder);
+            closeFolder(localFolder);
         }
     }
     private void queueMoveOrCopy(Account account, String srcFolder, String destFolder, boolean isCopy, String uids[])
@@ -2527,14 +2501,8 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (remoteSrcFolder != null)
-            {
-                remoteSrcFolder.close();
-            }
-            if (remoteDestFolder != null)
-            {
-                remoteDestFolder.close();
-            }
+            closeFolder(remoteSrcFolder);
+            closeFolder(remoteDestFolder);
         }
 
 
@@ -2621,10 +2589,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (remoteFolder != null)
-            {
-                remoteFolder.close();
-            }
+            closeFolder(remoteFolder);
         }
     }
 
@@ -2673,10 +2638,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (remoteFolder != null)
-            {
-                remoteFolder.close();
-            }
+            closeFolder(remoteFolder);
         }
     }
     private void queueExpunge(final Account account, final String folderName)
@@ -2727,10 +2689,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (remoteFolder != null)
-            {
-                remoteFolder.close();
-            }
+            closeFolder(remoteFolder);
         }
     }
 
@@ -2868,14 +2827,8 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (localFolder != null)
-            {
-                localFolder.close();
-            }
-            if (remoteFolder != null)
-            {
-                remoteFolder.close();
-            }
+            closeFolder(localFolder);
+            closeFolder(remoteFolder);
         }
     }
 
@@ -3060,10 +3013,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (localFolder != null)
-            {
-                localFolder.close();
-            }
+            closeFolder(localFolder);
         }
     }//setMesssageFlag
 
@@ -3163,16 +3113,9 @@ public class MessagingController implements Runnable
                 }
                 finally
                 {
-                    if (remoteFolder!=null)
-                    {
-                        remoteFolder.close();
-                    }
-
-                    if (localFolder!=null)
-                    {
-                        localFolder.close();
-                    }
-                }//finally
+                    closeFolder(remoteFolder);
+                    closeFolder(localFolder);
+                }
             }//run
         });
     }
@@ -3367,14 +3310,8 @@ public class MessagingController implements Runnable
                 }
                 finally
                 {
-                    if (remoteFolder != null)
-                    {
-                        remoteFolder.close();
-                    }
-                    if (localFolder != null)
-                    {
-                        localFolder.close();
-                    }
+                    closeFolder(localFolder);
+                    closeFolder(remoteFolder);
                 }
             }
         });
@@ -3512,10 +3449,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (localFolder != null)
-            {
-                localFolder.close();
-            }
+            closeFolder(localFolder);
         }
         return false;
     }
@@ -3689,17 +3623,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (localFolder != null)
-            {
-                try
-                {
-                    localFolder.close();
-                }
-                catch (Exception e)
-                {
-                    Log.e(K9.LOG_TAG, "Exception while closing folder", e);
-                }
-            }
+            closeFolder(localFolder);
         }
     }
 
@@ -3945,10 +3869,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (localFolder != null)
-            {
-                localFolder.close();
-            }
+            closeFolder(localFolder);
         }
     }
 
@@ -4096,15 +4017,8 @@ public class MessagingController implements Runnable
         }
         finally
         {
-
-            if (localFolder != null)
-            {
-                localFolder.close();
-            }
-            if (localTrashFolder != null)
-            {
-                localTrashFolder.close();
-            }
+            closeFolder(localFolder);
+            closeFolder(localTrashFolder);
         }
     }
 
@@ -4137,10 +4051,7 @@ public class MessagingController implements Runnable
         }
         finally
         {
-            if (remoteFolder != null)
-            {
-                remoteFolder.close();
-            }
+            closeFolder(remoteFolder);
         }
     }
 
@@ -4182,10 +4093,7 @@ public class MessagingController implements Runnable
                 }
                 finally
                 {
-                    if (localFolder != null)
-                    {
-                        localFolder.close();
-                    }
+                    closeFolder(localFolder);
                 }
             }
         });
@@ -4525,10 +4433,7 @@ public class MessagingController implements Runnable
                 }
                 finally
                 {
-                    if (tLocalFolder != null)
-                    {
-                        tLocalFolder.close();
-                    }
+                    closeFolder(tLocalFolder);
                 }
             }
         }
@@ -5208,17 +5113,7 @@ public class MessagingController implements Runnable
                 }
                 finally
                 {
-                    if (localFolder != null)
-                    {
-                        try
-                        {
-                            localFolder.close();
-                        }
-                        catch (Exception e)
-                        {
-                            Log.e(K9.LOG_TAG, "Unable to close localFolder", e);
-                        }
-                    }
+                    closeFolder(localFolder);
                     latch.countDown();
                 }
 
