@@ -4714,41 +4714,52 @@ public class MessagingController implements Runnable
             ringAndVibrate = true;
         }
 
-        configureNotification(account.getNotificationSetting(), notif, ringAndVibrate);
+        NotificationSetting n = account.getNotificationSetting();
+
+        configureNotification(notif, ( n.shouldRing() ?  n.getRingtone() : null), (n.shouldVibrate() ? n.getVibration() : null), (n.isLed() ?  n.getLedColor()  : null), ringAndVibrate);
 
         notifMgr.notify(account.getAccountNumber(), notif);
         return true;
     }
 
     /**
-     * @param setting
-     *            Configuration template. Never <code>null</code>.
      * @param notification
      *            Object to configure. Never <code>null</code>.
+     * @param rintone
+     *          String name of ringtone. <code>null</code> if no ringtone should be played
+     * @param vibrationPattern
+     *         <code>long[]</code> vibration pattern. <code>null</code> if no vibration should be played
+     * @param ledColor
+     *         <code>Integer</code> Color to flash LED. <code>null</code> if no LED flash should happen
      * @param ringAndVibrate
      *            <code>true</code> if ringtone/vibration are allowed,
      *            <code>false</code> otherwise.
      */
-    private void configureNotification(final NotificationSetting setting, final Notification notification, final boolean ringAndVibrate)
+    private void configureNotification(final Notification notification, 
+            final String ringtone,
+           final long[] vibrationPattern,
+           final Integer ledColor,  
+            
+            
+            final boolean ringAndVibrate)
     {
         if (ringAndVibrate)
         {
-            if (setting.shouldRing())
+            if (ringtone != null)
             {
-                String ringtone = setting.getRingtone();
                 notification.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
                 notification.audioStreamType = AudioManager.STREAM_NOTIFICATION;
             }
-            if (setting.shouldVibrate())
+            if (vibrationPattern != null )
             {
-                notification.vibrate = setting.getVibration();
+                notification.vibrate = vibrationPattern;
             }
         }
 
-        if (setting.isLed())
+        if (ledColor != null )
         {
             notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-            notification.ledARGB = setting.getLedColor();
+            notification.ledARGB = ledColor;
             notification.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
             notification.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
         }
