@@ -639,7 +639,7 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
     <string name="account_settings_add_account_label">Lisää toinen tili</string>
     <string name="account_settings_description_label">Tilin nimi</string>
     <string name="account_settings_name_label">Nimesi</string>
-    <string name="account_settings_notifications">Ilmoitukset</string>
+    <string name="notifications_title">Ilmoitukset</string>
     <string name="account_settings_ring_summary">Äänimerkki saapuvasta viestistä</string>
     <string name="account_settings_vibrate_enable">Värinä</string>
     <string name="account_settings_vibrate_summary">Värinähälytys saapuvasta viestistä</string>

@@ -663,7 +663,7 @@ Welcome to K-9 Mail setup.  K-9 is an open source mail client for Android origin
     <string name="account_settings_add_account_label">Add another account</string>
     <string name="account_settings_description_label">Account name</string>
     <string name="account_settings_name_label">Your name</string>
-    <string name="account_settings_notifications">Notifications</string>
+    <string name="notifications_title">Notifications</string>
     <string name="account_settings_ring_summary">Ring when mail arrives</string>
     <string name="account_settings_vibrate_enable">Vibrate</string>
     <string name="account_settings_vibrate_summary">Vibrate when mail arrives</string>

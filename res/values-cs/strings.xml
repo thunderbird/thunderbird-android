@@ -569,7 +569,7 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="account_settings_add_account_label">Přidat další účet</string>
     <string name="account_settings_description_label">Název účtu</string>
     <string name="account_settings_name_label">Vaše jméno</string>
-    <string name="account_settings_notifications">Oznámení</string>
+    <string name="notifications_title">Oznámení</string>
     <string name="account_settings_ring_summary">Zazvonit při příchodu zpráv</string>
     <string name="account_settings_vibrate_enable">Vibrovat</string>
     <string name="account_settings_vibrate_summary">Vibrovat při příchodu zpráv</string>

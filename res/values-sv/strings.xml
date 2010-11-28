@@ -641,7 +641,7 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="account_settings_add_account_label">Lägg till konto</string>
     <string name="account_settings_description_label">Kontonamn</string>
     <string name="account_settings_name_label">Ditt namn</string>
-    <string name="account_settings_notifications">Notifieringar</string>
+    <string name="notifications_title">Notifieringar</string>
     <string name="account_settings_ring_summary">Ring när det kommer ny e-post</string>
     <string name="account_settings_vibrate_enable">Vibrera</string>
     <string name="account_settings_vibrate_summary">Vibrera när det kommer e-post</string>

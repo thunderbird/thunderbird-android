@@ -505,7 +505,7 @@
     <string name="account_settings_add_account_label">Добавить почтовой ящик</string>
     <string name="account_settings_description_label">Название ящика</string>
     <string name="account_settings_name_label">Ваше имя</string>
-    <string name="account_settings_notifications">Уведомления</string>
+    <string name="notifications_title">Уведомления</string>
     <string name="account_settings_ring_summary">Звонок при новых сообщениях</string>
     <string name="account_settings_vibrate_enable">Вибрация</string>
     <string name="account_settings_vibrate_summary">Вибрация при новых сообщениях</string>

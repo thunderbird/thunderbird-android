@@ -594,7 +594,7 @@
   <string name="account_settings_add_account_label">Ajouter un autre compte</string>
   <string name="account_settings_description_label">Nom du compte</string>
   <string name="account_settings_name_label">Votre nom</string>
-  <string name="account_settings_notifications">Paramètres de notification</string>
+  <string name="notifications_title">Paramètres de notification</string>
   <string name="account_settings_ring_summary">Sonner lorsqu\'un message arrive</string>
   <string name="account_settings_vibrate_enable">Vibreur</string>
   <string name="account_settings_vibrate_summary">Vibrer à la réception d\'un e-mail</string>

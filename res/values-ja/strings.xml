@@ -660,7 +660,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_add_account_label">アカウント追加</string>
     <string name="account_settings_description_label">アカウント名</string>
     <string name="account_settings_name_label">名前</string>
-    <string name="account_settings_notifications">通知設定</string>
+    <string name="notifications_title">通知設定</string>
     <string name="account_settings_ring_summary">メール音受信時の通知音</string>
     <string name="account_settings_vibrate_enable">バイブレーション</string>
     <string name="account_settings_vibrate_summary">メール着信時バイブレーションをONにする</string>

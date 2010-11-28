@@ -129,7 +129,7 @@
 	<string name="folder_settings_folder_sync_mode_normal">Uguale alla classe di visualizzazione</string>
 	<string name="folder_settings_folder_sync_mode_first_class">1a classe</string>
 	<string name="folder_settings_folder_sync_mode_second_class">2a classe</string>
-	<string name="account_settings_notifications">Impostazioni notifiche</string>
+	<string name="notifications_title">Impostazioni notifiche</string>
 	<string name="account_settings_vibrate_enable">Vibra</string>
 	<string name="account_settings_vibrate_summary">Vibra quando un messaggio arriva</string>
 	<string name="account_settings_ringtone">Scegli suoneria</string>

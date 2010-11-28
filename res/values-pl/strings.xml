@@ -580,7 +580,7 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="account_settings_add_account_label">Dodaj kolejne konto</string>
     <string name="account_settings_description_label">Nazwa konta</string>
     <string name="account_settings_name_label">Twoje imię i nazwisko</string>
-    <string name="account_settings_notifications">Powiadomienia</string>
+    <string name="notifications_title">Powiadomienia</string>
     <string name="account_settings_ring_summary">Odtwórz dzwięk, gdy są nowe wiadomości</string>
     <string name="account_settings_vibrate_enable">Wibracja</string>
     <string name="account_settings_vibrate_summary">Wibruj gdy są nowe wiadomości</string>

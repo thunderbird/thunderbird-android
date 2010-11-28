@@ -652,7 +652,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_add_account_label">Eine weiteres Konto hinzufügen</string>
     <string name="account_settings_description_label">Kontoname</string>
     <string name="account_settings_name_label">Ihr Name</string>
-    <string name="account_settings_notifications">Benachrichtigungseinstellungen</string>
+    <string name="notifications_title">Benachrichtigungseinstellungen</string>
     <string name="account_settings_ring_summary">Klingeln bei neuer Nachricht</string>
     <string name="account_settings_vibrate_enable">Vibration</string>
     <string name="account_settings_vibrate_summary">Vibration bei neuer Nachricht</string>
