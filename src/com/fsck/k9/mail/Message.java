@@ -224,5 +224,5 @@ public abstract class Message implements Part, Body
         MessageReference tmpReference = makeMessageReference();
         return tmpReference.equals(ref);
     }
-    
+
 }

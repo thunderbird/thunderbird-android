@@ -264,25 +264,25 @@
 
     </PreferenceScreen>
 
-    <PreferenceScreen
+    <PreferenceScreen 
         android:title="@string/notifications_title"
         android:key="notification_preferences">
-
-        <CheckBoxPreference
+        
+        <CheckBoxPreference 
             android:key="quiet_time_enabled"
             android:persistent="false"
             android:title="@string/quiet_time"
             android:summary="@string/quiet_time_description"
             />
         <com.fsck.k9.preferences.TimePickerPreference
-            android:key="quiet_time_starts"
+            android:key="quiet_time_starts" 
             android:persistent="false"
             android:dependency="quiet_time_enabled"
             android:dialogTitle="@string/quiet_time_starts"
             android:title="@string/quiet_time_starts"
             />
         <com.fsck.k9.preferences.TimePickerPreference
-            android:key="quiet_time_ends"
+            android:key="quiet_time_ends" 
             android:dependency="quiet_time_enabled"
             android:persistent="false"
             android:dialogTitle="@string/quiet_time_ends"
