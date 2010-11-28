@@ -21,6 +21,7 @@ import java.util.List;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9;
+import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Folder;
@@ -29,7 +30,6 @@ import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
-import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
@@ -946,9 +946,8 @@ public class AccountSettings extends K9PreferenceActivity
     {
         // Do the vibration to show the user what it's like.
         Vibrator vibrate = (Vibrator)preference.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = MessagingController.getVibratePattern(
-                             Integer.parseInt(mAccountVibratePattern.getValue()),
-                             Integer.parseInt(mAccountVibrateTimes.getValue()));
-        vibrate.vibrate(pattern, -1);
+        vibrate.vibrate(NotificationSetting.getVibration(
+                            Integer.parseInt(mAccountVibratePattern.getValue()),
+                            Integer.parseInt(mAccountVibrateTimes.getValue())), -1);
     }
 }
