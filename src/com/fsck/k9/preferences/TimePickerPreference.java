@@ -84,7 +84,8 @@ public class TimePickerPreference extends DialogPreference implements
 	@Override
 	public void onTimeChanged(TimePicker view, int hour, int minute) {
  
-		persistString(hour + ":" + minute);
+        persistString(String.format("%02d:%02d",hour,minute));
+        callChangeListener(String.format("%02d:%02d",hour,minute));
 	}
  
 	/*
@@ -136,5 +137,10 @@ public class TimePickerPreference extends DialogPreference implements
  
 		return Integer.valueOf(time.split(":")[1]);
 	}
+
+    public String getTime() {
+		return getPersistedString(this.defaultValue);
+    }
+
 }
 

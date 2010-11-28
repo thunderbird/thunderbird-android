@@ -164,6 +164,9 @@ public class K9 extends Application
     private static boolean mCountSearchMessages = true;
     private static boolean mZoomControlsEnabled = false;
     private static boolean mMobileOptimizedLayout = false;
+    private static boolean mQuietTimeEnabled = false;
+    private static String mQuietTimeStarts = null;
+    private static String mQuietTimeEnds = null;
 
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
@@ -417,7 +420,9 @@ public class K9 extends Application
         editor.putBoolean("manageBack", mManageBack);
         editor.putBoolean("zoomControlsEnabled",mZoomControlsEnabled);
         editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
-
+        editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
+        editor.putString("quietTimeStarts", mQuietTimeStarts);
+        editor.putString("quietTimeEnds", mQuietTimeEnds);
 
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
@@ -471,6 +476,10 @@ public class K9 extends Application
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
         mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled",false);
+
+        mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
+        mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00" );
+        mQuietTimeEnds= sprefs.getString("quietTimeEnds", "7:00");
 
         mShowContactName = sprefs.getBoolean("showContactName", false);
         mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
@@ -714,9 +723,29 @@ public class K9 extends Application
         mMobileOptimizedLayout = mobileOptimizedLayout;
     }
 
+    public static boolean getQuietTimeEnabled() {
+		return mQuietTimeEnabled;
+	}
 
+	public static void setQuietTimeEnabled(boolean quietTimeEnabled) {
+		mQuietTimeEnabled = quietTimeEnabled;
+	}
 
+	public static String getQuietTimeStarts() {
+		return mQuietTimeStarts;
+	}
 
+	public static void setQuietTimeStarts(String quietTimeStarts) {
+		mQuietTimeStarts = quietTimeStarts;
+	}
+
+	public static String getQuietTimeEnds() {
+		return mQuietTimeEnds;
+	}
+
+	public static void setQuietTimeEnds(String quietTimeEnds) {
+		mQuietTimeEnds = quietTimeEnds;
+	}
 
     public static boolean startIntegratedInbox()
     {

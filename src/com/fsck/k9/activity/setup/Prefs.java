@@ -15,6 +15,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.view.KeyEvent;
 import android.widget.Toast;
+import android.widget.TimePicker;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -24,6 +25,8 @@ import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.DateFormatter;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.preferences.CheckBoxListPreference;
+import com.fsck.k9.preferences.TimePickerPreference;
+
 import com.fsck.k9.service.MailService;
 
 public class Prefs extends K9PreferenceActivity
@@ -60,6 +63,11 @@ public class Prefs extends K9PreferenceActivity
 
     private static final String PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST = "messageview_return_to_list";
     private static final String PREFERENCE_MESSAGEVIEW_ZOOM_CONTROLS_ENABLED = "messageview_zoom_controls";
+    private static final String PREFERENCE_QUIET_TIME_ENABLED = "quiet_time_enabled";
+    private static final String PREFERENCE_QUIET_TIME_STARTS = "quiet_time_starts";
+    private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
+
+
     private static final String PREFERENCE_MESSAGEVIEW_MOBILE_LAYOUT = "messageview_mobile_layout";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_GALLERY_BUG_WORKAROUND = "use_gallery_bug_workaround";
@@ -93,6 +101,11 @@ public class Prefs extends K9PreferenceActivity
     private CheckBoxPreference mUseGalleryBugWorkaround;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
+
+    private CheckBoxPreference mQuietTimeEnabled;
+    private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
+    private com.fsck.k9.preferences.TimePickerPreference mQuietTimeEnds;
+
 
 
     public static void actionPrefs(Context context)
@@ -241,6 +254,37 @@ public class Prefs extends K9PreferenceActivity
 
         mMobileOptimizedLayout.setChecked(K9.mobileOptimizedLayout());
 
+        mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
+        mQuietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
+
+        mQuietTimeStarts = (TimePickerPreference) findPreference(PREFERENCE_QUIET_TIME_STARTS);
+        mQuietTimeStarts.setDefaultValue(K9.getQuietTimeStarts());
+        mQuietTimeStarts.setSummary(K9.getQuietTimeStarts());
+        mQuietTimeStarts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String time = (String) newValue;
+                mQuietTimeStarts.setSummary(time);
+                return false;
+            }
+        });
+
+        mQuietTimeEnds = (TimePickerPreference) findPreference(PREFERENCE_QUIET_TIME_ENDS);
+        mQuietTimeEnds.setSummary(K9.getQuietTimeEnds());
+        mQuietTimeEnds.setDefaultValue(K9.getQuietTimeEnds());
+        mQuietTimeEnds.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                final String time = (String) newValue;
+                mQuietTimeEnds.setSummary(time);
+                return false;
+            }
+        });
+
+
+
 
         mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().toString());
 
@@ -279,6 +323,12 @@ public class Prefs extends K9PreferenceActivity
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
         K9.setMobileOptimizedLayout(mMobileOptimizedLayout.isChecked());
+        K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
+
+        K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
+        K9.setQuietTimeEnds(mQuietTimeEnds.getTime());
+
+
         K9.setZoomControlsEnabled(mZoomControlsEnabled.isChecked());
 
         boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
