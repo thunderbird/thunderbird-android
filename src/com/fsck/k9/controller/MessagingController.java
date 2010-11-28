@@ -4355,7 +4355,6 @@ public class MessagingController implements Runnable
             Store localStore = account.getLocalStore();
             for (final Folder folder : localStore.getPersonalNamespaces(false))
             {
-
                 folder.open(Folder.OpenMode.READ_WRITE);
                 folder.refresh(prefs);
 
@@ -4371,7 +4370,7 @@ public class MessagingController implements Runnable
                               " which is in display mode " + fDisplayClass + " while account is in display mode " + aDisplayMode);
                     */
 
-                    return;
+                    continue;
                 }
 
                 if (modeMismatch(aSyncMode, fSyncClass))
@@ -4383,94 +4382,9 @@ public class MessagingController implements Runnable
                               " which is in sync mode " + fSyncClass + " while account is in sync mode " + aSyncMode);
                     */
 
-                    return;
+                    continue;
                 }
-
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "Folder " + folder.getName() + " was last synced @ " +
-                          new Date(folder.getLastChecked()));
-
-                if (!ignoreLastCheckedTime && folder.getLastChecked() >
-                        (System.currentTimeMillis() - accountInterval))
-                {
-                    if (K9.DEBUG)
-                        Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName()
-                              + ", previously synced @ " + new Date(folder.getLastChecked())
-                              + " which would be too recent for the account period");
-
-                    return;
-                }
-                putBackground("sync" + folder.getName(), null, new Runnable()
-                {
-                    public void run()
-                    {
-                        LocalFolder tLocalFolder = null;
-                        try
-                        {
-                            // In case multiple Commands get enqueued, don't run more than
-                            // once
-                            final LocalStore localStore = account.getLocalStore();
-                            tLocalFolder = localStore.getFolder(folder.getName());
-                            tLocalFolder.open(Folder.OpenMode.READ_WRITE);
-
-                            if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
-                                    (System.currentTimeMillis() - accountInterval))
-                            {
-                                if (K9.DEBUG)
-                                    Log.v(K9.LOG_TAG, "Not running Command for folder " + folder.getName()
-                                          + ", previously synced @ " + new Date(folder.getLastChecked())
-                                          + " which would be too recent for the account period");
-                                return;
-                            }
-                            if (account.isShowOngoing())
-                            {
-                                Notification notif = new Notification(R.drawable.ic_menu_refresh,
-                                                                      context.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()),
-                                                                      System.currentTimeMillis());
-                                Intent intent = MessageList.actionHandleFolderIntent(context, account, K9.INBOX);
-                                PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
-                                notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_sync_title), account.getDescription()
-                                                         + context.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
-                                notif.flags = Notification.FLAG_ONGOING_EVENT;
-                                if (K9.NOTIFICATION_LED_WHILE_SYNCING)
-                                {
-                                    notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                                    notif.ledARGB = account.getNotificationSetting().getLedColor();
-                                    notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
-                                    notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
-                                }
-
-                                notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
-                            }
-                            try
-                            {
-                                synchronizeMailboxSynchronous(account, folder.getName(), listener, null);
-                            }
-                            finally
-                            {
-                                if (account.isShowOngoing())
-                                {
-                                    notifMgr.cancel(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-
-                            Log.e(K9.LOG_TAG, "Exception while processing folder " +
-                                  account.getDescription() + ":" + folder.getName(), e);
-                            addErrorMessage(account, null, e);
-                        }
-                        finally
-                        {
-                            if (tLocalFolder != null)
-                            {
-                                tLocalFolder.close();
-                            }
-                        }
-                    }
-                }
-                             );
+                synchronizeFolder(context, account, folder, ignoreLastCheckedTime, accountInterval, notifMgr, listener);
             }
         }
         catch (MessagingException e)
@@ -4507,6 +4421,108 @@ public class MessagingController implements Runnable
 
     }
 
+
+    private void synchronizeFolder(
+        final Context context, final Account account,
+        final Folder folder,
+        final boolean ignoreLastCheckedTime,
+        final long accountInterval,
+        final NotificationManager notifMgr,
+        final MessagingListener listener
+
+
+    )
+    {
+
+
+        if (K9.DEBUG)
+            Log.v(K9.LOG_TAG, "Folder " + folder.getName() + " was last synced @ " +
+                  new Date(folder.getLastChecked()));
+
+        if (!ignoreLastCheckedTime && folder.getLastChecked() >
+                (System.currentTimeMillis() - accountInterval))
+        {
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "Not syncing folder " + folder.getName()
+                      + ", previously synced @ " + new Date(folder.getLastChecked())
+                      + " which would be too recent for the account period");
+
+            return;
+        }
+        putBackground("sync" + folder.getName(), null, new Runnable()
+        {
+            public void run()
+            {
+                LocalFolder tLocalFolder = null;
+                try
+                {
+                    // In case multiple Commands get enqueued, don't run more than
+                    // once
+                    final LocalStore localStore = account.getLocalStore();
+                    tLocalFolder = localStore.getFolder(folder.getName());
+                    tLocalFolder.open(Folder.OpenMode.READ_WRITE);
+
+                    if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
+                            (System.currentTimeMillis() - accountInterval))
+                    {
+                        if (K9.DEBUG)
+                            Log.v(K9.LOG_TAG, "Not running Command for folder " + folder.getName()
+                                  + ", previously synced @ " + new Date(folder.getLastChecked())
+                                  + " which would be too recent for the account period");
+                        return;
+                    }
+                    if (account.isShowOngoing())
+                    {
+                        Notification notif = new Notification(R.drawable.ic_menu_refresh,
+                                                              context.getString(R.string.notification_bg_sync_ticker, account.getDescription(), folder.getName()),
+                                                              System.currentTimeMillis());
+                        Intent intent = MessageList.actionHandleFolderIntent(context, account, K9.INBOX);
+                        PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
+                        notif.setLatestEventInfo(context, context.getString(R.string.notification_bg_sync_title), account.getDescription()
+                                                 + context.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
+                        notif.flags = Notification.FLAG_ONGOING_EVENT;
+                        if (K9.NOTIFICATION_LED_WHILE_SYNCING)
+                        {
+                            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+                            notif.ledARGB = account.getNotificationSetting().getLedColor();
+                            notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
+                            notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
+                        }
+
+                        notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
+                    }
+                    try
+                    {
+                        synchronizeMailboxSynchronous(account, folder.getName(), listener, null);
+                    }
+                    finally
+                    {
+                        if (account.isShowOngoing())
+                        {
+                            notifMgr.cancel(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber());
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    Log.e(K9.LOG_TAG, "Exception while processing folder " +
+                          account.getDescription() + ":" + folder.getName(), e);
+                    addErrorMessage(account, null, e);
+                }
+                finally
+                {
+                    if (tLocalFolder != null)
+                    {
+                        tLocalFolder.close();
+                    }
+                }
+            }
+        }
+                     );
+
+
+    }
 
 
 
