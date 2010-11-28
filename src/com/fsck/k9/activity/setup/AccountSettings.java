@@ -533,7 +533,7 @@ public class AccountSettings extends K9PreferenceActivity
         prefs.edit().putString(PREFERENCE_RINGTONE, currentRingtone).commit();
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
-        mAccountVibrate.setChecked(mAccount.getNotificationSetting().isVibrate());
+        mAccountVibrate.setChecked(mAccount.getNotificationSetting().shouldVibrate());
 
         mAccountVibratePattern = (ListPreference) findPreference(PREFERENCE_VIBRATE_PATTERN);
         mAccountVibratePattern.setValue(String.valueOf(mAccount.getNotificationSetting().getVibratePattern()));

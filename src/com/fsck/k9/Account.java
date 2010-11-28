@@ -579,7 +579,7 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
 
-        editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.isVibrate());
+        editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
         editor.putInt(mUuid + ".vibrateTimes", mNotificationSetting.getVibrateTimes());
         editor.putBoolean(mUuid + ".ring", mNotificationSetting.shouldRing());

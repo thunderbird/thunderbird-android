@@ -82,7 +82,7 @@ public class NotificationSetting
         mLedColor = color;
     }
 
-    public synchronized boolean isVibrate()
+    public synchronized boolean shouldVibrate()
     {
         return mVibrate;
     }

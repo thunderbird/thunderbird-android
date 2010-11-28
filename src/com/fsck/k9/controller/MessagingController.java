@@ -4739,7 +4739,7 @@ public class MessagingController implements Runnable
                 notification.sound = TextUtils.isEmpty(ringtone) ? null : Uri.parse(ringtone);
                 notification.audioStreamType = AudioManager.STREAM_NOTIFICATION;
             }
-            if (setting.isVibrate())
+            if (setting.shouldVibrate())
             {
                 long[] pattern = getVibratePattern(setting.getVibratePattern(), setting.getVibrateTimes());
                 notification.vibrate = pattern;
