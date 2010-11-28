@@ -3433,10 +3433,7 @@ public class MessagingController implements Runnable
 
         if (K9.NOTIFICATION_LED_WHILE_SYNCING)
         {
-            notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-            notif.ledARGB = account.getNotificationSetting().getLedColor();
-            notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
-            notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
+            configureNotification(notif,  null, null, account.getNotificationSetting().getLedColor(), K9.NOTIFICATION_LED_BLINK_FAST, true);
         }
 
         notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
@@ -3453,11 +3450,8 @@ public class MessagingController implements Runnable
 
         notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.send_failure_subject), lastFailure.getMessage(), pi);
 
-        notif.flags |= Notification.FLAG_SHOW_LIGHTS;
+        configureNotification(notif,  null, null, K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR, K9.NOTIFICATION_LED_BLINK_FAST, true);
         notif.flags |= Notification.FLAG_AUTO_CANCEL;
-        notif.ledARGB = K9.NOTIFICATION_LED_SENDING_FAILURE_COLOR;
-        notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
-        notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
         notifMgr.notify(-1500 - account.getAccountNumber(), notif);
     }
 
@@ -3476,12 +3470,10 @@ public class MessagingController implements Runnable
             notif.setLatestEventInfo(mApplication, mApplication.getString(R.string.notification_bg_sync_title), account.getDescription()
                                      + mApplication.getString(R.string.notification_bg_title_separator) + folder.getName(), pi);
             notif.flags = Notification.FLAG_ONGOING_EVENT;
+
             if (K9.NOTIFICATION_LED_WHILE_SYNCING)
             {
-                notif.flags |= Notification.FLAG_SHOW_LIGHTS;
-                notif.ledARGB = account.getNotificationSetting().getLedColor();
-                notif.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
-                notif.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
+                configureNotification(notif,  null, null, account.getNotificationSetting().getLedColor(), K9.NOTIFICATION_LED_BLINK_FAST, true);
             }
 
             notifMgr.notify(K9.FETCHING_EMAIL_NOTIFICATION - account.getAccountNumber(), notif);
@@ -4716,7 +4708,7 @@ public class MessagingController implements Runnable
 
         NotificationSetting n = account.getNotificationSetting();
 
-        configureNotification(notif, ( n.shouldRing() ?  n.getRingtone() : null), (n.shouldVibrate() ? n.getVibration() : null), (n.isLed() ?  n.getLedColor()  : null), ringAndVibrate);
+        configureNotification(notif, ( n.shouldRing() ?  n.getRingtone() : null), (n.shouldVibrate() ? n.getVibration() : null), (n.isLed() ?  n.getLedColor()  : null), K9.NOTIFICATION_LED_BLINK_SLOW, ringAndVibrate);
 
         notifMgr.notify(account.getAccountNumber(), notif);
         return true;
@@ -4731,17 +4723,19 @@ public class MessagingController implements Runnable
      *         <code>long[]</code> vibration pattern. <code>null</code> if no vibration should be played
      * @param ledColor
      *         <code>Integer</code> Color to flash LED. <code>null</code> if no LED flash should happen
+     * @param ledSpeed
+     *         <code>int</code> should LEDs flash K9.NOTIFICATION_LED_BLINK_SLOW or K9.NOTIFICATION_LED_BLINK_FAST
      * @param ringAndVibrate
      *            <code>true</code> if ringtone/vibration are allowed,
      *            <code>false</code> otherwise.
      */
-    private void configureNotification(final Notification notification, 
-            final String ringtone,
-           final long[] vibrationPattern,
-           final Integer ledColor,  
-            
-            
-            final boolean ringAndVibrate)
+    private void configureNotification(final Notification notification,
+                                       final String ringtone,
+                                       final long[] vibrationPattern,
+                                       final Integer ledColor,
+                                       final int ledSpeed,
+
+                                       final boolean ringAndVibrate)
     {
         if (ringAndVibrate)
         {
@@ -4760,8 +4754,16 @@ public class MessagingController implements Runnable
         {
             notification.flags |= Notification.FLAG_SHOW_LIGHTS;
             notification.ledARGB = ledColor;
-            notification.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
-            notification.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
+            if (ledSpeed == K9.NOTIFICATION_LED_BLINK_SLOW)
+            {
+                notification.ledOnMS = K9.NOTIFICATION_LED_ON_TIME;
+                notification.ledOffMS = K9.NOTIFICATION_LED_OFF_TIME;
+            }
+            else if (ledSpeed == K9.NOTIFICATION_LED_BLINK_FAST)
+            {
+                notification.ledOnMS = K9.NOTIFICATION_LED_FAST_ON_TIME;
+                notification.ledOffMS = K9.NOTIFICATION_LED_FAST_OFF_TIME;
+            }
         }
     }
 
