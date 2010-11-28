@@ -452,7 +452,7 @@ public class StorageManager
 
     /**
      * Storage provider to allow access the Samsung Galaxy S 'internal SD card'.
-     * 
+     *
      * <p>
      * This implementation is experimental and _untested_.
      * </p>
@@ -585,8 +585,8 @@ public class StorageManager
          *
          * HTC Incredible storage and Samsung Galaxy S are omitted on purpose
          * (they're experimental and I don't have those devices to test).
-         * 
-         * 
+         *
+         *
          * !!! Make sure InternalStorageProvider is the first provider as it'll
          * be considered as the default provider !!!
          */

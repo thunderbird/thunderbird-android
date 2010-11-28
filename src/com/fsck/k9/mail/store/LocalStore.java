@@ -6056,12 +6056,15 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public boolean hasAttachments()
         {
-        	if (mAttachmentCount > 0) {
-        		return true;
-        	} else{
-        		return false;
-        	}
-        	
+            if (mAttachmentCount > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         public int getAttachmentCount()
@@ -6143,21 +6146,25 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public boolean toMe()
         {
-       try
-       { if (mToMeCalculated == false) {
-            for (Address address : getRecipients(RecipientType.TO))
+            try
             {
-                if (mAccount.isAnIdentity(address))
+                if (mToMeCalculated == false)
                 {
-                    mToMe = true;
-                    mToMeCalculated = true;
+                    for (Address address : getRecipients(RecipientType.TO))
+                    {
+                        if (mAccount.isAnIdentity(address))
+                        {
+                            mToMe = true;
+                            mToMeCalculated = true;
+                        }
+                    }
                 }
             }
-        }
-        } catch (MessagingException e) {
-            // do something better than ignore this
-            // getRecipients can throw a messagingexception
-        }
+            catch (MessagingException e)
+            {
+                // do something better than ignore this
+                // getRecipients can throw a messagingexception
+            }
             return mToMe;
         }
 
@@ -6167,26 +6174,30 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         public boolean ccMe()
         {
-        try {
+            try
+            {
 
-        if (mCcMeCalculated == false) {
-                for(Address address : getRecipients(RecipientType.CC))
+                if (mCcMeCalculated == false)
                 {
-                    if (mAccount.isAnIdentity(address))
+                    for(Address address : getRecipients(RecipientType.CC))
                     {
-                        mCcMe = true;
-                        mCcMeCalculated = true;
+                        if (mAccount.isAnIdentity(address))
+                        {
+                            mCcMe = true;
+                            mCcMeCalculated = true;
+                        }
                     }
-                }
 
-        }
-        } catch (MessagingException e) {
-            // do something better than ignore this
-            // getRecipients can throw a messagingexception
-        }
+                }
+            }
+            catch (MessagingException e)
+            {
+                // do something better than ignore this
+                // getRecipients can throw a messagingexception
+            }
 
             return mCcMe;
-    }
+        }
 
 
 

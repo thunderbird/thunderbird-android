@@ -723,29 +723,35 @@ public class K9 extends Application
         mMobileOptimizedLayout = mobileOptimizedLayout;
     }
 
-    public static boolean getQuietTimeEnabled() {
-		return mQuietTimeEnabled;
-	}
+    public static boolean getQuietTimeEnabled()
+    {
+        return mQuietTimeEnabled;
+    }
 
-	public static void setQuietTimeEnabled(boolean quietTimeEnabled) {
-		mQuietTimeEnabled = quietTimeEnabled;
-	}
+    public static void setQuietTimeEnabled(boolean quietTimeEnabled)
+    {
+        mQuietTimeEnabled = quietTimeEnabled;
+    }
 
-	public static String getQuietTimeStarts() {
-		return mQuietTimeStarts;
-	}
+    public static String getQuietTimeStarts()
+    {
+        return mQuietTimeStarts;
+    }
 
-	public static void setQuietTimeStarts(String quietTimeStarts) {
-		mQuietTimeStarts = quietTimeStarts;
-	}
+    public static void setQuietTimeStarts(String quietTimeStarts)
+    {
+        mQuietTimeStarts = quietTimeStarts;
+    }
 
-	public static String getQuietTimeEnds() {
-		return mQuietTimeEnds;
-	}
+    public static String getQuietTimeEnds()
+    {
+        return mQuietTimeEnds;
+    }
 
-	public static void setQuietTimeEnds(String quietTimeEnds) {
-		mQuietTimeEnds = quietTimeEnds;
-	}
+    public static void setQuietTimeEnds(String quietTimeEnds)
+    {
+        mQuietTimeEnds = quietTimeEnds;
+    }
 
     public static boolean startIntegratedInbox()
     {

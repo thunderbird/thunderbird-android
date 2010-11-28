@@ -2971,14 +2971,16 @@ public class MessageList
             animation.setAnimationListener(this);
             mBatchButtonArea.startAnimation(animation);
 
-            
-    		// hide spam button if there is no spam folder
-            if (mAccount != null) {
-            	String folderName = mAccount.getSpamFolderName();
-            	if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)
-            			|| !mController.isMoveCapable(mAccount)) {
-            		mBatchSpamButton.setVisibility(View.GONE);
-            	}
+
+            // hide spam button if there is no spam folder
+            if (mAccount != null)
+            {
+                String folderName = mAccount.getSpamFolderName();
+                if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)
+                        || !mController.isMoveCapable(mAccount))
+                {
+                    mBatchSpamButton.setVisibility(View.GONE);
+                }
             }
         }
     }
@@ -2986,55 +2988,55 @@ public class MessageList
     private void toggleBatchButtons()
     {
 
-	runOnUiThread(new Runnable()
-	{
-		@Override
-		public void run()
-		{
+        runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
 
-			if (mSelectedCount < 0)
-			{
-				mSelectedCount = 0;
-			}
+                if (mSelectedCount < 0)
+                {
+                    mSelectedCount = 0;
+                }
 
-			int readButtonIconId;
-			int flagButtonIconId;
+                int readButtonIconId;
+                int flagButtonIconId;
 
-			if (mSelectedCount==0)
-			{
-				readButtonIconId = R.drawable.ic_button_mark_read;
-				flagButtonIconId = R.drawable.ic_button_flag;
-				hideBatchButtons();
-			}
-			else
-			{
-				boolean newReadState = computeBatchDirection(false);
-				if (newReadState)
-				{
-					readButtonIconId = R.drawable.ic_button_mark_read;
-				}
-				else
-				{
-					readButtonIconId = R.drawable.ic_button_mark_unread;
-				}
-				boolean newFlagState = computeBatchDirection(true);
-				if (newFlagState)
-				{
-					flagButtonIconId = R.drawable.ic_button_flag;
-				}
-				else
-				{
-					flagButtonIconId = R.drawable.ic_button_unflag;
-				}
-				showBatchButtons();
-			}
+                if (mSelectedCount==0)
+                {
+                    readButtonIconId = R.drawable.ic_button_mark_read;
+                    flagButtonIconId = R.drawable.ic_button_flag;
+                    hideBatchButtons();
+                }
+                else
+                {
+                    boolean newReadState = computeBatchDirection(false);
+                    if (newReadState)
+                    {
+                        readButtonIconId = R.drawable.ic_button_mark_read;
+                    }
+                    else
+                    {
+                        readButtonIconId = R.drawable.ic_button_mark_unread;
+                    }
+                    boolean newFlagState = computeBatchDirection(true);
+                    if (newFlagState)
+                    {
+                        flagButtonIconId = R.drawable.ic_button_flag;
+                    }
+                    else
+                    {
+                        flagButtonIconId = R.drawable.ic_button_unflag;
+                    }
+                    showBatchButtons();
+                }
 
-			mBatchReadButton.setImageResource(readButtonIconId);
-			mBatchFlagButton.setImageResource(flagButtonIconId);
+                mBatchReadButton.setImageResource(readButtonIconId);
+                mBatchFlagButton.setImageResource(flagButtonIconId);
 
 
-		}
-	});
+            }
+        });
 
 
     }
