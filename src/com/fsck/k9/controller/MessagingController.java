@@ -1568,68 +1568,71 @@ public class MessagingController implements Runnable
         if (message.isSet(Flag.DELETED))
         {
             syncFlagMessages.add(message);
+            return;
         }
-        else if (!isMessageSuppressed(account, folder, message))
+        else if (isMessageSuppressed(account, folder, message))
         {
-            Message localMessage = localFolder.getMessage(message.getUid());
+            return;
+        }
 
-            if (localMessage == null)
+        Message localMessage = localFolder.getMessage(message.getUid());
+
+        if (localMessage == null)
+        {
+            if (!flagSyncOnly)
             {
-                if (!flagSyncOnly)
-                {
-                    if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
-                    {
-                        if (K9.DEBUG)
-                            Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " has not yet been downloaded");
-
-                        unsyncedMessages.add(message);
-                    }
-                    else
-                    {
-                        if (K9.DEBUG)
-                            Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is partially or fully downloaded");
-
-                        // Store the updated message locally
-                        localFolder.appendMessages(new Message[] { message });
-
-                        localMessage = localFolder.getMessage(message.getUid());
-
-                        localMessage.setFlag(Flag.X_DOWNLOADED_FULL, message.isSet(Flag.X_DOWNLOADED_FULL));
-                        localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, message.isSet(Flag.X_DOWNLOADED_PARTIAL));
-
-                        for (MessagingListener l : getListeners())
-                        {
-                            l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
-                            if (!localMessage.isSet(Flag.SEEN))
-                            {
-                                l.synchronizeMailboxNewMessage(account, folder, localMessage);
-                            }
-                        }
-                    }
-                }
-            }
-            else if (!localMessage.isSet(Flag.DELETED))
-            {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is present in the local store");
-
-                if (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
+                if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL))
                 {
                     if (K9.DEBUG)
-                        Log.v(K9.LOG_TAG, "Message with uid " + message.getUid()
-                              + " is not downloaded, even partially; trying again");
+                        Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " has not yet been downloaded");
 
                     unsyncedMessages.add(message);
                 }
                 else
                 {
-                    String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
-                    if (newPushState != null)
+                    if (K9.DEBUG)
+                        Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is partially or fully downloaded");
+
+                    // Store the updated message locally
+                    localFolder.appendMessages(new Message[] { message });
+
+                    localMessage = localFolder.getMessage(message.getUid());
+
+                    localMessage.setFlag(Flag.X_DOWNLOADED_FULL, message.isSet(Flag.X_DOWNLOADED_FULL));
+                    localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, message.isSet(Flag.X_DOWNLOADED_PARTIAL));
+
+                    for (MessagingListener l : getListeners())
                     {
-                        localFolder.setPushState(newPushState);
+                        l.synchronizeMailboxAddOrUpdateMessage(account, folder, localMessage);
+                        if (!localMessage.isSet(Flag.SEEN))
+                        {
+                            l.synchronizeMailboxNewMessage(account, folder, localMessage);
+                        }
                     }
-                    syncFlagMessages.add(message);
                 }
+            }
+        }
+        else if (!localMessage.isSet(Flag.DELETED))
+        {
+            if (K9.DEBUG)
+                Log.v(K9.LOG_TAG, "Message with uid " + message.getUid() + " is present in the local store");
+
+            if (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))
+            {
+                if (K9.DEBUG)
+                    Log.v(K9.LOG_TAG, "Message with uid " + message.getUid()
+                          + " is not downloaded, even partially; trying again");
+
+                unsyncedMessages.add(message);
+            }
+            else
+            {
+                String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
+                if (newPushState != null)
+                {
+                    localFolder.setPushState(newPushState);
+                }
+                syncFlagMessages.add(message);
             }
         }
     }
