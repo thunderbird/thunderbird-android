@@ -314,14 +314,9 @@ public class MessageList
     private boolean mCheckboxes = true;
     private int mSelectedCount = 0;
 
-    /**
-     * Area with buttons visible when multiple
-     * mails are marked.
-     */
     private View mBatchButtonArea;
     private ImageButton mBatchReadButton;
     private ImageButton mBatchDeleteButton;
-    private ImageButton mBatchSpamButton;
     private ImageButton mBatchFlagButton;
     private ImageButton mBatchDoneButton;
 
@@ -907,12 +902,9 @@ public class MessageList
         mBatchReadButton.setOnClickListener(this);
         mBatchDeleteButton = (ImageButton) findViewById(R.id.batch_delete_button);
         mBatchDeleteButton.setOnClickListener(this);
-        mBatchSpamButton = (ImageButton) findViewById(R.id.batch_spam_button);
-        mBatchSpamButton.setOnClickListener(this);
         mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
         mBatchFlagButton.setOnClickListener(this);
         mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
-
 
         mBatchDoneButton.setOnClickListener(this);
 
@@ -2970,18 +2962,6 @@ public class MessageList
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
             animation.setAnimationListener(this);
             mBatchButtonArea.startAnimation(animation);
-
-
-            // hide spam button if there is no spam folder
-            if (mAccount != null)
-            {
-                String folderName = mAccount.getSpamFolderName();
-                if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)
-                        || !mController.isMoveCapable(mAccount))
-                {
-                    mBatchSpamButton.setVisibility(View.GONE);
-                }
-            }
         }
     }
 
@@ -3100,7 +3080,6 @@ public class MessageList
     {
         boolean newState = false;
         List<Message> messageList = new ArrayList<Message>();
-        // messages to be removed from the view
         List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
 
         if (v == mBatchDoneButton)
@@ -3128,10 +3107,6 @@ public class MessageList
                     {
                         removeHolderList.add(holder);
                     }
-                    else if (v == mBatchSpamButton)
-                    {
-                        removeHolderList.add(holder);
-                    }
                     else if (v == mBatchFlagButton)
                     {
                         holder.flagged = newState;
@@ -3151,17 +3126,6 @@ public class MessageList
             if (v == mBatchDeleteButton)
             {
                 mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
-                mSelectedCount = 0;
-                toggleBatchButtons();
-            }
-            else if (v == mBatchSpamButton)
-            {
-                String folderName = mAccount.getSpamFolderName();
-                if (K9.FOLDER_NONE.equalsIgnoreCase(folderName))
-                {
-                    return;
-                }
-                mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
                 mSelectedCount = 0;
                 toggleBatchButtons();
             }
