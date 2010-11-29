@@ -208,6 +208,32 @@
 
     </PreferenceScreen>
 
+    <PreferenceScreen 
+        android:title="@string/notifications_title"
+        android:key="notification_preferences">
+        
+        <CheckBoxPreference 
+            android:key="quiet_time_enabled"
+            android:persistent="false"
+            android:title="@string/quiet_time"
+            android:summary="@string/quiet_time_description"
+            />
+        <com.fsck.k9.preferences.TimePickerPreference
+            android:key="quiet_time_starts" 
+            android:persistent="false"
+            android:dependency="quiet_time_enabled"
+            android:dialogTitle="@string/quiet_time_starts"
+            android:title="@string/quiet_time_starts"
+            />
+        <com.fsck.k9.preferences.TimePickerPreference
+            android:key="quiet_time_ends" 
+            android:dependency="quiet_time_enabled"
+            android:persistent="false"
+            android:dialogTitle="@string/quiet_time_ends"
+            android:title="@string/quiet_time_ends"
+            />
+    </PreferenceScreen>
+
     <PreferenceScreen
         android:title="@string/network_preferences"
         android:key="network_preferences">
@@ -262,31 +288,5 @@
             android:title="@string/debug_enable_sensitive_logging_title"
             android:summary="@string/debug_enable_sensitive_logging_summary" />
 
-    </PreferenceScreen>
-
-    <PreferenceScreen 
-        android:title="@string/notifications_title"
-        android:key="notification_preferences">
-        
-        <CheckBoxPreference 
-            android:key="quiet_time_enabled"
-            android:persistent="false"
-            android:title="@string/quiet_time"
-            android:summary="@string/quiet_time_description"
-            />
-        <com.fsck.k9.preferences.TimePickerPreference
-            android:key="quiet_time_starts" 
-            android:persistent="false"
-            android:dependency="quiet_time_enabled"
-            android:dialogTitle="@string/quiet_time_starts"
-            android:title="@string/quiet_time_starts"
-            />
-        <com.fsck.k9.preferences.TimePickerPreference
-            android:key="quiet_time_ends" 
-            android:dependency="quiet_time_enabled"
-            android:persistent="false"
-            android:dialogTitle="@string/quiet_time_ends"
-            android:title="@string/quiet_time_ends"
-            />
     </PreferenceScreen>
 </PreferenceScreen>
