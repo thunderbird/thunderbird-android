@@ -2750,7 +2750,7 @@ public class MessageList
             }
 
             holder.chip.setBackgroundColor(message.message.getFolder().getAccount().getChipColor());
-            holder.chip.getBackground().setAlpha(message.read ? 127 : 255);
+            holder.chip.getBackground().setAlpha(255);
             view.getBackground().setAlpha(message.downloaded ? 0 : 127);
 
             if ((message.message.getSubject() == null) || message.message.getSubject().equals(""))
