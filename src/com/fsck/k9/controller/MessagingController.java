@@ -4737,6 +4737,13 @@ public class MessagingController implements Runnable
 
                                        final boolean ringAndVibrate)
     {
+
+        // if it's quiet time, then we shouldn't be ringing, buzzing or flashing
+        if (K9.isQuietTime())
+        {
+            return;
+        }
+
         if (ringAndVibrate)
         {
             if (ringtone != null)
