@@ -223,6 +223,19 @@ public class MessageView extends K9Activity implements OnClickListener
             // Text selection is finished. Allow scrolling again.
             mToggleScrollView.setScrolling(true);
         }
+        else if (K9.zoomControlsEnabled())
+        {
+            // If we have system zoom controls enabled, disable scrolling so the screen isn't wiggling around while
+            // trying to zoom.
+            if (ev.getAction() == MotionEvent.ACTION_POINTER_2_DOWN)
+            {
+                mToggleScrollView.setScrolling(false);
+            }
+            else if (ev.getAction() == MotionEvent.ACTION_POINTER_2_UP)
+            {
+                mToggleScrollView.setScrolling(true);
+            }
+        }
 
         return super.dispatchTouchEvent(ev);
     }
