@@ -2762,6 +2762,7 @@ public class MessageList
                 holder.subject.setText(message.message.getSubject());
             }
 
+            int senderTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
             if (holder.preview != null)
             {
                 /*
@@ -2777,7 +2778,7 @@ public class MessageList
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create our span sections, and assign a format to each.
-                str.setSpan(new StyleSpan(Typeface.BOLD),
+                str.setSpan(new StyleSpan(senderTypeface),
                             0,
                             (message.sender.length()+1),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -2792,7 +2793,7 @@ public class MessageList
             {
                 holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append( message.sender));
 
-                holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
+                holder.from.setTypeface(null, senderTypeface);
             }
 
             holder.date.setText(message.getDate(mMessageHelper));
