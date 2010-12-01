@@ -6148,7 +6148,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
             try
             {
-                if (mToMeCalculated == false)
+                if (!mToMeCalculated)
                 {
                     for (Address address : getRecipients(RecipientType.TO))
                     {
@@ -6177,7 +6177,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             try
             {
 
-                if (mCcMeCalculated == false)
+                if (!mCcMeCalculated)
                 {
                     for(Address address : getRecipients(RecipientType.CC))
                     {

@@ -1031,7 +1031,7 @@ public class MimeUtility
                      */
                     final String originalCharset = getHeaderParameter(part.getContentType(), "charset");
                     String charset = "ASCII";   // No encoding, so use us-ascii, which is the standard.
-                    if ((originalCharset != null) && ("0".equals(originalCharset) == false))
+                    if ((originalCharset != null) && (!"0".equals(originalCharset)))
                     {
                         /*
                          * See if there is conversion from the MIME charset to the Java one.
