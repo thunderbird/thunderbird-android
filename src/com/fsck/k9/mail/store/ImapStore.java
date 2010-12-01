@@ -64,7 +64,7 @@ public class ImapStore extends Store
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
-    private enum AuthType { PLAIN, CRAM_MD5 };
+    private enum AuthType { PLAIN, CRAM_MD5 }
 
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;

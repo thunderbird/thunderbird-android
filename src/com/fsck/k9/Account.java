@@ -153,17 +153,17 @@ public class Account implements BaseAccount
 
     public enum FolderMode
     {
-        NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
+        NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS
     }
 
     public enum HideButtons
     {
-        NEVER, ALWAYS, KEYBOARD_AVAILABLE;
+        NEVER, ALWAYS, KEYBOARD_AVAILABLE
     }
 
     public enum ShowPictures
     {
-        NEVER, ALWAYS, ONLY_FROM_CONTACTS;
+        NEVER, ALWAYS, ONLY_FROM_CONTACTS
     }
 
     public enum Searchable

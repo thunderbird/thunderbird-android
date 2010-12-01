@@ -118,7 +118,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                         stats.size = newSize;
                     }
                     String toastText = getString(R.string.account_size_changed, account.getDescription(),
-                                                 SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));;
+                                                 SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));
 
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
@@ -856,7 +856,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         catch (PackageManager.NameNotFoundException e)
         {
             //Log.e(TAG, "Package name not found", e);
-        };
+        }
         return version;
     }
 

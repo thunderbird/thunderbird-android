@@ -575,7 +575,7 @@ public class AccountSettings extends K9PreferenceActivity
 
 
 
-        List<? extends Folder> folders = new LinkedList<LocalFolder>();;
+        List<? extends Folder> folders = new LinkedList<LocalFolder>();
         try
         {
             folders = mAccount.getLocalStore().getPersonalNamespaces(false);

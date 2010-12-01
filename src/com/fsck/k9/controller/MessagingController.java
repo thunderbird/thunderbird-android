@@ -171,7 +171,8 @@ public class MessagingController implements Runnable
         {
             return defaultAscending;
         }
-    };
+    }
+
     private SORT_TYPE sortType = SORT_TYPE.SORT_DATE;
 
     private MessagingListener checkMailListener = null;
@@ -5102,7 +5103,7 @@ public class MessagingController implements Runnable
         if (K9.DEBUG)
             Log.i(K9.LOG_TAG, "MessagingController.messagesArrivedLatch released");
     }
-    enum MemorizingState { STARTED, FINISHED, FAILED };
+    enum MemorizingState { STARTED, FINISHED, FAILED }
 
     class Memory
     {

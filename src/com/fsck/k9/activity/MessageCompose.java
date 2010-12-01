@@ -1411,7 +1411,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void onIdentityChosen(Intent intent)
     {
-        Bundle bundle = intent.getExtras();;
+        Bundle bundle = intent.getExtras();
         switchToIdentity((Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY));
     }
 

@@ -158,7 +158,7 @@ public class Prefs extends K9PreferenceActivity
         for (int i = 0 ; i < formats.length; i++)
         {
             String format = formats[i];
-            entries[i] = DateFormatter.getSampleDate(this, format);;
+            entries[i] = DateFormatter.getSampleDate(this, format);
             values[i] = format;
         }
         initListPreference(mDateFormat, DateFormatter.getFormat(this), entries, values);
