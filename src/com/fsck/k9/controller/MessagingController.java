@@ -3,17 +3,7 @@ package com.fsck.k9.controller;
 
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -761,10 +751,7 @@ public class MessagingController implements Runnable
         final Set<String> accountUuidsSet = new HashSet<String>();
         if (accountUuids != null)
         {
-            for (String accountUuid : accountUuids)
-            {
-                accountUuidsSet.add(accountUuid);
-            }
+            accountUuidsSet.addAll(Arrays.asList(accountUuids));
         }
         final Preferences prefs = Preferences.getPreferences(mApplication.getApplicationContext());
         Account[] accounts = prefs.getAccounts();
@@ -833,10 +820,7 @@ public class MessagingController implements Runnable
                     if (folderNames != null)
                     {
                         folderNameSet = new HashSet<String>();
-                        for (String folderName : folderNames)
-                        {
-                            folderNameSet.add(folderName);
-                        }
+                        folderNameSet.addAll(Arrays.asList(folderNames));
                     }
                     for (Folder folder : folders)
                     {
@@ -2406,10 +2390,7 @@ public class MessagingController implements Runnable
         command.arguments[0] = srcFolder;
         command.arguments[1] = destFolder;
         command.arguments[2] = Boolean.toString(isCopy);
-        for (int i = 0; i < uids.length; i++)
-        {
-            command.arguments[3 + i] = uids[i];
-        }
+        System.arraycopy(uids, 0, command.arguments, 3, uids.length);
         queuePendingCommand(account, command);
     }
     /**
@@ -2521,10 +2502,7 @@ public class MessagingController implements Runnable
                 command.arguments[0] = folderName;
                 command.arguments[1] = newState;
                 command.arguments[2] = flag;
-                for (int i = 0; i < uids.length; i++)
-                {
-                    command.arguments[3 + i] = uids[i];
-                }
+                System.arraycopy(uids, 0, command.arguments, 3, uids.length);
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
             }

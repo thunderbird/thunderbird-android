@@ -27,11 +27,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Flag;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener
@@ -427,10 +423,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             newAccounts.add(unreadAccount);
         }
 
-        for (BaseAccount account : accounts)
-        {
-            newAccounts.add(account);
-        }
+        newAccounts.addAll(Arrays.asList(accounts));
 
         mAdapter = new AccountsAdapter(newAccounts.toArray(EMPTY_BASE_ACCOUNT_ARRAY));
         getListView().setAdapter(mAdapter);
@@ -1084,14 +1077,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             return set1;
         }
         Set<Flag> flags = new HashSet<Flag>();
-        for (Flag flag : set1)
-        {
-            flags.add(flag);
-        }
-        for (Flag flag : set2)
-        {
-            flags.add(flag);
-        }
+        flags.addAll(Arrays.asList(set1));
+        flags.addAll(Arrays.asList(set2));
         return flags.toArray(EMPTY_FLAG_ARRAY);
     }
 

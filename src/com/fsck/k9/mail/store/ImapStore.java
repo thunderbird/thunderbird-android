@@ -3181,10 +3181,7 @@ public class ImapStore extends Store
                 messageArray = getMessages(flagSyncMsgSeqs, true, null);
 
                 List<Message> messages = new ArrayList<Message>();
-                for (Message message : messageArray)
-                {
-                    messages.add(message);
-                }
+                messages.addAll(Arrays.asList(messageArray));
                 pushMessages(messages, false);
 
             }
