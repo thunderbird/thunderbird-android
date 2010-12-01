@@ -4067,6 +4067,13 @@ public class MessagingController implements Runnable
                 {
                     remoteFolder.expunge();
                 }
+
+                // When we empty trash, we need to actually synchronize the folder
+                // or local deletes will never get cleaned up
+                synchronizeFolder(account, remoteFolder, true, 0, null);
+                compact(account, null);
+
+
             }
         }
         finally
