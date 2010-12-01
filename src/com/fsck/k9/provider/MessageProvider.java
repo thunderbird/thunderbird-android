@@ -982,7 +982,8 @@ public class MessageProvider extends ContentProvider
         K9.registerApplicationAware(new K9.ApplicationAware()
         {
             @Override
-            public void initializeComponent(final K9 application) {
+            public void initializeComponent(final K9 application)
+            {
                 Log.v(K9.LOG_TAG, "Registering content resolver notifier");
 
                 MessagingController.getInstance(application).addListener(new MessagingListener()

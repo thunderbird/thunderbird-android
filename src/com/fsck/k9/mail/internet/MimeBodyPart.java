@@ -39,7 +39,8 @@ public class MimeBodyPart extends BodyPart
         setBody(body);
     }
 
-    protected String getFirstHeader(String name) {
+    protected String getFirstHeader(String name)
+    {
         return mHeader.getFirstHeader(name);
     }
 
@@ -63,7 +64,8 @@ public class MimeBodyPart extends BodyPart
         mHeader.removeHeader(name);
     }
 
-    public Body getBody() {
+    public Body getBody()
+    {
         return mBody;
     }
 
@@ -147,7 +149,8 @@ public class MimeBodyPart extends BodyPart
         return getMimeType().equals(mimeType);
     }
 
-    public int getSize() {
+    public int getSize()
+    {
         return mSize;
     }
 

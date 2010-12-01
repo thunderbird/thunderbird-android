@@ -54,20 +54,24 @@ public class MimeMultipart extends Multipart
         return sb.toString().toUpperCase();
     }
 
-    public String getPreamble() {
+    public String getPreamble()
+    {
         return mPreamble;
     }
 
-    public void setPreamble(String preamble) {
+    public void setPreamble(String preamble)
+    {
         this.mPreamble = preamble;
     }
 
     @Override
-    public String getContentType() {
+    public String getContentType()
+    {
         return mContentType;
     }
 
-    public void setSubType(String subType) {
+    public void setSubType(String subType)
+    {
         this.mSubType = subType;
         mContentType = String.format("multipart/%s; boundary=\"%s\"", subType, mBoundary);
     }

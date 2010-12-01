@@ -121,7 +121,8 @@ public class MimeMessage extends Message
         addSentDate(sentDate);
     }
 
-    public void setInternalSentDate(Date sentDate) {
+    public void setInternalSentDate(Date sentDate)
+    {
         this.mSentDate = sentDate;
     }
 
@@ -160,7 +161,8 @@ public class MimeMessage extends Message
         return MimeUtility.getHeaderParameter(getContentType(), null);
     }
 
-    public int getSize() {
+    public int getSize()
+    {
         return mSize;
     }
 
@@ -253,7 +255,8 @@ public class MimeMessage extends Message
      * Returns the unfolded, decoded value of the Subject header.
      */
     @Override
-    public String getSubject() {
+    public String getSubject()
+    {
         return MimeUtility.unfoldAndDecode(getFirstHeader("Subject"));
     }
 
@@ -264,7 +267,8 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public Address[] getFrom() {
+    public Address[] getFrom()
+    {
         if (mFrom == null)
         {
             String list = MimeUtility.unfold(getFirstHeader("From"));
@@ -295,7 +299,8 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public Address[] getReplyTo() {
+    public Address[] getReplyTo()
+    {
         if (mReplyTo == null)
         {
             mReplyTo = Address.parse(MimeUtility.unfold(getFirstHeader("Reply-to")));
@@ -405,7 +410,8 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public Body getBody() {
+    public Body getBody()
+    {
         return mBody;
     }
 

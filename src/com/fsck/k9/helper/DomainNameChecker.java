@@ -140,15 +140,21 @@ public class DomainNameChecker
             Collection<?> subjectAltNames = certificate.getSubjectAlternativeNames();
             if (subjectAltNames != null)
             {
-                for (Object subjectAltName : subjectAltNames) {
+                for (Object subjectAltName : subjectAltNames)
+                {
                     List<?> altNameEntry = (List<?>) (subjectAltName);
-                    if ((altNameEntry != null) && (2 <= altNameEntry.size())) {
+                    if ((altNameEntry != null) && (2 <= altNameEntry.size()))
+                    {
                         Integer altNameType = (Integer) (altNameEntry.get(0));
-                        if (altNameType != null) {
-                            if (altNameType == ALT_IPA_NAME) {
+                        if (altNameType != null)
+                        {
+                            if (altNameType == ALT_IPA_NAME)
+                            {
                                 String altName = (String) (altNameEntry.get(1));
-                                if (altName != null) {
-                                    if (K9.DEBUG) {
+                                if (altName != null)
+                                {
+                                    if (K9.DEBUG)
+                                    {
                                         Log.v(K9.LOG_TAG, "alternative IP: " + altName);
                                     }
                                     if (thisDomain.equalsIgnoreCase(altName))

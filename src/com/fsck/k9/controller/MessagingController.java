@@ -3186,28 +3186,28 @@ public class MessagingController implements Runnable
          * download it, so we just tell the listener that it's ready to go.
          */
 
-            if (part.getBody() != null)
+        if (part.getBody() != null)
+        {
+            for (MessagingListener l : getListeners())
             {
-                for (MessagingListener l : getListeners())
-                {
-                    l.loadAttachmentStarted(account, message, part, tag, false);
-                }
-                if (listener != null)
-                {
-                    listener.loadAttachmentStarted(account, message, part, tag, false);
-                }
-
-                for (MessagingListener l : getListeners())
-                {
-                    l.loadAttachmentFinished(account, message, part, tag);
-                }
-
-                if (listener != null)
-                {
-                    listener.loadAttachmentFinished(account, message, part, tag);
-                }
-                return;
+                l.loadAttachmentStarted(account, message, part, tag, false);
             }
+            if (listener != null)
+            {
+                listener.loadAttachmentStarted(account, message, part, tag, false);
+            }
+
+            for (MessagingListener l : getListeners())
+            {
+                l.loadAttachmentFinished(account, message, part, tag);
+            }
+
+            if (listener != null)
+            {
+                listener.loadAttachmentFinished(account, message, part, tag);
+            }
+            return;
+        }
 
 
 

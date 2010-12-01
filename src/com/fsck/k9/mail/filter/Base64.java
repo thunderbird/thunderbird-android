@@ -538,8 +538,10 @@ public class Base64 implements BinaryEncoder, BinaryDecoder
      */
     public static boolean isArrayByteBase64(byte[] arrayOctet)
     {
-        for (byte anArrayOctet : arrayOctet) {
-            if (!isBase64(anArrayOctet) && !isWhiteSpace(anArrayOctet)) {
+        for (byte anArrayOctet : arrayOctet)
+        {
+            if (!isBase64(anArrayOctet) && !isWhiteSpace(anArrayOctet))
+            {
                 return false;
             }
         }

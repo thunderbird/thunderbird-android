@@ -147,7 +147,8 @@ public class Pop3Store extends Store
     }
 
     @Override
-    public Folder getFolder(String name) {
+    public Folder getFolder(String name)
+    {
         Folder folder = mFolders.get(name);
         if (folder == null)
         {
@@ -329,7 +330,8 @@ public class Pop3Store extends Store
         }
 
         @Override
-        public OpenMode getMode() {
+        public OpenMode getMode()
+        {
             return OpenMode.READ_WRITE;
         }
 
@@ -861,7 +863,8 @@ public class Pop3Store extends Store
         }
 
         @Override
-        public Flag[] getPermanentFlags() {
+        public Flag[] getPermanentFlags()
+        {
             return PERMANENT_FLAGS;
         }
 
@@ -982,7 +985,8 @@ public class Pop3Store extends Store
             mOut.flush();
         }
 
-        private Pop3Capabilities getCapabilities() throws IOException {
+        private Pop3Capabilities getCapabilities() throws IOException
+        {
             Pop3Capabilities capabilities = new Pop3Capabilities();
             try
             {
@@ -1099,7 +1103,8 @@ public class Pop3Store extends Store
 
     class Pop3Message extends MimeMessage
     {
-        public Pop3Message(String uid, Pop3Folder folder) {
+        public Pop3Message(String uid, Pop3Folder folder)
+        {
             mUid = uid;
             mFolder = folder;
             mSize = -1;

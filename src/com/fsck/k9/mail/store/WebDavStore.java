@@ -349,7 +349,8 @@ public class WebDavStore extends Store
     }
 
     @Override
-    public Folder getFolder(String name) {
+    public Folder getFolder(String name)
+    {
         WebDavFolder folder;
 
         if ((folder = this.mFolderList.get(name)) == null)
@@ -1272,7 +1273,8 @@ public class WebDavStore extends Store
         }
 
         @Override
-        public OpenMode getMode() {
+        public OpenMode getMode()
+        {
             return OpenMode.READ_WRITE;
         }
 
@@ -1746,7 +1748,8 @@ public class WebDavStore extends Store
         }
 
         @Override
-        public Flag[] getPermanentFlags() {
+        public Flag[] getPermanentFlags()
+        {
             return PERMANENT_FLAGS;
         }
 
@@ -1943,7 +1946,8 @@ public class WebDavStore extends Store
         private String mUrl = "";
 
 
-        WebDavMessage(String uid, Folder folder) {
+        WebDavMessage(String uid, Folder folder)
+        {
             this.mUid = uid;
             this.mFolder = folder;
         }

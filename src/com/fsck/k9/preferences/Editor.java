@@ -72,7 +72,8 @@ public class Editor implements android.content.SharedPreferences.Editor
         }
     }
 
-    public void commitChanges() {
+    public void commitChanges()
+    {
         long startTime = System.currentTimeMillis();
         Log.i(K9.LOG_TAG, "Committing preference changes");
         Runnable committer = new Runnable()

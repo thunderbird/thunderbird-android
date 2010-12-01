@@ -43,8 +43,10 @@ public class AccessibleEmailContentActivity extends ListActivity
         String[] rawListItems = parsedHtml.toString().split("\n");
 
         ArrayList<String> cleanedList = new ArrayList<String>();
-        for (String rawListItem : rawListItems) {
-            if (rawListItem.trim().length() > 0) {
+        for (String rawListItem : rawListItems)
+        {
+            if (rawListItem.trim().length() > 0)
+            {
                 addToCleanedList(cleanedList, rawListItem);
             }
         }

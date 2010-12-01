@@ -14,39 +14,48 @@ public abstract class Multipart implements Body
 
     protected String mContentType;
 
-    public void addBodyPart(BodyPart part) {
+    public void addBodyPart(BodyPart part)
+    {
         mParts.add(part);
     }
 
-    public void addBodyPart(BodyPart part, int index) {
+    public void addBodyPart(BodyPart part, int index)
+    {
         mParts.add(index, part);
     }
 
-    public BodyPart getBodyPart(int index) {
+    public BodyPart getBodyPart(int index)
+    {
         return mParts.get(index);
     }
 
-    public String getContentType() {
+    public String getContentType()
+    {
         return mContentType;
     }
 
-    public int getCount() {
+    public int getCount()
+    {
         return mParts.size();
     }
 
-    public boolean removeBodyPart(BodyPart part) {
+    public boolean removeBodyPart(BodyPart part)
+    {
         return mParts.remove(part);
     }
 
-    public void removeBodyPart(int index) {
+    public void removeBodyPart(int index)
+    {
         mParts.remove(index);
     }
 
-    public Part getParent() {
+    public Part getParent()
+    {
         return mParent;
     }
 
-    public void setParent(Part parent) {
+    public void setParent(Part parent)
+    {
         this.mParent = parent;
     }
 
