@@ -596,21 +596,26 @@ public class Pop3Store extends Store
                     break;
                 }
                 String[] uidParts = response.split(" ");
-                Integer msgNum = Integer.valueOf(uidParts[0]);
-                String msgUid = uidParts[1];
-                if (unindexedUids.contains(msgUid))
-                {
-                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
-                    {
-                        Log.d(K9.LOG_TAG, "Got msgNum " + msgNum + " for UID " + msgUid);
-                    }
 
-                    Pop3Message message = mUidToMsgMap.get(msgUid);
-                    if (message == null)
-                    {
-                        message = new Pop3Message(msgUid, this);
-                    }
-                    indexMessage(msgNum, message);
+                // Ignore messages without a unique-id
+                if (uidParts.length >= 2)
+                {
+	                Integer msgNum = Integer.valueOf(uidParts[0]);
+	                String msgUid = uidParts[1];
+	                if (unindexedUids.contains(msgUid))
+	                {
+	                    if (K9.DEBUG && K9.DEBUG_PROTOCOL_POP3)
+	                    {
+	                        Log.d(K9.LOG_TAG, "Got msgNum " + msgNum + " for UID " + msgUid);
+	                    }
+
+	                    Pop3Message message = mUidToMsgMap.get(msgUid);
+	                    if (message == null)
+	                    {
+	                        message = new Pop3Message(msgUid, this);
+	                    }
+	                    indexMessage(msgNum, message);
+	                }
                 }
             }
         }
