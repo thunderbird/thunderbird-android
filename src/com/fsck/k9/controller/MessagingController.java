@@ -4322,7 +4322,7 @@ public class MessagingController implements Runnable
 
                     continue;
                 }
-                synchronizeFolder(context, account, folder, ignoreLastCheckedTime, accountInterval, listener);
+                synchronizeFolder(account, folder, ignoreLastCheckedTime, accountInterval, listener);
             }
         }
         catch (MessagingException e)
@@ -4361,14 +4361,11 @@ public class MessagingController implements Runnable
 
 
     private void synchronizeFolder(
-        final Context context, final Account account,
+        final Account account,
         final Folder folder,
         final boolean ignoreLastCheckedTime,
         final long accountInterval,
-        final MessagingListener listener
-
-
-    )
+        final MessagingListener listener )
     {
 
 
