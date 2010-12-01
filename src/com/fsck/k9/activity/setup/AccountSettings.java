@@ -771,13 +771,13 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
 
-        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue().toString()));
-        mAccount.setArchiveFolderName(mArchiveFolder.getValue().toString());
-        mAccount.setDraftsFolderName(mDraftsFolder.getValue().toString());
-        mAccount.setOutboxFolderName(mOutboxFolder.getValue().toString());
-        mAccount.setSentFolderName(mSentFolder.getValue().toString());
-        mAccount.setSpamFolderName(mSpamFolder.getValue().toString());
-        mAccount.setTrashFolderName(mTrashFolder.getValue().toString());
+        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
+        mAccount.setArchiveFolderName(mArchiveFolder.getValue());
+        mAccount.setDraftsFolderName(mDraftsFolder.getValue());
+        mAccount.setOutboxFolderName(mOutboxFolder.getValue());
+        mAccount.setSentFolderName(mSentFolder.getValue());
+        mAccount.setSpamFolderName(mSpamFolder.getValue());
+        mAccount.setTrashFolderName(mTrashFolder.getValue());
 
 
         if (mIsPushCapable)
