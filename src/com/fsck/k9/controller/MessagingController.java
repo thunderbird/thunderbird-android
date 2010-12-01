@@ -3230,13 +3230,6 @@ public class MessagingController implements Runnable
                 {
                     LocalStore localStore = account.getLocalStore();
 
-                    /*
-                     * We clear out any attachments already cached in the entire store and then
-                     * we update the passed in message to reflect that there are no cached
-                     * attachments. This is in support of limiting the account to having one
-                     * attachment downloaded at a time.
-                     */
-                    localStore.pruneCachedAttachments();
                     ArrayList<Part> viewables = new ArrayList<Part>();
                     ArrayList<Part> attachments = new ArrayList<Part>();
                     MimeUtility.collectParts(message, viewables, attachments);

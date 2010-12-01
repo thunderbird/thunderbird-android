@@ -793,14 +793,16 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             throw new Error("Database upgrade failed!");
         }
 
-        try
-        {
-            pruneCachedAttachments(true);
-        }
-        catch (Exception me)
-        {
-            Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
-        }
+        // Unless we're blowing away the whole data store, there's no reason to prune attachments
+        // every time the user upgrades. it'll just cost them money and pain.
+        // try
+        //{
+        //        pruneCachedAttachments(true);
+        //}
+        //catch (Exception me)
+        //{
+        //   Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
+        //}
     }
 
     public long getSize() throws UnavailableStorageException
@@ -835,11 +837,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     public void compact() throws MessagingException
     {
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "Before prune size = " + getSize());
-
-        pruneCachedAttachments();
-        if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "After prune / before compaction size = " + getSize());
+            Log.i(K9.LOG_TAG, "Before compaction size = " + getSize());
 
         execute(false, new DbCallback<Void>()
         {
