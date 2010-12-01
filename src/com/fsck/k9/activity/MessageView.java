@@ -1417,8 +1417,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 dismissDialog(id);
             }
         });
-        final AlertDialog dialog = builder.create();
-        return dialog;
+        return  builder.create();
     }
 
     private void delete()
@@ -2065,8 +2064,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             case R.id.dialog_confirm_delete:
             {
-                final Dialog dialog = createConfirmDeleteDialog(id);
-                return dialog;
+                return createConfirmDeleteDialog(id);
             }
         }
         return super.onCreateDialog(id);

@@ -116,9 +116,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder>
         this.name = folder.getName();
         this.lastChecked = folder.getLastUpdate();
 
-        String mess = truncateStatus(folder.getStatus());
-
-        this.status = mess;
+        this.status = truncateStatus(folder.getStatus());
 
         if (this.name.equalsIgnoreCase(K9.INBOX))
         {

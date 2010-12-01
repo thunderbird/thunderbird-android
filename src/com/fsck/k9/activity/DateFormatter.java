@@ -87,9 +87,7 @@ public class DateFormatter
         if (sChosenFormat == null)
         {
             Preferences prefs = Preferences.getPreferences(context);
-            String chosenFormat = prefs.getPreferences().getString(PREF_KEY, DEFAULT_FORMAT);
-
-            sChosenFormat = chosenFormat;
+            sChosenFormat = prefs.getPreferences().getString(PREF_KEY, DEFAULT_FORMAT);
         }
         return sChosenFormat;
     }

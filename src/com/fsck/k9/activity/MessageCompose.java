@@ -894,8 +894,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private Address[] getAddresses(MultiAutoCompleteTextView view)
     {
-        Address[] addresses = Address.parseUnencoded(view.getText().toString().trim());
-        return addresses;
+
+        return Address.parseUnencoded(view.getText().toString().trim());
     }
 
     /*
@@ -1713,8 +1713,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
                 if (message.getMessageId() != null && message.getMessageId().length() > 0)
                 {
-                    String messageId = message.getMessageId();
-                    mInReplyTo = messageId;
+                    mInReplyTo = message.getMessageId();
 
                     if (message.getReferences() != null && message.getReferences().length > 0)
                     {
