@@ -39,8 +39,7 @@ public class MimeBodyPart extends BodyPart
         setBody(body);
     }
 
-    protected String getFirstHeader(String name) throws MessagingException
-    {
+    protected String getFirstHeader(String name) {
         return mHeader.getFirstHeader(name);
     }
 
@@ -64,8 +63,7 @@ public class MimeBodyPart extends BodyPart
         mHeader.removeHeader(name);
     }
 
-    public Body getBody() throws MessagingException
-    {
+    public Body getBody() {
         return mBody;
     }
 
@@ -149,8 +147,7 @@ public class MimeBodyPart extends BodyPart
         return getMimeType().equals(mimeType);
     }
 
-    public int getSize() throws MessagingException
-    {
+    public int getSize() {
         return mSize;
     }
 

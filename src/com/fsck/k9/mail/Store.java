@@ -101,7 +101,7 @@ public abstract class Store
         return (LocalStore) store;
     }
 
-    public abstract Folder getFolder(String name) throws MessagingException;
+    public abstract Folder getFolder(String name);
 
     public abstract List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException;
 

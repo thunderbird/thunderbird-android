@@ -550,8 +550,7 @@ public class StorageManager
      * @return Whether the specified file matches a filesystem root.
      * @throws IOException
      */
-    public static boolean isMountPoint(final File file) throws IOException
-    {
+    public static boolean isMountPoint(final File file) {
         for (final File root : File.listRoots())
         {
             if (root.equals(file))

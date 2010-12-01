@@ -111,8 +111,7 @@ public class MimeHeader
         mFields.removeAll(removeFields);
     }
 
-    public void writeTo(OutputStream out) throws IOException, MessagingException
-    {
+    public void writeTo(OutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
         for (Field field : mFields)
         {

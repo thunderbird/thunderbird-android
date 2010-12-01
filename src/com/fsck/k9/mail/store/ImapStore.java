@@ -216,8 +216,7 @@ public class ImapStore extends Store
     }
 
     @Override
-    public Folder getFolder(String name) throws MessagingException
-    {
+    public Folder getFolder(String name) {
         ImapFolder folder;
         synchronized (mFolderCache)
         {
@@ -667,8 +666,7 @@ public class ImapStore extends Store
         }
 
         @Override
-        public OpenMode getMode() throws MessagingException
-        {
+        public OpenMode getMode() {
             return mMode;
         }
 
@@ -1497,8 +1495,7 @@ public class ImapStore extends Store
         }
 
         @Override
-        public Flag[] getPermanentFlags() throws MessagingException
-        {
+        public Flag[] getPermanentFlags() {
             return PERMANENT_FLAGS;
         }
 
@@ -2015,9 +2012,7 @@ public class ImapStore extends Store
             }
         }
 
-        private MessagingException ioExceptionHandler(ImapConnection connection, IOException ioe)
-        throws MessagingException
-        {
+        private MessagingException ioExceptionHandler(ImapConnection connection, IOException ioe) {
             Log.e(K9.LOG_TAG, "IOException for " + getLogId(), ioe);
             if (connection != null)
             {
@@ -2587,8 +2582,7 @@ public class ImapStore extends Store
             return readResponse(null);
         }
 
-        private ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException, MessagingException
-        {
+        private ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException {
             try
             {
                 ImapResponse response = mParser.readResponse(callback);
@@ -2865,7 +2859,7 @@ public class ImapStore extends Store
         }
 
         private void sendContinuation(String continuation)
-        throws MessagingException, IOException
+        throws IOException
         {
             ImapConnection conn = mConnection;
             if (conn != null)

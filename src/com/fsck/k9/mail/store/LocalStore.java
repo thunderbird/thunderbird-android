@@ -947,8 +947,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     }
 
     @Override
-    public LocalFolder getFolder(String name) throws MessagingException
-    {
+    public LocalFolder getFolder(String name) {
         return new LocalFolder(name);
     }
 
@@ -1805,8 +1804,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         @Override
-        public OpenMode getMode() throws MessagingException
-        {
+        public OpenMode getMode() {
             return OpenMode.READ_WRITE;
         }
 
@@ -3572,8 +3570,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         @Override
-        public Flag[] getPermanentFlags() throws MessagingException
-        {
+        public Flag[] getPermanentFlags() {
             return PERMANENT_FLAGS;
         }
 
@@ -5892,8 +5889,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             super(body);
         }
 
-        public LocalTextBody(String body, String bodyForDisplay) throws MessagingException
-        {
+        public LocalTextBody(String body, String bodyForDisplay) {
             super(body);
             this.mBodyForDisplay = bodyForDisplay;
         }
@@ -5931,8 +5927,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
         }
 
-        LocalMessage(String uid, Folder folder) throws MessagingException
-        {
+        LocalMessage(String uid, Folder folder) {
             this.mUid = uid;
             this.mFolder = folder;
         }
@@ -6344,8 +6339,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
         }
 
-        private void updateFolderCountsOnFlag(Flag flag, boolean set) throws MessagingException
-        {
+        private void updateFolderCountsOnFlag(Flag flag, boolean set) {
             /*
              * Update the unread count on the folder.
              */

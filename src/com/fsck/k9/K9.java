@@ -53,7 +53,7 @@ public class K9 extends Application
          *            The application instance. Never <code>null</code>.
          * @throws Exception
          */
-        void initializeComponent(K9 application) throws Exception;
+        void initializeComponent(K9 application);
     }
 
     public static Application app = null;

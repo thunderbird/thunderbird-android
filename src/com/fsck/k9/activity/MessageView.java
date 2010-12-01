@@ -2090,8 +2090,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private Bitmap getPreviewIcon(Attachment attachment) throws MessagingException
-    {
+    private Bitmap getPreviewIcon(Attachment attachment) {
         try
         {
             return BitmapFactory.decodeStream(

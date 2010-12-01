@@ -24,8 +24,7 @@ public class BinaryTempFileBody implements Body
         mTempDirectory = tempDirectory;
     }
 
-    public BinaryTempFileBody() throws IOException
-    {
+    public BinaryTempFileBody() {
         if (mTempDirectory == null)
         {
             throw new

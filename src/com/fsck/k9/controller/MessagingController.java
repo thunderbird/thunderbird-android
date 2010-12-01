@@ -3206,8 +3206,7 @@ public class MessagingController implements Runnable
          * Check if the attachment has already been downloaded. If it has there's no reason to
          * download it, so we just tell the listener that it's ready to go.
          */
-        try
-        {
+
             if (part.getBody() != null)
             {
                 for (MessagingListener l : getListeners())
@@ -3230,14 +3229,8 @@ public class MessagingController implements Runnable
                 }
                 return;
             }
-        }
-        catch (MessagingException me)
-        {
-            /*
-             * If the header isn't there the attachment isn't downloaded yet, so just continue
-             * on.
-             */
-        }
+
+
 
         for (MessagingListener l : getListeners())
         {

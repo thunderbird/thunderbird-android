@@ -61,7 +61,7 @@ public abstract class Folder
      * was requested with.
      * @return
      */
-    public abstract OpenMode getMode() throws MessagingException;
+    public abstract OpenMode getMode();
 
     public abstract boolean create(FolderType type) throws MessagingException;
 
@@ -151,7 +151,7 @@ public abstract class Folder
 
     public abstract String getName();
 
-    public abstract Flag[] getPermanentFlags() throws MessagingException;
+    public abstract Flag[] getPermanentFlags();
 
     /**
      *
