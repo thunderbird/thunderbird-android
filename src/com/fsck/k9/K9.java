@@ -776,7 +776,7 @@ public class K9 extends Application
         Integer quietEnds =  endHour * 60 +endMinute;
 
         // If start and end times are the same, we're never quiet
-        if (quietStarts == quietEnds)
+        if (quietStarts.equals(quietEnds))
         {
             return false;
         }
