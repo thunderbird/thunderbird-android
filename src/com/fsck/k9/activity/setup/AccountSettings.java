@@ -625,7 +625,7 @@ public class AccountSettings extends K9PreferenceActivity
 
 
 
-        mChipColor = (Preference)findPreference(PREFERENCE_CHIP_COLOR);
+        mChipColor = findPreference(PREFERENCE_CHIP_COLOR);
         mChipColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
             public boolean onPreferenceClick(Preference preference)
@@ -635,7 +635,7 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
-        mLedColor = (Preference)findPreference(PREFERENCE_LED_COLOR);
+        mLedColor = findPreference(PREFERENCE_LED_COLOR);
         mLedColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
             public boolean onPreferenceClick(Preference preference)
