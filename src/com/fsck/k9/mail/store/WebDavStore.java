@@ -386,7 +386,7 @@ public class WebDavStore extends Store
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n");
-        buffer.append(" FROM SCOPE('hierarchical traversal of \""+this.mUrl+"\"')\r\n");
+        buffer.append(" FROM SCOPE('hierarchical traversal of \"").append(this.mUrl).append("\"')\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
         return buffer.toString();
@@ -399,7 +399,7 @@ public class WebDavStore extends Store
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:visiblecount\"\r\n");
         buffer.append(" FROM \"\"\r\n");
-        buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"="+messageState+"\r\n");
+        buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"=").append(messageState).append("\r\n");
         buffer.append(" GROUP BY \"DAV:ishidden\"\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
         return buffer.toString();
@@ -431,7 +431,7 @@ public class WebDavStore extends Store
             {
                 buffer.append("  OR ");
             }
-            buffer.append(" \"DAV:uid\"='"+uids[i]+"' ");
+            buffer.append(" \"DAV:uid\"='").append(uids[i]).append("' ");
         }
         buffer.append("\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
@@ -465,7 +465,7 @@ public class WebDavStore extends Store
                 buffer.append("  OR ");
             }
 
-            buffer.append(" \"DAV:uid\"='"+uids[i]+"' ");
+            buffer.append(" \"DAV:uid\"='").append(uids[i]).append("' ");
 
         }
         buffer.append("\r\n");
@@ -493,7 +493,7 @@ public class WebDavStore extends Store
             {
                 buffer.append(" OR ");
             }
-            buffer.append(" \"DAV:uid\"='"+uids[i]+"' ");
+            buffer.append(" \"DAV:uid\"='").append(uids[i]).append("' ");
         }
         buffer.append("\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
@@ -508,12 +508,12 @@ public class WebDavStore extends Store
         buffer.append("<a:target>\r\n");
         for (String url : urls)
         {
-            buffer.append(" <a:href>"+url+"</a:href>\r\n");
+            buffer.append(" <a:href>").append(url).append("</a:href>\r\n");
         }
         buffer.append("</a:target>\r\n");
         buffer.append("<a:set>\r\n");
         buffer.append(" <a:prop>\r\n");
-        buffer.append("  <b:read>" + (read ? "1" : "0") + "</b:read>\r\n");
+        buffer.append("  <b:read>").append(read ? "1" : "0").append("</b:read>\r\n");
         buffer.append(" </a:prop>\r\n");
         buffer.append("</a:set>\r\n");
         buffer.append("</a:propertyupdate>\r\n");
@@ -530,15 +530,15 @@ public class WebDavStore extends Store
         String action = (isMove ? "move" : "copy");
         StringBuffer buffer = new StringBuffer(600);
         buffer.append("<?xml version='1.0' ?>\r\n");
-        buffer.append("<a:" + action + " xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
+        buffer.append("<a:").append(action).append(" xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
         for (String url : urls)
         {
-            buffer.append(" <a:href>"+url+"</a:href>\r\n");
+            buffer.append(" <a:href>").append(url).append("</a:href>\r\n");
         }
         buffer.append("</a:target>\r\n");
 
-        buffer.append("</a:" + action + ">\r\n");
+        buffer.append("</a:").append(action).append(">\r\n");
         return buffer.toString();
     }
 
@@ -1547,7 +1547,7 @@ public class WebDavStore extends Store
                             while ((tempText = reader.readLine()) != null &&
                                     (currentLines < lines))
                             {
-                                buffer.append(tempText+"\r\n");
+                                buffer.append(tempText).append("\r\n");
                                 currentLines++;
                             }
 

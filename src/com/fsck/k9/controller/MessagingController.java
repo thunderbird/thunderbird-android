@@ -4618,7 +4618,7 @@ public class MessagingController implements Runnable
                     // Show From: address by default
                     if (!account.isAnIdentity(fromAddrs))
                     {
-                        messageNotice.append(from + ": " + subject);
+                        messageNotice.append(from).append(": ").append(subject);
                     }
                     // show To: if the message was sent from me
                     else
@@ -4632,11 +4632,11 @@ public class MessagingController implements Runnable
                         String to = rcpts.length > 0 ? rcpts[0].toFriendly().toString() : null;
                         if (to != null)
                         {
-                            messageNotice.append(String.format(context.getString(R.string.message_to_fmt), to) +": "+subject);
+                            messageNotice.append(String.format(context.getString(R.string.message_to_fmt), to)).append(": ").append(subject);
                         }
                         else
                         {
-                            messageNotice.append(context.getString(R.string.general_no_sender) + ": "+subject);
+                            messageNotice.append(context.getString(R.string.general_no_sender)).append(": ").append(subject);
 
                         }
 

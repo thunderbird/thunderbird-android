@@ -1425,7 +1425,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 {
                     whereClause.append(" OR ");
                 }
-                whereClause.append(queryField + " LIKE ? ");
+                whereClause.append(queryField).append(" LIKE ? ");
                 args.add(likeString);
                 anyAdded = true;
             }
