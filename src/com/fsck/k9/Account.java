@@ -641,7 +641,6 @@ public class Account implements BaseAccount
         long folderLoadStart = System.currentTimeMillis();
         List<? extends Folder> folders = localStore.getPersonalNamespaces(false);
         long folderLoadEnd = System.currentTimeMillis();
-        long folderEvalStart = folderLoadEnd;
         for (Folder folder : folders)
         {
             LocalFolder localFolder = (LocalFolder)folder;
@@ -690,7 +689,7 @@ public class Account implements BaseAccount
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;"
                   + " loading " + folders.size() + " took " + (folderLoadEnd - folderLoadStart) + " ms;"
-                  + " evaluating took " + (folderEvalEnd - folderEvalStart) + " ms");
+                  + " evaluating took " + (folderEvalEnd - folderLoadEnd) + " ms");
         return stats;
     }
 
@@ -860,10 +859,9 @@ public class Account implements BaseAccount
     public synchronized boolean setAutomaticCheckIntervalMinutes(int automaticCheckIntervalMinutes)
     {
         int oldInterval = this.mAutomaticCheckIntervalMinutes;
-        int newInterval = automaticCheckIntervalMinutes;
         this.mAutomaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
 
-        return (oldInterval != newInterval);
+        return (oldInterval != automaticCheckIntervalMinutes);
     }
 
     public synchronized int getDisplayCount()
