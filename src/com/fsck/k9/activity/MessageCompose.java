@@ -1704,12 +1704,23 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Address[] replyToAddresses;
                 if (message.getReplyTo().length > 0)
                 {
-                    addAddresses(mToView, replyToAddresses = message.getReplyTo());
+                    replyToAddresses = message.getReplyTo();
                 }
                 else
                 {
-                    addAddresses(mToView, replyToAddresses = message.getFrom());
+                   replyToAddresses = message.getFrom();
                 }
+
+                // if we're replying to a message we sent, we probably meant 
+                // to reply to the recipient of that message
+                if (mAccount.isAnIdentity(replyToAddresses)) 
+                {
+                   replyToAddresses = message.getRecipients(RecipientType.TO);
+                }
+
+                addAddresses(mToView, replyToAddresses);
+
+
 
                 if (message.getMessageId() != null && message.getMessageId().length() > 0)
                 {
