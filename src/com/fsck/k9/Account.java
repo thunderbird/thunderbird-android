@@ -59,7 +59,7 @@ public class Account implements BaseAccount
     public static final String TYPE_WIFI = "WIFI";
     public static final String TYPE_MOBILE = "MOBILE";
     public static final String TYPE_OTHER = "OTHER";
-    private static String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
+    private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
     private static final String DEFAULT_QUOTE_PREFIX = ">";
 
@@ -75,7 +75,7 @@ public class Account implements BaseAccount
      */
     private int mDeletePolicy;
 
-    private String mUuid;
+    private final String mUuid;
     private String mStoreUri;
 
     /**
@@ -88,7 +88,7 @@ public class Account implements BaseAccount
      * True if {@link #mLocalStoreUri} may be in use at
      * the moment.
      */
-    private boolean mIsInUse = false;
+    private final boolean mIsInUse = false;
     private LocalStoreMigrationListener mLocalStoreMigrationListener;
     private String mTransportUri;
     private String mDescription;
@@ -123,7 +123,7 @@ public class Account implements BaseAccount
     private int mMaxPushFolders;
     private int mIdleRefreshMinutes;
     private boolean goToUnreadMessageSearch;
-    private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
+    private final Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
     private int maximumPolledMessageAge;

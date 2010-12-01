@@ -39,7 +39,7 @@ public class EmailAddressAdapter extends ResourceCursorAdapter
     }
 
 
-    private Contacts mContacts;
+    private final Contacts mContacts;
 
     private EmailAddressAdapter(Context context)
     {
