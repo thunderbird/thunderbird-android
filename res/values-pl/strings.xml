@@ -716,7 +716,6 @@ Witaj w K-9 Mail, darmowym programie pocztowym dla systemu Android. Najistotniej
     <string name="setting_theme_light">Jasna</string>
     <string name="display_preferences">Ustawienia globalne</string>
     <string name="debug_preferences">Debugging</string>
-    <string name="operational_preferences">Synchronizacja</string>
     <string name="accountlist_preferences">Lista kont</string>
     <string name="messagelist_preferences">Listy widomości</string>
     <string name="messageview_preferences">Wiadomości</string>

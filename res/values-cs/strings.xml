@@ -693,7 +693,6 @@ Vítejte v nastavení pošty K-9 Mail.  K-9 je open source poštovní klient pro
     <string name="setting_theme_light">Světlé</string>
     <string name="display_preferences">Globální možnosti</string>
     <string name="debug_preferences">Ladění</string>
-    <string name="operational_preferences">Synchronizace</string>
     <string name="accountlist_preferences">Seznam účtů</string>
     <string name="messagelist_preferences">Zprávy</string>
     <string name="settings_theme_label">Téma</string>

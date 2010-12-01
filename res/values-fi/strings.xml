@@ -775,7 +775,6 @@ Tervetuloa K-9 Mail asennukseen.  K-9 on avoimen lähdekoodin sähköpostiasiaka
     <string name="setting_theme_light">Vaalea</string>
     <string name="display_preferences">Yleiset asetukset</string>
     <string name="debug_preferences">Vianetsintä</string>
-    <string name="operational_preferences">Synkronointi</string>
     <string name="accountlist_preferences">Tilit</string>
     <string name="messagelist_preferences">Viestilistat</string>
     <string name="messageview_preferences">Viestit</string>

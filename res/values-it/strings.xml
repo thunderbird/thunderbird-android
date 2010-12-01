@@ -359,7 +359,6 @@
 			l\'indirizzo email e la password corretti, è possibile che non sia stato pagato un account
 			\"Plus\". Lanciare il browser Internet per accedere a questi
 			account email.</string>
-	<string name="provider_note_yahoo">Gli account gratuiti di Yahoo! Mail funzionano solamente su reti wireless T-Mobile. Gli utenti Yahoo! Mail Plus devono configurare manualmente le impostazioni POP.</string>
 	<string name="read_action">Letto</string>
 	<string name="read_attachment_desc">Consente all\'applicazione di leggere gli allegati delle email.</string>
 	<string name="read_attachment_label">leggere allegati email</string>

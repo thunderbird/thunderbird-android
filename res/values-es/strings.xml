@@ -165,7 +165,6 @@
         su dirección de correo electrónico y su contraseña, quizá no tenga una cuenta
         \"Plus\" pagada. Inicie el explorador Web para acceder a
         estas cuentas de correo.</string>
-  <string name="provider_note_yahoo">Las cuentas gratuitas de Yahoo! Mail sólo funcionan a través de redes inalámbricas de T-Mobile. Los usuarios de Yahoo! Mail Plus deberían ajustar manualmente la configuración POP.</string>
   <string name="read_action">Leído</string>
   <string name="read_attachment_desc">Permite a esta aplicación leer los datos adjuntos del correo electrónico.</string>
   <string name="read_attachment_label">leer datos adjuntos del correo electrónico</string>

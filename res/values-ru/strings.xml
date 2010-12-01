@@ -583,7 +583,6 @@
     <string name="account_delete_dlg_title">Удалить</string>
     <string name="account_delete_dlg_instructions_fmt">Почтовой ящик \"<xliff:g id="account">%s</xliff:g>\" будет удален.</string>
 
-    <string name="provider_note_yahoo">Бесплатные ящики от Yahoo! Mail работают только через беспроводные сети компании T-Mobile. Настройки для ящиков Yahoo! Mail Plus необходимо сделать вручную.</string>
     <string name="provider_note_live">Только избранные \"Plus\" ящики поддерживают получения электронной почты через \"POP"
         и таким образом работают с этой программой. Если вы не можете подключится
         с верными данными, то ваш тип почтового ящика не имеет такого доступа.
@@ -623,7 +622,6 @@
     <string name="setting_theme_light">Светлое</string>
     <string name="display_preferences">Глобальные настройки</string>
     <string name="debug_preferences">Отладка</string>
-    <string name="operational_preferences">Синхронизация</string>
     <string name="messagelist_preferences">Списки Сообщений</string>
     <string name="settings_theme_label">Изображение</string>
 
@@ -665,17 +663,8 @@
     <string name="gestures_title">Жесты</string>
     <string name="gestures_summary">Принимать контроль жестами</string>
 
-    <string name="search_unread_messages_title">Все непрочитанные сообщения</string>
-    <string name="search_unread_messages_detail">Непрочитанные сообщения во всех почтовых ящиках</string>
-
-    <string name="search_starred_messages_title">Все помеченные звездой</string>
-    <string name="search_starred_messages_detail">Сообщения помеченные звездой во всех почтовых ящиках</string>
-
     <string name="integrated_inbox_title">Объединенная папка входящей почты (непрочитанное)</string>
     <string name="integrated_inbox_detail">Все непрочитанные сообщения в объединенных папках</string>
-
-    <string name="integrated_inbox_starred_title">Объединенная папка входящей почты (отмеченные звездой)</string>
-    <string name="integrated_inbox_starred_detail">Все сообщения отмеченные звездой в объединенных папках</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">Объединить</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Показывать непрочитанные сообщения в объединенной папке</string>

@@ -783,7 +783,6 @@ Welkom bij K-9 Mail setup.  K-9 is een open source mail cliënt voor Android, ge
     <string name="setting_theme_light">Licht</string>
     <string name="display_preferences">Algemene instellingen</string>
     <string name="debug_preferences">Verwijderen van fouten</string>
-    <string name="operational_preferences">Sync</string>
     <string name="accountlist_preferences">Account Lijst</string>
     <string name="messagelist_preferences">Berichten Lijst</string>
     <string name="messageview_preferences">Berichten</string>

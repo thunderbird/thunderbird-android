@@ -777,7 +777,6 @@ Välkommen till installationen av K-9 E-post. K-9 är en e-postklient med öppen
     <string name="setting_theme_light">Ljus</string>
     <string name="display_preferences">Globala inställningar</string>
     <string name="debug_preferences">Debugging</string>
-    <string name="operational_preferences">Synkronisera</string>
     <string name="accountlist_preferences">Kontolista</string>
     <string name="messagelist_preferences">E-post-listor</string>
     <string name="messageview_preferences">Brev</string>

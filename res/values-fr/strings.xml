@@ -713,7 +713,6 @@
   <string name="debug_preferences">Déboguage</string>
     <string name="privacy_preferences">Confidentialité</string>
     <string name="network_preferences">Réseau</string>
-  <string name="operational_preferences">Synchronisation</string>
   <string name="accountlist_preferences">Liste de comptes</string>
   <string name="messagelist_preferences">Liste de messages</string>
   <string name="messageview_preferences">Messages</string>
