@@ -31,7 +31,7 @@ public class Utility
     private static final Pattern TAG_PATTERN = Pattern.compile("\\[[-_a-z0-9]+\\] ",
             Pattern.CASE_INSENSITIVE);
 
-    public final static String readInputStream(InputStream in, String encoding) throws IOException
+    public static String readInputStream(InputStream in, String encoding) throws IOException
     {
         InputStreamReader reader = new InputStreamReader(in, encoding);
         StringBuffer sb = new StringBuffer();
@@ -44,7 +44,7 @@ public class Utility
         return sb.toString();
     }
 
-    public final static boolean arrayContains(Object[] a, Object o)
+    public static boolean arrayContains(Object[] a, Object o)
     {
         for (Object element : a)
         {
