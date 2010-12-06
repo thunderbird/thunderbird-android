@@ -180,6 +180,10 @@ public class MessagingController implements Runnable
     private MemorizingListener memorizingListener = new MemorizingListener();
 
     private boolean mBusy;
+
+    /**
+     *  {@link K9}
+     */
     private Application mApplication;
 
     // Key is accountUuid:folderName:messageUid   ,   value is unimportant
@@ -233,10 +237,14 @@ public class MessagingController implements Runnable
         return false;
     }
 
+    /**
+     * @param application  {@link K9}
+     */
     private MessagingController(Application application)
     {
         mApplication = application;
         mThread = new Thread(this);
+        mThread.setName("MessagingController");
         mThread.start();
         if (memorizingListener != null)
         {
@@ -247,7 +255,7 @@ public class MessagingController implements Runnable
     /**
      * Gets or creates the singleton instance of MessagingController. Application is used to
      * provide a Context to classes that need it.
-     * @param application
+     * @param application {@link K9}
      * @return
      */
     public synchronized static MessagingController getInstance(Application application)
