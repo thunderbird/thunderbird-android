@@ -317,8 +317,8 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="global_settings_touchable_label">Berührungsfreundliche Ansicht</string>
     <string name="global_settings_touchable_summary">Größere Darstellung mit Nachrichten-Vorschau</string>
     <string name="global_settings_preview_lines_label">Zeilenvorschau</string>
-    <string name="global_settings_show_contact_name_label">Zeige Kontakt Namen</string>
-    <string name="global_settings_show_contact_name_summary">Zeige bekannte Namen aus Kontakten</string>
+    <string name="global_settings_show_contact_name_label">Zeige Namen aus "Kontakte"</string>
+    <string name="global_settings_show_contact_name_summary">Zeige bekannte Namen aus dem Adressbuch ("Kontakte")</string>
     <string name="global_settings_registered_name_color_label">Farbe von bekannten Namen</string>
     <string name="global_settings_registered_name_color_default">Standardfarbe</string>
     <string name="global_settings_registered_name_color_changed">Farbe wählen</string>
@@ -340,7 +340,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
 
 
     <string name="quiet_time">Ruhezeit</string>
-    <string name="quiet_time_description">Deaktivere Läuten, Vibrieren und Leuchten in der Nacht</string>
+    <string name="quiet_time_description">Deaktivere Klingeln, Vibrieren und Leuchten in der Nacht</string>
     <string name="quiet_time_starts">Ruhezeit startet</string>
     <string name="quiet_time_ends">Ruhezeit endet</string>
 
@@ -480,7 +480,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_setup_options_mail_check_frequency_12hour">Alle 12 Stunden</string>
     <string name="account_setup_options_mail_check_frequency_24hour">Alle 24 Stunden</string>
 
-    <string name="push_poll_on_connect_label">Abruf beim Start der Push Verbindung</string>
+    <string name="push_poll_on_connect_label">Abruf beim Start der Push-Verbindung</string>
     <string name="account_setup_options_enable_push_label">Push-Mail für dieses Konto aktivieren</string>
     <string name="account_setup_options_enable_push_summary">Neue Nachrichten werden nach dem Eintreffen umgehend abgerufen, falls Ihr Server dies unterstützt. Diese Einstellung kann zur Reduzierung der Laufzeit führen oder diese verbessern.</string>
     <string name="idle_refresh_period_label">IDLE Verbindung refreshen</string>
@@ -555,7 +555,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="account_settings_reply_after_quote_summary">Die Antwort auf eine Nachricht unterhalb der Originalnachricht platzieren.</string>
 
     <string name="account_settings_general_title">Allgemeine Einstellungen</string>
-    <string name="account_settings_display_prefs_title">Display</string>
+    <string name="account_settings_display_prefs_title">Anzeige</string>
     <string name="account_settings_sync">Ordner synchronisieren</string>
     <string name="account_settings_folders">Ordner</string>
     <string name="account_settings_message_lists">Liste der Nachrichten</string>
@@ -777,7 +777,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
         \"Plus\"-Konto nicht bezahlt. Starten Sie den Webbrowser, um auf
         diese Mailkonten zuzugreifen.</string>
 
-	<string name="provider_note_yahoojp">Wenn sie für diesen Provider POP3 verwenden wollen sollten sie in den Yahoo Email Enstellungen POP3 aktivieren.</string>	
+    <string name="provider_note_yahoojp">Wenn Sie für diesen Provider POP3 verwenden möchten, sollten Sie in den "Yahoo! Mail"-Enstellungen POP3 aktivieren.</string>
 		
     <string name="account_setup_failed_dlg_invalid_certificate_title">Ungültiges Zertifikat</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
@@ -815,7 +815,7 @@ Willkommen zum \"K-9 Mail\"-Setup. K-9 ist eine quelloffene E-Mail-Anwendung fü
     <string name="setting_theme_light">Hell (Light)</string>
     <string name="display_preferences">Globale Einstellungen</string>
 	<string name="global_preferences">Globale Einstellungen</string>
-    <string name="debug_preferences">Debuggen</string>
+    <string name="debug_preferences">Fehlerdiagnose</string>
     <string name="privacy_preferences">Datenschutz</string>
     <string name="network_preferences">Netzwerk</string>
     <string name="interaction_preferences">Interaktion</string>
