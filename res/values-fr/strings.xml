@@ -658,6 +658,8 @@
   <string name="choose_identity">Choisir l\'identité</string>
   <string name="choose_identity_title">Choisir l\'identité</string>
   <string name="choose_account_title">Choisir le compte/l\'identité</string>
+    <string name="send_as">Envoyer en tant que</string>
+  
   <string name="no_identities">Aller dans Paramètres du compte &gt; Gérer les identités pour créer des identités</string>
   <string name="no_removable_identity">Vous ne pouvez votre seule identité</string>
   <string name="identity_has_no_email">Vous ne pouvez pas utiliser une identité sans adresse e-mail</string>
