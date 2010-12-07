@@ -173,7 +173,7 @@
             <src path="${source.absolute.dir}" />
             <src path="${gen.absolute.dir}" />
             <classpath>
-                <fileset dir="${external.libs.absolute.dir}" includes="*.jar" />
+                <!-- <fileset dir="${external.libs.absolute.dir}" includes="*.jar" /> -->
                 <fileset dir="compile-only-libs" includes="*.jar" />
             </classpath>
         </javac>
