@@ -62,6 +62,7 @@
   <string name="okay_action">OK</string>
   <string name="cancel_action">Annuler</string>
   <string name="send_action">Envoyer</string>
+  <string name="send_again_action">Envoyer à nouveau</string>
   <string name="select_action">Sélectionner</string>
   <string name="deselect_action">Désélectionner</string>
   <string name="reply_action">Répondre</string>
