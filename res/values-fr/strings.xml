@@ -123,6 +123,7 @@
   <string name="dump_settings_action">Paramètres de décharge</string>
   <string name="empty_trash_action">Vider la corbeille</string>
   <string name="expunge_action">Éliminer les messages supprimés</string>
+    <string name="clear_local_folder_action">Effacer les messages locaux</string>
   <string name="set_sort_action">Choisir le tri</string>
   <string name="reverse_sort_action">Inverser le tri</string>
   <string name="about_action">À propos</string>
