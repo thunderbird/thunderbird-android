@@ -312,6 +312,13 @@
     <string name="global_settings_privacy_mode_title">Notifications confidentielles</string>
     <string name="global_settings_privacy_mode_summary">Ne pas afficher les sujets des e-mails dans la barre de notification quand le système est verrouillé</string>
 
+
+    <string name="quiet_time">Heures silencieuses</string>
+    <string name="quiet_time_description">Désactiver les sons, vibrations et éclairage DEL aux heures programmées</string>
+    <string name="quiet_time_starts">Début des heures silencieuses</string>
+    <string name="quiet_time_ends">Fin des heures silencieuses</string>
+
+
   <string name="account_setup_basics_title">Configurer la messagerie</string>
   <string name="account_setup_basics_instructions">Saisissez l\'adresse de messagerie de votre compte\u00A0:</string>
   <string name="account_setup_basics_instructions2_fmt">(Vous pouvez ajouter %d comptes supplémentaires.)</string>
