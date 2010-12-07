@@ -458,6 +458,8 @@
   <string name="account_setup_options_mail_display_count_250">250 messages</string>
   <string name="account_setup_options_mail_display_count_500">500 messages</string>
   <string name="account_setup_options_mail_display_count_1000">1000 messages</string>
+  <string name="account_setup_options_mail_display_count_all">Tous</string>
+
   <string name="move_copy_cannot_copy_unsynced_message">Impossibilité de copier ou déplacer un message qui n\'est pas synchronisé aver le serveur</string>
   <string name="account_setup_failed_dlg_title">La configuration n\'a pu terminer</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Nom d\'utilisateur ou mot de passe incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string>
