@@ -292,7 +292,7 @@
   <string name="global_settings_checkbox_summary">Toujours afficher les cases à cocher</string>
   <string name="global_settings_touchable_label">Interface conviviale au toucher</string>
   <string name="global_settings_touchable_summary">Fournit plus d\'espace dans les éléments des listes</string>
-    <string name="global_settings_preview_lines_label">Lignes dʼapperçu</string>
+    <string name="global_settings_preview_lines_label">Lignes dʼaperçu</string>
 
     <string name="global_settings_show_contact_name_label">Afficher les noms des contacts connus</string>
     <string name="global_settings_show_contact_name_summary">Utiliser les noms du carnet d\'adresses</string>
