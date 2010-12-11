@@ -4,6 +4,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="fill_parent"
+    android:padding="6dip"
+    android:layout_width="fill_parent">
     <View
         android:layout_width="fill_parent"
         android:layout_height="100sp" />
@@ -14,26 +19,19 @@
         android:gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?android:attr/textColorPrimary"
-        android:paddingBottom="6px" />
+        android:paddingBottom="6dip"
+        android:focusable="true"
+       />
     <ProgressBar
         android:id="@+id/progress"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        style="?android:attr/progressBarStyleHorizontal" />
+        style="?android:attr/progressBarStyleHorizontal"
+        android:focusable="true" />
     <View
         android:layout_width="fill_parent"
-        android:layout_height="0px"
+        android:layout_height="0dip"
         android:layout_weight="1" />
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="54px"
-        android:background="@drawable/bottombar_565">
-        <Button
-            android:id="@+id/cancel"
-            android:text="@string/cancel_action"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:minWidth="@dimen/button_minWidth"
-            android:layout_centerVertical="true" />
-    </RelativeLayout>
+    </LinearLayout>
+    <include layout="@layout/wizard_cancel" />
 </LinearLayout>

@@ -1,158 +1,339 @@
 
 package com.fsck.k9.mail;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.util.Rfc822Token;
+import android.text.util.Rfc822Tokenizer;
+import android.util.Log;
 
+import com.fsck.k9.K9;
+import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.Utility;
+import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.field.address.AddressList;
 import org.apache.james.mime4j.field.address.Mailbox;
 import org.apache.james.mime4j.field.address.MailboxList;
 import org.apache.james.mime4j.field.address.NamedMailbox;
 import org.apache.james.mime4j.field.address.parser.ParseException;
 
-import android.util.Config;
-import android.util.Log;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.fsck.k9.k9;
-import com.fsck.k9.Utility;
-import com.fsck.k9.mail.internet.MimeUtility;
+public class Address
+{
+    /**
+     * If the number of addresses exceeds this value the addresses aren't
+     * resolved to the names of Android contacts.
+     *
+     * <p>
+     * TODO: This number was chosen arbitrarily and should be determined by
+     * performance tests.
+     * </p>
+     *
+     * @see Address#toFriendly(Address[], Contacts)
+     */
+    private static final int TOO_MANY_ADDRESSES = 50;
 
-public class Address {
+    /**
+     * Immutable empty {@link Address} array
+     */
+    private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
+
     String mAddress;
 
     String mPersonal;
 
-    public Address(String address, String personal) {
+    public Address(String address, String personal)
+    {
         this.mAddress = address;
+        if ("".equals(personal))
+        {
+            personal = null;
+        }
+        if (personal!=null)
+        {
+            personal = personal.trim();
+        }
         this.mPersonal = personal;
     }
 
-    public Address(String address) {
+    public Address(String address)
+    {
         this.mAddress = address;
     }
 
-    public String getAddress() {
+    public String getAddress()
+    {
         return mAddress;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(String address)
+    {
         this.mAddress = address;
     }
 
-    public String getPersonal() {
+    public String getPersonal()
+    {
         return mPersonal;
     }
 
-    public void setPersonal(String personal) {
+    public void setPersonal(String personal)
+    {
+        if ("".equals(personal))
+        {
+            personal = null;
+        }
+        if (personal!=null)
+        {
+            personal = personal.trim();
+        }
         this.mPersonal = personal;
+    }
+
+    /**
+     * Parse a comma separated list of email addresses in human readable format and return an
+     * array of Address objects, RFC-822 encoded.
+     *
+     * @param addressList
+     * @return An array of 0 or more Addresses.
+     */
+    public static Address[] parseUnencoded(String addressList)
+    {
+        List<Address> addresses = new ArrayList<Address>();
+        if (addressList!=null
+                && !"".equals(addressList))
+        {
+            Rfc822Token[] tokens =  Rfc822Tokenizer.tokenize(addressList);
+            for (Rfc822Token token : tokens)
+            {
+                String address = token.getAddress();
+                if (address!=null
+                        && !"".equals(address))
+                {
+                    addresses.add(new Address(token.getAddress(), token.getName()));
+                }
+            }
+        }
+        return addresses.toArray(EMPTY_ADDRESS_ARRAY);
     }
 
     /**
      * Parse a comma separated list of addresses in RFC-822 format and return an
      * array of Address objects.
-     * 
+     *
      * @param addressList
      * @return An array of 0 or more Addresses.
      */
-    public static Address[] parse(String addressList) {
+    public static Address[] parse(String addressList)
+    {
         ArrayList<Address> addresses = new ArrayList<Address>();
-        if (addressList == null) {
-            return new Address[] {};
+        if (addressList == null
+                && !"".equals(addressList))
+        {
+            return EMPTY_ADDRESS_ARRAY;
         }
-        try {
+        try
+        {
             MailboxList parsedList = AddressList.parse(addressList).flatten();
-            for (int i = 0, count = parsedList.size(); i < count; i++) {
+            for (int i = 0, count = parsedList.size(); i < count; i++)
+            {
                 org.apache.james.mime4j.field.address.Address address = parsedList.get(i);
-                if (address instanceof NamedMailbox) {
+                if (address instanceof NamedMailbox)
+                {
                     NamedMailbox namedMailbox = (NamedMailbox)address;
                     addresses.add(new Address(namedMailbox.getLocalPart() + "@"
-                            + namedMailbox.getDomain(), namedMailbox.getName()));
-                } else if (address instanceof Mailbox) {
+                                              + namedMailbox.getDomain(), namedMailbox.getName()));
+                }
+                else if (address instanceof Mailbox)
+                {
                     Mailbox mailbox = (Mailbox)address;
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain()));
-                } else {
-                    Log.e(k9.LOG_TAG, "Unknown address type from Mime4J: "
-                            + address.getClass().toString());
+                }
+                else
+                {
+                    Log.e(K9.LOG_TAG, "Unknown address type from Mime4J: "
+                          + address.getClass().toString());
                 }
 
             }
-        } catch (ParseException pe) {
         }
-        return addresses.toArray(new Address[] {});
+        catch (ParseException pe)
+        {
+        }
+        return addresses.toArray(EMPTY_ADDRESS_ARRAY);
     }
-    
+
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof Address) {
+    public boolean equals(Object o)
+    {
+        if (o instanceof Address)
+        {
             return getAddress().equals(((Address) o).getAddress());
         }
         return super.equals(o);
     }
 
-    public String toString() {
-        if (mPersonal != null) {
-            if (mPersonal.matches(".*[\\(\\)<>@,;:\\\\\".\\[\\]].*")) {
-                return Utility.quoteString(mPersonal) + " <" + mAddress + ">";
-            } else {
-                return mPersonal + " <" + mAddress + ">";
-            }
-        } else {
+    @Override
+    public int hashCode()
+    {
+        return getAddress().hashCode();
+    }
+
+    @Override
+    public String toString()
+    {
+        if (mPersonal != null)
+        {
+            return Utility.quoteString(mPersonal) + " <" + mAddress + ">";
+        }
+        else
+        {
             return mAddress;
         }
     }
 
-    public static String toString(Address[] addresses) {
-        if (addresses == null) {
+    public static String toString(Address[] addresses)
+    {
+        if (addresses == null)
+        {
             return null;
         }
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < addresses.length; i++) {
+        for (int i = 0; i < addresses.length; i++)
+        {
             sb.append(addresses[i].toString());
-            if (i < addresses.length - 1) {
+            if (i < addresses.length - 1)
+            {
                 sb.append(',');
             }
         }
         return sb.toString();
     }
-    
+
+    public String toEncodedString()
+    {
+        if (mPersonal != null)
+        {
+            return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
+        }
+        else
+        {
+            return mAddress;
+        }
+    }
+
+    public static String toEncodedString(Address[] addresses)
+    {
+        if (addresses == null)
+        {
+            return null;
+        }
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < addresses.length; i++)
+        {
+            sb.append(addresses[i].toEncodedString());
+            if (i < addresses.length - 1)
+            {
+                sb.append(',');
+            }
+        }
+        return sb.toString();
+    }
+
     /**
      * Returns either the personal portion of the Address or the address portion if the personal
      * is not available.
      * @return
      */
-    public String toFriendly() {
-        if (mPersonal != null && mPersonal.length() > 0) {
-            return  mPersonal;
-        }
-        else {
-            return mAddress;
-        }
+    public CharSequence toFriendly()
+    {
+        return toFriendly((Contacts)null);
     }
-    
-    public static String toFriendly(Address[] addresses) {
-        if (addresses == null) {
+
+    /**
+     * Returns the name of the contact this email address belongs to if
+     * the {@link Contacts contacts} parameter is not {@code null} and a
+     * contact is found. Otherwise the personal portion of the {@link Address}
+     * is returned. If that isn't available either, the email address is
+     * returned.
+     *
+     * @param contacts
+     *         A {@link Contacts} instance or {@code null}.
+     * @return
+     *         A "friendly" name for this {@link Address}.
+     */
+    public CharSequence toFriendly(final Contacts contacts)
+    {
+        if (contacts != null)
+        {
+            final String name = contacts.getNameForAddress(mAddress);
+
+            // TODO: The results should probably be cached for performance reasons.
+
+            if (name != null)
+            {
+                if (K9.changeContactNameColor())
+                {
+                    final SpannableString coloredName = new SpannableString(name);
+                    coloredName.setSpan(new ForegroundColorSpan(K9.getContactNameColor()),
+                                        0,
+                                        coloredName.length(),
+                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                       );
+                    return coloredName;
+                }
+                else
+                {
+                    return name;
+                }
+            }
+        }
+
+        return ((mPersonal != null) && (mPersonal.length() > 0)) ? mPersonal : mAddress;
+    }
+
+    public static CharSequence toFriendly(Address[] addresses)
+    {
+        return toFriendly(addresses, null);
+    }
+
+    public static CharSequence toFriendly(Address[] addresses, Contacts contacts)
+    {
+        if (addresses == null)
+        {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < addresses.length; i++) {
-            sb.append(addresses[i].toFriendly());
-            if (i < addresses.length - 1) {
+
+        if (addresses.length >= TOO_MANY_ADDRESSES)
+        {
+            // Don't look up contacts if the number of addresses is very high.
+            contacts = null;
+        }
+
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        for (int i = 0; i < addresses.length; i++)
+        {
+            sb.append(addresses[i].toFriendly(contacts));
+            if (i < addresses.length - 1)
+            {
                 sb.append(',');
             }
         }
-        return sb.toString();
+        return sb;
     }
-    
+
     /**
      * Unpacks an address list previously packed with packAddressList()
      * @param list
      * @return
      */
-    public static Address[] unpack(String addressList) {
-        if (addressList == null) {
+    public static Address[] unpack(String addressList)
+    {
+        if (addressList == null)
+        {
             return new Address[] { };
         }
         ArrayList<Address> addresses = new ArrayList<Address>();
@@ -160,54 +341,61 @@ public class Address {
         int pairStartIndex = 0;
         int pairEndIndex = 0;
         int addressEndIndex = 0;
-        while (pairStartIndex < length) {
-            pairEndIndex = addressList.indexOf(',', pairStartIndex);
-            if (pairEndIndex == -1) {
+        while (pairStartIndex < length)
+        {
+            pairEndIndex = addressList.indexOf(",\u0000", pairStartIndex);
+            if (pairEndIndex == -1)
+            {
                 pairEndIndex = length;
             }
-            addressEndIndex = addressList.indexOf(';', pairStartIndex);
+            addressEndIndex = addressList.indexOf(";\u0000", pairStartIndex);
             String address = null;
             String personal = null;
-            if (addressEndIndex == -1 || addressEndIndex > pairEndIndex) {
-                address = Utility.fastUrlDecode(addressList.substring(pairStartIndex, pairEndIndex));
+            if (addressEndIndex == -1 || addressEndIndex > pairEndIndex)
+            {
+                address = addressList.substring(pairStartIndex, pairEndIndex);
             }
-            else {
-                address = Utility.fastUrlDecode(addressList.substring(pairStartIndex, addressEndIndex));
-                personal = Utility.fastUrlDecode(addressList.substring(addressEndIndex + 1, pairEndIndex));
+            else
+            {
+                address = addressList.substring(pairStartIndex, addressEndIndex);
+                personal =addressList.substring(addressEndIndex + 2, pairEndIndex);
             }
             addresses.add(new Address(address, personal));
-            pairStartIndex = pairEndIndex + 1;
+            pairStartIndex = pairEndIndex + 2;
         }
-        return addresses.toArray(new Address[] { });
+        return addresses.toArray(new Address[addresses.size()]);
     }
-    
+
     /**
      * Packs an address list into a String that is very quick to read
      * and parse. Packed lists can be unpacked with unpackAddressList()
-     * The packed list is a comma seperated list of:
-     * URLENCODE(address)[;URLENCODE(personal)] 
+     * The packed list is a "\u0000," seperated list of:
+     * address\u0000;personal
      * @param list
      * @return
      */
-    public static String pack(Address[] addresses) {
-        if (addresses == null) {
+    public static String pack(Address[] addresses)
+    {
+        if (addresses == null)
+        {
             return null;
         }
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0, count = addresses.length; i < count; i++) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0, count = addresses.length; i < count; i++)
+        {
             Address address = addresses[i];
-            try {
-                sb.append(URLEncoder.encode(address.getAddress(), "UTF-8"));
-                if (address.getPersonal() != null) {
-                    sb.append(';');
-                    sb.append(URLEncoder.encode(address.getPersonal(), "UTF-8"));
-                }
-                if (i < count - 1) {
-                    sb.append(',');
-                }
+            sb.append(address.getAddress());
+            String personal = address.getPersonal();
+            if (personal != null)
+            {
+                sb.append(";\u0000");
+                // Escape quotes in the address part on the way in
+                personal.replaceAll("\"","\\\"");
+                sb.append(personal);
             }
-            catch (UnsupportedEncodingException uee) {
-                return null;
+            if (i < count - 1)
+            {
+                sb.append(",\u0000");
             }
         }
         return sb.toString();

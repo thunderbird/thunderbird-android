@@ -1,47 +1,82 @@
 
 package com.fsck.k9.mail.internet;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-
-
-import com.fsck.k9.codec.binary.Base64;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 
-public class TextBody implements Body {
-    String mBody;
+import java.io.*;
 
-    public TextBody(String body) {
+import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
+
+public class TextBody implements Body
+{
+
+    /**
+     * Immutable empty byte array
+     */
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
+    private String mBody;
+    private String mEncoding;
+
+    public TextBody(String body)
+    {
         this.mBody = body;
     }
 
-    public void writeTo(OutputStream out) throws IOException, MessagingException {
-        byte[] bytes = mBody.getBytes("UTF-8");
-        out.write(Base64.encodeBase64Chunked(bytes));
+    public void writeTo(OutputStream out) throws IOException, MessagingException
+    {
+        if (mBody != null)
+        {
+            byte[] bytes = mBody.getBytes("UTF-8");
+            if ("8bit".equals(mEncoding))
+            {
+                out.write(bytes);
+            }
+            else
+            {
+                QuotedPrintableOutputStream qp = new QuotedPrintableOutputStream(out, false);
+                qp.write(bytes);
+                qp.flush();
+            }
+        }
     }
-    
+
     /**
-     * Get the text of the body in it's unencoded format. 
+     * Get the text of the body in it's unencoded format.
      * @return
      */
-    public String getText() {
+    public String getText()
+    {
         return mBody;
     }
 
     /**
      * Returns an InputStream that reads this body's text in UTF-8 format.
      */
-    public InputStream getInputStream() throws MessagingException {
-        try {
-            byte[] b = mBody.getBytes("UTF-8");
+    public InputStream getInputStream() throws MessagingException
+    {
+        try
+        {
+            byte[] b;
+            if (mBody!=null)
+            {
+                b = mBody.getBytes("UTF-8");
+            }
+            else
+            {
+                b = EMPTY_BYTE_ARRAY;
+            }
             return new ByteArrayInputStream(b);
         }
-        catch (UnsupportedEncodingException usee) {
+        catch (UnsupportedEncodingException usee)
+        {
             return null;
         }
+    }
+
+    public void setEncoding(String encoding)
+    {
+        mEncoding = encoding;
     }
 }

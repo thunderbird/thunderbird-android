@@ -1,15 +1,8 @@
 package com.fsck.k9.provider;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,222 +10,271 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.provider.OpenableColumns;
-import android.util.Config;
 import android.util.Log;
-
 import com.fsck.k9.Account;
-import com.fsck.k9.k9;
-import com.fsck.k9.Utility;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.LocalStore;
+import com.fsck.k9.mail.store.LocalStore.AttachmentInfo;
+import com.fsck.k9.mail.store.StorageManager;
 
-/*
- * A simple ContentProvider that allows file access to Email's attachments.
+import java.io.*;
+import java.util.List;
+
+/**
+ * A simple ContentProvider that allows file access to Email's attachments.<br/>
+ * Warning! We make heavy assumptions about the Uris used by the {@link LocalStore} for an {@link Account} here.
  */
-public class AttachmentProvider extends ContentProvider {
-    public static final Uri CONTENT_URI = Uri.parse( "content://com.fsck.k9.attachmentprovider");
+public class AttachmentProvider extends ContentProvider
+{
+    public static final Uri CONTENT_URI = Uri.parse("content://com.fsck.k9.attachmentprovider");
 
     private static final String FORMAT_RAW = "RAW";
     private static final String FORMAT_THUMBNAIL = "THUMBNAIL";
 
-    public static class AttachmentProviderColumns {
+    public static class AttachmentProviderColumns
+    {
         public static final String _ID = "_id";
         public static final String DATA = "_data";
         public static final String DISPLAY_NAME = "_display_name";
         public static final String SIZE = "_size";
     }
 
-    public static Uri getAttachmentUri(Account account, long id) {
-        return CONTENT_URI.buildUpon()
-                .appendPath(account.getUuid() + ".db")
-                .appendPath(Long.toString(id))
-                .appendPath(FORMAT_RAW)
-                .build();
+    public static Uri getAttachmentUri(Account account, long id)
+    {
+        return getAttachmentUri(account.getUuid(), id);
     }
 
-    public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height) {
+    public static Uri getAttachmentThumbnailUri(Account account, long id, int width, int height)
+    {
         return CONTENT_URI.buildUpon()
-                .appendPath(account.getUuid() + ".db")
-                .appendPath(Long.toString(id))
-                .appendPath(FORMAT_THUMBNAIL)
-                .appendPath(Integer.toString(width))
-                .appendPath(Integer.toString(height))
-                .build();
+               .appendPath(account.getUuid())
+               .appendPath(Long.toString(id))
+               .appendPath(FORMAT_THUMBNAIL)
+               .appendPath(Integer.toString(width))
+               .appendPath(Integer.toString(height))
+               .build();
     }
 
-    public static Uri getAttachmentUri(String db, long id) {
+    private static Uri getAttachmentUri(String db, long id)
+    {
         return CONTENT_URI.buildUpon()
-                .appendPath(db)
-                .appendPath(Long.toString(id))
-                .appendPath(FORMAT_RAW)
-                .build();
+               .appendPath(db)
+               .appendPath(Long.toString(id))
+               .appendPath(FORMAT_RAW)
+               .build();
     }
 
     @Override
-    public boolean onCreate() {
+    public boolean onCreate()
+    {
         /*
          * We use the cache dir as a temporary directory (since Android doesn't give us one) so
          * on startup we'll clean up any .tmp files from the last run.
          */
         File[] files = getContext().getCacheDir().listFiles();
-        for (File file : files) {
-            if (file.getName().endsWith(".tmp")) {
+        for (File file : files)
+        {
+            if (file.getName().endsWith(".tmp"))
+            {
                 file.delete();
             }
         }
+
         return true;
     }
 
-    @Override
-    public String getType(Uri uri) {
-        List<String> segments = uri.getPathSegments();
-        String dbName = segments.get(0);
-        String id = segments.get(1);
-        String format = segments.get(2);
-        if (FORMAT_THUMBNAIL.equals(format)) {
-            return "image/png";
-        }
-        else {
-            String path = getContext().getDatabasePath(dbName).getAbsolutePath();
-            SQLiteDatabase db = null;
-            Cursor cursor = null;
-            try {
-                db = SQLiteDatabase.openDatabase(path, null, 0);
-                cursor = db.query(
-                        "attachments",
-                        new String[] { "mime_type" },
-                        "id = ?",
-                        new String[] { id },
-                        null,
-                        null,
-                        null);
-                cursor.moveToFirst();
-                String type = cursor.getString(0);
-                cursor.close();
-                db.close();
-                return type;
-
+    public static void clear(Context lContext)
+    {
+        /*
+         * We use the cache dir as a temporary directory (since Android doesn't give us one) so
+         * on startup we'll clean up any .tmp files from the last run.
+         */
+        File[] files = lContext.getCacheDir().listFiles();
+        for (File file : files)
+        {
+            try
+            {
+                if (K9.DEBUG)
+                    Log.d(K9.LOG_TAG, "Deleting file " + file.getCanonicalPath());
             }
-            finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-                if (db != null) {
-                    db.close();
-                }
-
-            }
+            catch (IOException ioe) {}   // No need to log failure to log
+            file.delete();
         }
     }
 
     @Override
-    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+    public String getType(Uri uri)
+    {
         List<String> segments = uri.getPathSegments();
         String dbName = segments.get(0);
         String id = segments.get(1);
         String format = segments.get(2);
-        if (FORMAT_THUMBNAIL.equals(format)) {
+        if (FORMAT_THUMBNAIL.equals(format))
+        {
+            return "image/png";
+        }
+        else
+        {
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+
+            try
+            {
+                final LocalStore localStore = LocalStore.getLocalInstance(account, K9.app);
+                return localStore.getAttachmentType(id);
+            }
+            catch (MessagingException e)
+            {
+                Log.e(K9.LOG_TAG, "Unable to retrieve LocalStore for " + account, e);
+                return null;
+            }
+        }
+    }
+
+    private File getFile(String dbName, String id)
+    throws FileNotFoundException
+    {
+        try
+        {
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            final File attachmentsDir;
+            attachmentsDir = StorageManager.getInstance(K9.app).getAttachmentDirectory(dbName,
+                             account.getLocalStorageProviderId());
+            final File file = new File(attachmentsDir, id);
+            if (!file.exists())
+            {
+                throw new FileNotFoundException(file.getAbsolutePath());
+            }
+            return file;
+        }
+        catch (IOException e)
+        {
+            Log.w(K9.LOG_TAG, null, e);
+            throw new FileNotFoundException(e.getMessage());
+        }
+    }
+
+    @Override
+    public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException
+    {
+        List<String> segments = uri.getPathSegments();
+        String dbName = segments.get(0); // "/sdcard/..." is URL-encoded and makes up only 1 segment
+        String id = segments.get(1);
+        String format = segments.get(2);
+        if (FORMAT_THUMBNAIL.equals(format))
+        {
             int width = Integer.parseInt(segments.get(3));
             int height = Integer.parseInt(segments.get(4));
-            String filename = "thmb_" + dbName + "_" + id;
+            String filename = "thmb_" + dbName + "_" + id + ".tmp";
+            int index = dbName.lastIndexOf('/');
+            if (index >= 0)
+            {
+                filename = /*dbName.substring(0, index + 1) + */"thmb_" + dbName.substring(index + 1) + "_" + id + ".tmp";
+            }
             File dir = getContext().getCacheDir();
             File file = new File(dir, filename);
-            if (!file.exists()) {
+            if (!file.exists())
+            {
                 Uri attachmentUri = getAttachmentUri(dbName, Long.parseLong(id));
                 String type = getType(attachmentUri);
-                try {
-                    FileInputStream in = new FileInputStream(
-                            new File(getContext().getDatabasePath(dbName + "_att"), id));
-                    Bitmap thumbnail = createThumbnail(type, in);
-                    thumbnail = thumbnail.createScaledBitmap(thumbnail, width, height, true);
-                    FileOutputStream out = new FileOutputStream(file);
-                    thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
-                    out.close();
-                    in.close();
+                try
+                {
+                    FileInputStream in = new FileInputStream(getFile(dbName, id));
+                    try
+                    {
+                        Bitmap thumbnail = createThumbnail(type, in);
+                        if (thumbnail != null)
+                        {
+                            thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, true);
+                            FileOutputStream out = new FileOutputStream(file);
+                            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, out);
+                            out.close();
+                        }
+                    }
+                    finally
+                    {
+                        in.close();
+                    }
                 }
-                catch (IOException ioe) {
+                catch (IOException ioe)
+                {
                     return null;
                 }
             }
             return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
         }
-        else {
+        else
+        {
             return ParcelFileDescriptor.open(
-                    new File(getContext().getDatabasePath(dbName + "_att"), id),
-                    ParcelFileDescriptor.MODE_READ_ONLY);
+                       getFile(dbName, id),
+                       ParcelFileDescriptor.MODE_READ_ONLY);
         }
     }
 
     @Override
-    public int delete(Uri uri, String arg1, String[] arg2) {
+    public int delete(Uri uri, String arg1, String[] arg2)
+    {
         return 0;
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(Uri uri, ContentValues values)
+    {
         return null;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-            String sortOrder) {
-        if (projection == null) {
+                        String sortOrder)
+    {
+        if (projection == null)
+        {
             projection =
-                new String[] {
-                    AttachmentProviderColumns._ID,
-                    AttachmentProviderColumns.DATA,
-                    };
+                new String[]
+            {
+                AttachmentProviderColumns._ID,
+                AttachmentProviderColumns.DATA,
+            };
         }
 
         List<String> segments = uri.getPathSegments();
         String dbName = segments.get(0);
         String id = segments.get(1);
-        String format = segments.get(2);
-        String path = getContext().getDatabasePath(dbName).getAbsolutePath();
-        String name = null;
-        int size = -1;
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        try {
-            db = SQLiteDatabase.openDatabase(path, null, 0);
-            cursor = db.query(
-                    "attachments",
-                    new String[] { "name", "size" },
-                    "id = ?",
-                    new String[] { id },
-                    null,
-                    null,
-                    null);
-            if (!cursor.moveToFirst()) {
-                return null;
-            }
-            name = cursor.getString(0);
-            size = cursor.getInt(1);
+        //String format = segments.get(2);
+        final AttachmentInfo attachmentInfo;
+        try
+        {
+            final Account account = Preferences.getPreferences(getContext()).getAccount(dbName);
+            attachmentInfo = LocalStore.getLocalInstance(account, K9.app).getAttachmentInfo(id);
         }
-        finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            if (db != null) {
-                db.close();
-            }
+        catch (MessagingException e)
+        {
+            Log.e(K9.LOG_TAG, "Uname to retrieve attachment info from local store for ID: " + id, e);
+            return null;
         }
 
         MatrixCursor ret = new MatrixCursor(projection);
         Object[] values = new Object[projection.length];
-        for (int i = 0, count = projection.length; i < count; i++) {
+        for (int i = 0, count = projection.length; i < count; i++)
+        {
             String column = projection[i];
-            if (AttachmentProviderColumns._ID.equals(column)) {
+            if (AttachmentProviderColumns._ID.equals(column))
+            {
                 values[i] = id;
             }
-            else if (AttachmentProviderColumns.DATA.equals(column)) {
+            else if (AttachmentProviderColumns.DATA.equals(column))
+            {
                 values[i] = uri.toString();
             }
-            else if (AttachmentProviderColumns.DISPLAY_NAME.equals(column)) {
-                values[i] = name;
+            else if (AttachmentProviderColumns.DISPLAY_NAME.equals(column))
+            {
+                values[i] = attachmentInfo.name;
             }
-            else if (AttachmentProviderColumns.SIZE.equals(column)) {
-                values[i] = size;
+            else if (AttachmentProviderColumns.SIZE.equals(column))
+            {
+                values[i] = attachmentInfo.size;
             }
         }
         ret.addRow(values);
@@ -240,23 +282,29 @@ public class AttachmentProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)
+    {
         return 0;
     }
 
-    private Bitmap createThumbnail(String type, InputStream data) {
-        if(MimeUtility.mimeTypeMatches(type, "image/*")) {
+    private Bitmap createThumbnail(String type, InputStream data)
+    {
+        if (MimeUtility.mimeTypeMatches(type, "image/*"))
+        {
             return createImageThumbnail(data);
         }
         return null;
     }
 
-    private Bitmap createImageThumbnail(InputStream data) {
-        try {
+    private Bitmap createImageThumbnail(InputStream data)
+    {
+        try
+        {
             Bitmap bitmap = BitmapFactory.decodeStream(data);
             return bitmap;
         }
-        catch (OutOfMemoryError oome) {
+        catch (OutOfMemoryError oome)
+        {
             /*
              * Improperly downloaded images, corrupt bitmaps and the like can commonly
              * cause OOME due to invalid allocation sizes. We're happy with a null bitmap in
@@ -265,7 +313,8 @@ public class AttachmentProvider extends ContentProvider {
              */
             return null;
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             return null;
         }
     }

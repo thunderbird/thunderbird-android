@@ -16,73 +16,58 @@
 
 package com.fsck.k9;
 
-import static android.provider.Contacts.ContactMethods.CONTENT_EMAIL_URI;
-import android.content.ContentResolver;
+import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.mail.Address;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.provider.Contacts.ContactMethods;
-import android.provider.Contacts.People;
 import android.view.View;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
-import com.fsck.k9.mail.Address;
+public class EmailAddressAdapter extends ResourceCursorAdapter
+{
+    private static EmailAddressAdapter sInstance;
 
-public class EmailAddressAdapter extends ResourceCursorAdapter {
-    public static final int NAME_INDEX = 1;
+    public static EmailAddressAdapter getInstance(Context context)
+    {
+        if (sInstance == null)
+        {
+            sInstance = new EmailAddressAdapter(context);
+        }
 
-    public static final int DATA_INDEX = 2;
+        return sInstance;
+    }
 
-    private static final String SORT_ORDER = People.TIMES_CONTACTED + " DESC, " + People.NAME;
 
-    private ContentResolver mContentResolver;
+    private final Contacts mContacts;
 
-    private static final String[] PROJECTION = {
-            ContactMethods._ID, // 0
-            ContactMethods.NAME, // 1
-            ContactMethods.DATA
-    // 2
-    };
-
-    public EmailAddressAdapter(Context context) {
+    private EmailAddressAdapter(Context context)
+    {
         super(context, R.layout.recipient_dropdown_item, null);
-        mContentResolver = context.getContentResolver();
+        mContacts = Contacts.getInstance(context);
     }
 
     @Override
-    public final String convertToString(Cursor cursor) {
-        String name = cursor.getString(NAME_INDEX);
-        String address = cursor.getString(DATA_INDEX);
+    public final String convertToString(final Cursor cursor)
+    {
+        final String name = mContacts.getName(cursor);
+        final String address = mContacts.getEmail(cursor);
 
         return new Address(address, name).toString();
     }
 
     @Override
-    public final void bindView(View view, Context context, Cursor cursor) {
-        TextView text1 = (TextView)view.findViewById(R.id.text1);
-        TextView text2 = (TextView)view.findViewById(R.id.text2);
-        text1.setText(cursor.getString(NAME_INDEX));
-        text2.setText(cursor.getString(DATA_INDEX));
+    public final void bindView(final View view, final Context context, final Cursor cursor)
+    {
+        final TextView text1 = (TextView) view.findViewById(R.id.text1);
+        final TextView text2 = (TextView) view.findViewById(R.id.text2);
+        text1.setText(mContacts.getName(cursor));
+        text2.setText(mContacts.getEmail(cursor));
     }
 
     @Override
-    public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
-        String where = null;
-
-        if (constraint != null) {
-            String filter = DatabaseUtils.sqlEscapeString(constraint.toString() + '%');
-
-            StringBuilder s = new StringBuilder();
-            s.append("(people.name LIKE ");
-            s.append(filter);
-            s.append(") OR (contact_methods.data LIKE ");
-            s.append(filter);
-            s.append(")");
-
-            where = s.toString();
-        }
-
-        return mContentResolver.query(CONTENT_EMAIL_URI, PROJECTION, where, null, SORT_ORDER);
+    public Cursor runQueryOnBackgroundThread(CharSequence constraint)
+    {
+        return mContacts.searchContacts(constraint);
     }
 }

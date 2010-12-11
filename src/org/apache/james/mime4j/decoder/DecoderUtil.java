@@ -19,14 +19,14 @@
 
 package org.apache.james.mime4j.decoder;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.james.mime4j.util.CharsetUtil;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.james.mime4j.util.CharsetUtil;
 
 /**
  * Static methods for decoding strings, byte arrays and encoded words.
@@ -146,131 +146,132 @@ public class DecoderUtil {
      * =?charset?enc?Encoded word?= where enc is either 'Q' or 'q' for 
      * quoted-printable and 'B' or 'b' for Base64.
      * 
+     * ANDROID:  COPIED FROM A NEWER VERSION OF MIME4J
+     * 
      * @param body the string to decode.
      * @return the decoded string.
      */
     public static String decodeEncodedWords(String body) {
-        StringBuffer sb = new StringBuffer();
         
-        int p1 = 0;
-        int p2 = 0;
-        
-        try {
-            
-            /*
-             * Encoded words in headers have the form 
-             * =?charset?enc?Encoded word?= where enc is either 'Q' or 'q' for 
-             * quoted printable and 'B' and 'b' for Base64
-             */
-            
-            while (p2 < body.length()) {
-                /*
-                 * Find beginning of first encoded word
-                 */
-                p1 = body.indexOf("=?", p2);
-                if (p1 == -1) {
-                    /*
-                     * None found. Emit the rest of the header and exit.
-                     */
-                    sb.append(body.substring(p2));
-                    break;
-                }
-                
-                /*
-                 * p2 points to the previously found end marker or the start
-                 * of the entire header text. Append the text between that
-                 * marker and the one pointed to by p1.
-                 */
-                if (p1 - p2 > 0) {
-                    sb.append(body.substring(p2, p1));
-                }
-
-                /*
-                 * Find the first and second '?':s after the marker pointed to
-                 * by p1.
-                 */
-                int t1 = body.indexOf('?', p1 + 2);
-                int t2 = t1 != -1 ? body.indexOf('?', t1 + 1) : -1;
-
-                /*
-                 * Find this words end marker.
-                 */
-                p2 = t2 != -1 ? body.indexOf("?=", t2 + 1) : -1;
-                if (p2 == -1) {
-                    if (t2 != -1 && (body.length() - 1 == t2 || body.charAt(t2 + 1) == '=')) {
-                        /*
-                         * Treat "=?charset?enc?" and "=?charset?enc?=" as
-                         * empty strings.
-                         */
-                        p2 = t2;
-                    } else {
-                        /*
-                         * No end marker was found. Append the rest of the 
-                         * header and exit.
-                         */
-                        sb.append(body.substring(p1));
-                        break;
-                    }
-                }
-
-                /*
-                 * [p1+2, t1] -> charset
-                 * [t1+1, t2] -> encoding
-                 * [t2+1, p2] -> encoded word
-                 */
-                
-                String decodedWord = null;
-                if (t2 == p2) {
-                    /*
-                     * The text is empty
-                     */
-                    decodedWord = "";
-                } else {
-
-                    String mimeCharset = body.substring(p1 + 2, t1);
-                    String enc = body.substring(t1 + 1, t2);
-                    String encodedWord = body.substring(t2 + 1, p2);
-
-                    /*
-                     * Convert the MIME charset to a corresponding Java one.
-                     */
-                    String charset = CharsetUtil.toJavaCharset(mimeCharset);
-                    if (charset == null) {
-                        decodedWord = body.substring(p1, p2 + 2);
-                        if (log.isWarnEnabled()) {
-                            log.warn("MIME charset '" + mimeCharset 
-                                    + "' in header field doesn't have a "
-                                    +"corresponding Java charset");
-                        }
-                    } else if (!CharsetUtil.isDecodingSupported(charset)) {
-                        decodedWord = body.substring(p1, p2 + 2);
-                        if (log.isWarnEnabled()) {
-                            log.warn("Current JDK doesn't support decoding "
-                                   + "of charset '" + charset 
-                                   + "' (MIME charset '" 
-                                   + mimeCharset + "')");
-                        }
-                    } else {
-                        if (enc.equalsIgnoreCase("Q")) {
-                            decodedWord = DecoderUtil.decodeQ(encodedWord, charset);
-                        } else if (enc.equalsIgnoreCase("B")) {
-                            decodedWord = DecoderUtil.decodeB(encodedWord, charset);
-                        } else {
-                            decodedWord = encodedWord;
-                            if (log.isWarnEnabled()) {
-                                log.warn("Warning: Unknown encoding in "
-                                        + "header field '" + enc + "'");
-                            }
-                        }
-                    }
-                }
-                p2 += 2;
-                sb.append(decodedWord);
-            }
-        } catch (Throwable t) {
-            log.error("Decoding header field body '" + body + "'", t);
+        // ANDROID:  Most strings will not include "=?" so a quick test can prevent unneeded
+        // object creation.  This could also be handled via lazy creation of the StringBuilder.
+        if (body.indexOf("=?") == -1) {
+            return body;
         }
         
-        return sb.toString();
+        int previousEnd = 0;
+        boolean previousWasEncoded = false;
+
+        StringBuilder sb = new StringBuilder();
+
+        while (true) {
+            int begin = body.indexOf("=?", previousEnd);
+            
+            // ANDROID:  The mime4j original version has an error here.  It gets confused if
+            // the encoded string begins with an '=' (just after "?Q?").  This patch seeks forward
+            // to find the two '?' in the "header", before looking for the final "?=".
+            int endScan = begin + 2;
+            if (begin != -1) {
+                int qm1 = body.indexOf('?', endScan + 2);
+                int qm2 = body.indexOf('?', qm1 + 1);
+                if (qm2 != -1) {
+                    endScan = qm2 + 1;
+                }
+            }
+            
+            int end = begin == -1 ? -1 : body.indexOf("?=", endScan);
+            if (end == -1) {
+                if (previousEnd == 0)
+                    return body;
+
+                sb.append(body.substring(previousEnd));
+                return sb.toString();
+            }
+            end += 2;
+
+            String sep = body.substring(previousEnd, begin);
+
+            String decoded = decodeEncodedWord(body, begin, end);
+            if (decoded == null) {
+                sb.append(sep);
+                sb.append(body.substring(begin, end));
+            } else {
+                if (!previousWasEncoded || !CharsetUtil.isWhitespace(sep)) {
+                    sb.append(sep);
+                }
+                sb.append(decoded);
+            }
+
+            previousEnd = end;
+            previousWasEncoded = decoded != null;
+        }
+    }
+
+    // return null on error
+    private static String decodeEncodedWord(String body, int begin, int end) {
+        int qm1 = body.indexOf('?', begin + 2);
+        if (qm1 == end - 2)
+            return null;
+
+        int qm2 = body.indexOf('?', qm1 + 1);
+        if (qm2 == end - 2)
+            return null;
+
+        String mimeCharset = body.substring(begin + 2, qm1);
+        String encoding = body.substring(qm1 + 1, qm2);
+        String encodedText = body.substring(qm2 + 1, end - 2);
+
+        String charset = CharsetUtil.toJavaCharset(mimeCharset);
+        if (charset == null) {
+            if (log.isWarnEnabled()) {
+                log.warn("MIME charset '" + mimeCharset + "' in encoded word '"
+                        + body.substring(begin, end) + "' doesn't have a "
+                        + "corresponding Java charset");
+            }
+            return null;
+        } else if (!CharsetUtil.isDecodingSupported(charset)) {
+            if (log.isWarnEnabled()) {
+                log.warn("Current JDK doesn't support decoding of charset '"
+                        + charset + "' (MIME charset '" + mimeCharset
+                        + "' in encoded word '" + body.substring(begin, end)
+                        + "')");
+            }
+            return null;
+        }
+
+        if (encodedText.length() == 0) {
+            if (log.isWarnEnabled()) {
+                log.warn("Missing encoded text in encoded word: '"
+                        + body.substring(begin, end) + "'");
+            }
+            return null;
+        }
+
+        try {
+            if (encoding.equalsIgnoreCase("Q")) {
+                return DecoderUtil.decodeQ(encodedText, charset);
+            } else if (encoding.equalsIgnoreCase("B")) {
+                return DecoderUtil.decodeB(encodedText, charset);
+            } else {
+                if (log.isWarnEnabled()) {
+                    log.warn("Warning: Unknown encoding in encoded word '"
+                            + body.substring(begin, end) + "'");
+                }
+                return null;
+            }
+        } catch (UnsupportedEncodingException e) {
+            // should not happen because of isDecodingSupported check above
+            if (log.isWarnEnabled()) {
+                log.warn("Unsupported encoding in encoded word '"
+                        + body.substring(begin, end) + "'", e);
+            }
+            return null;
+        } catch (RuntimeException e) {
+            if (log.isWarnEnabled()) {
+                log.warn("Could not decode encoded word '"
+                        + body.substring(begin, end) + "'", e);
+            }
+            return null;
+        }
     }
 }

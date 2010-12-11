@@ -1,7 +1,6 @@
 
 package com.fsck.k9.activity.setup;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +12,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import com.fsck.k9.*;
+import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.helper.Utility;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.k9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.Utility;
-import com.fsck.k9.activity.FolderMessageList;
-
-public class AccountSetupNames extends Activity implements OnClickListener {
+public class AccountSetupNames extends K9Activity implements OnClickListener
+{
     private static final String EXTRA_ACCOUNT = "account";
 
     private EditText mDescription;
@@ -32,14 +28,16 @@ public class AccountSetupNames extends Activity implements OnClickListener {
 
     private Button mDoneButton;
 
-    public static void actionSetNames(Context context, Account account) {
+    public static void actionSetNames(Context context, Account account)
+    {
         Intent i = new Intent(context, AccountSetupNames.class);
-        i.putExtra(EXTRA_ACCOUNT, account);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_names);
         mDescription = (EditText)findViewById(R.id.account_description);
@@ -47,22 +45,27 @@ public class AccountSetupNames extends Activity implements OnClickListener {
         mDoneButton = (Button)findViewById(R.id.done);
         mDoneButton.setOnClickListener(this);
 
-        TextWatcher validationTextWatcher = new TextWatcher() {
-            public void afterTextChanged(Editable s) {
+        TextWatcher validationTextWatcher = new TextWatcher()
+        {
+            public void afterTextChanged(Editable s)
+            {
                 validateFields();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
             }
 
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
             }
         };
         mName.addTextChangedListener(validationTextWatcher);
-        
+
         mName.setKeyListener(TextKeyListener.getInstance(false, Capitalize.WORDS));
 
-        mAccount = (Account)getIntent().getSerializableExtra(EXTRA_ACCOUNT);
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         /*
          * Since this field is considered optional, we don't set this here. If
@@ -70,31 +73,37 @@ public class AccountSetupNames extends Activity implements OnClickListener {
          * just leave the saved value alone.
          */
         // mDescription.setText(mAccount.getDescription());
-        if (mAccount.getName() != null) {
+        if (mAccount.getName() != null)
+        {
             mName.setText(mAccount.getName());
         }
-        if (!Utility.requiredFieldValid(mName)) {
+        if (!Utility.requiredFieldValid(mName))
+        {
             mDoneButton.setEnabled(false);
         }
     }
 
-    private void validateFields() {
+    private void validateFields()
+    {
         mDoneButton.setEnabled(Utility.requiredFieldValid(mName));
         Utility.setCompoundDrawablesAlpha(mDoneButton, mDoneButton.isEnabled() ? 255 : 128);
     }
 
-    private void onNext() {
-        if (Utility.requiredFieldValid(mDescription)) {
+    private void onNext()
+    {
+        if (Utility.requiredFieldValid(mDescription))
+        {
             mAccount.setDescription(mDescription.getText().toString());
         }
         mAccount.setName(mName.getText().toString());
         mAccount.save(Preferences.getPreferences(this));
-        FolderMessageList.actionHandleAccount(this, mAccount, k9.INBOX);
         finish();
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
             case R.id.done:
                 onNext();
                 break;

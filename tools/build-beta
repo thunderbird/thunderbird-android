@@ -1,0 +1,12 @@
+perl -pi -e's|\@string/app_name|\@string/beta_app_name|g' AndroidManifest.xml
+perl -pi -e's|com/fsck/k9/R.java|com/fsck/k9beta/R.java|g' build.xml
+find src/com/fsck -type f |xargs -n 1 perl -pi -e's|com.\fsck\.k9|com.fsck.k9beta|g'
+mv src/com/fsck/k9 src/com/fsck/k9beta
+perl -pi -e's|K9|K9-BETA|g' build.xml
+ant $@
+#mv src/com/fsck/k9beta src/com/fsck/k9
+#perl -pi -e's|K9-BETA|K9|g' build.xml
+#perl -pi -e's|com\.fsck\.k9beta|com.fsck.k9|g' build.xml AndroidManifest.xml src/com/fsck/k9/provider/AttachmentProvider.java
+#perl -pi -e's|com/fsck/k9beta/R.java|com/fsck/k9/R.java|g' build.xml
+#perl -pi -e's|\@string/beta_app_name|\@string/app_name|g' AndroidManifest.xml
+#find src/com/fsck -type f |xargs -n 1 perl -pi -e's|com.fsck.k9beta|com.fsck.k9|'

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginTop="-45dip" 
+        android:padding="0dip"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom|right" 
+        android:background="@android:drawable/bottom_bar"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent">
+        <Button
+            android:id="@+id/next"
+            android:text="@string/next_action"
+            android:minWidth="@dimen/button_minWidth"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:drawableRight="@drawable/button_indicator_next"
+            android:layout_marginBottom="-4dip" 
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="false" 
+            />
+    </RelativeLayout>

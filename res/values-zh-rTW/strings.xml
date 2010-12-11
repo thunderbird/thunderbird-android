@@ -106,8 +106,6 @@
   <string name="compose_action">撰寫</string>
   <string name="compose_title">撰寫</string>
   <string name="continue_action">繼續</string>
-  <string name="debug_enable_debug_logging_label">啟用額外的偵錯記錄？</string>
-  <string name="debug_enable_sensitive_logging_label">啟用機密資訊偵錯記錄？(可能會在記錄中顯示密碼。)</string>
   <string name="debug_title">偵錯</string>
   <string name="debug_version_fmt">版本：<xliff:g id="version">%s</xliff:g></string>
   <string name="delete_action">刪除</string>
@@ -117,7 +115,7 @@
   <string name="edit_subject_action">編輯主旨</string>
   <string name="empty_trash_action">清空垃圾筒</string>
   <string name="folders_action">資料夾</string>
-  <string name="forward_action">下一頁</string>
+  <string name="forward_action">转发</string>
   <string name="general_no_subject">(無主旨)</string>
   <string name="mailbox_select_dlg_new_mailbox_action">新增資料夾</string>
   <string name="mailbox_select_dlg_title">資料夾</string>
@@ -130,7 +128,7 @@
   <string name="message_compose_error_no_recipients">必須新增至少一位收件者。</string>
   <string name="message_compose_fwd_header_fmt">\n\n-------- 原始郵件 --------\n主旨：<xliff:g id="subject">%s</xliff:g>\n寄件者：<xliff:g id="sender">%s</xliff:g>\n收件者：<xliff:g id="to">%s</xliff:g>\n副本：<xliff:g id="cc">%s</xliff:g>\n\n</string>
   <string name="message_compose_quoted_text_label">引用的文字</string>
-  <string name="message_compose_reply_header_fmt">\n\n<xliff:g id="sender">%s</xliff:g> 說：\n\n</string>
+  <string name="message_compose_reply_header_fmt">\n<xliff:g id="sender">%s</xliff:g> 說：\n\n</string>
   <string name="message_compose_subject_hint">主旨</string>
   <string name="message_compose_to_hint">收件者</string>
   <string name="message_copied_toast">複製的訊息。</string>
@@ -144,13 +142,13 @@
   <string name="message_view_attachment_view_action">開啟</string>
   <string name="message_view_datetime_fmt">yyyy MMM dd hh:mm a</string>
   <string name="message_view_fetching_attachment_toast">正在取得附件。</string>
-  <string name="message_view_next_action">下一封郵件</string>
-  <string name="message_view_prev_action">上一封郵件</string>
+  <string name="message_view_prev_action">\u25BC</string>
+  <string name="message_view_next_action">\u25B2</string>
   <string name="message_view_show_pictures_action">顯示圖片</string>
   <string name="message_view_show_pictures_instructions">選取 \"顯示圖片\" 即可顯示內嵌的圖片。</string>
   <string name="message_view_status_attachment_not_saved">無法將附件儲存到 SD 卡。</string>
   <string name="message_view_status_attachment_saved">將儲存到 SD 卡的附件做為 <xliff:g id="filename">%s</xliff:g>。</string>
-  <string name="message_view_to_label">收件者：</string>
+  <string name="message_to_label">收件者：</string>
   <string name="move_to_action">移到</string>
   <string name="new_mailbox_dlg_title">新資料夾名稱</string>
   <string name="next_action">下一步</string>
@@ -167,7 +165,6 @@
         正確的電子郵件地址及帳號登入，則表示您可能沒有申請付費的
         \"Plus\" 帳號。請啟動網頁瀏覽器，以便取得
         這些郵件帳號的存取權限。</string>
-  <string name="provider_note_yahoo">免費的 Yahoo! Mail 帳號僅能夠透過 T-Mobile 無線網路存取。Yahoo! Mail Plus 的使用者必須手動配置 POP 設定。</string>
   <string name="read_action">讀取</string>
   <string name="read_attachment_desc">允許此應用程式讀取電子郵件附件。</string>
   <string name="read_attachment_label">讀取電子郵件附件</string>

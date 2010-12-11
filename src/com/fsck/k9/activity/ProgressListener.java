@@ -6,7 +6,8 @@ import android.content.Context;
 /**
  * A listener that the user can register for global, persistent progress events.
  */
-public interface ProgressListener {
+public interface ProgressListener
+{
     /**
      * @param context
      * @param title
@@ -16,7 +17,7 @@ public interface ProgressListener {
      * @param indeterminate
      */
     void showProgress(Context context, String title, String message, long currentProgress,
-            long maxProgress, boolean indeterminate);
+                      long maxProgress, boolean indeterminate);
 
     /**
      * @param context
@@ -27,7 +28,7 @@ public interface ProgressListener {
      * @param indeterminate
      */
     void updateProgress(Context context, String title, String message, long currentProgress,
-            long maxProgress, boolean indeterminate);
+                        long maxProgress, boolean indeterminate);
 
     /**
      * @param context

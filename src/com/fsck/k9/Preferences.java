@@ -1,84 +1,181 @@
 
 package com.fsck.k9;
 
-import java.util.Arrays;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.util.Config;
 import android.util.Log;
+import com.fsck.k9.preferences.Editor;
+import com.fsck.k9.preferences.Storage;
 
-public class Preferences {
-    private static Preferences preferences;
-
-    SharedPreferences mSharedPreferences;
-
-    private Preferences(Context context) {
-        mSharedPreferences = context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE);
-    }
+public class Preferences
+{
 
     /**
-     * TODO need to think about what happens if this gets GCed along with the
-     * Activity that initialized it. Do we lose ability to read Preferences in
-     * further Activities? Maybe this should be stored in the Application
-     * context.
-     *
-     * @return
+     * Immutable empty {@link Account} array
      */
-    public static synchronized Preferences getPreferences(Context context) {
-        if (preferences == null) {
+    private static final Account[] EMPTY_ACCOUNT_ARRAY = new Account[0];
+
+    private static Preferences preferences;
+
+    public static synchronized Preferences getPreferences(Context context)
+    {
+        if (preferences == null)
+        {
             preferences = new Preferences(context);
         }
         return preferences;
     }
 
+
+    private Storage mStorage;
+    private List<Account> accounts;
+    private Account newAccount;
+    private Context mContext;
+
+    private Preferences(Context context)
+    {
+        mStorage = Storage.getStorage(context);
+        mContext = context;
+        if (mStorage.size() == 0)
+        {
+            Log.i(K9.LOG_TAG, "Preferences storage is zero-size, importing from Android-style preferences");
+            Editor editor = mStorage.edit();
+            editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
+            editor.commit();
+        }
+    }
+
+    private synchronized void loadAccounts()
+    {
+        String accountUuids = getPreferences().getString("accountUuids", null);
+        if ((accountUuids != null) && (accountUuids.length() != 0))
+        {
+            String[] uuids = accountUuids.split(",");
+            accounts = new ArrayList<Account>(uuids.length);
+            for (String uuid : uuids)
+            {
+                accounts.add(new Account(this, uuid));
+            }
+        }
+        else
+        {
+            accounts = new ArrayList<Account>();
+        }
+    }
+
     /**
      * Returns an array of the accounts on the system. If no accounts are
      * registered the method returns an empty array.
-     *
-     * @return
+     * @return all accounts
      */
-    public Account[] getAccounts() {
-        String accountUuids = mSharedPreferences.getString("accountUuids", null);
-        if (accountUuids == null || accountUuids.length() == 0) {
-            return new Account[] {};
+    public synchronized Account[] getAccounts()
+    {
+        if (accounts == null)
+        {
+            loadAccounts();
         }
-        String[] uuids = accountUuids.split(",");
-        Account[] accounts = new Account[uuids.length];
-        for (int i = 0, length = uuids.length; i < length; i++) {
-            accounts[i] = new Account(this, uuids[i]);
+
+        if ((newAccount != null) && newAccount.getAccountNumber() != -1)
+        {
+            accounts.add(newAccount);
+            newAccount = null;
         }
-        return accounts;
+
+        return accounts.toArray(EMPTY_ACCOUNT_ARRAY);
     }
 
-    public Account getAccountByContentUri(Uri uri) {
-        return new Account(this, uri.getPath().substring(1));
+    /**
+     * Returns an array of the accounts on the system. If no accounts are
+     * registered the method returns an empty array.
+     * @param context
+     * @return all accounts with {@link Account#isAvailable(Context)}
+     */
+    public synchronized Collection<Account> getAvailableAccounts()
+    {
+        if (accounts == null)
+        {
+            loadAccounts();
+        }
+
+        if ((newAccount != null) && newAccount.getAccountNumber() != -1)
+        {
+            accounts.add(newAccount);
+            newAccount = null;
+        }
+        Collection<Account> retval = new ArrayList<Account>(accounts.size());
+        for (Account account : accounts)
+        {
+            if (account.isAvailable(mContext))
+            {
+                retval.add(account);
+            }
+        }
+
+        return retval;
+    }
+
+    public synchronized Account getAccount(String uuid)
+    {
+        if (accounts == null)
+        {
+            loadAccounts();
+        }
+
+        for (Account account : accounts)
+        {
+            if (account.getUuid().equals(uuid))
+            {
+                return account;
+            }
+        }
+
+        if ((newAccount != null) && newAccount.getUuid().equals(uuid))
+        {
+            return newAccount;
+        }
+
+        return null;
+    }
+
+    public synchronized Account newAccount()
+    {
+        newAccount = new Account(K9.app);
+
+        return newAccount;
+    }
+
+    public synchronized void deleteAccount(Account account)
+    {
+        accounts.remove(account);
+        account.delete(this);
+
+        if (newAccount == account)
+        {
+            newAccount = null;
+        }
     }
 
     /**
      * Returns the Account marked as default. If no account is marked as default
      * the first account in the list is marked as default and then returned. If
      * there are no accounts on the system the method returns null.
-     *
-     * @return
      */
-    public Account getDefaultAccount() {
-        String defaultAccountUuid = mSharedPreferences.getString("defaultAccountUuid", null);
-        Account defaultAccount = null;
-        Account[] accounts = getAccounts();
-        if (defaultAccountUuid != null) {
-            for (Account account : accounts) {
-                if (account.getUuid().equals(defaultAccountUuid)) {
-                    defaultAccount = account;
-                    break;
-                }
-            }
-        }
+    public Account getDefaultAccount()
+    {
+        String defaultAccountUuid = getPreferences().getString("defaultAccountUuid", null);
+        Account defaultAccount = getAccount(defaultAccountUuid);
 
-        if (defaultAccount == null) {
-            if (accounts.length > 0) {
-                defaultAccount = accounts[0];
+        if (defaultAccount == null)
+        {
+            Collection<Account> accounts = getAvailableAccounts();
+            if (accounts.size() > 0)
+            {
+                defaultAccount = accounts.iterator().next();
                 setDefaultAccount(defaultAccount);
             }
         }
@@ -86,38 +183,24 @@ public class Preferences {
         return defaultAccount;
     }
 
-    public void setDefaultAccount(Account account) {
-        mSharedPreferences.edit().putString("defaultAccountUuid", account.getUuid()).commit();
+    public void setDefaultAccount(Account account)
+    {
+        getPreferences().edit().putString("defaultAccountUuid", account.getUuid()).commit();
     }
 
-    public void setEnableDebugLogging(boolean value) {
-        mSharedPreferences.edit().putBoolean("enableDebugLogging", value).commit();
-    }
-
-    public boolean geteEnableDebugLogging() {
-        return mSharedPreferences.getBoolean("enableDebugLogging", false);
-    }
-
-    public void setEnableSensitiveLogging(boolean value) {
-        mSharedPreferences.edit().putBoolean("enableSensitiveLogging", value).commit();
-    }
-
-    public boolean getEnableSensitiveLogging() {
-        return mSharedPreferences.getBoolean("enableSensitiveLogging", false);
-    }
-
-    public void save() {
-    }
-
-    public void clear() {
-        mSharedPreferences.edit().clear().commit();
-    }
-
-    public void dump() {
-        if (Config.LOGV) {
-            for (String key : mSharedPreferences.getAll().keySet()) {
-                Log.v(k9.LOG_TAG, key + " = " + mSharedPreferences.getAll().get(key));
+    public void dump()
+    {
+        if (Config.LOGV)
+        {
+            for (String key : getPreferences().getAll().keySet())
+            {
+                Log.v(K9.LOG_TAG, key + " = " + getPreferences().getAll().get(key));
             }
         }
+    }
+
+    public SharedPreferences getPreferences()
+    {
+        return mStorage;
     }
 }
