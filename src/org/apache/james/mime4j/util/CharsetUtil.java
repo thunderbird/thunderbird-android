@@ -526,7 +526,7 @@ import org.apache.commons.logging.LogFactory;
  *     <tr>
  *         <td>GBK</td>
  *         <td>windows-936</td>
- *         <td>CP936 MS936 ms_936 x-mswin-936 </td>
+ *         <td>CP936 MS936 ms_936 x-mswin-936 x-gbk</td>
  *     </tr>
  *     <tr>
  *         <td>ISCII91</td>
@@ -863,7 +863,7 @@ public class CharsetUtil {
                                   "euckr"}),
         new Charset("GB18030", "GB18030", new String[] {"gb18030-2000"}),
         new Charset("EUC_CN", "GB2312", new String[] {"x-EUC-CN", "csGB2312", "euccn", "euc-cn", "gb2312-80", "gb2312-1980", "CN-GB", "CN-GB-ISOIR165"}),
-        new Charset("GBK", "windows-936", new String[] {"CP936", "MS936", "ms_936", "x-mswin-936"}),
+        new Charset("GBK", "windows-936", new String[] {"CP936", "MS936", "ms_936", "x-mswin-936", "x-gbk"}),
 
         new Charset("Cp037", "IBM037", new String[] {"ebcdic-cp-us", "ebcdic-cp-ca", "ebcdic-cp-wt", "ebcdic-cp-nl", "csIBM037"}),
         new Charset("Cp273", "IBM273", new String[] {"csIBM273"}),
