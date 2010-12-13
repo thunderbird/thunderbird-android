@@ -2951,6 +2951,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 String text = sbText.toString();
                                 String html = markupContent(text, sbHtml.toString());
                                 String preview = calculateContentPreview(text);
+                                // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
+                                if (preview == null || preview.length() == 0)
+                                {
+                                    preview = calculateContentPreview(Html.fromHtml(html).toString());
+                                }
 
                                 try
                                 {
@@ -3074,6 +3079,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             String text = sbText.toString();
                             String html = markupContent(text, sbHtml.toString());
                             String preview = calculateContentPreview(text);
+                            // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                             if (preview == null || preview.length() == 0)
                             {
                                 preview = calculateContentPreview(Html.fromHtml(html).toString());
@@ -3204,7 +3210,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         /**
          * @param messageId
          * @param attachment
-         * @param attachmentId -1 to create a new attachment or >= 0 to update an existing
+         * @param saveAsNew
          * @throws IOException
          * @throws MessagingException
          */
