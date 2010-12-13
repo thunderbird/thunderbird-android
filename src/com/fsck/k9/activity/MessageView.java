@@ -136,6 +136,9 @@ public class MessageView extends K9Activity implements OnClickListener
     private Button mDownloadRemainder;
 
 
+   private static Drawable answeredIcon; 
+
+
     View next;
     View next_scrolling;
     View previous;
@@ -502,7 +505,9 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         mSubjectView.setText(subject);
                     }
+
                     mFromView.setText(from);
+
                     if (date != null)
                     {
                         mDateView.setText(date);
@@ -520,14 +525,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
                     mCcView.setText(cc);
                     mAttachmentIcon.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
-                    if (flagged)
-                    {
-                        mFlagged.setChecked(true);
-                    }
-                    else
-                    {
-                        mFlagged.setChecked(false);
-                    }
+                    mFlagged.setChecked(flagged);
+
                     mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
                     chip.setBackgroundColor(accountColor);
@@ -535,21 +534,11 @@ public class MessageView extends K9Activity implements OnClickListener
 
                     if (answered)
                     {
-                        Drawable answeredIcon = getResources().getDrawable(
-                                                    R.drawable.ic_mms_answered_small);
-                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(
-                            answeredIcon, // left
-                            null, // top
-                            null, // right
-                            null); // bottom
+                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds( answeredIcon, null,null,null);
                     }
                     else
                     {
-                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(
-                            null, // left
-                            null, // top
-                            null, // right
-                            null); // bottom
+                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                     }
 
                     if (mMessage.isSet(Flag.X_DOWNLOADED_FULL))
@@ -856,6 +845,10 @@ public class MessageView extends K9Activity implements OnClickListener
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
 
         mScreenReaderEnabled = isScreenReaderActive();
+
+
+        answeredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
+
 
         if (mScreenReaderEnabled)
         {
