@@ -88,6 +88,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.view.AccessibleWebView;
+import com.fsck.k9.view.ToggleScrollView;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
