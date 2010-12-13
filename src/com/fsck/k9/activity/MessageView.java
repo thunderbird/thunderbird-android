@@ -89,6 +89,7 @@ import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.view.AccessibleWebView;
 import com.fsck.k9.view.ToggleScrollView;
+import com.fsck.k9.activity.SizeFormatter;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
@@ -2111,33 +2112,6 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    /*
-     * Formats the given size as a String in bytes, kB, MB or GB with a single digit
-     * of precision. Ex: 12,315,000 = 12.3 MB
-     */
-    public static String formatSize(float size)
-    {
-        long kb = 1024;
-        long mb = (kb * 1024);
-        long gb  = (mb * 1024);
-        if (size < kb)
-        {
-            return String.format("%d bytes", (int) size);
-        }
-        else if (size < mb)
-        {
-            return String.format("%.1f kB", size / kb);
-        }
-        else if (size < gb)
-        {
-            return String.format("%.1f MB", size / mb);
-        }
-        else
-        {
-            return String.format("%.1f GB", size / gb);
-        }
-    }
-
     private void renderAttachments(Part part, int depth) throws MessagingException
     {
         String contentType = MimeUtility.unfoldAndDecode(part.getContentType());
@@ -2218,7 +2192,7 @@ public class MessageView extends K9Activity implements OnClickListener
             attachmentDownload.setTag(attachment);
 
             attachmentName.setText(name);
-            attachmentInfo.setText(formatSize(size));
+            attachmentInfo.setText(SizeFormatter.formatSize(getApplication(),size));
 
             Bitmap previewIcon = getPreviewIcon(attachment);
             if (previewIcon != null)
