@@ -25,7 +25,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.fsck.k9.web.AccessibleEmailContentActivity;
+import com.fsck.k9.activity.AccessibleEmailContentActivity;
 
 public class AccessibleWebView extends TextView
 {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fsck.k9.web;
+package com.fsck.k9.activity;
 
 import java.util.ArrayList;
 import android.app.ListActivity;
