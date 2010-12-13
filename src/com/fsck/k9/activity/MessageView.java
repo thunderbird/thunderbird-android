@@ -74,6 +74,7 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -89,7 +90,6 @@ import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
 import com.fsck.k9.view.AccessibleWebView;
 import com.fsck.k9.view.ToggleScrollView;
-import com.fsck.k9.activity.SizeFormatter;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
