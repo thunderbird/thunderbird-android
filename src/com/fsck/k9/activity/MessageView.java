@@ -266,7 +266,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 if (K9.useVolumeKeysForNavigationEnabled())
                 {
-                    onNext(true);
+                    onNext();
                     return true;
                 }
             }
@@ -274,7 +274,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 if (K9.useVolumeKeysForNavigationEnabled())
                 {
-                    onPrevious(true);
+                    onPrevious();
                     return true;
                 }
             }
@@ -342,13 +342,13 @@ public class MessageView extends K9Activity implements OnClickListener
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P:
             {
-                onPrevious(K9.showAnimations());
+                onPrevious();
                 return true;
             }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K:
             {
-                onNext(K9.showAnimations());
+                onNext();
                 return true;
             }
             case KeyEvent.KEYCODE_Z:
@@ -1507,19 +1507,19 @@ public class MessageView extends K9Activity implements OnClickListener
 
         if (mLastDirection == NEXT && mNextMessage != null)
         {
-            onNext(K9.showAnimations());
+            onNext();
         }
         else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
         {
-            onPrevious(K9.showAnimations());
+            onPrevious();
         }
         else if (mNextMessage != null)
         {
-            onNext(K9.showAnimations());
+            onNext();
         }
         else if (mPreviousMessage != null)
         {
-            onPrevious(K9.showAnimations());
+            onPrevious();
         }
         else
         {
@@ -1727,7 +1727,7 @@ public class MessageView extends K9Activity implements OnClickListener
     }
 
     @Override
-    protected void onNext(boolean animate)
+    protected void onNext()
     {
         if (mNextMessage == null)
         {
@@ -1738,7 +1738,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         disableButtons();
 
-        if (animate)
+        if (K9.showAnimations())
         {
             mTopView.startAnimation(outToLeftAnimation());
         }
@@ -1749,7 +1749,7 @@ public class MessageView extends K9Activity implements OnClickListener
     }
 
     @Override
-    protected void onPrevious(boolean animate)
+    protected void onPrevious()
     {
         if (mPreviousMessage == null)
         {
@@ -1761,7 +1761,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         disableButtons();
 
-        if (animate)
+        if (K9.showAnimations())
         {
             mTopView.startAnimation(inFromRightAnimation());
         }
@@ -1942,11 +1942,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 break;
             case R.id.next:
             case R.id.next_scrolling:
-                onNext(K9.showAnimations());
+                onNext();
                 break;
             case R.id.previous:
             case R.id.previous_scrolling:
-                onPrevious(K9.showAnimations());
+                onPrevious();
                 break;
             case R.id.download:
                 onDownloadAttachment((Attachment) view.getTag());
