@@ -8,7 +8,7 @@
 
 
 
-package com.fsck.k9.activity;
+package com.fsck.k9.view;
 import com.fsck.k9.R;
 import android.content.*;
 import android.graphics.*;
@@ -69,7 +69,7 @@ public class ColorPickerBox extends View
         canvas.drawRect(0.f, 0.f, sizeUiPx, sizeUiPx, paint);
     }
 
-    void setHue(float hue)
+    public void setHue(float hue)
     {
         this.hue = hue;
         invalidate();

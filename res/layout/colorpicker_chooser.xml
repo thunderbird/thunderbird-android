@@ -15,7 +15,7 @@
 	 -->
 	 
 	 
-	<com.fsck.k9.activity.ColorPickerBox
+	<com.fsck.k9.view.ColorPickerBox
 		android:id="@+id/colorpicker_viewBox"
 		android:layout_x="8dp"
 		android:layout_y="8dp"
