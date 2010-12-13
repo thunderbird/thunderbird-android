@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fsck.k9.web;
+package com.fsck.k9.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +24,8 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
+
+import com.fsck.k9.web.AccessibleEmailContentActivity;
 
 public class AccessibleWebView extends TextView
 {
