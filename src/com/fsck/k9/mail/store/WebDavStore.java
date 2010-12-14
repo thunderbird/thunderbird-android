@@ -2138,7 +2138,7 @@ public class WebDavStore extends Store
      * done elsewhere.  This is done rather than having multiple hashmaps
      * associating UIDs to values
      */
-    public class ParsedMessageEnvelope
+    public static class ParsedMessageEnvelope
     {
         /**
          * Holds the mappings from the name returned from Exchange to the MIME format header name
@@ -2564,7 +2564,7 @@ public class WebDavStore extends Store
     /**
      * Simple data container for passing connection information.
      */
-    private class ConnectionInfo
+    private static class ConnectionInfo
     {
         public int statusCode;
         public short requiredAuthType;
