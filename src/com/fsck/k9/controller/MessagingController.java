@@ -4815,7 +4815,7 @@ public class MessagingController implements Runnable
     }
 
     static AtomicInteger sequencing = new AtomicInteger(0);
-    class Command implements Comparable<Command>
+    static class Command implements Comparable<Command>
     {
         public Runnable runnable;
 
@@ -5110,7 +5110,7 @@ public class MessagingController implements Runnable
     }
     enum MemorizingState { STARTED, FINISHED, FAILED }
 
-    class Memory
+    static class Memory
     {
         Account account;
         String folderName;
@@ -5144,7 +5144,7 @@ public class MessagingController implements Runnable
     {
         return taccount.getDescription() + ":" + tfolderName;
     }
-    class MemorizingListener extends MessagingListener
+    static class MemorizingListener extends MessagingListener
     {
         HashMap<String, Memory> memories = new HashMap<String, Memory>(31);
 
