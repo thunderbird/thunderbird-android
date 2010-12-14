@@ -5887,7 +5887,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public class LocalTextBody extends TextBody
+    public static class LocalTextBody extends TextBody
     {
         private String mBodyForDisplay;
 
@@ -6444,7 +6444,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public class LocalAttachmentBodyPart extends MimeBodyPart
+    public static class LocalAttachmentBodyPart extends MimeBodyPart
     {
         private long mAttachmentId = -1;
 
