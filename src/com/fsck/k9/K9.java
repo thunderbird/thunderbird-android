@@ -278,10 +278,10 @@ public class K9 extends Application
     public static final int CONNECTIVITY_ID = -3;
 
 
-    public class Intents
+    public static class Intents
     {
 
-        public class EmailReceived
+        public static class EmailReceived
         {
             public static final String ACTION_EMAIL_RECEIVED    = "com.fsck.k9.intent.action.EMAIL_RECEIVED";
             public static final String ACTION_EMAIL_DELETED     = "com.fsck.k9.intent.action.EMAIL_DELETED";
