@@ -1440,7 +1440,7 @@ public class FolderList extends K9ListActivity
 
     }
 
-    class FolderViewHolder
+    static class FolderViewHolder
     {
         public TextView folderName;
 
