@@ -102,9 +102,8 @@ public class WebDavStore extends Store
     private HttpContext mContext = null;
     private CookieStore mAuthCookies = null;
     private short mAuthentication = AUTH_TYPE_NONE;
-    private long mLastAuth = -1;
-    private long mAuthTimeout = 5 * 60;
-
+    private String mCachedLoginUrl;
+    
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
     /**
@@ -573,7 +572,6 @@ public class WebDavStore extends Store
                     if (statusCode >= 200 && statusCode < 300)
                     {
                         mAuthentication = AUTH_TYPE_BASIC;
-                        mLastAuth = System.currentTimeMillis() / 1000;
                     }
                     else if (statusCode == 401)
                     {
@@ -696,9 +694,26 @@ public class WebDavStore extends Store
      */
     public void doFBA(ConnectionInfo info) throws IOException, MessagingException
     {
+        // Clear out cookies from any previous authentication.
+        mAuthCookies.clear();
+        
         WebDavHttpClient httpClient = getHttpClient();
+        
+        String loginUrl = "";
+        if (info != null)
+        {
+            loginUrl = info.guessedAuthUrl;
+        }
+        else if (mCachedLoginUrl != null && !mCachedLoginUrl.equals(""))
+        {
+            loginUrl = mCachedLoginUrl;
+        }
+        else
+        {
+            throw new MessagingException("No valid login URL available for form-based authentication.");
+        }
 
-        HttpGeneric request = new HttpGeneric(info.guessedAuthUrl);
+        HttpGeneric request = new HttpGeneric(loginUrl);
         request.setMethod("POST");
 
         // Build the POST data.
@@ -738,7 +753,6 @@ public class WebDavStore extends Store
                 }
             });
 
-            String loginUrl = "";
             if (info != null)
             {
                 loginUrl = info.redirectUrl;
@@ -803,7 +817,7 @@ public class WebDavStore extends Store
         if (mAuthCookies != null && !mAuthCookies.getCookies().isEmpty())
         {
             mAuthentication = AUTH_TYPE_FORM_BASED;
-            mLastAuth = System.currentTimeMillis() / 1000;
+            mCachedLoginUrl = loginUrl;
         }
     }
 
