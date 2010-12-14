@@ -208,7 +208,7 @@ public class MessageView extends K9Activity implements OnClickListener
      * Pair class is only available since API Level 5, so we need
      * this helper class unfortunately
      */
-    private class HeaderEntry
+    private static class HeaderEntry
     {
         public String label;
         public String value;
@@ -784,7 +784,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    class Attachment
+    static class Attachment
     {
         public String name;
         public String contentType;
