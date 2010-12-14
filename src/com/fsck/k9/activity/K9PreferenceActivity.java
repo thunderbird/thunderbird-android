@@ -65,7 +65,7 @@ public class K9PreferenceActivity extends PreferenceActivity
     /**
      * This class handles value changes of the {@link ListPreference} objects.
      */
-    private class PreferenceChangeListener implements Preference.OnPreferenceChangeListener
+    private static class PreferenceChangeListener implements Preference.OnPreferenceChangeListener
     {
         private ListPreference mPrefView;
 
