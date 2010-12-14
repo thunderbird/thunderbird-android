@@ -2739,7 +2739,7 @@ public class ImapStore extends Store
         }
     }
 
-    class ImapMessage extends MimeMessage
+    static class ImapMessage extends MimeMessage
     {
         ImapMessage(String uid, Folder folder)
         {
@@ -2778,7 +2778,7 @@ public class ImapStore extends Store
         }
     }
 
-    class ImapBodyPart extends MimeBodyPart
+    static class ImapBodyPart extends MimeBodyPart
     {
         public ImapBodyPart() throws MessagingException
         {
@@ -2791,7 +2791,7 @@ public class ImapStore extends Store
         }
     }
 
-    class ImapException extends MessagingException
+    static class ImapException extends MessagingException
     {
         String mAlertText;
 
@@ -3581,7 +3581,7 @@ public class ImapStore extends Store
         List<ImapResponse> search() throws IOException, MessagingException;
     }
 
-    private class FetchBodyCallback implements ImapResponseParser.IImapResponseCallback
+    private static class FetchBodyCallback implements ImapResponseParser.IImapResponseCallback
     {
         private HashMap<String, Message> mMessageMap;
 
@@ -3610,7 +3610,7 @@ public class ImapStore extends Store
         }
     }
 
-    private class FetchPartCallback implements ImapResponseParser.IImapResponseCallback
+    private static class FetchPartCallback implements ImapResponseParser.IImapResponseCallback
     {
         private Part mPart;
 
