@@ -3022,7 +3022,7 @@ public class MessageList
 
     }
 
-    class FooterViewHolder
+    static class FooterViewHolder
     {
         public ProgressBar progress;
         public TextView main;
