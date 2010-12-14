@@ -1106,7 +1106,7 @@ public class Pop3Store extends Store
 
     }//Pop3Folder
 
-    class Pop3Message extends MimeMessage
+    static class Pop3Message extends MimeMessage
     {
         public Pop3Message(String uid, Pop3Folder folder)
         {
@@ -1148,7 +1148,7 @@ public class Pop3Store extends Store
         }
     }
 
-    class Pop3Capabilities
+    static class Pop3Capabilities
     {
         public boolean stls;
         public boolean top;
@@ -1168,7 +1168,7 @@ public class Pop3Store extends Store
         }
     }
 
-    class Pop3ResponseInputStream extends InputStream
+    static class Pop3ResponseInputStream extends InputStream
     {
         InputStream mIn;
         boolean mStartOfLine = true;
