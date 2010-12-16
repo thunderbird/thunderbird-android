@@ -197,18 +197,7 @@ public class WebDavStore extends Store
                 if (pathParts[0] != null &&
                         pathParts[0].length() > 1)
                 {
-                    if (!pathParts[0].substring(1).equals(""))
-                    {
-                        mPath = pathParts[0].substring(1);
-                    }
-                    else
-                    {
-                        mPath = "";
-                    }
-                }
-                else
-                {
-                    mPath = "";
+                    mPath = pathParts[0];
                 }
             }
             else if (i == 1)
@@ -216,7 +205,7 @@ public class WebDavStore extends Store
                 if (pathParts[1] != null &&
                         pathParts[1].length() > 1)
                 {
-                    mAuthPath = "/" + pathParts[1];
+                    mAuthPath = pathParts[1];
                 }
             }
             else if (i == 2)
@@ -224,36 +213,42 @@ public class WebDavStore extends Store
                 if (pathParts[2] != null &&
                         pathParts[2].length() > 1)
                 {
-                    mMailboxPath = "/" + pathParts[2];
-                    if (mPath == null ||
-                            mPath.equals(""))
-                    {
-                        mPath = mMailboxPath;
-                    }
+                    mMailboxPath = pathParts[2];
                 }
             }
         }
 
-        if (!this.mPath.equals("") &&
-                this.mPath.startsWith("/"))
+        if (mPath == null || mPath.equals(""))
+        {
+        	mPath = "/Exchange";
+        }
+        else if (!mPath.startsWith("/"))
         {
             mPath = "/" + mPath;
         }
 
-        if (this.mMailboxPath == null ||
-                this.mMailboxPath.equals(""))
+        if (mMailboxPath == null || mMailboxPath.equals(""))
         {
-            this.mMailboxPath = "/Exchange/" + this.mAlias;
+            mMailboxPath = "/" + mAlias;
         }
-        else if (!this.mMailboxPath.startsWith("/"))
+        else if (!mMailboxPath.startsWith("/"))
         {
             mMailboxPath = "/" + mMailboxPath;
         }
 
-        this.mUrl = getRoot() + mPath + mMailboxPath;
+        if (mAuthPath != null && 
+        		!mAuthPath.equals("") &&
+        		!mAuthPath.startsWith("/"))
+        {
+        	mAuthPath = "/" + mAuthPath;
+        }
 
-        this.mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-        this.mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
+        // The URL typically looks like the following: "https://mail.domain.com/Exchange/alias".
+        // The inbox path would look like: "https://mail.domain.com/Exchange/alias/Inbox".
+        mUrl = getRoot() + mPath + mMailboxPath;
+
+        mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+        mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
     }
 
     private String getRoot()
