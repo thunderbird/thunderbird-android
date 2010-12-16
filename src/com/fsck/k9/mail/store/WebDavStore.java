@@ -56,9 +56,7 @@ import java.util.zip.GZIPInputStream;
 /**
  * <pre>
  * Uses WebDAV formatted HTTP calls to an MS Exchange server to fetch email
- * and email information.  This has only been tested on an MS Exchange
- * Server 2003.  It uses Form-Based authentication and requires that
- * Outlook Web Access be enabled on the server.
+ * and email information.
  * </pre>
  */
 public class WebDavStore extends Store
@@ -102,9 +100,8 @@ public class WebDavStore extends Store
     private HttpContext mContext = null;
     private CookieStore mAuthCookies = null;
     private short mAuthentication = AUTH_TYPE_NONE;
-    private long mLastAuth = -1;
-    private long mAuthTimeout = 5 * 60;
-
+    private String mCachedLoginUrl;
+    
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
     /**
@@ -573,7 +570,6 @@ public class WebDavStore extends Store
                     if (statusCode >= 200 && statusCode < 300)
                     {
                         mAuthentication = AUTH_TYPE_BASIC;
-                        mLastAuth = System.currentTimeMillis() / 1000;
                     }
                     else if (statusCode == 401)
                     {
@@ -653,7 +649,7 @@ public class WebDavStore extends Store
                 // We will handle all 3 situations the same. First we take an educated
                 // guess at where the authorization DLL is located. If this is this
                 // doesn't work, then we'll use the redirection URL for OWA login given
-                // to use by exchange. We can use this to scrape the location of the
+                // to us by exchange. We can use this to scrape the location of the
                 // authorization URL.
                 info.requiredAuthType = AUTH_TYPE_FORM_BASED;
 
@@ -696,9 +692,26 @@ public class WebDavStore extends Store
      */
     public void doFBA(ConnectionInfo info) throws IOException, MessagingException
     {
+        // Clear out cookies from any previous authentication.
+        mAuthCookies.clear();
+        
         WebDavHttpClient httpClient = getHttpClient();
+        
+        String loginUrl = "";
+        if (info != null)
+        {
+            loginUrl = info.guessedAuthUrl;
+        }
+        else if (mCachedLoginUrl != null && !mCachedLoginUrl.equals(""))
+        {
+            loginUrl = mCachedLoginUrl;
+        }
+        else
+        {
+            throw new MessagingException("No valid login URL available for form-based authentication.");
+        }
 
-        HttpGeneric request = new HttpGeneric(info.guessedAuthUrl);
+        HttpGeneric request = new HttpGeneric(loginUrl);
         request.setMethod("POST");
 
         // Build the POST data.
@@ -738,7 +751,6 @@ public class WebDavStore extends Store
                 }
             });
 
-            String loginUrl = "";
             if (info != null)
             {
                 loginUrl = info.redirectUrl;
@@ -803,7 +815,7 @@ public class WebDavStore extends Store
         if (mAuthCookies != null && !mAuthCookies.getCookies().isEmpty())
         {
             mAuthentication = AUTH_TYPE_FORM_BASED;
-            mLastAuth = System.currentTimeMillis() / 1000;
+            mCachedLoginUrl = loginUrl;
         }
     }
 
