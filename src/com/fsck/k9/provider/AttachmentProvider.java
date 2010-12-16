@@ -242,6 +242,13 @@ public class AttachmentProvider extends ContentProvider
         List<String> segments = uri.getPathSegments();
         String dbName = segments.get(0);
         String id = segments.get(1);
+
+        // Versions of K-9 before 3.400 had a database name here, not an 
+        // account UID, so implement a bit of backcompat
+        if (dbName.endsWith(".db")) {
+            dbName = dbName.substring(0, dbName.length()-3);
+        }
+
         //String format = segments.get(2);
         final AttachmentInfo attachmentInfo;
         try
