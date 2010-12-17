@@ -741,7 +741,7 @@ public class WebDavStore extends Store
             if (formAction == null)
             {
                 // If there is no form action, try using our redirect URL from the initial connection.
-                if (info.redirectUrl != null && !info.redirectUrl.equals(""))
+                if (info != null && info.redirectUrl != null && !info.redirectUrl.equals(""))
                 {
                     loginUrl = info.redirectUrl;
 
