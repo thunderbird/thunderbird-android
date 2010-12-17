@@ -20,6 +20,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.format.Time;
 import android.util.Log;
 import android.webkit.WebSettings;
 
@@ -52,7 +53,7 @@ public class K9 extends Application
          *            The application instance. Never <code>null</code>.
          * @throws Exception
          */
-        void initializeComponent(K9 application) throws Exception;
+        void initializeComponent(K9 application);
     }
 
     public static Application app = null;
@@ -164,6 +165,9 @@ public class K9 extends Application
     private static boolean mCountSearchMessages = true;
     private static boolean mZoomControlsEnabled = false;
     private static boolean mMobileOptimizedLayout = false;
+    private static boolean mQuietTimeEnabled = false;
+    private static String mQuietTimeStarts = null;
+    private static String mQuietTimeEnds = null;
 
     private static boolean useGalleryBugWorkaround = false;
     private static boolean galleryBuggy;
@@ -252,18 +256,20 @@ public class K9 extends Application
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 
     /**
-     * Time the LED is on when blinking on new email notification
+     * Time the LED is on/off when blinking on new email notification
      */
     public static final int NOTIFICATION_LED_ON_TIME = 500;
-
-    /**
-     * Time the LED is off when blicking on new email notification
-     */
     public static final int NOTIFICATION_LED_OFF_TIME = 2000;
 
     public static final boolean NOTIFICATION_LED_WHILE_SYNCING = false;
     public static final int NOTIFICATION_LED_FAST_ON_TIME = 100;
     public static final int NOTIFICATION_LED_FAST_OFF_TIME = 100;
+
+
+    public static final int NOTIFICATION_LED_BLINK_SLOW = 0;
+    public static final int NOTIFICATION_LED_BLINK_FAST = 1;
+
+
 
     public static final int NOTIFICATION_LED_SENDING_FAILURE_COLOR = 0xffff0000;
 
@@ -272,10 +278,10 @@ public class K9 extends Application
     public static final int CONNECTIVITY_ID = -3;
 
 
-    public class Intents
+    public static class Intents
     {
 
-        public class EmailReceived
+        public static class EmailReceived
         {
             public static final String ACTION_EMAIL_RECEIVED    = "com.fsck.k9.intent.action.EMAIL_RECEIVED";
             public static final String ACTION_EMAIL_DELETED     = "com.fsck.k9.intent.action.EMAIL_DELETED";
@@ -417,7 +423,9 @@ public class K9 extends Application
         editor.putBoolean("manageBack", mManageBack);
         editor.putBoolean("zoomControlsEnabled",mZoomControlsEnabled);
         editor.putBoolean("mobileOptimizedLayout", mMobileOptimizedLayout);
-
+        editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
+        editor.putString("quietTimeStarts", mQuietTimeStarts);
+        editor.putString("quietTimeEnds", mQuietTimeEnds);
 
         editor.putBoolean("startIntegratedInbox", mStartIntegratedInbox);
         editor.putBoolean("measureAccounts", mMeasureAccounts);
@@ -471,6 +479,10 @@ public class K9 extends Application
 
         mMobileOptimizedLayout = sprefs.getBoolean("mobileOptimizedLayout", false);
         mZoomControlsEnabled = sprefs.getBoolean("zoomControlsEnabled",false);
+
+        mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
+        mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00" );
+        mQuietTimeEnds= sprefs.getString("quietTimeEnds", "7:00");
 
         mShowContactName = sprefs.getBoolean("showContactName", false);
         mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
@@ -714,7 +726,85 @@ public class K9 extends Application
         mMobileOptimizedLayout = mobileOptimizedLayout;
     }
 
+    public static boolean getQuietTimeEnabled()
+    {
+        return mQuietTimeEnabled;
+    }
 
+    public static void setQuietTimeEnabled(boolean quietTimeEnabled)
+    {
+        mQuietTimeEnabled = quietTimeEnabled;
+    }
+
+    public static String getQuietTimeStarts()
+    {
+        return mQuietTimeStarts;
+    }
+
+    public static void setQuietTimeStarts(String quietTimeStarts)
+    {
+        mQuietTimeStarts = quietTimeStarts;
+    }
+
+    public static String getQuietTimeEnds()
+    {
+        return mQuietTimeEnds;
+    }
+
+    public static void setQuietTimeEnds(String quietTimeEnds)
+    {
+        mQuietTimeEnds = quietTimeEnds;
+    }
+
+
+    public static boolean isQuietTime()
+    {
+        if (!mQuietTimeEnabled)
+        {
+            return false;
+        }
+
+        Time time = new Time();
+        time.setToNow();
+        Integer startHour = Integer.parseInt(mQuietTimeStarts.split(":")[0]);
+        Integer startMinute = Integer.parseInt(mQuietTimeStarts.split(":")[1]);
+        Integer endHour = Integer.parseInt(mQuietTimeEnds.split(":")[0]);
+        Integer endMinute = Integer.parseInt(mQuietTimeEnds.split(":")[1]);
+
+        Integer now = (time.hour * 60 ) + time.minute;
+        Integer quietStarts = startHour * 60 + startMinute;
+        Integer quietEnds =  endHour * 60 +endMinute;
+
+        // If start and end times are the same, we're never quiet
+        if (quietStarts.equals(quietEnds))
+        {
+            return false;
+        }
+
+
+        // 21:00 - 05:00 means we want to be quiet if it's after 9 or before 5
+        if (quietStarts > quietEnds)
+        {
+            // if it's 22:00 or 03:00 but not 8:00
+            if ( now >= quietStarts || now <= quietEnds)
+            {
+                return true;
+            }
+        }
+
+        // 01:00 - 05:00
+        else
+        {
+
+            // if it' 2:00 or 4:00 but not 8:00 or 0:00
+            if ( now >= quietStarts && now <= quietEnds)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
 

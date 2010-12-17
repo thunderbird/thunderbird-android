@@ -1,10 +1,14 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.helper;
 
 import android.content.Context;
 import com.fsck.k9.R;
 
 public class SizeFormatter
 {
+    /*
+     * Formats the given size as a String in bytes, kB, MB or GB with a single digit
+     * of precision. Ex: 12,315,000 = 12.3 MB
+     */
     public static String formatSize(Context context, long size)
     {
         if (size > 1024000000)
@@ -23,3 +27,5 @@ public class SizeFormatter
     }
 
 }
+
+

@@ -20,6 +20,7 @@ import android.widget.*;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import com.fsck.k9.*;
+import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.Prefs;
@@ -27,11 +28,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.Flag;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Accounts extends K9ListActivity implements OnItemClickListener, OnClickListener
@@ -122,7 +119,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
                         stats.size = newSize;
                     }
                     String toastText = getString(R.string.account_size_changed, account.getDescription(),
-                                                 SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));;
+                                                 SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));
 
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
@@ -346,7 +343,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
 
         Account[] accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
-        boolean startup = (boolean)intent.getBooleanExtra(EXTRA_STARTUP, true);
+        boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
         if (startup && K9.startIntegratedInbox())
         {
             onOpenAccount(integratedInboxAccount);
@@ -427,10 +424,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             newAccounts.add(unreadAccount);
         }
 
-        for (BaseAccount account : accounts)
-        {
-            newAccounts.add(account);
-        }
+        newAccounts.addAll(Arrays.asList(accounts));
 
         mAdapter = new AccountsAdapter(newAccounts.toArray(EMPTY_BASE_ACCOUNT_ARRAY));
         getListView().setAdapter(mAdapter);
@@ -863,7 +857,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
         catch (PackageManager.NameNotFoundException e)
         {
             //Log.e(TAG, "Package name not found", e);
-        };
+        }
         return version;
     }
 
@@ -1084,14 +1078,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener, OnC
             return set1;
         }
         Set<Flag> flags = new HashSet<Flag>();
-        for (Flag flag : set1)
-        {
-            flags.add(flag);
-        }
-        for (Flag flag : set2)
-        {
-            flags.add(flag);
-        }
+        flags.addAll(Arrays.asList(set1));
+        flags.addAll(Arrays.asList(set2));
         return flags.toArray(EMPTY_FLAG_ARRAY);
     }
 

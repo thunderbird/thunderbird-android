@@ -64,7 +64,7 @@ public class ImapStore extends Store
     public static final int CONNECTION_SECURITY_SSL_REQUIRED = 3;
     public static final int CONNECTION_SECURITY_SSL_OPTIONAL = 4;
 
-    private enum AuthType { PLAIN, CRAM_MD5 };
+    private enum AuthType { PLAIN, CRAM_MD5 }
 
     private static final int IDLE_READ_TIMEOUT_INCREMENT = 5 * 60 * 1000;
     private static final int IDLE_FAILURE_COUNT_LIMIT = 10;
@@ -216,7 +216,7 @@ public class ImapStore extends Store
     }
 
     @Override
-    public Folder getFolder(String name) throws MessagingException
+    public Folder getFolder(String name)
     {
         ImapFolder folder;
         synchronized (mFolderCache)
@@ -667,7 +667,7 @@ public class ImapStore extends Store
         }
 
         @Override
-        public OpenMode getMode() throws MessagingException
+        public OpenMode getMode()
         {
             return mMode;
         }
@@ -1497,7 +1497,7 @@ public class ImapStore extends Store
         }
 
         @Override
-        public Flag[] getPermanentFlags() throws MessagingException
+        public Flag[] getPermanentFlags()
         {
             return PERMANENT_FLAGS;
         }
@@ -2016,7 +2016,6 @@ public class ImapStore extends Store
         }
 
         private MessagingException ioExceptionHandler(ImapConnection connection, IOException ioe)
-        throws MessagingException
         {
             Log.e(K9.LOG_TAG, "IOException for " + getLogId(), ioe);
             if (connection != null)
@@ -2587,7 +2586,7 @@ public class ImapStore extends Store
             return readResponse(null);
         }
 
-        private ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException, MessagingException
+        private ImapResponse readResponse(ImapResponseParser.IImapResponseCallback callback) throws IOException
         {
             try
             {
@@ -2740,7 +2739,7 @@ public class ImapStore extends Store
         }
     }
 
-    class ImapMessage extends MimeMessage
+    static class ImapMessage extends MimeMessage
     {
         ImapMessage(String uid, Folder folder)
         {
@@ -2779,7 +2778,7 @@ public class ImapStore extends Store
         }
     }
 
-    class ImapBodyPart extends MimeBodyPart
+    static class ImapBodyPart extends MimeBodyPart
     {
         public ImapBodyPart() throws MessagingException
         {
@@ -2792,7 +2791,7 @@ public class ImapStore extends Store
         }
     }
 
-    class ImapException extends MessagingException
+    static class ImapException extends MessagingException
     {
         String mAlertText;
 
@@ -2865,7 +2864,7 @@ public class ImapStore extends Store
         }
 
         private void sendContinuation(String continuation)
-        throws MessagingException, IOException
+        throws IOException
         {
             ImapConnection conn = mConnection;
             if (conn != null)
@@ -3187,10 +3186,7 @@ public class ImapStore extends Store
                 messageArray = getMessages(flagSyncMsgSeqs, true, null);
 
                 List<Message> messages = new ArrayList<Message>();
-                for (Message message : messageArray)
-                {
-                    messages.add(message);
-                }
+                messages.addAll(Arrays.asList(messageArray));
                 pushMessages(messages, false);
 
             }
@@ -3585,7 +3581,7 @@ public class ImapStore extends Store
         List<ImapResponse> search() throws IOException, MessagingException;
     }
 
-    private class FetchBodyCallback implements ImapResponseParser.IImapResponseCallback
+    private static class FetchBodyCallback implements ImapResponseParser.IImapResponseCallback
     {
         private HashMap<String, Message> mMessageMap;
 
@@ -3614,7 +3610,7 @@ public class ImapStore extends Store
         }
     }
 
-    private class FetchPartCallback implements ImapResponseParser.IImapResponseCallback
+    private static class FetchPartCallback implements ImapResponseParser.IImapResponseCallback
     {
         private Part mPart;
 

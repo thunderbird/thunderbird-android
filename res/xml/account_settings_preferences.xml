@@ -329,7 +329,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:title="@string/account_settings_notifications"
+        android:title="@string/notifications_title"
         android:key="notifications">
 
         <CheckBoxPreference

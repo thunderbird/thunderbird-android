@@ -84,7 +84,7 @@ public abstract class Message implements Part, Body
         return mFolder;
     }
 
-    public abstract String getSubject() throws MessagingException;
+    public abstract String getSubject();
 
     public abstract void setSubject(String subject) throws MessagingException;
 
@@ -115,11 +115,11 @@ public abstract class Message implements Part, Body
                       });
     }
 
-    public abstract Address[] getFrom() throws MessagingException;
+    public abstract Address[] getFrom();
 
     public abstract void setFrom(Address from) throws MessagingException;
 
-    public abstract Address[] getReplyTo() throws MessagingException;
+    public abstract Address[] getReplyTo();
 
     public abstract void setReplyTo(Address[] from) throws MessagingException;
 
@@ -131,7 +131,7 @@ public abstract class Message implements Part, Body
 
     public abstract void setReferences(String references) throws MessagingException;
 
-    public abstract Body getBody() throws MessagingException;
+    public abstract Body getBody();
 
     public abstract String getContentType() throws MessagingException;
 
@@ -152,7 +152,7 @@ public abstract class Message implements Part, Body
         return getContentType().startsWith(mimeType);
     }
 
-    public void delete(String trashFolderName) throws MessagingException {} ;
+    public void delete(String trashFolderName) throws MessagingException {}
 
     /*
      * TODO Refactor Flags at some point to be able to store user defined flags.
@@ -225,4 +225,5 @@ public abstract class Message implements Part, Body
         MessageReference tmpReference = makeMessageReference();
         return tmpReference.equals(ref);
     }
+
 }

@@ -251,7 +251,7 @@
         android:id="@+id/message_content"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
-    <com.fsck.k9.web.AccessibleWebView
+    <com.fsck.k9.view.AccessibleWebView
         android:id="@+id/accessible_message_content"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />

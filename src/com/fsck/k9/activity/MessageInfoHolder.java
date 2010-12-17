@@ -3,19 +3,17 @@ import com.fsck.k9.helper.MessageHelper;
 import java.util.Date;
 
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 
 public class MessageInfoHolder
 {
-    public String subject;
     public String date;
     public Date compareDate;
     public String compareSubject;
     public CharSequence sender;
     public String senderAddress;
     public String compareCounterparty;
-    public String preview;
     public String[] recipients;
-    public boolean hasAttachments;
     public String uid;
     public boolean read;
     public boolean answered;
@@ -23,9 +21,7 @@ public class MessageInfoHolder
     public boolean downloaded;
     public boolean partially_downloaded;
     public boolean dirty;
-    public boolean toMe;
-    public boolean ccMe;
-    public Message message;
+    public LocalMessage message;
     public FolderInfoHolder folder;
     public boolean selected;
     public String account;

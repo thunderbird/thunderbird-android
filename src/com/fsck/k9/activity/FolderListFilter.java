@@ -81,9 +81,8 @@ public class FolderListFilter<T> extends Filter
 
             final ArrayList<T> newValues = new ArrayList<T>();
 
-            for (int i = 0; i < count; i++)
+            for (final T value : values)
             {
-                final T value = values.get(i);
                 final String valueText = value.toString().toLowerCase();
 
                 for (int k = 0; k < wordCount; k++)

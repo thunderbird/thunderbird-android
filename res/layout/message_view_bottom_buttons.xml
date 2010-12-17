@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/bottom_buttons"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="6dip"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical">
+        <Button
+            android:id="@+id/previous"
+            android:text="@string/message_view_prev_action"
+            android:contentDescription="@string/previous_action"
+            android:textSize="35dip"
+            android:padding="0dip"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/delete"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_button_delete"
+            android:textSize="0dip"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+       <Button
+            android:id="@+id/next"
+            android:text="@string/message_view_next_action"
+            android:contentDescription="@string/next_action"
+            android:textSize="35dip"
+            android:padding="0dip"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+</merge>

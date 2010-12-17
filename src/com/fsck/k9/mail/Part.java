@@ -12,7 +12,7 @@ public interface Part
 
     public void setHeader(String name, String value) throws MessagingException;
 
-    public Body getBody() throws MessagingException;
+    public Body getBody();
 
     public String getContentType() throws MessagingException;
 
@@ -22,7 +22,7 @@ public interface Part
 
     public String[] getHeader(String name) throws MessagingException;
 
-    public int getSize() throws MessagingException;
+    public int getSize();
 
     public boolean isMimeType(String mimeType) throws MessagingException;
 

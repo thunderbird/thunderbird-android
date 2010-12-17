@@ -121,7 +121,7 @@ public class MimeMessage extends Message
         addSentDate(sentDate);
     }
 
-    public void setInternalSentDate(Date sentDate) throws MessagingException
+    public void setInternalSentDate(Date sentDate)
     {
         this.mSentDate = sentDate;
     }
@@ -161,7 +161,7 @@ public class MimeMessage extends Message
         return MimeUtility.getHeaderParameter(getContentType(), null);
     }
 
-    public int getSize() throws MessagingException
+    public int getSize()
     {
         return mSize;
     }
@@ -255,7 +255,7 @@ public class MimeMessage extends Message
      * Returns the unfolded, decoded value of the Subject header.
      */
     @Override
-    public String getSubject() throws MessagingException
+    public String getSubject()
     {
         return MimeUtility.unfoldAndDecode(getFirstHeader("Subject"));
     }
@@ -267,7 +267,7 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public Address[] getFrom() throws MessagingException
+    public Address[] getFrom()
     {
         if (mFrom == null)
         {
@@ -299,7 +299,7 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public Address[] getReplyTo() throws MessagingException
+    public Address[] getReplyTo()
     {
         if (mReplyTo == null)
         {
@@ -410,7 +410,7 @@ public class MimeMessage extends Message
     }
 
     @Override
-    public Body getBody() throws MessagingException
+    public Body getBody()
     {
         return mBody;
     }
@@ -649,14 +649,8 @@ public class MimeMessage extends Message
             {
                 sb.append((char)b);
             }
-            try
-            {
-                ((MimeMultipart)stack.peek()).setPreamble(sb.toString());
-            }
-            catch (MessagingException me)
-            {
-                throw new Error(me);
-            }
+            ((MimeMultipart)stack.peek()).setPreamble(sb.toString());
+
         }
 
         public void raw(InputStream is) throws IOException

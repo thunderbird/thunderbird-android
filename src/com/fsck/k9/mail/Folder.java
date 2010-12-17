@@ -23,7 +23,7 @@ public abstract class Folder
     // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
     public enum FolderClass
     {
-        NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS;
+        NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS
     }
 
     public enum FolderType
@@ -61,7 +61,7 @@ public abstract class Folder
      * was requested with.
      * @return
      */
-    public abstract OpenMode getMode() throws MessagingException;
+    public abstract OpenMode getMode();
 
     public abstract boolean create(FolderType type) throws MessagingException;
 
@@ -111,9 +111,9 @@ public abstract class Folder
 
     public abstract void appendMessages(Message[] messages) throws MessagingException;
 
-    public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {} ;
+    public void copyMessages(Message[] msgs, Folder folder) throws MessagingException {}
 
-    public void moveMessages(Message[] msgs, Folder folder) throws MessagingException {} ;
+    public void moveMessages(Message[] msgs, Folder folder) throws MessagingException {}
 
     public void delete(Message[] msgs, String trashFolderName) throws MessagingException
     {
@@ -151,7 +151,7 @@ public abstract class Folder
 
     public abstract String getName();
 
-    public abstract Flag[] getPermanentFlags() throws MessagingException;
+    public abstract Flag[] getPermanentFlags();
 
     /**
      *

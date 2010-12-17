@@ -793,14 +793,16 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             throw new Error("Database upgrade failed!");
         }
 
-        try
-        {
-            pruneCachedAttachments(true);
-        }
-        catch (Exception me)
-        {
-            Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
-        }
+        // Unless we're blowing away the whole data store, there's no reason to prune attachments
+        // every time the user upgrades. it'll just cost them money and pain.
+        // try
+        //{
+        //        pruneCachedAttachments(true);
+        //}
+        //catch (Exception me)
+        //{
+        //   Log.e(K9.LOG_TAG, "Exception while force pruning attachments during DB update", me);
+        //}
     }
 
     public long getSize() throws UnavailableStorageException
@@ -835,11 +837,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     public void compact() throws MessagingException
     {
         if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "Before prune size = " + getSize());
-
-        pruneCachedAttachments();
-        if (K9.DEBUG)
-            Log.i(K9.LOG_TAG, "After prune / before compaction size = " + getSize());
+            Log.i(K9.LOG_TAG, "Before compaction size = " + getSize());
 
         execute(false, new DbCallback<Void>()
         {
@@ -947,7 +945,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
     }
 
     @Override
-    public LocalFolder getFolder(String name) throws MessagingException
+    public LocalFolder getFolder(String name)
     {
         return new LocalFolder(name);
     }
@@ -1426,7 +1424,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                 {
                     whereClause.append(" OR ");
                 }
-                whereClause.append(queryField + " LIKE ? ");
+                whereClause.append(queryField).append(" LIKE ? ");
                 args.add(likeString);
                 anyAdded = true;
             }
@@ -1805,7 +1803,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         @Override
-        public OpenMode getMode() throws MessagingException
+        public OpenMode getMode()
         {
             return OpenMode.READ_WRITE;
         }
@@ -2953,6 +2951,11 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                                 String text = sbText.toString();
                                 String html = markupContent(text, sbHtml.toString());
                                 String preview = calculateContentPreview(text);
+                                // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
+                                if (preview == null || preview.length() == 0)
+                                {
+                                    preview = calculateContentPreview(Html.fromHtml(html).toString());
+                                }
 
                                 try
                                 {
@@ -3076,6 +3079,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
                             String text = sbText.toString();
                             String html = markupContent(text, sbHtml.toString());
                             String preview = calculateContentPreview(text);
+                            // If we couldn't generate a reasonable preview from the text part, try doing it with the HTML part.
                             if (preview == null || preview.length() == 0)
                             {
                                 preview = calculateContentPreview(Html.fromHtml(html).toString());
@@ -3206,7 +3210,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         /**
          * @param messageId
          * @param attachment
-         * @param attachmentId -1 to create a new attachment or >= 0 to update an existing
+         * @param saveAsNew
          * @throws IOException
          * @throws MessagingException
          */
@@ -3572,7 +3576,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
 
         @Override
-        public Flag[] getPermanentFlags() throws MessagingException
+        public Flag[] getPermanentFlags()
         {
             return PERMANENT_FLAGS;
         }
@@ -5883,7 +5887,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public class LocalTextBody extends TextBody
+    public static class LocalTextBody extends TextBody
     {
         private String mBodyForDisplay;
 
@@ -5892,7 +5896,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             super(body);
         }
 
-        public LocalTextBody(String body, String bodyForDisplay) throws MessagingException
+        public LocalTextBody(String body, String bodyForDisplay)
         {
             super(body);
             this.mBodyForDisplay = bodyForDisplay;
@@ -5918,6 +5922,12 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
 
         private String mPreview = "";
 
+        private boolean mToMeCalculated = false;
+        private boolean mCcMeCalculated = false;
+        private boolean mToMe = false;
+        private boolean mCcMe = false;
+
+
         private boolean mHeadersLoaded = false;
         private boolean mMessageDirty = false;
 
@@ -5925,7 +5935,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         {
         }
 
-        LocalMessage(String uid, Folder folder) throws MessagingException
+        LocalMessage(String uid, Folder folder)
         {
             this.mUid = uid;
             this.mFolder = folder;
@@ -6048,7 +6058,18 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             mMessageDirty = true;
         }
 
+        public boolean hasAttachments()
+        {
+            if (mAttachmentCount > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
+        }
 
         public int getAttachmentCount()
         {
@@ -6124,6 +6145,66 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
             mMessageDirty = true;
         }
+
+
+
+        public boolean toMe()
+        {
+            try
+            {
+                if (!mToMeCalculated)
+                {
+                    for (Address address : getRecipients(RecipientType.TO))
+                    {
+                        if (mAccount.isAnIdentity(address))
+                        {
+                            mToMe = true;
+                            mToMeCalculated = true;
+                        }
+                    }
+                }
+            }
+            catch (MessagingException e)
+            {
+                // do something better than ignore this
+                // getRecipients can throw a messagingexception
+            }
+            return mToMe;
+        }
+
+
+
+
+
+        public boolean ccMe()
+        {
+            try
+            {
+
+                if (!mCcMeCalculated)
+                {
+                    for(Address address : getRecipients(RecipientType.CC))
+                    {
+                        if (mAccount.isAnIdentity(address))
+                        {
+                            mCcMe = true;
+                            mCcMeCalculated = true;
+                        }
+                    }
+
+                }
+            }
+            catch (MessagingException e)
+            {
+                // do something better than ignore this
+                // getRecipients can throw a messagingexception
+            }
+
+            return mCcMe;
+        }
+
+
+
 
 
 
@@ -6267,7 +6348,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
             }
         }
 
-        private void updateFolderCountsOnFlag(Flag flag, boolean set) throws MessagingException
+        private void updateFolderCountsOnFlag(Flag flag, boolean set)
         {
             /*
              * Update the unread count on the folder.
@@ -6363,7 +6444,7 @@ public class LocalStore extends Store implements Serializable, LocalStoreMigrati
         }
     }
 
-    public class LocalAttachmentBodyPart extends MimeBodyPart
+    public static class LocalAttachmentBodyPart extends MimeBodyPart
     {
         private long mAttachmentId = -1;
 

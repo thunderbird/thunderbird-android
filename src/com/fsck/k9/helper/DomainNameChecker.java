@@ -140,18 +140,17 @@ public class DomainNameChecker
             Collection<?> subjectAltNames = certificate.getSubjectAlternativeNames();
             if (subjectAltNames != null)
             {
-                Iterator<?> i = subjectAltNames.iterator();
-                while (i.hasNext())
+                for (Object subjectAltName : subjectAltNames)
                 {
-                    List<?> altNameEntry = (List<?>)(i.next());
+                    List<?> altNameEntry = (List<?>) (subjectAltName);
                     if ((altNameEntry != null) && (2 <= altNameEntry.size()))
                     {
-                        Integer altNameType = (Integer)(altNameEntry.get(0));
+                        Integer altNameType = (Integer) (altNameEntry.get(0));
                         if (altNameType != null)
                         {
-                            if (altNameType.intValue() == ALT_IPA_NAME)
+                            if (altNameType == ALT_IPA_NAME)
                             {
-                                String altName = (String)(altNameEntry.get(1));
+                                String altName = (String) (altNameEntry.get(1));
                                 if (altName != null)
                                 {
                                     if (K9.DEBUG)

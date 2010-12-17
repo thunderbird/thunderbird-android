@@ -336,6 +336,11 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="global_settings_privacy_mode_title">スクリーンロック時の通知</string>
     <string name="global_settings_privacy_mode_summary">システムがロックされているときは通知バーにメッセージの表題を表示しない</string>
 
+    <string name="quiet_time">夜間時間帯</string>
+    <string name="quiet_time_description">夜間での各種通知や表示を抑制する時間帯を設定します．</string>
+    <string name="quiet_time_starts">開始時間</string>
+    <string name="quiet_time_ends">終了時間</string>
+
     <string name="account_setup_basics_title">電子メールセットアップ</string>
     <string name="account_setup_basics_instructions">このアカウントで使用するメールアドレスを入力して下さい</string>
     <string name="account_setup_basics_instructions2_fmt">(追加する場合は <xliff:g id="number_accounts">%d</xliff:g> と異なるメールアドレスを入力して下さい)</string>
@@ -660,7 +665,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="account_settings_add_account_label">アカウント追加</string>
     <string name="account_settings_description_label">アカウント名</string>
     <string name="account_settings_name_label">名前</string>
-    <string name="account_settings_notifications">通知設定</string>
+    <string name="notifications_title">通知設定</string>
     <string name="account_settings_ring_summary">メール音受信時の通知音</string>
     <string name="account_settings_vibrate_enable">バイブレーション</string>
     <string name="account_settings_vibrate_summary">メール着信時バイブレーションをONにする</string>
@@ -722,7 +727,7 @@ K-9 Mail セットアップにようこそ。\nK-9 は標準のAndroidメール�
     <string name="choose_identity">差出人情報選択</string>
     <string name="choose_identity_title">差出人情報選択</string>
     <string name="choose_account_title">アカウント選択</string>
-    <string name="send_as">Send as</string>
+    <string name="send_as">他のアカウントで送信</string>
 
 
     <string name="no_identities">アカウント設定 -&gt; 差出人情報管理 で差出人情報を作成してください</string>

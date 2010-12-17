@@ -636,7 +636,7 @@
     <string name="account_settings_add_account_label">添加另一个账户</string>
     <string name="account_settings_description_label">账户名称</string>
     <string name="account_settings_name_label">您的名字</string>
-    <string name="account_settings_notifications">通知</string>
+    <string name="notifications_title">通知</string>
     <string name="account_settings_ring_summary">有新邮件时震铃</string>
     <string name="account_settings_vibrate_enable">震动</string>
     <string name="account_settings_vibrate_summary">有新邮件时震动</string>

@@ -57,6 +57,7 @@ public class MessageHelper
         try
         {
             LocalMessage message = (LocalMessage) m;
+            target.message = message;
             Date date = message.getSentDate();
             target.compareDate = message.getSentDate();
             if (target.compareDate == null)
@@ -65,8 +66,6 @@ public class MessageHelper
             }
 
             target.folder = folder;
-
-            target.hasAttachments = message.getAttachmentCount() > 0;
 
             target.read = message.isSet(Flag.SEEN);
             target.answered = message.isSet(Flag.ANSWERED);
@@ -100,30 +99,8 @@ public class MessageHelper
 
 
 
-            for (Address address : message.getRecipients(RecipientType.TO))
-            {
-                if (account.isAnIdentity(address))
-                {
-                    target.toMe = true;
-                }
-            }
-
-            if (target.toMe == false )
-            {
-                for(Address address : message.getRecipients(RecipientType.CC))
-                {
-                    if (account.isAnIdentity(address))
-                    {
-                        target.ccMe = true;
-                    }
-                }
-            }
-
-            target.subject = message.getSubject();
 
             target.uid = message.getUid();
-            target.message = m;
-            target.preview = message.getPreview();
 
             target.account = account.getDescription();
             target.uri = "email://messages/" + account.getAccountNumber() + "/" + m.getFolder().getName() + "/" + m.getUid();

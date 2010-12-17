@@ -59,7 +59,7 @@ public class Account implements BaseAccount
     public static final String TYPE_WIFI = "WIFI";
     public static final String TYPE_MOBILE = "MOBILE";
     public static final String TYPE_OTHER = "OTHER";
-    private static String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
+    private static final String[] networkTypes = { TYPE_WIFI, TYPE_MOBILE, TYPE_OTHER };
 
     private static final String DEFAULT_QUOTE_PREFIX = ">";
 
@@ -75,7 +75,7 @@ public class Account implements BaseAccount
      */
     private int mDeletePolicy;
 
-    private String mUuid;
+    private final String mUuid;
     private String mStoreUri;
 
     /**
@@ -88,7 +88,7 @@ public class Account implements BaseAccount
      * True if {@link #mLocalStoreUri} may be in use at
      * the moment.
      */
-    private boolean mIsInUse = false;
+    private final boolean mIsInUse = false;
     private LocalStoreMigrationListener mLocalStoreMigrationListener;
     private String mTransportUri;
     private String mDescription;
@@ -123,7 +123,7 @@ public class Account implements BaseAccount
     private int mMaxPushFolders;
     private int mIdleRefreshMinutes;
     private boolean goToUnreadMessageSearch;
-    private Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
+    private final Map<String, Boolean> compressionMap = new ConcurrentHashMap<String, Boolean>();
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
     private int maximumPolledMessageAge;
@@ -153,17 +153,17 @@ public class Account implements BaseAccount
 
     public enum FolderMode
     {
-        NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS;
+        NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS
     }
 
     public enum HideButtons
     {
-        NEVER, ALWAYS, KEYBOARD_AVAILABLE;
+        NEVER, ALWAYS, KEYBOARD_AVAILABLE
     }
 
     public enum ShowPictures
     {
-        NEVER, ALWAYS, ONLY_FROM_CONTACTS;
+        NEVER, ALWAYS, ONLY_FROM_CONTACTS
     }
 
     public enum Searchable
@@ -579,7 +579,7 @@ public class Account implements BaseAccount
         editor.putString(mUuid + ".cryptoApp", mCryptoApp);
         editor.putBoolean(mUuid + ".cryptoAutoSignature", mCryptoAutoSignature);
 
-        editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.isVibrate());
+        editor.putBoolean(mUuid + ".vibrate", mNotificationSetting.shouldVibrate());
         editor.putInt(mUuid + ".vibratePattern", mNotificationSetting.getVibratePattern());
         editor.putInt(mUuid + ".vibrateTimes", mNotificationSetting.getVibrateTimes());
         editor.putBoolean(mUuid + ".ring", mNotificationSetting.shouldRing());
@@ -641,7 +641,6 @@ public class Account implements BaseAccount
         long folderLoadStart = System.currentTimeMillis();
         List<? extends Folder> folders = localStore.getPersonalNamespaces(false);
         long folderLoadEnd = System.currentTimeMillis();
-        long folderEvalStart = folderLoadEnd;
         for (Folder folder : folders)
         {
             LocalFolder localFolder = (LocalFolder)folder;
@@ -690,7 +689,7 @@ public class Account implements BaseAccount
         if (K9.DEBUG)
             Log.d(K9.LOG_TAG, "Account.getStats() on " + getDescription() + " took " + (endTime - startTime) + " ms;"
                   + " loading " + folders.size() + " took " + (folderLoadEnd - folderLoadStart) + " ms;"
-                  + " evaluating took " + (folderEvalEnd - folderEvalStart) + " ms");
+                  + " evaluating took " + (folderEvalEnd - folderLoadEnd) + " ms");
         return stats;
     }
 
@@ -860,10 +859,9 @@ public class Account implements BaseAccount
     public synchronized boolean setAutomaticCheckIntervalMinutes(int automaticCheckIntervalMinutes)
     {
         int oldInterval = this.mAutomaticCheckIntervalMinutes;
-        int newInterval = automaticCheckIntervalMinutes;
         this.mAutomaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
 
-        return (oldInterval != newInterval);
+        return (oldInterval != automaticCheckIntervalMinutes);
     }
 
     public synchronized int getDisplayCount()

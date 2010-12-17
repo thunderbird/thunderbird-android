@@ -25,7 +25,6 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -56,9 +55,7 @@ import java.util.zip.GZIPInputStream;
 /**
  * <pre>
  * Uses WebDAV formatted HTTP calls to an MS Exchange server to fetch email
- * and email information.  This has only been tested on an MS Exchange
- * Server 2003.  It uses Form-Based authentication and requires that
- * Outlook Web Access be enabled on the server.
+ * and email information.
  * </pre>
  */
 public class WebDavStore extends Store
@@ -86,24 +83,22 @@ public class WebDavStore extends Store
 
     private short mConnectionSecurity;
     private String mUsername; /* Stores the username for authentications */
-    private String mAlias;    /* Stores the alias for the user's mailbox */
+    private String mAlias; /* Stores the alias for the user's mailbox */
     private String mPassword; /* Stores the password for authentications */
-    private String mUrl;      /* Stores the base URL for the server */
-    private String mHost;     /* Stores the host name for the server */
-    private String mPath;     /* Stores the path for the server */
+    private String mUrl; /* Stores the base URL for the server */
+    private String mHost; /* Stores the host name for the server */
+    private String mPath; /* Stores the path for the server */
     private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
     private String mMailboxPath; /* Stores the user specified path to the mailbox */
-    private URI mUri;         /* Stores the Uniform Resource Indicator with all connection info */
-    private String mRedirectUrl;
-    private String mAuthString;
+    private URI mUri; /* Stores the Uniform Resource Indicator with all connection info */
 
     private boolean mSecure;
     private WebDavHttpClient mHttpClient = null;
     private HttpContext mContext = null;
+    private String mAuthString;
     private CookieStore mAuthCookies = null;
     private short mAuthentication = AUTH_TYPE_NONE;
-    private long mLastAuth = -1;
-    private long mAuthTimeout = 5 * 60;
+    private String mCachedLoginUrl;
 
     private HashMap<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
 
@@ -200,18 +195,7 @@ public class WebDavStore extends Store
                 if (pathParts[0] != null &&
                         pathParts[0].length() > 1)
                 {
-                    if (!pathParts[0].substring(1).equals(""))
-                    {
-                        mPath = pathParts[0].substring(1);
-                    }
-                    else
-                    {
-                        mPath = "";
-                    }
-                }
-                else
-                {
-                    mPath = "";
+                    mPath = pathParts[0];
                 }
             }
             else if (i == 1)
@@ -219,7 +203,7 @@ public class WebDavStore extends Store
                 if (pathParts[1] != null &&
                         pathParts[1].length() > 1)
                 {
-                    mAuthPath = "/" + pathParts[1];
+                    mAuthPath = pathParts[1];
                 }
             }
             else if (i == 2)
@@ -227,36 +211,42 @@ public class WebDavStore extends Store
                 if (pathParts[2] != null &&
                         pathParts[2].length() > 1)
                 {
-                    mMailboxPath = "/" + pathParts[2];
-                    if (mPath == null ||
-                            mPath.equals(""))
-                    {
-                        mPath = mMailboxPath;
-                    }
+                    mMailboxPath = pathParts[2];
                 }
             }
         }
 
-        if (!this.mPath.equals("") &&
-                this.mPath.startsWith("/"))
+        if (mPath == null || mPath.equals(""))
+        {
+            mPath = "/Exchange";
+        }
+        else if (!mPath.startsWith("/"))
         {
             mPath = "/" + mPath;
         }
 
-        if (this.mMailboxPath == null ||
-                this.mMailboxPath.equals(""))
+        if (mMailboxPath == null || mMailboxPath.equals(""))
         {
-            this.mMailboxPath = "/Exchange/" + this.mAlias;
+            mMailboxPath = "/" + mAlias;
         }
-        else if (!this.mMailboxPath.startsWith("/"))
+        else if (!mMailboxPath.startsWith("/"))
         {
             mMailboxPath = "/" + mMailboxPath;
         }
 
-        this.mUrl = getRoot() + mPath + mMailboxPath;
+        if (mAuthPath != null &&
+                !mAuthPath.equals("") &&
+                !mAuthPath.startsWith("/"))
+        {
+            mAuthPath = "/" + mAuthPath;
+        }
 
-        this.mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
-        this.mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
+        // The URL typically looks like the following: "https://mail.domain.com/Exchange/alias".
+        // The inbox path would look like: "https://mail.domain.com/Exchange/alias/Inbox".
+        mUrl = getRoot() + mPath + mMailboxPath;
+
+        mSecure = mConnectionSecurity == CONNECTION_SECURITY_SSL_REQUIRED;
+        mAuthString = "Basic " + Utility.base64Encode(mUsername + ":" + mPassword);
     }
 
     private String getRoot()
@@ -349,7 +339,7 @@ public class WebDavStore extends Store
     }
 
     @Override
-    public Folder getFolder(String name) throws MessagingException
+    public Folder getFolder(String name)
     {
         WebDavFolder folder;
 
@@ -387,7 +377,7 @@ public class WebDavStore extends Store
         buffer.append("<?xml version='1.0' ?>");
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n");
-        buffer.append(" FROM SCOPE('hierarchical traversal of \""+this.mUrl+"\"')\r\n");
+        buffer.append(" FROM SCOPE('hierarchical traversal of \"").append(this.mUrl).append("\"')\r\n");
         buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
         return buffer.toString();
@@ -400,7 +390,8 @@ public class WebDavStore extends Store
         buffer.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
         buffer.append("SELECT \"DAV:visiblecount\"\r\n");
         buffer.append(" FROM \"\"\r\n");
-        buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"="+messageState+"\r\n");
+        buffer.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"=")
+                .append(messageState).append("\r\n");
         buffer.append(" GROUP BY \"DAV:ishidden\"\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
         return buffer.toString();
@@ -432,7 +423,7 @@ public class WebDavStore extends Store
             {
                 buffer.append("  OR ");
             }
-            buffer.append(" \"DAV:uid\"='"+uids[i]+"' ");
+            buffer.append(" \"DAV:uid\"='").append(uids[i]).append("' ");
         }
         buffer.append("\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
@@ -466,7 +457,7 @@ public class WebDavStore extends Store
                 buffer.append("  OR ");
             }
 
-            buffer.append(" \"DAV:uid\"='"+uids[i]+"' ");
+            buffer.append(" \"DAV:uid\"='").append(uids[i]).append("' ");
 
         }
         buffer.append("\r\n");
@@ -494,7 +485,7 @@ public class WebDavStore extends Store
             {
                 buffer.append(" OR ");
             }
-            buffer.append(" \"DAV:uid\"='"+uids[i]+"' ");
+            buffer.append(" \"DAV:uid\"='").append(uids[i]).append("' ");
         }
         buffer.append("\r\n");
         buffer.append("</a:sql></a:searchrequest>\r\n");
@@ -509,12 +500,12 @@ public class WebDavStore extends Store
         buffer.append("<a:target>\r\n");
         for (String url : urls)
         {
-            buffer.append(" <a:href>"+url+"</a:href>\r\n");
+            buffer.append(" <a:href>").append(url).append("</a:href>\r\n");
         }
         buffer.append("</a:target>\r\n");
         buffer.append("<a:set>\r\n");
         buffer.append(" <a:prop>\r\n");
-        buffer.append("  <b:read>" + (read ? "1" : "0") + "</b:read>\r\n");
+        buffer.append("  <b:read>").append(read ? "1" : "0").append("</b:read>\r\n");
         buffer.append(" </a:prop>\r\n");
         buffer.append("</a:set>\r\n");
         buffer.append("</a:propertyupdate>\r\n");
@@ -522,7 +513,7 @@ public class WebDavStore extends Store
     }
 
     // For flag:
-    //    http://www.devnewsgroups.net/group/microsoft.public.exchange.development/topic27175.aspx
+    // http://www.devnewsgroups.net/group/microsoft.public.exchange.development/topic27175.aspx
     // "<m:0x10900003>1</m:0x10900003>" & _
 
     private String getMoveOrCopyMessagesReadXml(String[] urls, boolean isMove)
@@ -531,15 +522,15 @@ public class WebDavStore extends Store
         String action = (isMove ? "move" : "copy");
         StringBuffer buffer = new StringBuffer(600);
         buffer.append("<?xml version='1.0' ?>\r\n");
-        buffer.append("<a:" + action + " xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
+        buffer.append("<a:").append(action).append(" xmlns:a='DAV:' xmlns:b='urn:schemas:httpmail:'>\r\n");
         buffer.append("<a:target>\r\n");
         for (String url : urls)
         {
-            buffer.append(" <a:href>"+url+"</a:href>\r\n");
+            buffer.append(" <a:href>").append(url).append("</a:href>\r\n");
         }
         buffer.append("</a:target>\r\n");
 
-        buffer.append("</a:" + action + ">\r\n");
+        buffer.append("</a:").append(action).append(">\r\n");
         return buffer.toString();
     }
 
@@ -548,11 +539,12 @@ public class WebDavStore extends Store
      */
 
     /**
-     * Determines which type of authentication Exchange is using and
-     * authenticates appropriately.
+     * Determines which type of authentication Exchange is using and authenticates appropriately.
+     * 
      * @throws MessagingException
      */
-    public boolean authenticate() throws MessagingException
+    public boolean authenticate()
+            throws MessagingException
     {
         try
         {
@@ -573,7 +565,6 @@ public class WebDavStore extends Store
                     if (statusCode >= 200 && statusCode < 300)
                     {
                         mAuthentication = AUTH_TYPE_BASIC;
-                        mLastAuth = System.currentTimeMillis() / 1000;
                     }
                     else if (statusCode == 401)
                     {
@@ -582,7 +573,7 @@ public class WebDavStore extends Store
                     else
                     {
                         throw new MessagingException("Error with code " + response.getStatusLine().getStatusCode() +
-                                                     " during request processing: " + response.getStatusLine().toString());
+                                " during request processing: " + response.getStatusLine().toString());
                     }
                 }
                 else if (info.requiredAuthType == AUTH_TYPE_FORM_BASED)
@@ -611,20 +602,22 @@ public class WebDavStore extends Store
     }
 
     /**
-     * Makes the initial connection to Exchange for authentication.
-     * Determines the type of authentication necessary for the server.
+     * Makes the initial connection to Exchange for authentication. Determines the type of authentication necessary for
+     * the server.
+     * 
      * @throws MessagingException
      */
-    private ConnectionInfo doInitialConnection() throws MessagingException
+    private ConnectionInfo doInitialConnection()
+            throws MessagingException
     {
         // For our initial connection we are sending an empty GET request to
         // the configured URL, which should be in the following form:
         // https://mail.server.com/Exchange/alias
         //
         // Possible status codes include:
-        //  401 - the server uses basic authentication
-        //  30x - the server is trying to redirect us to an OWA login
-        //  20x - success
+        // 401 - the server uses basic authentication
+        // 30x - the server is trying to redirect us to an OWA login
+        // 20x - success
         //
         // The latter two indicate form-based authentication.
         ConnectionInfo info = new ConnectionInfo();
@@ -646,14 +639,14 @@ public class WebDavStore extends Store
                 info.requiredAuthType = AUTH_TYPE_BASIC;
             }
             else if ((info.statusCode >= 200 && info.statusCode < 300) || // Success
-                     (info.statusCode >= 300 && info.statusCode < 400) || // Redirect
-                     (info.statusCode == 440)) // Unauthorized
+                    (info.statusCode >= 300 && info.statusCode < 400) || // Redirect
+                    (info.statusCode == 440)) // Unauthorized
 
             {
                 // We will handle all 3 situations the same. First we take an educated
                 // guess at where the authorization DLL is located. If this is this
                 // doesn't work, then we'll use the redirection URL for OWA login given
-                // to use by exchange. We can use this to scrape the location of the
+                // to us by exchange. We can use this to scrape the location of the
                 // authorization URL.
                 info.requiredAuthType = AUTH_TYPE_FORM_BASED;
 
@@ -677,11 +670,11 @@ public class WebDavStore extends Store
             }
             else
             {
-                throw new IOException("Error with code " + info.statusCode + " during request processing: "+
-                                      response.getStatusLine().toString());
+                throw new IOException("Error with code " + info.statusCode + " during request processing: " +
+                        response.getStatusLine().toString());
             }
         }
-        catch(IOException ioe)
+        catch (IOException ioe)
         {
             Log.e(K9.LOG_TAG, "IOException: " + ioe + "\nTrace: " + processException(ioe));
             throw new MessagingException("IOException", ioe);
@@ -692,13 +685,32 @@ public class WebDavStore extends Store
 
     /**
      * Performs form-based authentication.
+     * 
      * @throws MessagingException
      */
-    public void doFBA(ConnectionInfo info) throws IOException, MessagingException
+    public void doFBA(ConnectionInfo info)
+            throws IOException, MessagingException
     {
+        // Clear out cookies from any previous authentication.
+        mAuthCookies.clear();
+
         WebDavHttpClient httpClient = getHttpClient();
 
-        HttpGeneric request = new HttpGeneric(info.guessedAuthUrl);
+        String loginUrl = "";
+        if (info != null)
+        {
+            loginUrl = info.guessedAuthUrl;
+        }
+        else if (mCachedLoginUrl != null && !mCachedLoginUrl.equals(""))
+        {
+            loginUrl = mCachedLoginUrl;
+        }
+        else
+        {
+            throw new MessagingException("No valid login URL available for form-based authentication.");
+        }
+
+        HttpGeneric request = new HttpGeneric(loginUrl);
         request.setMethod("POST");
 
         // Build the POST data.
@@ -717,94 +729,127 @@ public class WebDavStore extends Store
         HttpResponse response = httpClient.executeOverride(request, mContext);
         int statusCode = response.getStatusLine().getStatusCode();
 
-        if (statusCode >= 200 && statusCode < 300)
+        if (statusCode >= 200 && statusCode < 300 &&
+                mAuthCookies != null && !mAuthCookies.getCookies().isEmpty())
         {
-            // Success, we're logged on and an authentication cookie should
-            // have already been added to mAuthCookies for us.
+            // Success, we're authenticated and cookies have been added to mAuthCookies for us.
         }
-        else if (statusCode == 404)
+        else
         {
-            // The resource was not found, which means we need to get tricky
-            // about finding the correct login path.
-            // Send a request to our original redirect URL, and scrape the
-            // login path from the returned page.
-            httpClient.addRequestInterceptor(new HttpRequestInterceptor()
+            // Check our response from the authentication URL above for a form action.
+            String formAction = findFormAction(WebDavHttpClient.getUngzippedContent(response.getEntity()));
+            if (formAction == null)
             {
-                public void process(HttpRequest request, HttpContext context)
-                throws HttpException, IOException
+                // If there is no form action, try using our redirect URL from the initial connection.
+                if (info != null && info.redirectUrl != null && !info.redirectUrl.equals(""))
                 {
-                    mRedirectUrl = ((HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST)).toURI() +
-                                   request.getRequestLine().getUri();
+                    loginUrl = info.redirectUrl;
+
+                    request = new HttpGeneric(loginUrl);
+                    request.setMethod("GET");
+
+                    response = httpClient.executeOverride(request, mContext);
+                    formAction = findFormAction(WebDavHttpClient.getUngzippedContent(response.getEntity()));
                 }
-            });
-
-            String loginUrl = "";
-            if (info != null)
-            {
-                loginUrl = info.redirectUrl;
             }
-            else if (mRedirectUrl != null && !mRedirectUrl.equals(""))
+            if (formAction != null)
             {
-                loginUrl = mRedirectUrl;
-            }
-            else
-            {
-                throw new MessagingException("No valid login URL available for form-based authentication.");
-            }
-
-            try
-            {
-                InputStream istream = sendRequest(loginUrl, "GET", null, null, false);
-                if (istream != null)
+                try
                 {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
-                    String tempText = "";
-                    boolean matched = false;
+                    URI formActionUri = new URI(formAction);
+                    URI loginUri = new URI(loginUrl);
 
-                    while ((tempText = reader.readLine()) != null &&
-                            !matched)
+                    if (formActionUri.isAbsolute())
                     {
-                        if (tempText.indexOf(" action") >= 0)
-                        {
-                            String[] tagParts = tempText.split("\"");
-                            if (tagParts[1].lastIndexOf('/') < 0 &&
-                                    mRedirectUrl != null &&
-                                    !mRedirectUrl.equals(""))
-                            {
-                                /* We have to do a multi-stage substring here because of potential GET parameters */
-                                mRedirectUrl = mRedirectUrl.substring(0, mRedirectUrl.lastIndexOf('?'));
-                                mRedirectUrl = mRedirectUrl.substring(0, mRedirectUrl.lastIndexOf('/'));
-                                loginUrl = mRedirectUrl + "/" + tagParts[1];
-                                this.mAuthPath = new URI(loginUrl).getPath();
-                            }
-                            else
-                            {
-                                loginUrl = getRoot() + tagParts[1];
-                                this.mAuthPath = new URI(loginUrl).getPath();
-                            }
-                        }
+                        // The form action is an absolute URL, just use it.
+                        loginUrl = formAction;
                     }
-                    istream.close();
+                    else
+                    {
+                        // Append the form action to our current URL, minus the file name.
+                        String urlPath = loginUri.getPath();
+                        int lastPathPos = urlPath.lastIndexOf('/');
+                        if (lastPathPos > -1)
+                        {
+                            urlPath = urlPath.substring(0, lastPathPos + 1);
+                            urlPath = urlPath.concat(formAction);
+                        }
 
-                    // Now retry the login using our scraped login URL.
+                        // Reconstruct the login URL based on the original login URL and the form action.
+                        URI finalUri = new URI(loginUri.getScheme(),
+                                loginUri.getUserInfo(),
+                                loginUri.getHost(),
+                                loginUri.getPort(),
+                                urlPath,
+                                null,
+                                null);
+                        loginUrl = finalUri.toString();
+                    }
+
+                    // Retry the login using our new URL.
                     request = new HttpGeneric(loginUrl);
                     request.setMethod("POST");
                     request.setEntity(formEntity);
-
                     httpClient.executeOverride(request, mContext);
                 }
+                catch (URISyntaxException e)
+                {
+                    Log.e(K9.LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + processException(e));
+                    throw new MessagingException("URISyntaxException caught", e);
+                }
             }
-            catch(URISyntaxException use)
+            else
             {
-                throw new MessagingException("An invalid login URL was detected: " + loginUrl);
+                throw new MessagingException("A valid URL for Exchange authentication could not be found.");
             }
         }
 
         if (mAuthCookies != null && !mAuthCookies.getCookies().isEmpty())
         {
             mAuthentication = AUTH_TYPE_FORM_BASED;
-            mLastAuth = System.currentTimeMillis() / 1000;
+            mCachedLoginUrl = loginUrl;
         }
+    }
+
+    /**
+     * Searches the specified stream for an HTML form and returns the form's action target.
+     * 
+     * @throws IOException
+     */
+    private String findFormAction(InputStream istream)
+            throws IOException
+    {
+        String formAction = null;
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
+        String tempText;
+
+        // Read line by line until we find something like: <form action="owaauth.dll"...>.
+        while ((tempText = reader.readLine()) != null &&
+                formAction == null)
+        {
+            if (tempText.indexOf(" action=") > -1)
+            {
+                String[] actionParts = tempText.split(" action=");
+                if (actionParts.length > 1 && actionParts[1].length() > 1)
+                {
+                    char openQuote = actionParts[1].charAt(0);
+                    int closePos = actionParts[1].indexOf(openQuote, 1);
+                    if (closePos > 1)
+                    {
+                        formAction = actionParts[1].substring(1, closePos);
+                        // Remove any GET parameters.
+                        int quesPos = formAction.indexOf('?');
+                        if (quesPos != -1)
+                        {
+                            formAction = formAction.substring(0, quesPos);
+                        }
+                    }
+                }
+            }
+        }
+
+        return formAction;
     }
 
     public CookieStore getAuthCookies()
@@ -827,6 +872,8 @@ public class WebDavStore extends Store
         if (mHttpClient == null)
         {
             mHttpClient = new WebDavHttpClient();
+            // Disable automatic redirects on the http client.
+            mHttpClient.getParams().setBooleanParameter("http.protocol.handle-redirects", false);
 
             // Setup a cookie store for forms-based authentication.
             mContext = new BasicHttpContext();
@@ -853,13 +900,13 @@ public class WebDavStore extends Store
         return mHttpClient;
     }
 
-    private InputStream sendRequest(String url, String method, StringEntity messageBody, HashMap<String, String> headers, boolean tryAuth)
-    throws MessagingException
+    private InputStream sendRequest(String url, String method, StringEntity messageBody,
+            HashMap<String, String> headers, boolean tryAuth)
+            throws MessagingException
     {
         InputStream istream = null;
 
-        if (url == null ||
-                method == null)
+        if (url == null || method == null)
         {
             return istream;
         }
@@ -878,9 +925,12 @@ public class WebDavStore extends Store
                 httpmethod.setEntity(messageBody);
             }
 
-            for (String headerName : headers.keySet())
+            if (headers != null)
             {
-                httpmethod.setHeader(headerName, headers.get(headerName));
+                for (String headerName : headers.keySet())
+                {
+                    httpmethod.setHeader(headerName, headers.get(headerName));
+                }
             }
 
             if (mAuthentication == AUTH_TYPE_NONE)
@@ -921,7 +971,7 @@ public class WebDavStore extends Store
             else if (statusCode < 200 || statusCode >= 300)
             {
                 throw new IOException("Error with code " + statusCode + " during request processing: " +
-                                      response.getStatusLine().toString());
+                        response.getStatusLine().toString());
             }
 
             if (entity != null)
@@ -949,23 +999,25 @@ public class WebDavStore extends Store
     }
 
     /**
-     * Performs an httprequest to the supplied url using the supplied method.
-     * messageBody and headers are optional as not all requests will need them.
-     * There are two signatures to support calls that don't require parsing of the response.
+     * Performs an httprequest to the supplied url using the supplied method. messageBody and headers are optional as
+     * not all requests will need them. There are two signatures to support calls that don't require parsing of the
+     * response.
      */
     private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers)
-    throws MessagingException
+            throws MessagingException
     {
         return processRequest(url, method, messageBody, headers, true);
     }
 
-    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers, boolean needsParsing)
-    throws MessagingException
+    private DataSet processRequest(String url, String method, String messageBody, HashMap<String, String> headers,
+            boolean needsParsing)
+            throws MessagingException
     {
         DataSet dataset = new DataSet();
         if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV)
         {
-            Log.v(K9.LOG_TAG, "processRequest url = '" + url + "', method = '" + method + "', messageBody = '" + messageBody + "'");
+            Log.v(K9.LOG_TAG, "processRequest url = '" + url + "', method = '" + method + "', messageBody = '"
+                    + messageBody + "'");
         }
 
         if (url == null ||
@@ -1008,7 +1060,8 @@ public class WebDavStore extends Store
                 }
                 catch (ParserConfigurationException pce)
                 {
-                    Log.e(K9.LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: " + processException(pce));
+                    Log.e(K9.LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: "
+                            + processException(pce));
                     throw new MessagingException("ParserConfigurationException in processRequest() ", pce);
                 }
 
@@ -1052,7 +1105,7 @@ public class WebDavStore extends Store
     @Override
     public void sendMessages(Message[] messages) throws MessagingException
     {
-        WebDavFolder tmpFolder = (WebDavStore.WebDavFolder)getFolder(DAV_MAIL_TMP_FOLDER);
+        WebDavFolder tmpFolder = (WebDavStore.WebDavFolder) getFolder(DAV_MAIL_TMP_FOLDER);
         try
         {
             tmpFolder.open(OpenMode.READ_WRITE);
@@ -1098,7 +1151,7 @@ public class WebDavStore extends Store
 
             if (DAV_MAIL_SEND_FOLDER.equals(name))
             {
-                this.mFolderUrl = getUrl() + "/" + name +"/";
+                this.mFolderUrl = getUrl() + "/" + name + "/";
             }
             else
             {
@@ -1129,12 +1182,12 @@ public class WebDavStore extends Store
                 encodedName = encodedName.replaceAll("\\+", "%20");
 
                 /**
-                 * In some instances, it is possible that our folder objects have been collected,
-                 * but getPersonalNamespaces() isn't called again (ex. Android destroys the email client).
-                 * Perform an authentication to get the appropriate URLs in place again
+                 * In some instances, it is possible that our folder objects have been collected, but
+                 * getPersonalNamespaces() isn't called again (ex. Android destroys the email client). Perform an
+                 * authentication to get the appropriate URLs in place again
                  */
                 // TODO: danapple0 - huh?
-                //getHttpClient();
+                // getHttpClient();
 
                 if (encodedName.equals("INBOX"))
                 {
@@ -1182,7 +1235,9 @@ public class WebDavStore extends Store
         {
             moveOrCopyMessages(msgs, trashFolderName, true);
         }
-        private void moveOrCopyMessages(Message[] messages, String folderName, boolean isMove) throws MessagingException
+
+        private void moveOrCopyMessages(Message[] messages, String folderName, boolean isMove)
+                throws MessagingException
         {
             String[] uids = new String[messages.length];
 
@@ -1200,13 +1255,13 @@ public class WebDavStore extends Store
                 urls[i] = uidToUrl.get(uids[i]);
                 if (urls[i] == null && messages[i] instanceof WebDavMessage)
                 {
-                    WebDavMessage wdMessage = (WebDavMessage)messages[i];
+                    WebDavMessage wdMessage = (WebDavMessage) messages[i];
                     urls[i] = wdMessage.getUrl();
                 }
             }
 
             messageBody = getMoveOrCopyMessagesReadXml(urls, isMove);
-            WebDavFolder destFolder = (WebDavFolder)store.getFolder(folderName);
+            WebDavFolder destFolder = (WebDavFolder) store.getFolder(folderName);
             headers.put("Destination", destFolder.mFolderUrl);
             headers.put("Brief", "t");
             headers.put("If-Match", "*");
@@ -1273,7 +1328,7 @@ public class WebDavStore extends Store
         }
 
         @Override
-        public OpenMode getMode() throws MessagingException
+        public OpenMode getMode()
         {
             return OpenMode.READ_WRITE;
         }
@@ -1318,7 +1373,7 @@ public class WebDavStore extends Store
 
         @Override
         public Message[] getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
-        throws MessagingException
+                throws MessagingException
         {
             ArrayList<Message> messages = new ArrayList<Message>();
             String[] uids;
@@ -1430,7 +1485,7 @@ public class WebDavStore extends Store
 
         @Override
         public void fetch(Message[] messages, FetchProfile fp, MessageRetrievalListener listener)
-        throws MessagingException
+                throws MessagingException
         {
             if (messages == null ||
                     messages.length == 0)
@@ -1453,7 +1508,6 @@ public class WebDavStore extends Store
                 fetchFlags(messages, listener);
             }
 
-
             if (fp.contains(FetchProfile.Item.BODY_SANE))
             {
                 fetchMessages(messages, listener, (mAccount.getMaximumAutoDownloadMessageSize() / 76));
@@ -1467,7 +1521,8 @@ public class WebDavStore extends Store
         /**
          * Fetches the full messages or up to lines lines and passes them to the message parser.
          */
-        private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines) throws MessagingException
+        private void fetchMessages(Message[] messages, MessageRetrievalListener listener, int lines)
+                throws MessagingException
         {
             WebDavHttpClient httpclient;
             httpclient = getHttpClient();
@@ -1493,13 +1548,14 @@ public class WebDavStore extends Store
                 }
 
                 /**
-                 * If fetch is called outside of the initial list (ie, a locally stored
-                 * message), it may not have a URL associated.  Verify and fix that
+                 * If fetch is called outside of the initial list (ie, a locally stored message), it may not have a URL
+                 * associated. Verify and fix that
                  */
                 if (wdMessage.getUrl().equals(""))
                 {
-                    wdMessage.setUrl(getMessageUrls(new String[] {wdMessage.getUid()}).get(wdMessage.getUid()));
-                    Log.i(K9.LOG_TAG, "Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '" + wdMessage.getUrl() + "'");
+                    wdMessage.setUrl(getMessageUrls(new String[] { wdMessage.getUid() }).get(wdMessage.getUid()));
+                    Log.i(K9.LOG_TAG, "Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '"
+                            + wdMessage.getUrl() + "'");
                     if (wdMessage.getUrl().equals(""))
                     {
                         throw new MessagingException("Unable to get URL for message");
@@ -1508,7 +1564,8 @@ public class WebDavStore extends Store
 
                 try
                 {
-                    Log.i(K9.LOG_TAG, "Fetching message with UID = '" + wdMessage.getUid() + "', URL = '" + wdMessage.getUrl() + "'");
+                    Log.i(K9.LOG_TAG, "Fetching message with UID = '" + wdMessage.getUid() + "', URL = '"
+                            + wdMessage.getUrl() + "'");
                     HttpGet httpget = new HttpGet(new URI(wdMessage.getUrl()));
                     HttpResponse response;
                     HttpEntity entity;
@@ -1528,7 +1585,7 @@ public class WebDavStore extends Store
                             statusCode > 300)
                     {
                         throw new IOException("Error during with code " + statusCode + " during fetch: "
-                                              + response.getStatusLine().toString());
+                                + response.getStatusLine().toString());
                     }
 
                     if (entity != null)
@@ -1549,7 +1606,7 @@ public class WebDavStore extends Store
                             while ((tempText = reader.readLine()) != null &&
                                     (currentLines < lines))
                             {
-                                buffer.append(tempText+"\r\n");
+                                buffer.append(tempText).append("\r\n");
                                 currentLines++;
                             }
 
@@ -1574,7 +1631,9 @@ public class WebDavStore extends Store
                 }
                 catch (IOException ioe)
                 {
-                    Log.e(K9.LOG_TAG, "Non-success response code loading message, response code was " + statusCode + "\nURL: " + wdMessage.getUrl() + "\nError: " + ioe.getMessage() + "\nTrace: " + processException(ioe));
+                    Log.e(K9.LOG_TAG, "Non-success response code loading message, response code was " + statusCode
+                            + "\nURL: " + wdMessage.getUrl() + "\nError: " + ioe.getMessage() + "\nTrace: "
+                            + processException(ioe));
                     throw new MessagingException("Failure code " + statusCode, ioe);
                 }
 
@@ -1586,9 +1645,8 @@ public class WebDavStore extends Store
         }
 
         /**
-         * Fetches and sets the message flags for the supplied messages.
-         * The idea is to have this be recursive so that we do a series of medium calls
-         * instead of one large massive call or a large number of smaller calls.
+         * Fetches and sets the message flags for the supplied messages. The idea is to have this be recursive so that
+         * we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          */
         private void fetchFlags(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException
         {
@@ -1668,12 +1726,12 @@ public class WebDavStore extends Store
         }
 
         /**
-         * Fetches and parses the message envelopes for the supplied messages.
-         * The idea is to have this be recursive so that we do a series of medium calls
-         * instead of one large massive call or a large number of smaller calls.
+         * Fetches and parses the message envelopes for the supplied messages. The idea is to have this be recursive so
+         * that we do a series of medium calls instead of one large massive call or a large number of smaller calls.
          * Call it a happy balance
          */
-        private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener) throws MessagingException
+        private void fetchEnvelope(Message[] startMessages, MessageRetrievalListener listener)
+                throws MessagingException
         {
             HashMap<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
             HashMap<String, String> headers = new HashMap<String, String>();
@@ -1748,14 +1806,14 @@ public class WebDavStore extends Store
         }
 
         @Override
-        public Flag[] getPermanentFlags() throws MessagingException
+        public Flag[] getPermanentFlags()
         {
             return PERMANENT_FLAGS;
         }
 
         @Override
         public void setFlags(Message[] messages, Flag[] flags, boolean value)
-        throws MessagingException
+                throws MessagingException
         {
             String[] uids = new String[messages.length];
 
@@ -1855,18 +1913,12 @@ public class WebDavStore extends Store
                 try
                 {
                     ByteArrayOutputStream out;
-                    try
-                    {
-                        out = new ByteArrayOutputStream(message.getSize());
-                    }
-                    catch (MessagingException e)
-                    {
-                        Log.e(K9.LOG_TAG, "MessagingException while getting size of message: " + e);
-                        out = new ByteArrayOutputStream();
-                    }
+
+                    out = new ByteArrayOutputStream(message.getSize());
+
                     open(OpenMode.READ_WRITE);
                     EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                        new BufferedOutputStream(out, 1024));
+                            new BufferedOutputStream(out, 1024));
                     message.writeTo(msgOut);
                     msgOut.flush();
 
@@ -1900,8 +1952,8 @@ public class WebDavStore extends Store
                             statusCode > 300)
                     {
                         throw new IOException("Error with status code " + statusCode
-                                              + " while sending/appending message.  Response = "
-                                              + response.getStatusLine().toString() + " for message " + messageURL);
+                                + " while sending/appending message.  Response = "
+                                + response.getStatusLine().toString() + " for message " + messageURL);
                     }
                     WebDavMessage retMessage = new WebDavMessage(message.getUid(), this);
 
@@ -1931,15 +1983,17 @@ public class WebDavStore extends Store
         @Override
         public String getUidFromMessageId(Message message) throws MessagingException
         {
-            Log.e(K9.LOG_TAG, "Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
-                  + " being uploaded to the Sent folder");
+            Log.e(K9.LOG_TAG,
+                    "Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
+                            + " being uploaded to the Sent folder");
             return null;
         }
 
         @Override
         public void setFlags(Flag[] flags, boolean value) throws MessagingException
         {
-            Log.e(K9.LOG_TAG, "Unimplemented method setFlags(Flag[], boolean) breaks markAllMessagesAsRead and EmptyTrash");
+            Log.e(K9.LOG_TAG,
+                    "Unimplemented method setFlags(Flag[], boolean) breaks markAllMessagesAsRead and EmptyTrash");
             // Try to make this efficient by not retrieving all of the messages
         }
     }
@@ -1951,8 +2005,7 @@ public class WebDavStore extends Store
     {
         private String mUrl = "";
 
-
-        WebDavMessage(String uid, Folder folder) throws MessagingException
+        WebDavMessage(String uid, Folder folder)
         {
             this.mUid = uid;
             this.mFolder = folder;
@@ -1960,8 +2013,8 @@ public class WebDavStore extends Store
 
         public void setUrl(String url)
         {
-            //TODO: This is a not as ugly hack (ie, it will actually work)
-            //XXX: prevent URLs from getting to us that are broken
+            // TODO: This is a not as ugly hack (ie, it will actually work)
+            // XXX: prevent URLs from getting to us that are broken
             if (!(url.toLowerCase().contains("http")))
             {
                 if (!(url.startsWith("/")))
@@ -1979,8 +2032,7 @@ public class WebDavStore extends Store
             url = "";
 
             /**
-             * We have to decode, then encode the URL because Exchange likes to
-             * not properly encode all characters
+             * We have to decode, then encode the URL because Exchange likes to not properly encode all characters
              */
             try
             {
@@ -1990,11 +2042,13 @@ public class WebDavStore extends Store
             }
             catch (UnsupportedEncodingException uee)
             {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in setUrl: " + uee + "\nTrace: " + processException(uee));
+                Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in setUrl: " + uee + "\nTrace: "
+                        + processException(uee));
             }
             catch (IllegalArgumentException iae)
             {
-                Log.e(K9.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: " + processException(iae));
+                Log.e(K9.LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
+                        + processException(iae));
             }
 
             for (int i = 0; i < length - 1; i++)
@@ -2060,7 +2114,7 @@ public class WebDavStore extends Store
         @Override
         public void delete(String trashFolderName) throws MessagingException
         {
-            WebDavFolder wdFolder = (WebDavFolder)getFolder();
+            WebDavFolder wdFolder = (WebDavFolder) getFolder();
             Log.i(K9.LOG_TAG, "Deleting message by moving to " + trashFolderName);
             wdFolder.moveMessages(new Message[] { this }, wdFolder.getStore().getFolder(trashFolderName));
         }
@@ -2074,8 +2128,7 @@ public class WebDavStore extends Store
     }
 
     /**
-     * XML Parsing Handler
-     * Can handle all XML handling needs
+     * XML Parsing Handler Can handle all XML handling needs
      */
     public class WebDavHandler extends DefaultHandler
     {
@@ -2101,7 +2154,7 @@ public class WebDavStore extends Store
 
         @Override
         public void startElement(String namespaceURI, String localName,
-                                 String qName, Attributes atts) throws SAXException
+                String qName, Attributes atts) throws SAXException
         {
             mOpenTags.push(localName);
         }
@@ -2127,18 +2180,17 @@ public class WebDavStore extends Store
     }
 
     /**
-     * Data set for a single E-Mail message's required headers (the envelope)
-     * Only provides accessor methods to the stored data.  All processing should be
-     * done elsewhere.  This is done rather than having multiple hashmaps
+     * Data set for a single E-Mail message's required headers (the envelope) Only provides accessor methods to the
+     * stored data. All processing should be done elsewhere. This is done rather than having multiple hashmaps
      * associating UIDs to values
      */
-    public class ParsedMessageEnvelope
+    public static class ParsedMessageEnvelope
     {
         /**
          * Holds the mappings from the name returned from Exchange to the MIME format header name
          */
         private final HashMap<String, String> mHeaderMappings = new HashMap<String, String>()
-        {
+                        {
             {
                 put("mime-version", "MIME-Version");
                 put("content-type", "Content-Type");
@@ -2205,13 +2257,13 @@ public class WebDavStore extends Store
     }
 
     /**
-     * Dataset for all XML parses.
-     * Data is stored in a single format inside the class and is formatted appropriately depending on the accessor calls made.
+     * Dataset for all XML parses. Data is stored in a single format inside the class and is formatted appropriately
+     * depending on the accessor calls made.
      */
     public class DataSet
     {
         private HashMap<String, HashMap<String, String>> mData = new HashMap<String, HashMap<String, String>>();
-        //private HashMap<String, String> mLostData = new HashMap<String, String>();
+        // private HashMap<String, String> mLostData = new HashMap<String, String>();
         private String mUid = "";
         private HashMap<String, String> mTempData = new HashMap<String, String>();
 
@@ -2241,8 +2293,9 @@ public class WebDavStore extends Store
             }
             else if (mTempData != null)
             {
-                /* Lost Data are for requests that don't include a message UID.
-                 * These requests should only have a depth of one for the response so it will never get stomped over.
+                /*
+                 * Lost Data are for requests that don't include a message UID. These requests should only have a depth
+                 * of one for the response so it will never get stomped over.
                  */
             }
 
@@ -2374,8 +2427,9 @@ public class WebDavStore extends Store
                         else if (header.equals("date"))
                         {
                             /**
-                             * Exchange doesn't give us rfc822 dates like it claims.  The date is in the format:
-                             * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances are Z>
+                             * Exchange doesn't give us rfc822 dates like it claims. The date is in the format:
+                             * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances
+                             * are Z>
                              */
                             String date = data.get(header);
                             date = date.substring(0, date.length() - 1);
@@ -2391,7 +2445,7 @@ public class WebDavStore extends Store
                             }
                             catch (java.text.ParseException pe)
                             {
-                                Log.e(K9.LOG_TAG, "Error parsing date: "+ pe + "\nTrace: " + processException(pe));
+                                Log.e(K9.LOG_TAG, "Error parsing date: " + pe + "\nTrace: " + processException(pe));
                             }
                             envelope.addHeader(header, tempDate);
                         }
@@ -2413,8 +2467,8 @@ public class WebDavStore extends Store
     }
 
     /**
-     * New HTTP Method that allows changing of the method and generic handling
-     * Needed for WebDAV custom methods such as SEARCH and PROPFIND
+     * New HTTP Method that allows changing of the method and generic handling Needed for WebDAV custom methods such as
+     * SEARCH and PROPFIND
      */
     public class HttpGeneric extends HttpEntityEnclosingRequestBase
     {
@@ -2432,7 +2486,8 @@ public class WebDavStore extends Store
         }
 
         /**
-         * @throws IllegalArgumentException if the uri is invalid.
+         * @throws IllegalArgumentException
+         *             if the uri is invalid.
          */
         public HttpGeneric(final String uri)
         {
@@ -2449,8 +2504,7 @@ public class WebDavStore extends Store
             String url = "";
 
             /**
-             * We have to decode, then encode the URL because Exchange likes to
-             * not properly encode all characters
+             * We have to decode, then encode the URL because Exchange likes to not properly encode all characters
              */
             try
             {
@@ -2463,11 +2517,13 @@ public class WebDavStore extends Store
             }
             catch (UnsupportedEncodingException uee)
             {
-                Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri): " + uee + "\nTrace: " + processException(uee));
+                Log.e(K9.LOG_TAG, "UnsupportedEncodingException caught in HttpGeneric(String uri): " + uee
+                        + "\nTrace: " + processException(uee));
             }
             catch (IllegalArgumentException iae)
             {
-                Log.e(K9.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri): " + iae + "\nTrace: " + processException(iae));
+                Log.e(K9.LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri): " + iae + "\nTrace: "
+                        + processException(iae));
             }
 
             for (int i = 0; i < length - 1; i++)
@@ -2484,7 +2540,7 @@ public class WebDavStore extends Store
             if (K9.DEBUG && K9.DEBUG_PROTOCOL_WEBDAV)
             {
                 Log.v(K9.LOG_TAG, "url = '" + url + "' length = " + url.length()
-                      + ", end = '" + end + "' length = " + end.length());
+                        + ", end = '" + end + "' length = " + end.length());
             }
             url = url + "/" + end;
 
@@ -2510,20 +2566,17 @@ public class WebDavStore extends Store
     public static class WebDavHttpClient extends DefaultHttpClient
     {
         /*
-        * Copyright (C) 2007 The Android Open Source Project
-        *
-        * Licensed under the Apache License, Version 2.0 (the "License");
-        * you may not use this file except in compliance with the License.
-        * You may obtain a copy of the License at
-        *
-        *      http://www.apache.org/licenses/LICENSE-2.0
-        *
-        * Unless required by applicable law or agreed to in writing, software
-        * distributed under the License is distributed on an "AS IS" BASIS,
-        * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-        * See the License for the specific language governing permissions and
-        * limitations under the License.
-        */
+         * Copyright (C) 2007 The Android Open Source Project
+         * 
+         * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in
+         * compliance with the License. You may obtain a copy of the License at
+         * 
+         * http://www.apache.org/licenses/LICENSE-2.0
+         * 
+         * Unless required by applicable law or agreed to in writing, software distributed under the License is
+         * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See
+         * the License for the specific language governing permissions and limitations under the License.
+         */
         public static void modifyRequestToAcceptGzipResponse(HttpRequest request)
         {
             Log.i(K9.LOG_TAG, "Requesting gzipped data");
@@ -2531,14 +2584,17 @@ public class WebDavStore extends Store
         }
 
         public static InputStream getUngzippedContent(HttpEntity entity)
-        throws IOException
+                throws IOException
         {
             InputStream responseStream = entity.getContent();
-            if (responseStream == null) return responseStream;
+            if (responseStream == null)
+                return responseStream;
             Header header = entity.getContentEncoding();
-            if (header == null) return responseStream;
+            if (header == null)
+                return responseStream;
             String contentEncoding = header.getValue();
-            if (contentEncoding == null) return responseStream;
+            if (contentEncoding == null)
+                return responseStream;
             if (contentEncoding.contains("gzip"))
             {
                 Log.i(K9.LOG_TAG, "Response is gzipped");
@@ -2548,7 +2604,7 @@ public class WebDavStore extends Store
         }
 
         public HttpResponse executeOverride(HttpUriRequest request, HttpContext context)
-        throws IOException
+                throws IOException
         {
             modifyRequestToAcceptGzipResponse(request);
             return super.execute(request, context);
@@ -2558,7 +2614,7 @@ public class WebDavStore extends Store
     /**
      * Simple data container for passing connection information.
      */
-    private class ConnectionInfo
+    private static class ConnectionInfo
     {
         public int statusCode;
         public short requiredAuthType;

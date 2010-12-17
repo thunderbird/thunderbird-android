@@ -149,7 +149,7 @@ public class MessageProvider extends ContentProvider
         @Override
         public String getField(final MessageInfoHolder source)
         {
-            return source.subject;
+            return source.message.getSubject();
         }
     }
     public static class SendDateExtractor implements FieldExtractor<MessageInfoHolder, Long>
@@ -165,7 +165,7 @@ public class MessageProvider extends ContentProvider
         @Override
         public String getField(final MessageInfoHolder source)
         {
-            return source.preview;
+            return source.message.getPreview();
         }
     }
     public static class UriExtractor implements FieldExtractor<MessageInfoHolder, String>
@@ -982,7 +982,7 @@ public class MessageProvider extends ContentProvider
         K9.registerApplicationAware(new K9.ApplicationAware()
         {
             @Override
-            public void initializeComponent(final K9 application) throws Exception
+            public void initializeComponent(final K9 application)
             {
                 Log.v(K9.LOG_TAG, "Registering content resolver notifier");
 

@@ -165,7 +165,6 @@
         正確的電子郵件地址及帳號登入，則表示您可能沒有申請付費的
         \"Plus\" 帳號。請啟動網頁瀏覽器，以便取得
         這些郵件帳號的存取權限。</string>
-  <string name="provider_note_yahoo">免費的 Yahoo! Mail 帳號僅能夠透過 T-Mobile 無線網路存取。Yahoo! Mail Plus 的使用者必須手動配置 POP 設定。</string>
   <string name="read_action">讀取</string>
   <string name="read_attachment_desc">允許此應用程式讀取電子郵件附件。</string>
   <string name="read_attachment_label">讀取電子郵件附件</string>

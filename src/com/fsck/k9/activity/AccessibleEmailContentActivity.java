@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fsck.k9.web;
+package com.fsck.k9.activity;
 
 import java.util.ArrayList;
 import android.app.ListActivity;
@@ -43,11 +43,11 @@ public class AccessibleEmailContentActivity extends ListActivity
         String[] rawListItems = parsedHtml.toString().split("\n");
 
         ArrayList<String> cleanedList = new ArrayList<String>();
-        for (int i = 0; i < rawListItems.length; i++)
+        for (String rawListItem : rawListItems)
         {
-            if (rawListItems[i].trim().length() > 0)
+            if (rawListItem.trim().length() > 0)
             {
-                addToCleanedList(cleanedList, rawListItems[i]);
+                addToCleanedList(cleanedList, rawListItem);
             }
         }
 

@@ -85,8 +85,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        mCheckIncoming = (boolean)getIntent().getBooleanExtra(EXTRA_CHECK_INCOMING, false);
-        mCheckOutgoing = (boolean)getIntent().getBooleanExtra(EXTRA_CHECK_OUTGOING, false);
+        mCheckIncoming = getIntent().getBooleanExtra(EXTRA_CHECK_INCOMING, false);
+        mCheckOutgoing = getIntent().getBooleanExtra(EXTRA_CHECK_OUTGOING, false);
 
         new Thread()
         {

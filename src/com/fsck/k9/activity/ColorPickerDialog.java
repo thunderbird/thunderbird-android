@@ -15,6 +15,8 @@ import android.graphics.Color;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+import com.fsck.k9.view.ColorPickerBox;
+
 
 public class ColorPickerDialog
 {

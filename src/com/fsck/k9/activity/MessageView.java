@@ -74,6 +74,7 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.crypto.CryptoProvider;
 import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -87,7 +88,8 @@ import com.fsck.k9.mail.store.LocalStore.LocalAttachmentBodyPart;
 import com.fsck.k9.mail.store.LocalStore.LocalMessage;
 import com.fsck.k9.mail.store.LocalStore.LocalTextBody;
 import com.fsck.k9.provider.AttachmentProvider;
-import com.fsck.k9.web.AccessibleWebView;
+import com.fsck.k9.view.AccessibleWebView;
+import com.fsck.k9.view.ToggleScrollView;
 
 public class MessageView extends K9Activity implements OnClickListener
 {
@@ -132,6 +134,9 @@ public class MessageView extends K9Activity implements OnClickListener
     private boolean mShowPictures;
 
     private Button mDownloadRemainder;
+
+
+   private static Drawable answeredIcon; 
 
 
     View next;
@@ -203,7 +208,7 @@ public class MessageView extends K9Activity implements OnClickListener
      * Pair class is only available since API Level 5, so we need
      * this helper class unfortunately
      */
-    private class HeaderEntry
+    private static class HeaderEntry
     {
         public String label;
         public String value;
@@ -222,6 +227,19 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             // Text selection is finished. Allow scrolling again.
             mToggleScrollView.setScrolling(true);
+        }
+        else if (K9.zoomControlsEnabled())
+        {
+            // If we have system zoom controls enabled, disable scrolling so the screen isn't wiggling around while
+            // trying to zoom.
+            if (ev.getAction() == MotionEvent.ACTION_POINTER_2_DOWN)
+            {
+                mToggleScrollView.setScrolling(false);
+            }
+            else if (ev.getAction() == MotionEvent.ACTION_POINTER_2_UP)
+            {
+                mToggleScrollView.setScrolling(true);
+            }
         }
 
         return super.dispatchTouchEvent(ev);
@@ -252,7 +270,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 if (K9.useVolumeKeysForNavigationEnabled())
                 {
-                    onNext(true);
+                    onNext();
                     return true;
                 }
             }
@@ -260,7 +278,7 @@ public class MessageView extends K9Activity implements OnClickListener
             {
                 if (K9.useVolumeKeysForNavigationEnabled())
                 {
-                    onPrevious(true);
+                    onPrevious();
                     return true;
                 }
             }
@@ -328,13 +346,13 @@ public class MessageView extends K9Activity implements OnClickListener
             case KeyEvent.KEYCODE_J:
             case KeyEvent.KEYCODE_P:
             {
-                onPrevious(K9.showAnimations());
+                onPrevious();
                 return true;
             }
             case KeyEvent.KEYCODE_N:
             case KeyEvent.KEYCODE_K:
             {
-                onNext(K9.showAnimations());
+                onNext();
                 return true;
             }
             case KeyEvent.KEYCODE_Z:
@@ -487,7 +505,9 @@ public class MessageView extends K9Activity implements OnClickListener
                     {
                         mSubjectView.setText(subject);
                     }
+
                     mFromView.setText(from);
+
                     if (date != null)
                     {
                         mDateView.setText(date);
@@ -505,14 +525,8 @@ public class MessageView extends K9Activity implements OnClickListener
 
                     mCcView.setText(cc);
                     mAttachmentIcon.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
-                    if (flagged)
-                    {
-                        mFlagged.setChecked(true);
-                    }
-                    else
-                    {
-                        mFlagged.setChecked(false);
-                    }
+                    mFlagged.setChecked(flagged);
+
                     mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
 
                     chip.setBackgroundColor(accountColor);
@@ -520,21 +534,11 @@ public class MessageView extends K9Activity implements OnClickListener
 
                     if (answered)
                     {
-                        Drawable answeredIcon = getResources().getDrawable(
-                                                    R.drawable.ic_mms_answered_small);
-                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(
-                            answeredIcon, // left
-                            null, // top
-                            null, // right
-                            null); // bottom
+                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds( answeredIcon, null,null,null);
                     }
                     else
                     {
-                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(
-                            null, // left
-                            null, // top
-                            null, // right
-                            null); // bottom
+                        mSubjectView.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
                     }
 
                     if (mMessage.isSet(Flag.X_DOWNLOADED_FULL))
@@ -780,7 +784,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    class Attachment
+    static class Attachment
     {
         public String name;
         public String contentType;
@@ -841,6 +845,10 @@ public class MessageView extends K9Activity implements OnClickListener
         mAccessibleMessageContentView = (AccessibleWebView) findViewById(R.id.accessible_message_content);
 
         mScreenReaderEnabled = isScreenReaderActive();
+
+
+        answeredIcon = getResources().getDrawable(R.drawable.ic_mms_answered_small);
+
 
         if (mScreenReaderEnabled)
         {
@@ -1404,8 +1412,7 @@ public class MessageView extends K9Activity implements OnClickListener
                 dismissDialog(id);
             }
         });
-        final AlertDialog dialog = builder.create();
-        return dialog;
+        return  builder.create();
     }
 
     private void delete()
@@ -1494,19 +1501,19 @@ public class MessageView extends K9Activity implements OnClickListener
 
         if (mLastDirection == NEXT && mNextMessage != null)
         {
-            onNext(K9.showAnimations());
+            onNext();
         }
         else if (mLastDirection == PREVIOUS && mPreviousMessage != null)
         {
-            onPrevious(K9.showAnimations());
+            onPrevious();
         }
         else if (mNextMessage != null)
         {
-            onNext(K9.showAnimations());
+            onNext();
         }
         else if (mPreviousMessage != null)
         {
-            onPrevious(K9.showAnimations());
+            onPrevious();
         }
         else
         {
@@ -1714,7 +1721,7 @@ public class MessageView extends K9Activity implements OnClickListener
     }
 
     @Override
-    protected void onNext(boolean animate)
+    protected void onNext()
     {
         if (mNextMessage == null)
         {
@@ -1725,7 +1732,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         disableButtons();
 
-        if (animate)
+        if (K9.showAnimations())
         {
             mTopView.startAnimation(outToLeftAnimation());
         }
@@ -1736,7 +1743,7 @@ public class MessageView extends K9Activity implements OnClickListener
     }
 
     @Override
-    protected void onPrevious(boolean animate)
+    protected void onPrevious()
     {
         if (mPreviousMessage == null)
         {
@@ -1748,7 +1755,7 @@ public class MessageView extends K9Activity implements OnClickListener
 
         disableButtons();
 
-        if (animate)
+        if (K9.showAnimations())
         {
             mTopView.startAnimation(inFromRightAnimation());
         }
@@ -1929,11 +1936,11 @@ public class MessageView extends K9Activity implements OnClickListener
                 break;
             case R.id.next:
             case R.id.next_scrolling:
-                onNext(K9.showAnimations());
+                onNext();
                 break;
             case R.id.previous:
             case R.id.previous_scrolling:
-                onPrevious(K9.showAnimations());
+                onPrevious();
                 break;
             case R.id.download:
                 onDownloadAttachment((Attachment) view.getTag());
@@ -2052,8 +2059,7 @@ public class MessageView extends K9Activity implements OnClickListener
         {
             case R.id.dialog_confirm_delete:
             {
-                final Dialog dialog = createConfirmDeleteDialog(id);
-                return dialog;
+                return createConfirmDeleteDialog(id);
             }
         }
         return super.onCreateDialog(id);
@@ -2079,7 +2085,7 @@ public class MessageView extends K9Activity implements OnClickListener
         }
     }
 
-    private Bitmap getPreviewIcon(Attachment attachment) throws MessagingException
+    private Bitmap getPreviewIcon(Attachment attachment)
     {
         try
         {
@@ -2096,33 +2102,6 @@ public class MessageView extends K9Activity implements OnClickListener
              * We don't care what happened, we just return null for the preview icon.
              */
             return null;
-        }
-    }
-
-    /*
-     * Formats the given size as a String in bytes, kB, MB or GB with a single digit
-     * of precision. Ex: 12,315,000 = 12.3 MB
-     */
-    public static String formatSize(float size)
-    {
-        long kb = 1024;
-        long mb = (kb * 1024);
-        long gb  = (mb * 1024);
-        if (size < kb)
-        {
-            return String.format("%d bytes", (int) size);
-        }
-        else if (size < mb)
-        {
-            return String.format("%.1f kB", size / kb);
-        }
-        else if (size < gb)
-        {
-            return String.format("%.1f MB", size / mb);
-        }
-        else
-        {
-            return String.format("%.1f GB", size / gb);
         }
     }
 
@@ -2206,7 +2185,7 @@ public class MessageView extends K9Activity implements OnClickListener
             attachmentDownload.setTag(attachment);
 
             attachmentName.setText(name);
-            attachmentInfo.setText(formatSize(size));
+            attachmentInfo.setText(SizeFormatter.formatSize(getApplication(),size));
 
             Bitmap previewIcon = getPreviewIcon(attachment);
             if (previewIcon != null)
@@ -2243,7 +2222,7 @@ public class MessageView extends K9Activity implements OnClickListener
         CharSequence ccText = Address.toFriendly(message.getRecipients(RecipientType.CC), contacts);
 
         int color = mAccount.getChipColor();
-        boolean hasAttachments = ((LocalMessage) message).getAttachmentCount() > 0;
+        boolean hasAttachments = ((LocalMessage) message).hasAttachments();
         boolean unread = !message.isSet(Flag.SEEN);
 
         mHandler.setHeaders(subjectText,

@@ -406,7 +406,7 @@ public class MessageList
         @Override
         public int compare(MessageInfoHolder object1, MessageInfoHolder object2)
         {
-            return (object1.hasAttachments ? 0 : 1) - (object2.hasAttachments ? 0 : 1);
+            return (object1.message.hasAttachments() ? 0 : 1) - (object2.message.hasAttachments() ? 0 : 1);
         }
 
     }
@@ -464,11 +464,11 @@ public class MessageList
             // XXX doesn't respect the Comparator contract since it alters the compared object
             if (arg0.compareSubject == null)
             {
-                arg0.compareSubject = Utility.stripSubject(arg0.subject);
+                arg0.compareSubject = Utility.stripSubject(arg0.message.getSubject());
             }
             if (arg1.compareSubject == null)
             {
-                arg1.compareSubject = Utility.stripSubject(arg1.subject);
+                arg1.compareSubject = Utility.stripSubject(arg1.message.getSubject());
             }
             return arg0.compareSubject.compareToIgnoreCase(arg1.compareSubject);
         }
@@ -540,14 +540,9 @@ public class MessageList
     private boolean mCheckboxes = true;
     private volatile int mSelectedCount = 0;
 
-    /**
-     * Area with buttons visible when multiple
-     * mails are marked.
-     */
     private View mBatchButtonArea;
     private ImageButton mBatchReadButton;
     private ImageButton mBatchDeleteButton;
-    private ImageButton mBatchSpamButton;
     private ImageButton mBatchFlagButton;
     private ImageButton mBatchDoneButton;
 
@@ -1196,12 +1191,9 @@ public class MessageList
         mBatchReadButton.setOnClickListener(this);
         mBatchDeleteButton = (ImageButton) findViewById(R.id.batch_delete_button);
         mBatchDeleteButton.setOnClickListener(this);
-        mBatchSpamButton = (ImageButton) findViewById(R.id.batch_spam_button);
-        mBatchSpamButton.setOnClickListener(this);
         mBatchFlagButton = (ImageButton) findViewById(R.id.batch_flag_button);
         mBatchFlagButton.setOnClickListener(this);
         mBatchDoneButton = (ImageButton) findViewById(R.id.batch_done_button);
-
 
         mBatchDoneButton.setOnClickListener(this);
 
@@ -2628,7 +2620,7 @@ public class MessageList
     {
         getMenuInflater().inflate(R.menu.message_list_context, menu);
 
-        menu.setHeaderTitle((CharSequence) message.subject);
+        menu.setHeaderTitle((CharSequence) message.message.getSubject());
 
         menu.setGroupVisible(R.id.single_message, true);
 
@@ -2916,7 +2908,7 @@ public class MessageList
                         continue;
                     }
                     messageInfo.setDate(holder.compareDate);
-                    messageInfo.setSubject(holder.subject);
+                    messageInfo.setSubject(holder.message.getSubject());
                     messageInfo.setSender(holder.sender.toString());
         
                     messageInfo.setTag(holder);
@@ -3320,17 +3312,18 @@ public class MessageList
             }
             view.getBackground().setAlpha(message.downloaded ? 0 : 127);
 
-            if ((message.subject == null) || "".equals(message.subject))
+            if ((message.message.getSubject() == null) || "".equals(message.message.getSubject()))
             {
                 holder.subject.setText(getText(R.string.general_no_subject));
                 holder.subject.setTypeface(null, message.read ? Typeface.ITALIC : Typeface.BOLD_ITALIC);
             }
             else
             {
-                holder.subject.setText(message.subject);
+                holder.subject.setText(message.message.getSubject());
                 holder.subject.setTypeface(null,  message.read ? Typeface.NORMAL : Typeface.BOLD);
             }
 
+            int senderTypeface = message.read ? Typeface.NORMAL : Typeface.BOLD;
             if (holder.preview != null)
             {
                 /*
@@ -3341,12 +3334,12 @@ public class MessageList
                  * from.
                  */
 
-                holder.preview.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender).append(" ").append(message.preview),
+                holder.preview.setText(new SpannableStringBuilder(recipientSigil(message)).append(message.sender).append(" ").append(message.message.getPreview()),
                                        TextView.BufferType.SPANNABLE);
                 Spannable str = (Spannable)holder.preview.getText();
 
                 // Create our span sections, and assign a format to each.
-                str.setSpan(new StyleSpan(Typeface.BOLD),
+                str.setSpan(new StyleSpan(senderTypeface),
                             0,
                             (message.sender.length()+1),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -3361,14 +3354,14 @@ public class MessageList
             {
                 holder.from.setText(new SpannableStringBuilder(recipientSigil(message)).append( message.sender));
 
-                holder.from.setTypeface(null, message.read ? Typeface.NORMAL : Typeface.BOLD);
+                holder.from.setTypeface(null, senderTypeface);
             }
 
             holder.date.setText(message.getDate(mMessageHelper));
             holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                 message.answered ? mAnsweredIcon : null, // left
                 null, // top
-                message.hasAttachments ? mAttachmentIcon : null, // right
+                message.message.hasAttachments() ? mAttachmentIcon : null, // right
                 null); // bottom
             holder.position = position;
             holder.groupPosition = position;
@@ -3376,11 +3369,11 @@ public class MessageList
 
         private String recipientSigil (MessageInfoHolder message)
         {
-            if (message.toMe)
+            if (message.message.toMe())
             {
                 return getString(R.string.messagelist_sent_to_me_sigil);
             }
-            else if (message.ccMe)
+            else if (message.message.ccMe())
             {
                 return getString(R.string.messagelist_sent_cc_me_sigil);
             }
@@ -3559,29 +3552,21 @@ public class MessageList
                 }
                 if (!mGroupLessMode)
                 {
-                    try
+                    final Address[] from = holder.message.getFrom();
+                    // TODO handle user's identities to display 'me'
+                    if (from.length > 0)
                     {
-                        final Address[] from = holder.message.getFrom();
-                        // TODO handle user's identities to display 'me'
-                        if (from.length > 0)
+                        final String address = from[0].getAddress().toLowerCase(Locale.US);
+                        if (!senders.containsKey(address))
                         {
-                            final String address = from[0].getAddress().toLowerCase(Locale.US);
-                            if (!senders.containsKey(address))
-                            {
-                                final String friendly = from[0].toFriendly().toString();
-                                // XXX toFriendly isn't as friendly as Gmail implementation which display only the first part to gain space
-                                senders.put(address, friendly);
-                            }
-                            if (!holder.read)
-                            {
-                                unreadSenders.add(address);
-                            }
+                            final String friendly = from[0].toFriendly().toString();
+                            // XXX toFriendly isn't as friendly as Gmail implementation which display only the first part to gain space
+                            senders.put(address, friendly);
                         }
-                    }
-                    catch (MessagingException e)
-                    {
-                        // should this happen?
-                        Log.w(K9.LOG_TAG, e);
+                        if (!holder.read)
+                        {
+                            unreadSenders.add(address);
+                        }
                     }
                 }
 
@@ -3951,63 +3936,66 @@ public class MessageList
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.footer_appear);
             animation.setAnimationListener(this);
             mBatchButtonArea.startAnimation(animation);
-
-            
-    		// hide spam button if there is no spam folder
-            if (mAccount != null) {
-            	String folderName = mAccount.getSpamFolderName();
-            	if (K9.FOLDER_NONE.equalsIgnoreCase(folderName)
-            			|| !mController.isMoveCapable(mAccount)) {
-            		mBatchSpamButton.setVisibility(View.GONE);
-            	}
-            }
         }
     }
 
     private void toggleBatchButtons()
     {
-        if (mSelectedCount < 0)
-        {
-            mSelectedCount = 0;
-        }
 
-        int readButtonIconId;
-        int flagButtonIconId;
-
-        if (mSelectedCount==0)
+        runOnUiThread(new Runnable()
         {
-            readButtonIconId = R.drawable.ic_button_mark_read;
-            flagButtonIconId = R.drawable.ic_button_flag;
-            hideBatchButtons();
-        }
-        else
-        {
-            boolean newReadState = computeBatchDirection(false);
-            if (newReadState)
+            @Override
+            public void run()
             {
-                readButtonIconId = R.drawable.ic_button_mark_read;
-            }
-            else
-            {
-                readButtonIconId = R.drawable.ic_button_mark_unread;
-            }
-            boolean newFlagState = computeBatchDirection(true);
-            if (newFlagState)
-            {
-                flagButtonIconId = R.drawable.ic_button_flag;
-            }
-            else
-            {
-                flagButtonIconId = R.drawable.ic_button_unflag;
-            }
-            showBatchButtons();
-        }
 
-        mBatchReadButton.setImageResource(readButtonIconId);
-        mBatchFlagButton.setImageResource(flagButtonIconId);
+                if (mSelectedCount < 0)
+                {
+                    mSelectedCount = 0;
+                }
+
+                int readButtonIconId;
+                int flagButtonIconId;
+
+                if (mSelectedCount==0)
+                {
+                    readButtonIconId = R.drawable.ic_button_mark_read;
+                    flagButtonIconId = R.drawable.ic_button_flag;
+                    hideBatchButtons();
+                }
+                else
+                {
+                    boolean newReadState = computeBatchDirection(false);
+                    if (newReadState)
+                    {
+                        readButtonIconId = R.drawable.ic_button_mark_read;
+                    }
+                    else
+                    {
+                        readButtonIconId = R.drawable.ic_button_mark_unread;
+                    }
+                    boolean newFlagState = computeBatchDirection(true);
+                    if (newFlagState)
+                    {
+                        flagButtonIconId = R.drawable.ic_button_flag;
+                    }
+                    else
+                    {
+                        flagButtonIconId = R.drawable.ic_button_unflag;
+                    }
+                    showBatchButtons();
+                }
+
+                mBatchReadButton.setImageResource(readButtonIconId);
+                mBatchFlagButton.setImageResource(flagButtonIconId);
+
+
+            }
+        });
+
+
     }
 
-    class FooterViewHolder
+    static class FooterViewHolder
     {
         public ProgressBar progress;
         public TextView main;
@@ -4066,7 +4054,6 @@ public class MessageList
     {
         boolean newState = false;
         List<Message> messageList = new ArrayList<Message>();
-        // messages to be removed from the view
         List<MessageInfoHolder> removeHolderList = new ArrayList<MessageInfoHolder>();
 
         if (v == mBatchDoneButton)
@@ -4094,10 +4081,6 @@ public class MessageList
                     {
                         removeHolderList.add(holder);
                     }
-                    else if (v == mBatchSpamButton)
-                    {
-                        removeHolderList.add(holder);
-                    }
                     else if (v == mBatchFlagButton)
                     {
                         holder.flagged = newState;
@@ -4117,17 +4100,6 @@ public class MessageList
             if (v == mBatchDeleteButton)
             {
                 mController.deleteMessages(messageList.toArray(EMPTY_MESSAGE_ARRAY), null);
-                mSelectedCount = 0;
-                toggleBatchButtons();
-            }
-            else if (v == mBatchSpamButton)
-            {
-                String folderName = mAccount.getSpamFolderName();
-                if (K9.FOLDER_NONE.equalsIgnoreCase(folderName))
-                {
-                    return;
-                }
-                mController.moveMessages(mAccount, mCurrentFolder.name, messageList.toArray(EMPTY_MESSAGE_ARRAY), folderName, null);
                 mSelectedCount = 0;
                 toggleBatchButtons();
             }

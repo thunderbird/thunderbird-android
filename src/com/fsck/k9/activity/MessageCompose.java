@@ -237,7 +237,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
     private Validator mAddressValidator;
 
 
-    class Attachment implements Serializable
+    static class Attachment implements Serializable
     {
         public String name;
         public String contentType;
@@ -894,8 +894,8 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private Address[] getAddresses(MultiAutoCompleteTextView view)
     {
-        Address[] addresses = Address.parseUnencoded(view.getText().toString().trim());
-        return addresses;
+
+        return Address.parseUnencoded(view.getText().toString().trim());
     }
 
     /*
@@ -1411,7 +1411,7 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
 
     private void onIdentityChosen(Intent intent)
     {
-        Bundle bundle = intent.getExtras();;
+        Bundle bundle = intent.getExtras();
         switchToIdentity((Identity)bundle.getSerializable(ChooseIdentity.EXTRA_IDENTITY));
     }
 
@@ -1704,17 +1704,27 @@ public class MessageCompose extends K9Activity implements OnClickListener, OnFoc
                 Address[] replyToAddresses;
                 if (message.getReplyTo().length > 0)
                 {
-                    addAddresses(mToView, replyToAddresses = message.getReplyTo());
+                    replyToAddresses = message.getReplyTo();
                 }
                 else
                 {
-                    addAddresses(mToView, replyToAddresses = message.getFrom());
+                    replyToAddresses = message.getFrom();
                 }
+
+                // if we're replying to a message we sent, we probably meant
+                // to reply to the recipient of that message
+                if (mAccount.isAnIdentity(replyToAddresses))
+                {
+                    replyToAddresses = message.getRecipients(RecipientType.TO);
+                }
+
+                addAddresses(mToView, replyToAddresses);
+
+
 
                 if (message.getMessageId() != null && message.getMessageId().length() > 0)
                 {
-                    String messageId = message.getMessageId();
-                    mInReplyTo = messageId;
+                    mInReplyTo = message.getMessageId();
 
                     if (message.getReferences() != null && message.getReferences().length > 0)
                     {

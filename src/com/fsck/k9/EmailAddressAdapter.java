@@ -39,7 +39,7 @@ public class EmailAddressAdapter extends ResourceCursorAdapter
     }
 
 
-    private Contacts mContacts;
+    private final Contacts mContacts;
 
     private EmailAddressAdapter(Context context)
     {
@@ -51,7 +51,7 @@ public class EmailAddressAdapter extends ResourceCursorAdapter
     public final String convertToString(final Cursor cursor)
     {
         final String name = mContacts.getName(cursor);
-        final String address = mContacts.getEmail(cursor);;
+        final String address = mContacts.getEmail(cursor);
 
         return new Address(address, name).toString();
     }

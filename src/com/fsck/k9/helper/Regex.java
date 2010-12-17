@@ -159,7 +159,7 @@ public class Regex
      *  @return             A String comprising all of the non-null matched
      *                      groups concatenated together
      */
-    public static final String concatGroups(Matcher matcher)
+    public static String concatGroups(Matcher matcher)
     {
         StringBuilder b = new StringBuilder();
         final int numGroups = matcher.groupCount();
@@ -189,7 +189,7 @@ public class Regex
      * @return             A String comprising all of the digits and plus in
      *                     the match
      */
-    public static final String digitsAndPlusOnly(Matcher matcher)
+    public static String digitsAndPlusOnly(Matcher matcher)
     {
         StringBuilder buffer = new StringBuilder();
         String matchingRegion = matcher.group();

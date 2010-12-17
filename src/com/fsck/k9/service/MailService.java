@@ -209,7 +209,6 @@ public class MailService extends CoreService
             }
             else if (CONNECTIVITY_CHANGE.equals(intent.getAction()))
             {
-                notifyConnectionStatus(hasConnectivity);
                 rescheduleAll(hasConnectivity, doBackground, startIdObj);
                 startIdObj = null;
                 if (K9.DEBUG)
@@ -217,7 +216,6 @@ public class MailService extends CoreService
             }
             else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction()))
             {
-                notifyConnectionStatus(true);
             }
         }
         finally
@@ -238,37 +236,6 @@ public class MailService extends CoreService
 
     }
 
-    private void notifyConnectionStatus(boolean hasConnectivity)
-    {
-        /*
-        NotificationManager notifMgr =
-            (NotificationManager)getApplication().getSystemService(Context.NOTIFICATION_SERVICE);
-        if (!hasConnectivity)
-        {
-            String notice = getApplication().getString(R.string.no_connection_alert);
-            String header = getApplication().getString(R.string.alert_header);
-
-
-            Notification notif = new Notification(R.drawable.stat_notify_email_generic,
-                                                  header, System.currentTimeMillis());
-
-            Intent i = new Intent();
-            i.setClassName(getApplication().getPackageName(), "com.fsck.k9.service.MailService");
-            i.setAction(MailService.CANCEL_CONNECTIVITY_NOTICE);
-
-            PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
-
-            notif.setLatestEventInfo(getApplication(), header, notice, pi);
-            notif.flags = Notification.FLAG_ONGOING_EVENT;
-
-            notifMgr.notify(K9.CONNECTIVITY_ID, notif);
-        }
-        else
-        {
-            notifMgr.cancel(K9.CONNECTIVITY_ID);
-        }
-        */
-    }
 
     @Override
     public void onDestroy()

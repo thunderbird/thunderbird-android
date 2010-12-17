@@ -21,6 +21,7 @@ import java.util.List;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9;
+import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Folder;
@@ -29,7 +30,6 @@ import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
-import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.crypto.Apg;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.service.MailService;
@@ -533,7 +533,7 @@ public class AccountSettings extends K9PreferenceActivity
         prefs.edit().putString(PREFERENCE_RINGTONE, currentRingtone).commit();
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
-        mAccountVibrate.setChecked(mAccount.getNotificationSetting().isVibrate());
+        mAccountVibrate.setChecked(mAccount.getNotificationSetting().shouldVibrate());
 
         mAccountVibratePattern = (ListPreference) findPreference(PREFERENCE_VIBRATE_PATTERN);
         mAccountVibratePattern.setValue(String.valueOf(mAccount.getNotificationSetting().getVibratePattern()));
@@ -575,7 +575,7 @@ public class AccountSettings extends K9PreferenceActivity
 
 
 
-        List<? extends Folder> folders = new LinkedList<LocalFolder>();;
+        List<? extends Folder> folders = new LinkedList<LocalFolder>();
         try
         {
             folders = mAccount.getLocalStore().getPersonalNamespaces(false);
@@ -625,7 +625,7 @@ public class AccountSettings extends K9PreferenceActivity
 
 
 
-        mChipColor = (Preference)findPreference(PREFERENCE_CHIP_COLOR);
+        mChipColor = findPreference(PREFERENCE_CHIP_COLOR);
         mChipColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
             public boolean onPreferenceClick(Preference preference)
@@ -635,7 +635,7 @@ public class AccountSettings extends K9PreferenceActivity
             }
         });
 
-        mLedColor = (Preference)findPreference(PREFERENCE_LED_COLOR);
+        mLedColor = findPreference(PREFERENCE_LED_COLOR);
         mLedColor.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
             public boolean onPreferenceClick(Preference preference)
@@ -771,13 +771,13 @@ public class AccountSettings extends K9PreferenceActivity
         mAccount.setCryptoAutoSignature(mCryptoAutoSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
 
-        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue().toString()));
-        mAccount.setArchiveFolderName(mArchiveFolder.getValue().toString());
-        mAccount.setDraftsFolderName(mDraftsFolder.getValue().toString());
-        mAccount.setOutboxFolderName(mOutboxFolder.getValue().toString());
-        mAccount.setSentFolderName(mSentFolder.getValue().toString());
-        mAccount.setSpamFolderName(mSpamFolder.getValue().toString());
-        mAccount.setTrashFolderName(mTrashFolder.getValue().toString());
+        mAccount.setAutoExpandFolderName(reverseTranslateFolder(mAutoExpandFolder.getValue()));
+        mAccount.setArchiveFolderName(mArchiveFolder.getValue());
+        mAccount.setDraftsFolderName(mDraftsFolder.getValue());
+        mAccount.setOutboxFolderName(mOutboxFolder.getValue());
+        mAccount.setSentFolderName(mSentFolder.getValue());
+        mAccount.setSpamFolderName(mSpamFolder.getValue());
+        mAccount.setTrashFolderName(mTrashFolder.getValue());
 
 
         if (mIsPushCapable)
@@ -946,9 +946,8 @@ public class AccountSettings extends K9PreferenceActivity
     {
         // Do the vibration to show the user what it's like.
         Vibrator vibrate = (Vibrator)preference.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = MessagingController.getVibratePattern(
-                             Integer.parseInt(mAccountVibratePattern.getValue()),
-                             Integer.parseInt(mAccountVibrateTimes.getValue()));
-        vibrate.vibrate(pattern, -1);
+        vibrate.vibrate(NotificationSetting.getVibration(
+                            Integer.parseInt(mAccountVibratePattern.getValue()),
+                            Integer.parseInt(mAccountVibrateTimes.getValue())), -1);
     }
 }
